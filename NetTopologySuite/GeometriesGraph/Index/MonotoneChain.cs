@@ -1,0 +1,36 @@
+using System;
+using System.Collections;
+using System.Text;
+
+namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    public class MonotoneChain
+    {
+        private MonotoneChainEdge mce;
+        private int chainIndex;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mce"></param>
+        /// <param name="chainIndex"></param>
+        public MonotoneChain(MonotoneChainEdge mce, int chainIndex)
+        {
+            this.mce = mce;
+            this.chainIndex = chainIndex;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mc"></param>
+        /// <param name="si"></param>
+        public virtual void ComputeIntersections(MonotoneChain mc, SegmentIntersector si)
+        {
+            this.mce.ComputeIntersectsForChain(chainIndex, mc.mce, mc.chainIndex, si);
+        }
+    }
+}

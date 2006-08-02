@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<project>
+	<test verbose="false" exception="true" interactive="false" filter="none">
+		<dirs>
+			<dir>..\..\..\test\vivid</dir>
+			<dir>..\..\..\test\validate</dir>
+			<!--<dir>..\..\..\test\robust</dir>-->      
+		</dirs>
+	</test>
+</project>

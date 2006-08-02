@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="Other.xsd">
+    <test verbose="false" exception="true" interactive="false" filter="none">
+        <files>
+            <file>C:\Documents and Settings\Davide\Documenti\Visual Studio\Projects\NetTopologySuite\test\vivid\TestBoundary.xml</file>
+            <file>C:\Documents and Settings\Davide\Documenti\Visual Studio\Projects\NetTopologySuite\test\vivid\TestBoundary.xml</file>
+        </files>
+        <dirs>
+            <dir>C:\Documents and Settings\Davide\Documenti\Visual Studio\Projects\NetTopologySuite\test</dir>
+            <dir>C:\Documents and Settings\Davide\Documenti\Visual Studio\Projects\NetTopologySuite\test</dir>
+        </dirs>
+    </test>
+    <test verbose="false" exception="true" interactive="false" filter="none">
+        <files>
+            <file>C:\Documents and Settings\Davide\Documenti\Visual Studio\Projects\NetTopologySuite\test\vivid\TestBoundary.xml</file>
+        </files>
+    </test>
+    <test verbose="false" exception="true" interactive="false" filter="none">
+        <dirs>
+            <dir>C:\Documents and Settings\Davide\Documenti\Visual Studio\Projects\NetTopologySuite\test</dir>
+        </dirs>
+    </test>
+</project>
