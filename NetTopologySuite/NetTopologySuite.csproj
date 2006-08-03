@@ -10,11 +10,14 @@
     <RootNamespace>GisSharpBlog.NetTopologySuite</RootNamespace>
     <AssemblyName>NetTopologySuite</AssemblyName>
     <SignAssembly>true</SignAssembly>
-    <SccProjectName>%24</SccProjectName>
-    <SccLocalPath>..</SccLocalPath>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
     <SccAuxPath>
     </SccAuxPath>
-    <SccProvider>MSSCCI:Workspaces</SccProvider>
+    <SccProvider>
+    </SccProvider>
     <AssemblyOriginatorKeyFile>ntskey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

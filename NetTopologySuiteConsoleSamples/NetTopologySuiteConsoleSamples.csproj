@@ -9,11 +9,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GisSharpBlog.NetTopologySuite.Samples</RootNamespace>
     <AssemblyName>NetTopologySuiteConsoleSamples</AssemblyName>
-    <SccProjectName>%24</SccProjectName>
-    <SccLocalPath>..</SccLocalPath>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
     <SccAuxPath>
     </SccAuxPath>
-    <SccProvider>MSSCCI:Workspaces</SccProvider>
+    <SccProvider>
+    </SccProvider>
     <StartupObject>GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
