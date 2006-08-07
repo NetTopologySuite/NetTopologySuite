@@ -273,5 +273,27 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             string name = className.Substring(lastDotPos + 1);
             outstream.Write("  " + name + ": " + p0 + " - " + p1 + " " + quadrant + ":" + angle);
         }
+
+        /// <summary>
+        /// Tests whether this component has been removed from its containing graph.
+        /// </summary>
+        /// <value></value>
+        public override bool IsRemoved
+        {
+            get
+            {
+                return parentEdge == null;
+            }
+        }
+
+        /// <summary>
+        /// Removes this directed edge from its containing graph.
+        /// </summary>
+        internal void Remove()
+        {
+            this.sym = null;
+            this.parentEdge = null;
+        }
+
     }
 }

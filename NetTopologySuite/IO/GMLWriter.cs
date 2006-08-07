@@ -6,6 +6,7 @@ using System.Text;
 using System.Xml;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.IO
 {
@@ -16,9 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
     public class GMLWriter
     {
         private const int InitValue = 100;
-        private const int CoordSize = 100;
-
-        private NumberFormatInfo nfi = null;        
+        private const int CoordSize = 100;   
 
         /// <summary>
         /// Formatter for double values of coordinates
@@ -27,12 +26,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
         {
             get 
             {
-                if (nfi == null)
-                {
-                    nfi = new NumberFormatInfo();
-                    nfi.NumberDecimalSeparator = ".";
-                }
-                return nfi;
+                
+                return Global.GetNfi();
             }            
         }
 

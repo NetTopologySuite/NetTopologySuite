@@ -2,75 +2,32 @@ using System;
 using System.Collections;
 using System.Text;
 
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
+
     /// <summary>
-    /// Computes all intersections between segments in a set of <c>SegmentString</c>s.
-    /// Intersections found are represented as <c>SegmentNode</c>s and add to the
-    /// <c>SegmentString</c>s in which they occur.
+    /// Computes all intersections between segments in a set of <see cref="SegmentString" />s.
+    /// Intersections found are represented as <see cref="SegmentNode" />s and added to the
+    /// <see cref="SegmentString" />s in which they occur.
+    /// As a final step in the noding a new set of segment strings split at the nodes may be returned.
     /// </summary>
-    public abstract class Noder
+    public interface Noder
     {
+
         /// <summary>
-        /// 
+        /// Computes the noding for a collection of <see cref="SegmentString" />s.
+        /// Some Noders may add all these nodes to the input <see cref="SegmentString" />s;
+        /// others may only add some or none at all.
         /// </summary>
         /// <param name="segStrings"></param>
+        void ComputeNodes(IList segStrings);
+
+        /// <summary>
+        /// Returns a <see cref="IList" /> of fully noded <see cref="SegmentString" />s.
+        /// The <see cref="SegmentString" />s have the same context as their parent.
+        /// </summary>
         /// <returns></returns>
-        public static IList GetNodedEdges(IList segStrings)
-        {
-            IList resultEdgelist = new ArrayList();
-            GetNodedEdges(segStrings, resultEdgelist);
-            return resultEdgelist;
-        }
+        IList GetNodedSubstrings();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="segStrings"></param>
-        /// <param name="resultEdgelist"></param>
-        public static void GetNodedEdges(IList segStrings, IList resultEdgelist)
-        {
-            for (IEnumerator i = segStrings.GetEnumerator(); i.MoveNext(); )
-            {
-                SegmentString ss = (SegmentString)i.Current;                
-                ss.IntersectionList.AddSplitEdges(resultEdgelist);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected SegmentIntersector segInt;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Noder() { }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public virtual SegmentIntersector SegmentIntersector
-        {
-            get
-            {
-                return segInt;
-            }
-            set
-            {
-                segInt = value;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="segStrings"></param>
-        /// <returns></returns>
-        public abstract IList Node(IList segStrings);
     }
 }

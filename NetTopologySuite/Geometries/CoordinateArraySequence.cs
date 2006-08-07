@@ -143,10 +143,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Creates a deep copy of the Object
+        /// Creates a deep copy of the object.
         /// </summary>
         /// <returns>The deep copy.</returns>
-        public virtual Object Clone() 
+        public virtual object Clone() 
         {
             Coordinate[] cloneCoordinates = new Coordinate[Count];
             for (int i = 0; i < coordinates.Length; i++) 

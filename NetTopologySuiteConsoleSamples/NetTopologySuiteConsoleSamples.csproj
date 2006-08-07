@@ -56,7 +56,6 @@
     <Compile Include="Geometries\simplemethodsexample.cs" />
     <Compile Include="LinearReferencing\LinearReferencingExample.cs" />
     <Compile Include="nunut-tests\CoordinateArraysTest.cs" />
-    <Compile Include="nunut-tests\CoordinateSystemBugTest.cs" />
     <Compile Include="nunut-tests\CoversTest.cs" />
     <Compile Include="nunut-tests\DbfDateTest.cs" />
     <Compile Include="nunut-tests\FormattingTest.cs" />

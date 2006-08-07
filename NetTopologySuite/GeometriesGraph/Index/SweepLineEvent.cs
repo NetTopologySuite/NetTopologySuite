@@ -125,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// correctly handled.
         /// </summary>
         /// <param name="o"></param>
-        public virtual int CompareTo(Object o)
+        public virtual int CompareTo(object o)
         {
             SweepLineEvent pe = (SweepLineEvent)o;
             if (xValue < pe.xValue)

@@ -31,21 +31,11 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// 
         /// </summary>
         /// <returns></returns>
-        public static IFormatProvider GetNfi()
+        public static NumberFormatInfo GetNfi()
         {            
             return global.nfi;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public static DataSet GetEPSGDataSet()
-        {
-            DataSet dataSet = new DataSet("EPGS");
-            dataSet.ReadXml(Directory.GetCurrentDirectory() + @"\Database\EPSG_v61.xml");
-            return dataSet;
-        }
+        
     }
 }
 

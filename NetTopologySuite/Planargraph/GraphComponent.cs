@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// graph might use this to indicate that a node has already been traversed.
     /// The visited flag may be set and cleared many times during the lifetime of a graph.
     /// </summary>
-    public class GraphComponent
+    public abstract class GraphComponent
     {
 
         #region Static
@@ -28,9 +28,9 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <param name="visited">The state to set the <see cref="GraphComponent.Visited" /> flag to.</param>
         public static void SetVisited(IEnumerator i, bool visited)
         {
-            while (i.MoveNext())
+            while(i.MoveNext())
             {
-                GraphComponent comp = (GraphComponent)i.Current;                           
+                GraphComponent comp = (GraphComponent)i.Current;
                 comp.Visited = visited;
             }
         }
@@ -68,7 +68,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             }
             return null;
         }
-
+        
         #endregion
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
                 return Visited;
             }
         }
-       
+
         /// <summary> 
         /// Gets/Sets the visited flag for this component.
         /// </summary>
@@ -138,5 +138,11 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
                 isMarked = value;
             }
         }
+
+        /// <summary>
+        /// Tests whether this component has been removed from its containing graph.
+        /// </summary>
+        public abstract bool IsRemoved { get; }
+
     }
 }

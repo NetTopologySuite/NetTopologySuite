@@ -88,7 +88,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public virtual int CompareTo(Object obj)
+        public virtual int CompareTo(object obj)
         {
             EdgeIntersection other = (EdgeIntersection)obj;
             return Compare(other.SegmentIndex, other.Distance);

@@ -146,6 +146,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             Remove(edge.GetDirEdge(0));
             Remove(edge.GetDirEdge(1));
             edges.Remove(edge);
+            edge.Remove();
         }
 
         /// <summary> 
@@ -158,8 +159,10 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         public virtual void Remove(DirectedEdge de)
         {
             DirectedEdge sym = de.Sym;
-            if (sym != null) sym.Sym = null;
+            if (sym != null) 
+                sym.Sym = null;
             de.FromNode.OutEdges.Remove(de);
+            de.Remove();
             dirEdges.Remove(de);
         }
 
@@ -177,7 +180,8 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
                 DirectedEdge de = (DirectedEdge)i.Current;
                 DirectedEdge sym = de.Sym;
                 // remove the diredge that points to this node
-                if (sym != null) Remove(sym);
+                if (sym != null) 
+                    Remove(sym);
                 // remove this diredge from the graph collection
                 dirEdges.Remove(de);
 
@@ -187,6 +191,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             }
             // remove the node from the graph
             nodeMap.Remove(node.Coordinate);
+            node.Remove();
         }
 
         /// <summary>

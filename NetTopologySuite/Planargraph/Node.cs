@@ -110,6 +110,26 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         public virtual int GetIndex(Edge edge)
         {
             return deStar.GetIndex(edge);
-        }
+       }
+
+       /// <summary>
+       /// Removes this node from its containing graph.
+       /// </summary>
+       internal void Remove()
+       {
+           pt = null;
+       }
+
+       /// <summary>
+       /// Tests whether this component has been removed from its containing graph.
+       /// </summary>
+       /// <value></value>
+       public override bool IsRemoved
+       {
+           get
+           {
+               return pt == null;
+           }
+       }
     }
 }

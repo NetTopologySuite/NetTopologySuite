@@ -388,7 +388,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Copies this location.
         /// </summary>
         /// <returns>A copy of this location.</returns>
-        public Object Clone()
+        public object Clone()
         {
             return new LinearLocation(segmentIndex, segmentFraction);
         }

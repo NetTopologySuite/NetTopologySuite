@@ -95,6 +95,26 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             // node not found
             // possibly should throw an exception here?
             return null;
-        }        
+        }
+
+        /// <summary>
+        /// Removes this edge from its containing graph.
+        /// </summary>
+        internal void Remove()
+        {
+            this.dirEdge = null;
+        }
+
+        /// <summary>
+        /// Tests whether this component has been removed from its containing graph.
+        /// </summary>
+        /// <value></value>
+        public override bool IsRemoved
+        {
+            get
+            {
+                return dirEdge == null;
+            }
+        }
     }
 }

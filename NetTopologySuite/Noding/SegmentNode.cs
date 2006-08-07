@@ -1,138 +1,93 @@
 using System;
 using System.Collections;
 using System.Text;
-using System.IO;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
     /// <summary>
-    /// Represents an intersection point between two <c>SegmentString</c>s.
+    /// Represents an intersection point between two <see cref="SegmentString" />s.
     /// </summary>
     public class SegmentNode : IComparable
     {
-        private Coordinate coord;   // the point of intersection 
-       
-        /// <summary>
-        /// The point of intersection.
-        /// </summary>
-        public virtual Coordinate Coordinate
-        {
-            get 
-            { 
-                return coord; 
-            }
-            set 
-            { 
-                coord = value; 
-            }
-        }
-
-        private int segmentIndex;   // the index of the containing line segment in the parent edge
+        private readonly SegmentString segString = null;
+        public readonly Coordinate Coordinate = null;   // the point of intersection
+        public readonly int SegmentIndex = 0;   // the index of the containing line segment in the parent edge
+        private readonly Octants segmentOctant = Octants.Null;
+        private readonly bool isInterior = false;
 
         /// <summary>
-        /// The index of the containing line segment in the parent edge.
+        /// Initializes a new instance of the <see cref="SegmentNode"/> class.
         /// </summary>
-        public virtual int SegmentIndex
-        {
-            get 
-            { 
-                return segmentIndex; 
-            }
-            set
-            { 
-                segmentIndex = value; 
-            }
-        }
-
-        private double dist;        // the edge distance of this point along the containing line segment
-
-        /// <summary>
-        /// The edge distance of this point along the containing line segment.
-        /// </summary>
-        public virtual double Distance
-        {
-            get 
-            {
-                return dist; 
-            }
-            set
-            {
-                dist = value; 
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <param name="segString"></param>
         /// <param name="coord"></param>
         /// <param name="segmentIndex"></param>
-        /// <param name="dist"></param>
-        public SegmentNode(Coordinate coord, int segmentIndex, double dist) 
+        /// <param name="segmentOctant"></param>
+        public SegmentNode(SegmentString segString, Coordinate coord, int segmentIndex, Octants segmentOctant) 
         {
-            this.coord = new Coordinate(coord);
-            this.segmentIndex = segmentIndex;
-            this.dist = dist;        
+            this.segString = segString;
+            this.Coordinate = new Coordinate(coord);
+            this.SegmentIndex = segmentIndex;
+            this.segmentOctant = segmentOctant;
+            isInterior = !coord.Equals2D(segString.GetCoordinate(segmentIndex));
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="segmentIndex"></param>
-        /// <param name="dist"></param>
-        /// <returns>
-        /// -1 this EdgeIntersection is located before the argument location,
-        /// 0 this EdgeIntersection is at the argument location,
-        /// 1 this EdgeIntersection is located after the argument location.
-        /// </returns>
-        public virtual int Compare(int segmentIndex, double dist)
-        {
-            if (this.SegmentIndex < segmentIndex) 
-                return -1;
-            if (this.SegmentIndex > segmentIndex) 
-                return 1;
-            if (this.Distance < dist) 
-                return -1;
-            if (this.Distance > dist) 
-                return 1;
-            return 0;
-        }        
+        /// <returns></returns>
+        public bool IsInterior
+        { 
+            get
+            {
+                return isInterior; 
+            }
+
+        }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="maxSegmentIndex"></param>
         /// <returns></returns>
-        public virtual bool IsEndPoint(int maxSegmentIndex)
+        public bool IsEndPoint(int maxSegmentIndex)
         {
-            if (SegmentIndex == 0 && Distance == 0.0) 
+            if(SegmentIndex == 0 && ! isInterior) 
                 return true;
-            if (SegmentIndex == maxSegmentIndex) 
+            if(SegmentIndex == maxSegmentIndex) 
                 return true;
             return false;
-        }
+        } 
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="obj"></param>
-        /// <returns></returns>
-        public virtual int CompareTo(Object obj)
+        /// <returns>
+        /// -1 this SegmentNode is located before the argument location, or
+        ///  0 this SegmentNode is at the argument location, or
+        ///  1 this SegmentNode is located after the argument location.   
+        /// </returns>
+        public int CompareTo(object obj)
         {
             SegmentNode other = (SegmentNode) obj;
-            return Compare(other.SegmentIndex, other.Distance);
+            if(SegmentIndex < other.SegmentIndex) 
+                return -1;
+            if(SegmentIndex > other.SegmentIndex) 
+                return 1;
+            if (Coordinate.Equals2D(other.Coordinate)) 
+                return 0;
+            return SegmentPointComparator.Compare(segmentOctant, Coordinate, other.Coordinate);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="outstream"></param>
-        public virtual void Write(StreamWriter outstream)
+        public void Write(System.IO.StreamWriter outstream)
         {
-            outstream.Write(coord);
-            outstream.Write(" seg # = " + segmentIndex);
-            outstream.WriteLine(" dist = " + dist);
+            outstream.Write(Coordinate);
+            outstream.Write(" seg # = " + SegmentIndex);
         }
     }
 }

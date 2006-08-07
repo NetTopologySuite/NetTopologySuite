@@ -23,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <returns></returns>
-        private Object ReadResolve() 
+        private object ReadResolve() 
         {
             return CoordinateArraySequenceFactory.Instance;
         }

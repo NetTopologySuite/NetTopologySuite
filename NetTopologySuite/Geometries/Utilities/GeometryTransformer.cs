@@ -249,7 +249,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                 ArrayList components = new ArrayList();
                 if (shell != null) 
                     components.Add(shell);                
-                foreach (Object hole in holes)
+                foreach (object hole in holes)
                     components.Add(hole);
                 return factory.BuildGeometry(components);
             }

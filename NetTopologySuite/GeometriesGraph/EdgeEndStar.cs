@@ -48,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="e"></param>
         /// <param name="obj"></param>
-        protected void InsertEdgeEnd(EdgeEnd e, Object obj)
+        protected void InsertEdgeEnd(EdgeEnd e, object obj)
         {
             // Diego Guidi says: i have inserted this line because if i try to add an object already present
             // in the list, a System.ArgumentException was thrown.
