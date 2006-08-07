@@ -224,7 +224,10 @@
     <Compile Include="LinearReferencing\LocationIndexedLine.cs" />
     <Compile Include="LinearReferencing\LocationIndexOfLine.cs" />
     <Compile Include="LinearReferencing\LocationIndexOfPoint.cs" />
+    <Compile Include="Noding\IntersectionAdder.cs" />
+    <Compile Include="Noding\IntersectionFinderAdder.cs" />
     <Compile Include="Noding\ISegmentIntersector.cs" />
+    <Compile Include="Noding\IteratedNoder.cs" />
     <Compile Include="Noding\MCIndexNoder.cs" />
     <Compile Include="Noding\Noder.cs" />
     <Compile Include="Noding\NodingValidator.cs" />
