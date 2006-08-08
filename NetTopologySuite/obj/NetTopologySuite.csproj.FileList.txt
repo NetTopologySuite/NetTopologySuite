@@ -1,5 +1,0 @@
-bin\Debug\NetTopologySuite.dll
-bin\Debug\NetTopologySuite.pdb
-obj\Debug\ResolveAssemblyReference.cache
-obj\Debug\NetTopologySuite.dll
-obj\Debug\NetTopologySuite.pdb
