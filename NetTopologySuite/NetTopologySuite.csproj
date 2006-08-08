@@ -243,6 +243,8 @@
     <Compile Include="Noding\SinglePassNoder.cs" />
     <Compile Include="Noding\Snapround\HotPixel.cs" />
     <Compile Include="Noding\Snapround\MCIndexPointSnapper.cs" />
+    <Compile Include="Noding\Snapround\MCIndexSnapRounder.cs" />
+    <Compile Include="Noding\Snapround\SimpleSnapRounder.cs" />
     <Compile Include="Operation\Buffer\BufferBuilder.cs" />
     <Compile Include="Operation\Buffer\BufferOp.cs" />
     <Compile Include="Operation\Buffer\BufferSubgraph.cs" />

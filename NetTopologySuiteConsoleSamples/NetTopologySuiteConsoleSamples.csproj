@@ -44,8 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Coordinates\CoordinatesTest.cs" />
-    <Compile Include="DBGenerator\DBGenerator.cs" />
     <Compile Include="Geometries\basicexample.cs" />
     <Compile Include="Geometries\constructionexample.cs" />
     <Compile Include="Geometries\extendedcoordinate.cs" />
@@ -72,7 +70,6 @@
     <Compile Include="ShapeTests\GMLTesting.cs" />
     <Compile Include="ShapeTests\ShapeRead.cs" />
     <Compile Include="SimpleTests\BaseSamples.cs" />
-    <Compile Include="SimpleTests\CoordConv\CoordSystem.cs" />
     <Compile Include="SimpleTests\Geometries\LineStringSamples.cs" />
     <Compile Include="SimpleTests\Geometries\MultiPointSamples.cs" />
     <Compile Include="SimpleTests\Geometries\PointSamples.cs" />

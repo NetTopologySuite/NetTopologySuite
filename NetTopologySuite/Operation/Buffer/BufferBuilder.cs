@@ -39,9 +39,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         
         private int quadrantSegments = OffsetCurveBuilder.DefaultQuadrantSegments;
         private BufferStyles endCapStyle = BufferStyles.CapRound;
-        private PrecisionModel workingPrecisionModel;
-        private GeometryFactory geomFact;
-        private PlanarGraph graph;
+        
+        private PrecisionModel workingPrecisionModel = null;
+        private INoder workingNoder = null;
+        private GeometryFactory geomFact = null;
+        private PlanarGraph graph = null;
         private EdgeList edgeList = new EdgeList();
 
         /// <summary> 
@@ -103,7 +105,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="g"></param>
         /// <param name="distance"></param>
         /// <returns></returns>
-        public virtual Geometry Buffer(Geometry g, double distance)
+        public Geometry Buffer(Geometry g, double distance)
         {
             PrecisionModel precisionModel = workingPrecisionModel;
             if (precisionModel == null)
@@ -116,15 +118,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             curveBuilder.EndCapStyle = endCapStyle;
             OffsetCurveSetBuilder curveSetBuilder = new OffsetCurveSetBuilder(g, distance, curveBuilder);
 
-            IList bufferSegStrList = curveSetBuilder.GetCurves();            
+            IList bufferSegStrList = curveSetBuilder.GetCurves();
 
             // short-circuit test
-            if (bufferSegStrList.Count <= 0) 
+            if (bufferSegStrList.Count <= 0)
             {
                 Geometry emptyGeom = geomFact.CreateGeometryCollection(new Geometry[0]);
                 return emptyGeom;
             }
-        
+
             ComputeNodedEdges(bufferSegStrList, precisionModel);
             graph = new PlanarGraph(new OverlayNodeFactory());
             graph.AddEdges(edgeList.Edges);
@@ -132,10 +134,27 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             IList subgraphList = CreateSubgraphs(graph);
             PolygonBuilder polyBuilder = new PolygonBuilder(geomFact);
             BuildSubgraphs(subgraphList, polyBuilder);
-            ArrayList resultPolyList = new ArrayList(polyBuilder.Polygons);
+            IList resultPolyList = polyBuilder.Polygons;
 
             Geometry resultGeom = geomFact.BuildGeometry(resultPolyList);
             return resultGeom;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="precisionModel"></param>
+        /// <returns></returns>
+        private INoder GetNoder(PrecisionModel precisionModel)
+        {
+            if (workingNoder != null) 
+                return workingNoder;
+
+            // otherwise use a fast (but non-robust) noder
+            LineIntersector li = new RobustLineIntersector();
+            li.PrecisionModel = precisionModel;
+            MCIndexNoder noder = new MCIndexNoder(new IntersectionAdder(li));                     
+            return noder;
         }
 
         /// <summary>
@@ -145,39 +164,40 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="precisionModel"></param>
         private void ComputeNodedEdges(IList bufferSegStrList, PrecisionModel precisionModel)
         {
-            IteratedNoder noder = new IteratedNoder(precisionModel);
-            IList nodedSegStrings = noder.Node(bufferSegStrList);        
-
-            for (IEnumerator i = nodedSegStrings.GetEnumerator(); i.MoveNext(); ) 
+            INoder noder = GetNoder(precisionModel);
+            noder.ComputeNodes(bufferSegStrList);
+            IList nodedSegStrings = noder.GetNodedSubstrings();
+            
+            foreach(object obj in nodedSegStrings)
             {
-                SegmentString segStr = (SegmentString) i.Current;
-                Label oldLabel = (Label) segStr.Context;
+                SegmentString segStr = (SegmentString)obj;
+                Label oldLabel = (Label)segStr.Data;
                 Edge edge = new Edge(segStr.Coordinates, new Label(oldLabel));
                 InsertEdge(edge);
-            }           
+            }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Inserted edges are checked to see if an identical edge already exists.
         /// If so, the edge is not inserted, but its label is merged
         /// with the existing edge.
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void InsertEdge(Edge e)
+        protected void InsertEdge(Edge e)
         {
             //<FIX> MD 8 Oct 03  speed up identical edge lookup
             // fast lookup
             Edge existingEdge = edgeList.FindEqualEdge(e);
 
             // If an identical edge already exists, simply update its label
-            if (existingEdge != null) 
+            if (existingEdge != null)
             {
                 Label existingLabel = existingEdge.Label;
-                Label labelToMerge = e.Label;
 
+                Label labelToMerge = e.Label;
                 // check if new edge is in reverse direction to existing edge
                 // if so, must flip the label before merging it
-                if (! existingEdge.IsPointwiseEqual(e))
+                if (!existingEdge.IsPointwiseEqual(e))
                 {
                     labelToMerge = new Label(e.Label);
                     labelToMerge.Flip();
@@ -190,9 +210,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 int newDelta = existingDelta + mergeDelta;
                 existingEdge.DepthDelta = newDelta;
             }
-            else 
-            {  
-                // no matching existing edge was found
+            else
+            {   // no matching existing edge was found
                 // add this new edge to the list of edges in this graph
                 //e.setName(name + edges.size());
                 edgeList.Add(e);
@@ -200,40 +219,34 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="graph"></param>
-        /// <returns></returns>
         private IList CreateSubgraphs(PlanarGraph graph)
         {
             ArrayList subgraphList = new ArrayList();
-            for (IEnumerator i = graph.Nodes.GetEnumerator(); i.MoveNext(); )
+            foreach(object obj in graph.Nodes)
             {
-                Node node = (Node) i.Current;
-                if (! node.IsVisited) 
+                Node node = (Node)obj;
+                if (!node.IsVisited)
                 {
                     BufferSubgraph subgraph = new BufferSubgraph();
                     subgraph.Create(node);
                     subgraphList.Add(subgraph);
                 }
             }
+
             /*
-            * Sort the subgraphs in descending order of their rightmost coordinate.
-            * This ensures that when the Polygons for the subgraphs are built,
-            * subgraphs for shells will have been built before the subgraphs for
-            * any holes they contain.
-            */
-            // Collections.sort(subgraphList, Collections.reverseOrder());
+             * Sort the subgraphs in descending order of their rightmost coordinate.
+             * This ensures that when the Polygons for the subgraphs are built,
+             * subgraphs for shells will have been built before the subgraphs for
+             * any holes they contain.
+             */
             subgraphList.Sort();
             subgraphList.Reverse();
-            
             return subgraphList;
         }
 
         /// <summary>
         /// Completes the building of the input subgraphs by depth-labelling them,
-        /// and adds them to the PolygonBuilder.
+        /// and adds them to the <see cref="PolygonBuilder" />.
         /// The subgraph list must be sorted in rightmost-coordinate order.
         /// </summary>
         /// <param name="subgraphList">The subgraphs to build.</param>
@@ -241,17 +254,18 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private void BuildSubgraphs(IList subgraphList, PolygonBuilder polyBuilder)
         {
             IList processedGraphs = new ArrayList();
-            for (IEnumerator i = subgraphList.GetEnumerator(); i.MoveNext(); ) 
+            foreach(object obj in subgraphList)
             {
-                BufferSubgraph subgraph = (BufferSubgraph)i.Current;
+                BufferSubgraph subgraph = (BufferSubgraph)obj;
                 Coordinate p = subgraph.RightMostCoordinate;
                 SubgraphDepthLocater locater = new SubgraphDepthLocater(processedGraphs);
                 int outsideDepth = locater.GetDepth(p);
-                subgraph.ComputeDepth(outsideDepth);        
+                subgraph.ComputeDepth(outsideDepth);
                 subgraph.FindResultEdges();
                 processedGraphs.Add(subgraph);
                 polyBuilder.Add(subgraph.DirectedEdges, subgraph.Nodes);
             }
         }
+
     }
 }

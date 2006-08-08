@@ -49,6 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.NUnitTests
             Console.WriteLine("intersects 7:" + geom7.Intersects(geom6));
             Console.WriteLine("intersects 8:" + geom7.Intersects(geom6));
         }
+
         [Test]
         public void Iteration()
         {

@@ -21,8 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         private LineIntersector li = null;
 
         private Coordinate pt = null;
-        private Coordinate originalPt = null;
-        private Coordinate ptScaled = null;
+        private Coordinate originalPt = null;        
 
         private Coordinate p0Scaled = null;
         private Coordinate p1Scaled = null;

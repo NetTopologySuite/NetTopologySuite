@@ -78,7 +78,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             Envelope pixelEnv = hotPixel.GetSafeEnvelope();
             HotPixelSnapAction hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, vertexIndex);
             index.Query(pixelEnv, new QueryVisitor(pixelEnv, hotPixelSnapAction));
-            return hotPixelSnapAction.IsNodeAdded();
+            return hotPixelSnapAction.IsNodeAdded;
         }
 
         public bool Snap(HotPixel hotPixel)

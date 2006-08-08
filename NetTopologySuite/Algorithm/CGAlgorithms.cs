@@ -9,7 +9,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// Specifies and implements various fundamental Computational Geometric algorithms.
     /// The algorithms supplied in this class are robust for double-precision floating point.
     /// </summary>
-    public class CGAlgorithms
+    public static class CGAlgorithms
     {        
         /// <summary> 
         /// A value that indicates an orientation of clockwise, or a right turn.
@@ -37,12 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// A value that indicates an orientation of collinear, or no turn (straight).
         /// </summary>
         public const int Straight = Collinear;
-
-        /// <summary>
-        /// Only static methods!
-        /// </summary>
-        private CGAlgorithms() { }
-
+        
         /// <summary> 
         /// Returns the index of the direction of the point <c>q</c>
         /// relative to a vector specified by <c>p1-p2</c>.

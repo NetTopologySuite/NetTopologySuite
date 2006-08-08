@@ -72,11 +72,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
 
                 //sample = new SerializationSamples();
                 //sample.Start();
-                //Console.WriteLine();
-
-                //sample = new CoordSystem();
-                //sample.Start();
-                //Console.WriteLine();
+                //Console.WriteLine();                
 
                 //sample = new AttributesTest();
                 //sample.Start();

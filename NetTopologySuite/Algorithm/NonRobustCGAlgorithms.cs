@@ -10,13 +10,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// FOR TESTING PURPOSES ONLY!.
     /// The non-robustness is due to rounding error in floating point computation.
     /// </summary>
-    public class NonRobustCGAlgorithms
+    public static class NonRobustCGAlgorithms
     {
-        /// <summary>
-        /// Only static methods!
-        /// </summary>
-        private NonRobustCGAlgorithms() { }
-
         /// <summary>
         /// 
         /// </summary>
