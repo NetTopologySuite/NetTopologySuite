@@ -1,9 +1,0 @@
-bin\Debug\ConsoleTestRunner.exe
-bin\Debug\ConsoleTestRunner.pdb
-bin\Debug\Open.Topology.TestRunner.dll
-bin\Debug\NetTopologySuite.dll
-bin\Debug\NetTopologySuite.pdb
-bin\Debug\Open.Topology.TestRunner.pdb
-obj\Debug\ResolveAssemblyReference.cache
-obj\Debug\ConsoleTestRunner.exe
-obj\Debug\ConsoleTestRunner.pdb
