@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 using Iesi.Collections;
+using Iesi.Collections.Generic;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
@@ -10,24 +13,45 @@ using GisSharpBlog.NetTopologySuite.Utilities;
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     /// <summary> 
-    /// Computes the convex hull of a <c>Geometry</c>.
+    /// Computes the convex hull of a <see cref="Geometry" />.
     /// The convex hull is the smallest convex Geometry that contains all the
     /// points in the input Geometry.
     /// Uses the Graham Scan algorithm.
     /// </summary>
     public class ConvexHull
     {
-        private PointLocator pointLocator = new PointLocator();
-        private Geometry geometry;
-        private GeometryFactory factory;
+
+        private GeometryFactory geomFactory = null;
+        private Coordinate[] inputPts = null;
 
         /// <summary> 
         /// Create a new convex hull construction for the input <c>Geometry</c>.
         /// </summary>
         /// <param name="geometry"></param>
-        public ConvexHull(Geometry geometry)
+        public ConvexHull(Geometry geometry) 
+            : this(ExtractCoordinates(geometry), geometry.Factory) { }
+
+        /// <summary>
+        /// Create a new convex hull construction for the input <see cref="Coordinate" /> array.
+        /// </summary>
+        /// <param name="pts"></param>
+        /// <param name="geomFactory"></param>   
+        public ConvexHull(Coordinate[] pts, GeometryFactory geomFactory)
         {
-            this.geometry = geometry;
+            inputPts = pts;
+            this.geomFactory = geomFactory;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="geom"></param>
+        /// <returns></returns>
+        private static Coordinate[] ExtractCoordinates(Geometry geom)
+        {
+            UniqueCoordinateArrayFilter filter = new UniqueCoordinateArrayFilter();
+            geom.Apply(filter);
+            return filter.Coordinates;
         }
 
         /// <summary> 
@@ -44,92 +68,73 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </returns>
         public virtual Geometry GetConvexHull()
         {
-            factory = geometry.Factory;
+            if (inputPts.Length == 0)
+                return geomFactory.CreateGeometryCollection(null);
+            
+            if (inputPts.Length == 1)
+                return geomFactory.CreatePoint(inputPts[0]);
 
-            UniqueCoordinateArrayFilter filter = new UniqueCoordinateArrayFilter();
-            geometry.Apply(filter);
-            Coordinate[] pts = filter.Coordinates;
+            if (inputPts.Length == 2)
+                return geomFactory.CreateLineString(inputPts);
+            
 
-            if (pts.Length == 0)
-                return factory.CreateGeometryCollection(null);            
-            if (pts.Length == 1)
-                return factory.CreatePoint(pts[0]);            
-            if (pts.Length == 2)            
-                return factory.CreateLineString(pts);            
-
+            Coordinate[] reducedPts = inputPts;
+            // use heuristic to reduce points, if large
+            if (inputPts.Length > 50)
+                reducedPts = Reduce(inputPts);
+            
             // sort points for Graham scan.
-            Coordinate[] pspts;
-            if (pts.Length > 10)
-            {
-                //Probably should be somewhere between 50 and 100?
-                Coordinate[] rpts = Reduce(pts);
-                pspts = PreSort(rpts);
-            }
-            else pspts = PreSort(pts);            
+            Coordinate[] sortedPts = PreSort(reducedPts);
 
             // Use Graham scan to find convex hull.
-            Stack cHS = GrahamScan(pspts);
+            Stack<Coordinate> cHS = GrahamScan(sortedPts);
 
             // Convert stack to an array.
-            Coordinate[] cH = ToCoordinateArray(cHS);
+            Coordinate[] cH = cHS.ToArray();
 
-            // Convert array to linear ring.
+            // Convert array to appropriate output geometry.
             return LineOrPolygon(cH);
         }
-  
+          
         /// <summary>
-        /// NOTE: why <c>(Coordinate[])stack.ToArray()</c> not work? Probably because ToArray(Type type) is missing...
-        /// </summary>
-        /// <param name="stack"></param>
-        /// <returns></returns>
-        protected virtual Coordinate[] ToCoordinateArray(Stack stack)
-        {            
-            object[] temp = stack.ToArray();
-            Coordinate[] coords = new Coordinate[temp.Length];
-            for(int i = 0; i < temp.Length; i++)
-                coords[i] = (Coordinate)temp[i];
-            return coords;
-        }
-
-        /// <summary>
-        /// 
+        /// Uses a heuristic to reduce the number of points scanned to compute the hull.
+        /// The heuristic is to find a polygon guaranteed to
+        /// be in (or on) the hull, and eliminate all points inside it.
+        /// A quadrilateral defined by the extremal points
+        /// in the four orthogonal directions
+        /// can be used, but even more inclusive is
+        /// to use an octilateral defined by the points in the 8 cardinal directions.
+        /// Note that even if the method used to determine the polygon vertices
+        /// is not 100% robust, this does not affect the robustness of the convex hull.
         /// </summary>
         /// <param name="pts"></param>
         /// <returns></returns>
         private Coordinate[] Reduce(Coordinate[] pts)
         {
-            BigQuad(pts);
-
-            // Build a linear ring defining a big poly.
-            ArrayList bigPoly = new ArrayList();
-            bigPoly.Add(BigQuadCoordinates.Westmost);
-            if (!bigPoly.Contains(BigQuadCoordinates.Northmost))
-                bigPoly.Add(BigQuadCoordinates.Northmost);
-            if (!bigPoly.Contains(BigQuadCoordinates.Eastmost))
-                bigPoly.Add(BigQuadCoordinates.Eastmost);
-            if (!bigPoly.Contains(BigQuadCoordinates.Southmost))
-                bigPoly.Add(BigQuadCoordinates.Southmost);           
-            if (bigPoly.Count < 3)
-                return pts;
-            bigPoly.Add(BigQuadCoordinates.Westmost);
-            Coordinate[] bigPolyArray = new Coordinate[bigPoly.Count];
-            LinearRing bQ = factory.CreateLinearRing((Coordinate[])bigPoly.ToArray(typeof(Coordinate)));
-
-            // load an array with all points not in the big poly
-            // and the defining points.
-            SortedSet reducedSet = new SortedSet(bigPoly);  
-            for (int i = 0; i < pts.Length; i++)
-            {
-                if (pointLocator.Locate(pts[i], bQ) == Locations.Exterior)
-                    reducedSet.Add(pts[i]);                
-            }
-            Coordinate[] rP = new Coordinate[reducedSet.Count];
-            int index = 0;
-            foreach (Coordinate coord in reducedSet)
-                rP[index++] = coord;
-
-            // Return this array as the reduced problem.
-            return rP;
+            Coordinate[] polyPts = ComputeOctRing(inputPts);
+            
+            // unable to compute interior polygon for some reason
+            if(polyPts == null)
+                return inputPts;
+            
+            // add points defining polygon
+            SortedSet<Coordinate> reducedSet = new SortedSet<Coordinate>();
+            for (int i = 0; i < polyPts.Length; i++)
+                reducedSet.Add(polyPts[i]);
+            
+            /*
+             * Add all unique points not in the interior poly.
+             * CGAlgorithms.IsPointInRing is not defined for points actually on the ring,
+             * but this doesn't matter since the points of the interior polygon
+             * are forced to be in the reduced set.
+             */
+            for (int i = 0; i < inputPts.Length; i++)
+                if (!CGAlgorithms.IsPointInRing(inputPts[i], polyPts))                
+                    reducedSet.Add(inputPts[i]);
+            
+            Coordinate[] arr = new Coordinate[reducedSet.Count];
+            reducedSet.CopyTo(arr, 0);
+            return arr;
         }
 
         /// <summary>
@@ -146,7 +151,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             // This focal point is put in array location pts[0].
             for (int i = 1; i < pts.Length; i++)
             {
-                if ((pts[i].Y < pts[0].Y) || ((pts[i].Y == pts[0].Y) && (pts[i].X < pts[0].X)))
+                if ((pts[i].Y < pts[0].Y) || ((pts[i].Y == pts[0].Y) 
+                     && (pts[i].X < pts[0].X)))
                 {
                     t = pts[0];
                     pts[0] = pts[i];
@@ -155,7 +161,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
 
             // sort the points radially around the focal point.
-            RadialSort(pts);
+            try
+            {
+                Array.Sort(pts, 1, pts.Length, new RadialComparator(pts[0]));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
             return pts;
         }
 
@@ -166,21 +179,23 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="c"></param>
         /// <returns></returns>
-        private Stack GrahamScan(Coordinate[] c)
+        private Stack<Coordinate> GrahamScan(Coordinate[] c)
         {
-            return GrahamScan(c, true);
+            // TODO: VERIFY!!! 
+            // return GrahamScan(c, true);
+            return GrahamScan(c, false);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="c"></param>
-        /// <param name="doReverse">Reverse the stack if true</param>
+        /// <param name="doReverse">If <c>true</c>, reverse the stack .</param>
         /// <returns></returns>
-        private Stack GrahamScan(Coordinate[] c, bool doReverse)
+        private Stack<Coordinate> GrahamScan(Coordinate[] c, bool doReverse)
         {
             Coordinate p;
-            Stack ps = new Stack(c.Length);
+            Stack<Coordinate> ps = new Stack<Coordinate>(c.Length);
             ps.Push(c[0]);
             ps.Push(c[1]);
             ps.Push(c[2]);
@@ -199,71 +214,17 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             {
                 // Do a manual reverse of the stack
                 int size = ps.Count;
-                object[] tempArray = new object[size];
+                Coordinate[] tempArray = new Coordinate[size];
                 for (int i = 0; i < size; i++)
                     tempArray[i] = ps.Pop();
-                Stack returnStack = new Stack(size);
-                foreach (object obj in tempArray)
+                Stack<Coordinate> returnStack = new Stack<Coordinate>(size);
+                foreach (Coordinate obj in tempArray)
                     returnStack.Push(obj);
                 return returnStack;
             }
+
             return ps;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="p"></param>
-        private void RadialSort(Coordinate[] p)
-        {
-
-            // A selection sort routine, assumes the pivot point is
-            // the first point (i.e., p[0]).
-            Coordinate t;
-            for (int i = 1; i < (p.Length - 1); i++)
-            {
-                int min = i;
-                for (int j = i + 1; j < p.Length; j++)
-                    if (PolarCompare(p[0], p[j], p[min]) < 0)
-                        min = j;                    
-                t = p[i];
-                p[i] = p[min];
-                p[min] = t;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="o"></param>
-        /// <param name="p"></param>
-        /// <param name="q"></param>
-        /// <returns></returns>
-        private int PolarCompare(Coordinate o, Coordinate p, Coordinate q)
-        {
-
-            // Given two points p and q compare them with respect to their radial
-            // ordering about point o. -1, 0 or 1 depending on whether p is less than,
-            // equal to or greater than q. First checks radial ordering then if both
-            // points lie on the same line, check distance to o.
-            double dxp = p.X - o.X;
-            double dyp = p.Y - o.Y;
-            double dxq = q.X - o.X;
-            double dyq = q.Y - o.Y;
-            double alph = Math.Atan2(dxp, dyp);
-            double beta = Math.Atan2(dxq, dyq);
-            if (alph < beta)
-                return -1;            
-            if (alph > beta)
-                return 1;
-            double op = dxp * dxp + dyp * dyp;
-            double oq = dxq * dxq + dyq * dyq;
-            if (op < oq)
-                return -1;
-            if (op > oq)
-                return 1;
-            return 0;
-        }
+        }               
        
         /// <summary>
         /// 
@@ -291,30 +252,66 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                     return true;
             }
             return false;
+        }              
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="inputPts"></param>
+        /// <returns></returns>
+        private Coordinate[] ComputeOctRing(Coordinate[] inputPts)
+        {
+            Coordinate[] octPts = ComputeOctPts(inputPts);
+            CoordinateList coordList = new CoordinateList();
+            coordList.Add(octPts, false);
+
+            // points must all lie in a line
+            if (coordList.Count < 3)
+                return null;
+            
+            coordList.CloseRing();
+            return coordList.ToCoordinateArray();
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="pts"></param>
+        /// <param name="inputPts"></param>
         /// <returns></returns>
-        private void BigQuad(Coordinate[] pts) 
-        {         
-            BigQuadCoordinates.Northmost = pts[0];
-            BigQuadCoordinates.Southmost = pts[0];
-            BigQuadCoordinates.Westmost = pts[0];
-            BigQuadCoordinates.Eastmost = pts[0];
-            for (int i = 1; i < pts.Length; i++)
+        private Coordinate[] ComputeOctPts(Coordinate[] inputPts)
+        {
+            Coordinate[] pts = new Coordinate[8];
+            for (int j = 0; j < pts.Length; j++)
+                pts[j] = inputPts[0];
+            
+            for (int i = 1; i < inputPts.Length; i++)
             {
-                if (pts[i].X < BigQuadCoordinates.Westmost.X)
-                    BigQuadCoordinates.Westmost = pts[i];
-                if (pts[i].X > BigQuadCoordinates.Eastmost.X)
-                    BigQuadCoordinates.Eastmost = pts[i];
-                if (pts[i].Y < BigQuadCoordinates.Southmost.Y)
-                    BigQuadCoordinates.Southmost = pts[i];
-                if (pts[i].Y > BigQuadCoordinates.Northmost.Y)
-                    BigQuadCoordinates.Northmost = pts[i];
-            }            
+                if (inputPts[i].X < pts[0].X)
+                    pts[0] = inputPts[i];
+                
+                if (inputPts[i].X - inputPts[i].Y < pts[1].X - pts[1].Y)
+                    pts[1] = inputPts[i];
+                
+                if (inputPts[i].Y > pts[2].Y)                
+                    pts[2] = inputPts[i];
+                
+                if (inputPts[i].X + inputPts[i].Y > pts[3].X + pts[3].Y)                
+                    pts[3] = inputPts[i];
+                
+                if (inputPts[i].X > pts[4].X)
+                    pts[4] = inputPts[i];
+                
+                if (inputPts[i].X - inputPts[i].Y > pts[5].X - pts[5].Y)                
+                    pts[5] = inputPts[i];
+                
+                if (inputPts[i].Y < pts[6].Y)
+                    pts[6] = inputPts[i];
+                
+                if (inputPts[i].X + inputPts[i].Y < pts[7].X + pts[7].Y)
+                    pts[7] = inputPts[i];                
+            }
+            return pts;
+
         }
 
         /// <summary>
@@ -326,10 +323,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private Geometry LineOrPolygon(Coordinate[] coordinates)
         {
             coordinates = CleanRing(coordinates);
-            if (coordinates.Length == 3)            
-                return factory.CreateLineString(new Coordinate[] { coordinates[0], coordinates[1] });                            
-            LinearRing linearRing = factory.CreateLinearRing(coordinates);
-            return factory.CreatePolygon(linearRing, null);
+            if (coordinates.Length == 3)
+                return geomFactory.CreateLineString(new Coordinate[] { coordinates[0], coordinates[1] });
+            LinearRing linearRing = geomFactory.CreateLinearRing(coordinates);
+            return geomFactory.CreatePolygon(linearRing, null);
         }
 
         /// <summary>
@@ -340,7 +337,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private Coordinate[] CleanRing(Coordinate[] original)
         {
             Assert.Equals(original[0], original[original.Length - 1]);
-            ArrayList cleanedRing = new ArrayList();
+            List<Coordinate> cleanedRing = new List<Coordinate>();
             Coordinate previousDistinctCoordinate = null;
             for (int i = 0; i <= original.Length - 2; i++)
             {
@@ -355,30 +352,69 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 previousDistinctCoordinate = currentCoordinate;
             }
             cleanedRing.Add(original[original.Length - 1]);
-            return (Coordinate[])cleanedRing.ToArray(typeof(Coordinate));
+            return cleanedRing.ToArray();
         }
 
-        // NOTE: modified for "safe" assembly in Sql 2005
-        // ReadOnly Property created
-        private static readonly BigQuadCoords bigQuadCoordinates = new BigQuadCoords();
-
-        private static BigQuadCoords BigQuadCoordinates
-        {
-            get 
-            { 
-                return ConvexHull.bigQuadCoordinates; 
-            }
-        } 
-          
         /// <summary>
-        /// 
+        /// Compares <see cref="Coordinate" />s for their angle and distance
+        /// relative to an origin.
         /// </summary>
-        private class BigQuadCoords
-        {                        
-            public Coordinate Northmost = null;
-            public Coordinate Southmost = null;
-            public Coordinate Westmost = null;
-            public Coordinate Eastmost = null;
+        private class RadialComparator : IComparer<Coordinate>
+        {
+            private Coordinate origin = null;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="RadialComparator"/> class.
+            /// </summary>
+            /// <param name="origin"></param>
+            public RadialComparator(Coordinate origin)
+            {
+                this.origin = origin;
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="p1"></param>
+            /// <param name="p2"></param>
+            /// <returns></returns>
+            public int Compare(Coordinate p1, Coordinate p2)
+            {                
+                return PolarCompare(origin, p1, p2);
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="o"></param>
+            /// <param name="p"></param>
+            /// <param name="q"></param>
+            /// <returns></returns>
+            private static int PolarCompare(Coordinate o, Coordinate p, Coordinate q)
+            {
+                double dxp = p.X - o.X;
+                double dyp = p.Y - o.Y;
+                double dxq = q.X - o.X;
+                double dyq = q.Y - o.Y;
+             
+                int orient = CGAlgorithms.ComputeOrientation(o, p, q);
+
+                if(orient == CGAlgorithms.CounterClockwise)
+                    return 1;
+                if(orient == CGAlgorithms.Clockwise) 
+                    return -1;
+
+                // points are collinear - check distance
+                double op = dxp * dxp + dyp * dyp;
+                double oq = dxq * dxq + dyq * dyq;
+                if (op < oq)
+                    return -1;                
+                if (op > oq)
+                    return 1;
+                return 0;
+            }
+
         }
+       
     }
 }
