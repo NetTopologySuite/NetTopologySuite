@@ -161,38 +161,16 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
 
             // sort the points radially around the focal point.
-            try
-            {
-                Array.Sort(pts, 1, pts.Length, new RadialComparator(pts[0]));
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.ToString());
-            }
+            Array.Sort(pts, 1, pts.Length - 1, new RadialComparator(pts[0]));
             return pts;
-        }
-
-        /// <summary>
-        /// NOTE: Seems strange but .NET Stack insert works in reverse order of Java Stack!
-        /// I perform a manual reverse of the stack, but this introduce several delays...
-        /// it's really necessary to perform the reverse?
-        /// </summary>
-        /// <param name="c"></param>
-        /// <returns></returns>
-        private Stack<Coordinate> GrahamScan(Coordinate[] c)
-        {
-            // TODO: VERIFY!!! 
-            // return GrahamScan(c, true);
-            return GrahamScan(c, false);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="c"></param>
-        /// <param name="doReverse">If <c>true</c>, reverse the stack .</param>
-        /// <returns></returns>
-        private Stack<Coordinate> GrahamScan(Coordinate[] c, bool doReverse)
+        /// <returns></returns>        
+        private Stack<Coordinate> GrahamScan(Coordinate[] c)
         {
             Coordinate p;
             Stack<Coordinate> ps = new Stack<Coordinate>(c.Length);
@@ -203,27 +181,31 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             {
                 p = (Coordinate)ps.Pop();
                 while (CGAlgorithms.ComputeOrientation((Coordinate)ps.Peek(), p, c[i]) > 0)
-                    p = (Coordinate)ps.Pop();                
+                    p = (Coordinate)ps.Pop();
                 ps.Push(p);
                 ps.Push(c[i]);
             }
             ps.Push(c[0]);
-
-            // perform reverse
-            if (doReverse)
-            {
-                // Do a manual reverse of the stack
-                int size = ps.Count;
-                Coordinate[] tempArray = new Coordinate[size];
-                for (int i = 0; i < size; i++)
-                    tempArray[i] = ps.Pop();
-                Stack<Coordinate> returnStack = new Stack<Coordinate>(size);
-                foreach (Coordinate obj in tempArray)
-                    returnStack.Push(obj);
-                return returnStack;
-            }
-
             return ps;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="?"></param>
+        /// <returns></returns>
+    
+        private Stack<Coordinate> ReverseStack(Stack<Coordinate> ps) 
+        {        
+            // Do a manual reverse of the stack
+            int size = ps.Count;
+            Coordinate[] tempArray = new Coordinate[size];
+            for (int i = 0; i < size; i++)
+                tempArray[i] = ps.Pop();
+            Stack<Coordinate> returnStack = new Stack<Coordinate>(size);
+            foreach (Coordinate obj in tempArray)
+                returnStack.Push(obj);
+            return returnStack;                        
         }               
        
         /// <summary>
@@ -232,7 +214,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="c1"></param>
         /// <param name="c2"></param>
         /// <param name="c3"></param>
-        /// <returns>Whether the three coordinates are collinear and c2 lies between c1 and c3 inclusive.</returns>        
+        /// <returns>
+        /// Whether the three coordinates are collinear 
+        /// and c2 lies between c1 and c3 inclusive.
+        /// </returns>        
         private bool IsBetween(Coordinate c1, Coordinate c2, Coordinate c3)
         {
             if (CGAlgorithms.ComputeOrientation(c1, c2, c3) != 0)
