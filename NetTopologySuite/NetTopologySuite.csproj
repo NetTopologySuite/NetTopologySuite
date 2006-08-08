@@ -229,14 +229,20 @@
     <Compile Include="Noding\ISegmentIntersector.cs" />
     <Compile Include="Noding\IteratedNoder.cs" />
     <Compile Include="Noding\MCIndexNoder.cs" />
-    <Compile Include="Noding\Noder.cs" />
+    <Compile Include="Noding\INoder.cs" />
     <Compile Include="Noding\NodingValidator.cs" />
     <Compile Include="Noding\Octant.cs" />
+    <Compile Include="Noding\OrientedCoordinateArray.cs" />
+    <Compile Include="Noding\ScaledNoder.cs" />
     <Compile Include="Noding\SegmentNode.cs" />
     <Compile Include="Noding\SegmentNodeList.cs" />
     <Compile Include="Noding\SegmentPointComparator.cs" />
     <Compile Include="Noding\SegmentString.cs" />
+    <Compile Include="Noding\SegmentStringDissolver.cs" />
+    <Compile Include="Noding\SimpleNoder.cs" />
     <Compile Include="Noding\SinglePassNoder.cs" />
+    <Compile Include="Noding\Snapround\HotPixel.cs" />
+    <Compile Include="Noding\Snapround\MCIndexPointSnapper.cs" />
     <Compile Include="Operation\Buffer\BufferBuilder.cs" />
     <Compile Include="Operation\Buffer\BufferOp.cs" />
     <Compile Include="Operation\Buffer\BufferSubgraph.cs" />
@@ -369,9 +375,6 @@
   <ItemGroup>
     <None Include="NTS.ndoc" />
     <None Include="ntskey.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Noding\Snapround\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

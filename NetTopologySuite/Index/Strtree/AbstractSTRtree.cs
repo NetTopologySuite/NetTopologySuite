@@ -10,9 +10,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
     /// Base class for STRtree and SIRtree. STR-packed R-trees are described in:
     /// P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
+    /// <para>
     /// This implementation is based on Boundables rather than just AbstractNodes,
     /// because the STR algorithm operates on both nodes and
     /// data, both of which are treated here as Boundables.
+    /// </para>
     /// </summary>
     public abstract class AbstractSTRtree
     {
@@ -255,11 +257,22 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return matches;
         }
 
-        /// <returns>
-        /// A test for intersection between two bounds, necessary because subclasses
-        /// of AbstractSTRtree have different implementations of bounds.
-        /// </returns>
-        protected abstract IIntersectsOp IntersectsOp { get; }
+        /// <summary>
+        /// Also builds the tree, if necessary.
+        /// </summary>
+        /// <param name="searchBounds"></param>
+        /// <param name="visitor"></param>
+        protected virtual void Query(Object searchBounds, IItemVisitor visitor)
+        {
+            if(!built) 
+                Build(); 
+
+            if(itemBoundables.Count == 0)
+                Assert.IsTrue(root.Bounds == null);            
+
+            if(IntersectsOp.Intersects(root.Bounds, searchBounds))
+                Query(searchBounds, root, visitor);            
+        }
 
         /// <summary>
         /// 
@@ -269,18 +282,46 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <param name="matches"></param>
         private void Query(object searchBounds, AbstractNode node, IList matches) 
         {
-            for (IEnumerator i = node.ChildBoundables.GetEnumerator(); i.MoveNext(); ) 
+            foreach(object obj in node.ChildBoundables) 
             {
-                IBoundable childBoundable = (IBoundable) i.Current;
+                IBoundable childBoundable = (IBoundable)obj;
                 if (!IntersectsOp.Intersects(childBoundable.Bounds, searchBounds)) 
-                    continue;                
-                if (childBoundable is AbstractNode) 
-                    Query(searchBounds, (AbstractNode) childBoundable, matches);                
-                else if (childBoundable is ItemBoundable) 
-                    matches.Add(((ItemBoundable)childBoundable).Item);                
-                else Assert.ShouldNeverReachHere();            
+                    continue;      
+      
+                if(childBoundable is AbstractNode) 
+                    Query(searchBounds, (AbstractNode) childBoundable, matches);      
+                else if(childBoundable is ItemBoundable) 
+                    matches.Add(((ItemBoundable)childBoundable).Item);
+                else Assert.ShouldNeverReachHere();
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="searchBounds"></param>
+        /// <param name="node"></param>
+        /// <param name="visitor"></param>
+        private void Query(object searchBounds, AbstractNode node, IItemVisitor visitor) 
+        {
+            foreach(object obj in node.ChildBoundables) 
+            {
+                IBoundable childBoundable = (IBoundable)obj;
+                if(!IntersectsOp.Intersects(childBoundable.Bounds, searchBounds))
+                    continue;      
+                if(childBoundable is AbstractNode) 
+                    Query(searchBounds, (AbstractNode)childBoundable, visitor);      
+                else if (childBoundable is ItemBoundable) 
+                    visitor.VisitItem(((ItemBoundable)childBoundable).Item);            
+                else Assert.ShouldNeverReachHere();
+            }
+        }
+
+        /// <returns>
+        /// A test for intersection between two bounds, necessary because subclasses
+        /// of AbstractSTRtree have different implementations of bounds.
+        /// </returns>
+        protected abstract IIntersectsOp IntersectsOp { get; }        
 
         /// <summary>
         /// Also builds the tree, if necessary.

@@ -29,6 +29,16 @@ namespace GisSharpBlog.NetTopologySuite.Index
         /// <returns>A list of the items found by the query.</returns>
         IList Query(Envelope searchEnv);
 
+        /// <summary>
+        /// Queries the index for all items whose extents intersect the given search <see cref="Envelope" />,
+        /// and applies an <see cref="IItemVisitor" /> to them.
+        /// Note that some kinds of indexes may also return objects which do not in fact
+        /// intersect the query envelope.
+        /// </summary>
+        /// <param name="searchEnv">The envelope to query for.</param>
+        /// <param name="visitor">A visitor object to apply to the items found.</param>
+        void Query(Envelope searchEnv, IItemVisitor visitor);
+
         /// <summary> 
         /// Removes a single item from the tree.
         /// </summary>

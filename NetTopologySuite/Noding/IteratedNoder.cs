@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// Clients can choose to rerun the noding using a lower precision model.
     /// </para>
     /// </summary>
-    public class IteratedNoder : Noder
+    public class IteratedNoder : INoder
     {
 
         /// <summary>

@@ -27,6 +27,7 @@ namespace Iesi.Collections.Generic
             if (obj == this) return true;
             return this.innerEnumerable.Equals(((EnumerableWrapper<T>)obj).innerEnumerable);
         }
+
         #region IEnumerable<T> Members
 
 
@@ -45,7 +46,6 @@ namespace Iesi.Collections.Generic
         }
 
         #endregion
-
        
     }
 }

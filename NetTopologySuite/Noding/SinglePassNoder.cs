@@ -9,7 +9,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// This allows using a custom <see cref="ISegmentIntersector" />
     /// (which for instance may simply identify intersections, rather than insert them).
     /// </summary>
-    public abstract class SinglePassNoder : Noder
+    public abstract class SinglePassNoder : INoder
     {
         private ISegmentIntersector segInt = null;
        

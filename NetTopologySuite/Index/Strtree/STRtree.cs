@@ -303,6 +303,18 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return base.Query(searchEnv);
         }
 
+        /// <summary>
+        /// Returns items whose bounds intersect the given envelope.
+        /// </summary>
+        /// <param name="searchEnv"></param>
+        /// <param name="visitor"></param>
+        public virtual void Query(Envelope searchEnv, IItemVisitor visitor)
+        {
+            //Yes this method does something. It specifies that the bounds is an
+            //Envelope. super.query takes an Object, not an Envelope. [Jon Aquino 10/24/2003]
+            base.Query(searchEnv, visitor);
+        }
+
         /// <summary> 
         /// Removes a single item from the tree.
         /// </summary>
@@ -344,5 +356,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             return new AnonymousYComparerImpl(this);
         }
+
     }
 }

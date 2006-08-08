@@ -10,12 +10,15 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
     /// </summary>
     public class CollectionUtil
     {
+        
+        // TODO: Implement using delegates!!!
+
         /// <summary>
         /// 
         /// </summary>
         public interface Function
         {
-            Object Execute(Object obj);
+            object Execute(object obj);
         }
 
         /// <summary>
@@ -61,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
             IEnumerator i = collection.GetEnumerator();
             while(i.MoveNext())
             {
-                Object item = i.Current;
+                object item = i.Current;
                 if (true.Equals(func.Execute(item)))
                     result.Add(item);                
             }
