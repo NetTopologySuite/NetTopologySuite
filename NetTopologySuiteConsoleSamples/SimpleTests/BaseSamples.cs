@@ -37,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
         /// 
         /// </summary>
         /// <param name="factory"></param>
-        protected BaseSamples(GeometryFactory factory) : this(factory, new WKTReader()) { }
+        protected BaseSamples(GeometryFactory factory) : this(factory, new WKTReader(factory)) { }
 
         /// <summary>
         /// 

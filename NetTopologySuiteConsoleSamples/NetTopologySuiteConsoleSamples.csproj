@@ -58,6 +58,7 @@
     <Compile Include="nunut-tests\DbfDateTest.cs" />
     <Compile Include="nunut-tests\FormattingTest.cs" />
     <Compile Include="nunut-tests\IntesectIterationTest.cs" />
+    <Compile Include="nunut-tests\IsValidTest.cs" />
     <Compile Include="nunut-tests\LineSequencerTest.cs" />
     <Compile Include="nunut-tests\NormalizeTest.cs" />
     <Compile Include="nunut-tests\OracleWKBTest.cs" />

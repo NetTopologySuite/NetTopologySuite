@@ -334,12 +334,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             double envDist = EnvelopeInternal.Distance(geom.EnvelopeInternal);            
             if (envDist > distance)
-                return false;            
-            // NOTE: this could be implemented more efficiently
-            double geomDist = this.Distance(geom);            
-            if (geomDist > distance)
-                return false;            
-            return true;
+                return false;
+            return DistanceOp.IsWithinDistance(this, geom, distance);            
         }
 
         /// <summary>  

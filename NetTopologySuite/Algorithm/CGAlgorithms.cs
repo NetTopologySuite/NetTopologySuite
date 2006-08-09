@@ -146,14 +146,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         }
  
 		/// <summary>
-        /// Computes whether a ring defined by an array of <c>Coordinate</c>s is
-		/// oriented counter-clockwise.
-		/// This will handle coordinate lists which contain repeated points.
-		/// </summary>
-		/// <param name="ring">An array of coordinates forming a ring.</param>
-		/// <returns> 
-        /// <c>true</c> if the ring is oriented counter-clockwise.
-        /// throws <c>ArgumentException</c> if the ring is degenerate (does not contain 3 distinct points).
+        /// Computes whether a ring defined by an array of <see cref="Coordinate" />s is oriented counter-clockwise.
+        /// The list of points is assumed to have the first and last points equal.
+        /// This will handle coordinate lists which contain repeated points.
+        /// This algorithm is only guaranteed to work with valid rings.
+        /// If the ring is invalid (e.g. self-crosses or touches),
+        /// the computed result may not be correct.
 		/// </returns>
         public static bool IsCCW(Coordinate[] ring) 
         {
@@ -161,62 +159,63 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             int nPts = ring.Length - 1;
 
             // find highest point
-            Coordinate hip = ring[0];
-            int hii = 0;
-            for (int i = 1; i <= nPts; i++) 
+            Coordinate hiPt = ring[0];
+            int hiIndex = 0;
+            for (int i = 1; i <= nPts; i++)
             {
                 Coordinate p = ring[i];
-                if (p.Y > hip.Y) 
+                if (p.Y > hiPt.Y)
                 {
-                    hip = p;
-                    hii = i;
+                    hiPt = p;
+                    hiIndex = i;
                 }
             }
 
             // find distinct point before highest point
-            int iPrev = hii;
-            do 
+            int iPrev = hiIndex;
+            do
             {
                 iPrev = iPrev - 1;
                 if (iPrev < 0) iPrev = nPts;
             } 
-            while (ring[iPrev].Equals(hip) && iPrev != hii);
+            while (ring[iPrev].Equals2D(hiPt) && iPrev != hiIndex);
 
             // find distinct point after highest point
-            int iNext = hii;
-            do 
+            int iNext = hiIndex;
+            do
                 iNext = (iNext + 1) % nPts;
-            while (ring[iNext].Equals(hip) && iNext != hii);
+            while (ring[iNext].Equals2D(hiPt) && iNext != hiIndex);
 
             Coordinate prev = ring[iPrev];
             Coordinate next = ring[iNext];
 
-            /*
-            * This check catches cases where the ring contains an A-B-A configuration of points.
-            * This can happen if the ring does not contain 3 distinct points
-            * (including the case where the input array has fewer than 4 elements),
-            * or it contains coincident line segments.
-            */
-            if (prev.Equals(hip) || next.Equals(hip) || prev.Equals(next))
+            /**
+             * This check catches cases where the ring contains an A-B-A configuration of points.
+             * This can happen if the ring does not contain 3 distinct points
+             * (including the case where the input array has fewer than 4 elements),
+             * or it contains coincident line segments.
+             */
+            if (prev.Equals2D(hiPt) || next.Equals2D(hiPt) || prev.Equals2D(next))
                 return false;
-            // MD - don't bother throwing exception, since this isn't a complete check for ring validity
-            // throw new ArgumentException("degenerate ring (does not contain 3 distinct points)");
 
-            int disc = ComputeOrientation(prev, hip, next);
+            int disc = ComputeOrientation(prev, hiPt, next);
 
-            /*
-            *  If disc is exactly 0, lines are collinear.  There are two possible cases:
-            *  (1) the lines lie along the x axis in opposite directions
-            *  (2) the lines lie on top of one another
-            *
-            *  (1) is handled by checking if next is left of prev ==> CCW
-            *  (2) should never happen, so we're going to ignore it!
-            *  (Might want to assert this)
-            */
+            /**
+             *  If disc is exactly 0, lines are collinear.  There are two possible cases:
+             *  (1) the lines lie along the x axis in opposite directions
+             *  (2) the lines lie on top of one another
+             *
+             *  (1) is handled by checking if next is left of prev ==> CCW
+             *  (2) will never happen if the ring is valid, so don't check for it
+             *  (Might want to assert this)
+             */
             bool isCCW = false;
-            if (disc == 0)
-                isCCW = (prev.X > next.X); // poly is CCW if prev x is right of next x
-            else isCCW = (disc > 0);       // if area is positive, points are ordered CCW     
+            if (disc == 0)            
+                // poly is CCW if prev x is right of next x
+                isCCW = (prev.X > next.X);            
+            else
+                // if area is positive, points are ordered CCW
+                isCCW = (disc > 0);
             return isCCW;
         }
 

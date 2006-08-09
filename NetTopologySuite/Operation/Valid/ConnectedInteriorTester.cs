@@ -11,13 +11,14 @@ using GisSharpBlog.NetTopologySuite.Utilities;
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 {
     /// <summary> 
-    /// This class tests that the interior of an area <c>Geometry</c>
-    /// (<c>Polygon</c>  or <c>MultiPolygon</c> )
+    /// This class tests that the interior of an area <see cref="Geometry" />
+    /// (<see cref="Polygon" /> or <see cref="MultiPolygon" />)
     /// is connected.  An area Geometry is invalid if the interior is disconnected.
     /// This can happen if:
-    /// One or more holes either form a chain touching the shell at two places.
-    /// One or more holes form a ring around a portion of the interior.
-    /// If an inconsistency if found the location of the problem is recorded.
+    /// - a shell self-intersects,
+    /// - one or more holes form a connected chain touching a shell at two different points,
+    /// - one or more holes form a ring around a subset of the interior.
+    /// If a disconnected situation is found the location of the problem is recorded.
     /// </summary>
     public class ConnectedInteriorTester
     {
@@ -29,9 +30,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <returns></returns>
         public static Coordinate FindDifferentPoint(Coordinate[] coord, Coordinate pt)
         {
-            for (int i = 0; i < coord.Length; i++)
-                if (!coord[i].Equals(pt))
-                    return coord[i];            
+            foreach (Coordinate c in coord)
+                if (!c.Equals(pt))
+                    return c;            
             return null;
         }
 
@@ -73,13 +74,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             IList splitEdges = new ArrayList();
             geomGraph.ComputeSplitEdges(splitEdges);
 
-            // polygonize the edges
+            // form the edges into rings
             PlanarGraph graph = new PlanarGraph(new OverlayNodeFactory());
             graph.AddEdges(splitEdges);
-            SetAllEdgesInResult(graph);
-            graph.LinkAllDirectedEdges();
+            SetInteriorEdgesInResult(graph);
+            graph.LinkResultDirectedEdges();
             IList edgeRings = BuildEdgeRings(graph.EdgeEnds);
-
             /*
              * Mark all the edges for the edgeRings corresponding to the shells
              * of the input polygons.  Note only ONE ring gets marked for each shell.
@@ -100,39 +100,43 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// 
         /// </summary>
         /// <param name="graph"></param>
-        private void SetAllEdgesInResult(PlanarGraph graph)
+        private void SetInteriorEdgesInResult(PlanarGraph graph)
         {
-            for (IEnumerator it = graph.EdgeEnds.GetEnumerator(); it.MoveNext(); )
-            {
-                DirectedEdge de = (DirectedEdge)it.Current;
-                de.InResult = true;
-            }
+            foreach (DirectedEdge de in graph.EdgeEnds)               
+                if (de.Label.GetLocation(0, Positions.Right) == Locations.Interior)
+                    de.InResult = true;
         }
-
+        
         /// <summary>
-        /// For all DirectedEdges in result, form them into EdgeRings.
+        /// Form <see cref="DirectedEdge" />s in graph into Minimal EdgeRings.
+        /// (Minimal Edgerings must be used, because only they are guaranteed to provide
+        /// a correct isHole computation).
         /// </summary>
         /// <param name="dirEdges"></param>
         /// <returns></returns>
         private IList BuildEdgeRings(IList dirEdges)
         {
             IList edgeRings = new ArrayList();
-            for (IEnumerator it = dirEdges.GetEnumerator(); it.MoveNext(); )
+            foreach (DirectedEdge de in dirEdges)
             {
-                DirectedEdge de = (DirectedEdge)it.Current;
                 // if this edge has not yet been processed
-                if (de.EdgeRing == null)
+                if (de.IsInResult && de.EdgeRing == null)
                 {
-                    EdgeRing er = new MaximalEdgeRing(de, geometryFactory);
-                    edgeRings.Add(er);
+                    MaximalEdgeRing er = new MaximalEdgeRing(de, geometryFactory);
+
+                    er.LinkDirectedEdgesForMinimalEdgeRings();
+                    IList minEdgeRings = er.BuildMinimalRings();
+                    foreach(object o in minEdgeRings)
+                        edgeRings.Add(o);
                 }
             }
             return edgeRings;
         }
 
         /// <summary>
-        /// Mark all the edges for the edgeRings corresponding to the shells
-        /// of the input polygons.  Note only ONE ring gets marked for each shell.
+        /// Mark all the edges for the edgeRings corresponding to the shells of the input polygons.  
+        /// Only ONE ring gets marked for each shell - if there are others which remain unmarked
+        /// this indicates a disconnected interior.
         /// </summary>
         /// <param name="g"></param>
         /// <param name="graph"></param>
@@ -146,11 +150,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             if (g is MultiPolygon) 
             {
                 MultiPolygon mp = (MultiPolygon) g;
-                for (int i = 0; i < mp.NumGeometries; i++) 
-                {
-                    Polygon p = (Polygon) mp.GetGeometryN(i);
+                foreach (Polygon p in mp.Geometries) 
                     VisitInteriorRing(p.ExteriorRing, graph);
-                }
             }
         }
 

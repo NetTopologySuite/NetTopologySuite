@@ -125,7 +125,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         public TopologyValidationError(TopologyValidationErrors errorType, Coordinate pt)
         {
             this.errorType = errorType;
-            this.pt = (Coordinate) pt.Clone();
+            if(pt != null)
+                this.pt = (Coordinate)pt.Clone();
         }
 
         /// <summary>

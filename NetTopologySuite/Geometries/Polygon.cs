@@ -435,9 +435,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 for (int i = 0; i < 5; i++)
                 {
                     double x = seq.GetX(i);
-                    if (!(x == env.MinX || x == env.MaxX)) return false;
+                    if (!(x == env.MinX || x == env.MaxX)) 
+                        return false;
+                    
                     double y = seq.GetY(i);
-                    if (!(y == env.MinY || y == env.MaxY)) return false;
+                    if (!(y == env.MinY || y == env.MaxY))
+                        return false;
                 }
 
                 // check vertices are in right order
@@ -447,10 +450,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 {
                     double x = seq.GetX(i);
                     double y = seq.GetY(i);
+
                     bool xChanged = x != prevX;
                     bool yChanged = y != prevY;
+                    
                     if (xChanged == yChanged)
                         return false;
+                    
                     prevX = x;
                     prevY = y;
                 }
