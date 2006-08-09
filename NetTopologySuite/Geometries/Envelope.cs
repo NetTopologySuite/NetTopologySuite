@@ -609,11 +609,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (other == null)
                 return false;
+
             if (!(other is Envelope)) 
                 return false;            
+
             Envelope otherEnvelope = (Envelope)other;
             if (IsNull) 
                 return otherEnvelope.IsNull;
+
             return  maxx == otherEnvelope.MaxX && maxy == otherEnvelope.MaxY &&
                     minx == otherEnvelope.MinX && miny == otherEnvelope.MinY;
         }

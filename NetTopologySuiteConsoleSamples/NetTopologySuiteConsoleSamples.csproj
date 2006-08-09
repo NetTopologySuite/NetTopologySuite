@@ -62,6 +62,8 @@
     <Compile Include="nunut-tests\NormalizeTest.cs" />
     <Compile Include="nunut-tests\OracleWKBTest.cs" />
     <Compile Include="nunut-tests\ReverseTest.cs" />
+    <Compile Include="nunut-tests\RobustLineIntersectorTest.cs" />
+    <Compile Include="nunut-tests\WKTTest.cs" />
     <Compile Include="SimpleTests\Attributes\AttributesTest.cs" />
     <Compile Include="Operation\Distance\ClosestPointExample.cs" />
     <Compile Include="Operation\Linemerge\LineMergeExample.cs" />

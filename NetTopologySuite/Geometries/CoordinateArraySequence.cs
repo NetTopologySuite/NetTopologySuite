@@ -185,7 +185,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     coordinates[index].Z = value;
                     break;
                 default:
-                    break;
+                    throw new ArgumentException("invalid ordinate index: " + ordinate);
             }
         }
 

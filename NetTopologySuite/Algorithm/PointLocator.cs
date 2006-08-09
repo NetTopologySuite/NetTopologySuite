@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private int numBoundaries;    // the number of sub-elements whose boundaries the point lies in
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="PointLocator"/> class.
         /// </summary>
         public PointLocator() { }
 
@@ -44,9 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             if(geom.IsEmpty)
                 return Locations.Exterior;
             if(geom is LineString) 
-                return Locate(p, (LineString)geom);            
-            if(geom is LinearRing) 
-                return Locate(p, (LinearRing)geom);            
+                return Locate(p, (LineString)geom);                        
             else if (geom is Polygon) 
                 return Locate(p, (Polygon)geom);
         
@@ -68,35 +66,27 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private void ComputeLocation(Coordinate p, Geometry geom)
         {
             if(geom is LineString) 
-                UpdateLocationInfo(Locate(p, (LineString)geom));            
-            if(geom is LinearRing) 
-                UpdateLocationInfo(Locate(p, (LinearRing)geom));            
+                UpdateLocationInfo(Locate(p, (LineString)geom));                                  
             else if(geom is Polygon) 
                 UpdateLocationInfo(Locate(p, (Polygon)geom));            
-            else if (geom is MultiLineString) 
+            else if(geom is MultiLineString) 
             {
                 MultiLineString ml = (MultiLineString)geom;
-                for (int i = 0; i < ml.NumGeometries; i++) 
-                {
-                    LineString l = (LineString)ml.GetGeometryN(i);
-                    UpdateLocationInfo(Locate(p, l));
-                }
+                foreach(LineString l in ml.Geometries)                     
+                    UpdateLocationInfo(Locate(p, l));                
             }
             else if(geom is MultiPolygon)
             {
                 MultiPolygon mpoly = (MultiPolygon)geom;
-                for (int i = 0; i < mpoly.NumGeometries; i++) 
-                {
-                    Polygon poly = (Polygon)mpoly.GetGeometryN(i);
+                foreach(Polygon poly in mpoly.Geometries) 
                     UpdateLocationInfo(Locate(p, poly));
-                }
             }
             else if (geom is GeometryCollection) 
             {
                 IEnumerator geomi = new GeometryCollectionEnumerator((GeometryCollection)geom);
-                while (geomi.MoveNext()) 
+                while(geomi.MoveNext()) 
                 {
-                    Geometry g2 = (Geometry) geomi.Current;
+                    Geometry g2 = (Geometry)geomi.Current;
                     if (g2 != geom)
                         ComputeLocation(p, g2);
                 }
@@ -109,8 +99,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="loc"></param>
         private void UpdateLocationInfo(Locations loc)
         {
-            if (loc == Locations.Interior) isIn = true;
-            if (loc == Locations.Boundary) numBoundaries++;
+            if(loc == Locations.Interior) 
+                isIn = true;
+            if(loc == Locations.Boundary) 
+                numBoundaries++;
         }
 
         /// <summary>
@@ -122,11 +114,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private Locations Locate(Coordinate p, LineString l)
         {
             Coordinate[] pt = l.Coordinates;
-            if (!l.IsClosed)
-            {
-                if (p.Equals(pt[0]) || p.Equals(pt[pt.Length - 1]))
-                    return Locations.Boundary;                
-            }
+            if(!l.IsClosed)
+                if(p.Equals(pt[0]) || p.Equals(pt[pt.Length - 1]))
+                    return Locations.Boundary;                            
             if (CGAlgorithms.IsOnLine(p, pt))
                 return Locations.Interior;
             return Locations.Exterior;
@@ -138,11 +128,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="p"></param>
         /// <param name="ring"></param>
         /// <returns></returns>
-        private Locations Locate(Coordinate p, LinearRing ring)
-        {            
-            if (CGAlgorithms.IsOnLine(p, ring.Coordinates))         
-                return Locations.Boundary;         
-            if (CGAlgorithms.IsPointInRing(p, ring.Coordinates))
+        private Locations LocateInPolygonRing(Coordinate p, LinearRing ring)
+        {
+            // can this test be folded into IsPointInRing?
+            if(CGAlgorithms.IsOnLine(p, ring.Coordinates))
+                return Locations.Boundary;
+            if(CGAlgorithms.IsPointInRing(p, ring.Coordinates))
                 return Locations.Interior;
             return Locations.Exterior;
         }
@@ -155,24 +146,21 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns></returns>
         private Locations Locate(Coordinate p, Polygon poly)
         {
-            if (poly.IsEmpty)
+            if (poly.IsEmpty) 
                 return Locations.Exterior;
-            
             LinearRing shell = (LinearRing)poly.ExteriorRing;
-            Locations shellLoc = Locate(p, shell);
+            Locations shellLoc = LocateInPolygonRing(p, shell);
             if (shellLoc == Locations.Exterior) 
                 return Locations.Exterior;
             if (shellLoc == Locations.Boundary) 
                 return Locations.Boundary;
-
             // now test if the point lies in or on the holes
-            for (int i = 0; i < poly.NumInteriorRings; i++)
+            foreach(LinearRing hole in poly.InteriorRings)
             {
-                LinearRing hole = (LinearRing)poly.GetInteriorRingN(i);
-                Locations holeLoc = Locate(p, hole);
-                if (holeLoc == Locations.Interior) 
+                Locations holeLoc = LocateInPolygonRing(p, hole);
+                if(holeLoc == Locations.Interior) 
                     return Locations.Exterior;
-                if (holeLoc == Locations.Boundary) 
+                if(holeLoc == Locations.Boundary) 
                     return Locations.Boundary;
             }
             return Locations.Interior;

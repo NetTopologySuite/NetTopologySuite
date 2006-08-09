@@ -430,7 +430,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <param name="p">The polygon to be tested for hole inclusion.</param>
         /// <param name="graph">A GeometryGraph incorporating the polygon.</param>
         private void CheckHolesInShell(Polygon p, GeometryGraph graph)
-        {            
+        {
             LinearRing shell = (LinearRing)p.ExteriorRing;
 
             IPointInRing pir = new MCPointInRing(shell);
@@ -438,6 +438,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             {
                 LinearRing hole = (LinearRing)p.GetInteriorRingN(i);
                 Coordinate holePt = FindPointNotNode(hole.Coordinates, shell, graph);
+
                 /**
                  * If no non-node hole vertex can be found, the hole must
                  * split the polygon into disconnected interiors.
@@ -445,14 +446,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                  */
                 if (holePt == null) 
                     return;
-                
+
                 bool outside = !pir.IsInside(holePt);
-                if (outside)
+                if(outside)
                 {
                     validErr = new TopologyValidationError(TopologyValidationErrors.HoleOutsideShell, holePt);
                     return;
                 }
-            }
+            }            
         }
 
         /// <summary>

@@ -10,8 +10,8 @@ using GisSharpBlog.NetTopologySuite.Utilities;
 namespace GisSharpBlog.NetTopologySuite.IO
 {
     /// <summary> 
-    /// Outputs the textual representation of a <c>Geometry</c>.
-    /// The <c>WKTWriter</c> outputs coordinates rounded to the precision
+    /// Outputs the textual representation of a <see cref="Geometry" />.
+    /// The <see cref="WKTWriter" /> outputs coordinates rounded to the precision
     /// model. No more than the maximum number of necessary decimal places will be
     /// output.
     /// The Well-known Text format is defined in the <A

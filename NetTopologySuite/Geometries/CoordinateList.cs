@@ -193,10 +193,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <returns>The copied object.</returns>
         public override object Clone()
-        {
+        {         
             CoordinateList copy = (CoordinateList)base.Clone();
             foreach (Coordinate c in this)
-                copy.Add(c.Clone());  
+                copy.Add(c.Clone());
             return copy;
         }
     } 
