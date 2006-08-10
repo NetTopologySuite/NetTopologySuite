@@ -10,7 +10,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 {
 
     /// <summary>
-    /// Wraps a <see cref="Noder" /> and transforms its input into the integer domain.
+    /// Wraps a <see cref="INoder" /> and transforms its input into the integer domain.
     /// This is intended for use with Snap-Rounding noders,
     /// which typically are only intended to work in the integer domain.
     /// Offsets can be provided to increase the number of digits of available precision.
@@ -31,6 +31,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         public ScaledNoder(INoder noder, double scaleFactor) 
             : this(noder, scaleFactor, 0, 0) { }      
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="noder"></param>
+        /// <param name="scaleFactor"></param>
+        /// <param name="offsetX"></param>
+        /// <param name="offsetY"></param>
         public ScaledNoder(INoder noder, double scaleFactor, double offsetX, double offsetY) 
         {
             this.noder = noder;

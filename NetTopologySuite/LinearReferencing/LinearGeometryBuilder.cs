@@ -23,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="factory"></param>
+        /// <param name="geomFact"></param>
         public LinearGeometryBuilder(GeometryFactory geomFact)
         {
             this.geomFact = geomFact;

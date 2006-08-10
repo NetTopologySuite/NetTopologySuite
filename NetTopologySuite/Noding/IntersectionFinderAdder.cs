@@ -4,6 +4,7 @@ using System.Text;
 
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Index.Chain;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
@@ -41,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
    
         /// <summary>
         /// This method is called by clients
-        /// of the <see cref="SegmentIntersector" /> class to process
+        /// of the <see cref="ISegmentIntersector" /> class to process
         /// intersections for two segments of the <see cref="SegmentString" />s being intersected.
         /// Note that some clients (such as <see cref="MonotoneChain" />s) may optimize away
         /// this call for segment pairs which they have determined do not intersect

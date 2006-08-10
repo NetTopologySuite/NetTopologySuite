@@ -428,12 +428,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:LineString"/> class.
-        /// </summary>
-        /// <param name="coordinates">The coordinates used for create this <see cref="LineString" />.</param>
+        /// </summary>        
         /// <remarks>
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
+        /// <param name="points">The coordinates used for create this <see cref="LineString" />.</param>
         public LineString(Coordinate[] points) : 
             this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
 

@@ -11,10 +11,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
     /// </summary>
     /// <remarks>
     /// While <see cref="BigEndianBinaryWriter" /> extends <see cref="BinaryWriter" /> 
-    /// adding methods for writing integer values (<see cref="BigEndianBinaryWriter.WriteInt32BE" />)
+    /// adding methods for writing integer values (<see cref="BigEndianBinaryWriter.WriteIntBE" />)
     /// and double values (<see cref="BigEndianBinaryWriter.WriteDoubleBE" />) in the BigEndian format,
-    /// this implementation overrides methods, such <see cref="BinaryWriter.WriteInt32" /> 
-    /// and <see cref="BinaryWriter.WriteDouble" /> and more, 
+    /// this implementation overrides methods, such <see cref="BinaryWriter.Write(Int32)" /> 
+    /// and <see cref="BinaryWriter.Write(Double)" /> and more, 
     /// for writing <see cref="T:ByteOrder.BigEndian" /> values in the BigEndian format.
     /// </remarks>
     public class BEBinaryWriter : BinaryWriter
@@ -68,7 +68,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <exception cref="T:System.ObjectDisposedException">The stream is closed. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void Write(ushort value)
-        {
+        {            
             byte[] bytes = BitConverter.GetBytes(value);
             Debug.Assert(bytes.Length == 2);
 

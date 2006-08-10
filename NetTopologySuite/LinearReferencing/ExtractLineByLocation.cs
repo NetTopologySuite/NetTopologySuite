@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     {
         /// <summary>
         /// Computes the subline of a <see cref="LineString" /> between
-        /// two <see cref="LineStringLocation" />s on the line.
+        /// two LineStringLocations on the line.
         /// If the start location is after the end location,
         /// the computed geometry is reversed.
         /// </summary>
@@ -104,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
             Coordinate[] newCoordinateArray = newCoordinates.ToCoordinateArray();
 
-            /**
+            /*
              * Ensure there is enough coordinates to build a valid line.
              * Make a 2-point line with duplicate coordinates, if necessary.
              * There will always be at least one coordinate in the coordList.

@@ -709,7 +709,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// The <c>CoveredBy</c> predicate has the following equivalent definitions:
         ///     - Every point of this geometry is a point of the other geometry.
         ///     - The DE-9IM Intersection Matrix for the two geometries is <c>T*F**F***</c> or <c>*TF**F***</c> or <c>**FT*F***</c> or <c>**F*TF***</c>.
-        ///     - <c>g.Covers(this)</x> (<c>CoveredBy</c> is the inverse of <c>Covers</c>).
+        ///     - <c>g.Covers(this)</c> (<c>CoveredBy</c> is the inverse of <c>Covers</c>).
         /// </para>
         /// Note the difference between <c>CoveredBy</c> and <c>Within</c>: <c>CoveredBy</c> is a more inclusive relation.
         /// </summary>

@@ -5,7 +5,7 @@ using System.Text;
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
     /// <summary>
-    /// Base class for <see cref="Noder" />s which make a single pass to find intersections.
+    /// Base class for <see cref="INoder" />s which make a single pass to find intersections.
     /// This allows using a custom <see cref="ISegmentIntersector" />
     /// (which for instance may simply identify intersections, rather than insert them).
     /// </summary>
@@ -32,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// A <see cref="ISegmentIntersector" />  will normally add intersection nodes
         /// to the input segment strings, but it may not - it may
         /// simply record the presence of intersections.
-        /// However, some <see cref="Noder" />s may require that intersections be added.
+        /// However, some <see cref="INoder" />s may require that intersections be added.
         /// </summary>
         public ISegmentIntersector SegmentIntersector
         {

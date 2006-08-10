@@ -5,13 +5,18 @@ using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 {
+
+    /// <summary>
+    /// 
+    /// </summary>
     public class LengthIndexOfPoint
     {
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="linearGeom"></param>
-        /// <param name="pt"></param>
+        /// <param name="inputPt"></param>
         /// <returns></returns>
         public static double IndexOf(Geometry linearGeom, Coordinate inputPt)
         {
@@ -23,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// 
         /// </summary>
         /// <param name="linearGeom"></param>
-        /// <param name="pt"></param>
+        /// <param name="inputPt"></param>
         /// <param name="minIndex"></param>
         /// <returns></returns>
         public static double IndexOfAfter(Geometry linearGeom, Coordinate inputPt, double minIndex)
@@ -77,7 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
             double closestAfter = IndexOfFromStart(inputPt, minIndex);
 
-            /**
+            /*
              * Return the minDistanceLocation found.
              * This will not be null, since it was initialized to minLocation
              */

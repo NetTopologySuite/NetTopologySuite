@@ -5,7 +5,7 @@ using System.Text;
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>
-    /// Utility functions for manipulating <see cref="CoordinateSequence" />s.
+    /// Utility functions for manipulating <see cref="ICoordinateSequence" />s.
     /// </summary>
     public static class CoordinateSequences
     {

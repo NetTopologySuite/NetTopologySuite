@@ -152,7 +152,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// This algorithm is only guaranteed to work with valid rings.
         /// If the ring is invalid (e.g. self-crosses or touches),
         /// the computed result may not be correct.
-		/// </returns>
+		/// </summary>>
+        /// <param name="ring"></param>
+        /// <returns></returns>
         public static bool IsCCW(Coordinate[] ring) 
         {
             // # of points without closing endpoint
@@ -189,7 +191,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             Coordinate prev = ring[iPrev];
             Coordinate next = ring[iNext];
 
-            /**
+            /*
              * This check catches cases where the ring contains an A-B-A configuration of points.
              * This can happen if the ring does not contain 3 distinct points
              * (including the case where the input array has fewer than 4 elements),
@@ -200,7 +202,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             int disc = ComputeOrientation(prev, hiPt, next);
 
-            /**
+            /*
              *  If disc is exactly 0, lines are collinear.  There are two possible cases:
              *  (1) the lines lie along the x axis in opposite directions
              *  (2) the lines lie on top of one another

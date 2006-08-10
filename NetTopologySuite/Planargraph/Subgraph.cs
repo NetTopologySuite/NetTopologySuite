@@ -19,9 +19,25 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// </summary>
     public class Subgraph
     {
+
+        /// <summary>
+        /// 
+        /// </summary>
         protected PlanarGraph parentGraph;
+        
+        /// <summary>
+        /// 
+        /// </summary>
         protected ISet<Edge> edges = new HashedSet<Edge>();
+        
+        /// <summary>
+        /// 
+        /// </summary>
         protected IList<DirectedEdge> dirEdges = new List<DirectedEdge>();
+        
+        /// <summary>
+        /// 
+        /// </summary>
         protected NodeMap nodeMap = new NodeMap();
 
         /// <summary>
@@ -48,17 +64,16 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="e">The <see cref="Edge" /> to add.</param>
         public virtual void Add(Edge e)
-        {
-            Console.WriteLine(e.ToString());
-            // TODO: Implementazione difforme rispetto al java... non viene rilevato che l'oggetto è già contenuto
-            if (edges.Contains(e)) 
+        {                        
+            if (edges.Contains(e))  
                 return;
 
             edges.Add(e);
             dirEdges.Add(e.GetDirEdge(0));
             dirEdges.Add(e.GetDirEdge(1));
+            
             nodeMap.Add(e.GetDirEdge(0).FromNode);
-            nodeMap.Add(e.GetDirEdge(1).FromNode);
+            nodeMap.Add(e.GetDirEdge(1).FromNode);            
         }
 
         /// <summary>

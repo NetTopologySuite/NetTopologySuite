@@ -86,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
               nodingIterationCount++;
               int nodesCreated = numInteriorIntersections[0];
 
-              /**
+              /*
                * Fail if the number of nodes created is not declining.
                * However, allow a few iterations at least before doing this
                */       

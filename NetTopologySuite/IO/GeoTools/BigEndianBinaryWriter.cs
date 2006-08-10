@@ -35,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// Reads a 4-byte signed integer using the big-endian layout from the current stream 
         /// and advances the current position of the stream by two bytes.
 		/// </summary>
-		/// <param name="integer">The four-byte signed integer to write.</param>
+        /// <param name="value">The four-byte signed integer to write.</param>
 		public void WriteIntBE(int value)
 		{
             byte[] bytes = BitConverter.GetBytes(value);
@@ -49,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// Reads a 8-byte signed integer using the big-endian layout from the current stream 
         /// and advances the current position of the stream by two bytes.
         /// </summary>
-        /// <param name="integer">The four-byte signed integer to write.</param>
+        /// <param name="value">The four-byte signed integer to write.</param>
         public void WriteDoubleBE(double value)
         {
             byte[] bytes = BitConverter.GetBytes(value);

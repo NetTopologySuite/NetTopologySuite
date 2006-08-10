@@ -30,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
-        /// <c> == </c> <see cref="PrecisionModels.Floatingsingle" />.
+        /// <c> == </c> <see cref="PrecisionModels.FloatingSingle" />.
         /// </summary>
         public static GeometryFactory FloatingSingle = new GeometryFactory(new PrecisionModel(PrecisionModels.FloatingSingle));  
 

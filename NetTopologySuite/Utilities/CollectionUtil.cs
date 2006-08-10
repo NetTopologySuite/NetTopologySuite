@@ -18,6 +18,12 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// </summary>
         public interface Function
         {
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="obj"></param>
+            /// <returns></returns>
             object Execute(object obj);
         }
 

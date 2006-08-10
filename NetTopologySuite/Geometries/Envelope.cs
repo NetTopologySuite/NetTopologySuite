@@ -440,6 +440,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="env"></param>
+        /// <returns></returns>
         public Envelope Intersection(Envelope env)
         {
             if (IsNull || env.IsNull || !Intersects(env)) 

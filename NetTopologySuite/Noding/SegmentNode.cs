@@ -10,10 +10,19 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// Represents an intersection point between two <see cref="SegmentString" />s.
     /// </summary>
     public class SegmentNode : IComparable
-    {
-        private readonly SegmentString segString = null;
+    {        
+
+        /// <summary>
+        /// 
+        /// </summary>
         public readonly Coordinate Coordinate = null;   // the point of intersection
+        
+        /// <summary>
+        /// 
+        /// </summary>
         public readonly int SegmentIndex = 0;   // the index of the containing line segment in the parent edge
+
+        private readonly SegmentString segString = null;
         private readonly Octants segmentOctant = Octants.Null;
         private readonly bool isInterior = false;
 

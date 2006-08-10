@@ -295,5 +295,14 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             this.parentEdge = null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {            
+            return "DirectedEdge: " + p0 + " - " + p1 + " " + quadrant + ":" + angle;
+        }
+
     }
 }

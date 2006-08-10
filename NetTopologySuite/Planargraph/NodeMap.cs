@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Diagnostics;
 using System.Text;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -25,7 +26,14 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <returns>The added node.</returns>
         public virtual Node Add(Node n)
         {
-            nodeMap.Add(n.Coordinate, n);
+            Coordinate key = n.Coordinate;
+            bool contains = nodeMap.Contains(key);
+            Debug.WriteLine("Try to insert " + key + " - already contained? " + contains);
+            
+            if (!contains)                            
+                nodeMap.Add(key, n);
+
+            Debug.WriteLine("NodeMap items after insert operation =  " + nodeMap.Count);
             return n;
         }
 

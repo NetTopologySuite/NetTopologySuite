@@ -6,7 +6,7 @@ using System.Text;
 namespace Iesi.Collections.Generic
 {
         /// <summary>
-        /// Simple Wrapper for wrapping an regular Enumerator as a generic Enumberator&lt;T&gt
+        /// Simple Wrapper for wrapping an regular Enumerator as a generic Enumberator&lt;T&gt;
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <exception cref="InvalidCastException">

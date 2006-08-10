@@ -16,9 +16,9 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Computes the <see cref="LinearLocation" /> for a
         /// given length along a linear <see cref="Geometry" />.
         /// </summary>
-        /// <param name="linearGeom">The linear geometry to use./param>
+        /// <param name="linearGeom">The linear geometry to use.</param>
         /// <param name="length">The length index of the location.</param>
-        /// <returns>The <see cref="LinearLocation" />for the length.</returns>
+        /// <returns>The <see cref="LinearLocation" /> for the length.</returns>
         public static LinearLocation GetLocation(Geometry linearGeom, double length)
         {
             LengthLocationMap locater = new LengthLocationMap(linearGeom);

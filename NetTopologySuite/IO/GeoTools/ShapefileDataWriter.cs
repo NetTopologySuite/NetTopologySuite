@@ -112,7 +112,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// Initializes a new instance of the <see cref="T:ShapefileDataWriter"/> class.
         /// </summary>
         /// <param name="fileName">File path without any extension</param>
-        /// <param name="factory"></param>
+        /// <param name="geometryFactory"></param>
         public ShapefileDataWriter(string fileName, GeometryFactory geometryFactory)
         {
             this.geometryFactory = geometryFactory;

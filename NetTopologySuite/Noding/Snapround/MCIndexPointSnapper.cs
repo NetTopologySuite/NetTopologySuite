@@ -18,6 +18,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
     public class MCIndexPointSnapper
     {
 
+        /// <summary>
+        /// 
+        /// </summary>
         public static int NumberSnaps = 0;
 
         private IList monoChains = null;
@@ -81,6 +84,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             return hotPixelSnapAction.IsNodeAdded;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="hotPixel"></param>
+        /// <returns></returns>
         public bool Snap(HotPixel hotPixel)
         {
             return Snap(hotPixel, null, -1);

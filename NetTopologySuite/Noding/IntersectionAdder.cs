@@ -4,6 +4,7 @@ using System.Text;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
+using GisSharpBlog.NetTopologySuite.Index.Chain;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
@@ -11,8 +12,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// <summary>
     /// Computes the intersections between two line segments in <see cref="SegmentString" />s
     /// and adds them to each string.
-    /// The <see cref="SegmentIntersector" /> is passed to a <see cref="Noder" />.
-    /// The <see cref="AddIntersections" /> method is called whenever the <see cref="Noder" />
+    /// The <see cref="ISegmentIntersector" /> is passed to a <see cref="INoder" />.
+    /// The <see cref="SegmentString.AddIntersections" /> method is called whenever the <see cref="INoder" />
     /// detects that two <see cref="SegmentString" />s might intersect.
     /// This class is an example of the Strategy pattern.
     /// </summary>
@@ -43,12 +44,26 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         private Coordinate properIntersectionPoint = null;
 
         private LineIntersector li = null;        
+        
+        /// <summary>
+        /// 
+        /// </summary>
         public int NumIntersections = 0;
+        
+        /// <summary>
+        /// 
+        /// </summary>
         public int NumInteriorIntersections = 0;
+        
+        /// <summary>
+        /// 
+        /// </summary>
         public int NumProperIntersections = 0;
 
-        // testing only
-        public int numTests = 0;
+        /// <summary>
+        /// 
+        /// </summary>
+        public int NumTests = 0;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IntersectionAdder"/> class.
@@ -178,7 +193,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             if (e0 == e1 && segIndex0 == segIndex1)
                 return;
 
-            numTests++;
+            NumTests++;
             Coordinate p00 = e0.Coordinates[segIndex0];
             Coordinate p01 = e0.Coordinates[segIndex0 + 1];
             Coordinate p10 = e1.Coordinates[segIndex1];

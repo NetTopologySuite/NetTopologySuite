@@ -304,7 +304,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <summary>
         /// Compares the current instance with another object of the same type.
         /// </summary>
-        /// <param name="obj">
+        /// <param name="other">
         /// The <c>LineStringLocation</c> with which this 
         /// <c>Coordinate</c> is being compared.
         /// </param>

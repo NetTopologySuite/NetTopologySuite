@@ -60,8 +60,7 @@ namespace Iesi.Collections.Generic
                 InternalDictionary.Add(o, PlaceholderObject);
                 return true;
             }
-            else return false;
-           
+            else return false;           
 		}
 
 		/// <summary>
@@ -97,7 +96,7 @@ namespace Iesi.Collections.Generic
 		/// <param name="o">The element to look for.</param>
 		/// <returns><c>true</c> if this set contains the specified element, <c>false</c> otherwise.</returns>
 		public override bool Contains(T o)
-		{
+		{            
 			return InternalDictionary.ContainsKey( o );
 		}
 

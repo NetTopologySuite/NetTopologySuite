@@ -137,10 +137,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Converts the given <see cref="IList<Coordinate>" /> of 
+        /// Converts the given <see cref="IList" /> of 
         /// <see cref="Coordinate" />s into a <see cref="Coordinate" /> array.
         /// </summary>
-        /// <param name="coordList"><see cref="IList<Coordinate>" /> of coordinates.</param>
+        /// <param name="coordList"><see cref="IList" /> of coordinates.</param>
         /// <returns></returns>
         public static Coordinate[] ToCoordinateArray(IList<Coordinate> coordList)
         {
@@ -238,8 +238,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Compares two <see cref="Coordinate" /> arrays
         /// in the forward direction of their coordinates,
         /// using lexicographic ordering.
-        /// </summary>
-        /// <typeparam name="T">A <see cref="Coordinate" /></typeparam>
+        /// </summary>        
         public class ForwardComparator : IComparer<Coordinate[]>
         {
             /// <summary>
@@ -260,8 +259,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// they will compare as equal under this ordering.
         /// If the arrays are not equal, the ordering returned
         /// is the ordering in the forward direction.
-        /// </summary>
-        /// <typeparam name="T">A <see cref="Coordinate" /></typeparam>
+        /// </summary>        
         public class BidirectionalComparator : IComparer<Coordinate[]>
         {
             /// <summary>
@@ -324,13 +322,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         
         /// <summary>
         /// Returns <c>true</c> if the two arrays are identical, both <c>null</c>, or pointwise
-        /// equal, using a user-defined <see cref="IComparer<Coordinate>" /> 
+        /// equal, using a user-defined <see cref="IComparer" /> 
         /// for <see cref="Coordinate" />s.
         /// </summary>
         /// <param name="coord1">An array of <see cref="Coordinate" />s.</param>
         /// <param name="coord2">Another array of <see cref="Coordinate" />s.</param>
         /// <param name="coordinateComparer">
-        ///  A <see cref="IComparer<Coordinate>" /> for <see cref="Coordinate" />s.
+        ///  A <see cref="IComparer" /> for <see cref="Coordinate" />s.
         /// </param>
         /// <returns></returns>
         public static bool Equals(Coordinate[] coord1, Coordinate[] coord2,

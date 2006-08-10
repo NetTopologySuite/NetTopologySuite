@@ -448,7 +448,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                 LinearRing hole = (LinearRing)p.GetInteriorRingN(i);
                 Coordinate holePt = FindPointNotNode(hole.Coordinates, shell, graph);
 
-                /**
+                /*
                  * If no non-node hole vertex can be found, the hole must
                  * split the polygon into disconnected interiors.
                  * This will be caught by a subsequent check.

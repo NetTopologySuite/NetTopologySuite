@@ -5,6 +5,7 @@ using System.Text;
 using GisSharpBlog.NetTopologySuite.Index;
 using GisSharpBlog.NetTopologySuite.Index.Chain;
 using GisSharpBlog.NetTopologySuite.Index.Strtree;
+using GisSharpBlog.NetTopologySuite.Index.Quadtree;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
@@ -95,7 +96,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                 foreach(object j in overlapChains)
                 {
                     MonotoneChain testChain = (MonotoneChain)j;
-                    /**
+                    /*
                      * following test makes sure we only compare each pair of chains once
                      * and that we don't compare a chain to itself
                      */

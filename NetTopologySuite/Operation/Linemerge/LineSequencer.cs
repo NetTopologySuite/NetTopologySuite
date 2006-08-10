@@ -79,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                 Coordinate startNode = line.GetCoordinateN(0);
                 Coordinate endNode = line.GetCoordinateN(line.NumPoints - 1);
 
-                /**
+                /*
                  * If this linestring is connected to a previous subgraph, geom is not sequenced
                  */
                 if (prevSubgraphNodes.Contains(startNode)) 
@@ -118,11 +118,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         public LineSequencer() { }
 
         /// <summary>
-        /// Adds a <see cref="IEnumerable<Geometry>" /> of <see cref="Geometry" />s to be sequenced.
+        /// Adds a <see cref="IEnumerable" /> of <see cref="Geometry" />s to be sequenced.
         /// May be called multiple times.
         /// Any dimension of Geometry may be added; the constituent linework will be extracted.
         /// </summary>
-        /// <param name="geometries">A <see cref="IEnumerable<Geometry>" /> of geometries to add.</param>
+        /// <param name="geometries">A <see cref="IEnumerable" /> of geometries to add.</param>
         public virtual void Add(IEnumerable<Geometry> geometries)
         {
             foreach(Geometry geometry in geometries)
@@ -277,7 +277,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// <param name="graph"></param>
         /// <returns></returns>
         private IList FindSequence(Subgraph graph)
-        {
+        {            
             GraphComponent.SetVisited(graph.GetEdgeEnumerator(), false);
 
             Node startNode = FindLowestDegreeNode(graph);
@@ -285,25 +285,22 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             temp.MoveNext();
             DirectedEdge startDE = (DirectedEdge)temp.Current;
             DirectedEdge startDESym = startDE.Sym;
-            
-            // TODO: cosa ci si inventa?
+                        
             LinkedList<DirectedEdge> seq = new LinkedList<DirectedEdge>();
-            AddReverseSubpath(startDESym, null, seq, false);
-            LinkedListNode<DirectedEdge> pos = seq.Find(startDESym);
+            LinkedListNode<DirectedEdge> pos = AddReverseSubpath(startDESym, null, seq, false);            
             while (pos != null)
             {
                 DirectedEdge prev = pos.Value;
                 DirectedEdge unvisitedOutDE = FindUnvisitedBestOrientedDE(prev.FromNode);
                 if (unvisitedOutDE != null)
                 {
-                    Debug.WriteLine(unvisitedOutDE.ToString());
                     DirectedEdge toInsert = unvisitedOutDE.Sym;
-                    AddReverseSubpath(toInsert, pos, seq, true);
-                    pos = seq.Find(toInsert);
+                    pos = AddReverseSubpath(toInsert, pos, seq, true);
                 }
-            }
+                else pos = pos.Previous;                
+            }                       
 
-            /**
+            /*
              * At this point, we have a valid sequence of graph DirectedEdges, but it
              * is not necessarily appropriately oriented relative to the underlying geometry.
              */
@@ -323,11 +320,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         private static DirectedEdge FindUnvisitedBestOrientedDE(Node node)
         {
             DirectedEdge wellOrientedDE = null;
-            DirectedEdge unvisitedDE = null;
-            IEnumerator i = node.OutEdges.GetEnumerator();
-            while(i.MoveNext())
+            DirectedEdge unvisitedDE = null;            
+            foreach(object obj in node.OutEdges)
             {
-                DirectedEdge de = (DirectedEdge)i.Current;
+                DirectedEdge de = (DirectedEdge)obj;
                 if (!de.Edge.IsVisited)
                 {
                     unvisitedDE = de;
@@ -347,18 +343,18 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// <param name="pos"></param>
         /// <param name="list"></param>
         /// <param name="expectedClosed"></param>
-        private void AddReverseSubpath(DirectedEdge de, LinkedListNode<DirectedEdge> pos,
-                                        LinkedList<DirectedEdge> list,  bool expectedClosed)
+        /// <returns></returns>
+        private LinkedListNode<DirectedEdge> AddReverseSubpath(DirectedEdge de, LinkedListNode<DirectedEdge> pos,
+                                                LinkedList<DirectedEdge> list,  bool expectedClosed)
         {
             // trace an unvisited path *backwards* from this de
             Node endNode = de.ToNode;
-
             Node fromNode = null;
             while (true)
             {
                 if (pos == null)
-                     list.AddFirst(de);
-                else list.AddBefore(pos, de);
+                     pos = list.AddLast(de.Sym);
+                else pos = list.AddAfter(pos, de.Sym);
                 de.Edge.Visited = true;
                 fromNode = de.FromNode;
                 DirectedEdge unvisitedOutDE = FindUnvisitedBestOrientedDE(fromNode);
@@ -372,6 +368,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                 // the path should end at the toNode of this de, otherwise we have an error
                 Assert.IsTrue(fromNode == endNode, "path not contiguous");
             }
+            return pos;
         }
 
         /// <summary>
@@ -382,7 +379,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         private static Node FindLowestDegreeNode(Subgraph graph)
         {
             int minDegree = Int32.MaxValue;
-            Node minDegreeNode = null;
+            Node minDegreeNode = null;            
             IEnumerator i = graph.GetNodeEnumerator();
             while(i.MoveNext())
             {

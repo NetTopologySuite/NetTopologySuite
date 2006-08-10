@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace GisSharpBlog.NetTopologySuite.IO
 {
 	/// <summary>
-    /// Extends the <see cref="BinaryReader" /> class to allow reading of integers and doubles 
+    /// Extends the <see cref="System.IO.BinaryReader" /> class to allow reading of integers and doubles 
     /// in the Big Endian format.
 	/// </summary>
 	/// <remarks>

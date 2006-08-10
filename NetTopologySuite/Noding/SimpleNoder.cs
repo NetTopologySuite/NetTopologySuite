@@ -44,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// Some Noders may add all these nodes to the input <see cref="SegmentString" />s;
         /// others may only add some or none at all.
         /// </summary>
-        /// <param name="segStrings"></param>
+        /// <param name="inputSegStrings"></param>
         public override void ComputeNodes(IList inputSegStrings)
         {
             this.nodedSegStrings = inputSegStrings;

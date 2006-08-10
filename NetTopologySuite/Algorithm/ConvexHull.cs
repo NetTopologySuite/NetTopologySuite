@@ -192,9 +192,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="?"></param>
-        /// <returns></returns>
-    
+        /// <param name="ps"></param>
+        /// <returns></returns>    
         private Stack<Coordinate> ReverseStack(Stack<Coordinate> ps) 
         {        
             // Do a manual reverse of the stack

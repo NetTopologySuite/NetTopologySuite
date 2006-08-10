@@ -194,7 +194,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             intPt.X += normPt.X;
             intPt.Y += normPt.Y;
 
-            /**
+            /*
              *
              * MD - May 4 2005 - This is still a problem.  Here is a failure case:
              *

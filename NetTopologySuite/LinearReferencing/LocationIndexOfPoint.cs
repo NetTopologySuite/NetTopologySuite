@@ -13,11 +13,12 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     /// </summary>
     public class LocationIndexOfPoint
     {
+        
         /// <summary>
         /// 
         /// </summary>
         /// <param name="linearGeom"></param>
-        /// <param name="pt"></param>
+        /// <param name="inputPt"></param>
         /// <returns></returns>
         public static LinearLocation IndexOf(Geometry linearGeom, Coordinate inputPt)
         {
@@ -68,7 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
             LinearLocation closestAfter = IndexOfFromStart(inputPt, minIndex);
 
-            /**
+            /*
              * Return the minDistanceLocation found.
              * This will not be null, since it was initialized to minLocation
              */

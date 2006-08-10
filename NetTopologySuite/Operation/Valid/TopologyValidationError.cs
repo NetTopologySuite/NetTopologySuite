@@ -76,7 +76,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <summary>
         /// Indicates that the <c>X</c> or <c>Y</c> ordinate of
         /// a <see cref="Coordinate" /> is not a valid 
-        /// numeric value (e.g. <see cref="Double.Nan" />).
+        /// numeric value (e.g. <see cref="Double.NaN" />).
         /// </summary>
         InvalidCoordinate = 10,
 
@@ -92,7 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// validation error.
     /// </summary>
     public class TopologyValidationError 
-    {
+    {        
         // NOTE: modified for "safe" assembly in Sql 2005
         // Added readonly!
 
