@@ -6,7 +6,7 @@ using System.Xml;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace GisSharpBlog.NetTopologySuite.IO.GML2
 {
     /// <summary>
     /// Reads a GML document and creates a representation of the features based or NetTopologySuite model.

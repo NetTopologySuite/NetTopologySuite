@@ -29,7 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="de"></param>
         public virtual void Add(DirectedEdge de)
-        {
+        {            
             outEdges.Add(de);
             sorted = false;
         }
@@ -51,18 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             SortEdges();
             return outEdges.GetEnumerator();
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public virtual int Count
-        {
-            get
-            {
-                return outEdges.Count;
-            }
-        }
-
+        
         /// <summary>
         /// Returns the number of edges around the Node associated with this DirectedEdgeStar.
         /// </summary>
@@ -108,12 +97,9 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         {
             if (!sorted)
             {
-                ArrayList list  = outEdges as ArrayList;               
-                if(list != null)
-                {
-                    list.Sort();
-                    sorted = true;
-                }
+                ArrayList list  = (ArrayList)outEdges;
+                list.Sort();
+                sorted = true;                
             }
         }
 

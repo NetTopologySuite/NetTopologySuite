@@ -6,6 +6,7 @@ using System.Xml;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
+using GisSharpBlog.NetTopologySuite.IO.GML2;
 using GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests

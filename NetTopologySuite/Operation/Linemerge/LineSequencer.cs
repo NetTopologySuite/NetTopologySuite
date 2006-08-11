@@ -280,16 +280,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         {            
             GraphComponent.SetVisited(graph.GetEdgeEnumerator(), false);
 
-            Node startNode = FindLowestDegreeNode(graph);            
-            DirectedEdgeStar outEdges = startNode.OutEdges;
-            IEnumerator ie = outEdges.GetEnumerator();
-            /* 
-             * Called two times where in java is called one time: because of different implementation of java iterator...                                            
-             * The first call is to initialize IEnumerator to start element (in java is automatic), the second call jump to second element...
-             */            
+            Node startNode = FindLowestDegreeNode(graph);                        
+            
+            // HACK: we need to reverse manually the order: maybe sorting error?
+            ArrayList list = (ArrayList)startNode.OutEdges.Edges;
+            list.Reverse();
+
+            IEnumerator ie = list.GetEnumerator();                        
             ie.MoveNext();
-            if(outEdges.Count > 1) 
-                ie.MoveNext();
 
             DirectedEdge startDE = (DirectedEdge)ie.Current;            
             DirectedEdge startDESym = startDE.Sym;
@@ -391,7 +389,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             IEnumerator i = graph.GetNodeEnumerator();
             while (i.MoveNext())
             {
-                Node node = (Node)i.Current;
+                Node node = (Node) i.Current;
                 if (minDegreeNode == null || node.Degree < minDegree)
                 {
                     minDegree = node.Degree;

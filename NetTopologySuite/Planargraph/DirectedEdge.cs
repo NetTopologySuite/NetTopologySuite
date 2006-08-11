@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Diagnostics;
 using System.Text;
 using System.IO;
 
@@ -252,14 +253,16 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <returns></returns>
         public virtual int CompareDirection(DirectedEdge e)
         {
+            int i = 0;
             // if the rays are in different quadrants, determining the ordering is trivial
             if (quadrant > e.Quadrant)
-                return 1;
+                i = 1;
             if (quadrant < e.Quadrant) 
-                return -1;
+                i = -1;
             // vectors are in the same quadrant - check relative orientation of direction vectors
             // this is > e if it is CCW of e
-            return CGAlgorithms.ComputeOrientation(e.p0, e.p1, p1);
+            i = CGAlgorithms.ComputeOrientation(e.p0, e.p1, p1);            
+            return i;
         }
 
         /// <summary>

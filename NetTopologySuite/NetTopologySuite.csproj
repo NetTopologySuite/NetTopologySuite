@@ -184,8 +184,8 @@
     <Compile Include="IO\GeoTools\Dbase\DbaseFileHeader.cs" />
     <Compile Include="IO\GeoTools\Dbase\DbaseFileReader.cs" />
     <Compile Include="IO\GeoTools\Dbase\DbaseFileWriter.cs" />
-    <Compile Include="IO\GMLReader.cs" />
-    <Compile Include="IO\GMLWriter.cs" />
+    <Compile Include="IO\GML2\GMLReader.cs" />
+    <Compile Include="IO\GML2\GMLWriter.cs" />
     <Compile Include="IO\GeoTools\Handlers\MultiLineHandler.cs" />
     <Compile Include="IO\GeoTools\Handlers\MultiPointHandler.cs" />
     <Compile Include="IO\GeoTools\Handlers\PointHandler.cs" />

@@ -8,7 +8,7 @@ using System.Xml;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.IO
+namespace GisSharpBlog.NetTopologySuite.IO.GML2
 {
     /// <summary>
     /// Writes the GML representation of the features of NetTopologySuite model.
