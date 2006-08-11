@@ -69,6 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
                 return;
 
             edges.Add(e);
+
             dirEdges.Add(e.GetDirEdge(0));
             dirEdges.Add(e.GetDirEdge(1));
             

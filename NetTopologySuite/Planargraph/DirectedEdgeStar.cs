@@ -53,6 +53,17 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public virtual int Count
+        {
+            get
+            {
+                return outEdges.Count;
+            }
+        }
+
+        /// <summary>
         /// Returns the number of edges around the Node associated with this DirectedEdgeStar.
         /// </summary>
         public virtual int Degree

@@ -33,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.NUnitTests
         /// <summary>
         /// 
         /// </summary>
-        // [Test]
+        [Test]
         public void Simple()      
         {
             String[] wkt =  
@@ -49,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.NUnitTests
         /// <summary>
         /// 
         /// </summary>
-        // [Test]
+        [Test]
         public void SimpleLoop()      
         {
             String[] wkt = 
@@ -81,7 +81,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.NUnitTests
         /// <summary>
         /// 
         /// </summary>
-        // [Test]
+        [Test]
         public void TwoSimpleLoops()      
         {
             String[] wkt = 
@@ -98,7 +98,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.NUnitTests
         /// <summary>
         /// 
         /// </summary>
-        // [Test]
+        [Test]
         public void Wide8WithTail()      
         {
             String[] wkt = 
@@ -119,7 +119,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.NUnitTests
         /// <summary>
         /// 
         /// </summary>
-        // [Test]
+        [Test]
         public void SimpleLoopWithTail()      
         {
             String[] wkt = 
@@ -135,7 +135,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.NUnitTests
         /// <summary>
         /// 
         /// </summary>
-        // [Test]
+        [Test]
         public void LineWithRing()
         {
             String[] wkt = 
@@ -152,7 +152,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.NUnitTests
         /// <summary>
         /// 
         /// </summary>
-        // [Test]
+        [Test]
         public void MultipleGraphsWithRing()
         {
             String[] wkt = 
@@ -171,7 +171,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.NUnitTests
         /// <summary>
         /// 
         /// </summary>
-        // [Test]
+        [Test]
         public void MultipleGraphsWithMultipeRings()
         {
             String[] wkt = 
@@ -191,7 +191,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.NUnitTests
         /// <summary>
         /// 
         /// </summary>
-        // [Test]
+        [Test]
         public void LineSequence()      
         {
             String wkt = "LINESTRING ( 0 0, 0 10 )";
@@ -201,7 +201,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.NUnitTests
         /// <summary>
         /// 
         /// </summary>
-        // [Test]
+        [Test]
         public void SplitLineSequence()      
         { 
             String wkt = "MULTILINESTRING ((0 0, 0 1), (0 2, 0 3), (0 3, 0 4) )";
@@ -211,7 +211,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.NUnitTests
         /// <summary>
         /// 
         /// </summary>
-        // [Test]
+        [Test]
         public void BadLineSequence()
         {
             String wkt = "MULTILINESTRING ((0 0, 0 1), (0 2, 0 3), (0 1, 0 4) )";

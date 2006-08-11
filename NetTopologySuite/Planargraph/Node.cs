@@ -138,7 +138,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <returns></returns>
         public override string ToString()
         {
-            return "NODE: " + pt.ToString();
+            return "NODE: " + pt.ToString() + ": " + Degree;
         }
 
     }

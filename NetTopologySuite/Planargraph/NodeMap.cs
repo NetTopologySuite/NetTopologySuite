@@ -27,13 +27,8 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         public virtual Node Add(Node n)
         {
             Coordinate key = n.Coordinate;
-            bool contains = nodeMap.Contains(key);
-            Debug.WriteLine("Try to insert " + key + " - already contained? " + contains);
-            
-            if (!contains)                            
-                nodeMap.Add(key, n);
-
-            Debug.WriteLine("NodeMap items after insert operation =  " + nodeMap.Count);
+            bool contains = nodeMap.Contains(key);            
+            if (!contains) nodeMap.Add(key, n);            
             return n;
         }
 

@@ -280,12 +280,20 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         {            
             GraphComponent.SetVisited(graph.GetEdgeEnumerator(), false);
 
-            Node startNode = FindLowestDegreeNode(graph);
-            IEnumerator temp = startNode.OutEdges.GetEnumerator();
-            temp.MoveNext();
-            DirectedEdge startDE = (DirectedEdge)temp.Current;
+            Node startNode = FindLowestDegreeNode(graph);            
+            DirectedEdgeStar outEdges = startNode.OutEdges;
+            IEnumerator ie = outEdges.GetEnumerator();
+            /* 
+             * Called two times where in java is called one time: because of different implementation of java iterator...                                            
+             * The first call is to initialize IEnumerator to start element (in java is automatic), the second call jump to second element...
+             */            
+            ie.MoveNext();
+            if(outEdges.Count > 1) 
+                ie.MoveNext();
+
+            DirectedEdge startDE = (DirectedEdge)ie.Current;            
             DirectedEdge startDESym = startDE.Sym;
-                        
+            
             LinkedList<DirectedEdge> seq = new LinkedList<DirectedEdge>();
             LinkedListNode<DirectedEdge> pos = AddReverseSubpath(startDESym, null, seq, false);            
             while (pos != null)
@@ -381,7 +389,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             int minDegree = Int32.MaxValue;
             Node minDegreeNode = null;            
             IEnumerator i = graph.GetNodeEnumerator();
-            while(i.MoveNext())
+            while (i.MoveNext())
             {
                 Node node = (Node)i.Current;
                 if (minDegreeNode == null || node.Degree < minDegree)
@@ -389,7 +397,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                     minDegree = node.Degree;
                     minDegreeNode = node;
                 }
-            }
+            }            
             return minDegreeNode;
         }
         

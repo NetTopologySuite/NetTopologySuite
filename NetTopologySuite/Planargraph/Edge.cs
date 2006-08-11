@@ -44,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <param name="de1"></param>
         public virtual void SetDirectedEdges(DirectedEdge de0, DirectedEdge de1)
         {
-            dirEdge = new DirectedEdge[] { de0, de1 };
+            dirEdge = new DirectedEdge[] { de0, de1, };
             de0.Edge = this;
             de1.Edge = this;
             de0.Sym = de1;
