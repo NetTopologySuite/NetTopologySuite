@@ -77,6 +77,43 @@ namespace GisSharpBlog.NetTopologySuite.Samples.NUnitTests
             String result = "MULTILINESTRING ((0 0, 0 10), (0 10, 0 20), (0 20, 0 30), (0 30, 0 0))";
             RunLineSequencer(wkt, result);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Test]
+        public void SimpleVeryBigLoop()
+        {
+            String[] wkt = 
+            {
+                "LINESTRING ( 0 0, 0 10 )",
+                "LINESTRING ( 0 30, 0 40 )",
+                "LINESTRING ( 0 40, 0 00 )",
+                "LINESTRING ( 0 20, 0 30 )",
+                "LINESTRING ( 0 10, 0 20 )",
+            };
+            String result = "MULTILINESTRING ((0 0, 0 10), (0 10, 0 20), (0 20, 0 30), (0 30, 0 40), (0 40, 0 0))";
+            RunLineSequencer(wkt, result);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Test]
+        public void SimpleVeryVeryBigLoop()
+        {
+            String[] wkt = 
+            {
+                "LINESTRING ( 0 0, 0 10 )",
+                "LINESTRING ( 0 30, 0 40 )",
+                "LINESTRING ( 0 50, 0 00 )",
+                "LINESTRING ( 0 20, 0 30 )",
+                "LINESTRING ( 0 30, 0 40 )",
+                "LINESTRING ( 0 10, 0 20 )",
+            };
+            String result = "MULTILINESTRING ((0 50, 0 0), (0 0, 0 10), (0 10, 0 20), (0 20, 0 30), (0 30, 0 40), (0 40, 0 30))";
+            RunLineSequencer(wkt, result);
+        }
         
         /// <summary>
         /// 

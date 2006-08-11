@@ -11,21 +11,13 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
     public class CollectionUtil
     {
         
-        // TODO: Implement using delegates!!!
-
         /// <summary>
         /// 
         /// </summary>
-        public interface Function
-        {
-
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="obj"></param>
-            /// <returns></returns>
-            object Execute(object obj);
-        }
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public delegate T FunctionDelegate<T>(T obj);
 
         /// <summary>
         /// Executes a function on each item in a <see cref="ICollection" />
@@ -34,12 +26,12 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <param name="coll"></param>
         /// <param name="func"></param>
         /// <returns></returns>
-        public static IList Transform(ICollection coll, Function func)
+        public static IList Transform(ICollection coll, FunctionDelegate<object> func)
         {
             IList result = new ArrayList();
             IEnumerator i = coll.GetEnumerator(); 
-            while(i.MoveNext())            
-                result.Add(func.Execute(i.Current));            
+            foreach(object obj in coll)           
+                result.Add(func(obj));
             return result;
         }
 
@@ -49,11 +41,10 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// </summary>
         /// <param name="coll"></param>
         /// <param name="func"></param>
-        public static void Apply(ICollection coll, Function func)
+        public static void Apply(ICollection coll, FunctionDelegate<object> func)
         {
-            IEnumerator i = coll.GetEnumerator();
-            while(i.MoveNext())
-                func.Execute(i.Current);
+            foreach(object obj in coll)
+                func(obj);
         }
 
         /// <summary>
@@ -61,19 +52,15 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// and collects all the entries for which the result
         /// of the function is equal to <c>true</c>.
         /// </summary>
-        /// <param name="collection"></param>
+        /// <param name="coll"></param>
         /// <param name="func"></param>
         /// <returns></returns>
-        public static IList Select(ICollection collection, Function func)
+        public static IList Select(ICollection coll, FunctionDelegate<object> func)
         {
-            IList result = new ArrayList();
-            IEnumerator i = collection.GetEnumerator();
-            while(i.MoveNext())
-            {
-                object item = i.Current;
-                if (true.Equals(func.Execute(item)))
-                    result.Add(item);                
-            }
+            IList result = new ArrayList();            
+            foreach (object obj in coll)
+                if (true.Equals(func(obj)))
+                    result.Add(obj);                            
             return result;
         }
     }

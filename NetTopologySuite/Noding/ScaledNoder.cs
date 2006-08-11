@@ -79,35 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             if(isScaled)
                 intSegStrings = Scale(inputSegStrings);
             noder.ComputeNodes(intSegStrings);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private class TrasformFunction : CollectionUtil.Function
-        {
-            private ScaledNoder noder = null;
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="TrasformFunction" /> class.
-            /// </summary>
-            /// <param name="noder"></param>
-            public TrasformFunction(ScaledNoder noder)
-            {
-                this.noder = noder;
-            }
-
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="obj"></param>
-            /// <returns></returns>
-            public object Execute(Object obj) 
-            {
-                SegmentString ss = (SegmentString) obj;
-                return new SegmentString(noder.Scale(ss.Coordinates), ss.Data);
-            }
-        }
+        }    
 
         /// <summary>
         /// 
@@ -116,7 +88,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <returns></returns>
         private IList Scale(IList segStrings)
         {
-            return CollectionUtil.Transform(segStrings, new TrasformFunction(this));
+            return CollectionUtil.Transform(segStrings, delegate(object obj)
+            {
+                SegmentString ss = (SegmentString)obj;
+                return new SegmentString(Scale(ss.Coordinates), ss.Data);
+            });
         }
         
         /// <summary>
@@ -131,33 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                 roundPts[i] = new Coordinate(Math.Round((pts[i].X - offsetX) * scaleFactor),
                                              Math.Round((pts[i].Y - offsetY) * scaleFactor));            
             return roundPts;
-        }
-
-        private class ApplyFunction : CollectionUtil.Function
-        {
-            private ScaledNoder noder = null;
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="ApplyFunction" /> class.
-            /// </summary>
-            /// <param name="noder"></param>
-            public ApplyFunction(ScaledNoder noder)
-            {
-                this.noder = noder;
-            }
-
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="obj"></param>
-            /// <returns></returns>
-            public Object Execute(object obj) 
-            {
-                SegmentString ss = (SegmentString) obj;
-                noder.Rescale(ss.Coordinates);
-                return null;
-            }
-        }
+        }      
 
         /// <summary>
         /// 
@@ -165,7 +115,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="segStrings"></param>
         private void Rescale(IList segStrings)
         {
-            CollectionUtil.Apply(segStrings, new ApplyFunction(this));                                           
+            CollectionUtil.Apply(segStrings, delegate(object obj)
+            {
+                SegmentString ss = (SegmentString)obj;
+                Rescale(ss.Coordinates);
+                return null;
+            });                                           
         }
 
         /// <summary>
