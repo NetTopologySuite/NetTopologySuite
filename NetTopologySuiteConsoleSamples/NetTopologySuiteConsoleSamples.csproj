@@ -64,6 +64,7 @@
     <Compile Include="Tests\Various\OracleWKBTest.cs" />
     <Compile Include="Tests\Various\ReverseTest.cs" />
     <Compile Include="Tests\Various\RobustLineIntersectorTest.cs" />
+    <Compile Include="Tests\Various\VariousTests.cs" />
     <Compile Include="Tests\Various\WKTTest.cs" />
     <Compile Include="SimpleTests\Attributes\AttributesTest.cs" />
     <Compile Include="Operation\Distance\ClosestPointExample.cs" />
