@@ -17,20 +17,20 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
     /// 
     /// </summary>
     [TestFixture]
-    public class VariousTests : BaseSamples
+    public class OGCTests : BaseSamples
     {
 
         /// <summary>
         /// 
         /// </summary>
-        public VariousTests() : base(GeometryFactory.Fixed) { }
+        public OGCTests() : base(GeometryFactory.Fixed) { }
 
 
         /// <summary>
         /// 
         /// </summary>
         [Test]
-        public void Test1()
+        public void OGCUnionTest()
         {                        
             Geometry blueLake = Reader.Read("POLYGON((52 18,66 23,73 9,48 6,52 18),(59 18,67 18,67 13,59 13,59 18))");
             Assert.IsNotNull(blueLake);
