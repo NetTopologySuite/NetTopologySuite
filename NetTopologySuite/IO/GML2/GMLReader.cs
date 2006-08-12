@@ -9,11 +9,11 @@ using GisSharpBlog.NetTopologySuite.Geometries;
 namespace GisSharpBlog.NetTopologySuite.IO.GML2
 {
     /// <summary>
-    /// Reads a GML document and creates a representation of the features based or NetTopologySuite model.
-    /// Uses GML 2.1.1 <c>Geometry.xsd</c> schema for base for features.
+    /// 
     /// </summary>
     public class GMLReader
     {
+
         private GeometryFactory factory = null;
 
         /// <summary>
@@ -336,5 +336,6 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
             }
             throw new ArgumentException("ShouldNeverReachHere!");
         }
+
     }
 }

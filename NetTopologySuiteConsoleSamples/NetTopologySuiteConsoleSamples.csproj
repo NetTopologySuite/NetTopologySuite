@@ -53,18 +53,18 @@
     <Compile Include="Geometries\precisionmodelexample.cs" />
     <Compile Include="Geometries\simplemethodsexample.cs" />
     <Compile Include="LinearReferencing\LinearReferencingExample.cs" />
-    <Compile Include="nunut-tests\CoordinateArraysTest.cs" />
-    <Compile Include="nunut-tests\CoversTest.cs" />
-    <Compile Include="nunut-tests\DbfDateTest.cs" />
-    <Compile Include="nunut-tests\FormattingTest.cs" />
-    <Compile Include="nunut-tests\IntesectIterationTest.cs" />
-    <Compile Include="nunut-tests\IsValidTest.cs" />
-    <Compile Include="nunut-tests\LineSequencerTest.cs" />
-    <Compile Include="nunut-tests\NormalizeTest.cs" />
-    <Compile Include="nunut-tests\OracleWKBTest.cs" />
-    <Compile Include="nunut-tests\ReverseTest.cs" />
-    <Compile Include="nunut-tests\RobustLineIntersectorTest.cs" />
-    <Compile Include="nunut-tests\WKTTest.cs" />
+    <Compile Include="Tests\Various\CoordinateArraysTest.cs" />
+    <Compile Include="Tests\Various\CoversTest.cs" />
+    <Compile Include="Tests\Various\DbfDateTest.cs" />
+    <Compile Include="Tests\Various\FormattingTest.cs" />
+    <Compile Include="Tests\Various\IntesectIterationTest.cs" />
+    <Compile Include="Tests\Various\IsValidTest.cs" />
+    <Compile Include="Tests\Operation\Linemerge\LineSequencerTest.cs" />
+    <Compile Include="Tests\Various\NormalizeTest.cs" />
+    <Compile Include="Tests\Various\OracleWKBTest.cs" />
+    <Compile Include="Tests\Various\ReverseTest.cs" />
+    <Compile Include="Tests\Various\RobustLineIntersectorTest.cs" />
+    <Compile Include="Tests\Various\WKTTest.cs" />
     <Compile Include="SimpleTests\Attributes\AttributesTest.cs" />
     <Compile Include="Operation\Distance\ClosestPointExample.cs" />
     <Compile Include="Operation\Linemerge\LineMergeExample.cs" />
@@ -92,7 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="lib\nunit.framework.dll" />
-    <Content Include="nunut-tests\Readme.txt" />
+    <Content Include="Tests\Readme.txt" />
     <Content Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
