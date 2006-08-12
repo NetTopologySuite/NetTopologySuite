@@ -127,7 +127,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         private void FindCollapsesFromInsertedNodes(IList collapsedVertexIndexes)
         {
             int[] collapsedVertexIndex = new int[1];
-            IEnumerator it = GetEnumerator();
+            
+	    IEnumerator it = GetEnumerator();
+	    ie.MoveNext();
+
             // there should always be at least two entries in the list, since the endpoints are nodes
             SegmentNode eiPrev = (SegmentNode)it.Current;
             while(it.MoveNext())
@@ -179,6 +182,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             AddCollapsedNodes();
 
             IEnumerator it = GetEnumerator();
+	    ie.MoveNext();
+
             // there should always be at least two entries in the list, since the endpoints are nodes
             SegmentNode eiPrev = (SegmentNode)it.Current;
             while(it.MoveNext())
