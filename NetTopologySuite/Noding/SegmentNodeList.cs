@@ -128,14 +128,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         {
             int[] collapsedVertexIndex = new int[1];
             
-	    IEnumerator it = GetEnumerator();
+	    IEnumerator ie = GetEnumerator();
 	    ie.MoveNext();
 
             // there should always be at least two entries in the list, since the endpoints are nodes
-            SegmentNode eiPrev = (SegmentNode)it.Current;
-            while(it.MoveNext())
+            SegmentNode eiPrev = (SegmentNode)ie.Current;
+            while (ie.MoveNext())
             {
-                SegmentNode ei = (SegmentNode)it.Current;
+                SegmentNode ei = (SegmentNode)ie.Current;
                 bool isCollapsed = FindCollapseIndex(eiPrev, ei, collapsedVertexIndex);
                 if (isCollapsed)
                     collapsedVertexIndexes.Add(collapsedVertexIndex[0]);
@@ -181,14 +181,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             AddEndPoints();
             AddCollapsedNodes();
 
-            IEnumerator it = GetEnumerator();
-	    ie.MoveNext();
+            IEnumerator ie = GetEnumerator();
+	        ie.MoveNext();
 
             // there should always be at least two entries in the list, since the endpoints are nodes
-            SegmentNode eiPrev = (SegmentNode)it.Current;
-            while(it.MoveNext())
+            SegmentNode eiPrev = (SegmentNode)ie.Current;
+            while(ie.MoveNext())
             {
-                SegmentNode ei = (SegmentNode)it.Current;
+                SegmentNode ei = (SegmentNode)ie.Current;
                 SegmentString newEdge = CreateSplitEdge(eiPrev, ei);
                 edgeList.Add(newEdge);
                 eiPrev = ei;
