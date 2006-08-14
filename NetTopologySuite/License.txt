@@ -58,7 +58,32 @@ For more information, contact:
     Canada
     (250)385-6040
     www.vividsolutions.com
+
+
+
     
+Copy of SharpMap license:
+
+Copyright 2005, 2006 - Morten Nielsen (www.iter.dk)
+
+This file is part of SharpMap.
+SharpMap is free software; you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+SharpMap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with SharpMap; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+
+    
+
+
 Copy of GeoTools.Net license:
 
 Copyright (C) 2002 Urban Science Applications, Inc. (translated from Java Topology Suite, 
@@ -76,6 +101,9 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
+
+
+
 Copy of RTools.Util license:
 
 Copyright (C) 2003 Ryan Seghers
@@ -89,6 +117,9 @@ License to use this software is limited by the following terms:
 Also, in return for using this code, please attempt to make your fixes and
 updates available in some way, such as by sending your updates to the
 author.
+
+
+
 
 Copy of Iesi.Collections license:
 
@@ -104,6 +135,10 @@ Use the software however you want. It's free to all, the source code is free
 to all, and if you use it, you own it. Heck, sell it if you can find someone
 dumb enough to pay for it. I don't care how you use it as long as you don't
 come looking for me if something goes wrong. 
+
+
+
+
 
 Copy of Iesi.Collections.Generic license:
 
