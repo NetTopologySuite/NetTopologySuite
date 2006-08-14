@@ -299,10 +299,22 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="z">The z coordinate.</param>
         /// /// <remarks>
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
-        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
+        /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public Point(double x, double y, double z) : 
             this(DefaultFactory.CoordinateSequenceFactory.Create(new Coordinate[] { new Coordinate(x, y, z) }), DefaultFactory) { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:Point"/> class.
+        /// </summary>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// /// <remarks>
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
+        /// </remarks>
+        public Point(double x, double y)
+            : this(DefaultFactory.CoordinateSequenceFactory.Create(new Coordinate[] { new Coordinate(x, y) }), DefaultFactory) { }
 
         /// <summary>
         /// 
@@ -315,7 +327,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     throw new ArgumentOutOfRangeException("Z called on empty Point");
                 return Coordinate.Z;
             }
-            set { Coordinate.Z = value; }
+            set 
+            { 
+                Coordinate.Z = value; 
+            }
         }
 
         /* END ADDED BY MPAUL42: monoGIS team */
