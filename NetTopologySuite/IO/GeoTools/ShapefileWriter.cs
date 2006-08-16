@@ -13,13 +13,14 @@ namespace GisSharpBlog.NetTopologySuite.IO
         private GeometryFactory geometryFactory = null;
 		
         /// <summary>
-		/// Initializes a new instance of the ShapefileWriter class.
+        /// Initializes a new instance of the <see cref="ShapefileWriter" /> class 
+        /// using <see cref="GeometryFactory.Default" /> with a <see cref="PrecisionModels.Floating" /> precision.
 		/// </summary>
-		public ShapefileWriter() : this(new GeometryFactory()) { }
+		public ShapefileWriter() : this(GeometryFactory.Default) { }
 
         /// <summary>
-        /// Initializes a new instance of the ShapefileWriter class
-        /// with the given GeometryFactory
+        /// Initializes a new instance of the <see cref="ShapefileWriter" /> class
+        /// with the given <see cref="GeometryFactory" />.
         /// </summary>
         /// <param name="geometryFactory"></param>
         public ShapefileWriter(GeometryFactory geometryFactory) 

@@ -182,11 +182,11 @@ namespace UnitTests
 			CoordinateTransformationFactory gtFac = new CoordinateTransformationFactory();
 			ICoordinateTransformation ct = gtFac.CreateFromCoordinateSystems(gcs,gcenCs);
 			Point pExpected = FromDMS(2, 7, 46.38, 53, 48, 33.82);
-			Point3D pExpected3D = new Point3D(pExpected.X, pExpected.Y, 73.0);
-			Point3D p0 = new Point3D(3771793.97, 140253.34, 5124304.35);
-			Point3D p1 = ct.MathTransform.Transform(pExpected3D) as Point3D;
-			Point3D p2 = ct.MathTransform.Inverse().Transform(p1) as Point3D;
-			Assert.IsTrue(ToleranceLessThan(p1, p0, 0.01));
+			Point pExpected3D = new Point(pExpected.X, pExpected.Y, 73.0);
+			Point p0 = new Point(3771793.97, 140253.34, 5124304.35);
+			Point p1 = ct.MathTransform.Transform(pExpected3D);
+			Point p2 = ct.MathTransform.Inverse().Transform(p1);
+			Assert.IsTrue(Tolerance3DLessThan(p1, p0, 0.01));
 			Assert.IsTrue(ToleranceLessThan(p2, pExpected, 0.00001));
 		}
 
@@ -238,32 +238,28 @@ namespace UnitTests
 			ICoordinateTransformation ctED50_UTM2Geo = ctFac.CreateFromCoordinateSystems(utmED50, gcsED50);  //UTM ->Geographic (ED50)
 			ICoordinateTransformation ctED50_Geo2Gcen = ctFac.CreateFromCoordinateSystems(gcsED50, gcenCsED50); //Geographic->Geocentric (ED50)
 
-			//Test datum-shift from WGS72 to WGS84
-			//Point3D pGeoCenWGS72 = ctForw.MathTransform.Transform(pLongLatWGS72) as Point3D;
-			Point3D pGeoCenWGS72 = new Point3D(3657660.66, 255768.55, 5201382.11);			
+			//Test datum-shift from WGS72 to WGS84			
+			Point pGeoCenWGS72 = new Point(3657660.66, 255768.55, 5201382.11);			
 			ICoordinateTransformation geocen_ed50_2_Wgs84 = ctFac.CreateFromCoordinateSystems(gcenCsWGS72, gcenCsWGS84);
-			Point3D pGeoCenWGS84 = geocen_ed50_2_Wgs84.MathTransform.Transform(pGeoCenWGS72) as Point3D;
-			//Point3D pGeoCenWGS84 = wgs72.Wgs84Parameters.Apply(pGeoCenWGS72);
-
-			Assert.IsTrue(ToleranceLessThan(new Point3D(3657660.78, 255778.43, 5201387.75), pGeoCenWGS84, 0.01));
+			Point pGeoCenWGS84 = geocen_ed50_2_Wgs84.MathTransform.Transform(pGeoCenWGS72);			
+			Assert.IsTrue(Tolerance3DLessThan(new Point(3657660.78, 255778.43, 5201387.75), pGeoCenWGS84, 0.01));
 
 			ICoordinateTransformation utm_ed50_2_Wgs84 = ctFac.CreateFromCoordinateSystems(utmED50, utmWGS84);
 			Point pUTMED50 = new Point(600000, 6100000);
 			Point pUTMWGS84 = utm_ed50_2_Wgs84.MathTransform.Transform(pUTMED50);
 			Assert.IsTrue(ToleranceLessThan(new Point(599928.6, 6099790.2), pUTMWGS84, 0.1));
+
 			//Perform reverse
 			ICoordinateTransformation utm_Wgs84_2_Ed50 = ctFac.CreateFromCoordinateSystems(utmWGS84, utmED50);
 			pUTMED50 = utm_Wgs84_2_Ed50.MathTransform.Transform(pUTMWGS84);
-			Assert.IsTrue(ToleranceLessThan(new Point(600000, 6100000), pUTMED50, 0.1));
-			//Assert.IsTrue(Math.Abs((pUTMWGS84 as Point3D).Z - 36.35) < 0.5);
-			//Point pExpected = Point.FromDMS(2, 7, 46.38, 53, 48, 33.82);
-			//ED50_to_WGS84_Denmark: datum.Wgs84Parameters = new Wgs84ConversionInfo(-89.5, -93.8, 127.6, 0, 0, 4.5, 1.2);
-
+			Assert.IsTrue(ToleranceLessThan(new Point(600000, 6100000), pUTMED50, 0.1));			
 		}
+
 		private bool ToleranceLessThan(Point p1, Point p2, double tolerance)
 		{
 			return Math.Abs(p1.X - p2.X) < tolerance && Math.Abs(p1.Y - p2.Y) < tolerance;
 		}
+
 		private bool Tolerance3DLessThan(Point p1, Point p2, double tolerance)
 		{
 			return Math.Abs(p1.X - p2.X) < tolerance && Math.Abs(p1.Y - p2.Y) < tolerance && Math.Abs(p1.Z - p2.Z) < tolerance;

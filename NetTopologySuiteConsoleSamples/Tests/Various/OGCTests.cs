@@ -64,5 +64,21 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             Assert.IsTrue(result.EqualsExact(expected));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        [Test]
+        public void ExtractToShapefile()
+        {                         
+            string path = Path.GetTempPath() + "\\test";
+            if(File.Exists(path + ".shp"))
+                File.Delete(path);
+            Assert.IsFalse(File.Exists(path));
+
+            ShapefileWriter writer = new ShapefileWriter(); 
+            writer.Write(path, new GeometryCollection(new Geometry[] { blueLake, ashton, }));
+            Assert.IsTrue(File.Exists(path + ".shp"));
+        }
+
     }
 }
