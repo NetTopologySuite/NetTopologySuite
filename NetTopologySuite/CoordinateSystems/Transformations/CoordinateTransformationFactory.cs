@@ -43,26 +43,25 @@ namespace SharpMap.CoordinateSystems.Transformations
 		/// <returns></returns>		
 		public ICoordinateTransformation CreateFromCoordinateSystems(ICoordinateSystem sourceCS, ICoordinateSystem targetCS)
 		{
-			if (sourceCS is IProjectedCoordinateSystem && targetCS is IGeographicCoordinateSystem) //Projected -> Geographic
-				return Proj2Geog((IProjectedCoordinateSystem)sourceCS, (IGeographicCoordinateSystem)targetCS);
+            if (sourceCS is IProjectedCoordinateSystem && targetCS is IGeographicCoordinateSystem) //Projected -> Geographic
+                return Proj2Geog((IProjectedCoordinateSystem)sourceCS, (IGeographicCoordinateSystem)targetCS);            
+            else if (sourceCS is IGeographicCoordinateSystem && targetCS is IProjectedCoordinateSystem) //Geographic -> Projected
+                return Geog2Proj((IGeographicCoordinateSystem)sourceCS, (IProjectedCoordinateSystem)targetCS);
 
-			else if (sourceCS is IGeographicCoordinateSystem && targetCS is IProjectedCoordinateSystem) //Geographic -> Projected
-				return Geog2Proj((IGeographicCoordinateSystem)sourceCS, (IProjectedCoordinateSystem)targetCS);
+            else if (sourceCS is IGeographicCoordinateSystem && targetCS is IGeocentricCoordinateSystem) //Geocentric -> Geographic
+                return Geog2Geoc((IGeographicCoordinateSystem)sourceCS, (IGeocentricCoordinateSystem)targetCS);
 
-			else if (sourceCS is IGeographicCoordinateSystem && targetCS is IGeocentricCoordinateSystem) //Geocentric -> Geographic
-				return Geog2Geoc((IGeographicCoordinateSystem)sourceCS, (IGeocentricCoordinateSystem)targetCS);
+            else if (sourceCS is IGeocentricCoordinateSystem && targetCS is IGeographicCoordinateSystem) //Geocentric -> Geographic
+                return Geoc2Geog((IGeocentricCoordinateSystem)sourceCS, (IGeographicCoordinateSystem)targetCS);
 
-			else if (sourceCS is IGeocentricCoordinateSystem && targetCS is IGeographicCoordinateSystem) //Geocentric -> Geographic
-				return Geoc2Geog((IGeocentricCoordinateSystem)sourceCS, (IGeographicCoordinateSystem)targetCS);
+            else if (sourceCS is IProjectedCoordinateSystem && targetCS is IProjectedCoordinateSystem) //Projected -> Projected
+                return Proj2Proj((sourceCS as IProjectedCoordinateSystem), (targetCS as IProjectedCoordinateSystem));
 
-			else if (sourceCS is IProjectedCoordinateSystem && targetCS is IProjectedCoordinateSystem) //Projected -> Projected
-				return Proj2Proj((sourceCS as IProjectedCoordinateSystem),(targetCS as IProjectedCoordinateSystem));
+            else if (sourceCS is IGeocentricCoordinateSystem && targetCS is IGeocentricCoordinateSystem) //Geocentric -> Geocentric
+                return CreateGeoc2Geoc((IGeocentricCoordinateSystem)sourceCS, (IGeocentricCoordinateSystem)targetCS);
 
-			else if (sourceCS is IGeocentricCoordinateSystem && targetCS is IGeocentricCoordinateSystem) //Geocentric -> Geocentric
-				return CreateGeoc2Geoc((IGeocentricCoordinateSystem)sourceCS, (IGeocentricCoordinateSystem)targetCS);
-
-			else if (sourceCS is IGeographicCoordinateSystem && targetCS is IGeographicCoordinateSystem) //Geographic -> Geographic
-				return CreateGeog2Geog(sourceCS as IGeographicCoordinateSystem, targetCS as IGeographicCoordinateSystem);
+            else if (sourceCS is IGeographicCoordinateSystem && targetCS is IGeographicCoordinateSystem) //Geographic -> Geographic
+                return CreateGeog2Geog(sourceCS as IGeographicCoordinateSystem, targetCS as IGeographicCoordinateSystem);
 
 			throw new NotSupportedException("No support for transforming between the two specified coordinate systems");
 		}

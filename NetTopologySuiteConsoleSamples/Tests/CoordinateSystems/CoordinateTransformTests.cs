@@ -11,9 +11,17 @@ using NUnit.Framework;
 
 namespace UnitTests
 {
+
+    /// <summary>
+    /// 
+    /// </summary>
 	[TestFixture]
-	public class CoordinateTransformTests
-	{
+	public class CoordinateTransformTests	
+    {
+
+        /// <summary>
+        /// 
+        /// </summary>
 		[Test]
 		public void TestAlbersProjection()
 		{
@@ -46,6 +54,10 @@ namespace UnitTests
 			Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.05), String.Format("Albers forward transformation outside tolerance, Expected {0}, got {1}", expected.ToString(), pUtm.ToString()));
 			Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), String.Format("Albers reverse transformation outside tolerance, Expected {0}, got {1}", pGeo.ToString(), pGeo2.ToString()));
 		}
+
+        /// <summary>
+        /// 
+        /// </summary>
 		[Test]
 		public void TestMercator_1SP_Projection()
 		{
@@ -77,6 +89,10 @@ namespace UnitTests
 			Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.02), String.Format("Mercator_1SP forward transformation outside tolerance, Expected {0}, got {1}", expected.ToString(), pUtm.ToString()));
 			Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), String.Format("Mercator_1SP reverse transformation outside tolerance, Expected {0}, got {1}", pGeo.ToString(), pGeo2.ToString()));
 		}
+
+        /// <summary>
+        /// 
+        /// </summary>
 		[Test]
 		public void TestMercator_2SP_Projection()
 		{
@@ -107,6 +123,10 @@ namespace UnitTests
 			Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.02), String.Format("Mercator_2SP forward transformation outside tolerance, Expected {0}, got {1}", expected.ToString(), pUtm.ToString()));
 			Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), String.Format("Mercator_2SP reverse transformation outside tolerance, Expected {0}, got {1}", pGeo.ToString(), pGeo2.ToString()));
 		}
+
+        /// <summary>
+        /// 
+        /// </summary>
 		[Test]
 		public void TestTransverseMercator_Projection()
 		{
@@ -138,6 +158,10 @@ namespace UnitTests
 			Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.02), String.Format("TransverseMercator forward transformation outside tolerance, Expected {0}, got {1}", expected.ToString(), pUtm.ToString()));
 			Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), String.Format("TransverseMercator reverse transformation outside tolerance, Expected {0}, got {1}", pGeo.ToString(), pGeo2.ToString()));
 		}
+
+        /// <summary>
+        /// 
+        /// </summary>
 		[Test]
 		public void TestLambertConicConformal2SP_Projection()
 		{
@@ -172,6 +196,9 @@ namespace UnitTests
 
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
 		[Test]
 		public void TestGeocentric()
 		{			
@@ -190,6 +217,9 @@ namespace UnitTests
 			Assert.IsTrue(ToleranceLessThan(p2, pExpected, 0.00001));
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
 		[Test]
 		public void TestDatumTransform()
 		{
@@ -255,16 +285,40 @@ namespace UnitTests
 			Assert.IsTrue(ToleranceLessThan(new Point(600000, 6100000), pUTMED50, 0.1));			
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <param name="tolerance"></param>
+        /// <returns></returns>
 		private bool ToleranceLessThan(Point p1, Point p2, double tolerance)
 		{
 			return Math.Abs(p1.X - p2.X) < tolerance && Math.Abs(p1.Y - p2.Y) < tolerance;
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <param name="tolerance"></param>
+        /// <returns></returns>
 		private bool Tolerance3DLessThan(Point p1, Point p2, double tolerance)
 		{
 			return Math.Abs(p1.X - p2.X) < tolerance && Math.Abs(p1.Y - p2.Y) < tolerance && Math.Abs(p1.Z - p2.Z) < tolerance;
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="longDegrees"></param>
+        /// <param name="longMinutes"></param>
+        /// <param name="longSeconds"></param>
+        /// <param name="latDegrees"></param>
+        /// <param name="latMinutes"></param>
+        /// <param name="latSeconds"></param>
+        /// <returns></returns>
         private static Point FromDMS(double longDegrees, double longMinutes, double longSeconds, double latDegrees, double latMinutes, double latSeconds)
         {
             return new Point(longDegrees + longMinutes / 60 + longSeconds / 3600,

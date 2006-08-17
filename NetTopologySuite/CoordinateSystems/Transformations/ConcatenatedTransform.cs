@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -53,8 +54,8 @@ namespace SharpMap.CoordinateSystems.Transformations
 		public override Point Transform(Point point)
 		{			
 			Point pnt = (Point) point.Clone();
-			foreach (ICoordinateTransformation ct in _CoordinateTransformationList)
-				pnt = ct.MathTransform.Transform(pnt);
+            foreach (ICoordinateTransformation ct in _CoordinateTransformationList)
+                pnt = ct.MathTransform.Transform(pnt);            
 			return pnt;			
 		}
 
