@@ -21,7 +21,7 @@ using System.Text;
 
 using GisSharpBlog.NetTopologySuite.Utilities;
 
-namespace SharpMap.CoordinateSystems
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 {
 	/// <summary>
 	/// A meridian used to take longitude measurements from.
@@ -52,14 +52,14 @@ namespace SharpMap.CoordinateSystems
 		/// </summary>
 		public static PrimeMeridian Greenwich
 		{
-			get { return new PrimeMeridian(0.0, SharpMap.CoordinateSystems.AngularUnit.Degrees, "Greenwich", "EPSG", 8901, String.Empty, String.Empty, String.Empty); }
+			get { return new PrimeMeridian(0.0, GisSharpBlog.NetTopologySuite.CoordinateSystems.AngularUnit.Degrees, "Greenwich", "EPSG", 8901, String.Empty, String.Empty, String.Empty); }
 		}
 		/// <summary>
 		/// Lisbon prime meridian
 		/// </summary>
 		public static PrimeMeridian Lisbon
 		{
-			get { return new PrimeMeridian(-9.0754862, SharpMap.CoordinateSystems.AngularUnit.Degrees, "Lisbon", "EPSG", 8902, String.Empty, String.Empty, String.Empty); }
+			get { return new PrimeMeridian(-9.0754862, GisSharpBlog.NetTopologySuite.CoordinateSystems.AngularUnit.Degrees, "Lisbon", "EPSG", 8902, String.Empty, String.Empty, String.Empty); }
 		}
 		/// <summary>
 		/// Paris prime meridian.
@@ -67,28 +67,28 @@ namespace SharpMap.CoordinateSystems
 		/// </summary>
 		public static PrimeMeridian Paris
 		{
-			get { return new PrimeMeridian(2.5969213, SharpMap.CoordinateSystems.AngularUnit.Degrees, "Paris", "EPSG", 8903, String.Empty, String.Empty, "Value adopted by IGN (Paris) in 1936. Equivalent to 2 deg 20min 14.025sec. Preferred by EPSG to earlier value of 2deg 20min 13.95sec (2.596898 grads) used by RGS London."); }
+			get { return new PrimeMeridian(2.5969213, GisSharpBlog.NetTopologySuite.CoordinateSystems.AngularUnit.Degrees, "Paris", "EPSG", 8903, String.Empty, String.Empty, "Value adopted by IGN (Paris) in 1936. Equivalent to 2 deg 20min 14.025sec. Preferred by EPSG to earlier value of 2deg 20min 13.95sec (2.596898 grads) used by RGS London."); }
 		}
 		/// <summary>
 		/// Bogota prime meridian
 		/// </summary>
 		public static PrimeMeridian Bogota
 		{
-			get { return new PrimeMeridian(-74.04513, SharpMap.CoordinateSystems.AngularUnit.Degrees, "Bogota", "EPSG", 8904, String.Empty, String.Empty, String.Empty); }
+			get { return new PrimeMeridian(-74.04513, GisSharpBlog.NetTopologySuite.CoordinateSystems.AngularUnit.Degrees, "Bogota", "EPSG", 8904, String.Empty, String.Empty, String.Empty); }
 		}
 		/// <summary>
 		/// Madrid prime meridian
 		/// </summary>
 		public static PrimeMeridian Madrid
 		{
-			get { return new PrimeMeridian(-3.411658, SharpMap.CoordinateSystems.AngularUnit.Degrees, "Madrid", "EPSG", 8905, String.Empty, String.Empty, String.Empty); }
+			get { return new PrimeMeridian(-3.411658, GisSharpBlog.NetTopologySuite.CoordinateSystems.AngularUnit.Degrees, "Madrid", "EPSG", 8905, String.Empty, String.Empty, String.Empty); }
 		}
 		/// <summary>
 		/// Rome prime meridian
 		/// </summary>
 		public static PrimeMeridian Rome
 		{
-			get { return new PrimeMeridian(12.27084, SharpMap.CoordinateSystems.AngularUnit.Degrees, "Rome", "EPSG", 8906, String.Empty, String.Empty, String.Empty); }
+			get { return new PrimeMeridian(12.27084, GisSharpBlog.NetTopologySuite.CoordinateSystems.AngularUnit.Degrees, "Rome", "EPSG", 8906, String.Empty, String.Empty, String.Empty); }
 		}
 		/// <summary>
 		/// Bern prime meridian.
@@ -96,14 +96,14 @@ namespace SharpMap.CoordinateSystems
 		/// </summary>
 		public static PrimeMeridian Bern
 		{
-			get { return new PrimeMeridian(7.26225, SharpMap.CoordinateSystems.AngularUnit.Degrees, "Bern", "EPSG", 8907, String.Empty, String.Empty, "1895 value. Newer value of 7 deg 26 min 22.335 sec E determined in 1938."); }
+			get { return new PrimeMeridian(7.26225, GisSharpBlog.NetTopologySuite.CoordinateSystems.AngularUnit.Degrees, "Bern", "EPSG", 8907, String.Empty, String.Empty, "1895 value. Newer value of 7 deg 26 min 22.335 sec E determined in 1938."); }
 		}
 		/// <summary>
 		/// Jakarta prime meridian
 		/// </summary>
 		public static PrimeMeridian Jakarta
 		{
-			get { return new PrimeMeridian(106.482779, SharpMap.CoordinateSystems.AngularUnit.Degrees, "Jakarta", "EPSG", 8908, String.Empty, String.Empty, String.Empty); }
+			get { return new PrimeMeridian(106.482779, GisSharpBlog.NetTopologySuite.CoordinateSystems.AngularUnit.Degrees, "Jakarta", "EPSG", 8908, String.Empty, String.Empty, String.Empty); }
 		}
 		/// <summary>
 		/// Ferro prime meridian.
@@ -111,21 +111,21 @@ namespace SharpMap.CoordinateSystems
 		/// </summary>
 		public static PrimeMeridian Ferro
 		{
-			get { return new PrimeMeridian(-17.4, SharpMap.CoordinateSystems.AngularUnit.Degrees, "Ferro", "EPSG", 8909, String.Empty, String.Empty, "Used in Austria and former Czechoslovakia."); }
+			get { return new PrimeMeridian(-17.4, GisSharpBlog.NetTopologySuite.CoordinateSystems.AngularUnit.Degrees, "Ferro", "EPSG", 8909, String.Empty, String.Empty, "Used in Austria and former Czechoslovakia."); }
 		}
 		/// <summary>
 		/// Brussels prime meridian
 		/// </summary>
 		public static PrimeMeridian Brussels
 		{
-			get { return new PrimeMeridian(4.220471, SharpMap.CoordinateSystems.AngularUnit.Degrees, "Brussels", "EPSG", 8910, String.Empty, String.Empty, String.Empty); }
+			get { return new PrimeMeridian(4.220471, GisSharpBlog.NetTopologySuite.CoordinateSystems.AngularUnit.Degrees, "Brussels", "EPSG", 8910, String.Empty, String.Empty, String.Empty); }
 		}
 		/// <summary>
 		/// Stockholm prime meridian
 		/// </summary>
 		public static PrimeMeridian Stockholm
 		{
-			get { return new PrimeMeridian(18.03298, SharpMap.CoordinateSystems.AngularUnit.Degrees, "Stockholm", "EPSG", 8911, String.Empty, String.Empty, String.Empty); }
+			get { return new PrimeMeridian(18.03298, GisSharpBlog.NetTopologySuite.CoordinateSystems.AngularUnit.Degrees, "Stockholm", "EPSG", 8911, String.Empty, String.Empty, String.Empty); }
 		}
 		/// <summary>
 		/// Athens prime meridian.
@@ -133,7 +133,7 @@ namespace SharpMap.CoordinateSystems
 		/// </summary>
 		public static PrimeMeridian Athens
 		{
-			get { return new PrimeMeridian(23.4258815, SharpMap.CoordinateSystems.AngularUnit.Degrees, "Athens", "EPSG", 8912, String.Empty, String.Empty, "Used in Greece for older mapping based on Hatt projection."); }
+			get { return new PrimeMeridian(23.4258815, GisSharpBlog.NetTopologySuite.CoordinateSystems.AngularUnit.Degrees, "Athens", "EPSG", 8912, String.Empty, String.Empty, "Used in Greece for older mapping based on Hatt projection."); }
 		}
 		/// <summary>
 		/// Oslo prime meridian.
@@ -141,7 +141,7 @@ namespace SharpMap.CoordinateSystems
 		/// </summary>
 		public static PrimeMeridian Oslo
 		{
-			get { return new PrimeMeridian(10.43225, SharpMap.CoordinateSystems.AngularUnit.Degrees, "Oslo", "EPSG", 8913, String.Empty, String.Empty, "Formerly known as Kristiania or Christiania."); }
+			get { return new PrimeMeridian(10.43225, GisSharpBlog.NetTopologySuite.CoordinateSystems.AngularUnit.Degrees, "Oslo", "EPSG", 8913, String.Empty, String.Empty, "Formerly known as Kristiania or Christiania."); }
 		}
 		#endregion
 
@@ -207,7 +207,7 @@ namespace SharpMap.CoordinateSystems
 		/// <returns>True if equal</returns>
 		public override bool EqualParams(object obj)
 		{
-			if (!(obj is SharpMap.CoordinateSystems.PrimeMeridian))
+			if (!(obj is GisSharpBlog.NetTopologySuite.CoordinateSystems.PrimeMeridian))
 				return false;
 			PrimeMeridian prime = obj as PrimeMeridian;
 			return prime.AngularUnit.EqualParams(this.AngularUnit) && prime.Longitude == this.Longitude;

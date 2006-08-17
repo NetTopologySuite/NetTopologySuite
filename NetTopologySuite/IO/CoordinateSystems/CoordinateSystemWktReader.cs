@@ -38,9 +38,9 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-using SharpMap.CoordinateSystems;
+using GisSharpBlog.NetTopologySuite.CoordinateSystems;
 
-namespace SharpMap.Converters.WellKnownText
+namespace GisSharpBlog.NetTopologySuite.Converters.WellKnownText
 {
 	/// <summary>
 	/// Creates an object based on the supplied Well Known Text (WKT).

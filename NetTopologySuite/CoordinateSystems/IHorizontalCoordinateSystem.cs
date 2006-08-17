@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharpMap.CoordinateSystems
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 {
 	/// <summary>
 	/// A 2D coordinate system suitable for positions on the Earth's surface.

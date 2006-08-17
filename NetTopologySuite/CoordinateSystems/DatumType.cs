@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharpMap.CoordinateSystems
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 {
 	/// <summary>
 	/// A vertical datum of geoid model derived heights, also called GPS-derived heights.

@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharpMap.Converters.WellKnownText
+namespace GisSharpBlog.NetTopologySuite.Converters.WellKnownText
 {
 	/// <summary>
 	/// Converts spatial reference IDs to a Well-Known Text representation.

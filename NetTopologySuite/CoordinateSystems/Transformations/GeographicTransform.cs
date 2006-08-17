@@ -21,7 +21,7 @@ using System.Text;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
 
-namespace SharpMap.CoordinateSystems.Transformations
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 {
 	/// <summary>
 	/// The GeographicTransform class is implemented on geographic transformation objects and

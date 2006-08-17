@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharpMap.CoordinateSystems
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 {
 	/// <summary>
 	/// The ILinearUnit interface defines methods on linear units.

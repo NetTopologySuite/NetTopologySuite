@@ -21,7 +21,7 @@ using System.Text;
 
 using GisSharpBlog.NetTopologySuite.Utilities;
 
-namespace SharpMap.CoordinateSystems
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 {
 	/// <summary>
 	/// A 2D cartographic coordinate system.

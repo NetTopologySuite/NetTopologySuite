@@ -21,7 +21,7 @@ using System.Text;
 
 using GisSharpBlog.NetTopologySuite.Utilities;
 
-namespace SharpMap.CoordinateSystems
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 {
 	/// <summary>
 	/// Horizontal datum defining the standard datum information.
@@ -65,7 +65,7 @@ namespace SharpMap.CoordinateSystems
 		{
 			get
 			{
-				return new HorizontalDatum(SharpMap.CoordinateSystems.Ellipsoid.WGS84, 
+				return new HorizontalDatum(GisSharpBlog.NetTopologySuite.CoordinateSystems.Ellipsoid.WGS84, 
 					null, DatumType.HD_Geocentric, "World Geodetic System 1984", "EPSG", 6326, String.Empty, 
 					"EPSG's WGS 84 datum has been the then current realisation. No distinction is made between the original WGS 84 frame, WGS 84 (G730), WGS 84 (G873) and WGS 84 (G1150). Since 1997, WGS 84 has been maintained within 10cm of the then current ITRF.", String.Empty);
 			}
@@ -85,7 +85,7 @@ namespace SharpMap.CoordinateSystems
 			get
 			{
 				HorizontalDatum datum = 
-					new HorizontalDatum(SharpMap.CoordinateSystems.Ellipsoid.WGS72,
+					new HorizontalDatum(GisSharpBlog.NetTopologySuite.CoordinateSystems.Ellipsoid.WGS72,
 					null, DatumType.HD_Geocentric, "World Geodetic System 1972", "EPSG", 6322, String.Empty,
 					"Used by GPS before 1987. For Transit satellite positioning see also WGS 72BE. Datum code 6323 reserved for southern hemisphere ProjCS's.", String.Empty);
 				datum.Wgs84Parameters = new Wgs84ConversionInfo(0, 0, 4.5, 0, 0, 0.554, 0.219);
@@ -112,7 +112,7 @@ namespace SharpMap.CoordinateSystems
 		{
 			get
 			{
-				HorizontalDatum datum = new HorizontalDatum(SharpMap.CoordinateSystems.Ellipsoid.GRS80, null, DatumType.HD_Geocentric, 
+				HorizontalDatum datum = new HorizontalDatum(GisSharpBlog.NetTopologySuite.CoordinateSystems.Ellipsoid.GRS80, null, DatumType.HD_Geocentric, 
 					"European Terrestrial Reference System 1989", "EPSG", 6258, "ETRF89", "The distinction in usage between ETRF89 and ETRS89 is confused: although in principle conceptually different in practice both are used for the realisation.", String.Empty);
 				datum.Wgs84Parameters = new Wgs84ConversionInfo();
 				return datum;
@@ -135,7 +135,7 @@ namespace SharpMap.CoordinateSystems
 		{
 			get
 			{
-				return new HorizontalDatum(SharpMap.CoordinateSystems.Ellipsoid.International1924, new Wgs84ConversionInfo(-87,-98,-121,0,0,0,0), DatumType.HD_Geocentric,
+				return new HorizontalDatum(GisSharpBlog.NetTopologySuite.CoordinateSystems.Ellipsoid.International1924, new Wgs84ConversionInfo(-87,-98,-121,0,0,0,0), DatumType.HD_Geocentric,
 				"European Datum 1950", "EPSG", 6230, "ED50", String.Empty, String.Empty);
 			}
 		}
@@ -208,7 +208,7 @@ namespace SharpMap.CoordinateSystems
 		/// <returns>True if equal</returns>
 		public override bool EqualParams(object obj)
 		{
-			if (!(obj is SharpMap.CoordinateSystems.HorizontalDatum))
+			if (!(obj is GisSharpBlog.NetTopologySuite.CoordinateSystems.HorizontalDatum))
 				return false;
 			HorizontalDatum datum = obj as HorizontalDatum;
 			if(datum.Wgs84Parameters==null && this.Wgs84Parameters!=null) return false;

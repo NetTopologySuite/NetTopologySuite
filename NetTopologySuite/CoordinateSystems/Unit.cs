@@ -21,7 +21,7 @@ using System.Text;
 
 using GisSharpBlog.NetTopologySuite.Utilities;
 
-namespace SharpMap.CoordinateSystems
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 {
 	/// <summary>
 	/// Class for defining units
@@ -103,7 +103,7 @@ namespace SharpMap.CoordinateSystems
 		/// <returns>True if equal</returns>
 		public override bool EqualParams(object obj)
 		{
-			if (!(obj is SharpMap.CoordinateSystems.Unit))
+			if (!(obj is GisSharpBlog.NetTopologySuite.CoordinateSystems.Unit))
 				return false;
 			return (obj as Unit).ConversionFactor == this.ConversionFactor;
 		}

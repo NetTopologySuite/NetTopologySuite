@@ -40,7 +40,7 @@ using System;
 using System.IO;
 using System.Text;
 
-using SharpMap.Converters.WellKnownText;
+using GisSharpBlog.NetTopologySuite.Converters.WellKnownText;
 
 using GisSharpBlog.NetTopologySuite.Utilities;
 
@@ -52,7 +52,7 @@ using GisSharpBlog.NetTopologySuite.Utilities;
 // a C# StringTokenizer
 //  http://sourceforge.net/snippet/detail.php?type=snippet&id=101171
 
-namespace SharpMap.Converters.WellKnownText.IO
+namespace GisSharpBlog.NetTopologySuite.Converters.WellKnownText.IO
 {
 
 	///<summary>

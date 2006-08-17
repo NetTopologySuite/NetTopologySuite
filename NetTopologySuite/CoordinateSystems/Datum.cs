@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharpMap.CoordinateSystems
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 {
 	/// <summary>
 	/// A set of quantities from which other quantities are calculated.
@@ -77,7 +77,7 @@ namespace SharpMap.CoordinateSystems
 		/// <returns>True if equal</returns>
 		public override bool EqualParams(object obj)
 		{
-			if (!(obj is SharpMap.CoordinateSystems.Ellipsoid))
+			if (!(obj is GisSharpBlog.NetTopologySuite.CoordinateSystems.Ellipsoid))
 				return false;
 			return (obj as Datum).DatumType == this.DatumType;
 		}

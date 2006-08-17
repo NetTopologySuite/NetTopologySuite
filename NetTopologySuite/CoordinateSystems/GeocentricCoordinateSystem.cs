@@ -21,7 +21,7 @@ using System.Text;
 
 using GisSharpBlog.NetTopologySuite.Utilities;
 
-namespace SharpMap.CoordinateSystems
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 {
 	/// <summary>
 	/// A 3D coordinate system, with its origin at the center of the Earth.
@@ -51,8 +51,8 @@ namespace SharpMap.CoordinateSystems
 			get
 			{
 				return new CoordinateSystemFactory().CreateGeocentricCoordinateSystem("WGS84 Geocentric",
-					SharpMap.CoordinateSystems.HorizontalDatum.WGS84, SharpMap.CoordinateSystems.LinearUnit.Metre, 
-					SharpMap.CoordinateSystems.PrimeMeridian.Greenwich);
+					GisSharpBlog.NetTopologySuite.CoordinateSystems.HorizontalDatum.WGS84, GisSharpBlog.NetTopologySuite.CoordinateSystems.LinearUnit.Metre, 
+					GisSharpBlog.NetTopologySuite.CoordinateSystems.PrimeMeridian.Greenwich);
 			}
 		}
 

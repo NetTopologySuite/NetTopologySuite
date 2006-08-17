@@ -21,7 +21,7 @@ using System.Text;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
 
-namespace SharpMap.CoordinateSystems.Transformations
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 {
 	/// <summary>
 	/// Helper class for transforming <see cref="Geometry"/>

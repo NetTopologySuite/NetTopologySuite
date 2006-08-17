@@ -38,11 +38,11 @@
 using System;
 using System.Collections.Generic;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using SharpMap.CoordinateSystems;
-using SharpMap.CoordinateSystems.Transformations;
+using GisSharpBlog.NetTopologySuite.CoordinateSystems;
+using GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations;
 using System.Text;
 
-namespace SharpMap.CoordinateSystems.Projections
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Projections
 {
 	/// <summary>
 	/// Projections inherit from this abstract class to get access to useful mathematical functions.

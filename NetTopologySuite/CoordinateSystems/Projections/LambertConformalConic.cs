@@ -38,12 +38,12 @@
 using System;
 using System.Collections.Generic;
 
-using SharpMap.CoordinateSystems;
-using SharpMap.CoordinateSystems.Transformations;
+using GisSharpBlog.NetTopologySuite.CoordinateSystems;
+using GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
 
-namespace SharpMap.CoordinateSystems.Projections
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Projections
 {
 
 	/// <summary>

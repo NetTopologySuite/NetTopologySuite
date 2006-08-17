@@ -19,9 +19,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using SharpMap.CoordinateSystems.Projections;
+using GisSharpBlog.NetTopologySuite.CoordinateSystems.Projections;
 
-namespace SharpMap.CoordinateSystems.Transformations
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 {
 	/// <summary>
 	/// Creates coordinate transformations.

@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharpMap.CoordinateSystems.Transformations
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 {
 	/// <summary>
 	/// Creates coordinate transformations.

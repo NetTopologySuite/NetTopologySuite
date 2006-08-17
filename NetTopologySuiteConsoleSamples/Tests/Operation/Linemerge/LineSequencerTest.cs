@@ -13,7 +13,7 @@ using GisSharpBlog.NetTopologySuite.Samples.SimpleTests;
 
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.NUnitTests
+namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
 {   
     /// <summary>
     /// 

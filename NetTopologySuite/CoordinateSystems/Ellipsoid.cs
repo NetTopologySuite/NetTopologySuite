@@ -21,7 +21,7 @@ using System.Text;
 
 using GisSharpBlog.NetTopologySuite.Utilities;
 
-namespace SharpMap.CoordinateSystems
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 {
 	/// <summary>
 	/// The IEllipsoid interface defines the standard information stored with ellipsoid objects.
@@ -275,7 +275,7 @@ namespace SharpMap.CoordinateSystems
 		/// <returns>True if equal</returns>
 		public override bool EqualParams(object obj)
 		{
-			if (!(obj is SharpMap.CoordinateSystems.Ellipsoid))
+			if (!(obj is GisSharpBlog.NetTopologySuite.CoordinateSystems.Ellipsoid))
 				return false;
 			Ellipsoid e = obj as Ellipsoid;
 			return (e.InverseFlattening == this.InverseFlattening &&

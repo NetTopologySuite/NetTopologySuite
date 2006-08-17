@@ -19,7 +19,7 @@ using System;
 
 using GisSharpBlog.NetTopologySuite.Utilities;
 
-namespace SharpMap.CoordinateSystems
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 { 
 	/// <summary>
 	/// Parameters for a geographic transformation into WGS84. The Bursa Wolf parameters should be applied 

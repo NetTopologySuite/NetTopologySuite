@@ -21,7 +21,7 @@ using System.Text;
 
 using GisSharpBlog.NetTopologySuite.Utilities;
 
-namespace SharpMap.CoordinateSystems
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 {
 	/// <summary>
 	/// A coordinate system based on latitude and longitude. 
@@ -67,8 +67,8 @@ namespace SharpMap.CoordinateSystems
 				List<AxisInfo> axes = new List<AxisInfo>(2);
 				axes.Add(new AxisInfo("Lon", AxisOrientationEnum.East));
 				axes.Add(new AxisInfo("Lat", AxisOrientationEnum.North));
-				return new GeographicCoordinateSystem(SharpMap.CoordinateSystems.AngularUnit.Degrees,
-					SharpMap.CoordinateSystems.HorizontalDatum.WGS84, SharpMap.CoordinateSystems.PrimeMeridian.Greenwich, axes,
+				return new GeographicCoordinateSystem(GisSharpBlog.NetTopologySuite.CoordinateSystems.AngularUnit.Degrees,
+					GisSharpBlog.NetTopologySuite.CoordinateSystems.HorizontalDatum.WGS84, GisSharpBlog.NetTopologySuite.CoordinateSystems.PrimeMeridian.Greenwich, axes,
 					"WGS 84", "EPSG", 4326, String.Empty, string.Empty, string.Empty);
 			}
 		}

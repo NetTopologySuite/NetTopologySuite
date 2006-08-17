@@ -12,7 +12,7 @@ using GisSharpBlog.NetTopologySuite.Samples.LinearReferencing;
 using GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries;
 using GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Attributes;
 using GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests;
-using GisSharpBlog.NetTopologySuite.Samples.NUnitTests;
+using GisSharpBlog.NetTopologySuite.Samples.Tests;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
 {

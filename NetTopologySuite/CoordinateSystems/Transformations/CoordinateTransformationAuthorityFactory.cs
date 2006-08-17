@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharpMap.CoordinateSystems.Transformations
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 {
 	/// <summary>
 	/// Creates coordinate transformation objects from codes. The codes are maintained by an external authority. A commonly used authority is EPSG, which is also used in the GeoTIFF standard

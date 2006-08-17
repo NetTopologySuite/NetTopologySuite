@@ -21,7 +21,7 @@ using System.Text;
 
 using GisSharpBlog.NetTopologySuite.Utilities;
 
-namespace SharpMap.CoordinateSystems
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 {
 	/// <summary>
 	/// Definition of angular units.
@@ -141,7 +141,7 @@ namespace SharpMap.CoordinateSystems
 		/// <returns>True if equal</returns>
 		public override bool EqualParams(object obj)
 		{
-			if (!(obj is SharpMap.CoordinateSystems.AngularUnit))
+			if (!(obj is GisSharpBlog.NetTopologySuite.CoordinateSystems.AngularUnit))
 				return false;
 			return (obj as AngularUnit).RadiansPerUnit == this.RadiansPerUnit;
 		}

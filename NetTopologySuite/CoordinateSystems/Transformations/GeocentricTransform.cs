@@ -19,10 +19,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using SharpMap.CoordinateSystems;
-using SharpMap.CoordinateSystems.Transformations;
+using GisSharpBlog.NetTopologySuite.CoordinateSystems;
+using GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations;
 
-namespace SharpMap.CoordinateSystems.Transformations
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 {
 	/// <summary>
 	/// 

@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharpMap.CoordinateSystems
+namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 {
 	/// <summary>
 	/// Builds up complex objects from simpler objects or values.
@@ -59,7 +59,7 @@ namespace SharpMap.CoordinateSystems
 		/// <returns>The resulting spatial reference object</returns>
 		public ICoordinateSystem CreateFromWkt(string WKT)
 		{
-			return SharpMap.Converters.WellKnownText.CoordinateSystemWktReader.Parse(WKT) as ICoordinateSystem;
+			return GisSharpBlog.NetTopologySuite.Converters.WellKnownText.CoordinateSystemWktReader.Parse(WKT) as ICoordinateSystem;
 		}
 		
 		/// <summary>
