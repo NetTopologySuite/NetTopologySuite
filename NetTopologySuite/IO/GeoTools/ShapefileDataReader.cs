@@ -236,7 +236,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// </summary>
 		public void Dispose()
 		{
-			throw new NotSupportedException();
+            if (!IsClosed)
+                Close();
 		}
 		
         /// <summary>

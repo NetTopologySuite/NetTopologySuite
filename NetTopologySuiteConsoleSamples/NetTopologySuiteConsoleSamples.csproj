@@ -54,6 +54,7 @@
     <Compile Include="Geometries\simplemethodsexample.cs" />
     <Compile Include="LinearReferencing\LinearReferencingExample.cs" />
     <Compile Include="Tests\CoordinateSystems\CoordinateTransformTests.cs" />
+    <Compile Include="Tests\IO\ShapeFileReadTest.cs" />
     <Compile Include="Tests\Various\CoordinateArraysTest.cs" />
     <Compile Include="Tests\Various\CoversTest.cs" />
     <Compile Include="Tests\Various\DbfDateTest.cs" />
