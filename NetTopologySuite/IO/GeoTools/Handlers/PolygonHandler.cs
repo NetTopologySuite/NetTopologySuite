@@ -118,13 +118,13 @@ namespace GisSharpBlog.NetTopologySuite.IO
                     if (isContained)
                     {
                         if (minShell == null || minEnv.Contains(tryEnv))
-                            minShell = tryRing;
+                            minShell = tryRing;             
 
                         // Suggested by Brian Macomber and added 3/28/2006:
                         // holes were being found but never added to the holesForShells array
                         // so when converted to geometry by the factory, the inner rings were never created.
-                        ArrayList holesForThisShell = (ArrayList)holesForShells[j];
-                        holesForThisShell.Add(holes[i]);
+                        ArrayList holesForThisShell = (ArrayList) holesForShells[j];
+                        holesForThisShell.Add(testRing);
                     }
 				}
 			}
