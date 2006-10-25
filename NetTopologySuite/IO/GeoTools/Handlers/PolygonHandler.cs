@@ -71,20 +71,26 @@ namespace GisSharpBlog.NetTopologySuite.IO
 					Coordinate external = new Coordinate(file.ReadDouble(), file.ReadDouble() );					
                     geometryFactory.PrecisionModel.MakePrecise(ref external);
                     Coordinate internalCoord = external;
-					points.Add(internalCoord);
-				}
 
-				LinearRing ring = geometryFactory.CreateLinearRing((Coordinate[])points.ToArray(typeof(Coordinate)));
-				
-                // If shape have only a part, jump orientation check and add to shells
-                if (numParts == 1)
-                    shells.Add(ring);
-                else
+                    // Thans to Abhay Menon!
+                    if (!Double.IsNaN(internalCoord.Y) && !Double.IsNaN(internalCoord.X))
+                       points.Add(internalCoord);
+ 				}
+
+                if (points.Count > 0) // Thans to Abhay Menon!
                 {
-                    // Orientation check
-                    if (CGAlgorithms.IsCCW((Coordinate[])points.ToArray(typeof(Coordinate))))
-                        holes.Add(ring);
-                    else shells.Add(ring);
+                    LinearRing ring = geometryFactory.CreateLinearRing((Coordinate[]) points.ToArray(typeof(Coordinate)));
+
+                    // If shape have only a part, jump orientation check and add to shells
+                    if (numParts == 1)
+                        shells.Add(ring);
+                    else
+                    {
+                        // Orientation check
+                        if (CGAlgorithms.IsCCW((Coordinate[])points.ToArray(typeof(Coordinate))))
+                             holes.Add(ring);
+                        else shells.Add(ring);
+                    }
                 }
 			}
 
