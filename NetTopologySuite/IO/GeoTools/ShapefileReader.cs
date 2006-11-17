@@ -61,14 +61,19 @@ namespace GisSharpBlog.NetTopologySuite.IO
             {
                 if (_shpBinaryReader.PeekChar() != -1)
                 {
-                    int recordNumber = _shpBinaryReader.ReadInt32BE();
-                    int contentLength = _shpBinaryReader.ReadInt32BE();                    
-                    _geometry = _handler.Read(_shpBinaryReader, _parent._geometryFactory);
+                    // Mark Jacquin: add a try catch when some shapefile have extra char at the end but no record
+                    try
+                    {
+                        int recordNumber = _shpBinaryReader.ReadInt32BE();
+                        int contentLength = _shpBinaryReader.ReadInt32BE();
+                        _geometry = _handler.Read(_shpBinaryReader, _parent._geometryFactory);
+                    }
+                    catch (Exception ex) { return false; }
                     return true;
                 }
                 else
                 {
-                    // reached end of file, so close the reader.
+                    // Reached end of file, so close the reader.
                     _shpBinaryReader.Close();
                     return false;
                 }
