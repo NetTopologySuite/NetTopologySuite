@@ -133,9 +133,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TestRunner\TestRunner.csproj">
+    <ProjectReference Include="..\TestRunner\NetTopologySute.TestRunner.csproj">
       <Project>{13669184-2446-404F-8894-5E20B6C3FCC6}</Project>
-      <Name>TestRunner</Name>
+      <Name>NetTopologySute.TestRunner</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
