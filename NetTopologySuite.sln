@@ -3,12 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite", "NetTopologySuite\NetTopologySuite.csproj", "{5770DAA9-84E5-4770-AF43-F6B815894368}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuiteConsoleSamples", "NetTopologySuiteConsoleSamples\NetTopologySuiteConsoleSamples.csproj", "{39E8A390-5304-4447-99E2-3810941824AD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestRunner", "TestRunner\TestRunner.csproj", "{13669184-2446-404F-8894-5E20B6C3FCC6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTestRunner", "ConsoleTestRunner\ConsoleTestRunner.csproj", "{85945EF0-2BD4-42C1-A934-C3485FCE9021}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A11130E8-4942-432A-97B7-ADEEFB34A977}"
 	ProjectSection(SolutionItems) = preProject
 		NetTopologySuite.CoordinateSystems\SRID.csv = NetTopologySuite.CoordinateSystems\SRID.csv
@@ -152,24 +146,6 @@ Global
 		{5770DAA9-84E5-4770-AF43-F6B815894368}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5770DAA9-84E5-4770-AF43-F6B815894368}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5770DAA9-84E5-4770-AF43-F6B815894368}.Release|Any CPU.Build.0 = Release|Any CPU
-		{39E8A390-5304-4447-99E2-3810941824AD}.Bug|Any CPU.ActiveCfg = Release|Any CPU
-		{39E8A390-5304-4447-99E2-3810941824AD}.Bug|Any CPU.Build.0 = Release|Any CPU
-		{39E8A390-5304-4447-99E2-3810941824AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{39E8A390-5304-4447-99E2-3810941824AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{39E8A390-5304-4447-99E2-3810941824AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{39E8A390-5304-4447-99E2-3810941824AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{13669184-2446-404F-8894-5E20B6C3FCC6}.Bug|Any CPU.ActiveCfg = Release|Any CPU
-		{13669184-2446-404F-8894-5E20B6C3FCC6}.Bug|Any CPU.Build.0 = Release|Any CPU
-		{13669184-2446-404F-8894-5E20B6C3FCC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{13669184-2446-404F-8894-5E20B6C3FCC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{13669184-2446-404F-8894-5E20B6C3FCC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{13669184-2446-404F-8894-5E20B6C3FCC6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Bug|Any CPU.ActiveCfg = Bug|Any CPU
-		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Bug|Any CPU.Build.0 = Bug|Any CPU
-		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E028BDD2-55E1-4E5F-BE31-35FAEC8D6428}.Bug|Any CPU.ActiveCfg = Release|Any CPU
 		{E028BDD2-55E1-4E5F-BE31-35FAEC8D6428}.Bug|Any CPU.Build.0 = Release|Any CPU
 		{E028BDD2-55E1-4E5F-BE31-35FAEC8D6428}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
