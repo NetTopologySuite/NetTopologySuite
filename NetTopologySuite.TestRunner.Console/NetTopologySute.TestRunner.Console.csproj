@@ -133,7 +133,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TestRunner\NetTopologySute.TestRunner.csproj">
+    <ProjectReference Include="..\NetTopologySuite.TestRunner\NetTopologySute.TestRunner.csproj">
       <Project>{13669184-2446-404F-8894-5E20B6C3FCC6}</Project>
       <Name>NetTopologySute.TestRunner</Name>
     </ProjectReference>

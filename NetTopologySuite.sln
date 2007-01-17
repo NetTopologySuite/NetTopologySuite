@@ -8,130 +8,72 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		NetTopologySuite.CoordinateSystems\SRID.csv = NetTopologySuite.CoordinateSystems\SRID.csv
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{00FBE9E2-537E-4FB8-AE9A-D3D04B44F946}"
-	ProjectSection(SolutionItems) = preProject
-		test\Default.xml = test\Default.xml
-		test\Other.xml = test\Other.xml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "vivid", "vivid", "{85AD64F4-6DCF-4EF0-9C05-22F8066F21CC}"
-	ProjectSection(SolutionItems) = preProject
-		test\vivid\TestBoundary.xml = test\vivid\TestBoundary.xml
-		test\vivid\TestCentroid.xml = test\vivid\TestCentroid.xml
-		test\vivid\TestConvexHull-big.xml = test\vivid\TestConvexHull-big.xml
-		test\vivid\TestConvexHull.xml = test\vivid\TestConvexHull.xml
-		test\vivid\TestFunctionAA.xml = test\vivid\TestFunctionAA.xml
-		test\vivid\TestFunctionAAPrec.xml = test\vivid\TestFunctionAAPrec.xml
-		test\vivid\TestFunctionLA.xml = test\vivid\TestFunctionLA.xml
-		test\vivid\TestFunctionLAPrec.xml = test\vivid\TestFunctionLAPrec.xml
-		test\vivid\TestFunctionLL.xml = test\vivid\TestFunctionLL.xml
-		test\vivid\TestFunctionLLPrec.xml = test\vivid\TestFunctionLLPrec.xml
-		test\vivid\TestFunctionPA.xml = test\vivid\TestFunctionPA.xml
-		test\vivid\TestFunctionPL.xml = test\vivid\TestFunctionPL.xml
-		test\vivid\TestFunctionPLPrec.xml = test\vivid\TestFunctionPLPrec.xml
-		test\vivid\TestFunctionPP.xml = test\vivid\TestFunctionPP.xml
-		test\vivid\TestInteriorPoint.xml = test\vivid\TestInteriorPoint.xml
-		test\vivid\TestRectanglePredicate.xml = test\vivid\TestRectanglePredicate.xml
-		test\vivid\TestRelateAA.xml = test\vivid\TestRelateAA.xml
-		test\vivid\TestRelateAC.xml = test\vivid\TestRelateAC.xml
-		test\vivid\TestRelateLA.xml = test\vivid\TestRelateLA.xml
-		test\vivid\TestRelateLC.xml = test\vivid\TestRelateLC.xml
-		test\vivid\TestRelateLL.xml = test\vivid\TestRelateLL.xml
-		test\vivid\TestRelatePA.xml = test\vivid\TestRelatePA.xml
-		test\vivid\TestRelatePL.xml = test\vivid\TestRelatePL.xml
-		test\vivid\TestRelatePP.xml = test\vivid\TestRelatePP.xml
-		test\vivid\TestSimple.xml = test\vivid\TestSimple.xml
-		test\vivid\TestValid.xml = test\vivid\TestValid.xml
-		test\vivid\TestValid2-big.xml = test\vivid\TestValid2-big.xml
-		test\vivid\TestValid2.xml = test\vivid\TestValid2.xml
-		test\vivid\TestWithinDistance.xml = test\vivid\TestWithinDistance.xml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "robust", "robust", "{D47CA03D-35C0-48A1-9B78-844C25649EF4}"
-	ProjectSection(SolutionItems) = preProject
-		test\robust\TestRobustOverlayFixed.xml = test\robust\TestRobustOverlayFixed.xml
-		test\robust\TestRobustOverlayFloat.xml = test\robust\TestRobustOverlayFloat.xml
-		test\robust\TestRobustRelate.xml = test\robust\TestRobustRelate.xml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "validate", "validate", "{8263ABBD-A8BD-472F-96D2-1E183505E34C}"
-	ProjectSection(SolutionItems) = preProject
-		test\validate\TestRelateAA-big.xml = test\validate\TestRelateAA-big.xml
-		test\validate\TestRelateAA.xml = test\validate\TestRelateAA.xml
-		test\validate\TestRelateAC.xml = test\validate\TestRelateAC.xml
-		test\validate\TestRelateLA.xml = test\validate\TestRelateLA.xml
-		test\validate\TestRelateLC.xml = test\validate\TestRelateLC.xml
-		test\validate\TestRelateLL.xml = test\validate\TestRelateLL.xml
-		test\validate\TestRelatePA.xml = test\validate\TestRelatePA.xml
-		test\validate\TestRelatePL.xml = test\validate\TestRelatePL.xml
-		test\validate\TestRelatePP.xml = test\validate\TestRelatePP.xml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shapefiles", "shapefiles", "{A148E8DD-1222-4471-B2CC-77BF5446CF60}"
-	ProjectSection(SolutionItems) = preProject
-		Shapefiles\a.dbf = Shapefiles\a.dbf
-		Shapefiles\a.prj = Shapefiles\a.prj
-		Shapefiles\a.sbn = Shapefiles\a.sbn
-		Shapefiles\a.sbx = Shapefiles\a.sbx
-		Shapefiles\a.shp = Shapefiles\a.shp
-		Shapefiles\a.shp.xml = Shapefiles\a.shp.xml
-		Shapefiles\a.shx = Shapefiles\a.shx
-		Shapefiles\arc.dbf = Shapefiles\arc.dbf
-		Shapefiles\arc.shp = Shapefiles\arc.shp
-		Shapefiles\arc.shx = Shapefiles\arc.shx
-		Shapefiles\b.dbf = Shapefiles\b.dbf
-		Shapefiles\b.prj = Shapefiles\b.prj
-		Shapefiles\b.sbn = Shapefiles\b.sbn
-		Shapefiles\b.sbx = Shapefiles\b.sbx
-		Shapefiles\b.shp = Shapefiles\b.shp
-		Shapefiles\b.shp.xml = Shapefiles\b.shp.xml
-		Shapefiles\b.shx = Shapefiles\b.shx
-		Shapefiles\BJmultipolygon.dbf = Shapefiles\BJmultipolygon.dbf
-		Shapefiles\BJmultipolygon.sbn = Shapefiles\BJmultipolygon.sbn
-		Shapefiles\BJmultipolygon.sbx = Shapefiles\BJmultipolygon.sbx
-		Shapefiles\BJmultipolygon.shp = Shapefiles\BJmultipolygon.shp
-		Shapefiles\crustal_test.dbf = Shapefiles\crustal_test.dbf
-		Shapefiles\crustal_test.shp = Shapefiles\crustal_test.shp
-		Shapefiles\crustal_test.shx = Shapefiles\crustal_test.shx
-		Shapefiles\crustal_test3d.dbf = Shapefiles\crustal_test3d.dbf
-		Shapefiles\crustal_test3d.shp = Shapefiles\crustal_test3d.shp
-		Shapefiles\crustal_test3d.shx = Shapefiles\crustal_test3d.shx
-		Shapefiles\crustal_test_bugged.dbf = Shapefiles\crustal_test_bugged.dbf
-		Shapefiles\crustal_test_bugged.shp = Shapefiles\crustal_test_bugged.shp
-		Shapefiles\crustal_test_bugged.shx = Shapefiles\crustal_test_bugged.shx
-		Shapefiles\date.dbf = Shapefiles\date.dbf
-		Shapefiles\date.shp = Shapefiles\date.shp
-		Shapefiles\date.shx = Shapefiles\date.shx
-		Shapefiles\Strade.dbf = Shapefiles\Strade.dbf
-		Shapefiles\Strade.shp = Shapefiles\Strade.shp
-		Shapefiles\Strade.shx = Shapefiles\Strade.shx
-		Shapefiles\temp.gml = Shapefiles\temp.gml
-		Shapefiles\tnp_arc.dbf = Shapefiles\tnp_arc.dbf
-		Shapefiles\tnp_arc.shp = Shapefiles\tnp_arc.shp
-		Shapefiles\tnp_arc.shx = Shapefiles\tnp_arc.shx
-		Shapefiles\tnp_multipoint.dbf = Shapefiles\tnp_multipoint.dbf
-		Shapefiles\tnp_multipoint.shp = Shapefiles\tnp_multipoint.shp
-		Shapefiles\tnp_multipoint.shx = Shapefiles\tnp_multipoint.shx
-		Shapefiles\tnp_pol.dbf = Shapefiles\tnp_pol.dbf
-		Shapefiles\tnp_pol.shp = Shapefiles\tnp_pol.shp
-		Shapefiles\tnp_pol.shx = Shapefiles\tnp_pol.shx
-		Shapefiles\tnp_pts.dbf = Shapefiles\tnp_pts.dbf
-		Shapefiles\tnp_pts.shp = Shapefiles\tnp_pts.shp
-		Shapefiles\tnp_pts.shx = Shapefiles\tnp_pts.shx
-		Shapefiles\Zone_ISTAT.dbf = Shapefiles\Zone_ISTAT.dbf
-		Shapefiles\Zone_ISTAT.shp = Shapefiles\Zone_ISTAT.shp
-		Shapefiles\Zone_ISTAT.shx = Shapefiles\Zone_ISTAT.shx
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "blob", "blob", "{A535F234-5A40-4084-A269-C8E46C963062}"
-	ProjectSection(SolutionItems) = preProject
-		Shapefiles\blob\blob = Shapefiles\blob\blob
-		Shapefiles\blob\queries.txt = Shapefiles\blob\queries.txt
-		Shapefiles\blob\wkb_blob.jpg = Shapefiles\blob\wkb_blob.jpg
-		Shapefiles\blob\wkt.JPG = Shapefiles\blob\wkt.JPG
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.CoordinateSystems", "NetTopologySuite.CoordinateSystems\NetTopologySuite.CoordinateSystems.csproj", "{E028BDD2-55E1-4E5F-BE31-35FAEC8D6428}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5AF10590-5E1C-4052-83C6-95C94B747195}"
+	ProjectSection(SolutionItems) = preProject
+		NetTopologySuite.TestRunner.Tests\Default.xml = NetTopologySuite.TestRunner.Tests\Default.xml
+		NetTopologySuite.TestRunner.Tests\Other.xml = NetTopologySuite.TestRunner.Tests\Other.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Robust", "Robust", "{71AF5313-7B61-47C0-B7A1-FBEAEB035011}"
+	ProjectSection(SolutionItems) = preProject
+		NetTopologySuite.TestRunner.Tests\robust\TestRobustOverlayFixed.xml = NetTopologySuite.TestRunner.Tests\robust\TestRobustOverlayFixed.xml
+		NetTopologySuite.TestRunner.Tests\robust\TestRobustOverlayFloat.xml = NetTopologySuite.TestRunner.Tests\robust\TestRobustOverlayFloat.xml
+		NetTopologySuite.TestRunner.Tests\robust\TestRobustRelate.xml = NetTopologySuite.TestRunner.Tests\robust\TestRobustRelate.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vivid", "Vivid", "{4692ED72-2D05-4DDC-8411-748A9BE61958}"
+	ProjectSection(SolutionItems) = preProject
+		NetTopologySuite.TestRunner.Tests\vivid\TestBoundary.xml = NetTopologySuite.TestRunner.Tests\vivid\TestBoundary.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestCentroid.xml = NetTopologySuite.TestRunner.Tests\vivid\TestCentroid.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestConvexHull-big.xml = NetTopologySuite.TestRunner.Tests\vivid\TestConvexHull-big.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestConvexHull.xml = NetTopologySuite.TestRunner.Tests\vivid\TestConvexHull.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestFunctionAA.xml = NetTopologySuite.TestRunner.Tests\vivid\TestFunctionAA.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestFunctionAAPrec.xml = NetTopologySuite.TestRunner.Tests\vivid\TestFunctionAAPrec.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestFunctionLA.xml = NetTopologySuite.TestRunner.Tests\vivid\TestFunctionLA.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestFunctionLAPrec.xml = NetTopologySuite.TestRunner.Tests\vivid\TestFunctionLAPrec.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestFunctionLL.xml = NetTopologySuite.TestRunner.Tests\vivid\TestFunctionLL.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestFunctionLLPrec.xml = NetTopologySuite.TestRunner.Tests\vivid\TestFunctionLLPrec.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestFunctionPA.xml = NetTopologySuite.TestRunner.Tests\vivid\TestFunctionPA.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestFunctionPL.xml = NetTopologySuite.TestRunner.Tests\vivid\TestFunctionPL.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestFunctionPLPrec.xml = NetTopologySuite.TestRunner.Tests\vivid\TestFunctionPLPrec.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestFunctionPP.xml = NetTopologySuite.TestRunner.Tests\vivid\TestFunctionPP.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestInteriorPoint.xml = NetTopologySuite.TestRunner.Tests\vivid\TestInteriorPoint.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestRectanglePredicate.xml = NetTopologySuite.TestRunner.Tests\vivid\TestRectanglePredicate.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestRelateAA.xml = NetTopologySuite.TestRunner.Tests\vivid\TestRelateAA.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestRelateAC.xml = NetTopologySuite.TestRunner.Tests\vivid\TestRelateAC.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestRelateLA.xml = NetTopologySuite.TestRunner.Tests\vivid\TestRelateLA.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestRelateLC.xml = NetTopologySuite.TestRunner.Tests\vivid\TestRelateLC.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestRelateLL.xml = NetTopologySuite.TestRunner.Tests\vivid\TestRelateLL.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestRelatePA.xml = NetTopologySuite.TestRunner.Tests\vivid\TestRelatePA.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestRelatePL.xml = NetTopologySuite.TestRunner.Tests\vivid\TestRelatePL.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestRelatePP.xml = NetTopologySuite.TestRunner.Tests\vivid\TestRelatePP.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestSimple.xml = NetTopologySuite.TestRunner.Tests\vivid\TestSimple.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestValid.xml = NetTopologySuite.TestRunner.Tests\vivid\TestValid.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestValid2-big.xml = NetTopologySuite.TestRunner.Tests\vivid\TestValid2-big.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestValid2.xml = NetTopologySuite.TestRunner.Tests\vivid\TestValid2.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestWithinDistance.xml = NetTopologySuite.TestRunner.Tests\vivid\TestWithinDistance.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Validate", "Validate", "{20350EA5-0BB8-4233-9C11-90E9A8D3C254}"
+	ProjectSection(SolutionItems) = preProject
+		NetTopologySuite.TestRunner.Tests\validate\TestRelateAA-big.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelateAA-big.xml
+		NetTopologySuite.TestRunner.Tests\validate\TestRelateAA.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelateAA.xml
+		NetTopologySuite.TestRunner.Tests\validate\TestRelateAC.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelateAC.xml
+		NetTopologySuite.TestRunner.Tests\validate\TestRelateLA.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelateLA.xml
+		NetTopologySuite.TestRunner.Tests\validate\TestRelateLC.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelateLC.xml
+		NetTopologySuite.TestRunner.Tests\validate\TestRelateLL.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelateLL.xml
+		NetTopologySuite.TestRunner.Tests\validate\TestRelatePA.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelatePA.xml
+		NetTopologySuite.TestRunner.Tests\validate\TestRelatePL.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelatePL.xml
+		NetTopologySuite.TestRunner.Tests\validate\TestRelatePP.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelatePP.xml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Samples.Console", "NetTopologySuite.Samples.Console\NetTopologySuite.Samples.Console.csproj", "{39E8A390-5304-4447-99E2-3810941824AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySute.TestRunner", "NetTopologySuite.TestRunner\NetTopologySute.TestRunner.csproj", "{13669184-2446-404F-8894-5E20B6C3FCC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySute.TestRunner.Console", "NetTopologySuite.TestRunner.Console\NetTopologySute.TestRunner.Console.csproj", "{85945EF0-2BD4-42C1-A934-C3485FCE9021}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -152,16 +94,32 @@ Global
 		{E028BDD2-55E1-4E5F-BE31-35FAEC8D6428}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E028BDD2-55E1-4E5F-BE31-35FAEC8D6428}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E028BDD2-55E1-4E5F-BE31-35FAEC8D6428}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39E8A390-5304-4447-99E2-3810941824AD}.Bug|Any CPU.ActiveCfg = Release|Any CPU
+		{39E8A390-5304-4447-99E2-3810941824AD}.Bug|Any CPU.Build.0 = Release|Any CPU
+		{39E8A390-5304-4447-99E2-3810941824AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39E8A390-5304-4447-99E2-3810941824AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39E8A390-5304-4447-99E2-3810941824AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39E8A390-5304-4447-99E2-3810941824AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13669184-2446-404F-8894-5E20B6C3FCC6}.Bug|Any CPU.ActiveCfg = Release|Any CPU
+		{13669184-2446-404F-8894-5E20B6C3FCC6}.Bug|Any CPU.Build.0 = Release|Any CPU
+		{13669184-2446-404F-8894-5E20B6C3FCC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13669184-2446-404F-8894-5E20B6C3FCC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13669184-2446-404F-8894-5E20B6C3FCC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13669184-2446-404F-8894-5E20B6C3FCC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Bug|Any CPU.ActiveCfg = Bug|Any CPU
+		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Bug|Any CPU.Build.0 = Bug|Any CPU
+		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{00FBE9E2-537E-4FB8-AE9A-D3D04B44F946} = {A11130E8-4942-432A-97B7-ADEEFB34A977}
-		{A148E8DD-1222-4471-B2CC-77BF5446CF60} = {A11130E8-4942-432A-97B7-ADEEFB34A977}
-		{85AD64F4-6DCF-4EF0-9C05-22F8066F21CC} = {00FBE9E2-537E-4FB8-AE9A-D3D04B44F946}
-		{D47CA03D-35C0-48A1-9B78-844C25649EF4} = {00FBE9E2-537E-4FB8-AE9A-D3D04B44F946}
-		{8263ABBD-A8BD-472F-96D2-1E183505E34C} = {00FBE9E2-537E-4FB8-AE9A-D3D04B44F946}
-		{A535F234-5A40-4084-A269-C8E46C963062} = {A148E8DD-1222-4471-B2CC-77BF5446CF60}
+		{5AF10590-5E1C-4052-83C6-95C94B747195} = {A11130E8-4942-432A-97B7-ADEEFB34A977}
+		{71AF5313-7B61-47C0-B7A1-FBEAEB035011} = {5AF10590-5E1C-4052-83C6-95C94B747195}
+		{4692ED72-2D05-4DDC-8411-748A9BE61958} = {5AF10590-5E1C-4052-83C6-95C94B747195}
+		{20350EA5-0BB8-4233-9C11-90E9A8D3C254} = {5AF10590-5E1C-4052-83C6-95C94B747195}
 	EndGlobalSection
 EndGlobal

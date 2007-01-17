@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GisSharpBlog.NetTopologySuite</RootNamespace>
-    <AssemblyName>NetTopologySuite.ConsoleSamples</AssemblyName>
+    <AssemblyName>NetTopologySuite.Samples.Console</AssemblyName>
     <SccProjectName>
     </SccProjectName>
     <SccLocalPath>
