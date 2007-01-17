@@ -10,6 +10,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTestRunner", "ConsoleTestRunner\ConsoleTestRunner.csproj", "{85945EF0-2BD4-42C1-A934-C3485FCE9021}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A11130E8-4942-432A-97B7-ADEEFB34A977}"
+	ProjectSection(SolutionItems) = preProject
+		NetTopologySuite.CoordinateSystems\SRID.csv = NetTopologySuite.CoordinateSystems\SRID.csv
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{00FBE9E2-537E-4FB8-AE9A-D3D04B44F946}"
 	ProjectSection(SolutionItems) = preProject

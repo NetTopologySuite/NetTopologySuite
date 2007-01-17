@@ -7,8 +7,8 @@
     <ProjectGuid>{39E8A390-5304-4447-99E2-3810941824AD}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GisSharpBlog.NetTopologySuite.Samples</RootNamespace>
-    <AssemblyName>NetTopologySuiteConsoleSamples</AssemblyName>
+    <RootNamespace>GisSharpBlog.NetTopologySuite</RootNamespace>
+    <AssemblyName>NetTopologySuite.ConsoleSamples</AssemblyName>
     <SccProjectName>
     </SccProjectName>
     <SccLocalPath>
