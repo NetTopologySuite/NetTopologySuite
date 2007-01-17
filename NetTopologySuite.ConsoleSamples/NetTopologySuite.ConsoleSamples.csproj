@@ -1,0 +1,102 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{39E8A390-5304-4447-99E2-3810941824AD}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GisSharpBlog.NetTopologySuite</RootNamespace>
+    <AssemblyName>NetTopologySuite.ConsoleSamples</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <StartupObject>GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.2.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Geometries\basicexample.cs" />
+    <Compile Include="Geometries\constructionexample.cs" />
+    <Compile Include="Geometries\extendedcoordinate.cs" />
+    <Compile Include="Geometries\extendedcoordinateexample.cs" />
+    <Compile Include="Geometries\extendedcoordinatesequence.cs" />
+    <Compile Include="Geometries\extendedcoordinatesequencefactory.cs" />
+    <Compile Include="Geometries\precisionmodelexample.cs" />
+    <Compile Include="Geometries\simplemethodsexample.cs" />
+    <Compile Include="LinearReferencing\LinearReferencingExample.cs" />
+    <Compile Include="Tests\CoordinateSystems\CoordinateTransformTests.cs" />
+    <Compile Include="Tests\IO\ShapeFileReadTest.cs" />
+    <Compile Include="Tests\Various\CoordinateArraysTest.cs" />
+    <Compile Include="Tests\Various\CoversTest.cs" />
+    <Compile Include="Tests\Various\DbfDateTest.cs" />
+    <Compile Include="Tests\Various\FormattingTest.cs" />
+    <Compile Include="Tests\Various\IntesectIterationTest.cs" />
+    <Compile Include="Tests\Various\IsValidTest.cs" />
+    <Compile Include="Tests\Operation\Linemerge\LineSequencerTest.cs" />
+    <Compile Include="Tests\Various\NormalizeTest.cs" />
+    <Compile Include="Tests\Various\OracleWKBTest.cs" />
+    <Compile Include="Tests\Various\ReverseTest.cs" />
+    <Compile Include="Tests\Various\RobustLineIntersectorTest.cs" />
+    <Compile Include="Tests\Various\OGCTests.cs" />
+    <Compile Include="Tests\Various\WKTTest.cs" />
+    <Compile Include="SimpleTests\Attributes\AttributesTest.cs" />
+    <Compile Include="Operation\Distance\ClosestPointExample.cs" />
+    <Compile Include="Operation\Linemerge\LineMergeExample.cs" />
+    <Compile Include="Operation\Poligonize\PolygonizeExample.cs" />
+    <Compile Include="Precision\EnhancedPrecisionOpExample.cs" />
+    <Compile Include="ShapeTests\GMLTesting.cs" />
+    <Compile Include="ShapeTests\ShapeRead.cs" />
+    <Compile Include="SimpleTests\BaseSamples.cs" />
+    <Compile Include="SimpleTests\Geometries\LineStringSamples.cs" />
+    <Compile Include="SimpleTests\Geometries\MultiPointSamples.cs" />
+    <Compile Include="SimpleTests\Geometries\PointSamples.cs" />
+    <Compile Include="SimpleTests\Geometries\PolygonSamples.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleTests\Geometries\SerializationSamples.cs" />
+    <Compile Include="SimpleTests\Geometries\ValidationSuite.cs" />
+    <Compile Include="Technique\LineStringSelfIntersections.cs" />
+    <Compile Include="Technique\UnionUsingBuffer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
+      <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
+      <Name>NetTopologySuite</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="lib\nunit.framework.dll" />
+    <Content Include="Tests\Readme.txt" />
+    <Content Include="ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>
