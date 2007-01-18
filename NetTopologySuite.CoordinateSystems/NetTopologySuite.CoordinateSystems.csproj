@@ -10,7 +10,7 @@
     <RootNamespace>GisSharpBlog.NetTopologySuite</RootNamespace>
     <AssemblyName>NetTopologySuite.CoordinateSystems</AssemblyName>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>ntscc.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>ntscs.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -113,7 +113,7 @@
     <Compile Include="Utilities\NumberFormatter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ntscc.snk" />
+    <None Include="ntscs.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

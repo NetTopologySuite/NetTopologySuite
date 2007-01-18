@@ -66,9 +66,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
                 //sample.Start();
                 //Console.WriteLine();
 
-                sample = new ValidationSuite();
-                sample.Start();
-                Console.WriteLine();
+                //sample = new ValidationSuite();
+                //sample.Start();
+                //Console.WriteLine();
 
                 //sample = new SerializationSamples();
                 //sample.Start();
@@ -90,7 +90,13 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
                 //sample.Start();
                 //Console.WriteLine();
 
-                new LinearReferencingExample().Run();                
+                //new LinearReferencingExample().Run();      
+
+                GisSharpBlog.NetTopologySuite.Samples.Tests.CoordinateSystems.CoordinateTransformTests test =
+                    new GisSharpBlog.NetTopologySuite.Samples.Tests.CoordinateSystems.CoordinateTransformTests();
+                test.TestAlbersProjection();
+                test.TestDatumTransform();
+                test.TestGeocentric();
             }
             finally
             {
