@@ -40,6 +40,7 @@ using System.Collections.Generic;
 
 using GisSharpBlog.NetTopologySuite.CoordinateSystems;
 using GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations;
+using GisSharpBlog.NetTopologySuite.Geometries.LightStructs;
 
 namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Projections
 {
@@ -153,7 +154,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Projections
 		public override Point DegreesToMeters(Point lonlat)
 		{
 			if (double.IsNaN(lonlat.X) || double.IsNaN(lonlat.Y))
-				return null;
+				return Point.Null;
 			double dLongitude = Degrees2Radians(lonlat.X);
 			double dLatitude = Degrees2Radians(lonlat.Y);
 

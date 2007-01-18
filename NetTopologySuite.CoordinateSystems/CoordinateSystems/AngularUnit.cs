@@ -19,6 +19,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using GisSharpBlog.NetTopologySuite.Utilities;
+
 namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 {
 	/// <summary>
@@ -110,7 +112,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 			get
 			{
 				StringBuilder sb = new StringBuilder();
-				sb.AppendFormat(Global.GetNfi(),"UNIT[\"{0}\", {1}", Name, RadiansPerUnit);
+				sb.AppendFormat(NumberFormatter.GetNfi(),"UNIT[\"{0}\", {1}", Name, RadiansPerUnit);
 				if (!String.IsNullOrEmpty(Authority) && AuthorityCode > 0)
 					sb.AppendFormat(", AUTHORITY[\"{0}\", \"{1}\"]", Authority, AuthorityCode);
 				sb.Append("]");
@@ -125,7 +127,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 		{
 			get
 			{
-				return String.Format(Global.GetNfi(), "<CS_AngularUnit RadiansPerUnit=\"{0}\">{1}</CS_AngularUnit>", RadiansPerUnit, InfoXml);
+                return String.Format(NumberFormatter.GetNfi(), "<CS_AngularUnit RadiansPerUnit=\"{0}\">{1}</CS_AngularUnit>", RadiansPerUnit, InfoXml);
 			}
 		}
 

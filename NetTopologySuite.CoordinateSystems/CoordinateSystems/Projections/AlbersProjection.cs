@@ -38,6 +38,7 @@
 using System;
 using System.Collections.Generic;
 using GisSharpBlog.NetTopologySuite.CoordinateSystems;
+using GisSharpBlog.NetTopologySuite.Geometries.LightStructs;
 using GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations;
 
 namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Projections

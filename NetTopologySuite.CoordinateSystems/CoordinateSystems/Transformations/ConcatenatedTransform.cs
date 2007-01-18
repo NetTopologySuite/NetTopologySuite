@@ -20,6 +20,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
+using GisSharpBlog.NetTopologySuite.Geometries.LightStructs;
+
 namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 {
 	internal class ConcatenatedTransform : MathTransform

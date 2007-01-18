@@ -10,7 +10,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
     /// <summary>
     /// 
     /// </summary>
-    public sealed class Global
+    public sealed class NumberFormatter
     {
         /*
          *  HACK: for SQLCLR integration i does avoid to use public static members,
@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <summary>
         /// 
         /// </summary>
-        private Global() 
+        private NumberFormatter() 
         {
             nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";            
@@ -31,15 +31,15 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <summary>
         /// 
         /// </summary>
-        private readonly static Global global = new Global();
+        private readonly static NumberFormatter formatter = new NumberFormatter();
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
         public static NumberFormatInfo GetNfi()
-        {            
-            return global.nfi;
+        {
+            return formatter.nfi;
         }        
     }
 }

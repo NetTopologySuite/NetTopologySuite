@@ -35,14 +35,12 @@
  *
  */
 
-#region Using
 using System;
 using System.IO;
 using System.Text;
 
 using GisSharpBlog.NetTopologySuite.Converters.WellKnownText;
-
-#endregion
+using GisSharpBlog.NetTopologySuite.Utilities;
 
 // http://java.sun.com/j2se/1.4/docs/api/java/io/StreamTokenizer.html
 // a better implementation could be written. Here is a good Java implementation of StreamTokenizer.
@@ -124,8 +122,8 @@ namespace GisSharpBlog.NetTopologySuite.Converters.WellKnownText.IO
 		{
 			string number = this.GetStringValue();
 			if (this.GetTokenType() == TokenType.Number)
-				return double.Parse(number, Global.GetNfi());
-            throw new Exception(String.Format(Global.GetNfi(), "The token '{0}' is not a number at line {1} column {2}.", 
+				return double.Parse(number, NumberFormatter.GetNfi());
+            throw new Exception(String.Format(NumberFormatter.GetNfi(), "The token '{0}' is not a number at line {1} column {2}.", 
                 number, this.LineNumber, this.Column));
 		}
 		/// <summary>

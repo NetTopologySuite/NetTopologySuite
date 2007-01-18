@@ -68,7 +68,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                         int contentLength = _shpBinaryReader.ReadInt32BE();
                         _geometry = _handler.Read(_shpBinaryReader, _parent._geometryFactory);
                     }
-                    catch (Exception ex) { return false; }
+                    catch (Exception) { return false; }
                     return true;
                 }
                 else

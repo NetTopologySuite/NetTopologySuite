@@ -14,20 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </summary>
     [Serializable]
     public class Envelope : ICloneable
-    {
-        /// <summary>
-        /// Return HashCode.
-        /// </summary>
-        public override int GetHashCode()
-        {
-            int result = 17;            
-            result = 37 * result + Coordinate.GetHashCode(minx);
-            result = 37 * result + Coordinate.GetHashCode(maxx);
-            result = 37 * result + Coordinate.GetHashCode(miny);
-            result = 37 * result + Coordinate.GetHashCode(maxy);
-            return result;
-        }
-
+    {        
         /// <summary>
         /// Test the point q to see whether it intersects the Envelope
         /// defined by p1-p2.
@@ -624,6 +611,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             return  maxx == otherEnvelope.MaxX && maxy == otherEnvelope.MaxY &&
                     minx == otherEnvelope.MinX && miny == otherEnvelope.MinY;
+        }
+
+        /// <summary>
+        /// Return HashCode.
+        /// </summary>
+        public override int GetHashCode()
+        {
+            int result = 17;
+            result = 37 * result + Coordinate.GetHashCode(minx);
+            result = 37 * result + Coordinate.GetHashCode(maxx);
+            result = 37 * result + Coordinate.GetHashCode(miny);
+            result = 37 * result + Coordinate.GetHashCode(maxy);
+            return result;
         }
         
         /// <summary>

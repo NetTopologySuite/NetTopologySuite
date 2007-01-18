@@ -19,6 +19,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using GisSharpBlog.NetTopologySuite.Utilities;
+
 namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 {
 	/// <summary>
@@ -79,7 +81,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 		{
 			get
 			{
-				return String.Format(Global.GetNfi(), "PARAMETER[\"{0}\", {1}]", Name, Value);
+				return String.Format(NumberFormatter.GetNfi(), "PARAMETER[\"{0}\", {1}]", Name, Value);
 			}
 		}
 
@@ -90,7 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 		{
 			get
 			{
-				return String.Format(Global.GetNfi(), "<CS_ProjectionParameter Name=\"{0}\" Value=\"{1}\"/>", Name, Value);
+                return String.Format(NumberFormatter.GetNfi(), "<CS_ProjectionParameter Name=\"{0}\" Value=\"{1}\"/>", Name, Value);
 			}
 		}
 	}

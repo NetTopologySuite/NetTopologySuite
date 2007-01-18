@@ -41,6 +41,8 @@ using GisSharpBlog.NetTopologySuite.CoordinateSystems;
 using GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations;
 using System.Text;
 
+using GisSharpBlog.NetTopologySuite.Geometries.LightStructs;
+
 namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Projections
 {
 	/// <summary>

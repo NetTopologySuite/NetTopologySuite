@@ -19,6 +19,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using GisSharpBlog.NetTopologySuite.Geometries;
+
 namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 {
 	/// <summary>
@@ -26,6 +28,27 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 	/// </summary>
 	public class GeometryTransform
 	{
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        private static Point ToNTS(double x, double y)
+        {
+            return new Point(x, y);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        private static GisSharpBlog.NetTopologySuite.Geometries.LightStructs.Point ToLightStruct(double x, double y)
+        {
+            return new GisSharpBlog.NetTopologySuite.Geometries.LightStructs.Point(x, y);
+        }        
 
 		/// <summary>
 		/// Transforms a <see cref="BoundingBox"/>.
@@ -37,15 +60,16 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 		{
 			if (box == null)
 				return null;
-			Point[] corners = new Point[4];
-			corners[0] = transform.Transform(new Point(box.MinX, box.MinY)); //LL
-			corners[1] = transform.Transform(new Point(box.MaxX, box.MaxY)); //UR
-			corners[2] = transform.Transform(new Point(box.MinX, box.MaxY)); //UL
-			corners[3] = transform.Transform(new Point(box.MaxX, box.MinY)); //LR
+            GisSharpBlog.NetTopologySuite.Geometries.LightStructs.Point[] corners = 
+                new GisSharpBlog.NetTopologySuite.Geometries.LightStructs.Point[4];
+            corners[0] = transform.Transform(ToLightStruct(box.MinX, box.MinY)); //LL
+            corners[1] = transform.Transform(ToLightStruct(box.MaxX, box.MaxY)); //UR
+            corners[2] = transform.Transform(ToLightStruct(box.MinX, box.MaxY)); //UL
+            corners[3] = transform.Transform(ToLightStruct(box.MaxX, box.MinY)); //LR
 
 			Envelope result = new Envelope();
-			foreach(Point p in corners)
-				result.ExpandToInclude(p.EnvelopeInternal);
+            foreach (GisSharpBlog.NetTopologySuite.Geometries.LightStructs.Point p in corners)
+				result.ExpandToInclude(p.X, p.Y);
 			return result;
 		}
 
@@ -82,7 +106,12 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 		/// <returns>Transformed Point</returns>
 		public static Point TransformPoint(Point p, IMathTransform transform)
 		{
-			try { return transform.Transform(p); }
+			try 
+            { 
+                GisSharpBlog.NetTopologySuite.Geometries.LightStructs.Point point = 
+                    transform.Transform(ToLightStruct(p.X, p.Y));
+                return ToNTS(point.X, point.Y);
+            }
 			catch { return null; }
 		}
 
@@ -126,13 +155,14 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
         /// <returns></returns>
         private static List<Coordinate> ExtractCoordinates(LineString ls, IMathTransform transform)
         {
-            List<Point> points = new List<Point>(ls.Count);
+            List<GisSharpBlog.NetTopologySuite.Geometries.LightStructs.Point> points =
+                new List<GisSharpBlog.NetTopologySuite.Geometries.LightStructs.Point>(ls.Count);
             foreach (Coordinate c in ls.Coordinates)
-                points.Add(new Point(c));
+                points.Add(ToLightStruct(c.X, c.Y));
             points = transform.TransformList(points);
             List<Coordinate> coords = new List<Coordinate>(points.Count);
-            foreach (Point p in points)
-                coords.Add(p.Coordinate);
+            foreach (GisSharpBlog.NetTopologySuite.Geometries.LightStructs.Point p in points)
+                coords.Add(new Coordinate(p.X, p.Y));
             return coords;
         }
 
@@ -157,12 +187,16 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 		/// <param name="transform">MathTransform</param>
 		/// <returns>Transformed MultiPoint</returns>
 		public static MultiPoint TransformMultiPoint(MultiPoint points, IMathTransform transform)
-		{			
-            List<Point> pointList = new List<Point>(points.Geometries.Length);
+		{
+            List<GisSharpBlog.NetTopologySuite.Geometries.LightStructs.Point> pointList =
+                new List<GisSharpBlog.NetTopologySuite.Geometries.LightStructs.Point>(points.Geometries.Length);
             foreach (Point p in points.Geometries)
-                pointList.Add(p);
-			pointList = transform.TransformList(pointList);			
-			return new MultiPoint(pointList.ToArray());
+                pointList.Add(ToLightStruct(p.X, p.Y));
+			pointList = transform.TransformList(pointList);
+            Point[] array = new Point[pointList.Count];
+            for (int i = 0; i < pointList.Count; i++)
+                array[i] = ToNTS(pointList[i].X, pointList[i].Y);
+			return new MultiPoint(array);
 		}
 
 		/// <summary>

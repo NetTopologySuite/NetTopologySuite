@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Geometries.LightStructs;
 
 using GisSharpBlog.NetTopologySuite.CoordinateSystems;
 using GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations;

@@ -19,6 +19,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using GisSharpBlog.NetTopologySuite.Utilities;
+
 namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 {
 	/// <summary>
@@ -138,7 +140,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 				StringBuilder sb = new StringBuilder();
 				sb.AppendFormat("PROJCS[\"{0}\", {1}, {2}",Name, GeographicCoordinateSystem.WKT, Projection.WKT);
 				for(int i=0;i<Projection.NumParameters;i++)
-					sb.AppendFormat(Global.GetNfi(), ", {0}", Projection.GetParameter(i).WKT);
+					sb.AppendFormat(NumberFormatter.GetNfi(), ", {0}", Projection.GetParameter(i).WKT);
 				sb.AppendFormat(", {0}", LinearUnit.WKT);
 				//Skip axis info if they contain default values
 				if (AxisInfo.Count != 2 ||
@@ -161,7 +163,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 			get
 			{
 				StringBuilder sb = new StringBuilder();
-				sb.AppendFormat(Global.GetNfi(),
+				sb.AppendFormat(NumberFormatter.GetNfi(),
 					"<CS_CoordinateSystem Dimension=\"{0}\"><CS_ProjectedCoordinateSystem>{1}",
 					this.Dimension, InfoXml);
 				foreach (AxisInfo ai in this.AxisInfo)

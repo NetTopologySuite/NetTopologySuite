@@ -40,6 +40,7 @@ using System.Collections.Generic;
 
 using GisSharpBlog.NetTopologySuite.CoordinateSystems;
 using GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations;
+using GisSharpBlog.NetTopologySuite.Geometries.LightStructs;
 
 namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Projections
 {

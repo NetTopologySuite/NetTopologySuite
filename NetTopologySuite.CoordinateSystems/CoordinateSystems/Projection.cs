@@ -19,6 +19,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using GisSharpBlog.NetTopologySuite.Utilities;
+
 namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 {
 	/// <summary>
@@ -121,7 +123,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 			get
 			{
 				StringBuilder sb = new StringBuilder();
-				sb.AppendFormat(Global.GetNfi(), "<CS_Projection Classname=\"{0}\">{1}", ClassName, InfoXml);
+				sb.AppendFormat(NumberFormatter.GetNfi(), "<CS_Projection Classname=\"{0}\">{1}", ClassName, InfoXml);
 				foreach (ProjectionParameter param in Parameters)
 					sb.Append(param.XML);
 				sb.Append("</CS_Projection>");

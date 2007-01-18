@@ -39,6 +39,7 @@ using System;
 using System.IO;
 
 using GisSharpBlog.NetTopologySuite.Converters.WellKnownText.IO;
+using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Converters.WellKnownText
 {
@@ -75,7 +76,7 @@ namespace GisSharpBlog.NetTopologySuite.Converters.WellKnownText
 			this.NextToken();
 			if (this.GetStringValue()!=expectedToken)
 			{
-				throw new Exception(String.Format(Global.GetNfi(), "Expecting ('{3}') but got a '{0}' at line {1} column {2}.", this.GetStringValue(), this.LineNumber, this.Column, expectedToken));
+                throw new Exception(String.Format(NumberFormatter.GetNfi(), "Expecting ('{3}') but got a '{0}' at line {1} column {2}.", this.GetStringValue(), this.LineNumber, this.Column, expectedToken));
 			}
 		}
 		

@@ -19,6 +19,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using GisSharpBlog.NetTopologySuite.Utilities;
+
 namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 {
 	/// <summary>
@@ -73,7 +75,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 			get
 			{
 				StringBuilder sb = new StringBuilder();
-				sb.AppendFormat(Global.GetNfi(), "UNIT[\"{0}\", {1}", Name, _ConversionFactor);
+				sb.AppendFormat(NumberFormatter.GetNfi(), "UNIT[\"{0}\", {1}", Name, _ConversionFactor);
 				if (!String.IsNullOrEmpty(Authority) && AuthorityCode > 0)
 					sb.AppendFormat(", AUTHORITY[\"{0}\", \"{1}\"]", Authority, AuthorityCode);
 				sb.Append("]");

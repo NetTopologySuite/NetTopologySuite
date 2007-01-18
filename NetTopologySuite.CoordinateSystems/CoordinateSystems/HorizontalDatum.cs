@@ -19,6 +19,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using GisSharpBlog.NetTopologySuite.Utilities;
+
 namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 {
 	/// <summary>
@@ -189,7 +191,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 		{
 			get
 			{
-				return String.Format(Global.GetNfi(),
+				return String.Format(NumberFormatter.GetNfi(),
 					"<CS_HorizontalDatum DatumType=\"{0}\">{1}{2}{3}</CS_HorizontalDatum>",
 					(int)DatumType, InfoXml, Ellipsoid.XML, (Wgs84Parameters==null?String.Empty:Wgs84Parameters.XML));
 			}

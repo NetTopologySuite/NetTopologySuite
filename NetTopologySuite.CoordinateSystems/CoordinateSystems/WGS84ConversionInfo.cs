@@ -17,6 +17,8 @@
 
 using System;
 
+using GisSharpBlog.NetTopologySuite.Utilities;
+
 namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 { 
 	/// <summary>
@@ -181,7 +183,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 		{
 			get
 			{
-				return String.Format(Global.GetNfi(), "TOWGS84[{0}, {1}, {2}, {3}, {4}, {5}, {6}]", Dx, Dy, Dz, Ex, Ey, Ez, Ppm);
+				return String.Format(NumberFormatter.GetNfi(), "TOWGS84[{0}, {1}, {2}, {3}, {4}, {5}, {6}]", Dx, Dy, Dz, Ex, Ey, Ez, Ppm);
 			}
 		}
 
@@ -192,7 +194,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 		{
 			get
 			{
-                return String.Format(Global.GetNfi(), "<CS_WGS84ConversionInfo Dx=\"{0}\" Dy=\"{1}\" Dz=\"{2}\" Ex=\"{3}\" Ey=\"{4}\" Ez=\"{5}\" Ppm=\"{6}\" />", Dx, Dy, Dz, Ex, Ey, Ez, Ppm);
+                return String.Format(NumberFormatter.GetNfi(), "<CS_WGS84ConversionInfo Dx=\"{0}\" Dy=\"{1}\" Dz=\"{2}\" Ex=\"{3}\" Ey=\"{4}\" Ez=\"{5}\" Ppm=\"{6}\" />", Dx, Dy, Dz, Ex, Ey, Ez, Ppm);
 			}
 		}
 

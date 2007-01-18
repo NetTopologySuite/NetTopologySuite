@@ -19,6 +19,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using GisSharpBlog.NetTopologySuite.Utilities;
+
 namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 {
 	/// <summary>
@@ -136,7 +138,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems
 			get
 			{
 				StringBuilder sb = new StringBuilder();
-				sb.AppendFormat(Global.GetNfi(),
+                sb.AppendFormat(NumberFormatter.GetNfi(),
 					"<CS_CoordinateSystem Dimension=\"{0}\"><CS_GeocentricCoordinateSystem>{1}",
 					this.Dimension, InfoXml);				
 				foreach (AxisInfo ai in this.AxisInfo)
