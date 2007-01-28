@@ -309,7 +309,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Both positive and negative distances are supported.
         /// </summary>
         /// <param name="distance">The distance to expand the envelope.</param>
-        public void expandBy(double distance)
+        public void ExpandBy(double distance)
         {
             ExpandBy(distance, distance);
         }
