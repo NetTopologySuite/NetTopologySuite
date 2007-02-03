@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Represents an empty <c>GeometryCollection</c>.
         /// </summary>
-        public static readonly GeometryCollection Empty = new GeometryFactory().CreateGeometryCollection(null);
+        public static readonly GeometryCollection Empty = DefaultFactory.CreateGeometryCollection(null);
 
         /// <summary>
         /// Internal representation of this <c>GeometryCollection</c>.        
@@ -118,7 +118,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             {
                 Dimensions dimension = Dimensions.False;
                 for (int i = 0; i < geometries.Length; i++)
-                    dimension = (Dimensions)Math.Max((int)dimension, (int)geometries[i].Dimension);
+                    dimension = (Dimensions) Math.Max((int)dimension, (int)geometries[i].Dimension);
                 return dimension;
             }
         }
@@ -132,7 +132,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             {
                 Dimensions dimension = Dimensions.False;
                 for (int i = 0; i < geometries.Length; i++)
-                    dimension = (Dimensions)Math.Max((int)dimension, (int)((Geometry)geometries[i]).BoundaryDimension);
+                    dimension = (Dimensions) Math.Max((int)dimension, (int)((Geometry)geometries[i]).BoundaryDimension);
                 return dimension;
             }
         }
@@ -178,15 +178,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             {
                 int numPoints = 0;
                 for (int i = 0; i < geometries.Length; i++)
-                    numPoints += ((Geometry)geometries[i]).NumPoints;
+                    numPoints += ((Geometry) geometries[i]).NumPoints;
                 return numPoints;
             }
         }
 
         /// <summary>
         /// 
-        /// </summary>
-        [Obsolete("Use reflection! GetType().Name")]
+        /// </summary>        
         public override string GeometryType
         {
             get
@@ -260,13 +259,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (!IsEquivalentClass(other)) 
                 return false;            
 
-            GeometryCollection otherCollection = (GeometryCollection)other;
+            GeometryCollection otherCollection = (GeometryCollection) other;
             if (geometries.Length != otherCollection.geometries.Length)
                 return false;
 
             for (int i = 0; i < geometries.Length; i++) 
-                if (!((Geometry)geometries[i]).EqualsExact(otherCollection.geometries[i], tolerance)) 
-                    return false;
+                if (!((Geometry) geometries[i]).EqualsExact(
+                    otherCollection.geometries[i], tolerance)) 
+                        return false;
             return true;
         }
 
@@ -311,7 +311,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             GeometryCollection gc = (GeometryCollection) base.Clone();
             gc.geometries = new Geometry[geometries.Length];
             for (int i = 0; i < geometries.Length; i++) 
-                gc.geometries[i] = (Geometry)geometries[i].Clone();
+                gc.geometries[i] = (Geometry) geometries[i].Clone();
             return gc; 
         }
 
@@ -345,7 +345,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         protected internal override int CompareToSameClass(object o) 
         {
             ArrayList theseElements = new ArrayList(geometries);
-            ArrayList otherElements = new ArrayList(((GeometryCollection)o).geometries);
+            ArrayList otherElements = new ArrayList(((GeometryCollection) o).geometries);
             return Compare(theseElements, otherElements);
         }
 
@@ -404,6 +404,5 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
         
         /* END ADDED BY MPAUL42: monoGIS team */
-
     }
 }

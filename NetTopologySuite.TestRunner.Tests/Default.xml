@@ -2,9 +2,9 @@
 <project>
 	<test verbose="false" exception="true" interactive="false" filter="none">
 		<dirs>
-			<dir>..\..\..\test\vivid</dir>
-			<dir>..\..\..\test\validate</dir>
-			<!--<dir>..\..\..\test\robust</dir>-->      
+			<dir>..\..\..\NetTopologySuite.TestRunner.Tests\vivid</dir>
+			<dir>..\..\..\NetTopologySuite.TestRunner.Tests\validate</dir>
+			<!--<dir>..\..\..\NetTopologySuite.TestRunner.Tests\robust</dir>-->      
 		</dirs>
 	</test>
 </project>

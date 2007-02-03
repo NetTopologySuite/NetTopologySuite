@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Unlike objects of type <c>Point</c> (which contain additional
     /// information such as an envelope, a precision model, and spatial reference
     /// system information), a <c>Coordinate</c> only contains ordinate values
-    /// and accessor methods.
+    /// and propertied.
     /// <c>Coordinate</c>s are two-dimensional points, with an additional
     /// z-ordinate. NTS does not support any operations on the z-ordinate except
     /// the basic accessor functions. Constructed coordinates will have a
@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// the z-ordinate.
     /// </summary>
     [Serializable]
-    public class Coordinate : ICloneable, IComparable 
+    public class Coordinate : ICloneable, IComparable, IComparable<Coordinate> 
     {
         private double x = Double.NaN;
         private double y = Double.NaN;
@@ -177,7 +177,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Compares this object with the specified object for order.
         /// Since Coordinates are 2.5D, this routine ignores the z value when making the comparison.
         /// Returns
-        ///    -1 : this.x lowerthan other.x || ((this.x == other.x) AND (this.y lowerthan other.y))
+        ///   -1  : this.x lowerthan other.x || ((this.x == other.x) AND (this.y lowerthan other.y))
         ///    0  : this.x == other.x AND this.y = other.y 
         ///    1  : this.x greaterthan other.x || ((this.x == other.x) AND (this.y greaterthan other.y)) 
         /// </summary>
@@ -189,6 +189,24 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public virtual int CompareTo(object o)
         {
             Coordinate other = (Coordinate) o;
+            return CompareTo(other);
+        }
+
+        /// <summary>
+        /// Compares this object with the specified object for order.
+        /// Since Coordinates are 2.5D, this routine ignores the z value when making the comparison.
+        /// Returns
+        ///   -1  : this.x lowerthan other.x || ((this.x == other.x) AND (this.y lowerthan other.y))
+        ///    0  : this.x == other.x AND this.y = other.y 
+        ///    1  : this.x greaterthan other.x || ((this.x == other.x) AND (this.y greaterthan other.y)) 
+        /// </summary>
+        /// <param name="o"><c>Coordinate</c> with which this <c>Coordinate</c> is being compared.</param>
+        /// <returns>
+        /// A negative integer, zero, or a positive integer as this <c>Coordinate</c>
+        ///         is less than, equal to, or greater than the specified <c>Coordinate</c>.
+        /// </returns>
+        public virtual int CompareTo(Coordinate other)
+        {
             if (x < other.x)
                 return -1;
             if (x > other.x)
@@ -207,8 +225,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns><c>true</c> if <c>other</c> is a <c>Coordinate</c> with the same values for x, y and z.</returns>
         public virtual bool Equals3D(Coordinate other)
         {
-            return (x == other.x) && (y == other.y) && ((z == other.z)
-            || (Double.IsNaN(z) && Double.IsNaN(other.z)));
+            return  (x == other.x) && (y == other.y) && ((z == other.z) || 
+                    (Double.IsNaN(z) && Double.IsNaN(other.z)));
         }
 
         /// <summary>
@@ -361,6 +379,5 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /* END ADDED BY MPAUL42: monoGIS team */
-
     }
 } 

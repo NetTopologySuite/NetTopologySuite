@@ -64,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <param name="size"></param>
-        /// <param name="dimension"></param>
+        /// <param name="dimension">not used</param>
         /// <returns></returns>
         public ICoordinateSequence Create(int size, int dimension) 
         {

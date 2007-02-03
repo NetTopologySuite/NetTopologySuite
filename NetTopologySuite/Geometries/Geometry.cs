@@ -103,6 +103,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             typeof(GeometryCollection),    
         };                    
 
+        [Obsolete("unused")]
         private readonly GeometryFactory InternalGeometryFactory = new GeometryFactory();        
 
         private GeometryFactory factory = null;

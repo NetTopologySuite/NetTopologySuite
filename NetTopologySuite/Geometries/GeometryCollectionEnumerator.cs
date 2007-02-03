@@ -14,15 +14,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </summary>    
     public class GeometryCollectionEnumerator : IEnumerator
     {
-
         /// <summary>
         /// The <c>GeometryCollection</c> being iterated over.
         /// </summary>
         private GeometryCollection parent;
 
         /// <summary>
-        /// Indicates whether or not the first element (the <c>GeometryCollection</c>
-        /// ) has been returned.
+        /// Indicates whether or not the first element (the <c>GeometryCollection</c>)
+        /// has been returned.
         /// </summary>
         private bool atStart;
 
@@ -81,6 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
+        /// <remarks> The parent GeometryCollection is the first object returned!</remarks>
         public virtual object Current
         {
             get

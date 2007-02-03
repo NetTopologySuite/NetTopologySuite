@@ -79,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 
                 if (points.Count > 0) // Thans to Abhay Menon!
                 {
-                    LinearRing ring = geometryFactory.CreateLinearRing((Coordinate[]) points.ToArray(typeof(Coordinate)));
+                    LinearRing ring = geometryFactory.CreateLinearRing(points.ToArray());
 
                     // If shape have only a part, jump orientation check and add to shells
                     if (numParts == 1)
@@ -87,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                     else
                     {
                         // Orientation check
-                        if (CGAlgorithms.IsCCW((Coordinate[])points.ToArray(typeof(Coordinate))))
+                        if (CGAlgorithms.IsCCW(points.ToArray()))
                              holes.Add(ring);
                         else shells.Add(ring);
                     }
@@ -116,7 +116,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 					bool isContained = false;
 					CoordinateList coordList = new CoordinateList(tryRing.Coordinates);
 					if (tryEnv.Contains(testEnv)
-                        && (CGAlgorithms.IsPointInRing(testPt, (Coordinate[])coordList.ToArray(typeof(Coordinate))) 
+                        && (CGAlgorithms.IsPointInRing(testPt, coordList.ToArray()) 
                         || (PointInList(testPt, coordList)))) 				
 						isContained = true;
 

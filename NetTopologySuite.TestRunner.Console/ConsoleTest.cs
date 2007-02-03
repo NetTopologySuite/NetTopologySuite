@@ -93,15 +93,13 @@ namespace ConsoleTestRunner
         static void RunDefault()
         {
             TestOptionsParser parserOptions = new TestOptionsParser();
-            TestInfoCollection listTests = 
-                parserOptions.ParseProject(@"..\..\..\test\Default.xml");
+            TestInfoCollection listTests =
+                parserOptions.ParseProject(@"..\..\..\NetTopologySuite.TestRunner.Tests\Default.xml");
             
             if (listTests != null && listTests.Count > 0)
             {
                 TestRunner runner = new TestRunner(listTests);
-
                 runner.Run();
-
                 runner.PrintResult();
             }   
         }
@@ -137,16 +135,13 @@ namespace ConsoleTestRunner
                             if (info.Interactive)
                             {
                                 if (info.Exception)
-                                {
                                     XmlTestExceptionManager.ErrorEvent += new XmlTestErrorEventHandler(OnErrorEvent);
-                                }
                                 RunInteractive(info.Filter, info.Verbose);
                             }
                         }
                         else
                         {
                             TestRunner runner = new TestRunner(collection);
-
                             runner.Run();
                         }
                     }

@@ -71,7 +71,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                     geometryFactory.PrecisionModel.MakePrecise(ref external);
                     points.Add(external);
 				}
-				lines[part] = geometryFactory.CreateLineString((Coordinate[])points.ToArray(typeof(Coordinate)));
+				lines[part] = geometryFactory.CreateLineString(points.ToArray());
 			}
 			return geometryFactory.CreateMultiLineString(lines);
 		}

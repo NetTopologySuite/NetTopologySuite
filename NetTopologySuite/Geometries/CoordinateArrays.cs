@@ -128,7 +128,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// If <paramref name="coordList"/> contains not only <see cref="Coordinate" />s.
         /// </exception>
         [Obsolete("Use generic method instead")]
-        public static Coordinate[] ToCoordinateArray(IList coordList)
+        public static Coordinate[] ToCoordinateArray(ICollection coordList)
         {
             List<Coordinate> tempList = new List<Coordinate>(coordList.Count);
             foreach (Coordinate coord in coordList)
@@ -142,7 +142,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordList"><see cref="IList" /> of coordinates.</param>
         /// <returns></returns>
-        public static Coordinate[] ToCoordinateArray(IList<Coordinate> coordList)
+        public static Coordinate[] ToCoordinateArray(ICollection<Coordinate> coordList)
         {
             List<Coordinate> tempList = new List<Coordinate>(coordList.Count);
             foreach (Coordinate coord in coordList)
@@ -222,11 +222,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <seealso cref="Coordinate.Equals"/>
       	public static bool Equals(Coordinate[] coord1, Coordinate[] coord2)
       	{
-            if(coord1 == coord2) 
+            if (coord1 == coord2) 
                 return true;
-            if(coord1 == null || coord2 == null) 
+            if (coord1 == null || coord2 == null) 
                 return false;
-            if(coord1.Length != coord2.Length) 
+            if (coord1.Length != coord2.Length) 
                 return false;
             for (int i = 0; i < coord1.Length; i++)
             	if (!coord1[i].Equals(coord2[i])) 
@@ -414,6 +414,5 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             */
             return extractPts;             
         }
-
     } 
 } 

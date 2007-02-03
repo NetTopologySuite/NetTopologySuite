@@ -10,14 +10,15 @@ using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>
-    /// Supplies a set of utility methods for building Geometry objects from lists
-    /// of Coordinates.
+    /// Supplies a set of utility methods for building Geometry objects 
+    /// from lists of Coordinates.
     /// </summary>            
     [Serializable]
     public class GeometryFactory 
     {
         /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating" />.
+        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
+        /// <c> == </c> <see cref="PrecisionModels.Floating" />.
         /// </summary>
         public static GeometryFactory Default = new GeometryFactory();
 
@@ -142,86 +143,116 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public GeometryFactory() : this(new PrecisionModel(), 0) { }
 
         /// <summary>
-        /// Converts the <c>List</c> to an array.
+        /// Converts the <c>ICollection</c> to an array.
         /// </summary>
-        /// <param name="points">The <c>List</c> of Points to convert.</param>
-        /// <returns>The <c>List</c> in array format.</returns>
-        public static Point[] ToPointArray(IList points) 
-        {            
-            return (Point[])(new ArrayList(points)).ToArray(typeof(Point));
+        /// <param name="points">The <c>ICollection</c> of Points to convert.</param>
+        /// <returns>The <c>ICollection</c> in array format.</returns>
+        public static Point[] ToPointArray(ICollection points) 
+        {
+            Point[] list = new Point[points.Count];
+            int i = 0;
+            foreach (Point p in points)
+                list[i++] = p;
+            return list;            
+        }        
+
+        /// <summary>
+        /// Converts the <c>ICollection</c> to an array.
+        /// </summary>
+        /// <param name="geometries">The <c>ICollection</c> of <c>Geometry</c>'s to convert.</param>
+        /// <returns>The <c>ICollection</c> in array format.</returns>
+        public static Geometry[] ToGeometryArray(ICollection geometries) 
+        {
+            Geometry[] list = new Geometry[geometries.Count];
+            int i = 0;
+            foreach (Geometry g in geometries)
+                list[i++] = g;
+            return list;            
         }
 
         /// <summary>
-        /// Converts the <c>List</c> to an array.
+        /// Converts the <c>ICollection</c> to an array.
         /// </summary>
-        /// <param name="geometries">The list of <c>Geometry's</c> to convert.</param>
-        /// <returns>The <c>List</c> in array format.</returns>
-        public static Geometry[] ToGeometryArray(IList geometries) 
+        /// <param name="lineStrings">The <c>ICollection</c> of LineStrings to convert.</param>
+        /// <returns>The <c>ICollection</c> in array format.</returns>
+        public static LineString[] ToLineStringArray(ICollection lineStrings)
         {
-            if (geometries == null) 
-                return null;          
-            return (Geometry[])(new ArrayList(geometries)).ToArray(typeof(Geometry));
+            LineString[] list = new LineString[lineStrings.Count];
+            int i = 0;
+            foreach (LineString ls in lineStrings)
+                list[i++] = ls;
+            return list;
         }
 
         /// <summary>
-        /// Converts the <c>List</c> to an array.
+        /// Converts the <c>ICollection</c> to an array.
         /// </summary>
-        /// <param name="linearRings">The <c>List</c> of LinearRings to convert.</param>
-        /// <returns>The <c>List</c> in array format.</returns>
-        public static LinearRing[] ToLinearRingArray(IList linearRings) 
+        /// <param name="linearRings">The <c>ICollection</c> of LinearRings to convert.</param>
+        /// <returns>The <c>ICollection</c> in array format.</returns>
+        public static LinearRing[] ToLinearRingArray(ICollection linearRings) 
         {
-            return (LinearRing[])(new ArrayList(linearRings)).ToArray(typeof(LinearRing));
+            LinearRing[] list = new LinearRing[linearRings.Count];
+            int i = 0;
+            foreach (LinearRing lr in linearRings)
+                list[i++] = lr;
+            return list;
+        }       
+
+        /// <summary>
+        /// Converts the <c>ICollection</c> to an array.
+        /// </summary>
+        /// <param name="polygons">The <c>ICollection</c> of Polygons to convert.</param>
+        /// <returns>The <c>ICollection</c> in array format.</returns>
+        public static Polygon[] ToPolygonArray(ICollection polygons)
+        {
+            Polygon[] list = new Polygon[polygons.Count];
+            int i = 0;
+            foreach (Polygon p in polygons)
+                list[i++] = p;
+            return list;
         }
 
         /// <summary>
-        /// Converts the <c>List</c> to an array.
+        /// Converts the <c>ICollection</c> to an array.
         /// </summary>
-        /// <param name="lineStrings">The <c>List</c> of LineStrings to convert.</param>
-        /// <returns>The <c>List</c> in array format.</returns>
-        public static LineString[] ToLineStringArray(IList lineStrings)
+        /// <param name="multiPoints">The <c>ICollection</c> of MultiPoints to convert.</param>
+        /// <returns>The <c>ICollection</c> in array format.</returns>
+        public static MultiPoint[] ToMultiPointArray(ICollection multiPoints)
         {
-            return (LineString[])(new ArrayList(lineStrings)).ToArray(typeof(LineString));
+            MultiPoint[] list = new MultiPoint[multiPoints.Count];
+            int i = 0;
+            foreach (MultiPoint mp in multiPoints)
+                list[i++] = mp;
+            return list;
         }
 
         /// <summary>
-        /// Converts the <c>List</c> to an array.
+        /// Converts the <c>ICollection</c> to an array.
         /// </summary>
-        /// <param name="polygons">The <c>List</c> of Polygons to convert.</param>
-        /// <returns>The <c>List</c> in array format.</returns>
-        public static Polygon[] ToPolygonArray(IList polygons)
+        /// <param name="multiLineStrings">The <c>ICollection</c> of MultiLineStrings to convert.</param>
+        /// <returns>The <c>ICollection</c> in array format.</returns>
+        public static MultiLineString[] ToMultiLineStringArray(ICollection multiLineStrings)
         {
-            return (Polygon[])(new ArrayList(polygons)).ToArray(typeof(Polygon));
+            MultiLineString[] list = new MultiLineString[multiLineStrings.Count];
+            int i = 0;
+            foreach (MultiLineString mls in multiLineStrings)
+                list[i++] = mls;
+            return list;
         }
 
         /// <summary>
-        /// Converts the <c>List</c> to an array.
+        /// Converts the <c>ICollection</c> to an array.
         /// </summary>
-        /// <param name="multiPolygons">The <c>List</c> of MultiPolygons to convert.</param>
-        /// <returns>The <c>List</c> in array format.</returns>
-        public static MultiPolygon[] ToMultiPolygonArray(IList multiPolygons)
+        /// <param name="multiPolygons">The <c>ICollection</c> of MultiPolygons to convert.</param>
+        /// <returns>The <c>ICollection</c> in array format.</returns>
+        public static MultiPolygon[] ToMultiPolygonArray(ICollection multiPolygons)
         {
-            return (MultiPolygon[])(new ArrayList(multiPolygons)).ToArray(typeof(MultiPolygon));
-        }
-
-        /// <summary>
-        /// Converts the <c>List</c> to an array.
-        /// </summary>
-        /// <param name="multiLineStrings">The <c>List</c> of MultiLineStrings to convert.</param>
-        /// <returns>The <c>List</c> in array format.</returns>
-        public static MultiLineString[] ToMultiLineStringArray(IList multiLineStrings)
-        {
-            return (MultiLineString[])(new ArrayList(multiLineStrings)).ToArray(typeof(MultiLineString));
-        }
-
-        /// <summary>
-        /// Converts the <c>List</c> to an array.
-        /// </summary>
-        /// <param name="multiPoints">The <c>List</c> of MultiPoints to convert.</param>
-        /// <returns>The <c>List</c> in array format.</returns>
-        public static MultiPoint[] ToMultiPointArray(IList multiPoints)
-        {
-            return (MultiPoint[])(new ArrayList(multiPoints)).ToArray(typeof(MultiPoint));
-        }
+            MultiPolygon[] list = new MultiPolygon[multiPolygons.Count];
+            int i = 0;
+            foreach (MultiPolygon mp in multiPolygons)
+                list[i++] = mp;
+            return list;
+        }        
 
         /// <summary>
         /// If the <c>Envelope</c> is a null <c>Envelope</c>, returns an
@@ -280,36 +311,27 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
   	        return new Point(coordinates, this);
         }
 
-        /// <summary>
-        /// Creates a <c>MultiLineString</c> using the given <c>LineStrings</c>; a null or empty
-        /// array will create an empty MultiLineString.
+        /// <summary> 
+        /// Creates a LineString using the given Coordinates; a null or empty array will
+        /// create an empty LineString. Consecutive points must not be equal.
         /// </summary>
-        /// <param name="lineStrings">LineStrings, each of which may be empty but not null-</param>
-        public virtual MultiLineString CreateMultiLineString(LineString[] lineStrings) 
+        /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
+        /// <returns></returns>
+        public virtual LineString CreateLineString(Coordinate[] coordinates)
         {
-  	        return new MultiLineString(lineStrings, this);
+            return CreateLineString(coordinates != null ?
+                CoordinateSequenceFactory.Create(coordinates) : null);
         }
 
         /// <summary>
-        /// Creates a <c>GeometryCollection</c> using the given <c>Geometries</c>; a null or empty
-        /// array will create an empty GeometryCollection.
+        /// Creates a LineString using the given CoordinateSequence; a null or empty CoordinateSequence will
+        /// create an empty LineString. Consecutive points must not be equal.
         /// </summary>
-        /// <param name="geometries">Geometries, each of which may be empty but not null.</param>
-        public virtual GeometryCollection CreateGeometryCollection(Geometry[] geometries) 
+        /// <param name="coordinates">A CoordinateSequence possibly empty, or null.</param>
+        /// <returns></returns>
+        public virtual LineString CreateLineString(ICoordinateSequence coordinates)
         {
-  	        return new GeometryCollection(geometries, this);
-        }
-
-        /// <summary>
-        /// Creates a <c>MultiPolygon</c> using the given <c>Polygons</c>; a null or empty array
-        /// will create an empty Polygon. The polygons must conform to the
-        /// assertions specified in the <see href="http://www.opengis.org/techno/specs.htm"/> OpenGIS Simple Features
-        /// Specification for SQL.
-        /// </summary>
-        /// <param name="polygons">Polygons, each of which may be empty but not null.</param>
-        public virtual MultiPolygon CreateMultiPolygon(Polygon[] polygons) 
-        {
-            return new MultiPolygon(polygons, this);
+            return new LineString(coordinates, this);
         }
 
         /// <summary>
@@ -318,9 +340,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// linestring. Consecutive points must not be equal.
         /// </summary>
         /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
-        public virtual LinearRing CreateLinearRing(Coordinate[] coordinates) 
+        public virtual LinearRing CreateLinearRing(Coordinate[] coordinates)
         {
-            return CreateLinearRing(coordinates != null ? 
+            return CreateLinearRing(coordinates != null ?
                 CoordinateSequenceFactory.Create(coordinates) : null);
         }
 
@@ -330,46 +352,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// linestring. Consecutive points must not be equal.
         /// </summary>
         /// <param name="coordinates">A CoordinateSequence possibly empty, or null.</param>
-        public virtual LinearRing CreateLinearRing(ICoordinateSequence coordinates) 
+        public virtual LinearRing CreateLinearRing(ICoordinateSequence coordinates)
         {
             return new LinearRing(coordinates, this);
-        }
-
-        /// <summary> 
-        /// Creates a MultiPoint using the given Points; a null or empty array will
-        /// create an empty MultiPoint.
-        /// </summary>
-        /// <param name="point">An array without null elements, or an empty array, or null.</param>
-        public virtual MultiPoint CreateMultiPoint(Point[] point) 
-        {
-  	        return new MultiPoint(point, this);
-        }
-
-        /// <summary> 
-        /// Creates a MultiPoint using the given Coordinates; a null or empty array will create an empty MultiPoint.
-        /// </summary>
-        /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
-        public virtual MultiPoint CreateMultiPoint(Coordinate[] coordinates) 
-        {
-            return CreateMultiPoint(coordinates != null ? 
-                CoordinateSequenceFactory.Create(coordinates) : null);
-        }
-
-        /// <summary> 
-        /// Creates a MultiPoint using the given CoordinateSequence; a null or empty CoordinateSequence will
-        /// create an empty MultiPoint.
-        /// </summary>
-        /// <param name="coordinates">A CoordinateSequence possibly empty, or null.</param>
-        public virtual MultiPoint CreateMultiPoint(ICoordinateSequence coordinates) 
-        {
-            if (coordinates == null) 
-                coordinates = CoordinateSequenceFactory.Create(new Coordinate[] { });            
-
-            List<Point> points = new List<Point>();
-            for (int i = 0; i < coordinates.Count; i++) 
-                points.Add(CreatePoint(coordinates.GetCoordinate(i)));            
-
-            return CreateMultiPoint(points.ToArray());
         }
 
         /// <summary> 
@@ -387,11 +372,80 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// the empty point is to be created.        
         /// </param>
         /// <returns></returns>
-        public virtual Polygon CreatePolygon(LinearRing shell, LinearRing[] holes) 
+        public virtual Polygon CreatePolygon(LinearRing shell, LinearRing[] holes)
         {
             return new Polygon(shell, holes, this);
-        }    
+        }
 
+        /// <summary> 
+        /// Creates a MultiPoint using the given Points; a null or empty array will
+        /// create an empty MultiPoint.
+        /// </summary>
+        /// <param name="point">An array without null elements, or an empty array, or null.</param>
+        public virtual MultiPoint CreateMultiPoint(Point[] point)
+        {
+            return new MultiPoint(point, this);
+        }
+
+        /// <summary> 
+        /// Creates a MultiPoint using the given Coordinates; a null or empty array will create an empty MultiPoint.
+        /// </summary>
+        /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
+        public virtual MultiPoint CreateMultiPoint(Coordinate[] coordinates)
+        {
+            return CreateMultiPoint(coordinates != null ?
+                CoordinateSequenceFactory.Create(coordinates) : null);
+        }
+
+        /// <summary> 
+        /// Creates a MultiPoint using the given CoordinateSequence; a null or empty CoordinateSequence will
+        /// create an empty MultiPoint.
+        /// </summary>
+        /// <param name="coordinates">A CoordinateSequence possibly empty, or null.</param>
+        public virtual MultiPoint CreateMultiPoint(ICoordinateSequence coordinates)
+        {
+            if (coordinates == null)
+                coordinates = CoordinateSequenceFactory.Create(new Coordinate[] { });
+
+            List<Point> points = new List<Point>();
+            for (int i = 0; i < coordinates.Count; i++)
+                points.Add(CreatePoint(coordinates.GetCoordinate(i)));
+
+            return CreateMultiPoint(points.ToArray());
+        }
+
+        /// <summary>
+        /// Creates a <c>MultiLineString</c> using the given <c>LineStrings</c>; a null or empty
+        /// array will create an empty MultiLineString.
+        /// </summary>
+        /// <param name="lineStrings">LineStrings, each of which may be empty but not null-</param>
+        public virtual MultiLineString CreateMultiLineString(LineString[] lineStrings) 
+        {
+  	        return new MultiLineString(lineStrings, this);
+        }
+
+        /// <summary>
+        /// Creates a <c>MultiPolygon</c> using the given <c>Polygons</c>; a null or empty array
+        /// will create an empty Polygon. The polygons must conform to the
+        /// assertions specified in the <see href="http://www.opengis.org/techno/specs.htm"/> OpenGIS Simple Features
+        /// Specification for SQL.
+        /// </summary>
+        /// <param name="polygons">Polygons, each of which may be empty but not null.</param>
+        public virtual MultiPolygon CreateMultiPolygon(Polygon[] polygons)
+        {
+            return new MultiPolygon(polygons, this);
+        }      
+
+        /// <summary>
+        /// Creates a <c>GeometryCollection</c> using the given <c>Geometries</c>; a null or empty
+        /// array will create an empty GeometryCollection.
+        /// </summary>
+        /// <param name="geometries">Geometries, each of which may be empty but not null.</param>
+        public virtual GeometryCollection CreateGeometryCollection(Geometry[] geometries) 
+        {
+  	        return new GeometryCollection(geometries, this);
+        }                  
+        
         /// <summary>  
         /// Build an appropriate <c>Geometry</c>, <c>MultiGeometry</c>, or
         /// <c>GeometryCollection</c> to contain the <c>Geometry</c>s in
@@ -411,16 +465,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// them will be returned.
         /// </example>
         /// </summary>
-        /// <param name="geomList">The <c>Geometry</c>s to combine.</param>
-        /// <returns>A <c>Geometry</c> of the "smallest", "most type-specific" class that can contain the elements of <c>geomList</c>.</returns>
-        public virtual Geometry BuildGeometry(IList geomList) 
+        /// <param name="geomList">The <c>Geometry</c> to combine.</param>
+        /// <returns>
+        /// A <c>Geometry</c> of the "smallest", "most type-specific" 
+        /// class that can contain the elements of <c>geomList</c>.
+        /// </returns>
+        public virtual Geometry BuildGeometry(ICollection geomList) 
         {
             Type geomClass = null;
             bool isHeterogeneous = false;
 
-            for (IEnumerator i = geomList.GetEnumerator(); i.MoveNext(); ) 
-            {
-                Geometry geom = (Geometry) i.Current;
+            foreach (Geometry geom in geomList)
+            {                
                 Type partClass = geom.GetType();
                 if (geomClass == null) 
                     geomClass = partClass;                
@@ -454,30 +510,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 Assert.ShouldNeverReachHere();
             }
             return geom0;
-        }
-
-        /// <summary> 
-        /// Creates a LineString using the given Coordinates; a null or empty array will
-        /// create an empty LineString. Consecutive points must not be equal.
-        /// </summary>
-        /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
-        /// <returns></returns>
-        public virtual LineString CreateLineString(Coordinate[] coordinates) 
-        {
-            return CreateLineString(coordinates != null ? 
-                CoordinateSequenceFactory.Create(coordinates) : null);
-        }
-
-        /// <summary>
-        /// Creates a LineString using the given CoordinateSequence; a null or empty CoordinateSequence will
-        /// create an empty LineString. Consecutive points must not be equal.
-        /// </summary>
-        /// <param name="coordinates">A CoordinateSequence possibly empty, or null.</param>
-        /// <returns></returns>
-        public virtual LineString CreateLineString(ICoordinateSequence coordinates) 
-        {
-	        return new LineString(coordinates, this);
-        }
+        }       
 
         /// <summary>
         /// 
@@ -503,6 +536,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return CoordinateArraySequenceFactory.Instance;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private class AnonymousCoordinateOperationImpl : GeometryEditor.CoordinateOperation
         {
             public override Coordinate[] Edit(Coordinate[] coordinates, Geometry geometry)
