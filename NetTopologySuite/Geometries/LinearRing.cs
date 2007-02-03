@@ -13,7 +13,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     [Serializable]
     public class LinearRing : LineString
     {
-
         /// <summary>
         /// Constructs a <c>LinearRing</c> with the given points.
         /// </summary>
@@ -28,6 +27,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             ValidateConstruction();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void ValidateConstruction() 
         {
 	        if (!IsEmpty && !base.IsClosed) 
@@ -50,7 +52,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        [Obsolete("Use reflection! GetType().Name")]
         public override string GeometryType
         {
             get
@@ -84,6 +85,5 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
         
         /* END ADDED BY MPAUL42: monoGIS team */
-
     }
 }

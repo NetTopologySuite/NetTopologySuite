@@ -498,5 +498,4 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return base.GetHashCode();
         }
     }
-
 }

@@ -103,9 +103,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             typeof(GeometryCollection),    
         };                    
 
-        [Obsolete("unused")]
-        private readonly GeometryFactory InternalGeometryFactory = new GeometryFactory();        
-
         private GeometryFactory factory = null;
 
         /// <summary> 
@@ -184,7 +181,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Returns the name of this object's interface.
 		/// </summary>
 		/// <returns>The name of this <c>Geometry</c>s most specific interface.</returns>
-        [Obsolete("Use reflection! GetType().Name")]
         public abstract string GeometryType { get; }
 
         /// <summary>  

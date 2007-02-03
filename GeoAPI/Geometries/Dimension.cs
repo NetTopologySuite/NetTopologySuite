@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace GeoAPI.Geometries
 {
     /// <summary>
     /// Constants representing the dimensions of a point, a curve and a surface.
@@ -44,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
     /// <summary>
     /// Class containing static methods for conversions
-    /// between Dimension values and characters.
+    /// between dimension values and characters.
     /// </summary>
     public class Dimension
     {

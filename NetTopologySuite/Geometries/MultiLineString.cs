@@ -73,7 +73,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <value></value>
-        [Obsolete("Use reflection! GetType().Name")]
         public override string GeometryType
         {
             get

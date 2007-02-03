@@ -187,7 +187,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        [Obsolete("Use reflection! GetType().Name")]
         public override string GeometryType 
         {
             get
@@ -334,6 +333,5 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /* END ADDED BY MPAUL42: monoGIS team */
-
     }
 }

@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// the z-ordinate.
     /// </summary>
     [Serializable]
-    public class Coordinate : ICloneable, IComparable, IComparable<Coordinate> 
+    public class Coordinate : ICloneable, IComparable, IComparable<Coordinate>
     {
         private double x = Double.NaN;
         private double y = Double.NaN;
