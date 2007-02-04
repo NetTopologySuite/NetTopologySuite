@@ -45,9 +45,9 @@ namespace GeoAPI.Geometries
                                
         void Normalize();
 
-        byte[] ToBinary();
+        byte[] AsBinary();
         
-        string ToText();
+        string AsText();
         
         object UserData { get; set; }
 
