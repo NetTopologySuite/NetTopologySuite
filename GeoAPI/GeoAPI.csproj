@@ -33,11 +33,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Geometries\IMultiSurface.cs" />
+    <Compile Include="Geometries\ISurface.cs" />
+    <Compile Include="Geometries\IMultiCurve.cs" />
+    <Compile Include="Geometries\ICurve.cs" />
+    <Compile Include="Geometries\IMultiPolygon.cs" />
+    <Compile Include="Geometries\IGeometryCollection.cs" />
+    <Compile Include="Geometries\ILinearRing.cs" />
     <Compile Include="Geometries\Dimension.cs" />
     <Compile Include="Geometries\ICoordinate.cs" />
     <Compile Include="Geometries\IEnvelope.cs" />
+    <Compile Include="Geometries\ILineString.cs" />
+    <Compile Include="Geometries\IMultiLineString.cs" />
+    <Compile Include="Geometries\IMultiPoint.cs" />
     <Compile Include="Geometries\IntersectionMatrix.cs" />
     <Compile Include="Geometries\IPoint.cs" />
+    <Compile Include="Geometries\IPolygon.cs" />
     <Compile Include="Geometries\Location.cs" />
     <Compile Include="Operation\Buffer\BufferStyles.cs" />
     <Compile Include="Geometries\IGeometry.cs" />

@@ -7,7 +7,9 @@ namespace GeoAPI.Geometries
     public interface ICoordinate : ICloneable, IComparable, IComparable<ICoordinate>, IEquatable<ICoordinate>
     {
         double X { get; set; }
+
         double Y { get; set; }
+        
         double Z { get; set; }
 
         ICoordinate CoordinateValue { get; set; }

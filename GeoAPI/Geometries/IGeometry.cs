@@ -15,32 +15,57 @@ namespace GeoAPI.Geometries
 
         string GeometryType { get; } 
 
+        /// <summary>
+        /// A ISurface method moved in IGeometry 
+        /// </summary>
         double Area { get; }
 
+        /// <summary>
+        /// A ICurve method moved in IGeometry
+        /// </summary>
         double Length { get; }        
 
+        /// <summary>
+        /// A IGeometryCollection method moved in IGeometry
+        /// </summary>
         int NumGeometries { get; }
 
+        /// <summary>
+        /// A ILineString method moved to IGeometry
+        /// </summary>
         int NumPoints { get; }        
 
         IGeometry Boundary { get; set; }
 
-        Dimensions BoundaryDimension { get; set; }                
-        
+        Dimensions BoundaryDimension { get; set; }
+
+        /// <summary>
+        /// A ISurface method moved in IGeometry 
+        /// </summary>
         IPoint Centroid { get; }                        
         
         ICoordinate Coordinate { get; }
         
-        ICoordinate[] Coordinates { get; }
+        ICoordinate[] Coordinates { get; }       
                         
         Dimensions Dimension { get; set; }
                 
         IGeometry Envelope { get; }
 
-        IEnvelope EnvelopeInternal { get; }                   
+        IEnvelope EnvelopeInternal { get; }
 
         IPoint InteriorPoint { get; }
 
+        /// <summary>
+        /// A ISurface method moved in IGeometry 
+        /// </summary>        
+        IPoint PointOnSurface { get; }        
+
+        /// <summary>
+        /// A IGeometryCollection method moved in IGeometry
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
         IGeometry GetGeometryN(int n);   
                                
         void Normalize();
