@@ -614,16 +614,26 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Return HashCode.
+        /// 
         /// </summary>
         public override int GetHashCode()
         {
             int result = 17;
-            result = 37 * result + Coordinate.GetHashCode(minx);
-            result = 37 * result + Coordinate.GetHashCode(maxx);
-            result = 37 * result + Coordinate.GetHashCode(miny);
-            result = 37 * result + Coordinate.GetHashCode(maxy);
+            result = 37 * result + GetHashCode(minx);
+            result = 37 * result + GetHashCode(maxx);
+            result = 37 * result + GetHashCode(miny);
+            result = 37 * result + GetHashCode(maxy);
             return result;
+        }
+
+        /// <summary>
+        /// Return HashCode.
+        /// </summary>
+        /// <param name="x">Value from HashCode computation.</param>
+        private static int GetHashCode(double x)
+        {
+            long f = BitConverter.DoubleToInt64Bits(x);
+            return (int)(f ^ (f >> 32));
         }
         
         /// <summary>

@@ -260,7 +260,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Return HashCode.
+        /// 
         /// </summary>
         public override int GetHashCode()
         {
@@ -274,7 +274,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Return HashCode.
         /// </summary>
         /// <param name="x">Value from HashCode computation.</param>
-        public static int GetHashCode(double x)
+        private static int GetHashCode(double x)
         {
             long f = BitConverter.DoubleToInt64Bits(x);
             return (int)(f^(f>>32));

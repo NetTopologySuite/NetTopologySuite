@@ -772,7 +772,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// <see cref="Equals(Geometry" />
+        /// 
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
@@ -784,11 +784,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
             return Equals((Geometry) obj);         
         }
-
-        /*
-
+       
         /// <summary>
-        /// See <see cref="Equals(Geometry)"/>.
+        /// 
         /// </summary>
         /// <param name="obj1"></param>
         /// <param name="obj2"></param>
@@ -799,7 +797,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// See <see cref="Equals(Geometry)"/>.
+        /// 
         /// </summary>
         /// <param name="obj1"></param>
         /// <param name="obj2"></param>
@@ -807,17 +805,22 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public static bool operator !=(Geometry obj1, Geometry obj2)
         {
             return !(obj1 == obj2);
-        }            
-        
+        }    
+
         /// <summary>
-        /// Return HashCode.
+        /// 
         /// </summary>
         public override int GetHashCode()
         {
+            /*
+            int result = 17;            
+            foreach (Coordinate coord in Coordinates)
+                result = 37 * result + coord.GetHashCode();
+            return result;
+            */
             return base.GetHashCode();
-        }     
-         
-        */
+        }   
+        
 
         /// <summary>
         /// Returns the Well-known Text representation of this <c>Geometry</c>.
