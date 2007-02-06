@@ -771,10 +771,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Relate(g).IsEquals(Dimension, g.Dimension);
         }
 
-        /*
-        
         /// <summary>
-        /// 
+        /// <see cref="Equals(Geometry" />
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
@@ -784,8 +782,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
             if (GetType().Namespace != obj.GetType().Namespace)
                 return false;
-            return Equals((Geometry)obj);         
+            return Equals((Geometry) obj);         
         }
+
+        /*
 
         /// <summary>
         /// See <see cref="Equals(Geometry)"/>.
