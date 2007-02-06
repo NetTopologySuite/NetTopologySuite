@@ -17,7 +17,6 @@ namespace Open.Topology.TestRunner
 		public XmlTestController()
 		{
             m_listFileNames = new StringCollection();
-
             m_objCurrentDoc = new XmlTestDocument();
 		}
 
@@ -32,18 +31,14 @@ namespace Open.Topology.TestRunner
         public void ResetFiles()
         {
             if (m_listFileNames != null)
-            {
-                m_listFileNames.Clear();
-            }
+                m_listFileNames.Clear();            
        }
 
         public void Reset()
         {
             if (m_objCurrentDoc != null)
-            {
                 m_objCurrentDoc.ResetTests();
-            }
-
+            
             ResetFiles();
         }
 
@@ -54,37 +49,27 @@ namespace Open.Topology.TestRunner
                 if (index >= 0 && index < m_listFileNames.Count)
                 {
                     string fileName = m_listFileNames[index];
-
                     if (m_objCurrentDoc != null && m_objCurrentDoc.LoadFile(fileName))
                     {
                         XmlTestCollection listTests = m_objCurrentDoc.CurrentTests;
-
                         if (listTests != null && listTests.Count > 0)
-                        {
-                            return listTests.RunTests();
-                        }
+                            return listTests.RunTests();                        
                     }
                 }
             }    
-
             return false;
         }
 
         public bool GetFiles(string directory)
         {
             if (m_listFileNames == null)
-            {
                 m_listFileNames = new StringCollection();
-            }
-
+            
             try
             {
                 string[] dirs = Directory.GetFiles(directory, "*.xml");
                 foreach (string dir in dirs) 
-                {
-                    m_listFileNames.Add(dir);
-                }
-               
+                    m_listFileNames.Add(dir);                
                 return true;
             }
             catch (Exception ex)
@@ -98,14 +83,9 @@ namespace Open.Topology.TestRunner
         public XmlTestCollection Load(string filePath)
         {
             if (m_objCurrentDoc != null)
-            {
                 if (m_objCurrentDoc.LoadFile(filePath))
-                {
                     return m_objCurrentDoc.CurrentTests;
-                }
-            }
-
-            return null;
+             return null;
         }
 	}
 }

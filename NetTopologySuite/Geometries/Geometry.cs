@@ -812,15 +812,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public override int GetHashCode()
         {
-            /*
             int result = 17;            
             foreach (Coordinate coord in Coordinates)
-                result = 37 * result + coord.GetHashCode();
+                result = 37 * result + coord.X.GetHashCode();                        
             return result;
-            */
-            return base.GetHashCode();
-        }   
-        
+        } 
 
         /// <summary>
         /// Returns the Well-known Text representation of this <c>Geometry</c>.

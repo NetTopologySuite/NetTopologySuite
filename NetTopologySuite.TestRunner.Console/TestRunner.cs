@@ -106,7 +106,6 @@ namespace ConsoleTestRunner
                     XmlTestController controller = new XmlTestController();
 
                     m_nTotalCount = 0;
-
                     for (int i = 0; i < m_listTestInfo.Count; i++)
                     {
                         TestInfo info = m_listTestInfo[i];
@@ -118,24 +117,20 @@ namespace ConsoleTestRunner
                                 RunTestDirectory(info, controller);
                         }
                     }
-
                     return true;
                 }
                 catch (Exception ex)
                 {
                     XmlTestExceptionManager.Publish(ex);
-
                     return false;
                 }
             }
-
             return false;
         }
  
         public void OnErrorEvent(object sender, XmlTestErrorEventArgs args)
         {
             Exception ex = args.Thrown;
-
             if (ex != null)
             {
                 System.Console.WriteLine(ex.Message);
@@ -225,23 +220,17 @@ namespace ConsoleTestRunner
                     foreach (string file in files) 
                     {
                         info.FileName = file;
-
                         RunTestFile(info, controller);
-                    }
-               
+                    }               
                     return true;
                 }
                 catch (Exception ex)
                 {
                     XmlTestExceptionManager.Publish(ex);
                 }
-
                 return true;
             }
-
             return false;
         }
-
 	}
-
 }

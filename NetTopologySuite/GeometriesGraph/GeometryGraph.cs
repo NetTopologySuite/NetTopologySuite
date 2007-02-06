@@ -154,7 +154,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public virtual Edge FindEdge(LineString line)
         {
-            return (Edge)lineEdgeMap[line];
+            return (Edge) lineEdgeMap[line];
         }
 
         /// <summary>
@@ -251,6 +251,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 right = cwLeft;
             }
             Edge e = new Edge(coord, new Label(argIndex, Locations.Boundary, left, right));
+            if (lineEdgeMap.Contains(lr))
+                lineEdgeMap.Remove(lr);
             lineEdgeMap.Add(lr, e);
             InsertEdge(e);
             // insert the endpoint as a node, to mark that it is on the boundary
@@ -290,7 +292,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             // add the edge for the LineString
             // line edges do not have locations for their left and right sides
             Edge e = new Edge(coord, new Label(argIndex, Locations.Interior));
-            lineEdgeMap.Add(line, e);
+            if (lineEdgeMap.Contains(line))
+                lineEdgeMap.Remove(line);
+            lineEdgeMap.Add(line, e);            
             InsertEdge(e);
 
             /*
@@ -301,7 +305,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             Assert.IsTrue(coord.Length >= 2, "found LineString with single point");
             InsertBoundaryPoint(argIndex, coord[0]);
             InsertBoundaryPoint(argIndex, coord[coord.Length - 1]);
-
         }
 
         /// <summary> 

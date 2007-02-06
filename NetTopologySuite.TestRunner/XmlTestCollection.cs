@@ -88,7 +88,7 @@ namespace Open.Topology.TestRunner
             {
                 for (int i = 0; i < List.Count; i++)
                 {
-                    XmlTest testItem = (XmlTest)List[i];
+                    XmlTest testItem = (XmlTest) List[i];
 
                     if (testItem != null)
                     {

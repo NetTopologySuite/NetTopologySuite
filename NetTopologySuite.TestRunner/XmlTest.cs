@@ -297,9 +297,9 @@ namespace Open.Topology.TestRunner
             catch (Exception ex)
             {                
                 m_objException = ex;
-
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
                 XmlTestExceptionManager.Publish(ex);
-
                 return false;
             }
         }
