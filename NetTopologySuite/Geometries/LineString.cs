@@ -390,16 +390,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="other"></param>
-        /// <returns></returns>
-        protected override bool IsEquivalentClass(Geometry other) 
-        {
-            return other is LineString;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="o"></param>
         /// <returns></returns>
         protected internal override int CompareToSameClass(object o)
