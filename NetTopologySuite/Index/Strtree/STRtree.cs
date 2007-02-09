@@ -71,7 +71,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             /// <param name="o1"></param>
             /// <param name="o2"></param>
             /// <returns></returns>
-            public virtual int Compare(object o1, object o2) 
+            public int Compare(object o1, object o2) 
             {
                 return container.CompareDoubles(container.CentreY((Envelope)((IBoundable)o1).Bounds),
                                                 container.CentreY((Envelope)((IBoundable)o2).Bounds));
@@ -129,7 +129,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             /// <param name="aBounds"></param>
             /// <param name="bBounds"></param>
             /// <returns></returns>
-            public virtual bool Intersects(object aBounds, object bBounds) 
+            public bool Intersects(object aBounds, object bBounds) 
             {
                 return ((Envelope)aBounds).Intersects((Envelope)bBounds);
             }
@@ -223,7 +223,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <param name="childBoundables"></param>
         /// <param name="newLevel"></param>
         /// <returns></returns>
-        protected virtual IList CreateParentBoundablesFromVerticalSlice(IList childBoundables, int newLevel)
+        protected IList CreateParentBoundablesFromVerticalSlice(IList childBoundables, int newLevel)
         {
             return base.CreateParentBoundables(childBoundables, newLevel);
         }
@@ -233,7 +233,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="childBoundables">Must be sorted by the x-value of the envelope midpoints.</param>
         /// <param name="sliceCount"></param>
-        protected virtual IList[] VerticalSlices(IList childBoundables, int sliceCount)
+        protected IList[] VerticalSlices(IList childBoundables, int sliceCount)
         {
             int sliceCapacity = (int)Math.Ceiling(childBoundables.Count / (double)sliceCount);
             IList[] slices = new IList[sliceCount];
@@ -285,7 +285,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="itemEnv"></param>
         /// <param name="item"></param>
-        public virtual void Insert(Envelope itemEnv, object item) 
+        public void Insert(Envelope itemEnv, object item) 
         {
             if (itemEnv.IsNull)  
                 return;
@@ -296,7 +296,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// Returns items whose bounds intersect the given envelope.
         /// </summary>
         /// <param name="searchEnv"></param>
-        public virtual IList Query(Envelope searchEnv) 
+        public IList Query(Envelope searchEnv) 
         {
             //Yes this method does something. It specifies that the bounds is an
             //Envelope. super.query takes an object, not an Envelope. [Jon Aquino 10/24/2003]
@@ -308,7 +308,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
-        public virtual void Query(Envelope searchEnv, IItemVisitor visitor)
+        public void Query(Envelope searchEnv, IItemVisitor visitor)
         {
             //Yes this method does something. It specifies that the bounds is an
             //Envelope. super.query takes an Object, not an Envelope. [Jon Aquino 10/24/2003]
@@ -321,33 +321,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <param name="itemEnv">The Envelope of the item to remove.</param>
         /// <param name="item">The item to remove.</param>
         /// <returns><c>true</c> if the item was found.</returns>
-        public virtual bool Remove(Envelope itemEnv, object item) 
+        public bool Remove(Envelope itemEnv, object item) 
         {
             return base.Remove(itemEnv, item);
-        }
-
-        /// <summary> 
-        /// Returns the number of items in the tree.
-        /// </summary>
-        public override int Count
-        {
-            get
-            {
-                return base.Count;
-            }
-        }
-
-        /// <summary>
-        /// Returns the number of items in the tree.
-        /// </summary>
-        public override int Depth
-        {
-            get
-            {
-                return base.Depth;
-            }
-        }
-
+        }        
+        
         /// <summary>
         /// 
         /// </summary>

@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Adds a new member to this DirectedEdgeStar.
         /// </summary>
         /// <param name="de"></param>
-        public virtual void Add(DirectedEdge de)
+        public void Add(DirectedEdge de)
         {            
             outEdges.Add(de);
             sorted = false;
@@ -38,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Drops a member of this DirectedEdgeStar.
         /// </summary>
         /// <param name="de"></param>
-        public virtual void Remove(DirectedEdge de)
+        public void Remove(DirectedEdge de)
         {
             outEdges.Remove(de);
         }
@@ -46,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Returns an Iterator over the DirectedEdges, in ascending order by angle with the positive x-axis.
         /// </summary>
-        public virtual IEnumerator GetEnumerator()
+        public IEnumerator GetEnumerator()
         {            
             SortEdges();
             return outEdges.GetEnumerator();
@@ -55,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the number of edges around the Node associated with this DirectedEdgeStar.
         /// </summary>
-        public virtual int Degree
+        public int Degree
         {
             get
             {
@@ -66,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the coordinate for the node at wich this star is based.
         /// </summary>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -81,7 +81,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the DirectedEdges, in ascending order by angle with the positive x-axis.
         /// </summary>
-        public virtual IList Edges
+        public IList Edges
         {
             get
             {
@@ -109,7 +109,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="edge"></param>
         /// <returns></returns>
-        public virtual int GetIndex(Edge edge)
+        public int GetIndex(Edge edge)
         {
             SortEdges();
             for (int i = 0; i < outEdges.Count; i++)
@@ -127,7 +127,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="dirEdge"></param>
         /// <returns></returns>
-        public virtual int GetIndex(DirectedEdge dirEdge)
+        public int GetIndex(DirectedEdge dirEdge)
         {
             SortEdges();
             for (int i = 0; i < outEdges.Count; i++)
@@ -145,7 +145,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public virtual int GetIndex(int i)
+        public int GetIndex(int i)
         {
             int modi = i % outEdges.Count;
             //I don't think modi can be 0 (assuming i is positive) [Jon Aquino 10/28/2003] 
@@ -160,7 +160,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="dirEdge"></param>
         /// <returns></returns>
-        public virtual DirectedEdge GetNextEdge(DirectedEdge dirEdge)
+        public DirectedEdge GetNextEdge(DirectedEdge dirEdge)
         {
             int i = GetIndex(dirEdge);
             return (DirectedEdge)outEdges[GetIndex(i + 1)];

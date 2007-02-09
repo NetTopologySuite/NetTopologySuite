@@ -107,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <param name="x1"></param>
         /// <param name="x2"></param>
         /// <param name="item"></param>
-        public virtual void Insert(double x1, double x2, object item) 
+        public void Insert(double x1, double x2, object item) 
         {
             base.Insert(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)), item);
         }
@@ -116,7 +116,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// Returns items whose bounds intersect the given value.
         /// </summary>
         /// <param name="x"></param>
-        public virtual IList Query(double x) 
+        public IList Query(double x) 
         {
             return Query(x, x);
         }
@@ -126,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="x1">Possibly equal to x2.</param>
         /// <param name="x2">Possibly equal to x1.</param>
-        public virtual IList Query(double x1, double x2) 
+        public IList Query(double x1, double x2) 
         {
             return base.Query(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)));
         }

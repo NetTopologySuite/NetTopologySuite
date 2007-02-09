@@ -88,7 +88,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// 
         /// </summary>
         /// <param name="num"></param>
-        public virtual void Add(double num)
+        public void Add(double num)
         {
             long numBits = System.BitConverter.DoubleToInt64Bits(num);            
             if (isFirst)
@@ -112,7 +112,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <summary>
         /// 
         /// </summary>
-        public virtual double Common
+        public double Common
         {
             get
             {
@@ -125,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// </summary>
         /// <param name="bits"></param>
         /// <returns></returns>
-        public virtual string ToString(long bits)
+        public string ToString(long bits)
         {
             double x = System.BitConverter.Int64BitsToDouble(bits);
             string numStr = HexConverter.ConvertAny2Any(bits.ToString(), 10, 2);            

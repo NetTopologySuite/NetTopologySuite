@@ -33,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// possibly with holes.
         /// </summary>
         /// <param name="graph"></param>
-        public virtual void Add(PlanarGraph graph)
+        public void Add(PlanarGraph graph)
         {
             Add(graph.EdgeEnds, graph.Nodes);
         }
@@ -45,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         /// <param name="dirEdges"></param>
         /// <param name="nodes"></param>
-        public virtual void Add(IList dirEdges, IList nodes)
+        public void Add(IList dirEdges, IList nodes)
         {
             PlanarGraph.LinkResultDirectedEdges(nodes);
             IList maxEdgeRings = BuildMaximalEdgeRings(dirEdges);
@@ -59,7 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <summary>
         /// 
         /// </summary>
-        public virtual IList Polygons
+        public IList Polygons
         {
             get
             {
@@ -291,7 +291,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        public virtual bool ContainsPoint(Coordinate p)
+        public bool ContainsPoint(Coordinate p)
         {
             for (IEnumerator it = shellList.GetEnumerator(); it.MoveNext(); )
             {

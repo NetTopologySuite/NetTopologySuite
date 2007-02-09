@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <summary>
         /// <c>Geometry</c> builder.
         /// </summary>
-        protected virtual GeometryFactory Factory
+        protected GeometryFactory Factory
         {
             get { return factory; }
         }
@@ -41,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public virtual Geometry Read(byte[] data)
+        public Geometry Read(byte[] data)
         {
             using(Stream stream = new MemoryStream(data))            
                 return Read(stream);
@@ -52,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>
-        public virtual Geometry Read(Stream stream)
+        public Geometry Read(Stream stream)
         {
             BinaryReader reader = null;
             ByteOrder byteOrder = (ByteOrder)stream.ReadByte();
@@ -75,7 +75,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry Read(BinaryReader reader)
+        protected Geometry Read(BinaryReader reader)
         {     
             WKBGeometryTypes geometryType = (WKBGeometryTypes)reader.ReadInt32();
             switch (geometryType)
@@ -104,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual ByteOrder ReadByteOrder(BinaryReader reader)
+        protected ByteOrder ReadByteOrder(BinaryReader reader)
         {
             byte byteOrder = reader.ReadByte();
             return (ByteOrder)byteOrder;
@@ -115,7 +115,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Coordinate ReadCoordinate(BinaryReader reader)
+        protected Coordinate ReadCoordinate(BinaryReader reader)
         {
             return new Coordinate(reader.ReadDouble(), reader.ReadDouble());
         }
@@ -125,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual LinearRing ReadRing(BinaryReader reader)
+        protected LinearRing ReadRing(BinaryReader reader)
         {
             int numPoints = reader.ReadInt32();
             Coordinate[] coordinates = new Coordinate[numPoints];
@@ -139,7 +139,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry ReadPoint(BinaryReader reader)
+        protected Geometry ReadPoint(BinaryReader reader)
         {
             return Factory.CreatePoint(ReadCoordinate(reader));
         }
@@ -149,7 +149,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry ReadLineString(BinaryReader reader)
+        protected Geometry ReadLineString(BinaryReader reader)
         {
             int numPoints = reader.ReadInt32();
             Coordinate[] coordinates = new Coordinate[numPoints];
@@ -163,7 +163,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry ReadPolygon(BinaryReader reader)
+        protected Geometry ReadPolygon(BinaryReader reader)
         {
             int numRings = reader.ReadInt32();
             LinearRing exteriorRing = ReadRing(reader);
@@ -178,7 +178,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry ReadMultiPoint(BinaryReader reader)
+        protected Geometry ReadMultiPoint(BinaryReader reader)
         {
             int numGeometries = reader.ReadInt32();
             Point[] points = new Point[numGeometries];
@@ -198,7 +198,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry ReadMultiLineString(BinaryReader reader)
+        protected Geometry ReadMultiLineString(BinaryReader reader)
         {
             int numGeometries = reader.ReadInt32();
             LineString[] strings = new LineString[numGeometries];
@@ -218,7 +218,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry ReadMultiPolygon(BinaryReader reader)
+        protected Geometry ReadMultiPolygon(BinaryReader reader)
         {
             int numGeometries = reader.ReadInt32();
             Polygon[] polygons = new Polygon[numGeometries];
@@ -238,7 +238,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry ReadGeometryCollection(BinaryReader reader)
+        protected Geometry ReadGeometryCollection(BinaryReader reader)
         {
             int numGeometries = reader.ReadInt32();
             Geometry[] geometries = new Geometry[numGeometries];

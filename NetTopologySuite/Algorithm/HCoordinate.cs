@@ -41,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Direct access to x private field
         /// </summary>
         [Obsolete("This is a simple access to x private field: use GetX() instead.")]
-        protected virtual double X
+        protected double X
         {
             get { return x; }
             set { x = value; }
@@ -51,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Direct access to y private field
         /// </summary>
         [Obsolete("This is a simple access to y private field: use GetY() instead.")]
-        protected virtual double Y
+        protected double Y
         {
             get { return y; }
             set { y = value; }
@@ -61,7 +61,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Direct access to w private field
         /// </summary>
         [Obsolete("This is a simple access to w private field: how do you use this field for?...")]
-        protected virtual double W
+        protected double W
         {
             get { return w; }
             set { w = value; }
@@ -117,10 +117,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual double GetX()
+        public double GetX()
         {
             double a = x/w;
-            if((Double.IsNaN(a)) || (Double.IsInfinity(a))) 
+            if ((Double.IsNaN(a)) || (Double.IsInfinity(a))) 
                 throw new NotRepresentableException();                
             return a;
             
@@ -130,7 +130,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual double GetY()
+        public double GetY()
         {            
             double a = y/w;
             if((Double.IsNaN(a)) || (Double.IsInfinity(a))) 
@@ -141,7 +141,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get 
             { 

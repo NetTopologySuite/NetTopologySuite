@@ -25,9 +25,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// If the point is not of dimension 0 it does not contribute to the centroid.
         /// </summary>
         /// <param name="geom">The point to add.</param>
-        public virtual void Add(Geometry geom)
+        public void Add(Geometry geom)
         {
-            if(geom is Point)             
+            if (geom is Point)             
                 Add(geom.Coordinate);
 
             else if(geom is GeometryCollection) 
@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Adds the length defined by a coordinate.
         /// </summary>
         /// <param name="pt">A coordinate.</param>
-        public virtual void Add(Coordinate pt)
+        public void Add(Coordinate pt)
         {
             ptCount += 1;
             centSum.X += pt.X;
@@ -52,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate Centroid
+        public Coordinate Centroid
         {
             get
             {

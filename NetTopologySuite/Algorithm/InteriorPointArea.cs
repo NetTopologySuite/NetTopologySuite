@@ -46,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate InteriorPoint
+        public Coordinate InteriorPoint
         {
             get
             {
@@ -80,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// The midpoint of the largest intersection between the point and
         /// a line halfway down its envelope.
         /// </returns>
-        public virtual void AddPolygon(Geometry geometry)
+        public void AddPolygon(Geometry geometry)
         {
             LineString bisector = HorizontalBisector(geometry);
 
@@ -103,7 +103,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// If point is a collection, the widest sub-point; otherwise,
         /// the point itself.
         /// </returns>
-        protected virtual Geometry WidestGeometry(Geometry geometry) 
+        protected Geometry WidestGeometry(Geometry geometry) 
         {
             if (!(geometry is GeometryCollection)) 
                 return geometry;        
@@ -132,7 +132,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected virtual LineString HorizontalBisector(Geometry geometry)
+        protected LineString HorizontalBisector(Geometry geometry)
         {
             Envelope envelope = geometry.EnvelopeInternal;
 
@@ -146,7 +146,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="envelope">The envelope to analyze.</param>
         /// <returns> The centre of the envelope.</returns>
-        public virtual Coordinate Centre(Envelope envelope)
+        public Coordinate Centre(Envelope envelope)
         {
             return new Coordinate(Avg(envelope.MinX, envelope.MaxX), Avg(envelope.MinY, envelope.MaxY));
         }

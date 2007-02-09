@@ -66,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// 1 point, a <c>Point</c>;
         /// 0 points, an empty <c>GeometryCollection</c>.
         /// </returns>
-        public virtual Geometry GetConvexHull()
+        public Geometry GetConvexHull()
         {
             if (inputPts.Length == 0)
                 return geomFactory.CreateGeometryCollection(null);

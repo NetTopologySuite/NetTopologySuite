@@ -25,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <summary>
         /// Returns the gathered <c>Coordinate</c>s.
         /// </summary>
-        public virtual Coordinate[] Coordinates
+        public Coordinate[] Coordinates
         {
             get
             {
@@ -38,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// 
         /// </summary>
         /// <param name="coord"></param>
-        public virtual void Filter(Coordinate coord) 
+        public void Filter(Coordinate coord) 
         {
             if (!table.Contains(coord)) 
             {

@@ -57,7 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public virtual IList Items
+        public IList Items
         {
             get
             {
@@ -68,7 +68,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool HasItems
+        public bool HasItems
         {
             get
             {
@@ -83,7 +83,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// 
         /// </summary>
         /// <param name="item"></param>
-        public virtual void Add(object item)
+        public void Add(object item)
         {
             items.Add(item);            
         }
@@ -94,7 +94,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <param name="itemEnv">The envelope containing the item.</param>
         /// <param name="item">The item to remove.</param>
         /// <returns><c>true</c> if the item was found and removed.</returns>
-        public virtual bool Remove(Envelope itemEnv, object item)
+        public bool Remove(Envelope itemEnv, object item)
         {
             // use envelope to restrict nodes scanned
             if (!IsSearchMatch(itemEnv))
@@ -132,7 +132,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool IsPrunable
+        public bool IsPrunable
         {
             get
             {
@@ -143,7 +143,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool HasChildren
+        public bool HasChildren
         {
             get
             {
@@ -159,7 +159,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool IsEmpty
+        public bool IsEmpty
         {
             get
             {
@@ -180,7 +180,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="resultItems">IList for adding items.</param>
         /// <returns>Parameter IList with <c>this</c> items.</returns>
-        public virtual IList AddAllItems(ref IList resultItems)
+        public IList AddAllItems(ref IList resultItems)
         {
             // this node may have items as well as subnodes (since items may not
             // be wholely contained in any single subnode
@@ -205,7 +205,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="resultItems"></param>
-        public virtual void AddAllItemsFromOverlapping(Envelope searchEnv, ref IList resultItems)
+        public void AddAllItemsFromOverlapping(Envelope searchEnv, ref IList resultItems)
         {
             if (!IsSearchMatch(searchEnv))
                 return;
@@ -226,7 +226,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
-        public virtual void Visit(Envelope searchEnv, IItemVisitor visitor)
+        public void Visit(Envelope searchEnv, IItemVisitor visitor)
         {
             if (!IsSearchMatch(searchEnv))
                 return;
@@ -255,7 +255,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public virtual int Depth
+        public int Depth
         {
             get
             {
@@ -276,7 +276,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public virtual int Count    
+        public int Count    
         {
             get
             {
@@ -291,7 +291,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public virtual int NodeCount
+        public int NodeCount
         {
             get
             {

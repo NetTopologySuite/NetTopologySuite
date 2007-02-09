@@ -45,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <summary>
         /// 
         /// </summary>
-        public virtual IList Items
+        public  IList Items
         {
             get
             {                
@@ -57,7 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// 
         /// </summary>
         /// <param name="item"></param>
-        public virtual void Add(object item)
+        public  void Add(object item)
         {
             items.Add(item);
         }
@@ -67,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        public virtual IList AddAllItems(IList items)
+        public  IList AddAllItems(IList items)
         {
             // items.addAll(this.items);
             foreach (object o in this.items)
@@ -91,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <param name="interval"></param>
         /// <param name="resultItems"></param>
         /// <returns></returns>
-        public virtual IList AddAllItemsFromOverlapping(Interval interval, IList resultItems)
+        public  IList AddAllItemsFromOverlapping(Interval interval, IList resultItems)
         {
             if (!IsSearchMatch(interval))
                 return items;
@@ -107,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <summary>
         /// 
         /// </summary>
-        public virtual int Depth
+        public  int Depth
         {
             get
             {
@@ -128,7 +128,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <summary>
         /// 
         /// </summary>
-        public virtual int Count
+        public  int Count
         {
             get
             {
@@ -143,7 +143,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <summary>
         /// 
         /// </summary>
-        public virtual int NodeCount
+        public  int NodeCount
         {
             get
             {

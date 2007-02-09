@@ -40,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// </remarks>
 		/// <param name="filename">The filename to write to (minus the .shp extension).</param>
 		/// <param name="geometryCollection">The GeometryCollection to write.</param>		
-		public virtual void Write(string filename, GeometryCollection geometryCollection)
+		public void Write(string filename, GeometryCollection geometryCollection)
 		{
 			System.IO.FileStream shpStream = new System.IO.FileStream(filename + ".shp", System.IO.FileMode.Create);
 			System.IO.FileStream shxStream = new System.IO.FileStream(filename + ".shx", System.IO.FileMode.Create);

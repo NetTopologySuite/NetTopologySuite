@@ -30,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        public virtual bool IsInside(Coordinate pt)
+        public bool IsInside(Coordinate pt)
         {
             return CGAlgorithms.IsPointInRing(pt, pts);
         }

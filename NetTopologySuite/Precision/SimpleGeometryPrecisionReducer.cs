@@ -38,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// being removed completely, or simply being collapsed to an (invalid)
         /// Geometry of the same type.
         /// </summary>
-        public virtual bool RemoveCollapsedComponents
+        public bool RemoveCollapsedComponents
         {
             get
             {
@@ -56,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// specify the reduction.  
         /// The default is to not change the precision model.
         /// </summary>
-        public virtual bool ChangePrecisionModel
+        public bool ChangePrecisionModel
         {
             get
             {
@@ -73,7 +73,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// </summary>
         /// <param name="geom"></param>
         /// <returns></returns>
-        public virtual Geometry Reduce(Geometry geom)
+        public Geometry Reduce(Geometry geom)
         {
             GeometryEditor geomEdit;
             if (changePrecisionModel) 

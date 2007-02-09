@@ -123,7 +123,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// Any dimension of Geometry may be added; the constituent linework will be extracted.
         /// </summary>
         /// <param name="geometries">A <see cref="IEnumerable" /> of geometries to add.</param>
-        public virtual void Add(IEnumerable<Geometry> geometries)
+        public void Add(IEnumerable<Geometry> geometries)
         {
             foreach(Geometry geometry in geometries)
                 Add(geometry);            
@@ -136,7 +136,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// the constituent linework will be extracted.
         /// </summary>
         /// <param name="geometry"></param>
-        public virtual void Add(Geometry geometry) 
+        public void Add(Geometry geometry) 
         {
             geometry.Apply(new GeometryComponentFilterImpl(this));             
         }
@@ -163,7 +163,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             /// <param name="component">
             /// A <see cref="Geometry" /> to which the filter is applied.
             /// </param>
-            public virtual void Filter(Geometry component)
+            public void Filter(Geometry component)
             {
                 if (component is LineString)
                     sequencer.AddLine(component as LineString);                    
@@ -174,7 +174,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// 
         /// </summary>
         /// <param name="lineString"></param>
-        internal virtual void AddLine(LineString lineString)
+        internal void AddLine(LineString lineString)
         {
             if (factory == null)
                 this.factory = lineString.Factory;
@@ -187,7 +187,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// Tests whether the arrangement of linestrings has a valid sequence.
         /// </summary>
         /// <returns><c>true</c> if a valid sequence exists.</returns>
-        public virtual bool IsSequenceable()
+        public bool IsSequenceable()
         {            
             ComputeSequence();
             return isSequenceable;         
@@ -199,7 +199,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// </summary>
         /// <returns>The sequenced linestrings,
         /// or <c>null</c> if a valid sequence does not exist.</returns>
-        public virtual Geometry GetSequencedLineStrings()
+        public Geometry GetSequencedLineStrings()
         {
             ComputeSequence();
             return sequencedGeometry;

@@ -15,16 +15,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate P2
+        public Coordinate P0
         {
-            get { return p2; }
-            set { p2 = value; }
+            get { return p0; }
+            set { p0 = value; }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate P1
+        public Coordinate P1
         {
             get { return p1; }
             set { p1 = value; }
@@ -33,10 +33,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate P0
+        public Coordinate P2
         {
-            get { return p0; }
-            set { p0 = value; }
+            get { return p2; }
+            set { p2 = value; }
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>
         /// The point which is the InCentre of the triangle.
         /// </returns>
-        public virtual Coordinate InCentre
+        public Coordinate InCentre
         {
             get
             {

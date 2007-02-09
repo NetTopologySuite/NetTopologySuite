@@ -164,7 +164,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// The styles supported are CapRound, CapButt, and CapSquare.
         /// The default is CapRound.
         /// </summary>
-        public virtual BufferStyles EndCapStyle
+        public BufferStyles EndCapStyle
         {
             get
             {
@@ -179,7 +179,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <summary>
         /// 
         /// </summary>
-        public virtual int QuadrantSegments
+        public int QuadrantSegments
         {
             get
             {
@@ -196,7 +196,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <param name="distance"></param>
         /// <returns></returns>
-        public virtual Geometry GetResultGeometry(double distance)
+        public Geometry GetResultGeometry(double distance)
         {
             this.distance = distance;
             ComputeGeometry();
@@ -209,7 +209,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="distance"></param>
         /// <param name="quadrantSegments"></param>
         /// <returns></returns>
-        public virtual Geometry GetResultGeometry(double distance, int quadrantSegments)
+        public Geometry GetResultGeometry(double distance, int quadrantSegments)
         {
             this.distance = distance;
             QuadrantSegments = quadrantSegments;

@@ -89,7 +89,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Tests if a component has been visited during the course of a graph algorithm.
         /// </summary>              
-        public virtual bool IsVisited
+        public bool IsVisited
         {
             get
             {
@@ -100,7 +100,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary> 
         /// Gets/Sets the visited flag for this component.
         /// </summary>
-        public virtual bool Visited
+        public bool Visited
         {
             get
             {
@@ -116,7 +116,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Tests if a component has been marked at some point during the processing
         /// involving this graph.
         /// </summary>
-        public virtual bool IsMarked
+        public bool IsMarked
         {
             get
             {
@@ -127,7 +127,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Gets/Sets the marked flag for this component.
         /// </summary>
-        public virtual bool Marked
+        public bool Marked
         {
             get
             {

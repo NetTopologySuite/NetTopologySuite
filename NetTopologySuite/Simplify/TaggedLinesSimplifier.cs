@@ -26,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// Points closer than this tolerance to a simplified segment may
         /// be removed.
         /// </summary>        
-        public virtual double DistanceTolerance
+        public double DistanceTolerance
         {
             get
             {
@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// Simplify a collection of <c>TaggedLineString</c>s.
         /// </summary>
         /// <param name="taggedLines">The collection of lines to simplify.</param>
-        public virtual void Simplify(IList taggedLines)
+        public void Simplify(IList taggedLines)
         {
             for (IEnumerator i = taggedLines.GetEnumerator(); i.MoveNext(); )            
                 inputIndex.Add((TaggedLineString)i.Current);

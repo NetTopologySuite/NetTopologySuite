@@ -26,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// geometries.
         /// </summary>
         /// <param name="geom">A Geometry to test for common bits.</param>
-        public virtual void Add(Geometry geom)
+        public void Add(Geometry geom)
         {
             geom.Apply(ccFilter);
             commonCoord = ccFilter.CommonCoordinate;
@@ -35,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <summary>
         /// The common bits of the Coordinates in the supplied Geometries.
         /// </summary>
-        public virtual Coordinate CommonCoordinate
+        public Coordinate CommonCoordinate
         {
             get
             {
@@ -49,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// </summary>
         /// <param name="geom">The Geometry from which to remove the common coordinate bits.</param>
         /// <returns>The shifted Geometry.</returns>
-        public virtual Geometry RemoveCommonBits(Geometry geom)
+        public Geometry RemoveCommonBits(Geometry geom)
         {
             if (commonCoord.X == 0.0 && commonCoord.Y == 0.0)
                 return geom;
@@ -68,7 +68,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// </summary>
         /// <param name="geom">The Geometry to which to add the common coordinate bits.</param>
         /// <returns>The shifted Geometry.</returns>
-        public virtual void AddCommonBits(Geometry geom)
+        public void AddCommonBits(Geometry geom)
         {
             Translater trans = new Translater(commonCoord);
             geom.Apply(trans);
@@ -87,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             /// 
             /// </summary>
             /// <param name="coord"></param>
-            public virtual void Filter(Coordinate coord)
+            public void Filter(Coordinate coord)
             {
                 commonBitsX.Add(coord.X);
                 commonBitsY.Add(coord.Y);
@@ -96,7 +96,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             /// <summary>
             /// 
             /// </summary>
-            public virtual Coordinate CommonCoordinate
+            public Coordinate CommonCoordinate
             {
                 get
                 {
@@ -125,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             /// 
             /// </summary>
             /// <param name="coord"></param>
-            public virtual void Filter(Coordinate coord)
+            public void Filter(Coordinate coord)
             {
                 coord.X += trans.X;
                 coord.Y += trans.Y;

@@ -62,7 +62,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual bool MoveNext() 
+        public bool MoveNext() 
         {
             if (atStart) 
                 return true;
@@ -81,7 +81,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <remarks> The parent GeometryCollection is the first object returned!</remarks>
-        public virtual object Current
+        public object Current
         {
             get
             {
@@ -114,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public virtual void Reset()
+        public void Reset()
         {
             atStart = true;
             index = 0;            

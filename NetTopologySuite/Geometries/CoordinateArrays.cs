@@ -247,7 +247,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             /// <param name="pts1"></param>
             /// <param name="pts2"></param>
             /// <returns></returns>
-            public virtual int Compare(Coordinate[] pts1, Coordinate[] pts2)
+            public int Compare(Coordinate[] pts1, Coordinate[] pts2)
             {
                 return CoordinateArrays.Compare(pts1, pts2);
             }
@@ -268,7 +268,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             /// <param name="pts1"></param>
             /// <param name="pts2"></param>
             /// <returns></returns>
-            public virtual int Compare(Coordinate[] pts1, Coordinate[] pts2)
+            public int Compare(Coordinate[] pts1, Coordinate[] pts2)
             {
                 if (pts1.Length < pts2.Length)
                     return -1;
@@ -292,7 +292,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             /// <param name="pts1"></param>
             /// <param name="pts2"></param>
             /// <returns></returns>
-            public virtual int OLDcompare(Coordinate[] pts1, Coordinate[] pts2)
+            public int OLDcompare(Coordinate[] pts1, Coordinate[] pts2)
             {
                 if (pts1.Length < pts2.Length)
                     return -1;

@@ -33,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public virtual Geometry Read(Stream data)
+        public Geometry Read(Stream data)
         {                                   
             using(BinaryReader reader = new BinaryReader(data))
             {
@@ -46,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public virtual Geometry Read(BinaryReader reader)
+        public Geometry Read(BinaryReader reader)
         {
             ShapeGeometryTypes shapeType = (ShapeGeometryTypes)reader.ReadInt32();
 
@@ -89,7 +89,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public virtual Geometry Read(byte[] data)
+        public Geometry Read(byte[] data)
         {
             using(Stream stream = new MemoryStream(data))
             {

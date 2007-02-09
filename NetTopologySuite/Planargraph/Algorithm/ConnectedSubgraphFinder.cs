@@ -26,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual IList GetConnectedSubgraphs()
+        public IList GetConnectedSubgraphs()
         {
             IList subgraphs = new ArrayList();
 

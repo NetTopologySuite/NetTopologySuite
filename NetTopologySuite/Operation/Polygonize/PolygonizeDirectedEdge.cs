@@ -39,7 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Returns the identifier attached to this directed edge.
         /// Attaches an identifier to this directed edge.
         /// </summary>
-        public virtual long Label
+        public long Label
         {
             get
             {
@@ -55,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Returns the next directed edge in the EdgeRing that this directed edge is a member of.
         /// Sets the next directed edge in the EdgeRing that this directed edge is a member of.
         /// </summary>
-        public virtual PolygonizeDirectedEdge Next
+        public PolygonizeDirectedEdge Next
         {
             get
             {
@@ -71,7 +71,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Returns the ring of directed edges that this directed edge is
         /// a member of, or null if the ring has not been set.
         /// </summary>
-        public virtual bool IsInRing
+        public bool IsInRing
         {
             get
             {
@@ -83,7 +83,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Gets/Sets the ring of directed edges that this directed edge is
         /// a member of.
         /// </summary>
-        public virtual EdgeRing Ring
+        public EdgeRing Ring
         {
             get
             {

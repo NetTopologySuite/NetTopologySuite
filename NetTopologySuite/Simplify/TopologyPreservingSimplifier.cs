@@ -51,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public virtual double DistanceTolerance
+        public double DistanceTolerance
         {
             get
             {
@@ -67,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual Geometry GetResultGeometry() 
+        public Geometry GetResultGeometry() 
         {
             lineStringMap = new Hashtable();
             inputGeom.Apply(new LineStringMapBuilderFilter(this));
@@ -130,7 +130,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             /// 
             /// </summary>
             /// <param name="geom"></param>
-            public virtual void Filter(Geometry geom)
+            public void Filter(Geometry geom)
             {
                 if (geom is LinearRing) 
                 {

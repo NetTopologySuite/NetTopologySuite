@@ -41,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// 
         /// </summary>
         /// <param name="geom"></param>
-        public virtual void Filter(Geometry geom)
+        public void Filter(Geometry geom)
         {
             if (geom is Point || geom is LineString || geom is Polygon)
                 pts.Add(geom.Coordinate);

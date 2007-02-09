@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Remove the selected Edge element from the list if present.
         /// </summary>
         /// <param name="e">Edge element to remove from list</param>
-        public virtual void Remove(Edge e)
+        public  void Remove(Edge e)
         {
             edges.Remove(e);
         }
@@ -45,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Insert an edge unless it is already in the list.
         /// </summary>
         /// <param name="e"></param>
-        public virtual void Add(Edge e)
+        public  void Add(Edge e)
         {
             edges.Add(e);
             index.Insert(e.Envelope, e);
@@ -55,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="edgeColl"></param>
-        public virtual void AddAll(ICollection edgeColl)
+        public  void AddAll(ICollection edgeColl)
         {
             for (IEnumerator i = edgeColl.GetEnumerator(); i.MoveNext(); ) 
                 Add((Edge)i.Current);
@@ -65,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual IList Edges
+        public  IList Edges
         {
             get
             {
@@ -83,7 +83,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// equal edge, if there is one already in the list,
         /// null otherwise.
         /// </returns>
-        public virtual Edge FindEqualEdge(Edge e)
+        public  Edge FindEqualEdge(Edge e)
         {
             ICollection testEdges = index.Query(e.Envelope);
             for (IEnumerator i = testEdges.GetEnumerator(); i.MoveNext(); ) 
@@ -99,7 +99,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetEnumerator() 
+        public  IEnumerator GetEnumerator() 
         { 
             return edges.GetEnumerator(); 
         }
@@ -109,7 +109,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public virtual Edge this[int index]
+        public  Edge this[int index]
         {
             get
             {
@@ -122,7 +122,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public virtual Edge Get(int i) 
+        public  Edge Get(int i) 
         {
             return (Edge)edges[i]; 
         }
@@ -135,7 +135,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Index, if e is already in the list,
         /// -1 otherwise.
         /// </returns>
-        public virtual int FindEdgeIndex(Edge e)
+        public  int FindEdgeIndex(Edge e)
         {
             for (int i = 0; i < edges.Count; i++)
                 if (((Edge)edges[i]).Equals(e))
@@ -148,7 +148,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="outstream"></param>
-        public virtual void Write(StreamWriter outstream)
+        public  void Write(StreamWriter outstream)
         {
             outstream.Write("MULTILINESTRING ( ");
             for (int j = 0; j < edges.Count; j++) 

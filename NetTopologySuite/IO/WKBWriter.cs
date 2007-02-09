@@ -40,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        public virtual byte[] Write(Geometry geometry)
+        public byte[] Write(Geometry geometry)
         {
             byte[] bytes = GetBytes(geometry);
             Write(geometry, new MemoryStream(bytes));
@@ -53,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="geometry"></param>
         /// <param name="stream"></param>
         /// <returns></returns>
-        public virtual void Write(Geometry geometry, Stream stream)
+        public void Write(Geometry geometry, Stream stream)
         {
             BinaryWriter writer = null;
             try
@@ -76,7 +76,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="writer"></param>
-        protected virtual void Write(Geometry geometry, BinaryWriter writer)
+        protected void Write(Geometry geometry, BinaryWriter writer)
         {
             if (geometry is Point)
                 Write(geometry as Point, writer);
@@ -99,7 +99,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// Writes LittleIndian ByteOrder.
         /// </summary>
         /// <param name="writer"></param>
-        protected virtual void WriteByteOrder(BinaryWriter writer)
+        protected void WriteByteOrder(BinaryWriter writer)
         {
             writer.Write((byte)ByteOrder.LittleIndian);
         }        
@@ -109,7 +109,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="point"></param>
         /// <param name="writer"></param>
-        protected virtual void Write(Point point, BinaryWriter writer)
+        protected void Write(Point point, BinaryWriter writer)
         {
             WriteByteOrder(writer);     // LittleIndian
             writer.Write((int)WKBGeometryTypes.WKBPoint);
@@ -121,7 +121,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="lineString"></param>
         /// <param name="writer"></param>
-        protected virtual void Write(LineString lineString, BinaryWriter writer)
+        protected void Write(LineString lineString, BinaryWriter writer)
         {
             WriteByteOrder(writer);     // LittleIndian
             writer.Write((int)WKBGeometryTypes.WKBLineString);
@@ -135,7 +135,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="polygon"></param>
         /// <param name="writer"></param>
-        protected virtual void Write(Polygon polygon, BinaryWriter writer)
+        protected void Write(Polygon polygon, BinaryWriter writer)
         {
             WriteByteOrder(writer);     // LittleIndian
             writer.Write((int)WKBGeometryTypes.WKBPolygon);
@@ -150,7 +150,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="multiPoint"></param>
         /// <param name="writer"></param>
-        protected virtual void Write(MultiPoint multiPoint, BinaryWriter writer)
+        protected void Write(MultiPoint multiPoint, BinaryWriter writer)
         {
             WriteByteOrder(writer);     // LittleIndian
             writer.Write((int)WKBGeometryTypes.WKBMultiPoint);
@@ -164,7 +164,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="multiLineString"></param>
         /// <param name="writer"></param>
-        protected virtual void Write(MultiLineString multiLineString, BinaryWriter writer)
+        protected void Write(MultiLineString multiLineString, BinaryWriter writer)
         {
             WriteByteOrder(writer);     // LittleIndian
             writer.Write((int)WKBGeometryTypes.WKBMultiLineString);
@@ -178,7 +178,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="multiPolygon"></param>
         /// <param name="writer"></param>
-        protected virtual void Write(MultiPolygon multiPolygon, BinaryWriter writer)
+        protected void Write(MultiPolygon multiPolygon, BinaryWriter writer)
         {
             WriteByteOrder(writer);     // LittleIndian
             writer.Write((int)WKBGeometryTypes.WKBMultiPolygon);
@@ -192,7 +192,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geomCollection"></param>
         /// <param name="writer"></param>
-        protected virtual void Write(GeometryCollection geomCollection, BinaryWriter writer)
+        protected void Write(GeometryCollection geomCollection, BinaryWriter writer)
         {
             WriteByteOrder(writer);     // LittleIndian
             writer.Write((int)WKBGeometryTypes.WKBGeometryCollection);
@@ -206,7 +206,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="coordinate"></param>
         /// <param name="writer"></param>
-        protected virtual void Write(Coordinate coordinate, BinaryWriter writer)
+        protected void Write(Coordinate coordinate, BinaryWriter writer)
         {
             writer.Write((double)coordinate.X);
             writer.Write((double)coordinate.Y);
@@ -217,7 +217,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="ring"></param>
         /// <param name="writer"></param>
-        protected virtual void Write(LinearRing ring, BinaryWriter writer)
+        protected void Write(LinearRing ring, BinaryWriter writer)
         {
             writer.Write((int)ring.NumPoints);
             for(int i = 0; i < ring.Coordinates.Length; i++)
@@ -229,7 +229,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected virtual byte[] GetBytes(Geometry geometry)
+        protected byte[] GetBytes(Geometry geometry)
         {
             if (geometry is Point)
                 return new byte[SetByteStream(geometry as Point)];
@@ -253,7 +253,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected virtual int SetByteStream(Geometry geometry)
+        protected int SetByteStream(Geometry geometry)
         {
             if (geometry is Point)
                 return SetByteStream(geometry as Point);
@@ -277,7 +277,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected virtual int SetByteStream(GeometryCollection geometry)
+        protected int SetByteStream(GeometryCollection geometry)
         {            
             int count = InitCount;
             count += 4;
@@ -291,7 +291,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected virtual int SetByteStream(MultiPolygon geometry)
+        protected int SetByteStream(MultiPolygon geometry)
         {            
             int count = InitCount;
             count += 4;
@@ -305,7 +305,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected virtual int SetByteStream(MultiLineString geometry)
+        protected int SetByteStream(MultiLineString geometry)
         {                       
             int count = InitCount;
             count += 4;
@@ -319,7 +319,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected virtual int SetByteStream(MultiPoint geometry)
+        protected int SetByteStream(MultiPoint geometry)
         {                        
             int count = InitCount;
             count += 4;     // NumPoints
@@ -333,7 +333,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected virtual int SetByteStream(Polygon geometry)
+        protected int SetByteStream(Polygon geometry)
         {                
             int count = InitCount;
             count += 4 + 4;                                 // NumRings + NumPoints
@@ -347,7 +347,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected virtual int SetByteStream(LineString geometry)
+        protected int SetByteStream(LineString geometry)
         {
             int numPoints = geometry.NumPoints;
             int count = InitCount;
@@ -361,7 +361,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected virtual int SetByteStream(Point geometry)
+        protected int SetByteStream(Point geometry)
         {
             return 21;
         }

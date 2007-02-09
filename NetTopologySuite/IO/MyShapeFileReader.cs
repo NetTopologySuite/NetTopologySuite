@@ -46,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="filepath">Shapefile path.</param>
         /// <returns><c>GeometryCollection</c> containing all geometries in shapefile.</returns>
-        public virtual GeometryCollection Read(string filepath)
+        public GeometryCollection Read(string filepath)
         {
             using (Stream stream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
@@ -61,7 +61,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="stream">Shapefile data stream.</param>
         /// <returns><c>GeometryCollection</c> containing all geometries in shapefile.</returns>
-        protected virtual GeometryCollection Read(Stream stream)
+        protected GeometryCollection Read(Stream stream)
         {
             // Read big endian values
             using (BigEndianBinaryReader beReader = new BigEndianBinaryReader(stream))
@@ -131,7 +131,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// Reads Point shapefile
         /// </summary>
         /// <param name="stream"></param>
-        protected virtual IList ReadPointData(Stream stream)
+        protected IList ReadPointData(Stream stream)
         {
             IList list = new ArrayList();
 
@@ -174,7 +174,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>
-        protected virtual IList ReadLineStringData(Stream stream)
+        protected IList ReadLineStringData(Stream stream)
         {
             IList list = new ArrayList();
 
@@ -214,7 +214,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>
-        protected virtual IList ReadPolygonData(Stream stream)
+        protected IList ReadPolygonData(Stream stream)
         {
             IList list = new ArrayList();
 
@@ -254,7 +254,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>
-        protected virtual IList ReadMultiPointData(Stream stream)
+        protected IList ReadMultiPointData(Stream stream)
         {
             IList list = new ArrayList();
 

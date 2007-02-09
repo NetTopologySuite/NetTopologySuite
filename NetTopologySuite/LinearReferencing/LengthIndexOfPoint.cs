@@ -53,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="inputPt">The coordinate to locate.</param>
         /// <returns>The location of the nearest point.</returns>
-        public virtual double IndexOf(Coordinate inputPt)
+        public double IndexOf(Coordinate inputPt)
         {
             return IndexOfFromStart(inputPt, -1.0);
         }
@@ -71,7 +71,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="inputPt">The coordinate to locate.</param>
         /// <param name="minIndex">The minimum location for the point location.</param>
         /// <returns>The location of the nearest point.</returns>
-        public virtual double IndexOfAfter(Coordinate inputPt, double minIndex)
+        public double IndexOfAfter(Coordinate inputPt, double minIndex)
         {
             if (minIndex < 0.0) return IndexOf(inputPt);
 

@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <summary>
         /// 
         /// </summary>
-        public virtual IList DirectedEdges
+        public IList DirectedEdges
         {
             get
             {
@@ -47,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <summary>
         /// 
         /// </summary>
-        public virtual IList Nodes
+        public IList Nodes
         {
             get
             {
@@ -58,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <summary>
         /// Gets the rightmost coordinate in the edges of the subgraph.
         /// </summary>
-        public virtual Coordinate RightMostCoordinate
+        public Coordinate RightMostCoordinate
         {
             get
             {
@@ -71,7 +71,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// Finds the edges in the graph and the rightmost coordinate.
         /// </summary>
         /// <param name="node">A node to start the graph traversal from.</param>
-        public virtual void Create(Node node)
+        public void Create(Node node)
         {
             AddReachable(node);
             finder.FindEdge(dirEdgeList);
@@ -135,7 +135,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// 
         /// </summary>
         /// <param name="outsideDepth"></param>
-        public virtual void ComputeDepth(int outsideDepth)
+        public void ComputeDepth(int outsideDepth)
         {
             ClearVisitedEdges();
             // find an outside edge to assign depth to
@@ -234,7 +234,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// Interior Area edges are the result of dimensional collapses.
         /// They do not form part of the result area boundary.
         /// </summary>
-        public virtual void FindResultEdges()
+        public void FindResultEdges()
         {
             for (IEnumerator it = dirEdgeList.GetEnumerator(); it.MoveNext(); )
             {
@@ -260,7 +260,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// This relationship is used to sort the BufferSubgraphs so that shells are guaranteed to
         /// be built before holes.
         /// </summary>
-        public virtual int CompareTo(Object o) 
+        public int CompareTo(Object o) 
         {
             BufferSubgraph graph = (BufferSubgraph) o;
             if (this.RightMostCoordinate.X < graph.RightMostCoordinate.X) 

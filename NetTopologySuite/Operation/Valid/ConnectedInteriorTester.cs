@@ -56,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -68,7 +68,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual bool IsInteriorsConnected()
+        public bool IsInteriorsConnected()
         {
             // node the edges, in case holes touch the shell
             IList splitEdges = new ArrayList();
@@ -184,7 +184,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// 
         /// </summary>
         /// <param name="start"></param>
-        protected virtual void VisitLinkedDirectedEdges(DirectedEdge start)
+        protected void VisitLinkedDirectedEdges(DirectedEdge start)
         {
             DirectedEdge startDe = start;
             DirectedEdge de = start;

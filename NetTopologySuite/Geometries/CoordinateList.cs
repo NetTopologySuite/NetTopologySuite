@@ -62,7 +62,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="i">Coordinate index.</param>
         /// <return>Coordinate specified.</return>
-        public virtual Coordinate GetCoordinate(int i)
+        public Coordinate GetCoordinate(int i)
         {
             return (Coordinate) base[i];
         }        
@@ -74,7 +74,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed.</param>
         /// <param name="direction">If false, the array is added in reverse order.</param>
         /// <returns>Return true.</returns>
-        public virtual bool Add(Coordinate[] coord, bool allowRepeated, bool direction)
+        public bool Add(Coordinate[] coord, bool allowRepeated, bool direction)
         {
             if (direction)
                 for (int i = 0; i < coord.Length; i++)
@@ -91,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coord">Coordinates to be inserted.</param>
         /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed.</param>
         /// <returns>Return true.</returns>
-        public virtual bool Add(Coordinate[] coord, bool allowRepeated)
+        public bool Add(Coordinate[] coord, bool allowRepeated)
         {
             return Add(coord, allowRepeated, true);
         }
@@ -102,7 +102,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="obj">Coordinate to be inserted, as object.</param>
         /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed.</param>
         /// <returns>Return true.</returns>
-        public virtual bool Add(object obj, bool allowRepeated)
+        public bool Add(object obj, bool allowRepeated)
         {
             return Add((Coordinate) obj, allowRepeated);
         }
@@ -113,7 +113,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coord">Coordinate to be inserted.</param>
         /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed.</param>
         /// <returns>Return true if all ok.</returns>
-        public virtual bool Add(Coordinate coord, bool allowRepeated)
+        public bool Add(Coordinate coord, bool allowRepeated)
         {
             // don't add duplicate coordinates
             if (!allowRepeated)
@@ -135,7 +135,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coll">Coordinates collection to be inserted.</param>
         /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed.</param>
         /// <returns>Return true if at least one element has added (IList not empty).</returns>
-        public virtual bool AddAll(List<Coordinate> coll, bool allowRepeated)
+        public bool AddAll(List<Coordinate> coll, bool allowRepeated)
         {
             bool isChanged = false;
             foreach (Coordinate c in coll)
@@ -149,7 +149,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Ensure this coordList is a ring, by adding the start point if necessary.
         /// </summary>
-        public virtual void CloseRing()
+        public void CloseRing()
         {
             if (this.Count > 0)
                 Add(this[0], false);
@@ -159,7 +159,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Returns the Coordinates in this collection.
         /// </summary>
         /// <returns>Coordinater as <c>Coordinate[]</c> array.</returns>
-        public virtual Coordinate[] ToCoordinateArray()
+        public Coordinate[] ToCoordinateArray()
         {
             return this.ToArray();
         }

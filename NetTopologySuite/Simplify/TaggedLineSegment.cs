@@ -39,7 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public virtual Geometry Parent
+        public Geometry Parent
         {
             get
             {
@@ -50,7 +50,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public virtual int Index
+        public int Index
         {
             get
             {

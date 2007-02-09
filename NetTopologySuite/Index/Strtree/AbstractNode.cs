@@ -33,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// Returns either child AbstractNodes, or if this is a leaf node, real data (wrapped
         /// in ItemBoundables).
         /// </summary>
-        public virtual IList ChildBoundables
+        public IList ChildBoundables
         {
             get
             {
@@ -56,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <summary>
         /// 
         /// </summary>
-        public virtual object Bounds
+        public object Bounds
         {
             get
             {
@@ -72,7 +72,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// Returns 0 if this node is a leaf, 1 if a parent of a leaf, and so on; the
         /// root node will have the highest level.
         /// </summary>
-        public virtual int Level
+        public int Level
         {
             get
             {
@@ -85,7 +85,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// (wrapped in an ItemBoundable).
         /// </summary>
         /// <param name="childBoundable"></param>
-        public virtual void AddChildBoundable(IBoundable childBoundable) 
+        public void AddChildBoundable(IBoundable childBoundable) 
         {
             Assert.IsTrue(bounds == null);
             childBoundables.Add(childBoundable);

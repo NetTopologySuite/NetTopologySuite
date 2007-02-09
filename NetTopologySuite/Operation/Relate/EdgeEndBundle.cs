@@ -24,24 +24,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         public EdgeEndBundle(EdgeEnd e) : base(e.Edge, e.Coordinate, e.DirectedCoordinate, new Label(e.Label))
         {
             Insert(e);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public override Label Label
-        {
-            get
-            {  
-                return label;
-            }
-        }
+        }       
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetEnumerator() 
+        public IEnumerator GetEnumerator() 
         { 
             return edgeEnds.GetEnumerator(); 
         }
@@ -49,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// <summary>
         /// 
         /// </summary>
-        public virtual IList EdgeEnds
+        public IList EdgeEnds
         {
             get
             {
@@ -61,7 +50,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// 
         /// </summary>
         /// <param name="e"></param>
-        public virtual void Insert(EdgeEnd e)
+        public void Insert(EdgeEnd e)
         {
             // Assert: start point is the same
             // Assert: direction is the same
@@ -190,7 +179,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// Update the IM with the contribution for the computed label for the EdgeStubs.
         /// </summary>
         /// <param name="im"></param>
-        public virtual void UpdateIM(IntersectionMatrix im)
+        public void UpdateIM(IntersectionMatrix im)
         {
             Edge.UpdateIM(label, im);
         }

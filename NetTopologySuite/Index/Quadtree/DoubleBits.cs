@@ -107,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public virtual double Double
+        public double Double
         {
             get
             {
@@ -118,7 +118,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// Determines the exponent for the number.
         /// </summary>
-        public virtual int BiasedExponent
+        public int BiasedExponent
         {
             get
             {
@@ -131,7 +131,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// Determines the exponent for the number.
         /// </summary>
-        public virtual int Exponent
+        public int Exponent
         {
             get
             {
@@ -143,7 +143,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// 
         /// </summary>
         /// <param name="nBits"></param>
-        public virtual void ZeroLowerBits(int nBits)
+        public void ZeroLowerBits(int nBits)
         {
             long invMask = (1L << nBits) - 1L;
             long mask = ~ invMask;
@@ -155,7 +155,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public virtual int GetBit(int i)
+        public int GetBit(int i)
         {
             long mask = (1L << i);
             return (xBits & mask) != 0 ? 1 : 0;
@@ -169,7 +169,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="db"></param>
         /// <returns> The number of common most-significant mantissa bits.</returns>
-        public virtual int NumCommonMantissaBits(DoubleBits db)
+        public int NumCommonMantissaBits(DoubleBits db)
         {
             for (int i = 0; i < 52; i++)
             {            

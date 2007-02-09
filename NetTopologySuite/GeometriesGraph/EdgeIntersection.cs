@@ -24,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// The point of intersection.
         /// </summary>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -41,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// The index of the containing line segment in the parent edge.
         /// </summary>
-        public virtual int SegmentIndex
+        public int SegmentIndex
         {
             get 
             {
@@ -58,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// The edge distance of this point along the containing line segment.
         /// </summary>
-        public virtual double Distance
+        public double Distance
         {
             get
             {
@@ -88,7 +88,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public virtual int CompareTo(object obj)
+        public int CompareTo(object obj)
         {
             EdgeIntersection other = (EdgeIntersection)obj;
             return Compare(other.SegmentIndex, other.Distance);
@@ -104,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 0 this EdgeIntersection is at the argument location,
         /// 1 this EdgeIntersection is located after the argument location.
         /// </returns>
-        public virtual int Compare(int segmentIndex, double dist)
+        public int Compare(int segmentIndex, double dist)
         {
             if (this.SegmentIndex < segmentIndex) 
                 return -1;
@@ -122,7 +122,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="maxSegmentIndex"></param>
         /// <returns></returns>
-        public virtual bool IsEndPoint(int maxSegmentIndex)
+        public bool IsEndPoint(int maxSegmentIndex)
         {
             if (SegmentIndex == 0 && Distance == 0.0) 
                 return true;
@@ -135,7 +135,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="outstream"></param>
-        public virtual void Write(StreamWriter outstream)
+        public void Write(StreamWriter outstream)
         {
             outstream.Write(Coordinate);
             outstream.Write(" seg # = " + SegmentIndex);

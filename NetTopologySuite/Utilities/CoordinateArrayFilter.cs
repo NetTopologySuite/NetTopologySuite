@@ -26,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <summary>
         /// Returns the <c>Coordinate</c>s collected by this <c>CoordinateArrayFilter</c>.
         /// </summary>
-        public virtual Coordinate[] Coordinates
+        public Coordinate[] Coordinates
         {
             get
             {
@@ -38,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// 
         /// </summary>
         /// <param name="coord"></param>
-        public virtual void Filter(Coordinate coord) 
+        public void Filter(Coordinate coord) 
         {
             pts[n++] = coord;
         }

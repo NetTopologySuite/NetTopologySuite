@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             /// 
             /// </summary>
             /// <param name="g"></param>
-            public virtual void Filter(Geometry g) 
+            public void Filter(Geometry g) 
             {
                 if (g is LineString)
                     container.Add((LineString)g);
@@ -105,7 +105,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// the constituent linework will be extracted and used.
         /// </summary>
         /// <param name="geomList">A list of <c>Geometry</c>s with linework to be polygonized.</param>
-        public virtual void Add(IList geomList)
+        public void Add(IList geomList)
         {
             for (IEnumerator i = geomList.GetEnumerator(); i.MoveNext(); ) 
             {
@@ -121,7 +121,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// the constituent linework will be extracted and used
         /// </summary>
         /// <param name="g">A <c>Geometry</c> with linework to be polygonized.</param>
-        public virtual void Add(Geometry g)
+        public void Add(Geometry g)
         {
             g.Apply(lineStringAdder);
         }
@@ -141,7 +141,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Compute and returns the list of polygons formed by the polygonization.
         /// </summary>        
-        public virtual IList Polygons
+        public IList Polygons
         {
             get
             {
@@ -153,7 +153,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <summary> 
         /// Compute and returns the list of dangling lines found during polygonization.
         /// </summary>
-        public virtual IList Dangles
+        public IList Dangles
         {
             get
             {
@@ -165,7 +165,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Compute and returns the list of cut edges found during polygonization.
         /// </summary>
-        public virtual IList CutEdges
+        public IList CutEdges
         {
             get
             {
@@ -177,7 +177,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Compute and returns the list of lines forming invalid rings found during polygonization.
         /// </summary>
-        public virtual IList InvalidRingLines
+        public IList InvalidRingLines
         {
             get
             {

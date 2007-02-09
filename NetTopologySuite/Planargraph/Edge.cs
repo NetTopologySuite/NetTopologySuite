@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="de0"></param>
         /// <param name="de1"></param>
-        public virtual void SetDirectedEdges(DirectedEdge de0, DirectedEdge de1)
+        public void SetDirectedEdges(DirectedEdge de0, DirectedEdge de1)
         {
             dirEdge = new DirectedEdge[] { de0, de1, };
             de0.Edge = this;
@@ -58,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="i">0 or 1.</param>
         /// <returns></returns>
-        public virtual DirectedEdge GetDirEdge(int i)
+        public DirectedEdge GetDirEdge(int i)
         {
             return dirEdge[i];
         }
@@ -69,7 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="fromNode"></param>
         /// <returns></returns>
-        public virtual DirectedEdge GetDirEdge(Node fromNode)
+        public DirectedEdge GetDirEdge(Node fromNode)
         {
             if (dirEdge[0].FromNode == fromNode) 
                 return dirEdge[0];
@@ -86,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public virtual Node GetOppositeNode(Node node)
+        public Node GetOppositeNode(Node node)
         {
             if (dirEdge[0].FromNode == node) 
                 return dirEdge[0].ToNode;

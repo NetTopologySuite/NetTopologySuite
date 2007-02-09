@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Index
         /// 
         /// </summary>
         /// <param name="item"></param>
-        public virtual void VisitItem(object item)
+        public void VisitItem(object item)
         {
             items.Add(item);
         }
@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Index
         /// <summary>
         /// 
         /// </summary>
-        public virtual ArrayList Items
+        public ArrayList Items
         {
             get
             {

@@ -67,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="i">The index of the coordinate.</param>
         /// <returns>The requested Coordinate instance.</returns>
-        public virtual Coordinate GetCoordinate(int i) 
+        public Coordinate GetCoordinate(int i) 
         {
             return coordinates[i];
         }
@@ -77,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="i">The index of the coordinate.</param>
         /// <returns>A copy of the requested Coordinate.</returns>
-        public virtual Coordinate GetCoordinateCopy(int i) 
+        public Coordinate GetCoordinateCopy(int i) 
         {
             return new Coordinate(coordinates[i]);
         }
@@ -88,7 +88,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="index">The index of the coordinate to copy.</param>
         /// <param name="coord">A Coordinate to receive the value.</param>
-        public virtual void GetCoordinate(int index, Coordinate coord) 
+        public void GetCoordinate(int index, Coordinate coord) 
         {
             coord.X = coordinates[index].X;
             coord.Y = coordinates[index].Y;
@@ -101,7 +101,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>
         /// The value of the X ordinate in the index'th coordinate.
         /// </returns>
-        public virtual double GetX(int index) 
+        public double GetX(int index) 
         {
             return coordinates[index].X;
         }
@@ -113,7 +113,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>
         /// The value of the Y ordinate in the index'th coordinate.
         /// </returns>
-        public virtual double GetY(int index) 
+        public double GetY(int index) 
         {
             return coordinates[index].Y;
         }
@@ -127,7 +127,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <returns></returns>
-        public virtual double GetOrdinate(int index, Ordinates ordinate)
+        public double GetOrdinate(int index, Ordinates ordinate)
         {
             switch (ordinate) 
             {
@@ -146,7 +146,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Creates a deep copy of the object.
         /// </summary>
         /// <returns>The deep copy.</returns>
-        public virtual object Clone() 
+        public object Clone() 
         {
             Coordinate[] cloneCoordinates = new Coordinate[Count];
             for (int i = 0; i < coordinates.Length; i++) 
@@ -157,7 +157,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Returns the length of the coordinate sequence.
         /// </summary>
-        public virtual int Count 
+        public int Count 
         {
             get
             {
@@ -171,7 +171,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <param name="value">The new ordinate value.</param>
-        public virtual void SetOrdinate(int index, Ordinates ordinate, double value)
+        public void SetOrdinate(int index, Ordinates ordinate, double value)
         {
             switch (ordinate) 
             {
@@ -193,7 +193,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         ///This method exposes the internal Array of Coordinate Objects.       
         /// </summary>
         /// <returns></returns>
-        public virtual Coordinate[] ToCoordinateArray() 
+        public Coordinate[] ToCoordinateArray() 
         {
             return coordinates;
         }
@@ -204,7 +204,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="env">The envelope to expand.</param>
         /// <returns>A reference to the expanded envelope.</returns>
-        public virtual Envelope ExpandEnvelope(Envelope env)
+        public Envelope ExpandEnvelope(Envelope env)
         {
             for (int i = 0; i < coordinates.Length; i++ ) 
                 env.ExpandToInclude(coordinates[i]);            

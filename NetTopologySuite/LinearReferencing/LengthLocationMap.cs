@@ -56,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="length">The length index.</param>
         /// <returns>The corresponding <see cref="LinearLocation" />.</returns>
-        public virtual LinearLocation GetLocation(double length)
+        public LinearLocation GetLocation(double length)
         {
             double forwardLength = length;
             if (length < 0.0)
@@ -106,7 +106,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="loc"></param>
         /// <returns></returns>
-        public virtual double GetLength(LinearLocation loc)
+        public double GetLength(LinearLocation loc)
         {
             double totalLength = 0.0;
             

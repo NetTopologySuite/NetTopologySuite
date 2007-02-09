@@ -30,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <summary>
         /// 
         /// </summary>
-        public virtual DirectedEdge Edge
+        public DirectedEdge Edge
         {
             get
             {
@@ -41,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -53,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// 
         /// </summary>
         /// <param name="dirEdgeList"></param>
-        public virtual void FindEdge(IList dirEdgeList)
+        public void FindEdge(IList dirEdgeList)
         {
             /*
              * Check all forward DirectedEdges only.  This is still general,

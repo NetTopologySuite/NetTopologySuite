@@ -61,7 +61,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <summary>
         /// 
         /// </summary>
-        public virtual int Id
+        public  int Id
         {
             get
             {
@@ -76,7 +76,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <summary>
         /// 
         /// </summary>
-        public virtual object Context
+        public  object Context
         {
             get
             {
@@ -87,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <summary>
         /// 
         /// </summary>
-        public virtual Envelope Envelope
+        public  Envelope Envelope
         {
             get
             {
@@ -104,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <summary>
         /// 
         /// </summary>
-        public virtual int StartIndex
+        public  int StartIndex
         {
             get
             {
@@ -115,7 +115,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <summary>
         /// 
         /// </summary>
-        public virtual int EndIndex
+        public  int EndIndex
         {
             get
             {
@@ -128,7 +128,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// </summary>
         /// <param name="index"></param>
         /// <param name="ls"></param>
-        public virtual void GetLineSegment(int index, ref LineSegment ls)
+        public  void GetLineSegment(int index, ref LineSegment ls)
         {
             ls.P0 = pts[index];
             ls.P1 = pts[index + 1];
@@ -138,7 +138,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// Return the subsequence of coordinates forming this chain.
         /// Allocates a new array to hold the Coordinates.
         /// </summary>
-        public virtual Coordinate[] Coordinates
+        public  Coordinate[] Coordinates
         {
             get
             {
@@ -156,7 +156,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="mcs"></param>
-        public virtual void Select(Envelope searchEnv, MonotoneChainSelectAction mcs)
+        public  void Select(Envelope searchEnv, MonotoneChainSelectAction mcs)
         {
             ComputeSelect(searchEnv, start, end, mcs);
         }
@@ -200,7 +200,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// </summary>
         /// <param name="mc"></param>
         /// <param name="mco"></param>
-        public virtual void ComputeOverlaps(MonotoneChain mc, MonotoneChainOverlapAction mco)
+        public  void ComputeOverlaps(MonotoneChain mc, MonotoneChainOverlapAction mco)
         {
             ComputeOverlaps(start, end, mc, mc.start, mc.end, mco);
         }

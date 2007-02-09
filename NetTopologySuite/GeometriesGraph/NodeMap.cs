@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// This method expects that a node has a coordinate value.
         /// </summary>
         /// <param name="coord"></param>
-        public virtual Node AddNode(Coordinate coord)
+        public  Node AddNode(Coordinate coord)
         {
             Node node = (Node)nodeMap[coord];
             if (node == null) 
@@ -44,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public virtual Node AddNode(Node n)
+        public  Node AddNode(Node n)
         {
             Node node = (Node)nodeMap[n.Coordinate];
             if (node == null) 
@@ -62,7 +62,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Adds the EdgeEnd to the (possibly new) node.
         /// </summary>
         /// <param name="e"></param>
-        public virtual void Add(EdgeEnd e)
+        public  void Add(EdgeEnd e)
         {
             Coordinate p = e.Coordinate;
             Node n = AddNode(p);
@@ -73,7 +73,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// The node if found; null otherwise.
         /// </returns>
         /// <param name="coord"></param>
-        public virtual Node Find(Coordinate coord)  
+        public  Node Find(Coordinate coord)  
         {
             return (Node)nodeMap[coord];
         }
@@ -82,7 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetEnumerator()
+        public  IEnumerator GetEnumerator()
         {
             return nodeMap.Values.GetEnumerator();
         }
@@ -90,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual IList Values
+        public  IList Values
         {
             get
             {
@@ -103,7 +103,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
-        public virtual IList GetBoundaryNodes(int geomIndex)
+        public  IList GetBoundaryNodes(int geomIndex)
         {
             IList bdyNodes = new ArrayList();
             for (IEnumerator i = GetEnumerator(); i.MoveNext(); ) 
@@ -119,7 +119,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="outstream"></param>
-        public virtual void Write(StreamWriter outstream)
+        public  void Write(StreamWriter outstream)
         {
             for (IEnumerator i = GetEnumerator(); i.MoveNext(); ) 
             {

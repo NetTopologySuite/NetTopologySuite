@@ -26,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// 
         /// </summary>
-        public virtual LineString Line
+        public LineString Line
         {
             get
             {

@@ -77,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public virtual Geometry GetArgGeometry(int i)
+        public Geometry GetArgGeometry(int i)
         {
             return arg[i].Geometry; 
         }
@@ -85,7 +85,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// <summary>
         /// 
         /// </summary>
-        protected virtual PrecisionModel ComputationPrecision
+        protected PrecisionModel ComputationPrecision
         {
             get
             {

@@ -54,7 +54,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// For all nodes in this EdgeRing,
         /// link the DirectedEdges at the node to form minimalEdgeRings
         /// </summary>
-        public virtual void LinkDirectedEdgesForMinimalEdgeRings()
+        public void LinkDirectedEdgesForMinimalEdgeRings()
         {
             DirectedEdge de = startDe;
             do 
@@ -70,7 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual IList BuildMinimalRings()
+        public IList BuildMinimalRings()
         {
             IList minEdgeRings = new ArrayList();
             DirectedEdge de = startDe;

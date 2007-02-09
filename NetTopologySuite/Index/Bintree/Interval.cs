@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <summary>
         /// 
         /// </summary>
-        public virtual double Min
+        public  double Min
         {
             get 
             { 
@@ -29,7 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <summary>
         /// 
         /// </summary>
-        public virtual double Max
+        public  double Max
         {
             get 
             { 
@@ -44,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <summary>
         /// 
         /// </summary>
-        public virtual double Width
+        public  double Width
         {
             get
             {
@@ -85,7 +85,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// </summary>
         /// <param name="min"></param>
         /// <param name="max"></param>
-        public virtual void Init(double min, double max)
+        public  void Init(double min, double max)
         {
             this.Min = min;
             this.Max = max;
@@ -101,7 +101,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// 
         /// </summary>
         /// <param name="interval"></param>
-        public virtual void ExpandToInclude(Interval interval)
+        public  void ExpandToInclude(Interval interval)
         {
             if (interval.Max > Max) 
                 Max = interval.Max;
@@ -114,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// </summary>
         /// <param name="interval"></param>
         /// <returns></returns>
-        public virtual bool Overlaps(Interval interval)
+        public  bool Overlaps(Interval interval)
         {
             return Overlaps(interval.Min, interval.Max);
         }
@@ -125,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <param name="min"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        public virtual bool Overlaps(double min, double max)
+        public  bool Overlaps(double min, double max)
         {
             if (this.Min > max || this.Max < min) 
                 return false;
@@ -137,7 +137,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// </summary>
         /// <param name="interval"></param>
         /// <returns></returns>
-        public virtual bool Contains(Interval interval)
+        public  bool Contains(Interval interval)
         {
             return Contains(interval.Min, interval.Max);
         }
@@ -148,7 +148,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <param name="min"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        public virtual bool Contains(double min, double max)
+        public  bool Contains(double min, double max)
         {
             return (min >= this.Min && max <= this.Max);
         }
@@ -158,7 +158,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        public virtual bool Contains(double p)
+        public  bool Contains(double p)
         {
             return (p >= this.Min && p <= this.Max);
         }

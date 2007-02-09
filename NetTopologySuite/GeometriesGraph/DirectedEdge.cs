@@ -66,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool InResult
+        public bool InResult
         {
             get
             {
@@ -81,7 +81,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool IsInResult
+        public bool IsInResult
         {
             get
             {
@@ -92,7 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool Visited
+        public bool Visited
         {
             get
             {
@@ -107,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool IsVisited
+        public bool IsVisited
         {
             get
             {
@@ -118,7 +118,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual EdgeRing EdgeRing
+        public EdgeRing EdgeRing
         {
             get
             {
@@ -133,7 +133,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual EdgeRing MinEdgeRing
+        public EdgeRing MinEdgeRing
         {
             get
             {
@@ -150,7 +150,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="position"></param>
         /// <returns></returns>
-        public virtual int GetDepth(Positions position) 
+        public int GetDepth(Positions position) 
         { 
             return depth[(int)position]; 
         }
@@ -160,7 +160,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="position"></param>
         /// <param name="depthVal"></param>
-        public virtual void SetDepth(Positions position, int depthVal)
+        public void SetDepth(Positions position, int depthVal)
         {
             if (depth[(int)position] != -999) 
                 if (depth[(int)position] != depthVal)                                     
@@ -171,7 +171,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual int DepthDelta
+        public int DepthDelta
         {
             get
             {
@@ -189,7 +189,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// This is used for edges corresponding to lines, which will only
         /// appear oriented in a single direction in the result.
         /// </summary>
-        public virtual bool VisitedEdge
+        public bool VisitedEdge
         {
             get
             {
@@ -205,7 +205,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool IsForward
+        public bool IsForward
         {
             get
             {
@@ -216,7 +216,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual DirectedEdge Sym
+        public DirectedEdge Sym
         {
             get
             {
@@ -231,7 +231,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual DirectedEdge Next
+        public DirectedEdge Next
         {
             get
             {
@@ -246,7 +246,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual DirectedEdge NextMin
+        public DirectedEdge NextMin
         {
             get
             {
@@ -263,7 +263,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// at least one of the labels is a line label
         /// any labels which are not line labels have all Locations = Exterior.
         /// </summary>
-        public virtual bool IsLineEdge
+        public bool IsLineEdge
         {
             get
             {
@@ -282,7 +282,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// and for each Geometry both sides are in the interior.
         /// </summary>
         /// <returns><c>true</c> if this is an interior Area edge.</returns>
-        public virtual bool IsInteriorAreaEdge
+        public bool IsInteriorAreaEdge
         {
             get
             {
@@ -318,7 +318,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="depth"></param>
         /// <param name="position"></param>
-        public virtual void SetEdgeDepths(Positions position, int depth)
+        public void SetEdgeDepths(Positions position, int depth)
         {
             // get the depth transition delta from R to Curve for this directed Edge
             int depthDelta = Edge.DepthDelta;
@@ -344,7 +344,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="depth"></param>
         /// <param name="position"></param>
         [Obsolete("Use SetEdgeDepths instead")]
-        public virtual void OLDSetEdgeDepths(Positions position, int depth)
+        public void OLDSetEdgeDepths(Positions position, int depth)
         {
             int depthDelta = Edge.DepthDelta;
             Locations loc = label.GetLocation(0, position);
@@ -373,7 +373,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="outstream"></param>
-        public virtual void WriteEdge(StreamWriter outstream)
+        public void WriteEdge(StreamWriter outstream)
         {
             Write(outstream);
             outstream.Write(" ");

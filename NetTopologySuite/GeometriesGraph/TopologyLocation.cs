@@ -89,7 +89,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        public virtual Locations Get(Positions posIndex)
+        public  Locations Get(Positions posIndex)
         {
             int index = (int)posIndex;
             if (index < location.Length)
@@ -103,7 +103,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        public virtual Locations this[Positions posIndex]
+        public  Locations this[Positions posIndex]
         {
             get
             {
@@ -118,7 +118,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns>
         /// <c>true</c> if all locations are Null.
         /// </returns>
-        public virtual bool IsNull
+        public  bool IsNull
         {
             get
             {
@@ -132,7 +132,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns> 
         /// <c>true</c> if any locations are Null.
         /// </returns>
-        public virtual bool IsAnyNull
+        public  bool IsAnyNull
         {
             get
             {
@@ -149,7 +149,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="le"></param>
         /// <param name="locIndex"></param>
         /// <returns></returns>
-        public virtual bool IsEqualOnSide(TopologyLocation le, int locIndex)
+        public  bool IsEqualOnSide(TopologyLocation le, int locIndex)
         {
             return location[locIndex] == le.location[locIndex];
         }
@@ -157,7 +157,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool IsArea
+        public  bool IsArea
         {
             get
             {
@@ -168,7 +168,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool IsLine
+        public  bool IsLine
         {
             get
             {
@@ -179,7 +179,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual void Flip()
+        public  void Flip()
         {
             if (location.Length <= 1) 
                 return;
@@ -192,7 +192,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="locValue"></param>
-        public virtual void SetAllLocations(Locations locValue)
+        public  void SetAllLocations(Locations locValue)
         {
             for (int i = 0; i < location.Length; i++) 
                 location[i] = locValue;            
@@ -202,7 +202,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="locValue"></param>
-        public virtual void SetAllLocationsIfNull(Locations locValue)
+        public  void SetAllLocationsIfNull(Locations locValue)
         {
             for (int i = 0; i < location.Length; i++) 
                 if (location[i] == Locations.Null) 
@@ -214,7 +214,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="locIndex"></param>
         /// <param name="locValue"></param>
-        public virtual void SetLocation(Positions locIndex, Locations locValue)
+        public  void SetLocation(Positions locIndex, Locations locValue)
         {
             location[(int)locIndex] = locValue;
         }
@@ -223,7 +223,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="locValue"></param>
-        public virtual void SetLocation(Locations locValue)
+        public  void SetLocation(Locations locValue)
         {
             SetLocation(Positions.On, locValue);
         }
@@ -232,7 +232,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual Locations[] GetLocations() 
+        public  Locations[] GetLocations() 
         {
             return location; 
         }
@@ -243,7 +243,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="on"></param>
         /// <param name="left"></param>
         /// <param name="right"></param>
-        public virtual void SetLocations(Locations on, Locations left, Locations right) 
+        public  void SetLocations(Locations on, Locations left, Locations right) 
         {
             location[(int)Positions.On] = on;
             location[(int)Positions.Left] = left;
@@ -254,7 +254,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="gl"></param>
-        public virtual void SetLocations(TopologyLocation gl) 
+        public  void SetLocations(TopologyLocation gl) 
         {
             for (int i = 0; i < gl.location.Length; i++) 
                 location[i] = gl.location[i];            
@@ -265,7 +265,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="loc"></param>
         /// <returns></returns>
-        public virtual bool AllPositionsEqual(Locations loc)
+        public  bool AllPositionsEqual(Locations loc)
         {
             for (int i = 0; i < location.Length; i++) 
                 if (location[i] != loc) 
@@ -277,7 +277,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Merge updates only the Null attributes of this object
         /// with the attributes of another.
         /// </summary>
-        public virtual void Merge(TopologyLocation gl)
+        public  void Merge(TopologyLocation gl)
         {
             // if the src is an Area label & and the dest is not, increase the dest to be an Area
             if (gl.location.Length > location.Length) 

@@ -38,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetNodeEnumerator() 
+        public IEnumerator GetNodeEnumerator() 
         {
             return nodes.GetEnumerator(); 
         }
@@ -47,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// 
         /// </summary>
         /// <param name="geomGraph"></param>
-        public virtual void Build(GeometryGraph geomGraph)
+        public void Build(GeometryGraph geomGraph)
         {
             // compute nodes for intersections between previously noded edges
             ComputeIntersectionNodes(geomGraph, 0);
@@ -75,7 +75,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// </summary>
         /// <param name="geomGraph"></param>
         /// <param name="argIndex"></param>
-        public virtual void ComputeIntersectionNodes(GeometryGraph geomGraph, int argIndex)
+        public void ComputeIntersectionNodes(GeometryGraph geomGraph, int argIndex)
         {
             for (IEnumerator edgeIt = geomGraph.GetEdgeEnumerator(); edgeIt.MoveNext(); ) 
             {
@@ -104,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// </summary>
         /// <param name="geomGraph"></param>
         /// <param name="argIndex"></param>
-        public virtual void CopyNodesAndLabels(GeometryGraph geomGraph, int argIndex)
+        public void CopyNodesAndLabels(GeometryGraph geomGraph, int argIndex)
         {
             for (IEnumerator nodeIt = geomGraph.GetNodeEnumerator(); nodeIt.MoveNext(); ) 
             {
@@ -118,7 +118,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// 
         /// </summary>
         /// <param name="ee"></param>
-        public virtual void InsertEdgeEnds(IList ee)
+        public void InsertEdgeEnds(IList ee)
         {
             for (IEnumerator i = ee.GetEnumerator(); i.MoveNext(); ) 
             {

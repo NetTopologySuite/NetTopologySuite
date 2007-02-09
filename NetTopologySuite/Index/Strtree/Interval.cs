@@ -35,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <summary>
         /// 
         /// </summary>
-        public virtual double Centre
+        public double Centre
         {
             get
             {
@@ -48,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="other"></param>
         /// <returns><c>this</c></returns>
-        public virtual Interval ExpandToInclude(Interval other)
+        public Interval ExpandToInclude(Interval other)
         {
             max = Math.Max(max, other.max);
             min = Math.Min(min, other.min);
@@ -60,7 +60,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public virtual bool Intersects(Interval other)
+        public bool Intersects(Interval other)
         {
             return !(other.min > max || other.max < min);
         }

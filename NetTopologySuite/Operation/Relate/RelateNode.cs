@@ -33,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// Update the IM with the contribution for the EdgeEnds incident on this node.
         /// </summary>
         /// <param name="im"></param>
-        public virtual void UpdateIMFromEdges(IntersectionMatrix im)
+        public void UpdateIMFromEdges(IntersectionMatrix im)
         {
             ((EdgeEndBundleStar) edges).UpdateIM(im);
         }

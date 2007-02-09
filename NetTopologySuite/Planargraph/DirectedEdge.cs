@@ -105,7 +105,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Associates this DirectedEdge with an Edge (possibly null, indicating no associated
         /// Edge).
         /// </summary>
-        public virtual Edge Edge
+        public Edge Edge
         {
             get
             {
@@ -122,7 +122,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Returns 0, 1, 2, or 3, indicating the quadrant in which this DirectedEdge's
         /// orientation lies.
         /// </summary>
-        public virtual int Quadrant
+        public int Quadrant
         {
             get
             {
@@ -134,7 +134,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Returns a point to which an imaginary line is drawn from the from-node to
         /// specify this DirectedEdge's orientation.
         /// </summary>
-        public virtual Coordinate DirectionPt
+        public Coordinate DirectionPt
         {
             get
             {
@@ -146,7 +146,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Returns whether the direction of the parent Edge (if any) is the same as that
         /// of this Directed Edge.
         /// </summary>
-        public virtual bool EdgeDirection
+        public bool EdgeDirection
         {
             get
             {
@@ -157,7 +157,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the node from which this DirectedEdge leaves.
         /// </summary>
-        public virtual Node FromNode
+        public Node FromNode
         {
             get
             {
@@ -168,7 +168,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the node to which this DirectedEdge goes.
         /// </summary>
-        public virtual Node ToNode
+        public Node ToNode
         {
             get
             {
@@ -179,7 +179,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the coordinate of the from-node.
         /// </summary>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -191,7 +191,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Returns the angle that the start of this DirectedEdge makes with the
         /// positive x-axis, in radians.
         /// </summary>
-        public virtual double Angle
+        public double Angle
         {
             get
             {
@@ -205,7 +205,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Sets this DirectedEdge's symmetric DirectedEdge, which runs in the opposite
         /// direction.
         /// </summary>
-        public virtual DirectedEdge Sym
+        public DirectedEdge Sym
         {
             get
             {
@@ -231,7 +231,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public virtual int CompareTo(Object obj)
+        public int CompareTo(Object obj)
         {
             DirectedEdge de = (DirectedEdge) obj;
             return CompareDirection(de);
@@ -251,7 +251,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        public virtual int CompareDirection(DirectedEdge e)
+        public int CompareDirection(DirectedEdge e)
         {
             int i = 0;
             // if the rays are in different quadrants, determining the ordering is trivial
@@ -269,7 +269,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Writes a detailed string representation of this DirectedEdge to the given PrintStream.
         /// </summary>
         /// <param name="outstream"></param>
-        public virtual void Write(StreamWriter outstream)
+        public void Write(StreamWriter outstream)
         {
             string className = GetType().FullName;
             int lastDotPos = className.LastIndexOf('.');

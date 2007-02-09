@@ -31,7 +31,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <summary>
         /// 
         /// </summary>
-        public virtual double MinX
+        public  double MinX
         {
             get
             {
@@ -44,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <summary>
         /// 
         /// </summary>
-        public virtual double MaxX
+        public  double MaxX
         {
             get
             {
@@ -59,7 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         /// <param name="ss"></param>
         /// <param name="si"></param>
-        public virtual void ComputeIntersections(SweepLineSegment ss, SegmentIntersector si)
+        public  void ComputeIntersections(SweepLineSegment ss, SegmentIntersector si)
         {
             si.AddIntersections(edge, ptIndex, ss.edge, ss.ptIndex);
         }

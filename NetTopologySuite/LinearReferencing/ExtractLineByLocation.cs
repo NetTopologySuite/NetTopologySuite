@@ -46,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="start">The start location.</param>
         /// <param name="end">The end location.</param>
         /// <returns>A linear geometry.</returns>
-        public virtual Geometry Extract(LinearLocation start, LinearLocation end)
+        public Geometry Extract(LinearLocation start, LinearLocation end)
         {
             if (end.CompareTo(start) < 0)
                 return Reverse(ComputeLinear(end, start));            

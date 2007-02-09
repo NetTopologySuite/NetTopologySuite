@@ -48,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public virtual double DistanceTolerance
+        public double DistanceTolerance
         {
             get
             {
@@ -64,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual Geometry GetResultGeometry()
+        public Geometry GetResultGeometry()
         {
             return (new DPTransformer(this)).Transform(inputGeom);
         }

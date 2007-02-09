@@ -33,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Allows invalid lines to be fixed rather than causing Exceptions.
         /// An invalid line is one which has only one unique point.
         /// </summary>
-        public virtual bool FixInvalidLines
+        public bool FixInvalidLines
         {
             get
             {
@@ -49,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Allows invalid lines to be ignored rather than causing Exceptions.
         /// An invalid line is one which has only one unique point.
         /// </summary>
-        public virtual bool IgnoreInvalidLines
+        public bool IgnoreInvalidLines
         {
             get
             {
@@ -65,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Adds a point to the current line.
         /// </summary>
         /// <param name="pt">The <see cref="Coordinate" /> to add.</param>
-        public virtual void Add(Coordinate pt)
+        public void Add(Coordinate pt)
         {
             Add(pt, true);
         }

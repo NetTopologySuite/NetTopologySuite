@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="p">The coordinate to test.</param>
         /// <param name="geom">The Geometry to test.</param>
         /// <returns><c>true</c> if the point is in the interior or boundary of the Geometry.</returns>
-        public virtual bool Intersects(Coordinate p, Geometry geom)
+        public bool Intersects(Coordinate p, Geometry geom)
         {
             return Locate(p, geom) != Locations.Exterior;
         }
@@ -39,7 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// The algorithm for multi-part Geometries takes into account the boundaryDetermination rule.
         /// </summary>
         /// <returns>The Location of the point relative to the input Geometry.</returns>
-        public virtual Locations Locate(Coordinate p, Geometry geom)
+        public Locations Locate(Coordinate p, Geometry geom)
         {
             if(geom.IsEmpty)
                 return Locations.Exterior;

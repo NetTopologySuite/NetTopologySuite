@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// (which in most cases is the
         /// lower left point of the envelope containing the shape).
         /// </summary>
-        public virtual Coordinate Base  
+        public Coordinate Base  
         {
             get
             {
@@ -52,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// Gets/Sets the location of the shape by specifying the centre of
         /// the shape's bounding box.
         /// </summary>
-        public virtual Coordinate Centre
+        public Coordinate Centre
         {
             get
             {
@@ -67,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <summary>
         /// Gets/Sets the total number of points in the created Geometry.
         /// </summary>
-        public virtual int NumPoints
+        public int NumPoints
         {
             get
             {
@@ -82,7 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <summary>
         /// Gets/Sets the size of the extent of the shape in both x and y directions.        
         /// </summary>                
-        public virtual double Size
+        public double Size
         {
             get
             {
@@ -97,7 +97,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <summary>
         /// Gets/Sets the width of the shape.
         /// </summary>
-        public virtual double Width
+        public double Width
         {
             get
             {
@@ -112,7 +112,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <summary>
         /// Gets/Sets the height of the shape.
         /// </summary>
-        public virtual double Height
+        public double Height
         {
             get
             {
@@ -128,7 +128,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// Creates a rectangular <c>Polygon</c>.
         /// </summary>
         /// <returns>A rectangular polygon.</returns>
-        public virtual Polygon CreateRectangle()
+        public Polygon CreateRectangle()
         {
             int i;
             int ipt = 0;
@@ -175,7 +175,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// Creates a circular <c>Polygon</c>.
         /// </summary>
         /// <returns>A circular polygon.</returns>
-        public virtual Polygon CreateCircle()
+        public Polygon CreateCircle()
         {
 
             Envelope env = dim.Envelope;
@@ -208,7 +208,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <param name="startAng"></param>
         /// <param name="endAng"></param>
         /// <returns></returns>
-        public virtual LineString CreateArc(double startAng, double endAng)
+        public LineString CreateArc(double startAng, double endAng)
         {
             Envelope env = dim.Envelope;
             double xRadius = env.Width / 2.0;
@@ -247,7 +247,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
             /// <summary>
             /// 
             /// </summary>
-            public virtual Coordinate Base
+            public Coordinate Base
             {
                 get { return basecoord; }
                 set { basecoord = value; }
@@ -258,7 +258,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
             /// <summary>
             /// 
             /// </summary>
-            public virtual Coordinate Centre
+            public Coordinate Centre
             {
                 get { return centre; }
                 set { centre = value; }
@@ -269,7 +269,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
             /// <summary>
             /// 
             /// </summary>
-            public virtual double Width
+            public double Width
             {
                 get { return width; }
                 set { width = value; }
@@ -280,7 +280,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
             /// <summary>
             /// 
             /// </summary>
-            public virtual double Height
+            public double Height
             {
                 get { return height; }
                 set { height = value; }
@@ -289,7 +289,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
             /// <summary>
             /// 
             /// </summary>
-            public virtual double Size
+            public double Size
             {
                 get
                 {
@@ -305,7 +305,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
             /// <summary>
             /// 
             /// </summary>
-            public virtual Envelope Envelope
+            public Envelope Envelope
             {
                 get
                 {

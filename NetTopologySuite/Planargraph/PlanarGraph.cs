@@ -44,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        public virtual Node FindNode(Coordinate pt)
+        public Node FindNode(Coordinate pt)
         {
             return (Node)nodeMap.Find(pt);
         }
@@ -55,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="node"></param>
         /// <returns>The added node.</returns>
-        protected virtual void Add(Node node)
+        protected void Add(Node node)
         {
             nodeMap.Add(node);
         }
@@ -66,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Only subclasses can add Edges, to ensure the edges added are of the right class.
         /// </summary>
         /// <param name="edge"></param>
-        protected virtual void Add(Edge edge)
+        protected void Add(Edge edge)
         {
             edges.Add(edge);
             Add(edge.GetDirEdge(0));
@@ -78,7 +78,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// to ensure the edges added are of the right class.
         /// </summary>
         /// <param name="dirEdge"></param>
-        protected virtual void Add(DirectedEdge dirEdge)
+        protected void Add(DirectedEdge dirEdge)
         {
             dirEdges.Add(dirEdge);
         }
@@ -87,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Returns an IEnumerator over the Nodes in this PlanarGraph.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetNodeEnumerator()
+        public IEnumerator GetNodeEnumerator()
         {            
             return nodeMap.GetEnumerator();          
         }
@@ -95,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the Nodes in this PlanarGraph.
         /// </summary>
-        public virtual ICollection Nodes
+        public ICollection Nodes
         {
             get
             {
@@ -108,7 +108,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// were added.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetDirEdgeEnumerator() 
+        public IEnumerator GetDirEdgeEnumerator() 
         {            
             return dirEdges.GetEnumerator();          
         }
@@ -118,7 +118,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// were added.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetEdgeEnumerator()
+        public IEnumerator GetEdgeEnumerator()
         {
             return edges.GetEnumerator(); 
         }
@@ -126,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the Edges that have been added to this PlanarGraph.
         /// </summary>
-        public virtual IList Edges
+        public IList Edges
         {
             get
             {
@@ -141,7 +141,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Node to zero.
         /// </summary>
         /// <param name="edge"></param>
-        public virtual void Remove(Edge edge)
+        public void Remove(Edge edge)
         {
             Remove(edge.GetDirEdge(0));
             Remove(edge.GetDirEdge(1));
@@ -156,7 +156,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// zero.
         /// </summary>
         /// <param name="de"></param>
-        public virtual void Remove(DirectedEdge de)
+        public void Remove(DirectedEdge de)
         {
             DirectedEdge sym = de.Sym;
             if (sym != null) 
@@ -171,7 +171,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Edges.
         /// </summary>
         /// <param name="node"></param>
-        public virtual void Remove(Node node)
+        public void Remove(Node node)
         {
             // unhook all directed edges
             IList outEdges = node.OutEdges.Edges;
@@ -199,7 +199,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="degree"></param>
         /// <returns></returns>
-        public virtual IList FindNodesOfDegree(int degree)
+        public IList FindNodesOfDegree(int degree)
         {
             IList nodesFound = new ArrayList();
             for (IEnumerator i = this.GetNodeEnumerator(); i.MoveNext(); )

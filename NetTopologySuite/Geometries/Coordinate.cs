@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
-
     /// <summary>
     /// A lightweight class used to store coordinates
     /// on the 2-dimensional Cartesian plane.
@@ -28,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// X coordinate.
         /// </summary>
-        public virtual double X
+        public double X
         {
             get
             {
@@ -43,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Y coordinate.
         /// </summary>
-        public virtual double Y
+        public double Y
         {
             get
             {
@@ -58,7 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Z coordinate.
         /// </summary>
-        public virtual double Z
+        public double Z
         {
             get
             {
@@ -105,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Gets/Sets <c>Coordinate</c>s (x,y,z) values.
         /// </summary>
-        public virtual Coordinate CoordinateValue
+        public Coordinate CoordinateValue
         {
             get
             {
@@ -127,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <c>true</c> if the x- and y-coordinates are equal;
         /// the Z coordinates do not have to be equal.
         /// </returns>
-        public virtual bool Equals2D(Coordinate other)
+        public bool Equals2D(Coordinate other)
         {
             if (x != other.x)
                 return false;            
@@ -186,7 +185,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// A negative integer, zero, or a positive integer as this <c>Coordinate</c>
         ///         is less than, equal to, or greater than the specified <c>Coordinate</c>.
         /// </returns>
-        public virtual int CompareTo(object o)
+        public int CompareTo(object o)
         {
             Coordinate other = (Coordinate) o;
             return CompareTo(other);
@@ -205,7 +204,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// A negative integer, zero, or a positive integer as this <c>Coordinate</c>
         ///         is less than, equal to, or greater than the specified <c>Coordinate</c>.
         /// </returns>
-        public virtual int CompareTo(Coordinate other)
+        public int CompareTo(Coordinate other)
         {
             if (x < other.x)
                 return -1;
@@ -223,7 +222,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other"><c>Coordinate</c> with which to do the 3D comparison.</param>
         /// <returns><c>true</c> if <c>other</c> is a <c>Coordinate</c> with the same values for x, y and z.</returns>
-        public virtual bool Equals3D(Coordinate other)
+        public bool Equals3D(Coordinate other)
         {
             return  (x == other.x) && (y == other.y) && ((z == other.z) || 
                     (Double.IsNaN(z) && Double.IsNaN(other.z)));
@@ -242,7 +241,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Create a new object as copy of this instance.
         /// </summary>
         /// <returns></returns>
-        public virtual object Clone()
+        public object Clone()
         {
             return new Coordinate(this.X, this.Y, this.Z);
         }
@@ -252,7 +251,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="p"><c>Coordinate</c> with which to do the distance comparison.</param>
         /// <returns></returns>
-        public virtual double Distance(Coordinate p)
+        public double Distance(Coordinate p)
         {
             double dx = x - p.x;
             double dy = y - p.y;

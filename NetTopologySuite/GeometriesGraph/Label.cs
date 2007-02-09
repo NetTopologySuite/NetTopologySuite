@@ -121,7 +121,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual void Flip()
+        public  void Flip()
         {
             elt[0].Flip();
             elt[1].Flip();
@@ -133,7 +133,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        public virtual Locations GetLocation(int geomIndex, Positions posIndex) 
+        public  Locations GetLocation(int geomIndex, Positions posIndex) 
         { 
             return elt[geomIndex].Get(posIndex); 
         }
@@ -143,7 +143,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
-        public virtual Locations GetLocation(int geomIndex) 
+        public  Locations GetLocation(int geomIndex) 
         { 
             return elt[geomIndex].Get(Positions.On); 
         }
@@ -154,7 +154,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <param name="location"></param>
-        public virtual void SetLocation(int geomIndex, Positions posIndex, Locations location)
+        public  void SetLocation(int geomIndex, Positions posIndex, Locations location)
         {
             elt[geomIndex].SetLocation(posIndex, location);
         }
@@ -164,7 +164,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="location"></param>
-        public virtual void SetLocation(int geomIndex, Locations location)
+        public  void SetLocation(int geomIndex, Locations location)
         {
             elt[geomIndex].SetLocation(Positions.On, location);
         }
@@ -174,7 +174,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="location"></param>
-        public virtual void SetAllLocations(int geomIndex, Locations location)
+        public  void SetAllLocations(int geomIndex, Locations location)
         {
             elt[geomIndex].SetAllLocations(location);
         }
@@ -184,7 +184,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="location"></param>
-        public virtual void SetAllLocationsIfNull(int geomIndex, Locations location)
+        public  void SetAllLocationsIfNull(int geomIndex, Locations location)
         {
             elt[geomIndex].SetAllLocationsIfNull(location);
         }
@@ -193,7 +193,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="location"></param>
-        public virtual void SetAllLocationsIfNull(Locations location)
+        public  void SetAllLocationsIfNull(Locations location)
         {
             SetAllLocationsIfNull(0, location);
             SetAllLocationsIfNull(1, location);
@@ -204,7 +204,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Merging updates any null attributes of this label with the attributes from lbl.
         /// </summary>
         /// <param name="lbl"></param>
-        public virtual void Merge(Label lbl)
+        public  void Merge(Label lbl)
         {
             for (int i = 0; i < 2; i++) 
             {
@@ -229,7 +229,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual int GeometryCount
+        public  int GeometryCount
         {
             get
             {
@@ -247,7 +247,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
-        public virtual bool IsNull(int geomIndex) 
+        public  bool IsNull(int geomIndex) 
         {
             return elt[geomIndex].IsNull; 
         }
@@ -257,7 +257,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
-        public virtual bool IsAnyNull(int geomIndex)
+        public  bool IsAnyNull(int geomIndex)
         { 
             return elt[geomIndex].IsAnyNull; 
         }
@@ -266,7 +266,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual bool IsArea()               
+        public  bool IsArea()               
         { 
             return elt[0].IsArea || elt[1].IsArea;   
         }
@@ -276,7 +276,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
-        public virtual bool IsArea(int geomIndex) 
+        public  bool IsArea(int geomIndex) 
         {
             return elt[geomIndex].IsArea;   
         }
@@ -286,7 +286,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
-        public virtual bool IsLine(int geomIndex)  
+        public  bool IsLine(int geomIndex)  
         {
             return elt[geomIndex].IsLine;   
         }
@@ -297,7 +297,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="lbl"></param>
         /// <param name="side"></param>
         /// <returns></returns>
-        public virtual bool IsEqualOnSide(Label lbl, int side)
+        public  bool IsEqualOnSide(Label lbl, int side)
         {
             return  this.elt[0].IsEqualOnSide(lbl.elt[0], side)
                 &&  this.elt[1].IsEqualOnSide(lbl.elt[1], side);
@@ -309,7 +309,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="loc"></param>
         /// <returns></returns>
-        public virtual bool AllPositionsEqual(int geomIndex, Locations loc)
+        public  bool AllPositionsEqual(int geomIndex, Locations loc)
         {
             return elt[geomIndex].AllPositionsEqual(loc);
         }
@@ -318,7 +318,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Converts one GeometryLocation to a Line location.
         /// </summary>
         /// <param name="geomIndex"></param>
-        public virtual void ToLine(int geomIndex)
+        public  void ToLine(int geomIndex)
         {
             if (elt[geomIndex].IsArea)
                 elt[geomIndex] = new TopologyLocation(elt[geomIndex].GetLocations()[0]);

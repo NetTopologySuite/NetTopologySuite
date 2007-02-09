@@ -30,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Features
         /// <summary>
         /// 
         /// </summary>
-        public virtual int Count
+        public int Count
         {
             get
             {
@@ -43,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Features
         /// all names of present attributes.
         /// </summary>
         /// <returns></returns>
-        public virtual string[] GetNames()
+        public string[] GetNames()
         {
             int index = 0;
             string[] names = new string[attributes.Count];
@@ -57,7 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.Features
         /// all values of present attributes.
         /// </summary>
         /// <returns></returns>
-        public virtual object[] GetValues()
+        public object[] GetValues()
         {
             int index = 0;
             object[] values = new object[attributes.Count];
@@ -71,7 +71,7 @@ namespace GisSharpBlog.NetTopologySuite.Features
         /// </summary>
         /// <param name="attributeName"></param>
         /// <returns></returns>
-        public virtual bool Exists(string attributeName)
+        public bool Exists(string attributeName)
         {
             return attributes.ContainsKey(attributeName);
         }
@@ -82,9 +82,9 @@ namespace GisSharpBlog.NetTopologySuite.Features
         /// <param name="attributeName">Name of the new attribute.</param>        
         /// <param name="attributeValue">Value for attribute (can be null).</param>
         /// <exception cref="ArgumentException">If attribute already exists.</exception>
-        public virtual void AddAttribute(string attributeName, object attributeValue)
+        public void AddAttribute(string attributeName, object attributeValue)
         {
-            if(Exists(attributeName))
+            if (Exists(attributeName))
                 throw new ArgumentException("Attribute " + attributeName + " already exists!");
             attributes.Add(attributeName, attributeValue);
         }        
@@ -106,7 +106,7 @@ namespace GisSharpBlog.NetTopologySuite.Features
         /// </summary>
         /// <param name="attributeName"></param>
         /// <returns></returns>
-        public virtual Type GetType(string attributeName)
+        public Type GetType(string attributeName)
         {
             if (!Exists(attributeName))
                 throw new ArgumentException("Attribute " + attributeName + " not exists!");
@@ -118,7 +118,7 @@ namespace GisSharpBlog.NetTopologySuite.Features
         /// </summary>
         /// <param name="attributeName"></param>
         /// <returns></returns>
-        protected virtual object GetValue(string attributeName)
+        protected object GetValue(string attributeName)
         {
             if (!Exists(attributeName))
                 throw new ArgumentException("Attribute " + attributeName + " not exists!");
@@ -130,7 +130,7 @@ namespace GisSharpBlog.NetTopologySuite.Features
         /// </summary>
         /// <param name="attributeName"></param>
         /// <param name="attributeValue"></param>
-        protected virtual void SetValue(string attributeName, object attributeValue)
+        protected void SetValue(string attributeName, object attributeValue)
         {
             if (!Exists(attributeName))
                 throw new ArgumentException("Attribute " + attributeName + " not exists!");
@@ -142,7 +142,7 @@ namespace GisSharpBlog.NetTopologySuite.Features
         /// </summary>
         /// <param name="attributeName"></param>
         /// <returns></returns>
-        public virtual object this[string attributeName]
+        public object this[string attributeName]
         {
             get
             {

@@ -252,7 +252,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// 
         /// </summary>
         /// <param name="outstream"></param>
-        public virtual void Write(System.IO.StreamWriter outstream)
+        public void Write(System.IO.StreamWriter outstream)
         {
             outstream.Write("Intersections:");
             foreach(object obj in this)

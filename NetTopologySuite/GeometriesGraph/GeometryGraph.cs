@@ -87,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool HasTooFewPoints
+        public  bool HasTooFewPoints
         {
             get
             {
@@ -98,7 +98,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate InvalidPoint
+        public  Coordinate InvalidPoint
         {
             get
             {
@@ -109,7 +109,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual Geometry Geometry
+        public  Geometry Geometry
         {
             get
             {
@@ -120,7 +120,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual ICollection BoundaryNodes
+        public  ICollection BoundaryNodes
         {
             get
             {
@@ -134,7 +134,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual Coordinate[] GetBoundaryPoints()
+        public  Coordinate[] GetBoundaryPoints()
         {
             ICollection coll = BoundaryNodes;
             Coordinate[] pts = new Coordinate[coll.Count];
@@ -152,7 +152,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="line"></param>
         /// <returns></returns>
-        public virtual Edge FindEdge(LineString line)
+        public  Edge FindEdge(LineString line)
         {
             return (Edge) lineEdgeMap[line];
         }
@@ -161,7 +161,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="edgelist"></param>
-        public virtual void ComputeSplitEdges(IList edgelist)
+        public  void ComputeSplitEdges(IList edgelist)
         {
             for (IEnumerator i = edges.GetEnumerator(); i.MoveNext(); ) 
             {                
@@ -312,7 +312,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// to be correct.
         /// </summary>
         /// <param name="e"></param>
-        public virtual void AddEdge(Edge e)
+        public  void AddEdge(Edge e)
         {
             InsertEdge(e);
             Coordinate[] coord = e.Coordinates;
@@ -326,7 +326,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Point Geometry part, which has a location of INTERIOR.
         /// </summary>
         /// <param name="pt"></param>
-        public virtual void AddPoint(Coordinate pt)
+        public  void AddPoint(Coordinate pt)
         {
             InsertPoint(argIndex, pt, Locations.Interior);
         }
@@ -339,7 +339,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="li">The <c>LineIntersector</c> to use.</param>
         /// <param name="computeRingSelfNodes">If <c>false</c>, intersection checks are optimized to not test rings for self-intersection.</param>
         /// <returns>The SegmentIntersector used, containing information about the intersections found.</returns>
-        public virtual SegmentIntersector ComputeSelfNodes(LineIntersector li, bool computeRingSelfNodes)
+        public  SegmentIntersector ComputeSelfNodes(LineIntersector li, bool computeRingSelfNodes)
         {
             SegmentIntersector si = new SegmentIntersector(li, true, false);
             EdgeSetIntersector esi = CreateEdgeSetIntersector();
@@ -359,7 +359,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="li"></param>
         /// <param name="includeProper"></param>
         /// <returns></returns>
-        public virtual SegmentIntersector ComputeEdgeIntersections(GeometryGraph g, LineIntersector li, bool includeProper)
+        public  SegmentIntersector ComputeEdgeIntersections(GeometryGraph g, LineIntersector li, bool includeProper)
         {
             SegmentIntersector si = new SegmentIntersector(li, includeProper, true);
             si.SetBoundaryNodes(BoundaryNodes, g.BoundaryNodes);

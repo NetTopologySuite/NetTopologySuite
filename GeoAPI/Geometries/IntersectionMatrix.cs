@@ -65,7 +65,7 @@ namespace GeoAPI.Geometries
         /// in the summand matrices.
         /// </summary>
         /// <param name="im">The matrix to add.</param>        
-        public virtual void Add(IntersectionMatrix im)
+        public void Add(IntersectionMatrix im)
         {
             for (int i = 0; i < 3; i++)            
                 for (int j = 0; j < 3; j++)
@@ -139,7 +139,7 @@ namespace GeoAPI.Geometries
         /// indicating the interior, boundary or exterior of the second <see cref="IGeometry"/>
         /// </param>
         /// <param name="dimensionValue">The new value of the element</param>        
-        public virtual void Set(Locations row, Locations column, Dimensions dimensionValue)
+        public void Set(Locations row, Locations column, Dimensions dimensionValue)
         {
             matrix[(int)row, (int)column] = dimensionValue;
         }
@@ -152,7 +152,7 @@ namespace GeoAPI.Geometries
         /// Nine dimension symbols to which to set this <see cref="IntersectionMatrix" />
         /// s elements. Possible values are <c>{T, F, * , 0, 1, 2}</c>
         /// </param>
-        public virtual void Set(string dimensionSymbols)
+        public void Set(string dimensionSymbols)
         {
             for (int i = 0; i < dimensionSymbols.Length; i++)
             {
@@ -178,7 +178,7 @@ namespace GeoAPI.Geometries
         /// element. The order of dimension values from least to greatest is
         /// <c>True, False, Dontcare, 0, 1, 2</c>.
         /// </param>
-        public virtual void SetAtLeast(Locations row, Locations column, Dimensions minimumDimensionValue)
+        public void SetAtLeast(Locations row, Locations column, Dimensions minimumDimensionValue)
         {
             if (matrix[(int)row, (int)column] < minimumDimensionValue)
                 matrix[(int)row, (int)column] = minimumDimensionValue;            
@@ -191,7 +191,7 @@ namespace GeoAPI.Geometries
         /// <param name="row"></param>
         /// <param name="column"></param>
         /// <param name="minimumDimensionValue"></param>
-        public virtual void SetAtLeastIfValid(Locations row, Locations column, Dimensions minimumDimensionValue)
+        public void SetAtLeastIfValid(Locations row, Locations column, Dimensions minimumDimensionValue)
         {
             if (row >= Locations.Interior && column >= Locations.Interior)
                 SetAtLeast(row, column, minimumDimensionValue);            
@@ -207,7 +207,7 @@ namespace GeoAPI.Geometries
         /// compare the elements of this <see cref="IntersectionMatrix" />. The
         /// order of dimension values from least to greatest is <c>Dontcare, True, False, 0, 1, 2</c>.
         /// </param>
-        public virtual void SetAtLeast(string minimumDimensionSymbols)
+        public void SetAtLeast(string minimumDimensionSymbols)
         {
             for (int i = 0; i < minimumDimensionSymbols.Length; i++)
             {
@@ -224,7 +224,7 @@ namespace GeoAPI.Geometries
         /// The dimension value to which to set this <see cref="IntersectionMatrix" />
         /// s elements. Possible values <c>True, False, Dontcare, 0, 1, 2}</c>.
         /// </param>         
-        public virtual void SetAll(Dimensions dimensionValue)
+        public void SetAll(Dimensions dimensionValue)
         {
             for (int ai = 0; ai < 3; ai++)
                 for (int bi = 0; bi < 3; bi++)                
@@ -244,7 +244,7 @@ namespace GeoAPI.Geometries
         /// indicating the interior, boundary or exterior of the second <see cref="IGeometry"/>.
         /// </param>
         /// <returns>The dimension value at the given matrix position.</returns>
-        public virtual Dimensions Get(Locations row, Locations column)
+        public Dimensions Get(Locations row, Locations column)
         {
             return matrix[(int)row, (int)column];
         }
@@ -271,7 +271,7 @@ namespace GeoAPI.Geometries
         /// <c>true</c> if the two <see cref="IGeometry"/>'s related by
         /// this <see cref="IntersectionMatrix" /> are disjoint.
         /// </returns>
-        public virtual bool IsDisjoint()
+        public bool IsDisjoint()
         {
             return
                 matrix[(int)Locations.Interior,(int)Locations.Interior] == Dimensions.False &&
@@ -287,7 +287,7 @@ namespace GeoAPI.Geometries
         /// <c>true</c> if the two <see cref="IGeometry"/>'s related by
         /// this <see cref="IntersectionMatrix" /> intersect.
         /// </returns>
-        public virtual bool IsIntersects()
+        public bool IsIntersects()
         {
             return !IsDisjoint();
         }
@@ -303,7 +303,7 @@ namespace GeoAPI.Geometries
         /// s related by this <see cref="IntersectionMatrix" /> touch; Returns false
         /// if both <see cref="IGeometry"/>s are points.
         /// </returns>
-        public virtual bool IsTouches(Dimensions dimensionOfGeometryA, Dimensions dimensionOfGeometryB)
+        public bool IsTouches(Dimensions dimensionOfGeometryA, Dimensions dimensionOfGeometryB)
         {
             if (dimensionOfGeometryA > dimensionOfGeometryB)
                 //no need to get transpose because pattern matrix is symmetrical
@@ -336,7 +336,7 @@ namespace GeoAPI.Geometries
         /// be a point and a curve; a point and a surface; two curves; or a curve
         /// and a surface.
         /// </returns>
-        public virtual bool IsCrosses(Dimensions dimensionOfGeometryA, Dimensions dimensionOfGeometryB)
+        public bool IsCrosses(Dimensions dimensionOfGeometryA, Dimensions dimensionOfGeometryB)
         {
             if ((dimensionOfGeometryA == Dimensions.Point   && dimensionOfGeometryB == Dimensions.Curve)   ||
                 (dimensionOfGeometryA == Dimensions.Point   && dimensionOfGeometryB == Dimensions.Surface) ||
@@ -361,7 +361,7 @@ namespace GeoAPI.Geometries
         /// T*F**F***.
         /// </summary>
         /// <returns><c>true</c> if the first <see cref="IGeometry"/> is within the second.</returns>
-        public virtual bool IsWithin()
+        public bool IsWithin()
         {
             return Matches(matrix[(int)Locations.Interior,(int)Locations.Interior], 'T') &&
                     matrix[(int)Locations.Interior, (int)Locations.Exterior] == Dimensions.False &&
@@ -373,7 +373,7 @@ namespace GeoAPI.Geometries
         /// T*****FF*.
         /// </summary>
         /// <returns><c>true</c> if the first <see cref="IGeometry"/> contains the second.</returns>
-        public virtual bool IsContains()
+        public bool IsContains()
         {
             return Matches(matrix[(int)Locations.Interior, (int)Locations.Interior], 'T') &&
                     matrix[(int)Locations.Exterior, (int)Locations.Interior] == Dimensions.False &&
@@ -385,7 +385,7 @@ namespace GeoAPI.Geometries
         /// or <c>*T****FF*</c> or <c>***T**FF*</c> or <c>****T*FF*</c>.
         /// </summary>
         /// <returns><c>true</c> if the first <see cref="IGeometry"/> covers the second</returns>
-        public virtual bool IsCovers()
+        public bool IsCovers()
         {
             bool hasPointInCommon =     Matches(matrix[(int)Locations.Interior, (int)Locations.Interior], 'T')
                                     ||  Matches(matrix[(int)Locations.Interior, (int)Locations.Boundary], 'T')
@@ -408,7 +408,7 @@ namespace GeoAPI.Geometries
         /// <see cref="IGeometry"/>s must have the same dimension for this function
         /// to return <c>true</c>.
         /// </returns>
-        public virtual bool IsEquals(Dimensions dimensionOfGeometryA, Dimensions dimensionOfGeometryB)
+        public bool IsEquals(Dimensions dimensionOfGeometryA, Dimensions dimensionOfGeometryB)
         {
             if (dimensionOfGeometryA != dimensionOfGeometryB)
                 return false;            
@@ -433,7 +433,7 @@ namespace GeoAPI.Geometries
         /// function to return <c>true</c>, the <see cref="IGeometry"/>s must
         /// be two points, two curves or two surfaces.
         /// </returns>
-        public virtual bool IsOverlaps(Dimensions dimensionOfGeometryA, Dimensions dimensionOfGeometryB)
+        public bool IsOverlaps(Dimensions dimensionOfGeometryA, Dimensions dimensionOfGeometryB)
         {
             if ((dimensionOfGeometryA == Dimensions.Point   && dimensionOfGeometryB == Dimensions.Point) ||
                 (dimensionOfGeometryA == Dimensions.Surface && dimensionOfGeometryB == Dimensions.Surface))
@@ -462,7 +462,7 @@ namespace GeoAPI.Geometries
         /// <c>true</c> if this <see cref="IntersectionMatrix" />
         /// matches the required dimension symbols.
         /// </returns>
-        public virtual bool Matches(string requiredDimensionSymbols)
+        public bool Matches(string requiredDimensionSymbols)
         {
             if (requiredDimensionSymbols.Length != 9)
                 throw new ArgumentException("Should be length 9: " + requiredDimensionSymbols);            
@@ -478,7 +478,7 @@ namespace GeoAPI.Geometries
         /// Transposes this IntersectionMatrix.
         /// </summary>
         /// <returns>This <see cref="IntersectionMatrix" /> as a convenience,</returns>
-        public virtual IntersectionMatrix Transpose()
+        public IntersectionMatrix Transpose()
         {
             Dimensions temp = matrix[1, 0];
             matrix[1, 0] = matrix[0, 1];

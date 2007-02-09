@@ -44,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="segmentIndex"></param>
         /// <param name="dist"></param>
         /// <returns>The EdgeIntersection found or added.</returns>
-        public virtual EdgeIntersection Add(Coordinate intPt, int segmentIndex, double dist)
+        public EdgeIntersection Add(Coordinate intPt, int segmentIndex, double dist)
         {
             EdgeIntersection eiNew = new EdgeIntersection(intPt, segmentIndex, dist);
             EdgeIntersection ei = (EdgeIntersection)nodeMap[eiNew];
@@ -57,7 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary> 
         /// Returns an iterator of EdgeIntersections.
         /// </summary>
-        public virtual IEnumerator GetEnumerator() 
+        public IEnumerator GetEnumerator() 
         { 
             return nodeMap.Values.GetEnumerator(); 
         }
@@ -67,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        public virtual bool IsIntersection(Coordinate pt)
+        public bool IsIntersection(Coordinate pt)
         {
             for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
             {
@@ -81,7 +81,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// Adds entries for the first and last points of the edge to the list.
         /// </summary>
-        public virtual void AddEndpoints()
+        public void AddEndpoints()
         {
             int maxSegIndex = edge.Points.Length - 1;
             Add(edge.Points[0], 0, 0.0);
@@ -95,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// can be used to accumulate all split edges for a Geometry).
         /// </summary>
         /// <param name="edgeList"></param>
-        public virtual void AddSplitEdges(IList edgeList)
+        public void AddSplitEdges(IList edgeList)
         {
             // ensure that the list has entries for the first and last point of the edge
             AddEndpoints();
@@ -121,7 +121,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="ei0"></param>
         /// <param name="ei1"></param>
-        public virtual Edge CreateSplitEdge(EdgeIntersection ei0, EdgeIntersection ei1)
+        public Edge CreateSplitEdge(EdgeIntersection ei0, EdgeIntersection ei1)
         {        
             int npts = ei1.SegmentIndex - ei0.SegmentIndex + 2;
             Coordinate lastSegStartPt = edge.Points[ei1.SegmentIndex];
@@ -147,7 +147,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="outstream"></param>
-        public virtual void Write(StreamWriter outstream)
+        public void Write(StreamWriter outstream)
         {
             outstream.WriteLine("Intersections:");
             for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 

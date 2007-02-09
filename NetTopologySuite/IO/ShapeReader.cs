@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <summary>
         /// 
         /// </summary>
-        public virtual GeometryFactory Factory
+        public GeometryFactory Factory
         {
             get { return factory; }            
         }
@@ -45,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public virtual Geometry ReadPoint(BinaryReader reader)
+        public Geometry ReadPoint(BinaryReader reader)
         {
             Coordinate coordinate = ReadCoordinate(reader);
             Geometry point = CreatePoint(coordinate);
@@ -57,7 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public virtual Geometry ReadLineString(BinaryReader reader)
+        public Geometry ReadLineString(BinaryReader reader)
         {
             ReadBoundingBox(reader);  // Jump boundingbox
 
@@ -78,7 +78,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public virtual Geometry ReadPolygon(BinaryReader reader)
+        public Geometry ReadPolygon(BinaryReader reader)
         {
             ReadBoundingBox(reader);  // Jump boundingbox
 
@@ -99,7 +99,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public virtual Geometry ReadMultiPoint(BinaryReader reader)
+        public Geometry ReadMultiPoint(BinaryReader reader)
         {
             ReadBoundingBox(reader);  // Jump boundingbox
 
@@ -115,7 +115,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="coordinate"></param>
         /// <returns></returns>
-        public virtual Point CreatePoint(Coordinate coordinate)
+        public Point CreatePoint(Coordinate coordinate)
         {
             return Factory.CreatePoint(coordinate);
         }
@@ -125,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="coords"></param>
         /// <returns></returns>
-        public virtual LineString CreateLineString(Coordinate[] coords)
+        public LineString CreateLineString(Coordinate[] coords)
         {
             return Factory.CreateLineString(coords);
         }
@@ -137,7 +137,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="indexParts"></param>
         /// <param name="coords"></param>
         /// <returns></returns>
-        public virtual Geometry CreateMultiLineString(int numPoints, int[] indexParts, Coordinate[] coords)
+        public Geometry CreateMultiLineString(int numPoints, int[] indexParts, Coordinate[] coords)
         {
             // Support vars
             LineString[] strings = new LineString[indexParts.Length];
@@ -179,7 +179,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="indexParts"></param>
         /// <param name="coords"></param>
         /// <returns></returns>
-        public virtual Geometry CreateSingleOrMultiPolygon(int numPoints, int[] indexParts, Coordinate[] coords)
+        public Geometry CreateSingleOrMultiPolygon(int numPoints, int[] indexParts, Coordinate[] coords)
         {
             // Support vars
             int i = 0;
@@ -269,7 +269,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="coords"></param>
         /// <returns></returns>
-        public virtual Polygon CreateSimpleSinglePolygon(Coordinate[] coords)
+        public Polygon CreateSimpleSinglePolygon(Coordinate[] coords)
         {
             return Factory.CreatePolygon(Factory.CreateLinearRing(coords), null);
         }
@@ -279,7 +279,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="coords"></param>
         /// <returns></returns>
-        public virtual MultiPoint CreateMultiPoint(Coordinate[] coords)
+        public MultiPoint CreateMultiPoint(Coordinate[] coords)
         {
             return Factory.CreateMultiPoint(coords);
         }        
@@ -288,7 +288,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// Jump values for VeDEx BoundingBox
         /// </summary>
         /// <param name="reader"></param>
-        public virtual void ReadBoundingBox(BinaryReader reader)
+        public void ReadBoundingBox(BinaryReader reader)
         {
             for (int i = 0; i < 4; i++)
                 reader.ReadDouble();
@@ -299,7 +299,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public virtual int ReadNumParts(BinaryReader reader)
+        public int ReadNumParts(BinaryReader reader)
         {
             return reader.ReadInt32();
         }
@@ -309,7 +309,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public virtual int ReadNumPoints(BinaryReader reader)
+        public int ReadNumPoints(BinaryReader reader)
         {
             return reader.ReadInt32();
         }
@@ -320,7 +320,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="reader"></param>
         /// <param name="numParts"></param>
         /// <returns></returns>
-        public virtual int[] ReadIndexParts(BinaryReader reader, int numParts)
+        public int[] ReadIndexParts(BinaryReader reader, int numParts)
         {
             int[] indexParts = new int[numParts];
             for (int i = 0; i < numParts; i++)
@@ -334,7 +334,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="reader"></param>
         /// <param name="numPoints"></param>
         /// <returns></returns>
-        public virtual Coordinate[] ReadCoordinates(BinaryReader reader, int numPoints)
+        public Coordinate[] ReadCoordinates(BinaryReader reader, int numPoints)
         {
             Coordinate[] coords = new Coordinate[numPoints];
             for (int i = 0; i < numPoints; i++)
@@ -347,7 +347,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public virtual Coordinate ReadCoordinate(BinaryReader reader)
+        public Coordinate ReadCoordinate(BinaryReader reader)
         {
             return new Coordinate(reader.ReadDouble(), reader.ReadDouble());
         }
@@ -357,7 +357,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        public virtual GeometryCollection CreateGeometryCollection(IList list)
+        public GeometryCollection CreateGeometryCollection(IList list)
         {            
             Geometry[] geometries = (Geometry[])(new ArrayList(list).ToArray(typeof(Geometry)));
             return Factory.CreateGeometryCollection(geometries);

@@ -114,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Adds a DirectedEdge which is known to form part of this ring.
         /// </summary>
         /// <param name="de">The DirectedEdge to add.</param>
-        public virtual void Add(DirectedEdge de)
+        public void Add(DirectedEdge de)
         {
             deList.Add(de);
         }
@@ -125,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// a ring is a hole if it is oriented counter-clockwise.
         /// </summary>
         /// <returns><c>true</c> if this ring is a hole.</returns>
-        public virtual bool IsHole
+        public bool IsHole
         {
             get
             {
@@ -137,7 +137,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Adds a hole to the polygon formed by this ring.
         /// </summary>
         /// <param name="hole">The LinearRing forming the hole.</param>
-        public virtual void AddHole(LinearRing hole)
+        public void AddHole(LinearRing hole)
         {
             if (holes == null)
                 holes = new ArrayList();
@@ -147,7 +147,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Computes and returns the Polygon formed by this ring and any contained holes.
         /// </summary>
-        public virtual Polygon Polygon
+        public Polygon Polygon
         {
             get
             {
@@ -166,7 +166,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Tests if the LinearRing ring formed by this edge ring is topologically valid.
         /// </summary>
-        public virtual bool IsValid
+        public bool IsValid
         {
             get
             {
@@ -209,7 +209,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// as a valid point, when it has been detected that the ring is topologically
         /// invalid.
         /// </summary>        
-        public virtual LineString LineString
+        public LineString LineString
         {
             get
             {
@@ -224,7 +224,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// creating it (such as a topology problem). Details of problems are written to
         /// standard output.
         /// </summary>
-        public virtual LinearRing Ring
+        public LinearRing Ring
         {
             get
             {

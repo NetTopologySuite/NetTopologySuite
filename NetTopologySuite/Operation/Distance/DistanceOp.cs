@@ -94,7 +94,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// Report the distance between the closest points on the input geometries.
         /// </summary>
         /// <returns>The distance between the geometries.</returns>
-        public virtual double Distance()
+        public double Distance()
         {
             ComputeMinDistance();
             return minDistance;
@@ -105,7 +105,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// The points are presented in the same order as the input Geometries.
         /// </summary>
         /// <returns>A pair of <c>Coordinate</c>s of the closest points.</returns>
-        public virtual Coordinate[] ClosestPoints()
+        public Coordinate[] ClosestPoints()
         {
             ComputeMinDistance();
             Coordinate[] closestPts = new Coordinate[] { minDistanceLocation[0].Coordinate, 
@@ -118,7 +118,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// The locations are presented in the same order as the input Geometries.
         /// </summary>
         /// <returns>A pair of {GeometryLocation}s for the closest points.</returns>
-        public virtual GeometryLocation[] ClosestLocations()
+        public GeometryLocation[] ClosestLocations()
         {
             ComputeMinDistance();
             return minDistanceLocation;

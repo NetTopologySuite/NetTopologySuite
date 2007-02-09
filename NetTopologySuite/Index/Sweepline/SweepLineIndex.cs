@@ -25,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
         /// 
         /// </summary>
         /// <param name="sweepInt"></param>
-        public virtual void Add(SweepLineInterval sweepInt)
+        public void Add(SweepLineInterval sweepInt)
         {
             SweepLineEvent insertEvent = new SweepLineEvent(sweepInt.Min, null, sweepInt);
             events.Add(insertEvent);
@@ -55,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
         /// 
         /// </summary>
         /// <param name="action"></param>
-        public virtual void ComputeOverlaps(ISweepLineOverlapAction action)
+        public void ComputeOverlaps(ISweepLineOverlapAction action)
         {
             nOverlaps = 0;
             BuildIndex();

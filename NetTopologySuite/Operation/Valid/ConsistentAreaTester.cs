@@ -41,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <summary>
         /// Returns the intersection point, or <c>null</c> if none was found.
         /// </summary>        
-        public virtual Coordinate InvalidPoint
+        public Coordinate InvalidPoint
         {
             get
             {
@@ -52,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool IsNodeConsistentArea
+        public bool IsNodeConsistentArea
         {
             get
             {
@@ -104,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// The start point of one of the equal rings will be placed in invalidPoint.
         /// Returns <c>true</c> if this area Geometry is topologically consistent but has two duplicate rings.
         /// </summary>
-        public virtual bool HasDuplicateRings
+        public bool HasDuplicateRings
         {
             get
             {

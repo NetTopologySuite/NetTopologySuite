@@ -33,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// Returns the directed edge that starts at this directed edge's end point, or null
         /// if there are zero or multiple directed edges starting there.  
         /// </summary>
-        public virtual LineMergeDirectedEdge Next 
+        public LineMergeDirectedEdge Next 
         {
             get
             {

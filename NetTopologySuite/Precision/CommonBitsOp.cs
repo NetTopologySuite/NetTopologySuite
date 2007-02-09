@@ -40,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <param name="geom0">The first Geometry.</param>
         /// <param name="geom1">The second Geometry.</param>
         /// <returns>The Geometry representing the set-theoretic intersection of the input Geometries.</returns>
-        public virtual Geometry Intersection(Geometry geom0, Geometry geom1)
+        public Geometry Intersection(Geometry geom0, Geometry geom1)
         {
             Geometry[] geom = RemoveCommonBits(geom0, geom1);
             return ComputeResultPrecision(geom[0].Intersection(geom[1]));
@@ -52,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <param name="geom0">The first Geometry.</param>
         /// <param name="geom1">The second Geometry.</param>
         /// <returns>The Geometry representing the set-theoretic union of the input Geometries.</returns>
-        public virtual Geometry Union(Geometry geom0, Geometry geom1)
+        public Geometry Union(Geometry geom0, Geometry geom1)
         {
             Geometry[] geom = RemoveCommonBits(geom0, geom1);
             return ComputeResultPrecision(geom[0].Union(geom[1]));
@@ -64,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <param name="geom0">The first Geometry.</param>
         /// <param name="geom1">The second Geometry, to be subtracted from the first.</param>
         /// <returns>The Geometry representing the set-theoretic difference of the input Geometries.</returns>
-        public virtual Geometry Difference(Geometry geom0, Geometry geom1)
+        public Geometry Difference(Geometry geom0, Geometry geom1)
         {
             Geometry[] geom = RemoveCommonBits(geom0, geom1);
             return ComputeResultPrecision(geom[0].Difference(geom[1]));
@@ -77,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <param name="geom0">The first Geometry.</param>
         /// <param name="geom1">The second Geometry.</param>
         /// <returns>The Geometry representing the set-theoretic symmetric difference of the input Geometries.</returns>
-        public virtual Geometry SymDifference(Geometry geom0, Geometry geom1)
+        public Geometry SymDifference(Geometry geom0, Geometry geom1)
         {
             Geometry[] geom = RemoveCommonBits(geom0, geom1);
             return ComputeResultPrecision(geom[0].SymmetricDifference(geom[1]));
@@ -89,7 +89,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <param name="geom0">The Geometry to buffer.</param>
         /// <param name="distance">The buffer distance.</param>
         /// <returns>The Geometry representing the buffer of the input Geometry.</returns>
-        public virtual Geometry Buffer(Geometry geom0, double distance)
+        public Geometry Buffer(Geometry geom0, double distance)
         {
             Geometry geom = RemoveCommonBits(geom0);
             return ComputeResultPrecision(geom.Buffer(distance));

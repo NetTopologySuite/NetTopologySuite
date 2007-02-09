@@ -35,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate NestedPoint
+        public Coordinate NestedPoint
         {
             get
             {
@@ -47,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// 
         /// </summary>
         /// <param name="ring"></param>
-        public virtual void Add(LinearRing ring)
+        public void Add(LinearRing ring)
         {
             rings.Add(ring);
             totalEnv.ExpandToInclude(ring.EnvelopeInternal);
@@ -57,7 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual bool IsNonNested()
+        public bool IsNonNested()
         {
             BuildQuadtree();
 

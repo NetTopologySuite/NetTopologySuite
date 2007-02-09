@@ -33,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        public virtual int GetDepth(Coordinate p)
+        public int GetDepth(Coordinate p)
         {
             ArrayList stabbedSegments = new ArrayList(FindStabbedSegments(p));
             // if no segments on stabbing line subgraph must be outside all others.
@@ -140,7 +140,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             /// <summary>
             /// 
             /// </summary>
-            public virtual int LeftDepth
+            public int LeftDepth
             {
                 get { return leftDepth; }
                 set { leftDepth = value; }
@@ -166,7 +166,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             /// </summary>
             /// <param name="obj"></param>
             /// <returns></returns>
-            public virtual int CompareTo(Object obj)
+            public int CompareTo(Object obj)
             {
                 DepthSegment other = (DepthSegment) obj;
 

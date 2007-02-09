@@ -138,7 +138,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -149,7 +149,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public virtual TopologyValidationErrors ErrorType
+        public TopologyValidationErrors ErrorType
         {
             get
             {
@@ -160,11 +160,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public virtual String Message
+        public String Message
         {
             get
             {
-                return errMsg[(int)errorType];
+                return errMsg[(int) errorType];
             }
         }
 

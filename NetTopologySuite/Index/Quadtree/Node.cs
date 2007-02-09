@@ -65,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public virtual Envelope Envelope
+        public Envelope Envelope
         {
             get
             {
@@ -89,7 +89,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// it does not already exist.
         /// </summary>
         /// <param name="searchEnv"></param>
-        public virtual Node GetNode(Envelope searchEnv)
+        public Node GetNode(Envelope searchEnv)
         {
             int subnodeIndex = GetSubnodeIndex(searchEnv, centre);            
             // if subquadIndex is -1 searchEnv is not contained in a subquad
@@ -108,7 +108,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// node containing the envelope.
         /// </summary>
         /// <param name="searchEnv"></param>
-        public virtual NodeBase Find(Envelope searchEnv)
+        public NodeBase Find(Envelope searchEnv)
         {
             int subnodeIndex = GetSubnodeIndex(searchEnv, centre);
             if (subnodeIndex == -1)
@@ -127,7 +127,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// 
         /// </summary>
         /// <param name="node"></param>
-        public virtual void InsertNode(Node node)
+        public void InsertNode(Node node)
         {
             Assert.IsTrue(env == null || env.Contains(node.Envelope));        
             int index = GetSubnodeIndex(node.env, centre);        

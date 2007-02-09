@@ -41,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public virtual double DistanceTolerance
+        public double DistanceTolerance
         {
             get
             {
@@ -57,7 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual Coordinate[] Simplify()
+        public Coordinate[] Simplify()
         {
             usePt = new bool[pts.Length];
             for (int i = 0; i < pts.Length; i++)

@@ -30,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// </summary>
         /// <param name="geom"></param>
         /// <returns></returns>
-        public virtual bool IsSimple(LineString geom)
+        public bool IsSimple(LineString geom)
         {
             return IsSimpleLinearGeometry(geom);
         }
@@ -40,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// </summary>
         /// <param name="geom"></param>
         /// <returns></returns>
-        public virtual bool IsSimple(MultiLineString geom)
+        public bool IsSimple(MultiLineString geom)
         {
             return IsSimpleLinearGeometry(geom);
         }
@@ -48,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// <summary>
         /// A MultiPoint is simple if it has no repeated points.
         /// </summary>
-        public virtual bool IsSimple(MultiPoint mp)
+        public bool IsSimple(MultiPoint mp)
         {
             if (mp.IsEmpty) 
                 return true;
@@ -115,7 +115,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
             /// <summary>
             /// 
             /// </summary>
-            public virtual Coordinate Point
+            public Coordinate Point
             {
                 get { return pt; }
                 set { pt = value; }
@@ -126,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
             /// <summary>
             /// 
             /// </summary>
-            public virtual bool IsClosed
+            public bool IsClosed
             {
                 get { return isClosed; }
                 set { isClosed = value; }
@@ -137,7 +137,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
             /// <summary>
             /// 
             /// </summary>
-            public virtual int Degree
+            public int Degree
             {
                 get { return degree; }
                 set { degree = value; }
@@ -158,7 +158,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
             /// 
             /// </summary>
             /// <param name="isClosed"></param>
-            public virtual void AddEndpoint(bool isClosed)
+            public void AddEndpoint(bool isClosed)
             {
                 Degree++;
                 this.IsClosed |= isClosed;

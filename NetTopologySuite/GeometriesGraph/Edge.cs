@@ -64,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate[] Points
+        public Coordinate[] Points
         {
             get
             {
@@ -79,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual int NumPoints
+        public int NumPoints
         {
             get
             {
@@ -90,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual string Name
+        public string Name
         {
             get
             {
@@ -105,7 +105,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate[] Coordinates
+        public Coordinate[] Coordinates
         {
             get
             {
@@ -118,7 +118,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public virtual Coordinate GetCoordinate(int i)
+        public Coordinate GetCoordinate(int i)
         {            
             return Points[i];
         }
@@ -139,7 +139,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual Envelope Envelope
+        public Envelope Envelope
         {
             get
             {
@@ -157,7 +157,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual Depth Depth
+        public Depth Depth
         {
             get
             {
@@ -169,7 +169,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// The depthDelta is the change in depth as an edge is crossed from R to L.
         /// </summary>
         /// <returns>The change in depth as the edge is crossed from R to L.</returns>
-        public virtual int DepthDelta
+        public int DepthDelta
         {
             get
             {
@@ -184,7 +184,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual int MaximumSegmentIndex
+        public int MaximumSegmentIndex
         {
             get
             {
@@ -195,7 +195,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual EdgeIntersectionList EdgeIntersectionList
+        public EdgeIntersectionList EdgeIntersectionList
         {
             get
             {
@@ -206,7 +206,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual MonotoneChainEdge MonotoneChainEdge
+        public MonotoneChainEdge MonotoneChainEdge
         {
             get
             {
@@ -219,7 +219,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool IsClosed
+        public bool IsClosed
         {
             get
             {
@@ -231,7 +231,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// An Edge is collapsed if it is an Area edge and it consists of
         /// two segments which are equal and opposite (eg a zero-width V).
         /// </summary>
-        public virtual bool IsCollapsed
+        public bool IsCollapsed
         {
             get
             {
@@ -248,7 +248,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual Edge CollapsedEdge
+        public Edge CollapsedEdge
         {
             get
             {
@@ -263,7 +263,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool Isolated
+        public bool Isolated
         {
             get
             {
@@ -293,7 +293,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="li"></param>
         /// <param name="segmentIndex"></param>
         /// <param name="geomIndex"></param>
-        public virtual void AddIntersections(LineIntersector li, int segmentIndex, int geomIndex)
+        public void AddIntersections(LineIntersector li, int segmentIndex, int geomIndex)
         {
             for (int i = 0; i < li.IntersectionNum; i++) 
                 AddIntersection(li, segmentIndex, geomIndex, i);            
@@ -308,7 +308,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="segmentIndex"></param>
         /// <param name="geomIndex"></param>
         /// <param name="intIndex"></param>
-        public virtual void AddIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
+        public void AddIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
         {
             Coordinate intPt = new Coordinate(li.GetIntersection(intIndex));
             int normalizedSegmentIndex = segmentIndex;
@@ -365,7 +365,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// the coordinates of e1 are the same or the reverse of the coordinates in e2.
         /// </summary>
         /// <param name="e"></param>
-        protected virtual bool Equals(Edge e)
+        protected bool Equals(Edge e)
         {                     
             if (Points.Length != e.Points.Length)
                 return false;
@@ -420,7 +420,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <c>true</c> if the coordinate sequences of the Edges are identical.
         /// </returns>
         /// <param name="e"></param>
-        public virtual bool IsPointwiseEqual(Edge e)
+        public bool IsPointwiseEqual(Edge e)
         {
             if (Points.Length != e.Points.Length) 
                 return false;
@@ -434,7 +434,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="outstream"></param>
-        public virtual void Write(StreamWriter outstream)
+        public void Write(StreamWriter outstream)
         {
             outstream.Write("edge " + name + ": ");
             outstream.Write("LINESTRING (");
@@ -450,7 +450,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="outstream"></param>
-        public virtual void WriteReverse(StreamWriter outstream)
+        public void WriteReverse(StreamWriter outstream)
         {
             outstream.Write("edge " + name + ": ");
             for (int i = Points.Length - 1; i >= 0; i--) 

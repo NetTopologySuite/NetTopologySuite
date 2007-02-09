@@ -62,7 +62,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the location of this Node.
         /// </summary>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -74,7 +74,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Adds an outgoing DirectedEdge to this Node.
         /// </summary>
         /// <param name="de"></param>
-        public virtual void AddOutEdge(DirectedEdge de)
+        public void AddOutEdge(DirectedEdge de)
         {
             deStar.Add(de);
         }
@@ -82,7 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the collection of DirectedEdges that leave this Node.
         /// </summary>
-        public virtual DirectedEdgeStar OutEdges
+        public DirectedEdgeStar OutEdges
         {
             get
             {
@@ -93,7 +93,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the number of edges around this Node.
         /// </summary>
-        public virtual int Degree
+        public int Degree
         {
             get
             {
@@ -107,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="edge"></param>
         /// <returns></returns>
-        public virtual int GetIndex(Edge edge)
+        public int GetIndex(Edge edge)
         {
             return deStar.GetIndex(edge);
         }

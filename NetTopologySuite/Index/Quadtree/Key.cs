@@ -45,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate Point
+        public Coordinate Point
         {
             get
             {
@@ -56,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public virtual int Level
+        public int Level
         {
             get
             {
@@ -67,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public virtual Envelope Envelope
+        public Envelope Envelope
         {
             get
             {
@@ -78,7 +78,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate Centre
+        public Coordinate Centre
         {
             get
             {
@@ -91,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// whose extent is a power of two and which is based at a power of 2.
         /// </summary>
         /// <param name="itemEnv"></param>
-        public virtual void ComputeKey(Envelope itemEnv)
+        public void ComputeKey(Envelope itemEnv)
         {
             level = ComputeQuadLevel(itemEnv);
             env = new Envelope();

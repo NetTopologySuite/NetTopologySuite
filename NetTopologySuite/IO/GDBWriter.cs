@@ -24,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns>Byte[] data</returns>
-        public virtual byte[] Write(Geometry geometry)
+        public byte[] Write(Geometry geometry)
         {
             byte[] bytes = GetBytes(geometry);
             Write(geometry, new MemoryStream(bytes));
@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="stream"></param>
-        public virtual void Write(Geometry geometry, Stream stream)
+        public void Write(Geometry geometry, Stream stream)
         {           
             using (BinaryWriter writer = new BinaryWriter(stream))
             {
@@ -49,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="writer"></param>
-        public virtual void Writer(Geometry geometry, BinaryWriter writer)
+        public void Writer(Geometry geometry, BinaryWriter writer)
         {
             if (geometry is Point)
                 Write(geometry as Point, writer);

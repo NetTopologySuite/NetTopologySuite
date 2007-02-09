@@ -27,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// </summary>
         /// <param name="itemInterval"></param>
         /// <param name="item"></param>
-        public virtual void Insert(Interval itemInterval, object item)
+        public void Insert(Interval itemInterval, object item)
         {
             int index = GetSubnodeIndex(itemInterval, origin);
             // if index is -1, itemEnv must contain the origin.

@@ -37,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <returns>
         /// A list of the Points in the result of the specified overlay operation.
         /// </returns>
-        public virtual IList Build(SpatialFunctions opCode)
+        public IList Build(SpatialFunctions opCode)
         {
             IList nodeList = CollectNodes(opCode);
             IList resultPointList = SimplifyPoints(nodeList);

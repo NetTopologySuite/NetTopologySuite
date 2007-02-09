@@ -35,16 +35,25 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
         /// <summary>
         /// 
         /// </summary>
-        public virtual double Min { get { return min; } }
+        public double Min 
+        { 
+            get { return min; } 
+        }
         
         /// <summary>
         /// 
         /// </summary>
-        public virtual double Max { get { return max; } }
+        public double Max 
+        { 
+            get { return max; } 
+        }
 
         /// <summary>
         /// 
         /// </summary>
-        public virtual object Item { get { return item; } }
+        public object Item 
+        { 
+            get { return item; } 
+        }
     }
 }

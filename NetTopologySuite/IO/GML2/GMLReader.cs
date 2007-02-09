@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// <summary>
         /// <c>Geometry</c> builder.
         /// </summary>
-        protected virtual GeometryFactory Factory
+        protected GeometryFactory Factory
         {
             get { return factory; }            
         }
@@ -46,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="document"></param>
         /// <returns></returns>
-        public virtual Geometry Read(XmlDocument document)
+        public Geometry Read(XmlDocument document)
         {            
             return Read(new StringReader(document.InnerXml));
         }
@@ -56,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="xmlText"></param>
         /// <returns></returns>
-        public virtual Geometry Read(string xmlText)
+        public Geometry Read(string xmlText)
         {            
             return Read(new StringReader(xmlText));
         }
@@ -66,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="stringReader"></param>
         /// <returns></returns>
-        public virtual Geometry Read(StringReader stringReader)
+        public Geometry Read(StringReader stringReader)
         {
             XmlReader reader = XmlReader.Create(stringReader, settings);
             if (reader.IsStartElement("Point"))
@@ -91,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Coordinate ReadCoordinate(XmlReader reader)
+        protected Coordinate ReadCoordinate(XmlReader reader)
         {            
             double x = 0, y = 0;
             while (reader.Read())
@@ -126,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Point ReadPoint(XmlReader reader)
+        protected Point ReadPoint(XmlReader reader)
         {            
             while (reader.Read())
             {
@@ -148,7 +148,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry ReadLineString(XmlReader reader)
+        protected Geometry ReadLineString(XmlReader reader)
         {
             ArrayList coordinates = new ArrayList();
             while (reader.Read())
@@ -173,7 +173,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry ReadLinearRing(XmlReader reader)
+        protected Geometry ReadLinearRing(XmlReader reader)
         {            
             return Factory.CreateLinearRing(ReadLineString(reader).Coordinates);
         }
@@ -183,7 +183,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry ReadPolygon(XmlReader reader)
+        protected Geometry ReadPolygon(XmlReader reader)
         {
             LinearRing exterior = null;
             ArrayList interiors = new ArrayList();
@@ -213,7 +213,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry ReadMultiPoint(XmlReader reader)
+        protected Geometry ReadMultiPoint(XmlReader reader)
         {
             ArrayList points = new ArrayList();
             while (reader.Read())
@@ -240,7 +240,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry ReadMultiLineString(XmlReader reader)
+        protected Geometry ReadMultiLineString(XmlReader reader)
         {
             ArrayList lines = new ArrayList();
             while (reader.Read())
@@ -267,7 +267,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry ReadMultiPolygon(XmlReader reader)
+        protected Geometry ReadMultiPolygon(XmlReader reader)
         {
             ArrayList polygons = new ArrayList();
             while (reader.Read())
@@ -294,7 +294,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry ReadGeometryCollection(XmlReader reader)
+        protected Geometry ReadGeometryCollection(XmlReader reader)
         {
             ArrayList collection = new ArrayList();
             while (reader.Read())

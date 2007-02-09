@@ -74,7 +74,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetEdgeEnumerator()
+        public  IEnumerator GetEdgeEnumerator()
         {
             return edges.GetEnumerator();            
         }
@@ -82,7 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual IList EdgeEnds
+        public  IList EdgeEnds
         {
             get
             {
@@ -96,7 +96,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="coord"></param>
         /// <returns></returns>
-        public virtual bool IsBoundaryNode(int geomIndex, Coordinate coord)
+        public  bool IsBoundaryNode(int geomIndex, Coordinate coord)
         {
             Node node = nodes.Find(coord);
             if (node == null) 
@@ -111,7 +111,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void InsertEdge(Edge e)
+        protected  void InsertEdge(Edge e)
         {
             edges.Add(e);
         }
@@ -120,7 +120,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="e"></param>
-        public virtual void Add(EdgeEnd e)
+        public  void Add(EdgeEnd e)
         {
             nodes.Add(e);
             edgeEndList.Add(e);
@@ -130,7 +130,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetNodeEnumerator()
+        public  IEnumerator GetNodeEnumerator()
         {            
             return nodes.GetEnumerator();         
         }
@@ -138,7 +138,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual IList Nodes
+        public  IList Nodes
         {
             get
             {
@@ -151,7 +151,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public virtual Node AddNode(Node node) 
+        public  Node AddNode(Node node) 
         { 
             return nodes.AddNode(node); 
         }
@@ -161,7 +161,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>
-        public virtual Node AddNode(Coordinate coord) 
+        public  Node AddNode(Coordinate coord) 
         {
             return nodes.AddNode(coord); 
         }
@@ -170,7 +170,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// The node if found; null otherwise
         /// </returns>
         /// <param name="coord"></param>
-        public virtual Node Find(Coordinate coord) 
+        public  Node Find(Coordinate coord) 
         {
             return nodes.Find(coord); 
         }
@@ -180,7 +180,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// will be created.  DirectedEdges are NOT linked by this method.
         /// </summary>
         /// <param name="edgesToAdd"></param>
-        public virtual void AddEdges(IList edgesToAdd)
+        public  void AddEdges(IList edgesToAdd)
         {
             // create all the nodes for the edges
             for (IEnumerator it = edgesToAdd.GetEnumerator(); it.MoveNext(); )
@@ -203,7 +203,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// This allows clients to link only a subset of nodes in the graph, for
         /// efficiency (because they know that only a subset is of interest).
         /// </summary>
-        public virtual void LinkResultDirectedEdges()
+        public  void LinkResultDirectedEdges()
         {
             for (IEnumerator nodeit = nodes.GetEnumerator(); nodeit.MoveNext(); ) 
             {
@@ -217,7 +217,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// This allows clients to link only a subset of nodes in the graph, for
         /// efficiency (because they know that only a subset is of interest).
         /// </summary>
-        public virtual void LinkAllDirectedEdges()
+        public  void LinkAllDirectedEdges()
         {
             for (IEnumerator nodeit = nodes.GetEnumerator(); nodeit.MoveNext(); ) 
             {
@@ -232,7 +232,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="e"></param>
         /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
-        public virtual EdgeEnd FindEdgeEnd(Edge e)
+        public  EdgeEnd FindEdgeEnd(Edge e)
         {
             for (IEnumerator i = EdgeEnds.GetEnumerator(); i.MoveNext(); ) 
             {
@@ -249,7 +249,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
-        public virtual Edge FindEdge(Coordinate p0, Coordinate p1)
+        public  Edge FindEdge(Coordinate p0, Coordinate p1)
         {
             for (int i = 0; i < edges.Count; i++) 
             {
@@ -268,7 +268,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="p0"></param>
         ///<param name="p1"></param>
         /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
-        public virtual Edge FindEdgeInSameDirection(Coordinate p0, Coordinate p1)
+        public  Edge FindEdgeInSameDirection(Coordinate p0, Coordinate p1)
         {
             for (int i = 0; i < edges.Count; i++) 
             {
@@ -305,7 +305,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="outstream"></param>
-        public virtual void WriteEdges(StreamWriter outstream)
+        public  void WriteEdges(StreamWriter outstream)
         {
             outstream.WriteLine("Edges:");
             for (int i = 0; i < edges.Count; i++) 

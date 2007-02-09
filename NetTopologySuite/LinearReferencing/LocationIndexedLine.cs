@@ -39,7 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="index">The index of the desired point.</param>
         /// <returns>The <see cref="Coordinate" /> at the given index.</returns>
-        public virtual Coordinate ExtractPoint(LinearLocation index)
+        public Coordinate ExtractPoint(LinearLocation index)
         {
             return index.GetCoordinate(linearGeom);
         }
@@ -51,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="startIndex">The index of the start of the interval.</param>
         /// <param name="endIndex">The index of the end of the interval.</param>
         /// <returns>The linear interval between the indices.</returns>
-        public virtual Geometry ExtractLine(LinearLocation startIndex, LinearLocation endIndex)
+        public Geometry ExtractLine(LinearLocation startIndex, LinearLocation endIndex)
         {
             return ExtractLineByLocation.Extract(linearGeom, startIndex, endIndex);
         }
@@ -66,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="pt">A point on the line.</param>
         /// <returns>The index of the point.</returns>
-        public virtual LinearLocation IndexOf(Coordinate pt)
+        public LinearLocation IndexOf(Coordinate pt)
         {
             return LocationIndexOfPoint.IndexOf(linearGeom, pt);
         }
@@ -79,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="subLine">A subLine of the line.</param>
         /// <returns>A pair of indices for the start and end of the subline.</returns>
-        public virtual LinearLocation[] IndicesOf(Geometry subLine)
+        public LinearLocation[] IndicesOf(Geometry subLine)
         {
             return LocationIndexOfLine.IndicesOf(linearGeom, subLine);
         }
@@ -91,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="pt">A point on the line.</param>
         /// <returns>The index of the point.</returns>
-        public virtual LinearLocation Project(Coordinate pt)
+        public LinearLocation Project(Coordinate pt)
         {
             return LocationIndexOfPoint.IndexOf(linearGeom, pt);
         }
@@ -99,7 +99,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <summary>
         /// Returns the index of the start of the line.
         /// </summary>
-        public virtual LinearLocation StartIndex
+        public LinearLocation StartIndex
         {
             get
             {
@@ -110,7 +110,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <summary>
         /// Returns the index of the end of the line.
         /// </summary>
-        public virtual LinearLocation EndIndex
+        public LinearLocation EndIndex
         {
             get
             {
@@ -123,7 +123,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="index">The index to test.</param>
         /// <returns><c>true</c> if the index is in the valid range.</returns>
-        public virtual bool isValidIndex(LinearLocation index)
+        public bool isValidIndex(LinearLocation index)
         {
             return index.IsValid(linearGeom);
         }
@@ -134,7 +134,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="index"></param>
         /// <returns>A valid index value.</returns>
-        public virtual LinearLocation ClampIndex(LinearLocation index)
+        public LinearLocation ClampIndex(LinearLocation index)
         {
             LinearLocation loc = (LinearLocation)index.Clone();
             loc.Clamp(linearGeom);

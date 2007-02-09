@@ -70,7 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="p0"></param>
         /// <param name="p1"></param>
-        protected virtual void Init(Coordinate p0, Coordinate p1)
+        protected void Init(Coordinate p0, Coordinate p1)
         {
             this.p0 = p0;
             this.p1 = p1;
@@ -83,7 +83,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual Edge Edge
+        public Edge Edge
         {
             get
             {
@@ -94,7 +94,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual Label Label
+        public Label Label
         {
             get
             {
@@ -105,7 +105,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -116,7 +116,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate DirectedCoordinate
+        public Coordinate DirectedCoordinate
         {
             get
             {
@@ -127,7 +127,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual int Quadrant
+        public int Quadrant
         {
             get
             {
@@ -138,7 +138,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual double Dx
+        public double Dx
         {
             get
             {
@@ -149,7 +149,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual double Dy
+        public double Dy
         {
             get
             {
@@ -160,7 +160,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual Node Node
+        public Node Node
         {
             get
             {
@@ -177,7 +177,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public virtual int CompareTo(object obj)
+        public int CompareTo(object obj)
         {
             EdgeEnd e = (EdgeEnd)obj;
             return CompareDirection(e);
@@ -195,7 +195,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// can be used to decide the relative orientation of the vectors.
         /// </summary>
         /// <param name="e"></param>
-        public virtual int CompareDirection(EdgeEnd e)
+        public int CompareDirection(EdgeEnd e)
         {
             if (dx == e.dx && dy == e.dy)
                 return 0;

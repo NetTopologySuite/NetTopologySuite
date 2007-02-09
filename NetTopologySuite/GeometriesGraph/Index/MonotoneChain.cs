@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         /// <param name="mc"></param>
         /// <param name="si"></param>
-        public virtual void ComputeIntersections(MonotoneChain mc, SegmentIntersector si)
+        public void ComputeIntersections(MonotoneChain mc, SegmentIntersector si)
         {
             this.mce.ComputeIntersectsForChain(chainIndex, mc.mce, mc.chainIndex, si);
         }

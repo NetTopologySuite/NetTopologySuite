@@ -48,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <summary>
         /// Returns the point associated with this location.
         /// </summary>
-        public virtual Geometry GeometryComponent
+        public Geometry GeometryComponent
         {
             get
             {
@@ -60,7 +60,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// Returns the segment index for this location. If the location is inside an
         /// area, the index will have the value InsideArea;
         /// </summary>
-        public virtual int SegmentIndex
+        public int SegmentIndex
         {
             get
             {
@@ -71,7 +71,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <summary>
         /// Returns the location.
         /// </summary>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -82,7 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <summary>
         /// Returns whether this GeometryLocation represents a point inside an area point.
         /// </summary>
-        public virtual bool IsInsideArea
+        public bool IsInsideArea
         {
             get
             {

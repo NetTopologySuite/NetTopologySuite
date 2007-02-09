@@ -32,9 +32,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// 
         /// </summary>
         /// <param name="edges"></param>
-        public virtual void AddEdges(IList edges)
+        public void AddEdges(IList edges)
         {
-            // inputEdges.addAll(edges);
             foreach (object obj in edges)
                 inputEdges.Add(obj);
         }
@@ -42,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <summary>
         /// 
         /// </summary>
-        public virtual IList NodedEdges
+        public IList NodedEdges
         {
             get
             {

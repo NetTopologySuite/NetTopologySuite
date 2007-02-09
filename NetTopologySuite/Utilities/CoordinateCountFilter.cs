@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <summary>
         /// Returns the result of the filtering.
         /// </summary>
-        public virtual int Count 
+        public int Count 
         {
             get
             {
@@ -34,7 +34,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// 
         /// </summary>
         /// <param name="coord"></param>
-        public virtual void Filter(Coordinate coord) 
+        public void Filter(Coordinate coord) 
         {
             n++;
         }

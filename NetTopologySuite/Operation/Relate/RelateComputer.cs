@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual IntersectionMatrix ComputeIM()
+        public IntersectionMatrix ComputeIM()
         {
             IntersectionMatrix im = new IntersectionMatrix();
             // since Geometries are finite and embedded in a 2-D space, the EE element must always be 2

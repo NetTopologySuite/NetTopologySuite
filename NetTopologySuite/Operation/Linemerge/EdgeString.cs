@@ -30,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// Adds a directed edge which is known to form part of this line.
         /// </summary>
         /// <param name="directedEdge"></param>
-        public virtual void Add(LineMergeDirectedEdge directedEdge)
+        public void Add(LineMergeDirectedEdge directedEdge)
         {
             directedEdges.Add(directedEdge);
         }
@@ -67,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// <summary>
         /// Converts this EdgeString into a LineString.
         /// </summary>
-        public virtual LineString ToLineString()
+        public LineString ToLineString()
         {
             return factory.CreateLineString(Coordinates);
         }

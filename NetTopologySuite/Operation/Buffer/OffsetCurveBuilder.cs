@@ -69,7 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <summary>
         /// 
         /// </summary>
-        public virtual BufferStyles EndCapStyle
+        public BufferStyles EndCapStyle
         {
             get
             {
@@ -89,7 +89,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="inputPts"></param>
         /// <param name="distance"></param>
         /// <returns> A List of Coordinate[].</returns>
-        public virtual IList GetLineCurve(Coordinate[] inputPts, double distance)
+        public IList GetLineCurve(Coordinate[] inputPts, double distance)
         {
             IList lineList = new ArrayList();
             // a zero or negative width buffer of a line/point is empty
@@ -122,7 +122,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// as well as rings.
         /// </summary>
         /// <returns>A List of Coordinate[].</returns>
-        public virtual IList GetRingCurve(Coordinate[] inputPts, Positions side, double distance)
+        public IList GetRingCurve(Coordinate[] inputPts, Positions side, double distance)
         {
             IList lineList = new ArrayList();
             Init(distance);

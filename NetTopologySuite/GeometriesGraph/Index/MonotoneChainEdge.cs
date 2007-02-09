@@ -47,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate[] Coordinates
+        public  Coordinate[] Coordinates
         {
             get
             {
@@ -58,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <summary>
         /// 
         /// </summary>
-        public virtual int[] StartIndexes
+        public  int[] StartIndexes
         {
             get
             {
@@ -71,7 +71,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         /// <param name="chainIndex"></param>
         /// <returns></returns>
-        public virtual double GetMinX(int chainIndex)
+        public  double GetMinX(int chainIndex)
         {
             double x1 = pts[startIndex[chainIndex]].X;
             double x2 = pts[startIndex[chainIndex + 1]].X;
@@ -83,7 +83,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         /// <param name="chainIndex"></param>
         /// <returns></returns>
-        public virtual double GetMaxX(int chainIndex)
+        public  double GetMaxX(int chainIndex)
         {
             double x1 = pts[startIndex[chainIndex]].X;
             double x2 = pts[startIndex[chainIndex + 1]].X;
@@ -95,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         /// <param name="mce"></param>
         /// <param name="si"></param>
-        public virtual void ComputeIntersects(MonotoneChainEdge mce, SegmentIntersector si)
+        public  void ComputeIntersects(MonotoneChainEdge mce, SegmentIntersector si)
         {
             for (int i = 0; i < startIndex.Length - 1; i++)
             {
@@ -113,7 +113,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <param name="mce"></param>
         /// <param name="chainIndex1"></param>
         /// <param name="si"></param>
-        public virtual void ComputeIntersectsForChain(int chainIndex0, MonotoneChainEdge mce, int chainIndex1, SegmentIntersector si)
+        public  void ComputeIntersectsForChain(int chainIndex0, MonotoneChainEdge mce, int chainIndex1, SegmentIntersector si)
         {
             ComputeIntersectsForChain(startIndex[chainIndex0], startIndex[chainIndex0 + 1], mce,
                                       mce.startIndex[chainIndex1], mce.startIndex[chainIndex1 + 1], si);

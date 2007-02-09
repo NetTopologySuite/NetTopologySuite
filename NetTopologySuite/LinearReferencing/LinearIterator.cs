@@ -98,7 +98,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <returns></returns>
         /// <returns><c>true</c> if there are more vertices to scan.</returns>
-        protected virtual bool HasNext()
+        protected bool HasNext()
         {
             if (componentIndex >= numLines)
                 return false;
@@ -110,7 +110,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <summary>
         /// Jump to the next element of the iteration.
         /// </summary>
-        protected virtual void Next()
+        protected void Next()
         {
             if (!HasNext()) 
                 return;
@@ -229,7 +229,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// so that <see cref="Current" /> exposes the elements.
         /// </summary>
         /// <returns><c>true</c> if there are more vertices to scan.</returns>
-        public virtual bool MoveNext()
+        public bool MoveNext()
         {
             // We must call HasNext() twice because, when in the Next() method
             // another line is loaded, it's necessary to re-ckeck with the new conditions.
@@ -293,7 +293,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// 
         /// </summary>
         /// <param name="dispose"></param>
-        protected virtual void Dispose(bool dispose)
+        protected void Dispose(bool dispose)
         {
             if (dispose)
             {
@@ -361,7 +361,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             /// <summary>
             /// The component index of the vertex the iterator is currently at.
             /// </summary>
-            public virtual int ComponentIndex
+            public int ComponentIndex
             {
                 get
                 {
@@ -372,7 +372,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             /// <summary>
             /// The vertex index of the vertex the iterator is currently at.
             /// </summary>
-            public virtual int VertexIndex
+            public int VertexIndex
             {
                 get
                 {
@@ -383,7 +383,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             /// <summary>
             /// Gets the <see cref="LineString" /> component the iterator is current at.
             /// </summary>
-            public virtual LineString Line
+            public LineString Line
             {
                 get
                 {
@@ -395,7 +395,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             /// Checks whether the iterator cursor is pointing to the
             /// endpoint of a linestring.
             /// </summary>
-            public virtual bool IsEndOfLine
+            public bool IsEndOfLine
             {
                 get
                 {
@@ -407,7 +407,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             /// Gets the first <see cref="Coordinate" /> of the current segment
             /// (the coordinate of the current vertex).
             /// </summary>
-            public virtual Coordinate SegmentStart
+            public Coordinate SegmentStart
             {
                 get
                 {
@@ -420,7 +420,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             /// (the coordinate of the next vertex).
             /// If the iterator is at the end of a line, <c>null</c> is returned.
             /// </summary>
-            public virtual Coordinate SegmentEnd
+            public Coordinate SegmentEnd
             {
                 get
                 {

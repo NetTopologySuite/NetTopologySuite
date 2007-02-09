@@ -117,7 +117,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool IsValid
+        public bool IsValid
         {
             get
             {
@@ -129,7 +129,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public virtual TopologyValidationError ValidationError
+        public TopologyValidationError ValidationError
         {
             get
             {

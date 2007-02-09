@@ -171,7 +171,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Tests whether the precision model supports floating point.
         /// </summary>
         /// <returns><c>true</c> if the precision model supports floating point.</returns>
-        public virtual bool IsFloating
+        public bool IsFloating
         {
             get
             {
@@ -187,7 +187,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>
         /// The maximum number of decimal places provided by this precision model.
         /// </returns>
-        public virtual int MaximumSignificantDigits
+        public int MaximumSignificantDigits
         {
             get
             {
@@ -214,7 +214,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// the amount by which to multiply a coordinate after subtracting
         /// the offset.
         /// </returns>
-        public virtual double Scale
+        public double Scale
         {
             get
             {
@@ -230,7 +230,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Gets the type of this PrecisionModel.
         /// </summary>
         /// <returns></returns>
-        public virtual PrecisionModels GetPrecisionModelType()
+        public PrecisionModels GetPrecisionModelType()
         {                        
             return modelType;
         }
@@ -243,7 +243,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// multiplying by the scale.
         /// </returns>
         [Obsolete("Offsets are no longer used")]
-        public virtual double OffsetX
+        public double OffsetX
         {
             get
             {
@@ -260,7 +260,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// multiplying by the scale
         /// </returns>
         [Obsolete("Offsets are no longer used")]
-        public virtual double OffsetY
+        public double OffsetY
         {
             get
             {
@@ -277,7 +277,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// precise representation of <c>external</c>.
         /// </param>        
         [Obsolete("Use MakePrecise instead")]
-        public virtual void ToInternal(Coordinate cexternal, Coordinate cinternal) 
+        public void ToInternal(Coordinate cexternal, Coordinate cinternal) 
         {
             if (IsFloating) 
             {
@@ -301,7 +301,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// representation of <c>external</c>
         /// </returns>
         [Obsolete("Use MakePrecise instead")]
-        public virtual Coordinate ToInternal(Coordinate cexternal) 
+        public Coordinate ToInternal(Coordinate cexternal) 
         {
             Coordinate cinternal = new Coordinate(cexternal);
             MakePrecise(ref cinternal);
@@ -317,7 +317,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// external representation of <c>internal</c>.
         /// </returns>
         [Obsolete("No longer needed, since internal representation is same as external representation")]
-        public virtual Coordinate ToExternal(Coordinate cinternal) 
+        public Coordinate ToExternal(Coordinate cinternal) 
         {
             Coordinate cexternal = new Coordinate(cinternal);
             return cexternal;
@@ -332,7 +332,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// external representation of <c>internal</c>.
         /// </param>
         [Obsolete("No longer needed, since internal representation is same as external representation")]
-        public virtual void ToExternal(Coordinate cinternal, Coordinate cexternal) 
+        public void ToExternal(Coordinate cinternal, Coordinate cexternal) 
         {
             cexternal.X = cinternal.X;
             cexternal.Y = cinternal.Y;
@@ -345,7 +345,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// on the number line.
         /// </summary>
         /// <param name="val"></param>
-        public virtual double MakePrecise(double val) 
+        public double MakePrecise(double val) 
         {
   	        if (modelType == PrecisionModels.FloatingSingle)
             {                
@@ -363,7 +363,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Rounds a Coordinate to the PrecisionModel grid.
         /// </summary>
         /// <param name="coord"></param>
-        public virtual void MakePrecise(ref Coordinate coord)
+        public void MakePrecise(ref Coordinate coord)
         {
             // optimization for full precision
             if (modelType == PrecisionModels.Floating) 
@@ -443,7 +443,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// A negative integer, zero, or a positive integer as this <c>PrecisionModel</c>
         /// is less than, equal to, or greater than the specified <c>PrecisionModel</c>.
         /// </returns>
-        public virtual int CompareTo(object o) 
+        public int CompareTo(object o) 
         {
             PrecisionModel other = (PrecisionModel) o;
 

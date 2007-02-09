@@ -40,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual Label Label
+        public Label Label
         {
             get
             {
@@ -52,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual int GetOutgoingDegree()
+        public int GetOutgoingDegree()
         {            
             int degree = 0;
             for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
@@ -69,7 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="er"></param>
         /// <returns></returns>
-        public virtual int GetOutgoingDegree(EdgeRing er)
+        public int GetOutgoingDegree(EdgeRing er)
         {
             int degree = 0;
             for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
@@ -85,7 +85,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual DirectedEdge GetRightmostEdge()
+        public DirectedEdge GetRightmostEdge()
         {
             IList edges = Edges;
             int size = edges.Count;
@@ -144,7 +144,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary> 
         /// For each dirEdge in the star, merge the label .
         /// </summary>
-        public virtual void MergeSymLabels()
+        public void MergeSymLabels()
         {
             for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
             {
@@ -158,7 +158,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Update incomplete dirEdge labels from the labelling for the node.
         /// </summary>
         /// <param name="nodeLabel"></param>
-        public virtual void UpdateLabelling(Label nodeLabel)
+        public void UpdateLabelling(Label nodeLabel)
         {
             for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
             {
@@ -202,7 +202,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// (in other words, the topological location of the face is given by the RHS label of the DirectedEdge).
         /// PRECONDITION: No pair of dirEdges are both marked as being in the result.
         /// </summary>
-        public virtual void LinkResultDirectedEdges()
+        public void LinkResultDirectedEdges()
         {
             // make sure edges are copied to resultAreaEdges list
             GetResultAreaEdges();
@@ -255,7 +255,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="er"></param>
-        public virtual void LinkMinimalDirectedEdges(EdgeRing er)
+        public void LinkMinimalDirectedEdges(EdgeRing er)
         {
             // find first area edge (if any) to start linking at
             DirectedEdge firstOut = null;
@@ -300,7 +300,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual void LinkAllDirectedEdges()
+        public void LinkAllDirectedEdges()
         {
             IList temp = Edges;
             temp = null;    //Hack
@@ -327,7 +327,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// area at this node (if any).
         /// If any L edges are found in the interior of the result, mark them as covered.
         /// </summary>
-        public virtual void FindCoveredLineEdges()
+        public void FindCoveredLineEdges()
         {        
             // Since edges are stored in CCW order around the node,
             // as we move around the ring we move from the right to the left side of the edge
@@ -388,7 +388,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="de"></param>
-        public virtual void ComputeDepths(DirectedEdge de)
+        public void ComputeDepths(DirectedEdge de)
         {
             int edgeIndex = FindIndex(de);
             int startDepth = de.GetDepth(Positions.Left);

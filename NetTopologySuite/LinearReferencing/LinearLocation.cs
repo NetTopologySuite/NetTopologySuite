@@ -127,7 +127,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Ensures the indexes are valid for a given linear <see cref="Geometry" />.
         /// </summary>
         /// <param name="linear">A linear geometry.</param>
-        public virtual void Clamp(Geometry linear)
+        public void Clamp(Geometry linear)
         {
             if (componentIndex >= linear.NumGeometries)
             {
@@ -150,7 +150,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="linearGeom">A linear geometry.</param>
         /// <param name="minDistance">The minimum allowable distance to a vertex.</param>
-        public virtual void SnapToVertex(Geometry linearGeom, double minDistance)
+        public void SnapToVertex(Geometry linearGeom, double minDistance)
         {
             if (segmentFraction <= 0.0 || segmentFraction >= 1.0)
                 return;
@@ -171,7 +171,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="linearGeom">A linear geometry.</param>
         /// <returns>The length of the segment.</returns>
-        public virtual double GetSegmentLength(Geometry linearGeom)
+        public double GetSegmentLength(Geometry linearGeom)
         {
             LineString lineComp = (LineString)linearGeom.GetGeometryN(componentIndex);
 
@@ -190,7 +190,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// refer the end of a linear geometry.
         /// </summary>
         /// <param name="linear">The linear geometry to set.</param>
-        public virtual void SetToEnd(Geometry linear)
+        public void SetToEnd(Geometry linear)
         {
             componentIndex = linear.NumGeometries - 1;
             LineString lastLine = (LineString)linear.GetGeometryN(componentIndex);
@@ -201,7 +201,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <summary>
         /// Gets the component index for this location.
         /// </summary>
-        public virtual int ComponentIndex
+        public int ComponentIndex
         {
             get
             {
@@ -212,7 +212,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <summary>
         /// Gets the segment index for this location.
         /// </summary>
-        public virtual int SegmentIndex
+        public int SegmentIndex
         {
             get
             {
@@ -223,7 +223,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <summary>
         /// Gets the segment fraction for this location.
         /// </summary>
-        public virtual double SegmentFraction
+        public double SegmentFraction
         {
             get
             {
@@ -235,7 +235,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Tests whether this location refers to a vertex:
         /// returns <c>true</c> if the location is a vertex.
         /// </summary>        
-        public virtual bool IsVertex
+        public bool IsVertex
         {
             get
             {
@@ -250,7 +250,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="linearGeom">A linear geometry.</param>
         /// <returns>The <see cref="Coordinate" /> at the location.</returns>
-        public virtual Coordinate GetCoordinate(Geometry linearGeom)
+        public Coordinate GetCoordinate(Geometry linearGeom)
         {
             LineString lineComp = (LineString)linearGeom.GetGeometryN(componentIndex);
             Coordinate p0 = lineComp.GetCoordinateN(segmentIndex);
@@ -266,7 +266,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="linearGeom">A linear geometry.</param>
         /// <returns><c>true</c> if this location is valid.</returns>
-        public virtual bool IsValid(Geometry linearGeom)
+        public bool IsValid(Geometry linearGeom)
         {
             if (componentIndex < 0 || componentIndex >= linearGeom.NumGeometries)
                 return false;
@@ -295,7 +295,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <exception cref="T:System.ArgumentException">
         /// <paramref name="obj" /> is not the same type as this instance. 
         /// </exception>
-        public virtual int CompareTo(object obj)
+        public int CompareTo(object obj)
         {
             LinearLocation other = (LinearLocation)obj;
             return CompareTo(other);
@@ -313,7 +313,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <c>LineStringLocation</c> is less than, equal to, 
         /// or greater than the specified <c>LineStringLocation</c>.
         /// </returns>
-        public virtual int CompareTo(LinearLocation other)
+        public int CompareTo(LinearLocation other)
         {            
             // compare component indices
             if (componentIndex < other.ComponentIndex) return -1;
@@ -338,7 +338,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// A negative integer, zero, or a positive integer as this <c>LineStringLocation</c>
         /// is less than, equal to, or greater than the specified locationValues.
         /// </returns>
-        public virtual int CompareLocationValues(int componentIndex1, int segmentIndex1, double segmentFraction1)
+        public int CompareLocationValues(int componentIndex1, int segmentIndex1, double segmentFraction1)
         {
             // compare component indices
             if (componentIndex < componentIndex1) return -1;

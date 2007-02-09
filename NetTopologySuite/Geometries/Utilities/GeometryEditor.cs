@@ -64,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <param name="geometry">The Geometry to edit.</param>
         /// <param name="operation">The edit operation to carry out.</param>
         /// <returns>A new <c>Geometry</c> which is the result of the editing.</returns>
-        public virtual Geometry Edit(Geometry geometry, GeometryEditorOperation operation)
+        public Geometry Edit(Geometry geometry, GeometryEditorOperation operation)
         {
             // if client did not supply a GeometryFactory, use the one from the input Geometry
             if (factory == null)
@@ -170,7 +170,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             /// <param name="geometry"></param>
             /// <param name="factory"></param>
             /// <returns></returns>
-            public virtual Geometry Edit(Geometry geometry, GeometryFactory factory) 
+            public Geometry Edit(Geometry geometry, GeometryFactory factory) 
             {
                 if (geometry is LinearRing) 
                     return factory.CreateLinearRing(Edit(geometry.Coordinates, geometry));

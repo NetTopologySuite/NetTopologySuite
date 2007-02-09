@@ -40,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// its left and right location.
         /// </summary>
         /// <returns>A Collection of SegmentStrings representing the raw buffer curves.</returns>
-        public virtual IList GetCurves()
+        public IList GetCurves()
         {            
             Add(inputGeom);
             return curveList;         

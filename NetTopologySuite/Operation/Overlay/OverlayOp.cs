@@ -139,7 +139,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <summary>
         /// 
         /// </summary>
-        public virtual PlanarGraph Graph
+        public PlanarGraph Graph
         {
             get
             {
@@ -222,7 +222,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// with the existing edge.
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void InsertUniqueEdge(Edge e)
+        protected void InsertUniqueEdge(Edge e)
         {
             int foundIndex = edgeList.FindEdgeIndex(e);
             // If an identical edge already exists, simply update its label
@@ -501,7 +501,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// This method is used to decide if a point node should be included in the result or not.
         /// </summary>
         /// <returns><c>true</c> if the coord point is covered by a result Line or Area point.</returns>
-        public virtual bool IsCoveredByLA(Coordinate coord)
+        public bool IsCoveredByLA(Coordinate coord)
         {
             if (IsCovered(coord, resultLineList)) 
                 return true;
@@ -513,7 +513,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// This method is used to decide if an L edge should be included in the result or not.
         /// </summary>
         /// <returns><c>true</c> if the coord point is covered by a result Area point.</returns>
-        public virtual bool IsCoveredByA(Coordinate coord)
+        public bool IsCoveredByA(Coordinate coord)
         {
             if (IsCovered(coord, resultPolyList)) 
                 return true;

@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// Adds an Edge, DirectedEdges, and Nodes for the given LineString representation
         /// of an edge. 
         /// </summary>
-        public virtual void AddEdge(LineString lineString)
+        public void AddEdge(LineString lineString)
         {
             if (lineString.IsEmpty)
                 return; 

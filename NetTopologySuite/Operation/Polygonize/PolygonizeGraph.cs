@@ -87,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Add a <c>LineString</c> forming an edge of the polygon graph.
         /// </summary>
         /// <param name="line">The line to add.</param>
-        public virtual void AddEdge(LineString line)
+        public void AddEdge(LineString line)
         {
             if (line.IsEmpty) return;
             Coordinate[] linePts = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
@@ -192,7 +192,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Computes the EdgeRings formed by the edges in this graph.        
         /// </summary>
         /// <returns>A list of the{EdgeRings found by the polygonization process.</returns>
-        public virtual IList GetEdgeRings()
+        public IList GetEdgeRings()
         {
             // maybe could optimize this, since most of these pointers should be set correctly already by deleteCutEdges()
             ComputeNextCWEdges();
@@ -244,7 +244,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Finds and removes all cut edges from the graph.
         /// </summary>
         /// <returns>A list of the <c>LineString</c>s forming the removed cut edges.</returns>
-        public virtual IList DeleteCutEdges()
+        public IList DeleteCutEdges()
         {
             ComputeNextCWEdges();
             // label the current set of edgerings
@@ -421,7 +421,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// an explicit recursion stack is used.
         /// </summary>
         /// <returns>A List containing the LineStrings that formed dangles.</returns>
-        public virtual IList DeleteDangles()
+        public IList DeleteDangles()
         {
             IList nodesToRemove = FindNodesOfDegree(1);
             ISet dangleLines = new HashedSet();

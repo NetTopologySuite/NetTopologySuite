@@ -43,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <summary>
         /// 
         /// </summary>
-        public virtual double Point
+        public  double Point
         {
             get
             {
@@ -54,7 +54,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <summary>
         /// 
         /// </summary>
-        public virtual int Level
+        public  int Level
         {
             get
             {
@@ -65,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <summary>
         /// 
         /// </summary>
-        public virtual Interval Interval
+        public  Interval Interval
         {
             get
             {
@@ -78,7 +78,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// whose extent is a power of two and which is based at a power of 2.
         /// </summary>
         /// <param name="itemInterval"></param>
-        public virtual void ComputeKey(Interval itemInterval)
+        public  void ComputeKey(Interval itemInterval)
         {
             level = ComputeLevel(itemInterval);
             interval = new Interval();

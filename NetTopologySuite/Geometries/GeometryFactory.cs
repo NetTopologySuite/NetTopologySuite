@@ -47,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Returns the PrecisionModel that Geometries created by this factory
         /// will be associated with.
         /// </summary>
-        public virtual PrecisionModel PrecisionModel
+        public PrecisionModel PrecisionModel
         {
             get
             {
@@ -60,7 +60,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public virtual ICoordinateSequenceFactory CoordinateSequenceFactory
+        public ICoordinateSequenceFactory CoordinateSequenceFactory
         {
             get
             {
@@ -73,7 +73,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public virtual int SRID
+        public int SRID
         {
             get
             {
@@ -270,7 +270,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// is not a closed linestring, that is, if the first and last coordinates
         /// are not equal.
         /// </returns>
-        public virtual Geometry ToGeometry(Envelope envelope) 
+        public Geometry ToGeometry(Envelope envelope) 
         {
             if (envelope.IsNull) 
                 return CreatePoint((ICoordinateSequence)null);            
@@ -295,7 +295,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// an empty Geometry.
         /// </summary>
         /// <param name="coordinate"></param>
-        public virtual Point CreatePoint(Coordinate coordinate) 
+        public Point CreatePoint(Coordinate coordinate) 
         {
             return CreatePoint(coordinate != null ? 
                 CoordinateSequenceFactory.Create(new Coordinate[] { coordinate }) : null);
@@ -306,7 +306,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// CoordinateSequence will create an empty Point.
         /// </summary>
         /// <param name="coordinates"></param>
-        public virtual Point CreatePoint(ICoordinateSequence coordinates) 
+        public Point CreatePoint(ICoordinateSequence coordinates) 
         {
   	        return new Point(coordinates, this);
         }
@@ -317,7 +317,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
         /// <returns></returns>
-        public virtual LineString CreateLineString(Coordinate[] coordinates)
+        public LineString CreateLineString(Coordinate[] coordinates)
         {
             return CreateLineString(coordinates != null ?
                 CoordinateSequenceFactory.Create(coordinates) : null);
@@ -329,7 +329,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">A CoordinateSequence possibly empty, or null.</param>
         /// <returns></returns>
-        public virtual LineString CreateLineString(ICoordinateSequence coordinates)
+        public LineString CreateLineString(ICoordinateSequence coordinates)
         {
             return new LineString(coordinates, this);
         }
@@ -340,7 +340,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// linestring. Consecutive points must not be equal.
         /// </summary>
         /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
-        public virtual LinearRing CreateLinearRing(Coordinate[] coordinates)
+        public LinearRing CreateLinearRing(Coordinate[] coordinates)
         {
             return CreateLinearRing(coordinates != null ?
                 CoordinateSequenceFactory.Create(coordinates) : null);
@@ -352,7 +352,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// linestring. Consecutive points must not be equal.
         /// </summary>
         /// <param name="coordinates">A CoordinateSequence possibly empty, or null.</param>
-        public virtual LinearRing CreateLinearRing(ICoordinateSequence coordinates)
+        public LinearRing CreateLinearRing(ICoordinateSequence coordinates)
         {
             return new LinearRing(coordinates, this);
         }
@@ -372,7 +372,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// the empty point is to be created.        
         /// </param>
         /// <returns></returns>
-        public virtual Polygon CreatePolygon(LinearRing shell, LinearRing[] holes)
+        public Polygon CreatePolygon(LinearRing shell, LinearRing[] holes)
         {
             return new Polygon(shell, holes, this);
         }
@@ -382,7 +382,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// create an empty MultiPoint.
         /// </summary>
         /// <param name="point">An array without null elements, or an empty array, or null.</param>
-        public virtual MultiPoint CreateMultiPoint(Point[] point)
+        public MultiPoint CreateMultiPoint(Point[] point)
         {
             return new MultiPoint(point, this);
         }
@@ -391,7 +391,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Creates a MultiPoint using the given Coordinates; a null or empty array will create an empty MultiPoint.
         /// </summary>
         /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
-        public virtual MultiPoint CreateMultiPoint(Coordinate[] coordinates)
+        public MultiPoint CreateMultiPoint(Coordinate[] coordinates)
         {
             return CreateMultiPoint(coordinates != null ?
                 CoordinateSequenceFactory.Create(coordinates) : null);
@@ -402,7 +402,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// create an empty MultiPoint.
         /// </summary>
         /// <param name="coordinates">A CoordinateSequence possibly empty, or null.</param>
-        public virtual MultiPoint CreateMultiPoint(ICoordinateSequence coordinates)
+        public MultiPoint CreateMultiPoint(ICoordinateSequence coordinates)
         {
             if (coordinates == null)
                 coordinates = CoordinateSequenceFactory.Create(new Coordinate[] { });
@@ -419,7 +419,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// array will create an empty MultiLineString.
         /// </summary>
         /// <param name="lineStrings">LineStrings, each of which may be empty but not null-</param>
-        public virtual MultiLineString CreateMultiLineString(LineString[] lineStrings) 
+        public MultiLineString CreateMultiLineString(LineString[] lineStrings) 
         {
   	        return new MultiLineString(lineStrings, this);
         }
@@ -431,7 +431,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Specification for SQL.
         /// </summary>
         /// <param name="polygons">Polygons, each of which may be empty but not null.</param>
-        public virtual MultiPolygon CreateMultiPolygon(Polygon[] polygons)
+        public MultiPolygon CreateMultiPolygon(Polygon[] polygons)
         {
             return new MultiPolygon(polygons, this);
         }      
@@ -441,7 +441,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// array will create an empty GeometryCollection.
         /// </summary>
         /// <param name="geometries">Geometries, each of which may be empty but not null.</param>
-        public virtual GeometryCollection CreateGeometryCollection(Geometry[] geometries) 
+        public GeometryCollection CreateGeometryCollection(Geometry[] geometries) 
         {
   	        return new GeometryCollection(geometries, this);
         }                  
@@ -470,7 +470,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// A <c>Geometry</c> of the "smallest", "most type-specific" 
         /// class that can contain the elements of <c>geomList</c>.
         /// </returns>
-        public virtual Geometry BuildGeometry(ICollection geomList) 
+        public Geometry BuildGeometry(ICollection geomList) 
         {
             Type geomClass = null;
             bool isHeterogeneous = false;
@@ -520,7 +520,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// A clone of g based on a CoordinateSequence created by this
         /// GeometryFactory's CoordinateSequenceFactory.
         /// </returns>
-        public virtual Geometry CreateGeometry(Geometry g)
+        public Geometry CreateGeometry(Geometry g)
         {
             // could this be cached to make this more efficient? Or maybe it isn't enough overhead to bother
             GeometryEditor editor = new GeometryEditor(this);

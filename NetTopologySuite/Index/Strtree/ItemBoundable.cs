@@ -27,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <summary>
         /// 
         /// </summary>
-        public virtual object Bounds 
+        public object Bounds 
         {
             get
             {
@@ -38,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <summary>
         /// 
         /// </summary>
-        public virtual object Item
+        public object Item
         {
             get
             {

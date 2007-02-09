@@ -34,7 +34,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="geometries">If geometries are not of the same type throws <c>System.ArgumentException</c>.</param>
         /// <param name="shapepath">Path of the shapefile to create: will be created a new file using the given path.
         /// if file exists throws <c>System.IO.IOException</c>.</param>        
-        public virtual void Write(GeometryCollection geometries, string shapepath)
+        public void Write(GeometryCollection geometries, string shapepath)
         {            
             using (Stream stream = new FileStream(shapepath, FileMode.CreateNew, FileAccess.Write, FileShare.None))
             {
@@ -47,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometries"></param>
         /// <param name="stream"></param>
-        protected virtual void Write(GeometryCollection geometries, Stream stream)
+        protected void Write(GeometryCollection geometries, Stream stream)
         {
             if (!geometries.IsHomogeneous)
                 throw new ArgumentException("Shapefile does contain only geometries of th esame type!");
@@ -78,7 +78,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="geometry"></param>
         /// <param name="leWriter"></param>
         /// <param name="beWriter"></param>
-        protected virtual void Write(Geometry geometry, BinaryWriter leWriter, BigEndianBinaryWriter beWriter)
+        protected void Write(Geometry geometry, BinaryWriter leWriter, BigEndianBinaryWriter beWriter)
         {
             WriteFeatureHeader(geometry, beWriter);             
                           
@@ -102,7 +102,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected virtual ShapeGeometryTypes GetShapeType(Geometry geometry)
+        protected ShapeGeometryTypes GetShapeType(Geometry geometry)
         {
             if (geometry is Point)
                 return ShapeGeometryTypes.Point;
@@ -128,7 +128,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="beWriter">Big Endian Writer</param>
         /// <param name="leWriter">Little Endian Endian Writer</param>
         /// <param name="streamLength"></param>
-        protected virtual void WriteHeaderFile(GeometryCollection geometries, BinaryWriter leWriter, BigEndianBinaryWriter beWriter, int streamLength)
+        protected void WriteHeaderFile(GeometryCollection geometries, BinaryWriter leWriter, BigEndianBinaryWriter beWriter, int streamLength)
         {
             // Write stub value for FileCode (big endian)            
             beWriter.WriteIntBE((int)9994);
@@ -162,7 +162,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="beWriter"></param>
-        protected virtual void WriteFeatureHeader(Geometry geometry, BigEndianBinaryWriter beWriter)
+        protected void WriteFeatureHeader(Geometry geometry, BigEndianBinaryWriter beWriter)
         {            
             // Write record number (big endian)
             beWriter.WriteIntBE((int)++recordCounter);            

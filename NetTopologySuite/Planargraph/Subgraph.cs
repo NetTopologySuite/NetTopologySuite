@@ -53,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         ///  Gets the <see cref="PlanarGraph" /> which this subgraph is part of.
         /// </summary>
         /// <returns></returns>
-        public virtual PlanarGraph GetParent()
+        public PlanarGraph GetParent()
         {
             return parentGraph;
         }
@@ -63,7 +63,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// The associated <see cref="DirectedEdge" />s and <see cref="Node" />s are also added.
         /// </summary>
         /// <param name="e">The <see cref="Edge" /> to add.</param>
-        public virtual void Add(Edge e)
+        public void Add(Edge e)
         {                        
             if (edges.Contains(e))  
                 return;
@@ -82,7 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// in the order in which they were added.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetDirEdgeEnumerator() 
+        public IEnumerator GetDirEdgeEnumerator() 
         { 
             return dirEdges.GetEnumerator(); 
         }
@@ -92,7 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// in the order in which they were added.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetEdgeEnumerator() 
+        public IEnumerator GetEdgeEnumerator() 
         { 
             return edges.GetEnumerator(); 
         }
@@ -101,7 +101,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Returns an <see cref="IEnumerator" /> over the <see cref="Node" />s in this graph.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerator GetNodeEnumerator() 
+        public IEnumerator GetNodeEnumerator() 
         { 
             return nodeMap.GetEnumerator(); 
         }
@@ -111,7 +111,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="e">The <see cref="Edge" /> to test.</param>
         /// <returns><c>true</c> if the <see cref="Edge" /> is contained in this subgraph.</returns>
-        public virtual bool Contains(Edge e) 
+        public bool Contains(Edge e) 
         { 
             return edges.Contains(e); 
         }

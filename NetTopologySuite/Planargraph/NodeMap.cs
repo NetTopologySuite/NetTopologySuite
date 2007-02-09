@@ -24,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="n"></param>
         /// <returns>The added node.</returns>
-        public virtual Node Add(Node n)
+        public Node Add(Node n)
         {
             Coordinate key = n.Coordinate;
             bool contains = nodeMap.Contains(key);            
@@ -37,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        public virtual Node Remove(Coordinate pt)
+        public Node Remove(Coordinate pt)
         {
             Node node = (Node)nodeMap[pt];
             nodeMap.Remove(pt);
@@ -49,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>
-        public virtual Node Find(Coordinate coord) 
+        public Node Find(Coordinate coord) 
         {
             return (Node)nodeMap[coord]; 
         }
@@ -58,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Returns an Iterator over the Nodes in this NodeMap, sorted in ascending order
         /// by angle with the positive x-axis.
         /// </summary>
-        public virtual IEnumerator GetEnumerator()
+        public IEnumerator GetEnumerator()
         {
             return nodeMap.Values.GetEnumerator();
         }
@@ -67,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Returns the Nodes in this NodeMap, sorted in ascending order
         /// by angle with the positive x-axis.
         /// </summary>
-        public virtual ICollection Values
+        public ICollection Values
         {
             get
             {

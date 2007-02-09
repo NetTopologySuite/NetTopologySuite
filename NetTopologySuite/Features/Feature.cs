@@ -12,15 +12,12 @@ namespace GisSharpBlog.NetTopologySuite.Features
     [Serializable]
     public class Feature
     {
-
-        #region Fields      
-
         private Geometry geometry = null;
 
         /// <summary>
         /// Geometry representation of the feature.
         /// </summary>
-        public virtual Geometry Geometry
+        public Geometry Geometry
         {
             get { return geometry; }
             set { geometry = value; }
@@ -31,16 +28,12 @@ namespace GisSharpBlog.NetTopologySuite.Features
         /// <summary>
         /// Attributes table of the feature.
         /// </summary>
-        public virtual IAttributesTable Attributes
+        public IAttributesTable Attributes
         {
             get { return attributes; }
             set { attributes = value; }
         }
-
-        #endregion
-
-        #region Constructor
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -56,8 +49,5 @@ namespace GisSharpBlog.NetTopologySuite.Features
         /// 
         /// </summary>
         public Feature() { }
-
-        #endregion
-
     }
 }

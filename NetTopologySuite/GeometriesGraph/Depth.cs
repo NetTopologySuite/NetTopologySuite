@@ -52,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        public virtual int GetDepth(int geomIndex, Positions posIndex)
+        public int GetDepth(int geomIndex, Positions posIndex)
         {
             return depth[geomIndex, (int)posIndex];
         }
@@ -63,7 +63,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <param name="depthValue"></param>
-        public virtual void SetDepth(int geomIndex, Positions posIndex, int depthValue)
+        public void SetDepth(int geomIndex, Positions posIndex, int depthValue)
         {
             depth[geomIndex, (int)posIndex] = depthValue;
         }
@@ -74,7 +74,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        public virtual int this[int geomIndex, Positions posIndex]
+        public int this[int geomIndex, Positions posIndex]
         {
             get
             {
@@ -92,7 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        public virtual Locations GetLocation(int geomIndex, Positions posIndex)
+        public Locations GetLocation(int geomIndex, Positions posIndex)
         {
             if (depth[geomIndex, (int)posIndex] <= 0) 
                 return Locations.Exterior;
@@ -105,7 +105,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <param name="location"></param>
-        public virtual void Add(int geomIndex, Positions posIndex, Locations location)
+        public void Add(int geomIndex, Positions posIndex, Locations location)
         {
             if (location == Locations.Interior)
                 depth[geomIndex, (int)posIndex]++;
@@ -114,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// A Depth object is null (has never been initialized) if all depths are null.
         /// </summary>
-        public virtual bool IsNull()
+        public bool IsNull()
         {                        
                 for (int i = 0; i < 2; i++)
                 {
@@ -132,7 +132,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
-        public virtual bool IsNull(int geomIndex)
+        public bool IsNull(int geomIndex)
         {
             return depth[geomIndex,1] == Null;
         }
@@ -143,7 +143,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        public virtual bool IsNull(int geomIndex, Positions posIndex)
+        public bool IsNull(int geomIndex, Positions posIndex)
         {
             return depth[geomIndex,(int)posIndex] == Null;
         }
@@ -152,7 +152,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="lbl"></param>
-        public virtual void Add(Label lbl)
+        public void Add(Label lbl)
         {
             for (int i = 0; i < 2; i++)
             {
@@ -175,7 +175,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
-        public virtual int GetDelta(int geomIndex)
+        public int GetDelta(int geomIndex)
         {
             return depth[geomIndex, (int)Positions.Right] - depth[geomIndex, (int)Positions.Left];
         }
@@ -188,7 +188,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// involves reducing the depths by the same amount so that at least
         /// one of them is 0.  If the remaining value is > 0, it is set to 1.
         /// </summary>
-        public virtual void Normalize()
+        public void Normalize()
         {
             for (int i = 0; i < 2; i++) 
             {

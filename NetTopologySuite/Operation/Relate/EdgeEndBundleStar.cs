@@ -43,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// Update the IM with the contribution for the EdgeStubs around the node.
         /// </summary>
         /// <param name="im"></param>
-        public virtual void UpdateIM(IntersectionMatrix im)
+        public void UpdateIM(IntersectionMatrix im)
         {
             for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
             {

@@ -26,9 +26,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// If the point is not linear it does not contribute to the centroid.
         /// </summary>
         /// <param name="geom">The point to add.</param>
-        public virtual void Add(Geometry geom)
+        public void Add(Geometry geom)
         {
-            if(geom is LineString)             
+            if (geom is LineString)             
                 Add(geom.Coordinates);            
 
             else if (geom is GeometryCollection) 
@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate Centroid
+        public Coordinate Centroid
         {
             get
             {
@@ -56,8 +56,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary> 
         /// Adds the length defined by an array of coordinates.
         /// </summary>
-        /// <param name="pts">An array of <c>Coordinates</c>.</param>
-        public virtual void Add(Coordinate[] pts)
+        /// <param name="pts">An array of <c>Coordinate</c>s.</param>
+        public void Add(Coordinate[] pts)
         {
             for (int i = 0; i < pts.Length - 1; i++)
             {

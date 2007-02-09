@@ -24,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// 
         /// </summary>
         /// <param name="line"></param>
-        public virtual void Add(TaggedLineString line) 
+        public void Add(TaggedLineString line) 
         {
             TaggedLineSegment[] segs = line.Segments;
             for (int i = 0; i < segs.Length - 1; i++) 
@@ -38,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// 
         /// </summary>
         /// <param name="seg"></param>
-        public virtual void Add(LineSegment seg)
+        public void Add(LineSegment seg)
         {
             index.Insert(new Envelope(seg.P0, seg.P1), seg);
         }
@@ -47,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// 
         /// </summary>
         /// <param name="seg"></param>
-        public virtual void Remove(LineSegment seg)
+        public void Remove(LineSegment seg)
         {
             index.Remove(new Envelope(seg.P0, seg.P1), seg);
         }
@@ -57,7 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// </summary>
         /// <param name="querySeg"></param>
         /// <returns></returns>
-        public virtual IList Query(LineSegment querySeg)
+        public IList Query(LineSegment querySeg)
         {
             Envelope env = new Envelope(querySeg.P0, querySeg.P1);
 
@@ -91,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// 
         /// </summary>
         /// <param name="item"></param>
-        public virtual void VisitItem(Object item)
+        public void VisitItem(Object item)
         {
             LineSegment seg = (LineSegment) item;
             if (Envelope.Intersects(seg.P0, seg.P1, querySeg.P0, querySeg.P1))
@@ -101,7 +101,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public virtual ArrayList Items 
+        public ArrayList Items 
         {
             get
             {

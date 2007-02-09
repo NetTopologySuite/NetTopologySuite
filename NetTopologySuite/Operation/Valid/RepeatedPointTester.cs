@@ -25,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -38,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// </summary>
         /// <param name="g"></param>
         /// <returns></returns>
-        public virtual bool HasRepeatedPoint(Geometry g)
+        public bool HasRepeatedPoint(Geometry g)
         {
             if (g.IsEmpty)  return false;
             if (g is Point) return false;
@@ -58,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>
-        public virtual bool HasRepeatedPoint(Coordinate[] coord)
+        public bool HasRepeatedPoint(Coordinate[] coord)
         {
             for (int i = 1; i < coord.Length; i++)
             {

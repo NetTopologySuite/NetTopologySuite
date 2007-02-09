@@ -65,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         /// <param name="bdyNodes0"></param>
         /// <param name="bdyNodes1"></param>
-        public virtual void SetBoundaryNodes(ICollection bdyNodes0, ICollection bdyNodes1)
+        public  void SetBoundaryNodes(ICollection bdyNodes0, ICollection bdyNodes1)
         {
             bdyNodes = new ICollection[2];
             bdyNodes[0] = bdyNodes0;
@@ -75,7 +75,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <returns> 
         /// The proper intersection point, or <c>null</c> if none was found.
         /// </returns>
-        public virtual Coordinate ProperIntersectionPoint
+        public  Coordinate ProperIntersectionPoint
         {
             get
             {
@@ -86,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool HasIntersection
+        public  bool HasIntersection
         {
             get
             {
@@ -101,7 +101,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// an endpoint equal to the intersection, which according to SFS semantics
         /// can result in the point being on the Boundary of the Geometry.
         /// </summary>
-        public virtual bool HasProperIntersection
+        public  bool HasProperIntersection
         {
             get
             {
@@ -113,7 +113,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// A proper interior intersection is a proper intersection which is not
         /// contained in the set of boundary nodes set for this SegmentIntersector.
         /// </summary>
-        public virtual bool HasProperInteriorIntersection
+        public  bool HasProperInteriorIntersection
         {
             get
             {
@@ -161,7 +161,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <param name="segIndex0"></param>
         /// <param name="e1"></param>
         /// <param name="segIndex1"></param>
-        public virtual void AddIntersections(Edge e0, int segIndex0, Edge e1, int segIndex1)
+        public  void AddIntersections(Edge e0, int segIndex0, Edge e1, int segIndex1)
         {            
             // if (e0 == e1 && segIndex0 == segIndex1) 
             if (Object.ReferenceEquals(e0, e1) && segIndex0 == segIndex1)

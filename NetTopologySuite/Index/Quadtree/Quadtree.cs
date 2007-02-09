@@ -81,7 +81,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary> 
         /// Returns the number of levels in the tree.
         /// </summary>
-        public virtual int Depth
+        public int Depth
         {
             get
             {
@@ -97,7 +97,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary> 
         /// Returns the number of items in the tree.
         /// </summary>
-        public virtual int Count
+        public int Count
         {
             get
             {
@@ -112,7 +112,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="itemEnv"></param>
         /// <param name="item"></param>
-        public virtual void Insert(Envelope itemEnv, object item)
+        public void Insert(Envelope itemEnv, object item)
         {
             CollectStats(itemEnv);
             Envelope insertEnv = EnsureExtent(itemEnv, minExtent);
@@ -125,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <param name="itemEnv">The Envelope of the item to remove.</param>
         /// <param name="item">The item to remove.</param>
         /// <returns><c>true</c> if the item was found.</returns>
-        public virtual bool Remove(Envelope itemEnv, object item)
+        public bool Remove(Envelope itemEnv, object item)
         {
             Envelope posEnv = EnsureExtent(itemEnv, minExtent);
             return root.Remove(posEnv, item);
@@ -136,7 +136,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <returns></returns>
-        public virtual IList Query(Envelope searchEnv)
+        public IList Query(Envelope searchEnv)
         {
             /*
             * the items that are matched are the items in quads which
@@ -152,7 +152,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
-        public virtual void Query(Envelope searchEnv, IItemVisitor visitor)
+        public void Query(Envelope searchEnv, IItemVisitor visitor)
         {
             /*
             * the items that are matched are the items in quads which
@@ -164,7 +164,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// Return a list of all items in the Quadtree.
         /// </summary>
-        public virtual IList QueryAll()
+        public IList QueryAll()
         {
             IList foundItems = new ArrayList();
             root.AddAllItems(ref foundItems);

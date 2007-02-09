@@ -46,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         /// <param name="pts"></param>
         /// <returns></returns>
-        public virtual int[] GetChainStartIndices(Coordinate[] pts)
+        public int[] GetChainStartIndices(Coordinate[] pts)
         {
             // find the startpoint (and endpoints) of all monotone chains in this edge
             int start = 0;

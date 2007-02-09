@@ -130,7 +130,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Initialize to a null <c>Envelope</c>.
         /// </summary>
-        public virtual void Init()
+        public void Init()
         {
             SetToNull();
         }
@@ -142,7 +142,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="x2">The second x-value.</param>
         /// <param name="y1">The first y-value.</param>
         /// <param name="y2">The second y-value.</param>
-        public virtual void Init(double x1, double x2, double y1, double y2)
+        public void Init(double x1, double x2, double y1, double y2)
         {
             if (x1 < x2)
             {
@@ -172,7 +172,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="p1">The first Coordinate.</param>
         /// <param name="p2">The second Coordinate.</param>
-        public virtual void Init(Coordinate p1, Coordinate p2)
+        public void Init(Coordinate p1, Coordinate p2)
         {
             Init(p1.X, p2.X, p1.Y, p2.Y);
         }
@@ -181,7 +181,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Initialize an <c>Envelope</c> for a region defined by a single Coordinate.
         /// </summary>
         /// <param name="p">The Coordinate.</param>
-        public virtual void Init(Coordinate p)
+        public void Init(Coordinate p)
         {
             Init(p.X, p.X, p.Y, p.Y);
         }
@@ -190,7 +190,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Initialize an <c>Envelope</c> from an existing Envelope.
         /// </summary>
         /// <param name="env">The Envelope to initialize from.</param>
-        public virtual void Init(Envelope env)
+        public void Init(Envelope env)
         {
             this.minx = env.minx;
             this.maxx = env.maxx;
@@ -201,7 +201,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Makes this <c>Envelope</c> a "null" envelope..
         /// </summary>
-        public virtual void SetToNull()
+        public void SetToNull()
         {
             minx = 0;
             maxx = -1;
@@ -216,7 +216,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <c>true</c> if this <c>Envelope</c> is uninitialized
         /// or is the envelope of the empty point.
         /// </returns>
-        public virtual bool IsNull
+        public bool IsNull
         {
             get
             {
@@ -228,7 +228,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Returns the difference between the maximum and minimum x values.
         /// </summary>
         /// <returns>max x - min x, or 0 if this is a null <c>Envelope</c>.</returns>
-        public virtual double Width
+        public double Width
         {
             get
             {
@@ -242,7 +242,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Returns the difference between the maximum and minimum y values.
         /// </summary>
         /// <returns>max y - min y, or 0 if this is a null <c>Envelope</c>.</returns>
-        public virtual double Height
+        public double Height
         {
             get
             {
@@ -257,7 +257,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// indicates that this is a null <c>Envelope</c>.
         /// </summary>
         /// <returns>The minimum x-coordinate.</returns>
-        public virtual double MinX
+        public double MinX
         {
             get
             {
@@ -270,7 +270,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// indicates that this is a null <c>Envelope</c>.
         /// </summary>
         /// <returns>The maximum x-coordinate.</returns>
-        public virtual double MaxX
+        public double MaxX
         {
             get
             {
@@ -283,7 +283,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// indicates that this is a null <c>Envelope</c>.
         /// </summary>
         /// <returns>The minimum y-coordinate.</returns>
-        public virtual double MinY
+        public double MinY
         {
             get
             {
@@ -296,7 +296,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// indicates that this is a null <c>Envelope</c>.
         /// </summary>
         /// <returns>The maximum y-coordinate.</returns>
-        public virtual double MaxY
+        public double MaxY
         {
             get
             {
@@ -340,7 +340,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Does nothing if (p) is already on or within the boundaries.
         /// </summary>
         /// <param name="p">The Coordinate.</param>
-        public virtual void ExpandToInclude(Coordinate p)
+        public void ExpandToInclude(Coordinate p)
         {
             ExpandToInclude(p.X, p.Y);
         }
@@ -351,7 +351,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="x">The value to lower the minimum x to or to raise the maximum x to.</param>
         /// <param name="y">The value to lower the minimum y to or to raise the maximum y to.</param>
-        public virtual void ExpandToInclude(double x, double y)
+        public void ExpandToInclude(double x, double y)
         {
             if (IsNull)
             {
@@ -375,7 +375,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// within the boundaries.
         /// </summary>
         /// <param name="other">the <c>Envelope</c> to merge with.</param>        
-        public virtual void ExpandToInclude(Envelope other)
+        public void ExpandToInclude(Envelope other)
         {
             if (other.IsNull)
                 return;            
@@ -404,7 +404,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="transX">The amount to translate along the X axis.</param>
         /// <param name="transY">The amount to translate along the Y axis.</param>
-        public virtual void Translate(double transX, double transY)
+        public void Translate(double transX, double transY)
         {
             if (IsNull) 
                 return;            
@@ -418,7 +418,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// The centre coordinate of this envelope, 
         /// or <c>null</c> if the envelope is null.
         /// </returns>.
-        public virtual Coordinate Centre
+        public Coordinate Centre
         {
             get
             {
@@ -453,7 +453,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>        
         /// <c>true</c> if the <c>Envelope</c>s overlap.
         /// </returns>
-        public virtual bool Intersects(Envelope other)
+        public bool Intersects(Envelope other)
         {
             if (IsNull || other.IsNull)
                 return false;            
@@ -468,7 +468,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <returns></returns>
         [Obsolete("Use Intersects instead")]
-        public virtual bool Overlaps(Envelope other)
+        public bool Overlaps(Envelope other)
         {
             return Intersects(other);
         }        
@@ -479,7 +479,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="p"></param>
         /// <returns></returns>
         [Obsolete("Use Intersects instead")]
-        public virtual bool Overlaps(Coordinate p)
+        public bool Overlaps(Coordinate p)
         {
             return Intersects(p);
         }
@@ -491,7 +491,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="y"></param>
         /// <returns></returns>
         [Obsolete("Use Intersects instead")]
-        public virtual bool Overlaps(double x, double y)
+        public bool Overlaps(double x, double y)
         {
             return Intersects(x, y);
         }
@@ -501,7 +501,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="p"> the <c>Coordinate</c> to be tested.</param>
         /// <returns><c>true</c> if the point overlaps this <c>Envelope</c>.</returns>
-        public virtual bool Intersects(Coordinate p)
+        public bool Intersects(Coordinate p)
         {
             return Intersects(p.X, p.Y);
         }
@@ -512,7 +512,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="x"> the x-ordinate of the point.</param>
         /// <param name="y"> the y-ordinate of the point.</param>
         /// <returns><c>true</c> if the point overlaps this <c>Envelope</c>.</returns>
-        public virtual bool Intersects(double x, double y)
+        public bool Intersects(double x, double y)
         {
             return !(x > maxx || x < minx || y > maxy || y < miny);
         }
@@ -526,7 +526,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <c>true</c> if the point lies in the interior or
         /// on the boundary of this <c>Envelope</c>.
         /// </returns>                
-        public virtual bool Contains(Coordinate p)
+        public bool Contains(Coordinate p)
         {
             return Contains(p.X, p.Y);
         }
@@ -540,7 +540,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// being checked for containing.</param>
         /// <returns><c>true</c> if <c>(x, y)</c> lies in the interior or
         /// on the boundary of this <c>Envelope</c>.</returns>
-        public virtual bool Contains(double x, double y)
+        public bool Contains(double x, double y)
         {
             return x >= minx && x <= maxx && y >= miny && y <= maxy;
         }
@@ -551,7 +551,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other"> the <c>Envelope</c> which this <c>Envelope</c> is being checked for containing.</param>
         /// <returns><c>true</c> if <c>other</c> is contained in this <c>Envelope</c>.</returns>
-        public virtual bool Contains(Envelope other)
+        public bool Contains(Envelope other)
         {
             if (IsNull || other.IsNull)
                 return false;            
@@ -566,7 +566,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// distance is the Euclidean distance between the closest points.
         /// </summary>
         /// <returns>The distance between this and another <c>Envelope</c>.</returns>
-        public virtual double Distance(Envelope env)
+        public double Distance(Envelope env)
         {
             if (Intersects(env))
                 return 0;
@@ -685,7 +685,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Returns the area of the envelope.
         /// </summary>
-        public virtual double Area
+        public double Area
         {
             get
             {
@@ -700,7 +700,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Creates a deep copy of the current envelope.
         /// </summary>
         /// <returns></returns>
-        public virtual Envelope Clone()
+        public Envelope Clone()
         {
             return new Envelope(minx, maxx, miny, maxy);
         }
@@ -708,7 +708,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Calculates the union of the current box and the given point.
         /// </summary>
-        public virtual Envelope Union(Point point)
+        public Envelope Union(Point point)
         {
             return Union(point.Coordinate);
         }
@@ -716,7 +716,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Calculates the union of the current box and the given coordinate.
         /// </summary>
-        public virtual Envelope Union(Coordinate coord)
+        public Envelope Union(Coordinate coord)
         {
             Envelope env = this.Clone();
             env.ExpandToInclude(coord);
@@ -726,7 +726,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Calculates the union of the current box and the given box.
         /// </summary>
-        public virtual Envelope Union(Envelope box)
+        public Envelope Union(Envelope box)
         {
             if (box.IsNull)
                 return this;
@@ -743,7 +743,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Moves the envelope to the indicated coordinate.
         /// </summary>
         /// <param name="centre">The new centre coordinate.</param>
-        public virtual void SetCentre(Coordinate centre)
+        public void SetCentre(Coordinate centre)
         {
             SetCentre(centre, Width, Height);
         }
@@ -752,7 +752,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Moves the envelope to the indicated point.
         /// </summary>
         /// <param name="centre">The new centre point.</param>
-        public virtual void SetCentre(Point centre)
+        public void SetCentre(Point centre)
         {
             SetCentre(centre.Coordinate, Width, Height);
         }
@@ -762,7 +762,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="width">The new width.</param>
         /// <param name="height">The new height.</param>
-        public virtual void SetCentre(double width, double height)
+        public void SetCentre(double width, double height)
         {
             SetCentre(Centre, width, height);
         }
@@ -773,7 +773,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="centre">The new centre point.</param>
         /// <param name="width">The new width.</param>
         /// <param name="height">The new height.</param>
-        public virtual void SetCentre(Point centre, double width, double height)
+        public void SetCentre(Point centre, double width, double height)
         {
             SetCentre(centre.Coordinate, width, height);
         }
@@ -784,7 +784,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="centre">The new centre coordinate.</param>
         /// <param name="width">The new width.</param>
         /// <param name="height">The new height.</param>
-        public virtual void SetCentre(Coordinate centre, double width, double height)
+        public void SetCentre(Coordinate centre, double width, double height)
         {
             minx = centre.X - (width / 2);
             maxx = centre.X + (width / 2);
@@ -804,7 +804,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         ///  perCent = -50 compact the envelope a 50% (make it smaller).
         ///  perCent = 200 enlarge envelope by 2.
         /// </example>
-        public virtual void Zoom(double perCent)
+        public void Zoom(double perCent)
         {
             double w = (this.Width * perCent / 100);
             double h = (this.Height * perCent / 100);

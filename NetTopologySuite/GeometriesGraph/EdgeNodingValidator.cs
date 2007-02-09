@@ -45,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual void checkValid()
+        public void checkValid()
         {
             nv.CheckValid();
         }

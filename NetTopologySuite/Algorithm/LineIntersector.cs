@@ -154,7 +154,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Force computed intersection to be rounded to a given precision model
         /// </summary>        
         [Obsolete("Use PrecisionModel instead")]
-        public virtual PrecisionModel MakePrecise
+        public PrecisionModel MakePrecise
         {            
             set
             {
@@ -166,7 +166,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Force computed intersection to be rounded to a given precision model.
         /// No getter is provided, because the precision model is not required to be specified.
         /// </summary>
-        public virtual PrecisionModel PrecisionModel
+        public PrecisionModel PrecisionModel
         {            
             set
             {
@@ -185,7 +185,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        protected virtual bool IsCollinear 
+        protected bool IsCollinear 
         {
             get
             {
@@ -198,7 +198,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// This function computes both the bool value of the hasIntersection test
         /// and the (approximate) value of the intersection point itself (if there is one).
         /// </summary>
-        public virtual void ComputeIntersection(Coordinate p1, Coordinate p2, Coordinate p3, Coordinate p4) 
+        public void ComputeIntersection(Coordinate p1, Coordinate p2, Coordinate p3, Coordinate p4) 
         {
             inputLines[0,0] = p1;
             inputLines[0,1] = p2;
@@ -239,7 +239,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        protected virtual bool IsEndPoint 
+        protected bool IsEndPoint 
         {
             get
             {
@@ -251,7 +251,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Tests whether the input geometries intersect.
         /// </summary>
         /// <returns><c>true</c> if the input geometries intersect.</returns>
-        public virtual bool HasIntersection
+        public bool HasIntersection
         {
             get
             {
@@ -262,7 +262,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// Returns the number of intersection points found.  This will be either 0, 1 or 2.
         /// </summary>
-        public virtual int IntersectionNum
+        public int IntersectionNum
         {
             get 
             { 
@@ -275,7 +275,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="intIndex">is 0 or 1.</param>
         /// <returns>The intIndex'th intersection point.</returns>
-        public virtual Coordinate GetIntersection(int intIndex)  
+        public Coordinate GetIntersection(int intIndex)  
         { 
             return intPt[intIndex]; 
         }
@@ -283,7 +283,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        protected virtual void ComputeIntLineIndex() 
+        protected void ComputeIntLineIndex() 
         {
             if (intLineIndex == null) 
             {
@@ -300,7 +300,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// It does not return true if the input point is internal to the intersection segment.
         /// </summary>
         /// <returns><c>true</c> if the input point is one of the intersection points.</returns>
-        public virtual bool IsIntersection(Coordinate pt) 
+        public bool IsIntersection(Coordinate pt) 
         {
             for (int i = 0; i < result; i++) 
                 if (intPt[i].Equals2D(pt)) 
@@ -314,7 +314,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns>
         /// <c>true</c> if either intersection point is in the interior of one of the input segment.
         /// </returns>
-        public virtual bool IsInteriorIntersection()
+        public bool IsInteriorIntersection()
         {
             if (IsInteriorIntersection(0)) 
                 return true;
@@ -329,7 +329,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns> 
         /// <c>true</c> if either intersection point is in the interior of the input segment.
         /// </returns>
-        public virtual bool IsInteriorIntersection(int inputLineIndex)
+        public bool IsInteriorIntersection(int inputLineIndex)
         {
             for (int i = 0; i < result; i++)
                 if (!(intPt[i].Equals2D(inputLines[inputLineIndex, 0]) || intPt[i].Equals2D(inputLines[inputLineIndex, 1])))                                   
@@ -346,7 +346,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// if the point lies in the interior of the segment (e.g. is not equal to either of the endpoints).
         /// </summary>
         /// <returns><c>true</c>  if the intersection is proper.</returns>
-        public virtual bool IsProper 
+        public bool IsProper 
         {
             get
             {
@@ -363,7 +363,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns>
         /// The intIndex'th intersection point in the direction of the specified input line segment.
         /// </returns>
-        public virtual Coordinate GetIntersectionAlongSegment(int segmentIndex, int intIndex) 
+        public Coordinate GetIntersectionAlongSegment(int segmentIndex, int intIndex) 
         {
             // lazily compute int line array
             ComputeIntLineIndex();
@@ -379,7 +379,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns>
         /// The index of the intersection point along the segment (0 or 1).
         /// </returns>
-        public virtual int GetIndexAlongSegment(int segmentIndex, int intIndex) 
+        public int GetIndexAlongSegment(int segmentIndex, int intIndex) 
         {
             ComputeIntLineIndex();
             return intLineIndex[segmentIndex, intIndex];
@@ -389,7 +389,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// 
         /// </summary>
         /// <param name="segmentIndex"></param>
-        protected virtual void ComputeIntLineIndex(int segmentIndex) 
+        protected void ComputeIntLineIndex(int segmentIndex) 
         {
             double dist0 = GetEdgeDistance(segmentIndex, 0);
             double dist1 = GetEdgeDistance(segmentIndex, 1);
@@ -411,7 +411,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="segmentIndex">is 0 or 1.</param>
         /// <param name="intIndex">is 0 or 1.</param>
         /// <returns>The edge distance of the intersection point.</returns>
-        public virtual double GetEdgeDistance(int segmentIndex, int intIndex) 
+        public double GetEdgeDistance(int segmentIndex, int intIndex) 
         {
             double dist = ComputeEdgeDistance(intPt[intIndex], inputLines[segmentIndex, 0], inputLines[segmentIndex, 1]);
             return dist;

@@ -32,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// If the point has no area it does not contribute to the centroid.
         /// </summary>
         /// <param name="geom">The point to add.</param>
-        public virtual void Add(Geometry geom)
+        public void Add(Geometry geom)
         {
             if (geom is Polygon) 
             {
@@ -54,7 +54,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// i.e. end with the same coordinate as it starts with.
         /// </summary>
         /// <param name="ring">An array of Coordinates.</param>
-        public virtual void Add(Coordinate[] ring)
+        public void Add(Coordinate[] ring)
         {
             BasePoint = ring[0];
             AddShell(ring);
@@ -63,7 +63,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate Centroid
+        public Coordinate Centroid
         {
             get
             {

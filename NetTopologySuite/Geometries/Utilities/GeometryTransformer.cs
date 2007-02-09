@@ -71,7 +71,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <summary>
         /// 
         /// </summary>
-        public virtual Geometry InputGeometry
+        public Geometry InputGeometry
         {
             get
             {
@@ -84,7 +84,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="inputGeom"></param>
         /// <returns></returns>
-        public virtual Geometry Transform(Geometry inputGeom)
+        public Geometry Transform(Geometry inputGeom)
         {
             this.inputGeom = inputGeom;
             this.factory = inputGeom.Factory;

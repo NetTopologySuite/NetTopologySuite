@@ -41,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// <summary>
         /// 
         /// </summary>
-        public virtual IntersectionMatrix IntersectionMatrix
+        public IntersectionMatrix IntersectionMatrix
         {
             get
             {

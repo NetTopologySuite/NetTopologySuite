@@ -51,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool IsInsert
+        public bool IsInsert
         {
             get
             {
@@ -62,7 +62,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool IsDelete
+        public bool IsDelete
         {
             get
             {
@@ -73,7 +73,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
         /// <summary>
         /// 
         /// </summary>
-        public virtual SweepLineEvent InsertEvent
+        public SweepLineEvent InsertEvent
         {
             get
             {
@@ -84,7 +84,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
         /// <summary>
         /// 
         /// </summary>
-        public virtual int DeleteEventIndex
+        public int DeleteEventIndex
         {
             get
             {
@@ -99,7 +99,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
         /// <summary>
         /// 
         /// </summary>
-        public virtual SweepLineInterval Interval
+        public SweepLineInterval Interval
         {
             get
             {
@@ -114,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
         /// correctly handled.
         /// </summary>
         /// <param name="o"></param>
-        public virtual int CompareTo(object o) 
+        public int CompareTo(object o) 
         {
             SweepLineEvent pe = (SweepLineEvent) o;
             if (xValue < pe.xValue) return  -1;

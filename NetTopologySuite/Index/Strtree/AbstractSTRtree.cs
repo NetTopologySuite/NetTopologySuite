@@ -61,7 +61,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// called once, and thus can be called only after all of the data has been
         /// inserted into the tree.
         /// </summary>
-        public virtual void Build()
+        public void Build()
         {
             Assert.IsTrue(!built);            
             root = (itemBoundables.Count == 0) ? CreateNode(0) : CreateHigherLevels(itemBoundables, -1);
@@ -103,7 +103,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="nodes"></param>
         /// <returns></returns>
-        protected virtual AbstractNode LastNode(IList nodes)
+        protected AbstractNode LastNode(IList nodes)
         {
             return (AbstractNode)nodes[nodes.Count - 1];
         }       
@@ -114,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        protected virtual int CompareDoubles(double a, double b)
+        protected int CompareDoubles(double a, double b)
         {
             return a > b ? 1 : a < b ? -1 : 0;
         }
@@ -138,7 +138,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <summary>
         /// 
         /// </summary>
-        protected virtual AbstractNode Root
+        protected AbstractNode Root
         {
             get
             {
@@ -149,7 +149,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <summary> 
         /// Returns the maximum number of child nodes that a node may have.
         /// </summary>
-        public virtual int NodeCapacity
+        public int NodeCapacity
         {
             get
             {
@@ -160,7 +160,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <summary>
         /// 
         /// </summary>
-        public virtual int Count
+        public int Count
         {
             get
             {
@@ -177,7 +177,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        protected virtual int GetSize(AbstractNode node)
+        protected int GetSize(AbstractNode node)
         {
             int size = 0;
             for (IEnumerator i = node.ChildBoundables.GetEnumerator(); i.MoveNext(); ) 
@@ -194,7 +194,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <summary>
         /// 
         /// </summary>
-        public virtual int Depth
+        public int Depth
         {
             get
             {
@@ -211,7 +211,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        protected virtual int GetDepth(AbstractNode node)
+        protected int GetDepth(AbstractNode node)
         {
             int maxChildDepth = 0;
             for (IEnumerator i = node.ChildBoundables.GetEnumerator(); i.MoveNext(); ) 
@@ -232,7 +232,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="bounds"></param>
         /// <param name="item"></param>
-        protected virtual void Insert(object bounds, object item)
+        protected void Insert(object bounds, object item)
         {
             Assert.IsTrue(!built, "Cannot insert items into an STR packed R-tree after it has been built.");
             itemBoundables.Add(new ItemBoundable(bounds, item));
@@ -242,7 +242,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// Also builds the tree, if necessary.
         /// </summary>
         /// <param name="searchBounds"></param>
-        protected virtual IList Query(object searchBounds)
+        protected IList Query(object searchBounds)
         {
             if (!built)             
                 Build();             
@@ -262,7 +262,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="searchBounds"></param>
         /// <param name="visitor"></param>
-        protected virtual void Query(Object searchBounds, IItemVisitor visitor)
+        protected void Query(Object searchBounds, IItemVisitor visitor)
         {
             if(!built) 
                 Build(); 
@@ -328,7 +328,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="searchBounds"></param>
         /// <param name="item"></param>
-        protected virtual bool Remove(object searchBounds, object item)
+        protected bool Remove(object searchBounds, object item)
         {
             if (!built)             
                 Build();                         
@@ -406,7 +406,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
-        protected virtual IList BoundablesAtLevel(int level)
+        protected IList BoundablesAtLevel(int level)
         {            
             IList boundables = new ArrayList();
             BoundablesAtLevel(level, root, ref boundables);

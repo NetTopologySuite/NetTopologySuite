@@ -61,7 +61,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns>
         /// The coordinate for the node this star is based at.
         /// </returns>
-        public virtual Coordinate Coordinate
+        public Coordinate Coordinate
         {
             get
             {
@@ -76,7 +76,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual int Degree
+        public int Degree
         {
             get
             {
@@ -90,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// once an iterator is requested, it is likely that insertion into
         /// the map is complete).
         /// </summary>
-        public virtual IEnumerator GetEnumerator()
+        public IEnumerator GetEnumerator()
         {
             return Edges.GetEnumerator();
         }
@@ -98,7 +98,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual IList Edges
+        public IList Edges
         {
             get
             {
@@ -113,7 +113,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="ee"></param>
         /// <returns></returns>
-        public virtual EdgeEnd GetNextCW(EdgeEnd ee)
+        public EdgeEnd GetNextCW(EdgeEnd ee)
         {
             IList temp = Edges;
             temp = null;    // Hack for calling property
@@ -216,7 +216,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="p"></param>
         /// <param name="geom"></param>
         /// <returns></returns>
-        public virtual Locations GetLocation(int geomIndex, Coordinate p, GeometryGraph[] geom)
+        public Locations GetLocation(int geomIndex, Coordinate p, GeometryGraph[] geom)
         {
             // compute location only on demand
             if (ptInAreaLocation[geomIndex] == Locations.Null) 
@@ -227,7 +227,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool IsAreaLabelsConsistent
+        public bool IsAreaLabelsConsistent
         {
             get
             {
@@ -279,7 +279,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="geomIndex"></param>
-        public virtual void PropagateSideLabels(int geomIndex)
+        public void PropagateSideLabels(int geomIndex)
         {
             // Since edges are stored in CCW order around the node,
             // As we move around the ring we move from the right to the left side of the edge
@@ -340,7 +340,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="eSearch"></param>
         /// <returns></returns>
-        public virtual int FindIndex(EdgeEnd eSearch)
+        public int FindIndex(EdgeEnd eSearch)
         {
             GetEnumerator();   // force edgelist to be computed
             for (int i = 0; i < edgeList.Count; i++ ) 

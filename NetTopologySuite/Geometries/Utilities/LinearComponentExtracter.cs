@@ -41,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// 
         /// </summary>
         /// <param name="geom"></param>
-        public virtual void Filter(Geometry geom)
+        public void Filter(Geometry geom)
         {
             if (geom is LineString) 
                 lines.Add(geom);

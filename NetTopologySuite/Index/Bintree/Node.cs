@@ -58,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <summary>
         /// 
         /// </summary>
-        public virtual Interval Interval
+        public  Interval Interval
         {
             get
             {
@@ -82,7 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// it does not already exist.
         /// </summary>
         /// <param name="searchInterval"></param>
-        public virtual Node GetNode(Interval searchInterval)
+        public  Node GetNode(Interval searchInterval)
         {
             int subnodeIndex = GetSubnodeIndex(searchInterval, centre);
             // if index is -1 searchEnv is not contained in a subnode
@@ -101,7 +101,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// node containing the envelope.
         /// </summary>
         /// <param name="searchInterval"></param>
-        public virtual NodeBase Find(Interval searchInterval)
+        public  NodeBase Find(Interval searchInterval)
         {
             int subnodeIndex = GetSubnodeIndex(searchInterval, centre);
             if (subnodeIndex == -1)
@@ -120,7 +120,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// 
         /// </summary>
         /// <param name="node"></param>
-        public virtual void Insert(Node node)
+        public  void Insert(Node node)
         {
             Assert.IsTrue(interval == null || interval.Contains(node.Interval));
             int index = GetSubnodeIndex(node.interval, centre);

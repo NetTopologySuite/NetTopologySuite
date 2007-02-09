@@ -54,7 +54,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <summary>
         /// Gets/Sets the number of segments used to approximate a angle fillet.
         /// </summary>
-        public virtual int QuadrantSegments
+        public int QuadrantSegments
         {
             get
             {
@@ -72,7 +72,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// If the precision model is less than the precision of the Geometry precision model,
         /// the Geometry must have previously been rounded to that precision.
         /// </summary>
-        public virtual PrecisionModel WorkingPrecisionModel
+        public PrecisionModel WorkingPrecisionModel
         {
             get
             {
@@ -87,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <summary>
         /// 
         /// </summary>
-        public virtual BufferStyles EndCapStyle
+        public BufferStyles EndCapStyle
         {
             get
             {

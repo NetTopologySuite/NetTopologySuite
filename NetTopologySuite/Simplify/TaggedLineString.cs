@@ -37,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public virtual int MinimumSize
+        public int MinimumSize
         {
             get
             {
@@ -48,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public virtual LineString Parent
+        public LineString Parent
         {
             get
             {
@@ -59,7 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate[] ParentCoordinates
+        public Coordinate[] ParentCoordinates
         {
             get
             {
@@ -70,7 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public virtual Coordinate[] ResultCoordinates
+        public Coordinate[] ResultCoordinates
         {
             get
             {
@@ -81,7 +81,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public virtual int ResultSize
+        public int ResultSize
         {
             get
             {
@@ -95,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public virtual TaggedLineSegment GetSegment(int i)
+        public TaggedLineSegment GetSegment(int i)
         {
             return segs[i]; 
         }
@@ -118,7 +118,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public virtual TaggedLineSegment[] Segments
+        public TaggedLineSegment[] Segments
         {
             get
             {
@@ -130,7 +130,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// 
         /// </summary>
         /// <param name="seg"></param>
-        public virtual void AddToResult(LineSegment seg)
+        public void AddToResult(LineSegment seg)
         {
             resultSegs.Add(seg);
         }
@@ -139,7 +139,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual LineString AsLineString()
+        public LineString AsLineString()
         {
             return parentLine.Factory.CreateLineString(ExtractCoordinates(resultSegs));        
         }
@@ -148,7 +148,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual LinearRing AsLinearRing()
+        public LinearRing AsLinearRing()
         {
             return parentLine.Factory.CreateLinearRing(ExtractCoordinates(resultSegs));
         }

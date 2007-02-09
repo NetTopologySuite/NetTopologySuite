@@ -96,7 +96,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// Gets or sets the geometry factory.
         /// </summary>
         /// <value>The geometry factory.</value>
-        protected virtual GeometryFactory GeometryFactory
+        protected GeometryFactory GeometryFactory
         {
             get { return geometryFactory; }
             set { geometryFactory = value; }
@@ -130,7 +130,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// Writes the specified feature collection.
         /// </summary>
         /// <param name="featureCollection">The feature collection.</param>
-        public virtual void Write(IList featureCollection)
+        public void Write(IList featureCollection)
         {
             // Test if the Header is initialized
             if (Header == null)

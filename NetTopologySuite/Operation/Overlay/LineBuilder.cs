@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <returns>
         /// A list of the LineStrings in the result of the specified overlay operation.
         /// </returns>
-        public virtual IList Build(SpatialFunctions opCode)
+        public IList Build(SpatialFunctions opCode)
         {
             FindCoveredLineEdges();
             CollectLines(opCode);
@@ -131,7 +131,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <param name="de"></param>
         /// <param name="opCode"></param>
         /// <param name="edges"></param>
-        public virtual void CollectBoundaryTouchEdge(DirectedEdge de, SpatialFunctions opCode, IList edges)
+        public void CollectBoundaryTouchEdge(DirectedEdge de, SpatialFunctions opCode, IList edges)
         {            
             Label label = de.Label;            
             if (de.IsLineEdge)  

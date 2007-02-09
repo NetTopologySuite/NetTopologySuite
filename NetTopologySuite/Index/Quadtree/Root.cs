@@ -25,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary> 
         /// Insert an item into the quadtree this is the root of.
         /// </summary>
-        public virtual void Insert(Envelope itemEnv, object item)
+        public void Insert(Envelope itemEnv, object item)
         {
             int index = GetSubnodeIndex(itemEnv, origin);
             // if index is -1, itemEnv must cross the X or Y axis.
