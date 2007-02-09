@@ -37,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public virtual ICoordinateSequence CoordinateSequence
+        public ICoordinateSequence CoordinateSequence
         {
             get
             {
@@ -67,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public virtual Coordinate GetCoordinateN(int n) 
+        public Coordinate GetCoordinateN(int n) 
         {
             return points.GetCoordinate(n);
         }
@@ -137,7 +137,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public virtual Point GetPointN(int n) 
+        public Point GetPointN(int n) 
         {
             return Factory.CreatePoint(points.GetCoordinate(n));
         }
@@ -145,14 +145,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public virtual Point StartPoint 
+        public Point StartPoint 
         {
             get
             {
                 if (IsEmpty)
-                {
                     return null;
-                }
                 return GetPointN(0);
             }
         }
@@ -160,14 +158,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public virtual Point EndPoint
+        public Point EndPoint
         {
             get
             {
                 if (IsEmpty)
-                {
                     return null;
-                }
                 return GetPointN(NumPoints - 1);
             }
         }
@@ -180,9 +176,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get
             {
                 if (IsEmpty)
-                {
                     return false;
-                }
                 return GetCoordinateN(0).Equals2D(GetCoordinateN(NumPoints - 1));
             }
         }
@@ -190,7 +184,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool IsRing
+        public bool IsRing
         {
             get
             {
@@ -251,7 +245,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Creates a <see cref="LineString" /> whose coordinates are in the reverse order of this objects.
         /// </summary>
         /// <returns>A <see cref="LineString" /> with coordinates in the reverse order.</returns>
-        public virtual LineString Reverse()
+        public LineString Reverse()
         {
             ICoordinateSequence seq = (ICoordinateSequence)points.Clone();
 
@@ -272,7 +266,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="pt">The <c>Coordinate</c> to check.</param>
         /// <returns><c>true</c> if <c>pt</c> is one of this <c>LineString</c>'s vertices.</returns>
-        public virtual bool IsCoordinate(Coordinate pt) 
+        public bool IsCoordinate(Coordinate pt) 
         {
             for (int i = 0; i < points.Count; i++) 
                 if (points.GetCoordinate(i).Equals(pt))
@@ -431,7 +425,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public virtual Coordinate this[int n]
+        public Coordinate this[int n]
         {
             get
             {
@@ -449,7 +443,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <value></value>
-        public virtual int Count
+        public int Count
         {
             get
             {
@@ -461,7 +455,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Returns the value of the angle between the <see cref="StartPoint" />
         /// and the <see cref="EndPoint" />.
         /// </summary>
-        public virtual double Angle
+        public double Angle
         {
             get
             {       

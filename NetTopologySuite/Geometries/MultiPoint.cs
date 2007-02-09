@@ -127,9 +127,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="n">The index of the <c>Coordinate</c> to retrieve, beginning at 0.
         /// </param>
         /// <returns>The <c>n</c>th <c>Coordinate</c>.</returns>
-        protected virtual Coordinate GetCoordinate(int n) 
+        protected Coordinate GetCoordinate(int n) 
         {
-            return ((Point)geometries[n]).Coordinate;
+            return ((Point) geometries[n]).Coordinate;
         }
     }
 }

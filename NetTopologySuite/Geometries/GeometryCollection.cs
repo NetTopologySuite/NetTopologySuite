@@ -161,7 +161,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public virtual Geometry[] Geometries
+        public Geometry[] Geometries
         {
             get
             {
@@ -395,7 +395,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Returns the number of geometries contained by this <see cref="GeometryCollection" />.
         /// </summary>
-        public virtual int Count
+        public int Count
         {
             get
             {

@@ -26,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public virtual ICoordinateSequence CoordinateSequence
+        public ICoordinateSequence CoordinateSequence
         {
             get
             {
@@ -142,7 +142,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>        
-        public virtual double X
+        public double X
         {
             get
             {
@@ -159,7 +159,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>        
-        public virtual double Y 
+        public double Y 
         {
             get
             {
@@ -318,7 +318,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>        
-        public virtual double Z
+        public double Z
         {
             get
             {

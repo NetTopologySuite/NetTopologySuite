@@ -183,7 +183,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public virtual LineString ExteriorRing
+        public LineString ExteriorRing
         {
             get
             {
@@ -194,7 +194,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public virtual int NumInteriorRings
+        public int NumInteriorRings
         {
             get
             {
@@ -205,7 +205,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public virtual LineString[] InteriorRings
+        public LineString[] InteriorRings
         {
             get
             {
@@ -218,7 +218,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public virtual LineString GetInteriorRingN(int n) 
+        public LineString GetInteriorRingN(int n) 
         {
             return holes[n];
         }
@@ -489,7 +489,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public virtual LinearRing Shell
+        public LinearRing Shell
         {
             get
             {
@@ -500,7 +500,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public virtual LinearRing[] Holes
+        public LinearRing[] Holes
         {
             get
             {

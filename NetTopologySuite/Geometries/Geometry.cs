@@ -445,7 +445,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// The dimension of the class implementing this interface, whether
         /// or not this object is the empty point.
         /// </returns>
-        /// TODO: REMOVE VIRTUAL!
         public virtual Dimensions Dimension
         {
             get { return dimension; }
@@ -462,7 +461,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// of a Geometry is a set of Geometries of the next lower dimension."
         /// </summary>
         /// <returns>The closure of the combinatorial boundary of this <c>Geometry</c>.</returns>
-        /// TODO: REMOVE VIRTUAL!
         public virtual Geometry Boundary
         {
             get { return boundary; }
@@ -479,7 +477,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// interface, whether or not this object is the empty point. Returns
         /// <c>Dimension.False</c> if the boundary is the empty point.
         /// </returns>
-        /// TODO: REMOVE VIRTUAL!
         public virtual Dimensions BoundaryDimension
         {
             get { return boundaryDimension; }
