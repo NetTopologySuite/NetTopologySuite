@@ -8,12 +8,16 @@ namespace GeoAPI.Geometries
     /// A Dimensionally Extended Nine-Intersection Model (DE-9IM) matrix. This class
     /// can used to represent both computed DE-9IM's (like 212FF1FF2) as well as
     /// patterns for matching them (like T*T******). 
+    /// <para>
     /// Methods are provided to:
-    /// Set and query the elements of the matrix in a convenient fashion
-    /// convert to and from the standard string representation (specified in SFS Section 2.1.13.2).
-    /// Test to see if a matrix matches a given pattern string.
+    /// - Set and query the elements of the matrix in a convenient fashion.
+    /// - Convert to and from the standard string representation (specified in SFS Section 2.1.13.2).
+    /// - Test to see if a matrix matches a given pattern string.
+    /// </para>
+    /// <remarks>
     /// For a description of the DE-9IM, see the 
     /// <see href="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features Specification for SQL.</see>
+    /// </remarks>
     /// </summary>       
     public class IntersectionMatrix
     {
@@ -48,15 +52,15 @@ namespace GeoAPI.Geometries
         /// <param name="other">An <see cref="IntersectionMatrix" /> to copy.</param>         
         public IntersectionMatrix(IntersectionMatrix other) : this()
         {
-            matrix[(int)Locations.Interior,(int)Locations.Interior] = other.matrix[(int)Locations.Interior,(int)Locations.Interior];
-            matrix[(int)Locations.Interior,(int)Locations.Boundary] = other.matrix[(int)Locations.Interior,(int)Locations.Boundary];
-            matrix[(int)Locations.Interior,(int)Locations.Exterior] = other.matrix[(int)Locations.Interior,(int)Locations.Exterior];
-            matrix[(int)Locations.Boundary,(int)Locations.Interior] = other.matrix[(int)Locations.Boundary,(int)Locations.Interior];
-            matrix[(int)Locations.Boundary,(int)Locations.Boundary] = other.matrix[(int)Locations.Boundary,(int)Locations.Boundary];
-            matrix[(int)Locations.Boundary,(int)Locations.Exterior] = other.matrix[(int)Locations.Boundary,(int)Locations.Exterior];
-            matrix[(int)Locations.Exterior,(int)Locations.Interior] = other.matrix[(int)Locations.Exterior,(int)Locations.Interior];
-            matrix[(int)Locations.Exterior,(int)Locations.Boundary] = other.matrix[(int)Locations.Exterior,(int)Locations.Boundary];
-            matrix[(int)Locations.Exterior,(int)Locations.Exterior] = other.matrix[(int)Locations.Exterior,(int)Locations.Exterior];
+            matrix[(int) Locations.Interior, (int)Locations.Interior] = other.matrix[(int) Locations.Interior, (int) Locations.Interior];
+            matrix[(int) Locations.Interior, (int)Locations.Boundary] = other.matrix[(int) Locations.Interior, (int) Locations.Boundary];
+            matrix[(int) Locations.Interior, (int)Locations.Exterior] = other.matrix[(int) Locations.Interior, (int) Locations.Exterior];
+            matrix[(int) Locations.Boundary, (int)Locations.Interior] = other.matrix[(int) Locations.Boundary, (int) Locations.Interior];
+            matrix[(int) Locations.Boundary, (int)Locations.Boundary] = other.matrix[(int) Locations.Boundary, (int) Locations.Boundary];
+            matrix[(int) Locations.Boundary, (int)Locations.Exterior] = other.matrix[(int) Locations.Boundary, (int) Locations.Exterior];
+            matrix[(int) Locations.Exterior, (int)Locations.Interior] = other.matrix[(int) Locations.Exterior, (int) Locations.Interior];
+            matrix[(int) Locations.Exterior, (int)Locations.Boundary] = other.matrix[(int) Locations.Exterior, (int) Locations.Boundary];
+            matrix[(int) Locations.Exterior, (int)Locations.Exterior] = other.matrix[(int) Locations.Exterior, (int) Locations.Exterior];
         }
 
         /// <summary> 
@@ -69,7 +73,7 @@ namespace GeoAPI.Geometries
         {
             for (int i = 0; i < 3; i++)            
                 for (int j = 0; j < 3; j++)
-                    SetAtLeast((Locations)i, (Locations)j, im.Get((Locations)i, (Locations)j));            
+                    SetAtLeast((Locations) i, (Locations) j, im.Get((Locations) i, (Locations) j));            
         }
 
         /// <summary>  
@@ -91,8 +95,7 @@ namespace GeoAPI.Geometries
         {                      
             if (requiredDimensionSymbol == '*')
                 return true;            
-            if (requiredDimensionSymbol == 'T' && (actualDimensionValue >= Dimensions.Point ||
-                actualDimensionValue == Dimensions.True))
+            if (requiredDimensionSymbol == 'T' && (actualDimensionValue >= Dimensions.Point || actualDimensionValue == Dimensions.True))
                 return true;            
             if (requiredDimensionSymbol == 'F' && actualDimensionValue == Dimensions.False)
                 return true;            
@@ -141,7 +144,7 @@ namespace GeoAPI.Geometries
         /// <param name="dimensionValue">The new value of the element</param>        
         public void Set(Locations row, Locations column, Dimensions dimensionValue)
         {
-            matrix[(int)row, (int)column] = dimensionValue;
+            matrix[(int) row, (int) column] = dimensionValue;
         }
 
         /// <summary>
@@ -158,7 +161,7 @@ namespace GeoAPI.Geometries
             {
                 int row = i / 3;
                 int col = i % 3;
-                matrix[row,col] = Dimension.ToDimensionValue(dimensionSymbols[i]);
+                matrix[row, col] = Dimension.ToDimensionValue(dimensionSymbols[i]);
             }
         }
 
@@ -180,8 +183,8 @@ namespace GeoAPI.Geometries
         /// </param>
         public void SetAtLeast(Locations row, Locations column, Dimensions minimumDimensionValue)
         {
-            if (matrix[(int)row, (int)column] < minimumDimensionValue)
-                matrix[(int)row, (int)column] = minimumDimensionValue;            
+            if (matrix[(int) row, (int) column] < minimumDimensionValue)
+                matrix[(int) row, (int) column] = minimumDimensionValue;            
         }
         
         /// <summary>
@@ -213,7 +216,7 @@ namespace GeoAPI.Geometries
             {
                 int row = i / 3;
                 int col = i % 3;
-                SetAtLeast((Locations)row, (Locations)col, Dimension.ToDimensionValue(minimumDimensionSymbols[i]));
+                SetAtLeast((Locations) row, (Locations) col, Dimension.ToDimensionValue(minimumDimensionSymbols[i]));
             }
         }
 
@@ -228,7 +231,7 @@ namespace GeoAPI.Geometries
         {
             for (int ai = 0; ai < 3; ai++)
                 for (int bi = 0; bi < 3; bi++)                
-                    matrix[ai,bi] = dimensionValue;            
+                    matrix[ai, bi] = dimensionValue;            
         }
 
         /// <summary>
@@ -246,7 +249,7 @@ namespace GeoAPI.Geometries
         /// <returns>The dimension value at the given matrix position.</returns>
         public Dimensions Get(Locations row, Locations column)
         {
-            return matrix[(int)row, (int)column];
+            return matrix[(int) row, (int) column];
         }
 
         /// <summary>
@@ -274,10 +277,10 @@ namespace GeoAPI.Geometries
         public bool IsDisjoint()
         {
             return
-                matrix[(int)Locations.Interior,(int)Locations.Interior] == Dimensions.False &&
-                matrix[(int)Locations.Interior,(int)Locations.Boundary] == Dimensions.False &&
-                matrix[(int)Locations.Boundary,(int)Locations.Interior] == Dimensions.False &&
-                matrix[(int)Locations.Boundary,(int)Locations.Boundary] == Dimensions.False;
+                matrix[(int) Locations.Interior, (int) Locations.Interior] == Dimensions.False &&
+                matrix[(int) Locations.Interior, (int) Locations.Boundary] == Dimensions.False &&
+                matrix[(int) Locations.Boundary, (int) Locations.Interior] == Dimensions.False &&
+                matrix[(int) Locations.Boundary, (int) Locations.Boundary] == Dimensions.False;
         }
 
         /// <summary>
@@ -309,15 +312,15 @@ namespace GeoAPI.Geometries
                 //no need to get transpose because pattern matrix is symmetrical
                 return IsTouches(dimensionOfGeometryB, dimensionOfGeometryA);            
 
-            if ((dimensionOfGeometryA == Dimensions.Surface && dimensionOfGeometryB == Dimensions.Surface) ||
-                (dimensionOfGeometryA == Dimensions.Curve && dimensionOfGeometryB == Dimensions.Curve)     ||
-                (dimensionOfGeometryA == Dimensions.Curve && dimensionOfGeometryB == Dimensions.Surface)   ||
-                (dimensionOfGeometryA == Dimensions.Point && dimensionOfGeometryB == Dimensions.Surface)   ||
-                (dimensionOfGeometryA == Dimensions.Point && dimensionOfGeometryB == Dimensions.Curve))            
-                return matrix[(int)Locations.Interior,(int)Locations.Interior] == Dimensions.False &&
-                        (Matches(matrix[(int)Locations.Interior, (int)Locations.Boundary], 'T') ||
-                         Matches(matrix[(int)Locations.Boundary, (int)Locations.Interior], 'T') ||  
-                         Matches(matrix[(int)Locations.Boundary, (int)Locations.Boundary], 'T'));
+            if ((dimensionOfGeometryA == Dimensions.Surface && dimensionOfGeometryB == Dimensions.Surface)   ||
+                (dimensionOfGeometryA == Dimensions.Curve   && dimensionOfGeometryB == Dimensions.Curve)     ||
+                (dimensionOfGeometryA == Dimensions.Curve   && dimensionOfGeometryB == Dimensions.Surface)   ||
+                (dimensionOfGeometryA == Dimensions.Point   && dimensionOfGeometryB == Dimensions.Surface)   ||
+                (dimensionOfGeometryA == Dimensions.Point   && dimensionOfGeometryB == Dimensions.Curve))            
+                return matrix[(int) Locations.Interior, (int) Locations.Interior] == Dimensions.False &&
+                        (Matches(matrix[(int) Locations.Interior, (int) Locations.Boundary], 'T') ||
+                         Matches(matrix[(int) Locations.Boundary, (int) Locations.Interior], 'T') ||  
+                         Matches(matrix[(int) Locations.Boundary, (int) Locations.Boundary], 'T'));
             
             return false;
         }
@@ -341,17 +344,17 @@ namespace GeoAPI.Geometries
             if ((dimensionOfGeometryA == Dimensions.Point   && dimensionOfGeometryB == Dimensions.Curve)   ||
                 (dimensionOfGeometryA == Dimensions.Point   && dimensionOfGeometryB == Dimensions.Surface) ||
                 (dimensionOfGeometryA == Dimensions.Curve   && dimensionOfGeometryB == Dimensions.Surface))            
-                return Matches(matrix[(int)Locations.Interior, (int)Locations.Interior], 'T') &&
-                       Matches(matrix[(int)Locations.Interior, (int)Locations.Exterior], 'T');
+                return Matches(matrix[(int) Locations.Interior, (int) Locations.Interior], 'T') &&
+                       Matches(matrix[(int) Locations.Interior, (int) Locations.Exterior], 'T');
             
             if ((dimensionOfGeometryA == Dimensions.Curve   && dimensionOfGeometryB == Dimensions.Point)   ||
                 (dimensionOfGeometryA == Dimensions.Surface && dimensionOfGeometryB == Dimensions.Point)   ||
                 (dimensionOfGeometryA == Dimensions.Surface && dimensionOfGeometryB == Dimensions.Curve))            
-                return Matches(matrix[(int)Locations.Interior, (int)Locations.Interior], 'T') &&
-                       Matches(matrix[(int)Locations.Exterior, (int)Locations.Interior], 'T');
+                return Matches(matrix[(int) Locations.Interior, (int) Locations.Interior], 'T') &&
+                       Matches(matrix[(int) Locations.Exterior, (int) Locations.Interior], 'T');
             
             if (dimensionOfGeometryA == Dimensions.Curve && dimensionOfGeometryB == Dimensions.Curve)            
-                return matrix[(int)Locations.Interior,(int)Locations.Interior] == 0;            
+                return matrix[(int) Locations.Interior, (int) Locations.Interior] == 0;            
             
             return false;
         }
@@ -363,9 +366,9 @@ namespace GeoAPI.Geometries
         /// <returns><c>true</c> if the first <see cref="IGeometry"/> is within the second.</returns>
         public bool IsWithin()
         {
-            return Matches(matrix[(int)Locations.Interior,(int)Locations.Interior], 'T') &&
-                    matrix[(int)Locations.Interior, (int)Locations.Exterior] == Dimensions.False &&
-                    matrix[(int)Locations.Boundary, (int)Locations.Exterior] == Dimensions.False;
+            return Matches( matrix[(int) Locations.Interior, (int) Locations.Interior], 'T') &&
+                            matrix[(int) Locations.Interior, (int) Locations.Exterior] == Dimensions.False &&
+                            matrix[(int) Locations.Boundary, (int) Locations.Exterior] == Dimensions.False;
         }
 
         /// <summary> 
@@ -375,9 +378,9 @@ namespace GeoAPI.Geometries
         /// <returns><c>true</c> if the first <see cref="IGeometry"/> contains the second.</returns>
         public bool IsContains()
         {
-            return Matches(matrix[(int)Locations.Interior, (int)Locations.Interior], 'T') &&
-                    matrix[(int)Locations.Exterior, (int)Locations.Interior] == Dimensions.False &&
-                    matrix[(int)Locations.Exterior, (int)Locations.Boundary] == Dimensions.False;
+            return Matches( matrix[(int) Locations.Interior, (int) Locations.Interior], 'T') &&
+                            matrix[(int) Locations.Exterior, (int) Locations.Interior] == Dimensions.False &&
+                            matrix[(int) Locations.Exterior, (int) Locations.Boundary] == Dimensions.False;
         }
 
         /// <summary>
@@ -387,14 +390,14 @@ namespace GeoAPI.Geometries
         /// <returns><c>true</c> if the first <see cref="IGeometry"/> covers the second</returns>
         public bool IsCovers()
         {
-            bool hasPointInCommon =     Matches(matrix[(int)Locations.Interior, (int)Locations.Interior], 'T')
-                                    ||  Matches(matrix[(int)Locations.Interior, (int)Locations.Boundary], 'T')
-                                    ||  Matches(matrix[(int)Locations.Boundary, (int)Locations.Interior], 'T')
-                                    ||  Matches(matrix[(int)Locations.Boundary, (int)Locations.Boundary], 'T');
+            bool hasPointInCommon =     Matches(matrix[(int) Locations.Interior, (int) Locations.Interior], 'T')
+                                    ||  Matches(matrix[(int) Locations.Interior, (int) Locations.Boundary], 'T')
+                                    ||  Matches(matrix[(int) Locations.Boundary, (int) Locations.Interior], 'T')
+                                    ||  Matches(matrix[(int) Locations.Boundary, (int) Locations.Boundary], 'T');
 
             return hasPointInCommon &&
-                    matrix[(int)Locations.Exterior, (int)Locations.Interior] == Dimensions.False &&
-                    matrix[(int)Locations.Exterior, (int)Locations.Boundary] == Dimensions.False;
+                    matrix[(int) Locations.Exterior, (int) Locations.Interior] == Dimensions.False &&
+                    matrix[(int) Locations.Exterior, (int) Locations.Boundary] == Dimensions.False;
         }
 
         /// <summary> 
@@ -413,11 +416,11 @@ namespace GeoAPI.Geometries
             if (dimensionOfGeometryA != dimensionOfGeometryB)
                 return false;            
 
-            return Matches(matrix[(int)Locations.Interior,(int)Locations.Interior], 'T') &&
-                matrix[(int)Locations.Exterior, (int)Locations.Interior] == Dimensions.False &&
-                matrix[(int)Locations.Interior, (int)Locations.Exterior] == Dimensions.False &&
-                matrix[(int)Locations.Exterior, (int)Locations.Boundary] == Dimensions.False &&
-                matrix[(int)Locations.Boundary, (int)Locations.Exterior] == Dimensions.False;
+            return Matches( matrix[(int)Locations.Interior,(int)Locations.Interior], 'T') &&
+                            matrix[(int) Locations.Exterior, (int) Locations.Interior] == Dimensions.False &&
+                            matrix[(int) Locations.Interior, (int) Locations.Exterior] == Dimensions.False &&
+                            matrix[(int) Locations.Exterior, (int) Locations.Boundary] == Dimensions.False &&
+                            matrix[(int) Locations.Boundary, (int) Locations.Exterior] == Dimensions.False;
         }
 
         /// <summary>
@@ -437,14 +440,14 @@ namespace GeoAPI.Geometries
         {
             if ((dimensionOfGeometryA == Dimensions.Point   && dimensionOfGeometryB == Dimensions.Point) ||
                 (dimensionOfGeometryA == Dimensions.Surface && dimensionOfGeometryB == Dimensions.Surface))
-                return Matches(matrix[(int)Locations.Interior, (int)Locations.Interior], 'T') &&
-                       Matches(matrix[(int)Locations.Interior, (int)Locations.Exterior], 'T') &&
-                       Matches(matrix[(int)Locations.Exterior, (int)Locations.Interior], 'T');            
+                return Matches(matrix[(int) Locations.Interior, (int) Locations.Interior], 'T') &&
+                       Matches(matrix[(int) Locations.Interior, (int) Locations.Exterior], 'T') &&
+                       Matches(matrix[(int) Locations.Exterior, (int) Locations.Interior], 'T');            
 
             if (dimensionOfGeometryA == Dimensions.Curve && dimensionOfGeometryB == Dimensions.Curve)
-                return matrix[(int)Locations.Interior, (int)Locations.Interior] == Dimensions.Curve &&
-                       Matches(matrix[(int)Locations.Interior, (int)Locations.Exterior], 'T') &&
-                       Matches(matrix[(int)Locations.Exterior, (int)Locations.Interior], 'T');
+                return matrix[(int) Locations.Interior, (int) Locations.Interior] == Dimensions.Curve &&
+                       Matches(matrix[(int) Locations.Interior, (int) Locations.Exterior], 'T') &&
+                       Matches(matrix[(int) Locations.Exterior, (int) Locations.Interior], 'T');
 
             return false;
         }
@@ -469,7 +472,7 @@ namespace GeoAPI.Geometries
 
             for (int ai = 0; ai < 3; ai++)            
                 for (int bi = 0; bi < 3; bi++)                
-                    if (!Matches(matrix[ai,bi], requiredDimensionSymbols[3 * ai + bi]))                    
+                    if (!Matches(matrix[ai, bi], requiredDimensionSymbols[3 * ai + bi]))                    
                         return false;                                               
             return true;
         }
