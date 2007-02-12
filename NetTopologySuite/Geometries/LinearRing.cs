@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>  
@@ -11,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// A valid ring must not self-intersect.
     /// </summary>
     [Serializable]
-    public class LinearRing : LineString
+    public class LinearRing : LineString, ILinearRing
     {
         /// <summary>
         /// Constructs a <c>LinearRing</c> with the given points.

@@ -3,6 +3,8 @@ using System.Text;
 using System.Diagnostics;
 using System.Globalization;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace Open.Topology.TestRunner
@@ -442,7 +444,7 @@ namespace Open.Topology.TestRunner
 
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
-                Geometry boundary = m_objGeometryA.Boundary;
+                Geometry boundary = (Geometry) m_objGeometryA.Boundary;
                 if (boundary != null)
                 {
                     if (boundary.IsEmpty && geoResult.IsEmpty)
@@ -462,7 +464,7 @@ namespace Open.Topology.TestRunner
             }
             else if (m_objGeometryB != null)
             {
-                Geometry boundary = m_objGeometryB.Boundary;
+                Geometry boundary = (Geometry) m_objGeometryB.Boundary;
                 if (boundary != null)
                 {
                     if (boundary.IsEmpty && geoResult.IsEmpty)
@@ -510,7 +512,7 @@ namespace Open.Topology.TestRunner
 
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
-                Geometry buffer = m_objGeometryA.Buffer(dArg);
+                Geometry buffer = (Geometry) m_objGeometryA.Buffer(dArg);
                 if (buffer != null)
                 {
                     if (buffer.IsEmpty && geoResult.IsEmpty)
@@ -528,7 +530,7 @@ namespace Open.Topology.TestRunner
             }
             else if (m_objGeometryB != null)
             {
-                Geometry buffer = m_objGeometryB.Buffer(dArg);
+                Geometry buffer = (Geometry) m_objGeometryB.Buffer(dArg);
                 if (buffer != null)
                 {
                     if (buffer.IsEmpty && geoResult.IsEmpty)
@@ -556,7 +558,7 @@ namespace Open.Topology.TestRunner
 
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
-                Geometry centroid = m_objGeometryA.Centroid;
+                Geometry centroid = (Geometry) m_objGeometryA.Centroid;
                 if (centroid != null)
                 {
                     if (centroid.IsEmpty && geoResult.IsEmpty)
@@ -574,7 +576,7 @@ namespace Open.Topology.TestRunner
             }
             else if (m_objGeometryB != null)
             {
-                Geometry centroid = m_objGeometryB.Centroid;
+                Geometry centroid = (Geometry) m_objGeometryB.Centroid;
                 if (centroid != null)
                 {
                     if (centroid.IsEmpty && geoResult.IsEmpty)
@@ -631,19 +633,13 @@ namespace Open.Topology.TestRunner
 
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
-                Geometry convexhall = m_objGeometryA.ConvexHull();
+                Geometry convexhall = (Geometry) m_objGeometryA.ConvexHull();
                 if (convexhall != null)
                 {
                     if (convexhall.IsEmpty && geoResult.IsEmpty)
-                    {
                         return true;
-                    }
-
-  //                  if (geoResult.GetType().Name == "GeometryCollection")
-  //                  {
-                        bool bResult = CompareGeometries(geoResult, convexhall);
-   //                 }
-
+    
+                    bool bResult = CompareGeometries(geoResult, convexhall);  
                     if (!bResult)
                     {
                         Console.WriteLine(m_objGeometryA.ToString());
@@ -653,26 +649,17 @@ namespace Open.Topology.TestRunner
                     }
 
                     return bResult;
-
-   //                 return convexhall.Equals(geoResult);
                 }
             }
             else if (m_objGeometryB != null)
             {
-                Geometry convexhall = m_objGeometryB.ConvexHull();
+                Geometry convexhall = (Geometry) m_objGeometryB.ConvexHull();
                 if (convexhall != null)
                 {
                     if (convexhall.IsEmpty && geoResult.IsEmpty)
-                    {
                         return true;
-                    }
-
-//                    if (geoResult.GetType().Name == "GeometryCollection")
-//                    {
-                        return CompareGeometries(geoResult, convexhall);
-//                    }
-
-//                    return convexhall.Equals(geoResult);
+                    
+                    return CompareGeometries(geoResult, convexhall);
                 }
             }
 
@@ -717,7 +704,7 @@ namespace Open.Topology.TestRunner
             {
                 if (m_objArgument1 == null)
                 {
-                    Geometry difference = m_objGeometryA.Difference(m_objGeometryB);
+                    Geometry difference = (Geometry) m_objGeometryA.Difference(m_objGeometryB);
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -737,7 +724,7 @@ namespace Open.Topology.TestRunner
                 }
                 else
                 {
-                    Geometry difference = m_objGeometryA.Difference((Geometry)m_objArgument1);
+                    Geometry difference = (Geometry) m_objGeometryA.Difference((Geometry)m_objArgument1);
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -760,7 +747,7 @@ namespace Open.Topology.TestRunner
             {
                 if (m_objArgument1 == null)
                 {
-                    Geometry difference = m_objGeometryB.Difference(m_objGeometryA);
+                    Geometry difference = (Geometry) m_objGeometryB.Difference(m_objGeometryA);
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -780,7 +767,7 @@ namespace Open.Topology.TestRunner
                 }
                 else
                 {
-                    Geometry difference = m_objGeometryB.Difference((Geometry)m_objArgument1);
+                    Geometry difference = (Geometry) m_objGeometryB.Difference((Geometry)m_objArgument1);
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -808,7 +795,7 @@ namespace Open.Topology.TestRunner
             int nResult = (int)m_objResult;
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
-                int nDim = (int)m_objGeometryA.Dimension;
+                int nDim = (int) m_objGeometryA.Dimension;
 
                 return Math.Abs(nDim - nResult) <= (int)m_dTolerance;
             }
@@ -894,13 +881,13 @@ namespace Open.Topology.TestRunner
 
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
-                Geometry envelope = m_objGeometryA.Envelope;
+                Geometry envelope = (Geometry) m_objGeometryA.Envelope;
                 if (envelope != null)
                     return envelope.Equals(geoResult);
             }
             else if (m_objGeometryB != null)
             {
-                Geometry envelope = m_objGeometryB.Envelope;
+                Geometry envelope = (Geometry) m_objGeometryB.Envelope;
                 if (envelope != null)
                     return envelope.Equals(geoResult);
             }
@@ -941,11 +928,11 @@ namespace Open.Topology.TestRunner
         {
             Trace.Assert(m_objResult != null, "The result object cannot be null");
 
-            Geometry geoResult = (Geometry)m_objResult;
+            Geometry geoResult = (Geometry) m_objResult;
 
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
-                Geometry interiorpoint = m_objGeometryA.InteriorPoint;
+                Geometry interiorpoint = (Geometry) m_objGeometryA.InteriorPoint;
                 if (interiorpoint != null)
                 {
                     if (interiorpoint.IsEmpty && geoResult.IsEmpty)
@@ -958,7 +945,7 @@ namespace Open.Topology.TestRunner
             }
             else if (m_objGeometryB != null)
             {
-                Geometry interiorpoint = m_objGeometryB.InteriorPoint;
+                Geometry interiorpoint = (Geometry) m_objGeometryB.InteriorPoint;
                 if (interiorpoint != null)
                 {
                     if (interiorpoint.IsEmpty && geoResult.IsEmpty)
@@ -982,7 +969,7 @@ namespace Open.Topology.TestRunner
             {
                 if (m_objArgument1 == null)                
                 {
-                    Geometry intersection = m_objGeometryA.Intersection(m_objGeometryB);                    
+                    Geometry intersection = (Geometry) m_objGeometryA.Intersection(m_objGeometryB);                    
                     if (intersection != null)
                     {
                         if (intersection.IsEmpty && geoResult.IsEmpty)
@@ -995,7 +982,7 @@ namespace Open.Topology.TestRunner
                 }
                 else
                 {
-                    Geometry intersection = m_objGeometryA.Intersection((Geometry)m_objArgument1);
+                    Geometry intersection = (Geometry) m_objGeometryA.Intersection((Geometry) m_objArgument1);
                     if (intersection != null)
                     {
                         if (intersection.IsEmpty && geoResult.IsEmpty)
@@ -1011,7 +998,7 @@ namespace Open.Topology.TestRunner
             {
                 if (m_objArgument1 == null)
                 {
-                    Geometry intersection = m_objGeometryB.Intersection(m_objGeometryA);
+                    Geometry intersection = (Geometry) m_objGeometryB.Intersection(m_objGeometryA);
                     if (intersection != null)
                     {
                         if (intersection.IsEmpty && geoResult.IsEmpty)
@@ -1024,7 +1011,7 @@ namespace Open.Topology.TestRunner
                 }
                 else
                 {
-                    Geometry intersection = m_objGeometryB.Intersection((Geometry)m_objArgument1);
+                    Geometry intersection = (Geometry) m_objGeometryB.Intersection((Geometry)m_objArgument1);
                     if (intersection != null)
                     {
                         if (intersection.IsEmpty && geoResult.IsEmpty)
@@ -1278,7 +1265,7 @@ namespace Open.Topology.TestRunner
             {
                 if (m_objArgument1 == null)
                 {
-                    Geometry difference = m_objGeometryA.SymmetricDifference(m_objGeometryB);
+                    Geometry difference = (Geometry) m_objGeometryA.SymmetricDifference(m_objGeometryB);
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -1298,7 +1285,7 @@ namespace Open.Topology.TestRunner
                 }
                 else
                 {
-                    Geometry difference = m_objGeometryA.SymmetricDifference((Geometry)m_objArgument1);
+                    Geometry difference = (Geometry) m_objGeometryA.SymmetricDifference((Geometry)m_objArgument1);
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -1321,7 +1308,7 @@ namespace Open.Topology.TestRunner
             {
                 if (m_objArgument1 == null)
                 {
-                    Geometry difference = m_objGeometryB.SymmetricDifference(m_objGeometryA);
+                    Geometry difference = (Geometry) m_objGeometryB.SymmetricDifference(m_objGeometryA);
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -1341,7 +1328,7 @@ namespace Open.Topology.TestRunner
                 }
                 else
                 {
-                    Geometry difference = m_objGeometryB.SymmetricDifference((Geometry)m_objArgument1);
+                    Geometry difference = (Geometry) m_objGeometryB.SymmetricDifference((Geometry)m_objArgument1);
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -1402,7 +1389,7 @@ namespace Open.Topology.TestRunner
             {
                 if (m_objArgument1 == null)
                 {
-                    Geometry union = m_objGeometryA.Union(m_objGeometryB);
+                    Geometry union = (Geometry) m_objGeometryA.Union(m_objGeometryB);
                     if (union != null)
                     {
                         if (union.IsEmpty && geoResult.IsEmpty)
@@ -1422,7 +1409,7 @@ namespace Open.Topology.TestRunner
                 }
                 else
                 {
-                    Geometry union = m_objGeometryA.Union((Geometry)m_objArgument1);
+                    Geometry union = (Geometry) m_objGeometryA.Union((Geometry)m_objArgument1);
                     if (union != null)
                     {
                         if (union.IsEmpty && geoResult.IsEmpty)
@@ -1445,7 +1432,7 @@ namespace Open.Topology.TestRunner
             {
                 if (m_objArgument1 == null)
                 {
-                    Geometry union = m_objGeometryB.Union(m_objGeometryA);
+                    Geometry union = (Geometry) m_objGeometryB.Union(m_objGeometryA);
                     if (union != null)
                     {
                         if (union.IsEmpty && geoResult.IsEmpty)
@@ -1465,7 +1452,7 @@ namespace Open.Topology.TestRunner
                 }
                 else
                 {
-                    Geometry union = m_objGeometryB.Union((Geometry)m_objArgument1);
+                    Geometry union = (Geometry) m_objGeometryB.Union((Geometry)m_objArgument1);
                     if (union != null)
                     {
                         if (union.IsEmpty && geoResult.IsEmpty)

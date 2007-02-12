@@ -26,15 +26,15 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 			Geometry g2 = fact.CreatePolygon(fact.CreateLinearRing(seq2), null);
 			
 			Console.WriteLine("WKT for g1: " + g1);
-			Console.WriteLine("Internal rep for g1: " + ((Polygon) g1).ExteriorRing.CoordinateSequence);
+			Console.WriteLine("Internal rep for g1: " + ((LineString) ((Polygon) g1).ExteriorRing).CoordinateSequence);
 			
 			Console.WriteLine("WKT for g2: " + g2);
-			Console.WriteLine("Internal rep for g2: " + ((Polygon) g2).ExteriorRing.CoordinateSequence);
+			Console.WriteLine("Internal rep for g2: " + ((LineString) ((Polygon) g2).ExteriorRing).CoordinateSequence);
 			
-			Geometry gInt = g1.Intersection(g2);
+			Geometry gInt = (Geometry) g1.Intersection(g2);
 			
 			Console.WriteLine("WKT for gInt: " + gInt);
-			Console.WriteLine("Internal rep for gInt: " + ((Polygon) gInt).ExteriorRing.CoordinateSequence);
+			Console.WriteLine("Internal rep for gInt: " + ((LineString) ((Polygon) gInt).ExteriorRing).CoordinateSequence);
 		}
 		
 		public ExtendedCoordinateExample() { }

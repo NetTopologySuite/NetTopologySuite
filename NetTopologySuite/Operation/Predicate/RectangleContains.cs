@@ -35,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         public RectangleContains(Polygon rectangle)
         {
             this.rectangle = rectangle;
-            rectEnv = rectangle.EnvelopeInternal;
+            rectEnv = (Envelope) rectangle.EnvelopeInternal;
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
 
             for (int i = 0; i < geom.NumGeometries; i++) 
             {
-                Geometry comp = geom.GetGeometryN(i);
+                Geometry comp = (Geometry) geom.GetGeometryN(i);
                 if (!IsContainedInBoundary(comp))
                     return false;
             }
@@ -84,7 +84,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         /// <returns></returns>
         private bool IsPointContainedInBoundary(Point point)
         {
-            return IsPointContainedInBoundary(point.Coordinate);
+            return IsPointContainedInBoundary((Coordinate) point.Coordinate);
         }
 
         /// <summary>

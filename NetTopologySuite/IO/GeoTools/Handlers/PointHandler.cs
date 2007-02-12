@@ -55,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		{
             file.Write(int.Parse(Enum.Format(typeof(ShapeGeometryTypes), this.ShapeType, "d")));
 			// Coordinate external = geometryFactory.PrecisionModel.ToExternal( geometry.Coordinates[0] );
-            Coordinate external = geometry.Coordinates[0];
+            Coordinate external = (Coordinate) geometry.Coordinates[0];
 			file.Write(external.X);
 			file.Write(external.Y);
 		}

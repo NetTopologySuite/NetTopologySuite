@@ -242,20 +242,20 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         private EdgeRing FindEdgeRingContaining(EdgeRing testEr, IList shellList)
         {
             LinearRing teString = testEr.LinearRing;
-            Envelope testEnv = teString.EnvelopeInternal;
+            Envelope testEnv = (Envelope) teString.EnvelopeInternal;
             Coordinate testPt = teString.GetCoordinateN(0);
 
             EdgeRing minShell = null;
             Envelope minEnv = null;
             for (IEnumerator it = shellList.GetEnumerator(); it.MoveNext(); )
             {
-                EdgeRing tryShell = (EdgeRing)it.Current;
+                EdgeRing tryShell = (EdgeRing) it.Current;
                 LinearRing tryRing = tryShell.LinearRing;
-                Envelope tryEnv = tryRing.EnvelopeInternal;
-                if (minShell != null) 
-                    minEnv = minShell.LinearRing.EnvelopeInternal;
+                Envelope tryEnv = (Envelope) tryRing.EnvelopeInternal;
+                if (minShell != null)
+                    minEnv = (Envelope) minShell.LinearRing.EnvelopeInternal;
                 bool isContained = false;
-                if (tryEnv.Contains(testEnv) && CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates))
+                if (tryEnv.Contains(testEnv) && CGAlgorithms.IsPointInRing(testPt, (Coordinate[]) tryRing.Coordinates))
                         isContained = true;
                 // check if this new containing ring is smaller than the current minimum ring
                 if (isContained)

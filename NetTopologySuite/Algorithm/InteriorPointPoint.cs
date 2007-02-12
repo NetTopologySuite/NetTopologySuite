@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="g"></param>
         public InteriorPointPoint(Geometry g)
         {
-            centroid = g.Centroid.Coordinate;
+            centroid = (Coordinate) g.Centroid.Coordinate;
             Add(g);
         }
 
@@ -33,8 +33,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="geom">The point to add.</param>
         private void Add(Geometry geom)
         {
-            if(geom is Point) 
-                Add(geom.Coordinate);    
+            if(geom is Point)
+                Add((Coordinate) geom.Coordinate);    
             else if (geom is GeometryCollection) 
             {
                 GeometryCollection gc = (GeometryCollection)geom;

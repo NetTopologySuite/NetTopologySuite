@@ -48,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			BigEndianBinaryWriter shxBinaryWriter = new BigEndianBinaryWriter(shxStream);
 			
 			// assumes
-			ShapeHandler handler = Shapefile.GetShapeHandler(Shapefile.GetShapeType(geometryCollection.Geometries[0]));
+			ShapeHandler handler = Shapefile.GetShapeHandler(Shapefile.GetShapeType((Geometry) geometryCollection.Geometries[0]));
 
 			Geometry body;
 			int numShapes = geometryCollection.NumGeometries;
@@ -56,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			int shpLength = 50;
 			for (int i = 0; i < numShapes; i++) 
 			{
-				body = geometryCollection.Geometries[i];
+				body = (Geometry) geometryCollection.Geometries[i];
 				shpLength += 4; // length of header in WORDS
 				shpLength += handler.GetLength(body); // length of shape in WORDS
 			}
@@ -68,13 +68,13 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			shpHeader.FileLength = shpLength;
 
 			// get envelope in external coordinates
-			Envelope env = geometryCollection.EnvelopeInternal;
+            Envelope env = (Envelope) geometryCollection.EnvelopeInternal;
 			Envelope bounds = ShapeHandler.GetEnvelopeExternal(geometryFactory.PrecisionModel,  env);
 			shpHeader.Bounds = bounds;
 
 			// assumes Geometry type of the first item will the same for all other items
 			// in the collection.
-			shpHeader.ShapeType = Shapefile.GetShapeType( geometryCollection.Geometries[0] );
+            shpHeader.ShapeType = Shapefile.GetShapeType((Geometry) geometryCollection.Geometries[0]);
 			shpHeader.Write(shpBinaryWriter);
 
 			// write the .shx header
@@ -83,14 +83,14 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			shxHeader.Bounds = shpHeader.Bounds;
 			
 			// assumes Geometry type of the first item will the same for all other items in the collection.
-            shxHeader.ShapeType = Shapefile.GetShapeType(geometryCollection.Geometries[0]);
+            shxHeader.ShapeType = Shapefile.GetShapeType((Geometry) geometryCollection.Geometries[0]);
 			shxHeader.Write(shxBinaryWriter);
 
 			// write the individual records.
 			int _pos = 50; // header length in WORDS
 			for (int i = 0; i < numShapes; i++) 
 			{
-                body = geometryCollection.Geometries[i];
+                body = (Geometry) geometryCollection.Geometries[i];
 				int recordLength = handler.GetLength(body);				
 				shpBinaryWriter.WriteIntBE(i+1);
 				shpBinaryWriter.WriteIntBE(recordLength);
@@ -119,15 +119,14 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		public static void WriteDummyDbf(string filename, int recordCount)
 		{
 			DbaseFileHeader dbfHeader = new DbaseFileHeader();
-
-			dbfHeader.AddColumn("Description",'C',20,0);
+			dbfHeader.AddColumn("Description",'C', 20, 0);
 			
 			DbaseFileWriter dbfWriter = new DbaseFileWriter(filename);
 			dbfWriter.Write(dbfHeader);
-			for (int i=0; i < recordCount; i++)
+			for (int i = 0; i < recordCount; i++)
 			{
 				ArrayList columnValues = new ArrayList();
-				columnValues.Add((double)i);
+				columnValues.Add((double) i);                
 				dbfWriter.Write(columnValues);
 			}
 			dbfWriter.Close();

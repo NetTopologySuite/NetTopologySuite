@@ -45,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             else if (g is MultiPoint) return false;
             // LineString also handles LinearRings
             else if (g is LineString) 
-                return HasRepeatedPoint(((LineString) g).Coordinates);
+                return HasRepeatedPoint((Coordinate[]) ((LineString) g).Coordinates);
             else if (g is Polygon)
                 return HasRepeatedPoint((Polygon) g);
             else if (g is GeometryCollection) 
@@ -78,10 +78,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <returns></returns>
         private bool HasRepeatedPoint(Polygon p)
         {
-            if (HasRepeatedPoint(p.ExteriorRing.Coordinates))
+            if (HasRepeatedPoint((Coordinate[]) p.ExteriorRing.Coordinates))
                 return true;
             for (int i = 0; i < p.NumInteriorRings; i++)
-                if (HasRepeatedPoint(p.GetInteriorRingN(i).Coordinates)) 
+                if (HasRepeatedPoint((Coordinate[]) p.GetInteriorRingN(i).Coordinates)) 
                     return true;            
             return false;
         }
@@ -95,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         {
             for (int i = 0; i < gc.NumGeometries; i++)
             {
-                Geometry g = gc.GetGeometryN(i);
+                Geometry g = (Geometry) gc.GetGeometryN(i);
                 if (HasRepeatedPoint(g)) 
                     return true;
             }

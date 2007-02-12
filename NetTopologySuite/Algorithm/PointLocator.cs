@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Text;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 
@@ -113,7 +116,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns></returns>
         private Locations Locate(Coordinate p, LineString l)
         {
-            Coordinate[] pt = l.Coordinates;
+            Coordinate[] pt = (Coordinate[]) l.Coordinates;
             if(!l.IsClosed)
                 if(p.Equals(pt[0]) || p.Equals(pt[pt.Length - 1]))
                     return Locations.Boundary;                            
@@ -131,9 +134,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private Locations LocateInPolygonRing(Coordinate p, LinearRing ring)
         {
             // can this test be folded into IsPointInRing?
-            if(CGAlgorithms.IsOnLine(p, ring.Coordinates))
+            if (CGAlgorithms.IsOnLine(p, (Coordinate[]) ring.Coordinates))
                 return Locations.Boundary;
-            if(CGAlgorithms.IsPointInRing(p, ring.Coordinates))
+            if (CGAlgorithms.IsPointInRing(p, (Coordinate[]) ring.Coordinates))
                 return Locations.Interior;
             return Locations.Exterior;
         }

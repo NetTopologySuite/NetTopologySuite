@@ -531,7 +531,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// <returns></returns>
         private static LineString Reverse(LineString line)
         {
-            Coordinate[] pts = line.Coordinates;                     
+            Coordinate[] pts = (Coordinate[]) line.Coordinates;                     
             Array.Reverse(pts);
             return line.Factory.CreateLineString(pts);
         }

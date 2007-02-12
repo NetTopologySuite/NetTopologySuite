@@ -84,13 +84,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             LineString bisector = HorizontalBisector(geometry);
 
-            Geometry intersections = bisector.Intersection(geometry);
+            Geometry intersections = (Geometry) bisector.Intersection(geometry);
             Geometry widestIntersection = WidestGeometry(intersections);
 
             double width = widestIntersection.EnvelopeInternal.Width;
             if (interiorPoint == null || width > maxWidth)
             {
-                interiorPoint = Centre(widestIntersection.EnvelopeInternal);
+                interiorPoint = Centre((Envelope) widestIntersection.EnvelopeInternal);
                 maxWidth = width;
             }
         }
@@ -119,11 +119,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             if (gc.IsEmpty) 
                 return gc;
-            
-            Geometry widestGeometry = gc.GetGeometryN(0);
+
+            Geometry widestGeometry = (Geometry) gc.GetGeometryN(0);
             for (int i = 1; i < gc.NumGeometries; i++) //Start at 1        
-                if (gc.GetGeometryN(i).EnvelopeInternal.Width > widestGeometry.EnvelopeInternal.Width)                
-                    widestGeometry = gc.GetGeometryN(i);                            
+                if (gc.GetGeometryN(i).EnvelopeInternal.Width > widestGeometry.EnvelopeInternal.Width)
+                    widestGeometry = (Geometry) gc.GetGeometryN(i);                            
             return widestGeometry;
         }
 
@@ -134,7 +134,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns></returns>
         protected LineString HorizontalBisector(Geometry geometry)
         {
-            Envelope envelope = geometry.EnvelopeInternal;
+            Envelope envelope = (Envelope) geometry.EnvelopeInternal;
 
             // Assert: for areas, minx <> maxx
             double avgY = Avg(envelope.MinY, envelope.MaxY);

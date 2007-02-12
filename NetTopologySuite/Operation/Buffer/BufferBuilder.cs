@@ -2,6 +2,9 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+using GeoAPI.Operations.Buffer;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Algorithm;

@@ -89,12 +89,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <returns></returns>
         private Polygon EditPolygon(Polygon polygon, GeometryEditorOperation operation) 
         {
-            Polygon newPolygon = (Polygon)operation.Edit(polygon, factory);
+            Polygon newPolygon = (Polygon) operation.Edit(polygon, factory);
             if (newPolygon.IsEmpty) 
                 //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
                 return newPolygon;
 
-            LinearRing shell = (LinearRing)Edit(newPolygon.ExteriorRing, operation);
+            LinearRing shell = (LinearRing) Edit((Geometry) newPolygon.ExteriorRing, operation);
             if (shell.IsEmpty) 
                 //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
                 return factory.CreatePolygon(null, null);
@@ -102,12 +102,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             ArrayList holes = new ArrayList();
             for (int i = 0; i < newPolygon.NumInteriorRings; i++) 
             {
-                LinearRing hole = (LinearRing)Edit(newPolygon.GetInteriorRingN(i), operation);
+                LinearRing hole = (LinearRing) Edit((Geometry) newPolygon.GetInteriorRingN(i), operation);
                 if (hole.IsEmpty) continue;
                 holes.Add(hole);
             }
 
-            return factory.CreatePolygon(shell, (LinearRing[])holes.ToArray(typeof(LinearRing)));
+            return factory.CreatePolygon(shell, (LinearRing[]) holes.ToArray(typeof(LinearRing)));
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             ArrayList geometries = new ArrayList();
             for (int i = 0; i < newCollection.NumGeometries; i++) 
             {
-                Geometry geometry = Edit(newCollection.GetGeometryN(i), operation);
+                Geometry geometry = Edit((Geometry) newCollection.GetGeometryN(i), operation);
                 if (geometry.IsEmpty)  continue;
                 geometries.Add(geometry);
             }
@@ -173,14 +173,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             public Geometry Edit(Geometry geometry, GeometryFactory factory) 
             {
                 if (geometry is LinearRing) 
-                    return factory.CreateLinearRing(Edit(geometry.Coordinates, geometry));
+                    return factory.CreateLinearRing(Edit((Coordinate[]) geometry.Coordinates, geometry));
 
-                if (geometry is LineString) 
-                    return factory.CreateLineString(Edit(geometry.Coordinates, geometry));                
+                if (geometry is LineString)
+                    return factory.CreateLineString(Edit((Coordinate[]) geometry.Coordinates, geometry));                
 
                 if (geometry is Point) 
                 {
-                    Coordinate[] newCoordinates = Edit(geometry.Coordinates, geometry);
+                    Coordinate[] newCoordinates = Edit((Coordinate[]) geometry.Coordinates, geometry);
                     return factory.CreatePoint((newCoordinates.Length > 0) ? newCoordinates[0] : null);
                 }
 

@@ -63,14 +63,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
             for (int i = 0; i < rings.Count; i++)
             {
-                LinearRing innerRing = (LinearRing)rings[i];
-                Coordinate[] innerRingPts = innerRing.Coordinates;
+                LinearRing innerRing = (LinearRing) rings[i];
+                Coordinate[] innerRingPts = (Coordinate[]) innerRing.Coordinates;
 
-                IList results = quadtree.Query(innerRing.EnvelopeInternal);
+                IList results = quadtree.Query((Envelope) innerRing.EnvelopeInternal);
                 for (int j = 0; j < results.Count; j++)
                 {
                     LinearRing searchRing = (LinearRing)results[j];
-                    Coordinate[] searchRingPts = searchRing.Coordinates;
+                    Coordinate[] searchRingPts = (Coordinate[]) searchRing.Coordinates;
 
                     if (innerRing == searchRing) continue;
 
@@ -100,7 +100,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             for (int i = 0; i < rings.Count; i++)
             {
                 LinearRing ring = (LinearRing)rings[i];
-                Envelope env = ring.EnvelopeInternal;
+                Envelope env = (Envelope) ring.EnvelopeInternal;
                 quadtree.Insert(env, ring);
             }
         }

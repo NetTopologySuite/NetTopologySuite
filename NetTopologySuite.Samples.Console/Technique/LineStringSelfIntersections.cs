@@ -32,9 +32,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Technique
 		public static Geometry LineStringSelfIntersectionsOp(LineString line)
 		{
 			Geometry lineEndPts = GetEndPoints(line);
-			Geometry nodedLine = line.Union(lineEndPts);
+            Geometry nodedLine = (Geometry) line.Union(lineEndPts);
 			Geometry nodedEndPts = GetEndPoints(nodedLine);
-			Geometry selfIntersections = nodedEndPts.Difference(lineEndPts);
+            Geometry selfIntersections = (Geometry) nodedEndPts.Difference(lineEndPts);
 			return selfIntersections;
 		}
 		

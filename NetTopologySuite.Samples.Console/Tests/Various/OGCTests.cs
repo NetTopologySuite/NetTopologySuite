@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             Assert.IsNotNull(ashton);
 
             Geometry expected = Reader.Read("POLYGON((52 18,66 23,73 9,48 6,52 18))");
-            Geometry result = blueLake.Union(ashton);
+            Geometry result = (Geometry) blueLake.Union(ashton);
 
             Debug.WriteLine(result);
             Assert.IsTrue(result.EqualsExact(expected));
@@ -58,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             Assert.IsNotNull(ashton);
 
             Geometry expected = Reader.Read("POLYGON((52 18,66 23,73 9,48 6,52 18))");
-            Geometry result = blueLake.SymmetricDifference(ashton);
+            Geometry result = (Geometry) blueLake.SymmetricDifference(ashton);
 
             Debug.WriteLine(result);
             Assert.IsTrue(result.EqualsExact(expected));

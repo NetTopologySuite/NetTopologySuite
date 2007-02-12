@@ -69,7 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 
             // Write Coordinates
             for (int i = 0; i < lineString.NumPoints; i++)
-                Write(lineString.Coordinates[i], writer);
+                Write((Coordinate) lineString.Coordinates[i], writer);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 
             // Write Coordinates
             for (int i = 0; i < polygon.NumPoints; i++)
-                Write(polygon.Coordinates[i], writer);
+                Write((Coordinate) polygon.Coordinates[i], writer);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 
             // Write Coordinates
             for (int i = 0; i < multiPoint.NumPoints; i++)
-                Write(multiPoint.Coordinates[i], writer);
+                Write((Coordinate) multiPoint.Coordinates[i], writer);
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 
             // Write Coordinates
             for (int i = 0; i < multiLineString.NumPoints; i++)
-                Write(multiLineString.Coordinates[i], writer);
+                Write((Coordinate) multiLineString.Coordinates[i], writer);
         }
 
         /// <summary>
@@ -191,14 +191,14 @@ namespace GisSharpBlog.NetTopologySuite.IO
             for (int i = 0; i < multiPolygon.NumGeometries; i++)
             {
                 Polygon polygon = multiPolygon.GetGeometryN(i) as Polygon;
-                LineString shell = polygon.ExteriorRing;
+                LineString shell = (LineString) polygon.ExteriorRing;
                 count += shell.NumPoints;
                 if (count == multiPolygon.NumPoints)
                     break;
                 writer.Write((int)count);
                 for (int j = 0; j < polygon.NumInteriorRings; j++)
                 {
-                    LineString hole = polygon.GetInteriorRingN(j);
+                    LineString hole = (LineString) polygon.GetInteriorRingN(j);
                     count += hole.NumPoints;
                     if (count == multiPolygon.NumPoints)
                         break;
@@ -208,7 +208,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 
             // Write Coordinates
             for (int i = 0; i < multiPolygon.NumPoints; i++)
-                Write(multiPolygon.Coordinates[i], writer);
+                Write((Coordinate) multiPolygon.Coordinates[i], writer);
         }
 
         /// <summary>
@@ -218,7 +218,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         public void WriteBoundingBox(Geometry geometry, BinaryWriter writer)
         {
-            Envelope boundingBox = geometry.EnvelopeInternal;
+            Envelope boundingBox = (Envelope) geometry.EnvelopeInternal;
             writer.Write((double)boundingBox.MinX);
             writer.Write((double)boundingBox.MinY);
             writer.Write((double)boundingBox.MaxX);

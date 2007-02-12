@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Utilities;
@@ -160,9 +162,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 return;   // don't compute more than once
             Coordinate[] coord = new Coordinate[pts.Count];
             for (int i = 0; i < pts.Count; i++)            
-                coord[i] = (Coordinate)pts[i];
+                coord[i] = (Coordinate) pts[i];
             ring = geometryFactory.CreateLinearRing(coord);
-            isHole = CGAlgorithms.IsCCW(ring.Coordinates);
+            isHole = CGAlgorithms.IsCCW((Coordinate[]) ring.Coordinates);
         }
 
         /// <summary>
@@ -332,14 +334,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public  bool ContainsPoint(Coordinate p)
         {
             LinearRing shell = LinearRing;
-            Envelope env = shell.EnvelopeInternal;
+            Envelope env = (Envelope) shell.EnvelopeInternal;
             if (!env.Contains(p)) 
                 return false;
-            if (!CGAlgorithms.IsPointInRing(p, shell.Coordinates)) 
+            if (!CGAlgorithms.IsPointInRing(p, (Coordinate[]) shell.Coordinates)) 
                 return false;
             for (IEnumerator i = holes.GetEnumerator(); i.MoveNext(); )
             {
-                EdgeRing hole = (EdgeRing)i.Current;
+                EdgeRing hole = (EdgeRing) i.Current;
                 if (hole.ContainsPoint(p))
                     return false;
             }

@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -211,7 +213,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             for (int i = 0; i < gc.NumGeometries; i++) 
             {
-                Geometry g = gc.GetGeometryN(i);
+                Geometry g = (Geometry) gc.GetGeometryN(i);
                 Add(g);
             }
         }
@@ -222,7 +224,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="p"></param>
         private void AddPoint(Point p)
         {
-            Coordinate coord = p.Coordinate;
+            Coordinate coord = (Coordinate) p.Coordinate;
             InsertPoint(argIndex, coord, Locations.Interior);
         }
 
@@ -236,7 +238,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="cwRight"></param>
         private void AddPolygonRing(LinearRing lr, Locations cwLeft, Locations cwRight)
         {
-            Coordinate[] coord = CoordinateArrays.RemoveRepeatedPoints(lr.Coordinates);
+            Coordinate[] coord = CoordinateArrays.RemoveRepeatedPoints((Coordinate[]) lr.Coordinates);
             if (coord.Length < 4) 
             {
                 hasTooFewPoints = true;
@@ -280,7 +282,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="line"></param>
         private void AddLineString(LineString line)
         {
-            Coordinate[] coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
+            Coordinate[] coord = CoordinateArrays.RemoveRepeatedPoints((Coordinate[]) line.Coordinates);
 
             if (coord.Length < 2) 
             {

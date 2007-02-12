@@ -22,8 +22,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         public void AddEdge(LineString lineString)
         {
             if (lineString.IsEmpty)
-                return; 
-            Coordinate[] coordinates = CoordinateArrays.RemoveRepeatedPoints(lineString.Coordinates);
+                return;
+            Coordinate[] coordinates = CoordinateArrays.RemoveRepeatedPoints((Coordinate[]) lineString.Coordinates);
             Coordinate startCoordinate = coordinates[0];
             Coordinate endCoordinate = coordinates[coordinates.Length - 1];
             Node startNode = GetNode(startCoordinate);

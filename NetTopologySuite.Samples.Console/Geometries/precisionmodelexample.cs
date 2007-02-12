@@ -73,7 +73,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 			
 			Geometry A = wktRdr.Read(wktA);
 			Geometry B = wktRdr.Read(wktB);
-			Geometry C = A.Intersection(B);
+			Geometry C = (Geometry) A.Intersection(B);
 			
 			Console.WriteLine("A intersection B = " + C);
 		}
@@ -87,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 			
 			Geometry A = wktRdr.Read(wktA);
 			Geometry B = wktRdr.Read(wktB);
-			Geometry C = A.Difference(B);
+            Geometry C = (Geometry) A.Difference(B);
 			
 			Console.WriteLine("A intersection B = " + C);
 		}

@@ -37,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             if (geom is Polygon) 
             {
                 Polygon poly = geom as Polygon;
-                BasePoint = poly.ExteriorRing.GetCoordinateN(0);
+                BasePoint = ((LineString) poly.ExteriorRing).GetCoordinateN(0);
                 Add(poly);
             }
             else if (geom is GeometryCollection) 
@@ -96,10 +96,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="poly"></param>
         private void Add(Polygon poly)
         {
-            AddShell(poly.ExteriorRing.Coordinates);
+            AddShell((Coordinate[]) poly.ExteriorRing.Coordinates);
 
             foreach (LineString ls in poly.InteriorRings)
-                AddHole(ls.Coordinates);
+                AddHole((Coordinate[]) ls.Coordinates);
         }
 
         /// <summary>

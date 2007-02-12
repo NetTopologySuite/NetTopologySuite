@@ -3,6 +3,8 @@ using System.Collections;
 using System.Text;
 using System.Xml;
 
+using GeoAPI.Operations.Buffer;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.Operation.Buffer;
@@ -93,8 +95,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(line.Intersects(pointInLine));
                 Write(line.Intersects(pointOutLine));
                 Write(line.Intersects(aLine));
-                Write(line.IsCoordinate(pointInLine.Coordinate));
-                Write(line.IsCoordinate(pointOutLine.Coordinate));
+                Write(line.IsCoordinate((Coordinate) pointInLine.Coordinate));
+                Write(line.IsCoordinate((Coordinate) pointOutLine.Coordinate));
                 Write(line.IsWithinDistance(pointOutLine, 2));
                 Write(line.IsWithinDistance(pointOutLine, 222));
                 Write(line.Overlaps(pointInLine));

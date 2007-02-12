@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -315,7 +317,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         {
             for (int i = 0; i < points0.Count; i++)
             {
-                Point pt0 = (Point)points0[i];
+                Point pt0 = (Point) points0[i];
                 for (int j = 0; j < points1.Count; j++)
                 {
                     Point pt1 = (Point)points1[j];
@@ -324,8 +326,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
                     {
                         minDistance = dist;
                         // this is wrong - need to determine closest points on both segments!!!
-                        locGeom[0] = new GeometryLocation(pt0, 0, pt0.Coordinate);
-                        locGeom[1] = new GeometryLocation(pt1, 0, pt1.Coordinate);
+                        locGeom[0] = new GeometryLocation(pt0, 0, (Coordinate) pt0.Coordinate);
+                        locGeom[1] = new GeometryLocation(pt1, 0, (Coordinate) pt1.Coordinate);
                     }
                     if (minDistance <= terminateDistance) return;
                 }
@@ -361,8 +363,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         private void ComputeMinDistance(LineString line0, LineString line1, GeometryLocation[] locGeom)
         {
             if (line0.EnvelopeInternal.Distance(line1.EnvelopeInternal) > minDistance) return;
-            Coordinate[] coord0 = line0.Coordinates;
-            Coordinate[] coord1 = line1.Coordinates;
+            Coordinate[] coord0 = (Coordinate[]) line0.Coordinates;
+            Coordinate[] coord1 = (Coordinate[]) line1.Coordinates;
             // brute force approach!
             for (int i = 0; i < coord0.Length - 1; i++)
             {
@@ -394,8 +396,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         private void ComputeMinDistance(LineString line, Point pt, GeometryLocation[] locGeom)
         {
             if (line.EnvelopeInternal.Distance(pt.EnvelopeInternal) > minDistance) return;
-            Coordinate[] coord0 = line.Coordinates;
-            Coordinate coord = pt.Coordinate;
+            Coordinate[] coord0 = (Coordinate[]) line.Coordinates;
+            Coordinate coord = (Coordinate) pt.Coordinate;
             // brute force approach!
             for (int i = 0; i < coord0.Length - 1; i++)
             {

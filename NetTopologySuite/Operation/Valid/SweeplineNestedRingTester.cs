@@ -73,7 +73,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             for (int i = 0; i < rings.Count; i++) 
             {
                 LinearRing ring = (LinearRing) rings[i];
-                Envelope env = ring.EnvelopeInternal;
+                Envelope env = (Envelope) ring.EnvelopeInternal;
                 SweepLineInterval sweepInt = new SweepLineInterval(env.MinX, env.MaxX, ring);
                 sweepLine.Add(sweepInt);
             }
@@ -87,8 +87,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <returns></returns>
         private bool IsInside(LinearRing innerRing, LinearRing searchRing)
         {
-            Coordinate[] innerRingPts = innerRing.Coordinates;
-            Coordinate[] searchRingPts = searchRing.Coordinates;
+            Coordinate[] innerRingPts = (Coordinate[]) innerRing.Coordinates;
+            Coordinate[] searchRingPts = (Coordinate[]) searchRing.Coordinates;
             if (!innerRing.EnvelopeInternal.Intersects(searchRing.EnvelopeInternal))
                 return false;
             Coordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, graph);

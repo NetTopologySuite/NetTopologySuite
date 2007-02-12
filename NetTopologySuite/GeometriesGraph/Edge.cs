@@ -4,6 +4,8 @@ using System.Text;
 using System.IO;
 using System.Diagnostics;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
 using GisSharpBlog.NetTopologySuite.Algorithm;

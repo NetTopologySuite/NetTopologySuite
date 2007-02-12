@@ -43,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         public Geometry Intersection(Geometry geom0, Geometry geom1)
         {
             Geometry[] geom = RemoveCommonBits(geom0, geom1);
-            return ComputeResultPrecision(geom[0].Intersection(geom[1]));
+            return ComputeResultPrecision((Geometry) geom[0].Intersection(geom[1]));
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         public Geometry Union(Geometry geom0, Geometry geom1)
         {
             Geometry[] geom = RemoveCommonBits(geom0, geom1);
-            return ComputeResultPrecision(geom[0].Union(geom[1]));
+            return ComputeResultPrecision((Geometry) geom[0].Union(geom[1]));
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         public Geometry Difference(Geometry geom0, Geometry geom1)
         {
             Geometry[] geom = RemoveCommonBits(geom0, geom1);
-            return ComputeResultPrecision(geom[0].Difference(geom[1]));
+            return ComputeResultPrecision((Geometry) geom[0].Difference(geom[1]));
         }
 
         /// <summary
@@ -80,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         public Geometry SymDifference(Geometry geom0, Geometry geom1)
         {
             Geometry[] geom = RemoveCommonBits(geom0, geom1);
-            return ComputeResultPrecision(geom[0].SymmetricDifference(geom[1]));
+            return ComputeResultPrecision((Geometry) geom[0].SymmetricDifference(geom[1]));
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         public Geometry Buffer(Geometry geom0, double distance)
         {
             Geometry geom = RemoveCommonBits(geom0);
-            return ComputeResultPrecision(geom.Buffer(distance));
+            return ComputeResultPrecision((Geometry) geom.Buffer(distance));
         }
 
         /// <summary>

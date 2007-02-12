@@ -112,8 +112,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
         protected void Write(Point point, BinaryWriter writer)
         {
             WriteByteOrder(writer);     // LittleIndian
-            writer.Write((int)WKBGeometryTypes.WKBPoint);
-            Write(point.Coordinate, writer);
+            writer.Write((int) WKBGeometryTypes.WKBPoint);
+            Write((Coordinate) point.Coordinate, writer);
         }
 
         /// <summary>
@@ -124,10 +124,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
         protected void Write(LineString lineString, BinaryWriter writer)
         {
             WriteByteOrder(writer);     // LittleIndian
-            writer.Write((int)WKBGeometryTypes.WKBLineString);
-            writer.Write((int)lineString.NumPoints);
-            for(int i = 0; i < lineString.Coordinates.Length; i++)
-                Write(lineString.Coordinates[i], writer);
+            writer.Write((int) WKBGeometryTypes.WKBLineString);
+            writer.Write((int) lineString.NumPoints);
+            for (int i = 0; i < lineString.Coordinates.Length; i++)
+                Write((Coordinate) lineString.Coordinates[i], writer);
         }
 
         /// <summary>
@@ -138,8 +138,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
         protected void Write(Polygon polygon, BinaryWriter writer)
         {
             WriteByteOrder(writer);     // LittleIndian
-            writer.Write((int)WKBGeometryTypes.WKBPolygon);
-            writer.Write((int)polygon.NumInteriorRings + 1);
+            writer.Write((int) WKBGeometryTypes.WKBPolygon);
+            writer.Write((int) polygon.NumInteriorRings + 1);
             Write(polygon.ExteriorRing as LinearRing, writer);
             for (int i = 0; i < polygon.NumInteriorRings; i++)
                 Write(polygon.InteriorRings[i] as LinearRing, writer);
@@ -153,8 +153,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
         protected void Write(MultiPoint multiPoint, BinaryWriter writer)
         {
             WriteByteOrder(writer);     // LittleIndian
-            writer.Write((int)WKBGeometryTypes.WKBMultiPoint);
-            writer.Write((int)multiPoint.NumGeometries);
+            writer.Write((int) WKBGeometryTypes.WKBMultiPoint);
+            writer.Write((int) multiPoint.NumGeometries);
             for (int i = 0; i < multiPoint.NumGeometries; i++)
                 Write(multiPoint.Geometries[i] as Point, writer);
         }
@@ -167,8 +167,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
         protected void Write(MultiLineString multiLineString, BinaryWriter writer)
         {
             WriteByteOrder(writer);     // LittleIndian
-            writer.Write((int)WKBGeometryTypes.WKBMultiLineString);
-            writer.Write((int)multiLineString.NumGeometries);
+            writer.Write((int) WKBGeometryTypes.WKBMultiLineString);
+            writer.Write((int) multiLineString.NumGeometries);
             for (int i = 0; i < multiLineString.NumGeometries; i++)
                 Write(multiLineString.Geometries[i] as LineString, writer);
         }
@@ -181,8 +181,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
         protected void Write(MultiPolygon multiPolygon, BinaryWriter writer)
         {
             WriteByteOrder(writer);     // LittleIndian
-            writer.Write((int)WKBGeometryTypes.WKBMultiPolygon);
-            writer.Write((int)multiPolygon.NumGeometries);
+            writer.Write((int) WKBGeometryTypes.WKBMultiPolygon);
+            writer.Write((int) multiPolygon.NumGeometries);
             for (int i = 0; i < multiPolygon.NumGeometries; i++)
                 Write(multiPolygon.Geometries[i] as Polygon, writer);
         }
@@ -195,10 +195,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
         protected void Write(GeometryCollection geomCollection, BinaryWriter writer)
         {
             WriteByteOrder(writer);     // LittleIndian
-            writer.Write((int)WKBGeometryTypes.WKBGeometryCollection);
-            writer.Write((int)geomCollection.NumGeometries);
+            writer.Write((int) WKBGeometryTypes.WKBGeometryCollection);
+            writer.Write((int) geomCollection.NumGeometries);
             for (int i = 0; i < geomCollection.NumGeometries; i++)
-                Write(geomCollection.Geometries[i], writer); ;                
+                Write((Geometry) geomCollection.Geometries[i], writer); ;                
         }
 
         /// <summary>
@@ -208,8 +208,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(Coordinate coordinate, BinaryWriter writer)
         {
-            writer.Write((double)coordinate.X);
-            writer.Write((double)coordinate.Y);
+            writer.Write((double) coordinate.X);
+            writer.Write((double) coordinate.Y);
         }
 
         /// <summary>
@@ -219,9 +219,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(LinearRing ring, BinaryWriter writer)
         {
-            writer.Write((int)ring.NumPoints);
-            for(int i = 0; i < ring.Coordinates.Length; i++)
-                Write(ring.Coordinates[i], writer);
+            writer.Write((int) ring.NumPoints);
+            for (int i = 0; i < ring.Coordinates.Length; i++)
+                Write((Coordinate) ring.Coordinates[i], writer);
         }
 
         /// <summary>

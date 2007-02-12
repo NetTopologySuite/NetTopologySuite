@@ -104,17 +104,17 @@ namespace GisSharpBlog.NetTopologySuite.IO
 				LinearRing testRing = (LinearRing) holes[i];
 				LinearRing minShell = null;
 				Envelope minEnv = null;
-				Envelope testEnv = testRing.EnvelopeInternal;
+                Envelope testEnv = (Envelope) testRing.EnvelopeInternal;
 				Coordinate testPt = testRing.GetCoordinateN(0);
 				LinearRing tryRing;
 				for (int j = 0; j < shells.Count; j++)
 				{
 					tryRing = (LinearRing) shells[j];
-					Envelope tryEnv = tryRing.EnvelopeInternal;
-					if (minShell != null) 
-						minEnv = minShell.EnvelopeInternal;
+                    Envelope tryEnv = (Envelope) tryRing.EnvelopeInternal;
+					if (minShell != null)
+                        minEnv = (Envelope) minShell.EnvelopeInternal;
 					bool isContained = false;
-					CoordinateList coordList = new CoordinateList(tryRing.Coordinates);
+					CoordinateList coordList = new CoordinateList((Coordinate[]) tryRing.Coordinates);
 					if (tryEnv.Contains(testEnv)
                         && (CGAlgorithms.IsPointInRing(testPt, coordList.ToArray()) 
                         || (PointInList(testPt, coordList)))) 				
@@ -168,8 +168,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			}
 
 			file.Write(int.Parse(Enum.Format(typeof(ShapeGeometryTypes), this.ShapeType, "d")));
-        
-			Envelope box = multi.EnvelopeInternal;
+
+            Envelope box = (Envelope) multi.EnvelopeInternal;
 			Envelope bounds = ShapeHandler.GetEnvelopeExternal(geometryFactory.PrecisionModel,  box);
 			file.Write(bounds.MinX);
 			file.Write(bounds.MinY);
@@ -202,11 +202,11 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			for (int part = 0; part < multi.NumGeometries; part++)
 			{
 				Polygon poly = (Polygon)multi.Geometries[part];
-				Coordinate[] points = poly.ExteriorRing.Coordinates;
+				Coordinate[] points = (Coordinate[]) poly.ExteriorRing.Coordinates;
 				WriteCoords(new CoordinateList(points), file, geometryFactory);
 				foreach(LinearRing ring in poly.InteriorRings)
 				{
-					Coordinate[] points2 = ring.Coordinates;					
+                    Coordinate[] points2 = (Coordinate[]) ring.Coordinates;					
 					WriteCoords(new CoordinateList(points2), file, geometryFactory);
 				}
 			}

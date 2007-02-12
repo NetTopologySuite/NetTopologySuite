@@ -2,13 +2,15 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>
     /// Basic implementation of <c>MultiPolygon</c>.
     /// </summary>
     [Serializable]
-    public class MultiPolygon : GeometryCollection 
+    public class MultiPolygon : GeometryCollection, IMultiPolygon 
     {
         /// <summary>
         /// Represents an empty <c>MultiPolygon</c>.
@@ -93,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override Geometry Boundary
+        public override IGeometry Boundary
         {
             get
             {
@@ -102,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 for (int i = 0; i < geometries.Length; i++)
                 {
                     Polygon polygon = (Polygon)geometries[i];
-                    Geometry rings = polygon.Boundary;
+                    Geometry rings = (Geometry) polygon.Boundary;
                     for (int j = 0; j < rings.NumGeometries; j++)
                         allRings.Add(rings.GetGeometryN(j));
                 }
@@ -117,9 +119,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(Geometry other, double tolerance) 
+        public override bool EqualsExact(IGeometry other, double tolerance) 
         {
-            if (!IsEquivalentClass(other)) 
+            if (!IsEquivalentClass((Geometry) other)) 
                 return false;
             return base.EqualsExact(other, tolerance);
         }

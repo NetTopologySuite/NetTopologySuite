@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Text;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -43,17 +46,17 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns></returns>
         private static bool ContainsPoint(Coordinate p, Geometry geom)
         {
-            if(geom is Polygon) 
-                return ContainsPointInPolygon(p, (Polygon)geom);            
+            if (geom is Polygon) 
+                return ContainsPointInPolygon(p, (Polygon) geom);            
             else if(geom is GeometryCollection) 
             {
-                IEnumerator geomi = new GeometryCollectionEnumerator((GeometryCollection)geom);
-                while(geomi.MoveNext()) 
+                IEnumerator geomi = new GeometryCollectionEnumerator((GeometryCollection) geom);
+                while (geomi.MoveNext()) 
                 {
-                    Geometry g2 = (Geometry)geomi.Current;
+                    Geometry g2 = (Geometry) geomi.Current;
                     // if(g2 != geom)  --- Diego Guidi say's: Java code tests reference equality: in C# with operator overloads we tests the object.equals()... more slower!                    
                     if (!Object.ReferenceEquals(g2, geom)) 
-                        if(ContainsPoint(p, g2))
+                        if (ContainsPoint(p, g2))
                             return true;
                 }
             }
@@ -68,16 +71,16 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns></returns>
         public static bool ContainsPointInPolygon(Coordinate p, Polygon poly)
         {
-            if(poly.IsEmpty) 
+            if (poly.IsEmpty) 
                 return false;
-            LinearRing shell = (LinearRing)poly.ExteriorRing;
-            if (!CGAlgorithms.IsPointInRing(p, shell.Coordinates)) 
+            LinearRing shell = (LinearRing) poly.ExteriorRing;
+            if (!CGAlgorithms.IsPointInRing(p, (Coordinate[]) shell.Coordinates)) 
                 return false;
             // now test if the point lies in or on the holes
-            for(int i = 0; i < poly.NumInteriorRings; i++)
+            for (int i = 0; i < poly.NumInteriorRings; i++)
             {
-                LinearRing hole = (LinearRing)poly.GetInteriorRingN(i);
-                if(CGAlgorithms.IsPointInRing(p, hole.Coordinates)) 
+                LinearRing hole = (LinearRing) poly.GetInteriorRingN(i);
+                if (CGAlgorithms.IsPointInRing(p, (Coordinate[]) hole.Coordinates)) 
                     return false;
             }
             return true;

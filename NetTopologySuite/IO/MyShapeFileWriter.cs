@@ -131,30 +131,30 @@ namespace GisSharpBlog.NetTopologySuite.IO
         protected void WriteHeaderFile(GeometryCollection geometries, BinaryWriter leWriter, BigEndianBinaryWriter beWriter, int streamLength)
         {
             // Write stub value for FileCode (big endian)            
-            beWriter.WriteIntBE((int)9994);
+            beWriter.WriteIntBE((int) 9994);
             // Write stub values for unused (big endian)
-            beWriter.WriteIntBE((int)0);
-            beWriter.WriteIntBE((int)0);
-            beWriter.WriteIntBE((int)0);
-            beWriter.WriteIntBE((int)0);
-            beWriter.WriteIntBE((int)0);
+            beWriter.WriteIntBE((int) 0);
+            beWriter.WriteIntBE((int) 0);
+            beWriter.WriteIntBE((int) 0);
+            beWriter.WriteIntBE((int) 0);
+            beWriter.WriteIntBE((int) 0);
             // Write stub value for Length (big endian)
-            beWriter.WriteIntBE((int)streamLength);
+            beWriter.WriteIntBE((int) streamLength);
 
             // Write version
-            leWriter.Write((int)1000);
+            leWriter.Write((int) 1000);
             // Write ShapeTipe
-            leWriter.Write((int)GetShapeType(geometries.Geometries[0]));
+            leWriter.Write((int) GetShapeType((Geometry) geometries.Geometries[0]));
             // Write values for boundingbox      
-            Envelope envelope = geometries.EnvelopeInternal;
-            leWriter.Write((double)envelope.MinX);
-            leWriter.Write((double)envelope.MinY);
-            leWriter.Write((double)envelope.MaxX);
-            leWriter.Write((double)envelope.MaxY);
-            leWriter.Write((double)0);
-            leWriter.Write((double)0);
-            leWriter.Write((double)0);
-            leWriter.Write((double)0);
+            Envelope envelope = (Envelope) geometries.EnvelopeInternal;
+            leWriter.Write((double) envelope.MinX);
+            leWriter.Write((double) envelope.MinY);
+            leWriter.Write((double) envelope.MaxX);
+            leWriter.Write((double) envelope.MaxY);
+            leWriter.Write((double) 0);
+            leWriter.Write((double) 0);
+            leWriter.Write((double) 0);
+            leWriter.Write((double) 0);
         }
 
         /// <summary>

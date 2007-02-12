@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             ApplicationException originalEx = null;
             try
             {
-                Geometry result = geom0.Intersection(geom1);
+                Geometry result = (Geometry) geom0.Intersection(geom1);
                 return result;
             }
             catch (ApplicationException ex)
@@ -66,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             ApplicationException originalEx = null;
             try
             {
-                Geometry result = geom0.Union(geom1);
+                Geometry result = (Geometry) geom0.Union(geom1);
                 return result;
             }
             catch (ApplicationException ex)
@@ -104,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             ApplicationException originalEx = null;
             try
             {
-                Geometry result = geom0.Difference(geom1);
+                Geometry result = (Geometry) geom0.Difference(geom1);
                 return result;
             }
             catch (ApplicationException ex)
@@ -142,7 +142,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             ApplicationException originalEx = null;
             try
             {
-                Geometry result = geom0.SymmetricDifference(geom1);
+                Geometry result = (Geometry) geom0.SymmetricDifference(geom1);
                 return result;
             }
             catch (ApplicationException ex)
@@ -183,7 +183,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             ApplicationException originalEx = null;
             try
             {
-                Geometry result = geom.Buffer(distance);
+                Geometry result = (Geometry) geom.Buffer(distance);
                 return result;
             }
             catch (ApplicationException ex)

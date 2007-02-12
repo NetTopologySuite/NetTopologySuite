@@ -25,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="g"></param>
         public InteriorPointLine(Geometry g)
         {
-            centroid = g.Centroid.Coordinate;
+            centroid = (Coordinate) g.Centroid.Coordinate;
             AddInterior(g);
 
             if (interiorPoint == null)                
@@ -52,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private void AddInterior(Geometry geom)
         {
             if(geom is LineString) 
-                AddInterior(geom.Coordinates);            
+                AddInterior((Coordinate[]) geom.Coordinates);            
             else if(geom is GeometryCollection) 
             {
                 GeometryCollection gc = (GeometryCollection)geom;
@@ -80,8 +80,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="geom">The point to add.</param>
         private void AddEndpoints(Geometry geom)
         {
-            if(geom is LineString) 
-                AddEndpoints(geom.Coordinates);   
+            if(geom is LineString)
+                AddEndpoints((Coordinate[]) geom.Coordinates);   
             else if(geom is GeometryCollection) 
             {
                 GeometryCollection gc = (GeometryCollection)geom;

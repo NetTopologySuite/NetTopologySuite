@@ -125,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         protected void Write(Point point, XmlTextWriter writer)
         {            
             writer.WriteStartElement("Point");
-            Write(point.Coordinate, writer);
+            Write((Coordinate) point.Coordinate, writer);
             writer.WriteEndElement();            
         }
 
@@ -137,7 +137,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         protected void Write(LineString lineString, XmlTextWriter writer)
         {            
             writer.WriteStartElement("LineString");       
-            Write(lineString.Coordinates, writer);    
+            Write((Coordinate[]) lineString.Coordinates, writer);    
             writer.WriteEndElement();            
         }
 
@@ -149,7 +149,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         protected void Write(LinearRing linearRing, XmlTextWriter writer)
         {
             writer.WriteStartElement("LinearRing");
-            Write(linearRing.Coordinates, writer);
+            Write((Coordinate[]) linearRing.Coordinates, writer);
             writer.WriteEndElement();
         }
 

@@ -25,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 			Console.WriteLine("Geometry 2: " + g2);
 			
 			// compute the intersection of the two geometries
-			Geometry g3 = g1.Intersection(g2);
+			Geometry g3 = (Geometry) g1.Intersection(g2);
 			Console.WriteLine("G1 intersection G2: " + g3);
 		}
 	}

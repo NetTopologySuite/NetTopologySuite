@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         public void Add(Geometry geom)
         {
             if (geom is Point)             
-                Add(geom.Coordinate);
+                Add((Coordinate) geom.Coordinate);
 
             else if(geom is GeometryCollection) 
             {

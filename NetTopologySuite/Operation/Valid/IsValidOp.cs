@@ -174,7 +174,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <param name="g"></param>
         private void CheckValid(Point g)
         {
-            CheckInvalidCoordinates(g.Coordinates);
+            CheckInvalidCoordinates((Coordinate[]) g.Coordinates);
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <param name="g"></param>
         private void CheckValid(MultiPoint g)
         {
-            CheckInvalidCoordinates(g.Coordinates);
+            CheckInvalidCoordinates((Coordinate[]) g.Coordinates);
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <param name="g"></param>
         private void CheckValid(LineString g)
         {
-            CheckInvalidCoordinates(g.Coordinates);
+            CheckInvalidCoordinates((Coordinate[]) g.Coordinates);
             if (validErr != null) return;
             GeometryGraph graph = new GeometryGraph(0, g);
             CheckTooFewPoints(graph);
@@ -205,7 +205,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <param name="g"></param>
         private void CheckValid(LinearRing g)
         {
-            CheckInvalidCoordinates(g.Coordinates);
+            CheckInvalidCoordinates((Coordinate[]) g.Coordinates);
             if (validErr != null) return;
             CheckClosedRing(g);
             if (validErr != null) return;
@@ -320,11 +320,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <param name="poly"></param>
         private void CheckInvalidCoordinates(Polygon poly)
         {
-            CheckInvalidCoordinates(poly.ExteriorRing.Coordinates);
+            CheckInvalidCoordinates((Coordinate[]) poly.ExteriorRing.Coordinates);
             if (validErr != null) return;
             foreach (LineString ls in poly.InteriorRings)
             {
-                CheckInvalidCoordinates(ls.Coordinates);
+                CheckInvalidCoordinates((Coordinate[]) ls.Coordinates);
                 if (validErr != null) return;
             }
         }
@@ -446,7 +446,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             for (int i = 0; i < p.NumInteriorRings; i++)
             {
                 LinearRing hole = (LinearRing)p.GetInteriorRingN(i);
-                Coordinate holePt = FindPointNotNode(hole.Coordinates, shell, graph);
+                Coordinate holePt = FindPointNotNode((Coordinate[]) hole.Coordinates, shell, graph);
 
                 /*
                  * If no non-node hole vertex can be found, the hole must
@@ -521,10 +521,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// </summary>
         private void CheckShellNotNested(LinearRing shell, Polygon p, GeometryGraph graph)
         {
-            Coordinate[] shellPts = shell.Coordinates;
+            Coordinate[] shellPts = (Coordinate[]) shell.Coordinates;
             // test if shell is inside polygon shell
             LinearRing polyShell = (LinearRing)p.ExteriorRing;
-            Coordinate[] polyPts = polyShell.Coordinates;
+            Coordinate[] polyPts = (Coordinate[]) polyShell.Coordinates;
             Coordinate shellPt = FindPointNotNode(shellPts, polyShell, graph);
             // if no point could be found, we can assume that the shell is outside the polygon
             if (shellPt == null) return;
@@ -567,8 +567,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// </returns>
         private Coordinate CheckShellInsideHole(LinearRing shell, LinearRing hole, GeometryGraph graph)
         {
-            Coordinate[] shellPts = shell.Coordinates;
-            Coordinate[] holePts = hole.Coordinates;
+            Coordinate[] shellPts = (Coordinate[]) shell.Coordinates;
+            Coordinate[] holePts = (Coordinate[]) hole.Coordinates;
             // TODO: improve performance of this - by sorting pointlists?
             Coordinate shellPt = FindPointNotNode(shellPts, hole, graph);
             // if point is on shell but not hole, check that the shell is inside the hole

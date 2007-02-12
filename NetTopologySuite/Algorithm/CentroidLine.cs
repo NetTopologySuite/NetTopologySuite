@@ -29,11 +29,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         public void Add(Geometry geom)
         {
             if (geom is LineString)             
-                Add(geom.Coordinates);            
+                Add((Coordinate[]) geom.Coordinates);            
 
             else if (geom is GeometryCollection) 
             {
-                GeometryCollection gc = (GeometryCollection)geom;
+                GeometryCollection gc = (GeometryCollection) geom;
                 foreach (Geometry geometry in gc.Geometries)
                     Add(geometry);
             }

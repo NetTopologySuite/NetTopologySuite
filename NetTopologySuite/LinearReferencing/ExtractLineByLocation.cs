@@ -77,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <returns></returns>
         private LineString ComputeLine(LinearLocation start, LinearLocation end)
         {
-            Coordinate[] coordinates = line.Coordinates;
+            Coordinate[] coordinates = (Coordinate[]) line.Coordinates;
             CoordinateList newCoordinates = new CoordinateList();
 
             int startSegmentIndex = start.SegmentIndex;

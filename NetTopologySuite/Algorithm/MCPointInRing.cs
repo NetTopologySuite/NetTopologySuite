@@ -65,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             tree = new Bintree();
 
-            Coordinate[] pts = CoordinateArrays.RemoveRepeatedPoints(ring.Coordinates);
+            Coordinate[] pts = CoordinateArrays.RemoveRepeatedPoints((Coordinate[]) ring.Coordinates);
             IList mcList = MonotoneChainBuilder.GetChains(pts);
 
             for (int i = 0; i < mcList.Count; i++) 

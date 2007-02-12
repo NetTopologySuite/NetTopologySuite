@@ -4,6 +4,8 @@ using System.Text;
 
 using Iesi.Collections;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
@@ -55,8 +57,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation
             ISet points = new ListSet();
             for (int i = 0; i < mp.NumGeometries; i++)
             {
-                Point pt = (Point)mp.GetGeometryN(i);
-                Coordinate p = pt.Coordinate;
+                IPoint pt = (IPoint) mp.GetGeometryN(i);
+                ICoordinate p = pt.Coordinate;
                 if (points.Contains(p))
                     return false;
                 points.Add(p);

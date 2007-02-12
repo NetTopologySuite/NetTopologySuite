@@ -2,32 +2,13 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Operations.Buffer;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Precision;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
-{
-    /// <summary>
-    /// Buffer styles.
-    /// </summary>
-    public enum BufferStyles
-    {
-        /// <summary> 
-        /// Specifies a round line buffer end cap endCapStyle (Default).
-        /// </summary>/
-        CapRound = 1,
-
-        /// <summary> 
-        /// Specifies a butt (or flat) line buffer end cap endCapStyle.
-        /// </summary>
-        CapButt = 2,
-
-        /// <summary>
-        /// Specifies a square line buffer end cap endCapStyle.
-        /// </summary>
-        CapSquare = 3,
-    }
-
+{    
     /// <summary>
     /// Computes the buffer of a point, for both positive and negative buffer distances.    
     /// In GIS, the buffer of a point is defined as
@@ -66,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <returns>A scale factor that allows a reasonable amount of precision for the buffer computation.</returns>
         private static double PrecisionScaleFactor(Geometry g, double distance, int maxPrecisionDigits)
         {
-            Envelope env = g.EnvelopeInternal;
+            Envelope env = (Envelope) g.EnvelopeInternal;
             double envSize = Math.Max(env.Height, env.Width);
             double expandByDistance = distance > 0.0 ? distance : 0.0;
             double bufEnvSize = envSize + 2 * expandByDistance;

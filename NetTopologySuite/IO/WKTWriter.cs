@@ -220,10 +220,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
             if (geometry is Point) 
             {
                 Point point = (Point) geometry;
-                AppendPointTaggedText(point.Coordinate, level, writer, point.PrecisionModel);
+                AppendPointTaggedText((Coordinate) point.Coordinate, level, writer, point.PrecisionModel);
             }
             else if (geometry is LinearRing) 
-                AppendLinearRingTaggedText((LinearRing )geometry, level, writer);            
+                AppendLinearRingTaggedText((LinearRing) geometry, level, writer);            
             else if (geometry is LineString) 
                 AppendLineStringTaggedText((LineString) geometry, level, writer);            
             else if (geometry is Polygon) 
@@ -447,11 +447,11 @@ namespace GisSharpBlog.NetTopologySuite.IO
             {
                 if (indentFirst) Indent(level, writer);
                 writer.Write("(");
-                AppendLineStringText(polygon.ExteriorRing, level, false, writer);
+                AppendLineStringText((LineString) polygon.ExteriorRing, level, false, writer);
                 for (int i = 0; i < polygon.NumInteriorRings; i++) 
                 {
                     writer.Write(", ");
-                    AppendLineStringText(polygon.GetInteriorRingN(i), level + 1, true, writer);
+                    AppendLineStringText((LineString) polygon.GetInteriorRingN(i), level + 1, true, writer);
                 }
                 writer.Write(")");
             }
@@ -473,8 +473,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 writer.Write("(");
                 for (int i = 0; i < multiPoint.NumGeometries; i++) 
                 {
-                    if (i > 0) writer.Write(", ");                    
-                    AppendCoordinate(((Point) multiPoint.GetGeometryN(i)).Coordinate, writer, multiPoint.PrecisionModel);
+                    if (i > 0) writer.Write(", ");
+                    AppendCoordinate((Coordinate) ((Point)multiPoint.GetGeometryN(i)).Coordinate, writer, multiPoint.PrecisionModel);
                 }
                 writer.Write(")");
             }
@@ -564,7 +564,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                         writer.Write(", ");
                         level2 = level + 1;
                     }
-                    AppendGeometryTaggedText(geometryCollection.GetGeometryN(i), level2, writer);
+                    AppendGeometryTaggedText((Geometry) geometryCollection.GetGeometryN(i), level2, writer);
                 }
                 writer.Write(")");
             }

@@ -58,12 +58,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             for (int i = 0; i < rings.Count; i++) 
             {
                 LinearRing innerRing = (LinearRing) rings[i];
-                Coordinate[] innerRingPts = innerRing.Coordinates;
+                Coordinate[] innerRingPts = (Coordinate[]) innerRing.Coordinates;
 
                 for (int j = 0; j < rings.Count; j++) 
                 {
                     LinearRing searchRing = (LinearRing) rings[j];
-                    Coordinate[] searchRingPts = searchRing.Coordinates;
+                    Coordinate[] searchRingPts = (Coordinate[]) searchRing.Coordinates;
 
                     if (innerRing == searchRing) continue;
 

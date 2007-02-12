@@ -131,8 +131,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             Coordinate[] pts = null;
             if (geom is Polygon)
-                pts = ((Polygon)geom).ExteriorRing.Coordinates;
-            else pts = geom.Coordinates;
+                pts = (Coordinate[]) ((Polygon) geom).ExteriorRing.Coordinates;
+            else pts = (Coordinate[]) geom.Coordinates;
 
             // special cases for lines or points or degenerate rings
             if (pts.Length == 0) 

@@ -55,6 +55,7 @@
     <Compile Include="LinearReferencing\LinearReferencingExample.cs" />
     <Compile Include="Tests\CoordinateSystems\CoordinateTransformTests.cs" />
     <Compile Include="Tests\IO\ShapeFileReadTest.cs" />
+    <Compile Include="Tests\IO\ShapefileWriteTest.cs" />
     <Compile Include="Tests\Various\CoordinateArraysTest.cs" />
     <Compile Include="Tests\Various\CoversTest.cs" />
     <Compile Include="Tests\Various\DbfDateTest.cs" />
@@ -88,6 +89,10 @@
     <Compile Include="Technique\UnionUsingBuffer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GeoAPI\GeoAPI.csproj">
+      <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
+      <Name>GeoAPI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.CoordinateSystems\NetTopologySuite.CoordinateSystems.csproj">
       <Project>{E028BDD2-55E1-4E5F-BE31-35FAEC8D6428}</Project>
       <Name>NetTopologySuite.CoordinateSystems</Name>

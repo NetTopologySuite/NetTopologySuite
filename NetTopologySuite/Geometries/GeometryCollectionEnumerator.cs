@@ -100,7 +100,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 if (index >= max) 
                     throw new ArgumentOutOfRangeException(); 
                 
-                Geometry obj = parent.GetGeometryN(index++);
+                Geometry obj = (Geometry) parent.GetGeometryN(index++);
                 if (obj is GeometryCollection) 
                 {
                     subcollectionEnumerator = new GeometryCollectionEnumerator((GeometryCollection) obj);

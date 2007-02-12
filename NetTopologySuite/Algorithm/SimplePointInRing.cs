@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="ring"></param>
         public SimplePointInRing(LinearRing ring)
         {
-            pts = ring.Coordinates;
+            pts = (Coordinate[]) ring.Coordinates;
         }
 
         /// <summary>

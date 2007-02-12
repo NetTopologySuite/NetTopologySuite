@@ -32,10 +32,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private void BuildIndex()
         {
             sirTree = new SIRtree();
-            Coordinate[] pts = ring.Coordinates;
+            Coordinate[] pts = (Coordinate[]) ring.Coordinates;
             for (int i = 1; i < pts.Length; i++) 
             {
-                if (pts[i-1].Equals(pts[i])) { continue; } 
+                if (pts[i - 1].Equals(pts[i])) { continue; } 
                 LineSegment seg = new LineSegment(pts[i - 1], pts[i]);
                 sirTree.Insert(seg.P0.Y, seg.P1.Y, seg);
             }

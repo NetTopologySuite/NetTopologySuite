@@ -18,7 +18,7 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
-    <AssemblyOriginatorKeyFile>ntskey.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>nts.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -81,7 +81,6 @@
     <Compile Include="Geometries\CoordinateSequences.cs" />
     <Compile Include="Geometries\DefaultCoordinateSequence.cs" />
     <Compile Include="Geometries\DefaultCoordinateSequenceFactory.cs" />
-    <Compile Include="Geometries\Dimension.cs" />
     <Compile Include="Geometries\Envelope.cs" />
     <Compile Include="Geometries\Geometry.cs" />
     <Compile Include="Geometries\GeometryCollection.cs" />
@@ -92,11 +91,9 @@
     <Compile Include="Geometries\ICoordinateSequence.cs" />
     <Compile Include="Geometries\ICoordinateSequenceFactory.cs" />
     <Compile Include="Geometries\IGeometryFilter.cs" />
-    <Compile Include="Geometries\IntersectionMatrix.cs" />
     <Compile Include="Geometries\LinearRing.cs" />
     <Compile Include="Geometries\LineSegment.cs" />
     <Compile Include="Geometries\LineString.cs" />
-    <Compile Include="Geometries\Location.cs" />
     <Compile Include="Geometries\MultiLineString.cs" />
     <Compile Include="Geometries\MultiPoint.cs" />
     <Compile Include="Geometries\MultiPolygon.cs" />
@@ -377,9 +374,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="NTS.ndoc" />
-    <None Include="ntskey.snk" />
+    <None Include="nts.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GeoAPI\GeoAPI.csproj">
+      <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
+      <Name>GeoAPI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite.CoordinateSystems\NetTopologySuite.CoordinateSystems.csproj">
       <Project>{E028BDD2-55E1-4E5F-BE31-35FAEC8D6428}</Project>
       <Name>NetTopologySuite.CoordinateSystems</Name>

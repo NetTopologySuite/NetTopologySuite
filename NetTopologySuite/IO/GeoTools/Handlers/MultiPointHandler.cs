@@ -72,8 +72,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
             MultiPoint mpoint = geometry as MultiPoint;
             
             file.Write(int.Parse(Enum.Format(typeof(ShapeGeometryTypes), this.ShapeType, "d")));
-        
-			Envelope box = geometry.EnvelopeInternal;
+
+            Envelope box = (Envelope) geometry.EnvelopeInternal;
 			Envelope bounds = ShapeHandler.GetEnvelopeExternal(geometryFactory.PrecisionModel, box);
 			file.Write(bounds.MinX);
 			file.Write(bounds.MinY);

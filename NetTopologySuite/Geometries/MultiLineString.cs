@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Text;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Operation;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 
@@ -9,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// <summary>
     /// Basic implementation of <c>MultiLineString</c>.
     /// </summary>    
-    public class MultiLineString : GeometryCollection 
+    public class MultiLineString : GeometryCollection, IMultiLineString
     {
         /// <summary>
         /// Represents an empty <c>MultiLineString</c>.
@@ -114,7 +117,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <value></value>
-        public override Geometry Boundary
+        public override IGeometry Boundary
         {
             get
             {
@@ -147,9 +150,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(Geometry other, double tolerance) 
+        public override bool EqualsExact(IGeometry other, double tolerance) 
         {
-            if (!IsEquivalentClass(other)) 
+            if (!IsEquivalentClass((Geometry) other)) 
                 return false;            
             return base.EqualsExact(other, tolerance);
         }

@@ -63,7 +63,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         {
             get
             {
-                return parentLine.Coordinates;
+                return (Coordinate[]) parentLine.Coordinates;
             }
         }
 
@@ -105,7 +105,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// </summary>
         private void Init()
         {
-            Coordinate[] pts = parentLine.Coordinates;
+            Coordinate[] pts = (Coordinate[]) parentLine.Coordinates;
             segs = new TaggedLineSegment[pts.Length - 1];
             for (int i = 0; i < pts.Length - 1; i++)
             {

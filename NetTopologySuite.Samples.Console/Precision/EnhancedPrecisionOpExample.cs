@@ -48,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Precision
 			Console.WriteLine("This call to intersection will throw a topology exception due to robustness problems:");
 			try
 			{
-				Geometry result = g1.Intersection(g2);
+                Geometry result = (Geometry) g1.Intersection(g2);
 			}
 			catch (TopologyException ex)
 			{

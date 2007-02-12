@@ -174,8 +174,8 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// <param name="reader"></param>
         /// <returns></returns>
         protected Geometry ReadLinearRing(XmlReader reader)
-        {            
-            return Factory.CreateLinearRing(ReadLineString(reader).Coordinates);
+        {
+            return Factory.CreateLinearRing((Coordinate[]) ReadLineString(reader).Coordinates);
         }
 
         /// <summary>

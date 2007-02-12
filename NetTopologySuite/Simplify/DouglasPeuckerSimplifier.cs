@@ -139,7 +139,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             /// <returns>A valid area point.</returns>
             private Geometry CreateValidArea(Geometry roughAreaGeom)
             {
-                return roughAreaGeom.Buffer(0.0);
+                return (Geometry) roughAreaGeom.Buffer(0.0);
             }
         }
     }

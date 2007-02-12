@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Operation;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
@@ -10,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Models a collection of <c>Point</c>s.
     /// </summary>
     [Serializable]
-    public class MultiPoint : GeometryCollection
+    public class MultiPoint : GeometryCollection, IMultiPoint
     {
         /// <summary>
         /// Represents an empty <c>MultiPoint</c>.
@@ -78,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override Geometry Boundary
+        public override IGeometry Boundary
         {
             get
             {
@@ -114,9 +116,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(Geometry other, double tolerance) 
+        public override bool EqualsExact(IGeometry other, double tolerance) 
         {
-            if (!IsEquivalentClass(other)) 
+            if (!IsEquivalentClass((Geometry) other)) 
                 return false;            
             return base.EqualsExact(other, tolerance);
         }
@@ -129,7 +131,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The <c>n</c>th <c>Coordinate</c>.</returns>
         protected Coordinate GetCoordinate(int n) 
         {
-            return ((Point) geometries[n]).Coordinate;
+            return (Coordinate) ((Point)geometries[n]).Coordinate;
         }
     }
 }

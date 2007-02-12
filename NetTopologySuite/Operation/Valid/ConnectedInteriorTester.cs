@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -145,13 +147,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             if (g is Polygon) 
             {
                 Polygon p = (Polygon) g;
-                VisitInteriorRing(p.ExteriorRing, graph);
+                VisitInteriorRing((LineString) p.ExteriorRing, graph);
             }
             if (g is MultiPolygon) 
             {
                 MultiPolygon mp = (MultiPolygon) g;
                 foreach (Polygon p in mp.Geometries) 
-                    VisitInteriorRing(p.ExteriorRing, graph);
+                    VisitInteriorRing((LineString) p.ExteriorRing, graph);
             }
         }
 
@@ -162,7 +164,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <param name="graph"></param>
         private void VisitInteriorRing(LineString ring, PlanarGraph graph)
         {
-            Coordinate[] pts = ring.Coordinates;
+            Coordinate[] pts = (Coordinate[]) ring.Coordinates;
             Coordinate pt0 = pts[0];
             /*
              * Find first point in coord list different to initial point.

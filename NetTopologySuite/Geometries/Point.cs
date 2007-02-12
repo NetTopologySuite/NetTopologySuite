@@ -3,13 +3,15 @@ using System.Collections;
 using System.Text;
 using System.Diagnostics;
 
+using GeoAPI.Geometries;
+
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>
     /// Basic implementation of <c>Point</c>.
     /// </summary>
     [Serializable]
-    public class Point : Geometry 
+    public class Point : Geometry, IPoint
     {
         private static readonly Coordinate emptyCoordinate = null;
 
@@ -65,11 +67,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override Coordinate[] Coordinates 
+        public override ICoordinate[] Coordinates 
         {
             get
             {
-                return IsEmpty ? new Coordinate[] { } : new Coordinate[]{ this.Coordinate };
+                return IsEmpty ? new Coordinate[] { } : new Coordinate[] { (Coordinate) this.Coordinate };
             }
         }
 
@@ -176,7 +178,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override Coordinate Coordinate
+        public override ICoordinate Coordinate
         {
             get
             {
@@ -198,7 +200,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override Geometry Boundary
+        public override IGeometry Boundary
         {
             get
             {
@@ -223,13 +225,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(Geometry other, double tolerance) 
+        public override bool EqualsExact(IGeometry other, double tolerance) 
         {
-            if (!IsEquivalentClass(other)) 
+            if (!IsEquivalentClass((Geometry) other)) 
                 return false;            
             if (IsEmpty && other.IsEmpty) 
                 return true;
-            return Equal(((Point)other).Coordinate, this.Coordinate, tolerance);
+            return Equal((Coordinate) ((Point) other).Coordinate, (Coordinate) this.Coordinate, tolerance);
         }
 
         /// <summary>
@@ -240,7 +242,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (IsEmpty) 
                 return;             
-            filter.Filter(Coordinate);
+            filter.Filter((Coordinate) Coordinate);
         }
 
         /// <summary>

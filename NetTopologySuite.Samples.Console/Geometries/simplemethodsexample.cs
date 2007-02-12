@@ -45,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 			string wktB = "LINESTRING(20 80, 80 60, 100 140)";
 			Geometry A = wktRdr.Read(wktA);
 			Geometry B = wktRdr.Read(wktB);
-			Geometry C = A.Intersection(B);
+            Geometry C = (Geometry) A.Intersection(B);
 			Console.WriteLine("A = " + A);
 			Console.WriteLine("B = " + B);
 			Console.WriteLine("A intersection B = " + C);

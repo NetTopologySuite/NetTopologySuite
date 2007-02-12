@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace GeoAPI.Geometries
-{
+{    
     public interface ICoordinate : ICloneable, IComparable, IComparable<ICoordinate>, IEquatable<ICoordinate>
     {
         double X { get; set; }

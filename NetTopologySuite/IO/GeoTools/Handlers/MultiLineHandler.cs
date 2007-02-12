@@ -87,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			MultiLineString multi = (MultiLineString) geometry;
             file.Write(int.Parse(Enum.Format(typeof(ShapeGeometryTypes), this.ShapeType, "d")));
         
-			Envelope box = multi.EnvelopeInternal;
+			Envelope box = (Envelope) multi.EnvelopeInternal;
 			file.Write(box.MinX);
 			file.Write(box.MinY);
 			file.Write(box.MaxX);
@@ -103,7 +103,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			int offset=0;
 			for (int i = 0; i < numParts; i++)
 			{
-				Geometry g =  multi.GetGeometryN(i);
+				Geometry g =  (Geometry) multi.GetGeometryN(i);
 				file.Write( offset );
 				offset = offset + g.NumPoints;
 			}
@@ -111,7 +111,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			Coordinate	external;
 			for (int part = 0; part < numParts; part++)
 			{
-                CoordinateList points = new CoordinateList(multi.GetGeometryN(part).Coordinates);
+                CoordinateList points = new CoordinateList((Coordinate[]) multi.GetGeometryN(part).Coordinates);
 				for (int i = 0; i < points.Count; i++)
 				{
 					// external = geometryFactory.PrecisionModel.ToExternal((Coordinate)points[i]);

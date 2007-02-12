@@ -23,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         {
             for (int i = 0; i < geom.NumGeometries && ! isDone; i++) 
             {
-                Geometry element = geom.GetGeometryN(i);
+                Geometry element = (Geometry) geom.GetGeometryN(i);
                 if (!(element is GeometryCollection)) 
                 {
                     Visit(element);

@@ -22,14 +22,16 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Attributes
         /// </summary>
         public override void Start()
         {
-            // ReadFromShapeFile();
+            // Set current dir to shapefiles dir
+            Environment.CurrentDirectory = @"../../../NetTopologySuite.Samples.Shapefiles";
 
+            ReadFromShapeFile();
             TestSharcDbf();
         }
 
         private void TestSharcDbf()
         {
-            string filename = @"Shapefiles\Strade.dbf";
+            string filename = @"\Strade.dbf";
             if (!File.Exists(filename))
                 throw new FileNotFoundException(filename + " not found at " + Environment.CurrentDirectory);
 
@@ -63,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Attributes
         private void ReadFromShapeFile()
         {
             ArrayList featureCollection = new ArrayList();
-            string filename = @"Shapefiles\country";
+            string filename = @"country";
             if (!File.Exists(filename + ".dbf"))
                 throw new FileNotFoundException(filename + " not found at " + Environment.CurrentDirectory);
             ShapefileDataReader dataReader = new ShapefileDataReader(filename, new GeometryFactory());                        
@@ -98,7 +100,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Attributes
             }
             
             // Test write with stub header            
-            string file = Environment.CurrentDirectory + "\\Shapefiles\\testWriteStubHeader";
+            string file = Environment.CurrentDirectory + "\\NetTopologySuite.Samples.Shapefiles\\testWriteStubHeader";
             if (File.Exists(file + ".shp")) File.Delete(file + ".shp");
             if (File.Exists(file + ".shx")) File.Delete(file + ".shx");
             if (File.Exists(file + ".dbf")) File.Delete(file + ".dbf");
@@ -108,13 +110,13 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Attributes
             dataWriter.Write(featureCollection);
 
             // Test write with header from a existing shapefile
-            file = Environment.CurrentDirectory + "\\Shapefiles\\testWriteShapefileHeader";
+            file = Environment.CurrentDirectory + "\\NetTopologySuite.Samples.Shapefiles\\testWriteShapefileHeader";
             if (File.Exists(file + ".shp")) File.Delete(file + ".shp");
             if (File.Exists(file + ".shx")) File.Delete(file + ".shx");
             if (File.Exists(file + ".dbf")) File.Delete(file + ".dbf");
 
             dataWriter = new ShapefileDataWriter(file);
-            dataWriter.Header = ShapefileDataWriter.GetHeader(Environment.CurrentDirectory + "\\Shapefiles\\country.dbf");
+            dataWriter.Header = ShapefileDataWriter.GetHeader(Environment.CurrentDirectory + "\\NetTopologySuite.Samples.Shapefiles\\country.dbf");
             dataWriter.Write(featureCollection);
         }
     }

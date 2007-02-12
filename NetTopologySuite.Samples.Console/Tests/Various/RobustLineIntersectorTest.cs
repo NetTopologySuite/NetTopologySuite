@@ -39,7 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             Geometry g2 = Reader.Read(lineString2);
             Geometry p1 = Reader.Read(point1);
 
-            Geometry result = g1.Intersection(g2);            
+            Geometry result = (Geometry) g1.Intersection(g2);            
             
             Debug.WriteLine(result);
             Assert.IsNotNull(result);            

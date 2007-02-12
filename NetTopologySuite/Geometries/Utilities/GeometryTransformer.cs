@@ -285,7 +285,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             ArrayList transGeomList = new ArrayList();
             for (int i = 0; i < geom.NumGeometries; i++) 
             {
-                Geometry transformGeom = Transform(geom.GetGeometryN(i));
+                Geometry transformGeom = Transform((Geometry) geom.GetGeometryN(i));
                 if (transformGeom == null) continue;
                 if (pruneEmptyGeometry && transformGeom.IsEmpty) continue;
                 transGeomList.Add(transformGeom);

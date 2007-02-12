@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
@@ -10,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Basic implementation of <c>GeometryCollection</c>.
     /// </summary>
     [Serializable]
-    public class GeometryCollection : Geometry, IEnumerable
+    public class GeometryCollection : Geometry, IGeometryCollection
     {
         /// <summary>
         /// Represents an empty <c>GeometryCollection</c>.
@@ -20,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Internal representation of this <c>GeometryCollection</c>.        
         /// </summary>
-        protected Geometry[] geometries = null;
+        protected IGeometry[] geometries = null;
 
         /// <summary>
         /// 
@@ -59,7 +61,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override Coordinate Coordinate 
+        public override ICoordinate Coordinate 
         {
             get
             {
@@ -76,7 +78,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// is only a temporary container which is not synchronized back.
         /// </summary>
         /// <returns>The collected coordinates.</returns>
-        public override Coordinate[] Coordinates
+        public override ICoordinate[] Coordinates
         {
             get
             {
@@ -84,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 int k = -1;
                 for (int i = 0; i < geometries.Length; i++)
                 {
-                    Coordinate[] childCoordinates = geometries[i].Coordinates;
+                    Coordinate[] childCoordinates = (Coordinate[]) geometries[i].Coordinates;
                     for (int j = 0; j < childCoordinates.Length; j++)
                     {
                         k++;
@@ -153,7 +155,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public override Geometry GetGeometryN(int n) 
+        public override IGeometry GetGeometryN(int n) 
         {
             return geometries[n];
         }
@@ -161,7 +163,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public Geometry[] Geometries
+        public IGeometry[] Geometries
         {
             get
             {
@@ -210,7 +212,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override Geometry Boundary
+        public override IGeometry Boundary
         {
             get
             {
@@ -254,9 +256,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(Geometry other, double tolerance) 
+        public override bool EqualsExact(IGeometry other, double tolerance) 
         {
-            if (!IsEquivalentClass(other)) 
+            if (!IsEquivalentClass((Geometry) other)) 
                 return false;            
 
             GeometryCollection otherCollection = (GeometryCollection) other;
@@ -276,8 +278,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="filter"></param>
         public override void Apply(ICoordinateFilter filter)
         {
-            for (int i = 0; i < geometries.Length; i++) 
-                geometries[i].Apply(filter);
+            for (int i = 0; i < geometries.Length; i++)
+                ((Geometry) geometries[i]).Apply(filter);
         }
 
         /// <summary>
@@ -287,8 +289,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public override void Apply(IGeometryFilter filter)
         {
             filter.Filter(this);
-            for (int i = 0; i < geometries.Length; i++) 
-                geometries[i].Apply(filter);
+            for (int i = 0; i < geometries.Length; i++)
+                ((Geometry) geometries[i]).Apply(filter);
         }
 
         /// <summary>
@@ -298,8 +300,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public override void Apply(IGeometryComponentFilter filter) 
         {
             filter.Filter(this);
-            for (int i = 0; i < geometries.Length; i++) 
-                geometries[i].Apply(filter);
+            for (int i = 0; i < geometries.Length; i++)
+                ((Geometry) geometries[i]).Apply(filter);
         }
 
         /// <summary>
@@ -356,7 +358,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                Geometry baseGeom = Geometries[0];
+                Geometry baseGeom = (Geometry) Geometries[0];
                 for (int i = 1; i < Geometries.Length; i++)
                     if (baseGeom.GetType() != Geometries[i].GetType())
                         return false;
@@ -382,7 +384,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public Geometry this[int i]
+        public IGeometry this[int i]
         {
             get
             {

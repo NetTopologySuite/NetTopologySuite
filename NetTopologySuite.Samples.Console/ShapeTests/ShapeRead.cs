@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
         public ShapeRead()
         {
             // Set current dir to shapefiles dir
-            Environment.CurrentDirectory = Environment.CurrentDirectory + "\\Shapefiles\\";
+            Environment.CurrentDirectory = Environment.CurrentDirectory + "\\NetTopologySuite.Samples.Shapefiles\\";
         }        
 
         /// <summary>

@@ -33,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Technique
 		{
 			GeometryFactory fact = geom[0].Factory;
 			Geometry geomColl = fact.CreateGeometryCollection(geom);
-			Geometry union = geomColl.Buffer(0.0);
+			Geometry union = (Geometry) geomColl.Buffer(0.0);
 			Console.WriteLine(union);
 		}
 	}

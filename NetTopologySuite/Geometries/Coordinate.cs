@@ -1,6 +1,8 @@
 using System;
 using System.Runtime.Serialization;
 
+using GeoAPI.Geometries;
+
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>
@@ -18,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// the z-ordinate.
     /// </summary>
     [Serializable]
-    public class Coordinate : ICloneable, IComparable, IComparable<Coordinate>
+    public class Coordinate : ICoordinate
     {
         private double x = Double.NaN;
         private double y = Double.NaN;
@@ -104,7 +106,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Gets/Sets <c>Coordinate</c>s (x,y,z) values.
         /// </summary>
-        public Coordinate CoordinateValue
+        public ICoordinate CoordinateValue
         {
             get
             {
@@ -112,9 +114,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
             set
             {
-                x = value.x;
-                y = value.y;
-                z = value.z;
+                x = value.X;
+                y = value.Y;
+                z = value.Z;
             }
         }
 
@@ -126,11 +128,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <c>true</c> if the x- and y-coordinates are equal;
         /// the Z coordinates do not have to be equal.
         /// </returns>
-        public bool Equals2D(Coordinate other)
+        public bool Equals2D(ICoordinate other)
         {
-            if (x != other.x)
+            if (x != other.X)
                 return false;            
-            if (y != other.y)
+            if (y != other.Y)
                 return false;            
             return true;
         }
@@ -147,6 +149,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
             if (!(other is Coordinate))
                 return false;
+            return Equals((Coordinate) other);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public Boolean Equals(ICoordinate other)
+        {
             return Equals2D((Coordinate) other);
         }
 
@@ -204,15 +216,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// A negative integer, zero, or a positive integer as this <c>Coordinate</c>
         ///         is less than, equal to, or greater than the specified <c>Coordinate</c>.
         /// </returns>
-        public int CompareTo(Coordinate other)
+        public int CompareTo(ICoordinate other)
         {
-            if (x < other.x)
+            if (x < other.X)
                 return -1;
-            if (x > other.x)
+            if (x > other.X)
                 return 1;
-            if (y < other.y)
+            if (y < other.Y)
                 return -1;
-            if (y > other.y)
+            if (y > other.Y)
                 return 1;
             return 0;
         }
@@ -222,10 +234,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other"><c>Coordinate</c> with which to do the 3D comparison.</param>
         /// <returns><c>true</c> if <c>other</c> is a <c>Coordinate</c> with the same values for x, y and z.</returns>
-        public bool Equals3D(Coordinate other)
+        public bool Equals3D(ICoordinate other)
         {
-            return  (x == other.x) && (y == other.y) && ((z == other.z) || 
-                    (Double.IsNaN(z) && Double.IsNaN(other.z)));
+            return  (x == other.X) && (y == other.Y) && ((z == other.Z) || 
+                    (Double.IsNaN(Z) && Double.IsNaN(other.Z)));
         }
 
         /// <summary>
@@ -251,10 +263,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="p"><c>Coordinate</c> with which to do the distance comparison.</param>
         /// <returns></returns>
-        public double Distance(Coordinate p)
+        public double Distance(ICoordinate p)
         {
-            double dx = x - p.x;
-            double dy = y - p.y;
+            double dx = x - p.X;
+            double dy = y - p.Y;
             return Math.Sqrt(dx * dx + dy * dy);
         }
 
@@ -377,6 +389,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return coord1 / d;
         }
 
-        /* END ADDED BY MPAUL42: monoGIS team */
+        /* END ADDED BY MPAUL42: monoGIS team */   
     }
 } 

@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Operation;
 
@@ -11,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Basic implementation of <c>LineString</c>.
     /// </summary>  
     [Serializable]
-    public class LineString : Geometry 
+    public class LineString : Geometry, ILineString 
     {
         /// <summary>
         /// Represents an empty <c>LineString</c>.
@@ -26,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override Coordinate[] Coordinates
+        public override ICoordinate[] Coordinates
         {
             get
             {
@@ -75,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override Coordinate Coordinate
+        public override ICoordinate Coordinate
         {
             get
             {
@@ -137,7 +139,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public Point GetPointN(int n) 
+        public IPoint GetPointN(int n) 
         {
             return Factory.CreatePoint(points.GetCoordinate(n));
         }
@@ -145,7 +147,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public Point StartPoint 
+        public IPoint StartPoint 
         {
             get
             {
@@ -158,7 +160,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public Point EndPoint
+        public IPoint EndPoint
         {
             get
             {
@@ -229,15 +231,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public override Geometry Boundary
+        public override IGeometry Boundary
         {
             get
             {
                 if (IsEmpty)
                     return Factory.CreateGeometryCollection(null);
                 if (IsClosed)
-                    return Factory.CreateMultiPoint((Coordinate[])null);
-                return Factory.CreateMultiPoint(new Point[] { StartPoint, EndPoint });
+                    return Factory.CreateMultiPoint((Coordinate[]) null);
+                return Factory.CreateMultiPoint(new Point[] { (Point) StartPoint, (Point) EndPoint });
             }
         }
 
@@ -307,9 +309,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(Geometry other, double tolerance) 
+        public override bool EqualsExact(IGeometry other, double tolerance) 
         {
-            if (!IsEquivalentClass(other)) 
+            if (!IsEquivalentClass((Geometry) other)) 
                 return false;
 
             LineString otherLineString = (LineString)other;
@@ -375,7 +377,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 if (!points.GetCoordinate(i).Equals(points.GetCoordinate(j))) 
                 {
                     if (points.GetCoordinate(i).CompareTo(points.GetCoordinate(j)) > 0) 
-                        CoordinateArrays.Reverse(Coordinates);                    
+                        CoordinateArrays.Reverse((Coordinate[]) Coordinates);                    
                     return;
                 }
             }
