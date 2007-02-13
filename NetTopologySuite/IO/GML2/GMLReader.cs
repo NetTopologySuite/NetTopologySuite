@@ -12,9 +12,6 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
     /// Reads a GML document and creates a representation of the features based or NetTopologySuite model.
     /// Uses GML 2.1.1 <c>Geometry.xsd</c> schema for base for features.
     /// </summary>
-    /// <remarks>
-    /// Thanks to <see cref="http://www.codeplex.com/Wiki/View.aspx?ProjectName=MsSqlSpatial">rstuven</see> for improvements :)
-    /// </remarks>
     public class GMLReader
     {
         private GeometryFactory factory = null;

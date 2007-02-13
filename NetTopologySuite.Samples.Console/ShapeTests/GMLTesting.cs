@@ -100,7 +100,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
             xmlreader = writer.Write(multiPoint);
             document = new XmlDocument();
             document.Load(xmlreader);
-            Write(document.InnerXml);
+            Write(document);
             result = reader.Read(document);
 
             MultiLineString multiLineString = new WKTReader().Read("MULTILINESTRING ((10 10, 20 20), (30 30, 40 40, 50 50, 70 80, 990 210), (2000.1 22, 457891.2334 3456.2, 33333 44444))") as MultiLineString;
