@@ -778,10 +778,44 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns><c>true</c> if the two <c>Geometry</c>s are equal.</returns>
         public bool Equals(IGeometry g)
         {
-            // short-circuit test
+            // Short-circuit test
             if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
                 return false;
+
+            // We use an alternative method for compare GeometryCollections (but not subclasses!), 
+            if (isGeometryCollection(this) || isGeometryCollection(g))
+                return CompareGeometryCollections(this, g);
+            
+            // Use RelateOp comparation method
             return Relate(g).IsEquals(Dimension, g.Dimension);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        private static bool CompareGeometryCollections(IGeometry obj1, IGeometry obj2)
+        {
+            IGeometryCollection coll1 = obj1 as IGeometryCollection;
+            IGeometryCollection coll2 = obj2 as IGeometryCollection;
+            if (coll1 == null || coll2 == null)
+                return false;
+
+            // Short-circuit test
+            if (coll1.NumGeometries != coll2.NumGeometries)
+                return false;
+
+            // Deep test
+            for (int i = 0; i < coll1.NumGeometries; i++)
+            {
+                IGeometry geom1 = coll1[i];
+                IGeometry geom2 = coll2[i];
+                if (!geom1.Equals(geom2)) // why == not works with interfaces?
+                    return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -794,9 +828,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (obj == null)
                 return false;
             if (GetType().Namespace != obj.GetType().Namespace)
-                return false;
+                return false;            
             return Equals((Geometry) obj);         
-        }
+        }        
        
         /// <summary>
         /// 
@@ -1215,17 +1249,29 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /// <summary>
         /// Throws an exception if <c>g</c>'s class is <c>GeometryCollection</c>. 
-        /// (Its subclasses do not trigger an exception).
+        /// (its subclasses do not trigger an exception).
         /// </summary>
-        /// <param name="g">
-        /// The <c>Geometry</c> to check;
-        /// throws  ArgumentException  if <c>g</c> is a <c>GeometryCollection</c>
-        /// but not one of its subclasses.
-        /// </param>        
+        /// <param name="g">The <c>Geometry</c> to check.</param>
+        /// <exception cref="ArgumentException">
+        /// if <c>g</c> is a <c>GeometryCollection</c>, but not one of its subclasses.
+        /// </exception>
         protected void CheckNotGeometryCollection(Geometry g) 
         {
-            if (g.GetType().Name == "GeometryCollection" && g.GetType().Namespace == GetType().Namespace) 
+            if (isGeometryCollection(g)) 
                 throw new ArgumentException("This method does not support GeometryCollection arguments");                            
+        }
+
+        /// <summary>
+        /// Returns <c>true</c> if <c>g</c>'s class is <c>GeometryCollection</c>. 
+        /// (its subclasses do not trigger an exception).
+        /// </summary>
+        /// <param name="g">The <c>Geometry</c> to check.</param>
+        /// <exception cref="ArgumentException">
+        /// If <c>g</c> is a <c>GeometryCollection</c>, but not one of its subclasses.
+        /// </exception>        
+        private bool isGeometryCollection(IGeometry g)
+        {
+            return g.GetType().Name == "GeometryCollection" && g.GetType().Namespace == GetType().Namespace;
         }
 
         /// <summary>

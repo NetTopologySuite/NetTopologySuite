@@ -388,7 +388,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                return this.Geometries[i];
+                return this.geometries[i];
             }
         }
 
@@ -401,7 +401,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                return Geometries.Length;
+                return geometries.Length;
             }
         }
         

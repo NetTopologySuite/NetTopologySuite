@@ -416,7 +416,7 @@ namespace GeoAPI.Geometries
             if (dimensionOfGeometryA != dimensionOfGeometryB)
                 return false;            
 
-            return Matches( matrix[(int)Locations.Interior,(int)Locations.Interior], 'T') &&
+            return Matches( matrix[(int) Locations.Interior,(int)Locations.Interior], 'T') &&
                             matrix[(int) Locations.Exterior, (int) Locations.Interior] == Dimensions.False &&
                             matrix[(int) Locations.Interior, (int) Locations.Exterior] == Dimensions.False &&
                             matrix[(int) Locations.Exterior, (int) Locations.Boundary] == Dimensions.False &&

@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
     public class GMLWriter
     {
 		private const int InitValue = 150;
-		private const int CoordSize = 110;
+		private const int CoordSize = 200;
 
         /// <summary>
         /// Formatter for double values of coordinates
@@ -90,13 +90,8 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// <param name="writer"></param>        
         protected void Write(Coordinate[] coordinates, XmlTextWriter writer)
         {
-            writer.WriteRaw("<" + GMLElements.gmlPrefix + ":coordinates>");
-            foreach (Coordinate coordinate in coordinates)
-            {
-                writer.WriteRaw(coordinate.X.ToString("g", NumberFormatter) + ",");
-                writer.WriteRaw(coordinate.Y.ToString("g", NumberFormatter) + " ");
-                writer.WriteRaw("</" + GMLElements.gmlPrefix + ":coordinates>");
-            }
+            foreach (Coordinate coord in coordinates)
+                Write(coord, writer);
         }
 
         /// <summary>
