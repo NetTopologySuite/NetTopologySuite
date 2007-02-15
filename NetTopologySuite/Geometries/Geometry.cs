@@ -809,9 +809,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             // Deep test
             for (int i = 0; i < coll1.NumGeometries; i++)
             {
-                IGeometry geom1 = coll1[i];
+                Geometry geom1 = (Geometry) coll1[i];
                 IGeometry geom2 = coll2[i];
-                if (!geom1.Equals(geom2)) // why == not works with interfaces?
+                if (!geom1.Equals(geom2) )
                     return false;
             }
 
@@ -830,15 +830,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (GetType().Namespace != obj.GetType().Namespace)
                 return false;            
             return Equals((Geometry) obj);         
-        }        
-       
+        }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="obj1"></param>
         /// <param name="obj2"></param>
         /// <returns></returns>
-        public static bool operator ==(Geometry obj1, Geometry obj2)
+        public static bool operator ==(Geometry obj1, IGeometry obj2)
         {       
             return Object.Equals(obj1, obj2); 
         }
@@ -849,7 +849,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="obj1"></param>
         /// <param name="obj2"></param>
         /// <returns></returns>
-        public static bool operator !=(Geometry obj1, Geometry obj2)
+        public static bool operator !=(Geometry obj1, IGeometry obj2)
         {
             return !(obj1 == obj2);
         }    
