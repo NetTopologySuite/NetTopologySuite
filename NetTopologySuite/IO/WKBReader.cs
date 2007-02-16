@@ -55,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         public Geometry Read(Stream stream)
         {
             BinaryReader reader = null;
-            ByteOrder byteOrder = (ByteOrder)stream.ReadByte();
+            ByteOrder byteOrder = (ByteOrder) stream.ReadByte();
             try
             {
                 if (byteOrder == ByteOrder.BigIndian)

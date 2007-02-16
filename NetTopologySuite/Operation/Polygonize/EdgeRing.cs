@@ -46,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
                 // the hole envelope cannot equal the shell envelope
                 if (tryEnv.Equals(testEnv)) continue;
 
-                testPt = PtNotInList((Coordinate[]) teString.Coordinates, (Coordinate[]) tryRing.Coordinates);
+                testPt = PointNotInList((Coordinate[]) teString.Coordinates, (Coordinate[]) tryRing.Coordinates);
                 if (tryEnv.Contains(testEnv) && CGAlgorithms.IsPointInRing(testPt, (Coordinate[]) tryRing.Coordinates))
                     isContained = true;
                 // check if this new containing ring is smaller than the current minimum ring
@@ -66,12 +66,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <param name="pts">An array of <c>Coordinate</c>s to test the input points against.</param>
         /// <returns>A <c>Coordinate</c> from <c>testPts</c> which is not in <c>pts</c>, 
         /// or <c>null</c>.</returns>
-        public static Coordinate PtNotInList(Coordinate[] testPts, Coordinate[] pts)
+        public static Coordinate PointNotInList(Coordinate[] testPts, Coordinate[] pts)
         {
             for (int i = 0; i < testPts.Length; i++)
             {
                 Coordinate testPt = testPts[i];
-                if (IsInList(testPt, pts))
+                if (!IsInList(testPt, pts))
                     return testPt;
             }
             return null;

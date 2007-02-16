@@ -10,6 +10,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.LightStructs
     [Serializable]
     public struct Point : ICloneable
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public static Point Null = new Point(Coordinate.Null);
 
         private Coordinate coordinate;

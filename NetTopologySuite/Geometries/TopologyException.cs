@@ -35,7 +35,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="msg"></param>
         /// <param name="pt"></param>
-        public TopologyException(string msg, Coordinate pt) : base(MsgWithCoord(msg, pt))
+        public TopologyException(string msg, Coordinate pt) 
+            : base (MsgWithCoord(msg, pt))
         {            
             this.pt = new Coordinate(pt);
         }

@@ -793,7 +793,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="obj1"></param>
+        /// <param name="obj2"></param>
         /// <returns></returns>
         private static bool CompareGeometryCollections(IGeometry obj1, IGeometry obj2)
         {
@@ -809,9 +810,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             // Deep test
             for (int i = 0; i < coll1.NumGeometries; i++)
             {
-                Geometry geom1 = (Geometry) coll1[i];
+                IGeometry geom1 = coll1[i];
                 IGeometry geom2 = coll2[i];
-                if (!geom1.Equals(geom2) )
+                if (!geom1.Equals(geom2))
                     return false;
             }
 
@@ -829,7 +830,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
             if (GetType().Namespace != obj.GetType().Namespace)
                 return false;            
-            return Equals((Geometry) obj);         
+            return Equals((IGeometry) obj);         
         }
 
         /// <summary>
@@ -839,7 +840,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="obj2"></param>
         /// <returns></returns>
         public static bool operator ==(Geometry obj1, IGeometry obj2)
-        {       
+        {            
             return Object.Equals(obj1, obj2); 
         }
 

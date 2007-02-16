@@ -51,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
         }        
 
 		/// <summary>
-		/// Transforms a <see cref="BoundingBox"/>.
+		/// Transforms a <see cref="Envelope"/>.
 		/// </summary>
 		/// <param name="box">BoundingBox to transform</param>
 		/// <param name="transform">Math Transform</param>

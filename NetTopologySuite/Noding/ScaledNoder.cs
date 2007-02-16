@@ -90,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         {
             return CollectionUtil.Transform(segStrings, delegate(object obj)
             {
-                SegmentString ss = (SegmentString)obj;
+                SegmentString ss = (SegmentString) obj;
                 return new SegmentString(Scale(ss.Coordinates), ss.Data);
             });
         }
@@ -105,8 +105,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             Coordinate[] roundPts = new Coordinate[pts.Length];
             for (int i = 0; i < pts.Length; i++)
                 roundPts[i] = new Coordinate(Math.Round((pts[i].X - offsetX) * scaleFactor),
-                                             Math.Round((pts[i].Y - offsetY) * scaleFactor));            
-            return roundPts;
+                                             Math.Round((pts[i].Y - offsetY) * scaleFactor));
+            Coordinate[] roundPtsNoDup = CoordinateArrays.RemoveRepeatedPoints(roundPts);
+            return roundPtsNoDup;
         }      
 
         /// <summary>

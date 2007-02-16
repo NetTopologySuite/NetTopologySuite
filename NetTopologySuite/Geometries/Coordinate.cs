@@ -211,7 +211,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         ///    0  : this.x == other.x AND this.y = other.y 
         ///    1  : this.x greaterthan other.x || ((this.x == other.x) AND (this.y greaterthan other.y)) 
         /// </summary>
-        /// <param name="o"><c>Coordinate</c> with which this <c>Coordinate</c> is being compared.</param>
+        /// <param name="other"><c>Coordinate</c> with which this <c>Coordinate</c> is being compared.</param>
         /// <returns>
         /// A negative integer, zero, or a positive integer as this <c>Coordinate</c>
         ///         is less than, equal to, or greater than the specified <c>Coordinate</c>.

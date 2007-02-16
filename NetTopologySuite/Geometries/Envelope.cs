@@ -680,7 +680,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
         
         /// <summary>
-        /// See <see cref="Equals"/>
+        ///
         /// </summary>
         /// <param name="obj1"></param>
         /// <param name="obj2"></param>

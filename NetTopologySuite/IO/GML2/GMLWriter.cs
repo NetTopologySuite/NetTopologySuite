@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
     /// Writes the GML representation of the features of NetTopologySuite model.
     /// Uses GML 2.1.1 <c>Geometry.xsd</c> schema for base for features.
     /// <remarks>
-    /// Thanks to <see cref="http://www.codeplex.com/Wiki/View.aspx?ProjectName=MsSqlSpatial">rstuven</see> for improvements :)
+    /// Thanks to <see href="http//www.codeplex.com/Wiki/View.aspx?ProjectName=MsSqlSpatial">rstuven</see> for improvements :)
     /// </remarks>
     /// </summary>
     public class GMLWriter

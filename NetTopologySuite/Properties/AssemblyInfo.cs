@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("NetTopologySuite")]
-[assembly: AssemblyDescription("A .NET library for GIS operations, direct porting of JTS Topology Suite 1.7.1 library")]
+[assembly: AssemblyDescription("A .NET library for GIS operations, direct porting of JTS Topology Suite 1.7.2 library")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("")]

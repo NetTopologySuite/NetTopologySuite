@@ -219,7 +219,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coord1">First array of Coordinates.</param>
         /// <param name="coord2">Second array of Coordinates.</param>
         /// <returns><c>true</c> if two Coordinates array are equals; false otherwise</returns>
-        /// <seealso cref="Coordinate.Equals"/>
       	public static bool Equals(Coordinate[] coord1, Coordinate[] coord2)
       	{
             if (coord1 == coord2) 
@@ -351,7 +350,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">Array to search.</param>
         /// <returns>The minimum coordinate in the array, found using <c>CompareTo</c>.</returns>
-        /// <seeaalso cref="Coordinate.CompareTo"/>
       	public static Coordinate MinCoordinate(Coordinate[] coordinates)
         {
             Coordinate minCoord = null;
