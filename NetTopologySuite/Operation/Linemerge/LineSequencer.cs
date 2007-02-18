@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using GisSharpBlog.NetTopologySuite.Planargraph.Algorithm;
@@ -163,7 +165,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             /// <param name="component">
             /// A <see cref="Geometry" /> to which the filter is applied.
             /// </param>
-            public void Filter(Geometry component)
+            public void Filter(IGeometry component)
             {
                 if (component is LineString)
                     sequencer.AddLine(component as LineString);                    

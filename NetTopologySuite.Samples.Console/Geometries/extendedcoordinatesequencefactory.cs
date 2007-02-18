@@ -1,4 +1,7 @@
 using System;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
@@ -24,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 		/// directly if it is an instance of ExtendedCoordinate[]; otherwise it is
 		/// copied.
 		/// </summary>
-		public virtual ICoordinateSequence Create(Coordinate[] coordinates)
+		public virtual ICoordinateSequence Create(ICoordinate[] coordinates)
 		{
 			return coordinates is ExtendedCoordinate[] ?
                 new ExtendedCoordinateSequence((ExtendedCoordinate[]) coordinates) :

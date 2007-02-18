@@ -4,6 +4,8 @@ using System.Text;
 
 using Iesi.Collections;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Utilities
@@ -38,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// 
         /// </summary>
         /// <param name="coord"></param>
-        public void Filter(Coordinate coord) 
+        public void Filter(ICoordinate coord) 
         {
             if (!table.Contains(coord)) 
             {

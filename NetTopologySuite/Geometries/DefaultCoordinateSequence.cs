@@ -1,6 +1,8 @@
 using System;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>
@@ -13,14 +15,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     [Obsolete("No longer used.")]
     public class DefaultCoordinateSequence : ICoordinateSequence
     {
-        private Coordinate[] coordinates = null;
+        private ICoordinate[] coordinates = null;
 
         /// <summary>
         /// Constructs a DefaultCoordinateSequence based on the given array (the
         /// array is not copied).
         /// </summary>
         /// <param name="coordinates">Coordinate array that will be assimilated.</param>
-        public DefaultCoordinateSequence(Coordinate[] coordinates)
+        public DefaultCoordinateSequence(ICoordinate[] coordinates)
         {
             if (Geometry.HasNullElements(coordinates))
                 throw new ArgumentException("Null coordinate");            
@@ -44,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="size">The size of the sequence to create.</param>
         public DefaultCoordinateSequence(int size)
         {
-            coordinates = new Coordinate[size];
+            coordinates = new ICoordinate[size];
             for (int i = 0; i < size; i++)
                 coordinates[i] = new Coordinate();
         }
@@ -66,7 +68,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="i">Coordinate index.</param>
         /// <return>Coordinate specified.</return>
-        public Coordinate GetCoordinate(int i)
+        public ICoordinate GetCoordinate(int i)
         {
             return coordinates[i];
         }
@@ -75,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="i">Coordinate index.</param>
         /// <return>The copy of the coordinate specified.</return>
-        public Coordinate GetCoordinateCopy(int i)
+        public ICoordinate GetCoordinateCopy(int i)
         {
             return new Coordinate(coordinates[i]);
         }
@@ -86,7 +88,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="index">The index of the coordinate to copy.</param>
         /// <param name="coord">A Coordinate to receive the value.</param>
-        public void GetCoordinate(int index, Coordinate coord)
+        public void GetCoordinate(int index, ICoordinate coord)
         {
             coord.X = coordinates[index].X;
             coord.Y = coordinates[index].Y;
@@ -182,7 +184,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="env">The envelope to expand.</param>
         /// <returns>A reference to the expanded envelope.</returns>
-        public Envelope ExpandEnvelope(Envelope env)
+        public IEnvelope ExpandEnvelope(IEnvelope env)
         {
             for (int i = 0; i < coordinates.Length; i++)
                 env.ExpandToInclude(coordinates[i]);
@@ -195,7 +197,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The copied object.</returns>
         public object Clone()
         {
-            Coordinate[] cloneCoordinates = new Coordinate[coordinates.Length];
+            ICoordinate[] cloneCoordinates = new Coordinate[coordinates.Length];
             for (int i = 0; i < coordinates.Length; i++)
                 cloneCoordinates[i] = (Coordinate) coordinates[i].Clone();            
             return new DefaultCoordinateSequence(cloneCoordinates);
@@ -229,7 +231,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// This method exposes the internal Array of Coordinate Objects.
         /// </summary>
         /// <returns>Coordinate[] array.</returns>
-        public Coordinate[] ToCoordinateArray()
+        public ICoordinate[] ToCoordinateArray()
         {
             return coordinates;
         }

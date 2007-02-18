@@ -71,7 +71,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public Coordinate GetCoordinateN(int n) 
         {
-            return points.GetCoordinate(n);
+            return (Coordinate) points.GetCoordinate(n);
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public IPoint GetPointN(int n) 
         {
-            return Factory.CreatePoint(points.GetCoordinate(n));
+            return Factory.CreatePoint((Coordinate) points.GetCoordinate(n));
         }
 
         /// <summary>
@@ -252,7 +252,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             ICoordinateSequence seq = (ICoordinateSequence)points.Clone();
 
             // Personalized implementation using Array.Reverse: maybe it's faster?
-            Coordinate[] array = seq.ToCoordinateArray();
+            Coordinate[] array = (Coordinate[]) seq.ToCoordinateArray();
             Array.Reverse(array);
             return Factory.CreateLineString(array);
             
@@ -288,7 +288,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             //Convert to array, then access array directly, to avoid the function-call overhead
             //of calling Getter millions of times. ToArray may be inefficient for
             //non-BasicCoordinateSequence CoordinateSequences. [Jon Aquino]
-            Coordinate[] coordinates = points.ToCoordinateArray();
+            Coordinate[] coordinates = (Coordinate[]) points.ToCoordinateArray();
             double minx = coordinates[0].X;
             double miny = coordinates[0].Y;
             double maxx = coordinates[0].X;
@@ -319,7 +319,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
 
             for (int i = 0; i < points.Count; i++)
-                if (!Equal(points.GetCoordinate(i), otherLineString.points.GetCoordinate(i), tolerance))             
+                if (!Equal((Coordinate) points.GetCoordinate(i), (Coordinate) otherLineString.points.GetCoordinate(i), tolerance))             
                     return false;            
             return true;
         }
@@ -331,7 +331,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public override void Apply(ICoordinateFilter filter) 
         {
             for (int i = 0; i < points.Count; i++)
-                filter.Filter(points.GetCoordinate(i));
+                filter.Filter((Coordinate) points.GetCoordinate(i));
         }
 
         /// <summary>
@@ -431,7 +431,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                return points.GetCoordinate(n);
+                return (Coordinate) points.GetCoordinate(n);
             }
             set
             {

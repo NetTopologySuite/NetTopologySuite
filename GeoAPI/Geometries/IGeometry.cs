@@ -131,5 +131,15 @@ namespace GeoAPI.Geometries
         bool Disjoint(IGeometry g);
 
         double Distance(IGeometry g);
+
+        void Apply(ICoordinateFilter filter);
+
+        void Apply(IGeometryFilter filter);
+
+        void Apply(IGeometryComponentFilter filter);
+
+        void GeometryChanged();
+
+        void GeometryChangedAction();
     }
 }

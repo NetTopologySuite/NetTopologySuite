@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Text;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace GeoAPI.Geometries
 {
     /// <summary>
     /// <c>GeometryCollection</c> classes support the concept of
@@ -18,6 +18,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Performs an operation with or on <c>geom</c>.
         /// </summary>
         /// <param name="geom">A <c>Geometry</c> to which the filter is applied.</param>
-        void Filter(Geometry geom);
+        void Filter(IGeometry geom);
     }
 }

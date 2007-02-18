@@ -1,6 +1,6 @@
 using System;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace GeoAPI.Geometries
 {
     /// <summary>
     /// Standard ordinate index values.
@@ -72,7 +72,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        Coordinate GetCoordinate(int i);
+        ICoordinate GetCoordinate(int i);
 
         /// <summary>
         /// Returns a copy of the i'th coordinate in this sequence.
@@ -82,7 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="i">The index of the coordinate to retrieve.</param>
         /// <returns>A copy of the i'th coordinate in the sequence</returns>
-        Coordinate GetCoordinateCopy(int i);             
+        ICoordinate GetCoordinateCopy(int i);             
 
         /// <summary>
         /// Copies the i'th coordinate in the sequence to the supplied Coordinate.  
@@ -90,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="index">The index of the coordinate to copy.</param>
         /// <param name="coord">A Coordinate to receive the value.</param>
-        void GetCoordinate(int index, Coordinate coord);
+        void GetCoordinate(int index, ICoordinate coord);
 
         /// <summary>
         /// Returns ordinate X (0) of the specified coordinate.
@@ -134,7 +134,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// be built from scratch.
         /// </summary>
         /// <returns></returns>
-        Coordinate[] ToCoordinateArray();
+        ICoordinate[] ToCoordinateArray();
 
         /// <summary>
         /// Expands the given Envelope to include the coordinates in the sequence.
@@ -142,6 +142,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="env">The envelope to expand.</param>
         /// <returns>A reference to the expanded envelope.</returns>       
-        Envelope ExpandEnvelope(Envelope env);
+        IEnvelope ExpandEnvelope(IEnvelope env);
     }
 }

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 
@@ -409,7 +411,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             List<Point> points = new List<Point>();
             for (int i = 0; i < coordinates.Count; i++)
-                points.Add(CreatePoint(coordinates.GetCoordinate(i)));
+                points.Add(CreatePoint((Coordinate) coordinates.GetCoordinate(i)));
 
             return CreateMultiPoint(points.ToArray());
         }

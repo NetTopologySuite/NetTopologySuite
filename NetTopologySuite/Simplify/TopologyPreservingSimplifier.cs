@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 
@@ -130,7 +132,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             /// 
             /// </summary>
             /// <param name="geom"></param>
-            public void Filter(Geometry geom)
+            public void Filter(IGeometry geom)
             {
                 if (geom is LinearRing) 
                 {

@@ -1,6 +1,6 @@
 using System;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace GeoAPI.Geometries
 {
     /// <summary>
     /// <c>Geometry</c> classes support the concept of applying a
@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 	    /// Performs an operation with or on <c>coord</c>.
     	/// </summary>
         /// <param name="coord"><c>Coordinate</c> to which the filter is applied.</param>
-    	void Filter(Coordinate coord);
+    	void Filter(ICoordinate coord);
     }
 
 }

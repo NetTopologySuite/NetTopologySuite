@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Distance
@@ -43,10 +45,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// 
         /// </summary>
         /// <param name="geom"></param>
-        public void Filter(Geometry geom)
+        public void Filter(IGeometry geom)
         {
             if (geom is Point || geom is LineString || geom is Polygon)
-                locations.Add(new GeometryLocation(geom, 0, (Coordinate) geom.Coordinate));
+                locations.Add(new GeometryLocation((Geometry) geom, 0, (Coordinate) geom.Coordinate));
         }
     }
 }

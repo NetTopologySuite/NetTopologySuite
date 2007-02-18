@@ -1,6 +1,6 @@
 using System;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace GeoAPI.Geometries
 {
     /// <summary>
     /// An object that knows how to build a particular implementation of
@@ -14,6 +14,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// array is copied is implementation-dependent.
         /// </summary>
         /// <param name="coordinates">Coordinates array, which may not be null nor contain null elements</param>
-        ICoordinateSequence Create(Coordinate[] coordinates);
+        ICoordinateSequence Create(ICoordinate[] coordinates);
     }
 }

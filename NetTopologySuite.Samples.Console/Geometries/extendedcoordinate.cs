@@ -1,4 +1,7 @@
 using System;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
@@ -20,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 			this.m = m;
 		}
 		
-		public ExtendedCoordinate(Coordinate coord) : base(coord)
+		public ExtendedCoordinate(ICoordinate coord) : base(coord)
 		{
 			m = 0.0;
 		}

@@ -36,6 +36,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Geometries\ICoordinateFilter.cs" />
+    <Compile Include="Geometries\ICoordinateSequence.cs" />
+    <Compile Include="Geometries\ICoordinateSequenceFactory.cs" />
+    <Compile Include="Geometries\IGeometryComponentFilter.cs" />
+    <Compile Include="Geometries\IGeometryFilter.cs" />
     <Compile Include="Geometries\IMultiSurface.cs" />
     <Compile Include="Geometries\ISurface.cs" />
     <Compile Include="Geometries\IMultiCurve.cs" />

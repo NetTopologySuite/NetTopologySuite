@@ -94,7 +94,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <c>other</c>.
         /// </summary>
         /// <param name="c"><c>Coordinate</c> to copy.</param>
-        public Coordinate(Coordinate c) : this(c.x, c.y, c.z) { }
+        public Coordinate(ICoordinate c) : this(c.X, c.Y, c.Z) { }
 
         /// <summary>
         /// Constructs a <c>Coordinate</c> at (x,y,NaN).

@@ -1,5 +1,7 @@
 using System;
 
+using GeoAPI.Geometries;
+
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>
@@ -44,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coordinates">Coordinates array, which may not be null
         /// nor contain null elements</param>
         /// <returns>Singleton instance of DefaultCoordinateSequenceFactory.</returns>
-        public ICoordinateSequence Create(Coordinate[] coordinates)
+        public ICoordinateSequence Create(ICoordinate[] coordinates)
         {
             return new DefaultCoordinateSequence(coordinates);
         }

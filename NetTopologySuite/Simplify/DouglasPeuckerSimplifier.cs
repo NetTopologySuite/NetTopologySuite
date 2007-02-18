@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 
@@ -93,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             /// <returns></returns>
             protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, Geometry parent)
             {
-                Coordinate[] inputPts = coords.ToCoordinateArray();
+                Coordinate[] inputPts = (Coordinate[]) coords.ToCoordinateArray();
                 Coordinate[] newPts = DouglasPeuckerLineSimplifier.Simplify(inputPts, container.DistanceTolerance);
                 return factory.CoordinateSequenceFactory.Create(newPts);
             }

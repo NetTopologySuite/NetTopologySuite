@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Precision
@@ -87,7 +89,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             /// 
             /// </summary>
             /// <param name="coord"></param>
-            public void Filter(Coordinate coord)
+            public void Filter(ICoordinate coord)
             {
                 commonBitsX.Add(coord.X);
                 commonBitsY.Add(coord.Y);
@@ -125,7 +127,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             /// 
             /// </summary>
             /// <param name="coord"></param>
-            public void Filter(Coordinate coord)
+            public void Filter(ICoordinate coord)
             {
                 coord.X += trans.X;
                 coord.Y += trans.Y;

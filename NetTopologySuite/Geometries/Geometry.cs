@@ -194,9 +194,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <c>true</c> if any of the <c>Geometry</c>s
 		/// <c>IsEmpty</c> methods return <c>false</c>.
 		/// </returns>
-        protected static bool HasNonEmptyElements(Geometry[] geometries)
+        protected static bool HasNonEmptyElements(IGeometry[] geometries)
         {
-            foreach (Geometry g in geometries)
+            foreach (IGeometry g in geometries)
                 if(!g.IsEmpty)
                     return true;                                        
             return false;
@@ -537,9 +537,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         private class GeometryChangedFilter : IGeometryComponentFilter
         {
-            public void Filter(Geometry geom)
+            public void Filter(IGeometry geom)
             {
-                geom.GeometryChangedAction();
+                ((Geometry) geom).GeometryChangedAction();
             }
         };
 
@@ -558,7 +558,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// party. When GeometryChanged is called, this method will be called for
         /// this Geometry and its component Geometries.
         /// </summary>
-        protected virtual void GeometryChangedAction()
+        public void GeometryChangedAction()
         {
             envelope = null;
         }

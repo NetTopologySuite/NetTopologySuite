@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
@@ -42,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             /// 
             /// </summary>
             /// <param name="g"></param>
-            public void Filter(Geometry g) 
+            public void Filter(IGeometry g) 
             {
                 if (g is LineString)
                     container.Add((LineString)g);

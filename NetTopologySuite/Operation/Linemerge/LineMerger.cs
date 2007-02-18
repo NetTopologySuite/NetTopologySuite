@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
@@ -41,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             /// 
             /// </summary>
             /// <param name="component"></param>
-            public void Filter(Geometry component)
+            public void Filter(IGeometry component)
             {
                 if (component is LineString)
                     container.Add((LineString)component);

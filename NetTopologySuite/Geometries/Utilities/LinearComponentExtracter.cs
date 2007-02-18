@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
@@ -41,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// 
         /// </summary>
         /// <param name="geom"></param>
-        public void Filter(Geometry geom)
+        public void Filter(IGeometry geom)
         {
             if (geom is LineString) 
                 lines.Add(geom);

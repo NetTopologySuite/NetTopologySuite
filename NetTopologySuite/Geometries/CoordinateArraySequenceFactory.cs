@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
@@ -45,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">the coordinates, which may not be null nor contain null elements.</param>
         /// <returns></returns>
-        public ICoordinateSequence Create(Coordinate[] coordinates) 
+        public ICoordinateSequence Create(ICoordinate[] coordinates) 
         {
             return new CoordinateArraySequence(coordinates);
         }

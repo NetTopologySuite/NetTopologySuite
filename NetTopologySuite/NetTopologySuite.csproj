@@ -85,12 +85,7 @@
     <Compile Include="Geometries\Geometry.cs" />
     <Compile Include="Geometries\GeometryCollection.cs" />
     <Compile Include="Geometries\GeometryCollectionEnumerator.cs" />
-    <Compile Include="Geometries\IGeometryComponentFilter.cs" />
     <Compile Include="Geometries\GeometryFactory.cs" />
-    <Compile Include="Geometries\ICoordinateFilter.cs" />
-    <Compile Include="Geometries\ICoordinateSequence.cs" />
-    <Compile Include="Geometries\ICoordinateSequenceFactory.cs" />
-    <Compile Include="Geometries\IGeometryFilter.cs" />
     <Compile Include="Geometries\LinearRing.cs" />
     <Compile Include="Geometries\LineSegment.cs" />
     <Compile Include="Geometries\LineString.cs" />
