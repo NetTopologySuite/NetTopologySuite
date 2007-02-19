@@ -43,9 +43,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Technique
 			List<Coordinate> endPtList = new List<Coordinate>();
 			if (g is LineString)
 			{
-				LineString line = (LineString) g;				
-				endPtList.Add(line.GetCoordinateN(0));
-				endPtList.Add(line.GetCoordinateN(line.NumPoints - 1));
+				LineString line = (LineString) g;
+                endPtList.Add((Coordinate) line.GetCoordinateN(0));
+                endPtList.Add((Coordinate) line.GetCoordinateN(line.NumPoints - 1));
 			}
 			else if (g is MultiLineString)
 			{
@@ -53,8 +53,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Technique
 				for (int i = 0; i < mls.NumGeometries; i++)
 				{
 					LineString line = (LineString) mls.GetGeometryN(i);
-					endPtList.Add(line.GetCoordinateN(0));
-					endPtList.Add(line.GetCoordinateN(line.NumPoints - 1));
+                    endPtList.Add((Coordinate) line.GetCoordinateN(0));
+                    endPtList.Add((Coordinate) line.GetCoordinateN(line.NumPoints - 1));
 				}
 			}
 			Coordinate[] endPts = endPtList.ToArray();

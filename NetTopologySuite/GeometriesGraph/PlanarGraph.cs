@@ -98,9 +98,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="coord"></param>
         /// <returns></returns>
-        public  bool IsBoundaryNode(int geomIndex, Coordinate coord)
+        public  bool IsBoundaryNode(int geomIndex, ICoordinate coord)
         {
-            Node node = nodes.Find(coord);
+            Node node = nodes.Find((Coordinate) coord);
             if (node == null) 
                 return false;
             Label label = node.Label;

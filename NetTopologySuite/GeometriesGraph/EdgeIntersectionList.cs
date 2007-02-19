@@ -3,6 +3,8 @@ using System.Collections;
 using System.Text;
 using System.IO;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
@@ -67,11 +69,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        public bool IsIntersection(Coordinate pt)
+        public bool IsIntersection(ICoordinate pt)
         {
             for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
             {
-                EdgeIntersection ei = (EdgeIntersection)it.Current;
+                EdgeIntersection ei = (EdgeIntersection) it.Current;
                 if (ei.Coordinate.Equals(pt))
                     return true;
             }

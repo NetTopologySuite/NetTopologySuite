@@ -48,9 +48,9 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <returns></returns>
         public virtual LinearLocation[] IndicesOf(Geometry subLine)
         {
-            Coordinate startPt = ((LineString)subLine.GetGeometryN(0)).GetCoordinateN(0);
-            LineString lastLine = (LineString)subLine.GetGeometryN(subLine.NumGeometries - 1);
-            Coordinate endPt = lastLine.GetCoordinateN(lastLine.NumPoints - 1);
+            Coordinate startPt = (Coordinate) ((LineString) subLine.GetGeometryN(0)).GetCoordinateN(0);
+            LineString lastLine = (LineString) subLine.GetGeometryN(subLine.NumGeometries - 1);
+            Coordinate endPt = (Coordinate) lastLine.GetCoordinateN(lastLine.NumPoints - 1);
 
             LocationIndexOfPoint locPt = new LocationIndexOfPoint(linearGeom);
             LinearLocation[] subLineLoc = new LinearLocation[2];

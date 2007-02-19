@@ -69,9 +69,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public Coordinate GetCoordinateN(int n) 
+        public ICoordinate GetCoordinateN(int n) 
         {
-            return (Coordinate) points.GetCoordinate(n);
+            return points.GetCoordinate(n);
         }
 
         /// <summary>

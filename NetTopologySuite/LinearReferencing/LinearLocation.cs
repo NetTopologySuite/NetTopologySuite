@@ -180,8 +180,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             if (segmentIndex >= lineComp.NumPoints - 1)
                 segIndex = lineComp.NumPoints - 2;
 
-            Coordinate p0 = lineComp.GetCoordinateN(segIndex);
-            Coordinate p1 = lineComp.GetCoordinateN(segIndex + 1);
+            Coordinate p0 = (Coordinate) lineComp.GetCoordinateN(segIndex);
+            Coordinate p1 = (Coordinate) lineComp.GetCoordinateN(segIndex + 1);
             return p0.Distance(p1);
         }
 
@@ -253,10 +253,10 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         public Coordinate GetCoordinate(Geometry linearGeom)
         {
             LineString lineComp = (LineString)linearGeom.GetGeometryN(componentIndex);
-            Coordinate p0 = lineComp.GetCoordinateN(segmentIndex);
+            Coordinate p0 = (Coordinate) lineComp.GetCoordinateN(segmentIndex);
             if (segmentIndex >= lineComp.NumPoints - 1)
                 return p0;
-            Coordinate p1 = lineComp.GetCoordinateN(segmentIndex + 1);
+            Coordinate p1 = (Coordinate) lineComp.GetCoordinateN(segmentIndex + 1);
             return PointAlongSegmentByFraction(p0, p1, segmentFraction);
         }
 

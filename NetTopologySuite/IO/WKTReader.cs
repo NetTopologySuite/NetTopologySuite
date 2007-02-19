@@ -387,7 +387,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// token in the stream.</returns>
         private LineString ReadLineStringText(IList tokens) 
         {
-            return geometryFactory.CreateLineString(GetCoordinates(tokens));
+            return (LineString) geometryFactory.CreateLineString(GetCoordinates(tokens));
         }
 
         /// <summary>
@@ -401,7 +401,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// token in the stream.</returns>
         private LinearRing ReadLinearRingText(IList tokens)
         {
-            return geometryFactory.CreateLinearRing(GetCoordinates(tokens));
+            return (LinearRing) geometryFactory.CreateLinearRing(GetCoordinates(tokens));
         }
 
         /// <summary>
@@ -416,7 +416,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// token in the stream.</returns>
         private MultiPoint ReadMultiPointText(IList tokens) 
         {
-            return geometryFactory.CreateMultiPoint(ToPoints(GetCoordinates(tokens)));
+            return (MultiPoint) geometryFactory.CreateMultiPoint(ToPoints(GetCoordinates(tokens)));
         }
 
         /// <summary> 
@@ -452,7 +452,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
-                return geometryFactory.CreatePolygon(geometryFactory.CreateLinearRing( new Coordinate[] { } ), new LinearRing[] { } );
+                return (Polygon) geometryFactory.CreatePolygon(
+                    geometryFactory.CreateLinearRing(new Coordinate[] { } ), new LinearRing[] { } );
 
             List<LinearRing> holes = new List<LinearRing>();
             LinearRing shell = ReadLinearRingText(tokens);
@@ -462,8 +463,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 LinearRing hole = ReadLinearRingText(tokens);
                 holes.Add(hole);
                 nextToken = GetNextCloserOrComma(tokens);
-            }            
-            return geometryFactory.CreatePolygon(shell, holes.ToArray());
+            }
+            return (Polygon) geometryFactory.CreatePolygon(shell, holes.ToArray());
         }
 
         /// <summary>

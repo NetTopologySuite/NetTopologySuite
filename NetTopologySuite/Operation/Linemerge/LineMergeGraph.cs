@@ -23,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         {
             if (lineString.IsEmpty)
                 return;
-            Coordinate[] coordinates = CoordinateArrays.RemoveRepeatedPoints((Coordinate[]) lineString.Coordinates);
+            Coordinate[] coordinates = (Coordinate[]) CoordinateArrays.RemoveRepeatedPoints(lineString.Coordinates);
             Coordinate startCoordinate = coordinates[0];
             Coordinate endCoordinate = coordinates[coordinates.Length - 1];
             Node startNode = GetNode(startCoordinate);

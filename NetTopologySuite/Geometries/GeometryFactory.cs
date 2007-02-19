@@ -89,7 +89,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coord"></param>
         /// <param name="exemplar"></param>
         /// <returns></returns>
-        public static Point CreatePointFromInternalCoord(Coordinate coord, Geometry exemplar)
+        public static IPoint CreatePointFromInternalCoord(ICoordinate coord, IGeometry exemplar)
         {
             exemplar.PrecisionModel.MakePrecise(ref coord);
             return exemplar.Factory.CreatePoint(coord);
@@ -149,11 +149,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="points">The <c>ICollection</c> of Points to convert.</param>
         /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static Point[] ToPointArray(ICollection points) 
+        public static IPoint[] ToPointArray(ICollection points) 
         {
-            Point[] list = new Point[points.Count];
+            IPoint[] list = new IPoint[points.Count];
             int i = 0;
-            foreach (Point p in points)
+            foreach (IPoint p in points)
                 list[i++] = p;
             return list;            
         }        
@@ -163,11 +163,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="geometries">The <c>ICollection</c> of <c>Geometry</c>'s to convert.</param>
         /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static Geometry[] ToGeometryArray(ICollection geometries) 
+        public static IGeometry[] ToGeometryArray(ICollection geometries) 
         {
-            Geometry[] list = new Geometry[geometries.Count];
+            IGeometry[] list = new IGeometry[geometries.Count];
             int i = 0;
-            foreach (Geometry g in geometries)
+            foreach (IGeometry g in geometries)
                 list[i++] = g;
             return list;            
         }
@@ -177,11 +177,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="lineStrings">The <c>ICollection</c> of LineStrings to convert.</param>
         /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static LineString[] ToLineStringArray(ICollection lineStrings)
+        public static ILineString[] ToLineStringArray(ICollection lineStrings)
         {
-            LineString[] list = new LineString[lineStrings.Count];
+            ILineString[] list = new ILineString[lineStrings.Count];
             int i = 0;
-            foreach (LineString ls in lineStrings)
+            foreach (ILineString ls in lineStrings)
                 list[i++] = ls;
             return list;
         }
@@ -191,11 +191,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="linearRings">The <c>ICollection</c> of LinearRings to convert.</param>
         /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static LinearRing[] ToLinearRingArray(ICollection linearRings) 
+        public static ILinearRing[] ToLinearRingArray(ICollection linearRings) 
         {
-            LinearRing[] list = new LinearRing[linearRings.Count];
+            ILinearRing[] list = new ILinearRing[linearRings.Count];
             int i = 0;
-            foreach (LinearRing lr in linearRings)
+            foreach (ILinearRing lr in linearRings)
                 list[i++] = lr;
             return list;
         }       
@@ -205,11 +205,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="polygons">The <c>ICollection</c> of Polygons to convert.</param>
         /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static Polygon[] ToPolygonArray(ICollection polygons)
+        public static IPolygon[] ToPolygonArray(ICollection polygons)
         {
-            Polygon[] list = new Polygon[polygons.Count];
+            IPolygon[] list = new IPolygon[polygons.Count];
             int i = 0;
-            foreach (Polygon p in polygons)
+            foreach (IPolygon p in polygons)
                 list[i++] = p;
             return list;
         }
@@ -221,9 +221,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The <c>ICollection</c> in array format.</returns>
         public static MultiPoint[] ToMultiPointArray(ICollection multiPoints)
         {
-            MultiPoint[] list = new MultiPoint[multiPoints.Count];
+            IMultiPoint[] list = new IMultiPoint[multiPoints.Count];
             int i = 0;
-            foreach (MultiPoint mp in multiPoints)
+            foreach (IMultiPoint mp in multiPoints)
                 list[i++] = mp;
             return list;
         }
@@ -233,11 +233,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="multiLineStrings">The <c>ICollection</c> of MultiLineStrings to convert.</param>
         /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static MultiLineString[] ToMultiLineStringArray(ICollection multiLineStrings)
+        public static IMultiLineString[] ToMultiLineStringArray(ICollection multiLineStrings)
         {
-            MultiLineString[] list = new MultiLineString[multiLineStrings.Count];
+            IMultiLineString[] list = new IMultiLineString[multiLineStrings.Count];
             int i = 0;
-            foreach (MultiLineString mls in multiLineStrings)
+            foreach (IMultiLineString mls in multiLineStrings)
                 list[i++] = mls;
             return list;
         }
@@ -247,11 +247,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="multiPolygons">The <c>ICollection</c> of MultiPolygons to convert.</param>
         /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static MultiPolygon[] ToMultiPolygonArray(ICollection multiPolygons)
+        public static IMultiPolygon[] ToMultiPolygonArray(ICollection multiPolygons)
         {
-            MultiPolygon[] list = new MultiPolygon[multiPolygons.Count];
+            IMultiPolygon[] list = new IMultiPolygon[multiPolygons.Count];
             int i = 0;
-            foreach (MultiPolygon mp in multiPolygons)
+            foreach (IMultiPolygon mp in multiPolygons)
                 list[i++] = mp;
             return list;
         }        
@@ -272,16 +272,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// is not a closed linestring, that is, if the first and last coordinates
         /// are not equal.
         /// </returns>
-        public Geometry ToGeometry(Envelope envelope) 
+        public IGeometry ToGeometry(IEnvelope envelope) 
         {
             if (envelope.IsNull) 
-                return CreatePoint((ICoordinateSequence)null);            
+                return CreatePoint((ICoordinateSequence) null);
 
             if (envelope.MinX == envelope.MaxX && envelope.MinY == envelope.MaxY) 
                 return CreatePoint(new Coordinate(envelope.MinX, envelope.MinY));            
 
             return CreatePolygon(
-                CreateLinearRing(new Coordinate[]
+                CreateLinearRing(new ICoordinate[]
                 {
                     new Coordinate(envelope.MinX, envelope.MinY),
                     new Coordinate(envelope.MaxX, envelope.MinY),
@@ -297,10 +297,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// an empty Geometry.
         /// </summary>
         /// <param name="coordinate"></param>
-        public Point CreatePoint(Coordinate coordinate) 
+        public Point CreatePoint(ICoordinate coordinate) 
         {
             return CreatePoint(coordinate != null ? 
-                CoordinateSequenceFactory.Create(new Coordinate[] { coordinate }) : null);
+                CoordinateSequenceFactory.Create(new ICoordinate[] { coordinate }) : null);
         }
 
         /// <summary>
@@ -319,7 +319,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
         /// <returns></returns>
-        public LineString CreateLineString(Coordinate[] coordinates)
+        public ILineString CreateLineString(ICoordinate[] coordinates)
         {
             return CreateLineString(coordinates != null ?
                 CoordinateSequenceFactory.Create(coordinates) : null);
@@ -331,7 +331,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">A CoordinateSequence possibly empty, or null.</param>
         /// <returns></returns>
-        public LineString CreateLineString(ICoordinateSequence coordinates)
+        public ILineString CreateLineString(ICoordinateSequence coordinates)
         {
             return new LineString(coordinates, this);
         }
@@ -342,7 +342,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// linestring. Consecutive points must not be equal.
         /// </summary>
         /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
-        public LinearRing CreateLinearRing(Coordinate[] coordinates)
+        public ILinearRing CreateLinearRing(ICoordinate[] coordinates)
         {
             return CreateLinearRing(coordinates != null ?
                 CoordinateSequenceFactory.Create(coordinates) : null);
@@ -354,7 +354,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// linestring. Consecutive points must not be equal.
         /// </summary>
         /// <param name="coordinates">A CoordinateSequence possibly empty, or null.</param>
-        public LinearRing CreateLinearRing(ICoordinateSequence coordinates)
+        public ILinearRing CreateLinearRing(ICoordinateSequence coordinates)
         {
             return new LinearRing(coordinates, this);
         }
@@ -374,7 +374,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// the empty point is to be created.        
         /// </param>
         /// <returns></returns>
-        public Polygon CreatePolygon(LinearRing shell, LinearRing[] holes)
+        public IPolygon CreatePolygon(ILinearRing shell, ILinearRing[] holes)
         {
             return new Polygon(shell, holes, this);
         }
@@ -384,7 +384,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// create an empty MultiPoint.
         /// </summary>
         /// <param name="point">An array without null elements, or an empty array, or null.</param>
-        public MultiPoint CreateMultiPoint(Point[] point)
+        public IMultiPoint CreateMultiPoint(IPoint[] point)
         {
             return new MultiPoint(point, this);
         }
@@ -393,7 +393,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Creates a MultiPoint using the given Coordinates; a null or empty array will create an empty MultiPoint.
         /// </summary>
         /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
-        public MultiPoint CreateMultiPoint(Coordinate[] coordinates)
+        public IMultiPoint CreateMultiPoint(ICoordinate[] coordinates)
         {
             return CreateMultiPoint(coordinates != null ?
                 CoordinateSequenceFactory.Create(coordinates) : null);
@@ -404,14 +404,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// create an empty MultiPoint.
         /// </summary>
         /// <param name="coordinates">A CoordinateSequence possibly empty, or null.</param>
-        public MultiPoint CreateMultiPoint(ICoordinateSequence coordinates)
+        public IMultiPoint CreateMultiPoint(ICoordinateSequence coordinates)
         {
             if (coordinates == null)
-                coordinates = CoordinateSequenceFactory.Create(new Coordinate[] { });
+                coordinates = CoordinateSequenceFactory.Create(new ICoordinate[] { });
 
-            List<Point> points = new List<Point>();
+            List<IPoint> points = new List<IPoint>();
             for (int i = 0; i < coordinates.Count; i++)
-                points.Add(CreatePoint((Coordinate) coordinates.GetCoordinate(i)));
+                points.Add(CreatePoint(coordinates.GetCoordinate(i)));
 
             return CreateMultiPoint(points.ToArray());
         }
@@ -421,7 +421,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// array will create an empty MultiLineString.
         /// </summary>
         /// <param name="lineStrings">LineStrings, each of which may be empty but not null-</param>
-        public MultiLineString CreateMultiLineString(LineString[] lineStrings) 
+        public IMultiLineString CreateMultiLineString(ILineString[] lineStrings) 
         {
   	        return new MultiLineString(lineStrings, this);
         }
@@ -433,7 +433,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Specification for SQL.
         /// </summary>
         /// <param name="polygons">Polygons, each of which may be empty but not null.</param>
-        public MultiPolygon CreateMultiPolygon(Polygon[] polygons)
+        public IMultiPolygon CreateMultiPolygon(IPolygon[] polygons)
         {
             return new MultiPolygon(polygons, this);
         }      
@@ -443,7 +443,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// array will create an empty GeometryCollection.
         /// </summary>
         /// <param name="geometries">Geometries, each of which may be empty but not null.</param>
-        public GeometryCollection CreateGeometryCollection(Geometry[] geometries) 
+        public IGeometryCollection CreateGeometryCollection(IGeometry[] geometries) 
         {
   	        return new GeometryCollection(geometries, this);
         }                  
@@ -472,12 +472,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// A <c>Geometry</c> of the "smallest", "most type-specific" 
         /// class that can contain the elements of <c>geomList</c>.
         /// </returns>
-        public Geometry BuildGeometry(ICollection geomList) 
+        public IGeometry BuildGeometry(ICollection geomList) 
         {
             Type geomClass = null;
             bool isHeterogeneous = false;
 
-            foreach (Geometry geom in geomList)
+            foreach (IGeometry geom in geomList)
             {                
                 Type partClass = geom.GetType();
                 if (geomClass == null) 
@@ -498,16 +498,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             // this should always return a point, since otherwise an empty collection would have already been returned
             IEnumerator ienum = geomList.GetEnumerator();
             ienum.MoveNext();
-            Geometry geom0 = (Geometry) ienum.Current;
+            IGeometry geom0 = (IGeometry) ienum.Current;
             bool isCollection = geomList.Count > 1;
 
             if (isCollection) 
             {
-                if(geom0 is Polygon)
+                if (geom0 is IPolygon)
                     return CreateMultiPolygon(ToPolygonArray(geomList));                
-                else if(geom0 is LineString)
+                else if (geom0 is ILineString)
                     return CreateMultiLineString(ToLineStringArray(geomList));                
-                else if(geom0 is Point)
+                else if (geom0 is IPoint)
                     return CreateMultiPoint(ToPointArray(geomList));
                 Assert.ShouldNeverReachHere();
             }
@@ -522,11 +522,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// A clone of g based on a CoordinateSequence created by this
         /// GeometryFactory's CoordinateSequenceFactory.
         /// </returns>
-        public Geometry CreateGeometry(Geometry g)
+        public IGeometry CreateGeometry(IGeometry g)
         {
             // could this be cached to make this more efficient? Or maybe it isn't enough overhead to bother
             GeometryEditor editor = new GeometryEditor(this);
-            return editor.Edit(g, new AnonymousCoordinateOperationImpl());            
+            return editor.Edit((Geometry) g, new AnonymousCoordinateOperationImpl());            
         }
 
         /// <summary>

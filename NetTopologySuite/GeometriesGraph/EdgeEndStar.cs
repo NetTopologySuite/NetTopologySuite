@@ -222,7 +222,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             // compute location only on demand
             if (ptInAreaLocation[geomIndex] == Locations.Null) 
-                ptInAreaLocation[geomIndex] = SimplePointInAreaLocator.Locate(p, geom[geomIndex].Geometry);            
+                ptInAreaLocation[geomIndex] = SimplePointInAreaLocator.Locate(p, (Geometry) geom[geomIndex].Geometry);            
             return ptInAreaLocation[geomIndex];
         }
 

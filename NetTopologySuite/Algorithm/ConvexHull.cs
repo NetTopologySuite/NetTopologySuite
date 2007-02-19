@@ -254,7 +254,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 return null;
             
             coordList.CloseRing();
-            return coordList.ToCoordinateArray();
+            return (Coordinate[]) coordList.ToCoordinateArray();
         }
 
         /// <summary>

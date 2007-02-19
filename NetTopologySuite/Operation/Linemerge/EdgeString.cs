@@ -56,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                         else reverseDirectedEdges++;
                          coordinateList.Add((Coordinate[]) ((LineMergeEdge) directedEdge.Edge).Line.Coordinates, false, directedEdge.EdgeDirection);
                     }
-                    coordinates = coordinateList.ToCoordinateArray();
+                    coordinates = (Coordinate[]) coordinateList.ToCoordinateArray();
                     if (reverseDirectedEdges > forwardDirectedEdges)
                         CoordinateArrays.Reverse(coordinates);                    
                 }

@@ -31,7 +31,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         {
             LinearRing teString = testEr.Ring;
             Envelope testEnv = (Envelope) teString.EnvelopeInternal;
-            Coordinate testPt = teString.GetCoordinateN(0);
+            Coordinate testPt = (Coordinate) teString.GetCoordinateN(0);
 
             EdgeRing minShell = null;
             Envelope minEnv = null;
@@ -197,7 +197,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
                         PolygonizeEdge edge = (PolygonizeEdge)de.Edge;
                         AddEdge((Coordinate[]) edge.Line.Coordinates, de.EdgeDirection, coordList);
                     }
-                    ringPts = coordList.ToCoordinateArray();
+                    ringPts = (Coordinate[]) coordList.ToCoordinateArray();
                 }
                 return ringPts;
             }

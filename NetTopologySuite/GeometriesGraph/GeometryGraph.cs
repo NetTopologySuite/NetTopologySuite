@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             return IsInBoundary(boundaryCount) ? Locations.Boundary : Locations.Interior;
         }
 
-        private Geometry parentGeom;
+        private IGeometry parentGeom;
 
         /// <summary>
         /// The lineEdgeMap is a map of the linestring components of the
@@ -60,7 +60,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         private int argIndex;  // the index of this point as an argument to a spatial function (used for labelling)
         private ICollection boundaryNodes;
         private bool hasTooFewPoints = false;
-        private Coordinate invalidPoint = null;
+        private ICoordinate invalidPoint = null;
 
         /// <summary>
         /// 
@@ -77,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="argIndex"></param>
         /// <param name="parentGeom"></param>
-        public GeometryGraph(int argIndex, Geometry parentGeom)
+        public GeometryGraph(int argIndex, IGeometry parentGeom)
         {
             this.argIndex = argIndex;
             this.parentGeom = parentGeom;
@@ -100,7 +100,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public  Coordinate InvalidPoint
+        public ICoordinate InvalidPoint
         {
             get
             {
@@ -111,7 +111,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public  Geometry Geometry
+        public IGeometry Geometry
         {
             get
             {
@@ -122,7 +122,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public  ICollection BoundaryNodes
+        public ICollection BoundaryNodes
         {
             get
             {
@@ -136,15 +136,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <returns></returns>
-        public  Coordinate[] GetBoundaryPoints()
+        public ICoordinate[] GetBoundaryPoints()
         {
             ICollection coll = BoundaryNodes;
-            Coordinate[] pts = new Coordinate[coll.Count];
+            ICoordinate[] pts = new ICoordinate[coll.Count];
             int i = 0;
             for (IEnumerator it = coll.GetEnumerator(); it.MoveNext(); ) 
             {
                 Node node = (Node) it.Current;
-                pts[i++] = (Coordinate) node.Coordinate.Clone();
+                pts[i++] = (ICoordinate) node.Coordinate.Clone();
             }
             return pts;
         }
@@ -154,7 +154,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="line"></param>
         /// <returns></returns>
-        public  Edge FindEdge(LineString line)
+        public Edge FindEdge(ILineString line)
         {
             return (Edge) lineEdgeMap[line];
         }
@@ -176,31 +176,31 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="g"></param>
-        private void Add(Geometry g)
+        private void Add(IGeometry g)
         {
             if (g.IsEmpty)
                 return;
 
             // check if this Geometry should obey the Boundary Determination Rule
             // all collections except MultiPolygons obey the rule
-            if (g is GeometryCollection && ! (g is MultiPolygon))
+            if (g is IGeometryCollection && !(g is IMultiPolygon))
                 useBoundaryDeterminationRule = true;
 
-            if (g is Polygon)                 
-                AddPolygon((Polygon) g);                                
+            if (g is IPolygon)                 
+                AddPolygon((IPolygon) g);                                
             // LineString also handles LinearRings
-            else if (g is LineString)         
-                AddLineString((LineString) g);
-            else if (g is Point) 
-                AddPoint((Point) g);
-            else if (g is MultiPoint)
-                AddCollection((MultiPoint) g);
-            else if (g is MultiLineString) 
-                AddCollection((MultiLineString) g);
-            else if (g is MultiPolygon)
-                AddCollection((MultiPolygon) g);
-            else if (g is GeometryCollection) 
-                AddCollection((GeometryCollection) g);
+            else if (g is ILineString)         
+                AddLineString((ILineString) g);
+            else if (g is IPoint) 
+                AddPoint((IPoint) g);
+            else if (g is IMultiPoint)
+                AddCollection((IMultiPoint) g);
+            else if (g is IMultiLineString) 
+                AddCollection((IMultiLineString) g);
+            else if (g is IMultiPolygon)
+                AddCollection((IMultiPolygon) g);
+            else if (g is IGeometryCollection) 
+                AddCollection((IGeometryCollection) g);
             else  
                 throw new NotSupportedException(g.GetType().FullName);
         }
@@ -209,11 +209,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="gc"></param>
-        private void AddCollection(GeometryCollection gc)
+        private void AddCollection(IGeometryCollection gc)
         {
             for (int i = 0; i < gc.NumGeometries; i++) 
             {
-                Geometry g = (Geometry) gc.GetGeometryN(i);
+                IGeometry g = gc.GetGeometryN(i);
                 Add(g);
             }
         }
@@ -222,9 +222,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Add a Point to the graph.
         /// </summary>
         /// <param name="p"></param>
-        private void AddPoint(Point p)
+        private void AddPoint(IPoint p)
         {
-            Coordinate coord = (Coordinate) p.Coordinate;
+            ICoordinate coord = p.Coordinate;
             InsertPoint(argIndex, coord, Locations.Interior);
         }
 
@@ -236,9 +236,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="lr"></param>
         /// <param name="cwLeft"></param>
         /// <param name="cwRight"></param>
-        private void AddPolygonRing(LinearRing lr, Locations cwLeft, Locations cwRight)
+        private void AddPolygonRing(ILinearRing lr, Locations cwLeft, Locations cwRight)
         {
-            Coordinate[] coord = CoordinateArrays.RemoveRepeatedPoints((Coordinate[]) lr.Coordinates);
+            ICoordinate[] coord = CoordinateArrays.RemoveRepeatedPoints(lr.Coordinates);
             if (coord.Length < 4) 
             {
                 hasTooFewPoints = true;
@@ -252,7 +252,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 left = cwRight;
                 right = cwLeft;
             }
-            Edge e = new Edge(coord, new Label(argIndex, Locations.Boundary, left, right));
+            Edge e = new Edge((Coordinate[]) coord, new Label(argIndex, Locations.Boundary, left, right));
             if (lineEdgeMap.Contains(lr))
                 lineEdgeMap.Remove(lr);
             lineEdgeMap.Add(lr, e);
@@ -265,25 +265,24 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="p"></param>
-        private void AddPolygon(Polygon p)
+        private void AddPolygon(IPolygon p)
         {
-            AddPolygonRing((LinearRing)p.ExteriorRing, Locations.Exterior, Locations.Interior);
+            AddPolygonRing(p.Shell, Locations.Exterior, Locations.Interior);
 
             for (int i = 0; i < p.NumInteriorRings; i++)             
                 // Holes are topologically labelled opposite to the shell, since
                 // the interior of the polygon lies on their opposite side
                 // (on the left, if the hole is oriented CW)
-                AddPolygonRing((LinearRing)p.GetInteriorRingN(i), Locations.Interior, Locations.Exterior);            
+                AddPolygonRing(p.Holes[i], Locations.Interior, Locations.Exterior);            
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="line"></param>
-        private void AddLineString(LineString line)
+        private void AddLineString(ILineString line)
         {
-            Coordinate[] coord = CoordinateArrays.RemoveRepeatedPoints((Coordinate[]) line.Coordinates);
-
+            ICoordinate[] coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
             if (coord.Length < 2) 
             {
                 hasTooFewPoints = true;
@@ -293,7 +292,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             // add the edge for the LineString
             // line edges do not have locations for their left and right sides
-            Edge e = new Edge(coord, new Label(argIndex, Locations.Interior));
+            Edge e = new Edge((Coordinate[])coord, new Label(argIndex, Locations.Interior));
             if (lineEdgeMap.Contains(line))
                 lineEdgeMap.Remove(line);
             lineEdgeMap.Add(line, e);            
@@ -314,10 +313,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// to be correct.
         /// </summary>
         /// <param name="e"></param>
-        public  void AddEdge(Edge e)
+        public void AddEdge(Edge e)
         {
             InsertEdge(e);
-            Coordinate[] coord = e.Coordinates;
+            ICoordinate[] coord = e.Coordinates;
             // insert the endpoint as a node, to mark that it is on the boundary
             InsertPoint(argIndex, coord[0], Locations.Boundary);
             InsertPoint(argIndex, coord[coord.Length - 1], Locations.Boundary);
@@ -328,7 +327,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Point Geometry part, which has a location of INTERIOR.
         /// </summary>
         /// <param name="pt"></param>
-        public  void AddPoint(Coordinate pt)
+        public void AddPoint(ICoordinate pt)
         {
             InsertPoint(argIndex, pt, Locations.Interior);
         }
@@ -341,13 +340,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="li">The <c>LineIntersector</c> to use.</param>
         /// <param name="computeRingSelfNodes">If <c>false</c>, intersection checks are optimized to not test rings for self-intersection.</param>
         /// <returns>The SegmentIntersector used, containing information about the intersections found.</returns>
-        public  SegmentIntersector ComputeSelfNodes(LineIntersector li, bool computeRingSelfNodes)
+        public SegmentIntersector ComputeSelfNodes(LineIntersector li, bool computeRingSelfNodes)
         {
             SegmentIntersector si = new SegmentIntersector(li, true, false);
             EdgeSetIntersector esi = CreateEdgeSetIntersector();
             // optimized test for Polygons and Rings
             if (!computeRingSelfNodes &&
-               (parentGeom is LinearRing || parentGeom is Polygon || parentGeom is MultiPolygon))
+               (parentGeom is ILinearRing || parentGeom is IPolygon || parentGeom is IMultiPolygon))
                  esi.ComputeIntersections(edges, si, false);            
             else esi.ComputeIntersections(edges, si, true);      
             AddSelfIntersectionNodes(argIndex);
@@ -361,7 +360,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="li"></param>
         /// <param name="includeProper"></param>
         /// <returns></returns>
-        public  SegmentIntersector ComputeEdgeIntersections(GeometryGraph g, LineIntersector li, bool includeProper)
+        public SegmentIntersector ComputeEdgeIntersections(GeometryGraph g, 
+            LineIntersector li, bool includeProper)
         {
             SegmentIntersector si = new SegmentIntersector(li, includeProper, true);
             si.SetBoundaryNodes(BoundaryNodes, g.BoundaryNodes);
@@ -376,9 +376,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="argIndex"></param>
         /// <param name="coord"></param>
         /// <param name="onLocation"></param>
-        private void InsertPoint(int argIndex, Coordinate coord, Locations onLocation)
+        private void InsertPoint(int argIndex, ICoordinate coord, Locations onLocation)
         {
-            Node n = nodes.AddNode(coord);
+            Node n = nodes.AddNode((Coordinate) coord);
             Label lbl = n.Label;
             if (lbl == null) 
                  n.Label = new Label(argIndex, onLocation);            
@@ -393,9 +393,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="argIndex"></param>
         /// <param name="coord"></param>
-        private void InsertBoundaryPoint(int argIndex, Coordinate coord)
+        private void InsertBoundaryPoint(int argIndex, ICoordinate coord)
         {
-            Node n = nodes.AddNode(coord);
+            Node n = nodes.AddNode((Coordinate) coord);
             Label lbl = n.Label;
             // the new point to insert is on a boundary
             int boundaryCount = 1;
@@ -438,7 +438,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="argIndex"></param>
         /// <param name="coord"></param>
         /// <param name="loc"></param>
-        private void AddSelfIntersectionNode(int argIndex, Coordinate coord, Locations loc)
+        private void AddSelfIntersectionNode(int argIndex, ICoordinate coord, Locations loc)
         {
             // if this node is already a boundary node, don't change it
             if (IsBoundaryNode(argIndex, coord)) 

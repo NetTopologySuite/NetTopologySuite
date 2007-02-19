@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
@@ -115,18 +117,18 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         };
 
         private TopologyValidationErrors errorType;
-        private Coordinate pt;
+        private ICoordinate pt;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="errorType"></param>
         /// <param name="pt"></param>
-        public TopologyValidationError(TopologyValidationErrors errorType, Coordinate pt)
+        public TopologyValidationError(TopologyValidationErrors errorType, ICoordinate pt)
         {
             this.errorType = errorType;
             if(pt != null)
-                this.pt = (Coordinate)pt.Clone();
+                this.pt = (ICoordinate) pt.Clone();
         }
 
         /// <summary>
@@ -138,7 +140,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate
+        public ICoordinate Coordinate
         {
             get
             {

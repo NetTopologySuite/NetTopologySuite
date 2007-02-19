@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
@@ -19,9 +21,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     {
         private GeometryGraph graph;  // used to find non-node vertices
         private IList rings = new ArrayList();
-        private Envelope totalEnv = new Envelope();
+        private IEnvelope totalEnv = new Envelope();
         private Quadtree quadtree;
-        private Coordinate nestedPt;
+        private ICoordinate nestedPt;
 
         /// <summary>
         /// 
@@ -35,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate NestedPoint
+        public ICoordinate NestedPoint
         {
             get
             {
@@ -47,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// 
         /// </summary>
         /// <param name="ring"></param>
-        public void Add(LinearRing ring)
+        public void Add(ILinearRing ring)
         {
             rings.Add(ring);
             totalEnv.ExpandToInclude(ring.EnvelopeInternal);
@@ -63,20 +65,20 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
             for (int i = 0; i < rings.Count; i++)
             {
-                LinearRing innerRing = (LinearRing) rings[i];
-                Coordinate[] innerRingPts = (Coordinate[]) innerRing.Coordinates;
+                ILinearRing innerRing = (ILinearRing) rings[i];
+                ICoordinate[] innerRingPts = innerRing.Coordinates;
 
                 IList results = quadtree.Query((Envelope) innerRing.EnvelopeInternal);
                 for (int j = 0; j < results.Count; j++)
                 {
-                    LinearRing searchRing = (LinearRing)results[j];
-                    Coordinate[] searchRingPts = (Coordinate[]) searchRing.Coordinates;
+                    ILinearRing searchRing = (ILinearRing) results[j];
+                    ICoordinate[] searchRingPts = searchRing.Coordinates;
 
                     if (innerRing == searchRing) continue;
 
                     if (!innerRing.EnvelopeInternal.Intersects(searchRing.EnvelopeInternal)) continue;
 
-                    Coordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, graph);
+                    ICoordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, graph);
                     Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
 
                     bool isInside = CGAlgorithms.IsPointInRing(innerRingPt, searchRingPts);
@@ -99,7 +101,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
             for (int i = 0; i < rings.Count; i++)
             {
-                LinearRing ring = (LinearRing)rings[i];
+                ILinearRing ring = (ILinearRing) rings[i];
                 Envelope env = (Envelope) ring.EnvelopeInternal;
                 quadtree.Insert(env, ring);
             }

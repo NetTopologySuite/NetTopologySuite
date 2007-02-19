@@ -37,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             if (geom is Polygon) 
             {
                 Polygon poly = geom as Polygon;
-                BasePoint = ((LineString) poly.ExteriorRing).GetCoordinateN(0);
+                BasePoint = (Coordinate) poly.ExteriorRing.GetCoordinateN(0);
                 Add(poly);
             }
             else if (geom is GeometryCollection) 

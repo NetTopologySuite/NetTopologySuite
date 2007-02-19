@@ -124,7 +124,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 if(IsEmpty)
                     return Factory.CreateGeometryCollection(null);
                 GeometryGraph g = new GeometryGraph(0, this);
-                Coordinate[] pts = g.GetBoundaryPoints();
+                ICoordinate[] pts = g.GetBoundaryPoints();
                 return Factory.CreateMultiPoint(pts);
             }
         }

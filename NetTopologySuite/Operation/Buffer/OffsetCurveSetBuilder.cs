@@ -131,7 +131,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private void AddLineString(LineString line)
         {
             if (distance <= 0.0) return;
-            Coordinate[] coord = CoordinateArrays.RemoveRepeatedPoints((Coordinate[]) line.Coordinates);
+            Coordinate[] coord = (Coordinate[]) CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
             IList lineList = curveBuilder.GetLineCurve(coord, distance);
             AddCurves(lineList, Locations.Exterior, Locations.Interior);
         }
@@ -151,7 +151,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             }
 
             LinearRing shell = (LinearRing)p.ExteriorRing;
-            Coordinate[] shellCoord = CoordinateArrays.RemoveRepeatedPoints((Coordinate[]) shell.Coordinates);
+            Coordinate[] shellCoord = (Coordinate[]) CoordinateArrays.RemoveRepeatedPoints(shell.Coordinates);
             // optimization - don't bother computing buffer
             // if the polygon would be completely eroded
             if (distance < 0.0 && IsErodedCompletely(shellCoord, distance))
@@ -163,7 +163,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             for (int i = 0; i < p.NumInteriorRings; i++)
             {
                 LinearRing hole = (LinearRing)p.GetInteriorRingN(i);
-                Coordinate[] holeCoord = CoordinateArrays.RemoveRepeatedPoints((Coordinate[]) hole.Coordinates);
+                Coordinate[] holeCoord = (Coordinate[]) CoordinateArrays.RemoveRepeatedPoints(hole.Coordinates);
 
                 // optimization - don't bother computing buffer for this hole
                 // if the hole would be completely covered

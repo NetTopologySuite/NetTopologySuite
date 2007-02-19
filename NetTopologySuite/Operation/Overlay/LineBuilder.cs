@@ -197,7 +197,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <param name="targetIndex"></param>
         private void LabelIsolatedLine(Edge e, int targetIndex)
         {
-            Locations loc = ptLocator.Locate(e.Coordinate, op.GetArgGeometry(targetIndex));
+            Locations loc = ptLocator.Locate((Coordinate) e.Coordinate, (Geometry) op.GetArgGeometry(targetIndex));
             e.Label.SetLocation(targetIndex, loc);
         }
     }

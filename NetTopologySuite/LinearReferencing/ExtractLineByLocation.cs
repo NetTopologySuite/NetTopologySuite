@@ -102,7 +102,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             if (newCoordinates.Count <= 0)
                 newCoordinates.Add(start.GetCoordinate(line));
 
-            Coordinate[] newCoordinateArray = newCoordinates.ToCoordinateArray();
+            Coordinate[] newCoordinateArray = (Coordinate[]) newCoordinates.ToCoordinateArray();
 
             /*
              * Ensure there is enough coordinates to build a valid line.

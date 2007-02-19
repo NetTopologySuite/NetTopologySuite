@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -31,7 +33,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation
             }
 
         }
-
         
         /// <summary>
         /// 
@@ -77,7 +78,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public Geometry GetArgGeometry(int i)
+        public IGeometry GetArgGeometry(int i)
         {
             return arg[i].Geometry; 
         }

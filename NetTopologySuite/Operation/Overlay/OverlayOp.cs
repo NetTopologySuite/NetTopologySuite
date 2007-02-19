@@ -452,7 +452,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         private void LabelIncompleteNode(Node n, int targetIndex)
         {
-            Locations loc = ptLocator.Locate(n.Coordinate, arg[targetIndex].Geometry);
+            Locations loc = ptLocator.Locate((Coordinate) n.Coordinate, (Geometry) arg[targetIndex].Geometry);
             n.Label.SetLocation(targetIndex, loc);
         }
 

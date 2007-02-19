@@ -90,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         public void AddEdge(LineString line)
         {
             if (line.IsEmpty) return;
-            Coordinate[] linePts = CoordinateArrays.RemoveRepeatedPoints((Coordinate[]) line.Coordinates);
+            Coordinate[] linePts = (Coordinate[]) CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
             Coordinate startPt = linePts[0];
             Coordinate endPt = linePts[linePts.Length - 1];
 

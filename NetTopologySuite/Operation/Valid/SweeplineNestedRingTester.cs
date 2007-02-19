@@ -91,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             Coordinate[] searchRingPts = (Coordinate[]) searchRing.Coordinates;
             if (!innerRing.EnvelopeInternal.Intersects(searchRing.EnvelopeInternal))
                 return false;
-            Coordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, graph);
+            Coordinate innerRingPt = (Coordinate) IsValidOp.FindPointNotNode(innerRingPts, searchRing, graph);
             Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
             bool isInside = CGAlgorithms.IsPointInRing(innerRingPt, searchRingPts);
             if (isInside) 

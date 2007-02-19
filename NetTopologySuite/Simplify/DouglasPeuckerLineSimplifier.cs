@@ -68,7 +68,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             for (int i = 0; i < pts.Length; i++)            
                 if (usePt[i])
                     coordList.Add(new Coordinate(pts[i]));            
-            return coordList.ToCoordinateArray();
+            return (Coordinate[]) coordList.ToCoordinateArray();
         }
 
         private LineSegment seg = new LineSegment();

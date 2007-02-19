@@ -126,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
 
                 // remove repeated points, to simplify returned point as much as possible
                 CoordinateList noRepeatedCoordList = new CoordinateList(reducedCoords, false);
-                Coordinate[] noRepeatedCoords = noRepeatedCoordList.ToCoordinateArray();
+                Coordinate[] noRepeatedCoords = (Coordinate[]) noRepeatedCoordList.ToCoordinateArray();
 
                 /*
                 * Check to see if the removal of repeated points

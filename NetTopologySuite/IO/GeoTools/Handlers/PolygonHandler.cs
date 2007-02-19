@@ -79,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 
                 if (points.Count > 0) // Thans to Abhay Menon!
                 {
-                    LinearRing ring = geometryFactory.CreateLinearRing(points.ToArray());
+                    LinearRing ring = geometryFactory.CreateLinearRing((Coordinate[]) points.ToArray());
 
                     // If shape have only a part, jump orientation check and add to shells
                     if (numParts == 1)
@@ -105,7 +105,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 				LinearRing minShell = null;
 				Envelope minEnv = null;
                 Envelope testEnv = (Envelope) testRing.EnvelopeInternal;
-				Coordinate testPt = testRing.GetCoordinateN(0);
+                Coordinate testPt = (Coordinate) testRing.GetCoordinateN(0);
 				LinearRing tryRing;
 				for (int j = 0; j < shells.Count; j++)
 				{

@@ -78,8 +78,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             for (int i = 0; i < mls.NumGeometries; i++) 
             {
                 LineString line = (LineString) mls.GetGeometryN(i);
-                Coordinate startNode = line.GetCoordinateN(0);
-                Coordinate endNode = line.GetCoordinateN(line.NumPoints - 1);
+                Coordinate startNode = (Coordinate) line.GetCoordinateN(0);
+                Coordinate endNode = (Coordinate) line.GetCoordinateN(line.NumPoints - 1);
 
                 /*
                  * If this linestring is connected to a previous subgraph, geom is not sequenced

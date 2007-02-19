@@ -106,7 +106,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             for (int i = 0; i < pts.Length; i++)
                 roundPts[i] = new Coordinate(Math.Round((pts[i].X - offsetX) * scaleFactor),
                                              Math.Round((pts[i].Y - offsetY) * scaleFactor));
-            Coordinate[] roundPtsNoDup = CoordinateArrays.RemoveRepeatedPoints(roundPts);
+            Coordinate[] roundPtsNoDup = (Coordinate[]) CoordinateArrays.RemoveRepeatedPoints(roundPts);
             return roundPtsNoDup;
         }      
 

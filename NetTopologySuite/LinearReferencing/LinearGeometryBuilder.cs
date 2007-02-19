@@ -108,7 +108,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
                 return;
             }
 
-            Coordinate[] rawPts = coordList.ToCoordinateArray();
+            Coordinate[] rawPts = (Coordinate[]) coordList.ToCoordinateArray();
             Coordinate[] pts = rawPts;
             if (FixInvalidLines)
                 pts = ValidCoordinateSequence(rawPts);

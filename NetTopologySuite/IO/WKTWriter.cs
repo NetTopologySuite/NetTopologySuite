@@ -427,7 +427,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                         writer.Write(", ");
                         if (i % 10 == 0) Indent(level + 2, writer);
                     }
-                    AppendCoordinate(lineString.GetCoordinateN(i), writer, lineString.PrecisionModel);
+                    AppendCoordinate((Coordinate) lineString.GetCoordinateN(i), writer, lineString.PrecisionModel);
                 }
                 writer.Write(")");
             }

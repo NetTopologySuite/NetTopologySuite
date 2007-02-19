@@ -181,7 +181,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         {
             get
             {
-                return currentLine.GetCoordinateN(vertexIndex);
+                return (Coordinate) currentLine.GetCoordinateN(vertexIndex);
             }
         }
 
@@ -195,7 +195,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             get
             {
                 if (vertexIndex < Line.NumPoints - 1)
-                    return currentLine.GetCoordinateN(vertexIndex + 1);
+                    return (Coordinate) currentLine.GetCoordinateN(vertexIndex + 1);
                 return null;
             }
         }

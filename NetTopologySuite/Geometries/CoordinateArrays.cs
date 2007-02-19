@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
+using GeoAPI.Geometries;
+
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>
@@ -156,7 +158,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coord">Array of Coordinates.</param>
         /// <returns>true if coord has repeated points; false otherwise.</returns>
-      	public static bool HasRepeatedPoints(Coordinate[] coord)
+      	public static bool HasRepeatedPoints(ICoordinate[] coord)
       	{
             for(int i = 1; i < coord.Length; i++)            
             	if(coord[i - 1].Equals(coord[i]))                
@@ -183,7 +185,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>        
-      	public static Coordinate[] RemoveRepeatedPoints(Coordinate[] coord)
+      	public static ICoordinate[] RemoveRepeatedPoints(ICoordinate[] coord)
       	{
             if (!HasRepeatedPoints(coord))
                 return coord;
@@ -195,7 +197,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Reverses the coordinates in an array in-place.
         /// </summary>
         /// <param name="coord">Array of Coordinates.</param>
-      	public static void Reverse(Coordinate[] coord)
+      	public static void Reverse(ICoordinate[] coord)
       	{
             // This implementation uses FCL capabilities
             Array.Reverse(coord);

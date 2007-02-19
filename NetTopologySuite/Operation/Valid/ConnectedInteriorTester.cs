@@ -86,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
              * Mark all the edges for the edgeRings corresponding to the shells
              * of the input polygons.  Note only ONE ring gets marked for each shell.
              */
-            VisitShellInteriors(geomGraph.Geometry, graph);
+            VisitShellInteriors((Geometry) geomGraph.Geometry, graph);
 
             /*
              * If there are any unvisited shell edges

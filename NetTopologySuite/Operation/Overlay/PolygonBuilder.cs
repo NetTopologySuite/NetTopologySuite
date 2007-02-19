@@ -243,7 +243,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         {
             LinearRing teString = testEr.LinearRing;
             Envelope testEnv = (Envelope) teString.EnvelopeInternal;
-            Coordinate testPt = teString.GetCoordinateN(0);
+            Coordinate testPt = (Coordinate) teString.GetCoordinateN(0);
 
             EdgeRing minShell = null;
             Envelope minEnv = null;

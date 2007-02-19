@@ -269,13 +269,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// <param name="im"></param>
         private void ComputeDisjointIM(IntersectionMatrix im)
         {
-            Geometry ga = arg[0].Geometry;
+            IGeometry ga = arg[0].Geometry;
             if (!ga.IsEmpty)
             {
                 im.Set(Locations.Interior, Locations.Exterior, ga.Dimension);
                 im.Set(Locations.Boundary, Locations.Exterior, ga.BoundaryDimension);
             }
-            Geometry gb = arg[1].Geometry;
+            IGeometry gb = arg[1].Geometry;
             if (!gb.IsEmpty)
             {
                 im.Set(Locations.Exterior, Locations.Interior, gb.Dimension);
@@ -330,7 +330,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                 Edge e = (Edge)ei.Current;
                 if (e.IsIsolated)
                 {
-                    LabelIsolatedEdge(e, targetIndex, arg[targetIndex].Geometry);
+                    LabelIsolatedEdge(e, targetIndex, (Geometry) arg[targetIndex].Geometry);
                     isolatedEdges.Add(e);
                 }
             }
@@ -391,7 +391,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// <param name="targetIndex"></param>
         private void LabelIsolatedNode(Node n, int targetIndex)
         {
-            Locations loc = ptLocator.Locate(n.Coordinate, arg[targetIndex].Geometry);
+            Locations loc = ptLocator.Locate((Coordinate) n.Coordinate, (Geometry) arg[targetIndex].Geometry);
             n.Label.SetAllLocations(targetIndex, loc);        
         }
     }
