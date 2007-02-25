@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 
@@ -21,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         private LineSegmentIndex inputIndex = new LineSegmentIndex();
         private LineSegmentIndex outputIndex = new LineSegmentIndex();
         private TaggedLineString line;
-        private Coordinate[] linePts;
+        private ICoordinate[] linePts;
         private double distanceTolerance = 0.0;        
 
         /// <summary>
@@ -84,9 +86,11 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             bool isValidToFlatten = true;
 
             // must have enough points in the output line
-            if (line.ResultSize < line.MinimumSize && depth < 2)  isValidToFlatten = false;
+            if (line.ResultSize < line.MinimumSize && depth < 2)  
+                isValidToFlatten = false;
             // flattening must be less than distanceTolerance
-            if (distance[0] > DistanceTolerance) isValidToFlatten = false;
+            if (distance[0] > DistanceTolerance)
+                isValidToFlatten = false;
             // test if flattened section would cause intersection
             LineSegment candidateSeg = new LineSegment();
             candidateSeg.P0 = linePts[i];
@@ -113,7 +117,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <param name="j"></param>
         /// <param name="maxDistance"></param>
         /// <returns></returns>
-        private int FindFurthestPoint(Coordinate[] pts, int i, int j, double[] maxDistance)
+        private int FindFurthestPoint(ICoordinate[] pts, int i, int j, double[] maxDistance)
         {
             LineSegment seg = new LineSegment();
             seg.P0 = pts[i];
@@ -122,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             int maxIndex = i;
             for (int k = i + 1; k < j; k++) 
             {
-                Coordinate midPt = pts[k];
+                ICoordinate midPt = pts[k];
                 double distance = seg.Distance(midPt);
                 if (distance > maxDist) 
                 {
@@ -143,8 +147,8 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         private LineSegment Flatten(int start, int end)
         {
             // make a new segment for the simplified point
-            Coordinate p0 = linePts[start];
-            Coordinate p1 = linePts[end];
+            ICoordinate p0 = linePts[start];
+            ICoordinate p1 = linePts[end];
             LineSegment newSeg = new LineSegment(p0, p1);
             // update the indexes
             Remove(line, start, end);

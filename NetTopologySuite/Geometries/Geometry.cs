@@ -1243,7 +1243,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <c>true</c> if the classes of the two <c>Geometry</c>
         /// s are considered to be equal by the <c>equalsExact</c> method.
         /// </returns>
-        protected bool IsEquivalentClass(Geometry other) 
+        protected bool IsEquivalentClass(IGeometry other) 
         {
             return this.GetType().FullName == other.GetType().FullName;
         }

@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -78,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             IList maxEdgeRings = new ArrayList();
             for (IEnumerator it = dirEdges.GetEnumerator(); it.MoveNext(); )
             {
-                DirectedEdge de = (DirectedEdge)it.Current;
+                DirectedEdge de = (DirectedEdge) it.Current;
                 if (de.IsInResult && de.Label.IsArea())
                 {
                     // if this edge has not yet been processed
@@ -105,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             IList edgeRings = new ArrayList();
             for (IEnumerator it = maxEdgeRings.GetEnumerator(); it.MoveNext(); )
             {
-                MaximalEdgeRing er = (MaximalEdgeRing)it.Current;
+                MaximalEdgeRing er = (MaximalEdgeRing) it.Current;
                 if (er.MaxNodeDegree > 2)
                 {
                     er.LinkDirectedEdgesForMinimalEdgeRings();
@@ -144,7 +146,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             EdgeRing shell = null;
             for (IEnumerator it = minEdgeRings.GetEnumerator(); it.MoveNext(); )
             {
-                EdgeRing er = (MinimalEdgeRing)it.Current;
+                EdgeRing er = (MinimalEdgeRing) it.Current;
                 if (!er.IsHole)
                 {
                     shell = er;
@@ -170,7 +172,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         {
             for (IEnumerator it = minEdgeRings.GetEnumerator(); it.MoveNext(); )
             {
-                MinimalEdgeRing er = (MinimalEdgeRing)it.Current;
+                MinimalEdgeRing er = (MinimalEdgeRing) it.Current;
                 if (er.IsHole) 
                     er.Shell = shell;
             }
@@ -190,7 +192,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         {
             for (IEnumerator it = edgeRings.GetEnumerator(); it.MoveNext(); )
             {
-                EdgeRing er = (EdgeRing)it.Current;
+                EdgeRing er = (EdgeRing) it.Current;
                 er.SetInResult();
                 if (er.IsHole)
                      freeHoleList.Add(er);
@@ -215,7 +217,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         {
             for (IEnumerator it = freeHoleList.GetEnumerator(); it.MoveNext(); )
             {
-                EdgeRing hole = (EdgeRing)it.Current;
+                EdgeRing hole = (EdgeRing) it.Current;
                 // only place this hole if it doesn't yet have a shell
                 if (hole.Shell == null)
                 {
@@ -241,21 +243,21 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// null if no containing EdgeRing is found.</returns>
         private EdgeRing FindEdgeRingContaining(EdgeRing testEr, IList shellList)
         {
-            LinearRing teString = testEr.LinearRing;
-            Envelope testEnv = (Envelope) teString.EnvelopeInternal;
-            Coordinate testPt = (Coordinate) teString.GetCoordinateN(0);
+            ILinearRing teString = testEr.LinearRing;
+            IEnvelope testEnv = teString.EnvelopeInternal;
+            ICoordinate testPt = teString.GetCoordinateN(0);
 
             EdgeRing minShell = null;
-            Envelope minEnv = null;
+            IEnvelope minEnv = null;
             for (IEnumerator it = shellList.GetEnumerator(); it.MoveNext(); )
             {
                 EdgeRing tryShell = (EdgeRing) it.Current;
-                LinearRing tryRing = tryShell.LinearRing;
-                Envelope tryEnv = (Envelope) tryRing.EnvelopeInternal;
+                ILinearRing tryRing = tryShell.LinearRing;
+                IEnvelope tryEnv = tryRing.EnvelopeInternal;
                 if (minShell != null)
-                    minEnv = (Envelope) minShell.LinearRing.EnvelopeInternal;
+                    minEnv = minShell.LinearRing.EnvelopeInternal;
                 bool isContained = false;
-                if (tryEnv.Contains(testEnv) && CGAlgorithms.IsPointInRing(testPt, (Coordinate[]) tryRing.Coordinates))
+                if (tryEnv.Contains(testEnv) && CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates))
                         isContained = true;
                 // check if this new containing ring is smaller than the current minimum ring
                 if (isContained)
@@ -278,8 +280,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             // add Polygons for all shells
             for (IEnumerator it = shellList.GetEnumerator(); it.MoveNext(); )
             {
-                EdgeRing er = (EdgeRing)it.Current;
-                Polygon poly = er.ToPolygon(geometryFactory);
+                EdgeRing er = (EdgeRing) it.Current;
+                IPolygon poly = er.ToPolygon(geometryFactory);
                 resultPolyList.Add(poly);
             }
             return resultPolyList;
@@ -291,11 +293,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        public bool ContainsPoint(Coordinate p)
+        public bool ContainsPoint(ICoordinate p)
         {
             for (IEnumerator it = shellList.GetEnumerator(); it.MoveNext(); )
             {
-                EdgeRing er = (EdgeRing)it.Current;
+                EdgeRing er = (EdgeRing) it.Current;
                 if (er.ContainsPoint(p))
                     return true;
             }

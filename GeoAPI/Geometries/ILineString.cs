@@ -9,5 +9,7 @@ namespace GeoAPI.Geometries
         IPoint GetPointN(int n);
 
         ICoordinate GetCoordinateN(int n);
+
+        ILineString Reverse();
     }
 }

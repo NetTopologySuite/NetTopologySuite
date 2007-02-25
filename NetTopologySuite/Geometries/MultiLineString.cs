@@ -95,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 if (IsEmpty) 
                     return false;
                 for (int i = 0; i < geometries.Length; i++)
-                    if (!((LineString)geometries[i]).IsClosed)
+                    if (!((ILineString) geometries[i]).IsClosed)
                         return false;                
                 return true;
             }
@@ -109,7 +109,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                return (new IsSimpleOp()).IsSimple((MultiLineString)this);
+                return (new IsSimpleOp()).IsSimple((IMultiLineString) this);
             }
         }
 
@@ -135,12 +135,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// and the order of their coordinate sequences are reversed.
         /// </summary>
         /// <returns>a <see cref="MultiLineString" /> in the reverse order.</returns>
-        public MultiLineString Reverse()
+        public IMultiLineString Reverse()
         {
             int nLines = geometries.Length;
-            LineString[] revLines = new LineString[nLines];
+            ILineString[] revLines = new ILineString[nLines];
             for (int i = 0; i < geometries.Length; i++)
-                revLines[nLines - 1 - i] = ((LineString)geometries[i]).Reverse();            
+                revLines[nLines - 1 - i] = ((ILineString) geometries[i]).Reverse();            
             return Factory.CreateMultiLineString(revLines);
         }
 
@@ -152,7 +152,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public override bool EqualsExact(IGeometry other, double tolerance) 
         {
-            if (!IsEquivalentClass((Geometry) other)) 
+            if (!IsEquivalentClass((IGeometry) other)) 
                 return false;            
             return base.EqualsExact(other, tolerance);
         }

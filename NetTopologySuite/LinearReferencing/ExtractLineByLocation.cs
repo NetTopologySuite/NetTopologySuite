@@ -1,5 +1,7 @@
 using System;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
@@ -21,19 +23,19 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="start">The start location.</param>
         /// <param name="end">The end location.</param>
         /// <returns>The extracted subline.</returns>
-        public static Geometry Extract(Geometry line, LinearLocation start, LinearLocation end)
+        public static IGeometry Extract(IGeometry line, LinearLocation start, LinearLocation end)
         {
             ExtractLineByLocation ls = new ExtractLineByLocation(line);
             return ls.Extract(start, end);
         }
 
-        private Geometry line = null;
+        private IGeometry line = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:ExtractLineByLocation"/> class.
         /// </summary>
         /// <param name="line"></param>
-        public ExtractLineByLocation(Geometry line)
+        public ExtractLineByLocation(IGeometry line)
         {
             this.line = line;
         }
@@ -46,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="start">The start location.</param>
         /// <param name="end">The end location.</param>
         /// <returns>A linear geometry.</returns>
-        public Geometry Extract(LinearLocation start, LinearLocation end)
+        public IGeometry Extract(LinearLocation start, LinearLocation end)
         {
             if (end.CompareTo(start) < 0)
                 return Reverse(ComputeLinear(end, start));            
@@ -58,12 +60,12 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="linear"></param>
         /// <returns></returns>
-        private Geometry Reverse(Geometry linear)
+        private IGeometry Reverse(IGeometry linear)
         {
-            if (linear is LineString)
-            return ((LineString)linear).Reverse();
-            if (linear is MultiLineString)
-            return ((MultiLineString)linear).Reverse();
+            if (linear is ILineString)
+            return ((ILineString) linear).Reverse();
+            if (linear is IMultiLineString)
+            return ((IMultiLineString) linear).Reverse();
             Assert.ShouldNeverReachHere("non-linear geometry encountered");
             return null;
         }
@@ -75,9 +77,9 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="start"></param>
         /// <param name="end"></param>
         /// <returns></returns>
-        private LineString ComputeLine(LinearLocation start, LinearLocation end)
+        private ILineString ComputeLine(LinearLocation start, LinearLocation end)
         {
-            Coordinate[] coordinates = (Coordinate[]) line.Coordinates;
+            ICoordinate[] coordinates = line.Coordinates;
             CoordinateList newCoordinates = new CoordinateList();
 
             int startSegmentIndex = start.SegmentIndex;
@@ -102,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             if (newCoordinates.Count <= 0)
                 newCoordinates.Add(start.GetCoordinate(line));
 
-            Coordinate[] newCoordinateArray = (Coordinate[]) newCoordinates.ToCoordinateArray();
+            ICoordinate[] newCoordinateArray = newCoordinates.ToCoordinateArray();
 
             /*
              * Ensure there is enough coordinates to build a valid line.
@@ -110,9 +112,9 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
              * There will always be at least one coordinate in the coordList.
              */
             if (newCoordinateArray.Length <= 1)
-                newCoordinateArray = new Coordinate[] { newCoordinateArray[0], newCoordinateArray[0] };
+                newCoordinateArray = new ICoordinate[] { newCoordinateArray[0], newCoordinateArray[0] };
             
-            return line.Factory.CreateLineString(newCoordinateArray);
+            return ((LineString) line).Factory.CreateLineString(newCoordinateArray);
         }
 
         /// <summary>
@@ -122,7 +124,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="start"></param>
         /// <param name="end"></param>
         /// <returns></returns>
-        private Geometry ComputeLinear(LinearLocation start, LinearLocation end)
+        private IGeometry ComputeLinear(LinearLocation start, LinearLocation end)
         {
             LinearGeometryBuilder builder = new LinearGeometryBuilder(line.Factory);
             builder.FixInvalidLines = true;
@@ -137,7 +139,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
                 if (compare < 0)
                     break;
 
-                Coordinate pt = element.SegmentStart;
+                ICoordinate pt = element.SegmentStart;
                 builder.Add(pt);
                 if (element.IsEndOfLine)
                     builder.EndLine();

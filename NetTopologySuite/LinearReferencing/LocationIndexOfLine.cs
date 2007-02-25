@@ -1,4 +1,7 @@
 using System;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
@@ -19,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="linearGeom"></param>
         /// <param name="subLine"></param>
         /// <returns></returns>
-        public static LinearLocation[] IndicesOf(Geometry linearGeom, Geometry subLine)
+        public static LinearLocation[] IndicesOf(IGeometry linearGeom, IGeometry subLine)
         {
             /*
              * MD - this algorithm has been extracted into a class
@@ -30,13 +33,13 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             return locater.IndicesOf(subLine);
         }
 
-        private Geometry linearGeom;
+        private IGeometry linearGeom;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:LocationIndexOfLine"/> class.
         /// </summary>
         /// <param name="linearGeom">The linear geom.</param>
-        public LocationIndexOfLine(Geometry linearGeom)
+        public LocationIndexOfLine(IGeometry linearGeom)
         {
             this.linearGeom = linearGeom;
         }
@@ -46,11 +49,11 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="subLine"></param>
         /// <returns></returns>
-        public virtual LinearLocation[] IndicesOf(Geometry subLine)
+        public virtual LinearLocation[] IndicesOf(IGeometry subLine)
         {
-            Coordinate startPt = (Coordinate) ((LineString) subLine.GetGeometryN(0)).GetCoordinateN(0);
-            LineString lastLine = (LineString) subLine.GetGeometryN(subLine.NumGeometries - 1);
-            Coordinate endPt = (Coordinate) lastLine.GetCoordinateN(lastLine.NumPoints - 1);
+            ICoordinate startPt = ((ILineString) subLine.GetGeometryN(0)).GetCoordinateN(0);
+            ILineString lastLine = (ILineString) subLine.GetGeometryN(subLine.NumGeometries - 1);
+            ICoordinate endPt = lastLine.GetCoordinateN(lastLine.NumPoints - 1);
 
             LocationIndexOfPoint locPt = new LocationIndexOfPoint(linearGeom);
             LinearLocation[] subLineLoc = new LinearLocation[2];
@@ -58,7 +61,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
             // check for case where subline is zero length
             if (subLine.Length == 0)
-                 subLineLoc[1] = (LinearLocation)subLineLoc[0].Clone();            
+                 subLineLoc[1] = (LinearLocation) subLineLoc[0].Clone();            
             else subLineLoc[1] = locPt.IndexOfAfter(endPt, subLineLoc[0]);
             return subLineLoc;
         }

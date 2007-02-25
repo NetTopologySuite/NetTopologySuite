@@ -1,5 +1,7 @@
 using System;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
@@ -19,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="linearGeom">The linear geometry to use.</param>
         /// <param name="length">The length index of the location.</param>
         /// <returns>The <see cref="LinearLocation" /> for the length.</returns>
-        public static LinearLocation GetLocation(Geometry linearGeom, double length)
+        public static LinearLocation GetLocation(IGeometry linearGeom, double length)
         {
             LengthLocationMap locater = new LengthLocationMap(linearGeom);
             return locater.GetLocation(length);
@@ -32,19 +34,19 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="linearGeom">The linear geometry to use.</param>
         /// <param name="loc">The <see cref="LinearLocation" /> index of the location.</param>
         /// <returns>The length for the <see cref="LinearLocation" />.</returns>
-        public static double GetLength(Geometry linearGeom, LinearLocation loc)
+        public static double GetLength(IGeometry linearGeom, LinearLocation loc)
         {
             LengthLocationMap locater = new LengthLocationMap(linearGeom);
             return locater.GetLength(loc);
         }
 
-        private Geometry linearGeom;
+        private IGeometry linearGeom;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:LengthLocationMap"/> class.
         /// </summary>
         /// <param name="linearGeom">A linear geometry.</param>
-        public LengthLocationMap(Geometry linearGeom)
+        public LengthLocationMap(IGeometry linearGeom)
         {
             this.linearGeom = linearGeom;
         }
@@ -83,8 +85,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             {
                 if (!element.IsEndOfLine)
                 {
-                    Coordinate p0 = element.SegmentStart;
-                    Coordinate p1 = element.SegmentEnd;
+                    ICoordinate p0 = element.SegmentStart;
+                    ICoordinate p1 = element.SegmentEnd;
                     double segLen = p1.Distance(p0);
                     // length falls in this segment
                     if (totalLength + segLen > length)
@@ -114,8 +116,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             {
                 if (!element.IsEndOfLine)
                 {
-                    Coordinate p0 = element.SegmentStart;
-                    Coordinate p1 = element.SegmentEnd;
+                    ICoordinate p0 = element.SegmentStart;
+                    ICoordinate p1 = element.SegmentEnd;
                     double segLen = p1.Distance(p0);
                     // length falls in this segment
                     if (loc.ComponentIndex == element.ComponentIndex && loc.SegmentIndex == element.VertexIndex)

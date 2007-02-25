@@ -3,6 +3,8 @@ using System.Collections;
 using System.Diagnostics;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
@@ -26,9 +28,10 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <returns>The added node.</returns>
         public Node Add(Node n)
         {
-            Coordinate key = n.Coordinate;
+            ICoordinate key = n.Coordinate;
             bool contains = nodeMap.Contains(key);            
-            if (!contains) nodeMap.Add(key, n);            
+            if (!contains) 
+                nodeMap.Add(key, n);            
             return n;
         }
 
@@ -37,9 +40,9 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        public Node Remove(Coordinate pt)
+        public Node Remove(ICoordinate pt)
         {
-            Node node = (Node)nodeMap[pt];
+            Node node = (Node) nodeMap[pt];
             nodeMap.Remove(pt);
             return node;
         }
@@ -49,9 +52,9 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>
-        public Node Find(Coordinate coord) 
+        public Node Find(ICoordinate coord) 
         {
-            return (Node)nodeMap[coord]; 
+            return (Node) nodeMap[coord]; 
         }
 
         /// <summary>

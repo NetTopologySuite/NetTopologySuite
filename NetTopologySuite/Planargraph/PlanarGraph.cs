@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
@@ -44,9 +46,9 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        public Node FindNode(Coordinate pt)
+        public Node FindNode(ICoordinate pt)
         {
-            return (Node)nodeMap.Find(pt);
+            return (Node) nodeMap.Find(pt);
         }
 
         /// <summary>
@@ -177,7 +179,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             IList outEdges = node.OutEdges.Edges;
             for (IEnumerator i = outEdges.GetEnumerator(); i.MoveNext(); )
             {
-                DirectedEdge de = (DirectedEdge)i.Current;
+                DirectedEdge de = (DirectedEdge) i.Current;
                 DirectedEdge sym = de.Sym;
                 // remove the diredge that points to this node
                 if (sym != null) 
@@ -204,7 +206,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             IList nodesFound = new ArrayList();
             for (IEnumerator i = this.GetNodeEnumerator(); i.MoveNext(); )
             {
-                Node node = (Node)i.Current;
+                Node node = (Node) i.Current;
                 if (node.Degree == degree)
                     nodesFound.Add(node);
             }

@@ -3,6 +3,8 @@ using System.Collections;
 using System.Diagnostics;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 
@@ -26,7 +28,6 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
     /// </summary>
     public class MCIndexSnapRounder : INoder
     {        
-
         private LineIntersector li = null;
         private readonly double scaleFactor;
         private MCIndexNoder noder = null;
@@ -118,9 +119,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <param name="snapPts"></param>
         private void ComputeIntersectionSnaps(IList snapPts)
         {
-            foreach(object obj in snapPts)
+            foreach (ICoordinate snapPt in snapPts)
             {
-                Coordinate snapPt = (Coordinate)obj;
                 HotPixel hotPixel = new HotPixel(snapPt, scaleFactor, li);
                 pointSnapper.Snap(hotPixel);
             }
@@ -133,11 +133,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <param name="edges"></param>
         public void ComputeVertexSnaps(IList edges)
         {
-            foreach(object obj in edges)
-            {
-                SegmentString edge0 = (SegmentString)obj;
-                ComputeVertexSnaps(edge0);
-            }
+            foreach (SegmentString edge in edges)
+                ComputeVertexSnaps(edge);            
         }
 
         /// <summary>
@@ -147,7 +144,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <param name="e"></param>
         private void ComputeVertexSnaps(SegmentString e)
         {
-            Coordinate[] pts0 = e.Coordinates;
+            ICoordinate[] pts0 = e.Coordinates;
             for(int i = 0; i < pts0.Length - 1; i++)
             {
                 HotPixel hotPixel = new HotPixel(pts0[i], scaleFactor, li);
@@ -157,6 +154,5 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
                     e.AddIntersection(pts0[i], i);
             }
         }
-
     }
 }

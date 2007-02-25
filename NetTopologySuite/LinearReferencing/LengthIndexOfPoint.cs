@@ -1,5 +1,7 @@
 using System;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
@@ -18,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="linearGeom"></param>
         /// <param name="inputPt"></param>
         /// <returns></returns>
-        public static double IndexOf(Geometry linearGeom, Coordinate inputPt)
+        public static double IndexOf(IGeometry linearGeom, ICoordinate inputPt)
         {
             LengthIndexOfPoint locater = new LengthIndexOfPoint(linearGeom);
             return locater.IndexOf(inputPt);
@@ -31,19 +33,19 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="inputPt"></param>
         /// <param name="minIndex"></param>
         /// <returns></returns>
-        public static double IndexOfAfter(Geometry linearGeom, Coordinate inputPt, double minIndex)
+        public static double IndexOfAfter(IGeometry linearGeom, ICoordinate inputPt, double minIndex)
         {
             LengthIndexOfPoint locater = new LengthIndexOfPoint(linearGeom);
             return locater.IndexOfAfter(inputPt, minIndex);
         }
 
-        private Geometry linearGeom;
+        private IGeometry linearGeom;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:LengthIndexOfPoint"/> class.
         /// </summary>
         /// <param name="linearGeom">A linear geometry.</param>
-        public LengthIndexOfPoint(Geometry linearGeom)
+        public LengthIndexOfPoint(IGeometry linearGeom)
         {
             this.linearGeom = linearGeom;
         }
@@ -53,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="inputPt">The coordinate to locate.</param>
         /// <returns>The location of the nearest point.</returns>
-        public double IndexOf(Coordinate inputPt)
+        public double IndexOf(ICoordinate inputPt)
         {
             return IndexOfFromStart(inputPt, -1.0);
         }
@@ -71,7 +73,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="inputPt">The coordinate to locate.</param>
         /// <param name="minIndex">The minimum location for the point location.</param>
         /// <returns>The location of the nearest point.</returns>
-        public double IndexOfAfter(Coordinate inputPt, double minIndex)
+        public double IndexOfAfter(ICoordinate inputPt, double minIndex)
         {
             if (minIndex < 0.0) return IndexOf(inputPt);
 
@@ -96,7 +98,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="inputPt"></param>
         /// <param name="minIndex"></param>
         /// <returns></returns>
-        private double IndexOfFromStart(Coordinate inputPt, double minIndex)
+        private double IndexOfFromStart(ICoordinate inputPt, double minIndex)
         {
             double minDistance = Double.MaxValue;
 
@@ -130,7 +132,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="inputPt"></param>
         /// <param name="segmentStartMeasure"></param>
         /// <returns></returns>
-        private double SegmentNearestMeasure(LineSegment seg, Coordinate inputPt, double segmentStartMeasure)
+        private double SegmentNearestMeasure(LineSegment seg, ICoordinate inputPt, double segmentStartMeasure)
         {
             // found new minimum, so compute location distance of point
             double projFactor = seg.ProjectionFactor(inputPt);

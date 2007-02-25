@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 
@@ -14,7 +16,6 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     public class NodingValidator
     {
         private LineIntersector li = new RobustLineIntersector();
-
         private IList segStrings = null;
 
         /// <summary>
@@ -41,11 +42,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>   
         private void CheckCollapses()
         {
-            foreach(object obj in segStrings)
-            {
-                SegmentString ss = (SegmentString)obj;
-                CheckCollapses(ss);
-            }
+            foreach (SegmentString ss in segStrings)
+                CheckCollapses(ss);            
         }
 
         /// <summary>
@@ -54,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="ss"></param>
         private void CheckCollapses(SegmentString ss)
         {
-            Coordinate[] pts = ss.Coordinates;
+            ICoordinate[] pts = ss.Coordinates;
             for (int i = 0; i < pts.Length - 2; i++)
                 CheckCollapse(pts[i], pts[i + 1], pts[i + 2]);            
         }
@@ -65,7 +63,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
-        private void CheckCollapse(Coordinate p0, Coordinate p1, Coordinate p2)
+        private void CheckCollapse(ICoordinate p0, ICoordinate p1, ICoordinate p2)
         {
             if (p0.Equals(p2))
                 throw new Exception("found non-noded collapse at: " + p0 + ", " + p1 + " " + p2);
@@ -76,15 +74,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         private void CheckInteriorIntersections()
         {
-            foreach(object obj0 in segStrings)
-            {
-                SegmentString ss0 = (SegmentString)obj0;
-                foreach(object obj1 in segStrings)
-                {
-                    SegmentString ss1 = (SegmentString)obj1;
-                    CheckInteriorIntersections(ss0, ss1);
-                }
-            }
+            foreach (SegmentString ss0 in segStrings)
+                foreach(SegmentString ss1 in segStrings)
+                    CheckInteriorIntersections(ss0, ss1);                
         }
 
         /// <summary>
@@ -94,8 +86,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="ss1"></param>
         private void CheckInteriorIntersections(SegmentString ss0, SegmentString ss1)
         {
-            Coordinate[] pts0 = ss0.Coordinates;
-            Coordinate[] pts1 = ss1.Coordinates;
+            ICoordinate[] pts0 = ss0.Coordinates;
+            ICoordinate[] pts1 = ss1.Coordinates;
             for (int i0 = 0; i0 < pts0.Length - 1; i0++)
                 for (int i1 = 0; i1 < pts1.Length - 1; i1++)
                     CheckInteriorIntersections(ss0, i0, ss1, i1);            
@@ -112,11 +104,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         {
             if (e0 == e1 && segIndex0 == segIndex1) 
                 return;
-            
-            Coordinate p00 = e0.Coordinates[segIndex0];
-            Coordinate p01 = e0.Coordinates[segIndex0 + 1];
-            Coordinate p10 = e1.Coordinates[segIndex1];
-            Coordinate p11 = e1.Coordinates[segIndex1 + 1];
+
+            ICoordinate p00 = e0.Coordinates[segIndex0];
+            ICoordinate p01 = e0.Coordinates[segIndex0 + 1];
+            ICoordinate p10 = e1.Coordinates[segIndex1];
+            ICoordinate p11 = e1.Coordinates[segIndex1 + 1];
 
             li.ComputeIntersection(p00, p01, p10, p11);
             if (li.HasIntersection)  
@@ -132,12 +124,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <returns><c>true</c> if there is an intersection point which is not an endpoint of the segment p0-p1.</returns>
-        private bool HasInteriorIntersection(LineIntersector li, Coordinate p0, Coordinate p1)
+        private bool HasInteriorIntersection(LineIntersector li, ICoordinate p0, ICoordinate p1)
         {
             for (int i = 0; i < li.IntersectionNum; i++)
             {
-                Coordinate intPt = li.GetIntersection(i);
-                if (!(intPt.Equals(p0) || intPt.Equals(p1)))
+                ICoordinate intPt = li.GetIntersection(i);
+                if (!(intPt.Equals(p0) || 
+                      intPt.Equals(p1)))
                     return true;
             }
             return false;
@@ -149,10 +142,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         private void CheckEndPtVertexIntersections()
         {
-            foreach(object obj in segStrings)
+            foreach (SegmentString ss in segStrings)
             {
-                SegmentString ss = (SegmentString)obj;
-                Coordinate[] pts = ss.Coordinates;
+                ICoordinate[] pts = ss.Coordinates;
                 CheckEndPtVertexIntersections(pts[0], segStrings);
                 CheckEndPtVertexIntersections(pts[pts.Length - 1], segStrings);
             }
@@ -163,17 +155,15 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         /// <param name="testPt"></param>
         /// <param name="segStrings"></param>
-        private void CheckEndPtVertexIntersections(Coordinate testPt, IList segStrings)
+        private void CheckEndPtVertexIntersections(ICoordinate testPt, IList segStrings)
         {
-            foreach (object obj in segStrings)
+            foreach (SegmentString ss in segStrings)
             {
-                SegmentString ss = (SegmentString)obj;
-                Coordinate[] pts = ss.Coordinates;
+                ICoordinate[] pts = ss.Coordinates;
                 for (int j = 1; j < pts.Length - 1; j++)
                     if (pts[j].Equals(testPt))
                         throw new Exception("found endpt/interior pt intersection at index " + j + " :pt " + testPt);                
             }
         }
-
     }
 }

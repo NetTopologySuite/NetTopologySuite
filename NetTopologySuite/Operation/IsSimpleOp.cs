@@ -32,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// </summary>
         /// <param name="geom"></param>
         /// <returns></returns>
-        public bool IsSimple(LineString geom)
+        public bool IsSimple(ILineString geom)
         {
             return IsSimpleLinearGeometry(geom);
         }
@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// </summary>
         /// <param name="geom"></param>
         /// <returns></returns>
-        public bool IsSimple(MultiLineString geom)
+        public bool IsSimple(IMultiLineString geom)
         {
             return IsSimpleLinearGeometry(geom);
         }
@@ -50,7 +50,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// <summary>
         /// A MultiPoint is simple if it has no repeated points.
         /// </summary>
-        public bool IsSimple(MultiPoint mp)
+        public bool IsSimple(IMultiPoint mp)
         {
             if (mp.IsEmpty) 
                 return true;
@@ -71,10 +71,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// </summary>
         /// <param name="geom"></param>
         /// <returns></returns>
-        private bool IsSimpleLinearGeometry(Geometry geom)
+        private bool IsSimpleLinearGeometry(IGeometry geom)
         {
             if (geom.IsEmpty) 
                 return true;
+
             GeometryGraph graph = new GeometryGraph(0, geom);
             LineIntersector li = new RobustLineIntersector();
             SegmentIntersector si = graph.ComputeSelfNodes(li, true);
@@ -95,11 +96,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         {
             for (IEnumerator i = graph.GetEdgeEnumerator(); i.MoveNext(); )
             {
-                Edge e = (Edge)i.Current;
+                Edge e = (Edge) i.Current;
                 int maxSegmentIndex = e.MaximumSegmentIndex;
                 for (IEnumerator eiIt = e.EdgeIntersectionList.GetEnumerator(); eiIt.MoveNext(); )
                 {
-                    EdgeIntersection ei = (EdgeIntersection)eiIt.Current;
+                    EdgeIntersection ei = (EdgeIntersection) eiIt.Current;
                     if (!ei.IsEndPoint(maxSegmentIndex))
                         return true;
                 }
@@ -112,12 +113,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// </summary>
         public class EndpointInfo
         {
-            private Coordinate pt;
+            private ICoordinate pt;
 
             /// <summary>
             /// 
             /// </summary>
-            public Coordinate Point
+            public ICoordinate Point
             {
                 get { return pt; }
                 set { pt = value; }
@@ -149,7 +150,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
             /// 
             /// </summary>
             /// <param name="pt"></param>
-            public EndpointInfo(Coordinate pt)
+            public EndpointInfo(ICoordinate pt)
             {
                 this.pt = pt;
                 isClosed = false;
@@ -179,16 +180,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation
             IDictionary endPoints = new SortedList();
             for (IEnumerator i = graph.GetEdgeEnumerator(); i.MoveNext(); )
             {
-                Edge e = (Edge)i.Current;
+                Edge e = (Edge) i.Current;
                 bool isClosed = e.IsClosed;                
-                Coordinate p0 = e.GetCoordinate(0);
+                ICoordinate p0 = e.GetCoordinate(0);
                 AddEndpoint(endPoints, p0, isClosed);
-                Coordinate p1 = e.GetCoordinate(e.NumPoints - 1);
+                ICoordinate p1 = e.GetCoordinate(e.NumPoints - 1);
                 AddEndpoint(endPoints, p1, isClosed);
             }
             for (IEnumerator i = endPoints.Values.GetEnumerator(); i.MoveNext(); )
             {
-                EndpointInfo eiInfo = (EndpointInfo)i.Current;
+                EndpointInfo eiInfo = (EndpointInfo) i.Current;
                 if (eiInfo.IsClosed && eiInfo.Degree != 2)
                     return true;
             }
@@ -201,9 +202,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// <param name="endPoints"></param>
         /// <param name="p"></param>
         /// <param name="isClosed"></param>
-        private void AddEndpoint(IDictionary endPoints, Coordinate p, bool isClosed)
+        private void AddEndpoint(IDictionary endPoints, ICoordinate p, bool isClosed)
         {
-            EndpointInfo eiInfo = (EndpointInfo)endPoints[p];
+            EndpointInfo eiInfo = (EndpointInfo) endPoints[p];
             if (eiInfo == null)
             {
                 eiInfo = new EndpointInfo(p);

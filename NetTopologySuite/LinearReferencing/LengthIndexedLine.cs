@@ -1,5 +1,7 @@
 using System;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
@@ -16,14 +18,14 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     /// </summary>
     public class LengthIndexedLine
     {
-        private Geometry linearGeom = null;
+        private IGeometry linearGeom = null;
  
         /// <summary>
         /// Constructs an object which allows a linear <see cref="Geometry" />
         /// to be linearly referenced using length as an index.
         /// </summary>
         /// <param name="linearGeom">The linear geometry to reference along.</param>
-        public LengthIndexedLine(Geometry linearGeom)
+        public LengthIndexedLine(IGeometry linearGeom)
         {
             this.linearGeom = linearGeom;
         }
@@ -36,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="index">The index of the desired point.</param>
         /// <returns>The <see cref="Coordinate" /> at the given index.</returns>
-        public Coordinate ExtractPoint(double index)
+        public ICoordinate ExtractPoint(double index)
         {
             LinearLocation loc = LengthLocationMap.GetLocation(linearGeom, index);
             return loc.GetCoordinate(linearGeom);
@@ -51,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="startIndex"></param>
         /// <param name="endIndex"></param>
         /// <returns></returns>
-        public Geometry ExtractLine(double startIndex, double endIndex)
+        public IGeometry ExtractLine(double startIndex, double endIndex)
         {
             LocationIndexedLine lil = new LocationIndexedLine(linearGeom);
             LinearLocation startLoc = LocationOf(startIndex);
@@ -82,7 +84,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="pt">A point on the line.</param>
         /// <returns>The minimum index of the point.</returns>
-        public double IndexOf(Coordinate pt)
+        public double IndexOf(ICoordinate pt)
         {
             return LengthIndexOfPoint.IndexOf(linearGeom, pt);
         }
@@ -105,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="pt">A point on the line.</param>
         /// <param name="minIndex">The value the returned index must be greater than.</param>
         /// <returns>The index of the point greater than the given minimum index.</returns>
-        public double IndexOfAfter(Coordinate pt, double minIndex)
+        public double IndexOfAfter(ICoordinate pt, double minIndex)
         {
             return LengthIndexOfPoint.IndexOfAfter(linearGeom, pt, minIndex);
         }
@@ -118,7 +120,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="subLine">A subLine of the line.</param>
         /// <returns>A pair of indices for the start and end of the subline..</returns>
-        public double[] IndicesOf(Geometry subLine)
+        public double[] IndicesOf(IGeometry subLine)
         {
             LinearLocation[] locIndex = LocationIndexOfLine.IndicesOf(linearGeom, subLine);
             double[] index = new double[] 
@@ -136,7 +138,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        public double Project(Coordinate pt)
+        public double Project(ICoordinate pt)
         {
             return LengthIndexOfPoint.IndexOf(linearGeom, pt);
         }

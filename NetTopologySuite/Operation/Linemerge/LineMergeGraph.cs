@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 
@@ -19,13 +21,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// Adds an Edge, DirectedEdges, and Nodes for the given LineString representation
         /// of an edge. 
         /// </summary>
-        public void AddEdge(LineString lineString)
+        public void AddEdge(ILineString lineString)
         {
             if (lineString.IsEmpty)
                 return;
-            Coordinate[] coordinates = (Coordinate[]) CoordinateArrays.RemoveRepeatedPoints(lineString.Coordinates);
-            Coordinate startCoordinate = coordinates[0];
-            Coordinate endCoordinate = coordinates[coordinates.Length - 1];
+            ICoordinate[] coordinates = CoordinateArrays.RemoveRepeatedPoints(lineString.Coordinates);
+            ICoordinate startCoordinate = coordinates[0];
+            ICoordinate endCoordinate = coordinates[coordinates.Length - 1];
             Node startNode = GetNode(startCoordinate);
             Node endNode = GetNode(endCoordinate);
             DirectedEdge directedEdge0 = new LineMergeDirectedEdge(startNode, endNode, 
@@ -42,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// </summary>
         /// <param name="coordinate"></param>
         /// <returns></returns>
-        private Node GetNode(Coordinate coordinate) 
+        private Node GetNode(ICoordinate coordinate) 
         {
             Node node = FindNode(coordinate);
             if (node == null) 
