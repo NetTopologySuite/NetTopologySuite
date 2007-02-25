@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
@@ -64,18 +66,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <param name="geometry">The Geometry to edit.</param>
         /// <param name="operation">The edit operation to carry out.</param>
         /// <returns>A new <c>Geometry</c> which is the result of the editing.</returns>
-        public Geometry Edit(Geometry geometry, GeometryEditorOperation operation)
+        public IGeometry Edit(IGeometry geometry, GeometryEditorOperation operation)
         {
             // if client did not supply a GeometryFactory, use the one from the input Geometry
             if (factory == null)
-                factory = geometry.Factory;
-            if (geometry is GeometryCollection) 
-                return EditGeometryCollection((GeometryCollection)geometry, operation);
-            if (geometry is Polygon) 
-                return EditPolygon((Polygon) geometry, operation);
-            if (geometry is Point) 
+                factory = ((Geometry) geometry).Factory;
+            if (geometry is IGeometryCollection) 
+                return EditGeometryCollection((IGeometryCollection) geometry, operation);
+            if (geometry is IPolygon)
+                return EditPolygon((IPolygon) geometry, operation);
+            if (geometry is IPoint) 
                 return operation.Edit(geometry, factory);
-            if (geometry is LineString) 
+            if (geometry is ILineString) 
                 return operation.Edit(geometry, factory);
             Assert.ShouldNeverReachHere("Unsupported Geometry classes should be caught in the GeometryEditorOperation.");
             return null;
@@ -87,14 +89,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <param name="polygon"></param>
         /// <param name="operation"></param>
         /// <returns></returns>
-        private Polygon EditPolygon(Polygon polygon, GeometryEditorOperation operation) 
+        private IPolygon EditPolygon(IPolygon polygon, GeometryEditorOperation operation) 
         {
-            Polygon newPolygon = (Polygon) operation.Edit(polygon, factory);
+            IPolygon newPolygon = (IPolygon) operation.Edit(polygon, factory);
             if (newPolygon.IsEmpty) 
                 //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
                 return newPolygon;
 
-            LinearRing shell = (LinearRing) Edit((Geometry) newPolygon.ExteriorRing, operation);
+            ILinearRing shell = (ILinearRing) Edit(newPolygon.ExteriorRing, operation);
             if (shell.IsEmpty) 
                 //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
                 return factory.CreatePolygon(null, null);
@@ -102,12 +104,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             ArrayList holes = new ArrayList();
             for (int i = 0; i < newPolygon.NumInteriorRings; i++) 
             {
-                LinearRing hole = (LinearRing) Edit((Geometry) newPolygon.GetInteriorRingN(i), operation);
+                ILinearRing hole = (ILinearRing) Edit(newPolygon.GetInteriorRingN(i), operation);
                 if (hole.IsEmpty) continue;
                 holes.Add(hole);
             }
 
-            return factory.CreatePolygon(shell, (LinearRing[]) holes.ToArray(typeof(LinearRing)));
+            return factory.CreatePolygon(shell, (ILinearRing[]) holes.ToArray(typeof(ILinearRing)));
         }
 
         /// <summary>
@@ -116,28 +118,27 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <param name="collection"></param>
         /// <param name="operation"></param>
         /// <returns></returns>
-        private GeometryCollection EditGeometryCollection(GeometryCollection collection, 
-                                                          GeometryEditorOperation operation)
+        private IGeometryCollection EditGeometryCollection(IGeometryCollection collection, GeometryEditorOperation operation)
         {
-            GeometryCollection newCollection = (GeometryCollection)operation.Edit(collection, factory);
+            IGeometryCollection newCollection = (IGeometryCollection) operation.Edit(collection, factory);
             ArrayList geometries = new ArrayList();
             for (int i = 0; i < newCollection.NumGeometries; i++) 
             {
-                Geometry geometry = Edit((Geometry) newCollection.GetGeometryN(i), operation);
+                IGeometry geometry = Edit(newCollection.GetGeometryN(i), operation);
                 if (geometry.IsEmpty)  continue;
                 geometries.Add(geometry);
             }
 
-            if (newCollection is MultiPoint) 
-                return factory.CreateMultiPoint((Point[]) geometries.ToArray(typeof(Point)));
+            if (newCollection is IMultiPoint) 
+                return factory.CreateMultiPoint((IPoint[]) geometries.ToArray(typeof(IPoint)));
 
-            if (newCollection is MultiLineString) 
-                return factory.CreateMultiLineString((LineString[]) geometries.ToArray(typeof(LineString)));
+            if (newCollection is IMultiLineString) 
+                return factory.CreateMultiLineString((ILineString[]) geometries.ToArray(typeof(ILineString)));
 
-            if (newCollection is MultiPolygon)
-                return factory.CreateMultiPolygon((Polygon[])geometries.ToArray(typeof(Polygon)));
+            if (newCollection is IMultiPolygon)
+                return factory.CreateMultiPolygon((IPolygon[]) geometries.ToArray(typeof(IPolygon)));
 
-            return factory.CreateGeometryCollection((Geometry[])geometries.ToArray(typeof(Geometry)));
+            return factory.CreateGeometryCollection((IGeometry[]) geometries.ToArray(typeof(IGeometry)));
         }
 
         /// <summary> 
@@ -155,7 +156,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             /// (may be different to the factory of the input point).
             /// </param>
             /// <returns>A new Geometry which is a modification of the input Geometry.</returns>
-            Geometry Edit(Geometry geometry, GeometryFactory factory);
+            IGeometry Edit(IGeometry geometry, GeometryFactory factory);
         }
 
         /// <summary>
@@ -170,17 +171,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             /// <param name="geometry"></param>
             /// <param name="factory"></param>
             /// <returns></returns>
-            public Geometry Edit(Geometry geometry, GeometryFactory factory) 
+            public IGeometry Edit(IGeometry geometry, GeometryFactory factory) 
             {
-                if (geometry is LinearRing) 
-                    return factory.CreateLinearRing(Edit((Coordinate[]) geometry.Coordinates, geometry));
+                if (geometry is ILinearRing) 
+                    return factory.CreateLinearRing(Edit(geometry.Coordinates, geometry));
 
-                if (geometry is LineString)
-                    return factory.CreateLineString(Edit((Coordinate[]) geometry.Coordinates, geometry));                
+                if (geometry is ILineString)
+                    return factory.CreateLineString(Edit(geometry.Coordinates, geometry));                
 
                 if (geometry is Point) 
                 {
-                    Coordinate[] newCoordinates = Edit((Coordinate[]) geometry.Coordinates, geometry);
+                    ICoordinate[] newCoordinates = Edit(geometry.Coordinates, geometry);
                     return factory.CreatePoint((newCoordinates.Length > 0) ? newCoordinates[0] : null);
                 }
 
@@ -193,7 +194,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             /// <param name="coordinates">The coordinate array to operate on.</param>
             /// <param name="geometry">The point containing the coordinate list.</param>
             /// <returns>An edited coordinate array (which may be the same as the input).</returns>
-            public abstract Coordinate[] Edit(Coordinate[] coordinates, Geometry geometry);
+            public abstract ICoordinate[] Edit(ICoordinate[] coordinates, IGeometry geometry);
         }
     }
 }

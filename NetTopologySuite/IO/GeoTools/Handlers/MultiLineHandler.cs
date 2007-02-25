@@ -1,4 +1,7 @@
 using System;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.IO
@@ -30,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <param name="file">The stream to read.</param>
 		/// <param name="geometryFactory">The geometry factory to use when making the object.</param>
 		/// <returns>The Geometry object that represents the shape file record.</returns>
-		public override Geometry Read(BigEndianBinaryReader file, GeometryFactory geometryFactory)
+		public override IGeometry Read(BigEndianBinaryReader file, GeometryFactory geometryFactory)
 		{
 			int shapeTypeNum = file.ReadInt32();
             ShapeGeometryTypes shapeType = (ShapeGeometryTypes)Enum.Parse(typeof(ShapeGeometryTypes), shapeTypeNum.ToString());
@@ -52,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			for (int i = 0; i < numParts; i++)
 				partOffsets[i] = file.ReadInt32();
 			
-			LineString[] lines = new LineString[numParts];
+			ILineString[] lines = new ILineString[numParts];
 			int start, finish, length;
 			for (int part = 0; part < numParts; part++)
 			{
@@ -63,15 +66,14 @@ namespace GisSharpBlog.NetTopologySuite.IO
 				length = finish - start;
                 CoordinateList points = new CoordinateList();
 				points.Capacity=length;
-				Coordinate external;
+				ICoordinate external;
 				for (int i = 0; i < length; i++)
 				{
 					external = new Coordinate(file.ReadDouble(),file.ReadDouble());
-					// points.Add(geometryFactory.PrecisionModel.ToInternal(external));
-                    geometryFactory.PrecisionModel.MakePrecise(ref external);
+					geometryFactory.PrecisionModel.MakePrecise(ref external);
                     points.Add(external);
 				}
-                lines[part] = geometryFactory.CreateLineString((Coordinate[]) points.ToArray());
+                lines[part] = geometryFactory.CreateLineString(points.ToArray());
 			}
 			return geometryFactory.CreateMultiLineString(lines);
 		}
@@ -82,12 +84,12 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <param name="geometry">The geometry object to write.</param>
 		/// <param name="file">The stream to write to.</param>
 		/// <param name="geometryFactory">The geometry factory to use.</param>
-		public override void Write(Geometry geometry, System.IO.BinaryWriter file, GeometryFactory geometryFactory)
+		public override void Write(IGeometry geometry, System.IO.BinaryWriter file, GeometryFactory geometryFactory)
 		{
-			MultiLineString multi = (MultiLineString) geometry;
+			IMultiLineString multi = (IMultiLineString) geometry;
             file.Write(int.Parse(Enum.Format(typeof(ShapeGeometryTypes), this.ShapeType, "d")));
         
-			Envelope box = (Envelope) multi.EnvelopeInternal;
+			IEnvelope box = multi.EnvelopeInternal;
 			file.Write(box.MinX);
 			file.Write(box.MinY);
 			file.Write(box.MaxX);
@@ -103,19 +105,18 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			int offset=0;
 			for (int i = 0; i < numParts; i++)
 			{
-				Geometry g =  (Geometry) multi.GetGeometryN(i);
+				IGeometry g = multi.GetGeometryN(i);
 				file.Write( offset );
 				offset = offset + g.NumPoints;
 			}
         
-			Coordinate	external;
+			ICoordinate	external;
 			for (int part = 0; part < numParts; part++)
 			{
-                CoordinateList points = new CoordinateList((Coordinate[]) multi.GetGeometryN(part).Coordinates);
+                CoordinateList points = new CoordinateList(multi.GetGeometryN(part).Coordinates);
 				for (int i = 0; i < points.Count; i++)
 				{
-					// external = geometryFactory.PrecisionModel.ToExternal((Coordinate)points[i]);
-                    external = (Coordinate)points[i];
+					external = points[i];
 					file.Write(external.X);
 					file.Write(external.Y);
 				}
@@ -128,9 +129,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// </summary>
 		/// <param name="geometry">The Geometry object to use.</param>
 		/// <returns>The length in bytes the Geometry will use when represented as a shape file record.</returns>
-		public override int GetLength(Geometry geometry)
+		public override int GetLength(IGeometry geometry)
 		{
-			int numParts=GetNumParts(geometry);
+			int numParts = GetNumParts(geometry);
 			return (22 + (2 * numParts) + geometry.NumPoints * 8);
 		}
 
@@ -139,11 +140,11 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-		private int GetNumParts(Geometry geometry)
+		private int GetNumParts(IGeometry geometry)
 		{
 			int numParts=1;
-			if (geometry is MultiLineString)
-				numParts = ((MultiLineString)geometry).Geometries.Length;
+			if (geometry is IMultiLineString)
+				numParts = ((IMultiLineString) geometry).Geometries.Length;
 			return numParts;
 		}
 	}

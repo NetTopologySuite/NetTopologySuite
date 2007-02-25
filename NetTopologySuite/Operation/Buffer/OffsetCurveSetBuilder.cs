@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// </summary>
     public class OffsetCurveSetBuilder
     {        
-        private Geometry inputGeom;
+        private IGeometry inputGeom;
         private double distance;
         private OffsetCurveBuilder curveBuilder;
 
@@ -29,7 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="inputGeom"></param>
         /// <param name="distance"></param>
         /// <param name="curveBuilder"></param>
-        public OffsetCurveSetBuilder(Geometry inputGeom, double distance, OffsetCurveBuilder curveBuilder)
+        public OffsetCurveSetBuilder(IGeometry inputGeom, double distance, OffsetCurveBuilder curveBuilder)
         {
             this.inputGeom = inputGeom;
             this.distance = distance;
@@ -58,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         {
             for (IEnumerator i = lineList.GetEnumerator(); i.MoveNext(); )
             {
-                Coordinate[] coords = (Coordinate[])i.Current;
+                ICoordinate[] coords = (ICoordinate[]) i.Current;
                 AddCurve(coords, leftLoc, rightLoc);
             }
         }
@@ -72,7 +72,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// Left: Location.Exterior.
         /// Right: Location.Interior.
         /// </summary>
-        private void AddCurve(Coordinate[] coord, Locations leftLoc, Locations rightLoc)
+        private void AddCurve(ICoordinate[] coord, Locations leftLoc, Locations rightLoc)
         {
             // don't add null curves!
             if (coord.Length < 2) return;
@@ -85,7 +85,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// 
         /// </summary>
         /// <param name="g"></param>
-        private void Add(Geometry g)
+        private void Add(IGeometry g)
         {
             if (g.IsEmpty) return;
             if (g is Polygon)                 AddPolygon((Polygon) g);
@@ -235,7 +235,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
              * a full topological computation.
              *
              */
-            LinearRing ring = inputGeom.Factory.CreateLinearRing(ringCoord);
+            ILinearRing ring = ((LinearRing) inputGeom).Factory.CreateLinearRing(ringCoord);
             MinimumDiameter md = new MinimumDiameter(ring);
             minDiam = md.Length;
             return minDiam < 2 * Math.Abs(bufferDistance);

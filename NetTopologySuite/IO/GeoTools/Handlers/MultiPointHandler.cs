@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Diagnostics;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 
@@ -34,10 +36,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <param name="file">The stream to read.</param>
 		/// <param name="geometryFactory">The geometry factory to use when making the object.</param>
 		/// <returns>The Geometry object that represents the shape file record.</returns>
-        public override Geometry Read(BigEndianBinaryReader file, GeometryFactory geometryFactory)
+        public override IGeometry Read(BigEndianBinaryReader file, GeometryFactory geometryFactory)
         {
             int shapeTypeNum = file.ReadInt32();
-            ShapeGeometryTypes shapeType = (ShapeGeometryTypes)Enum.Parse(typeof(ShapeGeometryTypes), shapeTypeNum.ToString());
+            ShapeGeometryTypes shapeType = (ShapeGeometryTypes) Enum.Parse(typeof(ShapeGeometryTypes), shapeTypeNum.ToString());
             if ( ! ( shapeType == ShapeGeometryTypes.MultiPoint  || shapeType == ShapeGeometryTypes.MultiPointM ||
                      shapeType == ShapeGeometryTypes.MultiPointZ || shapeType == ShapeGeometryTypes.MultiPointZM))	
                 throw new ShapefileException("Attempting to load a non-multipoint as multipoint.");
@@ -49,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 
             // Read points
             int numPoints = file.ReadInt32();
-            Point[] points = new Point[numPoints];
+            IPoint[] points = new IPoint[numPoints];
             for (int i = 0; i < numPoints; i++)
                 points[i] = geometryFactory.CreatePoint(new Coordinate(file.ReadDouble(), file.ReadDouble()));
             return geometryFactory.CreateMultiPoint(points);
@@ -61,20 +63,21 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <param name="geometry">The geometry to write.</param>
 		/// <param name="file">The file stream to write to.</param>
 		/// <param name="geometryFactory">The geometry factory to use.</param>
-		public override void Write(Geometry geometry, System.IO.BinaryWriter file, GeometryFactory geometryFactory)
+		public override void Write(IGeometry geometry, System.IO.BinaryWriter file, GeometryFactory geometryFactory)
 		{
-            if(!(geometry is MultiPoint))
+            if(!(geometry is IMultiPoint))
                 throw new ArgumentException("Geometry Type error: MultiPoint expected, but the type retrieved is " + geometry.GetType().Name);
 
-			if (!geometry.IsValid)
-				Trace.WriteLine("Invalid multipoint being written.");
+            // Slow and maybe not useful...
+			// if (!geometry.IsValid)
+			// 	Trace.WriteLine("Invalid multipoint being written.");
 
-            MultiPoint mpoint = geometry as MultiPoint;
+            IMultiPoint mpoint = geometry as IMultiPoint;
             
             file.Write(int.Parse(Enum.Format(typeof(ShapeGeometryTypes), this.ShapeType, "d")));
 
-            Envelope box = (Envelope) geometry.EnvelopeInternal;
-			Envelope bounds = ShapeHandler.GetEnvelopeExternal(geometryFactory.PrecisionModel, box);
+            IEnvelope box = geometry.EnvelopeInternal;
+			IEnvelope bounds = ShapeHandler.GetEnvelopeExternal(geometryFactory.PrecisionModel, box);
 			file.Write(bounds.MinX);
 			file.Write(bounds.MinY);
 			file.Write(bounds.MaxX);
@@ -86,7 +89,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			// write the points 
 			for (int i = 0; i < numPoints; i++)
 			{
-                Point point = (Point)mpoint.Geometries[i];
+                IPoint point = (IPoint) mpoint.Geometries[i];
                 file.Write(point.X);
                 file.Write(point.Y);	
 			}            
@@ -97,7 +100,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// </summary>
 		/// <param name="geometry">The geometry to get the length for.</param>
 		/// <returns>The length in bytes this geometry is going to use when written out as a shapefile record.</returns>
-		public override int GetLength(Geometry geometry)
+		public override int GetLength(IGeometry geometry)
 		{			
 			return (22 + geometry.NumPoints * 8);
 		}					

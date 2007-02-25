@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Simplify
@@ -13,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// </summary>
     public class TaggedLineSegment : LineSegment
     {
-        private Geometry parent;
+        private IGeometry parent;
         private int index;
 
         /// <summary>
@@ -23,7 +25,8 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <param name="p1"></param>
         /// <param name="parent"></param>
         /// <param name="index"></param>
-        public TaggedLineSegment(Coordinate p0, Coordinate p1, Geometry parent, int index) : base(p0, p1)
+        public TaggedLineSegment(ICoordinate p0, ICoordinate p1, IGeometry parent, int index)
+            : base(p0, p1)
         {            
             this.parent = parent;
             this.index = index;
@@ -34,12 +37,13 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// </summary>
         /// <param name="p0"></param>
         /// <param name="p1"></param>
-        public TaggedLineSegment(Coordinate p0, Coordinate p1) : this(p0, p1, null, -1) { }
+        public TaggedLineSegment(ICoordinate p0, ICoordinate p1) 
+            : this(p0, p1, null, -1) { }
 
         /// <summary>
         /// 
         /// </summary>
-        public Geometry Parent
+        public IGeometry Parent
         {
             get
             {

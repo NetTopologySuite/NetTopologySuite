@@ -53,10 +53,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <param name="geom1"></param>
         /// <param name="opCode"></param>
         /// <returns></returns>
-        public static Geometry Overlay(Geometry geom0, Geometry geom1, SpatialFunctions opCode)
+        public static IGeometry Overlay(IGeometry geom0, IGeometry geom1, SpatialFunctions opCode)
         {
             OverlayOp gov = new OverlayOp(geom0, geom1);
-            Geometry geomOv = gov.GetResultGeometry(opCode);
+            IGeometry geomOv = gov.GetResultGeometry(opCode);
             return geomOv;
         }
 
@@ -102,7 +102,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 
         private readonly PointLocator ptLocator = new PointLocator();
         private GeometryFactory geomFact;
-        private Geometry resultGeom;
+        private IGeometry resultGeom;
 
         private PlanarGraph graph;
         private EdgeList edgeList     = new EdgeList();
@@ -116,15 +116,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         /// <param name="g0"></param>
         /// <param name="g1"></param>
-        public OverlayOp(Geometry g0, Geometry g1) : base(g0, g1)
+        public OverlayOp(IGeometry g0, IGeometry g1) : base(g0, g1)
         {            
             graph = new PlanarGraph(new OverlayNodeFactory());
+
             /*
             * Use factory of primary point.
             * Note that this does NOT handle mixed-precision arguments
             * where the second arg has greater precision than the first.
             */
-            geomFact = g0.Factory;
+            geomFact = ((Geometry) g0).Factory;
         }
 
         /// <summary>
@@ -132,7 +133,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         /// <param name="funcCode"></param>
         /// <returns></returns>
-        public Geometry GetResultGeometry(SpatialFunctions funcCode)
+        public IGeometry GetResultGeometry(SpatialFunctions funcCode)
         {
             ComputeOverlay(funcCode);
             return resultGeom;
@@ -230,7 +231,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             // If an identical edge already exists, simply update its label
             if (foundIndex >= 0)
             {
-                Edge existingEdge = (Edge)edgeList[foundIndex];
+                Edge existingEdge = (Edge) edgeList[foundIndex];
                 Label existingLabel = existingEdge.Label;
 
                 Label labelToMerge = e.Label;
@@ -336,10 +337,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             }
             // Removing all collapsed edges at the end of iteration.
             foreach (Edge obj in edgesToRemove)
-                edgeList.Remove(obj);
-            // edgeList.addAll(newEdges);
+                edgeList.Remove(obj);            
             foreach (object obj in newEdges)
-                edgeList.Add((Edge)obj);
+                edgeList.Add((Edge) obj);
         }
 
         /// <summary>
@@ -452,7 +452,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         private void LabelIncompleteNode(Node n, int targetIndex)
         {
-            Locations loc = ptLocator.Locate((Coordinate) n.Coordinate, (Geometry) arg[targetIndex].Geometry);
+            Locations loc = ptLocator.Locate(n.Coordinate, arg[targetIndex].Geometry);
             n.Label.SetLocation(targetIndex, loc);
         }
 
@@ -503,7 +503,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// This method is used to decide if a point node should be included in the result or not.
         /// </summary>
         /// <returns><c>true</c> if the coord point is covered by a result Line or Area point.</returns>
-        public bool IsCoveredByLA(Coordinate coord)
+        public bool IsCoveredByLA(ICoordinate coord)
         {
             if (IsCovered(coord, resultLineList)) 
                 return true;
@@ -515,7 +515,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// This method is used to decide if an L edge should be included in the result or not.
         /// </summary>
         /// <returns><c>true</c> if the coord point is covered by a result Area point.</returns>
-        public bool IsCoveredByA(Coordinate coord)
+        public bool IsCoveredByA(ICoordinate coord)
         {
             if (IsCovered(coord, resultPolyList)) 
                 return true;
@@ -526,12 +526,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <c>true</c> if the coord is located in the interior or boundary of
         /// a point in the list.
         /// </returns>
-        private bool IsCovered(Coordinate coord, IList geomList)
+        private bool IsCovered(ICoordinate coord, IList geomList)
         {
             IEnumerator it = geomList.GetEnumerator();
             while (it.MoveNext()) 
             {
-                Geometry geom = (Geometry) it.Current;
+                IGeometry geom = (IGeometry) it.Current;
                 Locations loc = ptLocator.Locate(coord, geom);
                 if (loc != Locations.Exterior) 
                     return true;
@@ -546,7 +546,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <param name="resultLineList"></param>
         /// <param name="resultPolyList"></param>
         /// <returns></returns>
-        private Geometry ComputeGeometry(IList resultPointList, IList resultLineList, IList resultPolyList)
+        private IGeometry ComputeGeometry(IList resultPointList, IList resultLineList, IList resultPolyList)
         {
             ArrayList geomList = new ArrayList();
             // element geometries of the result are always in the order Point,Curve,A

@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>
@@ -17,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// The <c>GeometryCollection</c> being iterated over.
         /// </summary>
-        private GeometryCollection parent;
+        private IGeometryCollection parent;
 
         /// <summary>
         /// Indicates whether or not the first element (the <c>GeometryCollection</c>)
@@ -50,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// The collection over which to iterate; also, the first
         /// element returned by the iterator.
         /// </param>
-        public GeometryCollectionEnumerator(GeometryCollection parent) 
+        public GeometryCollectionEnumerator(IGeometryCollection parent) 
         {
             this.parent = parent;
             atStart = true;
@@ -100,10 +102,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 if (index >= max) 
                     throw new ArgumentOutOfRangeException(); 
                 
-                Geometry obj = (Geometry) parent.GetGeometryN(index++);
-                if (obj is GeometryCollection) 
+                IGeometry obj = parent.GetGeometryN(index++);
+                if (obj is IGeometryCollection) 
                 {
-                    subcollectionEnumerator = new GeometryCollectionEnumerator((GeometryCollection) obj);
+                    subcollectionEnumerator = new GeometryCollectionEnumerator((IGeometryCollection) obj);
                     // there will always be at least one element in the sub-collection
                     return subcollectionEnumerator.Current;
                 }

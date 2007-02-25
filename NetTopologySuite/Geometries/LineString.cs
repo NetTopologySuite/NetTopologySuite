@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Represents an empty <c>LineString</c>.
         /// </summary>
-        public static readonly LineString Empty = new GeometryFactory().CreateLineString(new Coordinate[] { });
+        public static readonly ILineString Empty = new GeometryFactory().CreateLineString(new ICoordinate[] { });
 
         /// <summary>  
         /// The points of this <c>LineString</c>.
@@ -247,9 +247,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Creates a <see cref="LineString" /> whose coordinates are in the reverse order of this objects.
         /// </summary>
         /// <returns>A <see cref="LineString" /> with coordinates in the reverse order.</returns>
-        public LineString Reverse()
+        public ILineString Reverse()
         {
-            ICoordinateSequence seq = (ICoordinateSequence)points.Clone();
+            ICoordinateSequence seq = (ICoordinateSequence) points.Clone();
 
             // Personalized implementation using Array.Reverse: maybe it's faster?
             Coordinate[] array = (Coordinate[]) seq.ToCoordinateArray();
@@ -280,7 +280,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <returns></returns>
-        protected override Envelope ComputeEnvelopeInternal() 
+        protected override IEnvelope ComputeEnvelopeInternal() 
         {
             if (IsEmpty) 
                 return new Envelope();
@@ -288,7 +288,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             //Convert to array, then access array directly, to avoid the function-call overhead
             //of calling Getter millions of times. ToArray may be inefficient for
             //non-BasicCoordinateSequence CoordinateSequences. [Jon Aquino]
-            Coordinate[] coordinates = (Coordinate[]) points.ToCoordinateArray();
+            ICoordinate[] coordinates = points.ToCoordinateArray();
             double minx = coordinates[0].X;
             double miny = coordinates[0].Y;
             double maxx = coordinates[0].X;

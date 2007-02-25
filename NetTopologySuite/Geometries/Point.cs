@@ -212,7 +212,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <returns></returns>
-        protected override Envelope ComputeEnvelopeInternal() 
+        protected override IEnvelope ComputeEnvelopeInternal() 
         {
             if (IsEmpty) 
                 return new Envelope();            

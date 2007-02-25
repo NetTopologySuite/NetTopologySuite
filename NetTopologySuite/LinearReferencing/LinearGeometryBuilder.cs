@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
@@ -12,13 +14,13 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     public class LinearGeometryBuilder
     {
         private GeometryFactory geomFact = null;
-        private List<Geometry> lines = new List<Geometry>();
+        private List<IGeometry> lines = new List<IGeometry>();
         private CoordinateList coordList = null;
 
         private bool ignoreInvalidLines = false;
         private bool fixInvalidLines = false;
 
-        private Coordinate lastPt = null;
+        private ICoordinate lastPt = null;
 
         /// <summary>
         /// 
@@ -65,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Adds a point to the current line.
         /// </summary>
         /// <param name="pt">The <see cref="Coordinate" /> to add.</param>
-        public void Add(Coordinate pt)
+        public void Add(ICoordinate pt)
         {
             Add(pt, true);
         }
@@ -75,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="pt">The <see cref="Coordinate" /> to add.</param>
         /// <param name="allowRepeatedPoints">If <c>true</c>, allows the insertions of repeated points.</param>
-        public void Add(Coordinate pt, bool allowRepeatedPoints)
+        public void Add(ICoordinate pt, bool allowRepeatedPoints)
         {
             if (coordList == null)
                 coordList = new CoordinateList();
@@ -86,7 +88,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate LastCoordinate
+        public ICoordinate LastCoordinate
         {
             get
             {
@@ -108,13 +110,13 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
                 return;
             }
 
-            Coordinate[] rawPts = (Coordinate[]) coordList.ToCoordinateArray();
-            Coordinate[] pts = rawPts;
+            ICoordinate[] rawPts = coordList.ToCoordinateArray();
+            ICoordinate[] pts = rawPts;
             if (FixInvalidLines)
                 pts = ValidCoordinateSequence(rawPts);
 
             coordList = null;
-            LineString line = null;
+            ILineString line = null;
             try
             {
                 line = geomFact.CreateLineString(pts);
@@ -136,11 +138,11 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="pts"></param>
         /// <returns></returns>
-        private Coordinate[] ValidCoordinateSequence(Coordinate[] pts)
+        private ICoordinate[] ValidCoordinateSequence(ICoordinate[] pts)
         {
             if (pts.Length >= 2) 
                 return pts;
-            Coordinate[] validPts = new Coordinate[] { pts[0], pts[0] };
+            ICoordinate[] validPts = new ICoordinate[] { pts[0], pts[0] };
             return validPts;
         }
 
@@ -148,7 +150,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Builds and returns the <see cref="Geometry" />.
         /// </summary>
         /// <returns></returns>
-        public Geometry GetGeometry()
+        public IGeometry GetGeometry()
         {
             // end last line in case it was not done by user
             EndLine();

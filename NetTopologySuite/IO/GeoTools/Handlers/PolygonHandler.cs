@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Diagnostics;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 
@@ -33,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <param name="file">The stream to read.</param>
 		/// <param name="geometryFactory">The geometry factory to use when making the object.</param>
 		/// <returns>The Geometry object that represents the shape file record.</returns>
-		public override Geometry Read(BigEndianBinaryReader file, GeometryFactory geometryFactory)
+		public override IGeometry Read(BigEndianBinaryReader file, GeometryFactory geometryFactory)
 		{
 			int shapeTypeNum = file.ReadInt32();
             ShapeGeometryTypes shapeType = (ShapeGeometryTypes)Enum.Parse(typeof(ShapeGeometryTypes), shapeTypeNum.ToString());
@@ -68,9 +71,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
 				points.Capacity = length;
 				for (int i = 0; i < length; i++)
 				{
-					Coordinate external = new Coordinate(file.ReadDouble(), file.ReadDouble() );					
+					ICoordinate external = new Coordinate(file.ReadDouble(), file.ReadDouble() );					
                     geometryFactory.PrecisionModel.MakePrecise(ref external);
-                    Coordinate internalCoord = external;
+                    ICoordinate internalCoord = external;
 
                     // Thans to Abhay Menon!
                     if (!Double.IsNaN(internalCoord.Y) && !Double.IsNaN(internalCoord.X))
@@ -79,7 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 
                 if (points.Count > 0) // Thans to Abhay Menon!
                 {
-                    LinearRing ring = geometryFactory.CreateLinearRing((Coordinate[]) points.ToArray());
+                    ILinearRing ring = geometryFactory.CreateLinearRing(points.ToArray());
 
                     // If shape have only a part, jump orientation check and add to shells
                     if (numParts == 1)
@@ -101,20 +104,20 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			// Find holes
 			for (int i = 0; i < holes.Count; i++)
 			{
-				LinearRing testRing = (LinearRing) holes[i];
-				LinearRing minShell = null;
-				Envelope minEnv = null;
-                Envelope testEnv = (Envelope) testRing.EnvelopeInternal;
-                Coordinate testPt = (Coordinate) testRing.GetCoordinateN(0);
-				LinearRing tryRing;
+				ILinearRing testRing = (ILinearRing) holes[i];
+				ILinearRing minShell = null;
+				IEnvelope minEnv = null;
+                IEnvelope testEnv = testRing.EnvelopeInternal;
+                ICoordinate testPt = testRing.GetCoordinateN(0);
+				ILinearRing tryRing;
 				for (int j = 0; j < shells.Count; j++)
 				{
-					tryRing = (LinearRing) shells[j];
-                    Envelope tryEnv = (Envelope) tryRing.EnvelopeInternal;
+					tryRing = (ILinearRing) shells[j];
+                    IEnvelope tryEnv = tryRing.EnvelopeInternal;
 					if (minShell != null)
-                        minEnv = (Envelope) minShell.EnvelopeInternal;
+                        minEnv = minShell.EnvelopeInternal;
 					bool isContained = false;
-					CoordinateList coordList = new CoordinateList((Coordinate[]) tryRing.Coordinates);
+					CoordinateList coordList = new CoordinateList(tryRing.Coordinates);
 					if (tryEnv.Contains(testEnv)
                         && (CGAlgorithms.IsPointInRing(testPt, coordList.ToArray()) 
                         || (PointInList(testPt, coordList)))) 				
@@ -135,10 +138,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
 				}
 			}
 
-			Polygon[] polygons = new Polygon[shells.Count];
-			for (int i = 0; i < shells.Count; i++)			
-				polygons[i] = geometryFactory.CreatePolygon((LinearRing) shells[i], 
-                    (LinearRing[])((ArrayList) holesForShells[i]).ToArray(typeof(LinearRing)));
+			IPolygon[] polygons = new IPolygon[shells.Count];
+			for (int i = 0; i < shells.Count; i++)
+                polygons[i] = (geometryFactory.CreatePolygon((ILinearRing) shells[i], 
+                    (ILinearRing[]) ((ArrayList)holesForShells[i]).ToArray(typeof(ILinearRing))));
         
 			if (polygons.Length == 1)
 				return polygons[0];
@@ -152,25 +155,25 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <param name="geometry">The geometry to write.</param>
 		/// <param name="file">The file stream to write to.</param>
 		/// <param name="geometryFactory">The geometry factory to use.</param>
-		public override void Write(Geometry geometry, System.IO.BinaryWriter file, GeometryFactory geometryFactory)
+		public override void Write(IGeometry geometry, System.IO.BinaryWriter file, GeometryFactory geometryFactory)
 		{
-            // Diego Guidi say's: his check seems to be not useful and slow the operations...
+            // This check seems to be not useful and slow the operations...
 			//  if (!geometry.IsValid)    
 			//	Trace.WriteLine("Invalid polygon being written.");
 
-			GeometryCollection multi;
-			if(geometry is GeometryCollection)
-				multi = (GeometryCollection) geometry;
+			IGeometryCollection multi;
+			if(geometry is IGeometryCollection)
+				multi = (IGeometryCollection) geometry;
 			else 
 			{
-				GeometryFactory gf = new GeometryFactory(geometry.PrecisionModel);				
-				multi = gf.CreateMultiPolygon( new Polygon[]{(Polygon) geometry} );
+				GeometryFactory gf = new GeometryFactory(((Geometry) geometry).PrecisionModel);				
+				multi = gf.CreateMultiPolygon( new IPolygon[] {(IPolygon) geometry} );
 			}
 
 			file.Write(int.Parse(Enum.Format(typeof(ShapeGeometryTypes), this.ShapeType, "d")));
 
-            Envelope box = (Envelope) multi.EnvelopeInternal;
-			Envelope bounds = ShapeHandler.GetEnvelopeExternal(geometryFactory.PrecisionModel,  box);
+            IEnvelope box = multi.EnvelopeInternal;
+			IEnvelope bounds = ShapeHandler.GetEnvelopeExternal(geometryFactory.PrecisionModel,  box);
 			file.Write(bounds.MinX);
 			file.Write(bounds.MinY);
 			file.Write(bounds.MaxX);
@@ -186,12 +189,12 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			for (int part = 0; part < multi.NumGeometries; part++)
 			{
 				// offset to the shell points
-				Polygon polygon = (Polygon)multi.Geometries[part];
+				IPolygon polygon = (IPolygon) multi.Geometries[part];
 				file.Write(offset);
 				offset = offset + polygon.ExteriorRing.NumPoints;
 
 				// offstes to the holes
-				foreach (LinearRing ring in polygon.InteriorRings)
+				foreach (ILinearRing ring in polygon.InteriorRings)
 				{
 					file.Write(offset);
 					offset = offset + ring.NumPoints;
@@ -201,12 +204,12 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			// write the points 
 			for (int part = 0; part < multi.NumGeometries; part++)
 			{
-				Polygon poly = (Polygon)multi.Geometries[part];
-				Coordinate[] points = (Coordinate[]) poly.ExteriorRing.Coordinates;
+                IPolygon poly = (IPolygon) multi.Geometries[part];
+				ICoordinate[] points = poly.ExteriorRing.Coordinates;
 				WriteCoords(new CoordinateList(points), file, geometryFactory);
-				foreach(LinearRing ring in poly.InteriorRings)
+				foreach(ILinearRing ring in poly.InteriorRings)
 				{
-                    Coordinate[] points2 = (Coordinate[]) ring.Coordinates;					
+                    ICoordinate[] points2 = ring.Coordinates;					
 					WriteCoords(new CoordinateList(points2), file, geometryFactory);
 				}
 			}
@@ -220,8 +223,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="geometryFactory"></param>
 		private void WriteCoords(CoordinateList points, System.IO.BinaryWriter file, GeometryFactory geometryFactory)
 		{
-			Coordinate external;
-			foreach (Coordinate point in points)
+			ICoordinate external;
+			foreach (ICoordinate point in points)
 			{
 				// external = geometryFactory.PrecisionModel.ToExternal(point);
                 external = point;
@@ -235,9 +238,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// </summary>
 		/// <param name="geometry">The geometry to get the length for.</param>
 		/// <returns>The length in bytes this geometry is going to use when written out as a shapefile record.</returns>
-		public override int GetLength(Geometry geometry)
+		public override int GetLength(IGeometry geometry)
 		{
-			int numParts=GetNumParts(geometry);
+			int numParts = GetNumParts(geometry);
 			return (22 + (2 * numParts) + geometry.NumPoints * 8);
 		}
 		
@@ -246,17 +249,17 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-		private int GetNumParts(Geometry geometry)
+		private int GetNumParts(IGeometry geometry)
 		{
-			int numParts=0;
-			if (geometry is MultiPolygon)
+			int numParts = 0;
+			if (geometry is IMultiPolygon)
             {
-                MultiPolygon mpoly = geometry as MultiPolygon;
-                foreach (Polygon poly in mpoly.Geometries)
+                IMultiPolygon mpoly = geometry as IMultiPolygon;
+                foreach (IPolygon poly in mpoly.Geometries)
 					numParts = numParts + poly.InteriorRings.Length + 1;
             }
-			else if (geometry is Polygon)
-				numParts = ((Polygon)geometry).InteriorRings.Length + 1;
+			else if (geometry is IPolygon)
+				numParts = ((IPolygon) geometry).InteriorRings.Length + 1;
 			else throw new InvalidOperationException("Should not get here.");
 			return numParts;
 		}
@@ -267,9 +270,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <param name="testPoint">TestPoint the point to test for.</param>
 		/// <param name="pointList">PointList the list of points to look through.</param>
 		/// <returns>true if testPoint is a point in the pointList list.</returns>
-		private bool PointInList(Coordinate testPoint, CoordinateList pointList) 
+		private bool PointInList(ICoordinate testPoint, CoordinateList pointList) 
 		{
-			foreach(Coordinate p in pointList)
+			foreach(ICoordinate p in pointList)
 				if (p.Equals2D(testPoint))
 					return true;
 			return false;

@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Text;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -19,11 +22,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class MinimumDiameter
     {
-        private readonly Geometry inputGeom;
+        private readonly IGeometry inputGeom;
         private readonly bool isConvex;
 
         private LineSegment minBaseSeg = new LineSegment();
-        private Coordinate minWidthPt = null;
+        private ICoordinate minWidthPt = null;
         private int minPtIndex;
         private double minWidth = 0.0;
 
@@ -31,7 +34,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Compute a minimum diameter for a giver <c>Geometry</c>.
         /// </summary>
         /// <param name="inputGeom">a Geometry.</param>
-        public MinimumDiameter(Geometry inputGeom) : this(inputGeom, false) { }
+        public MinimumDiameter(IGeometry inputGeom) 
+            : this(inputGeom, false) { }
 
         /// <summary> 
         /// Compute a minimum diameter for a giver <c>Geometry</c>,
@@ -42,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="inputGeom">a Geometry which is convex.</param>
         /// <param name="isConvex"><c>true</c> if the input point is convex.</param>
-        public MinimumDiameter(Geometry inputGeom, bool isConvex)
+        public MinimumDiameter(IGeometry inputGeom, bool isConvex)
         {
             this.inputGeom = inputGeom;
             this.isConvex = isConvex;
@@ -65,7 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Gets the <c>Coordinate</c> forming one end of the minimum diameter.
         /// </summary>
         /// <returns>A coordinate forming one end of the minimum diameter.</returns>
-        public Coordinate WidthCoordinate
+        public ICoordinate WidthCoordinate
         {
             get
             {
@@ -78,12 +82,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Gets the segment forming the base of the minimum diameter.
         /// </summary>
         /// <returns>The segment forming the base of the minimum diameter.</returns>
-        public LineString SupportingSegment
+        public ILineString SupportingSegment
         {
             get
             {
                 ComputeMinimumDiameter();
-                return inputGeom.Factory.CreateLineString(new Coordinate[] { minBaseSeg.P0, minBaseSeg.P1 });
+                return inputGeom.Factory.CreateLineString(new ICoordinate[] { minBaseSeg.P0, minBaseSeg.P1 });
             }
         }
 
@@ -91,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Gets a <c>LineString</c> which is a minimum diameter.
         /// </summary>
         /// <returns>A <c>LineString</c> which is a minimum diameter.</returns>
-        public LineString Diameter
+        public ILineString Diameter
         {
             get
             {
@@ -99,10 +103,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
                 // return empty linearRing if no minimum width calculated
                 if (minWidthPt == null)
-                    return inputGeom.Factory.CreateLineString((Coordinate[])null);
+                {
+                    (ICoordinate[]) nullCoords = null;
+                    return inputGeom.Factory.CreateLineString(nullCoords);
+                }
 
-                Coordinate basePt = minBaseSeg.Project(minWidthPt);
-                return inputGeom.Factory.CreateLineString(new Coordinate[] { basePt, minWidthPt });
+                ICoordinate basePt = minBaseSeg.Project(minWidthPt);
+                return inputGeom.Factory.CreateLineString(new ICoordinate[] { basePt, minWidthPt });
             }
         }
 
@@ -118,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             if (isConvex) ComputeWidthConvex(inputGeom);
             else
             {
-                Geometry convexGeom = (new ConvexHull(inputGeom)).GetConvexHull();
+                IGeometry convexGeom = (new ConvexHull(inputGeom)).GetConvexHull();
                 ComputeWidthConvex(convexGeom);
             }
         }
@@ -127,12 +134,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// 
         /// </summary>
         /// <param name="geom"></param>
-        private void ComputeWidthConvex(Geometry geom)
+        private void ComputeWidthConvex(IGeometry geom)
         {
-            Coordinate[] pts = null;
-            if (geom is Polygon)
-                pts = (Coordinate[]) ((Polygon) geom).ExteriorRing.Coordinates;
-            else pts = (Coordinate[]) geom.Coordinates;
+            ICoordinate[] pts = null;
+            if (geom is IPolygon)
+                 pts = ((IPolygon) geom).ExteriorRing.Coordinates;
+            else pts = geom.Coordinates;
 
             // special cases for lines or points or degenerate rings
             if (pts.Length == 0) 
@@ -163,7 +170,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Leaves the width information in the instance variables.
         /// </summary>
         /// <param name="pts"></param>
-        private void ComputeConvexRingMinDiameter(Coordinate[] pts)
+        private void ComputeConvexRingMinDiameter(ICoordinate[] pts)
         {
             // for each segment in the ring
             minWidth = Double.MaxValue;
@@ -186,7 +193,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="seg"></param>
         /// <param name="startIndex"></param>
         /// <returns></returns>
-        private int FindMaxPerpDistance(Coordinate[] pts, LineSegment seg, int startIndex)
+        private int FindMaxPerpDistance(ICoordinate[] pts, LineSegment seg, int startIndex)
         {
             double maxPerpDistance = seg.DistancePerpendicular(pts[startIndex]);
             double nextPerpDistance = maxPerpDistance;
@@ -218,7 +225,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="pts"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        private static int NextIndex(Coordinate[] pts, int index)
+        private static int NextIndex(ICoordinate[] pts, int index)
         {
             index++;
             if (index >= pts.Length) index = 0;

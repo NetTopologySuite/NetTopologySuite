@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 
@@ -73,12 +75,11 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// </summary>
         /// <param name="geom"></param>
         /// <returns></returns>
-        public Geometry Reduce(Geometry geom)
+        public IGeometry Reduce(IGeometry geom)
         {
             GeometryEditor geomEdit;
             if (changePrecisionModel) 
             {
-                // GeometryFactory newFactory = new GeometryFactory(newPrecisionModel, geom.SRID);
                 GeometryFactory newFactory = new GeometryFactory(newPrecisionModel);
                 geomEdit = new GeometryEditor(newFactory);
             }
@@ -110,23 +111,23 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             /// <param name="coordinates"></param>
             /// <param name="geom"></param>
             /// <returns></returns>
-            public override Coordinate[] Edit(Coordinate[] coordinates, Geometry geom)
+            public override ICoordinate[] Edit(ICoordinate[] coordinates, IGeometry geom)
             {
                 if (coordinates.Length == 0) 
                     return null;
 
-                Coordinate[] reducedCoords = new Coordinate[coordinates.Length];
+                ICoordinate[] reducedCoords = new ICoordinate[coordinates.Length];
                 // copy coordinates and reduce
                 for (int i = 0; i < coordinates.Length; i++) 
                 {
-                    Coordinate coord = new Coordinate(coordinates[i]);
+                    ICoordinate coord = new Coordinate(coordinates[i]);
                     container.newPrecisionModel.MakePrecise(ref coord);
                     reducedCoords[i] = coord;
                 }
 
                 // remove repeated points, to simplify returned point as much as possible
                 CoordinateList noRepeatedCoordList = new CoordinateList(reducedCoords, false);
-                Coordinate[] noRepeatedCoords = (Coordinate[]) noRepeatedCoordList.ToCoordinateArray();
+                ICoordinate[] noRepeatedCoords = noRepeatedCoordList.ToCoordinateArray();
 
                 /*
                 * Check to see if the removal of repeated points
@@ -139,12 +140,12 @@ namespace GisSharpBlog.NetTopologySuite.Precision
                 * (This may create an invalid point - the client must handle this.)
                 */
                 int minLength = 0;
-                if (geom is LineString) 
+                if (geom is ILineString) 
                     minLength = 2;
-                if (geom is LinearRing) 
+                if (geom is ILinearRing) 
                     minLength = 4;
 
-                Coordinate[] collapsedCoords = reducedCoords;
+                ICoordinate[] collapsedCoords = reducedCoords;
                 if (container.removeCollapsed) 
                     collapsedCoords = null;
 

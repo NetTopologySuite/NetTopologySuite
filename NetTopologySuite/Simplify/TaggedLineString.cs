@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Simplify
@@ -11,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// </summary>
     public class TaggedLineString
     {
-        private LineString parentLine;
+        private ILineString parentLine;
         private TaggedLineSegment[] segs;
         private IList resultSegs = new ArrayList();
         private int minimumSize;
@@ -20,14 +22,14 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// 
         /// </summary>
         /// <param name="parentLine"></param>
-        public TaggedLineString(LineString parentLine) : this(parentLine, 2) { }
+        public TaggedLineString(ILineString parentLine) : this(parentLine, 2) { }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="parentLine"></param>
         /// <param name="minimumSize"></param>
-        public TaggedLineString(LineString parentLine, int minimumSize)
+        public TaggedLineString(ILineString parentLine, int minimumSize)
         {
             this.parentLine = parentLine;
             this.minimumSize = minimumSize;
@@ -48,7 +50,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public LineString Parent
+        public ILineString Parent
         {
             get
             {
@@ -59,18 +61,18 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate[] ParentCoordinates
+        public ICoordinate[] ParentCoordinates
         {
             get
             {
-                return (Coordinate[]) parentLine.Coordinates;
+                return parentLine.Coordinates;
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate[] ResultCoordinates
+        public ICoordinate[] ResultCoordinates
         {
             get
             {
@@ -105,12 +107,11 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// </summary>
         private void Init()
         {
-            Coordinate[] pts = (Coordinate[]) parentLine.Coordinates;
+            ICoordinate[] pts = parentLine.Coordinates;
             segs = new TaggedLineSegment[pts.Length - 1];
             for (int i = 0; i < pts.Length - 1; i++)
             {
-                TaggedLineSegment seg
-                         = new TaggedLineSegment(pts[i], pts[i + 1], parentLine, i);
+                TaggedLineSegment seg = new TaggedLineSegment(pts[i], pts[i + 1], parentLine, i);
                 segs[i] = seg;
             }
         }
@@ -139,18 +140,18 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// 
         /// </summary>
         /// <returns></returns>
-        public LineString AsLineString()
+        public ILineString AsLineString()
         {
-            return parentLine.Factory.CreateLineString(ExtractCoordinates(resultSegs));        
+            return ((LineString) parentLine).Factory.CreateLineString(ExtractCoordinates(resultSegs));        
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public LinearRing AsLinearRing()
+        public ILinearRing AsLinearRing()
         {
-            return parentLine.Factory.CreateLinearRing(ExtractCoordinates(resultSegs));
+            return ((LineString) parentLine).Factory.CreateLinearRing(ExtractCoordinates(resultSegs));
         }
 
         /// <summary>
@@ -158,13 +159,13 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// </summary>
         /// <param name="segs"></param>
         /// <returns></returns>
-        private static Coordinate[] ExtractCoordinates(IList segs)
+        private static ICoordinate[] ExtractCoordinates(IList segs)
         {
-            Coordinate[] pts = new Coordinate[segs.Count + 1];
+            ICoordinate[] pts = new ICoordinate[segs.Count + 1];
             LineSegment seg = null;
             for (int i = 0; i < segs.Count; i++)
             {
-                seg = (LineSegment)segs[i];
+                seg = (LineSegment) segs[i];
                 pts[i] = seg.P0;
             }
             // add last point

@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Utilities;
@@ -100,13 +102,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         /// <param name="pts"></param>
         /// <returns></returns>
-        private Coordinate[] Scale(Coordinate[] pts)
+        private ICoordinate[] Scale(ICoordinate[] pts)
         {
-            Coordinate[] roundPts = new Coordinate[pts.Length];
+            ICoordinate[] roundPts = new ICoordinate[pts.Length];
             for (int i = 0; i < pts.Length; i++)
                 roundPts[i] = new Coordinate(Math.Round((pts[i].X - offsetX) * scaleFactor),
                                              Math.Round((pts[i].Y - offsetY) * scaleFactor));
-            Coordinate[] roundPtsNoDup = (Coordinate[]) CoordinateArrays.RemoveRepeatedPoints(roundPts);
+            ICoordinate[] roundPtsNoDup = CoordinateArrays.RemoveRepeatedPoints(roundPts);
             return roundPtsNoDup;
         }      
 
@@ -128,7 +130,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// 
         /// </summary>
         /// <param name="pts"></param>
-        private void Rescale(Coordinate[] pts)
+        private void Rescale(ICoordinate[] pts)
         {
             for (int i = 0; i < pts.Length; i++) 
             {
@@ -136,6 +138,5 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                 pts[i].Y = pts[i].Y / scaleFactor + offsetY;
             }
         }
-
     }
 }

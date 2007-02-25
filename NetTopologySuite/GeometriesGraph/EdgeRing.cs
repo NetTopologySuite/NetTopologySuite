@@ -24,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         private IList edges = new ArrayList();  // the DirectedEdges making up this EdgeRing
         private IList pts = new ArrayList();
         private Label label = new Label(Locations.Null); // label stores the locations of each point on the face surrounded by this ring
-        private LinearRing ring;  // the ring created for this EdgeRing
+        private ILinearRing ring;  // the ring created for this EdgeRing
         private bool isHole;
         private EdgeRing shell;   // if non-null, the ring is a hole and this EdgeRing is its containing shell
         private ArrayList holes = new ArrayList(); // a list of EdgeRings which are holes in this EdgeRing
@@ -49,18 +49,18 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public  bool IsIsolated
+        public bool IsIsolated
         {
             get
             {
-                return (label.GeometryCount == 1);
+                return label.GeometryCount == 1;
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public  bool IsHole
+        public bool IsHole
         {
             get
             {             
@@ -73,15 +73,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public  Coordinate GetCoordinate(int i) 
+        public ICoordinate GetCoordinate(int i) 
         {
-            return (Coordinate)pts[i]; 
+            return (ICoordinate) pts[i]; 
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public  LinearRing LinearRing
+        public ILinearRing LinearRing
         {
             get
             {
@@ -92,7 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public  Label Label
+        public Label Label
         {
             get
             {
@@ -103,7 +103,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public  bool IsShell
+        public bool IsShell
         {
             get
             {
@@ -114,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public  EdgeRing Shell
+        public EdgeRing Shell
         {
             get
             {
@@ -132,7 +132,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="ring"></param>
-        public  void AddHole(EdgeRing ring) 
+        public void AddHole(EdgeRing ring) 
         {
             holes.Add(ring); 
         }
@@ -142,12 +142,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geometryFactory"></param>
         /// <returns></returns>
-        public  Polygon ToPolygon(GeometryFactory geometryFactory)
+        public IPolygon ToPolygon(GeometryFactory geometryFactory)
         {
-            LinearRing[] holeLR = new LinearRing[holes.Count];
+            ILinearRing[] holeLR = new ILinearRing[holes.Count];
             for (int i = 0; i < holes.Count; i++)
-                holeLR[i] = ((EdgeRing)holes[i]).LinearRing;
-            Polygon poly = geometryFactory.CreatePolygon(LinearRing, holeLR);
+                holeLR[i] = ((EdgeRing) holes[i]).LinearRing;
+            IPolygon poly = geometryFactory.CreatePolygon(LinearRing, holeLR);
             return poly;
         }
 
@@ -156,15 +156,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Test if the ring is a hole (i.e. if it is CCW) and set the hole flag
         /// accordingly.
         /// </summary>
-        public  void ComputeRing()
+        public void ComputeRing()
         {
             if (ring != null) 
                 return;   // don't compute more than once
-            Coordinate[] coord = new Coordinate[pts.Count];
+            ICoordinate[] coord = new ICoordinate[pts.Count];
             for (int i = 0; i < pts.Count; i++)            
-                coord[i] = (Coordinate) pts[i];
+                coord[i] = (ICoordinate) pts[i];
             ring = geometryFactory.CreateLinearRing(coord);
-            isHole = CGAlgorithms.IsCCW((Coordinate[]) ring.Coordinates);
+            isHole = CGAlgorithms.IsCCW(ring.Coordinates);
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary> 
         /// Returns the list of DirectedEdges that make up this EdgeRing.
         /// </summary>
-        public  IList Edges
+        public IList Edges
         {
             get
             {
@@ -196,7 +196,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Collect all the points from the DirectedEdges of this ring into a contiguous list.
         /// </summary>
         /// <param name="start"></param>
-        protected  void ComputePoints(DirectedEdge start)
+        protected void ComputePoints(DirectedEdge start)
         {
             startDe = start;
             DirectedEdge de = start;
@@ -222,7 +222,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public  int MaxNodeDegree
+        public int MaxNodeDegree
         {
             get
             {
@@ -242,7 +242,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             do
             {
                 Node node = de.Node;
-                int degree = ((DirectedEdgeStar)node.Edges).GetOutgoingDegree(this);
+                int degree = ((DirectedEdgeStar) node.Edges).GetOutgoingDegree(this);
                 if (degree > maxNodeDegree) 
                     maxNodeDegree = degree;
                 de = GetNext(de);
@@ -254,7 +254,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public  void SetInResult()
+        public void SetInResult()
         {
             DirectedEdge de = startDe;
             do
@@ -269,7 +269,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="deLabel"></param>
-        protected  void MergeLabel(Label deLabel)
+        protected void MergeLabel(Label deLabel)
         {
             MergeLabel(deLabel, 0);
             MergeLabel(deLabel, 1);
@@ -284,7 +284,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="deLabel"></param>
         /// <param name="geomIndex"></param>
-        protected  void MergeLabel(Label deLabel, int geomIndex)
+        protected void MergeLabel(Label deLabel, int geomIndex)
         {
             Locations loc = deLabel.GetLocation(geomIndex, Positions.Right);
             // no information to be had from this label
@@ -304,9 +304,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="edge"></param>
         /// <param name="isForward"></param>
         /// <param name="isFirstEdge"></param>
-        protected  void AddPoints(Edge edge, bool isForward, bool isFirstEdge)
+        protected void AddPoints(Edge edge, bool isForward, bool isFirstEdge)
         {
-            Coordinate[] edgePts = edge.Coordinates;
+            ICoordinate[] edgePts = edge.Coordinates;
             if (isForward)
             {
                 int startIndex = 1;
@@ -331,13 +331,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// It will also check any holes, if they have been assigned.
         /// </summary>
         /// <param name="p"></param>
-        public  bool ContainsPoint(Coordinate p)
+        public bool ContainsPoint(ICoordinate p)
         {
-            LinearRing shell = LinearRing;
-            Envelope env = (Envelope) shell.EnvelopeInternal;
+            ILinearRing shell = LinearRing;
+            IEnvelope env = shell.EnvelopeInternal;
             if (!env.Contains(p)) 
                 return false;
-            if (!CGAlgorithms.IsPointInRing(p, (Coordinate[]) shell.Coordinates)) 
+            if (!CGAlgorithms.IsPointInRing(p, shell.Coordinates)) 
                 return false;
             for (IEnumerator i = holes.GetEnumerator(); i.MoveNext(); )
             {

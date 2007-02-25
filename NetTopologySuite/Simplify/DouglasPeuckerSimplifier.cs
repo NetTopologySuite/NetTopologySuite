@@ -28,21 +28,21 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <param name="geom"></param>
         /// <param name="distanceTolerance"></param>
         /// <returns></returns>
-        public static Geometry Simplify(Geometry geom, double distanceTolerance)
+        public static IGeometry Simplify(IGeometry geom, double distanceTolerance)
         {
             DouglasPeuckerSimplifier tss = new DouglasPeuckerSimplifier(geom);
             tss.DistanceTolerance = distanceTolerance;
             return tss.GetResultGeometry();
         }
 
-        private Geometry inputGeom;
+        private IGeometry inputGeom;
         private double distanceTolerance;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="inputGeom"></param>
-        public DouglasPeuckerSimplifier(Geometry inputGeom)
+        public DouglasPeuckerSimplifier(IGeometry inputGeom)
         {
             this.inputGeom = inputGeom;
         }
@@ -66,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// 
         /// </summary>
         /// <returns></returns>
-        public Geometry GetResultGeometry()
+        public IGeometry GetResultGeometry()
         {
             return (new DPTransformer(this)).Transform(inputGeom);
         }
@@ -93,10 +93,10 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             /// <param name="coords"></param>
             /// <param name="parent"></param>
             /// <returns></returns>
-            protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, Geometry parent)
+            protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
             {
-                Coordinate[] inputPts = (Coordinate[]) coords.ToCoordinateArray();
-                Coordinate[] newPts = DouglasPeuckerLineSimplifier.Simplify(inputPts, container.DistanceTolerance);
+                ICoordinate[] inputPts = coords.ToCoordinateArray();
+                ICoordinate[] newPts = DouglasPeuckerLineSimplifier.Simplify(inputPts, container.DistanceTolerance);
                 return factory.CoordinateSequenceFactory.Create(newPts);
             }
 
@@ -106,11 +106,11 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             /// <param name="geom"></param>
             /// <param name="parent"></param>
             /// <returns></returns>
-            protected override Geometry TransformPolygon(Polygon geom, Geometry parent)
+            protected override IGeometry TransformPolygon(IPolygon geom, IGeometry parent)
             {
-                Geometry roughGeom = base.TransformPolygon(geom, parent);
+                IGeometry roughGeom = base.TransformPolygon(geom, parent);
                 // don't try and correct if the parent is going to do this
-                if (parent is MultiPolygon) 
+                if (parent is IMultiPolygon) 
                     return roughGeom;            
                 return CreateValidArea(roughGeom);
             }
@@ -121,9 +121,9 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             /// <param name="geom"></param>
             /// <param name="parent"></param>
             /// <returns></returns>
-            protected override Geometry TransformMultiPolygon(MultiPolygon geom, Geometry parent)
+            protected override IGeometry TransformMultiPolygon(IMultiPolygon geom, IGeometry parent)
             {
-                Geometry roughGeom = base.TransformMultiPolygon(geom, parent);
+                IGeometry roughGeom = base.TransformMultiPolygon(geom, parent);
                 return CreateValidArea(roughGeom);
             }
 
@@ -139,9 +139,9 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             /// </summary>
             /// <param name="roughAreaGeom">An area point possibly containing self-intersections.</param>
             /// <returns>A valid area point.</returns>
-            private Geometry CreateValidArea(Geometry roughAreaGeom)
+            private IGeometry CreateValidArea(IGeometry roughAreaGeom)
             {
-                return (Geometry) roughAreaGeom.Buffer(0.0);
+                return roughAreaGeom.Buffer(0.0);
             }
         }
     }

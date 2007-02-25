@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.IO;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 
@@ -41,9 +43,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public Geometry Read(byte[] data)
+        public IGeometry Read(byte[] data)
         {
-            using(Stream stream = new MemoryStream(data))            
+            using (Stream stream = new MemoryStream(data))            
                 return Read(stream);
         }
 
@@ -52,7 +54,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>
-        public Geometry Read(Stream stream)
+        public IGeometry Read(Stream stream)
         {
             BinaryReader reader = null;
             ByteOrder byteOrder = (ByteOrder) stream.ReadByte();
@@ -75,9 +77,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected Geometry Read(BinaryReader reader)
+        protected IGeometry Read(BinaryReader reader)
         {     
-            WKBGeometryTypes geometryType = (WKBGeometryTypes)reader.ReadInt32();
+            WKBGeometryTypes geometryType = (WKBGeometryTypes) reader.ReadInt32();
             switch (geometryType)
             {
                 case WKBGeometryTypes.WKBPoint:
@@ -107,7 +109,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         protected ByteOrder ReadByteOrder(BinaryReader reader)
         {
             byte byteOrder = reader.ReadByte();
-            return (ByteOrder)byteOrder;
+            return (ByteOrder) byteOrder;
         }
 
         /// <summary>
@@ -115,7 +117,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected Coordinate ReadCoordinate(BinaryReader reader)
+        protected ICoordinate ReadCoordinate(BinaryReader reader)
         {
             return new Coordinate(reader.ReadDouble(), reader.ReadDouble());
         }
@@ -125,10 +127,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected LinearRing ReadRing(BinaryReader reader)
+        protected ILinearRing ReadRing(BinaryReader reader)
         {
             int numPoints = reader.ReadInt32();
-            Coordinate[] coordinates = new Coordinate[numPoints];
+            ICoordinate[] coordinates = new ICoordinate[numPoints];
             for (int i = 0; i < numPoints; i++)
                 coordinates[i] = ReadCoordinate(reader);
             return Factory.CreateLinearRing(coordinates);
@@ -139,7 +141,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected Geometry ReadPoint(BinaryReader reader)
+        protected IGeometry ReadPoint(BinaryReader reader)
         {
             return Factory.CreatePoint(ReadCoordinate(reader));
         }
@@ -149,10 +151,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected Geometry ReadLineString(BinaryReader reader)
+        protected IGeometry ReadLineString(BinaryReader reader)
         {
             int numPoints = reader.ReadInt32();
-            Coordinate[] coordinates = new Coordinate[numPoints];
+            ICoordinate[] coordinates = new ICoordinate[numPoints];
             for (int i = 0; i < numPoints; i++)
                 coordinates[i] = ReadCoordinate(reader);
             return Factory.CreateLineString(coordinates);
@@ -163,11 +165,11 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected Geometry ReadPolygon(BinaryReader reader)
+        protected IGeometry ReadPolygon(BinaryReader reader)
         {
             int numRings = reader.ReadInt32();
-            LinearRing exteriorRing = ReadRing(reader);
-            LinearRing[] interiorRings = new LinearRing[numRings - 1];
+            ILinearRing exteriorRing = ReadRing(reader);
+            ILinearRing[] interiorRings = new ILinearRing[numRings - 1];
             for (int i = 0; i < numRings - 1; i++)
                 interiorRings[i] = ReadRing(reader);
             return Factory.CreatePolygon(exteriorRing, interiorRings);
@@ -178,17 +180,17 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected Geometry ReadMultiPoint(BinaryReader reader)
+        protected IGeometry ReadMultiPoint(BinaryReader reader)
         {
             int numGeometries = reader.ReadInt32();
-            Point[] points = new Point[numGeometries];
+            IPoint[] points = new IPoint[numGeometries];
             for (int i = 0; i < numGeometries; i++)
             {
                 ReadByteOrder(reader);
                 WKBGeometryTypes geometryType = (WKBGeometryTypes)reader.ReadInt32();
                 if (geometryType != WKBGeometryTypes.WKBPoint)
-                    throw new ArgumentException("Point feature expected");
-                points[i] = ReadPoint(reader) as Point;
+                    throw new ArgumentException("IPoint feature expected");
+                points[i] = ReadPoint(reader) as IPoint;
             }
             return Factory.CreateMultiPoint(points);
         }
@@ -198,17 +200,17 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected Geometry ReadMultiLineString(BinaryReader reader)
+        protected IGeometry ReadMultiLineString(BinaryReader reader)
         {
             int numGeometries = reader.ReadInt32();
-            LineString[] strings = new LineString[numGeometries];
+            ILineString[] strings = new ILineString[numGeometries];
             for (int i = 0; i < numGeometries; i++)
             {
                 ReadByteOrder(reader);
-                WKBGeometryTypes geometryType = (WKBGeometryTypes)reader.ReadInt32();
+                WKBGeometryTypes geometryType = (WKBGeometryTypes) reader.ReadInt32();
                 if (geometryType != WKBGeometryTypes.WKBLineString)
-                    throw new ArgumentException("LineString feature expected");
-                strings[i] = ReadLineString(reader) as LineString ;
+                    throw new ArgumentException("ILineString feature expected");
+                strings[i] = ReadLineString(reader) as ILineString ;
             }
             return Factory.CreateMultiLineString(strings);
         }
@@ -218,17 +220,17 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected Geometry ReadMultiPolygon(BinaryReader reader)
+        protected IGeometry ReadMultiPolygon(BinaryReader reader)
         {
             int numGeometries = reader.ReadInt32();
-            Polygon[] polygons = new Polygon[numGeometries];
+            IPolygon[] polygons = new IPolygon[numGeometries];
             for (int i = 0; i < numGeometries; i++)
             {
                 ReadByteOrder(reader);
-                WKBGeometryTypes geometryType = (WKBGeometryTypes)reader.ReadInt32();
+                WKBGeometryTypes geometryType = (WKBGeometryTypes) reader.ReadInt32();
                 if (geometryType != WKBGeometryTypes.WKBPolygon)
-                    throw new ArgumentException("Polygon feature expected");
-                polygons[i] = ReadPolygon(reader) as Polygon;
+                    throw new ArgumentException("IPolygon feature expected");
+                polygons[i] = ReadPolygon(reader) as IPolygon;
             }
             return Factory.CreateMultiPolygon(polygons);
         }
@@ -238,15 +240,15 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected Geometry ReadGeometryCollection(BinaryReader reader)
+        protected IGeometry ReadGeometryCollection(BinaryReader reader)
         {
             int numGeometries = reader.ReadInt32();
-            Geometry[] geometries = new Geometry[numGeometries];
+            IGeometry[] geometries = new IGeometry[numGeometries];
 
             for (int i = 0; i < numGeometries; i++)
             {
                 ReadByteOrder(reader);
-                WKBGeometryTypes geometryType = (WKBGeometryTypes)reader.ReadInt32();
+                WKBGeometryTypes geometryType = (WKBGeometryTypes) reader.ReadInt32();
                 switch (geometryType)
                 {
                     case WKBGeometryTypes.WKBPoint:

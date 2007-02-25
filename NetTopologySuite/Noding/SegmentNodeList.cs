@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
@@ -43,10 +45,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="intPt"></param>
         /// <param name="segmentIndex"></param>
         /// <returns>The SegmentIntersection found or added.</returns>
-        public SegmentNode Add(Coordinate intPt, int segmentIndex)
+        public SegmentNode Add(ICoordinate intPt, int segmentIndex)
         {
             SegmentNode eiNew = new SegmentNode(edge, intPt, segmentIndex, edge.GetSegmentOctant(segmentIndex));
-            SegmentNode ei = (SegmentNode)nodeMap[eiNew];
+            SegmentNode ei = (SegmentNode) nodeMap[eiNew];
             if(ei != null)
             {
                 // debugging sanity check
@@ -108,9 +110,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         {
             for (int i = 0; i < edge.Count - 2; i++)
             {
-                Coordinate p0 = edge.GetCoordinate(i);
-                Coordinate p1 = edge.GetCoordinate(i + 1);
-                Coordinate p2 = edge.GetCoordinate(i + 2);
+                ICoordinate p0 = edge.GetCoordinate(i);
+                ICoordinate p1 = edge.GetCoordinate(i + 1);
+                ICoordinate p2 = edge.GetCoordinate(i + 2);
                 if (p0.Equals2D(p2))    // add base of collapse as node
                     collapsedVertexIndexes.Add(i + 1);                
             }
@@ -128,14 +130,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         {
             int[] collapsedVertexIndex = new int[1];
             
-	    IEnumerator ie = GetEnumerator();
-	    ie.MoveNext();
+	        IEnumerator ie = GetEnumerator();
+	        ie.MoveNext();
 
             // there should always be at least two entries in the list, since the endpoints are nodes
-            SegmentNode eiPrev = (SegmentNode)ie.Current;
+            SegmentNode eiPrev = (SegmentNode) ie.Current;
             while (ie.MoveNext())
             {
-                SegmentNode ei = (SegmentNode)ie.Current;
+                SegmentNode ei = (SegmentNode) ie.Current;
                 bool isCollapsed = FindCollapseIndex(eiPrev, ei, collapsedVertexIndex);
                 if (isCollapsed)
                     collapsedVertexIndexes.Add(collapsedVertexIndex[0]);
@@ -185,15 +187,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 	        ie.MoveNext();
 
             // there should always be at least two entries in the list, since the endpoints are nodes
-            SegmentNode eiPrev = (SegmentNode)ie.Current;
+            SegmentNode eiPrev = (SegmentNode) ie.Current;
             while(ie.MoveNext())
             {
-                SegmentNode ei = (SegmentNode)ie.Current;
+                SegmentNode ei = (SegmentNode) ie.Current;
                 SegmentString newEdge = CreateSplitEdge(eiPrev, ei);
                 edgeList.Add(newEdge);
                 eiPrev = ei;
             }
-            // CheckSplitEdgesCorrectness(testingSplitEdges);
         }
 
         /// <summary>
@@ -202,17 +203,17 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="splitEdges"></param>
         private void CheckSplitEdgesCorrectness(IList splitEdges)
         {
-            Coordinate[] edgePts = edge.Coordinates;
+            ICoordinate[] edgePts = edge.Coordinates;
 
             // check that first and last points of split edges are same as endpoints of edge
-            SegmentString split0 = (SegmentString)splitEdges[0];
-            Coordinate pt0 = split0.GetCoordinate(0);
+            SegmentString split0 = (SegmentString) splitEdges[0];
+            ICoordinate pt0 = split0.GetCoordinate(0);
             if (!pt0.Equals2D(edgePts[0]))
                 throw new Exception("bad split edge start point at " + pt0);
 
             SegmentString splitn = (SegmentString)splitEdges[splitEdges.Count - 1];
-            Coordinate[] splitnPts = splitn.Coordinates;
-            Coordinate ptn = splitnPts[splitnPts.Length - 1];
+            ICoordinate[] splitnPts = splitn.Coordinates;
+            ICoordinate ptn = splitnPts[splitnPts.Length - 1];
             if (!ptn.Equals2D(edgePts[edgePts.Length - 1]))
                 throw new Exception("bad split edge end point at " + ptn);
         }
@@ -229,7 +230,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         {
             int npts = ei1.SegmentIndex - ei0.SegmentIndex + 2;
 
-            Coordinate lastSegStartPt = edge.GetCoordinate(ei1.SegmentIndex);
+            ICoordinate lastSegStartPt = edge.GetCoordinate(ei1.SegmentIndex);
             // if the last intersection point is not equal to the its segment start pt, add it to the points list as well.
             // (This check is needed because the distance metric is not totally reliable!)
             // The check for point equality is 2D only - Z values are ignored
@@ -237,7 +238,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             if(!useIntPt1)
                 npts--;
 
-            Coordinate[] pts = new Coordinate[npts];
+            ICoordinate[] pts = new ICoordinate[npts];
             int ipt = 0;
             pts[ipt++] = new Coordinate(ei0.Coordinate);
             for (int i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
@@ -257,15 +258,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             outstream.Write("Intersections:");
             foreach(object obj in this)
             {
-                SegmentNode ei = (SegmentNode)obj;
+                SegmentNode ei = (SegmentNode) obj;
                 ei.Write(outstream);
             }
         }
-
     }
 
     /// <summary>
-    /// INCOMPLETE!!!
+    /// 
     /// </summary>
     class NodeVertexIterator : IEnumerator
     {
@@ -276,6 +276,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         private SegmentNode nextNode = null;
         private int currSegIndex = 0;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nodeList"></param>
         NodeVertexIterator(SegmentNodeList nodeList)
         {
             this.nodeList = nodeList;
@@ -283,10 +287,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             nodeIt = nodeList.GetEnumerator();            
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void ReadNextNode()
         {
             if (nodeIt.MoveNext())
-                 nextNode = (SegmentNode)nodeIt.Current;
+                 nextNode = (SegmentNode) nodeIt.Current;
             else nextNode = null;
         }
 
@@ -301,11 +308,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// Ottiene l'elemento corrente dell'insieme.
+        /// 
         /// </summary>
-        /// <value></value>
-        /// <returns>Elemento corrente nell'insieme.</returns>
-        /// <exception cref="T:System.InvalidOperationException">L'enumeratore è posizionato prima del primo elemento o dopo l'ultimo elemento dell'insieme. </exception>
         public object Current
         {
             get 
@@ -315,12 +319,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// Consente di spostare l'enumeratore all'elemento successivo dell'insieme.
+        /// 
         /// </summary>
-        /// <returns>
-        /// true se l'enumeratore è stato spostato correttamente in avanti in corrispondenza dell'elemento successivo; false se l'enumeratore ha raggiunto la fine dell'insieme.
-        /// </returns>
-        /// <exception cref="T:System.InvalidOperationException">L'insieme è stato modificato dopo la creazione dell'enumeratore. </exception>
+        /// <returns></returns>
         public bool MoveNext()
         {
             if (currNode == null)
@@ -350,14 +351,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// Imposta l'enumeratore sulla propria posizione iniziale, ovvero prima del primo elemento nell'insieme.
+        /// 
         /// </summary>
-        /// <exception cref="T:System.InvalidOperationException">L'insieme è stato modificato dopo la creazione dell'enumeratore. </exception>
         public void Reset()
         {
             nodeIt.Reset();            
         }
-
     }
-
 }

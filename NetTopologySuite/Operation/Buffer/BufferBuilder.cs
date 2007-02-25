@@ -108,7 +108,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="g"></param>
         /// <param name="distance"></param>
         /// <returns></returns>
-        public Geometry Buffer(Geometry g, double distance)
+        public IGeometry Buffer(IGeometry g, double distance)
         {
             PrecisionModel precisionModel = workingPrecisionModel;
             if (precisionModel == null)
@@ -126,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             // short-circuit test
             if (bufferSegStrList.Count <= 0)
             {
-                Geometry emptyGeom = geomFact.CreateGeometryCollection(new Geometry[0]);
+                IGeometry emptyGeom = geomFact.CreateGeometryCollection(new IGeometry[0]);
                 return emptyGeom;
             }
 
@@ -139,7 +139,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             BuildSubgraphs(subgraphList, polyBuilder);
             IList resultPolyList = polyBuilder.Polygons;
 
-            Geometry resultGeom = geomFact.BuildGeometry(resultPolyList);
+            IGeometry resultGeom = geomFact.BuildGeometry(resultPolyList);
             return resultGeom;
         }
 

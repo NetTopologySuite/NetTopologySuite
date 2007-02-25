@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 
@@ -18,9 +20,6 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public class SegmentString
     {
-
-        #region Static
-
         /// <summary>
         /// 
         /// </summary>
@@ -42,15 +41,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         {
             foreach(object obj in segStrings)
             {
-                SegmentString ss = (SegmentString)obj;
+                SegmentString ss = (SegmentString) obj;
                 ss.NodeList.AddSplitEdges(resultEdgelist);
             }
         }
 
-        #endregion
-
         private SegmentNodeList nodeList = null;
-        private Coordinate[] pts;
+        private ICoordinate[] pts;
         private object data;
 
         /// <summary>
@@ -58,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         /// <param name="pts">The vertices of the segment string.</param>
         /// <param name="data">The user-defined data of this segment string (may be null).</param>
-        public SegmentString(Coordinate[] pts, Object data)
+        public SegmentString(ICoordinate[] pts, Object data)
         {
             nodeList = new SegmentNodeList(this);
 
@@ -109,7 +106,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public Coordinate GetCoordinate(int i) 
+        public ICoordinate GetCoordinate(int i) 
         { 
             return pts[i]; 
         }
@@ -117,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate[] Coordinates
+        public ICoordinate[] Coordinates
         {
             get
             {
@@ -176,7 +173,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="intIndex"></param>
         public void AddIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
         {
-            Coordinate intPt = new Coordinate(li.GetIntersection(intIndex));
+            ICoordinate intPt = new Coordinate(li.GetIntersection(intIndex));
             AddIntersection(intPt, segmentIndex);
         }
 
@@ -185,14 +182,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         /// <param name="intPt"></param>
         /// <param name="segmentIndex"></param>
-        public void AddIntersection(Coordinate intPt, int segmentIndex)
+        public void AddIntersection(ICoordinate intPt, int segmentIndex)
         {
             int normalizedSegmentIndex = segmentIndex;
             // normalize the intersection point location
             int nextSegIndex = normalizedSegmentIndex + 1;
             if(nextSegIndex < pts.Length)
             {
-                Coordinate nextPt = pts[nextSegIndex];
+                ICoordinate nextPt = pts[nextSegIndex];
               
                 // Normalize segment index if intPt falls on vertex
                 // The check for point equality is 2D only - Z values are ignored
@@ -203,6 +200,5 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             // Add the intersection point to edge intersection list.
             SegmentNode ei = nodeList.Add(intPt, normalizedSegmentIndex);
         }
-
     }
 }

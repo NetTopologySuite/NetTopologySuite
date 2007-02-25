@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 
+using GeoAPI.Geometries;
+
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {    
     /// <summary>
@@ -65,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// NTS methods currently do not handle inputs with different precision models.
     /// </summary>
     [Serializable]
-    public class PrecisionModel :IComparable
+    public class PrecisionModel : IComparable, IComparable<PrecisionModel>, IEquatable<PrecisionModel>
     {
         private const int FloatingPrecisionDigits = 16;
         private const int FloatingSinglePrecisionDigits = 6;
@@ -277,7 +279,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// precise representation of <c>external</c>.
         /// </param>        
         [Obsolete("Use MakePrecise instead")]
-        public void ToInternal(Coordinate cexternal, Coordinate cinternal) 
+        public void ToInternal(ICoordinate cexternal, ICoordinate cinternal) 
         {
             if (IsFloating) 
             {
@@ -301,9 +303,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// representation of <c>external</c>
         /// </returns>
         [Obsolete("Use MakePrecise instead")]
-        public Coordinate ToInternal(Coordinate cexternal) 
+        public ICoordinate ToInternal(ICoordinate cexternal) 
         {
-            Coordinate cinternal = new Coordinate(cexternal);
+            ICoordinate cinternal = new Coordinate(cexternal);
             MakePrecise(ref cinternal);
             return cinternal;
         }
@@ -317,9 +319,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// external representation of <c>internal</c>.
         /// </returns>
         [Obsolete("No longer needed, since internal representation is same as external representation")]
-        public Coordinate ToExternal(Coordinate cinternal) 
+        public ICoordinate ToExternal(ICoordinate cinternal) 
         {
-            Coordinate cexternal = new Coordinate(cinternal);
+            ICoordinate cexternal = new Coordinate(cinternal);
             return cexternal;
         }
 
@@ -332,7 +334,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// external representation of <c>internal</c>.
         /// </param>
         [Obsolete("No longer needed, since internal representation is same as external representation")]
-        public void ToExternal(Coordinate cinternal, Coordinate cexternal) 
+        public void ToExternal(ICoordinate cinternal, ICoordinate cexternal) 
         {
             cexternal.X = cinternal.X;
             cexternal.Y = cinternal.Y;
@@ -363,7 +365,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Rounds a Coordinate to the PrecisionModel grid.
         /// </summary>
         /// <param name="coord"></param>
-        public void MakePrecise(ref Coordinate coord)
+        public void MakePrecise(ref ICoordinate coord)
         {
             // optimization for full precision
             if (modelType == PrecisionModels.Floating) 
@@ -399,9 +401,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (other == null)
                 return false;
+
             if (!(other is PrecisionModel))
                 return false;            
-            PrecisionModel otherPrecisionModel = (PrecisionModel) other;
+
+            return Equals((PrecisionModel) other);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="otherPrecisionModel"></param>
+        /// <returns></returns>
+        public bool Equals(PrecisionModel otherPrecisionModel)
+        {
             return modelType == otherPrecisionModel.modelType && scale == otherPrecisionModel.scale;
         }
         
@@ -445,11 +458,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public int CompareTo(object o) 
         {
-            PrecisionModel other = (PrecisionModel) o;
+            return CompareTo((PrecisionModel) o);   
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public int CompareTo(PrecisionModel other)
+        {
             int sigDigits = MaximumSignificantDigits;
             int otherSigDigits = other.MaximumSignificantDigits;
-            return (sigDigits).CompareTo(otherSigDigits);        
+            return (sigDigits).CompareTo(otherSigDigits);
         }
     }
 }

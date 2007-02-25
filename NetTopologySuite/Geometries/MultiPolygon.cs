@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Represents an empty <c>MultiPolygon</c>.
         /// </summary>
-        public static new readonly MultiPolygon Empty = new GeometryFactory().CreateMultiPolygon(null);
+        public static new readonly IMultiPolygon Empty = new GeometryFactory().CreateMultiPolygon(null);
 
         /// <summary>
         /// Constructs a <c>MultiPolygon</c>.
@@ -32,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public MultiPolygon(Polygon[] polygons) : this(polygons, DefaultFactory) { }  
+        public MultiPolygon(IPolygon[] polygons) : this(polygons, DefaultFactory) { }  
 
         /// <summary>
         /// Constructs a <c>MultiPolygon</c>.
@@ -46,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Specification for SQL.        
         /// </param>
         /// <param name="factory"></param>
-        public MultiPolygon(Polygon[] polygons, GeometryFactory factory) : base(polygons, factory) { }  
+        public MultiPolygon(IPolygon[] polygons, GeometryFactory factory) : base(polygons, factory) { }  
 
         /// <summary>
         /// 

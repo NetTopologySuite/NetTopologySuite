@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Text;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -37,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="p"></param>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
-        public override void ComputeIntersection(Coordinate p, Coordinate p1, Coordinate p2) 
+        public override void ComputeIntersection(ICoordinate p, ICoordinate p1, ICoordinate p2) 
         {
             double a1;
             double b1;
@@ -97,7 +100,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="p3"></param>
         /// <param name="p4"></param>
         /// <returns></returns>
-        public override int ComputeIntersect(Coordinate p1, Coordinate p2, Coordinate p3, Coordinate p4) 
+        public override int ComputeIntersect(ICoordinate p1, ICoordinate p2, ICoordinate p3, ICoordinate p4) 
         {
             double a1;
             double b1;
@@ -196,16 +199,19 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="p3"></param>
         /// <param name="p4"></param>
         /// <returns></returns>
-        private int ComputeCollinearIntersection(Coordinate p1, Coordinate p2, Coordinate p3, Coordinate p4) 
+        private int ComputeCollinearIntersection(ICoordinate p1, ICoordinate p2, ICoordinate p3, ICoordinate p4) 
         {
             double r1;
             double r2;
             double r3;
             double r4;
-            Coordinate q3;
-            Coordinate q4;
+
+            ICoordinate q3;
+            ICoordinate q4;
+            
             double t3;
             double t4;
+            
             r1 = 0;
             r2 = 1;
             r3 = RParameter(p1, p2, p3);
@@ -259,7 +265,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// of the line from p1 to p2.
         /// This is equal to the 'distance' of p along p1-p2.
         /// </summary>
-        private double RParameter(Coordinate p1, Coordinate p2, Coordinate p)
+        private double RParameter(ICoordinate p1, ICoordinate p2, ICoordinate p)
         {
             // compute maximum delta, for numerical stability
             // also handle case of p1-p2 being vertical or horizontal

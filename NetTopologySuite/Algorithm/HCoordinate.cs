@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Text;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -24,12 +27,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="q1"></param>
         /// <param name="q2"></param>
         /// <returns></returns>
-        public static Coordinate Intersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)            
+        public static ICoordinate Intersection(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2)            
         {
             HCoordinate l1 = new HCoordinate(new HCoordinate(p1), new HCoordinate(p2));
             HCoordinate l2 = new HCoordinate(new HCoordinate(q1), new HCoordinate(q2));
             HCoordinate intHCoord = new HCoordinate(l1, l2);
-            Coordinate intPt = intHCoord.Coordinate;
+            ICoordinate intPt = intHCoord.Coordinate;
             return intPt;
         }
 
@@ -94,7 +97,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// 
         /// </summary>
         /// <param name="p"></param>
-        public HCoordinate(Coordinate p) 
+        public HCoordinate(ICoordinate p) 
         {
             x = p.X;
             y = p.Y;
@@ -133,7 +136,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         public double GetY()
         {            
             double a = y/w;
-            if((Double.IsNaN(a)) || (Double.IsInfinity(a))) 
+            if ((Double.IsNaN(a)) || (Double.IsInfinity(a))) 
                 throw new NotRepresentableException();            
             return a;            
         }        
@@ -141,7 +144,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate
+        public ICoordinate Coordinate
         {
             get 
             { 

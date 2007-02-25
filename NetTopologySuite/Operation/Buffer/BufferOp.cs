@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -45,9 +46,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="maxPrecisionDigits">The mzx # of digits that should be allowed by
         /// the precision determined by the computed scale factor.</param>
         /// <returns>A scale factor that allows a reasonable amount of precision for the buffer computation.</returns>
-        private static double PrecisionScaleFactor(Geometry g, double distance, int maxPrecisionDigits)
+        private static double PrecisionScaleFactor(IGeometry g, double distance, int maxPrecisionDigits)
         {
-            Envelope env = (Envelope) g.EnvelopeInternal;
+            IEnvelope env = g.EnvelopeInternal;
             double envSize = Math.Max(env.Height, env.Width);
             double expandByDistance = distance > 0.0 ? distance : 0.0;
             double bufEnvSize = envSize + 2 * expandByDistance;
@@ -67,10 +68,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="g">The point to buffer.</param>
         /// <param name="distance">The buffer distance.</param>
         /// <returns> The buffer of the input point.</returns>
-        public static Geometry Buffer(Geometry g, double distance) 
+        public static IGeometry Buffer(IGeometry g, double distance) 
         {
             BufferOp gBuf = new BufferOp(g);
-            Geometry geomBuf = gBuf.GetResultGeometry(distance);        
+            IGeometry geomBuf = gBuf.GetResultGeometry(distance);        
             return geomBuf;
         }
 
@@ -82,11 +83,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="distance">The buffer distance.</param>        
         /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
         /// <returns> The buffer of the input point.</returns>
-        public static Geometry Buffer(Geometry g, double distance, BufferStyles endCapStyle)
+        public static IGeometry Buffer(IGeometry g, double distance, BufferStyles endCapStyle)
         {
             BufferOp gBuf = new BufferOp(g);
             gBuf.EndCapStyle = endCapStyle;
-            Geometry geomBuf = gBuf.GetResultGeometry(distance);
+            IGeometry geomBuf = gBuf.GetResultGeometry(distance);
             return geomBuf;
         }
 
@@ -98,11 +99,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="distance">The buffer distance.</param>
         /// <param name="quadrantSegments">The number of segments used to approximate a quarter circle.</param>
         /// <returns>The buffer of the input point.</returns>
-        public static Geometry Buffer(Geometry g, double distance, int quadrantSegments)
+        public static IGeometry Buffer(IGeometry g, double distance, int quadrantSegments)
         {
             BufferOp bufOp = new BufferOp(g);
             bufOp.QuadrantSegments = quadrantSegments;
-            Geometry geomBuf = bufOp.GetResultGeometry(distance);
+            IGeometry geomBuf = bufOp.GetResultGeometry(distance);
             return geomBuf;
         }
 
@@ -115,27 +116,27 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="quadrantSegments">The number of segments used to approximate a quarter circle.</param>
         /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
         /// <returns>The buffer of the input point.</returns>
-        public static Geometry Buffer(Geometry g, double distance, int quadrantSegments, BufferStyles endCapStyle)
+        public static IGeometry Buffer(IGeometry g, double distance, int quadrantSegments, BufferStyles endCapStyle)
         {
             BufferOp bufOp = new BufferOp(g);
             bufOp.EndCapStyle = endCapStyle;
             bufOp.QuadrantSegments = quadrantSegments;
-            Geometry geomBuf = bufOp.GetResultGeometry(distance);
+            IGeometry geomBuf = bufOp.GetResultGeometry(distance);
             return geomBuf;
         }
 
-        private Geometry argGeom;
+        private IGeometry argGeom;
         private double distance;
         private int quadrantSegments = OffsetCurveBuilder.DefaultQuadrantSegments;
         private BufferStyles endCapStyle = BufferStyles.CapRound;
-        private Geometry resultGeometry = null;
+        private IGeometry resultGeometry = null;
         private TopologyException saveException;   // debugging only
 
         /// <summary>
         /// Initializes a buffer computation for the given point.
         /// </summary>
         /// <param name="g">The point to buffer.</param>
-        public BufferOp(Geometry g)
+        public BufferOp(IGeometry g)
         {
             argGeom = g;
         }
@@ -177,7 +178,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <param name="distance"></param>
         /// <returns></returns>
-        public Geometry GetResultGeometry(double distance)
+        public IGeometry GetResultGeometry(double distance)
         {
             this.distance = distance;
             ComputeGeometry();
@@ -190,7 +191,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="distance"></param>
         /// <param name="quadrantSegments"></param>
         /// <returns></returns>
-        public Geometry GetResultGeometry(double distance, int quadrantSegments)
+        public IGeometry GetResultGeometry(double distance, int quadrantSegments)
         {
             this.distance = distance;
             QuadrantSegments = quadrantSegments;
@@ -258,7 +259,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             // don't change the precision model of the Geometry, just reduce the precision
             SimpleGeometryPrecisionReducer reducer = new SimpleGeometryPrecisionReducer(fixedPM);
-            Geometry reducedGeom = reducer.Reduce(argGeom);       
+            IGeometry reducedGeom = reducer.Reduce(argGeom);       
 
             BufferBuilder bufBuilder = new BufferBuilder();
             bufBuilder.WorkingPrecisionModel = fixedPM;

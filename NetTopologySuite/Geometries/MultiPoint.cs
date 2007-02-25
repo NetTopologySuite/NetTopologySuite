@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Represents an empty <c>MultiPoint</c>.
         /// </summary>
-        public static new readonly MultiPoint Empty = new GeometryFactory().CreateMultiPoint(new Point[] { });
+        public static new readonly IMultiPoint Empty = new GeometryFactory().CreateMultiPoint(new IPoint[] { });
         
         /// <summary>
         /// Constructs a <c>MultiPoint</c>.
@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Elements may be empty <c>Point</c>s, but not <c>null</c>s.
         /// </param>
         /// <param name="factory"></param>
-        public MultiPoint(Point[] points, GeometryFactory factory) : base(points, factory) { }
+        public MultiPoint(IPoint[] points, GeometryFactory factory) : base(points, factory) { }
 
         /// <summary>
         /// Constructs a <c>MultiPoint</c>.
@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public MultiPoint(Point[] points) : this(points, DefaultFactory) { }  
+        public MultiPoint(IPoint[] points) : this(points, DefaultFactory) { }  
 
         /// <summary>
         /// 

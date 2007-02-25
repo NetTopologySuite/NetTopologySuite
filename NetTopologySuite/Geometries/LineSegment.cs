@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Text;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Algorithm;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
@@ -18,12 +21,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     [Serializable]
     public class LineSegment: IComparable
     {
-        private Coordinate p0 = null, p1 = null;
+        private ICoordinate p0 = null, p1 = null;
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate P1
+        public ICoordinate P1
         {
             get { return p1; }
             set { p1 = value; }
@@ -32,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate P0
+        public ICoordinate P0
         {
             get { return p0; }
             set { p0 = value; }
@@ -43,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="p0"></param>
         /// <param name="p1"></param>
-        public LineSegment(Coordinate p0, Coordinate p1) 
+        public LineSegment(ICoordinate p0, ICoordinate p1) 
         {
             this.p0 = p0;
             this.p1 = p1;
@@ -65,7 +68,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public Coordinate GetCoordinate(int i)
+        public ICoordinate GetCoordinate(int i)
         {
             if (i == 0) return P0;
             return P1;
@@ -85,7 +88,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="p0"></param>
         /// <param name="p1"></param>
-        public void SetCoordinates(Coordinate p0, Coordinate p1)
+        public void SetCoordinates(ICoordinate p0, ICoordinate p1)
         {
             this.P0.X = p0.X;
             this.P0.Y = p0.Y;
@@ -165,7 +168,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public void Reverse()
         {
-            Coordinate temp = P0;
+            ICoordinate temp = P0;
             P0 = P1;
             P1 = temp;
         }
@@ -205,7 +208,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary> 
         /// Computes the distance between this line segment and a point.
         /// </summary>
-        public double Distance(Coordinate p)
+        public double Distance(ICoordinate p)
         {
             return CGAlgorithms.DistancePointLine(p, P0, P1);
         }
@@ -216,7 +219,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        public double DistancePerpendicular(Coordinate p)
+        public double DistancePerpendicular(ICoordinate p)
         {
             return CGAlgorithms.DistancePointLinePerpendicular(p, P0, P1);
         }
@@ -229,7 +232,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        public double ProjectionFactor(Coordinate p)
+        public double ProjectionFactor(ICoordinate p)
         {
             if (p.Equals(P0)) return 0.0;
             if (p.Equals(P1)) return 1.0;
@@ -261,13 +264,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        public Coordinate Project(Coordinate p)
+        public ICoordinate Project(ICoordinate p)
         {
             if (p.Equals(P0) || p.Equals(P1)) 
                 return new Coordinate(p);
 
             double r = ProjectionFactor(p);
-            Coordinate coord = new Coordinate();
+            ICoordinate coord = new Coordinate();
             coord.X = P0.X + r * (P1.X - P0.X);
             coord.Y = P0.Y + r * (P1.Y - P0.Y);
             return coord;
@@ -291,11 +294,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (pf0 >= 1.0 && pf1 >= 1.0) return null;
             if (pf0 <= 0.0 && pf1 <= 0.0) return null;
 
-            Coordinate newp0 = Project(seg.P0);
+            ICoordinate newp0 = Project(seg.P0);
             if (pf0 < 0.0) newp0 = P0;
             if (pf0 > 1.0) newp0 = P1;
 
-            Coordinate newp1 = Project(seg.P1);
+            ICoordinate newp1 = Project(seg.P1);
             if (pf1 < 0.0) newp1 = P0;
             if (pf1 > 1.0) newp1 = P1;
 
@@ -309,7 +312,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>
         /// A Coordinate which is the closest point on the line segment to the point p.
         /// </returns>
-        public Coordinate ClosestPoint(Coordinate p)
+        public ICoordinate ClosestPoint(ICoordinate p)
         {
             double factor = ProjectionFactor(p);
             if (factor > 0 && factor < 1) 
@@ -328,27 +331,27 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>
         /// A pair of Coordinates which are the closest points on the line segments.
         /// </returns>
-        public Coordinate[] ClosestPoints(LineSegment line)
+        public ICoordinate[] ClosestPoints(LineSegment line)
         {
             // test for intersection
-            Coordinate intPt = Intersection(line);
+            ICoordinate intPt = Intersection(line);
             if (intPt != null)
-                return new Coordinate[] { intPt, intPt };            
+                return new ICoordinate[] { intPt, intPt };            
 
             /*
             *  if no intersection closest pair contains at least one endpoint.
             * Test each endpoint in turn.
             */
-            Coordinate[] closestPt = new Coordinate[2];
+            ICoordinate[] closestPt = new ICoordinate[2];
             double minDistance = Double.MaxValue;
             double dist;
 
-            Coordinate close00 = ClosestPoint(line.P0);
+            ICoordinate close00 = ClosestPoint(line.P0);
             minDistance = close00.Distance(line.P0);
             closestPt[0] = close00;
             closestPt[1] = line.P0;
 
-            Coordinate close01 = ClosestPoint(line.P1);
+            ICoordinate close01 = ClosestPoint(line.P1);
             dist = close01.Distance(line.P1);
             if (dist < minDistance) 
             {
@@ -357,7 +360,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 closestPt[1] = line.P1;
             }
 
-            Coordinate close10 = line.ClosestPoint(P0);
+            ICoordinate close10 = line.ClosestPoint(P0);
             dist = close10.Distance(P0);
             if (dist < minDistance) 
             {
@@ -366,7 +369,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 closestPt[1] = close10;
             }
 
-            Coordinate close11 = line.ClosestPoint(P1);
+            ICoordinate close11 = line.ClosestPoint(P1);
             dist = close11.Distance(P1);
             if (dist < minDistance) 
             {
@@ -388,7 +391,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="line"></param>
         /// <returns> An intersection point, or <c>null</c> if there is none.</returns>
-        public Coordinate Intersection(LineSegment line)
+        public ICoordinate Intersection(LineSegment line)
         {
             LineIntersector li = new RobustLineIntersector();
             li.ComputeIntersection(P0, P1, line.P0, line.P1);
@@ -411,7 +414,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
             if (!(o is LineSegment)) 
                 return false;            
-            LineSegment other = (LineSegment)o;
+            LineSegment other = (LineSegment) o;
             return p0.Equals(other.p0) && p1.Equals(other.p1);
         }
         
@@ -451,7 +454,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public int CompareTo(object o) 
         {
-            LineSegment other = (LineSegment)o;
+            LineSegment other = (LineSegment) o;
             int comp0 = P0.CompareTo(other.P0);
             if (comp0 != 0) return comp0;
             return P1.CompareTo(other.P1);

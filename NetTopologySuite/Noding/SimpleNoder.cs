@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
@@ -48,12 +50,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         public override void ComputeNodes(IList inputSegStrings)
         {
             this.nodedSegStrings = inputSegStrings;
-            foreach(object obj0 in inputSegStrings)
+            foreach (object obj0 in inputSegStrings)
             {
-                SegmentString edge0 = (SegmentString)obj0;
+                SegmentString edge0 = (SegmentString) obj0;
                 foreach(object obj1 in inputSegStrings)
                 {
-                    SegmentString edge1 = (SegmentString)obj1;
+                    SegmentString edge1 = (SegmentString) obj1;
                     ComputeIntersects(edge0, edge1);
                 }
             }
@@ -66,12 +68,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="e1"></param>
         private void ComputeIntersects(SegmentString e0, SegmentString e1)
         {
-            Coordinate[] pts0 = e0.Coordinates;
-            Coordinate[] pts1 = e1.Coordinates;
+            ICoordinate[] pts0 = e0.Coordinates;
+            ICoordinate[] pts1 = e1.Coordinates;
             for (int i0 = 0; i0 < pts0.Length - 1; i0++)
                 for (int i1 = 0; i1 < pts1.Length - 1; i1++)
                     SegmentIntersector.ProcessIntersections(e0, i0, e1, i1);
         }
-
     }
 }

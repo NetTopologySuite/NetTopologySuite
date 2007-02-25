@@ -49,12 +49,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// </summary>
         /// <param name="g0"></param>
         /// <param name="g1"></param>
-        public GeometryGraphOperation(Geometry g0, Geometry g1)
+        public GeometryGraphOperation(IGeometry g0, IGeometry g1)
         {
+            Geometry geom0 = (Geometry) g0;
+            Geometry geom1 = (Geometry) g1;
+
             // use the most precise model for the result
-            if (g0.PrecisionModel.CompareTo(g1.PrecisionModel) >= 0)
-                 ComputationPrecision = g0.PrecisionModel;
-            else ComputationPrecision = g1.PrecisionModel;
+            if (geom0.PrecisionModel.CompareTo(geom1.PrecisionModel) >= 0)
+                ComputationPrecision = geom0.PrecisionModel;
+            else ComputationPrecision = geom1.PrecisionModel;
 
             arg = new GeometryGraph[2];
             arg[0] = new GeometryGraph(0, g0);
@@ -65,9 +68,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// 
         /// </summary>
         /// <param name="g0"></param>
-        public GeometryGraphOperation(Geometry g0) 
+        public GeometryGraphOperation(IGeometry g0) 
         {
-            ComputationPrecision = g0.PrecisionModel;
+            Geometry geom0 = (Geometry) g0;
+            ComputationPrecision = geom0.PrecisionModel;
 
             arg = new GeometryGraph[1];
             arg[0] = new GeometryGraph(0, g0);;

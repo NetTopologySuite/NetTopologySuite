@@ -23,18 +23,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Represents an empty <c>Polygon</c>.
         /// </summary>
-        public static readonly Polygon Empty = new GeometryFactory().CreatePolygon(null, null);
+        public static readonly IPolygon Empty = new GeometryFactory().CreatePolygon(null, null);
 
         /// <summary>
         /// The exterior boundary, or <c>null</c> if this <c>Polygon</c>
         /// is the empty point.
         /// </summary>
-        protected LinearRing shell = null;
+        protected ILinearRing shell = null;
 
         /// <summary>
         /// The interior boundaries, if any.
         /// </summary>
-        protected LinearRing[] holes; 
+        protected ILinearRing[] holes; 
         
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Polygon"/> class.
@@ -53,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public Polygon(LinearRing shell, LinearRing[] holes) : this(shell, holes, DefaultFactory) { }
+        public Polygon(ILinearRing shell, ILinearRing[] holes) : this(shell, holes, DefaultFactory) { }
 
         /// <summary>
         /// Constructs a <c>Polygon</c> with the given exterior boundary and
@@ -70,12 +70,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// point is to be created.
         /// </param>
         /// <param name="factory"></param>
-        public Polygon(LinearRing shell, LinearRing[] holes, GeometryFactory factory) : base(factory)
+        public Polygon(ILinearRing shell, ILinearRing[] holes, GeometryFactory factory) : base(factory)
         {        
             if (shell == null) 
-                shell = Factory.CreateLinearRing((ICoordinateSequence)null);            
+                shell = Factory.CreateLinearRing((ICoordinateSequence) null);            
             if (holes == null) 
-                holes = new LinearRing[] { };
+                holes = new ILinearRing[] { };
             if (HasNullElements(holes)) 
                 throw new ArgumentException("holes must not contain null elements");
             if (shell.IsEmpty && HasNonEmptyElements(holes)) 
@@ -104,9 +104,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             {
                 if (IsEmpty)
                     return new Coordinate[] { };
-                Coordinate[] coordinates = new Coordinate[NumPoints];
+                ICoordinate[] coordinates = new ICoordinate[NumPoints];
                 int k = -1;
-                Coordinate[] shellCoordinates = (Coordinate[]) shell.Coordinates;
+                ICoordinate[] shellCoordinates = shell.Coordinates;
                 for (int x = 0; x < shellCoordinates.Length; x++)
                 {
                     k++;
@@ -114,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 }
                 for (int i = 0; i < holes.Length; i++)
                 {
-                    Coordinate[] childCoordinates = (Coordinate[]) holes[i].Coordinates;
+                    ICoordinate[] childCoordinates = holes[i].Coordinates;
                     for (int j = 0; j < childCoordinates.Length; j++)
                     {
                         k++;
@@ -278,7 +278,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             {
                 if (IsEmpty)
                     return Factory.CreateGeometryCollection(null);
-                LinearRing[] rings = new LinearRing[holes.Length + 1];
+                ILinearRing[] rings = new ILinearRing[holes.Length + 1];
                 rings[0] = shell;
                 for (int i = 0; i < holes.Length; i++)
                     rings[i + 1] = holes[i];
@@ -292,9 +292,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <returns></returns>
-        protected override Envelope ComputeEnvelopeInternal() 
+        protected override IEnvelope ComputeEnvelopeInternal() 
         {
-            return (Envelope) shell.EnvelopeInternal;
+            return shell.EnvelopeInternal;
         }
 
         /// <summary>
@@ -308,8 +308,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (!IsEquivalentClass((Geometry) other)) 
                 return false;
             Polygon otherPolygon = (Polygon) other;
-            Geometry thisShell = shell;
-            Geometry otherPolygonShell = otherPolygon.shell;
+            IGeometry thisShell = shell;
+            IGeometry otherPolygonShell = otherPolygon.shell;
             if (!thisShell.EqualsExact(otherPolygonShell, tolerance)) 
                 return false;
             if (holes.Length != otherPolygon.holes.Length) 
@@ -317,7 +317,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (holes.Length != otherPolygon.holes.Length) 
                 return false;
             for (int i = 0; i < holes.Length; i++) 
-                if (!((Geometry) holes[i]).EqualsExact(otherPolygon.holes[i], tolerance)) 
+                if (!(holes[i]).EqualsExact(otherPolygon.holes[i], tolerance)) 
                     return false;
             return true;
         }
@@ -383,7 +383,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public override void Normalize() 
         {
             Normalize(shell, true);
-            foreach(LinearRing hole in Holes)
+            foreach(ILinearRing hole in Holes)
                 Normalize(hole, false);
             Array.Sort(holes);
         }
@@ -395,8 +395,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         protected internal override int CompareToSameClass(object o) 
         {   
-            LinearRing thisShell = shell;
-            LinearRing otherShell = ((Polygon)o).shell;
+            LinearRing thisShell = (LinearRing) shell;
+            ILinearRing otherShell = ((IPolygon) o).Shell;
             return thisShell.CompareToSameClass(otherShell);
         }
 
@@ -405,18 +405,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="ring"></param>
         /// <param name="clockwise"></param>        
-        private void Normalize(LinearRing ring, bool clockwise) 
+        private void Normalize(ILinearRing ring, bool clockwise) 
         {
             if (ring.IsEmpty) 
                 return;            
-            Coordinate[] uniqueCoordinates = new Coordinate[ring.Coordinates.Length - 1];
+            ICoordinate[] uniqueCoordinates = new ICoordinate[ring.Coordinates.Length - 1];
             Array.Copy(ring.Coordinates, 0, uniqueCoordinates, 0, uniqueCoordinates.Length);
-            Coordinate minCoordinate = CoordinateArrays.MinCoordinate((Coordinate[]) ring.Coordinates);
+            ICoordinate minCoordinate = CoordinateArrays.MinCoordinate(ring.Coordinates);
             CoordinateArrays.Scroll(uniqueCoordinates, minCoordinate);
             Array.Copy(uniqueCoordinates, 0, ring.Coordinates, 0, uniqueCoordinates.Length);
             ring.Coordinates[uniqueCoordinates.Length] = uniqueCoordinates[0];
-            if (CGAlgorithms.IsCCW((Coordinate[]) ring.Coordinates) == clockwise) 
-                CoordinateArrays.Reverse((Coordinate[]) ring.Coordinates);            
+            if (CGAlgorithms.IsCCW(ring.Coordinates) == clockwise) 
+                CoordinateArrays.Reverse(ring.Coordinates);            
         }
 
         /// <summary>

@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Represents an empty <c>MultiLineString</c>.
         /// </summary>
-        public static new readonly MultiLineString Empty = new GeometryFactory().CreateMultiLineString(null);
+        public static new readonly IMultiLineString Empty = new GeometryFactory().CreateMultiLineString(null);
 
         /// <summary>
         /// Constructs a <c>MultiLineString</c>.
@@ -29,7 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// but not <c>null</c>s.
         /// </param>
         /// <param name="factory"></param>
-        public MultiLineString(LineString[] lineStrings, GeometryFactory factory) : base(lineStrings, factory) { }        
+        public MultiLineString(ILineString[] lineStrings, GeometryFactory factory) : base(lineStrings, factory) { }        
 
         /// <summary>
         /// Constructs a <c>MultiLineString</c>.
@@ -44,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public MultiLineString(LineString[] lineStrings) : this(lineStrings, DefaultFactory) { }
+        public MultiLineString(ILineString[] lineStrings) : this(lineStrings, DefaultFactory) { }
 
         /// <summary>
         /// 

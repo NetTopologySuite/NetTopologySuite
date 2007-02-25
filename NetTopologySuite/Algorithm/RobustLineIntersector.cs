@@ -3,6 +3,8 @@ using System.Collections;
 using System.Diagnostics;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
@@ -24,13 +26,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="p"></param>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
-        public override void ComputeIntersection(Coordinate p, Coordinate p1, Coordinate p2) 
+        public override void ComputeIntersection(ICoordinate p, ICoordinate p1, ICoordinate p2) 
         {
             isProper = false;
             // do between check first, since it is faster than the orientation test
             if(Envelope.Intersects(p1, p2, p)) 
             {
-                if((CGAlgorithms.OrientationIndex(p1, p2, p) == 0) && (CGAlgorithms.OrientationIndex(p2, p1, p) == 0)) 
+                if( (CGAlgorithms.OrientationIndex(p1, p2, p) == 0) && 
+                    (CGAlgorithms.OrientationIndex(p2, p1, p) == 0) ) 
                 {
                     isProper = true;
                     if (p.Equals(p1) || p.Equals(p2)) 
@@ -50,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="q1"></param>
         /// <param name="q2"></param>
         /// <returns></returns>
-        public override int ComputeIntersect(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2) 
+        public override int ComputeIntersect(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2) 
         {            
             isProper = false;
 
@@ -113,44 +116,44 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="q1"></param>
         /// <param name="q2"></param>
         /// <returns></returns>
-        private int ComputeCollinearIntersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2) 
+        private int ComputeCollinearIntersection(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2) 
         {
             bool p1q1p2 = Envelope.Intersects(p1, p2, q1);
             bool p1q2p2 = Envelope.Intersects(p1, p2, q2);
             bool q1p1q2 = Envelope.Intersects(q1, q2, p1);
             bool q1p2q2 = Envelope.Intersects(q1, q2, p2);
 
-            if(p1q1p2 && p1q2p2) 
+            if (p1q1p2 && p1q2p2) 
             {
                 intPt[0] = q1;
                 intPt[1] = q2;
                 return Collinear;
             }
-            if(q1p1q2 && q1p2q2) 
+            if (q1p1q2 && q1p2q2) 
             {
                 intPt[0] = p1;
                 intPt[1] = p2;
                 return Collinear;
             }
-            if(p1q1p2 && q1p1q2)
+            if (p1q1p2 && q1p1q2)
             {
                 intPt[0] = q1;
                 intPt[1] = p1;
                 return q1.Equals(p1) && !p1q2p2 && !q1p2q2 ? DoIntersect : Collinear;
             }
-            if(p1q1p2 && q1p2q2) 
+            if (p1q1p2 && q1p2q2) 
             {
                 intPt[0] = q1;
                 intPt[1] = p2;
                 return q1.Equals(p2) && !p1q2p2 && !q1p1q2 ? DoIntersect : Collinear;
             }
-            if(p1q2p2 && q1p1q2) 
+            if (p1q2p2 && q1p1q2) 
             {
                 intPt[0] = q2;
                 intPt[1] = p1;
                 return q2.Equals(p1) && !p1q1p2 && !q1p2q2 ? DoIntersect : Collinear;
             }
-            if(p1q2p2 && q1p2q2) 
+            if (p1q2p2 && q1p2q2) 
             {
                 intPt[0] = q2;
                 intPt[1] = p2;
@@ -172,16 +175,16 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="q1"></param>
         /// <param name="q2"></param>
         /// <returns></returns>
-        private Coordinate Intersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
+        private ICoordinate Intersection(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2)
         {
-            Coordinate n1 = new Coordinate(p1);
-            Coordinate n2 = new Coordinate(p2);
-            Coordinate n3 = new Coordinate(q1);
-            Coordinate n4 = new Coordinate(q2);
-            Coordinate normPt = new Coordinate();
+            ICoordinate n1 = new Coordinate(p1);
+            ICoordinate n2 = new Coordinate(p2);
+            ICoordinate n3 = new Coordinate(q1);
+            ICoordinate n4 = new Coordinate(q2);
+            ICoordinate normPt = new Coordinate();
             NormalizeToEnvCentre(n1, n2, n3, n4, normPt);
 
-            Coordinate intPt = null;
+            ICoordinate intPt = null;
             try 
             {
                 intPt = HCoordinate.Intersection(n1, n2, n3, n4);
@@ -237,7 +240,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="n3"></param>
         /// <param name="n4"></param>
         /// <param name="normPt"></param>
-        private void NormalizeToMinimum(Coordinate n1, Coordinate n2, Coordinate n3, Coordinate n4, Coordinate normPt)
+        private void NormalizeToMinimum(ICoordinate n1, ICoordinate n2, ICoordinate n3, ICoordinate n4, ICoordinate normPt)
         {
             normPt.X = SmallestInAbsValue(n1.X, n2.X, n3.X, n4.X);
             normPt.Y = SmallestInAbsValue(n1.Y, n2.Y, n3.Y, n4.Y);
@@ -257,7 +260,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="n10"></param>
         /// <param name="n11"></param>
         /// <param name="normPt"></param>
-        private void NormalizeToEnvCentre(Coordinate n00, Coordinate n01, Coordinate n10, Coordinate n11, Coordinate normPt)
+        private void NormalizeToEnvCentre(ICoordinate n00, ICoordinate n01, ICoordinate n10, ICoordinate n11, ICoordinate normPt)
         {
             double minX0 = n00.X < n01.X ? n00.X : n01.X;
             double minY0 = n00.Y < n01.Y ? n00.Y : n01.Y;
@@ -321,10 +324,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="intPt"></param>
         /// <returns><c>true</c> if the input point lies within both input segment envelopes.</returns>
-        private bool IsInSegmentEnvelopes(Coordinate intPt)
+        private bool IsInSegmentEnvelopes(ICoordinate intPt)
         {
-            Envelope env0 = new Envelope(inputLines[0, 0], inputLines[0, 1]);
-            Envelope env1 = new Envelope(inputLines[1, 0], inputLines[1, 1]);
+            IEnvelope env0 = new Envelope(inputLines[0, 0], inputLines[0, 1]);
+            IEnvelope env1 = new Envelope(inputLines[1, 0], inputLines[1, 1]);
             return env0.Contains(intPt) && env1.Contains(intPt);
         }
     }

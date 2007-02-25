@@ -3,6 +3,8 @@ using System.Collections;
 using System.Diagnostics;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 
@@ -112,11 +114,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <param name="snapPts"></param>
         private void ComputeSnaps(IList segStrings, IList snapPts)
         {
-            foreach(object obj in segStrings)
-            {
-                SegmentString ss = (SegmentString)obj;
-                ComputeSnaps(ss, snapPts);
-            }
+            foreach (SegmentString ss in segStrings)
+                ComputeSnaps(ss, snapPts);            
         }
 
         /// <summary>
@@ -126,11 +125,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <param name="snapPts"></param>
         private void ComputeSnaps(SegmentString ss, IList snapPts)
         {
-            foreach(object objo in snapPts)
+            foreach (ICoordinate snapPt in snapPts)
             {
-                Coordinate snapPt = (Coordinate)objo;
                 HotPixel hotPixel = new HotPixel(snapPt, scaleFactor, li);
-                for(int i = 0; i < ss.Count - 1; i++)
+                for (int i = 0; i < ss.Count - 1; i++)
                     AddSnappedNode(hotPixel, ss, i);
             }
         }
@@ -142,15 +140,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <param name="edges"></param>
         public void ComputeVertexSnaps(IList edges)
         {
-            foreach(object obj0 in edges)
-            {
-                SegmentString edge0 = (SegmentString)obj0;
-                foreach(object obj1 in edges)
-                {
-                    SegmentString edge1 = (SegmentString)obj1;
-                    ComputeVertexSnaps(edge0, edge1);
-                }
-            }
+            foreach (SegmentString edge0 in edges)
+                foreach (SegmentString edge1 in edges)                    
+                    ComputeVertexSnaps(edge0, edge1);            
         }
 
         /// <summary>
@@ -161,8 +153,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <param name="e1"></param>
         private void ComputeVertexSnaps(SegmentString e0, SegmentString e1)
         {
-            Coordinate[] pts0 = e0.Coordinates;
-            Coordinate[] pts1 = e1.Coordinates;
+            ICoordinate[] pts0 = e0.Coordinates;
+            ICoordinate[] pts1 = e1.Coordinates;
             for (int i0 = 0; i0 < pts0.Length - 1; i0++)
             {
                 HotPixel hotPixel = new HotPixel(pts0[i0], scaleFactor, li);
@@ -191,8 +183,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <returns></returns>
         public static bool AddSnappedNode(HotPixel hotPix, SegmentString segStr, int segIndex)
         {
-            Coordinate p0 = segStr.GetCoordinate(segIndex);
-            Coordinate p1 = segStr.GetCoordinate(segIndex + 1);
+            ICoordinate p0 = segStr.GetCoordinate(segIndex);
+            ICoordinate p1 = segStr.GetCoordinate(segIndex + 1);
 
             if (hotPix.Intersects(p0, p1))
             {
@@ -201,6 +193,5 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             }
             return false;
         }
-
     }
 }

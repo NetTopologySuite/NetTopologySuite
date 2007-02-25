@@ -144,7 +144,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// The bounding box of this <c>Geometry</c>.
         /// </summary>
-        protected Envelope envelope;
+        protected IEnvelope envelope;
        
         // The ID of the Spatial Reference System used by this <c>Geometry</c>
         private int srid;
@@ -539,7 +539,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             public void Filter(IGeometry geom)
             {
-                ((Geometry) geom).GeometryChangedAction();
+                geom.GeometryChangedAction();
             }
         };
 
@@ -1286,7 +1286,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// This <c>Geometry</c>s bounding box; if the <c>Geometry</c>
         /// is empty, <c>Envelope.IsNull</c> will return <c>true</c>.
         /// </returns>
-        protected abstract Envelope ComputeEnvelopeInternal();
+        protected abstract IEnvelope ComputeEnvelopeInternal();
 
         /// <summary>
         /// Returns whether this <c>Geometry</c> is greater than, equal to,
@@ -1371,10 +1371,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coord"></param>
         /// <param name="exemplar"></param>
         /// <returns></returns>
-        private Point CreatePointFromInternalCoord(Coordinate coord, Geometry exemplar)
+        private IPoint CreatePointFromInternalCoord(ICoordinate coord, IGeometry exemplar)
         {
-            exemplar.PrecisionModel.MakePrecise(ref coord);
-            return exemplar.Factory.CreatePoint(coord);
+            Geometry geom = ((Geometry) exemplar);
+            geom.PrecisionModel.MakePrecise(ref coord);
+            return geom.Factory.CreatePoint(coord);
         }        
 
         /// <summary>

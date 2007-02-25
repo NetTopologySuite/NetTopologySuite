@@ -22,11 +22,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// A <see cref="Coordinate" /> from <paramref name="testPts" /> 
         /// which is not in <paramref name="pts" />, or <c>null</c>.
         /// </returns>
-        public static Coordinate PointNotInList(Coordinate[] testPts, Coordinate[] pts)
+        public static ICoordinate PointNotInList(ICoordinate[] testPts, ICoordinate[] pts)
         {
             for (int i = 0; i < testPts.Length; i++)
             {
-                Coordinate testPt = testPts[i];
+                ICoordinate testPt = testPts[i];
                 if (CoordinateArrays.IndexOf(testPt, pts) < 0)
                     return testPt;
             }
@@ -41,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="pts1"></param>
         /// <param name="pts2"></param>
         /// <returns></returns>
-        public static int Compare(Coordinate[] pts1, Coordinate[] pts2)
+        public static int Compare(ICoordinate[] pts1, ICoordinate[] pts2)
         {
             int i = 0;
             while (i < pts1.Length && i < pts2.Length)
@@ -74,7 +74,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <c>1</c> if the array is smaller at the start or is a palindrome,
         /// <c>-1</c> if smaller at the end.
         /// </returns>
-        public static int IncreasingDirection(Coordinate[] pts)
+        public static int IncreasingDirection(ICoordinate[] pts)
         {
             for (int i = 0; i < pts.Length / 2; i++)
             {
@@ -95,12 +95,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="pts1"></param>
         /// <param name="pts2"></param>
         /// <returns></returns>
-        private static bool IsEqualReversed(Coordinate[] pts1, Coordinate[] pts2)
+        private static bool IsEqualReversed(ICoordinate[] pts1, ICoordinate[] pts2)
         {
             for (int i = 0; i < pts1.Length; i++)
             {
-                Coordinate p1 = pts1[i];
-                Coordinate p2 = pts2[pts1.Length - i - 1];
+                ICoordinate p1 = pts1[i];
+                ICoordinate p2 = pts2[pts1.Length - i - 1];
                 if (p1.CompareTo(p2) != 0)
                     return false;
             }
@@ -112,9 +112,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">Array of Coordinates.</param>
         /// <returns>Deep copy of the input.</returns>
-        public static Coordinate[] CopyDeep(Coordinate[] coordinates)
+        public static ICoordinate[] CopyDeep(ICoordinate[] coordinates)
         {
-	        Coordinate[] copy = new Coordinate[coordinates.Length];            
+            ICoordinate[] copy = new Coordinate[coordinates.Length];            
 	        for(int i = 0; i < coordinates.Length; i++)            
             	copy[i] = new Coordinate(coordinates[i]);            
             return copy;
@@ -130,10 +130,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// If <paramref name="coordList"/> contains not only <see cref="Coordinate" />s.
         /// </exception>
         [Obsolete("Use generic method instead")]
-        public static Coordinate[] ToCoordinateArray(ICollection coordList)
+        public static ICoordinate[] ToCoordinateArray(ICollection coordList)
         {
-            List<Coordinate> tempList = new List<Coordinate>(coordList.Count);
-            foreach (Coordinate coord in coordList)
+            List<ICoordinate> tempList = new List<ICoordinate>(coordList.Count);
+            foreach (ICoordinate coord in coordList)
                 tempList.Add(coord);
             return tempList.ToArray();
         }
@@ -144,10 +144,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordList"><see cref="IList" /> of coordinates.</param>
         /// <returns></returns>
-        public static Coordinate[] ToCoordinateArray(ICollection<Coordinate> coordList)
+        public static ICoordinate[] ToCoordinateArray(ICollection<ICoordinate> coordList)
         {
-            List<Coordinate> tempList = new List<Coordinate>(coordList.Count);
-            foreach (Coordinate coord in coordList)
+            List<ICoordinate> tempList = new List<ICoordinate>(coordList.Count);
+            foreach (ICoordinate coord in coordList)
                 tempList.Add(coord);
             return tempList.ToArray();
         }
@@ -173,9 +173,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="n">Length amount.</param>
         /// <param name="c">Array of Coordinates.</param>
         /// <returns>New Coordinate array.</returns>
-      	public static Coordinate[] AtLeastNCoordinatesOrNothing(int n, Coordinate[] c)
+        public static ICoordinate[] AtLeastNCoordinatesOrNothing(int n, ICoordinate[] c)
       	{
-            return (c.Length >= n) ? (c) : (new Coordinate[] { });
+            return (c.Length >= n) ? (c) : (new ICoordinate[] { });
         }
 
         /// <summary>
@@ -221,7 +221,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coord1">First array of Coordinates.</param>
         /// <param name="coord2">Second array of Coordinates.</param>
         /// <returns><c>true</c> if two Coordinates array are equals; false otherwise</returns>
-      	public static bool Equals(Coordinate[] coord1, Coordinate[] coord2)
+        public static bool Equals(ICoordinate[] coord1, ICoordinate[] coord2)
       	{
             if (coord1 == coord2) 
                 return true;
@@ -240,7 +240,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// in the forward direction of their coordinates,
         /// using lexicographic ordering.
         /// </summary>        
-        public class ForwardComparator : IComparer<Coordinate[]>
+        public class ForwardComparator : IComparer<ICoordinate[]>
         {
             /// <summary>
             /// Compares the specified <see cref="Coordinate" />s arrays.
@@ -248,7 +248,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             /// <param name="pts1"></param>
             /// <param name="pts2"></param>
             /// <returns></returns>
-            public int Compare(Coordinate[] pts1, Coordinate[] pts2)
+            public int Compare(ICoordinate[] pts1, ICoordinate[] pts2)
             {
                 return CoordinateArrays.Compare(pts1, pts2);
             }
@@ -261,7 +261,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// If the arrays are not equal, the ordering returned
         /// is the ordering in the forward direction.
         /// </summary>        
-        public class BidirectionalComparator : IComparer<Coordinate[]>
+        public class BidirectionalComparator : IComparer<ICoordinate[]>
         {
             /// <summary>
             /// 
@@ -269,7 +269,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             /// <param name="pts1"></param>
             /// <param name="pts2"></param>
             /// <returns></returns>
-            public int Compare(Coordinate[] pts1, Coordinate[] pts2)
+            public int Compare(ICoordinate[] pts1, ICoordinate[] pts2)
             {
                 if (pts1.Length < pts2.Length)
                     return -1;
@@ -293,7 +293,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             /// <param name="pts1"></param>
             /// <param name="pts2"></param>
             /// <returns></returns>
-            public int OLDcompare(Coordinate[] pts1, Coordinate[] pts2)
+            public int OLDcompare(ICoordinate[] pts1, ICoordinate[] pts2)
             {
                 if (pts1.Length < pts2.Length)
                     return -1;
@@ -332,16 +332,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         ///  A <see cref="IComparer" /> for <see cref="Coordinate" />s.
         /// </param>
         /// <returns></returns>
-        public static bool Equals(Coordinate[] coord1, Coordinate[] coord2,
-                IComparer<Coordinate[]> coordinateComparer)
+        public static bool Equals(ICoordinate[] coord1, ICoordinate[] coord2,
+                IComparer<ICoordinate[]> coordinateComparer)
         {
             if (coord1 == coord2) 
                 return true;
             if (coord1 == null || coord2 == null)
                 return false;
             if (coord1.Length != coord2.Length) 
-                return false;
-            // for (int i = 0; i < coord1.Length; i++)            
+                return false;       
             if (coordinateComparer.Compare(coord1, coord2) != 0)
                 return false;            
             return true;
@@ -352,9 +351,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">Array to search.</param>
         /// <returns>The minimum coordinate in the array, found using <c>CompareTo</c>.</returns>
-      	public static Coordinate MinCoordinate(Coordinate[] coordinates)
+      	public static ICoordinate MinCoordinate(ICoordinate[] coordinates)
         {
-            Coordinate minCoord = null;
+            ICoordinate minCoord = null;
             for (int i = 0; i < coordinates.Length; i++)
             	if (minCoord == null || minCoord.CompareTo(coordinates[i]) > 0)
                     minCoord = coordinates[i];
@@ -366,12 +365,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">Array to rearrange.</param>
         /// <param name="firstCoordinate">Coordinate to make first.</param>
-      	public static void Scroll(Coordinate[] coordinates, Coordinate firstCoordinate)
+        public static void Scroll(ICoordinate[] coordinates, ICoordinate firstCoordinate)
         {
             int i = IndexOf(firstCoordinate, coordinates);
             if (i < 0) 
                 return;
-            Coordinate[] newCoordinates = new Coordinate[coordinates.Length];
+            ICoordinate[] newCoordinates = new ICoordinate[coordinates.Length];
             Array.Copy(coordinates, i, newCoordinates, 0, coordinates.Length - i);
             Array.Copy(coordinates, 0, newCoordinates, coordinates.Length - i, i);
             Array.Copy(newCoordinates, 0, coordinates, 0, coordinates.Length);
@@ -384,7 +383,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coordinate">A <see cref="Coordinate" /> to search for.</param>
         /// <param name="coordinates">A <see cref="Coordinate" /> array to search.</param>
         /// <returns>The position of <c>coordinate</c>, or -1 if it is not found.</returns>
-      	public static int IndexOf(Coordinate coordinate, Coordinate[] coordinates)
+        public static int IndexOf(ICoordinate coordinate, ICoordinate[] coordinates)
         {
             for (int i = 0; i < coordinates.Length; i++)
         	    if (coordinate.Equals(coordinates[i]))
@@ -400,11 +399,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="start">The index of the start of the subsequence to extract.</param>
         /// <param name="end">The index of the end of the subsequence to extract.</param>
         /// <returns>A subsequence of the input array.</returns>
-        public static Coordinate[] Extract(Coordinate[] pts, int start, int end)
+        public static ICoordinate[] Extract(ICoordinate[] pts, int start, int end)
         {
             // Code using FLC features
             int len = end - start + 1;
-            Coordinate[] extractPts = new Coordinate[len];
+            ICoordinate[] extractPts = new ICoordinate[len];
             Array.Copy(pts, start, extractPts, 0, len);
 
             /* Original JTS code

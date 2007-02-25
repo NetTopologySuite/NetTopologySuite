@@ -91,8 +91,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public static IPoint CreatePointFromInternalCoord(ICoordinate coord, IGeometry exemplar)
         {
-            exemplar.PrecisionModel.MakePrecise(ref coord);
-            return exemplar.Factory.CreatePoint(coord);
+            Geometry geom = (Geometry) exemplar;
+            geom.PrecisionModel.MakePrecise(ref coord);
+            return geom.Factory.CreatePoint(coord);
         }
 
         /// <summary>
@@ -219,7 +220,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="multiPoints">The <c>ICollection</c> of MultiPoints to convert.</param>
         /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static MultiPoint[] ToMultiPointArray(ICollection multiPoints)
+        public static IMultiPoint[] ToMultiPointArray(ICollection multiPoints)
         {
             IMultiPoint[] list = new IMultiPoint[multiPoints.Count];
             int i = 0;
@@ -543,7 +544,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         private class AnonymousCoordinateOperationImpl : GeometryEditor.CoordinateOperation
         {
-            public override Coordinate[] Edit(Coordinate[] coordinates, Geometry geometry)
+            public override ICoordinate[] Edit(ICoordinate[] coordinates, IGeometry geometry)
             {
                 return coordinates;
             }

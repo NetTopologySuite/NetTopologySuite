@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
@@ -47,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// My hypothesis is that the function is safe to use for points which are the
         /// result of rounding points which lie on the line, but not safe to use for truncated points.
         /// </summary>
-        public static double ComputeEdgeDistance(Coordinate p, Coordinate p0, Coordinate p1)
+        public static double ComputeEdgeDistance(ICoordinate p, ICoordinate p0, ICoordinate p1)
         {
             double dx = Math.Abs(p1.X - p0.X);
             double dy = Math.Abs(p1.Y - p0.Y);
@@ -86,7 +88,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="p1"></param>
         /// <param name="p2"></param>
         /// <returns></returns>
-        public static double NonRobustComputeEdgeDistance(Coordinate p, Coordinate p1, Coordinate p2)
+        public static double NonRobustComputeEdgeDistance(ICoordinate p, ICoordinate p1, ICoordinate p2)
         {
             double dx = p.X - p1.X;
             double dy = p.Y - p1.Y;
@@ -103,12 +105,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        protected Coordinate[,] inputLines = new Coordinate[2,2];
+        protected ICoordinate[,] inputLines = new ICoordinate[2, 2];
         
         /// <summary>
         /// 
         /// </summary>
-        protected Coordinate[] intPt = new Coordinate[2];
+        protected ICoordinate[] intPt = new ICoordinate[2];
 
         /// <summary> 
         /// The indexes of the endpoints of the intersection lines, in order along
@@ -124,12 +126,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        protected Coordinate pa;
+        protected ICoordinate pa;
         
         /// <summary>
         /// 
         /// </summary>
-        protected Coordinate pb;
+        protected ICoordinate pb;
 
         /// <summary> 
         /// If MakePrecise is true, computed intersection coordinates will be made precise
@@ -180,7 +182,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// The actual value of the intersection (if there is one)
         /// is equal to the value of <c>p</c>.
         /// </summary>
-        public abstract void ComputeIntersection(Coordinate p, Coordinate p1, Coordinate p2);
+        public abstract void ComputeIntersection(ICoordinate p, ICoordinate p1, ICoordinate p2);
 
         /// <summary>
         /// 
@@ -198,7 +200,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// This function computes both the bool value of the hasIntersection test
         /// and the (approximate) value of the intersection point itself (if there is one).
         /// </summary>
-        public void ComputeIntersection(Coordinate p1, Coordinate p2, Coordinate p3, Coordinate p4) 
+        public void ComputeIntersection(ICoordinate p1, ICoordinate p2, ICoordinate p3, ICoordinate p4) 
         {
             inputLines[0,0] = p1;
             inputLines[0,1] = p2;
@@ -215,7 +217,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="q1"></param>
         /// <param name="q2"></param>
         /// <returns></returns>
-        public abstract int ComputeIntersect(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2);
+        public abstract int ComputeIntersect(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2);
         
         /// <summary>
         /// 
@@ -275,7 +277,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="intIndex">is 0 or 1.</param>
         /// <returns>The intIndex'th intersection point.</returns>
-        public Coordinate GetIntersection(int intIndex)  
+        public ICoordinate GetIntersection(int intIndex)  
         { 
             return intPt[intIndex]; 
         }
@@ -300,7 +302,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// It does not return true if the input point is internal to the intersection segment.
         /// </summary>
         /// <returns><c>true</c> if the input point is one of the intersection points.</returns>
-        public bool IsIntersection(Coordinate pt) 
+        public bool IsIntersection(ICoordinate pt) 
         {
             for (int i = 0; i < result; i++) 
                 if (intPt[i].Equals2D(pt)) 
@@ -332,7 +334,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         public bool IsInteriorIntersection(int inputLineIndex)
         {
             for (int i = 0; i < result; i++)
-                if (!(intPt[i].Equals2D(inputLines[inputLineIndex, 0]) || intPt[i].Equals2D(inputLines[inputLineIndex, 1])))                                   
+                if (!(intPt[i].Equals2D(inputLines[inputLineIndex, 0]) || 
+                      intPt[i].Equals2D(inputLines[inputLineIndex, 1])))                                   
                     return true;                
             return false;
         }
@@ -363,7 +366,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns>
         /// The intIndex'th intersection point in the direction of the specified input line segment.
         /// </returns>
-        public Coordinate GetIntersectionAlongSegment(int segmentIndex, int intIndex) 
+        public ICoordinate GetIntersectionAlongSegment(int segmentIndex, int intIndex) 
         {
             // lazily compute int line array
             ComputeIntLineIndex();

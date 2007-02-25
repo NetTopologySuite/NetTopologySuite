@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Utilities;
@@ -20,11 +22,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
     {
         private LineIntersector li = null;
 
-        private Coordinate pt = null;
-        private Coordinate originalPt = null;        
+        private ICoordinate pt = null;
+        private ICoordinate originalPt = null;        
 
-        private Coordinate p0Scaled = null;
-        private Coordinate p1Scaled = null;
+        private ICoordinate p0Scaled = null;
+        private ICoordinate p1Scaled = null;
 
         private double scaleFactor;
 
@@ -38,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
          *  10
          *  23
          */
-        private Coordinate[] corner = new Coordinate[4];
+        private ICoordinate[] corner = new ICoordinate[4];
 
         private Envelope safeEnv = null;
 
@@ -48,13 +50,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <param name="pt"></param>
         /// <param name="scaleFactor"></param>
         /// <param name="li"></param>
-        public HotPixel(Coordinate pt, double scaleFactor, LineIntersector li)
+        public HotPixel(ICoordinate pt, double scaleFactor, LineIntersector li)
         {
             originalPt = pt;
             this.pt = pt;
             this.scaleFactor = scaleFactor;
             this.li = li;            
-            if(scaleFactor != 1.0)
+            if (scaleFactor != 1.0)
             {
                 this.pt = new Coordinate(Scale(pt.X), Scale(pt.Y));
                 p0Scaled = new Coordinate();
@@ -66,7 +68,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate
+        public ICoordinate Coordinate
         {
             get
             {
@@ -78,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// Returns a "safe" envelope that is guaranteed to contain the hot pixel.
         /// </summary>
         /// <returns></returns>
-        public Envelope GetSafeEnvelope()
+        public IEnvelope GetSafeEnvelope()
         {
             if (safeEnv == null)
             {
@@ -93,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// 
         /// </summary>
         /// <param name="pt"></param>
-        private void InitCorners(Coordinate pt)
+        private void InitCorners(ICoordinate pt)
         {
             double tolerance = 0.5;
             minx = pt.X - tolerance;
@@ -114,7 +116,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <returns></returns>
         private double Scale(double val)
         {
-            return (double)Math.Round(val * scaleFactor);
+            return (double) Math.Round(val * scaleFactor);
         }
 
         /// <summary>
@@ -123,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <returns></returns>
-        public bool Intersects(Coordinate p0, Coordinate p1)
+        public bool Intersects(ICoordinate p0, ICoordinate p1)
         {
             if (scaleFactor == 1.0)
                 return IntersectsScaled(p0, p1);
@@ -138,7 +140,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// </summary>
         /// <param name="p"></param>
         /// <param name="pScaled"></param>
-        private void CopyScaled(Coordinate p, Coordinate pScaled)
+        private void CopyScaled(ICoordinate p, ICoordinate pScaled)
         {
             pScaled.X = Scale(p.X);
             pScaled.Y = Scale(p.Y);
@@ -150,7 +152,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <returns></returns>
-        public bool IntersectsScaled(Coordinate p0, Coordinate p1)
+        public bool IntersectsScaled(ICoordinate p0, ICoordinate p1)
         {
             double segMinx = Math.Min(p0.X, p1.X);
             double segMaxx = Math.Max(p0.X, p1.X);
@@ -181,7 +183,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <returns></returns>
-        private bool IntersectsToleranceSquare(Coordinate p0, Coordinate p1)
+        private bool IntersectsToleranceSquare(ICoordinate p0, ICoordinate p1)
         {
             bool intersectsLeft = false;
             bool intersectsBottom = false;
@@ -218,7 +220,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <returns></returns>
-        private bool IntersectsPixelClosure(Coordinate p0, Coordinate p1)
+        private bool IntersectsPixelClosure(ICoordinate p0, ICoordinate p1)
         {
             li.ComputeIntersection(p0, p1, corner[0], corner[1]);
             if(li.HasIntersection) return true;
@@ -230,6 +232,5 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             if(li.HasIntersection) return true;
             return false;
         }
-
     }
 }

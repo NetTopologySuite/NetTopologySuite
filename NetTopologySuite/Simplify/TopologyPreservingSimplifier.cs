@@ -30,14 +30,14 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <param name="geom"></param>
         /// <param name="distanceTolerance"></param>
         /// <returns></returns>
-        public static Geometry Simplify(Geometry geom, double distanceTolerance)
+        public static IGeometry Simplify(IGeometry geom, double distanceTolerance)
         {
             TopologyPreservingSimplifier tss = new TopologyPreservingSimplifier(geom);
             tss.DistanceTolerance = distanceTolerance;
             return tss.GetResultGeometry();
         }
 
-        private Geometry inputGeom;
+        private IGeometry inputGeom;
         private TaggedLinesSimplifier lineSimplifier = new TaggedLinesSimplifier();
         private IDictionary lineStringMap;
 
@@ -45,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// 
         /// </summary>
         /// <param name="inputGeom"></param>
-        public TopologyPreservingSimplifier(Geometry inputGeom)
+        public TopologyPreservingSimplifier(IGeometry inputGeom)
         {
             this.inputGeom = inputGeom;            
         }
@@ -69,12 +69,12 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// 
         /// </summary>
         /// <returns></returns>
-        public Geometry GetResultGeometry() 
+        public IGeometry GetResultGeometry() 
         {
             lineStringMap = new Hashtable();
             inputGeom.Apply(new LineStringMapBuilderFilter(this));
             lineSimplifier.Simplify(new ArrayList(lineStringMap.Values));
-            Geometry result = (new LineStringTransformer(this)).Transform(inputGeom);
+            IGeometry result = (new LineStringTransformer(this)).Transform(inputGeom);
             return result;
         }
 
@@ -100,9 +100,9 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             /// <param name="coords"></param>
             /// <param name="parent"></param>
             /// <returns></returns>
-            protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, Geometry parent)
+            protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
             {
-                if (parent is LineString) 
+                if (parent is ILineString) 
                 {
                     TaggedLineString taggedLine = (TaggedLineString) container.lineStringMap[parent];
                     return CreateCoordinateSequence(taggedLine.ResultCoordinates);
@@ -134,14 +134,14 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             /// <param name="geom"></param>
             public void Filter(IGeometry geom)
             {
-                if (geom is LinearRing) 
+                if (geom is ILinearRing) 
                 {
-                    TaggedLineString taggedLine = new TaggedLineString((LineString) geom, 4);
+                    TaggedLineString taggedLine = new TaggedLineString((ILineString) geom, 4);
                     container.lineStringMap.Add(geom, taggedLine);
                 }
-                else if (geom is LineString) 
+                else if (geom is ILineString) 
                 {
-                    TaggedLineString taggedLine = new TaggedLineString((LineString) geom, 2);
+                    TaggedLineString taggedLine = new TaggedLineString((ILineString) geom, 2);
                     container.lineStringMap.Add(geom, taggedLine);
                 }
             }

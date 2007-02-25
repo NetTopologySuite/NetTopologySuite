@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Represents an empty <c>GeometryCollection</c>.
         /// </summary>
-        public static readonly GeometryCollection Empty = DefaultFactory.CreateGeometryCollection(null);
+        public static readonly IGeometryCollection Empty = DefaultFactory.CreateGeometryCollection(null);
 
         /// <summary>
         /// Internal representation of this <c>GeometryCollection</c>.        
@@ -37,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public GeometryCollection(Geometry[] geometries) : this(geometries, DefaultFactory) { }
+        public GeometryCollection(IGeometry[] geometries) : this(geometries, DefaultFactory) { }
               
         /// <summary>
         /// 
@@ -49,10 +49,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// but not <c>null</c>s.
         /// </param>
         /// <param name="factory"></param>
-        public GeometryCollection(Geometry[] geometries, GeometryFactory factory) : base(factory)
+        public GeometryCollection(IGeometry[] geometries, GeometryFactory factory) : base(factory)
         {            
             if (geometries == null)             
-                geometries = new Geometry[] { };            
+                geometries = new IGeometry[] { };            
             if (HasNullElements(geometries))             
                 throw new ArgumentException("geometries must not contain null elements");            
             this.geometries = geometries;
@@ -331,9 +331,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <returns></returns>
-        protected override Envelope ComputeEnvelopeInternal()
+        protected override IEnvelope ComputeEnvelopeInternal()
         {
-            Envelope envelope = new Envelope();
+            IEnvelope envelope = new Envelope();
             for (int i = 0; i < geometries.Length; i++) 
                 envelope.ExpandToInclude(geometries[i].EnvelopeInternal);
             return envelope;

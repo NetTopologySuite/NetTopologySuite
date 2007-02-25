@@ -40,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         * GetParent() method to return immediate parent e.g. of LinearRings in Polygons
         */
 
-        private Geometry inputGeom = null;
+        private IGeometry inputGeom = null;
 
         /// <summary>
         /// 
@@ -73,7 +73,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <summary>
         /// 
         /// </summary>
-        public Geometry InputGeometry
+        public IGeometry InputGeometry
         {
             get
             {
@@ -86,26 +86,26 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="inputGeom"></param>
         /// <returns></returns>
-        public Geometry Transform(Geometry inputGeom)
+        public IGeometry Transform(IGeometry inputGeom)
         {
             this.inputGeom = inputGeom;
-            this.factory = inputGeom.Factory;
-            if (inputGeom is Point)
-                return TransformPoint((Point) inputGeom, null);
-            if (inputGeom is MultiPoint)
-                return TransformMultiPoint((MultiPoint) inputGeom, null);
-            if (inputGeom is LinearRing)
-                return TransformLineString((LinearRing) inputGeom, null);
-            if (inputGeom is LineString)
-                return TransformLineString((LineString) inputGeom, null);
-            if (inputGeom is MultiLineString)
-                return TransformMultiLineString((MultiLineString) inputGeom, null);
-            if (inputGeom is Polygon)
-                return TransformPolygon((Polygon) inputGeom, null);
-            if (inputGeom is MultiPolygon)
-                return TransformMultiPolygon((MultiPolygon) inputGeom, null);
-            if (inputGeom is GeometryCollection)
-                return TransformGeometryCollection((GeometryCollection) inputGeom, null);
+            this.factory = ((Geometry) inputGeom).Factory;
+            if (inputGeom is IPoint)
+                return TransformPoint((IPoint) inputGeom, null);
+            if (inputGeom is IMultiPoint)
+                return TransformMultiPoint((IMultiPoint) inputGeom, null);
+            if (inputGeom is ILinearRing)
+                return TransformLineString((ILinearRing) inputGeom, null);
+            if (inputGeom is ILineString)
+                return TransformLineString((ILineString) inputGeom, null);
+            if (inputGeom is IMultiLineString)
+                return TransformMultiLineString((IMultiLineString) inputGeom, null);
+            if (inputGeom is IPolygon)
+                return TransformPolygon((IPolygon) inputGeom, null);
+            if (inputGeom is IMultiPolygon)
+                return TransformMultiPolygon((IMultiPolygon) inputGeom, null);
+            if (inputGeom is IGeometryCollection)
+                return TransformGeometryCollection((IGeometryCollection) inputGeom, null);
             throw new ArgumentException("Unknown Geometry subtype: " + inputGeom.GetType().FullName);
         }
 
@@ -115,7 +115,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="coords">The coordinate array to copy.</param>
         /// <returns>A coordinate sequence for the array.</returns>
-        protected virtual ICoordinateSequence CreateCoordinateSequence(Coordinate[] coords)
+        protected virtual ICoordinateSequence CreateCoordinateSequence(ICoordinate[] coords)
         {
             return factory.CoordinateSequenceFactory.Create(coords);
         }
@@ -136,7 +136,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <param name="coords"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected virtual ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, Geometry parent)
+        protected virtual ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
         {
             return Copy(coords);
         }
@@ -147,7 +147,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <param name="geom"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected virtual Geometry TransformPoint(Point geom, Geometry parent) 
+        protected virtual IGeometry TransformPoint(IPoint geom, IGeometry parent) 
         {
             return factory.CreatePoint(TransformCoordinates(geom.CoordinateSequence, geom));
         }
@@ -158,12 +158,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <param name="geom"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected virtual Geometry TransformMultiPoint(MultiPoint geom, Geometry parent) 
+        protected virtual IGeometry TransformMultiPoint(IMultiPoint geom, IGeometry parent) 
         {
             ArrayList transGeomList = new ArrayList();
             for (int i = 0; i < geom.NumGeometries; i++) 
             {
-                Geometry transformGeom = TransformPoint((Point) geom.GetGeometryN(i), geom);
+                IGeometry transformGeom = TransformPoint((IPoint) geom.GetGeometryN(i), geom);
                 if (transformGeom == null) continue;
                 if (transformGeom.IsEmpty) continue;
                 transGeomList.Add(transformGeom);
@@ -177,7 +177,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <param name="geom"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected virtual Geometry TransformLinearRing(LinearRing geom, Geometry parent) 
+        protected virtual IGeometry TransformLinearRing(ILinearRing geom, IGeometry parent) 
         {
             ICoordinateSequence seq = TransformCoordinates(geom.CoordinateSequence, geom);
             int seqSize = seq.Count;
@@ -194,7 +194,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <param name="geom"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected virtual Geometry TransformLineString(LineString geom, Geometry parent) 
+        protected virtual IGeometry TransformLineString(ILineString geom, IGeometry parent) 
         {
             // should check for 1-point sequences and downgrade them to points
             return factory.CreateLineString(TransformCoordinates(geom.CoordinateSequence, geom));
@@ -206,12 +206,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <param name="geom"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected virtual Geometry TransformMultiLineString(MultiLineString geom, Geometry parent) 
+        protected virtual IGeometry TransformMultiLineString(IMultiLineString geom, IGeometry parent) 
         {
             ArrayList transGeomList = new ArrayList();
             for (int i = 0; i < geom.NumGeometries; i++) 
             {
-                Geometry transformGeom = TransformLineString((LineString) geom.GetGeometryN(i), geom);
+                IGeometry transformGeom = TransformLineString((ILineString) geom.GetGeometryN(i), geom);
                 if (transformGeom == null) continue;
                 if (transformGeom.IsEmpty) continue;
                 transGeomList.Add(transformGeom);
@@ -225,27 +225,27 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <param name="geom"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected virtual Geometry TransformPolygon(Polygon geom, Geometry parent) 
+        protected virtual IGeometry TransformPolygon(IPolygon geom, IGeometry parent) 
         {
             bool isAllValidLinearRings = true;
-            Geometry shell = TransformLinearRing((LinearRing) geom.ExteriorRing, geom);
+            IGeometry shell = TransformLinearRing(geom.Shell, geom);
 
-            if (shell == null || ! (shell is LinearRing) || shell.IsEmpty)
+            if (shell == null || ! (shell is ILinearRing) || shell.IsEmpty)
                 isAllValidLinearRings = false;
 
             ArrayList holes = new ArrayList();
             for (int i = 0; i < geom.NumInteriorRings; i++) 
             {
-                Geometry hole = TransformLinearRing((LinearRing) geom.GetInteriorRingN(i), geom);
+                IGeometry hole = TransformLinearRing(geom.Holes[i], geom);
                 if (hole == null || hole.IsEmpty) continue;            
-                if (!(hole is LinearRing))
+                if (!(hole is ILinearRing))
                     isAllValidLinearRings = false;
                 holes.Add(hole);
             }
 
             if (isAllValidLinearRings)
-                return factory.CreatePolygon((LinearRing)   shell, 
-                                             (LinearRing[]) holes.ToArray(typeof(LinearRing)));
+                return factory.CreatePolygon((ILinearRing)   shell, 
+                                             (ILinearRing[]) holes.ToArray(typeof(ILinearRing)));
             else 
             {
                 ArrayList components = new ArrayList();
@@ -263,12 +263,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <param name="geom"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected virtual Geometry TransformMultiPolygon(MultiPolygon geom, Geometry parent) 
+        protected virtual IGeometry TransformMultiPolygon(IMultiPolygon geom, IGeometry parent) 
         {
             ArrayList transGeomList = new ArrayList();
             for (int i = 0; i < geom.NumGeometries; i++) 
             {
-                Geometry transformGeom = TransformPolygon((Polygon) geom.GetGeometryN(i), geom);
+                IGeometry transformGeom = TransformPolygon((IPolygon) geom.GetGeometryN(i), geom);
                 if (transformGeom == null) continue;
                 if (transformGeom.IsEmpty) continue;
                 transGeomList.Add(transformGeom);
@@ -282,12 +282,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <param name="geom"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected virtual Geometry TransformGeometryCollection(GeometryCollection geom, Geometry parent) 
+        protected virtual IGeometry TransformGeometryCollection(IGeometryCollection geom, IGeometry parent) 
         {
             ArrayList transGeomList = new ArrayList();
             for (int i = 0; i < geom.NumGeometries; i++) 
             {
-                Geometry transformGeom = Transform((Geometry) geom.GetGeometryN(i));
+                IGeometry transformGeom = Transform(geom.GetGeometryN(i));
                 if (transformGeom == null) continue;
                 if (pruneEmptyGeometry && transformGeom.IsEmpty) continue;
                 transGeomList.Add(transformGeom);
