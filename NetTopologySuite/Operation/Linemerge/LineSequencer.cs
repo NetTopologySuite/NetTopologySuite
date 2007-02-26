@@ -510,7 +510,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                 {
                     DirectedEdge de = (DirectedEdge) i2.Current;
                     LineMergeEdge e = (LineMergeEdge) de.Edge;
-                    LineString line = e.Line;
+                    ILineString line = e.Line;
 
                     ILineString lineToAdd = line;
                     if (!de.EdgeDirection && !line.IsClosed)

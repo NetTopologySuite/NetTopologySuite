@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Distance
@@ -22,9 +24,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// </summary>
         public const int InsideArea = -1;
 
-        private Geometry component = null;
+        private IGeometry component = null;
         private int segIndex;
-        private Coordinate pt = null;
+        private ICoordinate pt = null;
 
         /// <summary>
         /// Constructs a GeometryLocation specifying a point on a point, as well as the 
@@ -33,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <param name="component"></param>
         /// <param name="segIndex"></param>
         /// <param name="pt"></param>
-        public GeometryLocation(Geometry component, int segIndex, Coordinate pt)
+        public GeometryLocation(IGeometry component, int segIndex, ICoordinate pt)
         {
             this.component = component;
             this.segIndex = segIndex;
@@ -43,12 +45,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <summary> 
         /// Constructs a GeometryLocation specifying a point inside an area point.
         /// </summary>
-        public GeometryLocation(Geometry component, Coordinate pt) : this(component, InsideArea, pt) { }
+        public GeometryLocation(IGeometry component, ICoordinate pt) : this(component, InsideArea, pt) { }
 
         /// <summary>
         /// Returns the point associated with this location.
         /// </summary>
-        public Geometry GeometryComponent
+        public IGeometry GeometryComponent
         {
             get
             {
@@ -71,7 +73,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <summary>
         /// Returns the location.
         /// </summary>
-        public Coordinate Coordinate
+        public ICoordinate Coordinate
         {
             get
             {

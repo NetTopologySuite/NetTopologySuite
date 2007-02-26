@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
@@ -26,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// whether this DirectedEdge's direction is the same as or
         /// opposite to that of the parent Edge (if any).
         /// </param>
-        public LineMergeDirectedEdge(Node from, Node to, Coordinate directionPt, bool edgeDirection) 
+        public LineMergeDirectedEdge(Node from, Node to, ICoordinate directionPt, bool edgeDirection) 
             : base(from, to, directionPt, edgeDirection) { }
 
         /// <summary>
@@ -40,9 +42,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                 if (ToNode.Degree != 2)
                     return null;                
                 if (ToNode.OutEdges.Edges[0] == Sym)                
-                    return (LineMergeDirectedEdge)ToNode.OutEdges.Edges[1];                
+                    return (LineMergeDirectedEdge) ToNode.OutEdges.Edges[1];                
                 Assert.IsTrue(ToNode.OutEdges.Edges[1] == Sym);
-                return (LineMergeDirectedEdge)ToNode.OutEdges.Edges[0];
+                return (LineMergeDirectedEdge) ToNode.OutEdges.Edges[0];
             }
         }
     }

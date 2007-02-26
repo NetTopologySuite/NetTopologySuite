@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Text;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -14,15 +17,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        private Coordinate[] pts;
+        private ICoordinate[] pts;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="ring"></param>
-        public SimplePointInRing(LinearRing ring)
+        public SimplePointInRing(ILinearRing ring)
         {
-            pts = (Coordinate[]) ring.Coordinates;
+            pts = ring.Coordinates;
         }
 
         /// <summary>
@@ -30,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        public bool IsInside(Coordinate pt)
+        public bool IsInside(ICoordinate pt)
         {
             return CGAlgorithms.IsPointInRing(pt, pts);
         }

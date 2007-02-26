@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 
@@ -13,13 +15,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     /// </summary>
     public class LineMergeEdge : Edge
     {
-        private LineString line;
+        private ILineString line;
 
         /// <summary>
         /// Constructs a LineMergeEdge with vertices given by the specified LineString.
         /// </summary>
         /// <param name="line"></param>
-        public LineMergeEdge(LineString line)
+        public LineMergeEdge(ILineString line)
         {
             this.line = line;
         }
@@ -27,7 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// <summary>
         /// Returns the LineString specifying the vertices of this edge.
         /// </summary>
-        public LineString Line
+        public ILineString Line
         {
             get
             {

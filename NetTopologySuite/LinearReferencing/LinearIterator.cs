@@ -28,13 +28,13 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             return loc.SegmentIndex;
         }
 
-        private Geometry linear;
+        private IGeometry linear;
         private int numLines;        
 
         /*
          * Invariant: currentLine <> null if the iterator is pointing at a valid coordinate
          */
-        private LineString currentLine;
+        private ILineString currentLine;
 
         private int componentIndex = 0;
         private int vertexIndex = 0;
@@ -53,14 +53,14 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Creates an iterator initialized to the start of a linear <see cref="Geometry" />.
         /// </summary>
         /// <param name="linear">The linear geometry to iterate over.</param>
-        public LinearIterator(Geometry linear) : this(linear, 0, 0) { }
+        public LinearIterator(IGeometry linear) : this(linear, 0, 0) { }
 
         /// <summary>
         /// Creates an iterator starting at a <see cref="LinearLocation" /> on a linear <see cref="Geometry" />.
         /// </summary>
         /// <param name="linear">The linear geometry to iterate over.</param>
         /// <param name="start">The location to start at.</param>
-        public LinearIterator(Geometry linear, LinearLocation start) :
+        public LinearIterator(IGeometry linear, LinearLocation start) :
             this(linear, start.ComponentIndex, SegmentEndVertexIndex(start)) { }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="linear">The linear geometry to iterate over.</param>
         /// <param name="componentIndex">The component to start at.</param>
         /// <param name="vertexIndex">The vertex to start at.</param>
-        public LinearIterator(Geometry linear, int componentIndex, int vertexIndex)
+        public LinearIterator(IGeometry linear, int componentIndex, int vertexIndex)
         {
             startComponentIndex = componentIndex;
             startVertexIndex = vertexIndex;
@@ -91,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
                 currentLine = null;
                 return;
             }
-            currentLine = (LineString)linear.GetGeometryN(componentIndex);
+            currentLine = (ILineString) linear.GetGeometryN(componentIndex);
         }        
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <summary>
         /// Gets the <see cref="LineString" /> component the iterator is current at.
         /// </summary>
-        private LineString Line
+        private ILineString Line
         {
             get
             {
@@ -179,11 +179,11 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Gets the first <see cref="Coordinate" /> of the current segment
         /// (the coordinate of the current vertex).
         /// </summary>
-        private Coordinate SegmentStart
+        private ICoordinate SegmentStart
         {
             get
             {
-                return (Coordinate) currentLine.GetCoordinateN(vertexIndex);
+                return currentLine.GetCoordinateN(vertexIndex);
             }
         }
 
@@ -192,12 +192,12 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// (the coordinate of the next vertex).
         /// If the iterator is at the end of a line, <c>null</c> is returned.
         /// </summary>
-        private Coordinate SegmentEnd
+        private ICoordinate SegmentEnd
         {
             get
             {
                 if (vertexIndex < Line.NumPoints - 1)
-                    return (Coordinate) currentLine.GetCoordinateN(vertexIndex + 1);
+                    return currentLine.GetCoordinateN(vertexIndex + 1);
                 return null;
             }
         }
@@ -385,7 +385,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             /// <summary>
             /// Gets the <see cref="LineString" /> component the iterator is current at.
             /// </summary>
-            public LineString Line
+            public ILineString Line
             {
                 get
                 {
@@ -409,7 +409,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             /// Gets the first <see cref="Coordinate" /> of the current segment
             /// (the coordinate of the current vertex).
             /// </summary>
-            public Coordinate SegmentStart
+            public ICoordinate SegmentStart
             {
                 get
                 {
@@ -422,7 +422,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             /// (the coordinate of the next vertex).
             /// If the iterator is at the end of a line, <c>null</c> is returned.
             /// </summary>
-            public Coordinate SegmentEnd
+            public ICoordinate SegmentEnd
             {
                 get
                 {
@@ -434,5 +434,4 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         #endregion
        
     }
-    
 }

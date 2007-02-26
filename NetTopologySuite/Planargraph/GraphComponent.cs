@@ -45,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         {
             while (i.MoveNext())
             {
-                GraphComponent comp = (GraphComponent)i.Current;
+                GraphComponent comp = (GraphComponent) i.Current;
                 comp.Marked = marked;
             }
         }
@@ -62,7 +62,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         {
             while (i.MoveNext())
             {
-                GraphComponent comp = (GraphComponent)i.Current;
+                GraphComponent comp = (GraphComponent) i.Current;
                 if (comp.IsVisited == visitedState)
                     return comp;
             }
@@ -143,71 +143,5 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Tests whether this component has been removed from its containing graph.
         /// </summary>
         public abstract bool IsRemoved { get; }
-
-        /*
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public override bool Equals(object obj)
-        {
-            if (obj == null)
-                return false;
-            if (!(obj is GraphComponent))
-                return false;
-            if (!base.Equals(obj))
-                return false;
-
-            if (Object.ReferenceEquals(this, obj))
-                return true;
-             
-            GraphComponent other = obj as GraphComponent;
-            if (IsMarked != other.IsMarked)
-                return false;
-            if (IsVisited != other.IsVisited)
-                return false;
-            if (IsRemoved != other.IsRemoved)
-                return false;           
-            return true;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode()
-        {
-            int result = 29 * IsMarked.GetHashCode();
-            result += 14 + 29 * IsVisited.GetHashCode();
-            result += 14 + 29 * IsRemoved.GetHashCode();
-            return result;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="o1"></param>
-        /// <param name="o2"></param>
-        /// <returns></returns>
-        public static bool operator ==(GraphComponent o1, GraphComponent o2)
-        {
-            return Object.Equals(o1, o2);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="o1"></param>
-        /// <param name="o2"></param>
-        /// <returns></returns>
-        public static bool operator !=(GraphComponent o1, GraphComponent o2)
-        {
-            return !(o1 == o2);
-        }
-        
-        */
-
     }
 }

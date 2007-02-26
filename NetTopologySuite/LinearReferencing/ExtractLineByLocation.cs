@@ -126,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <returns></returns>
         private IGeometry ComputeLinear(LinearLocation start, LinearLocation end)
         {
-            LinearGeometryBuilder builder = new LinearGeometryBuilder(line.Factory);
+            LinearGeometryBuilder builder = new LinearGeometryBuilder(((LineString) line).Factory);
             builder.FixInvalidLines = true;
 
             if (!start.IsVertex)

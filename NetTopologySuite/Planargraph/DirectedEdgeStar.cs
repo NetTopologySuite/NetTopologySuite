@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
@@ -66,14 +68,14 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the coordinate for the node at wich this star is based.
         /// </summary>
-        public Coordinate Coordinate
+        public ICoordinate Coordinate
         {
             get
             {
                 IEnumerator it = GetEnumerator();
                 if (!it.MoveNext()) 
                     return null;
-                DirectedEdge e = (DirectedEdge)it.Current;
+                DirectedEdge e = (DirectedEdge) it.Current;
                 return e.Coordinate;
             }
         }
@@ -97,7 +99,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         {
             if (!sorted)
             {
-                ArrayList list  = (ArrayList)outEdges;
+                ArrayList list  = (ArrayList) outEdges;
                 list.Sort();
                 sorted = true;                
             }

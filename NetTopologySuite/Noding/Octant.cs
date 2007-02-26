@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
-{
-    
+{    
     /// <summary>
     /// Octants in the Cartesian plane.
     /// Octants are numbered as follows:
@@ -65,15 +66,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// 
         /// </summary>
         Seven   = 7,
-
     }
 
     /// <summary>
     ///  Methods for computing and working with <see cref="Octants"/> of the Cartesian plane.
     /// </summary>
     public static class Octant
-    {
-        
+    {        
         /// <summary>
         /// Returns the octant of a directed line segment (specified as x and y
         /// displacements, which cannot both be 0).
@@ -131,14 +130,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <returns></returns>
-        public static Octants GetOctant(Coordinate p0, Coordinate p1)
+        public static Octants GetOctant(ICoordinate p0, ICoordinate p1)
         {
             double dx = p1.X - p0.X;
             double dy = p1.Y - p0.Y;
             if (dx == 0.0 && dy == 0.0)
                 throw new ArgumentException("Cannot compute the octant for two identical points " + p0);
             return GetOctant(dx, dy);
-        }
-     
+        }     
     }
 }

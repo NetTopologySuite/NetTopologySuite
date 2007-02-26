@@ -4,6 +4,8 @@ using System.Text;
 
 using Iesi.Collections;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
@@ -35,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// The location of this Node.
         /// </summary>
-        protected Coordinate pt;
+        protected ICoordinate pt;
 
         /// <summary>
         /// The collection of DirectedEdges that leave this Node.
@@ -46,14 +48,14 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Constructs a Node with the given location.
         /// </summary>
         /// <param name="pt"></param>
-        public Node(Coordinate pt) : this(pt, new DirectedEdgeStar()) { }
+        public Node(ICoordinate pt) : this(pt, new DirectedEdgeStar()) { }
 
         /// <summary>
         /// Constructs a Node with the given location and collection of outgoing DirectedEdges.
         /// </summary>
         /// <param name="pt"></param>
         /// <param name="deStar"></param>
-        public Node(Coordinate pt, DirectedEdgeStar deStar)
+        public Node(ICoordinate pt, DirectedEdgeStar deStar)
         {
             this.pt = pt;
             this.deStar = deStar;
@@ -62,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the location of this Node.
         /// </summary>
-        public Coordinate Coordinate
+        public ICoordinate Coordinate
         {
             get
             {
@@ -140,6 +142,5 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         {
             return "NODE: " + pt.ToString() + ": " + Degree;
         }
-
     }
 }

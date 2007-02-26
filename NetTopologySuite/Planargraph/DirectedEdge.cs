@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Text;
 using System.IO;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -29,7 +31,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         {
             IList edges = new ArrayList();
             for (IEnumerator i = dirEdges.GetEnumerator(); i.MoveNext(); ) 
-                edges.Add(((DirectedEdge)i.Current).parentEdge);            
+                edges.Add(((DirectedEdge) i.Current).parentEdge);            
             return edges;
         }
         
@@ -51,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// 
         /// </summary>
-        protected Coordinate p0, p1;
+        protected ICoordinate p0, p1;
         
         /// <summary>
         /// 
@@ -87,7 +89,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Whether this DirectedEdge's direction is the same as or
         /// opposite to that of the parent Edge (if any).
         /// </param>
-        public DirectedEdge(Node from, Node to, Coordinate directionPt, bool edgeDirection)
+        public DirectedEdge(Node from, Node to, ICoordinate directionPt, bool edgeDirection)
         {
             this.from = from;
             this.to = to;
@@ -134,7 +136,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Returns a point to which an imaginary line is drawn from the from-node to
         /// specify this DirectedEdge's orientation.
         /// </summary>
-        public Coordinate DirectionPt
+        public ICoordinate DirectionPt
         {
             get
             {
@@ -179,7 +181,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the coordinate of the from-node.
         /// </summary>
-        public Coordinate Coordinate
+        public ICoordinate Coordinate
         {
             get
             {
@@ -306,6 +308,5 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         {            
             return "DirectedEdge: " + p0 + " - " + p1 + " " + quadrant + ":" + angle;
         }
-
     }
 }

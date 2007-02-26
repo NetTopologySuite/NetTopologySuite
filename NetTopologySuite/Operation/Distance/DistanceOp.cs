@@ -30,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <param name="g0">A <c>Geometry</c>.</param>
         /// <param name="g1">Another <c>Geometry</c>.</param>
         /// <returns>The distance between the geometries.</returns>
-        public static double Distance(Geometry g0, Geometry g1)
+        public static double Distance(IGeometry g0, IGeometry g1)
         {
             DistanceOp distOp = new DistanceOp(g0, g1);
             return distOp.Distance();
@@ -43,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <param name="g1"></param>
         /// <param name="distance"></param>
         /// <returns></returns>
-        public static bool IsWithinDistance(Geometry g0, Geometry g1, double distance)
+        public static bool IsWithinDistance(IGeometry g0, IGeometry g1, double distance)
         {
             DistanceOp distOp = new DistanceOp(g0, g1, distance);
             return distOp.Distance() <= distance;
@@ -56,14 +56,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <param name="g0">A <c>Geometry</c>.</param>
         /// <param name="g1">Another <c>Geometry</c>.</param>
         /// <returns>The closest points in the geometries.</returns>
-        public static Coordinate[] ClosestPoints(Geometry g0, Geometry g1)
+        public static ICoordinate[] ClosestPoints(IGeometry g0, IGeometry g1)
         {
             DistanceOp distOp = new DistanceOp(g0, g1);
             return distOp.ClosestPoints();
         }
 
         private PointLocator ptLocator = new PointLocator();
-        private Geometry[] geom;
+        private IGeometry[] geom;
         private GeometryLocation[] minDistanceLocation;
         private double minDistance = Double.MaxValue;
         private double terminateDistance = 0.0;
@@ -74,7 +74,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// </summary>
         /// <param name="g0"></param>
         /// <param name="g1"></param>
-        public DistanceOp(Geometry g0, Geometry g1) 
+        public DistanceOp(IGeometry g0, IGeometry g1) 
         : this(g0, g1, 0) { }
 
         /// <summary>
@@ -84,11 +84,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <param name="g0"></param>
         /// <param name="g1"></param>
         /// <param name="terminateDistance">The distance on which to terminate the search.</param>
-        public DistanceOp(Geometry g0, Geometry g1, double terminateDistance)
+        public DistanceOp(IGeometry g0, IGeometry g1, double terminateDistance)
         {
-            this.geom = new Geometry[2];
-            geom[0] = g0;
-            geom[1] = g1;
+            this.geom = new IGeometry[] { g0, g1, };            
             this.terminateDistance = terminateDistance;
         }
 
@@ -107,11 +105,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// The points are presented in the same order as the input Geometries.
         /// </summary>
         /// <returns>A pair of <c>Coordinate</c>s of the closest points.</returns>
-        public Coordinate[] ClosestPoints()
+        public ICoordinate[] ClosestPoints()
         {
             ComputeMinDistance();
-            Coordinate[] closestPts = new Coordinate[] { minDistanceLocation[0].Coordinate, 
-                                                         minDistanceLocation[1].Coordinate };
+            ICoordinate[] closestPts = new ICoordinate[] { minDistanceLocation[0].Coordinate, 
+                                                           minDistanceLocation[1].Coordinate };
             return closestPts;
         }
 
@@ -234,9 +232,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <param name="ptLoc"></param>
         /// <param name="poly"></param>
         /// <param name="locPtPoly"></param>
-        private void ComputeInside(GeometryLocation ptLoc, Polygon poly, GeometryLocation[] locPtPoly)
+        private void ComputeInside(GeometryLocation ptLoc, IPolygon poly, GeometryLocation[] locPtPoly)
         {
-            Coordinate pt = ptLoc.Coordinate;
+            ICoordinate pt = ptLoc.Coordinate;
             if (Locations.Exterior != ptLocator.Locate(pt, poly))
             {
                 minDistance = 0.0;
@@ -297,10 +295,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         {
             for (int i = 0; i < lines0.Count; i++)
             {
-                LineString line0 = (LineString)lines0[i];
+                ILineString line0 = (ILineString) lines0[i];
                 for (int j = 0; j < lines1.Count; j++)
                 {
-                    LineString line1 = (LineString)lines1[j];
+                    ILineString line1 = (ILineString) lines1[j];
                     ComputeMinDistance(line0, line1, locGeom);
                     if (minDistance <= terminateDistance) return;
                 }
@@ -317,17 +315,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         {
             for (int i = 0; i < points0.Count; i++)
             {
-                Point pt0 = (Point) points0[i];
+                IPoint pt0 = (IPoint) points0[i];
                 for (int j = 0; j < points1.Count; j++)
                 {
-                    Point pt1 = (Point)points1[j];
+                    IPoint pt1 = (IPoint) points1[j];
                     double dist = pt0.Coordinate.Distance(pt1.Coordinate);
                     if (dist < minDistance)
                     {
                         minDistance = dist;
                         // this is wrong - need to determine closest points on both segments!!!
-                        locGeom[0] = new GeometryLocation(pt0, 0, (Coordinate) pt0.Coordinate);
-                        locGeom[1] = new GeometryLocation(pt1, 0, (Coordinate) pt1.Coordinate);
+                        locGeom[0] = new GeometryLocation(pt0, 0, pt0.Coordinate);
+                        locGeom[1] = new GeometryLocation(pt1, 0, pt1.Coordinate);
                     }
                     if (minDistance <= terminateDistance) return;
                 }
@@ -344,10 +342,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         {
             for (int i = 0; i < lines.Count; i++)
             {
-                LineString line = (LineString)lines[i];
+                ILineString line = (ILineString) lines[i];
                 for (int j = 0; j < points.Count; j++)
                 {
-                    Point pt = (Point)points[j];
+                    IPoint pt = (IPoint) points[j];
                     ComputeMinDistance(line, pt, locGeom);
                     if (minDistance <= terminateDistance) return;
                 }
@@ -363,8 +361,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         private void ComputeMinDistance(LineString line0, LineString line1, GeometryLocation[] locGeom)
         {
             if (line0.EnvelopeInternal.Distance(line1.EnvelopeInternal) > minDistance) return;
-            Coordinate[] coord0 = (Coordinate[]) line0.Coordinates;
-            Coordinate[] coord1 = (Coordinate[]) line1.Coordinates;
+            ICoordinate[] coord0 = line0.Coordinates;
+            ICoordinate[] coord1 = line1.Coordinates;
             // brute force approach!
             for (int i = 0; i < coord0.Length - 1; i++)
             {
@@ -378,7 +376,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
                         minDistance = dist;
                         LineSegment seg0 = new LineSegment(coord0[i], coord0[i + 1]);
                         LineSegment seg1 = new LineSegment(coord1[j], coord1[j + 1]);
-                        Coordinate[] closestPt = seg0.ClosestPoints(seg1);
+                        ICoordinate[] closestPt = seg0.ClosestPoints(seg1);
                         locGeom[0] = new GeometryLocation(line0, i, closestPt[0]);
                         locGeom[1] = new GeometryLocation(line1, j, closestPt[1]);
                     }
@@ -393,11 +391,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <param name="line"></param>
         /// <param name="pt"></param>
         /// <param name="locGeom"></param>
-        private void ComputeMinDistance(LineString line, Point pt, GeometryLocation[] locGeom)
+        private void ComputeMinDistance(LineString line, IPoint pt, GeometryLocation[] locGeom)
         {
             if (line.EnvelopeInternal.Distance(pt.EnvelopeInternal) > minDistance) return;
-            Coordinate[] coord0 = (Coordinate[]) line.Coordinates;
-            Coordinate coord = (Coordinate) pt.Coordinate;
+            ICoordinate[] coord0 = line.Coordinates;
+            ICoordinate coord = pt.Coordinate;
             // brute force approach!
             for (int i = 0; i < coord0.Length - 1; i++)
             {
@@ -406,7 +404,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
                 {
                     minDistance = dist;
                     LineSegment seg = new LineSegment(coord0[i], coord0[i + 1]);
-                    Coordinate segClosestPoint = seg.ClosestPoint(coord);
+                    ICoordinate segClosestPoint = seg.ClosestPoint(coord);
                     locGeom[0] = new GeometryLocation(line, i, segClosestPoint);
                     locGeom[1] = new GeometryLocation(pt, 0, coord);
                 }
