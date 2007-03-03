@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
@@ -15,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
     public class Root : NodeBase
     {
         // the singleton root quad is centred at the origin.
-        private static readonly Coordinate origin = new Coordinate(0.0, 0.0);
+        private static readonly ICoordinate origin = new Coordinate(0.0, 0.0);
 
         /// <summary>
         /// 
@@ -25,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary> 
         /// Insert an item into the quadtree this is the root of.
         /// </summary>
-        public void Insert(Envelope itemEnv, object item)
+        public void Insert(IEnvelope itemEnv, object item)
         {
             int index = GetSubnodeIndex(itemEnv, origin);
             // if index is -1, itemEnv must cross the X or Y axis.
@@ -60,7 +62,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// the given QuadNode root.  Lower levels of the tree will be created
         /// if necessary to hold the item.
         /// </summary>
-        private void InsertContained(Node tree, Envelope itemEnv, object item)
+        private void InsertContained(Node tree, IEnvelope itemEnv, object item)
         {
             Assert.IsTrue(tree.Envelope.Contains(itemEnv));
             /*
@@ -82,7 +84,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <returns></returns>
-        protected override bool IsSearchMatch(Envelope searchEnv)
+        protected override bool IsSearchMatch(IEnvelope searchEnv)
         {
             return true;
         }

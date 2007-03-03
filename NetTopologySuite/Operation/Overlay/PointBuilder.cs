@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -56,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             IEnumerator nodeit = op.Graph.Nodes.GetEnumerator();
             while (nodeit.MoveNext()) 
             {
-                Node n = (Node)nodeit.Current;
+                Node n = (Node) nodeit.Current;
                 if (!n.IsInResult)
                 {
                     Label label = n.Label;
@@ -83,10 +85,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             while (it.MoveNext()) 
             {
                 Node n = (Node)it.Current;
-                Coordinate coord = n.Coordinate;
+                ICoordinate coord = n.Coordinate;
                 if (!op.IsCoveredByLA(coord))
                 {
-                    Point pt = geometryFactory.CreatePoint(coord);
+                    IPoint pt = geometryFactory.CreatePoint(coord);
                     nonCoveredPointList.Add(pt);
                 }
             }

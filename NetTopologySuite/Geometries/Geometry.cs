@@ -381,9 +381,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get
             {
                 if (IsEmpty) 
-                    return null; 
+                    return null;
 
-                Coordinate centPt = null;
+                ICoordinate centPt = null;
                 Dimensions dim = Dimension;
                 if (dim == Dimensions.Point)
                 {
@@ -418,7 +418,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                Coordinate interiorPt = null;
+                ICoordinate interiorPt = null;
                 Dimensions dim = Dimension;
                 if (dim == Dimensions.Point)
                 {

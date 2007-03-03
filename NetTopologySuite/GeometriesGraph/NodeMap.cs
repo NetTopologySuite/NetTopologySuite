@@ -30,9 +30,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// This method expects that a node has a coordinate value.
         /// </summary>
         /// <param name="coord"></param>
-        public  Node AddNode(Coordinate coord)
+        public Node AddNode(ICoordinate coord)
         {
-            Node node = (Node)nodeMap[coord];
+            Node node = (Node) nodeMap[coord];
             if (node == null) 
             {
                 node = nodeFact.CreateNode(coord);
@@ -46,9 +46,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public  Node AddNode(Node n)
+        public Node AddNode(Node n)
         {
-            Node node = (Node)nodeMap[n.Coordinate];
+            Node node = (Node) nodeMap[n.Coordinate];
             if (node == null) 
             {
                 nodeMap.Add(n.Coordinate, n);
@@ -64,9 +64,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Adds the EdgeEnd to the (possibly new) node.
         /// </summary>
         /// <param name="e"></param>
-        public  void Add(EdgeEnd e)
+        public void Add(EdgeEnd e)
         {
-            Coordinate p = e.Coordinate;
+            ICoordinate p = e.Coordinate;
             Node n = AddNode(p);
             n.Add(e);
         }
@@ -75,16 +75,16 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// The node if found; null otherwise.
         /// </returns>
         /// <param name="coord"></param>
-        public  Node Find(Coordinate coord)  
+        public Node Find(ICoordinate coord)  
         {
-            return (Node)nodeMap[coord];
+            return (Node) nodeMap[coord];
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public  IEnumerator GetEnumerator()
+        public IEnumerator GetEnumerator()
         {
             return nodeMap.Values.GetEnumerator();
         }
@@ -92,7 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public  IList Values
+        public IList Values
         {
             get
             {
@@ -105,12 +105,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
-        public  IList GetBoundaryNodes(int geomIndex)
+        public IList GetBoundaryNodes(int geomIndex)
         {
             IList bdyNodes = new ArrayList();
             for (IEnumerator i = GetEnumerator(); i.MoveNext(); ) 
             {
-                Node node = (Node)i.Current;
+                Node node = (Node) i.Current;
                 if (node.Label.GetLocation(geomIndex) == Locations.Boundary)
                     bdyNodes.Add(node);
             }
@@ -121,7 +121,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="outstream"></param>
-        public  void Write(StreamWriter outstream)
+        public void Write(StreamWriter outstream)
         {
             for (IEnumerator i = GetEnumerator(); i.MoveNext(); ) 
             {

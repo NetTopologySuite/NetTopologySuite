@@ -4,6 +4,8 @@ using System.Text;
 
 using Iesi.Collections;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -23,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private RightmostEdgeFinder finder;
         private IList dirEdgeList  = new ArrayList();
         private IList nodes        = new ArrayList();
-        private Coordinate rightMostCoord = null;
+        private ICoordinate rightMostCoord = null;
 
         /// <summary>
         /// 
@@ -58,7 +60,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <summary>
         /// Gets the rightmost coordinate in the edges of the subgraph.
         /// </summary>
-        public Coordinate RightMostCoordinate
+        public ICoordinate RightMostCoordinate
         {
             get
             {
@@ -161,7 +163,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             startEdge.Visited = true;
             while (nodeQueue.Count != 0)
             {
-                Node n = (Node)nodeQueue.Dequeue();                
+                Node n = (Node) nodeQueue.Dequeue();                
                 nodesVisited.Add(n);
                 // compute depths around node, starting at this edge since it has depths assigned
                 ComputeNodeDepth(n);
@@ -169,7 +171,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 IEnumerator i = ((DirectedEdgeStar)n.Edges).GetEnumerator();
                 while (i.MoveNext()) 
                 {
-                    DirectedEdge de = (DirectedEdge)i.Current;
+                    DirectedEdge de = (DirectedEdge) i.Current;
                     DirectedEdge sym = de.Sym;
                     if (sym.IsVisited) continue;
                     Node adjNode = sym.Node;
@@ -190,7 +192,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         {
             // find a visited dirEdge to start at
             DirectedEdge startEdge = null;
-            IEnumerator i = ((DirectedEdgeStar)n.Edges).GetEnumerator();
+            IEnumerator i = ((DirectedEdgeStar) n.Edges).GetEnumerator();
             while (i.MoveNext()) 
             {
                 DirectedEdge de = (DirectedEdge) i.Current;

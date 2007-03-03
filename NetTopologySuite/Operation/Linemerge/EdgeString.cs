@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
@@ -14,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     {
         private GeometryFactory factory;
         private IList directedEdges = new ArrayList();
-        private Coordinate[] coordinates = null;
+        private ICoordinate[] coordinates = null;
 
         /// <summary>
         /// Constructs an EdgeString with the given factory used to convert this EdgeString
@@ -38,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// <summary>
         /// 
         /// </summary>
-        private Coordinate[] Coordinates
+        private ICoordinate[] Coordinates
         {
             get
             {
@@ -50,13 +52,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                     IEnumerator i = directedEdges.GetEnumerator();
                     while (i.MoveNext()) 
                     {
-                        LineMergeDirectedEdge directedEdge = (LineMergeDirectedEdge)i.Current;
+                        LineMergeDirectedEdge directedEdge = (LineMergeDirectedEdge) i.Current;
                         if (directedEdge.EdgeDirection)                        
                              forwardDirectedEdges++;                        
                         else reverseDirectedEdges++;
-                         coordinateList.Add((Coordinate[]) ((LineMergeEdge) directedEdge.Edge).Line.Coordinates, false, directedEdge.EdgeDirection);
+                         coordinateList.Add(((LineMergeEdge) directedEdge.Edge).Line.Coordinates, false, directedEdge.EdgeDirection);
                     }
-                    coordinates = (Coordinate[]) coordinateList.ToCoordinateArray();
+                    coordinates = coordinateList.ToCoordinateArray();
                     if (reverseDirectedEdges > forwardDirectedEdges)
                         CoordinateArrays.Reverse(coordinates);                    
                 }
@@ -67,7 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// <summary>
         /// Converts this EdgeString into a LineString.
         /// </summary>
-        public LineString ToLineString()
+        public ILineString ToLineString()
         {
             return factory.CreateLineString(Coordinates);
         }

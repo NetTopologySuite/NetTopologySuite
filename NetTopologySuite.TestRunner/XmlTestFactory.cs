@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Globalization;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 
@@ -294,7 +296,7 @@ namespace Open.Topology.TestRunner
 
         protected bool ParseGeometry(Target targetType, string targetText, XmlTest xmlTestItem)
         {   
-            Geometry geom = null;
+            IGeometry geom = null;
             try
             {
                 geom = m_objReader.Read(targetText);

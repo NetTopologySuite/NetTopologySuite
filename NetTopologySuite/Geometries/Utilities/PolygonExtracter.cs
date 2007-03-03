@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// and pass it to multiple geometries.
         /// </summary>
         /// <param name="geom"></param>
-        public static IList GetPolygons(Geometry geom)
+        public static IList GetPolygons(IGeometry geom)
         {
             IList comps = new ArrayList();
             geom.Apply(new PolygonExtracter(comps));
@@ -44,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <param name="geom"></param>
         public void Filter(IGeometry geom)
         {
-            if (geom is Polygon) 
+            if (geom is IPolygon) 
                 comps.Add(geom);
         }
     }

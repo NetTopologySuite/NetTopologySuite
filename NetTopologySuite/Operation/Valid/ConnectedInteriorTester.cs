@@ -30,9 +30,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <param name="coord"></param>
         /// <param name="pt"></param>
         /// <returns></returns>
-        public static Coordinate FindDifferentPoint(Coordinate[] coord, Coordinate pt)
+        public static ICoordinate FindDifferentPoint(ICoordinate[] coord, ICoordinate pt)
         {
-            foreach (Coordinate c in coord)
+            foreach (ICoordinate c in coord)
                 if (!c.Equals(pt))
                     return c;            
             return null;
@@ -44,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
         // save a coordinate for any disconnected interior found
         // the coordinate will be somewhere on the ring surrounding the disconnected interior
-        private Coordinate disconnectedRingcoord;
+        private ICoordinate disconnectedRingcoord;
 
         /// <summary>
         /// 
@@ -58,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate
+        public ICoordinate Coordinate
         {
             get
             {
@@ -86,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
              * Mark all the edges for the edgeRings corresponding to the shells
              * of the input polygons.  Note only ONE ring gets marked for each shell.
              */
-            VisitShellInteriors((Geometry) geomGraph.Geometry, graph);
+            VisitShellInteriors((IGeometry) geomGraph.Geometry, graph);
 
             /*
              * If there are any unvisited shell edges
@@ -142,18 +142,18 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// </summary>
         /// <param name="g"></param>
         /// <param name="graph"></param>
-        private void VisitShellInteriors(Geometry g, PlanarGraph graph)
+        private void VisitShellInteriors(IGeometry g, PlanarGraph graph)
         {
-            if (g is Polygon) 
+            if (g is IPolygon) 
             {
-                Polygon p = (Polygon) g;
-                VisitInteriorRing((LineString) p.ExteriorRing, graph);
+                IPolygon p = (IPolygon) g;
+                VisitInteriorRing(p.Shell, graph);
             }
-            if (g is MultiPolygon) 
+            if (g is IMultiPolygon) 
             {
-                MultiPolygon mp = (MultiPolygon) g;
-                foreach (Polygon p in mp.Geometries) 
-                    VisitInteriorRing((LineString) p.ExteriorRing, graph);
+                IMultiPolygon mp = (IMultiPolygon) g;
+                foreach (IPolygon p in mp.Geometries) 
+                    VisitInteriorRing(p.Shell, graph);
             }
         }
 
@@ -162,17 +162,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// </summary>
         /// <param name="ring"></param>
         /// <param name="graph"></param>
-        private void VisitInteriorRing(LineString ring, PlanarGraph graph)
+        private void VisitInteriorRing(ILineString ring, PlanarGraph graph)
         {
-            Coordinate[] pts = (Coordinate[]) ring.Coordinates;
-            Coordinate pt0 = pts[0];
+            ICoordinate[] pts = ring.Coordinates;
+            ICoordinate pt0 = pts[0];
             /*
              * Find first point in coord list different to initial point.
              * Need special check since the first point may be repeated.
              */
-            Coordinate pt1 = FindDifferentPoint(pts, pt0);
+            ICoordinate pt1 = FindDifferentPoint(pts, pt0);
             Edge e = graph.FindEdgeInSameDirection(pt0, pt1);
-            DirectedEdge de = (DirectedEdge)graph.FindEdgeEnd(e);
+            DirectedEdge de = (DirectedEdge) graph.FindEdgeEnd(e);
             DirectedEdge intDe = null;
             if (de.Label.GetLocation(0, Positions.Right) == Locations.Interior)
                 intDe = de;            
@@ -213,10 +213,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         {
             for (int i = 0; i < edgeRings.Count; i++)
             {
-                EdgeRing er = (EdgeRing)edgeRings[i];
+                EdgeRing er = (EdgeRing) edgeRings[i];
                 if (er.IsHole) continue;
                 IList edges = er.Edges;
-                DirectedEdge de = (DirectedEdge)edges[0];
+                DirectedEdge de = (DirectedEdge) edges[0];
                 // don't check CW rings which are holes
                 if (de.Label.GetLocation(0, Positions.Right) != Locations.Interior) continue;
 

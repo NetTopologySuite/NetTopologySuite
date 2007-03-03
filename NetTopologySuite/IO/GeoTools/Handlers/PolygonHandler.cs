@@ -75,12 +75,12 @@ namespace GisSharpBlog.NetTopologySuite.IO
                     geometryFactory.PrecisionModel.MakePrecise(ref external);
                     ICoordinate internalCoord = external;
 
-                    // Thans to Abhay Menon!
+                    // Thanks to Abhay Menon!
                     if (!Double.IsNaN(internalCoord.Y) && !Double.IsNaN(internalCoord.X))
                        points.Add(internalCoord);
  				}
 
-                if (points.Count > 0) // Thans to Abhay Menon!
+                if (points.Count > 0) // Thanks to Abhay Menon!
                 {
                     ILinearRing ring = geometryFactory.CreateLinearRing(points.ToArray());
 

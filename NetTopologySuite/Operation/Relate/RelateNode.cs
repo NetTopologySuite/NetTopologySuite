@@ -20,7 +20,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// </summary>
         /// <param name="coord"></param>
         /// <param name="edges"></param>
-        public RelateNode(Coordinate coord, EdgeEndStar edges) : base(coord, edges) { }
+        public RelateNode(ICoordinate coord, EdgeEndStar edges) :
+            base(coord, edges) { }
 
         /// <summary>
         /// Update the IM with the contribution for this component.

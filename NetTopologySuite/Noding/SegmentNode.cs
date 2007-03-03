@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
@@ -15,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <summary>
         /// 
         /// </summary>
-        public readonly Coordinate Coordinate = null;   // the point of intersection
+        public readonly ICoordinate Coordinate = null;   // the point of intersection
         
         /// <summary>
         /// 
@@ -33,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="coord"></param>
         /// <param name="segmentIndex"></param>
         /// <param name="segmentOctant"></param>
-        public SegmentNode(SegmentString segString, Coordinate coord, int segmentIndex, Octants segmentOctant) 
+        public SegmentNode(SegmentString segString, ICoordinate coord, int segmentIndex, Octants segmentOctant) 
         {
             this.segString = segString;
             this.Coordinate = new Coordinate(coord);

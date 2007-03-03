@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
@@ -27,7 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         private RelateNodeGraph nodeGraph = new RelateNodeGraph();
 
         // the intersection point found (if any)
-        private Coordinate invalidPoint;
+        private ICoordinate invalidPoint;
 
         /// <summary>
         /// 
@@ -41,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <summary>
         /// Returns the intersection point, or <c>null</c> if none was found.
         /// </summary>        
-        public Coordinate InvalidPoint
+        public ICoordinate InvalidPoint
         {
             get
             {
@@ -81,10 +83,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             {
                 for (IEnumerator nodeIt = nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext(); )
                 {
-                    RelateNode node = (RelateNode)nodeIt.Current;
+                    RelateNode node = (RelateNode) nodeIt.Current;
                     if (!node.Edges.IsAreaLabelsConsistent)
                     {
-                        invalidPoint = (Coordinate)node.Coordinate.Clone();
+                        invalidPoint = (ICoordinate) node.Coordinate.Clone();
                         return false;
                     }
                 }
@@ -110,10 +112,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             {
                 for (IEnumerator nodeIt = nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext(); )
                 {
-                    RelateNode node = (RelateNode)nodeIt.Current;
+                    RelateNode node = (RelateNode) nodeIt.Current;
                     for (IEnumerator i = node.Edges.GetEnumerator(); i.MoveNext(); )
                     {
-                        EdgeEndBundle eeb = (EdgeEndBundle)i.Current;
+                        EdgeEndBundle eeb = (EdgeEndBundle) i.Current;
                         if (eeb.EdgeEnds.Count > 1)
                         {
                             invalidPoint = eeb.Edge.GetCoordinate(0);

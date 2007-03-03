@@ -3,6 +3,8 @@ using System.Collections;
 using System.Text;
 using System.IO;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
@@ -19,12 +21,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     public class EdgeIntersection : IComparable
     {
-        private Coordinate coordinate;   
+        private ICoordinate coordinate;   
 
         /// <summary>
         /// The point of intersection.
         /// </summary>
-        public Coordinate Coordinate
+        public ICoordinate Coordinate
         {
             get
             {
@@ -76,7 +78,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="coord"></param>
         /// <param name="segmentIndex"></param>
         /// <param name="dist"></param>
-        public EdgeIntersection(Coordinate coord, int segmentIndex, double dist) 
+        public EdgeIntersection(ICoordinate coord, int segmentIndex, double dist) 
         {
             this.coordinate = new Coordinate(coord);
             this.segmentIndex = segmentIndex;
@@ -90,7 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public int CompareTo(object obj)
         {
-            EdgeIntersection other = (EdgeIntersection)obj;
+            EdgeIntersection other = (EdgeIntersection) obj;
             return Compare(other.SegmentIndex, other.Distance);
         }
 

@@ -4,6 +4,8 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.IO.GML2
@@ -43,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="document"></param>
         /// <returns></returns>
-        public virtual Geometry Read(XmlDocument document)
+        public virtual IGeometry Read(XmlDocument document)
         {
             XmlTextReader reader = new XmlTextReader(new StringReader(document.InnerXml));
             return Read(reader);
@@ -54,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="xmlText"></param>
         /// <returns></returns>
-        public virtual Geometry Read(string xmlText)
+        public virtual IGeometry Read(string xmlText)
         {
             XmlTextReader reader = new XmlTextReader(new StringReader(xmlText));
             return Read(reader);
@@ -65,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="stringReader"></param>
         /// <returns></returns>
-        public virtual Geometry Read(StringReader stringReader)
+        public virtual IGeometry Read(StringReader stringReader)
         {
             XmlTextReader reader = new XmlTextReader(stringReader);
             return Read(reader);
@@ -76,7 +78,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public virtual Geometry Read(XmlTextReader reader)
+        public virtual IGeometry Read(XmlTextReader reader)
         {
             // Read the first two childs...
             reader.Read();
@@ -105,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <returns></returns>
-        protected virtual Coordinate ReadCoordinate(XmlTextReader reader)
+        protected virtual ICoordinate ReadCoordinate(XmlTextReader reader)
         {
             double x = 0, y = 0;
             while (reader.Read())
@@ -124,6 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
                             y = XmlConvert.ToDouble(reader.Value);                            
                         }
                         break;
+
                     case XmlNodeType.EndElement:  
                         if (reader.Name == GMLElements.gmlPrefix + ":coord")
                             return new Coordinate(x, y);
@@ -141,7 +144,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Point ReadPoint(XmlTextReader reader)
+        protected virtual IPoint ReadPoint(XmlTextReader reader)
         {
             while (reader.Read())
             {
@@ -151,6 +154,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
                         if (reader.IsStartElement("coord", GMLElements.gmlNS))
                             return Factory.CreatePoint(ReadCoordinate(reader));
                         break;
+
                     default:
                         break;
                 }
@@ -163,7 +167,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry ReadLineString(XmlTextReader reader)
+        protected virtual ILineString ReadLineString(XmlTextReader reader)
         {
             ArrayList coordinates = new ArrayList();
             while (reader.Read())
@@ -174,8 +178,10 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
                         if (reader.IsStartElement("coord", GMLElements.gmlNS))
                             coordinates.Add(ReadCoordinate(reader));
                         break;
+
                     case XmlNodeType.EndElement:
-                        return Factory.CreateLineString((Coordinate[]) coordinates.ToArray(typeof(Coordinate)));
+                        return Factory.CreateLineString((ICoordinate[]) coordinates.ToArray(typeof(ICoordinate)));
+                    
                     default:
                         break;
                 }
@@ -188,9 +194,9 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry ReadLinearRing(XmlTextReader reader)
+        protected virtual ILinearRing ReadLinearRing(XmlTextReader reader)
         {
-            return Factory.CreateLinearRing((Coordinate[]) ReadLineString(reader).Coordinates);
+            return Factory.CreateLinearRing(ReadLineString(reader).Coordinates);
         }
 
         /// <summary>
@@ -198,9 +204,9 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry ReadPolygon(XmlTextReader reader)
+        protected virtual IPolygon ReadPolygon(XmlTextReader reader)
         {
-            LinearRing exterior = null;
+            ILinearRing exterior = null;
             ArrayList interiors = new ArrayList();
             while (reader.Read())
             {
@@ -212,11 +218,12 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
                         else if (reader.IsStartElement("innerBoundaryIs", GMLElements.gmlNS))
                             interiors.Add(ReadLinearRing(reader));
                         break;
+
                     case XmlNodeType.EndElement:
                         if (reader.Name == GMLElements.gmlPrefix + ":Polygon")
-                            return Factory.CreatePolygon(exterior, 
-                                (LinearRing[]) interiors.ToArray(typeof(LinearRing)));
+                            return Factory.CreatePolygon(exterior, (ILinearRing[]) interiors.ToArray(typeof(ILinearRing)));
                         break;
+
                     default:
                         break;
                 }
@@ -229,7 +236,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry ReadMultiPoint(XmlTextReader reader)
+        protected virtual IMultiPoint ReadMultiPoint(XmlTextReader reader)
         {
             ArrayList points = new ArrayList();
             while (reader.Read())
@@ -240,10 +247,12 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
                         if (reader.IsStartElement("pointMember", GMLElements.gmlNS))
                             points.Add(ReadPoint(reader));
                         break;
+
                     case XmlNodeType.EndElement:
                         if (reader.Name == GMLElements.gmlPrefix + ":MultiPoint")
-                            return Factory.CreateMultiPoint((Point[]) points.ToArray(typeof(Point)));
+                            return Factory.CreateMultiPoint((IPoint[]) points.ToArray(typeof(IPoint)));
                         break;
+
                     default:
                         break;
                 }
@@ -256,7 +265,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry ReadMultiLineString(XmlTextReader reader)
+        protected virtual IMultiLineString ReadMultiLineString(XmlTextReader reader)
         {
             ArrayList lines = new ArrayList();
             while (reader.Read())
@@ -267,10 +276,12 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
                         if (reader.IsStartElement("lineStringMember", GMLElements.gmlNS))
                             lines.Add(ReadLineString(reader));
                         break;
+
                     case XmlNodeType.EndElement:
                         if (reader.Name == GMLElements.gmlPrefix + ":MultiLineString")
-                            return Factory.CreateMultiLineString((LineString[]) lines.ToArray(typeof(LineString)));
+                            return Factory.CreateMultiLineString((ILineString[]) lines.ToArray(typeof(ILineString)));
                         break;
+
                     default:
                         break;
                 }
@@ -283,7 +294,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry ReadMultiPolygon(XmlTextReader reader)
+        protected virtual IMultiPolygon ReadMultiPolygon(XmlTextReader reader)
         {
             ArrayList polygons = new ArrayList();
             while (reader.Read())
@@ -294,10 +305,12 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
                         if (reader.IsStartElement("polygonMember", GMLElements.gmlNS))
                             polygons.Add(ReadPolygon(reader));
                         break;
+
                     case XmlNodeType.EndElement:
                         if (reader.Name == GMLElements.gmlPrefix + ":MultiPolygon")
-                            return Factory.CreateMultiPolygon((Polygon[]) polygons.ToArray(typeof(Polygon)));
+                            return Factory.CreateMultiPolygon((IPolygon[]) polygons.ToArray(typeof(IPolygon)));
                         break;
+
                     default:
                         break;
                 }
@@ -310,7 +323,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected virtual Geometry ReadGeometryCollection(XmlTextReader reader)
+        protected virtual IGeometryCollection ReadGeometryCollection(XmlTextReader reader)
         {
             ArrayList collection = new ArrayList();
             while (reader.Read())
@@ -333,10 +346,12 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
                         else if (reader.IsStartElement("MultiGeometry", GMLElements.gmlNS))
                             collection.Add(ReadGeometryCollection(reader));
                         break;
+
                     case XmlNodeType.EndElement:
                         if (reader.Name == GMLElements.gmlPrefix + ":MultiGeometry")
-                            return Factory.CreateGeometryCollection((Geometry[])collection.ToArray(typeof(Geometry)));
+                            return Factory.CreateGeometryCollection((IGeometry[])collection.ToArray(typeof(IGeometry)));
                         break;
+
                     default:
                         break;
                 }

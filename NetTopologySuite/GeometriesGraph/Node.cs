@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// Only non-null if this node is precise.
         /// </summary>
-        protected Coordinate coord = null;     
+        protected ICoordinate coord = null;     
         
         /// <summary>
         /// 
@@ -29,7 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="coord"></param>
         /// <param name="edges"></param>
-        public Node(Coordinate coord, EdgeEndStar edges)
+        public Node(ICoordinate coord, EdgeEndStar edges)
         {
             this.coord = coord;
             this.edges = edges;
@@ -39,7 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public override Coordinate Coordinate
+        public override ICoordinate Coordinate
         {
             get
             {
@@ -50,7 +50,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public  EdgeEndStar Edges
+        public EdgeEndStar Edges
         {
             get
             {
@@ -79,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Add the edge to the list of edges at this node.
         /// </summary>
         /// <param name="e"></param>
-        public  void Add(EdgeEnd e)
+        public void Add(EdgeEnd e)
         {
             // Assert: start pt of e is equal to node point
             edges.Insert(e);
@@ -90,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="n"></param>
-        public  void MergeLabel(Node n)
+        public void MergeLabel(Node n)
         {
             MergeLabel(n.Label);
         }
@@ -102,7 +102,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// as long as the location is non-null.
         /// </summary>
         /// <param name="label2"></param>
-        public  void MergeLabel(Label label2)
+        public void MergeLabel(Label label2)
         {
             for (int i = 0; i < 2; i++) 
             {
@@ -118,7 +118,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="argIndex"></param>
         /// <param name="onLocation"></param>
-        public  void SetLabel(int argIndex, Locations onLocation)
+        public void SetLabel(int argIndex, Locations onLocation)
         {
             if (label == null) 
                  label = new Label(argIndex, onLocation);            
@@ -130,7 +130,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// obeying the mod-2 boundaryDetermination rule.
         /// </summary>
         /// <param name="argIndex"></param>
-        public  void SetLabelBoundary(int argIndex)
+        public void SetLabelBoundary(int argIndex)
         {
             // determine the current location for the point (if any)
             Locations loc = Locations.Null;
@@ -162,7 +162,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="label2"></param>
         /// <param name="eltIndex"></param>
-        public  Locations ComputeMergedLocation(Label label2, int eltIndex)
+        public Locations ComputeMergedLocation(Label label2, int eltIndex)
         {
             Locations loc = Locations.Null;
             loc = label.GetLocation(eltIndex);
@@ -179,7 +179,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="outstream"></param>
-        public  void Write(StreamWriter outstream)
+        public void Write(StreamWriter outstream)
         {
             outstream.WriteLine("node " + coord + " lbl: " + label);
         }

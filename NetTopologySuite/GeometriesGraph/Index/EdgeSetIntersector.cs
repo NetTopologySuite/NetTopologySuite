@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 {
     /// <summary>

@@ -4,6 +4,9 @@ using System.IO;
 using System.ComponentModel;
 using System.Collections;
 using System.Diagnostics;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.IO
@@ -19,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         private class ShapefileEnumerator : IEnumerator
         {
             private ShapefileReader _parent;
-            private Geometry _geometry;
+            private IGeometry _geometry;
             private ShapeHandler _handler;
             private BigEndianBinaryReader _shpBinaryReader = null;
 
@@ -124,7 +127,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// and a standard GeometryFactory.
         /// </summary>
         /// <param name="filename">The filename of the shape file to read (with .shp).</param>        
-        public ShapefileReader(string filename) : this(filename, new GeometryFactory()) { }        
+        public ShapefileReader(string filename) : 
+            this(filename, new GeometryFactory()) { }        
 
 		/// <summary>
 		/// Gets the bounds of the shape file.
@@ -141,7 +145,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// Reads the shapefile and returns a GeometryCollection representing all the records in the shapefile.
 		/// </summary>
 		/// <returns>GeometryCollection representing every record in the shapefile.</returns>
-		public GeometryCollection ReadAll()
+		public IGeometryCollection ReadAll()
 		{
 			ArrayList list = new ArrayList();
             ShapeGeometryTypes type = _mainHeader.ShapeType;
@@ -150,13 +154,13 @@ namespace GisSharpBlog.NetTopologySuite.IO
 				throw new NotSupportedException("Unsupported shape type:" + type);
 
 			int i = 0;
-			foreach (Geometry geometry in this)
+			foreach (IGeometry geometry in this)
 			{                
 				list.Add(geometry);
 				i++;
 			}
 			
-	        Geometry[] geomArray = GeometryFactory.ToGeometryArray(list);
+	        IGeometry[] geomArray = GeometryFactory.ToGeometryArray(list);
 			return _geometryFactory.CreateGeometryCollection(geomArray);
 		}		
 		

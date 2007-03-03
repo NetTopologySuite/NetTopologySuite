@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 
@@ -17,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>
-        public override Node CreateNode(Coordinate coord)
+        public override Node CreateNode(ICoordinate coord)
         {
             return new RelateNode(coord, new EdgeEndBundleStar());
         }

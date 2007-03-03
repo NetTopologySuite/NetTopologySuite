@@ -112,10 +112,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         {
             PrecisionModel precisionModel = workingPrecisionModel;
             if (precisionModel == null)
-                precisionModel = g.PrecisionModel;
+                precisionModel = ((Geometry) g).PrecisionModel;
 
             // factory must be the same as the one used by the input
-            geomFact = g.Factory;
+            geomFact = ((Geometry) g).Factory;
 
             OffsetCurveBuilder curveBuilder = new OffsetCurveBuilder(precisionModel, quadrantSegments);
             curveBuilder.EndCapStyle = endCapStyle;
@@ -173,8 +173,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             
             foreach(object obj in nodedSegStrings)
             {
-                SegmentString segStr = (SegmentString)obj;
-                Label oldLabel = (Label)segStr.Data;
+                SegmentString segStr = (SegmentString) obj;
+                Label oldLabel = (Label) segStr.Data;
                 Edge edge = new Edge(segStr.Coordinates, new Label(oldLabel));
                 InsertEdge(edge);
             }
@@ -260,7 +260,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             foreach(object obj in subgraphList)
             {
                 BufferSubgraph subgraph = (BufferSubgraph)obj;
-                Coordinate p = subgraph.RightMostCoordinate;
+                ICoordinate p = subgraph.RightMostCoordinate;
                 SubgraphDepthLocater locater = new SubgraphDepthLocater(processedGraphs);
                 int outsideDepth = locater.GetDepth(p);
                 subgraph.ComputeDepth(outsideDepth);

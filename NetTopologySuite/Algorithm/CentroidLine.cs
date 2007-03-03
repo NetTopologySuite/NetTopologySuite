@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Text;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -13,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class CentroidLine
     {
-        private Coordinate centSum = new Coordinate();
+        private ICoordinate centSum = new Coordinate();
         private double totalLength = 0.0;
 
         /// <summary>
@@ -26,15 +29,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// If the point is not linear it does not contribute to the centroid.
         /// </summary>
         /// <param name="geom">The point to add.</param>
-        public void Add(Geometry geom)
+        public void Add(IGeometry geom)
         {
-            if (geom is LineString)             
-                Add((Coordinate[]) geom.Coordinates);            
+            if (geom is ILineString)             
+                Add(geom.Coordinates);            
 
-            else if (geom is GeometryCollection) 
+            else if (geom is IGeometryCollection) 
             {
-                GeometryCollection gc = (GeometryCollection) geom;
-                foreach (Geometry geometry in gc.Geometries)
+                IGeometryCollection gc = (IGeometryCollection) geom;
+                foreach (IGeometry geometry in gc.Geometries)
                     Add(geometry);
             }
         }
@@ -42,11 +45,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Centroid
+        public ICoordinate Centroid
         {
             get
             {
-                Coordinate cent = new Coordinate();
+                ICoordinate cent = new Coordinate();
                 cent.X = centSum.X / totalLength;
                 cent.Y = centSum.Y / totalLength;
                 return cent;
@@ -57,7 +60,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Adds the length defined by an array of coordinates.
         /// </summary>
         /// <param name="pts">An array of <c>Coordinate</c>s.</param>
-        public void Add(Coordinate[] pts)
+        public void Add(ICoordinate[] pts)
         {
             for (int i = 0; i < pts.Length - 1; i++)
             {

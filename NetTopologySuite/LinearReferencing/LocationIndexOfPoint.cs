@@ -129,7 +129,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="seg"></param>
         /// <param name="inputPt"></param>
         /// <returns></returns>
-        public static double SegmentFraction(LineSegment seg, Coordinate inputPt)
+        public static double SegmentFraction(LineSegment seg, ICoordinate inputPt)
         {
             double segFrac = seg.ProjectionFactor(inputPt);
             if (segFrac < 0.0)

@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Text;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -30,23 +33,23 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         }
 
         private GeometryFactory factory;
-        private Coordinate interiorPoint = null;
+        private ICoordinate interiorPoint = null;
         private double maxWidth = 0;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="g"></param>
-        public InteriorPointArea(Geometry g)
+        public InteriorPointArea(IGeometry g)
         {
-            factory = g.Factory;
+            factory = ((Geometry) g).Factory;
             Add(g);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate InteriorPoint
+        public ICoordinate InteriorPoint
         {
             get
             {
@@ -60,14 +63,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// If a Geometry is not of dimension 1 it is not tested.
         /// </summary>
         /// <param name="geom">The point to add.</param>
-        private void Add(Geometry geom)
+        private void Add(IGeometry geom)
         {
             if (geom is Polygon) 
                 AddPolygon(geom);            
-            else if (geom is GeometryCollection) 
+            else if (geom is IGeometryCollection) 
             {
-                GeometryCollection gc = (GeometryCollection)geom;
-                foreach (Geometry geometry in gc.Geometries)
+                IGeometryCollection gc = (IGeometryCollection) geom;
+                foreach (IGeometry geometry in gc.Geometries)
                     Add(geometry);
             }
         }
@@ -80,17 +83,17 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// The midpoint of the largest intersection between the point and
         /// a line halfway down its envelope.
         /// </returns>
-        public void AddPolygon(Geometry geometry)
+        public void AddPolygon(IGeometry geometry)
         {
-            LineString bisector = HorizontalBisector(geometry);
+            ILineString bisector = HorizontalBisector(geometry);
 
-            Geometry intersections = (Geometry) bisector.Intersection(geometry);
-            Geometry widestIntersection = WidestGeometry(intersections);
+            IGeometry intersections = bisector.Intersection(geometry);
+            IGeometry widestIntersection = WidestGeometry(intersections);
 
             double width = widestIntersection.EnvelopeInternal.Width;
             if (interiorPoint == null || width > maxWidth)
             {
-                interiorPoint = Centre((Envelope) widestIntersection.EnvelopeInternal);
+                interiorPoint = Centre(widestIntersection.EnvelopeInternal);
                 maxWidth = width;
             }
         }
@@ -103,11 +106,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// If point is a collection, the widest sub-point; otherwise,
         /// the point itself.
         /// </returns>
-        protected Geometry WidestGeometry(Geometry geometry) 
+        protected IGeometry WidestGeometry(IGeometry geometry) 
         {
-            if (!(geometry is GeometryCollection)) 
+            if (!(geometry is IGeometryCollection)) 
                 return geometry;        
-            return WidestGeometry((GeometryCollection)geometry);
+            return WidestGeometry((IGeometryCollection) geometry);
         }
 
         /// <summary>
@@ -115,15 +118,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="gc"></param>
         /// <returns></returns>
-        private Geometry WidestGeometry(GeometryCollection gc)
+        private IGeometry WidestGeometry(IGeometryCollection gc)
         {
             if (gc.IsEmpty) 
                 return gc;
 
-            Geometry widestGeometry = (Geometry) gc.GetGeometryN(0);
+            IGeometry widestGeometry = gc.GetGeometryN(0);
             for (int i = 1; i < gc.NumGeometries; i++) //Start at 1        
                 if (gc.GetGeometryN(i).EnvelopeInternal.Width > widestGeometry.EnvelopeInternal.Width)
-                    widestGeometry = (Geometry) gc.GetGeometryN(i);                            
+                    widestGeometry = gc.GetGeometryN(i);                            
             return widestGeometry;
         }
 
@@ -132,13 +135,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected LineString HorizontalBisector(Geometry geometry)
+        protected ILineString HorizontalBisector(IGeometry geometry)
         {
-            Envelope envelope = (Envelope) geometry.EnvelopeInternal;
+            IEnvelope envelope = geometry.EnvelopeInternal;
 
             // Assert: for areas, minx <> maxx
             double avgY = Avg(envelope.MinY, envelope.MaxY);
-            return factory.CreateLineString(new Coordinate[] { new Coordinate(envelope.MinX, avgY), new Coordinate(envelope.MaxX, avgY) });
+            return factory.CreateLineString(
+                new ICoordinate[] { new Coordinate(envelope.MinX, avgY), new Coordinate(envelope.MaxX, avgY) });
         }
 
         /// <summary> 
@@ -146,7 +150,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="envelope">The envelope to analyze.</param>
         /// <returns> The centre of the envelope.</returns>
-        public Coordinate Centre(Envelope envelope)
+        public ICoordinate Centre(IEnvelope envelope)
         {
             return new Coordinate(Avg(envelope.MinX, envelope.MaxX), Avg(envelope.MinY, envelope.MaxY));
         }

@@ -3,6 +3,8 @@ using System.Collections;
 using System.Text;
 using System.IO;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Utilities;
@@ -31,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         protected Label label = null;
 
         private Node node;          // the node this edge end originates at
-        private Coordinate p0, p1;  // points of initial line segment
+        private ICoordinate p0, p1;  // points of initial line segment
         private double dx, dy;      // the direction vector for this edge from its starting point
         private int quadrant;
 
@@ -50,7 +52,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="edge"></param>
         /// <param name="p0"></param>
         /// <param name="p1"></param>
-        public EdgeEnd(Edge edge, Coordinate p0, Coordinate p1) : this(edge, p0, p1, null) { }
+        public EdgeEnd(Edge edge, ICoordinate p0, ICoordinate p1) : 
+            this(edge, p0, p1, null) { }
 
         /// <summary>
         /// 
@@ -59,7 +62,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <param name="label"></param>
-        public EdgeEnd(Edge edge, Coordinate p0, Coordinate p1, Label label) : this(edge)
+        public EdgeEnd(Edge edge, ICoordinate p0, ICoordinate p1, Label label)
+            : this(edge)
         {
             Init(p0, p1);
             this.label = label;
@@ -70,7 +74,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="p0"></param>
         /// <param name="p1"></param>
-        protected void Init(Coordinate p0, Coordinate p1)
+        protected void Init(ICoordinate p0, ICoordinate p1)
         {
             this.p0 = p0;
             this.p1 = p1;
@@ -105,7 +109,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate
+        public ICoordinate Coordinate
         {
             get
             {
@@ -116,7 +120,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate DirectedCoordinate
+        public ICoordinate DirectedCoordinate
         {
             get
             {
@@ -179,7 +183,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public int CompareTo(object obj)
         {
-            EdgeEnd e = (EdgeEnd)obj;
+            EdgeEnd e = (EdgeEnd) obj;
             return CompareDirection(e);
         }
 

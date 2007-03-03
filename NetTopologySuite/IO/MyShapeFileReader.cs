@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 
@@ -46,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="filepath">Shapefile path.</param>
         /// <returns><c>GeometryCollection</c> containing all geometries in shapefile.</returns>
-        public GeometryCollection Read(string filepath)
+        public IGeometryCollection Read(string filepath)
         {
             using (Stream stream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
@@ -61,7 +63,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="stream">Shapefile data stream.</param>
         /// <returns><c>GeometryCollection</c> containing all geometries in shapefile.</returns>
-        protected GeometryCollection Read(Stream stream)
+        protected IGeometryCollection Read(Stream stream)
         {
             // Read big endian values
             using (BigEndianBinaryReader beReader = new BigEndianBinaryReader(stream))
@@ -85,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                     // ShapeTypes
                     int shapeType = leReader.ReadInt32();         
 
-                    switch ((ShapeGeometryTypes)shapeType)
+                    switch ((ShapeGeometryTypes) shapeType)
                     {
                         case ShapeGeometryTypes.Point:
                         case ShapeGeometryTypes.PointZ:
@@ -121,7 +123,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                         default:
                             throw new ArgumentOutOfRangeException("FeatureType " + shapeType + " not recognized by the system");
                     }
-                    GeometryCollection collection = shapeReader.CreateGeometryCollection(list);
+                    IGeometryCollection collection = shapeReader.CreateGeometryCollection(list);
                     return collection;
                 }                               
             }
@@ -149,8 +151,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
                     {
                         ReadFeatureHeader(beReader);                  
                                             
-                        Coordinate coordinate =    shapeReader.ReadCoordinate(leReader);
-                        Geometry point = shapeReader.CreatePoint(coordinate);
+                        ICoordinate coordinate = shapeReader.ReadCoordinate(leReader);
+                        IGeometry point = shapeReader.CreatePoint(coordinate);
                         list.Add(point);
                     }
                 }              
@@ -198,7 +200,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                         int numPoints = shapeReader.ReadNumPoints(leReader);
 
                         indexParts = shapeReader.ReadIndexParts(leReader, numParts);
-                        Coordinate[] coordinates = shapeReader.ReadCoordinates(leReader, numPoints);
+                        ICoordinate[] coordinates = shapeReader.ReadCoordinates(leReader, numPoints);
 
                         if (numParts == 1)
                             list.Add(shapeReader.CreateLineString(coordinates));
@@ -238,10 +240,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
                         int numPoints = shapeReader.ReadNumPoints(reader);
 
                         indexParts = shapeReader.ReadIndexParts(reader, numParts);
-                        Coordinate[] coordinates = shapeReader.ReadCoordinates(reader, numPoints);
+                        ICoordinate[] coordinates = shapeReader.ReadCoordinates(reader, numPoints);
 
                         if (numParts == 1)
-                            list.Add(shapeReader.CreateSimpleSinglePolygon(coordinates));
+                             list.Add(shapeReader.CreateSimpleSinglePolygon(coordinates));
                         else list.Add(shapeReader.CreateSingleOrMultiPolygon(numPoints, indexParts, coordinates));
                     }                    
                 }
@@ -274,7 +276,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                         shapeReader.ReadBoundingBox(reader);
 
                         int numPoints = shapeReader.ReadNumPoints(reader);
-                        Coordinate[] coords = new Coordinate[numPoints];
+                        ICoordinate[] coords = new ICoordinate[numPoints];
                         for (int i = 0; i < numPoints; i++)
                             coords[i] = shapeReader.ReadCoordinate(reader);
                         list.Add(shapeReader.CreateMultiPoint(coords));

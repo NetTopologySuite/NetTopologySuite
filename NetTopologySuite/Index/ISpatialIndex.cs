@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Text;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Index
@@ -18,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Index
         /// <summary>
         /// Adds a spatial item with an extent specified by the given <c>Envelope</c> to the index.
         /// </summary>
-        void Insert(Envelope itemEnv, object item);
+        void Insert(IEnvelope itemEnv, object item);
 
         /// <summary> 
         /// Queries the index for all items whose extents intersect the given search <c>Envelope</c> 
@@ -27,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Index
         /// </summary>
         /// <param name="searchEnv">The envelope to query for.</param>
         /// <returns>A list of the items found by the query.</returns>
-        IList Query(Envelope searchEnv);
+        IList Query(IEnvelope searchEnv);
 
         /// <summary>
         /// Queries the index for all items whose extents intersect the given search <see cref="Envelope" />,
@@ -37,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.Index
         /// </summary>
         /// <param name="searchEnv">The envelope to query for.</param>
         /// <param name="visitor">A visitor object to apply to the items found.</param>
-        void Query(Envelope searchEnv, IItemVisitor visitor);
+        void Query(IEnvelope searchEnv, IItemVisitor visitor);
 
         /// <summary> 
         /// Removes a single item from the tree.
@@ -45,6 +48,6 @@ namespace GisSharpBlog.NetTopologySuite.Index
         /// <param name="itemEnv">The Envelope of the item to remove.</param>
         /// <param name="item">The item to remove.</param>
         /// <returns> <c>true</c> if the item was found.</returns>
-        bool Remove(Envelope itemEnv, object item);
+        bool Remove(IEnvelope itemEnv, object item);
     }
 }

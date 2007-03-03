@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Text;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
@@ -49,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="p0"></param>
         /// <param name="p1"></param>
-        public static int Quadrant(Coordinate p0, Coordinate p1)
+        public static int Quadrant(ICoordinate p0, ICoordinate p1)
         {
             double dx = p1.X - p0.X;
             double dy = p1.Y - p0.Y;

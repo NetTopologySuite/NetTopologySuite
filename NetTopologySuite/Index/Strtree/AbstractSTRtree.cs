@@ -64,7 +64,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         public void Build()
         {
             Assert.IsTrue(!built);            
-            root = (itemBoundables.Count == 0) ? CreateNode(0) : CreateHigherLevels(itemBoundables, -1);
+            root = (itemBoundables.Count == 0) ? 
+                CreateNode(0) : CreateHigherLevels(itemBoundables, -1);
             built = true;
         }
 
@@ -90,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             sortedChildBoundables.Sort(GetComparer());            
             for (IEnumerator i = sortedChildBoundables.GetEnumerator(); i.MoveNext(); )
             {
-                IBoundable childBoundable = (IBoundable)i.Current;
+                IBoundable childBoundable = (IBoundable) i.Current;
                 if (LastNode(parentBoundables).ChildBoundables.Count == NodeCapacity)
                     parentBoundables.Add(CreateNode(newLevel));                
                 LastNode(parentBoundables).AddChildBoundable(childBoundable);
@@ -105,7 +106,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <returns></returns>
         protected AbstractNode LastNode(IList nodes)
         {
-            return (AbstractNode)nodes[nodes.Count - 1];
+            return (AbstractNode) nodes[nodes.Count - 1];
         }       
 
         /// <summary>
@@ -131,7 +132,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             Assert.IsTrue(boundablesOfALevel.Count != 0);
             IList parentBoundables = CreateParentBoundables(boundablesOfALevel, level + 1);
             if (parentBoundables.Count == 1)
-                return (AbstractNode)parentBoundables[0];            
+                return (AbstractNode) parentBoundables[0];            
             return CreateHigherLevels(parentBoundables, level + 1);
         }
 
@@ -184,7 +185,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             {
                 IBoundable childBoundable = (IBoundable) i.Current;
                 if (childBoundable is AbstractNode)                 
-                    size += GetSize((AbstractNode)childBoundable);
+                    size += GetSize((AbstractNode) childBoundable);
                 else if (childBoundable is ItemBoundable) 
                     size += 1;            
             }
@@ -284,14 +285,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             foreach(object obj in node.ChildBoundables) 
             {
-                IBoundable childBoundable = (IBoundable)obj;
+                IBoundable childBoundable = (IBoundable) obj;
                 if (!IntersectsOp.Intersects(childBoundable.Bounds, searchBounds)) 
                     continue;      
       
                 if(childBoundable is AbstractNode) 
                     Query(searchBounds, (AbstractNode) childBoundable, matches);      
                 else if(childBoundable is ItemBoundable) 
-                    matches.Add(((ItemBoundable)childBoundable).Item);
+                    matches.Add(((ItemBoundable) childBoundable).Item);
                 else Assert.ShouldNeverReachHere();
             }
         }
@@ -306,13 +307,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             foreach(object obj in node.ChildBoundables) 
             {
-                IBoundable childBoundable = (IBoundable)obj;
-                if(!IntersectsOp.Intersects(childBoundable.Bounds, searchBounds))
+                IBoundable childBoundable = (IBoundable) obj;
+                if (!IntersectsOp.Intersects(childBoundable.Bounds, searchBounds))
                     continue;      
-                if(childBoundable is AbstractNode) 
-                    Query(searchBounds, (AbstractNode)childBoundable, visitor);      
+                if (childBoundable is AbstractNode) 
+                    Query(searchBounds, (AbstractNode) childBoundable, visitor);      
                 else if (childBoundable is ItemBoundable) 
-                    visitor.VisitItem(((ItemBoundable)childBoundable).Item);            
+                    visitor.VisitItem(((ItemBoundable) childBoundable).Item);            
                 else Assert.ShouldNeverReachHere();
             }
         }
@@ -431,7 +432,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             {
                 IBoundable boundable = (IBoundable) i.Current;
                 if (boundable is AbstractNode) 
-                    BoundablesAtLevel(level, (AbstractNode)boundable, ref boundables);            
+                    BoundablesAtLevel(level, (AbstractNode) boundable, ref boundables);            
                 else 
                 {
                     Assert.IsTrue(boundable is ItemBoundable);

@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Text;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -17,10 +20,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class CentroidArea
     {
-        private Coordinate basePt = null;                       // the point all triangles are based at
-        private Coordinate triangleCent3 = new Coordinate();    // temporary variable to hold centroid of triangle
+        private ICoordinate basePt = null;                       // the point all triangles are based at
+        private ICoordinate triangleCent3 = new Coordinate();    // temporary variable to hold centroid of triangle
         private double areasum2 = 0;                            // Partial area sum
-        private Coordinate cg3 = new Coordinate();              // partial centroid sum
+        private ICoordinate cg3 = new Coordinate();              // partial centroid sum
 
         /// <summary>
         /// 
@@ -32,18 +35,18 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// If the point has no area it does not contribute to the centroid.
         /// </summary>
         /// <param name="geom">The point to add.</param>
-        public void Add(Geometry geom)
+        public void Add(IGeometry geom)
         {
-            if (geom is Polygon) 
+            if (geom is IPolygon) 
             {
-                Polygon poly = geom as Polygon;
-                BasePoint = (Coordinate) poly.ExteriorRing.GetCoordinateN(0);
+                IPolygon poly = (IPolygon) geom;
+                BasePoint = poly.ExteriorRing.GetCoordinateN(0);
                 Add(poly);
             }
-            else if (geom is GeometryCollection) 
+            else if (geom is IGeometryCollection) 
             {
-                GeometryCollection gc = geom as GeometryCollection;
-                foreach (Geometry geometry in gc.Geometries)
+                IGeometryCollection gc = (IGeometryCollection) geom;
+                foreach (IGeometry geometry in gc.Geometries)
                     Add(geometry);
             }
         }
@@ -54,7 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// i.e. end with the same coordinate as it starts with.
         /// </summary>
         /// <param name="ring">An array of Coordinates.</param>
-        public void Add(Coordinate[] ring)
+        public void Add(ICoordinate[] ring)
         {
             BasePoint = ring[0];
             AddShell(ring);
@@ -63,11 +66,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Centroid
+        public ICoordinate Centroid
         {
             get
             {
-                Coordinate cent = new Coordinate();
+                ICoordinate cent = new Coordinate();
                 cent.X = cg3.X / 3 / areasum2;
                 cent.Y = cg3.Y / 3 / areasum2;
                 return cent;
@@ -77,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        private Coordinate BasePoint
+        private ICoordinate BasePoint
         {
             get
             {
@@ -94,19 +97,18 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// 
         /// </summary>
         /// <param name="poly"></param>
-        private void Add(Polygon poly)
+        private void Add(IPolygon poly)
         {
-            AddShell((Coordinate[]) poly.ExteriorRing.Coordinates);
-
-            foreach (LineString ls in poly.InteriorRings)
-                AddHole((Coordinate[]) ls.Coordinates);
+            AddShell(poly.ExteriorRing.Coordinates);
+            foreach (ILineString ls in poly.InteriorRings)
+                AddHole(ls.Coordinates);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="pts"></param>
-        private void AddShell(Coordinate[] pts)
+        private void AddShell(ICoordinate[] pts)
         {
             bool isPositiveArea = !CGAlgorithms.IsCCW(pts);
             for (int i = 0; i < pts.Length - 1; i++)
@@ -117,7 +119,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// 
         /// </summary>
         /// <param name="pts"></param>
-        private void AddHole(Coordinate[] pts)
+        private void AddHole(ICoordinate[] pts)
         {
             bool isPositiveArea = CGAlgorithms.IsCCW(pts);
             for (int i = 0; i < pts.Length - 1; i++)
@@ -131,7 +133,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="p1"></param>
         /// <param name="p2"></param>
         /// <param name="isPositiveArea"></param>
-        private void AddTriangle(Coordinate p0, Coordinate p1, Coordinate p2, bool isPositiveArea)
+        private void AddTriangle(ICoordinate p0, ICoordinate p1, ICoordinate p2, bool isPositiveArea)
         {
             double sign = (isPositiveArea) ? 1.0 : -1.0;
             Centroid3(p0, p1, p2, ref triangleCent3);
@@ -146,7 +148,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// The factor of 3 is
         /// left in to permit division to be avoided until later.
         /// </summary>
-        private static void Centroid3(Coordinate p1, Coordinate p2, Coordinate p3, ref Coordinate c)
+        private static void Centroid3(ICoordinate p1, ICoordinate p2, ICoordinate p3, ref ICoordinate c)
         {
             c.X = p1.X + p2.X + p3.X;
             c.Y = p1.Y + p2.Y + p3.Y;
@@ -157,7 +159,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Returns twice the signed area of the triangle p1-p2-p3,
         /// positive if a,b,c are oriented ccw, and negative if cw.
         /// </summary>
-        private static double Area2(Coordinate p1, Coordinate p2, Coordinate p3)
+        private static double Area2(ICoordinate p1, ICoordinate p2, ICoordinate p3)
         {
             return (p2.X - p1.X) * (p3.Y - p1.Y) - (p3.X - p1.X) * (p2.Y - p1.Y);
         }

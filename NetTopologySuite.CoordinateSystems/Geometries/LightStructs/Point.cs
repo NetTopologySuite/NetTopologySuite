@@ -8,7 +8,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.LightStructs
     /// 
     /// </summary>
     [Serializable]
-    public struct Point : ICloneable
+    public struct Point : ICloneable, IEquatable<Point>, IComparable, IComparable<Point>
     {
         /// <summary>
         /// 
@@ -96,6 +96,59 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.LightStructs
         public override string ToString()
         {
             return Coordinate.ToString();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return coordinate.GetHashCode();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            if (!(obj is Point))
+                return false;
+            return Equals((Point) obj);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public bool Equals(Point other)
+        {
+            return this.Coordinate.Equals(other.Coordinate);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public int CompareTo(object obj)
+        {
+            return CompareTo((Coordinate) obj);            
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public int CompareTo(Point other)
+        {
+            return this.Coordinate.CompareTo(other.Coordinate);
         }
     }
 }

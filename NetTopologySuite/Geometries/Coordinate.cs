@@ -199,7 +199,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public int CompareTo(object o)
         {
-            Coordinate other = (Coordinate) o;
+            ICoordinate other = (ICoordinate) o;
             return CompareTo(other);
         }
 
@@ -285,9 +285,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Return HashCode.
         /// </summary>
         /// <param name="x">Value from HashCode computation.</param>
-        private static int GetHashCode(double x)
+        private static int GetHashCode(double value)
         {
-            long f = BitConverter.DoubleToInt64Bits(x);
+            long f = BitConverter.DoubleToInt64Bits(value);
             return (int)(f^(f>>32));
         }
 

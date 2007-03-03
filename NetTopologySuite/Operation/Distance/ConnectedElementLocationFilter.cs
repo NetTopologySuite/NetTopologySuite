@@ -23,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// not a GeometryCollection, an empty list will be returned. The elements of the list 
         /// are <c>com.vividsolutions.jts.operation.distance.GeometryLocation</c>s.
         /// </summary>
-        public static IList GetLocations(Geometry geom)
+        public static IList GetLocations(IGeometry geom)
         {
             IList locations = new ArrayList();
             geom.Apply(new ConnectedElementLocationFilter(locations));
@@ -47,8 +47,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <param name="geom"></param>
         public void Filter(IGeometry geom)
         {
-            if (geom is Point || geom is LineString || geom is Polygon)
-                locations.Add(new GeometryLocation((Geometry) geom, 0, (Coordinate) geom.Coordinate));
+            if (geom is IPoint || geom is ILineString || geom is IPolygon)
+                locations.Add(new GeometryLocation(geom, 0, geom.Coordinate));
         }
     }
 }

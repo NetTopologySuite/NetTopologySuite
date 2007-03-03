@@ -46,10 +46,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="segmentIndex"></param>
         /// <param name="dist"></param>
         /// <returns>The EdgeIntersection found or added.</returns>
-        public EdgeIntersection Add(Coordinate intPt, int segmentIndex, double dist)
+        public EdgeIntersection Add(ICoordinate intPt, int segmentIndex, double dist)
         {
             EdgeIntersection eiNew = new EdgeIntersection(intPt, segmentIndex, dist);
-            EdgeIntersection ei = (EdgeIntersection)nodeMap[eiNew];
+            EdgeIntersection ei = (EdgeIntersection) nodeMap[eiNew];
             if (ei != null) 
                 return ei;            
             nodeMap.Add(eiNew, eiNew);
@@ -105,10 +105,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             IEnumerator it = GetEnumerator();
             it.MoveNext();
             // there should always be at least two entries in the list
-            EdgeIntersection eiPrev = (EdgeIntersection)it.Current;
+            EdgeIntersection eiPrev = (EdgeIntersection) it.Current;
             while (it.MoveNext()) 
             {
-                EdgeIntersection ei = (EdgeIntersection)it.Current;
+                EdgeIntersection ei = (EdgeIntersection) it.Current;
                 Edge newEdge = CreateSplitEdge(eiPrev, ei);
                 edgeList.Add(newEdge);
 
@@ -126,22 +126,23 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public Edge CreateSplitEdge(EdgeIntersection ei0, EdgeIntersection ei1)
         {        
             int npts = ei1.SegmentIndex - ei0.SegmentIndex + 2;
-            Coordinate lastSegStartPt = edge.Points[ei1.SegmentIndex];
+            ICoordinate lastSegStartPt = edge.Points[ei1.SegmentIndex];
             // if the last intersection point is not equal to the its segment start pt,
             // add it to the points list as well.
             // (This check is needed because the distance metric is not totally reliable!)
             // The check for point equality is 2D only - Z values are ignored
             bool useIntPt1 = ei1.Distance > 0.0 || ! ei1.Coordinate.Equals2D(lastSegStartPt);
             if (! useIntPt1) 
-                npts--;            
+                npts--;
 
-            Coordinate[] pts = new Coordinate[npts];
+            ICoordinate[] pts = new ICoordinate[npts];
             int ipt = 0;
             pts[ipt++] = new Coordinate(ei0.Coordinate);
             for (int i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++) 
                 pts[ipt++] = edge.Points[i];
 
-            if (useIntPt1) pts[ipt] = ei1.Coordinate;
+            if (useIntPt1) 
+                pts[ipt] = ei1.Coordinate;
             return new Edge(pts, new Label(edge.Label));
         }
 

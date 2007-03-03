@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Text;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Chain
@@ -37,9 +40,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
     /// </summary>
     public class MonotoneChain
     {
-        private Coordinate[] pts;
+        private ICoordinate[] pts;
         private int start, end;
-        private Envelope env = null;
+        private IEnvelope env = null;
         private object context = null;  // user-defined information
         private int id;                 // useful for optimizing chain comparisons
 
@@ -50,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <param name="start"></param>
         /// <param name="end"></param>
         /// <param name="context"></param>
-        public MonotoneChain(Coordinate[] pts, int start, int end, object context)
+        public MonotoneChain(ICoordinate[] pts, int start, int end, object context)
         {
             this.pts = pts;
             this.start = start;
@@ -61,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <summary>
         /// 
         /// </summary>
-        public  int Id
+        public int Id
         {
             get
             {
@@ -76,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <summary>
         /// 
         /// </summary>
-        public  object Context
+        public object Context
         {
             get
             {
@@ -87,14 +90,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <summary>
         /// 
         /// </summary>
-        public  Envelope Envelope
+        public IEnvelope Envelope
         {
             get
             {
                 if (env == null)
                 {
-                    Coordinate p0 = pts[start];
-                    Coordinate p1 = pts[end];
+                    ICoordinate p0 = pts[start];
+                    ICoordinate p1 = pts[end];
                     env = new Envelope(p0, p1);
                 }
                 return env;
@@ -104,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <summary>
         /// 
         /// </summary>
-        public  int StartIndex
+        public int StartIndex
         {
             get
             {
@@ -115,7 +118,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <summary>
         /// 
         /// </summary>
-        public  int EndIndex
+        public int EndIndex
         {
             get
             {
@@ -128,7 +131,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// </summary>
         /// <param name="index"></param>
         /// <param name="ls"></param>
-        public  void GetLineSegment(int index, ref LineSegment ls)
+        public void GetLineSegment(int index, ref LineSegment ls)
         {
             ls.P0 = pts[index];
             ls.P1 = pts[index + 1];
@@ -138,11 +141,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// Return the subsequence of coordinates forming this chain.
         /// Allocates a new array to hold the Coordinates.
         /// </summary>
-        public  Coordinate[] Coordinates
+        public ICoordinate[] Coordinates
         {
             get
             {
-                Coordinate[] coord = new Coordinate[end - start + 1];
+                ICoordinate[] coord = new ICoordinate[end - start + 1];
                 int index = 0;
                 for (int i = start; i <= end; i++) 
                     coord[index++] = pts[i];                
@@ -156,7 +159,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="mcs"></param>
-        public  void Select(Envelope searchEnv, MonotoneChainSelectAction mcs)
+        public void Select(IEnvelope searchEnv, MonotoneChainSelectAction mcs)
         {
             ComputeSelect(searchEnv, start, end, mcs);
         }
@@ -168,10 +171,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <param name="start0"></param>
         /// <param name="end0"></param>
         /// <param name="mcs"></param>
-        private void ComputeSelect(Envelope searchEnv, int start0, int end0, MonotoneChainSelectAction mcs)
+        private void ComputeSelect(IEnvelope searchEnv, int start0, int end0, MonotoneChainSelectAction mcs)
         {
-            Coordinate p0 = pts[start0];
-            Coordinate p1 = pts[end0];
+            ICoordinate p0 = pts[start0];
+            ICoordinate p1 = pts[end0];
             mcs.TempEnv1.Init(p0, p1);
             
             // terminating condition for the recursion
@@ -216,10 +219,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <param name="mco"></param>
         private void ComputeOverlaps(int start0, int end0, MonotoneChain mc, int start1, int end1, MonotoneChainOverlapAction mco)
         {
-            Coordinate p00 = pts[start0];
-            Coordinate p01 = pts[end0];
-            Coordinate p10 = mc.pts[start1];
-            Coordinate p11 = mc.pts[end1];
+            ICoordinate p00 = pts[start0];
+            ICoordinate p01 = pts[end0];
+            ICoordinate p10 = mc.pts[start1];
+            ICoordinate p11 = mc.pts[end1];
             
             // terminating condition for the recursion
             if (end0 - start0 == 1 && end1 - start1 == 1)

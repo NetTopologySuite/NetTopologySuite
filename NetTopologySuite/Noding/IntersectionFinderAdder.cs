@@ -2,20 +2,20 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Index.Chain;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
-
     /// <summary>
     /// Finds proper and interior intersections in a set of <see cref="SegmentString" />s,
     /// and adds them as nodes.
     /// </summary>
     public class IntersectionFinderAdder : ISegmentIntersector
     {
-
         private LineIntersector li = null;
         private readonly IList interiorIntersections = null;
 
@@ -58,11 +58,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             if (e0 == e1 && segIndex0 == segIndex1) 
                 return;
 
-            Coordinate p00 = e0.Coordinates[segIndex0];
-            Coordinate p01 = e0.Coordinates[segIndex0 + 1];
-            Coordinate p10 = e1.Coordinates[segIndex1];
-            Coordinate p11 = e1.Coordinates[segIndex1 + 1];
-
+            ICoordinate p00 = e0.Coordinates[segIndex0];
+            ICoordinate p01 = e0.Coordinates[segIndex0 + 1];
+            ICoordinate p10 = e1.Coordinates[segIndex1];
+            ICoordinate p11 = e1.Coordinates[segIndex1 + 1];
             li.ComputeIntersection(p00, p01, p10, p11);            
 
             if (li.HasIntersection)
@@ -77,6 +76,5 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                 }
             }
         }
-
     }
 }

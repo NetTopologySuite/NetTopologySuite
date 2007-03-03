@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Text;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
@@ -16,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="env"></param>
         /// <param name="centre"></param>
-        public static int GetSubnodeIndex(Envelope env, Coordinate centre)
+        public static int GetSubnodeIndex(IEnvelope env, ICoordinate centre)
         {
             int subnodeIndex = -1;
             if (env.MinX >= centre.X)
@@ -94,7 +97,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <param name="itemEnv">The envelope containing the item.</param>
         /// <param name="item">The item to remove.</param>
         /// <returns><c>true</c> if the item was found and removed.</returns>
-        public bool Remove(Envelope itemEnv, object item)
+        public bool Remove(IEnvelope itemEnv, object item)
         {
             // use envelope to restrict nodes scanned
             if (!IsSearchMatch(itemEnv))
@@ -164,7 +167,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             get
             {
                 bool isEmpty = true;
-                // if (!items.isEmpty()) 
                 if(items.Count != 0)
                     isEmpty = false;
                 for (int i = 0; i < 4; i++)
@@ -198,21 +200,20 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <returns></returns>
-        protected abstract bool IsSearchMatch(Envelope searchEnv);
+        protected abstract bool IsSearchMatch(IEnvelope searchEnv);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="resultItems"></param>
-        public void AddAllItemsFromOverlapping(Envelope searchEnv, ref IList resultItems)
+        public void AddAllItemsFromOverlapping(IEnvelope searchEnv, ref IList resultItems)
         {
             if (!IsSearchMatch(searchEnv))
                 return;
 
             // this node may have items as well as subnodes (since items may not
             // be wholely contained in any single subnode
-            // resultItems.addAll(items);
             foreach (object o in this.items)
                 resultItems.Add(o);
 
@@ -226,7 +227,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
-        public void Visit(Envelope searchEnv, IItemVisitor visitor)
+        public void Visit(IEnvelope searchEnv, IItemVisitor visitor)
         {
             if (!IsSearchMatch(searchEnv))
                 return;
@@ -245,7 +246,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
-        private void VisitItems(Envelope searchEnv, IItemVisitor visitor)
+        private void VisitItems(IEnvelope searchEnv, IItemVisitor visitor)
         {
             // would be nice to filter items based on search envelope, but can't until they contain an envelope
             for (IEnumerator i = items.GetEnumerator(); i.MoveNext(); )            

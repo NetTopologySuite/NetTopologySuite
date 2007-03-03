@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -17,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     public class RightmostEdgeFinder
     {        
         private int minIndex = -1;
-        private Coordinate minCoord = null;
+        private ICoordinate minCoord = null;
         private DirectedEdge minDe = null;
         private DirectedEdge orientedDe = null;
 
@@ -41,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate
+        public ICoordinate Coordinate
         {
             get
             {
@@ -61,7 +63,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
              */
             for (IEnumerator i = dirEdgeList.GetEnumerator(); i.MoveNext(); )
             {
-                DirectedEdge de = (DirectedEdge)i.Current;
+                DirectedEdge de = (DirectedEdge) i.Current;
                 if (!de.IsForward) continue;
                 CheckForRightmostCoordinate(de);
             }
@@ -91,7 +93,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private void FindRightmostEdgeAtNode()
         {
             Node node = minDe.Node;
-            DirectedEdgeStar star = (DirectedEdgeStar)node.Edges;
+            DirectedEdgeStar star = (DirectedEdgeStar) node.Edges;
             minDe = star.GetRightmostEdge();
             // the DirectedEdge returned by the previous call is not
             // necessarily in the forward direction. Use the sym edge if it isn't.
@@ -112,10 +114,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
              * If these segments are both above or below the rightmost point, we need to
              * determine their relative orientation to decide which is rightmost.
              */
-            Coordinate[] pts = minDe.Edge.Coordinates;
+            ICoordinate[] pts = minDe.Edge.Coordinates;
             Assert.IsTrue(minIndex > 0 && minIndex < pts.Length, "rightmost point expected to be interior vertex of edge");
-            Coordinate pPrev = pts[minIndex - 1];
-            Coordinate pNext = pts[minIndex + 1];
+            ICoordinate pPrev = pts[minIndex - 1];
+            ICoordinate pNext = pts[minIndex + 1];
             int orientation = CGAlgorithms.ComputeOrientation(minCoord, pNext, pPrev);
             bool usePrev = false;
             // both segments are below min point
@@ -134,7 +136,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="de"></param>
         private void CheckForRightmostCoordinate(DirectedEdge de)
         {
-            Coordinate[] coord = de.Edge.Coordinates;
+            ICoordinate[] coord = de.Edge.Coordinates;
             for (int i = 0; i < coord.Length - 1; i++)
             {
                 // only check vertices which are the start or end point of a non-horizontal segment
@@ -177,7 +179,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private Positions GetRightmostSideOfSegment(DirectedEdge de, int i)
         {
             Edge e = de.Edge;
-            Coordinate[] coord = e.Coordinates;
+            ICoordinate[] coord = e.Coordinates;
 
             if (i < 0 || i + 1 >= coord.Length) 
                 return Positions.Parallel;

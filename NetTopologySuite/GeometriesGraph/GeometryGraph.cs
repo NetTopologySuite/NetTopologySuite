@@ -292,7 +292,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             // add the edge for the LineString
             // line edges do not have locations for their left and right sides
-            Edge e = new Edge((Coordinate[])coord, new Label(argIndex, Locations.Interior));
+            Edge e = new Edge(coord, new Label(argIndex, Locations.Interior));
             if (lineEdgeMap.Contains(line))
                 lineEdgeMap.Remove(line);
             lineEdgeMap.Add(line, e);            

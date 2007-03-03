@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Diagnostics;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.IO
@@ -40,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// </remarks>
 		/// <param name="filename">The filename to write to (minus the .shp extension).</param>
 		/// <param name="geometryCollection">The GeometryCollection to write.</param>		
-		public void Write(string filename, GeometryCollection geometryCollection)
+		public void Write(string filename, IGeometryCollection geometryCollection)
 		{
 			System.IO.FileStream shpStream = new System.IO.FileStream(filename + ".shp", System.IO.FileMode.Create);
 			System.IO.FileStream shxStream = new System.IO.FileStream(filename + ".shx", System.IO.FileMode.Create);
@@ -50,13 +53,13 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			// assumes
 			ShapeHandler handler = Shapefile.GetShapeHandler(Shapefile.GetShapeType((Geometry) geometryCollection.Geometries[0]));
 
-			Geometry body;
+			IGeometry body;
 			int numShapes = geometryCollection.NumGeometries;
 			// calc the length of the shp file, so it can put in the header.
 			int shpLength = 50;
 			for (int i = 0; i < numShapes; i++) 
 			{
-				body = (Geometry) geometryCollection.Geometries[i];
+				body = (IGeometry) geometryCollection.Geometries[i];
 				shpLength += 4; // length of header in WORDS
 				shpLength += handler.GetLength(body); // length of shape in WORDS
 			}
@@ -68,13 +71,13 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			shpHeader.FileLength = shpLength;
 
 			// get envelope in external coordinates
-            Envelope env = (Envelope) geometryCollection.EnvelopeInternal;
-			Envelope bounds = ShapeHandler.GetEnvelopeExternal(geometryFactory.PrecisionModel,  env);
+            IEnvelope env = geometryCollection.EnvelopeInternal;
+			IEnvelope bounds = ShapeHandler.GetEnvelopeExternal(geometryFactory.PrecisionModel,  env);
 			shpHeader.Bounds = bounds;
 
 			// assumes Geometry type of the first item will the same for all other items
 			// in the collection.
-            shpHeader.ShapeType = Shapefile.GetShapeType((Geometry) geometryCollection.Geometries[0]);
+            shpHeader.ShapeType = Shapefile.GetShapeType(geometryCollection.Geometries[0]);
 			shpHeader.Write(shpBinaryWriter);
 
 			// write the .shx header
@@ -83,14 +86,14 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			shxHeader.Bounds = shpHeader.Bounds;
 			
 			// assumes Geometry type of the first item will the same for all other items in the collection.
-            shxHeader.ShapeType = Shapefile.GetShapeType((Geometry) geometryCollection.Geometries[0]);
+            shxHeader.ShapeType = Shapefile.GetShapeType(geometryCollection.Geometries[0]);
 			shxHeader.Write(shxBinaryWriter);
 
 			// write the individual records.
 			int _pos = 50; // header length in WORDS
 			for (int i = 0; i < numShapes; i++) 
 			{
-                body = (Geometry) geometryCollection.Geometries[i];
+                body = geometryCollection.Geometries[i];
 				int recordLength = handler.GetLength(body);				
 				shpBinaryWriter.WriteIntBE(i+1);
 				shpBinaryWriter.WriteIntBE(recordLength);

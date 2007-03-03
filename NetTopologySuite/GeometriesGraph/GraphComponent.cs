@@ -45,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public  Label Label
+        public Label Label
         {
             get
             {
@@ -60,7 +60,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public  bool InResult
+        public bool InResult
         { 
             get
             {
@@ -75,7 +75,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary> 
         /// IsInResult indicates if this component has already been included in the result.
         /// </summary>
-        public  bool IsInResult
+        public bool IsInResult
         {
             get
             {
@@ -86,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public  bool Covered
+        public bool Covered
         {
             get
             {
@@ -102,7 +102,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public  bool IsCovered
+        public bool IsCovered
         {
             get
             {
@@ -113,7 +113,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public  bool IsCoveredSet 
+        public bool IsCoveredSet 
         {
             get
             {
@@ -124,7 +124,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public  bool Visited
+        public bool Visited
         {
             get
             {
@@ -139,7 +139,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public  bool IsVisited
+        public bool IsVisited
         {
             get
             {
@@ -153,7 +153,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns>
         /// A coordinate in this component (or null, if there are none).
         /// </returns>
-        abstract public Coordinate Coordinate { get; }
+        abstract public ICoordinate Coordinate { get; }
 
         /// <summary>
         /// Compute the contribution to an IM for this component.
@@ -173,7 +173,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// A component only contributes if it has a labelling for both parent geometries.
         /// </summary>
         /// <param name="im"></param>
-        public  void UpdateIM(IntersectionMatrix im)
+        public void UpdateIM(IntersectionMatrix im)
         {
             Assert.IsTrue(label.GeometryCount >= 2, "found partial label");
             ComputeIM(im);

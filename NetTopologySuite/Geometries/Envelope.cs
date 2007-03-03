@@ -673,10 +673,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Return HashCode.
         /// </summary>
         /// <param name="x">Value from HashCode computation.</param>
-        private static int GetHashCode(double x)
+        private static int GetHashCode(double value)
         {
-            long f = BitConverter.DoubleToInt64Bits(x);
-            return (int)(f ^ (f >> 32));
+            long f = BitConverter.DoubleToInt64Bits(value);
+            return (int) (f ^ (f >> 32));
         }
         
         /// <summary>

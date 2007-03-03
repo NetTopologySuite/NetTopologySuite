@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 
@@ -13,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     public class SweepLineSegment
     {
         private Edge edge;
-        private Coordinate[] pts;
+        private ICoordinate[] pts;
         int ptIndex;
 
         /// <summary>
@@ -31,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <summary>
         /// 
         /// </summary>
-        public  double MinX
+        public double MinX
         {
             get
             {
@@ -44,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <summary>
         /// 
         /// </summary>
-        public  double MaxX
+        public double MaxX
         {
             get
             {
@@ -59,7 +61,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         /// <param name="ss"></param>
         /// <param name="si"></param>
-        public  void ComputeIntersections(SweepLineSegment ss, SegmentIntersector si)
+        public void ComputeIntersections(SweepLineSegment ss, SegmentIntersector si)
         {
             si.AddIntersections(edge, ptIndex, ss.edge, ss.ptIndex);
         }

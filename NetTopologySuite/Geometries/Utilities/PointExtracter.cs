@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// and pass it to multiple geometries.
         /// </summary>
         /// <param name="geom"></param>
-        public static IList GetPoints(Geometry geom)
+        public static IList GetPoints(IGeometry geom)
         {
             IList pts = new ArrayList();
             geom.Apply(new PointExtracter(pts));
@@ -44,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <param name="geom"></param>
         public void Filter(IGeometry geom)
         {
-            if (geom is Point)
+            if (geom is IPoint)
                 pts.Add(geom);
         }
     }

@@ -31,7 +31,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// The location of the point for this star in Geometry i Areas.
         /// </summary>
-        private Locations[] ptInAreaLocation = { Locations.Null, Locations.Null };
+        private Locations[] ptInAreaLocation = new Locations[] { Locations.Null, Locations.Null };
 
         /// <summary>
         /// 
@@ -63,14 +63,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns>
         /// The coordinate for the node this star is based at.
         /// </returns>
-        public Coordinate Coordinate
+        public ICoordinate Coordinate
         {
             get
             {
                 IEnumerator it = GetEnumerator();
                 if (!it.MoveNext())
                     return null;
-                EdgeEnd e = (EdgeEnd)it.Current;
+                EdgeEnd e = (EdgeEnd) it.Current;
                 return e.Coordinate;
             }
         }
@@ -123,7 +123,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             int iNextCW = i - 1;
             if (i == 0)
                 iNextCW = edgeList.Count - 1;
-            return (EdgeEnd)edgeList[iNextCW];
+            return (EdgeEnd) edgeList[iNextCW];
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             bool[] hasDimensionalCollapseEdge = { false, false };
             for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
             {
-                EdgeEnd e = (EdgeEnd)it.Current;
+                EdgeEnd e = (EdgeEnd) it.Current;
                 Label label = e.Label;
                 for (int geomi = 0; geomi < 2; geomi++) 
                     if (label.IsLine(geomi) && label.GetLocation(geomi) == Locations.Boundary)
@@ -189,7 +189,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                             loc = Locations.Exterior;                
                         else 
                         {
-                            Coordinate p = e.Coordinate;
+                            ICoordinate p = e.Coordinate;
                             loc = GetLocation(geomi, p, geom);
                         }
                         label.SetAllLocationsIfNull(geomi, loc);
@@ -206,7 +206,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             // Compute edge label for each EdgeEnd
             for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
             {
-                EdgeEnd ee = (EdgeEnd)it.Current;
+                EdgeEnd ee = (EdgeEnd) it.Current;
                 ee.ComputeLabel();
             }
         }
@@ -218,11 +218,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="p"></param>
         /// <param name="geom"></param>
         /// <returns></returns>
-        public Locations GetLocation(int geomIndex, Coordinate p, GeometryGraph[] geom)
+        public Locations GetLocation(int geomIndex, ICoordinate p, GeometryGraph[] geom)
         {
             // compute location only on demand
             if (ptInAreaLocation[geomIndex] == Locations.Null) 
-                ptInAreaLocation[geomIndex] = SimplePointInAreaLocator.Locate(p, (Geometry) geom[geomIndex].Geometry);            
+                ptInAreaLocation[geomIndex] = SimplePointInAreaLocator.Locate(p, geom[geomIndex].Geometry);            
             return ptInAreaLocation[geomIndex];
         }
 
@@ -253,14 +253,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 return true;
             // initialize startLoc to location of last Curve side (if any)
             int lastEdgeIndex = edges.Count - 1;
-            Label startLabel = ((EdgeEnd)edges[lastEdgeIndex]).Label;
+            Label startLabel = ((EdgeEnd) edges[lastEdgeIndex]).Label;
             Locations startLoc = startLabel.GetLocation(geomIndex, Positions.Left);
             Assert.IsTrue(startLoc != Locations.Null, "Found unlabelled area edge");
 
             Locations currLoc = startLoc;
             for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
             {
-                EdgeEnd e = (EdgeEnd)it.Current;
+                EdgeEnd e = (EdgeEnd) it.Current;
                 Label label = e.Label;
                 // we assume that we are only checking a area
                 Assert.IsTrue(label.IsArea(geomIndex), "Found non-area edge");
@@ -289,7 +289,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             // initialize loc to location of last Curve side (if any)
             for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
             {
-                EdgeEnd e = (EdgeEnd)it.Current;
+                EdgeEnd e = (EdgeEnd) it.Current;
                 Label label = e.Label;
                 if (label.IsArea(geomIndex) && label.GetLocation(geomIndex, Positions.Left) != Locations.Null)
                     startLoc = label.GetLocation(geomIndex, Positions.Left);
@@ -301,7 +301,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             Locations currLoc = startLoc;
             for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
             {
-                EdgeEnd e = (EdgeEnd)it.Current;
+                EdgeEnd e = (EdgeEnd) it.Current;
                 Label label = e.Label;
                 // set null On values to be in current location
                 if (label.GetLocation(geomIndex, Positions.On) == Locations.Null)
@@ -347,7 +347,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             GetEnumerator();   // force edgelist to be computed
             for (int i = 0; i < edgeList.Count; i++ ) 
             {
-                EdgeEnd e = (EdgeEnd)edgeList[i];
+                EdgeEnd e = (EdgeEnd) edgeList[i];
                 if (e == eSearch) 
                     return i;
             }

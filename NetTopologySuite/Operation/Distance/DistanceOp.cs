@@ -358,9 +358,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <param name="line0"></param>
         /// <param name="line1"></param>
         /// <param name="locGeom"></param>
-        private void ComputeMinDistance(LineString line0, LineString line1, GeometryLocation[] locGeom)
+        private void ComputeMinDistance(ILineString line0, ILineString line1, GeometryLocation[] locGeom)
         {
-            if (line0.EnvelopeInternal.Distance(line1.EnvelopeInternal) > minDistance) return;
+            if (line0.EnvelopeInternal.Distance(line1.EnvelopeInternal) > minDistance) 
+                return;
             ICoordinate[] coord0 = line0.Coordinates;
             ICoordinate[] coord1 = line1.Coordinates;
             // brute force approach!
@@ -391,7 +392,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <param name="line"></param>
         /// <param name="pt"></param>
         /// <param name="locGeom"></param>
-        private void ComputeMinDistance(LineString line, IPoint pt, GeometryLocation[] locGeom)
+        private void ComputeMinDistance(ILineString line, IPoint pt, GeometryLocation[] locGeom)
         {
             if (line.EnvelopeInternal.Distance(pt.EnvelopeInternal) > minDistance) return;
             ICoordinate[] coord0 = line.Coordinates;
@@ -408,7 +409,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
                     locGeom[0] = new GeometryLocation(line, i, segClosestPoint);
                     locGeom[1] = new GeometryLocation(pt, 0, coord);
                 }
-                if (minDistance <= terminateDistance) return;
+                if (minDistance <= terminateDistance) 
+                    return;
             }
         }
     }

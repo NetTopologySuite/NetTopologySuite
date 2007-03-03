@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Index;
@@ -10,14 +12,12 @@ using GisSharpBlog.NetTopologySuite.Index.Strtree;
 
 namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
 {
-
     /// <summary>
     /// "Snaps" all <see cref="SegmentString" />s in a <see cref="ISpatialIndex" /> containing
     /// <see cref="MonotoneChain" />s to a given <see cref="HotPixel" />.
     /// </summary>
     public class MCIndexPointSnapper
     {
-
         /// <summary>
         /// 
         /// </summary>
@@ -35,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         public MCIndexPointSnapper(IList monoChains, ISpatialIndex index)
         {
             this.monoChains = monoChains;
-            this.index = (STRtree)index;
+            this.index = (STRtree) index;
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// </summary>
         private class QueryVisitor : IItemVisitor
         {
-            Envelope env = null;
+            IEnvelope env = null;
             HotPixelSnapAction action = null;
 
             /// <summary>
@@ -51,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             /// </summary>
             /// <param name="env"></param>
             /// <param name="action"></param>
-            public QueryVisitor(Envelope env, HotPixelSnapAction action)
+            public QueryVisitor(IEnvelope env, HotPixelSnapAction action)
             {
                 this.env = env;
                 this.action = action;
@@ -62,7 +62,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             /// <param name="item"></param>
             public void VisitItem(object item)
             {
-                MonotoneChain testChain = (MonotoneChain)item;
+                MonotoneChain testChain = (MonotoneChain) item;
                 testChain.Select(env, action);
             }
         }
@@ -79,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <returns><c>true</c> if a node was added for this pixel.</returns>
         public bool Snap(HotPixel hotPixel, SegmentString parentEdge, int vertexIndex)
         {
-            Envelope pixelEnv = hotPixel.GetSafeEnvelope();
+            IEnvelope pixelEnv = hotPixel.GetSafeEnvelope();
             HotPixelSnapAction hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, vertexIndex);
             index.Query(pixelEnv, new QueryVisitor(pixelEnv, hotPixelSnapAction));
             return hotPixelSnapAction.IsNodeAdded;
@@ -136,15 +136,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             /// <param name="startIndex"></param>
             public override void Select(MonotoneChain mc, int startIndex)
             {
-                SegmentString ss = (SegmentString)mc.Context;
+                SegmentString ss = (SegmentString) mc.Context;
                 // don't snap a vertex to itself
                 if (parentEdge != null) 
                     if (ss == parentEdge && startIndex == vertexIndex)
                         return;
                 isNodeAdded = SimpleSnapRounder.AddSnappedNode(hotPixel, ss, startIndex);
             }
-
         }
-
     }
 }

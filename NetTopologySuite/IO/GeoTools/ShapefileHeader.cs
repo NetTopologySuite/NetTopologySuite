@@ -1,5 +1,8 @@
 using System;
 using System.Diagnostics;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.IO
@@ -13,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		private int _fileLength = -1;
 		private int _version = 1000;
         private ShapeGeometryTypes _shapeType = ShapeGeometryTypes.NullShape;
-		private Envelope _bounds;
+		private IEnvelope _bounds;
 	
 		/// <summary>
 		/// Initializes a new instance of the ShapefileHeader class with values read in from the stream.
@@ -41,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			_version = shpBinaryReader.ReadInt32();
 			Debug.Assert(_version == 1000, "Shapefile version", String.Format("Expecting only one version (1000), but got {0}",_version));
 			int shapeType = shpBinaryReader.ReadInt32();
-            _shapeType = (ShapeGeometryTypes)Enum.Parse(typeof(ShapeGeometryTypes), shapeType.ToString());
+            _shapeType = (ShapeGeometryTypes) Enum.Parse(typeof(ShapeGeometryTypes), shapeType.ToString());
 
 			//read in and store the bounding box
 			double[] coords = new double[4];
@@ -62,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <summary>
 		/// Gets and sets the bounds of the shape file.
 		/// </summary>
-		public Envelope Bounds
+		public IEnvelope Bounds
 		{
 			get
 			{

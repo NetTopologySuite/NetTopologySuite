@@ -8,22 +8,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.LightStructs
     /// 
     /// </summary>
     [Serializable]
-    public struct Coordinate : ICloneable
+    public struct Coordinate : ICloneable, IComparable, IComparable<Coordinate>, IEquatable<Coordinate>
     {
         /// <summary>
         /// 
         /// </summary>
-        public static Coordinate Null = new Coordinate(Double.NaN, Double.NaN, Double.NaN);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        public static int GetHashCode(double value)
-        {
-            long f = BitConverter.DoubleToInt64Bits(value);
-            return (int)(f ^ (f >> 32));
-        }
+        public static Coordinate Null = new Coordinate(Double.NaN, Double.NaN, Double.NaN);       
 
         private double x;
         private double y;
@@ -164,15 +154,125 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.LightStructs
             return new Coordinate(this.X, this.Y, this.Z);
         }
 
-        /* TODO: continue...
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public override bool Equals(object other)
+        {
+            if (other == null)
+                return false;
+            if (!(other is Coordinate))
+                return false;
+            return Equals((Coordinate) other);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public Boolean Equals(Coordinate other)
+        {
+            return Equals2D((Coordinate) other);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj1"></param>
+        /// <param name="obj2"></param>
+        /// <returns></returns>
+        public static bool operator ==(Coordinate obj1, Coordinate obj2)
+        {
+            return Object.Equals(obj1, obj2);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj1"></param>
+        /// <param name="obj2"></param>
+        /// <returns></returns>
+        public static bool operator !=(Coordinate obj1, Coordinate obj2)
+        {
+            return !(obj1 == obj2);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public bool Equals2D(Coordinate other)
+        {
+            if (x != other.X)
+                return false;
+            if (y != other.Y)
+                return false;
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public bool Equals3D(Coordinate other)
+        {
+            return (x == other.X) && (y == other.Y) && ((z == other.Z) ||
+                    (Double.IsNaN(Z) && Double.IsNaN(other.Z)));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="o"></param>
+        /// <returns></returns>
+        public int CompareTo(object o)
+        {
+            Coordinate other = (Coordinate) o;
+            return CompareTo(other);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public int CompareTo(Coordinate other)
+        {
+            if (x < other.X)
+                return -1;
+            if (x > other.X)
+                return 1;
+            if (y < other.Y)
+                return -1;
+            if (y > other.Y)
+                return 1;
+            return 0;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public override int GetHashCode()
         {
             int result = 17;
             result = 37 * result + GetHashCode(X);
             result = 37 * result + GetHashCode(Y);
-            result = 37 * result + GetHashCode(Z);            
             return result;
         }
-        */
+
+        /// <summary>
+        /// Return HashCode.
+        /// </summary>
+        /// <param name="x">Value from HashCode computation.</param>
+        private static int GetHashCode(double value)
+        {
+            long f = BitConverter.DoubleToInt64Bits(value);
+            return (int)(f ^ (f >> 32));
+        }
     }
 }

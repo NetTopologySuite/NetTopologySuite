@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="geom">The point from which to extract linear components.</param>
         /// <returns>The list of linear components.</returns>
-        public static IList GetLines(Geometry geom)
+        public static IList GetLines(IGeometry geom)
         {
             IList lines = new ArrayList();
             geom.Apply(new LinearComponentExtracter(lines));
@@ -45,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <param name="geom"></param>
         public void Filter(IGeometry geom)
         {
-            if (geom is LineString) 
+            if (geom is ILineString) 
                 lines.Add(geom);
         }
     }

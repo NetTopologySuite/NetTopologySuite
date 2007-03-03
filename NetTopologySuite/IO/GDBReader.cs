@@ -5,6 +5,8 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 
@@ -33,12 +35,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public Geometry Read(Stream data)
+        public IGeometry Read(Stream data)
         {                                   
             using(BinaryReader reader = new BinaryReader(data))
-            {
                 return Read(reader);
-            }
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public Geometry Read(BinaryReader reader)
+        public IGeometry Read(BinaryReader reader)
         {
             ShapeGeometryTypes shapeType = (ShapeGeometryTypes)reader.ReadInt32();
 
@@ -89,12 +89,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public Geometry Read(byte[] data)
+        public IGeometry Read(byte[] data)
         {
             using(Stream stream = new MemoryStream(data))
-            {
-                return Read(stream);
-            }
+                return Read(stream);            
         }
     }
 }

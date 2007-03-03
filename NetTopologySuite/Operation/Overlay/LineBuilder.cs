@@ -63,10 +63,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         {            
             // first set covered for all L edges at nodes which have A edges too
             IEnumerator nodeit = op.Graph.Nodes.GetEnumerator();
-            while(nodeit.MoveNext())
+            while (nodeit.MoveNext())
             {
-                Node node = (Node)nodeit.Current;                
-                ((DirectedEdgeStar)node.Edges).FindCoveredLineEdges();
+                Node node = (Node) nodeit.Current;                
+                ((DirectedEdgeStar) node.Edges).FindCoveredLineEdges();
             }
 
             /*
@@ -76,7 +76,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             IEnumerator it = op.Graph.EdgeEnds.GetEnumerator();
             while (it.MoveNext()) 
             {
-                DirectedEdge de = (DirectedEdge)it.Current;
+                DirectedEdge de = (DirectedEdge) it.Current;
                 Edge e = de.Edge;                
                 if (de.IsLineEdge && !e.IsCoveredSet)
                 {                    
@@ -95,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             IEnumerator it = op.Graph.EdgeEnds.GetEnumerator();
             while (it.MoveNext()) 
             {
-                DirectedEdge de = (DirectedEdge)it.Current;                
+                DirectedEdge de = (DirectedEdge) it.Current;                
                 CollectLineEdge(de, opCode, lineEdgesList);
                 CollectBoundaryTouchEdge(de, opCode, lineEdgesList);
             }           
@@ -163,8 +163,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         {            
             for (IEnumerator it = lineEdgesList.GetEnumerator(); it.MoveNext(); )
             {
-                Edge e = (Edge)it.Current;                
-                LineString line = geometryFactory.CreateLineString(e.Coordinates);
+                Edge e = (Edge) it.Current;                
+                ILineString line = geometryFactory.CreateLineString(e.Coordinates);
                 resultLineList.Add(line);
                 e.InResult = true;
             }
@@ -179,7 +179,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             IEnumerator it = edgesList.GetEnumerator();
             while (it.MoveNext()) 
             {
-                Edge e = (Edge)it.Current;
+                Edge e = (Edge) it.Current;
                 Label label = e.Label;
                 if (e.IsIsolated)
                 {
@@ -197,7 +197,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <param name="targetIndex"></param>
         private void LabelIsolatedLine(Edge e, int targetIndex)
         {
-            Locations loc = ptLocator.Locate((Coordinate) e.Coordinate, (Geometry) op.GetArgGeometry(targetIndex));
+            Locations loc = ptLocator.Locate(e.Coordinate, op.GetArgGeometry(targetIndex));
             e.Label.SetLocation(targetIndex, loc);
         }
     }

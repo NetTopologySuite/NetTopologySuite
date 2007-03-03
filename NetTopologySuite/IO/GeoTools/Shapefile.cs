@@ -3,8 +3,10 @@ using System.Collections;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
 using System.Diagnostics;
+using System.Text;
+
+using GeoAPI.Geometries;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
 
@@ -23,19 +25,19 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// </summary>
 		/// <param name="geom">A Geometry object.</param>
 		/// <returns>The equilivent for the geometry object.</returns>
-        public static ShapeGeometryTypes GetShapeType(Geometry geom) 
+        public static ShapeGeometryTypes GetShapeType(IGeometry geom) 
 		{
-			if (geom is Point) 
+			if (geom is IPoint) 
                 return ShapeGeometryTypes.Point;
-			if (geom is Polygon) 
+			if (geom is IPolygon) 
                 return ShapeGeometryTypes.Polygon;
-			if (geom is MultiPolygon) 			
+			if (geom is IMultiPolygon) 			
                 return ShapeGeometryTypes.Polygon;
-			if (geom is LineString) 
+			if (geom is ILineString) 
                 return ShapeGeometryTypes.LineString;
-			if (geom is MultiLineString) 			
+			if (geom is IMultiLineString) 			
                 return ShapeGeometryTypes.LineString;
-            if (geom is MultiPoint)
+            if (geom is IMultiPoint)
                 return ShapeGeometryTypes.MultiPoint;
             return ShapeGeometryTypes.NullShape;
 		}
@@ -120,10 +122,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
 
 			IEnumerator enumerator = shpfileDataReader.GetEnumerator();
 			bool moreRecords = enumerator.MoveNext();
-			ICustomTypeDescriptor typeDescriptor  = (ICustomTypeDescriptor)enumerator.Current;
-			foreach(PropertyDescriptor property in typeDescriptor.GetProperties())
+			ICustomTypeDescriptor typeDescriptor  = (ICustomTypeDescriptor) enumerator.Current;
+			foreach (PropertyDescriptor property in typeDescriptor.GetProperties())
 			{
-				ColumnStructure column = (ColumnStructure)property;
+				ColumnStructure column = (ColumnStructure) property;
 				Type fieldType = column.PropertyType;
 				DataColumn datacolumn = new DataColumn(column.Name, fieldType);
 				if (fieldType== typeof(string))
@@ -133,7 +135,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			}
 
 			// add the rows - need a do-while loop because we read one row in order to determine the fields
-			int iRecordCount=0;
+			int iRecordCount = 0;
 			object[] values = new object[shpfileDataReader.FieldCount];
 			do
 			{
@@ -147,7 +149,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		}
 	
 		/// <summary>
-		/// Imports a shapefile into a dababase table.
+		/// Imports a shapefile into a database table.
 		/// </summary>
 		/// <remarks>
 		/// This method assumes a table has already been crated in the database.
@@ -201,7 +203,6 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 rowsAdded = dataAdapter.Update(ds, shpDataTable.TableName);
                 int iRows = shpDataTable.Rows.Count;
                 Debug.Assert(rowsAdded != iRows, String.Format("{0} of {1] rows were added to the database.", rowsAdded, shpDataTable.Rows.Count));
-
                 return rowsAdded;
             }
 		}

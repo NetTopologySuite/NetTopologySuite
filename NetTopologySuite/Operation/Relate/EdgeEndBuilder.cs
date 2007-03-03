@@ -3,6 +3,8 @@ using System.Collections;
 using System.Text;
 using System.Diagnostics;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 
@@ -61,7 +63,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                 eiNext = null;
                 
                 if (it.MoveNext())
-                    eiNext = (EdgeIntersection)it.Current;                
+                    eiNext = (EdgeIntersection) it.Current;                
 
                 if (eiCurr != null) 
                 {
@@ -93,7 +95,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                     return;
                 iPrev--;
             }
-            Coordinate pPrev = edge.GetCoordinate(iPrev);
+
+            ICoordinate pPrev = edge.GetCoordinate(iPrev);
             // if prev intersection is past the previous vertex, use it instead
             if (eiPrev != null && eiPrev.SegmentIndex >= iPrev)
                 pPrev = eiPrev.Coordinate;
@@ -123,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             if (iNext >= edge.NumPoints && eiNext == null)          
                 return;
 
-            Coordinate pNext = edge.GetCoordinate(iNext);
+            ICoordinate pNext = edge.GetCoordinate(iNext);
             // if the next intersection is in the same segment as the current, use it as the endpoint
             if (eiNext != null && eiNext.SegmentIndex == eiCurr.SegmentIndex)
                 pNext = eiNext.Coordinate;

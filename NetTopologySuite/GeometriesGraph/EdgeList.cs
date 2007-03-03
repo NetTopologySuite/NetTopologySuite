@@ -3,6 +3,8 @@ using System.Collections;
 using System.Text;
 using System.IO;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Index;
 using GisSharpBlog.NetTopologySuite.Index.Quadtree;
@@ -36,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Remove the selected Edge element from the list if present.
         /// </summary>
         /// <param name="e">Edge element to remove from list</param>
-        public  void Remove(Edge e)
+        public void Remove(Edge e)
         {
             edges.Remove(e);
         }
@@ -45,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Insert an edge unless it is already in the list.
         /// </summary>
         /// <param name="e"></param>
-        public  void Add(Edge e)
+        public void Add(Edge e)
         {
             edges.Add(e);
             index.Insert(e.Envelope, e);
@@ -55,17 +57,17 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="edgeColl"></param>
-        public  void AddAll(ICollection edgeColl)
+        public void AddAll(ICollection edgeColl)
         {
             for (IEnumerator i = edgeColl.GetEnumerator(); i.MoveNext(); ) 
-                Add((Edge)i.Current);
+                Add((Edge) i.Current);
             
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public  IList Edges
+        public IList Edges
         {
             get
             {
@@ -83,12 +85,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// equal edge, if there is one already in the list,
         /// null otherwise.
         /// </returns>
-        public  Edge FindEqualEdge(Edge e)
+        public Edge FindEqualEdge(Edge e)
         {
             ICollection testEdges = index.Query(e.Envelope);
             for (IEnumerator i = testEdges.GetEnumerator(); i.MoveNext(); ) 
             {
-                Edge testEdge = (Edge)i.Current;
+                Edge testEdge = (Edge) i.Current;
                 if (testEdge.Equals(e)) 
                     return testEdge;
             }
@@ -99,7 +101,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <returns></returns>
-        public  IEnumerator GetEnumerator() 
+        public IEnumerator GetEnumerator() 
         { 
             return edges.GetEnumerator(); 
         }
@@ -109,7 +111,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public  Edge this[int index]
+        public Edge this[int index]
         {
             get
             {
@@ -122,9 +124,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public  Edge Get(int i) 
+        public Edge Get(int i) 
         {
-            return (Edge)edges[i]; 
+            return (Edge) edges[i]; 
         }
 
         /// <summary>
@@ -135,10 +137,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Index, if e is already in the list,
         /// -1 otherwise.
         /// </returns>
-        public  int FindEdgeIndex(Edge e)
+        public int FindEdgeIndex(Edge e)
         {
             for (int i = 0; i < edges.Count; i++)
-                if (((Edge)edges[i]).Equals(e))
+                if (((Edge) edges[i]).Equals(e))
                     return i;            
             return -1;
         }
@@ -148,16 +150,16 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="outstream"></param>
-        public  void Write(StreamWriter outstream)
+        public void Write(StreamWriter outstream)
         {
             outstream.Write("MULTILINESTRING ( ");
             for (int j = 0; j < edges.Count; j++) 
             {
-                Edge e = (Edge)edges[j];
+                Edge e = (Edge) edges[j];
                 if (j > 0) 
                     outstream.Write(",");
                 outstream.Write("(");
-                Coordinate[] pts = e.Coordinates;
+                ICoordinate[] pts = e.Coordinates;
                 for (int i = 0; i < pts.Length; i++)
                 {
                     if (i > 0) 

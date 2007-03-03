@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Text;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 
@@ -35,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// </summary>
         /// <param name="pts"></param>
         /// <returns></returns>
-        public static IList GetChains(Coordinate[] pts)
+        public static IList GetChains(ICoordinate[] pts)
         {
             return GetChains(pts, null);
         }
@@ -46,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// </summary>
         /// <param name="pts"></param>
         /// <param name="context"></param>
-        public static IList GetChains(Coordinate[] pts, object context)
+        public static IList GetChains(ICoordinate[] pts, object context)
         {
             IList mcList = new ArrayList();
             int[] startIndex = GetChainStartIndices(pts);
@@ -65,7 +68,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// for use as a sentinel.
         /// </summary>
         /// <param name="pts"></param>
-        public static int[] GetChainStartIndices(Coordinate[] pts)
+        public static int[] GetChainStartIndices(ICoordinate[] pts)
         {
             // find the startpoint (and endpoints) of all monotone chains in this edge
             int start = 0;
@@ -92,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <returns> 
         /// The index of the last point in the monotone chain starting at <c>start</c>.
         /// </returns>
-        private static int FindChainEnd(Coordinate[] pts, int start)
+        private static int FindChainEnd(ICoordinate[] pts, int start)
         {
             // determine quadrant for chain
             int chainQuad = QuadrantOp.Quadrant(pts[start], pts[start + 1]);

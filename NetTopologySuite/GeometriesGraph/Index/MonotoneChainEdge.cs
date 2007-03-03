@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 
@@ -24,13 +26,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     public class MonotoneChainEdge
     {
         private Edge e;
-        private Coordinate[] pts; // cache a reference to the coord array, for efficiency
+        private ICoordinate[] pts; // cache a reference to the coord array, for efficiency
         // the lists of start/end indexes of the monotone chains.
         // Includes the end point of the edge as a sentinel
         private int[] startIndex;
         // these envelopes are created once and reused
-        private Envelope env1 = new Envelope();
-        private Envelope env2 = new Envelope();
+        private IEnvelope env1 = new Envelope();
+        private IEnvelope env2 = new Envelope();
 
         /// <summary>
         /// 
@@ -47,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <summary>
         /// 
         /// </summary>
-        public  Coordinate[] Coordinates
+        public ICoordinate[] Coordinates
         {
             get
             {
@@ -58,7 +60,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <summary>
         /// 
         /// </summary>
-        public  int[] StartIndexes
+        public int[] StartIndexes
         {
             get
             {
@@ -71,7 +73,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         /// <param name="chainIndex"></param>
         /// <returns></returns>
-        public  double GetMinX(int chainIndex)
+        public double GetMinX(int chainIndex)
         {
             double x1 = pts[startIndex[chainIndex]].X;
             double x2 = pts[startIndex[chainIndex + 1]].X;
@@ -83,7 +85,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         /// <param name="chainIndex"></param>
         /// <returns></returns>
-        public  double GetMaxX(int chainIndex)
+        public double GetMaxX(int chainIndex)
         {
             double x1 = pts[startIndex[chainIndex]].X;
             double x2 = pts[startIndex[chainIndex + 1]].X;
@@ -95,15 +97,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         /// <param name="mce"></param>
         /// <param name="si"></param>
-        public  void ComputeIntersects(MonotoneChainEdge mce, SegmentIntersector si)
+        public void ComputeIntersects(MonotoneChainEdge mce, SegmentIntersector si)
         {
             for (int i = 0; i < startIndex.Length - 1; i++)
-            {
                 for (int j = 0; j < mce.startIndex.Length - 1; j++)
-                {
-                    ComputeIntersectsForChain(i, mce, j, si);
-                }
-            }
+                    ComputeIntersectsForChain(i, mce, j, si);           
         }
 
         /// <summary>
@@ -113,7 +111,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <param name="mce"></param>
         /// <param name="chainIndex1"></param>
         /// <param name="si"></param>
-        public  void ComputeIntersectsForChain(int chainIndex0, MonotoneChainEdge mce, int chainIndex1, SegmentIntersector si)
+        public void ComputeIntersectsForChain(int chainIndex0, MonotoneChainEdge mce, int chainIndex1, SegmentIntersector si)
         {
             ComputeIntersectsForChain(startIndex[chainIndex0], startIndex[chainIndex0 + 1], mce,
                                       mce.startIndex[chainIndex1], mce.startIndex[chainIndex1 + 1], si);
@@ -130,13 +128,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <param name="ei"></param>
         private void ComputeIntersectsForChain( int start0, int end0, MonotoneChainEdge mce, int start1, int end1, SegmentIntersector ei)
         {
-            Coordinate p00 = pts[start0];
-            Coordinate p01 = pts[end0];
-            Coordinate p10 = mce.pts[start1];
-            Coordinate p11 = mce.pts[end1];
+            ICoordinate p00 = pts[start0];
+            ICoordinate p01 = pts[end0];
+            ICoordinate p10 = mce.pts[start1];
+            ICoordinate p11 = mce.pts[end1];
             
-            // Console.WriteLine("computeIntersectsForChain:" + p00 + p01 + p10 + p11);
-
             // terminating condition for the recursion
             if (end0 - start0 == 1 && end1 - start1 == 1)
             {

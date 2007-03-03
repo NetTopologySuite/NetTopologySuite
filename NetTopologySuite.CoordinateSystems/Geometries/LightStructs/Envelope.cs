@@ -8,7 +8,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.LightStructs
     /// 
     /// </summary>
     [Serializable]
-    public class Envelope : ICloneable
+    public class Envelope : ICloneable, IEquatable<Envelope>
     {        
         private double minx;
         private double maxx;
@@ -363,16 +363,23 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.LightStructs
         {
             if (other == null)
                 return false;
-
             if (!(other is Envelope))
                 return false;
+            return Equals((Envelope) other);
+        }
 
-            Envelope otherEnvelope = (Envelope)other;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public bool Equals(Envelope other)
+        {
             if (IsNull)
-                return otherEnvelope.IsNull;
+                return other.IsNull;
 
-            return maxx == otherEnvelope.MaxX && maxy == otherEnvelope.MaxY &&
-                    minx == otherEnvelope.MinX && miny == otherEnvelope.MinY;
+            return maxx == other.MaxX && maxy == other.MaxY &&
+                   minx == other.MinX && miny == other.MinY;
         }
 
         /// <summary>
@@ -381,10 +388,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.LightStructs
         public override int GetHashCode()
         {
             int result = 17;
-            result = 37 * result + Coordinate.GetHashCode(minx);
-            result = 37 * result + Coordinate.GetHashCode(maxx);
-            result = 37 * result + Coordinate.GetHashCode(miny);
-            result = 37 * result + Coordinate.GetHashCode(maxy);
+            result = 37 * result + GetHashCode(minx);
+            result = 37 * result + GetHashCode(maxx);
+            result = 37 * result + GetHashCode(miny);
+            result = 37 * result + GetHashCode(maxy);
             return result;
         }
 
@@ -417,22 +424,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.LightStructs
         public override string ToString()
         {
             return "Env[" + minx + " : " + maxx + ", " + miny + " : " + maxy + "]";
-        }
-
-        #region ICloneable Members
-
-        /// <summary>
-        /// Creates a new object that is a copy of the current instance.
-        /// </summary>
-        /// <returns>A new object that is a copy of this instance.</returns>
-        object ICloneable.Clone()
-        {
-            return Clone();
-        }
-
-        #endregion
-
-        /* BEGIN ADDED BY MPAUL42: monoGIS team */
+        }       
 
         /// <summary>
         /// Returns the area of the envelope.
@@ -455,6 +447,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.LightStructs
         public virtual Envelope Clone()
         {
             return new Envelope(minx, maxx, miny, maxy);
+        }
+
+        /// <summary>
+        /// Creates a new object that is a copy of the current instance.
+        /// </summary>
+        /// <returns>A new object that is a copy of this instance.</returns>
+        object ICloneable.Clone()
+        {
+            return Clone();
         }
         
         /// <summary>
@@ -508,8 +509,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.LightStructs
             maxx = centre.X + (width / 2);
             miny = centre.Y - (height / 2);
             maxy = centre.Y + (height / 2);
-        }        
+        }
 
-        /* END ADDED BY MPAUL42: monoGIS team */
+        /// <summary>
+        /// Return HashCode.
+        /// </summary>
+        /// <param name="x">Value from HashCode computation.</param>
+        private static int GetHashCode(double value)
+        {
+            long f = BitConverter.DoubleToInt64Bits(value);
+            return (int) (f ^ (f >> 32));
+        }
     }
 }

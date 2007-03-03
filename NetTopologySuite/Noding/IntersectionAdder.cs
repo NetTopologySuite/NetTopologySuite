@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Index.Chain;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
-
     /// <summary>
     /// Computes the intersections between two line segments in <see cref="SegmentString" />s
     /// and adds them to each string.
@@ -19,7 +20,6 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public class IntersectionAdder : ISegmentIntersector
     {
-
         /// <summary>
         /// 
         /// </summary>
@@ -88,7 +88,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <summary>
         /// Returns the proper intersection point, or <c>null</c> if none was found.
         /// </summary>
-        public Coordinate ProperIntersectionPoint
+        public ICoordinate ProperIntersectionPoint
         {
             get
             {
@@ -194,10 +194,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                 return;
 
             NumTests++;
-            Coordinate p00 = e0.Coordinates[segIndex0];
-            Coordinate p01 = e0.Coordinates[segIndex0 + 1];
-            Coordinate p10 = e1.Coordinates[segIndex1];
-            Coordinate p11 = e1.Coordinates[segIndex1 + 1];
+            ICoordinate p00 = e0.Coordinates[segIndex0];
+            ICoordinate p01 = e0.Coordinates[segIndex0 + 1];
+            ICoordinate p10 = e1.Coordinates[segIndex1];
+            ICoordinate p11 = e1.Coordinates[segIndex1 + 1];
 
             li.ComputeIntersection(p00, p01, p10, p11);            
             if(li.HasIntersection)
@@ -225,6 +225,5 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                 }
             }
         }
-
     }
 }

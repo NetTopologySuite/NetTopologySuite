@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 
@@ -30,10 +32,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         {            
             for (IEnumerator i0 = edges.GetEnumerator(); i0.MoveNext(); ) 
             {
-                Edge edge0 = (Edge)i0.Current;
+                Edge edge0 = (Edge) i0.Current;
                 for (IEnumerator i1 = edges.GetEnumerator(); i1.MoveNext(); ) 
                 {
-                    Edge edge1 = (Edge)i1.Current;
+                    Edge edge1 = (Edge) i1.Current;
                     if (testAllSegments || edge0 != edge1)
                         ComputeIntersects(edge0, edge1, si);
                 }
@@ -50,10 +52,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         {            
             for (IEnumerator i0 = edges0.GetEnumerator(); i0.MoveNext(); )
             {
-                Edge edge0 = (Edge)i0.Current;
+                Edge edge0 = (Edge) i0.Current;
                 for (IEnumerator i1 = edges1.GetEnumerator(); i1.MoveNext(); )
                 {
-                    Edge edge1 = (Edge)i1.Current;
+                    Edge edge1 = (Edge) i1.Current;
                         ComputeIntersects(edge0, edge1, si);
                 }
             }
@@ -69,8 +71,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <param name="si"></param>
         private void ComputeIntersects(Edge e0, Edge e1, SegmentIntersector si)
         {
-            Coordinate[] pts0 = e0.Coordinates;
-            Coordinate[] pts1 = e1.Coordinates;
+            ICoordinate[] pts0 = e0.Coordinates;
+            ICoordinate[] pts1 = e1.Coordinates;
             for (int i0 = 0; i0 < pts0.Length - 1; i0++) 
                 for (int i1 = 0; i1 < pts1.Length - 1; i1++)             
                     si.AddIntersections(e0, i0, e1, i1);            

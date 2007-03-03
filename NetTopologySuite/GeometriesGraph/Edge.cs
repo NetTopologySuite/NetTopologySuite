@@ -33,9 +33,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        private Coordinate[] pts;
+        private ICoordinate[] pts;
         
-        private Envelope env;
+        private IEnvelope env;
         private EdgeIntersectionList eiList = null;
       
         private string name;
@@ -49,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="pts"></param>
         /// <param name="label"></param>
-        public Edge(Coordinate[] pts, Label label)
+        public Edge(ICoordinate[] pts, Label label)
         {
             this.eiList = new EdgeIntersectionList(this);
 
@@ -61,12 +61,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="pts"></param>
-        public Edge(Coordinate[] pts) : this(pts, null) { }
+        public Edge(ICoordinate[] pts) : this(pts, null) { }
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate[] Points
+        public ICoordinate[] Points
         {
             get
             {
@@ -107,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate[] Coordinates
+        public ICoordinate[] Coordinates
         {
             get
             {
@@ -120,7 +120,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public Coordinate GetCoordinate(int i)
+        public ICoordinate GetCoordinate(int i)
         {            
             return Points[i];
         }
@@ -128,7 +128,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public override Coordinate Coordinate
+        public override ICoordinate Coordinate
         {
             get
             {
@@ -141,7 +141,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public Envelope Envelope
+        public IEnvelope Envelope
         {
             get
             {
@@ -254,7 +254,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                Coordinate[] newPts = new Coordinate[2];
+                ICoordinate[] newPts = new ICoordinate[2];
                 newPts[0] = Points[0];
                 newPts[1] = Points[1];
                 Edge newe = new Edge(newPts, Label.ToLineLabel(label));
@@ -312,7 +312,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="intIndex"></param>
         public void AddIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
         {
-            Coordinate intPt = new Coordinate(li.GetIntersection(intIndex));
+            ICoordinate intPt = new Coordinate(li.GetIntersection(intIndex));
             int normalizedSegmentIndex = segmentIndex;
             double dist = li.GetEdgeDistance(geomIndex, intIndex);        
             
@@ -320,7 +320,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             int nextSegIndex = normalizedSegmentIndex + 1;
             if (nextSegIndex < Points.Length) 
             {
-                Coordinate nextPt = Points[nextSegIndex];        
+                ICoordinate nextPt = Points[nextSegIndex];        
 
                 // Normalize segment index if intPt falls on vertex
                 // The check for point equality is 2D only - Z values are ignored

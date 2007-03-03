@@ -122,8 +122,8 @@ namespace Open.Topology.TestRunner
         private bool      m_bSuccess       = false;
         private object    m_objResult      = null;
 
-        private Geometry  m_objGeometryA   = null;
-        private Geometry  m_objGeometryB   = null;
+        private IGeometry  m_objGeometryA   = null;
+        private IGeometry  m_objGeometryB   = null;
 
         private object    m_objArgument1   = null;
         private object    m_objArgument2   = null;
@@ -193,7 +193,7 @@ namespace Open.Topology.TestRunner
             }
         }
 
-        public Geometry A
+        public IGeometry A
         {
             get
             {
@@ -206,7 +206,7 @@ namespace Open.Topology.TestRunner
             }
         }
 
-        public Geometry B
+        public IGeometry B
         {
             get
             {

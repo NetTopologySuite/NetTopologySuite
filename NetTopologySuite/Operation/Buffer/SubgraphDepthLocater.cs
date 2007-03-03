@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -33,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        public int GetDepth(Coordinate p)
+        public int GetDepth(ICoordinate p)
         {
             ArrayList stabbedSegments = new ArrayList(FindStabbedSegments(p));
             // if no segments on stabbing line subgraph must be outside all others.
@@ -50,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <param name="stabbingRayLeftPt">The left-hand origin of the stabbing line.</param>
         /// <returns>A List of {DepthSegments} intersecting the stabbing line.</returns>
-        private IList FindStabbedSegments(Coordinate stabbingRayLeftPt)
+        private IList FindStabbedSegments(ICoordinate stabbingRayLeftPt)
         {
             IList stabbedSegments = new ArrayList();
             IEnumerator i = subgraphs.GetEnumerator();
@@ -70,7 +72,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="stabbingRayLeftPt">The left-hand origin of the stabbing line.</param>
         /// <param name="dirEdges"></param>
         /// <param name="stabbedSegments">The current list of DepthSegments intersecting the stabbing line.</param>
-        private void FindStabbedSegments(Coordinate stabbingRayLeftPt, IList dirEdges, IList stabbedSegments)
+        private void FindStabbedSegments(ICoordinate stabbingRayLeftPt, IList dirEdges, IList stabbedSegments)
         {
             /*
             * Check all forward DirectedEdges only.  This is still general,
@@ -94,9 +96,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="stabbingRayLeftPt">The left-hand origin of the stabbing line.</param>
         /// <param name="dirEdge"></param>
         /// <param name="stabbedSegments">The current list of DepthSegments intersecting the stabbing line.</param>
-        private void FindStabbedSegments(Coordinate stabbingRayLeftPt, DirectedEdge dirEdge, IList stabbedSegments)
+        private void FindStabbedSegments(ICoordinate stabbingRayLeftPt, DirectedEdge dirEdge, IList stabbedSegments)
         {
-            Coordinate[] pts = dirEdge.Edge.Coordinates;
+            ICoordinate[] pts = dirEdge.Edge.Coordinates;
             for (int i = 0; i < pts.Length - 1; i++)
             {
                 seg.P0 = pts[i];

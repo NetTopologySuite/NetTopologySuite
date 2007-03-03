@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Text;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -13,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     public class CentroidPoint
     {
         private int ptCount = 0;
-        private Coordinate centSum = new Coordinate();
+        private ICoordinate centSum = new Coordinate();
 
         /// <summary>
         /// 
@@ -25,15 +28,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// If the point is not of dimension 0 it does not contribute to the centroid.
         /// </summary>
         /// <param name="geom">The point to add.</param>
-        public void Add(Geometry geom)
+        public void Add(IGeometry geom)
         {
-            if (geom is Point)             
-                Add((Coordinate) geom.Coordinate);
+            if (geom is IPoint)             
+                Add(geom.Coordinate);
 
-            else if(geom is GeometryCollection) 
+            else if(geom is IGeometryCollection) 
             {
-                GeometryCollection gc = (GeometryCollection)geom;
-                foreach (Geometry geometry in gc.Geometries)
+                IGeometryCollection gc = (IGeometryCollection) geom;
+                foreach (IGeometry geometry in gc.Geometries)
                     Add(geometry);
             }
         }
@@ -42,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Adds the length defined by a coordinate.
         /// </summary>
         /// <param name="pt">A coordinate.</param>
-        public void Add(Coordinate pt)
+        public void Add(ICoordinate pt)
         {
             ptCount += 1;
             centSum.X += pt.X;
@@ -52,11 +55,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Centroid
+        public ICoordinate Centroid
         {
             get
             {
-                Coordinate cent = new Coordinate();
+                ICoordinate cent = new Coordinate();
                 cent.X = centSum.X / ptCount;
                 cent.Y = centSum.Y / ptCount;
                 return cent;

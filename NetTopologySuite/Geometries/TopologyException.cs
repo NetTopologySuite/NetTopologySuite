@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary> 
@@ -15,14 +17,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="msg"></param>
         /// <param name="pt"></param>
         /// <returns></returns>
-        private static string MsgWithCoord(string msg, Coordinate pt)
+        private static string MsgWithCoord(string msg, ICoordinate pt)
         {
             if (pt != null)
             return msg + " [ " + pt + " ]";
             return msg;
         }
 
-        private Coordinate pt = null;
+        private ICoordinate pt = null;
 
         /// <summary>
         /// 
@@ -35,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="msg"></param>
         /// <param name="pt"></param>
-        public TopologyException(string msg, Coordinate pt) 
+        public TopologyException(string msg, ICoordinate pt) 
             : base (MsgWithCoord(msg, pt))
         {            
             this.pt = new Coordinate(pt);
@@ -44,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate
+        public ICoordinate Coordinate
         {
             get
             {
