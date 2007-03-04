@@ -246,9 +246,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get
             {
                 double area = 0.0;
-                area += Math.Abs(CGAlgorithms.SignedArea((Coordinate[]) shell.Coordinates));
+                area += Math.Abs(CGAlgorithms.SignedArea(shell.Coordinates));
                 for (int i = 0; i < holes.Length; i++)
-                    area -= Math.Abs(CGAlgorithms.SignedArea((Coordinate[]) holes[i].Coordinates));                
+                    area -= Math.Abs(CGAlgorithms.SignedArea(holes[i].Coordinates));                
                 return area;
             }
         }

@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary> 
@@ -10,12 +12,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </summary>
     public class Triangle
     {
-        private Coordinate p0, p1, p2;
+        private ICoordinate p0, p1, p2;
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate P0
+        public ICoordinate P0
         {
             get { return p0; }
             set { p0 = value; }
@@ -24,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate P1
+        public ICoordinate P1
         {
             get { return p1; }
             set { p1 = value; }
@@ -33,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate P2
+        public ICoordinate P2
         {
             get { return p2; }
             set { p2 = value; }
@@ -45,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
-        public Triangle(Coordinate p0, Coordinate p1, Coordinate p2)
+        public Triangle(ICoordinate p0, ICoordinate p1, ICoordinate p2)
         {
             this.p0 = p0;
             this.p1 = p1;
@@ -60,7 +62,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>
         /// The point which is the InCentre of the triangle.
         /// </returns>
-        public Coordinate InCentre
+        public ICoordinate InCentre
         {
             get
             {

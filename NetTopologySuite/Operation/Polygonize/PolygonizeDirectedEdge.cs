@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 
@@ -32,7 +34,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Whether this DirectedEdge's direction is the same as or
         /// opposite to that of the parent Edge (if any).
         /// </param>
-        public PolygonizeDirectedEdge(Node from, Node to, Coordinate directionPt, bool edgeDirection)
+        public PolygonizeDirectedEdge(Node from, Node to, ICoordinate directionPt, bool edgeDirection)
             : base(from, to, directionPt, edgeDirection) { }
 
         /// <summary> 

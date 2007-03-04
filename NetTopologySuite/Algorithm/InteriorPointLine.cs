@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Text;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -15,17 +18,17 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class InteriorPointLine
     {
-        private Coordinate centroid = null;
+        private ICoordinate centroid = null;
         private double minDistance = Double.MaxValue;
-        private Coordinate interiorPoint = null;
+        private ICoordinate interiorPoint = null;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="g"></param>
-        public InteriorPointLine(Geometry g)
+        public InteriorPointLine(IGeometry g)
         {
-            centroid = (Coordinate) g.Centroid.Coordinate;
+            centroid = g.Centroid.Coordinate;
             AddInterior(g);
 
             if (interiorPoint == null)                
@@ -35,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate InteriorPoint
+        public ICoordinate InteriorPoint
         {
             get
             {
@@ -49,14 +52,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// If a Geometry is not of dimension 1 it is not tested.
         /// </summary>
         /// <param name="geom">The point to add.</param>
-        private void AddInterior(Geometry geom)
+        private void AddInterior(IGeometry geom)
         {
-            if(geom is LineString) 
-                AddInterior((Coordinate[]) geom.Coordinates);            
-            else if(geom is GeometryCollection) 
+            if(geom is ILineString) 
+                AddInterior(geom.Coordinates);            
+            else if(geom is IGeometryCollection) 
             {
-                GeometryCollection gc = (GeometryCollection)geom;
-                foreach (Geometry geometry in gc.Geometries)
+                IGeometryCollection gc = (IGeometryCollection) geom;
+                foreach (IGeometry geometry in gc.Geometries)
                     AddInterior(geometry);
             }
         }
@@ -65,7 +68,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// 
         /// </summary>
         /// <param name="pts"></param>
-        private void AddInterior(Coordinate[] pts)
+        private void AddInterior(ICoordinate[] pts)
         {
             for (int i = 1; i < pts.Length - 1; i++)
                 Add(pts[i]);
@@ -78,14 +81,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// If a Geometry is not of dimension 1 it is not tested.
         /// </summary>
         /// <param name="geom">The point to add.</param>
-        private void AddEndpoints(Geometry geom)
+        private void AddEndpoints(IGeometry geom)
         {
-            if(geom is LineString)
-                AddEndpoints((Coordinate[]) geom.Coordinates);   
-            else if(geom is GeometryCollection) 
+            if(geom is ILineString)
+                AddEndpoints(geom.Coordinates);   
+            else if(geom is IGeometryCollection) 
             {
-                GeometryCollection gc = (GeometryCollection)geom;
-                foreach (Geometry geometry in gc.Geometries)
+                IGeometryCollection gc = (IGeometryCollection) geom;
+                foreach (IGeometry geometry in gc.Geometries)
                     AddEndpoints(geometry);
             }
         }
@@ -94,7 +97,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// 
         /// </summary>
         /// <param name="pts"></param>
-        private void AddEndpoints(Coordinate[] pts)
+        private void AddEndpoints(ICoordinate[] pts)
         {
             Add(pts[0]);
             Add(pts[pts.Length - 1]);
@@ -104,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// 
         /// </summary>
         /// <param name="point"></param>
-        private void Add(Coordinate point)
+        private void Add(ICoordinate point)
         {
             double dist = point.Distance(centroid);
             if (dist < minDistance)

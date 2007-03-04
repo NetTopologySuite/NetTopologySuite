@@ -88,14 +88,21 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private void Add(IGeometry g)
         {
             if (g.IsEmpty) return;
-            if (g is Polygon)                 AddPolygon((Polygon) g);
+            if (g is IPolygon)                 
+                AddPolygon((IPolygon) g);
             // LineString also handles LinearRings
-            else if (g is LineString)         AddLineString((LineString) g);
-            else if (g is Point)              AddPoint((Point) g);
-            else if (g is MultiPoint)         AddCollection((MultiPoint) g);
-            else if (g is MultiLineString)    AddCollection((MultiLineString) g);
-            else if (g is MultiPolygon)       AddCollection((MultiPolygon) g);
-            else if (g is GeometryCollection) AddCollection((GeometryCollection) g);
+            else if (g is ILineString)        
+                AddLineString((ILineString) g);
+            else if (g is IPoint) 
+                AddPoint((IPoint) g);
+            else if (g is IMultiPoint) 
+                AddCollection((IMultiPoint) g);
+            else if (g is IMultiLineString) 
+                AddCollection((IMultiLineString) g);
+            else if (g is IMultiPolygon)
+                AddCollection((IMultiPolygon) g);
+            else if (g is IGeometryCollection) 
+                AddCollection((IGeometryCollection) g);
             else  throw new NotSupportedException(g.GetType().FullName);
         }
 
@@ -103,11 +110,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// 
         /// </summary>
         /// <param name="gc"></param>
-        private void AddCollection(GeometryCollection gc)
+        private void AddCollection(IGeometryCollection gc)
         {
             for (int i = 0; i < gc.NumGeometries; i++)
             {
-                Geometry g = (Geometry) gc.GetGeometryN(i);
+                IGeometry g = gc.GetGeometryN(i);
                 Add(g);
             }
         }
@@ -116,10 +123,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// Add a Point to the graph.
         /// </summary>
         /// <param name="p"></param>
-        private void AddPoint(Point p)
+        private void AddPoint(IPoint p)
         {
-            if (distance <= 0.0) return;
-            Coordinate[] coord = (Coordinate[]) p.Coordinates;
+            if (distance <= 0.0) 
+                return;
+            ICoordinate[] coord = p.Coordinates;
             IList lineList = curveBuilder.GetLineCurve(coord, distance);
             AddCurves(lineList, Locations.Exterior, Locations.Interior);
         }
@@ -128,10 +136,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// 
         /// </summary>
         /// <param name="line"></param>
-        private void AddLineString(LineString line)
+        private void AddLineString(ILineString line)
         {
             if (distance <= 0.0) return;
-            Coordinate[] coord = (Coordinate[]) CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
+            ICoordinate[] coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
             IList lineList = curveBuilder.GetLineCurve(coord, distance);
             AddCurves(lineList, Locations.Exterior, Locations.Interior);
         }
@@ -140,7 +148,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// 
         /// </summary>
         /// <param name="p"></param>
-        private void AddPolygon(Polygon p)
+        private void AddPolygon(IPolygon p)
         {
             double offsetDistance = distance;
             Positions offsetSide = Positions.Left;
@@ -150,8 +158,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 offsetSide = Positions.Right;
             }
 
-            LinearRing shell = (LinearRing)p.ExteriorRing;
-            Coordinate[] shellCoord = (Coordinate[]) CoordinateArrays.RemoveRepeatedPoints(shell.Coordinates);
+            ILinearRing shell = p.Shell;
+            ICoordinate[] shellCoord = CoordinateArrays.RemoveRepeatedPoints(shell.Coordinates);
             // optimization - don't bother computing buffer
             // if the polygon would be completely eroded
             if (distance < 0.0 && IsErodedCompletely(shellCoord, distance))
@@ -162,8 +170,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             for (int i = 0; i < p.NumInteriorRings; i++)
             {
-                LinearRing hole = (LinearRing)p.GetInteriorRingN(i);
-                Coordinate[] holeCoord = (Coordinate[]) CoordinateArrays.RemoveRepeatedPoints(hole.Coordinates);
+                ILinearRing hole = (ILinearRing) p.GetInteriorRingN(i);
+                ICoordinate[] holeCoord = CoordinateArrays.RemoveRepeatedPoints(hole.Coordinates);
 
                 // optimization - don't bother computing buffer for this hole
                 // if the hole would be completely covered
@@ -190,7 +198,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="side">The side of the ring on which to construct the buffer line.</param>
         /// <param name="cwLeftLoc">The location on the L side of the ring (if it is CW).</param>
         /// <param name="cwRightLoc">The location on the R side of the ring (if it is CW).</param>
-        private void AddPolygonRing(Coordinate[] coord, double offsetDistance, Positions side, Locations cwLeftLoc, Locations cwRightLoc)
+        private void AddPolygonRing(ICoordinate[] coord, double offsetDistance, 
+            Positions side, Locations cwLeftLoc, Locations cwRightLoc)
         {
             Locations leftLoc = cwLeftLoc;
             Locations rightLoc = cwRightLoc;
@@ -212,7 +221,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="ringCoord"></param>
         /// <param name="bufferDistance"></param>
         /// <returns></returns>
-        private bool IsErodedCompletely(Coordinate[] ringCoord, double bufferDistance)
+        private bool IsErodedCompletely(ICoordinate[] ringCoord, double bufferDistance)
         {
             double minDiam = 0.0;
             // degenerate ring has no area
@@ -256,10 +265,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="triangleCoord"></param>
         /// <param name="bufferDistance"></param>
         /// <returns></returns>
-        private bool IsTriangleErodedCompletely(Coordinate[] triangleCoord, double bufferDistance)
+        private bool IsTriangleErodedCompletely(ICoordinate[] triangleCoord, double bufferDistance)
         {
             Triangle tri = new Triangle(triangleCoord[0], triangleCoord[1], triangleCoord[2]);
-            Coordinate inCentre = tri.InCentre;
+            ICoordinate inCentre = tri.InCentre;
             double distToCentre = CGAlgorithms.DistancePointLine(inCentre, tri.P0, tri.P1);
             return distToCentre < Math.Abs(bufferDistance);
         }

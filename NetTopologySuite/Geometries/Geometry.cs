@@ -1342,7 +1342,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="b"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        protected bool Equal(Coordinate a, Coordinate b, double tolerance) 
+        protected bool Equal(ICoordinate a, ICoordinate b, double tolerance) 
         {
             if (tolerance == 0)             
                 return a.Equals(b);             

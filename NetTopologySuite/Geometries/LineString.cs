@@ -141,7 +141,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public IPoint GetPointN(int n) 
         {
-            return Factory.CreatePoint((Coordinate) points.GetCoordinate(n));
+            return Factory.CreatePoint(points.GetCoordinate(n));
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                return (new IsSimpleOp()).IsSimple((LineString)this);
+                return (new IsSimpleOp()).IsSimple(this);
             }
         }
 
@@ -238,8 +238,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 if (IsEmpty)
                     return Factory.CreateGeometryCollection(null);
                 if (IsClosed)
-                    return Factory.CreateMultiPoint((Coordinate[]) null);
-                return Factory.CreateMultiPoint(new Point[] { (Point) StartPoint, (Point) EndPoint });
+                    return Factory.CreateMultiPoint((ICoordinate[]) null);
+                return Factory.CreateMultiPoint(new IPoint[] { StartPoint, EndPoint });
             }
         }
 
@@ -252,15 +252,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             ICoordinateSequence seq = (ICoordinateSequence) points.Clone();
 
             // Personalized implementation using Array.Reverse: maybe it's faster?
-            Coordinate[] array = (Coordinate[]) seq.ToCoordinateArray();
+            ICoordinate[] array = seq.ToCoordinateArray();
             Array.Reverse(array);
-            return Factory.CreateLineString(array);
-            
-            /*
-            // Standard implementation : direct port of JTS code            
-            CoordinateSequences.Reverse(seq);
-            return Factory.CreateLineString(seq);
-            */
+            return Factory.CreateLineString(array);           
         }
 
         /// <summary>
@@ -268,7 +262,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="pt">The <c>Coordinate</c> to check.</param>
         /// <returns><c>true</c> if <c>pt</c> is one of this <c>LineString</c>'s vertices.</returns>
-        public bool IsCoordinate(Coordinate pt) 
+        public bool IsCoordinate(ICoordinate pt) 
         {
             for (int i = 0; i < points.Count; i++) 
                 if (points.GetCoordinate(i).Equals(pt))
@@ -311,15 +305,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public override bool EqualsExact(IGeometry other, double tolerance) 
         {
-            if (!IsEquivalentClass((Geometry) other)) 
+            if (!IsEquivalentClass(other)) 
                 return false;
 
-            LineString otherLineString = (LineString)other;
-            if (points.Count != otherLineString.points.Count)
+            ILineString otherLineString = (ILineString) other;
+            if (points.Count != otherLineString.NumPoints)
                 return false;
 
             for (int i = 0; i < points.Count; i++)
-                if (!Equal((Coordinate) points.GetCoordinate(i), (Coordinate) otherLineString.points.GetCoordinate(i), tolerance))             
+                if (!Equal(points.GetCoordinate(i), otherLineString.GetCoordinateN(i), tolerance))             
                     return false;            
             return true;
         }
@@ -331,7 +325,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public override void Apply(ICoordinateFilter filter) 
         {
             for (int i = 0; i < points.Count; i++)
-                filter.Filter((Coordinate) points.GetCoordinate(i));
+                filter.Filter(points.GetCoordinate(i));
         }
 
         /// <summary>
@@ -359,7 +353,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public override object Clone()
         {
             LineString ls = (LineString) base.Clone();
-            ls.points = (ICoordinateSequence)points.Clone();
+            ls.points = (ICoordinateSequence) points.Clone();
             return ls;
         }
 
@@ -377,7 +371,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 if (!points.GetCoordinate(i).Equals(points.GetCoordinate(j))) 
                 {
                     if (points.GetCoordinate(i).CompareTo(points.GetCoordinate(j)) > 0) 
-                        CoordinateArrays.Reverse((Coordinate[]) Coordinates);                    
+                        CoordinateArrays.Reverse(Coordinates);                    
                     return;
                 }
             }
@@ -390,7 +384,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         protected internal override int CompareToSameClass(object o)
         {
-            LineString line = o as LineString;
+            LineString line = (LineString) o;
             // MD - optimized implementation
             int i = 0;
             int j = 0;
@@ -419,7 +413,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         /// <param name="points">The coordinates used for create this <see cref="LineString" />.</param>
-        public LineString(Coordinate[] points) : 
+        public LineString(ICoordinate[] points) : 
             this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
 
         /// <summary>
@@ -427,11 +421,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public Coordinate this[int n]
+        public ICoordinate this[int n]
         {
             get
             {
-                return (Coordinate) points.GetCoordinate(n);
+                return points.GetCoordinate(n);
             }
             set
             {

@@ -82,11 +82,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                Coordinate[] coordinates = new Coordinate[NumPoints];
+                ICoordinate[] coordinates = new ICoordinate[NumPoints];
                 int k = -1;
                 for (int i = 0; i < geometries.Length; i++)
                 {
-                    Coordinate[] childCoordinates = (Coordinate[]) geometries[i].Coordinates;
+                    ICoordinate[] childCoordinates = geometries[i].Coordinates;
                     for (int j = 0; j < childCoordinates.Length; j++)
                     {
                         k++;

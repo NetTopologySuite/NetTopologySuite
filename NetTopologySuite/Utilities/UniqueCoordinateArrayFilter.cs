@@ -27,12 +27,11 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <summary>
         /// Returns the gathered <c>Coordinate</c>s.
         /// </summary>
-        public Coordinate[] Coordinates
+        public ICoordinate[] Coordinates
         {
             get
             {
-                Coordinate[] coordinates = new Coordinate[list.Count];
-                return (Coordinate[])list.ToArray(typeof(Coordinate));
+                return (ICoordinate[]) list.ToArray(typeof(ICoordinate));
             }
         }
 

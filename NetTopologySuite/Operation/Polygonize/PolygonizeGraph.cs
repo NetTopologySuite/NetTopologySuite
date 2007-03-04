@@ -4,6 +4,8 @@ using System.Text;
 
 using Iesi.Collections;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
@@ -87,12 +89,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Add a <c>LineString</c> forming an edge of the polygon graph.
         /// </summary>
         /// <param name="line">The line to add.</param>
-        public void AddEdge(LineString line)
+        public void AddEdge(ILineString line)
         {
-            if (line.IsEmpty) return;
-            Coordinate[] linePts = (Coordinate[]) CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
-            Coordinate startPt = linePts[0];
-            Coordinate endPt = linePts[linePts.Length - 1];
+            if (line.IsEmpty) 
+                return;
+
+            ICoordinate[] linePts = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
+            ICoordinate startPt = linePts[0];
+            ICoordinate endPt = linePts[linePts.Length - 1];
 
             Node nStart = GetNode(startPt);
             Node nEnd = GetNode(endPt);
@@ -109,7 +113,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        private Node GetNode(Coordinate pt)
+        private Node GetNode(ICoordinate pt)
         {
             Node node = FindNode(pt);
             if (node == null) 
@@ -147,7 +151,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
                 long label = de.Label;
                 IList intNodes = FindIntersectionNodes(de, label);
 
-                if (intNodes == null) continue;
+                if (intNodes == null) 
+                    continue;
+
                 // flip the next pointers on the intersection nodes to create minimal edge rings
                 for (IEnumerator iNode = intNodes.GetEnumerator(); iNode.MoveNext(); )
                 {
@@ -176,7 +182,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
                 if (GetDegree(node, label) > 1) 
                 {
                     if (intNodes == null)
-                    intNodes = new ArrayList();
+                        intNodes = new ArrayList();
                     intNodes.Add(node);
                 }
 
@@ -303,7 +309,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
                 PolygonizeDirectedEdge outDE = (PolygonizeDirectedEdge) i.Current;
                 if (outDE.IsMarked) continue;
 
-                if (startDE == null) startDE = outDE;
+                if (startDE == null) 
+                    startDE = outDE;
+
                 if (prevDE != null) 
                 {
                     PolygonizeDirectedEdge sym = (PolygonizeDirectedEdge) prevDE.Sym;

@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 
@@ -12,13 +14,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
     /// </summary>
     public class PolygonizeEdge : Edge
     {
-        private LineString line;
+        private ILineString line;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="line"></param>
-        public PolygonizeEdge(LineString line)
+        public PolygonizeEdge(ILineString line)
         {
             this.line = line;
         }
@@ -26,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// 
         /// </summary>
-        public LineString Line
+        public ILineString Line
         {
             get
             {

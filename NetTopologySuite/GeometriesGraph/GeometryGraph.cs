@@ -252,7 +252,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 left = cwRight;
                 right = cwLeft;
             }
-            Edge e = new Edge((Coordinate[]) coord, new Label(argIndex, Locations.Boundary, left, right));
+            Edge e = new Edge(coord, new Label(argIndex, Locations.Boundary, left, right));
             if (lineEdgeMap.Contains(lr))
                 lineEdgeMap.Remove(lr);
             lineEdgeMap.Add(lr, e);
