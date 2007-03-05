@@ -3,6 +3,8 @@ using System.Collections;
 using System.Diagnostics;
 using System.IO;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 
@@ -15,13 +17,13 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
     [TestFixture]
     public class IntesectIterationTest : BaseSamples
     {
-        Geometry geom1 = null;
-        Geometry geom2 = null;
-        Geometry geom3 = null;
-        Geometry geom4 = null;
-        Geometry geom5 = null;
-        Geometry geom6 = null;
-        Geometry geom7 = null;
+        IGeometry geom1 = null;
+        IGeometry geom2 = null;
+        IGeometry geom3 = null;
+        IGeometry geom4 = null;
+        IGeometry geom5 = null;
+        IGeometry geom6 = null;
+        IGeometry geom7 = null;
 
         [TestFixtureSetUp]
         public void MyClassInitialize()
@@ -53,12 +55,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         [Test]
         public void Iteration()
         {
-            GeometryCollection collection = geom2 as GeometryCollection;
+            IGeometryCollection collection = geom2 as IGeometryCollection;
             //mpaul42: the next line should output MultiPolygon, 4 geometries, 704 points:
             Console.WriteLine("original collection:type:{0},geometries:{1},coords:{2}", 
                 collection.GeometryType, collection.NumGeometries, collection.NumPoints);
             int index = 0;
-            foreach (Geometry item in collection)
+            foreach (IGeometry item in collection)
             {
                 // The first object returned is the collection itself: this is the standard behaviour                
                 if(index++ == 0)

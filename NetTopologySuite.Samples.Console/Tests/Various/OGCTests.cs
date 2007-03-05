@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 
@@ -12,15 +14,14 @@ using NUnit.Framework;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 {
-
     /// <summary>
     /// 
     /// </summary>
     [TestFixture]
     public class OGCTests : BaseSamples
     {
-        private Geometry blueLake = null;
-        private Geometry ashton = null;
+        private IGeometry blueLake = null;
+        private IGeometry ashton = null;
  
         /// <summary>
         /// 
@@ -41,8 +42,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             Assert.IsNotNull(blueLake);            
             Assert.IsNotNull(ashton);
 
-            Geometry expected = Reader.Read("POLYGON((52 18,66 23,73 9,48 6,52 18))");
-            Geometry result = (Geometry) blueLake.Union(ashton);
+            IGeometry expected = Reader.Read("POLYGON((52 18,66 23,73 9,48 6,52 18))");
+            IGeometry result = blueLake.Union(ashton);
 
             Debug.WriteLine(result);
             Assert.IsTrue(result.EqualsExact(expected));
@@ -57,12 +58,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             Assert.IsNotNull(blueLake);
             Assert.IsNotNull(ashton);
 
-            Geometry expected = Reader.Read("POLYGON((52 18,66 23,73 9,48 6,52 18))");
-            Geometry result = (Geometry) blueLake.SymmetricDifference(ashton);
+            IGeometry expected = Reader.Read("POLYGON((52 18,66 23,73 9,48 6,52 18))");
+            IGeometry result = blueLake.SymmetricDifference(ashton);
 
             Debug.WriteLine(result);
             Assert.IsTrue(result.EqualsExact(expected));
-        }
-       
+        }       
     }
 }

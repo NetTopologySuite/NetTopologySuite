@@ -3,6 +3,7 @@ using System.Collections;
 using System.Text;
 using System.Xml;
 
+using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -16,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
     /// </summary>
     public class PointSamples : BaseSamples
     {
-        private Point point = null;        
+        private IPoint point = null;        
 
         /// <summary>
         /// 
@@ -31,8 +32,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
         /// </summary>
         public override void Start()
         {
-            Point pInterior = Factory.CreatePoint(new Coordinate(100, 100));
-            Point pExterior = Factory.CreatePoint(new Coordinate(100, 101));
+            IPoint pInterior = Factory.CreatePoint(new Coordinate(100, 100));
+            IPoint pExterior = Factory.CreatePoint(new Coordinate(100, 101));
 
             try
             {
@@ -46,14 +47,14 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(point.Dimension);
                 Write(point.Envelope);
                 Write(point.EnvelopeInternal);
-                Write(point.Factory);                
+                Write(((Point) point).Factory);
                 Write(point.InteriorPoint);
                 Write(point.IsEmpty);
                 Write(point.IsSimple);
                 Write(point.IsValid);
                 Write(point.Length);
                 Write(point.NumPoints);
-                Write(point.PrecisionModel);                          
+                Write(((Point)point).PrecisionModel);                          
                 Write(point.X);
                 Write(point.Y);                               
 
@@ -89,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(point.SymmetricDifference(pInterior));
                 Write(point.SymmetricDifference(pExterior));
                 Write(point.ToString());
-                Write(point.ToText());                
+                Write(point.AsText());                
                 Write(point.Touches(pInterior));
                 Write(point.Touches(pExterior));
                 Write(point.Union(pInterior));                 
@@ -98,18 +99,18 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(point.Within(pExterior));
                                 
                 string pointstring = "POINT (100.22 100.33)";
-                string anotherpointstring = "POINT (12345 3654321)";                 
-                Geometry geom1 = Reader.Read(pointstring);
-                Write(geom1.ToText());
-                Geometry geom2 = Reader.Read(anotherpointstring);
-                Write(geom2.ToText());
+                string anotherpointstring = "POINT (12345 3654321)";
+                IGeometry geom1 = Reader.Read(pointstring);
+                Write(geom1.AsText());
+                IGeometry geom2 = Reader.Read(anotherpointstring);
+                Write(geom2.AsText());
 
-                byte[] bytes = point.ToBinary();
-                Geometry test1 = new WKBReader().Read(bytes);
+                byte[] bytes = point.AsBinary();
+                IGeometry test1 = new WKBReader().Read(bytes);
                 Write(test1.ToString());
                 
                 bytes = Factory.CreatePoint(new Coordinate(Double.MinValue, Double.MinValue)).ToBinary();
-                Geometry testempty = new WKBReader().Read(bytes);
+                IGeometry testempty = new WKBReader().Read(bytes);
                 Write(testempty);
 
                 bytes = new GDBWriter().Write(geom1);

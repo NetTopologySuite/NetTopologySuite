@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.Operation.Linemerge;
@@ -264,7 +266,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
         {
             try
             {
-                IList<Geometry> inputGeoms = FromWKT(inputWKT);
+                IList<IGeometry> inputGeoms = FromWKT(inputWKT);
                 LineSequencer sequencer = new LineSequencer();
                 sequencer.Add(inputGeoms);
 
@@ -272,8 +274,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
                     Assert.IsNull(expectedWKT);
                 else
                 {
-                    Geometry expected = rdr.Read(expectedWKT);
-                    Geometry result = sequencer.GetSequencedLineStrings();
+                    IGeometry expected = rdr.Read(expectedWKT);
+                    IGeometry result = sequencer.GetSequencedLineStrings();
                     bool isTrue = expected.EqualsExact(result);
                     Assert.IsTrue(isTrue);
 
@@ -293,7 +295,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
         {
             try
             {
-                Geometry g = rdr.Read(inputWKT);
+                IGeometry g = rdr.Read(inputWKT);
                 bool isSequenced = LineSequencer.IsSequenced(g);
                 Assert.IsTrue(isSequenced == expected);
             }
@@ -305,9 +307,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
         /// </summary>
         /// <param name="wkts"></param>
         /// <returns></returns>
-        private IList<Geometry> FromWKT(String[] wkts)
+        private IList<IGeometry> FromWKT(String[] wkts)
         {
-            IList<Geometry> geomList = new List<Geometry>();
+            IList<IGeometry> geomList = new List<IGeometry>();
             foreach (string wkt in wkts)
             {
                 try 

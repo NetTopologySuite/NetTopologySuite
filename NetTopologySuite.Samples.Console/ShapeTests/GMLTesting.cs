@@ -5,6 +5,8 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.IO.GML2;
@@ -19,15 +21,15 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
     {
         XmlReader xmlreader = null;
         private XmlDocument document = null;
-        Geometry result = null;
+        IGeometry result = null;
 
         private GMLWriter writer = null;
         private GMLReader reader = null;
 
-        private Point point = null;
-        private LineString line = null;
-        private Polygon polygon = null;
-        private MultiPoint multiPoint = null;
+        private IPoint point = null;
+        private ILineString line = null;
+        private IPolygon polygon = null;
+        private IMultiPoint multiPoint = null;
 
         /// <summary>
         /// 
@@ -60,8 +62,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
                 new Coordinate(120,180),
                 new Coordinate(120,120),
             };
-            LinearRing linearRing = Factory.CreateLinearRing(coordinates);
-            LinearRing[] holes = new LinearRing[] { Factory.CreateLinearRing(interior1), };
+            ILinearRing linearRing = Factory.CreateLinearRing(coordinates);
+            ILinearRing[] holes = new ILinearRing[] { Factory.CreateLinearRing(interior1), };
             polygon = Factory.CreatePolygon(linearRing, holes);
 
             coordinates = new Coordinate[]
@@ -124,8 +126,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
             result = reader.Read(document);
             Debug.Assert(multiPolygon == result, "ERROR!");
             
-            Geometry[] geometries = new Geometry[]  { point, line, polygon, multiPoint, multiLineString, multiPolygon, };
-            GeometryCollection geometryCollection = Factory.CreateGeometryCollection(geometries);
+            IGeometry[] geometries = new IGeometry[]  { point, line, polygon, multiPoint, multiLineString, multiPolygon, };
+            IGeometryCollection geometryCollection = Factory.CreateGeometryCollection(geometries);
             xmlreader = writer.Write(geometryCollection);
             document = new XmlDocument();
             document.Load(xmlreader);
