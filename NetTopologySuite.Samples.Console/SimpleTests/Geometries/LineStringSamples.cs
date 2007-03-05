@@ -3,6 +3,7 @@ using System.Collections;
 using System.Text;
 using System.Xml;
 
+using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -16,18 +17,18 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
     /// </summary>
     public class LineStringSamples : BaseSamples
     {
-        private LineString line = null;       
+        private ILineString line = null;       
 
         /// <summary>
         /// 
         /// </summary>
         public LineStringSamples() : base()            
         {
-            Coordinate[] coordinates = new Coordinate[]
+            ICoordinate[] coordinates = new ICoordinate[]
             {
-                 new Coordinate(10,10),
-                 new Coordinate(20,20),
-                 new Coordinate(20,10),                 
+                 new Coordinate(10, 10),
+                 new Coordinate(20, 20),
+                 new Coordinate(20, 10),                 
             };
             line = Factory.CreateLineString(coordinates);
         }        
@@ -37,10 +38,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
         /// </summary>
         public override void Start()
         {
-            Point pointInLine = Factory.CreatePoint(new Coordinate(20, 10));
-            Point pointOutLine = Factory.CreatePoint(new Coordinate(20, 31));
-            LineString aLine = Factory.CreateLineString(new Coordinate[] { new Coordinate(23, 32.2), new Coordinate(922, 11) });
-            LineString anotherLine = Factory.CreateLineString(new Coordinate[] { new Coordinate(0, 1), new Coordinate(30, 30) });
+            IPoint pointInLine = Factory.CreatePoint(new Coordinate(20, 10));
+            IPoint pointOutLine = Factory.CreatePoint(new Coordinate(20, 31));
+            ILineString aLine = Factory.CreateLineString(new ICoordinate[] { new Coordinate(23, 32.2), new Coordinate(922, 11) });
+            ILineString anotherLine = Factory.CreateLineString(new ICoordinate[] { new Coordinate(0, 1), new Coordinate(30, 30) });
 
             try
             {
@@ -55,7 +56,6 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(line.EndPoint);
                 Write(line.Envelope);
                 Write(line.EnvelopeInternal);                
-                Write(line.Factory);                
                 Write(line.InteriorPoint);
                 Write(line.IsClosed);
                 Write(line.IsEmpty);
@@ -64,7 +64,6 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(line.IsValid);
                 Write(line.Length);
                 Write(line.NumPoints);                
-                Write(line.PrecisionModel);
                 Write(line.StartPoint);
                 if (line.UserData != null)
                     Write(line.UserData);
@@ -95,8 +94,6 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(line.Intersects(pointInLine));
                 Write(line.Intersects(pointOutLine));
                 Write(line.Intersects(aLine));
-                Write(line.IsCoordinate((Coordinate) pointInLine.Coordinate));
-                Write(line.IsCoordinate((Coordinate) pointOutLine.Coordinate));
                 Write(line.IsWithinDistance(pointOutLine, 2));
                 Write(line.IsWithinDistance(pointOutLine, 222));
                 Write(line.Overlaps(pointInLine));
@@ -112,7 +109,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(line.SymmetricDifference(aLine));
                 Write(line.SymmetricDifference(anotherLine)); 
                 Write(line.ToString());
-                Write(line.ToText());                
+                Write(line.AsText());                
                 Write(line.Touches(pointInLine));
                 Write(line.Touches(pointOutLine));
                 Write(line.Touches(aLine));
@@ -128,13 +125,13 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 
                 string linestring = "LINESTRING (1.2 3.4, 5.6 7.8, 9.1 10.12)";
                 string anotherlinestringg = "LINESTRING (12345 3654321, 685 7777.945677, 782 111.1)";
-                Geometry geom1 = Reader.Read(linestring);
-                Write(geom1.ToText());
-                Geometry geom2 = Reader.Read(anotherlinestringg);
-                Write(geom2.ToText());
+                IGeometry geom1 = Reader.Read(linestring);
+                Write(geom1.AsText());
+                IGeometry geom2 = Reader.Read(anotherlinestringg);
+                Write(geom2.AsText());
 
-                byte[] bytes = line.ToBinary();
-                Geometry test1 = new WKBReader().Read(bytes);
+                byte[] bytes = line.AsBinary();
+                IGeometry test1 = new WKBReader().Read(bytes);
                 Write(test1.ToString());
 
                 bytes = new GDBWriter().Write(line);

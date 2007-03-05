@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 
@@ -35,11 +37,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         [Test]
         public void IntersectionTest()
         {
-            Geometry g1 = Reader.Read(lineString1);
-            Geometry g2 = Reader.Read(lineString2);
-            Geometry p1 = Reader.Read(point1);
-
-            Geometry result = (Geometry) g1.Intersection(g2);            
+            IGeometry g1 = Reader.Read(lineString1);
+            IGeometry g2 = Reader.Read(lineString2);
+            IGeometry p1 = Reader.Read(point1);            
+            IGeometry result = g1.Intersection(g2);            
             
             Debug.WriteLine(result);
             Assert.IsNotNull(result);            

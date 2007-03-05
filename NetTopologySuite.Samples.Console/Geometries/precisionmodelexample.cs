@@ -1,4 +1,7 @@
 using System;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 
@@ -71,9 +74,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 			GeometryFactory fact = new GeometryFactory(pm);
 			WKTReader wktRdr = new WKTReader(fact);
 			
-			Geometry A = wktRdr.Read(wktA);
-			Geometry B = wktRdr.Read(wktB);
-			Geometry C = (Geometry) A.Intersection(B);
+			IGeometry A = wktRdr.Read(wktA);
+			IGeometry B = wktRdr.Read(wktB);
+			IGeometry C = A.Intersection(B);
 			
 			Console.WriteLine("A intersection B = " + C);
 		}
@@ -84,10 +87,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 			Console.WriteLine("Running example using Precision Model = " + pm);
 			GeometryFactory fact = new GeometryFactory(pm);
 			WKTReader wktRdr = new WKTReader(fact);
-			
-			Geometry A = wktRdr.Read(wktA);
-			Geometry B = wktRdr.Read(wktB);
-            Geometry C = (Geometry) A.Difference(B);
+
+            IGeometry A = wktRdr.Read(wktA);
+            IGeometry B = wktRdr.Read(wktB);
+            IGeometry C = A.Difference(B);
 			
 			Console.WriteLine("A intersection B = " + C);
 		}

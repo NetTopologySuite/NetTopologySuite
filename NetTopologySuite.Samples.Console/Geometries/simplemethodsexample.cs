@@ -1,4 +1,7 @@
 using System;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 
@@ -20,6 +23,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 	/// </summary>	
 	public class SimpleMethodsExample
 	{
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
 		[STAThread]
 		public static void  main(string[] args)
 		{
@@ -34,8 +41,14 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 			}
 		}
 		
+        /// <summary>
+        /// 
+        /// </summary>
 		public SimpleMethodsExample() { }
 		
+        /// <summary>
+        /// 
+        /// </summary>
 		public virtual void Run()
 		{
 			GeometryFactory fact = new GeometryFactory();
@@ -43,9 +56,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 			
 			string wktA = "POLYGON((40 100, 40 20, 120 20, 120 100, 40 100))";
 			string wktB = "LINESTRING(20 80, 80 60, 100 140)";
-			Geometry A = wktRdr.Read(wktA);
-			Geometry B = wktRdr.Read(wktB);
-            Geometry C = (Geometry) A.Intersection(B);
+			IGeometry A = wktRdr.Read(wktA);
+			IGeometry B = wktRdr.Read(wktB);
+            IGeometry C = A.Intersection(B);
 			Console.WriteLine("A = " + A);
 			Console.WriteLine("B = " + B);
 			Console.WriteLine("A intersection B = " + C);

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Text;
 using System.Xml;
 
+using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -16,14 +17,14 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
     /// </summary>
     public class MultiPointSamples : BaseSamples
     {
-        private MultiPoint multiPoint = null;
+        private IMultiPoint multiPoint = null;
 
         /// <summary>
         /// 
         /// </summary>
         public MultiPointSamples() : base()
         {
-            Coordinate[] coordinates = new Coordinate[]
+            ICoordinate[] coordinates = new ICoordinate[]
             {
                 new Coordinate(100,100),
                 new Coordinate(200,200),
@@ -50,7 +51,6 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(multiPoint.Dimension);
                 Write(multiPoint.Envelope);
                 Write(multiPoint.EnvelopeInternal);
-                Write(multiPoint.Factory);
                 Write(multiPoint.Geometries.Length);
                 Write(multiPoint.InteriorPoint);
                 Write(multiPoint.IsEmpty);
@@ -59,7 +59,6 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(multiPoint.Length);
                 Write(multiPoint.NumGeometries);
                 Write(multiPoint.NumPoints);
-                Write(multiPoint.PrecisionModel);        
                 
                 Write(multiPoint.Buffer(10));
                 Write(multiPoint.Buffer(10, BufferStyles.CapButt));
@@ -69,8 +68,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(multiPoint.Buffer(10, 20, BufferStyles.CapSquare));
                 Write(multiPoint.ConvexHull()); 
                
-                byte[] bytes = multiPoint.ToBinary();
-                Geometry test1 = new WKBReader().Read(bytes);
+                byte[] bytes = multiPoint.AsBinary();
+                IGeometry test1 = new WKBReader().Read(bytes);
                 Write(test1.ToString());
 
                 bytes = new GDBWriter().Write(multiPoint);

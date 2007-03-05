@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 
@@ -43,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         [Test]        
         public void OracleWKBBigIndianReadTest()
         {
-            Geometry result = null;
+            IGeometry result = null;
             using(Stream stream = new FileStream(blobFile, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 WKBReader wkbreader = new WKBReader();
@@ -59,17 +61,17 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         [Test] 
         public void OracleWKBBigIndianWriteTest()
         {
-            LinearRing shell = Factory.CreateLinearRing(new Coordinate[] { new Coordinate(100,100),
-                                                                new Coordinate(200,100),
-                                                                new Coordinate(200,200),                
-                                                                new Coordinate(100,200),
-                                                                new Coordinate(100,100), });
-            LinearRing hole = Factory.CreateLinearRing(new Coordinate[] {  new Coordinate(120,120),
-                                                                new Coordinate(180,120),
-                                                                new Coordinate(180,180),                                                                                
-                                                                new Coordinate(120,180),                                                                
-                                                                new Coordinate(120,120), });
-            Polygon polygon = Factory.CreatePolygon(shell, new LinearRing[] { hole, });                                    
+            ILinearRing shell = Factory.CreateLinearRing(new ICoordinate[] {    new Coordinate(100,100),
+                                                                                new Coordinate(200,100),
+                                                                                new Coordinate(200,200),                
+                                                                                new Coordinate(100,200),
+                                                                                new Coordinate(100,100), });
+            ILinearRing hole = Factory.CreateLinearRing(new ICoordinate[] {     new Coordinate(120,120),
+                                                                                new Coordinate(180,120),
+                                                                                new Coordinate(180,180),                                                                                
+                                                                                new Coordinate(120,180),                                                                
+                                                                                new Coordinate(120,120), });
+            IPolygon polygon = Factory.CreatePolygon(shell, new ILinearRing[] { hole, });                                    
             WKBWriter writer = new WKBWriter(ByteOrder.BigIndian);
             byte[] bytes = writer.Write(polygon);
             Assert.IsNotNull(bytes);

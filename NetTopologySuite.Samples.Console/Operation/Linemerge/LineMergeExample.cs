@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.Operation.Linemerge;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
 {
-	
 	/// <summary> 
     /// Example of using the LineMerger class to sew together a set of fully noded 
 	/// linestrings.
@@ -75,11 +77,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
 		}
 		
 		
-		internal virtual Geometry Read(string lineWKT)
+		internal virtual IGeometry Read(string lineWKT)
 		{
 			try
 			{
-				Geometry geom = reader.Read(lineWKT);				
+				IGeometry geom = reader.Read(lineWKT);				
 				return geom;
 			}
 			catch (Exception ex)

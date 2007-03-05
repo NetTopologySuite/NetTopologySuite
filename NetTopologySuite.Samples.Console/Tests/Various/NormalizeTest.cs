@@ -1,6 +1,8 @@
 using System;
 using System.Diagnostics;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 
@@ -16,9 +18,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
     [TestFixture]
     public class NormalizeTest : BaseSamples
     {
-        private Polygon polygon = null;
-        private LinearRing shell = null;
-        private LinearRing hole = null;
+        private IPolygon polygon = null;
+        private ILinearRing shell = null;
+        private ILinearRing hole = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:NormalizeTest"/> class.
@@ -31,18 +33,18 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         [SetUp]
         public void Init()
         {
-            shell = Factory.CreateLinearRing(new Coordinate[] { new Coordinate(100,100),
-                                                                new Coordinate(200,100),
-                                                                new Coordinate(200,200),                
-                                                                new Coordinate(100,200),
-                                                                new Coordinate(100,100), });
+            shell = Factory.CreateLinearRing(new ICoordinate[] {    new Coordinate(100,100),
+                                                                    new Coordinate(200,100),
+                                                                    new Coordinate(200,200),                
+                                                                    new Coordinate(100,200),
+                                                                    new Coordinate(100,100), });
             // NOTE: Hole is created with not correct order for holes
-            hole = Factory.CreateLinearRing(new Coordinate[] {  new Coordinate(120,120),
-                                                                new Coordinate(180,120),
-                                                                new Coordinate(180,180),                                                                                
-                                                                new Coordinate(120,180),                                                                
-                                                                new Coordinate(120,120), });
-            polygon = Factory.CreatePolygon(shell, new LinearRing[] { hole, });
+            hole = Factory.CreateLinearRing(new ICoordinate[] {      new Coordinate(120,120),
+                                                                    new Coordinate(180,120),
+                                                                    new Coordinate(180,180),                                                                                
+                                                                    new Coordinate(120,180),                                                                
+                                                                    new Coordinate(120,120), });
+            polygon = Factory.CreatePolygon(shell, new ILinearRing[] { hole, });
         }
 
         /// <summary>
@@ -53,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         public void NotNormalizedGDBOperation()
         {                        
 	        byte[] bytes = new GDBWriter().Write(polygon);
-            Geometry test = new GDBReader().Read(bytes);
+            IGeometry test = new GDBReader().Read(bytes);
 
             Assert.IsNull(test);    
         }
@@ -67,7 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             polygon.Normalize();
 
             byte[] bytes = new GDBWriter().Write(polygon);
-            Geometry test = new GDBReader().Read(bytes);
+            IGeometry test = new GDBReader().Read(bytes);
 
             Assert.IsNotNull(test);            
         }

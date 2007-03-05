@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.IO;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.IO
@@ -24,7 +26,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <summary>
         /// Initializes writer with LittleIndian byte order.
         /// </summary>
-        public WKBWriter() : this(ByteOrder.LittleIndian) { }
+        public WKBWriter() : 
+            this(ByteOrder.LittleIndian) { }
 
         /// <summary>
         /// Initializes writer with the specified byte order.
@@ -40,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        public byte[] Write(Geometry geometry)
+        public byte[] Write(IGeometry geometry)
         {
             byte[] bytes = GetBytes(geometry);
             Write(geometry, new MemoryStream(bytes));
@@ -53,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="geometry"></param>
         /// <param name="stream"></param>
         /// <returns></returns>
-        public void Write(Geometry geometry, Stream stream)
+        public void Write(IGeometry geometry, Stream stream)
         {
             BinaryWriter writer = null;
             try
@@ -76,22 +79,22 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="writer"></param>
-        protected void Write(Geometry geometry, BinaryWriter writer)
+        protected void Write(IGeometry geometry, BinaryWriter writer)
         {
-            if (geometry is Point)
-                Write(geometry as Point, writer);
-            else if (geometry is LineString)
-                Write(geometry as LineString, writer);
-            else if (geometry is Polygon)
-                Write(geometry as Polygon, writer);
-            else if (geometry is MultiPoint)
-                Write(geometry as MultiPoint, writer);
-            else if (geometry is MultiLineString)
-                Write(geometry as MultiLineString, writer);
-            else if (geometry is MultiPolygon)
-                Write(geometry as MultiPolygon, writer);
-            else if (geometry is GeometryCollection)
-                Write(geometry as GeometryCollection, writer);
+            if (geometry is IPoint)
+                Write(geometry as IPoint, writer);
+            else if (geometry is ILineString)
+                Write(geometry as ILineString, writer);
+            else if (geometry is IPolygon)
+                Write(geometry as IPolygon, writer);
+            else if (geometry is IMultiPoint)
+                Write(geometry as IMultiPoint, writer);
+            else if (geometry is IMultiLineString)
+                Write(geometry as IMultiLineString, writer);
+            else if (geometry is IMultiPolygon)
+                Write(geometry as IMultiPolygon, writer);
+            else if (geometry is IGeometryCollection)
+                Write(geometry as IGeometryCollection, writer);
             else throw new ArgumentException("Geometry not recognized: " + geometry.ToString());
         }
 
@@ -101,104 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void WriteByteOrder(BinaryWriter writer)
         {
-            writer.Write((byte)ByteOrder.LittleIndian);
-        }        
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="point"></param>
-        /// <param name="writer"></param>
-        protected void Write(Point point, BinaryWriter writer)
-        {
-            WriteByteOrder(writer);     // LittleIndian
-            writer.Write((int) WKBGeometryTypes.WKBPoint);
-            Write((Coordinate) point.Coordinate, writer);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="lineString"></param>
-        /// <param name="writer"></param>
-        protected void Write(LineString lineString, BinaryWriter writer)
-        {
-            WriteByteOrder(writer);     // LittleIndian
-            writer.Write((int) WKBGeometryTypes.WKBLineString);
-            writer.Write((int) lineString.NumPoints);
-            for (int i = 0; i < lineString.Coordinates.Length; i++)
-                Write((Coordinate) lineString.Coordinates[i], writer);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="polygon"></param>
-        /// <param name="writer"></param>
-        protected void Write(Polygon polygon, BinaryWriter writer)
-        {
-            WriteByteOrder(writer);     // LittleIndian
-            writer.Write((int) WKBGeometryTypes.WKBPolygon);
-            writer.Write((int) polygon.NumInteriorRings + 1);
-            Write(polygon.ExteriorRing as LinearRing, writer);
-            for (int i = 0; i < polygon.NumInteriorRings; i++)
-                Write(polygon.InteriorRings[i] as LinearRing, writer);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="multiPoint"></param>
-        /// <param name="writer"></param>
-        protected void Write(MultiPoint multiPoint, BinaryWriter writer)
-        {
-            WriteByteOrder(writer);     // LittleIndian
-            writer.Write((int) WKBGeometryTypes.WKBMultiPoint);
-            writer.Write((int) multiPoint.NumGeometries);
-            for (int i = 0; i < multiPoint.NumGeometries; i++)
-                Write(multiPoint.Geometries[i] as Point, writer);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="multiLineString"></param>
-        /// <param name="writer"></param>
-        protected void Write(MultiLineString multiLineString, BinaryWriter writer)
-        {
-            WriteByteOrder(writer);     // LittleIndian
-            writer.Write((int) WKBGeometryTypes.WKBMultiLineString);
-            writer.Write((int) multiLineString.NumGeometries);
-            for (int i = 0; i < multiLineString.NumGeometries; i++)
-                Write(multiLineString.Geometries[i] as LineString, writer);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="multiPolygon"></param>
-        /// <param name="writer"></param>
-        protected void Write(MultiPolygon multiPolygon, BinaryWriter writer)
-        {
-            WriteByteOrder(writer);     // LittleIndian
-            writer.Write((int) WKBGeometryTypes.WKBMultiPolygon);
-            writer.Write((int) multiPolygon.NumGeometries);
-            for (int i = 0; i < multiPolygon.NumGeometries; i++)
-                Write(multiPolygon.Geometries[i] as Polygon, writer);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomCollection"></param>
-        /// <param name="writer"></param>
-        protected void Write(GeometryCollection geomCollection, BinaryWriter writer)
-        {
-            WriteByteOrder(writer);     // LittleIndian
-            writer.Write((int) WKBGeometryTypes.WKBGeometryCollection);
-            writer.Write((int) geomCollection.NumGeometries);
-            for (int i = 0; i < geomCollection.NumGeometries; i++)
-                Write((Geometry) geomCollection.Geometries[i], writer); ;                
+            writer.Write((byte) ByteOrder.LittleIndian);
         }
 
         /// <summary>
@@ -206,10 +112,36 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="coordinate"></param>
         /// <param name="writer"></param>
-        protected void Write(Coordinate coordinate, BinaryWriter writer)
+        protected void Write(ICoordinate coordinate, BinaryWriter writer)
         {
-            writer.Write((double) coordinate.X);
-            writer.Write((double) coordinate.Y);
+            writer.Write((double)coordinate.X);
+            writer.Write((double)coordinate.Y);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="writer"></param>
+        protected void Write(IPoint point, BinaryWriter writer)
+        {
+            WriteByteOrder(writer);     // LittleIndian
+            writer.Write((int) WKBGeometryTypes.WKBPoint);
+            Write(point.Coordinate, writer);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lineString"></param>
+        /// <param name="writer"></param>
+        protected void Write(ILineString lineString, BinaryWriter writer)
+        {
+            WriteByteOrder(writer);     // LittleIndian
+            writer.Write((int) WKBGeometryTypes.WKBLineString);
+            writer.Write((int) lineString.NumPoints);
+            for (int i = 0; i < lineString.Coordinates.Length; i++)
+                Write(lineString.Coordinates[i], writer);
         }
 
         /// <summary>
@@ -217,11 +149,82 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="ring"></param>
         /// <param name="writer"></param>
-        protected void Write(LinearRing ring, BinaryWriter writer)
+        protected void Write(ILinearRing ring, BinaryWriter writer)
         {
             writer.Write((int) ring.NumPoints);
             for (int i = 0; i < ring.Coordinates.Length; i++)
-                Write((Coordinate) ring.Coordinates[i], writer);
+                Write(ring.Coordinates[i], writer);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="polygon"></param>
+        /// <param name="writer"></param>
+        protected void Write(IPolygon polygon, BinaryWriter writer)
+        {
+            WriteByteOrder(writer);     // LittleIndian
+            writer.Write((int) WKBGeometryTypes.WKBPolygon);
+            writer.Write((int) polygon.NumInteriorRings + 1);
+            Write(polygon.ExteriorRing as ILinearRing, writer);
+            for (int i = 0; i < polygon.NumInteriorRings; i++)
+                Write(polygon.InteriorRings[i] as ILinearRing, writer);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="multiPoint"></param>
+        /// <param name="writer"></param>
+        protected void Write(IMultiPoint multiPoint, BinaryWriter writer)
+        {
+            WriteByteOrder(writer);     // LittleIndian
+            writer.Write((int) WKBGeometryTypes.WKBMultiPoint);
+            writer.Write((int) multiPoint.NumGeometries);
+            for (int i = 0; i < multiPoint.NumGeometries; i++)
+                Write(multiPoint.Geometries[i] as IPoint, writer);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="multiLineString"></param>
+        /// <param name="writer"></param>
+        protected void Write(IMultiLineString multiLineString, BinaryWriter writer)
+        {
+            WriteByteOrder(writer);     // LittleIndian
+            writer.Write((int) WKBGeometryTypes.WKBMultiLineString);
+            writer.Write((int) multiLineString.NumGeometries);
+            for (int i = 0; i < multiLineString.NumGeometries; i++)
+                Write(multiLineString.Geometries[i] as ILineString, writer);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="multiPolygon"></param>
+        /// <param name="writer"></param>
+        protected void Write(IMultiPolygon multiPolygon, BinaryWriter writer)
+        {
+            WriteByteOrder(writer);     // LittleIndian
+            writer.Write((int) WKBGeometryTypes.WKBMultiPolygon);
+            writer.Write((int) multiPolygon.NumGeometries);
+            for (int i = 0; i < multiPolygon.NumGeometries; i++)
+                Write(multiPolygon.Geometries[i] as IPolygon, writer);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="geomCollection"></param>
+        /// <param name="writer"></param>
+        protected void Write(IGeometryCollection geomCollection, BinaryWriter writer)
+        {
+            WriteByteOrder(writer);     // LittleIndian
+            writer.Write((int)WKBGeometryTypes.WKBGeometryCollection);
+            writer.Write((int)geomCollection.NumGeometries);
+            for (int i = 0; i < geomCollection.NumGeometries; i++)
+                Write(geomCollection.Geometries[i], writer); ;
         }
 
         /// <summary>
@@ -229,22 +232,22 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected byte[] GetBytes(Geometry geometry)
+        protected byte[] GetBytes(IGeometry geometry)
         {
-            if (geometry is Point)
-                return new byte[SetByteStream(geometry as Point)];
-            else if (geometry is LineString)
-                return new byte[SetByteStream(geometry as LineString)];
-            else if (geometry is Polygon)
-                return new byte[SetByteStream(geometry as Polygon)];
-            else if (geometry is MultiPoint)
-                return new byte[SetByteStream(geometry as MultiPoint)];
-            else if (geometry is MultiLineString)
-                return new byte[SetByteStream(geometry as MultiLineString)];
-            else if (geometry is MultiPolygon)
-                return new byte[SetByteStream(geometry as MultiPolygon)];
-            else if (geometry is GeometryCollection)
-                return new byte[SetByteStream(geometry as GeometryCollection)];
+            if (geometry is IPoint)
+                return new byte[SetByteStream(geometry as IPoint)];
+            else if (geometry is ILineString)
+                return new byte[SetByteStream(geometry as ILineString)];
+            else if (geometry is IPolygon)
+                return new byte[SetByteStream(geometry as IPolygon)];
+            else if (geometry is IMultiPoint)
+                return new byte[SetByteStream(geometry as IMultiPoint)];
+            else if (geometry is IMultiLineString)
+                return new byte[SetByteStream(geometry as IMultiLineString)];
+            else if (geometry is IMultiPolygon)
+                return new byte[SetByteStream(geometry as IMultiPolygon)];
+            else if (geometry is IGeometryCollection)
+                return new byte[SetByteStream(geometry as IGeometryCollection)];
             else throw new ArgumentException("ShouldNeverReachHere");
         }
 
@@ -253,22 +256,22 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected int SetByteStream(Geometry geometry)
+        protected int SetByteStream(IGeometry geometry)
         {
-            if (geometry is Point)
-                return SetByteStream(geometry as Point);
-            else if (geometry is LineString)
-                return SetByteStream(geometry as LineString);
-            else if (geometry is Polygon)
-                return SetByteStream(geometry as Polygon);
-            else if (geometry is MultiPoint)
-                return SetByteStream(geometry as MultiPoint);
-            else if (geometry is MultiLineString)
-                return SetByteStream(geometry as MultiLineString);
-            else if (geometry is MultiPolygon)
-                return SetByteStream(geometry as MultiPolygon);
-            else if (geometry is GeometryCollection)
-                return SetByteStream(geometry as GeometryCollection);
+            if (geometry is IPoint)
+                return SetByteStream(geometry as IPoint);
+            else if (geometry is ILineString)
+                return SetByteStream(geometry as ILineString);
+            else if (geometry is IPolygon)
+                return SetByteStream(geometry as IPolygon);
+            else if (geometry is IMultiPoint)
+                return SetByteStream(geometry as IMultiPoint);
+            else if (geometry is IMultiLineString)
+                return SetByteStream(geometry as IMultiLineString);
+            else if (geometry is IMultiPolygon)
+                return SetByteStream(geometry as IMultiPolygon);
+            else if (geometry is IGeometryCollection)
+                return SetByteStream(geometry as IGeometryCollection);
             else throw new ArgumentException("ShouldNeverReachHere");
         }
 
@@ -277,11 +280,11 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected int SetByteStream(GeometryCollection geometry)
+        protected int SetByteStream(IGeometryCollection geometry)
         {            
             int count = InitCount;
             count += 4;
-            foreach (Geometry geom in geometry.Geometries)
+            foreach (IGeometry geom in geometry.Geometries)
                 count += SetByteStream(geom);
             return count;
         }
@@ -291,11 +294,11 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected int SetByteStream(MultiPolygon geometry)
+        protected int SetByteStream(IMultiPolygon geometry)
         {            
             int count = InitCount;
             count += 4;
-            foreach (Polygon geom in geometry.Geometries)
+            foreach (IPolygon geom in geometry.Geometries)
                 count += SetByteStream(geom);
             return count;
         }
@@ -305,11 +308,11 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected int SetByteStream(MultiLineString geometry)
+        protected int SetByteStream(IMultiLineString geometry)
         {                       
             int count = InitCount;
             count += 4;
-            foreach (LineString geom in geometry.Geometries)
+            foreach (ILineString geom in geometry.Geometries)
                 count += SetByteStream(geom);
             return count;
         }
@@ -319,11 +322,11 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected int SetByteStream(MultiPoint geometry)
+        protected int SetByteStream(IMultiPoint geometry)
         {                        
             int count = InitCount;
             count += 4;     // NumPoints
-            foreach (Point geom in geometry.Geometries)
+            foreach (IPoint geom in geometry.Geometries)
                 count += SetByteStream(geom);            
             return count;
         }
@@ -333,7 +336,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected int SetByteStream(Polygon geometry)
+        protected int SetByteStream(IPolygon geometry)
         {                
             int count = InitCount;
             count += 4 + 4;                                 // NumRings + NumPoints
@@ -347,7 +350,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected int SetByteStream(LineString geometry)
+        protected int SetByteStream(ILineString geometry)
         {
             int numPoints = geometry.NumPoints;
             int count = InitCount;
@@ -361,7 +364,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected int SetByteStream(Point geometry)
+        protected int SetByteStream(IPoint geometry)
         {
             return 21;
         }

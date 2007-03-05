@@ -1,5 +1,7 @@
 using System;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
@@ -21,13 +23,13 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 			// create a factory using default values (e.g. floating precision)
 			GeometryFactory fact = new GeometryFactory();
 			
-			Point p1 = fact.CreatePoint(new Coordinate(0, 0));
+			IPoint p1 = fact.CreatePoint(new Coordinate(0, 0));
 			Console.WriteLine(p1);
 			
-			Point p2 = fact.CreatePoint(new Coordinate(1, 1));
+			IPoint p2 = fact.CreatePoint(new Coordinate(1, 1));
 			Console.WriteLine(p1);
 			
-			MultiPoint mpt = fact.CreateMultiPoint(new Coordinate[]{new Coordinate(0, 0), new Coordinate(1, 1)});
+			IMultiPoint mpt = fact.CreateMultiPoint(new ICoordinate[]{ new Coordinate(0, 0), new Coordinate(1, 1), });
 			Console.WriteLine(mpt);
 		}
 	}

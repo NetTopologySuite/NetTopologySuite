@@ -1,5 +1,7 @@
 using System;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.LinearReferencing;
 using GisSharpBlog.NetTopologySuite.IO;
@@ -11,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.LinearReferencing
     /// </summary>
     public class LinearReferencingExample
     {
-        //TODO: Verificare il comportamento nell'analoga classe java usando i diversi GeometryFactory
+        // TODO: Verificare il comportamento nell'analoga classe java usando i diversi GeometryFactory
         private static GeometryFactory fact = GeometryFactory.Fixed;
         private static WKTReader rdr = new WKTReader(fact);
         
@@ -38,19 +40,19 @@ namespace GisSharpBlog.NetTopologySuite.Samples.LinearReferencing
         public void RunExtractedLine(string wkt, double start, double end)    
         {
             Console.WriteLine("=========================");
-            Geometry g1 = rdr.Read(wkt);
+            IGeometry g1 = rdr.Read(wkt);
             Console.WriteLine("Input Geometry: " + g1);
             Console.WriteLine("Indices to extract: " + start + " " + end);
             
             LengthIndexedLine indexedLine = new LengthIndexedLine(g1);
 
-            Geometry subLine = indexedLine.ExtractLine(start, end);
+            IGeometry subLine = indexedLine.ExtractLine(start, end);
             Console.WriteLine("Extracted Line: " + subLine);
 
             double[] index = indexedLine.IndicesOf(subLine);
             Console.WriteLine("Indices of extracted line: " + index[0] + " " + index[1]);
 
-            Coordinate midpt = indexedLine.ExtractPoint((index[0] + index[1]) / 2);
+            ICoordinate midpt = indexedLine.ExtractPoint((index[0] + index[1]) / 2);
             Console.WriteLine("Midpoint of extracted line: " + midpt);
         }
     }

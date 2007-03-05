@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 
@@ -18,12 +20,15 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
     [TestFixture]
     public class CoordinateArraysTest : BaseSamples
     {
-        Coordinate[] array = new Coordinate[]  {    new Coordinate(10, 10), 
-                                                    new Coordinate(20, 20),
-                                                    new Coordinate(30, 30),
-                                                    new Coordinate(40, 40),
-                                                    new Coordinate(50, 50),
-                                                    new Coordinate(50, 60), };        
+        ICoordinate[] array = new ICoordinate[]  
+        {  
+            new Coordinate(10, 10), 
+            new Coordinate(20, 20),
+            new Coordinate(30, 30),
+            new Coordinate(40, 40),
+            new Coordinate(50, 50),
+            new Coordinate(50, 60), 
+        };
 
         /// <summary>
         /// 
@@ -36,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         [Test]
         public void ExtractTest()
         {
-            Coordinate[] result = CoordinateArrays.Extract(array, 1, 5);
+            ICoordinate[] result = CoordinateArrays.Extract(array, 1, 5);
             Assert.AreEqual(5, result.Length);
             Assert.AreEqual(result[0], array[1]);
             Assert.AreEqual(result[1], array[2]);
@@ -52,7 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         [ExpectedException("System.ArgumentException")]
         public void ExtractTest2()
         {            
-            Coordinate[] result = CoordinateArrays.Extract(array, 1, 10);
+            ICoordinate[] result = CoordinateArrays.Extract(array, 1, 10);
             Assert.IsNull(result);
         }
 
@@ -62,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         [Test]
         public void EqualsComparerTest()
         {
-            Coordinate[] reverse = CoordinateArrays.CopyDeep(array);
+            ICoordinate[] reverse = CoordinateArrays.CopyDeep(array);
             CoordinateArrays.Reverse(reverse);
             Assert.IsFalse(CoordinateArrays.Equals(array, reverse));
             Assert.IsFalse(CoordinateArrays.Equals(array, reverse, new CoordinateArrays.ForwardComparator()));

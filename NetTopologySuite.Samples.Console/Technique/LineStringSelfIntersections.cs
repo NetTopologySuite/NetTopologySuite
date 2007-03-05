@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 
@@ -17,48 +20,58 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Technique
 		{
 			WKTReader rdr = new WKTReader();
 			
-			LineString line1 = (LineString) (rdr.Read("LINESTRING (0 0, 10 10, 20 20)"));
-			ShowSelfIntersections(line1);
-			LineString line2 = (LineString) (rdr.Read("LINESTRING (0 40, 60 40, 60 0, 20 0, 20 60)"));
+			ILineString line1 = (ILineString) rdr.Read("LINESTRING (0 0, 10 10, 20 20)");
+			ShowSelfIntersections(line1);			
+            ILineString line2 = (ILineString) rdr.Read("LINESTRING (0 40, 60 40, 60 0, 20 0, 20 60)");
 			ShowSelfIntersections(line2);
 		}
 		
-		public static void  ShowSelfIntersections(LineString line)
+		public static void  ShowSelfIntersections(ILineString line)
 		{
 			Console.WriteLine("Line: " + line);
 			Console.WriteLine("Self Intersections: " + LineStringSelfIntersectionsOp(line));
 		}
 		
-		public static Geometry LineStringSelfIntersectionsOp(LineString line)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
+		public static IGeometry LineStringSelfIntersectionsOp(ILineString line)
 		{
-			Geometry lineEndPts = GetEndPoints(line);
-            Geometry nodedLine = (Geometry) line.Union(lineEndPts);
-			Geometry nodedEndPts = GetEndPoints(nodedLine);
-            Geometry selfIntersections = (Geometry) nodedEndPts.Difference(lineEndPts);
+			IGeometry lineEndPts = GetEndPoints(line);
+            IGeometry nodedLine = line.Union(lineEndPts);
+			IGeometry nodedEndPts = GetEndPoints(nodedLine);
+            IGeometry selfIntersections = nodedEndPts.Difference(lineEndPts);
 			return selfIntersections;
 		}
 		
-		public static Geometry GetEndPoints(Geometry g)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="g"></param>
+        /// <returns></returns>
+        public static IGeometry GetEndPoints(IGeometry g)
 		{
-			List<Coordinate> endPtList = new List<Coordinate>();
-			if (g is LineString)
+			List<ICoordinate> endPtList = new List<ICoordinate>();
+			if (g is ILineString)
 			{
-				LineString line = (LineString) g;
-                endPtList.Add((Coordinate) line.GetCoordinateN(0));
-                endPtList.Add((Coordinate) line.GetCoordinateN(line.NumPoints - 1));
+				ILineString line = (ILineString) g;
+                endPtList.Add(line.GetCoordinateN(0));
+                endPtList.Add(line.GetCoordinateN(line.NumPoints - 1));
 			}
-			else if (g is MultiLineString)
+			else if (g is IMultiLineString)
 			{
-				MultiLineString mls = (MultiLineString) g;
+				IMultiLineString mls = (IMultiLineString) g;
 				for (int i = 0; i < mls.NumGeometries; i++)
 				{
-					LineString line = (LineString) mls.GetGeometryN(i);
-                    endPtList.Add((Coordinate) line.GetCoordinateN(0));
-                    endPtList.Add((Coordinate) line.GetCoordinateN(line.NumPoints - 1));
+					ILineString line = (ILineString) mls.GetGeometryN(i);
+                    endPtList.Add(line.GetCoordinateN(0));
+                    endPtList.Add(line.GetCoordinateN(line.NumPoints - 1));
 				}
 			}
-			Coordinate[] endPts = endPtList.ToArray();
-			return (new GeometryFactory()).CreateMultiPoint(endPts);
+			ICoordinate[] endPts = endPtList.ToArray();
+			return GeometryFactory.Default.CreateMultiPoint(endPts);
 		}
 	}
 }

@@ -1,4 +1,7 @@
 using System;
+
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 
@@ -22,18 +25,22 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Technique
 		public static void main(string[] args)
 		{
 			WKTReader rdr = new WKTReader();			
-			Geometry[] geom = new Geometry[3];
+			IGeometry[] geom = new IGeometry[3];
 			geom[0] = rdr.Read("POLYGON (( 100 180, 100 260, 180 260, 180 180, 100 180 ))");
 			geom[1] = rdr.Read("POLYGON (( 80 140, 80 200, 200 200, 200 140, 80 140 ))");
 			geom[2] = rdr.Read("POLYGON (( 160 160, 160 240, 240 240, 240 160, 160 160 ))");
             UnionUsingBufferOp(geom);
 		}
 		
-		public static void  UnionUsingBufferOp(Geometry[] geom)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="geom"></param>
+		public static void UnionUsingBufferOp(IGeometry[] geom)
 		{
-			GeometryFactory fact = geom[0].Factory;
-			Geometry geomColl = fact.CreateGeometryCollection(geom);
-			Geometry union = (Geometry) geomColl.Buffer(0.0);
+			GeometryFactory fact = ((Geometry) geom[0]).Factory;
+			IGeometry geomColl = fact.CreateGeometryCollection(geom);
+			IGeometry union = geomColl.Buffer(0.0);
 			Console.WriteLine(union);
 		}
 	}

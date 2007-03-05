@@ -3,6 +3,8 @@ using System.Collections;
 using System.IO;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries;
@@ -34,9 +36,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
             TestBugCimino();
             
             // Bug with a.shp and b.shp and intersection
-            GeometryCollection aColl = ReadShape("a.shp");
-            GeometryCollection bColl = ReadShape("b.shp");
-            Geometry result = aColl.Intersection(bColl);
+            IGeometryCollection aColl = ReadShape("a.shp");
+            IGeometryCollection bColl = ReadShape("b.shp");
+            IGeometry result = aColl.Intersection(bColl);
             
             // Point shapefile            
             TestShapeReadWrite("tnp_pts.shp", "Test_tnp_pts.shp");
@@ -61,8 +63,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
 
         private void TestBugMultipolygonHShuntao()
         {
-            GeometryCollection gc1 = null;
-            GeometryCollection gc2 = null;
+            IGeometryCollection gc1 = null;
+            IGeometryCollection gc2 = null;
             string file = "BJmultipolygon.shp";
             if (!File.Exists(file))
                 throw new FileNotFoundException();
@@ -104,13 +106,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
 
                 ShapefileReader sfr = new ShapefileReader(file);
 
-                GeometryCollection gc = sfr.ReadAll();
+                IGeometryCollection gc = sfr.ReadAll();
 
                 for (int i = 0; i < gc.NumGeometries; i++)
-                {
                     Console.WriteLine(i + " " + gc.Geometries[i].Envelope);
-                }
-
+           
                 // IsValidOp.CheckShellsNotNested molto lento nell'analisi di J == 7 (Poligono con 11600 punti)
                 ShapefileWriter sfw = new ShapefileWriter();
                 string write = Path.Combine(Path.GetTempPath(), "copy_countryCopy");
@@ -123,17 +123,17 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
             }
         }
 
-        private GeometryCollection ReadShape(string shapepath)
+        private IGeometryCollection ReadShape(string shapepath)
         {
             if (!File.Exists(shapepath))
                 throw new ArgumentException("File " + shapepath + " not found!");
 
             ShapefileReader reader = new ShapefileReader(shapepath);             
-            GeometryCollection geometries = reader.ReadAll();                  
+            IGeometryCollection geometries = reader.ReadAll();                  
             return geometries;            
         }
 
-        private void WriteShape(GeometryCollection geometries, string shapepath)
+        private void WriteShape(IGeometryCollection geometries, string shapepath)
         {
             if (File.Exists(shapepath))
                 File.Delete(shapepath);
@@ -144,8 +144,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
 
         private void TestShapeReadWrite(string shapepath, string outputpath)
         {
-            GeometryCollection collection = null;
-            GeometryCollection testcollection = null;
+            IGeometryCollection collection = null;
+            IGeometryCollection testcollection = null;
 
             collection = ReadShape(shapepath);
             WriteShape(collection, outputpath);

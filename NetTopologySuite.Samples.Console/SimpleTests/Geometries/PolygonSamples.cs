@@ -3,6 +3,7 @@ using System.Collections;
 using System.Text;
 using System.Xml;
 
+using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -13,35 +14,35 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
 {
     public class PolygonSamples : BaseSamples
     {
-        private Polygon polygon = null;
-        private LinearRing shell = null;
-        private LinearRing hole = null;
+        private IPolygon polygon = null;
+        private ILinearRing shell = null;
+        private ILinearRing hole = null;
 
         /// <summary>
         /// 
         /// </summary>
         public PolygonSamples() : base(new GeometryFactory(new PrecisionModel(PrecisionModels.Fixed)))
         {
-            shell = Factory.CreateLinearRing(new Coordinate[] { new Coordinate(100,100),
-                                                                new Coordinate(200,100),
-                                                                new Coordinate(200,200),                
-                                                                new Coordinate(100,200),
-                                                                new Coordinate(100,100), });
-            hole = Factory.CreateLinearRing(new Coordinate[] {  new Coordinate(120,120),
-                                                                new Coordinate(180,120),
-                                                                new Coordinate(180,180),                                                                                
-                                                                new Coordinate(120,180),                                                                
-                                                                new Coordinate(120,120), });
-            polygon = Factory.CreatePolygon(shell, new LinearRing[] { hole, });
+            shell = Factory.CreateLinearRing(new ICoordinate[] { new Coordinate(100,100),
+                                                                 new Coordinate(200,100),
+                                                                 new Coordinate(200,200),                
+                                                                 new Coordinate(100,200),
+                                                                 new Coordinate(100,100), });
+            hole = Factory.CreateLinearRing(new ICoordinate[] {  new Coordinate(120,120),
+                                                                 new Coordinate(180,120),
+                                                                 new Coordinate(180,180),                                                                                
+                                                                 new Coordinate(120,180),                                                                
+                                                                 new Coordinate(120,120), });
+            polygon = Factory.CreatePolygon(shell, new ILinearRing[] { hole, });
         }
 
         public override void Start()
         {
-            Point interiorPoint = Factory.CreatePoint(new Coordinate(130, 150));
-            Point exteriorPoint = Factory.CreatePoint(new Coordinate(650, 1500));
-            LineString aLine = Factory.CreateLineString(new Coordinate[] { new Coordinate(23, 32.2), new Coordinate(10, 222) });
-            LineString anotherLine = Factory.CreateLineString(new Coordinate[] { new Coordinate(0, 1), new Coordinate(30, 30) });
-            LineString intersectLine = Factory.CreateLineString(new Coordinate[] { new Coordinate(0, 1), new Coordinate(300, 300) });            
+            IPoint interiorPoint = Factory.CreatePoint(new Coordinate(130, 150));
+            IPoint exteriorPoint = Factory.CreatePoint(new Coordinate(650, 1500));
+            ILineString aLine = Factory.CreateLineString(new ICoordinate[] { new Coordinate(23, 32.2), new Coordinate(10, 222) });
+            ILineString anotherLine = Factory.CreateLineString(new ICoordinate[] { new Coordinate(0, 1), new Coordinate(30, 30) });
+            ILineString intersectLine = Factory.CreateLineString(new ICoordinate[] { new Coordinate(0, 1), new Coordinate(300, 300) });            
 
             try
             {               
@@ -62,8 +63,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(polygon.IsValid);
                 Write(polygon.Length);
                 Write(polygon.NumInteriorRings);
-                Write(polygon.NumPoints);
-                Write(polygon.PrecisionModel);
+                Write(polygon.NumPoints);                
                 if (polygon.UserData != null)
                     Write(polygon.UserData);
                 else Write("UserData null");
@@ -119,7 +119,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(polygon.SymmetricDifference(aLine));
                 Write(polygon.SymmetricDifference(anotherLine));
                 Write(polygon.ToString());
-                Write(polygon.ToText());
+                Write(polygon.AsText());
                 Write(polygon.Touches(interiorPoint));
                 Write(polygon.Touches(exteriorPoint));
                 Write(polygon.Touches(aLine));
@@ -131,10 +131,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
 
                 string aPoly = "POLYGON ((20 20, 100 20, 100 100, 20 100, 20 20))";
                 string anotherPoly = "POLYGON ((20 20, 100 20, 100 100, 20 100, 20 20), (50 50, 60 50, 60 60, 50 60, 50 50))";                
-                Geometry geom1 = Reader.Read(aPoly);
-                Write(geom1.ToText());                                
-                Geometry geom2 = Reader.Read(anotherPoly);
-                Write(geom2.ToText());
+                IGeometry geom1 = Reader.Read(aPoly);
+                Write(geom1.AsText());                                
+                IGeometry geom2 = Reader.Read(anotherPoly);
+                Write(geom2.AsText());
 
                 // ExpandToInclude tests
                 Envelope envelope = new Envelope(0, 0, 0, 0);
@@ -145,8 +145,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 // The polygon is not correctly ordered! Calling normalize we fix the problem...
                 polygon.Normalize();
 
-                byte[] bytes = polygon.ToBinary();
-                Geometry test1 = new WKBReader().Read(bytes);
+                byte[] bytes = polygon.AsBinary();
+                IGeometry test1 = new WKBReader().Read(bytes);
                 Write(test1.ToString());
 
                 bytes = new GDBWriter().Write(polygon);

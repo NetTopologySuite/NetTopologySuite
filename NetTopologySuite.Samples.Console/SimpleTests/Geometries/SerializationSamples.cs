@@ -5,6 +5,8 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
@@ -17,11 +19,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
         private readonly string filepath = String.Empty;
         private IFormatter serializer = null;
 
-        private Coordinate[] coordinates = null;
-        private Point point = null;
-        private LineString line = null;
-        private Polygon polygon = null;
-        private MultiPoint multiPoint = null;
+        private ICoordinate[] coordinates = null;
+        private IPoint point = null;
+        private ILineString line = null;
+        private IPolygon polygon = null;
+        private IMultiPoint multiPoint = null;
 
         public SerializationSamples() : base()
         {
@@ -31,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
 
             point = Factory.CreatePoint(new Coordinate(100, 100));
 
-            coordinates = new Coordinate[]
+            coordinates = new ICoordinate[]
             {
                  new Coordinate(10,10),
                  new Coordinate(20,20),
@@ -47,10 +49,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 new Coordinate(100,200),
                 new Coordinate(100,100),
             };
-            LinearRing linearRing = Factory.CreateLinearRing(coordinates);
+            ILinearRing linearRing = Factory.CreateLinearRing(coordinates);
             polygon = Factory.CreatePolygon(linearRing, null);
 
-            coordinates = new Coordinate[]
+            coordinates = new ICoordinate[]
             {
                 new Coordinate(100,100),
                 new Coordinate(200,200),
@@ -71,7 +73,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
             TestSerialization(multiPoint);
         }
 
-        private void TestSerialization(Geometry geom)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="geom"></param>
+        private void TestSerialization(IGeometry geom)
         {            
             using (Stream stream = File.OpenWrite(filepath))
                 serializer.Serialize(stream, geom);
