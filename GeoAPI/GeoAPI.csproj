@@ -42,7 +42,7 @@
     <Compile Include="Geometries\IGeometryComponentFilter.cs" />
     <Compile Include="Geometries\IGeometryFilter.cs" />
     <Compile Include="Geometries\IMultiSurface.cs" />
-    <Compile Include="Geometries\IPrecisionModel1.cs" />
+    <Compile Include="Geometries\IPrecisionModel.cs" />
     <Compile Include="Geometries\ISurface.cs" />
     <Compile Include="Geometries\IMultiCurve.cs" />
     <Compile Include="Geometries\ICurve.cs" />
