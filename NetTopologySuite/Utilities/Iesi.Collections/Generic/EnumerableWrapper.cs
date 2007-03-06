@@ -16,36 +16,55 @@ namespace Iesi.Collections.Generic
     {
         private IEnumerable innerEnumerable;
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="innerEnumerable"></param>
         public EnumerableWrapper(IEnumerable innerEnumerable)
         {
             this.innerEnumerable = innerEnumerable;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public override bool Equals(object obj)
-        {
-            if (!obj.GetType().Equals( this.GetType() )) return false;
-            if (obj == this) return true;
-            return this.innerEnumerable.Equals(((EnumerableWrapper<T>)obj).innerEnumerable);
+        {            
+            if (!obj.GetType().Equals(GetType())) 
+                return false;
+            if (obj == this) 
+                return true;
+            return innerEnumerable.Equals(
+                ((EnumerableWrapper<T>) obj).innerEnumerable);
         }
 
-        #region IEnumerable<T> Members
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return innerEnumerable.GetHashCode();
+        }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return new EnumeratorWrapper<T>(this.innerEnumerable.GetEnumerator());
+            return new EnumeratorWrapper<T>(innerEnumerable.GetEnumerator());
         }
 
-        #endregion
-
-        #region IEnumerable Members
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.innerEnumerable.GetEnumerator();    
-        }
-
-        #endregion
-       
+            return innerEnumerable.GetEnumerator();    
+        }              
     }
 }

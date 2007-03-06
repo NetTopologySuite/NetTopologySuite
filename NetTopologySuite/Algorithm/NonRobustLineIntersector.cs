@@ -186,7 +186,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             // truncate computed point to precision grid            
             if (precisionModel != null) 
-                precisionModel.MakePrecise(ref pa);
+                precisionModel.MakePrecise(pa);
             
             return DoIntersect;
         }

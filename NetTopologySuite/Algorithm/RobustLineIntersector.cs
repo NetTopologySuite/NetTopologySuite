@@ -227,7 +227,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             */
 
             if (precisionModel != null) 
-                precisionModel.MakePrecise(ref intPt);
+                precisionModel.MakePrecise( intPt);
      
             return intPt;
         }

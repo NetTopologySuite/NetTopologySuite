@@ -121,7 +121,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
                 for (int i = 0; i < coordinates.Length; i++) 
                 {
                     ICoordinate coord = new Coordinate(coordinates[i]);
-                    container.newPrecisionModel.MakePrecise(ref coord);
+                    container.newPrecisionModel.MakePrecise( coord);
                     reducedCoords[i] = coord;
                 }
 

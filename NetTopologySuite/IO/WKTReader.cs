@@ -146,7 +146,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
             coord.Y = GetNextNumber(tokens);
             if (IsNumberNext(tokens))
                 coord.Z = GetNextNumber(tokens);            
-            precisionModel.MakePrecise(ref coord);
+            precisionModel.MakePrecise(coord);
             return coord;
         }
 

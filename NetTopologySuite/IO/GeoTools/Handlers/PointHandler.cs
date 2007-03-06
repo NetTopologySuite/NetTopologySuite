@@ -43,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			double x= file.ReadDouble();
 			double y= file.ReadDouble();
 			ICoordinate external = new Coordinate(x,y);			
-			geometryFactory.PrecisionModel.MakePrecise(ref external);
+			geometryFactory.PrecisionModel.MakePrecise( external);
             return geometryFactory.CreatePoint(external);
 		}
 		

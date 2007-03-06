@@ -237,7 +237,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private void AddPt(ICoordinate pt)
         {
             ICoordinate bufPt = new Coordinate(pt);
-            precisionModel.MakePrecise(ref bufPt);
+            precisionModel.MakePrecise( bufPt);
             // don't add duplicate points
             ICoordinate lastPt = null;
             if (ptList.Count >= 1)

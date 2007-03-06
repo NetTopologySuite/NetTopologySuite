@@ -231,7 +231,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
                 double x = xRadius * Math.Cos(ang) + centreX;
                 double y = yRadius * Math.Sin(ang) + centreY;
                 ICoordinate pt = new Coordinate(x, y);
-                geomFact.PrecisionModel.MakePrecise(ref pt);
+                geomFact.PrecisionModel.MakePrecise( pt);
                 pts[iPt++] = pt;
             }
             ILineString line = geomFact.CreateLineString(pts);

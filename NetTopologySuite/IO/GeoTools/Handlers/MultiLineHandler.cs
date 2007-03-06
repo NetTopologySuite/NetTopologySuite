@@ -70,7 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 				for (int i = 0; i < length; i++)
 				{
 					external = new Coordinate(file.ReadDouble(),file.ReadDouble());
-					geometryFactory.PrecisionModel.MakePrecise(ref external);
+					geometryFactory.PrecisionModel.MakePrecise( external);
                     points.Add(external);
 				}
                 lines[part] = geometryFactory.CreateLineString(points.ToArray());

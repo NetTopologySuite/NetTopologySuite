@@ -72,7 +72,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 				for (int i = 0; i < length; i++)
 				{
 					ICoordinate external = new Coordinate(file.ReadDouble(), file.ReadDouble() );					
-                    geometryFactory.PrecisionModel.MakePrecise(ref external);
+                    geometryFactory.PrecisionModel.MakePrecise( external);
                     ICoordinate internalCoord = external;
 
                     // Thanks to Abhay Menon!

@@ -92,7 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public static IPoint CreatePointFromInternalCoord(ICoordinate coord, IGeometry exemplar)
         {
             Geometry geom = (Geometry) exemplar;
-            geom.PrecisionModel.MakePrecise(ref coord);
+            geom.PrecisionModel.MakePrecise( coord);
             return geom.Factory.CreatePoint(coord);
         }
 

@@ -67,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// NTS methods currently do not handle inputs with different precision models.
     /// </summary>
     [Serializable]
-    public class PrecisionModel : IComparable, IComparable<PrecisionModel>, IEquatable<PrecisionModel>
+    public class PrecisionModel : IPrecisionModel, IEquatable<PrecisionModel>
     {
         private const int FloatingPrecisionDigits = 16;
         private const int FloatingSinglePrecisionDigits = 6;
@@ -306,7 +306,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public ICoordinate ToInternal(ICoordinate cexternal) 
         {
             ICoordinate cinternal = new Coordinate(cexternal);
-            MakePrecise(ref cinternal);
+            MakePrecise( cinternal);
             return cinternal;
         }
 
@@ -365,7 +365,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Rounds a Coordinate to the PrecisionModel grid.
         /// </summary>
         /// <param name="coord"></param>
-        public void MakePrecise(ref ICoordinate coord)
+        public void MakePrecise(ICoordinate coord)
         {
             // optimization for full precision
             if (modelType == PrecisionModels.Floating) 
@@ -413,9 +413,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="otherPrecisionModel"></param>
         /// <returns></returns>
+        public bool Equals(IPrecisionModel otherPrecisionModel)
+        {
+            return Equals((PrecisionModel) otherPrecisionModel);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="otherPrecisionModel"></param>
+        /// <returns></returns>
         public bool Equals(PrecisionModel otherPrecisionModel)
         {
-            return modelType == otherPrecisionModel.modelType && scale == otherPrecisionModel.scale;
+            return  modelType == otherPrecisionModel.modelType &&
+                    scale == otherPrecisionModel.scale;
         }
         
         /// <summary>
@@ -458,7 +469,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public int CompareTo(object o) 
         {
-            return CompareTo((PrecisionModel) o);   
+            return CompareTo((IPrecisionModel) o);   
         }
 
         /// <summary>
@@ -466,7 +477,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public int CompareTo(PrecisionModel other)
+        public int CompareTo(IPrecisionModel other)
         {
             int sigDigits = MaximumSignificantDigits;
             int otherSigDigits = other.MaximumSignificantDigits;
