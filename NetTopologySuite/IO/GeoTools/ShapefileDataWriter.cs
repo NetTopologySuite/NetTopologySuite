@@ -161,10 +161,6 @@ namespace GisSharpBlog.NetTopologySuite.IO
                     dbaseWriter.Write(values);
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
             finally
             {
                 // Close dbf writer

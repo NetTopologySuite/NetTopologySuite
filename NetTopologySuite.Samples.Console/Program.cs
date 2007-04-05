@@ -74,17 +74,17 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
                 //sample.Start();
                 //Console.WriteLine();                
 
-                //sample = new AttributesTest();
-                //sample.Start();
-                //Console.WriteLine();
+                sample = new AttributesTest();
+                sample.Start();
+                Console.WriteLine();
 
                 //sample = new ShapeRead();
                 //sample.Start();
                 //Console.WriteLine();
 
-                sample = new GMLTesting();
-                sample.Start();
-                Console.WriteLine();   
+                //sample = new GMLTesting();
+                //sample.Start();
+                //Console.WriteLine();   
 
                 //new LinearReferencingExample().Run();      
 

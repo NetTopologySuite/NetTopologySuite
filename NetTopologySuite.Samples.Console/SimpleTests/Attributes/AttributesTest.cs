@@ -4,6 +4,8 @@ using System.Data;
 using System.IO;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Features;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
@@ -25,8 +27,30 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Attributes
             // Set current dir to shapefiles dir
             Environment.CurrentDirectory = @"../../../NetTopologySuite.Samples.Shapefiles";
 
-            ReadFromShapeFile();
-            TestSharcDbf();
+            // ReadFromShapeFile();
+            // TestSharcDbf();
+            TestShapeCreation();
+        }
+
+        private void TestShapeCreation()
+        {
+            Coordinate[] points = new Coordinate[3];
+            points[0] = new Coordinate(0, 0);
+            points[1] = new Coordinate(1, 0);
+            points[2] = new Coordinate(1, 1);
+
+            LineString line_string = new LineString(points);
+
+            AttributesTable attributes = new AttributesTable();
+            attributes.AddAttribute("FOO", "FOO");
+
+            Feature feature = new Feature((Geometry) Factory.CreateMultiLineString(new ILineString[] { line_string }), attributes);
+            Feature[] features = new Feature[1];
+            features[0] = feature;
+
+            ShapefileDataWriter shp_writer = new ShapefileDataWriter("C:\\line_string");
+            shp_writer.Header = ShapefileDataWriter.GetHeader(features[0], features.Length);
+            shp_writer.Write(features);             
         }
 
         private void TestSharcDbf()

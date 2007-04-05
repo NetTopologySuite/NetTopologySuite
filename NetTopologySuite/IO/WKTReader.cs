@@ -173,17 +173,17 @@ namespace GisSharpBlog.NetTopologySuite.IO
         {
             Token token = tokens[index++] as Token;            
 
-            if(token is EofToken)
+            if (token is EofToken)
                 throw new ParseException("Expected number but encountered end of stream");
-            else if(token is EolToken)
+            else if (token is EolToken)
                 throw new ParseException("Expected number but encountered end of line");
-            else if(token is FloatToken || token is IntToken)
-                return (double)token.ConvertToType(typeof(double));
-            else if(token is WordToken)
+            else if (token is FloatToken || token is IntToken)
+                return (double) token.ConvertToType(typeof(double));
+            else if (token is WordToken)
                 throw new ParseException("Expected number but encountered word: " + token.StringValue);
-            else if(token.StringValue == "(")
+            else if (token.StringValue == "(")
                 throw new ParseException("Expected number but encountered '('");
-            else if(token.StringValue == ")")
+            else if (token.StringValue == ")")
                 throw new ParseException("Expected number but encountered ')'");
             else if (token.StringValue == ",")
                 throw new ParseException("Expected number but encountered ','");
