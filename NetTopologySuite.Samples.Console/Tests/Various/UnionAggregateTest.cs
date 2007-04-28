@@ -54,11 +54,11 @@ namespace  GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                     {
                         Debug.WriteLine(count + ": " + ex.Message);
                         Debug.WriteLine(ex.StackTrace);
-                        Debug.WriteLine();
+                        Debug.WriteLine(String.Empty);
                         Debug.WriteLine("--- BEGIN RESULT ---");
                         Debug.WriteLine(result);
                         Debug.WriteLine("--- END RESULT ---");
-                        Debug.WriteLine();
+                        Debug.WriteLine(String.Empty);
                         Debug.WriteLine("--- BEGIN CURRENT ---");
                         Debug.WriteLine(current);
                         Debug.WriteLine("--- END CURRENT ---");
