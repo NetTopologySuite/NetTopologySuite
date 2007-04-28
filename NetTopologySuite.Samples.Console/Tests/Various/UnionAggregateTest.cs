@@ -38,7 +38,7 @@ namespace  GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             int count = 0;
             IGeometry current = null;
             IGeometry result = null;
-            using (ShapefileDataReader reader = new ShapefileDataReader("sa_region", Factory))
+            using (ShapefileDataReader reader = new ShapefileDataReader("sa_region", GeometryFactory.Fixed))
             {                
                 while (reader.Read())
                 {
