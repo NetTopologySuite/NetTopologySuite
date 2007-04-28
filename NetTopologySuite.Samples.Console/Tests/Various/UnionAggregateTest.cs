@@ -36,6 +36,7 @@ namespace  GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         public void PerformUnionAggregateTest()
         {
             int count = 0;
+            IGeometry current = null;
             IGeometry result = null;
             using (ShapefileDataReader reader = new ShapefileDataReader("sa_region", Factory))
             {                
@@ -43,15 +44,24 @@ namespace  GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 {
                     try
                     {
+                        current = reader.Geometry;
                         if (result == null)
-                            result = reader.Geometry;
-                        else result = result.Union(reader.Geometry);
+                             result = current;
+                        else result = result.Union(current);
                         Debug.WriteLine("Iteration => " + ++count);
                     }
                     catch (TopologyException ex)
                     {
-                        Debug.WriteLine(count + ": " + ex.ToString());
+                        Debug.WriteLine(count + ": " + ex.Message);
                         Debug.WriteLine(ex.StackTrace);
+                        Debug.WriteLine();
+                        Debug.WriteLine("--- BEGIN RESULT ---");
+                        Debug.WriteLine(result);
+                        Debug.WriteLine("--- END RESULT ---");
+                        Debug.WriteLine();
+                        Debug.WriteLine("--- BEGIN CURRENT ---");
+                        Debug.WriteLine(current);
+                        Debug.WriteLine("--- END CURRENT ---");
                         throw ex;
                     }                    
                 }
