@@ -219,7 +219,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="locValue"></param>
         public  void SetLocation(Positions locIndex, Locations locValue)
         {
-            location[(int)locIndex] = locValue;
+            location[(int)locIndex] = locValue;            
         }
 
         /// <summary>
