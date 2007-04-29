@@ -307,8 +307,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 if (label.GetLocation(geomIndex, Positions.On) == Locations.Null)
                     label.SetLocation(geomIndex, Positions.On, currLoc);
                 // set side labels (if any)
-                if (label.IsArea())    //ORIGINAL
-                // if (label.IsArea(geomIndex)) 
+                if (label.IsArea(geomIndex)) 
                 {
                     Locations leftLoc   = label.GetLocation(geomIndex, Positions.Left);
                     Locations rightLoc  = label.GetLocation(geomIndex, Positions.Right);
