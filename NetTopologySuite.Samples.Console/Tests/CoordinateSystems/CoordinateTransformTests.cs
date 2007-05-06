@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using GisSharpBlog.NetTopologySuite.Geometries.LightStructs;
+using SharpMap.Geometries.LightStructs;
 
-using GisSharpBlog.NetTopologySuite.CoordinateSystems;
-using GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations;
+using SharpMap.CoordinateSystems;
+using SharpMap.CoordinateSystems.Transformations;
 
 using NUnit.Framework;
 
@@ -25,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.CoordinateSystems
 		[Test]
 		public void TestAlbersProjection()
 		{
-			CoordinateSystemFactory cFac = new GisSharpBlog.NetTopologySuite.CoordinateSystems.CoordinateSystemFactory();
+			CoordinateSystemFactory cFac = new SharpMap.CoordinateSystems.CoordinateSystemFactory();
 
 			IEllipsoid ellipsoid = cFac.CreateFlattenedSphere("Clarke 1866", 6378206.4, 294.9786982138982, LinearUnit.USSurveyFoot);
 
@@ -61,7 +61,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.CoordinateSystems
 		[Test]
 		public void TestMercator_1SP_Projection()
 		{
-			CoordinateSystemFactory cFac = new GisSharpBlog.NetTopologySuite.CoordinateSystems.CoordinateSystemFactory();
+            CoordinateSystemFactory cFac = new SharpMap.CoordinateSystems.CoordinateSystemFactory();
 
 			IEllipsoid ellipsoid = cFac.CreateFlattenedSphere("Bessel 1840", 6377397.155, 299.15281, LinearUnit.Metre);
 
@@ -96,7 +96,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.CoordinateSystems
 		[Test]
 		public void TestMercator_2SP_Projection()
 		{
-			CoordinateSystemFactory cFac = new GisSharpBlog.NetTopologySuite.CoordinateSystems.CoordinateSystemFactory();
+            CoordinateSystemFactory cFac = new SharpMap.CoordinateSystems.CoordinateSystemFactory();
 
 			IEllipsoid ellipsoid = cFac.CreateFlattenedSphere("Krassowski 1940", 6378245.0, 298.3, LinearUnit.Metre);
 
@@ -130,7 +130,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.CoordinateSystems
 		[Test]
 		public void TestTransverseMercator_Projection()
 		{
-			CoordinateSystemFactory cFac = new GisSharpBlog.NetTopologySuite.CoordinateSystems.CoordinateSystemFactory();
+            CoordinateSystemFactory cFac = new SharpMap.CoordinateSystems.CoordinateSystemFactory();
 
 			IEllipsoid ellipsoid = cFac.CreateFlattenedSphere("Airy 1830", 6377563.396, 299.32496, LinearUnit.Metre);
 
@@ -165,7 +165,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.CoordinateSystems
 		[Test]
 		public void TestLambertConicConformal2SP_Projection()
 		{
-			CoordinateSystemFactory cFac = new GisSharpBlog.NetTopologySuite.CoordinateSystems.CoordinateSystemFactory();
+            CoordinateSystemFactory cFac = new SharpMap.CoordinateSystems.CoordinateSystemFactory();
 
 			IEllipsoid ellipsoid = cFac.CreateFlattenedSphere("Clarke 1866", 20925832.16, 294.97470, LinearUnit.USSurveyFoot);
 

@@ -39,7 +39,7 @@
 using System;
 #endregion
 
-namespace GisSharpBlog.NetTopologySuite.Converters.WellKnownText
+namespace SharpMap.Converters.WellKnownText
 {
 	/// <summary>
 	/// Represents the type of token created by the StreamTokenizer class.

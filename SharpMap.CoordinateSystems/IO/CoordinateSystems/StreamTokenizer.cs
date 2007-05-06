@@ -39,8 +39,8 @@ using System;
 using System.IO;
 using System.Text;
 
-using GisSharpBlog.NetTopologySuite.Converters.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using SharpMap.Converters.WellKnownText;
+using SharpMap.Utilities;
 
 // http://java.sun.com/j2se/1.4/docs/api/java/io/StreamTokenizer.html
 // a better implementation could be written. Here is a good Java implementation of StreamTokenizer.
@@ -48,7 +48,7 @@ using GisSharpBlog.NetTopologySuite.Utilities;
 // a C# StringTokenizer
 //  http://sourceforge.net/snippet/detail.php?type=snippet&id=101171
 
-namespace GisSharpBlog.NetTopologySuite.Converters.WellKnownText.IO
+namespace SharpMap.Converters.WellKnownText.IO
 {
 
 	///<summary>

@@ -38,10 +38,10 @@
 using System;
 using System.IO;
 
-using GisSharpBlog.NetTopologySuite.Converters.WellKnownText.IO;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using SharpMap.Converters.WellKnownText.IO;
+using SharpMap.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.Converters.WellKnownText
+namespace SharpMap.Converters.WellKnownText
 {
 	/// <summary>
 	/// Reads a stream of Well Known Text (wkt) string and returns a stream of tokens.

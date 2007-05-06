@@ -59,7 +59,7 @@ namespace SharpMap.CoordinateSystems
 		/// <returns>The resulting spatial reference object</returns>
 		public ICoordinateSystem CreateFromWkt(string WKT)
 		{
-			return GisSharpBlog.NetTopologySuite.Converters.WellKnownText.CoordinateSystemWktReader.Parse(WKT) as ICoordinateSystem;
+			return SharpMap.Converters.WellKnownText.CoordinateSystemWktReader.Parse(WKT) as ICoordinateSystem;
 		}
 		
 		/// <summary>

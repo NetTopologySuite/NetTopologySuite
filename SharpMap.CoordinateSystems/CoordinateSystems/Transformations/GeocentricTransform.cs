@@ -21,7 +21,7 @@ using System.Text;
 
 using SharpMap.CoordinateSystems;
 using SharpMap.CoordinateSystems.Transformations;
-using GisSharpBlog.NetTopologySuite.Geometries.LightStructs;
+using SharpMap.Geometries.LightStructs;
 
 namespace SharpMap.CoordinateSystems.Transformations
 {

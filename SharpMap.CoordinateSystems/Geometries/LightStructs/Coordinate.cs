@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.LightStructs
+namespace SharpMap.Geometries.LightStructs
 {
     /// <summary>
     /// 

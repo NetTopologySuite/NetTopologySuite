@@ -377,6 +377,10 @@
       <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
       <Name>GeoAPI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SharpMap.CoordinateSystems\SharpMap.CoordinateSystems.csproj">
+      <Project>{E028BDD2-55E1-4E5F-BE31-35FAEC8D6428}</Project>
+      <Name>SharpMap.CoordinateSystems</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using GisSharpBlog.NetTopologySuite.Utilities;
+using SharpMap.Utilities;
 
 namespace SharpMap.CoordinateSystems
 {

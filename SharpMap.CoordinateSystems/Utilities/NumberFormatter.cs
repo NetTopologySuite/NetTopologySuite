@@ -5,7 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 
-namespace GisSharpBlog.NetTopologySuite.Utilities
+namespace SharpMap.Utilities
 {
     /// <summary>
     /// 

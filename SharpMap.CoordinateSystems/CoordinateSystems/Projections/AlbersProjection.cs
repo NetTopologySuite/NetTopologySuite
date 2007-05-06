@@ -38,7 +38,7 @@
 using System;
 using System.Collections.Generic;
 using SharpMap.CoordinateSystems;
-using GisSharpBlog.NetTopologySuite.Geometries.LightStructs;
+using SharpMap.Geometries.LightStructs;
 using SharpMap.CoordinateSystems.Transformations;
 
 namespace SharpMap.CoordinateSystems.Projections

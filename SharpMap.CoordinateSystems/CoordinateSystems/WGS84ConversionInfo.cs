@@ -17,7 +17,7 @@
 
 using System;
 
-using GisSharpBlog.NetTopologySuite.Utilities;
+using SharpMap.Utilities;
 
 namespace SharpMap.CoordinateSystems
 { 

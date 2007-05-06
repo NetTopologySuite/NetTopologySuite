@@ -98,6 +98,10 @@
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
       <Name>NetTopologySuite</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SharpMap.CoordinateSystems\SharpMap.CoordinateSystems.csproj">
+      <Project>{E028BDD2-55E1-4E5F-BE31-35FAEC8D6428}</Project>
+      <Name>SharpMap.CoordinateSystems</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="lib\nunit.framework.dll" />

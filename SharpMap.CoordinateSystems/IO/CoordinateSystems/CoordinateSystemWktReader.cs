@@ -40,7 +40,7 @@ using System.IO;
 using System.Collections.Generic;
 using SharpMap.CoordinateSystems;
 
-namespace GisSharpBlog.NetTopologySuite.Converters.WellKnownText
+namespace SharpMap.Converters.WellKnownText
 {
 	/// <summary>
 	/// Creates an object based on the supplied Well Known Text (WKT).
