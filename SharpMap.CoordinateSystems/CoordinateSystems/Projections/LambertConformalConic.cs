@@ -40,7 +40,6 @@ using System.Collections.Generic;
 
 using SharpMap.CoordinateSystems;
 using SharpMap.CoordinateSystems.Transformations;
-using SharpMap.Geometries.LightStructs;
 
 namespace SharpMap.CoordinateSystems.Projections
 {
@@ -70,6 +69,7 @@ namespace SharpMap.CoordinateSystems.Projections
 		private double rh=0;              /* height above ellipsoid       */
 
 		#region Constructors
+
 		/// <summary>
 		/// Creates an instance of an LambertConformalConic2SPProjection projection object.
 		/// </summary>
@@ -184,16 +184,15 @@ namespace SharpMap.CoordinateSystems.Projections
 		}
 		#endregion
 
-
 		/// <summary>
 		/// Converts coordinates in decimal degrees to projected meters.
 		/// </summary>
 		/// <param name="lonlat">The point in decimal degrees.</param>
 		/// <returns>Point in projected meters</returns>
-		public override Point DegreesToMeters(Point lonlat)
+        public override double[] DegreesToMeters(double[] lonlat)
 		{
-			double dLongitude = Degrees2Radians(lonlat.X);
-			double dLatitude = Degrees2Radians(lonlat.Y);
+			double dLongitude = Degrees2Radians(lonlat[0]);
+			double dLatitude = Degrees2Radians(lonlat[1]);
 
 			double con;                     /* temporary angle variable             */
 			double rh1;                     /* height above ellipsoid               */
@@ -213,15 +212,13 @@ namespace SharpMap.CoordinateSystems.Projections
 			{
 				con = dLatitude * ns;
 				if (con <= 0)
-				{
 					throw new ApplicationException();
-				}
 				rh1 = 0;
 			}
 			theta = ns * adjust_lon(dLongitude - center_lon);
-			return new Point(
+			return new double[] {
 				rh1 * Math.Sin(theta) + this._falseEasting,
-				rh - rh1 * Math.Cos(theta) + this._falseNorthing);
+				rh - rh1 * Math.Cos(theta) + this._falseNorthing, };
 	
 		}
 
@@ -230,10 +227,10 @@ namespace SharpMap.CoordinateSystems.Projections
 		/// </summary>
 		/// <param name="p">Point in meters</param>
 		/// <returns>Transformed point in decimal degrees</returns>
-		public override Point MetersToDegrees(Point p)
+        public override double[] MetersToDegrees(double[] p)
 		{
-			double dLongitude =Double.NaN;
-			double dLatitude =Double.NaN;
+			double dLongitude = Double.NaN;
+			double dLatitude = Double.NaN;
 
 			double rh1;			/* height above ellipsoid	*/
 			double con;			/* sign variable		*/
@@ -242,8 +239,8 @@ namespace SharpMap.CoordinateSystems.Projections
 			long   flag;			/* error flag			*/
 
 			flag = 0;
-			double dX = p.X - this._falseEasting;
-			double dY = rh - p.Y + this._falseNorthing;
+			double dX = p[0] - this._falseEasting;
+			double dY = rh - p[1] + this._falseNorthing;
 			if (ns > 0)
 			{
 				rh1 = Math.Sqrt(dX * dX + dY * dY);
@@ -263,16 +260,12 @@ namespace SharpMap.CoordinateSystems.Projections
 				ts = Math.Pow((rh1/(this._semiMajor * f0)),con);
 				dLatitude = phi2z(e,ts,out flag);
 				if (flag != 0)
-				{
-					throw new ApplicationException();
-				}
+					throw new ApplicationException();				
 			}
-			else
-			{
-				dLatitude = -HALF_PI;
-			}
+			else dLatitude = -HALF_PI;
+			
 			dLongitude = adjust_lon(theta/ns + center_lon);
-			return new Point(Radians2Degrees(dLongitude), Radians2Degrees(dLatitude));
+            return new double[] { Radians2Degrees(dLongitude), Radians2Degrees(dLatitude), };
 		}
 
 		/// <summary>
@@ -282,9 +275,7 @@ namespace SharpMap.CoordinateSystems.Projections
 		public override IMathTransform Inverse()
 		{
 			if (_inverse==null)
-			{
 				_inverse = new LambertConformalConic2SP(this._Parameters, ! _isInverse);
-			}
 			return _inverse;
 		}
 	}

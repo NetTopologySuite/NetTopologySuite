@@ -19,8 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using SharpMap.Geometries.LightStructs;
-
 namespace SharpMap.CoordinateSystems.Transformations
 {
 	/// <summary>
@@ -85,7 +83,7 @@ namespace SharpMap.CoordinateSystems.Transformations
 		/// </summary>
 		/// <param name="point"></param>
 		/// <returns></returns>
-		public virtual double[,] Derivative(Point point)
+		public virtual double[,] Derivative(double[] point)
 		{
 			throw new NotImplementedException();
 		}
@@ -146,7 +144,7 @@ namespace SharpMap.CoordinateSystems.Transformations
 		/// </summary>
 		/// <param name="point"></param>
 		/// <returns></returns>
-		public abstract Point Transform(Point point);
+        public abstract double[] Transform(double[] point);
 
 		/// <summary>
 		/// Transforms a list of coordinate point ordinal values.
@@ -165,7 +163,7 @@ namespace SharpMap.CoordinateSystems.Transformations
 		/// </remarks>
 		/// <param name="points"></param>
 		/// <returns></returns>
-		public abstract List<Point> TransformList(List<Point> points);
+        public abstract List<double[]> TransformList(List<double[]> points);
 
 		/// <summary>
 		/// Reverses the transformation
@@ -185,6 +183,7 @@ namespace SharpMap.CoordinateSystems.Transformations
 		/// R2D
 		/// </summary>
 		protected const double R2D = 180 / Math.PI;
+
 		/// <summary>
 		/// D2R
 		/// </summary>
@@ -199,6 +198,7 @@ namespace SharpMap.CoordinateSystems.Transformations
 		{
 			return (R2D * rad);
 		}
+
 		#endregion
 	}
 }

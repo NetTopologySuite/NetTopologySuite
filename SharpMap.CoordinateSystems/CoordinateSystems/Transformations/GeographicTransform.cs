@@ -19,8 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using SharpMap.Geometries.LightStructs;
-
 namespace SharpMap.CoordinateSystems.Transformations
 {
 	/// <summary>
@@ -99,13 +97,13 @@ namespace SharpMap.CoordinateSystems.Transformations
 		/// </summary>
 		/// <param name="point"></param>
 		/// <returns></returns>
-		public override Point Transform(Point point)
+        public override double[] Transform(double[] point)
 		{
-			Point pOut = (Point) point.Clone();
-			pOut.X /= SourceGCS.AngularUnit.RadiansPerUnit;
-			pOut.X -= SourceGCS.PrimeMeridian.Longitude / SourceGCS.PrimeMeridian.AngularUnit.RadiansPerUnit;
-			pOut.X += TargetGCS.PrimeMeridian.Longitude / TargetGCS.PrimeMeridian.AngularUnit.RadiansPerUnit;
-			pOut.X *= SourceGCS.AngularUnit.RadiansPerUnit;
+            double[] pOut = (double[]) point.Clone();
+            pOut[0] /= SourceGCS.AngularUnit.RadiansPerUnit;
+            pOut[0] -= SourceGCS.PrimeMeridian.Longitude / SourceGCS.PrimeMeridian.AngularUnit.RadiansPerUnit;
+            pOut[0] += TargetGCS.PrimeMeridian.Longitude / TargetGCS.PrimeMeridian.AngularUnit.RadiansPerUnit;
+            pOut[0] *= SourceGCS.AngularUnit.RadiansPerUnit;
 			return pOut;
 		}
 
@@ -126,10 +124,10 @@ namespace SharpMap.CoordinateSystems.Transformations
 		/// </remarks>
 		/// <param name="points"></param>
 		/// <returns></returns>
-		public override List<Point> TransformList(List<Point> points)
+        public override List<double[]> TransformList(List<double[]> points)
 		{
-			List<Point> trans = new List<Point>(points.Count);
-			foreach (Point p in points)
+            List<double[]> trans = new List<double[]>(points.Count);
+            foreach (double[] p in points)
 				trans.Add(Transform(p));
 			return trans;
 		}

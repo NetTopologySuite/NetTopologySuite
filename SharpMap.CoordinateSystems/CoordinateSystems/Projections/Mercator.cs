@@ -40,7 +40,6 @@ using System.Collections.Generic;
 
 using SharpMap.CoordinateSystems;
 using SharpMap.CoordinateSystems.Transformations;
-using SharpMap.Geometries.LightStructs;
 
 namespace SharpMap.CoordinateSystems.Projections
 {
@@ -151,24 +150,22 @@ namespace SharpMap.CoordinateSystems.Projections
 		/// </remarks>
 		/// <param name="lonlat">The point in decimal degrees.</param>
 		/// <returns>Point in projected meters</returns>
-		public override Point DegreesToMeters(Point lonlat)
+        public override double[] DegreesToMeters(double[] lonlat)
 		{
-			if (double.IsNaN(lonlat.X) || double.IsNaN(lonlat.Y))
-				return Point.Null;
-			double dLongitude = Degrees2Radians(lonlat.X);
-			double dLatitude = Degrees2Radians(lonlat.Y);
+			if (double.IsNaN(lonlat[0]) || double.IsNaN(lonlat[1]))
+                return new double[] { Double.NaN, Double.NaN, };
+			double dLongitude = Degrees2Radians(lonlat[0]);
+			double dLatitude = Degrees2Radians(lonlat[1]);
 
 			/* Forward equations */
 			if (Math.Abs(Math.Abs(dLatitude) - HALF_PI)  <= EPSLN)
-			{
 				throw new ApplicationException("Transformation cannot be computed at the poles.");
-			}
 			else
 			{
 				double esinphi = e*Math.Sin(dLatitude);
 				double x = _falseEasting + this._semiMajor * k0 * (dLongitude - lon_center);
 				double y = _falseNorthing + this._semiMajor * k0 * Math.Log(Math.Tan(PI * 0.25 + dLatitude * 0.5) * Math.Pow((1 - esinphi) / (1 + esinphi), e * 0.5));
-				return new Point(x, y);
+				return new double[] { x, y, };
 			}
 		}
 
@@ -177,16 +174,16 @@ namespace SharpMap.CoordinateSystems.Projections
 		/// </summary>
 		/// <param name="p">Point in meters</param>
 		/// <returns>Transformed point in decimal degrees</returns>
-		public override Point MetersToDegrees(Point p)
+        public override double[] MetersToDegrees(double[] p)
 		{	
-			double dLongitude =Double.NaN ; 
-			double dLatitude =Double.NaN ;
+			double dLongitude = Double.NaN ; 
+			double dLatitude = Double.NaN ;
 	
 			/* Inverse equations
 			  -----------------*/
-			double dX = p.X - this._falseEasting;
-			double dY = p.Y - this._falseNorthing;
-			double ts = Math.Exp(-dY/(this._semiMajor * k0)); //t
+			double dX = p[0] - this._falseEasting;
+			double dY = p[1] - this._falseNorthing;
+			double ts = Math.Exp(-dY / (this._semiMajor * k0)); //t
 			
 			double chi = HALF_PI - 2 * Math.Atan(ts);
 			double e4 = Math.Pow(e, 4);
@@ -194,18 +191,14 @@ namespace SharpMap.CoordinateSystems.Projections
 			double e8 = Math.Pow(e, 8);
 
 			dLatitude = chi + (e2 * 0.5 + 5 * e4 / 24 + e6 / 12 + 13 * e8 / 360) * Math.Sin(2 * chi)
-			+ (7 * e4 / 48 + 29 * e6 / 240 + 811 * e8 / 11520) * Math.Sin(4 * chi) +
-			+(7 * e6 / 120 + 81 * e8 / 1120) * Math.Sin(6 * chi) +
-			+(4279 * e8 / 161280) * Math.Sin(8 * chi);
-			
-			dLongitude = (p.X - this._falseEasting) / (this._semiMajor * k0) + lon_center;
+			    + (7 * e4 / 48 + 29 * e6 / 240 + 811 * e8 / 11520) * Math.Sin(4 * chi) +
+			    +(7 * e6 / 120 + 81 * e8 / 1120) * Math.Sin(6 * chi) +
+			    +(4279 * e8 / 161280) * Math.Sin(8 * chi);
 
-			return new Point(Radians2Degrees(dLongitude), Radians2Degrees(dLatitude));
+            dLongitude = dX / (this._semiMajor * k0) + lon_center;
+            return new double[] { Radians2Degrees(dLongitude), Radians2Degrees(dLatitude), };
 		}
 		
-		
-
-
 		/// <summary>
 		/// Returns the inverse of this projection.
 		/// </summary>

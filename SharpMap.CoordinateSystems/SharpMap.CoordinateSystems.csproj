@@ -102,19 +102,19 @@
     <Compile Include="CoordinateSystems\Transformations\TransformType.cs" />
     <Compile Include="CoordinateSystems\Unit.cs" />
     <Compile Include="CoordinateSystems\WGS84ConversionInfo.cs" />
-    <Compile Include="Geometries\LightStructs\Coordinate.cs" />
-    <Compile Include="Geometries\LightStructs\Envelope.cs" />
     <Compile Include="IO\CoordinateSystems\CoordinateSystemWktReader.cs" />
     <Compile Include="IO\CoordinateSystems\SpatialReference.cs" />
     <Compile Include="IO\CoordinateSystems\StreamTokenizer.cs" />
     <Compile Include="IO\CoordinateSystems\TokenType.cs" />
     <Compile Include="IO\CoordinateSystems\WKTStreamTokenizer.cs" />
-    <Compile Include="Geometries\LightStructs\Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\NumberFormatter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="scskey.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Geometries\LightStructs\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

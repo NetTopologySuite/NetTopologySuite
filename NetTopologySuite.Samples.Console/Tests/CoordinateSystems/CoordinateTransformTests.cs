@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using SharpMap.Geometries.LightStructs;
-
 using SharpMap.CoordinateSystems;
 using SharpMap.CoordinateSystems.Transformations;
 
@@ -46,11 +44,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.CoordinateSystems
 
 			ICoordinateTransformation trans = new CoordinateTransformationFactory().CreateFromCoordinateSystems(gcs, coordsys);
 
-			Point pGeo = new Point(-75, 35);
-			Point pUtm = trans.MathTransform.Transform(pGeo);
-			Point pGeo2 = trans.MathTransform.Inverse().Transform(pUtm);
+            double[] pGeo = new double[] { -75, 35, };
+            double[] pUtm = trans.MathTransform.Transform(pGeo);
+            double[] pGeo2 = trans.MathTransform.Inverse().Transform(pUtm);
 
-			Point expected = new Point(1885472.7, 1535925);
+            double[] expected = new double[] { 1885472.7, 1535925, };
 			Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.05), String.Format("Albers forward transformation outside tolerance, Expected {0}, got {1}", expected.ToString(), pUtm.ToString()));
 			Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), String.Format("Albers reverse transformation outside tolerance, Expected {0}, got {1}", pGeo.ToString(), pGeo2.ToString()));
 		}
@@ -81,11 +79,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.CoordinateSystems
 
 			ICoordinateTransformation trans = new CoordinateTransformationFactory().CreateFromCoordinateSystems(gcs, coordsys);
 
-			Point pGeo = new Point(120, -3);
-			Point pUtm = trans.MathTransform.Transform(pGeo);
-			Point pGeo2 = trans.MathTransform.Inverse().Transform(pUtm);
+            double[] pGeo = new double[] { 120, -3, };
+            double[] pUtm = trans.MathTransform.Transform(pGeo);
+            double[] pGeo2 = trans.MathTransform.Inverse().Transform(pUtm);
 
-			Point expected = new Point(5009726.58, 569150.82);
+            double[] expected = new double[] { 5009726.58, 569150.82, };
 			Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.02), String.Format("Mercator_1SP forward transformation outside tolerance, Expected {0}, got {1}", expected.ToString(), pUtm.ToString()));
 			Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), String.Format("Mercator_1SP reverse transformation outside tolerance, Expected {0}, got {1}", pGeo.ToString(), pGeo2.ToString()));
 		}
@@ -115,11 +113,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.CoordinateSystems
 
 			ICoordinateTransformation trans = new CoordinateTransformationFactory().CreateFromCoordinateSystems(gcs, coordsys);
 
-			Point pGeo = new Point(53, 53);
-			Point pUtm = trans.MathTransform.Transform(pGeo);
-			Point pGeo2 = trans.MathTransform.Inverse().Transform(pUtm);
+            double[] pGeo = new double[] { 53, 53, };
+            double[] pUtm = trans.MathTransform.Transform(pGeo);
+			double[] pGeo2 = trans.MathTransform.Inverse().Transform(pUtm);
 
-			Point expected = new Point(165704.29, 5171848.07);
+            double[] expected = new double[] { 165704.29, 5171848.07, };
 			Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.02), String.Format("Mercator_2SP forward transformation outside tolerance, Expected {0}, got {1}", expected.ToString(), pUtm.ToString()));
 			Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), String.Format("Mercator_2SP reverse transformation outside tolerance, Expected {0}, got {1}", pGeo.ToString(), pGeo2.ToString()));
 		}
@@ -150,11 +148,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.CoordinateSystems
 
 			ICoordinateTransformation trans = new CoordinateTransformationFactory().CreateFromCoordinateSystems(gcs, coordsys);
 
-			Point pGeo = new Point(0.5, 50.5);
-			Point pUtm = trans.MathTransform.Transform(pGeo);
-			Point pGeo2 = trans.MathTransform.Inverse().Transform(pUtm);
+            double[] pGeo = new double[] {0.5, 50.5, };
+			double[] pUtm = trans.MathTransform.Transform(pGeo);
+			double[] pGeo2 = trans.MathTransform.Inverse().Transform(pUtm);
 
-			Point expected = new Point(577274.99, 69740.50);
+            double[] expected = new double[] { 577274.99, 69740.50, };
 			Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.02), String.Format("TransverseMercator forward transformation outside tolerance, Expected {0}, got {1}", expected.ToString(), pUtm.ToString()));
 			Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), String.Format("TransverseMercator reverse transformation outside tolerance, Expected {0}, got {1}", pGeo.ToString(), pGeo2.ToString()));
 		}
@@ -186,11 +184,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.CoordinateSystems
 
 			ICoordinateTransformation trans = new CoordinateTransformationFactory().CreateFromCoordinateSystems(gcs, coordsys);
 
-			Point pGeo = new Point(-96, 28.5);
-			Point pUtm = trans.MathTransform.Transform(pGeo);
-			Point pGeo2 = trans.MathTransform.Inverse().Transform(pUtm);
+            double[] pGeo = new double[] { -96, 28.5, };
+            double[] pUtm = trans.MathTransform.Transform(pGeo);
+            double[] pGeo2 = trans.MathTransform.Inverse().Transform(pUtm);
 
-			Point expected = new Point(2963503.91, 254759.80);
+            double[] expected = new double[] { 2963503.91, 254759.80, };
 			Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.02), String.Format("LambertConicConformal2SP forward transformation outside tolerance, Expected {0}, got {1}", expected.ToString(), pUtm.ToString()));
 			Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), String.Format("LambertConicConformal2SP reverse transformation outside tolerance, Expected {0}, got {1}", pGeo.ToString(), pGeo2.ToString()));
 
@@ -208,11 +206,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.CoordinateSystems
 			IGeocentricCoordinateSystem gcenCs = cFac.CreateGeocentricCoordinateSystem("ETRF89 Geocentric", HorizontalDatum.ETRF89, LinearUnit.Metre, PrimeMeridian.Greenwich);
 			CoordinateTransformationFactory gtFac = new CoordinateTransformationFactory();
 			ICoordinateTransformation ct = gtFac.CreateFromCoordinateSystems(gcs,gcenCs);
-			Point pExpected = FromDMS(2, 7, 46.38, 53, 48, 33.82);
-			Point pExpected3D = new Point(pExpected.X, pExpected.Y, 73.0);
-			Point p0 = new Point(3771793.97, 140253.34, 5124304.35);
-			Point p1 = ct.MathTransform.Transform(pExpected3D);
-			Point p2 = ct.MathTransform.Inverse().Transform(p1);
+            double[] pExpected = FromDMS(2, 7, 46.38, 53, 48, 33.82);
+            double[] pExpected3D = new double[] { pExpected[0], pExpected[1], 73.0, };
+            double[] p0 = new double[] { 3771793.97, 140253.34, 5124304.35, };
+			double[] p1 = ct.MathTransform.Transform(pExpected3D);
+			double[] p2 = ct.MathTransform.Inverse().Transform(p1);
 			Assert.IsTrue(Tolerance3DLessThan(p1, p0, 0.01));
 			Assert.IsTrue(ToleranceLessThan(p2, pExpected, 0.00001));
 		}
@@ -269,20 +267,20 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.CoordinateSystems
 			ICoordinateTransformation ctED50_Geo2Gcen = ctFac.CreateFromCoordinateSystems(gcsED50, gcenCsED50); //Geographic->Geocentric (ED50)
 
 			//Test datum-shift from WGS72 to WGS84			
-			Point pGeoCenWGS72 = new Point(3657660.66, 255768.55, 5201382.11);			
+            double[] pGeoCenWGS72 = new double[] { 3657660.66, 255768.55, 5201382.11, };
 			ICoordinateTransformation geocen_ed50_2_Wgs84 = ctFac.CreateFromCoordinateSystems(gcenCsWGS72, gcenCsWGS84);
-			Point pGeoCenWGS84 = geocen_ed50_2_Wgs84.MathTransform.Transform(pGeoCenWGS72);			
-			Assert.IsTrue(Tolerance3DLessThan(new Point(3657660.78, 255778.43, 5201387.75), pGeoCenWGS84, 0.01));
+            double[] pGeoCenWGS84 = geocen_ed50_2_Wgs84.MathTransform.Transform(pGeoCenWGS72);			
+			Assert.IsTrue(Tolerance3DLessThan(new double[] { 3657660.78, 255778.43, 5201387.75, }, pGeoCenWGS84, 0.01));
 
 			ICoordinateTransformation utm_ed50_2_Wgs84 = ctFac.CreateFromCoordinateSystems(utmED50, utmWGS84);
-			Point pUTMED50 = new Point(600000, 6100000);
-			Point pUTMWGS84 = utm_ed50_2_Wgs84.MathTransform.Transform(pUTMED50);
-			Assert.IsTrue(ToleranceLessThan(new Point(599928.6, 6099790.2), pUTMWGS84, 0.1));
+            double[] pUTMED50 = new double[] { 600000, 6100000, };
+			double[] pUTMWGS84 = utm_ed50_2_Wgs84.MathTransform.Transform(pUTMED50);
+            Assert.IsTrue(ToleranceLessThan(new double[] { 599928.6, 6099790.2, }, pUTMWGS84, 0.1));
 
 			//Perform reverse
 			ICoordinateTransformation utm_Wgs84_2_Ed50 = ctFac.CreateFromCoordinateSystems(utmWGS84, utmED50);
 			pUTMED50 = utm_Wgs84_2_Ed50.MathTransform.Transform(pUTMWGS84);
-			Assert.IsTrue(ToleranceLessThan(new Point(600000, 6100000), pUTMED50, 0.1));			
+			Assert.IsTrue(ToleranceLessThan(new double[] { 600000, 6100000, }, pUTMED50, 0.1));			
 		}
 
         /// <summary>
@@ -292,9 +290,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.CoordinateSystems
         /// <param name="p2"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-		private bool ToleranceLessThan(Point p1, Point p2, double tolerance)
+        private bool ToleranceLessThan(double[] p1, double[] p2, double tolerance)
 		{
-			return Math.Abs(p1.X - p2.X) < tolerance && Math.Abs(p1.Y - p2.Y) < tolerance;
+			return Math.Abs(p1[0] - p2[0]) < tolerance && Math.Abs(p1[1] - p2[1]) < tolerance;
 		}
 
         /// <summary>
@@ -304,9 +302,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.CoordinateSystems
         /// <param name="p2"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-		private bool Tolerance3DLessThan(Point p1, Point p2, double tolerance)
+        private bool Tolerance3DLessThan(double[] p1, double[] p2, double tolerance)
 		{
-			return Math.Abs(p1.X - p2.X) < tolerance && Math.Abs(p1.Y - p2.Y) < tolerance && Math.Abs(p1.Z - p2.Z) < tolerance;
+			return Math.Abs(p1[0] - p2[0]) < tolerance && Math.Abs(p1[1] - p2[1]) < tolerance && Math.Abs(p1[2] - p2[2]) < tolerance;
 		}
 
         /// <summary>
@@ -319,10 +317,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.CoordinateSystems
         /// <param name="latMinutes"></param>
         /// <param name="latSeconds"></param>
         /// <returns></returns>
-        private static Point FromDMS(double longDegrees, double longMinutes, double longSeconds, double latDegrees, double latMinutes, double latSeconds)
+        private static double[] FromDMS(double longDegrees, double longMinutes, double longSeconds, double latDegrees, double latMinutes, double latSeconds)
         {
-            return new Point(longDegrees + longMinutes / 60 + longSeconds / 3600,
-                latDegrees + latMinutes / 60 + latSeconds / 3600);
+            return new double[] { longDegrees + longMinutes / 60 + longSeconds / 3600,
+                latDegrees + latMinutes / 60 + latSeconds / 3600, };
         }
 	}
 }

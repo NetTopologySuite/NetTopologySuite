@@ -165,6 +165,7 @@ namespace SharpMap.CoordinateSystems
 				gcc.LinearUnit.EqualParams(this.LinearUnit) &&
 				gcc.PrimeMeridian.EqualParams(this.PrimeMeridian);
 		}
+
 		#endregion
 	}
 }

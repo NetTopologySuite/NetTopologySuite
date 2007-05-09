@@ -38,7 +38,6 @@
 using System;
 using System.Collections.Generic;
 using SharpMap.CoordinateSystems;
-using SharpMap.Geometries.LightStructs;
 using SharpMap.CoordinateSystems.Transformations;
 
 namespace SharpMap.CoordinateSystems.Projections
@@ -190,17 +189,17 @@ namespace SharpMap.CoordinateSystems.Projections
 		/// </summary>
 		/// <param name="lonlat">The point in decimal degrees.</param>
 		/// <returns>Point in projected meters</returns>
-		public override Point DegreesToMeters(Point lonlat)
+        public override double[] DegreesToMeters(double[] lonlat)
 		{
-			double dLongitude = Degrees2Radians(lonlat.X);
-			double dLatitude = Degrees2Radians(lonlat.Y);
+			double dLongitude = Degrees2Radians(lonlat[0]);
+			double dLatitude = Degrees2Radians(lonlat[1]);
 
 			double a = alpha(dLatitude);
 			double ro = Ro(a);
 			double theta = n * (dLongitude - lon_center);
-			return new Point(
+            return new double[] {
 				_falseEasting + ro * Math.Sin(theta),
-				_falseNorthing + ro0 - (ro * Math.Cos(theta)));			
+				_falseNorthing + ro0 - (ro * Math.Cos(theta)), };			
 		}
 
 		/// <summary>
@@ -208,10 +207,10 @@ namespace SharpMap.CoordinateSystems.Projections
 		/// </summary>
 		/// <param name="p">Point in meters</param>
 		/// <returns>Transformed point in decimal degrees</returns>
-		public override Point MetersToDegrees(Point p) 
+        public override double[] MetersToDegrees(double[] p) 
 		{
-			double theta = Math.Atan((p.X - _falseEasting) / (ro0 - (p.Y - _falseNorthing)));
-			double ro = Math.Sqrt(Math.Pow(p.X - _falseEasting, 2) + Math.Pow(ro0 - (p.Y - _falseNorthing), 2));
+			double theta = Math.Atan((p[0] - _falseEasting) / (ro0 - (p[1] - _falseNorthing)));
+			double ro = Math.Sqrt(Math.Pow(p[0] - _falseEasting, 2) + Math.Pow(ro0 - (p[1] - _falseNorthing), 2));
 			double q = (C - Math.Pow(ro, 2) * Math.Pow(n, 2) / Math.Pow(this._semiMajor, 2)) / n;
 			double b = Math.Sin(q / (1 - ((1 - e_sq) / (2 * e)) * Math.Log((1 - e) / (1 + e))));
 
@@ -229,8 +228,9 @@ namespace SharpMap.CoordinateSystems.Projections
 					throw new ApplicationException("Transformation failed to converge in Albers backwards transformation");
 			}
 			double lon = lon_center + (theta / n);
-			return new Point(Radians2Degrees(lon), Radians2Degrees(lat));
+            return new double[] { Radians2Degrees(lon), Radians2Degrees(lat), };
 		}
+
 		/// <summary>
 		/// Returns the inverse of this projection.
 		/// </summary>
@@ -238,13 +238,10 @@ namespace SharpMap.CoordinateSystems.Projections
 		public override IMathTransform Inverse()
 		{
 			if (_inverse == null)
-			{
 				_inverse = new AlbersProjection(this._Parameters, !_isInverse);
-			}
 			return _inverse;
 		}
 		
-
 		#endregion
 
 		#region Math helper functions

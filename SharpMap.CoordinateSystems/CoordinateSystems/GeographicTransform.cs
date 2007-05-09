@@ -19,8 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using SharpMap.Geometries.LightStructs;
-
 namespace SharpMap.CoordinateSystems
 {
 	/// <summary>
@@ -76,7 +74,7 @@ namespace SharpMap.CoordinateSystems
 		/// </summary>
 		/// <param name="points">On input points in the source geographic coordinate system</param>
 		/// <returns>Output points in the target geographic coordinate system</returns>
-		public List<Point> Forward(List<Point> points)
+        public List<double[]> Forward(List<double[]> points)
 		{
 			throw new NotImplementedException();
 			/*
@@ -95,7 +93,7 @@ namespace SharpMap.CoordinateSystems
 		/// </summary>
 		/// <param name="points">Input points in the target geographic coordinate system,</param>
 		/// <returns>Output points in the source geographic coordinate system</returns>
-		public List<Point> Inverse(List<Point> points)
+        public List<double[]> Inverse(List<double[]> points)
 		{
 			throw new NotImplementedException();
 		}

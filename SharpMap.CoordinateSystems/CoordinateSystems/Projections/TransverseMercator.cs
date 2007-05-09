@@ -40,7 +40,6 @@ using System.Collections.Generic;
 
 using SharpMap.CoordinateSystems;
 using SharpMap.CoordinateSystems.Transformations;
-using SharpMap.Geometries.LightStructs;
 
 namespace SharpMap.CoordinateSystems.Projections
 {
@@ -154,10 +153,10 @@ namespace SharpMap.CoordinateSystems.Projections
 		/// </summary>
 		/// <param name="lonlat">The point in decimal degrees.</param>
 		/// <returns>Point in projected meters</returns>
-		public override Point DegreesToMeters(Point lonlat)
+        public override double[] DegreesToMeters(double[] lonlat)
 		{
-			double lon = Degrees2Radians(lonlat.X);
-			double lat = Degrees2Radians(lonlat.Y);
+			double lon = Degrees2Radians(lonlat[0]);
+			double lat = Degrees2Radians(lonlat[1]);
 
 			double delta_lon=0.0;	/* Delta longitude (Given longitude - center 	*/
 			double sin_phi, cos_phi;/* sin and cos value				*/
@@ -177,13 +176,13 @@ namespace SharpMap.CoordinateSystems.Projections
 			n   = r_major / Math.Sqrt(con);
 			ml  = r_major * mlfn(e0, e1, e2, e3, lat);
 
-			return new Point(
+            return new double[] {
 				scale_factor * n * al * (1.0 + als / 6.0 * (1.0 - t + c + als / 20.0 *
 				(5.0 - 18.0 * t + Math.Pow(t,2) + 72.0 * c - 58.0 * esp))) + false_easting
 			,
 				 scale_factor * (ml - ml0 + n * tq * (als * (0.5 + als / 24.0 *
 				(5.0 - t + 9.0 * c + 4.0 * Math.Pow(c,2) + als / 30.0 * (61.0 - 58.0 * t
-				+ Math.Pow(t,2) + 600.0 * c - 330.0 * esp))))) + false_northing);
+				+ Math.Pow(t,2) + 600.0 * c - 330.0 * esp))))) + false_northing, };
 		}
 
 		/// <summary>
@@ -191,7 +190,7 @@ namespace SharpMap.CoordinateSystems.Projections
 		/// </summary>
 		/// <param name="p">Point in meters</param>
 		/// <returns>Transformed point in decimal degrees</returns>
-		public override Point MetersToDegrees(Point p)
+        public override double[] MetersToDegrees(double[] p)
 		{
 			double con,phi;		/* temporary angles				*/
 			double delta_phi;	/* difference between longitudes		*/
@@ -201,8 +200,8 @@ namespace SharpMap.CoordinateSystems.Projections
 			long max_iter = 6;			/* maximun number of iterations	*/
 
 	
-			double x = p.X - false_easting;
-			double y = p.Y - false_northing;
+			double x = p[0] - false_easting;
+			double y = p[1] - false_northing;
 
 			con = (ml0 + y / scale_factor) / r_major;
 			phi = con;
@@ -235,9 +234,9 @@ namespace SharpMap.CoordinateSystems.Projections
 				double lon = adjust_lon(central_meridian + (d * (1.0 - ds / 6.0 * (1.0 + 2.0 * t +
 					c - ds / 20.0 * (5.0 - 2.0 * c + 28.0 * t - 3.0 * cs + 8.0 * esp +
 					24.0 * ts))) / cos_phi));
-				return new Point(Radians2Degrees(lon), Radians2Degrees(lat));
+                return new double[] { Radians2Degrees(lon), Radians2Degrees(lat), };
 			}
-			else return new Point(Radians2Degrees(HALF_PI * sign(y)), Radians2Degrees(central_meridian));
+            else return new double[] { Radians2Degrees(HALF_PI * sign(y)), Radians2Degrees(central_meridian), };
 		}
 			
 		

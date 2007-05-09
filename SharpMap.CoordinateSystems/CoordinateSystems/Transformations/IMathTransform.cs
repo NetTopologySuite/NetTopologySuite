@@ -19,8 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using SharpMap.Geometries.LightStructs;
-
 namespace SharpMap.CoordinateSystems.Transformations
 {
 	/// <summary>
@@ -74,7 +72,7 @@ namespace SharpMap.CoordinateSystems.Transformations
 		/// </summary>
 		/// <param name="point"></param>
 		/// <returns></returns>
-		double[,] Derivative(Point point);
+		double[,] Derivative(double[] point);
 
 		/// <summary>
 		/// Gets transformed convex hull.
@@ -126,7 +124,7 @@ namespace SharpMap.CoordinateSystems.Transformations
 		/// </summary>
 		/// <param name="point"></param>
 		/// <returns></returns>
-		Point Transform(Point point);
+        double[] Transform(double[] point);
 
 		/// <summary>
 		/// Transforms a list of coordinate point ordinal values.
@@ -145,7 +143,7 @@ namespace SharpMap.CoordinateSystems.Transformations
 		/// </remarks>
 		/// <param name="points"></param>
 		/// <returns></returns>
-		List<Point> TransformList(List<Point> points);
+        List<double[]> TransformList(List<double[]> points);
 
 		/// <summary>
 		/// Reverses the transformation

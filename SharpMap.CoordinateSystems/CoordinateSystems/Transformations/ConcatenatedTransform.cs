@@ -20,20 +20,28 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-using SharpMap.Geometries.LightStructs;
-
 namespace SharpMap.CoordinateSystems.Transformations
 {
+    /// <summary>
+    /// 
+    /// </summary>
 	internal class ConcatenatedTransform : MathTransform
 	{
+        /// <summary>
+        /// 
+        /// </summary>
 		protected IMathTransform _inverse;
 
+        /// <summary>
+        /// 
+        /// </summary>
+		public ConcatenatedTransform() : 
+            this(new List<ICoordinateTransformation>()) { }
 
-		public ConcatenatedTransform()
-			: this(new List<ICoordinateTransformation>())
-		{
-		}
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="transformlist"></param>
 		public ConcatenatedTransform(List<ICoordinateTransformation> transformlist)
 		{
 			_CoordinateTransformationList = transformlist;
@@ -41,6 +49,9 @@ namespace SharpMap.CoordinateSystems.Transformations
 
 		private List<ICoordinateTransformation> _CoordinateTransformationList;
 
+        /// <summary>
+        /// 
+        /// </summary>
 		public List<ICoordinateTransformation> CoordinateTransformationList
 		{
 			get { return _CoordinateTransformationList; }
@@ -51,17 +62,28 @@ namespace SharpMap.CoordinateSystems.Transformations
 			}
 		}
 		
-		public override Point Transform(Point point)
-		{			
-			Point pnt = (Point) point.Clone();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        public override double[] Transform(double[] point)
+		{
+            // Really need to do this?
+            double[] pnt = (double[]) point.Clone();
             foreach (ICoordinateTransformation ct in _CoordinateTransformationList)
                 pnt = ct.MathTransform.Transform(pnt);            
 			return pnt;			
 		}
 
-		public override List<Point> TransformList(List<Point> points)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="points"></param>
+        /// <returns></returns>
+        public override List<double[]> TransformList(List<double[]> points)
 		{
-			List<Point> pnts = new List<Point>(points.Count);
+            List<double[]> pnts = new List<double[]>(points.Count);
 			foreach (ICoordinateTransformation ct in _CoordinateTransformationList)
 				pnts = ct.MathTransform.TransformList(pnts);
 			return pnts;
@@ -91,11 +113,19 @@ namespace SharpMap.CoordinateSystems.Transformations
 				ic.MathTransform.Invert();
 		}
 
-		public override string WKT
+        /// <summary>
+        /// Gets a Well-Known text representation of this object.
+        /// </summary>
+        /// <value></value>
+        public override string WKT
 		{
 			get { throw new Exception("The method or operation is not implemented."); }
 		}
 
+        /// <summary>
+        /// Gets an XML representation of this object.
+        /// </summary>
+        /// <value></value>
 		public override string XML
 		{
 			get { throw new Exception("The method or operation is not implemented."); }

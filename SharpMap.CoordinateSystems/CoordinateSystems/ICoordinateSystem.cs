@@ -19,8 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using SharpMap.Geometries.LightStructs;
-
 namespace SharpMap.CoordinateSystems
 {
 	/// <summary>
@@ -41,7 +39,9 @@ namespace SharpMap.CoordinateSystems
 	/// corresponds to a location on the surface of the Earth. This mapping from the mathematical 
 	/// space into real-world locations is called a Datum.</para>
 	/// </remarks>
-	public interface ICoordinateSystem : IInfo {
+	public interface ICoordinateSystem : IInfo 
+    {
+
 		/// <summary>
 		/// Dimension of the coordinate system.
 		/// </summary>
@@ -72,6 +72,6 @@ namespace SharpMap.CoordinateSystems
 		/// return a box from (-r,-r,-r) to (+r,+r,+r) where r is the 
 		/// approximate radius of the Earth.
 		/// </remarks>
-		Envelope DefaultEnvelope { get; }
+		double[] DefaultEnvelope { get; }
 	}
 }

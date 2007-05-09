@@ -19,8 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using SharpMap.Geometries.LightStructs;
-
 namespace SharpMap.CoordinateSystems
 {
 	/// <summary>
@@ -52,9 +50,8 @@ namespace SharpMap.CoordinateSystems
 		/// <param name="abbreviation">Abbreviation</param>
 		/// <param name="remarks">Provider-supplied remarks</param>
 		internal CoordinateSystem(string name, string authority, long authorityCode, string alias, string abbreviation, string remarks)
-			: base (name,authority,authorityCode,alias,abbreviation,remarks)
-		{
-		}
+			: base (name, authority, authorityCode, alias,abbreviation, remarks) { }
+
 		#region ICoordinateSystem Members
 
 		/// <summary>
@@ -90,9 +87,9 @@ namespace SharpMap.CoordinateSystems
 				throw new ArgumentException("AxisInfo not available for dimension " + dimension.ToString());
 			return _AxisInfo[dimension];
 		}
-				
 
-		private Envelope _DefaultEnvelope;
+
+        private double[] _DefaultEnvelope;
 
 		/// <summary>
 		/// Gets default envelope of coordinate system.
@@ -104,7 +101,7 @@ namespace SharpMap.CoordinateSystems
 		/// (-180,-90) to (180,90), and a geocentric coordinate system could return a box from (-r,-r,-r)
 		/// to (+r,+r,+r) where r is the approximate radius of the Earth.
 		/// </remarks>
-		public Envelope DefaultEnvelope
+        public double[] DefaultEnvelope
 		{
 			get { return _DefaultEnvelope; }
 			set { _DefaultEnvelope = value; }

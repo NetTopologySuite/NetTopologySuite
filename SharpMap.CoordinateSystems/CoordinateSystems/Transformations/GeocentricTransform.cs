@@ -21,7 +21,6 @@ using System.Text;
 
 using SharpMap.CoordinateSystems;
 using SharpMap.CoordinateSystems.Transformations;
-using SharpMap.Geometries.LightStructs;
 
 namespace SharpMap.CoordinateSystems.Transformations
 {
@@ -45,24 +44,29 @@ namespace SharpMap.CoordinateSystems.Transformations
 	/// </remarks>
 	internal class GeocentricTransform : MathTransform
 	{
-		private const double COS_67P5 = 0.38268343236508977;  /* cosine of 67.5 degrees */
-		private const double AD_C = 1.0026000;            /* Toms region 1 constant */
+		private const double COS_67P5 = 0.38268343236508977;    /* cosine of 67.5 degrees */
+		private const double AD_C = 1.0026000;                  /* Toms region 1 constant */
 
- 
+        /// <summary>
+        /// 
+        /// </summary>
 		protected bool _isInverse = false;
-		/// <summary>
-		/// Eccentricity squared : (a^2 - b^2)/a^2
-		/// </summary>
-		private double es;
+
+        private double es;              // Eccentricity squared : (a^2 - b^2)/a^2
 		private double semiMajor;		// major axis
 		private double semiMinor;		// minor axis
 		private double ab;				// Semi_major / semi_minor
 		private double ba;				// Semi_minor / semi_major
-		/// <summary>
-		/// Second eccentricity squared : (a^2 - b^2)/b^2    
-		/// </summary>
-		private double ses;
+        private double ses;             // Second eccentricity squared : (a^2 - b^2)/b^2    
+
+        /// <summary>
+        /// 
+        /// </summary>
 		protected List<ProjectionParameter> _Parameters;
+
+        /// <summary>
+        /// 
+        /// </summary>
 		protected MathTransform _inverse;
 
 		/// <summary>
@@ -70,8 +74,7 @@ namespace SharpMap.CoordinateSystems.Transformations
 		/// </summary>
 		/// <param name="parameters">List of parameters to initialize the projection.</param>
 		/// <param name="isInverse">Indicates whether the projection forward (meters to degrees or degrees to meters).</param>
-		public GeocentricTransform(List<ProjectionParameter> parameters, bool isInverse)
-			: this(parameters)
+		public GeocentricTransform(List<ProjectionParameter> parameters, bool isInverse) : this(parameters)
 		{
 			_isInverse = isInverse;
 		}
@@ -111,16 +114,16 @@ namespace SharpMap.CoordinateSystems.Transformations
 		/// </summary>
 		/// <param name="lonlat">The point in decimal degrees.</param>
 		/// <returns>Point in projected meters</returns>
-		private Point DegreesToMeters(Point lonlat)
+        private double[] DegreesToMeters(double[] lonlat)
 		{
-			double lon = Degrees2Radians(lonlat.X);
-			double lat = Degrees2Radians(lonlat.Y);            
-            double h = lonlat.Z.Equals(Double.NaN) ? 0 : lonlat.Z;  // HACK: lonlat.Z == Double.NaN not works
+			double lon = Degrees2Radians(lonlat[0]);
+            double lat = Degrees2Radians(lonlat[1]);            
+            double h = lonlat[2].Equals(Double.NaN) ? 0 : lonlat[2];  // HACK: lonlat[2] == Double.NaN not works
 			double v = semiMajor / Math.Sqrt(1 - es * Math.Pow(Math.Sin(lat), 2));
 			double x = (v + h) * Math.Cos(lat) * Math.Cos(lon);
 			double y = (v + h) * Math.Cos(lat) * Math.Sin(lon);
 			double z = ((1 - es) * v + h) * Math.Sin(lat);
-			return new Point(x, y, z);
+            return new double[] { x, y, z, };
 		}
 
 		/// <summary>
@@ -128,21 +131,21 @@ namespace SharpMap.CoordinateSystems.Transformations
 		/// </summary>
 		/// <param name="pnt">Point in meters</param>
 		/// <returns>Transformed point in decimal degrees</returns>		
-		private Point MetersToDegrees(Point pnt)
+        private double[] MetersToDegrees(double[] pnt)
 		{
 			bool At_Pole = false; // indicates whether location is in polar region */
-            double Z = pnt.Z.Equals(Double.NaN) ? 0 : pnt.Z; // HACK: lonlat.Z == Double.NaN not works
+            double Z = pnt[2].Equals(Double.NaN) ? 0 : pnt[2]; // HACK: pnt[2] == Double.NaN not works
 
 			double lon = 0;
 			double lat = 0;
 			double Height = 0;
-			if (pnt.X != 0.0)
-				lon = Math.Atan2(pnt.Y, pnt.X);
+			if (pnt[0] != 0.0)
+				lon = Math.Atan2(pnt[1], pnt[0]);
 			else
 			{
-				if (pnt.Y > 0)
+				if (pnt[1] > 0)
 					lon = Math.PI/2;
-				else if (pnt.Y < 0)
+                else if (pnt[1] < 0)
 					lon = -Math.PI * 0.5;
 				else
 				{
@@ -158,11 +161,11 @@ namespace SharpMap.CoordinateSystems.Transformations
 					}
 					else
 					{   /* center of earth */
-						return new Point(Radians2Degrees(lon), Radians2Degrees(Math.PI * 0.5), -semiMinor);
+                        return new double[] { Radians2Degrees(lon), Radians2Degrees(Math.PI * 0.5), -semiMinor, };
 					}
 				}
 			}
-			double W2 = pnt.X * pnt.X + pnt.Y * pnt.Y; // Square of distance from Z axis
+			double W2 = pnt[0] * pnt[0] + pnt[1] * pnt[1]; // Square of distance from Z axis
 			double W = Math.Sqrt(W2); // distance from Z axis
 			double T0 = Z * AD_C; // initial estimate of vertical component
 			double S0 = Math.Sqrt(T0 * T0 + W2); //initial estimate of horizontal component
@@ -182,23 +185,44 @@ namespace SharpMap.CoordinateSystems.Transformations
 			else Height = Z / Sin_p1 + Rn * (es - 1.0);
 			if(!At_Pole)
 				lat = Math.Atan(Sin_p1 / Cos_p1);
-			return new Point(Radians2Degrees(lon), Radians2Degrees(lat), Height);
+            return new double[] { Radians2Degrees(lon), Radians2Degrees(lat), Height, };
 		}
 
-		public override Point Transform(Point point)
+        /// <summary>
+        /// Transforms a coordinate point. The passed parameter point should not be modified.
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        public override double[] Transform(double[] point)
 		{
 			if (!_isInverse)
-				return this.DegreesToMeters(point);
-			else
-				return this.MetersToDegrees(point);
+				 return this.DegreesToMeters(point);
+			else return this.MetersToDegrees(point);
 		}
 
-		public override List<Point> TransformList(List<Point> points)
+        /// <summary>
+        /// Transforms a list of coordinate point ordinal values.
+        /// </summary>
+        /// <param name="points"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// This method is provided for efficiently transforming many points. The supplied array
+        /// of ordinal values will contain packed ordinal values. For example, if the source
+        /// dimension is 3, then the ordinals will be packed in this order (x0,y0,z0,x1,y1,z1 ...).
+        /// The size of the passed array must be an integer multiple of DimSource. The returned
+        /// ordinal values are packed in a similar way. In some DCPs. the ordinals may be
+        /// transformed in-place, and the returned array may be the same as the passed array.
+        /// So any client code should not attempt to reuse the passed ordinal values (although
+        /// they can certainly reuse the passed array). If there is any problem then the server
+        /// implementation will throw an exception. If this happens then the client should not
+        /// make any assumptions about the state of the ordinal values.
+        /// </remarks>
+        public override List<double[]> TransformList(List<double[]> points)
 		{
-			List<Point> result = new List<Point>(points.Count);
+            List<double[]> result = new List<double[]>(points.Count);
 			for (int i = 0; i < points.Count; i++)
 			{
-				Point point = points[i];
+                double[] point = points[i];
 				result.Add(Transform(point));
 			}
 			return result;
@@ -212,10 +236,18 @@ namespace SharpMap.CoordinateSystems.Transformations
 			_isInverse = !_isInverse;
 		}
 
+        /// <summary>
+        /// Gets a Well-Known text representation of this object.
+        /// </summary>
+        /// <value></value>
 		public override string WKT
 		{
 			get { throw new NotImplementedException("The method or operation is not implemented."); }
 		}
+        /// <summary>
+        /// Gets an XML representation of this object.
+        /// </summary>
+        /// <value></value>
 		public override string XML
 		{
 			get { throw new NotImplementedException("The method or operation is not implemented."); }

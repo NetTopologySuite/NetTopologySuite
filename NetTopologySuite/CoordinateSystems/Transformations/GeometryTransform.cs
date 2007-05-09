@@ -46,9 +46,9 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        private static SharpMap.Geometries.LightStructs.Point ToLightStruct(double x, double y)
+        private static double[] ToLightStruct(double x, double y)
         {
-            return new SharpMap.Geometries.LightStructs.Point(x, y);
+            return new double[] { x, y, };
         }        
 
 		/// <summary>
@@ -61,16 +61,15 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 		{
 			if (box == null)
 				return null;
-            SharpMap.Geometries.LightStructs.Point[] corners =
-                new SharpMap.Geometries.LightStructs.Point[4];
+            double[][] corners = new double[4][];
             corners[0] = transform.Transform(ToLightStruct(box.MinX, box.MinY)); //LL
             corners[1] = transform.Transform(ToLightStruct(box.MaxX, box.MaxY)); //UR
             corners[2] = transform.Transform(ToLightStruct(box.MinX, box.MaxY)); //UL
             corners[3] = transform.Transform(ToLightStruct(box.MaxX, box.MinY)); //LR
 
 			Envelope result = new Envelope();
-            foreach (SharpMap.Geometries.LightStructs.Point p in corners)
-				result.ExpandToInclude(p.X, p.Y);
+            foreach (double[] p in corners)
+				result.ExpandToInclude(p[0], p[1]);
 			return result;
 		}
 
@@ -109,9 +108,8 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 		{
 			try 
             { 
-                SharpMap.Geometries.LightStructs.Point point = 
-                    transform.Transform(ToLightStruct(p.X, p.Y));
-                return ToNTS(point.X, point.Y);
+                double[] point = transform.Transform(ToLightStruct(p.X, p.Y));
+                return ToNTS(point[0], point[1]);
             }
 			catch { return null; }
 		}
@@ -156,14 +154,14 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
         /// <returns></returns>
         private static List<Coordinate> ExtractCoordinates(LineString ls, IMathTransform transform)
         {
-            List<SharpMap.Geometries.LightStructs.Point> points =
-                new List<SharpMap.Geometries.LightStructs.Point>(ls.Count);
+            List<double[]> points =
+                new List<double[]>(ls.Count);
             foreach (Coordinate c in ls.Coordinates)
                 points.Add(ToLightStruct(c.X, c.Y));
             points = transform.TransformList(points);
             List<Coordinate> coords = new List<Coordinate>(points.Count);
-            foreach (SharpMap.Geometries.LightStructs.Point p in points)
-                coords.Add(new Coordinate(p.X, p.Y));
+            foreach (double[] p in points)
+                coords.Add(new Coordinate(p[0], p[1]));
             return coords;
         }
 
@@ -189,14 +187,13 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 		/// <returns>Transformed MultiPoint</returns>
 		public static MultiPoint TransformMultiPoint(MultiPoint points, IMathTransform transform)
 		{
-            List<SharpMap.Geometries.LightStructs.Point> pointList =
-                new List<SharpMap.Geometries.LightStructs.Point>(points.Geometries.Length);
+            List<double[]> pointList = new List<double[]>(points.Geometries.Length);
             foreach (Point p in points.Geometries)
                 pointList.Add(ToLightStruct(p.X, p.Y));
 			pointList = transform.TransformList(pointList);
             Point[] array = new Point[pointList.Count];
             for (int i = 0; i < pointList.Count; i++)
-                array[i] = ToNTS(pointList[i].X, pointList[i].Y);
+                array[i] = ToNTS(pointList[i][0], pointList[i][1]);
 			return new MultiPoint(array);
 		}
 
