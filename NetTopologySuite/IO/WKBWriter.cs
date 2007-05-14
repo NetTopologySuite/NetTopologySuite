@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
     /// </summary>
     public class WKBWriter
     {
-        private ByteOrder encodingType;
+        protected ByteOrder encodingType;
 
         /// <summary>
         /// Standard byte size for each complex point.
@@ -43,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        public byte[] Write(IGeometry geometry)
+        public virtual byte[] Write(IGeometry geometry)
         {
             byte[] bytes = GetBytes(geometry);
             Write(geometry, new MemoryStream(bytes));
@@ -56,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="geometry"></param>
         /// <param name="stream"></param>
         /// <returns></returns>
-        public void Write(IGeometry geometry, Stream stream)
+        public virtual void Write(IGeometry geometry, Stream stream)
         {
             BinaryWriter writer = null;
             try
@@ -256,7 +256,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected int SetByteStream(IGeometry geometry)
+        protected virtual int SetByteStream(IGeometry geometry)
         {
             if (geometry is IPoint)
                 return SetByteStream(geometry as IPoint);

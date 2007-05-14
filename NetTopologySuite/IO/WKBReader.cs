@@ -54,7 +54,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>
-        public IGeometry Read(Stream stream)
+        public virtual IGeometry Read(Stream stream)
         {
             BinaryReader reader = null;
             ByteOrder byteOrder = (ByteOrder) stream.ReadByte();
