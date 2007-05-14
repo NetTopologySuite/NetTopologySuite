@@ -22,26 +22,26 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModels.Floating" />.
         /// </summary>
-        public static GeometryFactory Default = new GeometryFactory();
+        public static readonly GeometryFactory Default = new GeometryFactory();
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModels.Floating" />.
         /// </summary>
         /// <remarks>A shortcut for <see cref="GeometryFactory.Default" />.</remarks>
-        public static GeometryFactory Floating = Default;
+		public static readonly GeometryFactory Floating = Default;
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModels.FloatingSingle" />.
         /// </summary>
-        public static GeometryFactory FloatingSingle = new GeometryFactory(new PrecisionModel(PrecisionModels.FloatingSingle));  
+		public static readonly GeometryFactory FloatingSingle = new GeometryFactory(new PrecisionModel(PrecisionModels.FloatingSingle));  
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModels.Fixed" />.
         /// </summary>
-        public static GeometryFactory Fixed = new GeometryFactory(new PrecisionModel(PrecisionModels.Fixed));
+		public static readonly GeometryFactory Fixed = new GeometryFactory(new PrecisionModel(PrecisionModels.Fixed));
            
         private PrecisionModel precisionModel;
 

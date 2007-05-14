@@ -1398,7 +1398,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <seealso cref="GeometryFactory.Default" />
         /// <seealso cref="GeometryFactory.Fixed"/>
-        public static GeometryFactory DefaultFactory = GeometryFactory.Default;
+        public static readonly GeometryFactory DefaultFactory = GeometryFactory.Default;
         
         /* END ADDED BY MPAUL42: monoGIS team */
 

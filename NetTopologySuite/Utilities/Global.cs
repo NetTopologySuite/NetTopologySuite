@@ -31,7 +31,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <summary>
         /// 
         /// </summary>
-        private readonly static Global global = new Global();
+		private static readonly Global global = new Global();
 
         /// <summary>
         /// 

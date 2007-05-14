@@ -31,7 +31,7 @@ namespace Iesi_NTS.Collections
 		/// if you create your own <c>Set</c> class.  
 		/// </summary>
 		protected IDictionary InternalDictionary = null;
-		private readonly static object PlaceholderObject = new object();
+		private static readonly object PlaceholderObject = new object();
 
 		/// <summary>
 		/// The placeholder object used as the value for the <c>IDictionary</c> instance.

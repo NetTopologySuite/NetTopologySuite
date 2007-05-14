@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// 
         /// </summary>
         // Public in java code... temporary modified for "safe assembly" in Sql2005
-        internal static int numberSnaps = 0;        
+		internal static readonly int numberSnaps = 0;        
 
         private IList monoChains = null;
         private STRtree index = null;
