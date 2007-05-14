@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 
@@ -29,16 +31,24 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             writer = new WKTWriter();
         }
 
-        /// <summary>
+         /// <summary>
         /// 
         /// </summary>
         [Test]
-        public void WriteZeroBasedCoordinate()
+        public void WriteZeroBasedCoordinateWithDifferentFactories()
         {
-            Geometry point = Factory.CreatePoint(new Coordinate(0.01, 0.02));
-            String result = writer.Write(point);
-            Debug.Write(result);
-            Assert.AreEqual('0', result[7]);
+            ICoordinate c = new Coordinate(0.0001, 0.0002);
+            Geometry point = GeometryFactory.Floating.CreatePoint(c);
+            String result = writer.Write(point); // TODO: writer needs to accept a IGeometry parameter...
+            Debug.WriteLine(result);
+
+            point = GeometryFactory.FloatingSingle.CreatePoint(c);
+            result = writer.Write(point);
+            Debug.WriteLine(result); 
+            
+            point = GeometryFactory.Fixed.CreatePoint(c);
+            result = writer.Write(point);
+            Debug.WriteLine(result); 
         }
     }
 }

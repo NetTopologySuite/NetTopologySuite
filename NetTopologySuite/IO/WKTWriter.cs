@@ -92,10 +92,11 @@ namespace GisSharpBlog.NetTopologySuite.IO
             // the default number of decimal places is 16, which is sufficient
             // to accomodate the maximum precision of a double.
             int decimalPlaces = precisionModel.MaximumSignificantDigits;
+
             // specify decimal separator explicitly to avoid problems in other locales
             NumberFormatInfo nfi = new NumberFormatInfo();
-            nfi.NumberDecimalSeparator = ".";
-            nfi.NumberDecimalDigits = decimalPlaces;
+            nfi.NumberDecimalSeparator = ".";            
+            nfi.NumberDecimalDigits = decimalPlaces;            
             nfi.NumberGroupSeparator = String.Empty;
             nfi.NumberGroupSizes = new int[] { };
             return nfi;            
@@ -116,7 +117,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         }
 
         private NumberFormatInfo formatter;
-        private bool isFormatted = false;        
+        private bool isFormatted = false;
 
         /// <summary>
         /// 
@@ -400,8 +401,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </returns>
         private string WriteNumber(double d) 
         {           
-            // return Convert.ToString(d, formatter) not generate decimals well formatted!
-		    return d.ToString("N", formatter);	   
+            // return Convert.ToString(d, formatter) not generate decimals well formatted!            
+		    return d.ToString("N", formatter);
         }
 
         /// <summary>
