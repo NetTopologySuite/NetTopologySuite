@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-using Iesi.Collections;
-using Iesi.Collections.Generic;
+using Iesi_NTS.Collections;
+using Iesi_NTS.Collections.Generic;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
 {

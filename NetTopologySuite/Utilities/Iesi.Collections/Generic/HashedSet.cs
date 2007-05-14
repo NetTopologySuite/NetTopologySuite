@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
-namespace Iesi.Collections.Generic
+namespace Iesi_NTS.Collections.Generic
 {
 	/// <summary>
 	/// Implements a <c>Set</c> based on a hash table.  This will give the best lookup, add, and remove

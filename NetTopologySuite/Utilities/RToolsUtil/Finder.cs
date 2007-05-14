@@ -24,7 +24,7 @@ using System.IO;
 using System.Reflection;
 using System.Collections;
 
-namespace RTools.Util
+namespace RTools_NTS.Util
 {
 	/// <summary>
 	/// This class provides some static methods which are useful

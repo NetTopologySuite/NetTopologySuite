@@ -11,7 +11,7 @@ using GisSharpBlog.NetTopologySuite.Planargraph;
 using GisSharpBlog.NetTopologySuite.Planargraph.Algorithm;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
-using Iesi.Collections.Generic;
+using Iesi_NTS.Collections.Generic;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 {

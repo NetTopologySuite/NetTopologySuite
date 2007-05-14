@@ -18,7 +18,7 @@
 using System;
 using System.Collections;
 
-namespace RTools.Util
+namespace RTools_NTS.Util
 {
 	/// <summary>
 	/// A start on some utility methods for parsing in conjunction with

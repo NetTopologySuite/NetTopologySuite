@@ -18,7 +18,7 @@
 using System;
 using System.IO;
 
-namespace RTools.Util
+namespace RTools_NTS.Util
 {
 	/// <summary>
 	/// Wraps a TextReader with buffering for speed. This is not finished,

@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 
-namespace Iesi.Collections
+namespace Iesi_NTS.Collections
 {
 	/// <summary>
 	/// Implements a <c>Set</c> based on a list.  Performance is much better for very small lists 

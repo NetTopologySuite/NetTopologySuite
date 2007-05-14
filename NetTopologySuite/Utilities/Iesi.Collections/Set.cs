@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Reflection;
 
-namespace Iesi.Collections
+namespace Iesi_NTS.Collections
 {
 	/// <summary><p>A collection that contains no duplicate elements.  This class models the mathematical
 	/// <c>Set</c> abstraction, and is the base class for all other <c>Set</c> implementations.  

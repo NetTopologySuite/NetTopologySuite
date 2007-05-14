@@ -18,7 +18,7 @@
 using System;
 using System.Text;
 
-namespace RTools.Util
+namespace RTools_NTS.Util
 {
 	/// <summary>
 	/// Buffer for characters.  This approximates StringBuilder

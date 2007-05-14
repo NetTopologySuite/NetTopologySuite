@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 
-namespace Iesi.Collections
+namespace Iesi_NTS.Collections
 {
 	/// <summary>
 	/// Implements a <c>Set</c> that automatically changes from a list to a hash table

@@ -16,7 +16,7 @@
 // updates available in some way, such as by sending your updates to the
 // author.
 
-namespace RTools.Util
+namespace RTools_NTS.Util
 {
 	/// <summary>
 	/// This enumerates verbosity levels.

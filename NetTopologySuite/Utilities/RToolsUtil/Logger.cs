@@ -17,7 +17,7 @@
 
 using System;
 
-namespace RTools.Util
+namespace RTools_NTS.Util
 {
 	/// <summary>
 	/// This is a simple implementation of a Logger class.

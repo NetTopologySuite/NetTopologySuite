@@ -23,7 +23,7 @@ using System.Globalization;
 
 using GisSharpBlog.NetTopologySuite.Utilities;
 
-namespace RTools.Util
+namespace RTools_NTS.Util
 {
 	/// <summary>
 	/// Token class used by StreamTokenizer.

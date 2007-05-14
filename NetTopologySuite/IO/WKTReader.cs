@@ -9,7 +9,7 @@ using GeoAPI.Geometries;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
-using RTools.Util;
+using RTools_NTS.Util;
 
 namespace GisSharpBlog.NetTopologySuite.IO
 {

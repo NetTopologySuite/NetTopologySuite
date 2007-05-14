@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 
-namespace Iesi.Collections
+namespace Iesi_NTS.Collections
 {
 	/// <summary>
 	/// <p>Implements an immutable (read-only) <c>Set</c> wrapper.</p>

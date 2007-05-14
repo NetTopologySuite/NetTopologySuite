@@ -23,7 +23,7 @@ using System.CodeDom.Compiler;
 
 using Microsoft.Win32;
 
-namespace RTools.Util
+namespace RTools_NTS.Util
 {
 	/// <summary>
 	/// This class represents an installed software package on a Windows

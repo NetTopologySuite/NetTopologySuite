@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Text;
 
-using Iesi.Collections;
+using Iesi_NTS.Collections;
 
 using GeoAPI.Geometries;
 

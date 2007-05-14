@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
-namespace Iesi.Collections.Generic
+namespace Iesi_NTS.Collections.Generic
 {
 	/// <summary>
 	/// <p><c>DictionarySet</c> is an abstract class that supports the creation of new <c>Set</c>

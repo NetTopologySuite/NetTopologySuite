@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Iesi.Collections.Generic
+namespace Iesi_NTS.Collections.Generic
 {
 	/// <summary>
 	/// Implements a <c>Set</c> based on a sorted tree.  This gives good performance for operations on very

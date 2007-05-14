@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace Iesi.Collections
+namespace Iesi_NTS.Collections
 {
 	/// <summary>
 	/// <p>A collection that contains no duplicate elements.  This interface models the mathematical

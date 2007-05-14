@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-using Iesi.Collections;
-using Iesi.Collections.Generic;
+using Iesi_NTS.Collections;
+using Iesi_NTS.Collections.Generic;
 
 using GeoAPI.Geometries;
 

@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using Iesi.Collections;
+using Iesi_NTS.Collections;
 
-namespace Iesi.Collections.Generic
+namespace Iesi_NTS.Collections.Generic
 {
 	/// <summary>
 	/// <p>A collection that contains no duplicate elements.  This interface models the mathematical

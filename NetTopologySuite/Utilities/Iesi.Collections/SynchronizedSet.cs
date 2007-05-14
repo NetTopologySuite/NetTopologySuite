@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 
-namespace Iesi.Collections
+namespace Iesi_NTS.Collections
 {
 	/// <summary>
 	/// <p>Implements a thread-safe <c>Set</c> wrapper.  The implementation is extremely conservative, 

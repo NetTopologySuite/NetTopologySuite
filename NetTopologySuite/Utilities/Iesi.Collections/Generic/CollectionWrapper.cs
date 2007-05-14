@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Text;
 
-namespace Iesi.Collections.Generic 
+namespace Iesi_NTS.Collections.Generic 
 {
     public class CollectionWrapper<T> : EnumerableWrapper<T>, ICollection<T>
     {

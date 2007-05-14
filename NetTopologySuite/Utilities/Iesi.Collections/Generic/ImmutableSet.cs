@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
-namespace Iesi.Collections.Generic
+namespace Iesi_NTS.Collections.Generic
 {
 	/// <summary>
 	/// <p>Implements an immutable (read-only) <c>Set</c> wrapper.</p>

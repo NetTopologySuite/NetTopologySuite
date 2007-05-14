@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Text;
 
-namespace Iesi.Collections.Generic
+namespace Iesi_NTS.Collections.Generic
 {
     /// <summary>
     /// A wrapper that can wrap a ISet as a generic ISet&lt;T&gt; 

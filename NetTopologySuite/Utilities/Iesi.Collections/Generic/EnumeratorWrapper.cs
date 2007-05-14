@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Text;
 
-namespace Iesi.Collections.Generic
+namespace Iesi_NTS.Collections.Generic
 {
         /// <summary>
         /// Simple Wrapper for wrapping an regular Enumerator as a generic Enumberator&lt;T&gt;
