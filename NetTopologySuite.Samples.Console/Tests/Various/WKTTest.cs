@@ -36,19 +36,27 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// </summary>
         [Test]
         public void WriteZeroBasedCoordinateWithDifferentFactories()
+        {            
+            TestFormatting(new Coordinate(0.00000000001, 0.00000000002));
+            TestFormatting(new Coordinate(0.00001, 0.00002));
+            TestFormatting(new Coordinate(0.01, 0.02));
+            TestFormatting(new Coordinate(0.1, 0.2));
+            TestFormatting(new Coordinate(0, 0));
+        }
+
+        private void TestFormatting(ICoordinate c)
         {
-            ICoordinate c = new Coordinate(0.0001, 0.0002);
-            Geometry point = GeometryFactory.Floating.CreatePoint(c);
-            String result = writer.Write(point); // TODO: writer needs to accept a IGeometry parameter...
+            IGeometry point = GeometryFactory.Floating.CreatePoint(c);
+            String result = writer.Write(point);
             Debug.WriteLine(result);
 
             point = GeometryFactory.FloatingSingle.CreatePoint(c);
             result = writer.Write(point);
-            Debug.WriteLine(result); 
-            
+            Debug.WriteLine(result);
+
             point = GeometryFactory.Fixed.CreatePoint(c);
             result = writer.Write(point);
-            Debug.WriteLine(result); 
+            Debug.WriteLine(result);
         }
     }
 }
