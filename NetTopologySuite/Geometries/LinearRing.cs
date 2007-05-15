@@ -83,7 +83,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public LinearRing(Coordinate[] points) : 
+        public LinearRing(ICoordinate[] points) : 
             this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
         
         /* END ADDED BY MPAUL42: monoGIS team */

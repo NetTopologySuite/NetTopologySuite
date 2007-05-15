@@ -21,6 +21,7 @@ using System.Text;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
 using SharpMap.CoordinateSystems.Transformations;
+using GeoAPI.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 {
@@ -35,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        private static Point ToNTS(double x, double y)
+		private static IPoint ToNTS(double x, double y)
         {
             return new Point(x, y);
         }
@@ -57,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 		/// <param name="box">BoundingBox to transform</param>
 		/// <param name="transform">Math Transform</param>
 		/// <returns>Transformed object</returns>
-        public static Envelope TransformBox(Envelope box, IMathTransform transform)
+		public static IEnvelope TransformBox(IEnvelope box, IMathTransform transform)
 		{
 			if (box == null)
 				return null;
@@ -67,7 +68,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
             corners[2] = transform.Transform(ToLightStruct(box.MinX, box.MaxY)); //UL
             corners[3] = transform.Transform(ToLightStruct(box.MaxX, box.MinY)); //LR
 
-			Envelope result = new Envelope();
+			IEnvelope result = new Envelope();
             foreach (double[] p in corners)
 				result.ExpandToInclude(p[0], p[1]);
 			return result;
@@ -79,22 +80,22 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 		/// <param name="g">Geometry to transform</param>
 		/// <param name="transform">MathTransform</param>
 		/// <returns>Transformed Geometry</returns>
-		public static Geometry TransformGeometry(Geometry g, IMathTransform transform)
+		public static IGeometry TransformGeometry(IGeometry g, IMathTransform transform)
 		{
 			if (g == null)
 				return null;
-			else if (g is Point)
-				return TransformPoint(g as Point, transform);
-			else if (g is LineString)
-				return TransformLineString(g as LineString, transform);
-			else if (g is Polygon)
-				return TransformPolygon(g as Polygon, transform);
-			else if (g is MultiPoint)
-				return TransformMultiPoint(g as MultiPoint, transform);
-			else if (g is MultiLineString)
-				return TransformMultiLineString(g as MultiLineString, transform);
-			else if (g is MultiPolygon)
-				return TransformMultiPolygon(g as MultiPolygon, transform);
+			else if (g is IPoint)
+				return TransformPoint(g as IPoint, transform);
+			else if (g is ILineString)
+				return TransformLineString(g as ILineString, transform);
+			else if (g is IPolygon)
+				return TransformPolygon(g as IPolygon, transform);
+			else if (g is IMultiPoint)
+				return TransformMultiPoint(g as IMultiPoint, transform);
+			else if (g is IMultiLineString)
+				return TransformMultiLineString(g as IMultiLineString, transform);
+			else if (g is IMultiPolygon)
+				return TransformMultiPolygon(g as IMultiPolygon, transform);
 			else throw new ArgumentException("Could not transform geometry type '" + g.GetType().ToString() +"'");
 		}
 
@@ -104,7 +105,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 		/// <param name="p">Point to transform</param>
 		/// <param name="transform">MathTransform</param>
 		/// <returns>Transformed Point</returns>
-		public static Point TransformPoint(Point p, IMathTransform transform)
+		public static IPoint TransformPoint(IPoint p, IMathTransform transform)
 		{
 			try 
             { 
@@ -120,12 +121,12 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 		/// <param name="l">LineString to transform</param>
 		/// <param name="transform">MathTransform</param>
 		/// <returns>Transformed LineString</returns>
-		public static LineString TransformLineString(LineString l, IMathTransform transform)
+		public static ILineString TransformLineString(ILineString l, IMathTransform transform)
 		{
 			try 
             {
-                List<Coordinate> coords = ExtractCoordinates(l, transform);
-                return new LineString(coords.ToArray()); 
+				List<ICoordinate> coords = ExtractCoordinates(l, transform);
+				return new LineString(coords.ToArray()); 
             }
 			catch { return null; }
 		}
@@ -136,11 +137,11 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 		/// <param name="r">LinearRing to transform</param>
 		/// <param name="transform">MathTransform</param>
 		/// <returns>Transformed LinearRing</returns>
-		public static LinearRing TransformLinearRing(LinearRing r, IMathTransform transform)
+		public static ILinearRing TransformLinearRing(ILinearRing r, IMathTransform transform)
 		{
 			try 
             {
-                List<Coordinate> coords = ExtractCoordinates(r, transform);
+                List<ICoordinate> coords = ExtractCoordinates(r, transform);
                 return new LinearRing(coords.ToArray()); 
             }
 			catch { return null; }
@@ -152,14 +153,14 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
         /// <param name="ls"></param>
         /// <param name="transform"></param>
         /// <returns></returns>
-        private static List<Coordinate> ExtractCoordinates(LineString ls, IMathTransform transform)
+        private static List<ICoordinate> ExtractCoordinates(ILineString ls, IMathTransform transform)
         {
             List<double[]> points =
-                new List<double[]>(ls.Count);
-            foreach (Coordinate c in ls.Coordinates)
+                new List<double[]>(ls.NumPoints);
+            foreach (ICoordinate c in ls.Coordinates)
                 points.Add(ToLightStruct(c.X, c.Y));
             points = transform.TransformList(points);
-            List<Coordinate> coords = new List<Coordinate>(points.Count);
+            List<ICoordinate> coords = new List<ICoordinate>(points.Count);
             foreach (double[] p in points)
                 coords.Add(new Coordinate(p[0], p[1]));
             return coords;
@@ -171,12 +172,12 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 		/// <param name="p">Polygon to transform</param>
 		/// <param name="transform">MathTransform</param>
 		/// <returns>Transformed Polygon</returns>
-		public static Polygon TransformPolygon(Polygon p, IMathTransform transform)
+		public static IPolygon TransformPolygon(IPolygon p, IMathTransform transform)
 		{
-            List<LinearRing> rings  = new List<LinearRing>(p.InteriorRings.Length); 
+			List<ILinearRing> rings = new List<ILinearRing>(p.InteriorRings.Length); 
             for (int i = 0; i < p.InteriorRings.Length; i++)
-                rings.Add(TransformLinearRing((LinearRing) p.InteriorRings[i], transform));            
-            return new Polygon(TransformLinearRing((LinearRing)p.ExteriorRing, transform), rings.ToArray());
+				rings.Add(TransformLinearRing((ILinearRing)p.InteriorRings[i], transform));
+			return new Polygon(TransformLinearRing((ILinearRing)p.ExteriorRing, transform), rings.ToArray());
 		}
 
 		/// <summary>
@@ -185,13 +186,13 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 		/// <param name="points">MultiPoint to transform</param>
 		/// <param name="transform">MathTransform</param>
 		/// <returns>Transformed MultiPoint</returns>
-		public static MultiPoint TransformMultiPoint(MultiPoint points, IMathTransform transform)
+		public static IMultiPoint TransformMultiPoint(IMultiPoint points, IMathTransform transform)
 		{
             List<double[]> pointList = new List<double[]>(points.Geometries.Length);
-            foreach (Point p in points.Geometries)
+			foreach (IPoint p in points.Geometries)
                 pointList.Add(ToLightStruct(p.X, p.Y));
 			pointList = transform.TransformList(pointList);
-            Point[] array = new Point[pointList.Count];
+			IPoint[] array = new IPoint[pointList.Count];
             for (int i = 0; i < pointList.Count; i++)
                 array[i] = ToNTS(pointList[i][0], pointList[i][1]);
 			return new MultiPoint(array);
@@ -203,10 +204,10 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 		/// <param name="lines">MultiLineString to transform</param>
 		/// <param name="transform">MathTransform</param>
 		/// <returns>Transformed MultiLineString</returns>
-		public static MultiLineString TransformMultiLineString(MultiLineString lines, IMathTransform transform)
-		{			
-            List<LineString> strings = new List<LineString>(lines.Geometries.Length); 
-			foreach (LineString ls in lines.Geometries)
+		public static IMultiLineString TransformMultiLineString(IMultiLineString lines, IMathTransform transform)
+		{
+			List<ILineString> strings = new List<ILineString>(lines.Geometries.Length);
+			foreach (ILineString ls in lines.Geometries)
 				strings.Add(TransformLineString(ls, transform));
             return new MultiLineString(strings.ToArray());
 		}
@@ -217,10 +218,10 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 		/// <param name="polys">MultiPolygon to transform</param>
 		/// <param name="transform">MathTransform</param>
 		/// <returns>Transformed MultiPolygon</returns>
-		public static MultiPolygon TransformMultiPolygon(MultiPolygon polys, IMathTransform transform)
+		public static IMultiPolygon TransformMultiPolygon(IMultiPolygon polys, IMathTransform transform)
 		{
-            List<Polygon> polygons = new List<Polygon>(polys.Geometries.Length); 
-			foreach (Polygon p in polys.Geometries)
+			List<IPolygon> polygons = new List<IPolygon>(polys.Geometries.Length);
+			foreach (IPolygon p in polys.Geometries)
 				polygons.Add(TransformPolygon(p, transform));
 			return new MultiPolygon(polygons.ToArray());
 		}
@@ -231,10 +232,10 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 		/// <param name="geoms">GeometryCollection to transform</param>
 		/// <param name="transform">MathTransform</param>
 		/// <returns>Transformed GeometryCollection</returns>
-		public static GeometryCollection TransformGeometryCollection(GeometryCollection geoms, IMathTransform transform)
+		public static IGeometryCollection TransformGeometryCollection(GeometryCollection geoms, IMathTransform transform)
 		{
-            List<Geometry> coll = new List<Geometry>(geoms.Geometries.Length); 
-			foreach (Geometry g in geoms.Geometries)
+			List<IGeometry> coll = new List<IGeometry>(geoms.Geometries.Length);
+			foreach (IGeometry g in geoms.Geometries)
 				coll.Add(TransformGeometry(g, transform));
 			return new GeometryCollection(coll.ToArray());
 		}
