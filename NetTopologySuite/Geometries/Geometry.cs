@@ -157,7 +157,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// accessor operations for this field, but no others. The SRID is represented
         /// as an integer.
         /// </summary>        
-        [Obsolete("deprecated use {getUserData} instead")]
         public int SRID
         {
             get 
