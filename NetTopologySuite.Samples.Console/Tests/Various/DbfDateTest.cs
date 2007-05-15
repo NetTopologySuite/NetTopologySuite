@@ -29,7 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         [Test]
         public void ReadDbfDate()
         {            
-            string file = Path.Combine(Environment.CurrentDirectory, @"..\..\..\Shapefiles\date.dbf");
+            string file = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), @"..\..\..\NetTopologySuite.Samples.Shapefiles\date.dbf");
             if (!File.Exists(file))
                 throw new FileNotFoundException("file not found at " + Path.GetDirectoryName(file));
             
