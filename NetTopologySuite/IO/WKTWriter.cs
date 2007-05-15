@@ -32,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns></returns>
         public static String ToPoint(ICoordinate p0)
         {
-            return "POINT ( " + p0.X + " " + p0.Y + " )";
+            return "POINT(" + p0.X + " " + p0.Y + ")";
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         public static String ToLineString(ICoordinateSequence seq)
         {
             StringBuilder buf = new StringBuilder();
-            buf.Append("LINESTRING ");
+            buf.Append("LINESTRING");
             if (seq.Count == 0)
                 buf.Append(" EMPTY");
             else 
@@ -52,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 for (int i = 0; i < seq.Count; i++) 
                 {
                     if (i > 0)
-                        buf.Append(", ");
+                        buf.Append(",");
                     buf.Append(seq.GetX(i) + " " + seq.GetY(i));
               }
               buf.Append(")");
@@ -68,7 +68,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns></returns>
         public static String ToLineString(ICoordinate p0, ICoordinate p1)
         {
-            return "LINESTRING ( " + p0.X + " " + p0.Y + ", " + p1.X + " " + p1.Y + " )";
+			return "LINESTRING(" + p0.X + " " + p0.Y + "," + p1.X + " " + p1.Y + ")";
         }
 
         // NOTE: modified for "safe" assembly in Sql 2005
@@ -258,7 +258,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </param>
         private void AppendPointTaggedText(ICoordinate coordinate, int level, TextWriter writer, PrecisionModel precisionModel)
         {
-            writer.Write("POINT ");
+            writer.Write("POINT");
             AppendPointText(coordinate, level, writer, precisionModel);
         }
 
@@ -271,7 +271,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer">The output writer to append to.</param>
         private void AppendLineStringTaggedText(ILineString lineString, int level, TextWriter writer)
         {
-            writer.Write("LINESTRING ");
+            writer.Write("LINESTRING");
             AppendLineStringText(lineString, level, false, writer);
         }
 
@@ -284,7 +284,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer">The output writer to append to.</param>
         private void AppendLinearRingTaggedText(ILinearRing linearRing, int level, TextWriter writer)
         {
-            writer.Write("LINEARRING ");
+            writer.Write("LINEARRING");
             AppendLineStringText(linearRing, level, false, writer);
         }
 
@@ -297,7 +297,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer">The output writer to append to.</param>
         private void AppendPolygonTaggedText(IPolygon polygon, int level, TextWriter writer)
         {
-            writer.Write("POLYGON ");
+            writer.Write("POLYGON");
             AppendPolygonText(polygon, level, false, writer);
         }
 
@@ -310,7 +310,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer">The output writer to append to.</param>
         private void AppendMultiPointTaggedText(IMultiPoint multipoint, int level, TextWriter writer)
         {
-            writer.Write("MULTIPOINT ");
+            writer.Write("MULTIPOINT");
             AppendMultiPointText(multipoint, level, writer);
         }
 
@@ -323,7 +323,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer">The output writer to append to.</param>
         private void AppendMultiLineStringTaggedText(IMultiLineString multiLineString, int level, TextWriter writer)
         {
-            writer.Write("MULTILINESTRING ");
+            writer.Write("MULTILINESTRING");
             AppendMultiLineStringText(multiLineString, level, false, writer);
         }
 
@@ -336,7 +336,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer">The output writer to append to.</param>
         private void AppendMultiPolygonTaggedText(IMultiPolygon multiPolygon, int level, TextWriter writer)
         {
-            writer.Write("MULTIPOLYGON ");
+            writer.Write("MULTIPOLYGON");
             AppendMultiPolygonText(multiPolygon, level, writer);
         }
 
@@ -349,7 +349,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer">The output writer to append to.</param>
         private void AppendGeometryCollectionTaggedText(IGeometryCollection geometryCollection, int level, TextWriter writer)
         {
-            writer.Write("GEOMETRYCOLLECTION ");
+            writer.Write("GEOMETRYCOLLECTION");
             AppendGeometryCollectionText(geometryCollection, level, writer);
         }
 
@@ -367,7 +367,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         private void AppendPointText(ICoordinate coordinate, int level, TextWriter writer, PrecisionModel precisionModel)
         {
             if (coordinate == null) 
-                writer.Write("EMPTY");            
+                writer.Write(" EMPTY");
             else 
             {
                 writer.Write("(");
@@ -417,7 +417,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         private void AppendLineStringText(ILineString lineString, int level, bool doIndent, TextWriter writer)
         {
             if (lineString.IsEmpty)
-                writer.Write("EMPTY");            
+                writer.Write(" EMPTY");            
             else 
             {
                 if (doIndent) Indent(level, writer);
@@ -426,7 +426,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 {
                     if (i > 0) 
                     {
-                        writer.Write(", ");
+                        writer.Write(",");
                         if (i % 10 == 0) Indent(level + 2, writer);
                     }
                     AppendCoordinate(lineString.GetCoordinateN(i), writer, ((Geometry) lineString).PrecisionModel);
@@ -446,7 +446,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         private void AppendPolygonText(IPolygon polygon, int level, bool indentFirst, TextWriter writer)
         {
             if (polygon.IsEmpty) 
-                writer.Write("EMPTY");            
+                writer.Write(" EMPTY");            
             else 
             {
                 if (indentFirst) Indent(level, writer);
@@ -454,7 +454,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 AppendLineStringText(polygon.ExteriorRing, level, false, writer);
                 for (int i = 0; i < polygon.NumInteriorRings; i++) 
                 {
-                    writer.Write(", ");
+                    writer.Write(",");
                     AppendLineStringText(polygon.GetInteriorRingN(i), level + 1, true, writer);
                 }
                 writer.Write(")");
@@ -471,13 +471,13 @@ namespace GisSharpBlog.NetTopologySuite.IO
         private void AppendMultiPointText(IMultiPoint multiPoint, int level, TextWriter writer)
         {
             if (multiPoint.IsEmpty) 
-                writer.Write("EMPTY");            
+                writer.Write(" EMPTY");
             else 
             {
                 writer.Write("(");
                 for (int i = 0; i < multiPoint.NumGeometries; i++) 
                 {
-                    if (i > 0) writer.Write(", ");
+                    if (i > 0) writer.Write(",");
                     AppendCoordinate(((IPoint) multiPoint.GetGeometryN(i)).Coordinate, writer, ((Geometry) multiPoint).PrecisionModel);
                 }
                 writer.Write(")");
@@ -495,7 +495,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         private void AppendMultiLineStringText(IMultiLineString multiLineString, int level, bool indentFirst, TextWriter writer)
         {
             if (multiLineString.IsEmpty) 
-                writer.Write("EMPTY");            
+                writer.Write(" EMPTY");            
             else 
             {
                 int level2 = level;
@@ -505,7 +505,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 {
                     if (i > 0) 
                     {
-                        writer.Write(", ");
+                        writer.Write(",");
                         level2 = level + 1;
                         doIndent = true;
                     }
@@ -525,7 +525,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         private void AppendMultiPolygonText(IMultiPolygon multiPolygon, int level, TextWriter writer)            
         {
             if (multiPolygon.IsEmpty) 
-                writer.Write("EMPTY");            
+                writer.Write(" EMPTY");            
             else 
             {
                 int level2 = level;
@@ -535,7 +535,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 {
                     if (i > 0) 
                     {
-                        writer.Write(", ");
+                        writer.Write(",");
                         level2 = level + 1;
                         doIndent = true;
                     }
@@ -555,7 +555,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         private void AppendGeometryCollectionText(IGeometryCollection geometryCollection, int level, TextWriter writer)            
         {
             if (geometryCollection.IsEmpty)
-                writer.Write("EMPTY");            
+                writer.Write(" EMPTY");            
             else 
             {
                 int level2 = level;
@@ -564,7 +564,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 {
                     if (i > 0) 
                     {
-                        writer.Write(", ");
+                        writer.Write(",");
                         level2 = level + 1;
                     }
                     AppendGeometryTaggedText(geometryCollection.GetGeometryN(i), level2, writer);
