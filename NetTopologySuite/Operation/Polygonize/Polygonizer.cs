@@ -46,8 +46,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             /// <param name="g"></param>
             public void Filter(IGeometry g) 
             {
-                if (g is LineString)
-                    container.Add((LineString)g);
+                if (g is ILineString)
+					container.Add((ILineString)g);
             }
         }
 
@@ -111,7 +111,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         {
             for (IEnumerator i = geomList.GetEnumerator(); i.MoveNext(); ) 
             {
-                Geometry geometry = (Geometry) i.Current;
+				IGeometry geometry = (IGeometry)i.Current;
                 Add(geometry);
             }
         }
@@ -123,7 +123,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// the constituent linework will be extracted and used
         /// </summary>
         /// <param name="g">A <c>Geometry</c> with linework to be polygonized.</param>
-        public void Add(Geometry g)
+		public void Add(IGeometry g)
         {
             g.Apply(lineStringAdder);
         }
@@ -132,11 +132,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Add a linestring to the graph of polygon edges.
         /// </summary>
         /// <param name="line">The <c>LineString</c> to add.</param>
-        private void Add(LineString line)
+        private void Add(ILineString line)
         {
             // create a new graph using the factory from the input Geometry
             if (graph == null)
-                graph = new PolygonizeGraph(line.Factory);
+				graph = new PolygonizeGraph(((LineString)line).Factory);
             graph.AddEdge(line);
         }
 

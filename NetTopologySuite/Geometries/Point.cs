@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     [Serializable]
     public class Point : Geometry, IPoint
     {
-        private static readonly Coordinate emptyCoordinate = null;
+        private static readonly ICoordinate emptyCoordinate = null;
 
         /// <summary>
         /// Represents an empty <c>Point</c>.
@@ -44,8 +44,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public Point(Coordinate coordinate) :   
-            this(GeometryFactory.Default.CoordinateSequenceFactory.Create(new Coordinate[] { coordinate } ),
+        public Point(ICoordinate coordinate) :   
+            this(GeometryFactory.Default.CoordinateSequenceFactory.Create(new ICoordinate[] { coordinate } ),
             GeometryFactory.Default) { }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public Point(ICoordinateSequence coordinates, GeometryFactory factory) : base(factory)
         {               
             if (coordinates == null) 
-                coordinates = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
+                coordinates = factory.CoordinateSequenceFactory.Create(new ICoordinate[] { });
             Debug.Assert(coordinates.Count <= 1);
             this.coordinates = (ICoordinateSequence) coordinates;
         }        
@@ -71,7 +71,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                return IsEmpty ? new Coordinate[] { } : new Coordinate[] { (Coordinate) this.Coordinate };
+                return IsEmpty ? new ICoordinate[] { } : new ICoordinate[] { this.Coordinate };
             }
         }
 
@@ -227,11 +227,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public override bool EqualsExact(IGeometry other, double tolerance) 
         {
-            if (!IsEquivalentClass((Geometry) other)) 
+            if (!IsEquivalentClass(other)) 
                 return false;            
             if (IsEmpty && other.IsEmpty) 
                 return true;
-            return Equal((Coordinate) ((Point) other).Coordinate, (Coordinate) this.Coordinate, tolerance);
+            return Equal(((IPoint) other).Coordinate, this.Coordinate, tolerance);
         }
 
         /// <summary>
@@ -303,7 +303,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public Point(double x, double y, double z) : 
-            this(DefaultFactory.CoordinateSequenceFactory.Create(new Coordinate[] { new Coordinate(x, y, z) }), DefaultFactory) { }
+            this(DefaultFactory.CoordinateSequenceFactory.Create(new ICoordinate[] { new Coordinate(x, y, z) }), DefaultFactory) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Point"/> class.
@@ -315,7 +315,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public Point(double x, double y)
-            : this(DefaultFactory.CoordinateSequenceFactory.Create(new Coordinate[] { new Coordinate(x, y) }), DefaultFactory) { }
+            : this(DefaultFactory.CoordinateSequenceFactory.Create(new ICoordinate[] { new Coordinate(x, y) }), DefaultFactory) { }
 
         /// <summary>
         /// 
