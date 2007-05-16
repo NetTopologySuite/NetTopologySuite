@@ -87,28 +87,32 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
             document.Load(xmlreader);
             Write(document.InnerXml);
             result = reader.Read(document);
-            Debug.Assert(point == result, "ERROR!");
+            Debug.Assert(point.Equals(result), "ERROR!");
+
+			string gml = document.InnerXml;
+			gml = gml.Replace("gml:", "");
+			result = reader.Read(gml);
             
             xmlreader = writer.Write(line);
             document = new XmlDocument();
             document.Load(xmlreader);
             Write(document.InnerXml);
             result = reader.Read(document);
-            Debug.Assert(line == result, "ERROR!");
+            Debug.Assert(line.Equals(result), "ERROR!");
             
             xmlreader = writer.Write(polygon);
             document = new XmlDocument();
             document.Load(xmlreader);
             Write(document.InnerXml);
             result = reader.Read(document);
-            Debug.Assert(polygon == result, "ERROR!");
+            Debug.Assert(polygon.Equals(result), "ERROR!");
             
             xmlreader = writer.Write(multiPoint);
             document = new XmlDocument();
             document.Load(xmlreader);
             Write(document);
             result = reader.Read(document);
-            Debug.Assert(multiPoint == result, "ERROR!");
+            Debug.Assert(multiPoint.Equals(result), "ERROR!");
             
             MultiLineString multiLineString = new WKTReader().Read("MULTILINESTRING ((10 10, 20 20), (30 30, 40 40, 50 50, 70 80, 990 210), (2000.1 22, 457891.2334 3456.2, 33333 44444))") as MultiLineString;
             xmlreader = writer.Write(multiLineString);            
@@ -116,7 +120,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
             document.Load(xmlreader);
             Write(document.InnerXml);
             result = reader.Read(document);
-            Debug.Assert(multiLineString == result, "ERROR!");
+            Debug.Assert(multiLineString.Equals(result), "ERROR!");
             
             MultiPolygon multiPolygon = new WKTReader().Read("MULTIPOLYGON (((10 10, 10 20, 20 20, 20 10, 10 10), (12 12, 18 12, 18 18, 12 18, 12 12), (14 14, 16 14, 16 16, 14 16, 14 14)), ((30 30, 30 40, 40 40, 40 30, 30 30), (32 32, 38 32, 38 38, 32 38, 32 32)))") as MultiPolygon;
             xmlreader = writer.Write(multiPolygon);
@@ -124,7 +128,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
             document.Load(xmlreader);
             Write(document.InnerXml);
             result = reader.Read(document);
-            Debug.Assert(multiPolygon == result, "ERROR!");
+            Debug.Assert(multiPolygon.Equals(result), "ERROR!");
             
             IGeometry[] geometries = new IGeometry[]  { point, line, polygon, multiPoint, multiLineString, multiPolygon, };
             IGeometryCollection geometryCollection = Factory.CreateGeometryCollection(geometries);
@@ -133,7 +137,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
             document.Load(xmlreader);
             Write(document.InnerXml);
             result = reader.Read(document);
-            Debug.Assert(geometryCollection == result, "ERROR!");            
+            Debug.Assert(geometryCollection.Equals(result), "ERROR!");            
         }
     }
 }
