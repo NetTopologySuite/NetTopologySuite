@@ -117,8 +117,8 @@ namespace SharpMap.CoordinateSystems.Transformations
         private double[] DegreesToMeters(double[] lonlat)
 		{
 			double lon = Degrees2Radians(lonlat[0]);
-            double lat = Degrees2Radians(lonlat[1]);            
-            double h = lonlat[2].Equals(Double.NaN) ? 0 : lonlat[2];  // HACK: lonlat[2] == Double.NaN not works
+            double lat = Degrees2Radians(lonlat[1]);
+			double h = lonlat.Length < 3 ? 0 : lonlat[2].Equals(Double.NaN) ? 0 : lonlat[2];
 			double v = semiMajor / Math.Sqrt(1 - es * Math.Pow(Math.Sin(lat), 2));
 			double x = (v + h) * Math.Cos(lat) * Math.Cos(lon);
 			double y = (v + h) * Math.Cos(lat) * Math.Sin(lon);
@@ -134,7 +134,7 @@ namespace SharpMap.CoordinateSystems.Transformations
         private double[] MetersToDegrees(double[] pnt)
 		{
 			bool At_Pole = false; // indicates whether location is in polar region */
-            double Z = pnt[2].Equals(Double.NaN) ? 0 : pnt[2]; // HACK: pnt[2] == Double.NaN not works
+			double Z = pnt.Length < 3 ? 0 : pnt[2].Equals(Double.NaN) ? 0 : pnt[2];
 
 			double lon = 0;
 			double lat = 0;
