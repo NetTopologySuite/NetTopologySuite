@@ -59,7 +59,7 @@
     <Compile Include="Geometries\IPoint.cs" />
     <Compile Include="Geometries\IPolygon.cs" />
     <Compile Include="Geometries\Location.cs" />
-    <Compile Include="Operation\Buffer\BufferStyles.cs" />
+    <Compile Include="Operation\Buffer\BufferStyle.cs" />
     <Compile Include="Geometries\IGeometry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
