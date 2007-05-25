@@ -5,9 +5,9 @@ using System.Text;
 namespace GeoAPI.Operations.Buffer
 {
     /// <summary>
-    /// Buffer styles.
+    /// Buffer style.
     /// </summary>
-    public enum BufferStyles
+    public enum BufferStyle
     {
         /// <summary> 
         /// Specifies a round line buffer end cap endCapStyle (Default).

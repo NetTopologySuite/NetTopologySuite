@@ -88,9 +88,9 @@ namespace GeoAPI.Geometries
 
         IGeometry Buffer(double distance, int quadrantSegments);
 
-        IGeometry Buffer(double distance, BufferStyles endCapStyle);
+        IGeometry Buffer(double distance, BufferStyle endCapStyle);
 
-        IGeometry Buffer(double distance, int quadrantSegments, BufferStyles endCapStyle);
+        IGeometry Buffer(double distance, int quadrantSegments, BufferStyle endCapStyle);
 
         IGeometry Intersection(IGeometry other);
 

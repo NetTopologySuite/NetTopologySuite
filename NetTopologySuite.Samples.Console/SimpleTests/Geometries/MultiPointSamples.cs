@@ -61,11 +61,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(multiPoint.NumPoints);
                 
                 Write(multiPoint.Buffer(10));
-                Write(multiPoint.Buffer(10, BufferStyles.CapButt));
-                Write(multiPoint.Buffer(10, BufferStyles.CapSquare));
+                Write(multiPoint.Buffer(10, BufferStyle.CapButt));
+                Write(multiPoint.Buffer(10, BufferStyle.CapSquare));
                 Write(multiPoint.Buffer(10, 20));
-                Write(multiPoint.Buffer(10, 20, BufferStyles.CapButt));
-                Write(multiPoint.Buffer(10, 20, BufferStyles.CapSquare));
+                Write(multiPoint.Buffer(10, 20, BufferStyle.CapButt));
+                Write(multiPoint.Buffer(10, 20, BufferStyle.CapSquare));
                 Write(multiPoint.ConvexHull()); 
                
                 byte[] bytes = multiPoint.AsBinary();

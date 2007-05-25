@@ -41,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         }
         
         private int quadrantSegments = OffsetCurveBuilder.DefaultQuadrantSegments;
-        private BufferStyles endCapStyle = BufferStyles.CapRound;
+        private BufferStyle endCapStyle = BufferStyle.CapRound;
         
         private PrecisionModel workingPrecisionModel = null;
         private INoder workingNoder = null;
@@ -90,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <summary>
         /// 
         /// </summary>
-        public BufferStyles EndCapStyle
+        public BufferStyle EndCapStyle
         {
             get
             {

@@ -83,7 +83,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="distance">The buffer distance.</param>        
         /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
         /// <returns> The buffer of the input point.</returns>
-        public static IGeometry Buffer(IGeometry g, double distance, BufferStyles endCapStyle)
+        public static IGeometry Buffer(IGeometry g, double distance, BufferStyle endCapStyle)
         {
             BufferOp gBuf = new BufferOp(g);
             gBuf.EndCapStyle = endCapStyle;
@@ -116,7 +116,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="quadrantSegments">The number of segments used to approximate a quarter circle.</param>
         /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
         /// <returns>The buffer of the input point.</returns>
-        public static IGeometry Buffer(IGeometry g, double distance, int quadrantSegments, BufferStyles endCapStyle)
+        public static IGeometry Buffer(IGeometry g, double distance, int quadrantSegments, BufferStyle endCapStyle)
         {
             BufferOp bufOp = new BufferOp(g);
             bufOp.EndCapStyle = endCapStyle;
@@ -128,7 +128,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private IGeometry argGeom;
         private double distance;
         private int quadrantSegments = OffsetCurveBuilder.DefaultQuadrantSegments;
-        private BufferStyles endCapStyle = BufferStyles.CapRound;
+        private BufferStyle endCapStyle = BufferStyle.CapRound;
         private IGeometry resultGeometry = null;
         private TopologyException saveException;   // debugging only
 
@@ -146,7 +146,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// The styles supported are CapRound, CapButt, and CapSquare.
         /// The default is CapRound.
         /// </summary>
-        public BufferStyles EndCapStyle
+        public BufferStyle EndCapStyle
         {
             get
             {

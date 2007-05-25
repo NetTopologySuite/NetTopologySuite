@@ -963,7 +963,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// All points whose distance from this <c>Geometry</c>
         /// are less than or equal to <c>distance</c>.
         /// </returns>
-        public IGeometry Buffer(double distance, BufferStyles endCapStyle)
+        public IGeometry Buffer(double distance, BufferStyle endCapStyle)
         {
             return BufferOp.Buffer(this, distance, endCapStyle);
         }
@@ -1008,7 +1008,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// All points whose distance from this <c>Geometry</c>
         /// are less than or equal to <c>distance</c>.
         /// </returns>
-        public IGeometry Buffer(double distance, int quadrantSegments, BufferStyles endCapStyle)
+        public IGeometry Buffer(double distance, int quadrantSegments, BufferStyle endCapStyle)
         {
             return BufferOp.Buffer(this, distance, quadrantSegments, endCapStyle);
         } 

@@ -69,11 +69,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 else Write("UserData null");
              
                 Write(polygon.Buffer(10));
-                Write(polygon.Buffer(10, BufferStyles.CapButt));                
-                Write(polygon.Buffer(10, BufferStyles.CapSquare));
+                Write(polygon.Buffer(10, BufferStyle.CapButt));                
+                Write(polygon.Buffer(10, BufferStyle.CapSquare));
                 Write(polygon.Buffer(10, 20));
-                Write(polygon.Buffer(10, 20, BufferStyles.CapButt));                
-                Write(polygon.Buffer(10, 20, BufferStyles.CapSquare));
+                Write(polygon.Buffer(10, 20, BufferStyle.CapButt));                
+                Write(polygon.Buffer(10, 20, BufferStyle.CapSquare));
                 Write(polygon.Contains(interiorPoint));
                 Write(polygon.Contains(exteriorPoint));
                 Write(polygon.Contains(aLine));

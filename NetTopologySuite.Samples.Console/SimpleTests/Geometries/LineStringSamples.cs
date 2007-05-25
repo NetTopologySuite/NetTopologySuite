@@ -70,11 +70,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 else Write("UserData null");                 
 
                 Write(line.Buffer(10));
-                Write(line.Buffer(10, BufferStyles.CapButt));
-                Write(line.Buffer(10, BufferStyles.CapSquare));
+                Write(line.Buffer(10, BufferStyle.CapButt));
+                Write(line.Buffer(10, BufferStyle.CapSquare));
                 Write(line.Buffer(10, 20));                
-                Write(line.Buffer(10, 20, BufferStyles.CapButt));                
-                Write(line.Buffer(10, 20, BufferStyles.CapSquare));   
+                Write(line.Buffer(10, 20, BufferStyle.CapButt));                
+                Write(line.Buffer(10, 20, BufferStyle.CapSquare));   
                 Write(line.Contains(pointInLine));               
                 Write(line.Contains(pointOutLine));
                 Write(line.Crosses(pointInLine));

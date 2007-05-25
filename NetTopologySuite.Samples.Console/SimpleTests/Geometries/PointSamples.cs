@@ -62,11 +62,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(point.Contains(pExterior));
 
                 Write(point.Buffer(10));
-                Write(point.Buffer(10, BufferStyles.CapSquare));
-                Write(point.Buffer(10, BufferStyles.CapButt));
+                Write(point.Buffer(10, BufferStyle.CapSquare));
+                Write(point.Buffer(10, BufferStyle.CapButt));
                 Write(point.Buffer(10, 20));                
-                Write(point.Buffer(10, 20, BufferStyles.CapSquare));                
-                Write(point.Buffer(10, 20, BufferStyles.CapButt)); 
+                Write(point.Buffer(10, 20, BufferStyle.CapSquare));                
+                Write(point.Buffer(10, 20, BufferStyle.CapButt)); 
 
                 Write(point.Crosses(pInterior));
                 Write(point.Crosses(pExterior));

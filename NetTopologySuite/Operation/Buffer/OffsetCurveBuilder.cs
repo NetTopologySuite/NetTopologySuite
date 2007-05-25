@@ -46,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private ArrayList ptList;
         private double distance = 0.0;
         private PrecisionModel precisionModel;
-        private BufferStyles endCapStyle = BufferStyles.CapRound;
+        private BufferStyle endCapStyle = BufferStyle.CapRound;
 
         /// <summary>
         /// 
@@ -72,7 +72,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <summary>
         /// 
         /// </summary>
-        public BufferStyles EndCapStyle
+        public BufferStyle EndCapStyle
         {
             get
             {
@@ -103,10 +103,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             {
                 switch (endCapStyle) 
                 {
-                    case BufferStyles.CapRound:
+                    case BufferStyle.CapRound:
                         AddCircle(inputPts[0], distance);
                         break;
-                    case BufferStyles.CapSquare:
+                    case BufferStyle.CapSquare:
                         AddSquare(inputPts[0], distance);
                         break;
 	                default:
@@ -422,20 +422,20 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             switch (endCapStyle) 
             {
-                case BufferStyles.CapRound:
+                case BufferStyle.CapRound:
                     // add offset seg points with a fillet between them
                     AddPt(offsetL.P1);
                     AddFillet(p1, angle + Math.PI / 2, angle - Math.PI / 2, CGAlgorithms.Clockwise, distance);
                     AddPt(offsetR.P1);
                     break;
 
-                case BufferStyles.CapButt:
+                case BufferStyle.CapButt:
                     // only offset segment points are added
                     AddPt(offsetL.P1);
                     AddPt(offsetR.P1);
                     break;
                 
-                case BufferStyles.CapSquare:
+                case BufferStyle.CapSquare:
                     // add a square defined by extensions of the offset segment endpoints
                     ICoordinate squareCapSideOffset = new Coordinate();
                     squareCapSideOffset.X = Math.Abs(distance) * Math.Cos(angle);
