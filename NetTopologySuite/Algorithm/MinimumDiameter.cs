@@ -87,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             get
             {
                 ComputeMinimumDiameter();
-                return ((Geometry) inputGeom).Factory.CreateLineString(new ICoordinate[] { minBaseSeg.P0, minBaseSeg.P1 });
+                return inputGeom.Factory.CreateLineString(new ICoordinate[] { minBaseSeg.P0, minBaseSeg.P1 });
             }
         }
 
@@ -105,11 +105,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 if (minWidthPt == null)
                 {
                     ICoordinate[] nullCoords = null;
-                    return ((Geometry) inputGeom).Factory.CreateLineString(nullCoords);
+                    return inputGeom.Factory.CreateLineString(nullCoords);
                 }
 
                 ICoordinate basePt = minBaseSeg.Project(minWidthPt);
-                return ((Geometry) inputGeom).Factory.CreateLineString(new ICoordinate[] { basePt, minWidthPt });
+                return inputGeom.Factory.CreateLineString(new ICoordinate[] { basePt, minWidthPt });
             }
         }
 

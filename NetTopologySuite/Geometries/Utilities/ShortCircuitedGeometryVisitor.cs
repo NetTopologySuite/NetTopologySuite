@@ -1,5 +1,7 @@
 using System;
 
+using GeoAPI.Geometries;
+
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
@@ -19,12 +21,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// 
         /// </summary>
         /// <param name="geom"></param>
-        public void ApplyTo(Geometry geom) 
+        public void ApplyTo(IGeometry geom) 
         {
             for (int i = 0; i < geom.NumGeometries && ! isDone; i++) 
             {
-                Geometry element = (Geometry) geom.GetGeometryN(i);
-                if (!(element is GeometryCollection)) 
+                IGeometry element = geom.GetGeometryN(i);
+                if (!(element is IGeometryCollection)) 
                 {
                     Visit(element);
                     if (IsDone()) 
@@ -41,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// 
         /// </summary>
         /// <param name="element"></param>
-        protected abstract void Visit(Geometry element);
+        protected abstract void Visit(IGeometry element);
 
         /// <summary>
         /// 

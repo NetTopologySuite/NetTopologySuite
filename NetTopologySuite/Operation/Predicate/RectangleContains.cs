@@ -21,23 +21,23 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         /// <param name="rectangle"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        public static bool Contains(Polygon rectangle, Geometry b)
+        public static bool Contains(IPolygon rectangle, IGeometry b)
         {
             RectangleContains rc = new RectangleContains(rectangle);
             return rc.Contains(b);
         }
 
-        private Polygon rectangle;
-        private Envelope rectEnv;
+        private IPolygon rectangle;
+        private IEnvelope rectEnv;
 
         /// <summary>
         /// Create a new contains computer for two geometries.
         /// </summary>
         /// <param name="rectangle">A rectangular geometry.</param>
-        public RectangleContains(Polygon rectangle)
+        public RectangleContains(IPolygon rectangle)
         {
             this.rectangle = rectangle;
-            rectEnv = (Envelope) rectangle.EnvelopeInternal;
+            rectEnv = rectangle.EnvelopeInternal;
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         /// </summary>
         /// <param name="geom"></param>
         /// <returns></returns>
-        public bool Contains(Geometry geom)
+        public bool Contains(IGeometry geom)
         {
             if (!rectEnv.Contains(geom.EnvelopeInternal))
                 return false;
@@ -60,19 +60,19 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         /// </summary>
         /// <param name="geom"></param>
         /// <returns></returns>
-        private bool IsContainedInBoundary(Geometry geom)
+        private bool IsContainedInBoundary(IGeometry geom)
         {
             // polygons can never be wholely contained in the boundary
-            if (geom is Polygon) 
+            if (geom is IPolygon) 
                 return false;
-            if (geom is Point) 
-                return IsPointContainedInBoundary((Point) geom);
-            if (geom is LineString) 
-                return IsLineStringContainedInBoundary((LineString) geom);
+            if (geom is IPoint) 
+                return IsPointContainedInBoundary((IPoint) geom);
+            if (geom is ILineString) 
+                return IsLineStringContainedInBoundary((ILineString) geom);
 
             for (int i = 0; i < geom.NumGeometries; i++) 
             {
-                Geometry comp = (Geometry) geom.GetGeometryN(i);
+                IGeometry comp = geom.GetGeometryN(i);
                 if (!IsContainedInBoundary(comp))
                     return false;
             }
@@ -84,9 +84,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
-        private bool IsPointContainedInBoundary(Point point)
+        private bool IsPointContainedInBoundary(IPoint point)
         {
-            return IsPointContainedInBoundary((Coordinate) point.Coordinate);
+            return IsPointContainedInBoundary(point.Coordinate);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        private bool IsPointContainedInBoundary(Coordinate pt)
+        private bool IsPointContainedInBoundary(ICoordinate pt)
         {
             // we already know that the point is contained in the rectangle envelope
             if (!(pt.X == rectEnv.MinX || pt.X == rectEnv.MaxX))
@@ -109,11 +109,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         /// </summary>
         /// <param name="line"></param>
         /// <returns></returns>
-        private bool IsLineStringContainedInBoundary(LineString line)
+        private bool IsLineStringContainedInBoundary(ILineString line)
         {
             ICoordinateSequence seq = line.CoordinateSequence;
-            Coordinate p0 = new Coordinate();
-            Coordinate p1 = new Coordinate();
+            ICoordinate p0 = new Coordinate();
+            ICoordinate p1 = new Coordinate();
             for (int i = 0; i < seq.Count - 1; i++)
             {
                 seq.GetCoordinate(i, p0);
@@ -130,7 +130,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <returns></returns>
-        private bool IsLineSegmentContainedInBoundary(Coordinate p0, Coordinate p1)
+        private bool IsLineSegmentContainedInBoundary(ICoordinate p0, ICoordinate p1)
         {
             if (p0.Equals(p1))
                 return IsPointContainedInBoundary(p0);

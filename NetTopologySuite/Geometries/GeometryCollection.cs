@@ -134,7 +134,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             {
                 Dimensions dimension = Dimensions.False;
                 for (int i = 0; i < geometries.Length; i++)
-                    dimension = (Dimensions) Math.Max((int)dimension, (int)((Geometry)geometries[i]).BoundaryDimension);
+                    dimension = (Dimensions) Math.Max((int) dimension, (int) (geometries[i].BoundaryDimension));
                 return dimension;
             }
         }
@@ -180,7 +180,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             {
                 int numPoints = 0;
                 for (int i = 0; i < geometries.Length; i++)
-                    numPoints += ((Geometry) geometries[i]).NumPoints;
+                    numPoints += geometries[i].NumPoints;
                 return numPoints;
             }
         }
@@ -258,16 +258,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public override bool EqualsExact(IGeometry other, double tolerance) 
         {
-            if (!IsEquivalentClass((Geometry) other)) 
+            if (!IsEquivalentClass(other)) 
                 return false;            
 
-            GeometryCollection otherCollection = (GeometryCollection) other;
-            if (geometries.Length != otherCollection.geometries.Length)
+            IGeometryCollection otherCollection = (IGeometryCollection) other;
+            if (geometries.Length != otherCollection.Geometries.Length)
                 return false;
 
             for (int i = 0; i < geometries.Length; i++) 
-                if (!((Geometry) geometries[i]).EqualsExact(
-                    otherCollection.geometries[i], tolerance)) 
+                if (!geometries[i].EqualsExact(
+                     otherCollection.Geometries[i], tolerance)) 
                         return false;
             return true;
         }
@@ -279,7 +279,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public override void Apply(ICoordinateFilter filter)
         {
             for (int i = 0; i < geometries.Length; i++)
-                ((Geometry) geometries[i]).Apply(filter);
+                 geometries[i].Apply(filter);
         }
 
         /// <summary>
@@ -290,7 +290,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             filter.Filter(this);
             for (int i = 0; i < geometries.Length; i++)
-                ((Geometry) geometries[i]).Apply(filter);
+                 geometries[i].Apply(filter);
         }
 
         /// <summary>
@@ -301,7 +301,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             filter.Filter(this);
             for (int i = 0; i < geometries.Length; i++)
-                ((Geometry) geometries[i]).Apply(filter);
+                 geometries[i].Apply(filter);
         }
 
         /// <summary>
@@ -358,7 +358,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                Geometry baseGeom = (Geometry) Geometries[0];
+                IGeometry baseGeom = Geometries[0];
                 for (int i = 1; i < Geometries.Length; i++)
                     if (baseGeom.GetType() != Geometries[i].GetType())
                         return false;

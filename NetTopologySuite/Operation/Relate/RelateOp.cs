@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        public static IntersectionMatrix Relate(Geometry a, Geometry b)
+        public static IntersectionMatrix Relate(IGeometry a, IGeometry b)
         {
             RelateOp relOp = new RelateOp(a, b);
             IntersectionMatrix im = relOp.IntersectionMatrix;
@@ -35,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// </summary>
         /// <param name="g0"></param>
         /// <param name="g1"></param>
-        public RelateOp(Geometry g0, Geometry g1) : base(g0, g1)
+        public RelateOp(IGeometry g0, IGeometry g1) : base(g0, g1)
         {            
             relate = new RelateComputer(arg);
         }

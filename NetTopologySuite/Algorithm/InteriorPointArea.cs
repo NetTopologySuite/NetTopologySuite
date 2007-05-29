@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="g"></param>
         public InteriorPointArea(IGeometry g)
         {
-            factory = ((Geometry) g).Factory;
+            factory = g.Factory;
             Add(g);
         }
 

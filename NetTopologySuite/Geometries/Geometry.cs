@@ -320,7 +320,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="g">The <c>Geometry</c> from which to compute the distance.</param>
         public double Distance(IGeometry g)
         {
-            return DistanceOp.Distance(this, (Geometry) g);
+            return DistanceOp.Distance(this, g);
         }
 
         /// <summary> 
@@ -335,7 +335,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             double envDist = EnvelopeInternal.Distance(geom.EnvelopeInternal);            
             if (envDist > distance)
                 return false;
-            return DistanceOp.IsWithinDistance(this, (Geometry) geom, distance);            
+            return DistanceOp.IsWithinDistance(this, geom, distance);            
         }
 
         /// <summary>  
@@ -465,7 +465,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
 
-        private Geometry boundary;
+        private IGeometry boundary;
 
         /// <summary>  
         /// Returns the boundary, or the empty point if this <c>Geometry</c>
@@ -477,7 +477,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public virtual IGeometry Boundary
         {
             get { return boundary; }
-            set { boundary = (Geometry) value; }
+            set { boundary = value; }
         }
 
         private Dimensions boundaryDimension;
@@ -605,9 +605,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
             // optimizations for rectangle arguments
             if (IsRectangle)
-                return RectangleIntersects.Intersects((Polygon) this, (Geometry) g);
+                return RectangleIntersects.Intersects((IPolygon) this, g);
             if (g.IsRectangle)
-                return RectangleIntersects.Intersects((Polygon) g, this);
+                return RectangleIntersects.Intersects((IPolygon) g, this);
             return Relate(g).IsIntersects();
         }
 
@@ -655,7 +655,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
             // optimizations for rectangle arguments
             if (IsRectangle)
-                return RectangleContains.Contains((Polygon) this, (Geometry) g);
+                return RectangleContains.Contains((IPolygon) this, g);
             // general case
             return Relate(g).IsContains();
         }
@@ -764,9 +764,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public IntersectionMatrix Relate(IGeometry g) 
         {
             CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection((Geometry) g);
+            CheckNotGeometryCollection((IGeometry) g);
 
-            return RelateOp.Relate(this, (Geometry) g);
+            return RelateOp.Relate(this, g);
         }                    
                 
         /// <summary>
@@ -1033,9 +1033,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public IGeometry Intersection(IGeometry other) 
         {
             CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection((Geometry) other);
+            CheckNotGeometryCollection(other);
         
-            return OverlayOp.Overlay(this, (Geometry) other, SpatialFunctions.Intersection);
+            return OverlayOp.Overlay(this, other, SpatialFunctions.Intersection);
         }
 
         /// <summary>
@@ -1047,9 +1047,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public IGeometry Union(IGeometry other) 
         {
             CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection((Geometry) other);
+            CheckNotGeometryCollection(other);
 
-            return OverlayOp.Overlay(this, (Geometry) other, SpatialFunctions.Union);
+            return OverlayOp.Overlay(this, other, SpatialFunctions.Union);
         }
 
         /// <summary>
@@ -1062,9 +1062,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public IGeometry Difference(IGeometry other)
         {
             CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection((Geometry) other);
+            CheckNotGeometryCollection(other);
 
-            return OverlayOp.Overlay(this, (Geometry) other, SpatialFunctions.Difference);
+            return OverlayOp.Overlay(this, other, SpatialFunctions.Difference);
          }
 
         /// <summary>
@@ -1078,9 +1078,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public IGeometry SymmetricDifference(IGeometry other) 
         {
             CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection((Geometry) other);
+            CheckNotGeometryCollection(other);
 
-            return OverlayOp.Overlay(this, (Geometry) other, SpatialFunctions.SymDifference);
+            return OverlayOp.Overlay(this, other, SpatialFunctions.SymDifference);
         }
 
         /// <summary>
@@ -1255,7 +1255,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <exception cref="ArgumentException">
         /// if <c>g</c> is a <c>GeometryCollection</c>, but not one of its subclasses.
         /// </exception>
-        protected void CheckNotGeometryCollection(Geometry g) 
+        protected void CheckNotGeometryCollection(IGeometry g) 
         {
             if (isGeometryCollection(g)) 
                 throw new ArgumentException("This method does not support GeometryCollection arguments");                            
@@ -1372,9 +1372,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         private IPoint CreatePointFromInternalCoord(ICoordinate coord, IGeometry exemplar)
         {
-            Geometry geom = ((Geometry) exemplar);
-            geom.PrecisionModel.MakePrecise( coord);
-            return geom.Factory.CreatePoint(coord);
+            exemplar.PrecisionModel.MakePrecise(coord);
+            return exemplar.Factory.CreatePoint(coord);
         }        
 
         /// <summary>

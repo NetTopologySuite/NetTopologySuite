@@ -30,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="geometry"></param>
         public ConvexHull(IGeometry geometry) 
-            : this(ExtractCoordinates(geometry), ((Geometry) geometry).Factory) { }
+            : this(ExtractCoordinates(geometry), geometry.Factory) { }
 
         /// <summary>
         /// Create a new convex hull construction for the input <see cref="Coordinate" /> array.

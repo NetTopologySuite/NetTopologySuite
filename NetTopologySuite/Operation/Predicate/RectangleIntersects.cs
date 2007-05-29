@@ -32,23 +32,23 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         /// <param name="rectangle"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        public static bool Intersects(Polygon rectangle, Geometry b)
+        public static bool Intersects(IPolygon rectangle, IGeometry b)
         {
             RectangleIntersects rp = new RectangleIntersects(rectangle);
             return rp.Intersects(b);
         }
 
-        private Polygon rectangle;
-        private Envelope rectEnv;
+        private IPolygon rectangle;
+        private IEnvelope rectEnv;
 
         /// <summary>
         /// Create a new intersects computer for a rectangle.
         /// </summary>
         /// <param name="rectangle">A rectangular geometry.</param>
-        public RectangleIntersects(Polygon rectangle) 
+        public RectangleIntersects(IPolygon rectangle) 
         {
             this.rectangle = rectangle;
-            rectEnv = (Envelope) rectangle.EnvelopeInternal;
+            rectEnv = rectangle.EnvelopeInternal;
         }
 
         /// <summary>
@@ -56,9 +56,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         /// </summary>
         /// <param name="geom"></param>
         /// <returns></returns>
-        public bool Intersects(Geometry geom)
+        public bool Intersects(IGeometry geom)
         {
-            if (! rectEnv.Intersects(geom.EnvelopeInternal))
+            if (!rectEnv.Intersects(geom.EnvelopeInternal))
                 return false;
             // test envelope relationships
             EnvelopeIntersectsVisitor visitor = new EnvelopeIntersectsVisitor(rectEnv);
@@ -87,14 +87,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
     /// </summary>
     class EnvelopeIntersectsVisitor : ShortCircuitedGeometryVisitor
     {
-        private Envelope rectEnv;
+        private IEnvelope rectEnv;
         private bool intersects = false;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="rectEnv"></param>
-        public EnvelopeIntersectsVisitor(Envelope rectEnv)
+        public EnvelopeIntersectsVisitor(IEnvelope rectEnv)
         {
             this.rectEnv = rectEnv;
         }
@@ -103,17 +103,20 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         /// 
         /// </summary>
         /// <returns></returns>
-        public bool Intersects() { return intersects; }
+        public bool Intersects() 
+        { 
+            return intersects; 
+        }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="element"></param>
-        protected override void Visit(Geometry element)
+        protected override void Visit(IGeometry element)
         {
-            Envelope elementEnv = (Envelope) element.EnvelopeInternal;
+            IEnvelope elementEnv = element.EnvelopeInternal;
             // disjoint
-            if (! rectEnv.Intersects(elementEnv))
+            if (!rectEnv.Intersects(elementEnv))
                 return;            
             // fully contained - must intersect
             if (rectEnv.Contains(elementEnv)) 
@@ -157,17 +160,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
     class ContainsPointVisitor : ShortCircuitedGeometryVisitor
         {
         private ICoordinateSequence rectSeq;
-        private Envelope rectEnv;
+        private IEnvelope rectEnv;
         private bool containsPoint = false;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="rectangle"></param>
-        public ContainsPointVisitor(Polygon rectangle)
+        public ContainsPointVisitor(IPolygon rectangle)
         {
-            this.rectSeq = ((LineString) rectangle.ExteriorRing).CoordinateSequence;
-            rectEnv = (Envelope) rectangle.EnvelopeInternal;
+            this.rectSeq = rectangle.ExteriorRing.CoordinateSequence;
+            rectEnv = rectangle.EnvelopeInternal;
         }
 
         /// <summary>
@@ -180,22 +183,22 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         /// 
         /// </summary>
         /// <param name="geom"></param>
-        protected override void Visit(Geometry geom)
+        protected override void Visit(IGeometry geom)
         {
-            if (!(geom is Polygon))
+            if (!(geom is IPolygon))
                 return;
-            Envelope elementEnv = (Envelope) geom.EnvelopeInternal;
+            IEnvelope elementEnv = geom.EnvelopeInternal;
             if (! rectEnv.Intersects(elementEnv))
                 return;
             // test each corner of rectangle for inclusion
-            Coordinate rectPt = new Coordinate();
+            ICoordinate rectPt = new Coordinate();
             for (int i = 0; i < 4; i++) 
             {
                 rectSeq.GetCoordinate(i, rectPt);
-                if (! elementEnv.Contains(rectPt))
+                if (!elementEnv.Contains(rectPt))
                     continue;
                 // check rect point in poly (rect is known not to touch polygon at this point)
-                if (SimplePointInAreaLocator.ContainsPointInPolygon(rectPt, (Polygon) geom)) 
+                if (SimplePointInAreaLocator.ContainsPointInPolygon(rectPt, (IPolygon) geom)) 
                 {
                     containsPoint = true;
                     return;
@@ -218,35 +221,38 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
     /// </summary>
     class LineIntersectsVisitor : ShortCircuitedGeometryVisitor
     {
-        private Polygon rectangle;
+        private IPolygon rectangle;
         private ICoordinateSequence rectSeq;
-        private Envelope rectEnv;
+        private IEnvelope rectEnv;
         private bool intersects = false;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="rectangle"></param>
-        public LineIntersectsVisitor(Polygon rectangle)
+        public LineIntersectsVisitor(IPolygon rectangle)
         {
             this.rectangle = rectangle;
-            this.rectSeq = ((LineString) rectangle.ExteriorRing).CoordinateSequence;
-            rectEnv = (Envelope) rectangle.EnvelopeInternal;
+            this.rectSeq = rectangle.ExteriorRing.CoordinateSequence;
+            rectEnv = rectangle.EnvelopeInternal;
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public bool Intersects() { return intersects; }
+        public bool Intersects() 
+        { 
+            return intersects; 
+        }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="geom"></param>
-        protected override void Visit(Geometry geom)
+        protected override void Visit(IGeometry geom)
         {
-            Envelope elementEnv = (Envelope) geom.EnvelopeInternal;
+            IEnvelope elementEnv = geom.EnvelopeInternal;
             if (!rectEnv.Intersects(elementEnv))
                 return;
             // check if general relate algorithm should be used, since it's faster for large inputs
@@ -262,7 +268,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         /// 
         /// </summary>
         /// <param name="geom"></param>
-        private void ComputeSegmentIntersection(Geometry geom)
+        private void ComputeSegmentIntersection(IGeometry geom)
         {
             // check segment intersection
             // get all lines from geom (e.g. if it's a multi-ring polygon)

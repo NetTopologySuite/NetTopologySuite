@@ -91,9 +91,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public static IPoint CreatePointFromInternalCoord(ICoordinate coord, IGeometry exemplar)
         {
-            Geometry geom = (Geometry) exemplar;
-            geom.PrecisionModel.MakePrecise( coord);
-            return geom.Factory.CreatePoint(coord);
+            exemplar.PrecisionModel.MakePrecise(coord);
+            return exemplar.Factory.CreatePoint(coord);
         }
 
         /// <summary>
@@ -527,7 +526,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             // could this be cached to make this more efficient? Or maybe it isn't enough overhead to bother
             GeometryEditor editor = new GeometryEditor(this);
-            return editor.Edit((Geometry) g, new AnonymousCoordinateOperationImpl());            
+            return editor.Edit(g, new AnonymousCoordinateOperationImpl());            
         }
 
         /// <summary>

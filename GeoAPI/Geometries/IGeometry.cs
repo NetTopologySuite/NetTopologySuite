@@ -12,6 +12,7 @@ namespace GeoAPI.Geometries
     public interface IGeometry : ICloneable, IComparable, IComparable<IGeometry>, IEquatable<IGeometry>
     {
         IGeometryFactory Factory { get; }
+        IPrecisionModel PrecisionModel { get; }
 
         int SRID { get; set; }
 
