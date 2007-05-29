@@ -330,7 +330,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                 Edge e = (Edge)ei.Current;
                 if (e.IsIsolated)
                 {
-                    LabelIsolatedEdge(e, targetIndex, (Geometry) arg[targetIndex].Geometry);
+                    LabelIsolatedEdge(e, targetIndex, arg[targetIndex].Geometry);
                     isolatedEdges.Add(e);
                 }
             }
@@ -344,7 +344,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// <param name="e"></param>
         /// <param name="targetIndex"></param>
         /// <param name="target"></param>
-        private void LabelIsolatedEdge(Edge e, int targetIndex, Geometry target)
+        private void LabelIsolatedEdge(Edge e, int targetIndex, IGeometry target)
         {
             // this won't work for GeometryCollections with both dim 2 and 1 geoms
             if (target.Dimension > 0)
@@ -371,7 +371,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         {
             for (IEnumerator ni = nodes.GetEnumerator(); ni.MoveNext(); )
             {
-                Node n = (Node)ni.Current;
+                Node n = (Node) ni.Current;
                 Label label = n.Label;
                 // isolated nodes should always have at least one point in their label
                 Assert.IsTrue(label.GeometryCount > 0, "node with empty label found");
@@ -391,7 +391,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// <param name="targetIndex"></param>
         private void LabelIsolatedNode(Node n, int targetIndex)
         {
-            Locations loc = ptLocator.Locate((Coordinate) n.Coordinate, (Geometry) arg[targetIndex].Geometry);
+            Locations loc = ptLocator.Locate(n.Coordinate, arg[targetIndex].Geometry);
             n.Label.SetAllLocations(targetIndex, loc);        
         }
     }

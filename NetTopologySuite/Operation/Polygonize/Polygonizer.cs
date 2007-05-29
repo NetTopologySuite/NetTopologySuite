@@ -136,7 +136,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         {
             // create a new graph using the factory from the input Geometry
             if (graph == null)
-				graph = new PolygonizeGraph(((LineString)line).Factory);
+				graph = new PolygonizeGraph(line.Factory);
             graph.AddEdge(line);
         }
 

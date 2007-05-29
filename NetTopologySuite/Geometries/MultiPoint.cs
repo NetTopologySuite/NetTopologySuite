@@ -95,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                return (new IsSimpleOp()).IsSimple((MultiPoint)this);
+                return (new IsSimpleOp()).IsSimple(this);
             }
         }
 
@@ -118,7 +118,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public override bool EqualsExact(IGeometry other, double tolerance) 
         {
-            if (!IsEquivalentClass((Geometry) other)) 
+            if (!IsEquivalentClass(other)) 
                 return false;            
             return base.EqualsExact(other, tolerance);
         }
@@ -129,9 +129,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="n">The index of the <c>Coordinate</c> to retrieve, beginning at 0.
         /// </param>
         /// <returns>The <c>n</c>th <c>Coordinate</c>.</returns>
-        protected Coordinate GetCoordinate(int n) 
+        protected ICoordinate GetCoordinate(int n) 
         {
-            return (Coordinate) ((Point)geometries[n]).Coordinate;
+            return geometries[n].Coordinate;
         }
     }
 }

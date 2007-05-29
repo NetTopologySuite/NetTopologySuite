@@ -440,7 +440,7 @@ namespace Open.Topology.TestRunner
         {
             Trace.Assert(m_objResult != null, "The result object cannot be null");
 
-            Geometry geoResult = (Geometry)m_objResult;
+            Geometry geoResult = (Geometry) m_objResult;
 
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {

@@ -142,7 +142,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <returns></returns>
         public ILineString AsLineString()
         {
-            return ((LineString) parentLine).Factory.CreateLineString(ExtractCoordinates(resultSegs));        
+            return parentLine.Factory.CreateLineString(ExtractCoordinates(resultSegs));        
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <returns></returns>
         public ILinearRing AsLinearRing()
         {
-            return ((LineString) parentLine).Factory.CreateLinearRing(ExtractCoordinates(resultSegs));
+            return parentLine.Factory.CreateLinearRing(ExtractCoordinates(resultSegs));
         }
 
         /// <summary>

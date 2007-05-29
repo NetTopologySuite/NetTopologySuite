@@ -125,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             * Note that this does NOT handle mixed-precision arguments
             * where the second arg has greater precision than the first.
             */
-            geomFact = ((Geometry) g0).Factory;
+            geomFact = g0.Factory;
         }
 
         /// <summary>

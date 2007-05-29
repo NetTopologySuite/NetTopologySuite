@@ -89,7 +89,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         public IGeometry Transform(IGeometry inputGeom)
         {
             this.inputGeom = inputGeom;
-            this.factory = ((Geometry) inputGeom).Factory;
+            this.factory = inputGeom.Factory;
             if (inputGeom is IPoint)
                 return TransformPoint((IPoint) inputGeom, null);
             if (inputGeom is IMultiPoint)

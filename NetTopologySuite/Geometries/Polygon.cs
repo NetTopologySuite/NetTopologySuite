@@ -305,19 +305,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public override bool EqualsExact(IGeometry other, double tolerance) 
         {
-            if (!IsEquivalentClass((Geometry) other)) 
+            if (!IsEquivalentClass(other)) 
                 return false;
-            Polygon otherPolygon = (Polygon) other;
+
+            IPolygon otherPolygon = (IPolygon) other;
             IGeometry thisShell = shell;
-            IGeometry otherPolygonShell = otherPolygon.shell;
+            IGeometry otherPolygonShell = otherPolygon.Shell;
             if (!thisShell.EqualsExact(otherPolygonShell, tolerance)) 
                 return false;
-            if (holes.Length != otherPolygon.holes.Length) 
+            if (holes.Length != otherPolygon.Holes.Length) 
                 return false;
-            if (holes.Length != otherPolygon.holes.Length) 
+            if (holes.Length != otherPolygon.Holes.Length) 
                 return false;
             for (int i = 0; i < holes.Length; i++) 
-                if (!(holes[i]).EqualsExact(otherPolygon.holes[i], tolerance)) 
+                if (!(holes[i]).EqualsExact(otherPolygon.Holes[i], tolerance)) 
                     return false;
             return true;
         }
@@ -362,7 +363,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             Polygon poly = (Polygon) base.Clone();
             poly.shell = (LinearRing) shell.Clone();
-            poly.holes = new LinearRing[holes.Length];
+            poly.holes = new ILinearRing[holes.Length];
             for (int i = 0; i < holes.Length; i++) 
                 poly.holes[i] = (LinearRing) holes[i].Clone();            
             return poly; 
@@ -432,7 +433,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 if (Shell.NumPoints != 5) return false;
 
                 // check vertices have correct values
-                ICoordinateSequence seq = ((LinearRing) Shell).CoordinateSequence;                
+                ICoordinateSequence seq = Shell.CoordinateSequence;                
                 Envelope env = (Envelope) EnvelopeInternal;
                 for (int i = 0; i < 5; i++)
                 {

@@ -45,8 +45,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             /// <param name="component"></param>
             public void Filter(IGeometry component)
             {
-                if (component is LineString)
-                    container.Add((LineString)component);
+                if (component is ILineString)
+                    container.Add((ILineString) component);
             }
         }
 
@@ -61,7 +61,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             IEnumerator i = geometries.GetEnumerator();
             while (i.MoveNext())
             {
-                Geometry geometry = (Geometry) i.Current;
+                IGeometry geometry = (IGeometry) i.Current;
                 Add(geometry);
             }
         }
@@ -77,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// extracted.
         /// </summary>
         /// <param name="geometry"></param>
-        public void Add(Geometry geometry)
+        public void Add(IGeometry geometry)
         {            
             geometry.Apply(new AnonymousGeometryComponentFilterImpl(this));
         }
@@ -86,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// 
         /// </summary>
         /// <param name="lineString"></param>
-        private void Add(LineString lineString) 
+        private void Add(ILineString lineString) 
         {
             if (factory == null) 
                 this.factory = lineString.Factory;            

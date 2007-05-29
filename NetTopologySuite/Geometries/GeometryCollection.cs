@@ -311,9 +311,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public override object Clone() 
         {
             GeometryCollection gc = (GeometryCollection) base.Clone();
-            gc.geometries = new Geometry[geometries.Length];
+            gc.geometries = new IGeometry[geometries.Length];
             for (int i = 0; i < geometries.Length; i++) 
-                gc.geometries[i] = (Geometry) geometries[i].Clone();
+                gc.geometries[i] = (IGeometry) geometries[i].Clone();
             return gc; 
         }
 

@@ -193,7 +193,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
             for (int i = 0; i < multiPolygon.NumGeometries; i++)
             {
                 IPolygon polygon = (IPolygon) multiPolygon.GetGeometryN(i);
-                LineString shell = (LineString) polygon.ExteriorRing;
+                ILineString shell = polygon.ExteriorRing;
                 count += shell.NumPoints;
                 if (count == multiPolygon.NumPoints)
                     break;

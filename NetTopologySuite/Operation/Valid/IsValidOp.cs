@@ -446,7 +446,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         {
             ILinearRing shell = p.Shell;
 
-            IPointInRing pir = new MCPointInRing((LinearRing) shell);
+            IPointInRing pir = new MCPointInRing(shell);
             for (int i = 0; i < p.NumInteriorRings; i++)
             {
                 ILinearRing hole = p.Holes[i];

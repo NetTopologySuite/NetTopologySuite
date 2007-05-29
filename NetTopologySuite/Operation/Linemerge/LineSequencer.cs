@@ -179,7 +179,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         internal void AddLine(ILineString lineString)
         {
             if (factory == null)
-                this.factory = ((LineString)lineString).Factory;
+                this.factory = lineString.Factory;
             
             graph.AddEdge(lineString);
             lineCount++;
@@ -534,7 +534,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         {
             ICoordinate[] pts = line.Coordinates;                     
             Array.Reverse(pts);
-            return ((LineString) line).Factory.CreateLineString(pts);
+            return line.Factory.CreateLineString(pts);
         }
     }    
 }

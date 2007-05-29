@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 
 using GeoAPI.Geometries;
@@ -99,17 +99,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                if (IsEmpty)    return Factory.CreateGeometryCollection(null);
-                ArrayList allRings = new ArrayList();
+                if (IsEmpty)    
+                    return Factory.CreateGeometryCollection(null);
+
+                List<ILineString> allRings = new List<ILineString>();
                 for (int i = 0; i < geometries.Length; i++)
                 {
-                    Polygon polygon = (Polygon)geometries[i];
-                    Geometry rings = (Geometry) polygon.Boundary;
+                    IPolygon polygon = (IPolygon) geometries[i];
+                    IGeometry rings = polygon.Boundary;
                     for (int j = 0; j < rings.NumGeometries; j++)
-                        allRings.Add(rings.GetGeometryN(j));
-                }
-                LineString[] allRingsArray = new LineString[allRings.Count];
-                return Factory.CreateMultiLineString((LineString[])allRings.ToArray(typeof(LineString)));                
+                        allRings.Add((ILineString) rings.GetGeometryN(j));
+                }                
+                return Factory.CreateMultiLineString(allRings.ToArray());
             }
         }
 
@@ -121,7 +122,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public override bool EqualsExact(IGeometry other, double tolerance) 
         {
-            if (!IsEquivalentClass((Geometry) other)) 
+            if (!IsEquivalentClass(other)) 
                 return false;
             return base.EqualsExact(other, tolerance);
         }

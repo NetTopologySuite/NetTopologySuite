@@ -206,7 +206,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         private void WriteFormatted(IGeometry geometry, bool isFormatted, TextWriter writer)
         {
             this.isFormatted = isFormatted;
-            formatter = CreateFormatter(((Geometry) geometry).PrecisionModel);
+            formatter = CreateFormatter(geometry.PrecisionModel);
             format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);
 
             AppendGeometryTaggedText(geometry, 0, writer);
@@ -226,7 +226,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
             if (geometry is IPoint) 
             {
                 IPoint point = (IPoint)geometry;
-                AppendPointTaggedText(point.Coordinate, level, writer, ((Geometry) point).PrecisionModel);
+                AppendPointTaggedText(point.Coordinate, level, writer, point.PrecisionModel);
             }
             else if (geometry is ILinearRing)
                 AppendLinearRingTaggedText((ILinearRing) geometry, level, writer);            
@@ -429,7 +429,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                         writer.Write(",");
                         if (i % 10 == 0) Indent(level + 2, writer);
                     }
-                    AppendCoordinate(lineString.GetCoordinateN(i), writer, ((Geometry) lineString).PrecisionModel);
+                    AppendCoordinate(lineString.GetCoordinateN(i), writer, lineString.PrecisionModel);
                 }
                 writer.Write(")");
             }
@@ -478,7 +478,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 for (int i = 0; i < multiPoint.NumGeometries; i++) 
                 {
                     if (i > 0) writer.Write(",");
-                    AppendCoordinate(((IPoint) multiPoint.GetGeometryN(i)).Coordinate, writer, ((Geometry) multiPoint).PrecisionModel);
+                    AppendCoordinate(((IPoint) multiPoint.GetGeometryN(i)).Coordinate, writer, multiPoint.PrecisionModel);
                 }
                 writer.Write(")");
             }

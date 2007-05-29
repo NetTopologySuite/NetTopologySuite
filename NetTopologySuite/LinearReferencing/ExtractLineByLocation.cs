@@ -114,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             if (newCoordinateArray.Length <= 1)
                 newCoordinateArray = new ICoordinate[] { newCoordinateArray[0], newCoordinateArray[0] };
             
-            return ((LineString) line).Factory.CreateLineString(newCoordinateArray);
+            return line.Factory.CreateLineString(newCoordinateArray);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <returns></returns>
         private IGeometry ComputeLinear(LinearLocation start, LinearLocation end)
         {
-            LinearGeometryBuilder builder = new LinearGeometryBuilder(((LineString) line).Factory);
+            LinearGeometryBuilder builder = new LinearGeometryBuilder(line.Factory);
             builder.FixInvalidLines = true;
 
             if (!start.IsVertex)

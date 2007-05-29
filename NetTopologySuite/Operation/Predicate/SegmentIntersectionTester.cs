@@ -39,7 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         {
             for (IEnumerator i = lines.GetEnumerator(); i.MoveNext(); ) 
             {
-                LineString line = (LineString)i.Current;
+                ILineString line = (ILineString) i.Current;
                 HasIntersection(seq, line.CoordinateSequence);
                 if (hasIntersection)
                     break;

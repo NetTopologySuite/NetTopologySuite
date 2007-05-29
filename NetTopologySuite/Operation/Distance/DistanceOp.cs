@@ -218,7 +218,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
                 GeometryLocation loc = (GeometryLocation)locs[i];
                 for (int j = 0; j < polys.Count; j++)
                 {
-                    Polygon poly = (Polygon)polys[j];
+                    IPolygon poly = (IPolygon) polys[j];
                     ComputeInside(loc, poly, locPtPoly);
                     if (minDistance <= terminateDistance)                    
                         return;                    

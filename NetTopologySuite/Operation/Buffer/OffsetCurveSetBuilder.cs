@@ -244,7 +244,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
              * a full topological computation.
              *
              */
-            ILinearRing ring = ((LinearRing) inputGeom).Factory.CreateLinearRing(ringCoord);
+            ILinearRing ring = inputGeom.Factory.CreateLinearRing(ringCoord);
             MinimumDiameter md = new MinimumDiameter(ring);
             minDiam = md.Length;
             return minDiam < 2 * Math.Abs(bufferDistance);

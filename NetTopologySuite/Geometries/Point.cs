@@ -270,7 +270,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public override object Clone() 
         {
             Point p = (Point) base.Clone();
-            p.coordinates = (ICoordinateSequence)coordinates.Clone();
+            p.coordinates = (ICoordinateSequence) coordinates.Clone();
             return p; 
         }
 
@@ -286,7 +286,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         protected internal override int CompareToSameClass(object other) 
         {
-            Point point = (Point) other;
+            Point point = (Point)  other;
             return Coordinate.CompareTo(point.Coordinate);
         }
 

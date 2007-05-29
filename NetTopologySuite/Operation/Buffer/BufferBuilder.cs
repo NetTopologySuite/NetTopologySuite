@@ -112,10 +112,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         {
             IPrecisionModel precisionModel = workingPrecisionModel;
             if (precisionModel == null)
-                precisionModel = ((Geometry) g).PrecisionModel;
+                precisionModel = g.PrecisionModel;
 
             // factory must be the same as the one used by the input
-            geomFact = ((Geometry) g).Factory;
+            geomFact = g.Factory;
 
             OffsetCurveBuilder curveBuilder = new OffsetCurveBuilder(precisionModel, quadrantSegments);
             curveBuilder.EndCapStyle = endCapStyle;

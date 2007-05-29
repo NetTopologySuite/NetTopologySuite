@@ -51,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			BigEndianBinaryWriter shxBinaryWriter = new BigEndianBinaryWriter(shxStream);
 			
 			// assumes
-			ShapeHandler handler = Shapefile.GetShapeHandler(Shapefile.GetShapeType((Geometry) geometryCollection.Geometries[0]));
+			ShapeHandler handler = Shapefile.GetShapeHandler(Shapefile.GetShapeType(geometryCollection.Geometries[0]));
 
 			IGeometry body;
 			int numShapes = geometryCollection.NumGeometries;

@@ -158,16 +158,16 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		public override void Write(IGeometry geometry, System.IO.BinaryWriter file, IGeometryFactory geometryFactory)
 		{
             // This check seems to be not useful and slow the operations...
-			//  if (!geometry.IsValid)    
-			//	Trace.WriteLine("Invalid polygon being written.");
+			// if (!geometry.IsValid)    
+			// Trace.WriteLine("Invalid polygon being written.");
 
-			IGeometryCollection multi;
-			if(geometry is IGeometryCollection)
+			IGeometryCollection multi = null;
+			if (geometry is IGeometryCollection)
 				multi = (IGeometryCollection) geometry;
 			else 
 			{
-				GeometryFactory gf = new GeometryFactory(((Geometry) geometry).PrecisionModel);				
-				multi = gf.CreateMultiPolygon( new IPolygon[] {(IPolygon) geometry} );
+				GeometryFactory gf = new GeometryFactory(geometry.PrecisionModel);				
+				multi = gf.CreateMultiPolygon(new IPolygon[] { (IPolygon) geometry, } );
 			}
 
 			file.Write(int.Parse(Enum.Format(typeof(ShapeGeometryTypes), this.ShapeType, "d")));

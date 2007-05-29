@@ -47,14 +47,14 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(point.Dimension);
                 Write(point.Envelope);
                 Write(point.EnvelopeInternal);
-                Write(((Point) point).Factory);
+                Write(point.Factory);
                 Write(point.InteriorPoint);
                 Write(point.IsEmpty);
                 Write(point.IsSimple);
                 Write(point.IsValid);
                 Write(point.Length);
                 Write(point.NumPoints);
-                Write(((Point)point).PrecisionModel);                          
+                Write(point.PrecisionModel);                          
                 Write(point.X);
                 Write(point.Y);                               
 

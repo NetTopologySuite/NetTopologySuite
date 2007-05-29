@@ -70,7 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         {
             // if client did not supply a GeometryFactory, use the one from the input Geometry
             if (factory == null)
-                factory = ((Geometry) geometry).Factory;
+                factory = geometry.Factory;
             if (geometry is IGeometryCollection) 
                 return EditGeometryCollection((IGeometryCollection) geometry, operation);
             if (geometry is IPolygon)

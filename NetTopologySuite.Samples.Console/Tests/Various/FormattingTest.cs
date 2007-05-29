@@ -79,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         {
             Coordinate coordinate = new Coordinate(0.0000000000001, 0.0000000000002);
             IPoint point = GeometryFactory.Floating.CreatePoint(coordinate);            
-            IPoint test = (Point)new WKTReader(GeometryFactory.Floating).Read(point.ToString());
+            IPoint test = (IPoint) new WKTReader(GeometryFactory.Floating).Read(point.ToString());
             Debug.WriteLine(point.ToString());
             Debug.WriteLine(test.ToString());
 

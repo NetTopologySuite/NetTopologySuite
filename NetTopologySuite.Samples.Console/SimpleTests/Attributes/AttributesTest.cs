@@ -44,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Attributes
             AttributesTable attributes = new AttributesTable();
             attributes.AddAttribute("FOO", "FOO");
 
-            Feature feature = new Feature((Geometry) Factory.CreateMultiLineString(new ILineString[] { line_string }), attributes);
+            Feature feature = new Feature(Factory.CreateMultiLineString(new ILineString[] { line_string }), attributes);
             Feature[] features = new Feature[1];
             features[0] = feature;
 
