@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Represents an empty <c>Point</c>.
         /// </summary>
-        public static readonly Point Empty = new GeometryFactory().CreatePoint(emptyCoordinate);
+        public static readonly IPoint Empty = new GeometryFactory().CreatePoint(emptyCoordinate);
 
         /// <summary>  
         /// The <c>Coordinate</c> wrapped by this <c>Point</c>.

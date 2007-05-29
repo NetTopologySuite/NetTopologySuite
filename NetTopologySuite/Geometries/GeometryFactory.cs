@@ -298,7 +298,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// an empty Geometry.
         /// </summary>
         /// <param name="coordinate"></param>
-        public Point CreatePoint(ICoordinate coordinate) 
+        public IPoint CreatePoint(ICoordinate coordinate) 
         {
             return CreatePoint(coordinate != null ? 
                 CoordinateSequenceFactory.Create(new ICoordinate[] { coordinate }) : null);
@@ -309,7 +309,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// CoordinateSequence will create an empty Point.
         /// </summary>
         /// <param name="coordinates"></param>
-        public Point CreatePoint(ICoordinateSequence coordinates) 
+        public IPoint CreatePoint(ICoordinateSequence coordinates) 
         {
   	        return new Point(coordinates, this);
         }

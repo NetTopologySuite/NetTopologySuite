@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 
@@ -58,8 +60,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         public void FloatFormatting17DigitsTest1()
         {
             Coordinate coordinate = new Coordinate(0.00000000000000000001, 0.00000000000000000001);
-            Point point = GeometryFactory.Floating.CreatePoint(coordinate);
-            Point test = (Point)new WKTReader(GeometryFactory.Floating).Read(point.ToString());
+            IPoint point = GeometryFactory.Floating.CreatePoint(coordinate);
+            IPoint test = (IPoint)new WKTReader(GeometryFactory.Floating).Read(point.ToString());
             
             // If i modify PrecisionModel.MaximumSignificantDigits from 16 to (as example) 20, all the digits are printed... 
             Debug.WriteLine(point.ToString());
@@ -76,8 +78,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         public void FloatFormatting9MoreDigitsTest1()
         {
             Coordinate coordinate = new Coordinate(0.0000000000001, 0.0000000000002);
-            Point point = GeometryFactory.Floating.CreatePoint(coordinate);            
-            Point test = (Point)new WKTReader(GeometryFactory.Floating).Read(point.ToString());
+            IPoint point = GeometryFactory.Floating.CreatePoint(coordinate);            
+            IPoint test = (Point)new WKTReader(GeometryFactory.Floating).Read(point.ToString());
             Debug.WriteLine(point.ToString());
             Debug.WriteLine(test.ToString());
 
@@ -94,8 +96,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         public void FloatFormatting9MoreDigitsTest2()
         {
             Coordinate coordinate = new Coordinate(0.0000000000001, 0.0000000000002);
-            Point point = GeometryFactory.FloatingSingle.CreatePoint(coordinate);
-            Point test = (Point)new WKTReader(GeometryFactory.FloatingSingle).Read(point.ToString());
+            IPoint point = GeometryFactory.FloatingSingle.CreatePoint(coordinate);
+            IPoint test = (IPoint)new WKTReader(GeometryFactory.FloatingSingle).Read(point.ToString());
             Debug.WriteLine(point.ToString());
             Debug.WriteLine(test.ToString());
             
@@ -112,8 +114,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         public void FloatFormatting9MoreDigitsTest3()
         {
             Coordinate coordinate = new Coordinate(0.0000000000001, 0.0000000000002);
-            Point point = GeometryFactory.Fixed.CreatePoint(coordinate);
-            Point test = (Point)new WKTReader(GeometryFactory.Fixed).Read(point.ToString());
+            IPoint point = GeometryFactory.Fixed.CreatePoint(coordinate);
+            IPoint test = (IPoint)new WKTReader(GeometryFactory.Fixed).Read(point.ToString());
             Debug.WriteLine(point.ToString());
             Debug.WriteLine(test.ToString());
 

@@ -109,7 +109,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 IGeometry test1 = new WKBReader().Read(bytes);
                 Write(test1.ToString());
                 
-                bytes = Factory.CreatePoint(new Coordinate(Double.MinValue, Double.MinValue)).ToBinary();
+                bytes = Factory.CreatePoint(new Coordinate(Double.MinValue, Double.MinValue)).AsBinary();
                 IGeometry testempty = new WKBReader().Read(bytes);
                 Write(testempty);
 

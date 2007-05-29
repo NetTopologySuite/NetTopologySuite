@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 
@@ -36,10 +38,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.IO
         [Test]
         public void TestWriteSimpleShapeFile()
         {
-            Point p1 = Factory.CreatePoint(new Coordinate(100, 100));
-            Point p2 = Factory.CreatePoint(new Coordinate(200, 200));
+            IPoint p1 = Factory.CreatePoint(new Coordinate(100, 100));
+            IPoint p2 = Factory.CreatePoint(new Coordinate(200, 200));
 
-            GeometryCollection coll = new GeometryCollection(new Geometry[] { p1, p2, });
+            GeometryCollection coll = new GeometryCollection(new IGeometry[] { p1, p2, });
             ShapefileWriter writer = new ShapefileWriter(Factory);
             writer.Write(@"c:\test_arcview", coll);
 
