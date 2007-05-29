@@ -137,7 +137,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// If MakePrecise is true, computed intersection coordinates will be made precise
         /// using <c>Coordinate.MakePrecise</c>.
         /// </summary>
-        protected PrecisionModel precisionModel = null;
+        protected IPrecisionModel precisionModel = null;
 
         /// <summary>
         /// 
@@ -156,7 +156,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Force computed intersection to be rounded to a given precision model
         /// </summary>        
         [Obsolete("Use PrecisionModel instead")]
-        public PrecisionModel MakePrecise
+        public IPrecisionModel MakePrecise
         {            
             set
             {
@@ -168,7 +168,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Force computed intersection to be rounded to a given precision model.
         /// No getter is provided, because the precision model is not required to be specified.
         /// </summary>
-        public PrecisionModel PrecisionModel
+        public IPrecisionModel PrecisionModel
         {            
             set
             {

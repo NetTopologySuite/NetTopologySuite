@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 	/// </summary>
 	public class ShapefileWriter
 	{
-        private GeometryFactory geometryFactory = null;
+        private IGeometryFactory geometryFactory = null;
 		
         /// <summary>
         /// Initializes a new instance of the <see cref="ShapefileWriter" /> class 
@@ -26,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// with the given <see cref="GeometryFactory" />.
         /// </summary>
         /// <param name="geometryFactory"></param>
-        public ShapefileWriter(GeometryFactory geometryFactory) 
+        public ShapefileWriter(IGeometryFactory geometryFactory) 
         {
             this.geometryFactory = geometryFactory;
         }

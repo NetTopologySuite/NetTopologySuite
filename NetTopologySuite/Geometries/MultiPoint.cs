@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Elements may be empty <c>Point</c>s, but not <c>null</c>s.
         /// </param>
         /// <param name="factory"></param>
-        public MultiPoint(IPoint[] points, GeometryFactory factory) : base(points, factory) { }
+        public MultiPoint(IPoint[] points, IGeometryFactory factory) : base(points, factory) { }
 
         /// <summary>
         /// Constructs a <c>MultiPoint</c>.

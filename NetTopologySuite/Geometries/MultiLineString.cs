@@ -29,7 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// but not <c>null</c>s.
         /// </param>
         /// <param name="factory"></param>
-        public MultiLineString(ILineString[] lineStrings, GeometryFactory factory) : base(lineStrings, factory) { }        
+        public MultiLineString(ILineString[] lineStrings, IGeometryFactory factory) : base(lineStrings, factory) { }        
 
         /// <summary>
         /// Constructs a <c>MultiLineString</c>.

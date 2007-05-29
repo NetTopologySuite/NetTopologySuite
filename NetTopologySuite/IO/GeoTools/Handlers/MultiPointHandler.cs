@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <param name="file">The stream to read.</param>
 		/// <param name="geometryFactory">The geometry factory to use when making the object.</param>
 		/// <returns>The Geometry object that represents the shape file record.</returns>
-        public override IGeometry Read(BigEndianBinaryReader file, GeometryFactory geometryFactory)
+        public override IGeometry Read(BigEndianBinaryReader file, IGeometryFactory geometryFactory)
         {
             int shapeTypeNum = file.ReadInt32();
             ShapeGeometryTypes shapeType = (ShapeGeometryTypes) Enum.Parse(typeof(ShapeGeometryTypes), shapeTypeNum.ToString());
@@ -63,7 +63,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <param name="geometry">The geometry to write.</param>
 		/// <param name="file">The file stream to write to.</param>
 		/// <param name="geometryFactory">The geometry factory to use.</param>
-		public override void Write(IGeometry geometry, System.IO.BinaryWriter file, GeometryFactory geometryFactory)
+		public override void Write(IGeometry geometry, System.IO.BinaryWriter file, IGeometryFactory geometryFactory)
 		{
             if(!(geometry is IMultiPoint))
                 throw new ArgumentException("Geometry Type error: MultiPoint expected, but the type retrieved is " + geometry.GetType().Name);

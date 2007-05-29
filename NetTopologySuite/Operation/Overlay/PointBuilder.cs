@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     public class PointBuilder
     {
         private OverlayOp op;
-        private GeometryFactory geometryFactory;
+        private IGeometryFactory geometryFactory;
         private PointLocator ptLocator;
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <param name="op"></param>
         /// <param name="geometryFactory"></param>
         /// <param name="ptLocator"></param>
-        public PointBuilder(OverlayOp op, GeometryFactory geometryFactory, PointLocator ptLocator)
+        public PointBuilder(OverlayOp op, IGeometryFactory geometryFactory, PointLocator ptLocator)
         {
             this.op = op;
             this.geometryFactory = geometryFactory;

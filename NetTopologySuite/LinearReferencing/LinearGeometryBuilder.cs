@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     /// </summary>
     public class LinearGeometryBuilder
     {
-        private GeometryFactory geomFact = null;
+        private IGeometryFactory geomFact = null;
         private List<IGeometry> lines = new List<IGeometry>();
         private CoordinateList coordList = null;
 
@@ -26,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// 
         /// </summary>
         /// <param name="geomFact"></param>
-        public LinearGeometryBuilder(GeometryFactory geomFact)
+        public LinearGeometryBuilder(IGeometryFactory geomFact)
         {
             this.geomFact = geomFact;
         }

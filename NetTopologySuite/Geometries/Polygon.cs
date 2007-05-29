@@ -70,7 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// point is to be created.
         /// </param>
         /// <param name="factory"></param>
-        public Polygon(ILinearRing shell, ILinearRing[] holes, GeometryFactory factory) : base(factory)
+        public Polygon(ILinearRing shell, ILinearRing[] holes, IGeometryFactory factory) : base(factory)
         {        
             if (shell == null) 
                 shell = Factory.CreateLinearRing((ICoordinateSequence) null);            

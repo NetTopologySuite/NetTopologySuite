@@ -42,8 +42,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
     /// </summary>
     public class WKTReader 
     {
-        private GeometryFactory geometryFactory;
-        private PrecisionModel precisionModel;
+        private IGeometryFactory geometryFactory;
+        private IPrecisionModel precisionModel;
         int index;
 
         /// <summary> 
@@ -56,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <c>GeometryFactory</c>.
         /// </summary>
         /// <param name="geometryFactory">The factory used to create <c>Geometry</c>s.</param>
-        public WKTReader(GeometryFactory geometryFactory) 
+        public WKTReader(IGeometryFactory geometryFactory) 
         {
             this.geometryFactory = geometryFactory;
             precisionModel = geometryFactory.PrecisionModel;

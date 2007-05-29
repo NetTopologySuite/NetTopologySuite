@@ -45,21 +45,21 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
         private ArrayList ptList;
         private double distance = 0.0;
-        private PrecisionModel precisionModel;
+        private IPrecisionModel precisionModel;
         private BufferStyle endCapStyle = BufferStyle.CapRound;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="precisionModel"></param>
-        public OffsetCurveBuilder(PrecisionModel precisionModel) : this(precisionModel, DefaultQuadrantSegments) { }
+        public OffsetCurveBuilder(IPrecisionModel precisionModel) : this(precisionModel, DefaultQuadrantSegments) { }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="precisionModel"></param>
         /// <param name="quadrantSegments"></param>
-        public OffsetCurveBuilder(PrecisionModel precisionModel, int quadrantSegments)
+        public OffsetCurveBuilder(IPrecisionModel precisionModel, int quadrantSegments)
         {
             this.precisionModel = precisionModel;
             // compute intersections in full precision, to provide accuracy

@@ -56,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// or <c>null</c> to create the empty point.
         /// </param>
         /// <param name="factory"></param>
-        public Point(ICoordinateSequence coordinates, GeometryFactory factory) : base(factory)
+        public Point(ICoordinateSequence coordinates, IGeometryFactory factory) : base(factory)
         {               
             if (coordinates == null) 
                 coordinates = factory.CoordinateSequenceFactory.Create(new ICoordinate[] { });

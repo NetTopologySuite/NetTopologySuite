@@ -95,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         }
 
 		private ShapefileHeader _mainHeader = null;
-		private GeometryFactory _geometryFactory=null;
+		private IGeometryFactory _geometryFactory = null;
 		private string _filename;
 		
 		/// <summary>
@@ -103,7 +103,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// </summary>
 		/// <param name="filename">The filename of the shape file to read (with .shp).</param>
 		/// <param name="geometryFactory">The GeometryFactory to use when creating Geometry objects.</param>
-		public ShapefileReader(string filename, GeometryFactory geometryFactory)
+		public ShapefileReader(string filename, IGeometryFactory geometryFactory)
 		{           
 			if (filename == null)
 				throw new ArgumentNullException("filename");

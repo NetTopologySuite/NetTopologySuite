@@ -43,9 +43,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private int quadrantSegments = OffsetCurveBuilder.DefaultQuadrantSegments;
         private BufferStyle endCapStyle = BufferStyle.CapRound;
         
-        private PrecisionModel workingPrecisionModel = null;
+        private IPrecisionModel workingPrecisionModel = null;
         private INoder workingNoder = null;
-        private GeometryFactory geomFact = null;
+        private IGeometryFactory geomFact = null;
         private PlanarGraph graph = null;
         private EdgeList edgeList = new EdgeList();
 
@@ -75,7 +75,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// If the precision model is less than the precision of the Geometry precision model,
         /// the Geometry must have previously been rounded to that precision.
         /// </summary>
-        public PrecisionModel WorkingPrecisionModel
+        public IPrecisionModel WorkingPrecisionModel
         {
             get
             {
@@ -110,7 +110,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <returns></returns>
         public IGeometry Buffer(IGeometry g, double distance)
         {
-            PrecisionModel precisionModel = workingPrecisionModel;
+            IPrecisionModel precisionModel = workingPrecisionModel;
             if (precisionModel == null)
                 precisionModel = ((Geometry) g).PrecisionModel;
 
@@ -148,7 +148,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <param name="precisionModel"></param>
         /// <returns></returns>
-        private INoder GetNoder(PrecisionModel precisionModel)
+        private INoder GetNoder(IPrecisionModel precisionModel)
         {
             if (workingNoder != null) 
                 return workingNoder;
@@ -165,7 +165,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <param name="bufferSegStrList"></param>
         /// <param name="precisionModel"></param>
-        private void ComputeNodedEdges(IList bufferSegStrList, PrecisionModel precisionModel)
+        private void ComputeNodedEdges(IList bufferSegStrList, IPrecisionModel precisionModel)
         {
             INoder noder = GetNoder(precisionModel);
             noder.ComputeNodes(bufferSegStrList);

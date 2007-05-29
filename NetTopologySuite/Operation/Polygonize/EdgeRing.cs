@@ -94,7 +94,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             return true;
         }
         
-        private GeometryFactory factory = null;
+        private IGeometryFactory factory = null;
         private IList deList = new ArrayList();
 
         // cache the following data for efficiency
@@ -107,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// 
         /// </summary>
         /// <param name="factory"></param>
-        public EdgeRing(GeometryFactory factory)
+        public EdgeRing(IGeometryFactory factory)
         {
             this.factory = factory;
         }

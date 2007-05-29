@@ -33,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <param name="file">The stream to read.</param>
 		/// <param name="geometryFactory">The geometry factory to use when making the object.</param>
 		/// <returns>The Geometry object that represents the shape file record.</returns>
-		public override IGeometry Read(BigEndianBinaryReader file, GeometryFactory geometryFactory)
+		public override IGeometry Read(BigEndianBinaryReader file, IGeometryFactory geometryFactory)
 		{
 			int shapeTypeNum = file.ReadInt32();
             ShapeGeometryTypes shapeType = (ShapeGeometryTypes)Enum.Parse(typeof(ShapeGeometryTypes), shapeTypeNum.ToString());
@@ -84,7 +84,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <param name="geometry">The geometry object to write.</param>
 		/// <param name="file">The stream to write to.</param>
 		/// <param name="geometryFactory">The geometry factory to use.</param>
-		public override void Write(IGeometry geometry, System.IO.BinaryWriter file, GeometryFactory geometryFactory)
+		public override void Write(IGeometry geometry, System.IO.BinaryWriter file, IGeometryFactory geometryFactory)
 		{
 			IMultiLineString multi = (IMultiLineString) geometry;
             file.Write(int.Parse(Enum.Format(typeof(ShapeGeometryTypes), this.ShapeType, "d")));

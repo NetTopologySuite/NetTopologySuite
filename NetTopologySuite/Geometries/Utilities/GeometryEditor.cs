@@ -40,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <summary> 
         /// The factory used to create the modified Geometry.
         /// </summary>
-        private GeometryFactory factory = null;
+        private IGeometryFactory factory = null;
 
         /// <summary> 
         /// Creates a new GeometryEditor object which will create
@@ -53,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// the edited Geometry with the given GeometryFactory.
         /// </summary>
         /// <param name="factory">The GeometryFactory to create the edited Geometry with.</param>
-        public GeometryEditor(GeometryFactory factory)
+        public GeometryEditor(IGeometryFactory factory)
         {
             this.factory = factory;
         }
@@ -156,7 +156,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             /// (may be different to the factory of the input point).
             /// </param>
             /// <returns>A new Geometry which is a modification of the input Geometry.</returns>
-            IGeometry Edit(IGeometry geometry, GeometryFactory factory);
+            IGeometry Edit(IGeometry geometry, IGeometryFactory factory);
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             /// <param name="geometry"></param>
             /// <param name="factory"></param>
             /// <returns></returns>
-            public IGeometry Edit(IGeometry geometry, GeometryFactory factory) 
+            public IGeometry Edit(IGeometry geometry, IGeometryFactory factory) 
             {
                 if (geometry is ILinearRing) 
                     return factory.CreateLinearRing(Edit(geometry.Coordinates, geometry));

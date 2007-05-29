@@ -13,8 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.LinearReferencing
     /// </summary>
     public class LinearReferencingExample
     {
-        // TODO: Verificare il comportamento nell'analoga classe java usando i diversi GeometryFactory
-        private static GeometryFactory fact = GeometryFactory.Fixed;
+        private static IGeometryFactory fact = GeometryFactory.Fixed;
         private static WKTReader rdr = new WKTReader(fact);
         
         /// <summary>

@@ -38,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Technique
         /// <param name="geom"></param>
 		public static void UnionUsingBufferOp(IGeometry[] geom)
 		{
-			GeometryFactory fact = ((Geometry) geom[0]).Factory;
+			IGeometryFactory fact = ((Geometry) geom[0]).Factory;
 			IGeometry geomColl = fact.CreateGeometryCollection(geom);
 			IGeometry union = geomColl.Buffer(0.0);
 			Console.WriteLine(union);

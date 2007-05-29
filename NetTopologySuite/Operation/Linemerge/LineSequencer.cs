@@ -106,7 +106,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         private LineMergeGraph graph = new LineMergeGraph();
 
         // Initialize with default, in case no lines are input        
-        private GeometryFactory factory = GeometryFactory.Default;
+        private IGeometryFactory factory = GeometryFactory.Default;
 
         private IGeometry sequencedGeometry = null;
         

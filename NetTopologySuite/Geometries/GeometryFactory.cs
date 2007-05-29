@@ -16,40 +16,40 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// from lists of Coordinates.
     /// </summary>            
     [Serializable]
-    public class GeometryFactory 
+    public class GeometryFactory : IGeometryFactory
     {
         /// <summary>
         /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModels.Floating" />.
         /// </summary>
-        public static readonly GeometryFactory Default = new GeometryFactory();
+        public static readonly IGeometryFactory Default = new GeometryFactory();
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModels.Floating" />.
         /// </summary>
         /// <remarks>A shortcut for <see cref="GeometryFactory.Default" />.</remarks>
-		public static readonly GeometryFactory Floating = Default;
+		public static readonly IGeometryFactory Floating = Default;
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModels.FloatingSingle" />.
         /// </summary>
-		public static readonly GeometryFactory FloatingSingle = new GeometryFactory(new PrecisionModel(PrecisionModels.FloatingSingle));  
+		public static readonly IGeometryFactory FloatingSingle = new GeometryFactory(new PrecisionModel(PrecisionModels.FloatingSingle));  
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModels.Fixed" />.
         /// </summary>
-		public static readonly GeometryFactory Fixed = new GeometryFactory(new PrecisionModel(PrecisionModels.Fixed));
+		public static readonly IGeometryFactory Fixed = new GeometryFactory(new PrecisionModel(PrecisionModels.Fixed));
            
-        private PrecisionModel precisionModel;
+        private IPrecisionModel precisionModel;
 
         /// <summary>
         /// Returns the PrecisionModel that Geometries created by this factory
         /// will be associated with.
         /// </summary>
-        public PrecisionModel PrecisionModel
+        public IPrecisionModel PrecisionModel
         {
             get
             {
@@ -103,7 +103,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="precisionModel"></param>
         /// <param name="SRID"></param>
         /// <param name="coordinateSequenceFactory"></param>       
-        public GeometryFactory(PrecisionModel precisionModel, int SRID,
+        public GeometryFactory(IPrecisionModel precisionModel, int SRID,
                                ICoordinateSequenceFactory coordinateSequenceFactory) 
         {
             this.precisionModel = precisionModel;
@@ -126,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// implementation.
         /// </summary>
         /// <param name="precisionModel">The PrecisionModel to use.</param>
-        public GeometryFactory(PrecisionModel precisionModel) 
+        public GeometryFactory(IPrecisionModel precisionModel) 
             : this(precisionModel, 0, GetDefaultCoordinateSequenceFactory()) { }
 
         /// <summary>

@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -27,7 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         /// <param name="start"></param>
         /// <param name="geometryFactory"></param>
-        public MaximalEdgeRing(DirectedEdge start, GeometryFactory geometryFactory) 
+        public MaximalEdgeRing(DirectedEdge start, IGeometryFactory geometryFactory) 
             : base(start, geometryFactory) { }
 
         /// <summary>

@@ -3,6 +3,8 @@ using System.Collections;
 using System.IO;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Features;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
@@ -144,7 +146,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
             try
             {
                 // Write shp and shx  
-                Geometry[] geometries = new Geometry[featureCollection.Count];
+                IGeometry[] geometries = new IGeometry[featureCollection.Count];
                 int index = 0;
                 foreach (Feature feature in featureCollection)
                     geometries[index++] = feature.Geometry;

@@ -69,7 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         private LineMergeGraph graph = new LineMergeGraph();
         private IList mergedLineStrings = null;
         private IList edgeStrings = null;
-        private GeometryFactory factory = null;
+        private IGeometryFactory factory = null;
 
         /// <summary>
         /// Adds a Geometry to be processed. May be called multiple times.

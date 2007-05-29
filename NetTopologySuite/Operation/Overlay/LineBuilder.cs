@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     public class LineBuilder
     {
         private OverlayOp op;
-        private GeometryFactory geometryFactory;
+        private IGeometryFactory geometryFactory;
         private PointLocator ptLocator;
 
         private IList lineEdgesList = new ArrayList();
@@ -30,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <param name="op"></param>
         /// <param name="geometryFactory"></param>
         /// <param name="ptLocator"></param>
-        public LineBuilder(OverlayOp op, GeometryFactory geometryFactory, PointLocator ptLocator)
+        public LineBuilder(OverlayOp op, IGeometryFactory geometryFactory, PointLocator ptLocator)
         {
             this.op = op;
             this.geometryFactory = geometryFactory;

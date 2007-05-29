@@ -27,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <param name="file">The stream to read.</param>
 		/// <param name="geometryFactory">The geometry factory to use when making the object.</param>
 		/// <returns>The Geometry object that represents the shape file record.</returns>
-		public abstract IGeometry Read(BigEndianBinaryReader file, GeometryFactory geometryFactory);
+		public abstract IGeometry Read(BigEndianBinaryReader file, IGeometryFactory geometryFactory);
 
 		/// <summary>
 		/// Writes to the given stream the equilivent shape file record given a Geometry object.
@@ -35,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <param name="geometry">The geometry object to write.</param>
 		/// <param name="file">The stream to write to.</param>
 		/// <param name="geometryFactory">The geometry factory to use.</param>
-		public abstract void Write(IGeometry geometry, System.IO.BinaryWriter file,  GeometryFactory geometryFactory);
+		public abstract void Write(IGeometry geometry, System.IO.BinaryWriter file,  IGeometryFactory geometryFactory);
 
 		/// <summary>
 		/// Gets the length in bytes the Geometry will need when written as a shape file record.
@@ -64,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="precisionModel"></param>
         /// <param name="envelope"></param>
         /// <returns></returns>
-		public static IEnvelope GetEnvelopeExternal(PrecisionModel precisionModel, IEnvelope envelope)
+		public static IEnvelope GetEnvelopeExternal(IPrecisionModel precisionModel, IEnvelope envelope)
 		{
             return GetEnvelopeExternal(envelope);
 		}        

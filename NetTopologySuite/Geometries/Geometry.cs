@@ -106,13 +106,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             typeof(GeometryCollection),    
         };                    
 
-        private GeometryFactory factory = null;
+        private IGeometryFactory factory = null;
 
         /// <summary> 
         /// Gets the factory which contains the context in which this point was created.
         /// </summary>
         /// <returns>The factory for this point.</returns>
-        public GeometryFactory Factory
+        public IGeometryFactory Factory
         {
             get 
             { 
@@ -173,7 +173,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <param name="factory"></param>
-        public Geometry(GeometryFactory factory)
+        public Geometry(IGeometryFactory factory)
         {
             this.factory = factory;
             this.srid = factory.SRID;
@@ -221,7 +221,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// the specification of the grid of allowable points, for this
         /// <c>Geometry</c> and all other <c>Geometry</c>s.
         /// </returns>
-        public PrecisionModel PrecisionModel
+        public IPrecisionModel PrecisionModel
         {
             get
             {
@@ -1397,7 +1397,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <seealso cref="GeometryFactory.Default" />
         /// <seealso cref="GeometryFactory.Fixed"/>
-        public static readonly GeometryFactory DefaultFactory = GeometryFactory.Default;
+        public static readonly IGeometryFactory DefaultFactory = GeometryFactory.Default;
         
         /* END ADDED BY MPAUL42: monoGIS team */
 

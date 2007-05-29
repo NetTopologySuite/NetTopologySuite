@@ -101,7 +101,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         }
 
         private readonly PointLocator ptLocator = new PointLocator();
-        private GeometryFactory geomFact;
+        private IGeometryFactory geomFact;
         private IGeometry resultGeom;
 
         private PlanarGraph graph;

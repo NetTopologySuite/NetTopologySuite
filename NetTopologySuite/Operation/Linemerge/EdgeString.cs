@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     /// </summary>
     public class EdgeString
     {
-        private GeometryFactory factory;
+        private IGeometryFactory factory;
         private IList directedEdges = new ArrayList();
         private ICoordinate[] coordinates = null;
 
@@ -23,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// to a LineString.
         /// </summary>
         /// <param name="factory"></param>
-        public EdgeString(GeometryFactory factory)
+        public EdgeString(IGeometryFactory factory)
         {
             this.factory = factory;
         }

@@ -32,14 +32,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        protected GeometryFactory geometryFactory;
+        protected IGeometryFactory geometryFactory;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="start"></param>
         /// <param name="geometryFactory"></param>
-        public EdgeRing(DirectedEdge start, GeometryFactory geometryFactory)
+        public EdgeRing(DirectedEdge start, IGeometryFactory geometryFactory)
         {
             this.geometryFactory = geometryFactory;
             ComputePoints(start);
@@ -142,7 +142,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geometryFactory"></param>
         /// <returns></returns>
-        public IPolygon ToPolygon(GeometryFactory geometryFactory)
+        public IPolygon ToPolygon(IGeometryFactory geometryFactory)
         {
             ILinearRing[] holeLR = new ILinearRing[holes.Count];
             for (int i = 0; i < holes.Count; i++)

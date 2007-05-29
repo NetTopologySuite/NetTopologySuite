@@ -17,14 +17,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// </summary>
     public class PolygonBuilder
     {
-        private GeometryFactory geometryFactory;        
+        private IGeometryFactory geometryFactory;        
         private IList shellList = new ArrayList();
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="geometryFactory"></param>
-        public PolygonBuilder(GeometryFactory geometryFactory)
+        public PolygonBuilder(IGeometryFactory geometryFactory)
         {
             this.geometryFactory = geometryFactory;
         }

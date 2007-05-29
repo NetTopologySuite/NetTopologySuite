@@ -74,13 +74,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             }
         }
 
-        private GeometryFactory factory;
+        private IGeometryFactory factory;
 
         /// <summary>
         /// Create a new polygonization graph.
         /// </summary>
         /// <param name="factory"></param>
-        public PolygonizeGraph(GeometryFactory factory)
+        public PolygonizeGraph(IGeometryFactory factory)
         {
             this.factory = factory;
         }

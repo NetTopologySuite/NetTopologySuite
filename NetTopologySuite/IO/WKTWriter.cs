@@ -256,7 +256,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// The <c>PrecisionModel</c> to use to convert
         /// from a precise coordinate to an external coordinate.
         /// </param>
-        private void AppendPointTaggedText(ICoordinate coordinate, int level, TextWriter writer, PrecisionModel precisionModel)
+        private void AppendPointTaggedText(ICoordinate coordinate, int level, TextWriter writer, IPrecisionModel precisionModel)
         {
             writer.Write("POINT");
             AppendPointText(coordinate, level, writer, precisionModel);
@@ -364,7 +364,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// The <c>PrecisionModel</c> to use to convert
         /// from a precise coordinate to an external coordinate.
         /// </param>
-        private void AppendPointText(ICoordinate coordinate, int level, TextWriter writer, PrecisionModel precisionModel)
+        private void AppendPointText(ICoordinate coordinate, int level, TextWriter writer, IPrecisionModel precisionModel)
         {
             if (coordinate == null) 
                 writer.Write(" EMPTY");
@@ -386,7 +386,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// The <c>PrecisionModel</c> to use to convert
         /// from a precise coordinate to an external coordinate.
         /// </param>
-        private void AppendCoordinate(ICoordinate coordinate, TextWriter writer, PrecisionModel precisionModel)
+        private void AppendCoordinate(ICoordinate coordinate, TextWriter writer, IPrecisionModel precisionModel)
         {	              
             writer.Write(WriteNumber(coordinate.X) + " " + WriteNumber(coordinate.Y));
         }

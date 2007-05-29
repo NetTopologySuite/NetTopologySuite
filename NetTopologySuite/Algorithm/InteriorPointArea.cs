@@ -32,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return (a + b) / 2.0;
         }
 
-        private GeometryFactory factory;
+        private IGeometryFactory factory;
         private ICoordinate interiorPoint = null;
         private double maxWidth = 0;
 

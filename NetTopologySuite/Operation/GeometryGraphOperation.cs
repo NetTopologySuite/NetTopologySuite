@@ -37,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// <summary>
         /// 
         /// </summary>
-        protected PrecisionModel resultPrecisionModel;
+        protected IPrecisionModel resultPrecisionModel;
 
         /// <summary>
         /// The operation args into an array so they can be accessed by index.
@@ -90,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// <summary>
         /// 
         /// </summary>
-        protected PrecisionModel ComputationPrecision
+        protected IPrecisionModel ComputationPrecision
         {
             get
             {

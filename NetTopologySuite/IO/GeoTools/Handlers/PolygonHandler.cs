@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <param name="file">The stream to read.</param>
 		/// <param name="geometryFactory">The geometry factory to use when making the object.</param>
 		/// <returns>The Geometry object that represents the shape file record.</returns>
-		public override IGeometry Read(BigEndianBinaryReader file, GeometryFactory geometryFactory)
+		public override IGeometry Read(BigEndianBinaryReader file, IGeometryFactory geometryFactory)
 		{
 			int shapeTypeNum = file.ReadInt32();
             ShapeGeometryTypes shapeType = (ShapeGeometryTypes)Enum.Parse(typeof(ShapeGeometryTypes), shapeTypeNum.ToString());
@@ -155,7 +155,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <param name="geometry">The geometry to write.</param>
 		/// <param name="file">The file stream to write to.</param>
 		/// <param name="geometryFactory">The geometry factory to use.</param>
-		public override void Write(IGeometry geometry, System.IO.BinaryWriter file, GeometryFactory geometryFactory)
+		public override void Write(IGeometry geometry, System.IO.BinaryWriter file, IGeometryFactory geometryFactory)
 		{
             // This check seems to be not useful and slow the operations...
 			//  if (!geometry.IsValid)    
@@ -221,7 +221,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="points"></param>
         /// <param name="file"></param>
         /// <param name="geometryFactory"></param>
-		private void WriteCoords(CoordinateList points, System.IO.BinaryWriter file, GeometryFactory geometryFactory)
+		private void WriteCoords(CoordinateList points, System.IO.BinaryWriter file, IGeometryFactory geometryFactory)
 		{
 			ICoordinate external;
 			foreach (ICoordinate point in points)

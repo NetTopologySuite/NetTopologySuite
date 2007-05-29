@@ -2,6 +2,8 @@ using System;
 using System.Diagnostics;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Features
@@ -12,12 +14,12 @@ namespace GisSharpBlog.NetTopologySuite.Features
     [Serializable]
     public class Feature
     {
-        private Geometry geometry = null;
+        private IGeometry geometry = null;
 
         /// <summary>
         /// Geometry representation of the feature.
         /// </summary>
-        public Geometry Geometry
+        public IGeometry Geometry
         {
             get { return geometry; }
             set { geometry = value; }
@@ -39,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Features
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="attributes"></param>
-        public Feature(Geometry geometry, IAttributesTable attributes) : this()
+        public Feature(IGeometry geometry, IAttributesTable attributes) : this()
         {
             this.geometry = geometry;
             this.attributes = attributes;

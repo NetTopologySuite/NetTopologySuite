@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Text;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 
@@ -15,9 +17,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
         /// <summary>
         /// 
         /// </summary>
-        private GeometryFactory factory = null;
+        private IGeometryFactory factory = null;
 
-        protected GeometryFactory Factory
+        protected IGeometryFactory Factory
         {
             get { return factory; }            
         }
@@ -37,13 +39,13 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
         /// 
         /// </summary>
         /// <param name="factory"></param>
-        protected BaseSamples(GeometryFactory factory) : this(factory, new WKTReader(factory)) { }
+        protected BaseSamples(IGeometryFactory factory) : this(factory, new WKTReader(factory)) { }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="factory"></param>
-        protected BaseSamples(GeometryFactory factory, WKTReader reader)
+        protected BaseSamples(IGeometryFactory factory, WKTReader reader)
         {
             this.factory = factory;
             this.reader = reader;

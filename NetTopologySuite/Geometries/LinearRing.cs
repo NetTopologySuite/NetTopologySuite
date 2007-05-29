@@ -24,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// This array must not contain <c>null</c> elements.
         /// </param>
         /// <param name="factory"></param>
-        public LinearRing(ICoordinateSequence points, GeometryFactory factory) : base(points, factory)
+        public LinearRing(ICoordinateSequence points, IGeometryFactory factory) : base(points, factory)
         {            
             ValidateConstruction();
         }

@@ -45,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <summary>
         /// 
         /// </summary>
-        protected GeometryFactory factory = null;
+        protected IGeometryFactory factory = null;
 
         // these could eventually be exposed to clients
         /// <summary>

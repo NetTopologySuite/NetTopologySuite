@@ -5,6 +5,8 @@ using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 
+using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 
@@ -70,18 +72,18 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		ShapefileReader _shpReader;
 		IEnumerator _dbfEnumerator;
 		IEnumerator _shpEnumerator;             
-		GeometryFactory _geometryFactory;
+		IGeometryFactory _geometryFactory;
 		ShapefileHeader _shpHeader;
 		DbaseFileHeader _dbfHeader;
 		bool _moreRecords = false;
 		int _recordCount=0;				
 
-        Geometry geometry = null;
+        IGeometry geometry = null;
 
         /// <summary>
         /// Return geometry feature of the shapefile.
         /// </summary>
-        public Geometry Geometry
+        public IGeometry Geometry
         {
             get { return geometry; }         
         }
@@ -91,7 +93,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// </summary>
 		/// <param name="filename">The shapefile to read (minus the .shp extension)</param>
 		///<param name="geometryFactory">The GeometryFactory to use.</param>
-		public ShapefileDataReader(string filename, GeometryFactory geometryFactory) 
+		public ShapefileDataReader(string filename, IGeometryFactory geometryFactory) 
 		{
 			if (filename == null)
 				throw new ArgumentNullException("filename");
@@ -160,7 +162,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			_moreRecords = moreDbfRecords && moreShpRecords;
 
 			// get current shape 
-			geometry = (Geometry)_shpEnumerator.Current;            
+			geometry = (IGeometry)_shpEnumerator.Current;            
 
 			// get current dbase record
 			_columnValues = (ArrayList)_dbfEnumerator.Current;            

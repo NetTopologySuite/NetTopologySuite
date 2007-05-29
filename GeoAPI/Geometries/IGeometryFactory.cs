@@ -6,7 +6,7 @@ namespace GeoAPI.Geometries
     /// <summary>
     /// 
     /// </summary>
-    interface IGeometryFactory
+    public interface IGeometryFactory
     {
         ICoordinateSequenceFactory CoordinateSequenceFactory { get; }
 
@@ -36,5 +36,7 @@ namespace GeoAPI.Geometries
         IMultiPolygon CreateMultiPolygon(IPolygon[] polygons);
         
         IGeometryCollection CreateGeometryCollection(IGeometry[] geometries);
+
+        IGeometry ToGeometry(IEnvelope envelopeInternal);
     }
 }

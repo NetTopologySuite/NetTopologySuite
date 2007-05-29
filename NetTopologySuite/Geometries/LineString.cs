@@ -55,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// to create the empty point. Consecutive points may not be equal.
         /// </param>
         /// <param name="factory"></param>
-        public LineString(ICoordinateSequence points, GeometryFactory factory) : base(factory)
+        public LineString(ICoordinateSequence points, IGeometryFactory factory) : base(factory)
         {            
             if (points == null) 
                 points = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });

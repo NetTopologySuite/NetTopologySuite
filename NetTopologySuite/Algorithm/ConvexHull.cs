@@ -22,8 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class ConvexHull
     {
-
-        private GeometryFactory geomFactory = null;
+        private IGeometryFactory geomFactory = null;
         private ICoordinate[] inputPts = null;
 
         /// <summary> 
@@ -38,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="pts"></param>
         /// <param name="geomFactory"></param>   
-        public ConvexHull(ICoordinate[] pts, GeometryFactory geomFactory)
+        public ConvexHull(ICoordinate[] pts, IGeometryFactory geomFactory)
         {
             inputPts = pts;
             this.geomFactory = geomFactory;

@@ -49,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// but not <c>null</c>s.
         /// </param>
         /// <param name="factory"></param>
-        public GeometryCollection(IGeometry[] geometries, GeometryFactory factory) : base(factory)
+        public GeometryCollection(IGeometry[] geometries, IGeometryFactory factory) : base(factory)
         {            
             if (geometries == null)             
                 geometries = new IGeometry[] { };            

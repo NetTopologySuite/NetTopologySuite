@@ -46,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Specification for SQL.        
         /// </param>
         /// <param name="factory"></param>
-        public MultiPolygon(IPolygon[] polygons, GeometryFactory factory) : base(polygons, factory) { }  
+        public MultiPolygon(IPolygon[] polygons, IGeometryFactory factory) : base(polygons, factory) { }  
 
         /// <summary>
         /// 
