@@ -10,14 +10,14 @@ namespace GisSharpBlog.NetTopologySuite.IO
     public enum ByteOrder
     {
         /// <summary>
-        /// LittleIndian
-        /// </summary>
-        BigIndian = 0x00,
+		/// BigEndian
+		/// </summary>
+        BigEndian = 0x00,
 
         /// <summary>
-        /// BigIndian
-        /// </summary>
-        LittleIndian = 0x01,
+		/// LittleEndian
+		/// </summary>
+        LittleEndian = 0x01,
     }
 
     /// <summary>

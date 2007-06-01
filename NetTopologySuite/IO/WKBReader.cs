@@ -14,12 +14,12 @@ namespace GisSharpBlog.NetTopologySuite.IO
     /// </summary>
     public class WKBReader
     {
-        private GeometryFactory factory = null;
+        private IGeometryFactory factory = null;
 
         /// <summary>
         /// <c>Geometry</c> builder.
         /// </summary>
-        protected GeometryFactory Factory
+        protected IGeometryFactory Factory
         {
             get { return factory; }
         }
@@ -33,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// Initialize reader with the given <c>GeometryFactory</c>.
         /// </summary>
         /// <param name="factory"></param>
-        public WKBReader(GeometryFactory factory)
+        public WKBReader(IGeometryFactory factory)
         {
             this.factory = factory;
         }
@@ -60,7 +60,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
             ByteOrder byteOrder = (ByteOrder) stream.ReadByte();
             try
             {
-                if (byteOrder == ByteOrder.BigIndian)
+                if (byteOrder == ByteOrder.BigEndian)
                      reader = new BEBinaryReader(stream);
                 else reader = new BinaryReader(stream);
                 return Read(reader);

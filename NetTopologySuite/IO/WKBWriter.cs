@@ -27,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// Initializes writer with LittleIndian byte order.
         /// </summary>
         public WKBWriter() : 
-            this(ByteOrder.LittleIndian) { }
+            this(ByteOrder.LittleEndian) { }
 
         /// <summary>
         /// Initializes writer with the specified byte order.
@@ -61,7 +61,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
             BinaryWriter writer = null;
             try
             {
-                if (encodingType == ByteOrder.LittleIndian)
+                if (encodingType == ByteOrder.LittleEndian)
                      writer = new BinaryWriter(stream);
                 else writer = new BEBinaryWriter(stream);
                 Write(geometry, writer);
@@ -104,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void WriteByteOrder(BinaryWriter writer)
         {
-            writer.Write((byte) ByteOrder.LittleIndian);
+            writer.Write((byte) ByteOrder.LittleEndian);
         }
 
         /// <summary>
