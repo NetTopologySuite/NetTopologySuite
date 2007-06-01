@@ -777,6 +777,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns><c>true</c> if the two <c>Geometry</c>s are equal.</returns>
         public bool Equals(IGeometry g)
         {
+			if (IsEmpty && g.IsEmpty)
+				return true;
+
             // Short-circuit test
             if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
                 return false;
