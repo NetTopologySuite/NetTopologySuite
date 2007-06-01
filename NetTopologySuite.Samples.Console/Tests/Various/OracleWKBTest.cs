@@ -72,7 +72,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                                                                                 new Coordinate(120,180),                                                                
                                                                                 new Coordinate(120,120), });
             IPolygon polygon = Factory.CreatePolygon(shell, new ILinearRing[] { hole, });                                    
-            WKBWriter writer = new WKBWriter(ByteOrder.BigIndian);
+            WKBWriter writer = new WKBWriter(ByteOrder.BigEndian);
             byte[] bytes = writer.Write(polygon);
             Assert.IsNotNull(bytes);
             Assert.IsNotEmpty(bytes);

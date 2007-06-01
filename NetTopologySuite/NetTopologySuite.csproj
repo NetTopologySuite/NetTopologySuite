@@ -196,6 +196,9 @@
     <Compile Include="IO\GeoTools\ShapefileReader.cs" />
     <Compile Include="IO\GeoTools\ShapefileWriter.cs" />
     <Compile Include="IO\GeoTools\ShapefileDataWriter.cs" />
+    <Compile Include="IO\PostGisGeometryType.cs" />
+    <Compile Include="IO\PostGisReader.cs" />
+    <Compile Include="IO\PostGisWriter.cs" />
     <Compile Include="IO\ShapeGeometryTypes.cs" />
     <Compile Include="IO\GDBReader.cs" />
     <Compile Include="IO\GDBWriter.cs" />
