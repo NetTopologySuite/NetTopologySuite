@@ -3,7 +3,9 @@
 
 using System;
 using System.IO;
+
 using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.IO
@@ -26,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <summary>
         /// Initialize reader with a standard <c>GeometryFactory</c>. 
         /// </summary>
-        public PostGisReader() : this(new GeometryFactory()) { }
+        public PostGisReader() : this(GeometryFactory.Default) { }
 
         /// <summary>
         /// Initialize reader with the given <c>GeometryFactory</c>.
@@ -97,12 +99,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			int srid = -1;
 
 			if (hasS)
-			{
 				srid = reader.ReadInt32();
-			}
-
+			
 			IGeometry result;
-
             switch (geometryType)
             {
                 case PostGisGeometryType.Point:
@@ -130,8 +129,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                     throw new ArgumentException("Geometry type not recognized. GeometryCode: " + geometryType);
             }
 
-			result.SRID = (hasS ? srid : -1);
-
+			result.SRID = hasS ? srid : -1;
 			return result;
         }
 
@@ -150,10 +148,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
 				double Z = reader.ReadDouble();
 				result = new Coordinate(X, Y, Z);
 			}
-			else
-			{
-				result = new Coordinate(X, Y);
-			}
+			else result = new Coordinate(X, Y);
+			
 			if (hasM)
 			{
 				double M = reader.ReadDouble();
@@ -183,7 +179,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			int numPoints = reader.ReadInt32();
 			ICoordinate[] coordinates = new ICoordinate[numPoints];
 			for (int i = 0; i < numPoints; i++)
-				coordinates[i] = ReadCoordinate(reader, hasZ, hasM);
+				 coordinates[i] = ReadCoordinate(reader, hasZ, hasM);
 			return coordinates;
 		}
 
@@ -232,9 +228,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		protected void ReadGeometryArray(BinaryReader reader, IGeometry[] container)
 		{
 			for (int i = 0; i < container.Length; i++)
-			{
-				container[i] = Read(reader);
-			}
+				container[i] = Read(reader);			
 		}
 
         /// <summary>
@@ -288,6 +282,5 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			ReadGeometryArray(reader, geometries);
             return Factory.CreateGeometryCollection(geometries);
         }
-
 	}
 }

@@ -44,5 +44,4 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		GeometryCollection = 7,
 	
 	}
-
 }

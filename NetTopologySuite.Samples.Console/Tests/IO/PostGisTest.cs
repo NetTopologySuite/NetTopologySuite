@@ -12,10 +12,10 @@ namespace GisSharpBlog.NetTopologySuite.Tests.IO
 	[TestFixture]
 	public class PostGisTest
 	{
-
 		// Our set of geometries to test.
-		public static string[] testset = new string[]{
-				// 2D
+		public static string[] testset = new string[]
+        {
+		        // 2D
 				"POINT(10 10)",
 				// 3D with 3rd coordinate set to 0
 				"POINT(10 10 0)",
@@ -104,6 +104,9 @@ namespace GisSharpBlog.NetTopologySuite.Tests.IO
 		private static readonly PostGisReader br = new PostGisReader();
 		private static readonly WKTReader wr = new WKTReader();
 
+        /// <summary>
+        /// 
+        /// </summary>
 		[Test]
 		public void Main()
 		{
@@ -114,6 +117,11 @@ namespace GisSharpBlog.NetTopologySuite.Tests.IO
 			}
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="wkt"></param>
+        /// <param name="srid"></param>
 		private static void Test(string wkt, int srid)
 		{
 			IGeometry geom = wr.Read(wkt);
@@ -133,11 +141,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests.IO
 
 			byte[] bytesL = new PostGisWriter(ByteOrder.LittleEndian).Write(regeom);
 			regeom = br.Read(bytesL);
-			Assert.IsTrue(geom.Equals(regeom));
-			
+			Assert.IsTrue(geom.Equals(regeom));			
 			Assert.AreEqual(bytesB.Length, bytesL.Length);
 		}
-
-
 	}
 }

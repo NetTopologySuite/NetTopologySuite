@@ -71,7 +71,6 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 if (writer != null)
                     writer.Close();
             }
-
         }
 
         /// <summary>
@@ -114,8 +113,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(ICoordinate coordinate, BinaryWriter writer)
         {
-            writer.Write((double)coordinate.X);
-            writer.Write((double)coordinate.Y);
+            writer.Write((double) coordinate.X);
+            writer.Write((double) coordinate.Y);
         }
 
         /// <summary>

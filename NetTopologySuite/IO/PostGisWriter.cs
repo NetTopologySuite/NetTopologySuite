@@ -3,7 +3,9 @@
 
 using System;
 using System.IO;
+
 using GeoAPI.Geometries;
+
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.IO
@@ -63,7 +65,6 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 if (writer != null)
                     writer.Close();
             }
-
         }
 
         /// <summary>
@@ -92,31 +93,31 @@ namespace GisSharpBlog.NetTopologySuite.IO
             else throw new ArgumentException("Geometry not recognized: " + geometry.ToString());
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="geometry"></param>
+        /// <param name="type"></param>
+        /// <param name="writer"></param>
 		private void WriteHeader(IGeometry geometry, PostGisGeometryType type, BinaryWriter writer)
 		{
-			writer.Write((byte)encodingType);
+			writer.Write((byte) encodingType);
 
 			// write typeword
-			uint typeword = (uint)type;
-			//if (geometry.Dimension == 3)
-			//{
-			//    typeword |= 0x80000000;
-			//}
-			//if (geometry.HasMeasure)
-			//{
+			uint typeword = (uint) type;
+
+            //if (geometry.Dimension == 3)
+            //    typeword |= 0x80000000;			
+			
+            //if (geometry.HasMeasure)
 			//    typeword |= 0x40000000;
-			//}
+			
 			if (geometry.SRID != -1)
-			{
 				typeword |= 0x20000000;
-			}
 			writer.Write(typeword);
 
 			if (geometry.SRID != -1)
-			{
-				writer.Write(geometry.SRID);
-			}
-
+				writer.Write(geometry.SRID);			
 		}
 
 		/// <summary>
@@ -129,17 +130,15 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		{
 			if (coordinate != null)
 			{
-				writer.Write((double)coordinate.X);
-				writer.Write((double)coordinate.Y);
+				writer.Write((double) coordinate.X);
+				writer.Write((double) coordinate.Y);
 
-				//if (baseGeometry.Dimension == 3)
-				//{
-				//    writer.Write((double)coordinate.Z);
-				//}
+                //if (baseGeometry.Dimension == Dimensions.Surface)
+				//    writer.Write((double) coordinate.Z);
+				
 				//if (baseGeometry.HasMeasure)
-				//{
 				//    writer.Write((double)coordinate.M);
-				//}
+				
 			}
 		}
 
@@ -162,9 +161,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		private void Write(IGeometry[] geometries, BinaryWriter writer)
 		{
 			for (int i = 0; i < geometries.Length; i++)
-			{
 				Write(geometries[i], writer);
-			}
 		}
 
 		/// <summary>
@@ -176,11 +173,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <param name="writer"></param>
 		private void Write(ICoordinate[] coordinates, IGeometry baseGeometry, BinaryWriter writer)
 		{
-			writer.Write((int)coordinates.Length);
+			writer.Write((int) coordinates.Length);
 			for (int i = 0; i < coordinates.Length; i++)
-			{
-				Write(coordinates[i], baseGeometry, writer);
-			}
+				Write(coordinates[i], baseGeometry, writer);			
 		}
 
         /// <summary>
@@ -237,7 +232,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         protected void Write(IMultiLineString multiLineString, BinaryWriter writer)
         {
 			WriteHeader(multiLineString, PostGisGeometryType.MultiLineString, writer);
-			writer.Write((int)multiLineString.NumGeometries);
+			writer.Write((int) multiLineString.NumGeometries);
 			Write(multiLineString.Geometries, writer);
         }
 
@@ -249,7 +244,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         protected void Write(IMultiPolygon multiPolygon, BinaryWriter writer)
         {
 			WriteHeader(multiPolygon, PostGisGeometryType.MultiPolygon, writer);
-			writer.Write((int)multiPolygon.NumGeometries);
+			writer.Write((int) multiPolygon.NumGeometries);
 			Write(multiPolygon.Geometries, writer);
         }
 
@@ -261,7 +256,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         protected void Write(IGeometryCollection geomCollection, BinaryWriter writer)
         {
 			WriteHeader(geomCollection, PostGisGeometryType.GeometryCollection, writer);
-			writer.Write((int)geomCollection.NumGeometries);
+			writer.Write((int) geomCollection.NumGeometries);
 			Write(geomCollection.Geometries, writer);
         }
 
@@ -291,10 +286,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			result += 4;
 
 			if (geometry.SRID != -1)
-			{
 				result += 4;
-			}
-
+			
 			if (geometry is IPoint)
 				result += SetByteStream(geometry as IPoint);
             else if (geometry is ILineString)
@@ -309,8 +302,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 result +=  SetByteStream(geometry as IMultiPolygon);
             else if (geometry is IGeometryCollection)
                 result +=  SetByteStream(geometry as IGeometryCollection);
-            else
-				throw new ArgumentException("ShouldNeverReachHere");
+            else throw new ArgumentException("ShouldNeverReachHere");
 
 			return result;
         }
@@ -374,41 +366,40 @@ namespace GisSharpBlog.NetTopologySuite.IO
         {
 			// int length
 			int result = 4;
-
 			result += SetByteStream(geometry.ExteriorRing);
 			for (int i = 0; i < geometry.NumInteriorRings; i++)
-			{
 				result += SetByteStream(geometry.InteriorRings[i]);
-			}
 			return result;
         }
 
-		/** Write an Array of "full" Geometries */
+		/// <summary>
+        /// Write an Array of "full" Geometries
+		/// </summary>
+		/// <param name="container"></param>
+		/// <returns></returns>
 		private int SetByteStream(IGeometry[] container)
 		{
 			int result = 0;
 			for (int i = 0; i < container.Length; i++)
-			{
 				result += SetByteStream(container[i]);
-			}
 			return result;
 		}
 
-		/**
-		 * Write an Array of "slim" Points (without endianness and type, part of
-		 * LinearRing and Linestring, but not MultiPoint!
-		 */
+		/// <summary>
+		/// Write an Array of "slim" Points (without endianness and type, part of
+		/// LinearRing and Linestring, but not MultiPoint!
+		/// </summary>
+		/// <param name="coordinates"></param>
+		/// <param name="geometry"></param>
+		/// <returns></returns>
 		private int SetByteStream(ICoordinate[] coordinates, IGeometry geometry)
 		{
 			// number of points
 			int result = 4;
-
 			// And the amount of the points itsself, in consistent geometries
 			// all points have equal size.
 			if (coordinates.Length > 0)
-			{
 				result += coordinates.Length * SetByteStream(coordinates[0], geometry);
-			}
 			return result;
 		}
 
@@ -454,16 +445,53 @@ namespace GisSharpBlog.NetTopologySuite.IO
 
 			// x, y both have 8 bytes
 			int result = 16;
-			//if (geometry.Dimension == 3)
-			//{
+
+            //if (geometry.Dimension == Dimensions.Surface)
 			//    result += 8;
-			//}
+			
 			//if (geometry.HasMeasure)
-			//{
 			//    result += 8;
-			//}
+			
 			return result;
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="geometry"></param>
+        /// <returns></returns>
+        private static int GetCoordDim(IGeometry geometry)
+        {
+            if (geometry.IsEmpty)
+                return 0;
+        
+            if (geometry is IPoint) 
+                 return GetCoordSequenceDim((geometry as IPoint).CoordinateSequence);
+            if (geometry is ILineString) 
+                 return GetCoordSequenceDim((geometry as ILineString).CoordinateSequence);
+            else if (geometry is IPolygon) 
+                 return GetCoordSequenceDim((geometry as IPolygon).ExteriorRing.CoordinateSequence);
+            else return GetCoordDim(geometry.GetGeometryN(0));            
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="iCoordinateSequence"></param>
+        /// <returns></returns>
+        private static int GetCoordSequenceDim(ICoordinateSequence coords)
+        {
+            if (coords == null || coords.Count == 0)
+                return 0;
+
+            int dimensions = coords.Dimension;
+            if (dimensions == 3)
+            {
+                // CoordinateArraySequence will always return 3, so we have to
+                // check, if the third ordinate contains NaN, then the geom is actually 2-dimensional
+                return Double.IsNaN(coords.GetOrdinate(0, Ordinates.Z)) ? 2 : 3;
+            }
+            else return dimensions;            
+        }
 	}
 }
