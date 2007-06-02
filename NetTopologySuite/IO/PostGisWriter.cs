@@ -106,8 +106,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			// write typeword
 			uint typeword = (uint) type;
 
-            //if (geometry.Dimension == 3)
-            //    typeword |= 0x80000000;			
+            if (hasZ(geometry))
+                typeword |= 0x80000000;			
 			
             //if (geometry.HasMeasure)
 			//    typeword |= 0x40000000;
@@ -133,8 +133,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
 				writer.Write((double) coordinate.X);
 				writer.Write((double) coordinate.Y);
 
-                //if (baseGeometry.Dimension == Dimensions.Surface)
-				//    writer.Write((double) coordinate.Z);
+                if (hasZ(baseGeometry))
+				    writer.Write((double) coordinate.Z);
 				
 				//if (baseGeometry.HasMeasure)
 				//    writer.Write((double)coordinate.M);
@@ -446,8 +446,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			// x, y both have 8 bytes
 			int result = 16;
 
-            //if (geometry.Dimension == Dimensions.Surface)
-			//    result += 8;
+            if (hasZ(geometry))
+			    result += 8;
 			
 			//if (geometry.HasMeasure)
 			//    result += 8;
@@ -460,18 +460,18 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        private static int GetCoordDim(IGeometry geometry)
+        private static bool hasZ(IGeometry geometry)
         {
             if (geometry.IsEmpty)
-                return 0;
+                return false;
         
             if (geometry is IPoint) 
-                 return GetCoordSequenceDim((geometry as IPoint).CoordinateSequence);
+                 return hasZ((geometry as IPoint).CoordinateSequence);
             if (geometry is ILineString) 
-                 return GetCoordSequenceDim((geometry as ILineString).CoordinateSequence);
+                 return hasZ((geometry as ILineString).CoordinateSequence);
             else if (geometry is IPolygon) 
-                 return GetCoordSequenceDim((geometry as IPolygon).ExteriorRing.CoordinateSequence);
-            else return GetCoordDim(geometry.GetGeometryN(0));            
+                 return hasZ((geometry as IPolygon).ExteriorRing.CoordinateSequence);
+            else return hasZ(geometry.GetGeometryN(0));            
         }
 
         /// <summary>
@@ -479,19 +479,19 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="iCoordinateSequence"></param>
         /// <returns></returns>
-        private static int GetCoordSequenceDim(ICoordinateSequence coords)
+        private static bool hasZ(ICoordinateSequence coords)
         {
             if (coords == null || coords.Count == 0)
-                return 0;
+                return false;
 
             int dimensions = coords.Dimension;
-            if (dimensions == 3)
+            if (coords.Dimension == 3)
             {
                 // CoordinateArraySequence will always return 3, so we have to
                 // check, if the third ordinate contains NaN, then the geom is actually 2-dimensional
-                return Double.IsNaN(coords.GetOrdinate(0, Ordinates.Z)) ? 2 : 3;
+                return Double.IsNaN(coords.GetOrdinate(0, Ordinates.Z)) ? false : true;
             }
-            else return dimensions;            
+            else return false;
         }
 	}
 }
