@@ -165,7 +165,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
             set 
             {
-                srid = value; 
+                srid = value;
+				IGeometryCollection collection = this as IGeometryCollection;
+				if (collection != null)
+				{
+					foreach (IGeometry geometry in collection.Geometries)
+					{
+						geometry.SRID = value;
+					}
+				}
             }
         }
 
