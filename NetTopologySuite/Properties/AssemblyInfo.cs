@@ -1,8 +1,6 @@
 using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
 [assembly: AssemblyTitle("NetTopologySuite")]
 [assembly: AssemblyDescription("A .NET library for GIS operations, direct porting of JTS Topology Suite 1.7.2 library")]
 [assembly: AssemblyConfiguration("")]
@@ -11,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright ©  2006 Diego Guidi")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("1.7.2.*")]
+[assembly: AssemblyVersion("1.7.3.*")]
 [assembly: AssemblyDelaySign(false)]
 [assembly: CLSCompliant(false)]
 [assembly: ComVisible(false)]
