@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using GisSharpBlog.NetTopologySuite.IO;
 using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Tests.IO
 {
@@ -108,12 +109,12 @@ namespace GisSharpBlog.NetTopologySuite.Tests.IO
         /// 
         /// </summary>
 		[Test]
-		public void Main()
+		public void General()
 		{
 			for (int i = 0; i < testset.Length; i++)
 			{
-				Test(testset[i], -1);
-				Test(testset[i], SRID);
+				General(testset[i], -1);
+				General(testset[i], SRID);
 			}
 		}
 
@@ -122,7 +123,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.IO
         /// </summary>
         /// <param name="wkt"></param>
         /// <param name="srid"></param>
-		private static void Test(string wkt, int srid)
+		private static void General(string wkt, int srid)
 		{
 			IGeometry geom = wr.Read(wkt);
 			string parsed = geom.AsText();
@@ -143,6 +144,46 @@ namespace GisSharpBlog.NetTopologySuite.Tests.IO
 			regeom = br.Read(bytesL);
 			Assert.IsTrue(geom.Equals(regeom));			
 			Assert.AreEqual(bytesB.Length, bytesL.Length);
+		}
+
+		[Test]
+		public void Point3D()
+		{
+			// Warm up assertions:
+			IPoint point2D = new Point(1, 2);
+			Assert.IsTrue(Double.IsNaN(point2D.Z));
+
+			IPoint point3D = new Point(1, 2, 3);
+			Assert.IsFalse(Double.IsNaN(point3D.Z));
+
+			// The real thing:
+			IPoint source = new Point(123, 456, 789);
+			byte[] bytes = new PostGisWriter().Write(source);
+			IPoint target = (IPoint)new PostGisReader().Read(bytes);
+			Assert.AreEqual(source.X, target.X);
+			Assert.AreEqual(source.Y, target.Y);
+			Assert.AreEqual(source.Z, target.Z);
+		}
+
+		[Test]
+		public void LineString3D()
+		{
+			const int size = 10;
+			ICoordinate[] points = new ICoordinate[size];
+			for (int i = 0; i < size; i++)
+			{
+				// just some arbitrary values
+				points[i] = new Coordinate(100*Math.Sin(i), 200*Math.Cos(i), 300*Math.Tan(i));
+			}
+			ILineString source = new LineString(points);
+			byte[] bytes = new PostGisWriter().Write(source);
+			ILineString target = (ILineString)new PostGisReader().Read(bytes);
+			for (int i = 0; i < size; i++)
+			{
+				Assert.AreEqual(source.Coordinates[i].X, target.Coordinates[i].X);
+				Assert.AreEqual(source.Coordinates[i].Y, target.Coordinates[i].Y);
+				Assert.AreEqual(source.Coordinates[i].Z, target.Coordinates[i].Z);
+			}
 		}
 	}
 }
