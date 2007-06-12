@@ -271,6 +271,19 @@ namespace Open.Topology.TestRunner
             }
         }
 
+		public bool IsDefaultTarget
+		{
+            get
+            {
+                return m_bIsDefaultTarget;
+            }
+
+            set
+            {
+				m_bIsDefaultTarget = value;
+            }
+		}
+
         #endregion
 
         #region Public Methods
