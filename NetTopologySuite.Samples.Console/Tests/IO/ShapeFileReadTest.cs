@@ -27,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.IO
         public ShapeFileDataReaderTest() : base() 
         {
             // Set current dir to shapefiles dir
-            Environment.CurrentDirectory = @"../../../NetTopologySuite.Samples.Shapefiles";
+			Environment.CurrentDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../NetTopologySuite.Samples.Shapefiles");
         }
 
         /// <summary>

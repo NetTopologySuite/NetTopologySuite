@@ -33,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         [SetUp]
         public void Init()
         {
-			string blobDir = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), @"..\..\..\NetTopologySuite.Samples.Shapefiles\blob\");
+			string blobDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\NetTopologySuite.Samples.Shapefiles\blob\");
             blobFile = blobDir + @"\blob"; 
             if (!File.Exists(blobFile))
                 throw new FileNotFoundException("blob file not found at " + blobDir);

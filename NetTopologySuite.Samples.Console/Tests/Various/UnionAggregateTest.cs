@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.IO;
 
 using NUnit.Framework;
 
@@ -26,7 +27,7 @@ namespace  GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         public UnionAggregateTest() : base() 
         {
             // Set current dir to shapefiles dir
-            Environment.CurrentDirectory = @"../../../NetTopologySuite.Samples.Shapefiles";
+			Environment.CurrentDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../NetTopologySuite.Samples.Shapefiles");
         }
 
         /// <summary>

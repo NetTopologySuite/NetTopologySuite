@@ -89,9 +89,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
             result = reader.Read(document);
             Debug.Assert(point.Equals(result), "ERROR!");
 
-			string gml = document.InnerXml;
-			gml = gml.Replace("gml:", "");
-			result = reader.Read(gml);
+			//string gml = document.InnerXml;
+			//gml = gml.Replace("gml:", "");
+			//result = reader.Read(gml);
             
             xmlreader = writer.Write(line);
             document = new XmlDocument();
