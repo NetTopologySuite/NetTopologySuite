@@ -174,7 +174,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 						geometry.SRID = value;
 					}
 				}
-            }
+				factory = new GeometryFactory(factory.PrecisionModel, value, factory.CoordinateSequenceFactory);
+			}
         }
 
         /// <summary>
