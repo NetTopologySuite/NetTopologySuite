@@ -32,8 +32,11 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns></returns>
         public static String ToPoint(ICoordinate p0)
         {
-            return "POINT(" + p0.X + " " + p0.Y + ")";
-        }
+			if (double.IsNaN(p0.Z))
+				return "POINT(" + p0.X + " " + p0.Y + ")";
+			else
+				return "POINT(" + p0.X + " " + p0.Y + " " + p0.Z + ")";
+		}
 
         /// <summary>
         /// Generates the WKT for a N-point <c>LineString</c>.
@@ -68,8 +71,11 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns></returns>
         public static String ToLineString(ICoordinate p0, ICoordinate p1)
         {
-			return "LINESTRING(" + p0.X + " " + p0.Y + "," + p1.X + " " + p1.Y + ")";
-        }
+			if (double.IsNaN(p0.Z))
+				return "LINESTRING(" + p0.X + " " + p0.Y + "," + p1.X + " " + p1.Y + ")";
+			else
+				return "LINESTRING(" + p0.X + " " + p0.Y + " " + p0.Z + "," + p1.X + " " + p1.Y + " " + p1.Z + ")";
+		}
 
         // NOTE: modified for "safe" assembly in Sql 2005
         // const added!
@@ -387,8 +393,12 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// from a precise coordinate to an external coordinate.
         /// </param>
         private void AppendCoordinate(ICoordinate coordinate, TextWriter writer, IPrecisionModel precisionModel)
-        {	              
-            writer.Write(WriteNumber(coordinate.X) + " " + WriteNumber(coordinate.Y));
+        {
+			writer.Write(WriteNumber(coordinate.X) + " " + WriteNumber(coordinate.Y));
+			if (!double.IsNaN(coordinate.Z))
+			{
+				writer.Write(" " + WriteNumber(coordinate.Z));
+			}
         }
 
         /// <summary>
