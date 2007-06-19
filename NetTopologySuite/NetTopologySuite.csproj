@@ -191,6 +191,12 @@
     <Compile Include="IO\GeoTools\ShapefileReader.cs" />
     <Compile Include="IO\GeoTools\ShapefileWriter.cs" />
     <Compile Include="IO\GeoTools\ShapefileDataWriter.cs" />
+    <Compile Include="IO\MsSqlSpatialReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\MsSqlSpatialWriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IO\PostGisGeometryType.cs" />
     <Compile Include="IO\PostGisReader.cs" />
     <Compile Include="IO\PostGisWriter.cs" />
@@ -381,7 +387,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="CoordinateSystems\Transformations\" />
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
