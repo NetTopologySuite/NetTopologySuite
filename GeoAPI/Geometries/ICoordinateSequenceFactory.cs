@@ -15,5 +15,25 @@ namespace GeoAPI.Geometries
         /// </summary>
         /// <param name="coordinates">Coordinates array, which may not be null nor contain null elements</param>
         ICoordinateSequence Create(ICoordinate[] coordinates);
+
+        /// <summary>
+        /// Creates a <see cref="ICoordinateSequence" />  which is a copy
+        /// of the given <see cref="ICoordinateSequence" />.
+        /// This method must handle null arguments by creating an empty sequence.
+        /// </summary>
+        /// <param name="coordSeq"></param>
+        /// <returns></returns>
+        ICoordinateSequence Create(ICoordinateSequence coordSeq);
+
+        /// <summary>
+        /// Creates a <see cref="ICoordinateSequence" /> of the specified size and dimension.
+        /// For this to be useful, the <see cref="ICoordinateSequence" /> implementation must
+        /// be mutable.
+        /// </summary>
+        /// <param name="size"></param>
+        /// <param name="dimension">the dimension of the coordinates in the sequence 
+        /// (if user-specifiable, otherwise ignored)</param>
+        /// <returns></returns>
+        ICoordinateSequence Create(int size, int dimension);
     }
 }

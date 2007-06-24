@@ -14,7 +14,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     {
         // NOTE: modified for "safe" assembly in Sql 2005
         // Readonly added
-        private static readonly DefaultCoordinateSequenceFactory instance = new DefaultCoordinateSequenceFactory();
+        private static readonly DefaultCoordinateSequenceFactory instance = 
+            new DefaultCoordinateSequenceFactory();
 
         /// <summary>
         /// 
@@ -49,6 +50,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public ICoordinateSequence Create(ICoordinate[] coordinates)
         {
             return new DefaultCoordinateSequence(coordinates);
+        }
+
+        public ICoordinateSequence Create(ICoordinateSequence coordSeq)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICoordinateSequence Create(int size, int dimension)
+        {
+            throw new NotImplementedException();
         }
     }
 }

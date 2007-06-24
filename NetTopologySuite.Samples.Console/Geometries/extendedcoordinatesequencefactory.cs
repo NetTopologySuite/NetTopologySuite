@@ -34,7 +34,17 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
                 new ExtendedCoordinateSequence(coordinates);
 		}
 
-		static ExtendedCoordinateSequenceFactory()
+	    public ICoordinateSequence Create(ICoordinateSequence coordSeq)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public ICoordinateSequence Create(int size, int dimension)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    static ExtendedCoordinateSequenceFactory()
 		{
 			instance = new ExtendedCoordinateSequenceFactory();
 		}
