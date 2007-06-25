@@ -535,7 +535,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         private static ICoordinateSequenceFactory GetDefaultCoordinateSequenceFactory()
         {
-            return CoordinateArraySequenceFactory.Instance;
+            return CoordinateArraySequenceFactory.Instance;            
         }
 
         /// <summary>
