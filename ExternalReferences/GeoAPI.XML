@@ -1,0 +1,715 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GeoAPI</name>
+    </assembly>
+    <members>
+        <member name="T:GeoAPI.Geometries.IGeometryComponentFilter">
+            <summary>
+            <c>Geometry</c> classes support the concept of applying
+            an <c>IGeometryComponentFilter</c> filter to the <c>Geometry</c>.
+            The filter is applied to every component of the <c>Geometry</c>
+            which is itself a <c>Geometry</c>.
+            (For instance, all the LinearRings in Polygons are visited.)
+            An <c>IGeometryComponentFilter</c> filter can either
+            record information about the <c>Geometry</c>
+            or change the <c>Geometry</c> in some way.
+            <c>IGeometryComponentFilter</c> is an example of the Gang-of-Four Visitor pattern.
+            </summary>    
+        </member>
+        <member name="M:GeoAPI.Geometries.IGeometryComponentFilter.Filter(GeoAPI.Geometries.IGeometry)">
+            <summary>
+            Performs an operation with or on <c>geom</c>.
+            </summary>
+            <param name="geom">A <c>Geometry</c> to which the filter is applied.</param>
+        </member>
+        <member name="T:GeoAPI.Operations.Buffer.BufferStyle">
+            <summary>
+            Buffer style.
+            </summary>
+        </member>
+        <member name="F:GeoAPI.Operations.Buffer.BufferStyle.CapRound">
+            <summary> 
+            Specifies a round line buffer end cap endCapStyle (Default).
+            </summary>/
+        </member>
+        <member name="F:GeoAPI.Operations.Buffer.BufferStyle.CapButt">
+            <summary> 
+            Specifies a butt (or flat) line buffer end cap endCapStyle.
+            </summary>
+        </member>
+        <member name="F:GeoAPI.Operations.Buffer.BufferStyle.CapSquare">
+            <summary>
+            Specifies a square line buffer end cap endCapStyle.
+            </summary>
+        </member>
+        <member name="T:GeoAPI.Geometries.IntersectionMatrix">
+            <summary>  
+            A Dimensionally Extended Nine-Intersection Model (DE-9IM) matrix. This class
+            can used to represent both computed DE-9IM's (like 212FF1FF2) as well as
+            patterns for matching them (like T*T******). 
+            <para>
+            Methods are provided to:
+            - Set and query the elements of the matrix in a convenient fashion.
+            - Convert to and from the standard string representation (specified in SFS Section 2.1.13.2).
+            - Test to see if a matrix matches a given pattern string.
+            </para>
+            <remarks>
+            For a description of the DE-9IM, see the 
+            <see href="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features Specification for SQL.</see>
+            </remarks>
+            </summary>       
+        </member>
+        <member name="F:GeoAPI.Geometries.IntersectionMatrix.matrix">
+            <summary>  
+            Internal representation of this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/>.
+            </summary>
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.#ctor">
+            <summary>  
+            Creates an <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> with <c>null</c> location values.
+            </summary>
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.#ctor(System.String)">
+            <summary>
+            Creates an <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> with the given dimension
+            symbols.
+            </summary>
+            <param name="elements">A string of nine dimension symbols in row major order.</param>
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.#ctor(GeoAPI.Geometries.IntersectionMatrix)">
+            <summary> 
+            Creates an <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> with the same elements as
+            <c>other</c>.
+            </summary>
+            <param name="other">An <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> to copy.</param>         
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.Add(GeoAPI.Geometries.IntersectionMatrix)">
+            <summary> 
+            Adds one matrix to another.
+            Addition is defined by taking the maximum dimension value of each position
+            in the summand matrices.
+            </summary>
+            <param name="im">The matrix to add.</param>        
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.Matches(GeoAPI.Geometries.Dimensions,System.Char)">
+            <summary>  
+            Returns true if the dimension value satisfies the dimension symbol.
+            </summary>
+            <param name="actualDimensionValue">
+            A number that can be stored in the <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/>. 
+            Possible values are <c>True, False, Dontcare, 0, 1, 2</c>.
+            </param>
+            <param name="requiredDimensionSymbol">
+            A character used in the string
+            representation of an <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/>. 
+            Possible values are <c>T, F, * , 0, 1, 2</c>.
+            </param>
+            <returns>
+            <c>true</c> if the dimension symbol encompasses the dimension value.        
+            </returns>        
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.Matches(System.String,System.String)">
+            <summary>
+            Returns true if each of the actual dimension symbols satisfies the
+            corresponding required dimension symbol.
+            </summary>
+            <param name="actualDimensionSymbols">
+            Nine dimension symbols to validate.
+            Possible values are <c>T, F, * , 0, 1, 2</c>.
+            </param>
+            <param name="requiredDimensionSymbols">
+            Nine dimension symbols to validate
+            against. Possible values are <c>T, F, * , 0, 1, 2</c>.
+            </param>
+            <returns>
+            <c>true</c> if each of the required dimension
+            symbols encompass the corresponding actual dimension symbol.
+            </returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.Set(GeoAPI.Geometries.Locations,GeoAPI.Geometries.Locations,GeoAPI.Geometries.Dimensions)">
+            <summary>
+            Changes the value of one of this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> elements.
+            </summary>
+            <param name="row">
+            The row of this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/>,
+            indicating the interior, boundary or exterior of the first <see cref="T:GeoAPI.Geometries.IGeometry"/>
+            </param>
+            <param name="column">
+            The column of this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/>,
+            indicating the interior, boundary or exterior of the second <see cref="T:GeoAPI.Geometries.IGeometry"/>
+            </param>
+            <param name="dimensionValue">The new value of the element</param>        
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.Set(System.String)">
+            <summary>
+            Changes the elements of this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> to the
+            dimension symbols in <c>dimensionSymbols</c>.
+            </summary>
+            <param name="dimensionSymbols">
+            Nine dimension symbols to which to set this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/>
+            s elements. Possible values are <c>{T, F, * , 0, 1, 2}</c>
+            </param>
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.SetAtLeast(GeoAPI.Geometries.Locations,GeoAPI.Geometries.Locations,GeoAPI.Geometries.Dimensions)">
+            <summary>
+            Changes the specified element to <c>minimumDimensionValue</c> if the element is less.
+            </summary>
+            <param name="row">
+            The row of this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/>, 
+            indicating the interior, boundary or exterior of the first <see cref="T:GeoAPI.Geometries.IGeometry"/>.
+            </param>
+            <param name="column">
+            The column of this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/>, 
+            indicating the interior, boundary or exterior of the second <see cref="T:GeoAPI.Geometries.IGeometry"/>.
+            </param>
+            <param name="minimumDimensionValue">
+            The dimension value with which to compare the
+            element. The order of dimension values from least to greatest is
+            <c>True, False, Dontcare, 0, 1, 2</c>.
+            </param>
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.SetAtLeastIfValid(GeoAPI.Geometries.Locations,GeoAPI.Geometries.Locations,GeoAPI.Geometries.Dimensions)">
+            <summary>
+            If row >= 0 and column >= 0, changes the specified element to <c>minimumDimensionValue</c>
+            if the element is less. Does nothing if row is smaller to 0 or column is smaller to 0.
+            </summary>
+            <param name="row"></param>
+            <param name="column"></param>
+            <param name="minimumDimensionValue"></param>
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.SetAtLeast(System.String)">
+            <summary>
+            For each element in this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/>, changes the
+            element to the corresponding minimum dimension symbol if the element is
+            less.
+            </summary>
+            <param name="minimumDimensionSymbols"> 
+            Nine dimension symbols with which to
+            compare the elements of this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/>. The
+            order of dimension values from least to greatest is <c>Dontcare, True, False, 0, 1, 2</c>.
+            </param>
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.SetAll(GeoAPI.Geometries.Dimensions)">
+            <summary>  
+            Changes the elements of this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> to <c>dimensionValue</c>.
+            </summary>
+            <param name="dimensionValue">
+            The dimension value to which to set this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/>
+            s elements. Possible values <c>True, False, Dontcare, 0, 1, 2}</c>.
+            </param>         
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.Get(GeoAPI.Geometries.Locations,GeoAPI.Geometries.Locations)">
+            <summary>
+            Returns the value of one of this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/>s
+            elements.
+            </summary>
+            <param name="row">
+            The row of this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/>, indicating
+            the interior, boundary or exterior of the first <see cref="T:GeoAPI.Geometries.IGeometry"/>.
+            </param>
+            <param name="column">
+            The column of this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/>,
+            indicating the interior, boundary or exterior of the second <see cref="T:GeoAPI.Geometries.IGeometry"/>.
+            </param>
+            <returns>The dimension value at the given matrix position.</returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.IsDisjoint">
+            <summary>
+            Returns <c>true</c> if this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> is FF*FF****.
+            </summary>
+            <returns>
+            <c>true</c> if the two <see cref="T:GeoAPI.Geometries.IGeometry"/>'s related by
+            this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> are disjoint.
+            </returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.IsIntersects">
+            <summary>
+            Returns <c>true</c> if <c>isDisjoint</c> returns false.
+            </summary>
+            <returns>
+            <c>true</c> if the two <see cref="T:GeoAPI.Geometries.IGeometry"/>'s related by
+            this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> intersect.
+            </returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.IsTouches(GeoAPI.Geometries.Dimensions,GeoAPI.Geometries.Dimensions)">
+            <summary>
+            Returns <c>true</c> if this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> is
+            FT*******, F**T***** or F***T****.
+            </summary>
+            <param name="dimensionOfGeometryA">The dimension of the first <see cref="T:GeoAPI.Geometries.IGeometry"/>.</param>
+            <param name="dimensionOfGeometryB">The dimension of the second <see cref="T:GeoAPI.Geometries.IGeometry"/>.</param>
+            <returns>
+            <c>true</c> if the two <see cref="T:GeoAPI.Geometries.IGeometry"/>
+            s related by this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> touch; Returns false
+            if both <see cref="T:GeoAPI.Geometries.IGeometry"/>s are points.
+            </returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.IsCrosses(GeoAPI.Geometries.Dimensions,GeoAPI.Geometries.Dimensions)">
+            <summary>
+            Returns <c>true</c> if this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> is
+             T*T****** (for a point and a curve, a point and an area or a line
+            and an area) 0******** (for two curves).
+            </summary>
+            <param name="dimensionOfGeometryA">The dimension of the first <see cref="T:GeoAPI.Geometries.IGeometry"/>.</param>
+            <param name="dimensionOfGeometryB">The dimension of the second <see cref="T:GeoAPI.Geometries.IGeometry"/>.</param>
+            <returns>
+            <c>true</c> if the two <see cref="T:GeoAPI.Geometries.IGeometry"/>
+            s related by this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> cross. For this
+            function to return <c>true</c>, the <see cref="T:GeoAPI.Geometries.IGeometry"/>s must
+            be a point and a curve; a point and a surface; two curves; or a curve
+            and a surface.
+            </returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.IsWithin">
+            <summary>  
+            Returns <c>true</c> if this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> is
+            T*F**F***.
+            </summary>
+            <returns><c>true</c> if the first <see cref="T:GeoAPI.Geometries.IGeometry"/> is within the second.</returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.IsContains">
+            <summary> 
+            Returns <c>true</c> if this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> is
+            T*****FF*.
+            </summary>
+            <returns><c>true</c> if the first <see cref="T:GeoAPI.Geometries.IGeometry"/> contains the second.</returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.IsCovers">
+            <summary>
+            Returns <c>true</c> if this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> is <c>T*****FF*</c>
+            or <c>*T****FF*</c> or <c>***T**FF*</c> or <c>****T*FF*</c>.
+            </summary>
+            <returns><c>true</c> if the first <see cref="T:GeoAPI.Geometries.IGeometry"/> covers the second</returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.IsEquals(GeoAPI.Geometries.Dimensions,GeoAPI.Geometries.Dimensions)">
+            <summary> 
+            Returns <c>true</c> if this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> is T*F**FFF*.
+            </summary>
+            <param name="dimensionOfGeometryA">The dimension of the first <see cref="T:GeoAPI.Geometries.IGeometry"/>.</param>
+            <param name="dimensionOfGeometryB">The dimension of the second <see cref="T:GeoAPI.Geometries.IGeometry"/>.</param>
+            <returns>
+            <c>true</c> if the two <see cref="T:GeoAPI.Geometries.IGeometry"/>
+            s related by this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> are equal; the
+            <see cref="T:GeoAPI.Geometries.IGeometry"/>s must have the same dimension for this function
+            to return <c>true</c>.
+            </returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.IsOverlaps(GeoAPI.Geometries.Dimensions,GeoAPI.Geometries.Dimensions)">
+            <summary>
+            Returns <c>true</c> if this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> is
+             T*T***T** (for two points or two surfaces)
+             1*T***T** (for two curves).
+            </summary>
+            <param name="dimensionOfGeometryA">The dimension of the first <see cref="T:GeoAPI.Geometries.IGeometry"/>.</param>
+            <param name="dimensionOfGeometryB">The dimension of the second <see cref="T:GeoAPI.Geometries.IGeometry"/>.</param>
+            <returns>
+            <c>true</c> if the two <see cref="T:GeoAPI.Geometries.IGeometry"/>
+            s related by this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> overlap. For this
+            function to return <c>true</c>, the <see cref="T:GeoAPI.Geometries.IGeometry"/>s must
+            be two points, two curves or two surfaces.
+            </returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.Matches(System.String)">
+            <summary> 
+            Returns whether the elements of this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/>
+            satisfies the required dimension symbols.
+            </summary>
+            <param name="requiredDimensionSymbols"> 
+            Nine dimension symbols with which to
+            compare the elements of this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/>. Possible
+            values are <c>{T, F, * , 0, 1, 2}</c>.
+            </param>
+            <returns>
+            <c>true</c> if this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/>
+            matches the required dimension symbols.
+            </returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.Transpose">
+            <summary>  
+            Transposes this IntersectionMatrix.
+            </summary>
+            <returns>This <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/> as a convenience,</returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.IntersectionMatrix.ToString">
+            <summary>
+            Returns a nine-character <c>String</c> representation of this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/>.
+            </summary>
+            <returns>
+            The nine dimension symbols of this <see cref="T:GeoAPI.Geometries.IntersectionMatrix"/>
+            in row-major order.
+            </returns>
+        </member>
+        <member name="P:GeoAPI.Geometries.IntersectionMatrix.Item(GeoAPI.Geometries.Locations,GeoAPI.Geometries.Locations)">
+            <summary>
+            See methods Get(int, int) and Set(int, int, int value)
+            </summary>         
+        </member>
+        <member name="T:GeoAPI.Geometries.Ordinates">
+            <summary>
+            Standard ordinate index values.
+            </summary>
+        </member>
+        <member name="F:GeoAPI.Geometries.Ordinates.X">
+            <summary>
+            X Ordinate = 0.
+            </summary>
+        </member>
+        <member name="F:GeoAPI.Geometries.Ordinates.Y">
+            <summary>
+            Y Ordinate = 1.
+            </summary>
+        </member>
+        <member name="F:GeoAPI.Geometries.Ordinates.Z">
+            <summary>
+            Z Ordinate = 2.
+            </summary>
+        </member>
+        <member name="F:GeoAPI.Geometries.Ordinates.M">
+            <summary>
+            M Ordinate = 3.
+            </summary>
+        </member>
+        <member name="T:GeoAPI.Geometries.ICoordinateSequence">
+            <summary>
+            The internal representation of a list of coordinates inside a Geometry.
+            <para>
+            There are some cases in which you might want Geometries to store their
+            points using something other than the NTS Coordinate class. For example, you
+            may want to experiment with another implementation, such as an array of x’s
+            and an array of y’s. or you might want to use your own coordinate class, one
+            that supports extra attributes like M-values.
+            </para>
+            <para>
+            You can do this by implementing the ICoordinateSequence and
+            ICoordinateSequenceFactory interfaces. You would then create a
+            GeometryFactory parameterized by your ICoordinateSequenceFactory, and use
+            this GeometryFactory to create new Geometries. All of these new Geometries
+            will use your ICoordinateSequence implementation.
+            A note on performance. If your ICoordinateSequence is not based on an array
+            of Coordinates, it may incur a performance penalty when its ToArray() method
+            is called because the array needs to be built from scratch. 
+            </para>
+            </summary>
+            <seealso cref="!:DefaultCoordinateSequenceFactory"/>
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequence.GetCoordinate(System.Int32)">
+            <summary>
+            Returns (possibly a copy of) the ith Coordinate in this collection.
+            Whether or not the Coordinate returned is the actual underlying
+            Coordinate or merely a copy depends on the implementation.
+            Note that in the future the semantics of this method may change
+            to guarantee that the Coordinate returned is always a copy. Callers are
+            advised not to assume that they can modify a CoordinateSequence by
+            modifying the Coordinate returned by this method.
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequence.GetCoordinateCopy(System.Int32)">
+            <summary>
+            Returns a copy of the i'th coordinate in this sequence.
+            This method optimizes the situation where the caller is
+            going to make a copy anyway - if the implementation
+            has already created a new Coordinate object, no further copy is needed.
+            </summary>
+            <param name="i">The index of the coordinate to retrieve.</param>
+            <returns>A copy of the i'th coordinate in the sequence</returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequence.GetCoordinate(System.Int32,GeoAPI.Geometries.ICoordinate)">
+            <summary>
+            Copies the i'th coordinate in the sequence to the supplied Coordinate.  
+            Only the first two dimensions are copied.        
+            </summary>
+            <param name="index">The index of the coordinate to copy.</param>
+            <param name="coord">A Coordinate to receive the value.</param>
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequence.GetX(System.Int32)">
+            <summary>
+            Returns ordinate X (0) of the specified coordinate.
+            </summary>
+            <param name="index"></param>
+            <returns>The value of the X ordinate in the index'th coordinate.</returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequence.GetY(System.Int32)">
+            <summary>
+            Returns ordinate Y (1) of the specified coordinate.
+            </summary>
+            <param name="index"></param>
+            <returns>The value of the Y ordinate in the index'th coordinate.</returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequence.GetOrdinate(System.Int32,GeoAPI.Geometries.Ordinates)">
+            <summary>
+            Returns the ordinate of a coordinate in this sequence.
+            Ordinate indices 0 and 1 are assumed to be X and Y.
+            Ordinates indices greater than 1 have user-defined semantics
+            (for instance, they may contain other dimensions or measure values).         
+            </summary>
+            <param name="index">The coordinate index in the sequence.</param>
+            <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
+            <returns></returns>       
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequence.SetOrdinate(System.Int32,GeoAPI.Geometries.Ordinates,System.Double)">
+            <summary>
+            Sets the value for a given ordinate of a coordinate in this sequence.       
+            </summary>
+            <param name="index">The coordinate index in the sequence.</param>
+            <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
+            <param name="value">The new ordinate value.</param>       
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequence.ToCoordinateArray">
+            <summary>
+            Returns (possibly copies of) the Coordinates in this collection.
+            Whether or not the Coordinates returned are the actual underlying
+            Coordinates or merely copies depends on the implementation. Note that
+            if this implementation does not store its data as an array of Coordinates,
+            this method will incur a performance penalty because the array needs to
+            be built from scratch.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequence.ExpandEnvelope(GeoAPI.Geometries.IEnvelope)">
+            <summary>
+            Expands the given Envelope to include the coordinates in the sequence.
+            Allows implementing classes to optimize access to coordinate values.      
+            </summary>
+            <param name="env">The envelope to expand.</param>
+            <returns>A reference to the expanded envelope.</returns>       
+        </member>
+        <member name="P:GeoAPI.Geometries.ICoordinateSequence.Dimension">
+            <summary>
+            Returns the dimension (number of ordinates in each coordinate) for this sequence.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.Geometries.ICoordinateSequence.Count">
+            <summary>
+            Returns the number of coordinates in this sequence.
+            </summary>        
+        </member>
+        <member name="T:GeoAPI.Geometries.IGeometry">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:GeoAPI.Geometries.IGeometry.GetGeometryN(System.Int32)">
+            <summary>
+            A IGeometryCollection method moved in IGeometry
+            </summary>
+            <param name="n"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GeoAPI.Geometries.IGeometry.Area">
+            <summary>
+            A ISurface method moved in IGeometry 
+            </summary>
+        </member>
+        <member name="P:GeoAPI.Geometries.IGeometry.Length">
+            <summary>
+            A ICurve method moved in IGeometry
+            </summary>
+        </member>
+        <member name="P:GeoAPI.Geometries.IGeometry.NumGeometries">
+            <summary>
+            A IGeometryCollection method moved in IGeometry
+            </summary>
+        </member>
+        <member name="P:GeoAPI.Geometries.IGeometry.NumPoints">
+            <summary>
+            A ILineString method moved to IGeometry
+            </summary>
+        </member>
+        <member name="P:GeoAPI.Geometries.IGeometry.Centroid">
+            <summary>
+            A ISurface method moved in IGeometry 
+            </summary>
+        </member>
+        <member name="P:GeoAPI.Geometries.IGeometry.PointOnSurface">
+            <summary>
+            A ISurface method moved in IGeometry 
+            </summary>        
+        </member>
+        <member name="T:GeoAPI.Geometries.IGeometryFactory">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:GeoAPI.Geometries.ICoordinateSequenceFactory">
+            <summary>
+            An object that knows how to build a particular implementation of
+            <c>ICoordinateSequence</c> from an array of Coordinates.
+            </summary>
+            <seealso cref="T:GeoAPI.Geometries.ICoordinateSequence"/>
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequenceFactory.Create(GeoAPI.Geometries.ICoordinate[])">
+            <summary>
+            Returns a <see cref="T:GeoAPI.Geometries.ICoordinateSequence"/> based on the given array; 
+            whether or not the array is copied is implementation-dependent.
+            </summary>
+            <param name="coordinates">A coordinates array, which may not be null nor contain null elements</param>
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequenceFactory.Create(GeoAPI.Geometries.ICoordinateSequence)">
+            <summary>
+            Creates a <see cref="T:GeoAPI.Geometries.ICoordinateSequence"/>  which is a copy
+            of the given <see cref="T:GeoAPI.Geometries.ICoordinateSequence"/>.
+            This method must handle null arguments by creating an empty sequence.
+            </summary>
+            <param name="coordSeq"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequenceFactory.Create(System.Int32,System.Int32)">
+            <summary>
+            Creates a <see cref="T:GeoAPI.Geometries.ICoordinateSequence"/> of the specified size and dimension.
+            For this to be useful, the <see cref="T:GeoAPI.Geometries.ICoordinateSequence"/> implementation must be mutable.
+            </summary>
+            <param name="size"></param>
+            <param name="dimension">the dimension of the coordinates in the sequence 
+            (if user-specifiable, otherwise ignored)</param>
+            <returns></returns>
+        </member>
+        <member name="T:GeoAPI.Geometries.Locations">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:GeoAPI.Geometries.Locations.Interior">
+            <summary>
+            DE-9IM row index of the interior of the first point and column index of
+            the interior of the second point. Location value for the interior of a
+            point.
+            int value = 0;
+            </summary>
+        </member>
+        <member name="F:GeoAPI.Geometries.Locations.Boundary">
+            <summary>
+            DE-9IM row index of the boundary of the first point and column index of
+            the boundary of the second point. Location value for the boundary of a
+            point.
+            int value = 1;
+            </summary>
+        </member>
+        <member name="F:GeoAPI.Geometries.Locations.Exterior">
+            <summary>
+            DE-9IM row index of the exterior of the first point and column index of
+            the exterior of the second point. Location value for the exterior of a
+            point.
+            int value = 2;
+            </summary>
+        </member>
+        <member name="F:GeoAPI.Geometries.Locations.Null">
+            <summary>
+            Used for uninitialized location values.
+            int value = -1;
+            </summary>
+        </member>
+        <member name="T:GeoAPI.Geometries.Location">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:GeoAPI.Geometries.Location.ToLocationSymbol(GeoAPI.Geometries.Locations)">
+            <summary>
+            Converts the location value to a location symbol, for example, <c>EXTERIOR => 'e'</c>.
+            </summary>
+            <param name="locationValue"></param>
+            <returns>Either 'e', 'b', 'i' or '-'.</returns>
+        </member>
+        <member name="T:GeoAPI.Geometries.Dimensions">
+            <summary>
+            Constants representing the dimensions of a point, a curve and a surface.
+            Also, constants representing the dimensions of the empty point and
+            non-empty geometries, and a wildcard dimension meaning "any dimension".
+            </summary>
+        </member>
+        <member name="F:GeoAPI.Geometries.Dimensions.Point">
+            <summary>
+            Dimension value of a point (0).
+            </summary>
+        </member>
+        <member name="F:GeoAPI.Geometries.Dimensions.Curve">
+            <summary>
+            Dimension value of a curve (1).
+            </summary>
+        </member>
+        <member name="F:GeoAPI.Geometries.Dimensions.Surface">
+            <summary>
+            Dimension value of a surface (2).
+            </summary>
+        </member>
+        <member name="F:GeoAPI.Geometries.Dimensions.False">
+            <summary>
+            Dimension value of a empty point (-1).
+            </summary>
+        </member>
+        <member name="F:GeoAPI.Geometries.Dimensions.True">
+            <summary>
+            Dimension value of non-empty geometries (= {Point,Curve,A}).
+            </summary>
+        </member>
+        <member name="F:GeoAPI.Geometries.Dimensions.Dontcare">
+            <summary>
+            Dimension value for any dimension (= {False, True}).
+            </summary>
+        </member>
+        <member name="T:GeoAPI.Geometries.Dimension">
+            <summary>
+            Class containing static methods for conversions
+            between dimension values and characters.
+            </summary>
+        </member>
+        <member name="M:GeoAPI.Geometries.Dimension.ToDimensionSymbol(GeoAPI.Geometries.Dimensions)">
+            <summary>
+            Converts the dimension value to a dimension symbol,
+            for example, <c>True => 'T'</c>
+            </summary>
+            <param name="dimensionValue">Number that can be stored in the <c>IntersectionMatrix</c>.
+            Possible values are <c>True, False, Dontcare, 0, 1, 2</c>.</param>
+            <returns>Character for use in the string representation of an <c>IntersectionMatrix</c>.
+            Possible values are <c>T, F, * , 0, 1, 2</c>.</returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.Dimension.ToDimensionValue(System.Char)">
+            <summary>
+            Converts the dimension symbol to a dimension value,
+            for example, <c>'*' => Dontcare</c>
+            </summary>
+            <param name="dimensionSymbol">Character for use in the string representation of an <c>IntersectionMatrix</c>.
+            Possible values are <c>T, F, * , 0, 1, 2</c>.</param>
+            <returns>Number that can be stored in the <c>IntersectionMatrix</c>.
+            Possible values are <c>True, False, Dontcare, 0, 1, 2</c>.</returns>
+        </member>
+        <member name="T:GeoAPI.Geometries.IGeometryFilter">
+            <summary>
+            <c>GeometryCollection</c> classes support the concept of
+            applying a <c>IGeometryFilter</c> to the <c>Geometry</c>.
+            The filter is applied to every element <c>Geometry</c>.
+            A <c>IGeometryFilter</c> can either record information about the <c>Geometry</c>
+            or change the <c>Geometry</c> in some way.
+            <c>IGeometryFilter</c> is an example of the Gang-of-Four Visitor pattern.
+            </summary>
+        </member>
+        <member name="M:GeoAPI.Geometries.IGeometryFilter.Filter(GeoAPI.Geometries.IGeometry)">
+            <summary>
+            Performs an operation with or on <c>geom</c>.
+            </summary>
+            <param name="geom">A <c>Geometry</c> to which the filter is applied.</param>
+        </member>
+        <member name="T:GeoAPI.Geometries.ICoordinateFilter">
+            <summary>
+            <c>Geometry</c> classes support the concept of applying a
+            coordinate filter to every coordinate in the <c>Geometry</c>. A
+            coordinate filter can either record information about each coordinate or
+            change the coordinate in some way. Coordinate filters implement the
+            interface <c>ICoordinateFilter</c>. 
+            <c>ICoordinateFilter</c> is an example of the Gang-of-Four Visitor pattern. 
+            Coordinate filters can be
+            used to implement such things as coordinate transformations, centroid and
+            envelope computation, and many other functions.
+            </summary>
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateFilter.Filter(GeoAPI.Geometries.ICoordinate)">
+            <summary>
+            Performs an operation with or on <c>coord</c>.
+            </summary>
+            <param name="coord"><c>Coordinate</c> to which the filter is applied.</param>
+        </member>
+    </members>
+</doc>
