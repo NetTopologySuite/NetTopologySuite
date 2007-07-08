@@ -39,35 +39,20 @@ namespace  GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             int count = 0;
             IGeometry current = null;
             IGeometry result = null;
-            using (ShapefileDataReader reader = new ShapefileDataReader("sa_region", GeometryFactory.Fixed))
+            using (ShapefileDataReader reader = new ShapefileDataReader("sa_region", GeometryFactory.Default))
             {                
                 while (reader.Read())
                 {
-                    try
-                    {
-                        current = reader.Geometry;
-                        if (result == null)
-                             result = current;
-                        else result = result.Union(current);
-                        Debug.WriteLine("Iteration => " + ++count);
-                    }
-                    catch (TopologyException ex)
-                    {
-                        Debug.WriteLine(count + ": " + ex.Message);
-                        Debug.WriteLine(ex.StackTrace);
-                        Debug.WriteLine(String.Empty);
-                        Debug.WriteLine("--- BEGIN RESULT ---");
-                        Debug.WriteLine(result);
-                        Debug.WriteLine("--- END RESULT ---");
-                        Debug.WriteLine(String.Empty);
-                        Debug.WriteLine("--- BEGIN CURRENT ---");
-                        Debug.WriteLine(current);
-                        Debug.WriteLine("--- END CURRENT ---");
-                        throw;
-                    }                    
+                    current = reader.Geometry;
+                    if (!current.IsValid) 
+                        return;
+
+                    if (result == null)
+                         result = current;
+                    else result = result.Union(current);
+                    Debug.WriteLine("Iteration => " + ++count);
                 }
-            }
-            Debug.WriteLine(result);
+            }            
         }
 
         /// <summary>
