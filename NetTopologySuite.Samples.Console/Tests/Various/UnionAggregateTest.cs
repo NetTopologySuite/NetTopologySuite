@@ -34,25 +34,58 @@ namespace  GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// 
         /// </summary>
         [Test]
-        public void PerformUnionAggregateTest()
+        public void PerformUnionAggregateTest1()
+        {
+            Assert.IsNotNull(CheckShapefile("sa_region"));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Test]
+        public void PerformUnionAggregateTest2()
+        {
+            Assert.IsNotNull(CheckShapefile("CA_Cable_region"));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Test]
+        public void PerformUnionAggregateTest3()
+        {
+            Assert.IsNotNull(CheckShapefile("US_DMA_region.shp"));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        private IGeometry CheckShapefile(string fileName)
         {
             int count = 0;
             IGeometry current = null;
             IGeometry result = null;
-            using (ShapefileDataReader reader = new ShapefileDataReader("sa_region", GeometryFactory.Default))
+            using (ShapefileDataReader reader = new ShapefileDataReader(fileName, GeometryFactory.Fixed))
             {                
                 while (reader.Read())
                 {
                     current = reader.Geometry;
-                    if (!current.IsValid) 
-                        return;
+                    if (!current.IsValid)
+                    {
+                        Debug.WriteLine("Imvalid geometry found: " + current);
+                        continue;
+                    }
 
                     if (result == null)
-                         result = current;
+                        result = current;
                     else result = result.Union(current);
                     Debug.WriteLine("Iteration => " + ++count);
                 }
-            }            
+            }
+            Debug.WriteLine("Operation result: " + result);
+            return result;
         }
 
         /// <summary>
