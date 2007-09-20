@@ -1,16 +1,17 @@
 using System;
-using System.Collections;
 using System.IO;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.IO
 {
     /// <summary>
     /// Writes a Well-Known Binary byte data representation of a <c>Geometry</c>.
     /// </summary>
+    /// <remarks>
+    /// WKBWriter stores <see cref="ICoordinate" /> X,Y,Z values if <see cref="ICoordinate.Z" /> is not <see cref="Double.NaN"/>, 
+    /// otherwise <see cref="ICoordinate.Z" /> value is discarded and only X,Y are stored.
+    /// </remarks>
+    // Thanks to Roberto Acioli for ICoordinate.Z patch
     public class WKBWriter
     {
         protected ByteOrder encodingType;
@@ -115,6 +116,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
         {
             writer.Write((double) coordinate.X);
             writer.Write((double) coordinate.Y);
+            if (!Double.IsNaN(coordinate.Z))
+                writer.Write((double)coordinate.Z);            
         }
 
         /// <summary>
@@ -125,7 +128,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
         protected void Write(IPoint point, BinaryWriter writer)
         {
             WriteByteOrder(writer);     // LittleIndian
-            writer.Write((int) WKBGeometryTypes.WKBPoint);
+            if (Double.IsNaN(point.Coordinate.Z))
+                 writer.Write((int)WKBGeometryTypes.WKBPoint);
+            else writer.Write((int)WKBGeometryTypes.WKBPointZ);
             Write(point.Coordinate, writer);
         }
 
@@ -137,7 +142,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
         protected void Write(ILineString lineString, BinaryWriter writer)
         {
             WriteByteOrder(writer);     // LittleIndian
-            writer.Write((int) WKBGeometryTypes.WKBLineString);
+            if (Double.IsNaN(lineString.Coordinate.Z))
+                 writer.Write((int)WKBGeometryTypes.WKBLineString);
+            else writer.Write((int)WKBGeometryTypes.WKBLineStringZ);
             writer.Write((int) lineString.NumPoints);
             for (int i = 0; i < lineString.Coordinates.Length; i++)
                 Write(lineString.Coordinates[i], writer);
@@ -163,7 +170,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
         protected void Write(IPolygon polygon, BinaryWriter writer)
         {
             WriteByteOrder(writer);     // LittleIndian
-            writer.Write((int) WKBGeometryTypes.WKBPolygon);
+            if (Double.IsNaN(polygon.Coordinate.Z))
+                 writer.Write((int)WKBGeometryTypes.WKBPolygon);
+            else writer.Write((int)WKBGeometryTypes.WKBPolygonZ);            
             writer.Write((int) polygon.NumInteriorRings + 1);
             Write(polygon.ExteriorRing as ILinearRing, writer);
             for (int i = 0; i < polygon.NumInteriorRings; i++)
@@ -178,7 +187,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
         protected void Write(IMultiPoint multiPoint, BinaryWriter writer)
         {
             WriteByteOrder(writer);     // LittleIndian
-            writer.Write((int) WKBGeometryTypes.WKBMultiPoint);
+            if (Double.IsNaN(multiPoint.Coordinate.Z))
+                 writer.Write((int)WKBGeometryTypes.WKBMultiPoint);
+            else writer.Write((int)WKBGeometryTypes.WKBMultiPointZ);
             writer.Write((int) multiPoint.NumGeometries);
             for (int i = 0; i < multiPoint.NumGeometries; i++)
                 Write(multiPoint.Geometries[i] as IPoint, writer);
@@ -192,7 +203,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
         protected void Write(IMultiLineString multiLineString, BinaryWriter writer)
         {
             WriteByteOrder(writer);     // LittleIndian
-            writer.Write((int) WKBGeometryTypes.WKBMultiLineString);
+            if (Double.IsNaN(multiLineString.Coordinate.Z))
+                 writer.Write((int)WKBGeometryTypes.WKBMultiLineString);
+            else writer.Write((int)WKBGeometryTypes.WKBMultiLineStringZ);
             writer.Write((int) multiLineString.NumGeometries);
             for (int i = 0; i < multiLineString.NumGeometries; i++)
                 Write(multiLineString.Geometries[i] as ILineString, writer);
@@ -206,7 +219,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
         protected void Write(IMultiPolygon multiPolygon, BinaryWriter writer)
         {
             WriteByteOrder(writer);     // LittleIndian
-            writer.Write((int) WKBGeometryTypes.WKBMultiPolygon);
+            if (Double.IsNaN(multiPolygon.Coordinate.Z))
+                 writer.Write((int)WKBGeometryTypes.WKBMultiPolygon);
+            else writer.Write((int)WKBGeometryTypes.WKBMultiPolygonZ);
             writer.Write((int) multiPolygon.NumGeometries);
             for (int i = 0; i < multiPolygon.NumGeometries; i++)
                 Write(multiPolygon.Geometries[i] as IPolygon, writer);
@@ -220,7 +235,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
         protected void Write(IGeometryCollection geomCollection, BinaryWriter writer)
         {
             WriteByteOrder(writer);     // LittleIndian
-            writer.Write((int)WKBGeometryTypes.WKBGeometryCollection);
+            if (Double.IsNaN(geomCollection.Coordinate.Z))
+                 writer.Write((int)WKBGeometryTypes.WKBGeometryCollection);
+            else writer.Write((int)WKBGeometryTypes.WKBGeometryCollectionZ);
             writer.Write((int)geomCollection.NumGeometries);
             for (int i = 0; i < geomCollection.NumGeometries; i++)
                 Write(geomCollection.Geometries[i], writer); ;
@@ -336,11 +353,12 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="geometry"></param>
         /// <returns></returns>
         protected int SetByteStream(IPolygon geometry)
-        {                
+        {
+            int pointSize = Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
             int count = InitCount;
             count += 4 + 4;                                 // NumRings + NumPoints
             count += 4 * (geometry.NumInteriorRings + 1);   // Index parts
-            count += geometry.NumPoints * 16;               // Points in exterior and interior rings
+            count += geometry.NumPoints * pointSize;        // Points in exterior and interior rings
             return count;
         }
 
@@ -351,10 +369,11 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns></returns>
         protected int SetByteStream(ILineString geometry)
         {
+            int pointSize = Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
             int numPoints = geometry.NumPoints;
             int count = InitCount;
             count += 4;                             // NumPoints
-            count += 16 * numPoints;            
+            count += pointSize * numPoints;            
             return count;
         }
 
@@ -365,7 +384,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns></returns>
         protected int SetByteStream(IPoint geometry)
         {
-            return 21;
+            return Double.IsNaN(geometry.Coordinate.Z) ? 21 : 29;
         }
     }
 }

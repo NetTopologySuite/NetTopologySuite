@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Text;
-
 namespace GisSharpBlog.NetTopologySuite.IO
 {
     /// <summary>
@@ -58,6 +54,41 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <summary>
         /// GeometryCollection.
         /// </summary>
-        WKBGeometryCollection = 7
+        WKBGeometryCollection = 7,
+
+        /// <summary>
+        /// Point with Z coordinate.
+        /// </summary>
+        WKBPointZ = 1001,
+
+        /// <summary>
+        /// LineString with Z coordinate.
+        /// </summary>
+        WKBLineStringZ = 1002,
+
+        /// <summary>
+        /// Polygon with Z coordinate.
+        /// </summary>
+        WKBPolygonZ = 1003,
+
+        /// <summary>
+        /// MultiPoint with Z coordinate.
+        /// </summary>
+        WKBMultiPointZ = 1004,
+
+        /// <summary>
+        /// MultiLineString with Z coordinate.
+        /// </summary>
+        WKBMultiLineStringZ = 1005,
+
+        /// <summary>
+        /// MultiPolygon with Z coordinate.
+        /// </summary>
+        WKBMultiPolygonZ = 1006,
+
+        /// <summary>
+        /// GeometryCollection with Z coordinate.
+        /// </summary>
+        WKBGeometryCollectionZ = 1007,
     };
 }
