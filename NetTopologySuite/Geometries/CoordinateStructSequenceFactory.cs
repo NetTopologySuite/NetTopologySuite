@@ -4,6 +4,7 @@ using GeoAPI.Geometries;
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     [Serializable]
+    [Obsolete("Only for test purposes")]
     public sealed class CoordinateStructSequenceFactory : ICoordinateSequenceFactory
     {
         private static readonly CoordinateStructSequenceFactory instance = new CoordinateStructSequenceFactory();

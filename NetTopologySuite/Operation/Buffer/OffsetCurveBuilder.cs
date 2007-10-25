@@ -1,13 +1,10 @@
 using System;
 using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
-
+using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.Algorithm;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 {
@@ -29,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// </summary>
         public const int DefaultQuadrantSegments = 8;
 
-        private static readonly Coordinate[] arrayTypeCoordinate = new Coordinate[0];
+        private static readonly ICoordinate[] arrayTypeCoordinate = new ICoordinate[0];
         private LineIntersector li;
 
         /*

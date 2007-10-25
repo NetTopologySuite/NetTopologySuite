@@ -1,7 +1,6 @@
 using System;
-
 using System.Collections;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using GeoAPI.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Utilities
 {
@@ -51,10 +50,11 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
 		public int Compare(object x, object y)
 		{
 			int returnValue = 0;
-			Coordinate coord1 = x as Coordinate;
-			Coordinate coord2 = y as Coordinate;
-			if ( coord1 != null && coord2 != null )
-			{
+            if (x is ICoordinate && y is  ICoordinate)
+            {
+			
+			    ICoordinate coord1 = (ICoordinate) x;
+                ICoordinate coord2 = (ICoordinate) y;
 				if (coord1.X < coord2.X) 
 					returnValue = -1;
 				else if (coord1.X > coord2.X) 
@@ -65,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
 					returnValue = 1;
 				else returnValue = 0;
 			}
-			else throw new ArgumentException("Argument obj is not of type Coordinate", "obj");
+			else throw new ArgumentException("Wrong arguments type: ICoordinate expected");
 			return returnValue;
 		}
 	}

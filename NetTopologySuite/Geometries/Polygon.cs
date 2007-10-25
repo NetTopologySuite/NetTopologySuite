@@ -103,7 +103,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get
             {
                 if (IsEmpty)
-                    return new Coordinate[] { };
+                    return new ICoordinate[] { };
                 ICoordinate[] coordinates = new ICoordinate[NumPoints];
                 int k = -1;
                 ICoordinate[] shellCoordinates = shell.Coordinates;

@@ -58,9 +58,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public LineString(ICoordinateSequence points, IGeometryFactory factory) : base(factory)
         {            
             if (points == null) 
-                points = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
+                points = factory.CoordinateSequenceFactory.Create(new ICoordinate[] { });
             if (points.Count == 1)
-                throw new ArgumentException("point array must contain 0 or >1 elements");
+                throw new ArgumentException("point array must contain 0 or >1 elements", "points");
             this.points = points;
         }
 

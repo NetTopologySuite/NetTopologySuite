@@ -1,8 +1,5 @@
-using System;
 using System.Collections;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 
@@ -19,10 +16,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         private LineIntersector li = new RobustLineIntersector();
 
         private bool hasIntersection = false;
-        private Coordinate pt00 = new Coordinate();
-        private Coordinate pt01 = new Coordinate();
-        private Coordinate pt10 = new Coordinate();
-        private Coordinate pt11 = new Coordinate();
+        private ICoordinate pt00 = new Coordinate();
+        private ICoordinate pt01 = new Coordinate();
+        private ICoordinate pt10 = new Coordinate();
+        private ICoordinate pt11 = new Coordinate();
 
         /// <summary>
         /// 

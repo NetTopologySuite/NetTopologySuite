@@ -4,6 +4,7 @@ using GeoAPI.Geometries;
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     [Serializable]
+    [Obsolete("Only for test purposes")]
     public struct CoordinateStruct : ICoordinate 
     {
         private double x;

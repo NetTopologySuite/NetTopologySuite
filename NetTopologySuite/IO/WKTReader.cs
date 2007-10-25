@@ -118,7 +118,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
-                return new Coordinate[]{};
+                return new ICoordinate[]{};
             List<ICoordinate> coordinates = new List<ICoordinate>();
             coordinates.Add(GetPreciseCoordinate(tokens));
             nextToken = GetNextCloserOrComma(tokens);
@@ -345,7 +345,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY")) 
-                return geometryFactory.CreatePoint((Coordinate)null);
+                return geometryFactory.CreatePoint((ICoordinate) null);
             IPoint point = geometryFactory.CreatePoint(GetPreciseCoordinate(tokens));                        
             GetNextCloser(tokens);
             return point;

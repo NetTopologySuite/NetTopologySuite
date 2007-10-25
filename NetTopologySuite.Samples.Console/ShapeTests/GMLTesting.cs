@@ -1,16 +1,9 @@
-using System;
-using System.Collections;
 using System.Diagnostics;
-using System.IO;
-using System.Text;
 using System.Xml;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.IO.GML2;
-using GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
 {
@@ -38,7 +31,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
         {
             point = Factory.CreatePoint(new Coordinate(100, 100));
 
-            Coordinate[] coordinates = new Coordinate[]
+            ICoordinate[] coordinates = new ICoordinate[]
             {
                  new Coordinate(10,10),
                  new Coordinate(20,20),
@@ -46,7 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
             };
             line = Factory.CreateLineString(coordinates);
 
-            coordinates = new Coordinate[]
+            coordinates = new ICoordinate[]
             {
                 new Coordinate(100,100),
                 new Coordinate(200,100),
@@ -54,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
                 new Coordinate(100,200),
                 new Coordinate(100,100),
             };
-            Coordinate[] interior1 = new Coordinate[] 
+            ICoordinate[] interior1 = new ICoordinate[] 
             { 
                 new Coordinate(120,120),
                 new Coordinate(180,120),
@@ -66,7 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
             ILinearRing[] holes = new ILinearRing[] { Factory.CreateLinearRing(interior1), };
             polygon = Factory.CreatePolygon(linearRing, holes);
 
-            coordinates = new Coordinate[]
+            coordinates = new ICoordinate[]
             {
                 new Coordinate(100,100),
                 new Coordinate(200,200),

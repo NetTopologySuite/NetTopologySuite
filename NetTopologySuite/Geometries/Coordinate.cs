@@ -21,9 +21,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     [Serializable]
     public class Coordinate : ICoordinate
     {
-        private double x = Double.NaN;
-        private double y = Double.NaN;
-        private double z = Double.NaN;
+        private double x; // = Double.NaN;
+        private double y; // = Double.NaN;
+        private double z; // = Double.NaN;
 
         /// <summary>
         /// X coordinate.
@@ -78,16 +78,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="z">Z value.</param>
         public Coordinate(double x, double y, double z)
         {
-            this.X = x;
-            this.Y = y;
-            this.Z = z;
+            this.x = x;
+            this.y = y;
+            this.z = z;
         }
-
+        
         /// <summary>
         ///  Constructs a <c>Coordinate</c> at (0,0,NaN).
         /// </summary>
-        public Coordinate() : this(0.0, 0.0, Double.NaN) { }
-        
+        // public Coordinate() : this(0.0, 0.0, Double.NaN) { }        
+
         /// <summary>
         /// Constructs a <c>Coordinate</c> having the same (x,y,z) values as
         /// <c>other</c>.

@@ -41,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         private bool hasInterior = false;
 
         // the proper intersection point found
-        private Coordinate properIntersectionPoint = null;
+        private ICoordinate properIntersectionPoint = null;
 
         private LineIntersector li = null;        
         

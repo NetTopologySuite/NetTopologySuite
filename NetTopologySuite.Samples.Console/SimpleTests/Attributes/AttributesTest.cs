@@ -1,11 +1,7 @@
 using System;
 using System.Collections;
-using System.Data;
 using System.IO;
-using System.Text;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Features;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
@@ -13,12 +9,7 @@ using GisSharpBlog.NetTopologySuite.IO;
 namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Attributes
 {
     public class AttributesTest : BaseSamples
-    {        
-        /// <summary>
-        /// 
-        /// </summary>
-        public AttributesTest() { }
-
+    {
         /// <summary>
         /// 
         /// </summary>
@@ -34,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Attributes
 
         private void TestShapeCreation()
         {
-            Coordinate[] points = new Coordinate[3];
+            ICoordinate[] points = new ICoordinate[3];
             points[0] = new Coordinate(0, 0);
             points[1] = new Coordinate(1, 0);
             points[2] = new Coordinate(1, 1);

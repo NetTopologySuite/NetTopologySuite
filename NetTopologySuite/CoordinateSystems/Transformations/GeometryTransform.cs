@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
-using SharpMap.CoordinateSystems.Transformations;
+using GeoAPI.CoordinateSystems.Transformations;
 using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 {

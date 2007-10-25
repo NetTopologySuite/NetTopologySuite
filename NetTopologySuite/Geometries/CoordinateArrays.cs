@@ -114,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>Deep copy of the input.</returns>
         public static ICoordinate[] CopyDeep(ICoordinate[] coordinates)
         {
-            ICoordinate[] copy = new Coordinate[coordinates.Length];            
+            ICoordinate[] copy = new ICoordinate[coordinates.Length];            
 	        for(int i = 0; i < coordinates.Length; i++)            
             	copy[i] = new Coordinate(coordinates[i]);            
             return copy;

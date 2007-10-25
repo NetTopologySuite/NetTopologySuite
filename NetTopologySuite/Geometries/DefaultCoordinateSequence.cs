@@ -35,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coordSeq"></param>
         public DefaultCoordinateSequence(ICoordinateSequence coordSeq)
         {
-            coordinates = new Coordinate[coordSeq.Count];
+            coordinates = new ICoordinate[coordSeq.Count];
             for (int i = 0; i < coordinates.Length; i++)
                 coordinates[i] = coordSeq.GetCoordinateCopy(i);
         }
@@ -197,7 +197,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The copied object.</returns>
         public object Clone()
         {
-            ICoordinate[] cloneCoordinates = new Coordinate[coordinates.Length];
+            ICoordinate[] cloneCoordinates = new ICoordinate[coordinates.Length];
             for (int i = 0; i < coordinates.Length; i++)
                 cloneCoordinates[i] = (Coordinate) coordinates[i].Clone();            
             return new DefaultCoordinateSequence(cloneCoordinates);

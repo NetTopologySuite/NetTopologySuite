@@ -1,12 +1,8 @@
 using System;
-using System.Collections;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
@@ -41,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
             };
             line = Factory.CreateLineString(coordinates);
 
-            coordinates = new Coordinate[]
+            coordinates = new ICoordinate[]
             {
                 new Coordinate(100,100),
                 new Coordinate(200,100),

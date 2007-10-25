@@ -139,7 +139,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
             double XsegLen = dim.Envelope.Width / nSide;
             double YsegLen = dim.Envelope.Height / nSide;
 
-            ICoordinate[] pts = new Coordinate[4 * nSide + 1];
+            ICoordinate[] pts = new ICoordinate[4 * nSide + 1];
             IEnvelope env = dim.Envelope;            
 
             for (i = 0; i < nSide; i++) 
@@ -186,7 +186,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
             double centreX = env.MinX + xRadius;
             double centreY = env.MinY + yRadius;
 
-            ICoordinate[] pts = new Coordinate[nPts + 1];
+            ICoordinate[] pts = new ICoordinate[nPts + 1];
             int iPt = 0;
             for (int i = 0; i < nPts; i++) 
             {
@@ -223,7 +223,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
                 angSize = 2 * Math.PI;
             double angInc = angSize / nPts;
 
-            ICoordinate[] pts = new Coordinate[nPts];
+            ICoordinate[] pts = new ICoordinate[nPts];
             int iPt = 0;
             for (int i = 0; i < nPts; i++) 
             {

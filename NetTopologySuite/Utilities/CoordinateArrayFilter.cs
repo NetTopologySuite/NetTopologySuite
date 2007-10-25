@@ -1,10 +1,4 @@
-using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Utilities
 {
@@ -13,7 +7,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
     /// </summary>
     public class CoordinateArrayFilter : ICoordinateFilter 
     {
-        Coordinate[] pts = null;
+        ICoordinate[] pts = null;
         int n = 0;
 
         /// <summary>
@@ -22,13 +16,13 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <param name="size">The number of points that the <c>CoordinateArrayFilter</c> will collect.</param>
         public CoordinateArrayFilter(int size) 
         {
-            pts = new Coordinate[size];
+            pts = new ICoordinate[size];
         }
 
         /// <summary>
         /// Returns the <c>Coordinate</c>s collected by this <c>CoordinateArrayFilter</c>.
         /// </summary>
-        public Coordinate[] Coordinates
+        public ICoordinate[] Coordinates
         {
             get
             {
@@ -42,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <param name="coord"></param>
         public void Filter(ICoordinate coord) 
         {
-            pts[n++] = (Coordinate) coord;
+            pts[n++] = (ICoordinate) coord;
         }
     }
 }
