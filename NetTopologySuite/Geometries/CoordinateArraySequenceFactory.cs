@@ -1,10 +1,5 @@
 using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -20,15 +15,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// 
         /// </summary>
         private CoordinateArraySequenceFactory() { }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        private object ReadResolve() 
-        {
-            return CoordinateArraySequenceFactory.Instance;
-        }
 
         /// <summary>
         /// Returns the singleton instance of CoordinateArraySequenceFactory.

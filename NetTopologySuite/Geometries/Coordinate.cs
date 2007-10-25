@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Serialization;
 
 using GeoAPI.Geometries;
 
@@ -130,11 +129,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public bool Equals2D(ICoordinate other)
         {
-            if (x != other.X)
-                return false;            
-            if (y != other.Y)
-                return false;            
-            return true;
+            return (x == other.X) && (y == other.Y);
         }
 
         /// <summary>
@@ -159,7 +154,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public Boolean Equals(ICoordinate other)
         {
-            return Equals2D((Coordinate) other);
+            return Equals2D(other);
         }
 
         /// <summary>
@@ -236,8 +231,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns><c>true</c> if <c>other</c> is a <c>Coordinate</c> with the same values for x, y and z.</returns>
         public bool Equals3D(ICoordinate other)
         {
-            return  (x == other.X) && (y == other.Y) && ((z == other.Z) || 
-                    (Double.IsNaN(Z) && Double.IsNaN(other.Z)));
+            return  (x == other.X) && (y == other.Y) && 
+                ((z == other.Z) || (Double.IsNaN(Z) && Double.IsNaN(other.Z)));
         }
 
         /// <summary>
@@ -284,7 +279,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Return HashCode.
         /// </summary>
-        /// <param name="x">Value from HashCode computation.</param>
+        /// <param name="value">Value from HashCode computation.</param>
         private static int GetHashCode(double value)
         {
             long f = BitConverter.DoubleToInt64Bits(value);

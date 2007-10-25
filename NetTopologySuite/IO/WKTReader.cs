@@ -1,12 +1,8 @@
 using System;
-using System.IO;
-using System.Globalization;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-
+using System.IO;
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using RTools_NTS.Util;

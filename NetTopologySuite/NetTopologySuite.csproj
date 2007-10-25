@@ -89,6 +89,9 @@
     <Compile Include="Geometries\CoordinateArraySequenceFactory.cs" />
     <Compile Include="Geometries\CoordinateList.cs" />
     <Compile Include="Geometries\CoordinateSequences.cs" />
+    <Compile Include="Geometries\CoordinateStruct.cs" />
+    <Compile Include="Geometries\CoordinateStructSequence.cs" />
+    <Compile Include="Geometries\CoordinateStructSequenceFactory.cs" />
     <Compile Include="Geometries\DefaultCoordinateSequence.cs" />
     <Compile Include="Geometries\DefaultCoordinateSequenceFactory.cs" />
     <Compile Include="Geometries\Envelope.cs" />
