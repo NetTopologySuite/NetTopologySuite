@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <summary>
         /// 
         /// </summary>
-		private class DbaseFileEnumerator : IEnumerator
+		private class DbaseFileEnumerator : IEnumerator, IDisposable
 		{
 			DbaseFileReader _parent;
 			ArrayList _arrayList;
@@ -36,6 +36,11 @@ namespace GisSharpBlog.NetTopologySuite.IO
 				ReadHeader();
 			}
 
+            ~DbaseFileEnumerator()
+            {
+                _dbfStream.Close();
+            }
+
 			#region Implementation of IEnumerator
 
             /// <summary>
@@ -43,7 +48,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
             /// </summary>
 			public void Reset()
 			{
-				throw new InvalidOperationException();
+                _dbfStream.BaseStream.Seek(_header.HeaderLength, SeekOrigin.Begin);
+                _iCurrentRecord = 0;
+				//throw new InvalidOperationException();
 			}
 
             /// <summary>
@@ -58,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 				bool more= true;
 				if (_iCurrentRecord > _header.NumRecords)
 				{
-					this._dbfStream.Close();			
+					//this._dbfStream.Close();			
 					more = false;
 				}
 				return more;
@@ -193,7 +200,16 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			}
 
 			#endregion
-		}
+
+            #region IDisposable Members
+
+            public void Dispose()
+            {
+                _dbfStream.Close();
+            }
+
+            #endregion
+        }
 
 		private DbaseFileHeader _header = null;
 		private string _filename;
@@ -231,7 +247,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		{
 			if (_header==null)
 			{
-				FileStream stream = new FileStream(_filename, System.IO.FileMode.Open);
+				FileStream stream = new FileStream(_filename, System.IO.FileMode.Open, FileAccess.Read);
 				BinaryReader dbfStream = new BinaryReader(stream);
 
 				_header = new DbaseFileHeader();

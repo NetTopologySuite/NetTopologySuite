@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <summary>
 		/// Summary description for ShapefileEnumerator.
 		/// </summary>
-        private class ShapefileEnumerator : IEnumerator
+        private class ShapefileEnumerator : IEnumerator, IDisposable
         {
             private ShapefileReader _parent;
             private IGeometry _geometry;
@@ -48,12 +48,18 @@ namespace GisSharpBlog.NetTopologySuite.IO
                     throw new NotSupportedException("Unsuported shape type:" + type);
             }
 
+            ~ShapefileEnumerator()
+            {
+                _shpBinaryReader.Close();
+            }
+
             /// <summary>
             /// 
             /// </summary>
             public void Reset()
             {
-                throw new InvalidOperationException();
+                _shpBinaryReader.BaseStream.Seek(100, SeekOrigin.Begin);
+                //throw new InvalidOperationException();
             }
 
             /// <summary>
@@ -77,7 +83,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 else
                 {
                     // Reached end of file, so close the reader.
-                    _shpBinaryReader.Close();
+                    //_shpBinaryReader.Close();
                     return false;
                 }
             }
@@ -92,6 +98,15 @@ namespace GisSharpBlog.NetTopologySuite.IO
                     return _geometry;
                 }
             }
+
+            #region IDisposable Members
+
+            public void Dispose()
+            {
+                _shpBinaryReader.Close();
+            }
+
+            #endregion
         }
 
 		private ShapefileHeader _mainHeader = null;

@@ -42,9 +42,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 else if (type == typeof(string))
                     header.AddColumn(name, 'C', StringLength, StringDecimals);
                 else if (type == typeof(bool))
-                    throw new NotImplementedException("Boolean values currently not supported");
+                    header.AddColumn(name, 'L', BoolLength, BoolDecimals);
                 else if (type == typeof(DateTime))
-                    throw new NotImplementedException("DateTime values currently not supported");
+                    header.AddColumn(name, 'D', DateLength, DateDecimals);
                 else throw new ArgumentException("Type " + type.Name + " not supported");
             }
             return header;
@@ -64,6 +64,17 @@ namespace GisSharpBlog.NetTopologySuite.IO
             return header;
         }
 
+        public static DbaseFileHeader GetHeader(DbaseFieldDescriptor[] dbFields, int count)
+        {
+            DbaseFileHeader header = new DbaseFileHeader();
+            header.NumRecords = count;
+
+            foreach (DbaseFieldDescriptor dbField in dbFields)
+                header.AddColumn(dbField.Name, dbField.DbaseType, dbField.Length, dbField.DecimalCount);
+
+            return header;
+        }
+
         #endregion
 
         private const int DoubleLength = 18;
@@ -72,6 +83,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
         private const int IntDecimals = 0;
         private const int StringLength = 254;
         private const int StringDecimals = 0;
+        private const int BoolLength = 1;
+        private const int BoolDecimals = 0;
+        private const int DateLength = 8;
+        private const int DateDecimals = 0;
 
         private string shpFile = String.Empty;
         private string shxFile = String.Empty;

@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 	/// <remarks>	
 	/// To create a ShapefileDataReader, use the static methods on the Shapefile class.
 	/// </remarks>
-	public class ShapefileDataReader : IDataReader, IDataRecord, IEnumerable
+	public class ShapefileDataReader : IDataReader, IDataRecord, IEnumerable, IDisposable
 	{
 		/// <summary>
 		/// 
@@ -34,6 +34,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			public ShapefileDataReaderEnumerator(ShapefileDataReader parent)
 			{
 				_parent = parent;
+                _parent.Reset();
 			}
 
             /// <summary>
@@ -41,7 +42,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
             /// </summary>
 			public void Reset()
 			{
-				throw new NotImplementedException();
+                _parent.Reset();
+				//throw new NotImplementedException();
 			}
 
             /// <summary>
@@ -63,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 					return new RowStructure(_parent._dbaseFields, _parent._columnValues);
 				}
 			}
-		}
+        }
 
 		bool _open = false;
 		DbaseFieldDescriptor[] _dbaseFields;
@@ -240,6 +242,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		{
             if (!IsClosed)
                 Close();
+            ((IDisposable)_shpEnumerator).Dispose();
+            ((IDisposable)_dbfEnumerator).Dispose();
 		}
 		
         /// <summary>
@@ -249,7 +253,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns></returns>
 		public int GetInt32(int i)
 		{
-			return (int)_columnValues[i];
+            string strValue = _columnValues[i].ToString().Trim();
+            Int32 value;
+            Int32.TryParse(strValue, out value);
+            return value;
 		}
 
         /// <summary>
@@ -346,7 +353,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns></returns>
 		public long GetInt64(int i)
 		{
-			return (long)_columnValues[i];
+            string strValue = _columnValues[i].ToString().Trim();
+            Int64 value;
+            Int64.TryParse(strValue, out value);
+            return value;
 		}
 
         /// <summary>
@@ -356,7 +366,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns></returns>
 		public double GetDouble(int i)
 		{
-			return (double)_columnValues[i];
+            string strValue = _columnValues[i].ToString().Trim();
+            double value;
+            Double.TryParse(strValue, out value);
+            return value;
 		}
 
         /// <summary>
@@ -376,7 +389,18 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns></returns>
 		public System.Guid GetGuid(int i)
 		{
-			return new System.Guid();
+            Guid value = Guid.Empty;
+            try
+            {
+                string strValue = _columnValues[i].ToString().Trim();
+                value = new Guid(strValue);
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
+            }
+
+            return value;
 		}
 
         /// <summary>
@@ -386,7 +410,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns></returns>
 		public System.DateTime GetDateTime(int i)
 		{
-			return new System.DateTime();
+            string strValue = _columnValues[i].ToString().Trim();
+            DateTime value;
+            DateTime.TryParse(strValue, out value);
+            return value;
 		}
 
         /// <summary>
@@ -420,7 +447,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns></returns>
 		public float GetFloat(int i)
 		{
-			return (float)_columnValues[i];
+            string strValue = _columnValues[i].ToString().Trim();
+            float value;
+            float.TryParse(strValue, out value);
+            return value;
 		}
 
         /// <summary>
@@ -462,7 +492,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns></returns>
 		public string GetString(int i)
 		{
-			return _columnValues[i].ToString();
+            return _columnValues[i].ToString().Trim();
 		}
 
         /// <summary>
@@ -482,7 +512,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns></returns>
 		public short GetInt16(int i)
 		{
-			return (short)_columnValues[i];
+            string strValue = _columnValues[i].ToString().Trim();
+            Int16 value;
+            Int16.TryParse(strValue, out value);
+            return value;
 		}
 
         /// <summary>
@@ -529,8 +562,13 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns></returns>
 		public System.Collections.IEnumerator GetEnumerator()
 		{
-			return new ShapefileDataReaderEnumerator(this);
+            return new ShapefileDataReaderEnumerator(this);
 		}
+        public void Reset()
+        {
+            _dbfEnumerator.Reset();
+            _shpEnumerator.Reset();
+        }
 		
 		/// <summary>
 		/// Gets the header for the Shapefile.
@@ -564,5 +602,5 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		{
 			return CultureInfo.CurrentCulture.CompareInfo.Compare(strA, strB, CompareOptions.IgnoreKanaType | CompareOptions.IgnoreWidth | CompareOptions.IgnoreCase);
 		}
-	}
+    }
 }

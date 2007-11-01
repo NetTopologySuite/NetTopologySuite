@@ -77,22 +77,34 @@ namespace GisSharpBlog.NetTopologySuite.IO
 
                     // Thanks to Abhay Menon!
                     if (!Double.IsNaN(internalCoord.Y) && !Double.IsNaN(internalCoord.X))
-                       points.Add(internalCoord);
+                         points.Add(internalCoord, false);
  				}
 
-                if (points.Count > 0) // Thanks to Abhay Menon!
+                if (points.Count > 2) // Thanks to Abhay Menon!
                 {
-                    ILinearRing ring = geometryFactory.CreateLinearRing(points.ToArray());
-
-                    // If shape have only a part, jump orientation check and add to shells
-                    if (numParts == 1)
-                        shells.Add(ring);
-                    else
+                    try
                     {
-                        // Orientation check
-                        if (CGAlgorithms.IsCCW(points.ToArray()))
-                             holes.Add(ring);
-                        else shells.Add(ring);
+                        if (points[0].Distance(points[points.Count - 1]) > .00001)
+                            points.Add(new Coordinate(points[0]));
+                        else if (points[0].Distance(points[points.Count - 1]) > 0.0)
+                            points[points.Count - 1].CoordinateValue = points[0];
+
+                        ILinearRing ring = geometryFactory.CreateLinearRing(points.ToArray());
+
+                        // If shape have only a part, jump orientation check and add to shells
+                        if (numParts == 1)
+                            shells.Add(ring);
+                        else
+                        {
+                            // Orientation check
+                            if (CGAlgorithms.IsCCW(points.ToArray()))
+                                holes.Add(ring);
+                            else shells.Add(ring);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex.Message);
                     }
                 }
 			}

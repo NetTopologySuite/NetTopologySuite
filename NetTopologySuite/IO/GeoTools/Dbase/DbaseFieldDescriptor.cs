@@ -30,14 +30,33 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		public static char GetDbaseType(Type type)
 		{
 			DbaseFieldDescriptor dbaseColumn = new DbaseFieldDescriptor();
-			if (type == typeof(string))
-				return 'C';
-			else if (type == typeof(double)) { }
-			else if (type == typeof(float)) { }
-			else if (type == typeof(bool))
-				return 'L';
-			else if (type == typeof(DateTime))
-				return 'D';
+            if (type == typeof(Char))
+                return 'C';
+            if (type == typeof(string))
+                return 'C';
+            else if (type == typeof(Double))
+                return 'N';
+            else if (type == typeof(Single))
+                return 'N';
+            else if (type == typeof(Int16))
+                return 'N';
+            else if (type == typeof(Int32))
+                return 'N';
+            else if (type == typeof(Int64))
+                return 'N';
+            else if (type == typeof(UInt16))
+                return 'N';
+            else if (type == typeof(UInt32))
+                return 'N';
+            else if (type == typeof(UInt64))
+                return 'N';
+            else if (type == typeof(Decimal))
+                return 'N';
+            else if (type == typeof(Boolean))
+                return 'L';
+            else if (type == typeof(DateTime))
+                return 'D';
+
 			throw new NotSupportedException(String.Format("{0} does not have a corresponding dbase type.", type.Name));
 		}
 
