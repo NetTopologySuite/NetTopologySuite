@@ -54,6 +54,10 @@
   <ItemGroup>
     <Compile Include="Geometries\basicexample.cs" />
     <Compile Include="Geometries\constructionexample.cs" />
+    <Compile Include="Geometries\extendedcoordinate.cs" />
+    <Compile Include="Geometries\extendedcoordinateexample.cs" />
+    <Compile Include="Geometries\extendedcoordinatesequence.cs" />
+    <Compile Include="Geometries\extendedcoordinatesequencefactory.cs" />
     <Compile Include="Geometries\precisionmodelexample.cs" />
     <Compile Include="Geometries\simplemethodsexample.cs" />
     <Compile Include="LinearReferencing\LinearReferencingExample.cs" />

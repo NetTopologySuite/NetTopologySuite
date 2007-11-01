@@ -86,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         ///  Constructs a <c>Coordinate</c> at (0,0,NaN).
         /// </summary>
-        // public Coordinate() : this(0.0, 0.0, Double.NaN) { }        
+        public Coordinate() : this(0.0, 0.0, Double.NaN) { }        
 
         /// <summary>
         /// Constructs a <c>Coordinate</c> having the same (x,y,z) values as
