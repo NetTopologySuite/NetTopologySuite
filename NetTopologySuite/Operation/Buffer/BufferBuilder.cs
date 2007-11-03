@@ -1,15 +1,10 @@
-using System;
 using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Operation.Overlay;
+using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Noding;
+using GisSharpBlog.NetTopologySuite.Operation.Overlay;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 {
@@ -59,14 +54,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// </summary>
         public int QuadrantSegments
         {
-            get
-            {
-                return quadrantSegments;
-            }
-            set
-            {
-                quadrantSegments = value;
-            }
+            get { return quadrantSegments;  }
+            set { quadrantSegments = value; }
         }
 
         /// <summary>
@@ -77,14 +66,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// </summary>
         public IPrecisionModel WorkingPrecisionModel
         {
-            get
-            {
-                return workingPrecisionModel;
-            }
-            set
-            {
-                workingPrecisionModel = value;
-            }
+            get { return workingPrecisionModel;  }
+            set { workingPrecisionModel = value; }
         }
 
         /// <summary>
@@ -92,14 +75,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// </summary>
         public BufferStyle EndCapStyle
         {
-            get
-            {
-                return endCapStyle;
-            }
-            set
-            {
-                endCapStyle = value;
-            }
+            get { return endCapStyle;  }
+            set { endCapStyle = value; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public INoder Noder
+        {
+            get { return workingNoder; }
+            set { workingNoder = value; }
         }
 
         /// <summary>
