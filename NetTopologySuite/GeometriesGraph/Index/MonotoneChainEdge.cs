@@ -31,8 +31,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         // Includes the end point of the edge as a sentinel
         private int[] startIndex;
         // these envelopes are created once and reused
-        private IEnvelope env1 = new Envelope();
-        private IEnvelope env2 = new Envelope();
+        private IExtents env1 = new Envelope();
+        private IExtents env2 = new Envelope();
 
         /// <summary>
         /// 

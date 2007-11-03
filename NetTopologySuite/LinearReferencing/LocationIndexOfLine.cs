@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         private IGeometry linearGeom;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:LocationIndexOfLine"/> class.
+        /// Initializes a new instance of the <see cref="LocationIndexOfLine"/> class.
         /// </summary>
         /// <param name="linearGeom">The linear geom.</param>
         public LocationIndexOfLine(IGeometry linearGeom)

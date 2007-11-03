@@ -47,7 +47,7 @@ namespace RTools_NTS.Util
 		#region Properties
 
 		/// <summary>
-		/// Gets/Sets the number of characters in the character buffer.
+		/// Gets or sets the number of characters in the character buffer.
 		/// Increasing the length this way provides indeterminate results.
 		/// </summary>
 		public int Length

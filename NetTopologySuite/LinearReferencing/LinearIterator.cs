@@ -265,7 +265,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Sets the enumerator to its initial position, 
         /// which is before the first element in the collection.
         /// </summary>
-        /// <exception cref="T:System.InvalidOperationException">
+        /// <exception cref="System.InvalidOperationException">
         /// The collection was modified after the enumerator was created. 
         /// </exception>
         public void Reset()
@@ -315,7 +315,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns>
-        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"></see> that can be used 
+        /// A <see cref="System.Collections.Generic.IEnumerator`1"></see> that can be used 
         /// to iterate through the collection.
         /// </returns>
         public IEnumerator<LinearIterator.LinearElement> GetEnumerator()
@@ -332,7 +332,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// that iterates through a collection.
         /// </summary>
         /// <returns>
-        /// An <see cref="T:System.Collections.IEnumerator"></see> object 
+        /// An <see cref="System.Collections.IEnumerator"></see> object 
         /// that can be used to iterate through the collection.
         /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
@@ -352,7 +352,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             private LinearIterator iterator = null;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="T:LinearElement"/> class.
+            /// Initializes a new instance of the <see cref="LinearElement"/> class.
             /// </summary>
             /// <param name="iterator">The iterator.</param>
             public LinearElement(LinearIterator iterator)

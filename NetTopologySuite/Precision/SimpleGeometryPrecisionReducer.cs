@@ -53,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         }
 
         /// <summary>
-        /// Gets/Sets whether the PrecisionModel of the new reduced Geometry
+        /// Gets or sets whether the PrecisionModel of the new reduced Geometry
         /// will be changed to be the PrecisionModel supplied to
         /// specify the reduction.  
         /// The default is to not change the precision model.

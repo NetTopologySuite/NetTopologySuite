@@ -24,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coordinates">Coordinate array that will be assimilated.</param>
         public DefaultCoordinateSequence(ICoordinate[] coordinates)
         {
-            if (Geometry.HasNullElements(coordinates))
+            if (Geometry2D.HasNullElements(coordinates))
                 throw new ArgumentException("Null coordinate");            
             this.coordinates = coordinates;
         }
@@ -184,7 +184,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="env">The envelope to expand.</param>
         /// <returns>A reference to the expanded envelope.</returns>
-        public IEnvelope ExpandEnvelope(IEnvelope env)
+        public IExtents ExpandEnvelope(IExtents env)
         {
             for (int i = 0; i < coordinates.Length; i++)
                 env.ExpandToInclude(coordinates[i]);

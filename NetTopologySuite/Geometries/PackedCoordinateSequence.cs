@@ -219,7 +219,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="env">The envelope to expand.</param>
         /// <returns>A reference to the expanded envelope.</returns>
-        public abstract IEnvelope ExpandEnvelope(IEnvelope env);
+        public abstract IExtents ExpandEnvelope(IExtents env);
     }
 
     /// <summary>
@@ -375,7 +375,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="env">The envelope to expand.</param>
         /// <returns>A reference to the expanded envelope.</returns>
-        public override IEnvelope ExpandEnvelope(IEnvelope env)
+        public override IExtents ExpandEnvelope(IExtents env)
         {
             for (int i = 0; i < coords.Length; i += dimension)
                 env.ExpandToInclude(coords[i], coords[i + 1]);        
@@ -530,7 +530,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="env">The envelope to expand.</param>
         /// <returns>A reference to the expanded envelope.</returns>
-        public override IEnvelope ExpandEnvelope(IEnvelope env)
+        public override IExtents ExpandEnvelope(IExtents env)
         {
         for (int i = 0; i < coords.Length; i += dimension )
             env.ExpandToInclude(coords[i], coords[i + 1]);      

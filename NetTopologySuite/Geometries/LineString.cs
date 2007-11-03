@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Basic implementation of <c>LineString</c>.
     /// </summary>  
     [Serializable]
-    public class LineString : Geometry, ILineString 
+    public class LineString : Geometry2D, ILineString 
     {
         /// <summary>
         /// Represents an empty <c>LineString</c>.
@@ -274,7 +274,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <returns></returns>
-        protected override IEnvelope ComputeEnvelopeInternal() 
+        protected override IExtents ComputeEnvelopeInternal() 
         {
             if (IsEmpty) 
                 return new Envelope();
@@ -406,10 +406,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:LineString"/> class.
+        /// Initializes a new instance of the <see cref="LineString"/> class.
         /// </summary>        
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         /// <param name="points">The coordinates used for create this <see cref="LineString" />.</param>

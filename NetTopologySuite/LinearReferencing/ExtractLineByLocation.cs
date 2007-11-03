@@ -32,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         private IGeometry line = null;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:ExtractLineByLocation"/> class.
+        /// Initializes a new instance of the <see cref="ExtractLineByLocation"/> class.
         /// </summary>
         /// <param name="line"></param>
         public ExtractLineByLocation(IGeometry line)

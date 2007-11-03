@@ -41,6 +41,10 @@
     <DocumentationFile>bin\Release\NetTopologySuite.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NPack, Version=0.7.13341.0, Culture=neutral, PublicKeyToken=56f174b1685ddc6a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ExternalReferences\NPack.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -68,6 +72,7 @@
     <Compile Include="Algorithm\SimplePointInAreaLocator.cs" />
     <Compile Include="Algorithm\SimplePointInRing.cs" />
     <Compile Include="Algorithm\SIRtreePointInRing.cs" />
+    <Compile Include="BTreeVertexBuffer.cs" />
     <Compile Include="CoordinateSystems\Transformations\GeometryTransform.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -75,17 +80,11 @@
     </Compile>
     <Compile Include="Features\Feature.cs" />
     <Compile Include="Features\IAttributesTable.cs" />
-    <Compile Include="Geometries\Coordinate.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Geometries\CoordinateArrays.cs" />
     <Compile Include="Geometries\CoordinateArraySequence.cs" />
     <Compile Include="Geometries\CoordinateArraySequenceFactory.cs" />
     <Compile Include="Geometries\CoordinateList.cs" />
     <Compile Include="Geometries\CoordinateSequences.cs" />
-    <Compile Include="Geometries\CoordinateStruct.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Geometries\CoordinateStructSequence.cs">
       <SubType>Code</SubType>
     </Compile>

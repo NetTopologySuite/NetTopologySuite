@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         public TaggedLinesSimplifier() { }
 
         /// <summary>
-        /// Gets/Sets the distance tolerance for the simplification.
+        /// Gets or sets the distance tolerance for the simplification.
         /// Points closer than this tolerance to a simplified segment may
         /// be removed.
         /// </summary>        

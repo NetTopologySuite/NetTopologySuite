@@ -89,7 +89,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// remain distinct. This behaviour is desired in many cases.
     /// </remarks>
     [Serializable]    
-    public abstract class Geometry: IGeometry
+    public abstract class Geometry2D : IGeometry<Coordinate2D>
     {        
         /// <summary>
         /// 
@@ -106,13 +106,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             typeof(GeometryCollection),    
         };                    
 
-        private IGeometryFactory factory = null;
+        private IGeometryFactory<Coordinate2D> factory = null;
 
         /// <summary> 
         /// Gets the factory which contains the context in which this point was created.
         /// </summary>
         /// <returns>The factory for this point.</returns>
-        public IGeometryFactory Factory
+        public IGeometryFactory<Coordinate2D> Factory
         {
             get 
             { 
@@ -123,7 +123,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         private object userData = null;
         
         /// <summary> 
-        /// Gets/Sets the user data object for this point, if any.
+        /// Gets or sets the user data object for this point, if any.
         /// A simple scheme for applications to add their own custom data to a Geometry.
         /// An example use might be to add an object representing a Coordinate Reference System.
         /// Note that user data objects are not present in geometries created by
@@ -144,20 +144,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// The bounding box of this <c>Geometry</c>.
         /// </summary>
-        protected IEnvelope envelope;
+        protected IExtents<Coordinate2D> envelope;
        
         // The ID of the Spatial Reference System used by this <c>Geometry</c>
         private int srid;
 
         /// <summary>  
-        /// Gets/Sets the ID of the Spatial Reference System used by the <c>Geometry</c>. 
+        /// Gets or sets the ID of the Spatial Reference System used by the <c>Geometry</c>. 
         /// NTS supports Spatial Reference System information in the simple way
         /// defined in the SFS. A Spatial Reference System ID (SRID) is present in
         /// each <c>Geometry</c> object. <c>Geometry</c> provides basic
         /// accessor operations for this field, but no others. The SRID is represented
         /// as an integer.
         /// </summary>        
-        public int SRID
+        public int Srid
         {
             get 
             { 
@@ -166,15 +166,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             set 
             {
                 srid = value;
-				IGeometryCollection collection = this as IGeometryCollection;
+                IGeometryCollection<Coordinate2D> collection = this as IGeometryCollection<Coordinate2D>;
+
 				if (collection != null)
 				{
 					foreach (IGeometry geometry in collection.Geometries)
 					{
-						geometry.SRID = value;
+						geometry.Srid = value;
 					}
 				}
-				factory = new GeometryFactory(factory.PrecisionModel, value, factory.CoordinateSequenceFactory);
+
+                factory = new GeometryFactory<Coordinate2D>(factory.PrecisionModel, value, factory.CoordinateSequenceFactory);
 			}
         }
 
@@ -182,7 +184,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <param name="factory"></param>
-        public Geometry(IGeometryFactory factory)
+        public Geometry2D(IGeometryFactory factory)
         {
             this.factory = factory;
             this.srid = factory.SRID;
@@ -533,7 +535,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// This <c>Geometry</c>s bounding box; if the <c>Geometry</c>
         /// is empty, <c>Envelope.IsNull</c> will return <c>true</c>.
         /// </returns>
-        public IEnvelope EnvelopeInternal
+        public IExtents EnvelopeInternal
         {
             get
             {
@@ -850,7 +852,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="obj1"></param>
         /// <param name="obj2"></param>
         /// <returns></returns>
-        public static bool operator ==(Geometry obj1, IGeometry obj2)
+        public static bool operator ==(Geometry2D obj1, IGeometry obj2)
         {            
             return Object.Equals(obj1, obj2); 
         }
@@ -861,7 +863,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="obj1"></param>
         /// <param name="obj2"></param>
         /// <returns></returns>
-        public static bool operator !=(Geometry obj1, IGeometry obj2)
+        public static bool operator !=(Geometry2D obj1, IGeometry obj2)
         {
             return !(obj1 == obj2);
         }    
@@ -1175,7 +1177,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public virtual object Clone() 
         {            
-            Geometry clone = (Geometry) base.MemberwiseClone();
+            Geometry2D clone = (Geometry2D) base.MemberwiseClone();
             if (clone.envelope != null) 
                 clone.envelope = new Envelope(clone.envelope);                 
             return clone;         
@@ -1230,7 +1232,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public int CompareTo(IGeometry geom)
         {
-            Geometry other = (Geometry) geom;
+            Geometry2D other = (Geometry2D) geom;
             if (ClassSortIndex != other.ClassSortIndex)
                 return ClassSortIndex - other.ClassSortIndex;
             if (IsEmpty && other.IsEmpty)
@@ -1297,7 +1299,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// This <c>Geometry</c>s bounding box; if the <c>Geometry</c>
         /// is empty, <c>Envelope.IsNull</c> will return <c>true</c>.
         /// </returns>
-        protected abstract IEnvelope ComputeEnvelopeInternal();
+        protected abstract IExtents ComputeEnvelopeInternal();
 
         /// <summary>
         /// Returns whether this <c>Geometry</c> is greater than, equal to,
@@ -1404,7 +1406,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Fixed" />.
+        /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Fixed" />.
         /// </summary>
         /// <seealso cref="GeometryFactory.Default" />
         /// <seealso cref="GeometryFactory.Fixed"/>

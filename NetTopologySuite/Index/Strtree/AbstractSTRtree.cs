@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
     /// data, both of which are treated here as Boundables.
     /// </para>
     /// </summary>
-    public abstract class AbstractSTRtree
+    public abstract class AbstractStrTree
     {
         /// <returns>
         /// A test for intersection between two bounds, necessary because subclasses
@@ -49,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// nodes that a node may have.
         /// </summary>
         /// <param name="nodeCapacity"></param>
-        public AbstractSTRtree(int nodeCapacity)
+        public AbstractStrTree(int nodeCapacity)
         {
             Assert.IsTrue(nodeCapacity > 1, "Node capacity must be greater than 1");
             this.nodeCapacity = nodeCapacity;

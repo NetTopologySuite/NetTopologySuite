@@ -10,7 +10,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Basic implementation of <c>MultiPolygon</c>.
     /// </summary>
     [Serializable]
-    public class MultiPolygon : GeometryCollection, IMultiPolygon 
+    public class MultiPolygon2D : GeometryCollection, IMultiPolygon<Coordinate2D>
     {
         /// <summary>
         /// Represents an empty <c>MultiPolygon</c>.
@@ -29,7 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Specification for SQL.        
         /// </param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public MultiPolygon(IPolygon[] polygons) : this(polygons, DefaultFactory) { }  

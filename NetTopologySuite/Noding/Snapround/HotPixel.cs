@@ -80,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// Returns a "safe" envelope that is guaranteed to contain the hot pixel.
         /// </summary>
         /// <returns></returns>
-        public IEnvelope GetSafeEnvelope()
+        public IExtents GetSafeEnvelope()
         {
             if (safeEnv == null)
             {

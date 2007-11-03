@@ -115,7 +115,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         private bool isSequenceable = false;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:LineSequencer"/> class.
+        /// Initializes a new instance of the <see cref="LineSequencer"/> class.
         /// </summary>
         public LineSequencer() { }
 
@@ -151,7 +151,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             private LineSequencer sequencer = null;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="T:GeometryComponentFilterImpl"/> class.
+            /// Initializes a new instance of the <see cref="GeometryComponentFilterImpl"/> class.
             /// </summary>
             /// <param name="sequencer">The sequencer.</param>
             internal GeometryComponentFilterImpl(LineSequencer sequencer)

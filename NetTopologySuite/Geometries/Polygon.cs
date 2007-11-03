@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// <see href="http://www.opengis.org/techno/specs.htm"/> OpenGIS Simple Features Specification for SQL.     
     /// </summary>
     [Serializable]
-    public class Polygon : Geometry, IPolygon
+    public class Polygon : Geometry2D, IPolygon
     {
         /// <summary>
         /// Represents an empty <c>Polygon</c>.
@@ -37,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         protected ILinearRing[] holes; 
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Polygon"/> class.
+        /// Initializes a new instance of the <see cref="Polygon"/> class.
         /// </summary>
         /// <param name="shell">
         /// The outer boundary of the new <c>Polygon</c>,
@@ -50,7 +50,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// point is to be created.
         /// </param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public Polygon(ILinearRing shell, ILinearRing[] holes) : this(shell, holes, DefaultFactory) { }
@@ -292,7 +292,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <returns></returns>
-        protected override IEnvelope ComputeEnvelopeInternal() 
+        protected override IExtents ComputeEnvelopeInternal() 
         {
             return shell.EnvelopeInternal;
         }

@@ -82,7 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
         /// <summary>
         /// <para>
-        /// Gets/Sets whether polygons using Self-Touching Rings to form
+        /// Gets or sets whether polygons using Self-Touching Rings to form
         /// holes are reported as valid.
         /// If this flag is set, the following Self-Touching conditions
         /// are treated as being valid:

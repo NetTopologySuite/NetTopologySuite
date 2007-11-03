@@ -35,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         private ICoordinate[] pts;
         
-        private IEnvelope env;
+        private IExtents env;
         private EdgeIntersectionList eiList = null;
       
         private string name;
@@ -141,7 +141,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public IEnvelope Envelope
+        public IExtents Envelope
         {
             get
             {

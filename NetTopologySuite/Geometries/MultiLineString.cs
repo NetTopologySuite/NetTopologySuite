@@ -41,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// but not <c>null</c>s.
         /// </param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public MultiLineString(ILineString[] lineStrings) : this(lineStrings, DefaultFactory) { }

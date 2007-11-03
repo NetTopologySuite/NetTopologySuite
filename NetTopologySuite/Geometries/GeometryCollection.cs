@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Basic implementation of <c>GeometryCollection</c>.
     /// </summary>
     [Serializable]
-    public class GeometryCollection : Geometry, IGeometryCollection
+    public class GeometryCollection2D : Geometry2D, IGeometryCollection<Coordinate2D>
     {
         /// <summary>
         /// Represents an empty <c>GeometryCollection</c>.
@@ -34,7 +34,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// but not <c>null</c>s.
         /// </param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public GeometryCollection(IGeometry[] geometries) : this(geometries, DefaultFactory) { }
@@ -331,9 +331,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <returns></returns>
-        protected override IEnvelope ComputeEnvelopeInternal()
+        protected override IExtents ComputeEnvelopeInternal()
         {
-            IEnvelope envelope = new Envelope();
+            IExtents envelope = new Envelope();
             for (int i = 0; i < geometries.Length; i++) 
                 envelope.ExpandToInclude(geometries[i].EnvelopeInternal);
             return envelope;

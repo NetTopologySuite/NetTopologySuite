@@ -34,12 +34,12 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
         }        
 
 		/// <summary>
-		/// Transforms a <see cref="IEnvelope" /> object.
+		/// Transforms a <see cref="IExtents" /> object.
 		/// </summary>
         /// <param name="box"></param>
 		/// <param name="transform"></param>
 		/// <returns></returns>
-		public static IEnvelope TransformBox(IEnvelope box, IMathTransform transform)
+		public static IExtents TransformBox(IExtents box, IMathTransform transform)
 		{
 			if (box == null) return null;
 
@@ -49,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
             corners[2] = transform.Transform(ToArray(box.MinX, box.MaxY)); //UL
             corners[3] = transform.Transform(ToArray(box.MaxX, box.MinY)); //LR
 
-			IEnvelope result = new Envelope();
+			IExtents result = new Envelope();
             foreach (double[] p in corners)
 				result.ExpandToInclude(p[0], p[1]);
 			return result;

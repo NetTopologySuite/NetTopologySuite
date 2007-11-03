@@ -10,7 +10,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
     /// P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
     /// </summary>
-    public class SIRtree : AbstractSTRtree 
+    public class SIRtree : AbstractStrTree 
     {
         /// <summary>
         /// 

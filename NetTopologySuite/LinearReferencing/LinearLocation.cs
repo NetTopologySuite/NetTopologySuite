@@ -62,13 +62,13 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         private double segmentFraction = 0.0;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:LinearLocation"/> class:
+        /// Initializes a new instance of the <see cref="LinearLocation"/> class:
         /// creates a location referring to the start of a linear geometry.
         /// </summary>
         public LinearLocation() { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:LinearLocation"/> class:
+        /// Initializes a new instance of the <see cref="LinearLocation"/> class:
         /// creates a location referring to the start of a linear geometry.
         /// </summary>
         /// <param name="segmentIndex">Index of the segment.</param>
@@ -77,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             this(0, segmentIndex, segmentFraction) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:LinearLocation"/> class:
+        /// Initializes a new instance of the <see cref="LinearLocation"/> class:
         /// creates a location referring to the start of a linear geometry.
         /// </summary>
         /// <param name="componentIndex">Index of the component.</param>
@@ -293,7 +293,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <c>LineStringLocation</c> is less than, equal to, 
         /// or greater than the specified <c>LineStringLocation</c>.
         /// </returns>
-        /// <exception cref="T:System.ArgumentException">
+        /// <exception cref="System.ArgumentException">
         /// <paramref name="obj" /> is not the same type as this instance. 
         /// </exception>
         public int CompareTo(object obj)

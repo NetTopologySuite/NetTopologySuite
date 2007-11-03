@@ -41,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// Gets/Sets the maximum number of noding iterations performed before
+        /// Gets or sets the maximum number of noding iterations performed before
         /// the noding is aborted. Experience suggests that this should rarely need to be changed
         /// from the default. The default is <see cref="MaxIterations" />.
         /// </summary>

@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="env"></param>
         /// <returns></returns>
-        public static int ComputeQuadLevel(IEnvelope env)
+        public static int ComputeQuadLevel(IExtents env)
         {
             double dx = env.Width;
             double dy = env.Height;
@@ -34,13 +34,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         private int level = 0;
 
         // auxiliary data which is derived from the key for use in computation
-        private IEnvelope env = null;
+        private IExtents env = null;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="itemEnv"></param>
-        public Key(IEnvelope itemEnv)
+        public Key(IExtents itemEnv)
         {
             ComputeKey(itemEnv);
         }
@@ -70,7 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public IEnvelope Envelope
+        public IExtents Envelope
         {
             get
             {
@@ -94,7 +94,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// whose extent is a power of two and which is based at a power of 2.
         /// </summary>
         /// <param name="itemEnv"></param>
-        public void ComputeKey(IEnvelope itemEnv)
+        public void ComputeKey(IExtents itemEnv)
         {
             level = ComputeQuadLevel(itemEnv);
             env = new Envelope();
@@ -112,7 +112,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="level"></param>
         /// <param name="itemEnv"></param>
-        private void ComputeKey(int level, IEnvelope itemEnv)
+        private void ComputeKey(int level, IExtents itemEnv)
         {
             double quadSize = DoubleBits.PowerOf2(level);            
             pt.X = Math.Floor(itemEnv.MinX / quadSize) * quadSize;

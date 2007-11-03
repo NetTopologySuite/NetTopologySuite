@@ -39,7 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         }
 
         private IPolygon rectangle;
-        private IEnvelope rectEnv;
+        private IExtents rectEnv;
 
         /// <summary>
         /// Create a new intersects computer for a rectangle.
@@ -87,14 +87,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
     /// </summary>
     class EnvelopeIntersectsVisitor : ShortCircuitedGeometryVisitor
     {
-        private IEnvelope rectEnv;
+        private IExtents rectEnv;
         private bool intersects = false;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="rectEnv"></param>
-        public EnvelopeIntersectsVisitor(IEnvelope rectEnv)
+        public EnvelopeIntersectsVisitor(IExtents rectEnv)
         {
             this.rectEnv = rectEnv;
         }
@@ -114,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         /// <param name="element"></param>
         protected override void Visit(IGeometry element)
         {
-            IEnvelope elementEnv = element.EnvelopeInternal;
+            IExtents elementEnv = element.EnvelopeInternal;
             // disjoint
             if (!rectEnv.Intersects(elementEnv))
                 return;            
@@ -160,7 +160,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
     class ContainsPointVisitor : ShortCircuitedGeometryVisitor
         {
         private ICoordinateSequence rectSeq;
-        private IEnvelope rectEnv;
+        private IExtents rectEnv;
         private bool containsPoint = false;
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         {
             if (!(geom is IPolygon))
                 return;
-            IEnvelope elementEnv = geom.EnvelopeInternal;
+            IExtents elementEnv = geom.EnvelopeInternal;
             if (! rectEnv.Intersects(elementEnv))
                 return;
             // test each corner of rectangle for inclusion
@@ -223,7 +223,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
     {
         private IPolygon rectangle;
         private ICoordinateSequence rectSeq;
-        private IEnvelope rectEnv;
+        private IExtents rectEnv;
         private bool intersects = false;
 
         /// <summary>
@@ -252,7 +252,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         /// <param name="geom"></param>
         protected override void Visit(IGeometry geom)
         {
-            IEnvelope elementEnv = geom.EnvelopeInternal;
+            IExtents elementEnv = geom.EnvelopeInternal;
             if (!rectEnv.Intersects(elementEnv))
                 return;
             // check if general relate algorithm should be used, since it's faster for large inputs

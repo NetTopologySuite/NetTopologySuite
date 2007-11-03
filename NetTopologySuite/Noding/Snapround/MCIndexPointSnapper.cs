@@ -43,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// </summary>
         private class QueryVisitor : IItemVisitor
         {
-            IEnvelope env = null;
+            IExtents env = null;
             HotPixelSnapAction action = null;
 
             /// <summary>
@@ -51,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             /// </summary>
             /// <param name="env"></param>
             /// <param name="action"></param>
-            public QueryVisitor(IEnvelope env, HotPixelSnapAction action)
+            public QueryVisitor(IExtents env, HotPixelSnapAction action)
             {
                 this.env = env;
                 this.action = action;
@@ -79,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <returns><c>true</c> if a node was added for this pixel.</returns>
         public bool Snap(HotPixel hotPixel, SegmentString parentEdge, int vertexIndex)
         {
-            IEnvelope pixelEnv = hotPixel.GetSafeEnvelope();
+            IExtents pixelEnv = hotPixel.GetSafeEnvelope();
             HotPixelSnapAction hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, vertexIndex);
             index.Query(pixelEnv, new QueryVisitor(pixelEnv, hotPixelSnapAction));
             return hotPixelSnapAction.IsNodeAdded;

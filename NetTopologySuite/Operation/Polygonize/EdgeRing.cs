@@ -32,16 +32,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         public static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IList shellList)
         {
             ILinearRing teString = testEr.Ring;
-            IEnvelope testEnv = teString.EnvelopeInternal;
+            IExtents testEnv = teString.EnvelopeInternal;
             ICoordinate testPt = teString.GetCoordinateN(0);
 
             EdgeRing minShell = null;
-            IEnvelope minEnv = null;
+            IExtents minEnv = null;
             for (IEnumerator it = shellList.GetEnumerator(); it.MoveNext(); )
             {
                 EdgeRing tryShell = (EdgeRing) it.Current;
                 ILinearRing tryRing = tryShell.Ring;
-                IEnvelope tryEnv = tryRing.EnvelopeInternal;
+                IExtents tryEnv = tryRing.EnvelopeInternal;
                 if (minShell != null)
                     minEnv = minShell.Ring.EnvelopeInternal;
                 bool isContained = false;

@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GeoAPI.CoordinateSystems;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using GisSharpBlog.NetTopologySuite.Utilities;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -12,29 +14,31 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// from lists of Coordinates.
     /// </summary>            
     [Serializable]
-    public class GeometryFactory : IGeometryFactory
+    public class GeometryFactory<TCoordinate> : IGeometryFactory<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, IComputable<TCoordinate>, IConvertible
+
     {
         /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
+        /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModels.Floating" />.
         /// </summary>
-        public static readonly IGeometryFactory Default = new GeometryFactory();
+        public static readonly IGeometryFactory<TCoordinate> Default = new GeometryFactory();
 
         /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
+        /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModels.Floating" />.
         /// </summary>
         /// <remarks>A shortcut for <see cref="GeometryFactory.Default" />.</remarks>
-		public static readonly IGeometryFactory Floating = Default;
+        public static readonly IGeometryFactory<TCoordinate> Floating = Default;
 
         /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
+        /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModels.FloatingSingle" />.
         /// </summary>
 		public static readonly IGeometryFactory FloatingSingle = new GeometryFactory(new PrecisionModel(PrecisionModels.FloatingSingle));  
 
         /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
+        /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModels.Fixed" />.
         /// </summary>
 		public static readonly IGeometryFactory Fixed = new GeometryFactory(new PrecisionModel(PrecisionModels.Fixed));
@@ -268,7 +272,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// is not a closed linestring, that is, if the first and last coordinates
         /// are not equal.
         /// </returns>
-        public IGeometry ToGeometry(IEnvelope envelope) 
+        public IGeometry ToGeometry(IExtents envelope) 
         {
             if (envelope.IsNull) 
                 return CreatePoint((ICoordinateSequence) null);

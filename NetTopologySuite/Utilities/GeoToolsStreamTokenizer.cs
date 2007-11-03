@@ -2,8 +2,6 @@ using System;
 using System.IO;
 using System.Text;
 
-using GisSharpBlog.NetTopologySuite.IO;
-
 // http://java.sun.com/j2se/1.4/docs/api/java/io/StreamTokenizer.html
 // a better implementation could be written. Here is a good Java implementation of StreamTokenizer.
 // http://www.flex-compiler.lcs.mit.edu/Harpoon/srcdoc/java/io/StreamTokenizer.html

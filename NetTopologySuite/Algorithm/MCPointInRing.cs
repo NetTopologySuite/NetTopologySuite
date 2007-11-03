@@ -74,7 +74,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             for (int i = 0; i < mcList.Count; i++) 
             {
                 MonotoneChain mc = (MonotoneChain) mcList[i];
-                IEnvelope mcEnv = mc.Envelope;
+                IExtents mcEnv = mc.Envelope;
                 interval.Min = mcEnv.MinY;
                 interval.Max = mcEnv.MaxY;
                 tree.Insert(interval, mc);
@@ -91,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             crossings = 0;
 
             // test all segments intersected by ray from pt in positive x direction
-            IEnvelope rayEnv = new Envelope(Double.NegativeInfinity, Double.PositiveInfinity, pt.Y, pt.Y);
+            IExtents rayEnv = new Envelope(Double.NegativeInfinity, Double.PositiveInfinity, pt.Y, pt.Y);
             interval.Min = pt.Y;
             interval.Max = pt.Y;
             IList segs = tree.Query(interval);
@@ -117,7 +117,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="rayEnv"></param>
         /// <param name="mcSelecter"></param>
         /// <param name="mc"></param>
-        private void TestMonotoneChain(IEnvelope rayEnv, MCSelecter mcSelecter, MonotoneChain mc)
+        private void TestMonotoneChain(IExtents rayEnv, MCSelecter mcSelecter, MonotoneChain mc)
         {
             mc.Select(rayEnv, mcSelecter);
         }

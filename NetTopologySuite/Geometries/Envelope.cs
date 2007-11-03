@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// the supplies extent values are automatically sorted into the correct order.    
     /// </summary>
     [Serializable]
-    public class Envelope : IEnvelope
+    public class Envelope : IExtents
     {        
         /// <summary>
         /// Test the point q to see whether it intersects the Envelope
@@ -124,7 +124,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Create an <c>Envelope</c> from an existing Envelope.
         /// </summary>
         /// <param name="env">The Envelope to initialize from.</param>
-        public Envelope(IEnvelope env)
+        public Envelope(IExtents env)
         {
             Init(env);
         }
@@ -192,7 +192,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Initialize an <c>Envelope</c> from an existing Envelope.
         /// </summary>
         /// <param name="env">The Envelope to initialize from.</param>
-        public void Init(IEnvelope env)
+        public void Init(IExtents env)
         {
             this.minx = env.MinX;
             this.maxx = env.MaxX;
@@ -377,7 +377,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// within the boundaries.
         /// </summary>
         /// <param name="other">the <c>Envelope</c> to merge with.</param>        
-        public void ExpandToInclude(IEnvelope other)
+        public void ExpandToInclude(IExtents other)
         {
             if (other.IsNull)
                 return;            
@@ -434,7 +434,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="env"></param>
         /// <returns></returns>
-        public IEnvelope Intersection(IEnvelope env)
+        public IExtents Intersection(IExtents env)
         {
             if (IsNull || env.IsNull || !Intersects(env)) 
                 return new Envelope();
@@ -455,7 +455,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>        
         /// <c>true</c> if the <c>Envelope</c>s overlap.
         /// </returns>
-        public bool Intersects(IEnvelope other)
+        public bool Intersects(IExtents other)
         {
             if (IsNull || other.IsNull)
                 return false;            
@@ -470,7 +470,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <returns></returns>
         [Obsolete("Use Intersects instead")]
-        public bool Overlaps(IEnvelope other)
+        public bool Overlaps(IExtents other)
         {
             return Intersects(other);
         }        
@@ -553,7 +553,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other"> the <c>Envelope</c> which this <c>Envelope</c> is being checked for containing.</param>
         /// <returns><c>true</c> if <c>other</c> is contained in this <c>Envelope</c>.</returns>
-        public bool Contains(IEnvelope other)
+        public bool Contains(IExtents other)
         {
             if (IsNull || other.IsNull)
                 return false;            
@@ -568,7 +568,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// distance is the Euclidean distance between the closest points.
         /// </summary>
         /// <returns>The distance between this and another <c>Envelope</c>.</returns>
-        public double Distance(IEnvelope env)
+        public double Distance(IExtents env)
         {
             if (Intersects(env))
                 return 0;
@@ -607,7 +607,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (!(other is Envelope)) 
                 return false;
 
-            return Equals((IEnvelope) other);
+            return Equals((IExtents) other);
         }
 
         /// <summary>
@@ -615,7 +615,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public bool Equals(IEnvelope other)
+        public bool Equals(IExtents other)
         {
             if (IsNull)
                 return other.IsNull;
@@ -631,7 +631,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public int CompareTo(object other)
         {
-            return CompareTo((IEnvelope) other);
+            return CompareTo((IExtents) other);
             
         }
 
@@ -640,7 +640,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public int CompareTo(IEnvelope other)
+        public int CompareTo(IExtents other)
         {
             if (IsNull && other.IsNull)
                 return 0;
@@ -739,7 +739,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Creates a deep copy of the current envelope.
         /// </summary>
         /// <returns></returns>
-        public IEnvelope Clone()
+        public IExtents Clone()
         {
             return new Envelope(minx, maxx, miny, maxy);
         }
@@ -747,7 +747,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Calculates the union of the current box and the given point.
         /// </summary>
-        public IEnvelope Union(IPoint point)
+        public IExtents Union(IPoint point)
         {
             return Union(point.Coordinate);
         }
@@ -755,7 +755,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Calculates the union of the current box and the given coordinate.
         /// </summary>
-        public IEnvelope Union(ICoordinate coord)
+        public IExtents Union(ICoordinate coord)
         {
             Envelope env = (Envelope) this.Clone();
             env.ExpandToInclude(coord);
@@ -765,7 +765,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Calculates the union of the current box and the given box.
         /// </summary>
-        public IEnvelope Union(IEnvelope box)
+        public IExtents Union(IExtents box)
         {
             if (box.IsNull)
                 return this;

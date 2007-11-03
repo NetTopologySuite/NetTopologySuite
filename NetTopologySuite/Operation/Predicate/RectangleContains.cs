@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         }
 
         private IPolygon rectangle;
-        private IEnvelope rectEnv;
+        private IExtents rectEnv;
 
         /// <summary>
         /// Create a new contains computer for two geometries.

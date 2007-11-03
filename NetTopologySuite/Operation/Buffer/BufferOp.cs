@@ -48,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <returns>A scale factor that allows a reasonable amount of precision for the buffer computation.</returns>
         private static double PrecisionScaleFactor(IGeometry g, double distance, int maxPrecisionDigits)
         {
-            IEnvelope env = g.EnvelopeInternal;
+            IExtents env = g.EnvelopeInternal;
             double envSize = Math.Max(env.Height, env.Width);
             double expandByDistance = distance > 0.0 ? distance : 0.0;
             double bufEnvSize = envSize + 2 * expandByDistance;

@@ -137,7 +137,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns></returns>
         protected ILineString HorizontalBisector(IGeometry geometry)
         {
-            IEnvelope envelope = geometry.EnvelopeInternal;
+            IExtents envelope = geometry.EnvelopeInternal;
 
             // Assert: for areas, minx <> maxx
             double avgY = Avg(envelope.MinY, envelope.MaxY);
@@ -150,7 +150,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="envelope">The envelope to analyze.</param>
         /// <returns> The centre of the envelope.</returns>
-        public ICoordinate Centre(IEnvelope envelope)
+        public ICoordinate Centre(IExtents envelope)
         {
             return new Coordinate(Avg(envelope.MinX, envelope.MaxX), Avg(envelope.MinY, envelope.MaxY));
         }

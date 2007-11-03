@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Basic implementation of <c>Point</c>.
     /// </summary>
     [Serializable]
-    public class Point : Geometry, IPoint
+    public class Point : Geometry2D, IPoint
     {
         private static readonly ICoordinate emptyCoordinate = null;
 
@@ -37,11 +37,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }             
 
          /// <summary>
-        /// Initializes a new instance of the <see cref="T:Point"/> class.
+        /// Initializes a new instance of the <see cref="Point"/> class.
         /// </summary>
         /// <param name="coordinate">The coordinate used for create this <see cref="Point" />.</param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public Point(ICoordinate coordinate) :   
@@ -212,7 +212,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <returns></returns>
-        protected override IEnvelope ComputeEnvelopeInternal() 
+        protected override IExtents ComputeEnvelopeInternal() 
         {
             if (IsEmpty) 
                 return new Envelope();            
@@ -293,25 +293,25 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Point"/> class.
+        /// Initializes a new instance of the <see cref="Point"/> class.
         /// </summary>
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
         /// <param name="z">The z coordinate.</param>
         /// /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public Point(double x, double y, double z) : 
             this(DefaultFactory.CoordinateSequenceFactory.Create(new ICoordinate[] { new Coordinate(x, y, z) }), DefaultFactory) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Point"/> class.
+        /// Initializes a new instance of the <see cref="Point"/> class.
         /// </summary>
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
         /// /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public Point(double x, double y)

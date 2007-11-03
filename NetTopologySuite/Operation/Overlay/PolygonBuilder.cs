@@ -244,16 +244,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         private EdgeRing FindEdgeRingContaining(EdgeRing testEr, IList shellList)
         {
             ILinearRing teString = testEr.LinearRing;
-            IEnvelope testEnv = teString.EnvelopeInternal;
+            IExtents testEnv = teString.EnvelopeInternal;
             ICoordinate testPt = teString.GetCoordinateN(0);
 
             EdgeRing minShell = null;
-            IEnvelope minEnv = null;
+            IExtents minEnv = null;
             for (IEnumerator it = shellList.GetEnumerator(); it.MoveNext(); )
             {
                 EdgeRing tryShell = (EdgeRing) it.Current;
                 ILinearRing tryRing = tryShell.LinearRing;
-                IEnvelope tryEnv = tryRing.EnvelopeInternal;
+                IExtents tryEnv = tryRing.EnvelopeInternal;
                 if (minShell != null)
                     minEnv = minShell.LinearRing.EnvelopeInternal;
                 bool isContained = false;

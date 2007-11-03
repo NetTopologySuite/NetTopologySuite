@@ -55,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         public BufferBuilder() { }
 
         /// <summary>
-        /// Gets/Sets the number of segments used to approximate a angle fillet.
+        /// Gets or sets the number of segments used to approximate a angle fillet.
         /// </summary>
         public int QuadrantSegments
         {
@@ -70,7 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Gets/Sets the precision model to use during the curve computation and noding,
+        /// Gets or sets the precision model to use during the curve computation and noding,
         /// if it is different to the precision model of the Geometry.
         /// If the precision model is less than the precision of the Geometry precision model,
         /// the Geometry must have previously been rounded to that precision.

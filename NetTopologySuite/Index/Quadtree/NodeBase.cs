@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="env"></param>
         /// <param name="centre"></param>
-        public static int GetSubnodeIndex(IEnvelope env, ICoordinate centre)
+        public static int GetSubnodeIndex(IExtents env, ICoordinate centre)
         {
             int subnodeIndex = -1;
             if (env.MinX >= centre.X)
@@ -97,7 +97,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <param name="itemEnv">The envelope containing the item.</param>
         /// <param name="item">The item to remove.</param>
         /// <returns><c>true</c> if the item was found and removed.</returns>
-        public bool Remove(IEnvelope itemEnv, object item)
+        public bool Remove(IExtents itemEnv, object item)
         {
             // use envelope to restrict nodes scanned
             if (!IsSearchMatch(itemEnv))
@@ -200,14 +200,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <returns></returns>
-        protected abstract bool IsSearchMatch(IEnvelope searchEnv);
+        protected abstract bool IsSearchMatch(IExtents searchEnv);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="resultItems"></param>
-        public void AddAllItemsFromOverlapping(IEnvelope searchEnv, ref IList resultItems)
+        public void AddAllItemsFromOverlapping(IExtents searchEnv, ref IList resultItems)
         {
             if (!IsSearchMatch(searchEnv))
                 return;
@@ -227,7 +227,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
-        public void Visit(IEnvelope searchEnv, IItemVisitor visitor)
+        public void Visit(IExtents searchEnv, IItemVisitor visitor)
         {
             if (!IsSearchMatch(searchEnv))
                 return;
@@ -246,7 +246,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
-        private void VisitItems(IEnvelope searchEnv, IItemVisitor visitor)
+        private void VisitItems(IExtents searchEnv, IItemVisitor visitor)
         {
             // would be nice to filter items based on search envelope, but can't until they contain an envelope
             for (IEnumerator i = items.GetEnumerator(); i.MoveNext(); )            

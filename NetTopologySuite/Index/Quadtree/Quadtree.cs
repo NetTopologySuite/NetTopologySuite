@@ -34,7 +34,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="itemEnv"></param>
         /// <param name="minExtent"></param>
-        public static IEnvelope EnsureExtent(IEnvelope itemEnv, double minExtent)
+        public static IExtents EnsureExtent(IExtents itemEnv, double minExtent)
         {
             //The names "ensureExtent" and "minExtent" are misleading -- sounds like
             //this method ensures that the extents are greater than minExtent.
@@ -115,10 +115,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="itemEnv"></param>
         /// <param name="item"></param>
-        public void Insert(IEnvelope itemEnv, object item)
+        public void Insert(IExtents itemEnv, object item)
         {
             CollectStats(itemEnv);
-            IEnvelope insertEnv = EnsureExtent(itemEnv, minExtent);
+            IExtents insertEnv = EnsureExtent(itemEnv, minExtent);
             root.Insert(insertEnv, item);
         }
 
@@ -128,9 +128,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <param name="itemEnv">The Envelope of the item to remove.</param>
         /// <param name="item">The item to remove.</param>
         /// <returns><c>true</c> if the item was found.</returns>
-        public bool Remove(IEnvelope itemEnv, object item)
+        public bool Remove(IExtents itemEnv, object item)
         {
-            IEnvelope posEnv = EnsureExtent(itemEnv, minExtent);
+            IExtents posEnv = EnsureExtent(itemEnv, minExtent);
             return root.Remove(posEnv, item);
         }        
 
@@ -139,7 +139,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <returns></returns>
-        public IList Query(IEnvelope searchEnv)
+        public IList Query(IExtents searchEnv)
         {
             /*
             * the items that are matched are the items in quads which
@@ -155,7 +155,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
-        public void Query(IEnvelope searchEnv, IItemVisitor visitor)
+        public void Query(IExtents searchEnv, IItemVisitor visitor)
         {
             /*
             * the items that are matched are the items in quads which
@@ -178,7 +178,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// 
         /// </summary>
         /// <param name="itemEnv"></param>
-        private void CollectStats(IEnvelope itemEnv)
+        private void CollectStats(IExtents itemEnv)
         {
             double delX = itemEnv.Width;
             if (delX < minExtent && delX > 0.0)

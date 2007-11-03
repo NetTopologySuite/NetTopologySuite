@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     {
         private GeometryGraph graph;  // used to find non-node vertices
         private IList rings = new ArrayList();
-        private IEnvelope totalEnv = new Envelope();
+        private IExtents totalEnv = new Envelope();
         private SweepLineIndex sweepLine;
         private ICoordinate nestedPt = null;
 

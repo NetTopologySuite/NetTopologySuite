@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// found inside the specified point. Thus, if the specified point is
         /// not a GeometryCollection, an empty list will be returned.
         /// </summary>
-        public static IList GetCoordinates(Geometry geom)
+        public static IList GetCoordinates(Geometry2D geom)
         {
             IList pts = new ArrayList();
             geom.Apply(new ConnectedElementPointFilter(pts));

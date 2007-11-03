@@ -334,7 +334,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public bool ContainsPoint(ICoordinate p)
         {
             ILinearRing shell = LinearRing;
-            IEnvelope env = shell.EnvelopeInternal;
+            IExtents env = shell.EnvelopeInternal;
             if (!env.Contains(p)) 
                 return false;
             if (!CGAlgorithms.IsPointInRing(p, shell.Coordinates)) 

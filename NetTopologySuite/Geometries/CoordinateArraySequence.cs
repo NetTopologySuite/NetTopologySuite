@@ -215,7 +215,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="env">The envelope to expand.</param>
         /// <returns>A reference to the expanded envelope.</returns>
-        public IEnvelope ExpandEnvelope(IEnvelope env)
+        public IExtents ExpandEnvelope(IExtents env)
         {
             for (int i = 0; i < coordinates.Length; i++ ) 
                 env.ExpandToInclude(coordinates[i]);            

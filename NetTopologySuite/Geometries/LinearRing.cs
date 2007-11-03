@@ -76,11 +76,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:LinearRing"/> class.
+        /// Initializes a new instance of the <see cref="LinearRing"/> class.
         /// </summary>
         /// <param name="points">The points used for create this instance.</param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public LinearRing(ICoordinate[] points) : 

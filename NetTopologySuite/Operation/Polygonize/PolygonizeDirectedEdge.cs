@@ -82,7 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary> 
-        /// Gets/Sets the ring of directed edges that this directed edge is
+        /// Gets or sets the ring of directed edges that this directed edge is
         /// a member of.
         /// </summary>
         public EdgeRing Ring

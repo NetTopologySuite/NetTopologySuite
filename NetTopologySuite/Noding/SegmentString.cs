@@ -64,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// Gets/Sets the user-defined data for this segment string.
+        /// Gets or sets the user-defined data for this segment string.
         /// </summary>
         public object Data
         {

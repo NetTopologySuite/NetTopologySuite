@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
     {
         private ICoordinate[] pts;
         private int start, end;
-        private IEnvelope env = null;
+        private IExtents env = null;
         private object context = null;  // user-defined information
         private int id;                 // useful for optimizing chain comparisons
 
@@ -90,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <summary>
         /// 
         /// </summary>
-        public IEnvelope Envelope
+        public IExtents Envelope
         {
             get
             {
@@ -159,7 +159,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="mcs"></param>
-        public void Select(IEnvelope searchEnv, MonotoneChainSelectAction mcs)
+        public void Select(IExtents searchEnv, MonotoneChainSelectAction mcs)
         {
             ComputeSelect(searchEnv, start, end, mcs);
         }
@@ -171,7 +171,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <param name="start0"></param>
         /// <param name="end0"></param>
         /// <param name="mcs"></param>
-        private void ComputeSelect(IEnvelope searchEnv, int start0, int end0, MonotoneChainSelectAction mcs)
+        private void ComputeSelect(IExtents searchEnv, int start0, int end0, MonotoneChainSelectAction mcs)
         {
             ICoordinate p0 = pts[start0];
             ICoordinate p1 = pts[end0];

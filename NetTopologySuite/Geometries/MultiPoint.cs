@@ -39,7 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Elements may be empty <c>Point</c>s, but not <c>null</c>s.
         /// </param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public MultiPoint(IPoint[] points) : this(points, DefaultFactory) { }  

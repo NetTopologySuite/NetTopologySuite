@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="env"></param>
         /// <returns></returns>
-        public static Node CreateNode(IEnvelope env)
+        public static Node CreateNode(IExtents env)
         {
             Key key = new Key(env);
             Node node = new Node(key.Envelope, key.Level);
@@ -34,9 +34,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <param name="node"></param>
         /// <param name="addEnv"></param>
         /// <returns></returns>
-        public static Node CreateExpanded(Node node, IEnvelope addEnv)
+        public static Node CreateExpanded(Node node, IExtents addEnv)
         {
-            IEnvelope expandEnv = new Envelope(addEnv);
+            IExtents expandEnv = new Envelope(addEnv);
             if (node != null) 
                 expandEnv.ExpandToInclude(node.env);
 
@@ -46,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             return largerNode;
         }
 
-        private IEnvelope env;
+        private IExtents env;
         private ICoordinate centre;
         private int level;
 
@@ -55,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="env"></param>
         /// <param name="level"></param>
-        public Node(IEnvelope env, int level)
+        public Node(IExtents env, int level)
         {
             this.env = env;
             this.level = level;
@@ -67,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public IEnvelope Envelope
+        public IExtents Envelope
         {
             get
             {
@@ -80,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <returns></returns>
-        protected override bool IsSearchMatch(IEnvelope searchEnv)
+        protected override bool IsSearchMatch(IExtents searchEnv)
         {
             return env.Intersects(searchEnv);
         }
@@ -91,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// it does not already exist.
         /// </summary>
         /// <param name="searchEnv"></param>
-        public Node GetNode(IEnvelope searchEnv)
+        public Node GetNode(IExtents searchEnv)
         {
             int subnodeIndex = GetSubnodeIndex(searchEnv, centre);            
             // if subquadIndex is -1 searchEnv is not contained in a subquad
@@ -110,7 +110,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// node containing the envelope.
         /// </summary>
         /// <param name="searchEnv"></param>
-        public NodeBase Find(IEnvelope searchEnv)
+        public NodeBase Find(IExtents searchEnv)
         {
             int subnodeIndex = GetSubnodeIndex(searchEnv, centre);
             if (subnodeIndex == -1)
@@ -203,7 +203,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 	            default:
 		            break;
             }
-            IEnvelope sqEnv = new Envelope(minx, maxx, miny, maxy);
+            IExtents sqEnv = new Envelope(minx, maxx, miny, maxy);
             Node node = new Node(sqEnv, level - 1);
             return node;
         }
