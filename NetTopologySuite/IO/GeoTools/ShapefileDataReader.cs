@@ -1,14 +1,9 @@
 using System;
 using System.Collections;
-using System.IO;
 using System.Data;
 using System.Diagnostics;
 using System.Globalization;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
 
 namespace GisSharpBlog.NetTopologySuite.IO
 {

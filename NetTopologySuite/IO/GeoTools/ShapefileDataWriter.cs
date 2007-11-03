@@ -1,13 +1,9 @@
 using System;
 using System.Collections;
 using System.IO;
-using System.Text;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Features;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
 
 namespace GisSharpBlog.NetTopologySuite.IO
 {
@@ -16,6 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
     /// </summary>
     public class ShapefileDataWriter
     {
+
         #region Static
 
         /// <summary>
@@ -107,30 +104,30 @@ namespace GisSharpBlog.NetTopologySuite.IO
             set { header = value; }
         }
 
-        private GeometryFactory geometryFactory = null;
+        private IGeometryFactory geometryFactory = null;
 
         /// <summary>
         /// Gets or sets the geometry factory.
         /// </summary>
         /// <value>The geometry factory.</value>
-        protected GeometryFactory GeometryFactory
+        protected IGeometryFactory GeometryFactory
         {
             get { return geometryFactory; }
             set { geometryFactory = value; }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:ShapefileDataWriter"/> class.
+        /// Initializes a new instance of the <see cref="ShapefileDataWriter"/> class.
         /// </summary>
         /// <param name="fileName">Name of the file with or without any extension.</param>
-        public ShapefileDataWriter(string fileName) : this(fileName, new GeometryFactory()) { }
+        public ShapefileDataWriter(string fileName) : this(fileName, Geometries.GeometryFactory.Default) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:ShapefileDataWriter"/> class.
+        /// Initializes a new instance of the <see cref="ShapefileDataWriter"/> class.
         /// </summary>
         /// <param name="fileName">File path without any extension</param>
         /// <param name="geometryFactory"></param>
-        public ShapefileDataWriter(string fileName, GeometryFactory geometryFactory)
+        public ShapefileDataWriter(string fileName, IGeometryFactory geometryFactory)
         {
             this.geometryFactory = geometryFactory;
 
