@@ -42,12 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private INoder workingNoder = null;
         private IGeometryFactory geomFact = null;
         private PlanarGraph graph = null;
-        private EdgeList edgeList = new EdgeList();
-
-        /// <summary> 
-        /// Creates a new BufferBuilder.
-        /// </summary>
-        public BufferBuilder() { }
+        private EdgeList edgeList = new EdgeList();        
 
         /// <summary>
         /// Gets/Sets the number of segments used to approximate a angle fillet.

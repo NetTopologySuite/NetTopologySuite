@@ -1,36 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
-
 using GeoAPI.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
-{    
-    /// <summary>
-    /// The types of Precision Model which NTS supports.
-    /// </summary>
-    public enum PrecisionModels : int
-    {
-        /// <summary> 
-        /// Floating precision corresponds to the standard 
-        /// double-precision floating-point representation, which is
-        /// based on the IEEE-754 standard
-        /// </summary>
-        Floating = 0,
-
-        /// <summary>
-        /// Floating single precision corresponds to the standard
-        /// single-precision floating-point representation, which is
-        /// based on the IEEE-754 standard
-        /// </summary>
-        FloatingSingle = 1,
-
-        /// <summary> 
-        /// Fixed Precision indicates that coordinates have a fixed number of decimal places.
-        /// The number of decimal places is determined by the log10 of the scale factor.
-        /// </summary>
-        Fixed = 2,
-    }
-
+{        
     /// <summary> 
     /// Specifies the precision model of the <c>Coordinate</c>s in a <c>Geometry</c>.
     /// In other words, specifies the grid of allowable
@@ -218,14 +190,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public double Scale
         {
-            get
-            {
-                return scale;
-            }
-            set
-            {
-                this.scale = Math.Abs(value);
-            }
+            get { return scale; }
+            set { this.scale = Math.Abs(value); }
         }
 
         /// <summary> 
@@ -238,6 +204,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary> 
+        /// Gets the type of this PrecisionModel.
+        /// </summary>
+        /// <returns></returns>
+        public PrecisionModels PrecisionModelType
+        {
+            get { return modelType; }            
+        }
+
+        /// <summary> 
         /// Returns the x-offset used to obtain a precise coordinate.
         /// </summary>
         /// <returns>
@@ -247,11 +222,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         [Obsolete("Offsets are no longer used")]
         public double OffsetX
         {
-            get
-            {
-                //We actually don't use offsetX and offsetY anymore ... [Jon Aquino]
-                return 0;
-            }
+            get { return 0; }
         }
 
         /// <summary> 
@@ -264,10 +235,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         [Obsolete("Offsets are no longer used")]
         public double OffsetY
         {
-            get
-            {
-                return 0;
-            }
+            get { return 0; }
         }
 
         /// <summary>  

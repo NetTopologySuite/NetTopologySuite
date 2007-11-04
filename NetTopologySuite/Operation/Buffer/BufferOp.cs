@@ -1,15 +1,9 @@
 using System;
-using System.Collections;
-using System.Diagnostics;
-using System.Text;
-
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Noding;
 using GisSharpBlog.NetTopologySuite.Noding.Snapround;
-using GisSharpBlog.NetTopologySuite.Precision;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 {    
@@ -211,8 +205,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             if (resultGeometry != null)
                 return;
 
-            PrecisionModel argPM = (PrecisionModel) argGeom.Factory.PrecisionModel;
-            if (argPM.GetPrecisionModelType() == PrecisionModels.Fixed)
+            IPrecisionModel argPM = argGeom.Factory.PrecisionModel;
+            if (argPM.PrecisionModelType == PrecisionModels.Fixed)
                  BufferFixedPrecision(argPM);
             else BufferReducedPrecision();
         }
@@ -240,7 +234,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// 
         /// </summary>
         /// <param name="fixedPM"></param>
-        private void BufferFixedPrecision(PrecisionModel fixedPM)
+        private void BufferFixedPrecision(IPrecisionModel fixedPM)
         {
             INoder noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)), fixedPM.Scale);
 
@@ -270,7 +264,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                     saveException = ex;
                     // don't propagate the exception - it will be detected by fact that resultGeometry is null
                 }
-                if (resultGeometry != null) return;
+                if (resultGeometry != null) 
+                    return;
             }
 
             // tried everything - have to bail
@@ -284,7 +279,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private void BufferReducedPrecision(int precisionDigits)
         {
             double sizeBasedScaleFactor = PrecisionScaleFactor(argGeom, distance, precisionDigits);
-            Debug.WriteLine(String.Format("recomputing with precision scale factor = {0}", sizeBasedScaleFactor));
+            // Debug.WriteLine(String.Format("recomputing with precision scale factor = {0}", sizeBasedScaleFactor));
 
             PrecisionModel fixedPM = new PrecisionModel(sizeBasedScaleFactor);
             BufferFixedPrecision(fixedPM);
