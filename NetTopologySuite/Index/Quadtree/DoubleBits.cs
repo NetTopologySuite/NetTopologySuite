@@ -1,7 +1,6 @@
 using System;
-using System.Collections;
-using System.Text;
 using GisSharpBlog.NetTopologySuite.Utilities;
+using BitConverter=System.BitConverter;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 {
@@ -12,118 +11,85 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
     /// this is more accurate than using mathematical operations
     /// (which suffer from round-off error).
     /// The algorithms and constants in this class
-    /// apply only to IEEE-754 double-precision floating point format.
+    /// apply only to IEEE-754 Double-precision floating point format.
     /// </summary>
-    public class DoubleBits 
+    public class DoubleBits
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        public const int ExponentBias = 1023;
+        public const Int32 ExponentBias = 1023;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="exp"></param>
-        /// <returns></returns>
-        public static double PowerOf2(int exp)
+        public static Double PowerOf2(Int32 exp)
         {
             if (exp > 1023 || exp < -1022)
+            {
                 throw new ArgumentException("Exponent out of bounds");
+            }
             long expBias = exp + ExponentBias;
-            long bits = (long)expBias << 52;
-            return System.BitConverter.Int64BitsToDouble(bits);
+            long bits = (long) expBias << 52;
+            return BitConverter.Int64BitsToDouble(bits);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="d"></param>
-        /// <returns></returns>
-        public static int GetExponent(double d)
+        public static Int32 GetExponent(Double d)
         {
             DoubleBits db = new DoubleBits(d);
             return db.Exponent;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="d"></param>
-        /// <returns></returns>
-        public static double TruncateToPowerOfTwo(double d)
+        public static Double TruncateToPowerOfTwo(Double d)
         {
             DoubleBits db = new DoubleBits(d);
             db.ZeroLowerBits(52);
             return db.Double;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="d"></param>
-        /// <returns></returns>
-        public static string ToBinaryString(double d)
+        public static string ToBinaryString(Double d)
         {
             DoubleBits db = new DoubleBits(d);
             return db.ToString();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="d1"></param>
-        /// <param name="d2"></param>
-        /// <returns></returns>
-        public static double MaximumCommonMantissa(double d1, double d2)
+        public static Double MaximumCommonMantissa(Double d1, Double d2)
         {
-            if (d1 == 0.0 || d2 == 0.0) 
+            if (d1 == 0.0 || d2 == 0.0)
+            {
                 return 0.0;
+            }
 
             DoubleBits db1 = new DoubleBits(d1);
             DoubleBits db2 = new DoubleBits(d2);
 
-            if (db1.Exponent != db2.Exponent) 
+            if (db1.Exponent != db2.Exponent)
+            {
                 return 0.0;
+            }
 
-            int maxCommon = db1.NumCommonMantissaBits(db2);
+            Int32 maxCommon = db1.NumCommonMantissaBits(db2);
             db1.ZeroLowerBits(64 - (12 + maxCommon));
             return db1.Double;
         }
 
-        private double x;
+        private Double x;
         private long xBits;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="x"></param>
-        public DoubleBits(double x)
+        public DoubleBits(Double x)
         {
             this.x = x;
-            xBits = System.BitConverter.DoubleToInt64Bits(x);
+            xBits = BitConverter.DoubleToInt64Bits(x);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public double Double
+        public Double Double
         {
-            get
-            {
-                return System.BitConverter.Int64BitsToDouble(xBits);
-            }
+            get { return BitConverter.Int64BitsToDouble(xBits); }
         }
 
         /// <summary>
         /// Determines the exponent for the number.
         /// </summary>
-        public int BiasedExponent
+        public Int32 BiasedExponent
         {
             get
             {
-                int signExp = (int)(xBits >> 52);
-                int exp = signExp & 0x07ff;
+                Int32 signExp = (Int32) (xBits >> 52);
+                Int32 exp = signExp & 0x07ff;
                 return exp;
             }
         }
@@ -131,31 +97,19 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// Determines the exponent for the number.
         /// </summary>
-        public int Exponent
+        public Int32 Exponent
         {
-            get
-            {
-                return BiasedExponent - ExponentBias;
-            }
+            get { return BiasedExponent - ExponentBias; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="nBits"></param>
-        public void ZeroLowerBits(int nBits)
+        public void ZeroLowerBits(Int32 nBits)
         {
             long invMask = (1L << nBits) - 1L;
             long mask = ~ invMask;
             xBits &= mask;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public int GetBit(int i)
+        public Int32 GetBit(Int32 i)
         {
             long mask = (1L << i);
             return (xBits & mask) != 0 ? 1 : 0;
@@ -167,14 +121,15 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// It does not determine whether the numbers have the same exponent - if they do
         /// not, the value computed by this function is meaningless.
         /// </summary>
-        /// <param name="db"></param>
         /// <returns> The number of common most-significant mantissa bits.</returns>
-        public int NumCommonMantissaBits(DoubleBits db)
+        public Int32 NumCommonMantissaBits(DoubleBits db)
         {
-            for (int i = 0; i < 52; i++)
-            {            
-            if (GetBit(i) != db.GetBit(i))
-                return i;
+            for (Int32 i = 0; i < 52; i++)
+            {
+                if (GetBit(i) != db.GetBit(i))
+                {
+                    return i;
+                }
             }
             return 52;
         }
@@ -183,17 +138,17 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// A representation of the Double bits formatted for easy readability.
         /// </summary>
         public override string ToString()
-        {            
+        {
             string numStr = HexConverter.ConvertAny2Any(xBits.ToString(), 10, 2);
-            
+
             // 64 zeroes!
             string zero64 = "0000000000000000000000000000000000000000000000000000000000000000";
-            string padStr =  zero64 + numStr;
+            string padStr = zero64 + numStr;
             string bitStr = padStr.Substring(padStr.Length - 64);
             string str = bitStr.Substring(0, 1) + "  "
-                + bitStr.Substring(1, 12) + "(" + Exponent + ") "
-                + bitStr.Substring(12)
-                + " [ " + x + " ]";
+                         + bitStr.Substring(1, 12) + "(" + Exponent + ") "
+                         + bitStr.Substring(12)
+                         + " [ " + x + " ]";
             return str;
         }
     }

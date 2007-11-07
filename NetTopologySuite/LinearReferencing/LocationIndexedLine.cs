@@ -1,7 +1,5 @@
 using System;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
@@ -31,7 +29,9 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         private void CheckGeometryType()
         {
             if (!(linearGeom is ILineString || linearGeom is IMultiLineString))
+            {
                 throw new ArgumentException("Input geometry must be linear", "linearGeom");
+            }
         }
 
         /// <summary>
@@ -103,10 +103,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         public LinearLocation StartIndex
         {
-            get
-            {
-                return new LinearLocation();
-            }
+            get { return new LinearLocation(); }
         }
 
         /// <summary>
@@ -114,10 +111,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         public LinearLocation EndIndex
         {
-            get
-            {
-                return LinearLocation.GetEndLocation(linearGeom);
-            }
+            get { return LinearLocation.GetEndLocation(linearGeom); }
         }
 
         /// <summary>
@@ -125,7 +119,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="index">The index to test.</param>
         /// <returns><c>true</c> if the index is in the valid range.</returns>
-        public bool isValidIndex(LinearLocation index)
+        public Boolean isValidIndex(LinearLocation index)
         {
             return index.IsValid(linearGeom);
         }

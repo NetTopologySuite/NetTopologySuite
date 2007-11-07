@@ -1,10 +1,4 @@
 using System;
-using System.Collections;
-using System.Text;
-
-using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
@@ -34,8 +28,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Whether this DirectedEdge's direction is the same as or
         /// opposite to that of the parent Edge (if any).
         /// </param>
-        public PolygonizeDirectedEdge(Node from, Node to, ICoordinate directionPt, bool edgeDirection)
-            : base(from, to, directionPt, edgeDirection) { }
+        public PolygonizeDirectedEdge(Node from, Node to, ICoordinate directionPt, Boolean edgeDirection)
+            : base(from, to, directionPt, edgeDirection) {}
 
         /// <summary> 
         /// Returns the identifier attached to this directed edge.
@@ -43,14 +37,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// </summary>
         public long Label
         {
-            get
-            {
-                return label;
-            }
-            set
-            {
-                label = value;
-            }
+            get { return label; }
+            set { label = value; }
         }
 
         /// <summary>
@@ -59,26 +47,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// </summary>
         public PolygonizeDirectedEdge Next
         {
-            get
-            {
-                return next;
-            }
-            set
-            {
-                next = value;
-            }
+            get { return next; }
+            set { next = value; }
         }
 
         /// <summary>
         /// Returns the ring of directed edges that this directed edge is
         /// a member of, or null if the ring has not been set.
         /// </summary>
-        public bool IsInRing
+        public Boolean IsInRing
         {
-            get
-            {
-                return Ring != null;
-            }
+            get { return Ring != null; }
         }
 
         /// <summary> 
@@ -87,14 +66,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// </summary>
         public EdgeRing Ring
         {
-            get
-            {
-                return this.edgeRing;
-            }
-            set
-            {
-                edgeRing = value;
-            }
+            get { return edgeRing; }
+            set { edgeRing = value; }
         }
     }
 }

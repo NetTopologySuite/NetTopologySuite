@@ -1,9 +1,5 @@
 using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -15,13 +11,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class CentroidPoint
     {
-        private int ptCount = 0;
+        private Int32 ptCount = 0;
         private ICoordinate centSum = new Coordinate();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public CentroidPoint() { }
+        public CentroidPoint() {}
 
         /// <summary> 
         /// Adds the point(s) defined by a Geometry to the centroid total.
@@ -30,14 +23,19 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="geom">The point to add.</param>
         public void Add(IGeometry geom)
         {
-            if (geom is IPoint)             
+            if (geom is IPoint)
+            {
                 Add(geom.Coordinate);
+            }
 
-            else if(geom is IGeometryCollection) 
+            else if (geom is IGeometryCollection)
             {
                 IGeometryCollection gc = (IGeometryCollection) geom;
+                
                 foreach (IGeometry geometry in gc.Geometries)
+                {
                     Add(geometry);
+                }
             }
         }
 
@@ -52,18 +50,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             centSum.Y += pt.Y;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public ICoordinate Centroid
         {
             get
             {
                 ICoordinate cent = new Coordinate();
-                cent.X = centSum.X / ptCount;
-                cent.Y = centSum.Y / ptCount;
+                cent.X = centSum.X/ptCount;
+                cent.Y = centSum.Y/ptCount;
                 return cent;
             }
         }
-    }   
+    }
 }

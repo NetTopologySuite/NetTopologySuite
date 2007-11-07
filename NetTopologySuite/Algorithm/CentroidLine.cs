@@ -1,9 +1,5 @@
 using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -17,12 +13,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     public class CentroidLine
     {
         private ICoordinate centSum = new Coordinate();
-        private double totalLength = 0.0;
+        private Double totalLength = 0.0;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public CentroidLine() { }
+        public CentroidLine() {}
 
         /// <summary> 
         /// Adds the linestring(s) defined by a Geometry to the centroid total.
@@ -31,27 +24,29 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="geom">The point to add.</param>
         public void Add(IGeometry geom)
         {
-            if (geom is ILineString)             
-                Add(geom.Coordinates);            
+            if (geom is ILineString)
+            {
+                Add(geom.Coordinates);
+            }
 
-            else if (geom is IGeometryCollection) 
+            else if (geom is IGeometryCollection)
             {
                 IGeometryCollection gc = (IGeometryCollection) geom;
+                
                 foreach (IGeometry geometry in gc.Geometries)
+                {
                     Add(geometry);
+                }
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public ICoordinate Centroid
         {
             get
             {
                 ICoordinate cent = new Coordinate();
-                cent.X = centSum.X / totalLength;
-                cent.Y = centSum.Y / totalLength;
+                cent.X = centSum.X/totalLength;
+                cent.Y = centSum.Y/totalLength;
                 return cent;
             }
         }
@@ -62,15 +57,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="pts">An array of <c>Coordinate</c>s.</param>
         public void Add(ICoordinate[] pts)
         {
-            for (int i = 0; i < pts.Length - 1; i++)
+            for (Int32 i = 0; i < pts.Length - 1; i++)
             {
-                double segmentLen = pts[i].Distance(pts[i + 1]);
+                Double segmentLen = pts[i].Distance(pts[i + 1]);
                 totalLength += segmentLen;
 
-                double midx = (pts[i].X + pts[i + 1].X) / 2;
-                centSum.X += segmentLen * midx;
-                double midy = (pts[i].Y + pts[i + 1].Y) / 2;
-                centSum.Y += segmentLen * midy;
+                Double midx = (pts[i].X + pts[i + 1].X)/2;
+                centSum.X += segmentLen*midx;
+                Double midy = (pts[i].Y + pts[i + 1].Y)/2;
+                centSum.Y += segmentLen*midy;
             }
         }
     }

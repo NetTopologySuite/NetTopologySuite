@@ -1,12 +1,9 @@
 using System;
 using System.Collections;
-using System.Text;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
-
     /// <summary>
     /// Dissolves a noded collection of <see cref="SegmentString" />s to produce
     /// a set of merged linework with unique segments.
@@ -35,12 +32,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             /// <c>true</c> if the strings are in the same direction,
             /// <c>false</c> if they are opposite.
             /// </param>
-            void Merge(SegmentString mergeTarget, SegmentString ssToMerge, bool isSameOrientation);
+            void Merge(SegmentString mergeTarget, SegmentString ssToMerge, Boolean isSameOrientation);
         }
 
         private ISegmentStringMerger merger;
         private IDictionary ocaMap = new SortedList();
-        
+
         /// <summary>
         /// Creates a dissolver with a user-defined merge strategy.
         /// </summary>
@@ -54,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// Creates a dissolver with the default merging strategy.
         /// </summary>
         public SegmentStringDissolver()
-            : this(null) { }
+            : this(null) {}
 
         /// <summary>
         /// Dissolve all <see cref="SegmentString" />s in the input <see cref="ICollection"/>.
@@ -62,8 +59,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="segStrings"></param>
         public void Dissolve(ICollection segStrings)
         {
-            foreach(object obj in segStrings)
-                Dissolve((SegmentString)obj);
+            foreach (object obj in segStrings)
+            {
+                Dissolve((SegmentString) obj);
+            }
         }
 
         /// <summary>
@@ -85,12 +84,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             OrientedCoordinateArray oca = new OrientedCoordinateArray(segString.Coordinates);
             SegmentString existing = FindMatching(oca, segString);
             if (existing == null)
-                Add(oca, segString);            
+            {
+                Add(oca, segString);
+            }
             else
             {
                 if (merger != null)
                 {
-                    bool isSameOrientation = CoordinateArrays.Equals(existing.Coordinates, segString.Coordinates);
+                    Boolean isSameOrientation = CoordinateArrays.Equals(existing.Coordinates, segString.Coordinates);
                     merger.Merge(existing, segString, isSameOrientation);
                 }
             }
@@ -104,19 +105,15 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <returns></returns>
         private SegmentString FindMatching(OrientedCoordinateArray oca, SegmentString segString)
         {
-            return (SegmentString)ocaMap[oca];            
-        }        
+            return (SegmentString) ocaMap[oca];
+        }
 
         /// <summary>
         /// Gets the collection of dissolved (i.e. unique) <see cref="SegmentString" />s
         /// </summary>
         public ICollection Dissolved
         {
-            get
-            {
-                return ocaMap.Values;
-            }
+            get { return ocaMap.Values; }
         }
-
     }
 }

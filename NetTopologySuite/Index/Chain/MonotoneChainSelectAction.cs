@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Text;
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Chain
@@ -14,19 +12,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <summary>
         /// These envelopes are used during the MonotoneChain search process.
         /// </summary>
-        public Envelope TempEnv1 = new Envelope();
+        public Extents TempEnv1 = new Extents();
 
-        /// <summary>
-        /// 
-        /// </summary>
         public LineSegment SelectedSegment = new LineSegment();
 
         /// <summary> 
         /// This function can be overridden if the original chain is needed.
         /// </summary>
-        /// <param name="mc"></param>
-        /// <param name="start"></param>
-        public virtual void Select(MonotoneChain mc, int start)
+        public virtual void Select(MonotoneChain mc, Int32 start)
         {
             mc.GetLineSegment(start, ref SelectedSegment);
             Select(SelectedSegment);
@@ -36,7 +29,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// This is a convenience function which can be overridden to obtain the actual
         /// line segment which is selected.
         /// </summary>
-        /// <param name="seg"></param>
-        public virtual void Select(LineSegment seg) { }
+        public virtual void Select(LineSegment seg) {}
     }
 }

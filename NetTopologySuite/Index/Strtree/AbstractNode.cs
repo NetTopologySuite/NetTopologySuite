@@ -1,7 +1,5 @@
 using System;
 using System.Collections;
-using System.Text;
-
 using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Strtree
@@ -11,11 +9,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
     /// (AbstractNodes) or real data (ItemBoundables). If this node contains real data
     /// (rather than nodes), then we say that this node is a "leaf node".
     /// </summary>
-    public abstract class AbstractNode : IBoundable 
+    public abstract class AbstractNode : IBoundable
     {
         private ArrayList childBoundables = new ArrayList();
         private object bounds = null;
-        private int level;
+        private Int32 level;
 
         /// <summary> 
         /// Constructs an AbstractNode at the given level in the tree
@@ -24,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// 0 if this node is a leaf, 1 if a parent of a leaf, and so on; the
         /// root node will have the highest level.
         /// </param>
-        public AbstractNode(int level) 
+        public AbstractNode(Int32 level)
         {
             this.level = level;
         }
@@ -35,10 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         public IList ChildBoundables
         {
-            get
-            {
-                return childBoundables;
-            }
+            get { return childBoundables; }
         }
 
         /// <summary>
@@ -53,9 +48,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </returns>        
         protected abstract object ComputeBounds();
 
-        /// <summary>
-        /// 
-        /// </summary>
         public object Bounds
         {
             get
@@ -72,20 +64,16 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// Returns 0 if this node is a leaf, 1 if a parent of a leaf, and so on; the
         /// root node will have the highest level.
         /// </summary>
-        public int Level
+        public Int32 Level
         {
-            get
-            {
-                return level;
-            }
+            get { return level; }
         }
 
         /// <summary>
         /// Adds either an AbstractNode, or if this is a leaf node, a data object
         /// (wrapped in an ItemBoundable).
         /// </summary>
-        /// <param name="childBoundable"></param>
-        public void AddChildBoundable(IBoundable childBoundable) 
+        public void AddChildBoundable(IBoundable childBoundable)
         {
             Assert.IsTrue(bounds == null);
             childBoundables.Add(childBoundable);

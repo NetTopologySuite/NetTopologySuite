@@ -1,53 +1,31 @@
 using System;
-using System.Collections;
-using System.Text;
-
 using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 {
+    // DESIGN_NOTE: Looks like a value type
     /// <summary> 
     /// A contiguous portion of 1D-space. Used internally by SIRtree.
     /// </summary>
     public class Interval
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="other"></param>
-        public Interval(Interval other) : this(other.min, other.max) { }
+        public Interval(Interval other) : this(other.min, other.max) {}
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="min"></param>
-        /// <param name="max"></param>
-        public Interval(double min, double max)
+        public Interval(Double min, Double max)
         {
             Assert.IsTrue(min <= max);
             this.min = min;
             this.max = max;
         }
 
-        private double min;
-        private double max;
+        private Double min;
+        private Double max;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public double Centre
+        public Double Centre
         {
-            get
-            {
-                return (min + max) / 2;
-            }
+            get { return (min + max)/2; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="other"></param>
-        /// <returns><c>this</c></returns>
         public Interval ExpandToInclude(Interval other)
         {
             max = Math.Max(max, other.max);
@@ -55,36 +33,19 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return this;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="other"></param>
-        /// <returns></returns>
-        public bool Intersects(Interval other)
+        public Boolean Intersects(Interval other)
         {
             return !(other.min > max || other.max < min);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="o"></param>
-        /// <returns></returns>
-        public override bool Equals(object o) 
+        public override Boolean Equals(object o)
         {
-            if (!(o is Interval))             
-                return false;            
+            if (!(o is Interval))
+            {
+                return false;
+            }
             Interval other = (Interval) o;
             return min == other.min && max == other.max;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-    }    
+    }
 }

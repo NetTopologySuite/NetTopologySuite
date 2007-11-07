@@ -1,9 +1,5 @@
 using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
@@ -15,89 +11,55 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
     /// </summary>
     public class Key
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="env"></param>
-        /// <returns></returns>
-        public static int ComputeQuadLevel(IExtents env)
+        public static Int32 ComputeQuadLevel(IExtents env)
         {
-            double dx = env.Width;
-            double dy = env.Height;
-            double dMax = dx > dy ? dx : dy;
-            int level = DoubleBits.GetExponent(dMax) + 1;
+            Double dx = env.Width;
+            Double dy = env.Height;
+            Double dMax = dx > dy ? dx : dy;
+            Int32 level = DoubleBits.GetExponent(dMax) + 1;
             return level;
         }
 
         // the fields which make up the key
         private ICoordinate pt = new Coordinate();
-        private int level = 0;
+        private Int32 level = 0;
 
         // auxiliary data which is derived from the key for use in computation
         private IExtents env = null;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="itemEnv"></param>
         public Key(IExtents itemEnv)
         {
             ComputeKey(itemEnv);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public ICoordinate Point
         {
-            get
-            {
-                return pt;
-            }
+            get { return pt; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public int Level
+        public Int32 Level
         {
-            get
-            {
-                return level;
-            }
+            get { return level; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public IExtents Envelope
         {
-            get
-            {
-                return env;
-            }
+            get { return env; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public ICoordinate Centre
         {
-            get
-            {
-                return new Coordinate((env.MinX + env.MaxX) / 2, (env.MinY + env.MaxY) / 2);
-            }
+            get { return new Coordinate((env.MinX + env.MaxX)/2, (env.MinY + env.MaxY)/2); }
         }
 
         /// <summary>
         /// Return a square envelope containing the argument envelope,
         /// whose extent is a power of two and which is based at a power of 2.
         /// </summary>
-        /// <param name="itemEnv"></param>
         public void ComputeKey(IExtents itemEnv)
         {
             level = ComputeQuadLevel(itemEnv);
-            env = new Envelope();
+            env = new Extents();
             ComputeKey(level, itemEnv);
             // MD - would be nice to have a non-iterative form of this algorithm
             while (!env.Contains(itemEnv))
@@ -107,16 +69,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="level"></param>
-        /// <param name="itemEnv"></param>
-        private void ComputeKey(int level, IExtents itemEnv)
+        private void ComputeKey(Int32 level, IExtents itemEnv)
         {
-            double quadSize = DoubleBits.PowerOf2(level);            
-            pt.X = Math.Floor(itemEnv.MinX / quadSize) * quadSize;
-            pt.Y = Math.Floor(itemEnv.MinY / quadSize) * quadSize;
+            Double quadSize = DoubleBits.PowerOf2(level);
+            pt.X = Math.Floor(itemEnv.MinX/quadSize)*quadSize;
+            pt.Y = Math.Floor(itemEnv.MinY/quadSize)*quadSize;
             env.Init(pt.X, pt.X + quadSize, pt.Y, pt.Y + quadSize);
         }
     }

@@ -1,9 +1,5 @@
 using System;
 
-using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
-
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     /// <summary> 
@@ -16,6 +12,6 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        bool IsInside(ICoordinate pt);
+        Boolean IsInside(ICoordinate pt);
     }
 }

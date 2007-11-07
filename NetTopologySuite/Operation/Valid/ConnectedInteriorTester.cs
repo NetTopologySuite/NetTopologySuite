@@ -1,12 +1,8 @@
 using System;
 using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Operation.Overlay;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
@@ -24,17 +20,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// </summary>
     public class ConnectedInteriorTester
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="coord"></param>
-        /// <param name="pt"></param>
-        /// <returns></returns>
         public static ICoordinate FindDifferentPoint(ICoordinate[] coord, ICoordinate pt)
         {
             foreach (ICoordinate c in coord)
+            {
                 if (!c.Equals(pt))
-                    return c;            
+                {
+                    return c;
+                }
+            }
             return null;
         }
 
@@ -46,31 +40,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         // the coordinate will be somewhere on the ring surrounding the disconnected interior
         private ICoordinate disconnectedRingcoord;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomGraph"></param>
         public ConnectedInteriorTester(GeometryGraph geomGraph)
         {
             this.geomGraph = geomGraph;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public ICoordinate Coordinate
         {
-            get
-            {
-                return disconnectedRingcoord;
-            }
+            get { return disconnectedRingcoord; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public bool IsInteriorsConnected()
+        public Boolean IsInteriorsConnected()
         {
             // node the edges, in case holes touch the shell
             IList splitEdges = new ArrayList();
@@ -86,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
              * Mark all the edges for the edgeRings corresponding to the shells
              * of the input polygons.  Note only ONE ring gets marked for each shell.
              */
-            VisitShellInteriors((IGeometry) geomGraph.Geometry, graph);
+            VisitShellInteriors(geomGraph.Geometry, graph);
 
             /*
              * If there are any unvisited shell edges
@@ -98,24 +78,22 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             return !HasUnvisitedShellEdge(edgeRings);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="graph"></param>
         private void SetInteriorEdgesInResult(PlanarGraph graph)
         {
-            foreach (DirectedEdge de in graph.EdgeEnds)               
+            foreach (DirectedEdge de in graph.EdgeEnds)
+            {
                 if (de.Label.GetLocation(0, Positions.Right) == Locations.Interior)
+                {
                     de.InResult = true;
+                }
+            }
         }
-        
+
         /// <summary>
         /// Form <see cref="DirectedEdge" />s in graph into Minimal EdgeRings.
         /// (Minimal Edgerings must be used, because only they are guaranteed to provide
         /// a correct isHole computation).
         /// </summary>
-        /// <param name="dirEdges"></param>
-        /// <returns></returns>
         private IList BuildEdgeRings(IList dirEdges)
         {
             IList edgeRings = new ArrayList();
@@ -128,8 +106,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
                     er.LinkDirectedEdgesForMinimalEdgeRings();
                     IList minEdgeRings = er.BuildMinimalRings();
-                    foreach(object o in minEdgeRings)
+                    foreach (object o in minEdgeRings)
+                    {
                         edgeRings.Add(o);
+                    }
                 }
             }
             return edgeRings;
@@ -140,28 +120,23 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// Only ONE ring gets marked for each shell - if there are others which remain unmarked
         /// this indicates a disconnected interior.
         /// </summary>
-        /// <param name="g"></param>
-        /// <param name="graph"></param>
         private void VisitShellInteriors(IGeometry g, PlanarGraph graph)
         {
-            if (g is IPolygon) 
+            if (g is IPolygon)
             {
                 IPolygon p = (IPolygon) g;
                 VisitInteriorRing(p.Shell, graph);
             }
-            if (g is IMultiPolygon) 
+            if (g is IMultiPolygon)
             {
                 IMultiPolygon mp = (IMultiPolygon) g;
-                foreach (IPolygon p in mp.Geometries) 
+                foreach (IPolygon p in mp.Geometries)
+                {
                     VisitInteriorRing(p.Shell, graph);
+                }
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ring"></param>
-        /// <param name="graph"></param>
         private void VisitInteriorRing(ILineString ring, PlanarGraph graph)
         {
             ICoordinate[] pts = ring.Coordinates;
@@ -175,17 +150,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             DirectedEdge de = (DirectedEdge) graph.FindEdgeEnd(e);
             DirectedEdge intDe = null;
             if (de.Label.GetLocation(0, Positions.Right) == Locations.Interior)
-                intDe = de;            
-            else if (de.Sym.Label.GetLocation(0, Positions.Right) == Locations.Interior)            
-                intDe = de.Sym;            
+            {
+                intDe = de;
+            }
+            else if (de.Sym.Label.GetLocation(0, Positions.Right) == Locations.Interior)
+            {
+                intDe = de.Sym;
+            }
             Assert.IsTrue(intDe != null, "unable to find dirEdge with Interior on RHS");
             VisitLinkedDirectedEdges(intDe);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="start"></param>
         protected void VisitLinkedDirectedEdges(DirectedEdge start)
         {
             DirectedEdge startDe = start;
@@ -195,8 +170,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                 Assert.IsTrue(de != null, "found null Directed Edge");
                 de.Visited = true;
                 de = de.Next;
-            } 
-            while (de != startDe);
+            } while (de != startDe);
         }
 
         /// <summary>
@@ -207,24 +181,29 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// since the interior of holes will also be polygonized into CW rings
         /// by the <c>LinkAllDirectedEdges()</c> step).
         /// </summary>
-        /// <param name="edgeRings"></param>
         /// <returns><c>true</c> if there is an unvisited edge in a non-hole ring.</returns>
-        private bool HasUnvisitedShellEdge(IList edgeRings)
+        private Boolean HasUnvisitedShellEdge(IList edgeRings)
         {
-            for (int i = 0; i < edgeRings.Count; i++)
+            for (Int32 i = 0; i < edgeRings.Count; i++)
             {
                 EdgeRing er = (EdgeRing) edgeRings[i];
-                if (er.IsHole) continue;
+                if (er.IsHole)
+                {
+                    continue;
+                }
                 IList edges = er.Edges;
                 DirectedEdge de = (DirectedEdge) edges[0];
                 // don't check CW rings which are holes
-                if (de.Label.GetLocation(0, Positions.Right) != Locations.Interior) continue;
+                if (de.Label.GetLocation(0, Positions.Right) != Locations.Interior)
+                {
+                    continue;
+                }
 
                 // must have a CW ring which surrounds the INT of the area, so check all
                 // edges have been visited
-                for (int j = 0; j < edges.Count; j++)
+                for (Int32 j = 0; j < edges.Count; j++)
                 {
-                    de = (DirectedEdge)edges[j];
+                    de = (DirectedEdge) edges[j];
                     if (!de.IsVisited)
                     {
                         disconnectedRingcoord = de.Coordinate;

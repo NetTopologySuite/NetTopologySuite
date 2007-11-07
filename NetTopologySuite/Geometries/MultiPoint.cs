@@ -1,9 +1,5 @@
 using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Operation;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
@@ -17,8 +13,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Represents an empty <c>MultiPoint</c>.
         /// </summary>
-        public static new readonly IMultiPoint Empty = new GeometryFactory().CreateMultiPoint(new IPoint[] { });
-        
+        public new static readonly IMultiPoint Empty = new GeometryFactory().CreateMultiPoint(new IPoint[] {});
+
         /// <summary>
         /// Constructs a <c>MultiPoint</c>.
         /// </summary>
@@ -27,8 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// , or <c>null</c> or an empty array to create the empty point.
         /// Elements may be empty <c>Point</c>s, but not <c>null</c>s.
         /// </param>
-        /// <param name="factory"></param>
-        public MultiPoint(IPoint[] points, IGeometryFactory factory) : base(points, factory) { }
+        public MultiPoint(IPoint[] points, IGeometryFactory factory) : base(points, factory) {}
 
         /// <summary>
         /// Constructs a <c>MultiPoint</c>.
@@ -42,84 +37,44 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public MultiPoint(IPoint[] points) : this(points, DefaultFactory) { }  
+        public MultiPoint(IPoint[] points) : this(points, DefaultFactory) {}
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public override Dimensions Dimension 
+        public override Dimensions Dimension
         {
-            get
-            {
-                return Dimensions.Point;
-            }
+            get { return Dimensions.Point; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public override Dimensions BoundaryDimension
         {
-            get
-            {
-                return Dimensions.False;
-            }
+            get { return Dimensions.False; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public override string GeometryType
         {
-            get
-            {
-                return "MultiPoint";
-            }
+            get { return "MultiPoint"; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public override IGeometry Boundary
         {
-            get
-            {
-                return Factory.CreateGeometryCollection(null);
-            }
+            get { return Factory.CreateGeometryCollection(null); }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public override bool IsSimple
+        public override Boolean IsSimple
         {
-            get
-            {
-                return (new IsSimpleOp()).IsSimple(this);
-            }
+            get { return (new IsSimpleOp()).IsSimple(this); }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public override bool IsValid
+        public override Boolean IsValid
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="other"></param>
-        /// <param name="tolerance"></param>
-        /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance) 
+        public override Boolean EqualsExact(IGeometry other, Double tolerance)
         {
-            if (!IsEquivalentClass(other)) 
-                return false;            
+            if (!IsEquivalentClass(other))
+            {
+                return false;
+            }
+
             return base.EqualsExact(other, tolerance);
         }
 
@@ -129,7 +84,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="n">The index of the <c>Coordinate</c> to retrieve, beginning at 0.
         /// </param>
         /// <returns>The <c>n</c>th <c>Coordinate</c>.</returns>
-        protected ICoordinate GetCoordinate(int n) 
+        protected ICoordinate GetCoordinate(Int32 n)
         {
             return geometries[n].Coordinate;
         }

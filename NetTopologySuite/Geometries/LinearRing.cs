@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
@@ -25,30 +22,31 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </param>
         /// <param name="factory"></param>
         public LinearRing(ICoordinateSequence points, IGeometryFactory factory) : base(points, factory)
-        {            
+        {
             ValidateConstruction();
         }
 
         /// <summary>
         /// 
         /// </summary>
-        private void ValidateConstruction() 
+        private void ValidateConstruction()
         {
-	        if (!IsEmpty && !base.IsClosed) 
-                throw new ArgumentException("points must form a closed linestring");            
-            if (CoordinateSequence.Count >= 1 && CoordinateSequence.Count <= 3) 
-                throw new ArgumentException("Number of points must be 0 or >3");            
+            if (!IsEmpty && !base.IsClosed)
+            {
+                throw new ArgumentException("points must form a closed linestring");
+            }
+            if (CoordinateSequence.Count >= 1 && CoordinateSequence.Count <= 3)
+            {
+                throw new ArgumentException("Number of points must be 0 or >3");
+            }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public override bool IsSimple
+        public override Boolean IsSimple
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
 
         /// <summary>
@@ -56,21 +54,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public override string GeometryType
         {
-            get
-            {
-                return "LinearRing";
-            }
+            get { return "LinearRing"; }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public override bool IsClosed
+        public override Boolean IsClosed
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
@@ -83,9 +75,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public LinearRing(ICoordinate[] points) : 
-            this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
-        
+        public LinearRing(ICoordinate[] points) :
+            this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) {}
+
         /* END ADDED BY MPAUL42: monoGIS team */
     }
 }

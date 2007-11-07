@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
@@ -22,7 +19,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// Constructs an EdgeString with the given factory used to convert this EdgeString
         /// to a LineString.
         /// </summary>
-        /// <param name="factory"></param>
         public EdgeString(IGeometryFactory factory)
         {
             this.factory = factory;
@@ -31,36 +27,40 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// <summary>
         /// Adds a directed edge which is known to form part of this line.
         /// </summary>
-        /// <param name="directedEdge"></param>
         public void Add(LineMergeDirectedEdge directedEdge)
         {
             directedEdges.Add(directedEdge);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         private ICoordinate[] Coordinates
         {
             get
             {
                 if (coordinates == null)
                 {
-                    int forwardDirectedEdges = 0;
-                    int reverseDirectedEdges = 0;
+                    Int32 forwardDirectedEdges = 0;
+                    Int32 reverseDirectedEdges = 0;
                     CoordinateList coordinateList = new CoordinateList();
                     IEnumerator i = directedEdges.GetEnumerator();
-                    while (i.MoveNext()) 
+                    while (i.MoveNext())
                     {
                         LineMergeDirectedEdge directedEdge = (LineMergeDirectedEdge) i.Current;
-                        if (directedEdge.EdgeDirection)                        
-                             forwardDirectedEdges++;                        
-                        else reverseDirectedEdges++;
-                         coordinateList.Add(((LineMergeEdge) directedEdge.Edge).Line.Coordinates, false, directedEdge.EdgeDirection);
+                        if (directedEdge.EdgeDirection)
+                        {
+                            forwardDirectedEdges++;
+                        }
+                        else
+                        {
+                            reverseDirectedEdges++;
+                        }
+                        coordinateList.Add(((LineMergeEdge) directedEdge.Edge).Line.Coordinates, false,
+                                           directedEdge.EdgeDirection);
                     }
                     coordinates = coordinateList.ToCoordinateArray();
                     if (reverseDirectedEdges > forwardDirectedEdges)
-                        CoordinateArrays.Reverse(coordinates);                    
+                    {
+                        CoordinateArrays.Reverse(coordinates);
+                    }
                 }
                 return coordinates;
             }

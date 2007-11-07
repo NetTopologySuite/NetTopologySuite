@@ -1,10 +1,5 @@
 using System;
 using System.Collections;
-using System.Text;
-
-using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
 {
@@ -19,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         protected IList outEdges = new ArrayList();
 
-        private bool sorted = false;
+        private Boolean sorted = false;
 
         /// <summary>
         /// Constructs a DirectedEdgeStar with no edges.
@@ -29,9 +24,8 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Adds a new member to this DirectedEdgeStar.
         /// </summary>
-        /// <param name="de"></param>
         public void Add(DirectedEdge de)
-        {            
+        {
             outEdges.Add(de);
             sorted = false;
         }
@@ -39,30 +33,28 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Drops a member of this DirectedEdgeStar.
         /// </summary>
-        /// <param name="de"></param>
         public void Remove(DirectedEdge de)
         {
             outEdges.Remove(de);
         }
 
         /// <summary>
-        /// Returns an Iterator over the DirectedEdges, in ascending order by angle with the positive x-axis.
+        /// Returns an Iterator over the DirectedEdges, in ascending order by 
+        /// angle with the positive x-axis.
         /// </summary>
         public IEnumerator GetEnumerator()
-        {            
+        {
             SortEdges();
             return outEdges.GetEnumerator();
         }
-        
+
         /// <summary>
-        /// Returns the number of edges around the Node associated with this DirectedEdgeStar.
+        /// Returns the number of edges around the Node associated with this 
+        /// DirectedEdgeStar.
         /// </summary>
-        public int Degree
+        public Int32 Degree
         {
-            get
-            {
-                return outEdges.Count;
-            }
+            get { return outEdges.Count; }
         }
 
         /// <summary>
@@ -73,15 +65,18 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             get
             {
                 IEnumerator it = GetEnumerator();
-                if (!it.MoveNext()) 
+                if (!it.MoveNext())
+                {
                     return null;
-                DirectedEdge e = (DirectedEdge) it.Current;
+                }
+                DirectedEdge e = (DirectedEdge)it.Current;
                 return e.Coordinate;
             }
         }
 
         /// <summary>
-        /// Returns the DirectedEdges, in ascending order by angle with the positive x-axis.
+        /// Returns the DirectedEdges, in ascending order by angle with the positive 
+        /// x-axis.
         /// </summary>
         public IList Edges
         {
@@ -92,33 +87,30 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         private void SortEdges()
         {
             if (!sorted)
             {
-                ArrayList list  = (ArrayList) outEdges;
+                ArrayList list = (ArrayList)outEdges;
                 list.Sort();
-                sorted = true;                
+                sorted = true;
             }
         }
 
         /// <summary>
-        /// Returns the zero-based index of the given Edge, after sorting in ascending order
-        /// by angle with the positive x-axis.
+        /// Returns the zero-based index of the given Edge, after sorting in 
+        /// ascending order by angle with the positive x-axis.
         /// </summary>
-        /// <param name="edge"></param>
-        /// <returns></returns>
-        public int GetIndex(Edge edge)
+        public Int32 GetIndex(Edge edge)
         {
             SortEdges();
-            for (int i = 0; i < outEdges.Count; i++)
+            for (Int32 i = 0; i < outEdges.Count; i++)
             {
                 DirectedEdge de = (DirectedEdge)outEdges[i];
                 if (de.Edge == edge)
+                {
                     return i;
+                }
             }
             return -1;
         }
@@ -127,16 +119,16 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Returns the zero-based index of the given DirectedEdge, after sorting in ascending order
         /// by angle with the positive x-axis.
         /// </summary>
-        /// <param name="dirEdge"></param>
-        /// <returns></returns>
-        public int GetIndex(DirectedEdge dirEdge)
+        public Int32 GetIndex(DirectedEdge dirEdge)
         {
             SortEdges();
-            for (int i = 0; i < outEdges.Count; i++)
+            for (Int32 i = 0; i < outEdges.Count; i++)
             {
                 DirectedEdge de = (DirectedEdge)outEdges[i];
                 if (de == dirEdge)
+                {
                     return i;
+                }
             }
             return -1;
         }
@@ -145,14 +137,15 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Returns the remainder when i is divided by the number of edges in this
         /// DirectedEdgeStar. 
         /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public int GetIndex(int i)
+        public Int32 GetIndex(Int32 i)
         {
-            int modi = i % outEdges.Count;
+            Int32 modi = i % outEdges.Count;
+
             //I don't think modi can be 0 (assuming i is positive) [Jon Aquino 10/28/2003] 
-            if (modi < 0) 
+            if (modi < 0)
+            {
                 modi += outEdges.Count;
+            }
             return modi;
         }
 
@@ -160,11 +153,9 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Returns the DirectedEdge on the left-hand side of the given DirectedEdge (which
         /// must be a member of this DirectedEdgeStar). 
         /// </summary>
-        /// <param name="dirEdge"></param>
-        /// <returns></returns>
         public DirectedEdge GetNextEdge(DirectedEdge dirEdge)
         {
-            int i = GetIndex(dirEdge);
+            Int32 i = GetIndex(dirEdge);
             return (DirectedEdge)outEdges[GetIndex(i + 1)];
         }
     }

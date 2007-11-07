@@ -1,9 +1,4 @@
 using System;
-using System.Collections;
-using System.Text;
-
-using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
@@ -18,31 +13,29 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public class SegmentPointComparator
     {
-
         /// <summary>
         ///  Compares two <see cref="Coordinate" />s for their relative position along a segment
         /// lying in the specified <see cref="Octant" />.
         /// </summary>
-        /// <param name="octant"></param>
-        /// <param name="p0"></param>
-        /// <param name="p1"></param>
         /// <returns>
         /// -1 if node0 occurs first, or
         ///  0 if the two nodes are equal, or
         ///  1 if node1 occurs first.
         /// </returns>
-        public static int Compare(Octants octant, ICoordinate p0, ICoordinate p1)
+        public static Int32 Compare(Octants octant, ICoordinate p0, ICoordinate p1)
         {
             // nodes can only be equal if their coordinates are equal
-            if (p0.Equals2D(p1)) 
+            if (p0.Equals2D(p1))
+            {
                 return 0;
+            }
 
-            int xSign = RelativeSign(p0.X, p1.X);
-            int ySign = RelativeSign(p0.Y, p1.Y);
+            Int32 xSign = RelativeSign(p0.X, p1.X);
+            Int32 ySign = RelativeSign(p0.Y, p1.Y);
 
             switch (octant)
             {
-                case Octants.Zero: 
+                case Octants.Zero:
                     return CompareValue(xSign, ySign);
                 case Octants.One:
                     return CompareValue(ySign, xSign);
@@ -64,39 +57,38 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             return 0;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="x0"></param>
-        /// <param name="x1"></param>
-        /// <returns></returns>
-        public static int RelativeSign(double x0, double x1)
+        public static Int32 RelativeSign(Double x0, Double x1)
         {
-            if (x0 < x1) 
+            if (x0 < x1)
+            {
                 return -1;
-            if (x0 > x1) 
+            }
+            if (x0 > x1)
+            {
                 return 1;
+            }
             return 0;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="compareSign0"></param>
-        /// <param name="compareSign1"></param>
-        /// <returns></returns>
-        private static int CompareValue(int compareSign0, int compareSign1)
+        private static Int32 CompareValue(Int32 compareSign0, Int32 compareSign1)
         {
             if (compareSign0 < 0)
+            {
                 return -1;
-            if (compareSign0 > 0) 
+            }
+            if (compareSign0 > 0)
+            {
                 return 1;
+            }
             if (compareSign1 < 0)
+            {
                 return -1;
-            if (compareSign1 > 0) 
+            }
+            if (compareSign1 > 0)
+            {
                 return 1;
+            }
             return 0;
-
         }
     }
 }

@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Text;
 using GisSharpBlog.NetTopologySuite.Index.Quadtree;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Bintree
@@ -12,77 +10,50 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
     /// </summary>
     public class Key
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="interval"></param>
-        /// <returns></returns>
-        public static int ComputeLevel(Interval interval)
+        public static Int32 ComputeLevel(Interval interval)
         {
-            double dx = interval.Width;            
-            int level = DoubleBits.GetExponent(dx) + 1;
+            Double dx = interval.Width;
+            Int32 level = DoubleBits.GetExponent(dx) + 1;
             return level;
         }
 
         // the fields which make up the key
-        private double pt = 0.0;
-        private int level = 0;
+        private Double pt = 0.0;
+        private Int32 level = 0;
 
         // auxiliary data which is derived from the key for use in computation
         private Interval interval;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="interval"></param>
         public Key(Interval interval)
         {
             ComputeKey(interval);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public  double Point
+        public Double Point
         {
-            get
-            {
-                return pt;
-            }
+            get { return pt; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public  int Level
+        public Int32 Level
         {
-            get
-            {
-                return level;
-            }
+            get { return level; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public  Interval Interval
+        public Interval Interval
         {
-            get
-            {
-                return interval;
-            }
+            get { return interval; }
         }
 
         /// <summary>
         /// Return a square envelope containing the argument envelope,
         /// whose extent is a power of two and which is based at a power of 2.
         /// </summary>
-        /// <param name="itemInterval"></param>
-        public  void ComputeKey(Interval itemInterval)
+        public void ComputeKey(Interval itemInterval)
         {
             level = ComputeLevel(itemInterval);
             interval = new Interval();
             ComputeInterval(level, itemInterval);
+
             // MD - would be nice to have a non-iterative form of this algorithm
             while (!interval.Contains(itemInterval))
             {
@@ -91,15 +62,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="level"></param>
-        /// <param name="itemInterval"></param>
-        private void ComputeInterval(int level, Interval itemInterval)
+        private void ComputeInterval(Int32 level, Interval itemInterval)
         {
-            double size = DoubleBits.PowerOf2(level);            
-            pt = Math.Floor(itemInterval.Min / size) * size;
+            Double size = DoubleBits.PowerOf2(level);
+            pt = Math.Floor(itemInterval.Min/size)*size;
             interval.Init(pt, pt + size);
         }
     }

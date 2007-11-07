@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-
-using GeoAPI.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
-{       
+{
     /// <summary>
     /// A list of Coordinates, which may
     /// be set to prevent repeated coordinates from occuring in the list.
@@ -43,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordList">Collection of coordinates to load into the list.</param>
         /// <param name="allowRepeated">If <c>false</c>, repeated points are removed.</param>
-        public CoordinateList(List<ICoordinate> coordList, bool allowRepeated)
+        public CoordinateList(List<ICoordinate> coordList, Boolean allowRepeated)
         {
             AddAll(coordList, allowRepeated);
         }
@@ -54,20 +51,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coord">Array of coordinates to load into the list.</param>
         /// <param name="allowRepeated">If <c>false</c>, repeated points are removed.</param>
-        public CoordinateList(ICoordinate[] coord, bool allowRepeated)
+        public CoordinateList(ICoordinate[] coord, Boolean allowRepeated)
         {
             Add(coord, allowRepeated);
-        }        
+        }
 
         /// <summary>
         /// Returns the coordinate at specified index.
         /// </summary>
         /// <param name="i">Coordinate index.</param>
         /// <return>Coordinate specified.</return>
-        public ICoordinate GetCoordinate(int i)
+        public ICoordinate GetCoordinate(Int32 i)
         {
             return base[i];
-        }        
+        }
 
         /// <summary>
         /// Add an array of coordinates.
@@ -76,14 +73,23 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed.</param>
         /// <param name="direction">If false, the array is added in reverse order.</param>
         /// <returns>Return true.</returns>
-        public bool Add(ICoordinate[] coord, bool allowRepeated, bool direction)
+        public Boolean Add(ICoordinate[] coord, Boolean allowRepeated, Boolean direction)
         {
             if (direction)
-                for (int i = 0; i < coord.Length; i++)
+            {
+                for (Int32 i = 0; i < coord.Length; i++)
+                {
                     Add(coord[i], allowRepeated);
+                }
+            }
             else
-                for (int i = coord.Length - 1; i >= 0; i--)
+            {
+                for (Int32 i = coord.Length - 1; i >= 0; i--)
+                {
                     Add(coord[i], allowRepeated);
+                }
+            }
+
             return true;
         }
 
@@ -93,7 +99,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coord">Coordinates to be inserted.</param>
         /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed.</param>
         /// <returns>Return true.</returns>
-        public bool Add(ICoordinate[] coord, bool allowRepeated)
+        public Boolean Add(ICoordinate[] coord, Boolean allowRepeated)
         {
             return Add(coord, allowRepeated, true);
         }
@@ -104,7 +110,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="obj">Coordinate to be inserted, as object.</param>
         /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed.</param>
         /// <returns>Return true.</returns>
-        public bool Add(object obj, bool allowRepeated)
+        public Boolean Add(object obj, Boolean allowRepeated)
         {
             return Add((ICoordinate) obj, allowRepeated);
         }
@@ -115,19 +121,22 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coord">Coordinate to be inserted.</param>
         /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed.</param>
         /// <returns>Return true if all ok.</returns>
-        public bool Add(ICoordinate coord, bool allowRepeated)
+        public Boolean Add(ICoordinate coord, Boolean allowRepeated)
         {
             // don't add duplicate coordinates
             if (!allowRepeated)
             {
-                if (this.Count >= 1)
+                if (Count >= 1)
                 {
-                    ICoordinate last = this[this.Count - 1];
-                    if (last.Equals2D(coord)) 
+                    ICoordinate last = this[Count - 1];
+                    if (last.Equals2D(coord))
+                    {
                         return false;
+                    }
                 }
             }
-            this.Add(coord);
+
+            Add(coord);
             return true;
         }
 
@@ -137,14 +146,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coll">Coordinates collection to be inserted.</param>
         /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed.</param>
         /// <returns>Return true if at least one element has added (IList not empty).</returns>
-        public bool AddAll(List<ICoordinate> coll, bool allowRepeated)
+        public Boolean AddAll(List<ICoordinate> coll, Boolean allowRepeated)
         {
-            bool isChanged = false;
+            Boolean isChanged = false;
+
             foreach (ICoordinate c in coll)
             {
                 Add(c, allowRepeated);
                 isChanged = true;
             }
+
             return isChanged;
         }
 
@@ -153,8 +164,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public void CloseRing()
         {
-            if (this.Count > 0)
+            if (Count > 0)
+            {
                 Add(this[0], false);
+            }
         }
 
         /// <summary>
@@ -163,7 +176,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>Coordinater as <c>Coordinate[]</c> array.</returns>
         public ICoordinate[] ToCoordinateArray()
         {
-            return this.ToArray();
+            return ToArray();
         }
 
         /// <summary>
@@ -171,11 +184,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <returns>The copied object.</returns>
         public object Clone()
-        {         
+        {
             CoordinateList copy = new CoordinateList();
+
             foreach (ICoordinate c in this)
+            {
                 copy.Add((ICoordinate) c.Clone());
+            }
+
             return copy;
-        }        
-    } 
-} 
+        }
+    }
+}

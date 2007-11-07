@@ -1,12 +1,9 @@
 using System;
 using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
+using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Noding;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
@@ -16,20 +13,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// Raw curves need to be noded together and polygonized to form the final buffer area.
     /// </summary>
     public class OffsetCurveSetBuilder
-    {        
+    {
         private IGeometry inputGeom;
-        private double distance;
+        private Double distance;
         private OffsetCurveBuilder curveBuilder;
 
         private IList curveList = new ArrayList();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="inputGeom"></param>
-        /// <param name="distance"></param>
-        /// <param name="curveBuilder"></param>
-        public OffsetCurveSetBuilder(IGeometry inputGeom, double distance, OffsetCurveBuilder curveBuilder)
+        public OffsetCurveSetBuilder(IGeometry inputGeom, Double distance, OffsetCurveBuilder curveBuilder)
         {
             this.inputGeom = inputGeom;
             this.distance = distance;
@@ -43,20 +34,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <returns>A Collection of SegmentStrings representing the raw buffer curves.</returns>
         public IList GetCurves()
-        {            
+        {
             Add(inputGeom);
-            return curveList;         
+            return curveList;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="lineList"></param>
-        /// <param name="leftLoc"></param>
-        /// <param name="rightLoc"></param>
         private void AddCurves(IList lineList, Locations leftLoc, Locations rightLoc)
         {
-            for (IEnumerator i = lineList.GetEnumerator(); i.MoveNext(); )
+            for (IEnumerator i = lineList.GetEnumerator(); i.MoveNext();)
             {
                 ICoordinate[] coords = (ICoordinate[]) i.Current;
                 AddCurve(coords, leftLoc, rightLoc);
@@ -75,44 +60,59 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private void AddCurve(ICoordinate[] coord, Locations leftLoc, Locations rightLoc)
         {
             // don't add null curves!
-            if (coord.Length < 2) return;
+            if (coord.Length < 2)
+            {
+                return;
+            }
             // add the edge for a coordinate list which is a raw offset curve
             SegmentString e = new SegmentString(coord, new Label(0, Locations.Boundary, leftLoc, rightLoc));
             curveList.Add(e);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="g"></param>
         private void Add(IGeometry g)
         {
-            if (g.IsEmpty) return;
-            if (g is IPolygon)                 
+            if (g.IsEmpty)
+            {
+                return;
+            }
+            if (g is IPolygon)
+            {
                 AddPolygon((IPolygon) g);
-            // LineString also handles LinearRings
-            else if (g is ILineString)        
+            }
+                // LineString also handles LinearRings
+            else if (g is ILineString)
+            {
                 AddLineString((ILineString) g);
-            else if (g is IPoint) 
+            }
+            else if (g is IPoint)
+            {
                 AddPoint((IPoint) g);
-            else if (g is IMultiPoint) 
+            }
+            else if (g is IMultiPoint)
+            {
                 AddCollection((IMultiPoint) g);
-            else if (g is IMultiLineString) 
+            }
+            else if (g is IMultiLineString)
+            {
                 AddCollection((IMultiLineString) g);
+            }
             else if (g is IMultiPolygon)
+            {
                 AddCollection((IMultiPolygon) g);
-            else if (g is IGeometryCollection) 
+            }
+            else if (g is IGeometryCollection)
+            {
                 AddCollection((IGeometryCollection) g);
-            else  throw new NotSupportedException(g.GetType().FullName);
+            }
+            else
+            {
+                throw new NotSupportedException(g.GetType().FullName);
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="gc"></param>
         private void AddCollection(IGeometryCollection gc)
         {
-            for (int i = 0; i < gc.NumGeometries; i++)
+            for (Int32 i = 0; i < gc.NumGeometries; i++)
             {
                 IGeometry g = gc.GetGeometryN(i);
                 Add(g);
@@ -122,35 +122,32 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <summary>
         /// Add a Point to the graph.
         /// </summary>
-        /// <param name="p"></param>
         private void AddPoint(IPoint p)
         {
-            if (distance <= 0.0) 
+            if (distance <= 0.0)
+            {
                 return;
+            }
+
             ICoordinate[] coord = p.Coordinates;
             IList lineList = curveBuilder.GetLineCurve(coord, distance);
             AddCurves(lineList, Locations.Exterior, Locations.Interior);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="line"></param>
         private void AddLineString(ILineString line)
         {
-            if (distance <= 0.0) return;
+            if (distance <= 0.0)
+            {
+                return;
+            }
             ICoordinate[] coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
             IList lineList = curveBuilder.GetLineCurve(coord, distance);
             AddCurves(lineList, Locations.Exterior, Locations.Interior);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="p"></param>
         private void AddPolygon(IPolygon p)
         {
-            double offsetDistance = distance;
+            Double offsetDistance = distance;
             Positions offsetSide = Positions.Left;
             if (distance < 0.0)
             {
@@ -163,12 +160,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             // optimization - don't bother computing buffer
             // if the polygon would be completely eroded
             if (distance < 0.0 && IsErodedCompletely(shellCoord, distance))
+            {
                 return;
+            }
 
-            AddPolygonRing(shellCoord, offsetDistance, offsetSide, 
+            AddPolygonRing(shellCoord, offsetDistance, offsetSide,
                            Locations.Exterior, Locations.Interior);
 
-            for (int i = 0; i < p.NumInteriorRings; i++)
+            for (Int32 i = 0; i < p.NumInteriorRings; i++)
             {
                 ILinearRing hole = (ILinearRing) p.GetInteriorRingN(i);
                 ICoordinate[] holeCoord = CoordinateArrays.RemoveRepeatedPoints(hole.Coordinates);
@@ -176,7 +175,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 // optimization - don't bother computing buffer for this hole
                 // if the hole would be completely covered
                 if (distance > 0.0 && IsErodedCompletely(holeCoord, -distance))
+                {
                     continue;
+                }
 
                 // Holes are topologically labelled opposite to the shell, since
                 // the interior of the polygon lies on their opposite side
@@ -198,8 +199,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="side">The side of the ring on which to construct the buffer line.</param>
         /// <param name="cwLeftLoc">The location on the L side of the ring (if it is CW).</param>
         /// <param name="cwRightLoc">The location on the R side of the ring (if it is CW).</param>
-        private void AddPolygonRing(ICoordinate[] coord, double offsetDistance, 
-            Positions side, Locations cwLeftLoc, Locations cwRightLoc)
+        private void AddPolygonRing(ICoordinate[] coord, Double offsetDistance,
+                                    Positions side, Locations cwLeftLoc, Locations cwRightLoc)
         {
             Locations leftLoc = cwLeftLoc;
             Locations rightLoc = cwRightLoc;
@@ -218,20 +219,21 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// It may be degenerate (i.e. contain only 1, 2, or 3 points).
         /// In this case it has no area, and hence has a minimum diameter of 0.
         /// </summary>
-        /// <param name="ringCoord"></param>
-        /// <param name="bufferDistance"></param>
-        /// <returns></returns>
-        private bool IsErodedCompletely(ICoordinate[] ringCoord, double bufferDistance)
+        private Boolean IsErodedCompletely(ICoordinate[] ringCoord, Double bufferDistance)
         {
-            double minDiam = 0.0;
+            Double minDiam = 0.0;
             // degenerate ring has no area
             if (ringCoord.Length < 4)
+            {
                 return bufferDistance < 0;
+            }
 
             // important test to eliminate inverted triangle bug
             // also optimizes erosion test for triangles
             if (ringCoord.Length == 4)
+            {
                 return IsTriangleErodedCompletely(ringCoord, bufferDistance);
+            }
 
             /*
              * The following is a heuristic test to determine whether an
@@ -247,7 +249,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             ILinearRing ring = inputGeom.Factory.CreateLinearRing(ringCoord);
             MinimumDiameter md = new MinimumDiameter(ring);
             minDiam = md.Length;
-            return minDiam < 2 * Math.Abs(bufferDistance);
+            return minDiam < 2*Math.Abs(bufferDistance);
         }
 
         /// <summary>
@@ -262,14 +264,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// In this case the triangle buffer curve "inverts" with incorrect topology,
         /// producing an incorrect hole in the buffer.       
         /// </summary>
-        /// <param name="triangleCoord"></param>
-        /// <param name="bufferDistance"></param>
-        /// <returns></returns>
-        private bool IsTriangleErodedCompletely(ICoordinate[] triangleCoord, double bufferDistance)
+        private Boolean IsTriangleErodedCompletely(ICoordinate[] triangleCoord, Double bufferDistance)
         {
             Triangle tri = new Triangle(triangleCoord[0], triangleCoord[1], triangleCoord[2]);
             ICoordinate inCentre = tri.InCentre;
-            double distToCentre = CGAlgorithms.DistancePointLine(inCentre, tri.P0, tri.P1);
+            Double distToCentre = CGAlgorithms.DistancePointLine(inCentre, tri.P0, tri.P1);
             return distToCentre < Math.Abs(bufferDistance);
         }
     }

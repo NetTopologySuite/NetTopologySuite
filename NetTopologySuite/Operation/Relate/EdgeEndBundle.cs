@@ -1,11 +1,7 @@
 using System;
 using System.Collections;
-using System.Text;
 using System.IO;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Relate
@@ -19,39 +15,21 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     {
         private IList edgeEnds = new ArrayList();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="e"></param>
         public EdgeEndBundle(EdgeEnd e) : base(e.Edge, e.Coordinate, e.DirectedCoordinate, new Label(e.Label))
         {
             Insert(e);
-        }       
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator GetEnumerator() 
-        { 
-            return edgeEnds.GetEnumerator(); 
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        public IEnumerator GetEnumerator()
+        {
+            return edgeEnds.GetEnumerator();
+        }
+
         public IList EdgeEnds
         {
-            get
-            {
-                return edgeEnds; 
-            }
+            get { return edgeEnds; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="e"></param>
         public void Insert(EdgeEnd e)
         {
             // Assert: start point is the same
@@ -69,25 +47,33 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         {
             // create the label.  If any of the edges belong to areas,
             // the label must be an area label
-            bool isArea = false;
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            Boolean isArea = false;
+            for (IEnumerator it = GetEnumerator(); it.MoveNext();)
             {
                 EdgeEnd e = (EdgeEnd) it.Current;
                 if (e.Label.IsArea())
+                {
                     isArea = true;
+                }
             }
             if (isArea)
-                 label = new Label(Locations.Null, Locations.Null, Locations.Null);
-            else label = new Label(Locations.Null);
+            {
+                label = new Label(Locations.Null, Locations.Null, Locations.Null);
+            }
+            else
+            {
+                label = new Label(Locations.Null);
+            }
 
             // compute the On label, and the side labels if present
-            for (int i = 0; i < 2; i++)
+            for (Int32 i = 0; i < 2; i++)
             {
                 ComputeLabelOn(i);
                 if (isArea)
+                {
                     ComputeLabelSides(i);
+                }
             }
-
         }
 
         /// <summary>
@@ -107,37 +93,43 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         ///  if there are any Int edges, the attribute is Int
         ///  otherwise, the attribute is Null.
         /// </summary>
-        /// <param name="geomIndex"></param>
-        private void ComputeLabelOn(int geomIndex)
+        private void ComputeLabelOn(Int32 geomIndex)
         {
             // compute the On location value
-            int boundaryCount = 0;
-            bool foundInterior = false;
+            Int32 boundaryCount = 0;
+            Boolean foundInterior = false;
             Locations loc = Locations.Null;
 
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            for (IEnumerator it = GetEnumerator(); it.MoveNext();)
             {
                 EdgeEnd e = (EdgeEnd) it.Current;
                 loc = e.Label.GetLocation(geomIndex);
-                if (loc == Locations.Boundary) 
+                if (loc == Locations.Boundary)
+                {
                     boundaryCount++;
-                if (loc == Locations.Interior) 
+                }
+                if (loc == Locations.Interior)
+                {
                     foundInterior = true;
+                }
             }
 
             loc = Locations.Null;
-            if (foundInterior) 
+            if (foundInterior)
+            {
                 loc = Locations.Interior;
-            if (boundaryCount > 0) 
-                loc = GeometryGraph.DetermineBoundary(boundaryCount);            
+            }
+            if (boundaryCount > 0)
+            {
+                loc = GeometryGraph.DetermineBoundary(boundaryCount);
+            }
             label.SetLocation(geomIndex, loc);
         }
 
         /// <summary>
         /// Compute the labelling for each side
         /// </summary>
-        /// <param name="geomIndex"></param>
-        private void ComputeLabelSides(int geomIndex)
+        private void ComputeLabelSides(Int32 geomIndex)
         {
             ComputeLabelSide(geomIndex, Positions.Left);
             ComputeLabelSide(geomIndex, Positions.Right);
@@ -156,14 +148,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// along an edge.  This is the reason for Interior-primacy rule above - it
         /// results in the summary label having the Geometry interior on both sides.
         /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="side"></param>
-        private void ComputeLabelSide(int geomIndex, Positions side)
+        private void ComputeLabelSide(Int32 geomIndex, Positions side)
         {
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            for (IEnumerator it = GetEnumerator(); it.MoveNext();)
             {
                 EdgeEnd e = (EdgeEnd) it.Current;
-                if (e.Label.IsArea()) 
+                if (e.Label.IsArea())
                 {
                     Locations loc = e.Label.GetLocation(geomIndex, side);
                     if (loc == Locations.Interior)
@@ -172,7 +162,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                         return;
                     }
                     else if (loc == Locations.Exterior)
+                    {
                         label.SetLocation(geomIndex, side, Locations.Exterior);
+                    }
                 }
             }
         }
@@ -180,20 +172,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// <summary>
         /// Update the IM with the contribution for the computed label for the EdgeStubs.
         /// </summary>
-        /// <param name="im"></param>
         public void UpdateIM(IntersectionMatrix im)
         {
             Edge.UpdateIM(label, im);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="outstream"></param>
         public override void Write(StreamWriter outstream)
         {
             outstream.WriteLine("EdgeEndBundle--> Label: " + label);
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
+            for (IEnumerator it = GetEnumerator(); it.MoveNext();)
             {
                 EdgeEnd ee = (EdgeEnd) it.Current;
                 ee.Write(outstream);

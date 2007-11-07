@@ -1,9 +1,5 @@
 using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -20,15 +16,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class CentroidArea
     {
-        private ICoordinate basePt = null;                       // the point all triangles are based at
-        private ICoordinate triangleCent3 = new Coordinate();    // temporary variable to hold centroid of triangle
-        private double areasum2 = 0;                            // Partial area sum
-        private ICoordinate cg3 = new Coordinate();              // partial centroid sum
+        private ICoordinate basePt = null; // the point all triangles are based at
+        private ICoordinate triangleCent3 = new Coordinate(); // temporary variable to hold centroid of triangle
+        private Double areasum2 = 0; // Partial area sum
+        private ICoordinate cg3 = new Coordinate(); // partial centroid sum
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public CentroidArea() { }
+        public CentroidArea() {}
 
         /// <summary> 
         /// Adds the area defined by a Geometry to the centroid total.
@@ -37,17 +30,20 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="geom">The point to add.</param>
         public void Add(IGeometry geom)
         {
-            if (geom is IPolygon) 
+            if (geom is IPolygon)
             {
                 IPolygon poly = (IPolygon) geom;
                 BasePoint = poly.ExteriorRing.GetCoordinateN(0);
                 Add(poly);
             }
-            else if (geom is IGeometryCollection) 
+            else if (geom is IGeometryCollection)
             {
                 IGeometryCollection gc = (IGeometryCollection) geom;
+                
                 foreach (IGeometry geometry in gc.Geometries)
+                {
                     Add(geometry);
+                }
             }
         }
 
@@ -63,84 +59,67 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             AddShell(ring);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public ICoordinate Centroid
         {
             get
             {
                 ICoordinate cent = new Coordinate();
-                cent.X = cg3.X / 3 / areasum2;
-                cent.Y = cg3.Y / 3 / areasum2;
+                cent.X = cg3.X/3/areasum2;
+                cent.Y = cg3.Y/3/areasum2;
                 return cent;
             }
         }
-        
-        /// <summary>
-        /// 
-        /// </summary>
+
         private ICoordinate BasePoint
         {
-            get
-            {
-                return this.basePt;
-            }
+            get { return basePt; }
             set
             {
-                if (this.basePt == null)
-                    this.basePt = value;
+                if (basePt == null)
+                {
+                    basePt = value;
+                }
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="poly"></param>
         private void Add(IPolygon poly)
         {
             AddShell(poly.ExteriorRing.Coordinates);
+          
             foreach (ILineString ls in poly.InteriorRings)
+            {
                 AddHole(ls.Coordinates);
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pts"></param>
         private void AddShell(ICoordinate[] pts)
         {
-            bool isPositiveArea = !CGAlgorithms.IsCCW(pts);
-            for (int i = 0; i < pts.Length - 1; i++)
+            Boolean isPositiveArea = !CGAlgorithms.IsCCW(pts);
+          
+            for (Int32 i = 0; i < pts.Length - 1; i++)
+            {
                 AddTriangle(basePt, pts[i], pts[i + 1], isPositiveArea);
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pts"></param>
         private void AddHole(ICoordinate[] pts)
         {
-            bool isPositiveArea = CGAlgorithms.IsCCW(pts);
-            for (int i = 0; i < pts.Length - 1; i++)
+            Boolean isPositiveArea = CGAlgorithms.IsCCW(pts);
+            
+            for (Int32 i = 0; i < pts.Length - 1; i++)
+            {
                 AddTriangle(basePt, pts[i], pts[i + 1], isPositiveArea);
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="p0"></param>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        /// <param name="isPositiveArea"></param>
-        private void AddTriangle(ICoordinate p0, ICoordinate p1, ICoordinate p2, bool isPositiveArea)
+        private void AddTriangle(ICoordinate p0, ICoordinate p1, ICoordinate p2, Boolean isPositiveArea)
         {
-            double sign = (isPositiveArea) ? 1.0 : -1.0;
+            Double sign = (isPositiveArea) ? 1.0 : -1.0;
             Centroid3(p0, p1, p2, ref triangleCent3);
-            double area2 = Area2(p0, p1, p2);
-            cg3.X += sign * area2 * triangleCent3.X;
-            cg3.Y += sign * area2 * triangleCent3.Y;
-            areasum2 += sign * area2;
+            Double area2 = Area2(p0, p1, p2);
+            cg3.X += sign*area2*triangleCent3.X;
+            cg3.Y += sign*area2*triangleCent3.Y;
+            areasum2 += sign*area2;
         }
 
         /// <summary> 
@@ -159,9 +138,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Returns twice the signed area of the triangle p1-p2-p3,
         /// positive if a,b,c are oriented ccw, and negative if cw.
         /// </summary>
-        private static double Area2(ICoordinate p1, ICoordinate p2, ICoordinate p3)
+        private static Double Area2(ICoordinate p1, ICoordinate p2, ICoordinate p3)
         {
-            return (p2.X - p1.X) * (p3.Y - p1.Y) - (p3.X - p1.X) * (p2.Y - p1.Y);
+            return (p2.X - p1.X)*(p3.Y - p1.Y) - (p3.X - p1.X)*(p2.Y - p1.Y);
         }
     }
 }

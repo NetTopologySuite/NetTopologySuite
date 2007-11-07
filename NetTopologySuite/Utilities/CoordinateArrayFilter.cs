@@ -8,13 +8,13 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
     public class CoordinateArrayFilter : ICoordinateFilter 
     {
         ICoordinate[] pts = null;
-        int n = 0;
+        Int32 n = 0;
 
         /// <summary>
         /// Constructs a <c>CoordinateArrayFilter</c>.
         /// </summary>
         /// <param name="size">The number of points that the <c>CoordinateArrayFilter</c> will collect.</param>
-        public CoordinateArrayFilter(int size) 
+        public CoordinateArrayFilter(Int32 size) 
         {
             pts = new ICoordinate[size];
         }

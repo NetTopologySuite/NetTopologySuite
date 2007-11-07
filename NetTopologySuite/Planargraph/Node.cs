@@ -1,12 +1,6 @@
 using System;
 using System.Collections;
-using System.Text;
-
 using Iesi_NTS.Collections;
-
-using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
 {
@@ -22,9 +16,6 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Returns all Edges that connect the two nodes (which are assumed to be different).
         /// </summary>
-        /// <param name="node0"></param>
-        /// <param name="node1"></param>
-        /// <returns></returns>
         public static IList getEdgesBetween(Node node0, Node node1)
         {
             IList edges0 = DirectedEdge.ToEdges(node0.OutEdges.Edges);
@@ -47,14 +38,11 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Constructs a Node with the given location.
         /// </summary>
-        /// <param name="pt"></param>
-        public Node(ICoordinate pt) : this(pt, new DirectedEdgeStar()) { }
+        public Node(ICoordinate pt) : this(pt, new DirectedEdgeStar()) {}
 
         /// <summary>
         /// Constructs a Node with the given location and collection of outgoing DirectedEdges.
         /// </summary>
-        /// <param name="pt"></param>
-        /// <param name="deStar"></param>
         public Node(ICoordinate pt, DirectedEdgeStar deStar)
         {
             this.pt = pt;
@@ -66,16 +54,12 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public ICoordinate Coordinate
         {
-            get
-            {
-                return pt;
-            }
+            get { return pt; }
         }
 
         /// <summary>
         /// Adds an outgoing DirectedEdge to this Node.
         /// </summary>
-        /// <param name="de"></param>
         public void AddOutEdge(DirectedEdge de)
         {
             deStar.Add(de);
@@ -86,30 +70,22 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public DirectedEdgeStar OutEdges
         {
-            get
-            {
-                return deStar;
-            }
+            get { return deStar; }
         }
 
         /// <summary>
         /// Returns the number of edges around this Node.
         /// </summary>
-        public int Degree
+        public Int32 Degree
         {
-            get
-            {
-                return deStar.Degree;
-            }
+            get { return deStar.Degree; }
         }
 
         /// <summary>
         /// Returns the zero-based index of the given Edge, after sorting in ascending order
         /// by angle with the positive x-axis.
         /// </summary>
-        /// <param name="edge"></param>
-        /// <returns></returns>
-        public int GetIndex(Edge edge)
+        public Int32 GetIndex(Edge edge)
         {
             return deStar.GetIndex(edge);
         }
@@ -125,19 +101,11 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Tests whether this component has been removed from its containing graph.
         /// </summary>
-        /// <value></value>
-        public override bool IsRemoved
+        public override Boolean IsRemoved
         {
-            get
-            {
-                return pt == null;
-            }
+            get { return pt == null; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
             return "NODE: " + pt.ToString() + ": " + Degree;

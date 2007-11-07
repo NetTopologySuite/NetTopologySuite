@@ -1,10 +1,5 @@
 using System;
 using System.Collections;
-using System.Text;
-
-using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Chain
@@ -13,31 +8,20 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
     /// A MonotoneChainBuilder implements static functions
     /// to determine the monotone chains in a sequence of points.
     /// </summary>
-    public class MonotoneChainBuilder
+    public static class MonotoneChainBuilder
     {
-        /// <summary>
-        /// Only static methods!
-        /// </summary>
-        private MonotoneChainBuilder() { }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="list"></param>
-        /// <returns></returns>
-        public static int[] ToIntArray(IList list)
+        public static Int32[] ToIntArray(IList list)
         {
-            int[] array = new int[list.Count];
-            for (int i = 0; i < array.Length; i++)            
-                array[i] = (int)list[i];            
+            Int32[] array = new Int32[list.Count];
+            
+            for (Int32 i = 0; i < array.Length; i++)
+            {
+                array[i] = (Int32) list[i];
+            }
+
             return array;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pts"></param>
-        /// <returns></returns>
         public static IList GetChains(ICoordinate[] pts)
         {
             return GetChains(pts, null);
@@ -47,17 +31,17 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// Return a list of the <c>MonotoneChain</c>s
         /// for the given list of coordinates.
         /// </summary>
-        /// <param name="pts"></param>
-        /// <param name="context"></param>
         public static IList GetChains(ICoordinate[] pts, object context)
         {
             IList mcList = new ArrayList();
-            int[] startIndex = GetChainStartIndices(pts);
-            for (int i = 0; i < startIndex.Length - 1; i++)
+            Int32[] startIndex = GetChainStartIndices(pts);
+            
+            for (Int32 i = 0; i < startIndex.Length - 1; i++)
             {
-                MonotoneChain mc = new MonotoneChain(pts, startIndex[i], startIndex[i + 1], context);                
+                MonotoneChain mc = new MonotoneChain(pts, startIndex[i], startIndex[i + 1], context);
                 mcList.Add(mc);
             }
+
             return mcList;
         }
 
@@ -67,48 +51,48 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// The last entry in the array points to the end point of the point array,
         /// for use as a sentinel.
         /// </summary>
-        /// <param name="pts"></param>
-        public static int[] GetChainStartIndices(ICoordinate[] pts)
+        public static Int32[] GetChainStartIndices(ICoordinate[] pts)
         {
             // find the startpoint (and endpoints) of all monotone chains in this edge
-            int start = 0;
+            Int32 start = 0;
             IList startIndexList = new ArrayList();
             startIndexList.Add(start);
+            
             do
             {
-                int last = FindChainEnd(pts, start);
+                Int32 last = FindChainEnd(pts, start);
                 startIndexList.Add(last);
                 start = last;
-            } 
-            while (start < pts.Length - 1);
+            } while (start < pts.Length - 1);
 
             // copy list to an array of ints, for efficiency
-            int[] startIndex = ToIntArray(startIndexList);
+            Int32[] startIndex = ToIntArray(startIndexList);
             return startIndex;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pts"></param>
-        /// <param name="start"></param>
         /// <returns> 
         /// The index of the last point in the monotone chain starting at <c>start</c>.
         /// </returns>
-        private static int FindChainEnd(ICoordinate[] pts, int start)
+        private static Int32 FindChainEnd(ICoordinate[] pts, Int32 start)
         {
             // determine quadrant for chain
-            int chainQuad = QuadrantOp.Quadrant(pts[start], pts[start + 1]);
-            int last = start + 1;
+            Int32 chainQuad = QuadrantOp.Quadrant(pts[start], pts[start + 1]);
+            Int32 last = start + 1;
+
             while (last < pts.Length)
             {
                 // compute quadrant for next possible segment in chain
-                int quad = QuadrantOp.Quadrant(pts[last - 1], pts[last]);
-                if (quad != chainQuad) 
+                Int32 quad = QuadrantOp.Quadrant(pts[last - 1], pts[last]);
+                
+                if (quad != chainQuad)
+                {
                     break;
+                }
+
                 last++;
             }
+
             return last - 1;
-        }           
+        }
     }
 }

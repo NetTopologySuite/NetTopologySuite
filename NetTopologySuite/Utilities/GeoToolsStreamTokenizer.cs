@@ -29,16 +29,16 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
 		TokenType _currentTokenType;
 		TextReader _reader;
 		string _currentToken;
-		bool _ignoreWhitespace = false;
-		int _lineNumber=1;
-		int _colNumber=1;				
+		Boolean _ignoreWhitespace = false;
+		Int32 _lineNumber=1;
+		Int32 _colNumber=1;				
 		
 		/// <summary>
 		/// Initializes a new instance of the StreamTokenizer class.
 		/// </summary>
 		/// <param name="reader">A TextReader with some text to read.</param>
 		/// <param name="ignoreWhitespace">Flag indicating whether whitespace should be ignored.</param>
-		public GeoToolsStreamTokenizer(TextReader reader, bool ignoreWhitespace)
+		public GeoToolsStreamTokenizer(TextReader reader, Boolean ignoreWhitespace)
 		{
 			if (reader == null)
 				throw new ArgumentNullException("reader");
@@ -49,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
 		/// <summary>
 		/// The current line number of the stream being read.
 		/// </summary>
-		public int LineNumber
+		public Int32 LineNumber
 		{
 			get
 			{
@@ -60,7 +60,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
 		/// <summary>
 		/// The current column number of the stream being read.
 		/// </summary>
-		public int Column
+		public Int32 Column
 		{
 			get
 			{
@@ -75,11 +75,11 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
 		/// If the current token is a number, this field contains the value of that number. The current token is a number when the value of the ttype field is TT_NUMBER.
 		/// </remarks>
 		/// <exception cref="FormatException">Current token is not a number in a valid format.</exception>
-		public double GetNumericValue()
+		public Double GetNumericValue()
 		{
 			string number = this.GetStringValue();
 			if (this.GetTokenType() == TokenType.Number)
-				return double.Parse(number);
+				return Double.Parse(number);
 			throw new ParseException(String.Format("The token '{0}' is not a number at line {1} column {2}.", number, this.LineNumber, this.Column));;
 
 		}
@@ -106,7 +106,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
 		/// </summary>
 		/// <param name="ignoreWhitespace">Determines is whitespace is ignored. True if whitespace is to be ignored.</param>
 		/// <returns>The TokenType of the next token.</returns>
-		public TokenType NextToken(bool ignoreWhitespace)
+		public TokenType NextToken(Boolean ignoreWhitespace)
 		{
 			TokenType nextTokenType;
 			if (ignoreWhitespace)
@@ -134,19 +134,19 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
 			char[] chars = new char[1];
 			_currentToken=String.Empty;
 			_currentTokenType = TokenType.Eof;
-			int finished = _reader.Read(chars,0,1);
+			Int32 finished = _reader.Read(chars,0,1);
 
-			bool isNumber=false;
-			bool isWord=false;
-			byte[] ba=null;
+			Boolean isNumber=false;
+			Boolean isWord=false;
+			Byte[] ba=null;
 			ASCIIEncoding AE = new ASCIIEncoding();
 			char[] ascii=null;
 			Char currentCharacter;
 			Char nextCharacter;
 			while (finished != 0 )
 			{
-				// convert int to char
-				ba = new Byte[]{(byte)_reader.Peek()};				
+				// convert Int32 to char
+				ba = new Byte[]{(Byte)_reader.Peek()};				
 				ascii = AE.GetChars(ba);
 				currentCharacter = chars[0];
 				nextCharacter = ascii[0];

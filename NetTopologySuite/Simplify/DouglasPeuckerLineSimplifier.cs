@@ -1,9 +1,4 @@
 using System;
-using System.Collections;
-using System.Text;
-
-using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Simplify
@@ -20,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <param name="pts"></param>
         /// <param name="distanceTolerance"></param>
         /// <returns></returns>
-        public static ICoordinate[] Simplify(ICoordinate[] pts, double distanceTolerance)
+        public static ICoordinate[] Simplify(ICoordinate[] pts, Double distanceTolerance)
         {
             DouglasPeuckerLineSimplifier simp = new DouglasPeuckerLineSimplifier(pts);
             simp.DistanceTolerance = distanceTolerance;
@@ -28,8 +23,8 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         }
 
         private ICoordinate[] pts;
-        private bool[] usePt;
-        private double distanceTolerance;       
+        private Boolean[] usePt;
+        private Double distanceTolerance;
 
         /// <summary>
         /// 
@@ -43,16 +38,10 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
-        public double DistanceTolerance
+        public Double DistanceTolerance
         {
-            get
-            {
-                return distanceTolerance;
-            }
-            set
-            {
-                distanceTolerance = value;
-            }
+            get { return distanceTolerance; }
+            set { distanceTolerance = value; }
         }
 
         /// <summary>
@@ -61,15 +50,21 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <returns></returns>
         public ICoordinate[] Simplify()
         {
-            usePt = new bool[pts.Length];
-            for (int i = 0; i < pts.Length; i++)
+            usePt = new Boolean[pts.Length];
+            for (Int32 i = 0; i < pts.Length; i++)
+            {
                 usePt[i] = true;
-            
+            }
+
             SimplifySection(0, pts.Length - 1);
             CoordinateList coordList = new CoordinateList();
-            for (int i = 0; i < pts.Length; i++)            
+            for (Int32 i = 0; i < pts.Length; i++)
+            {
                 if (usePt[i])
-                    coordList.Add(new Coordinate(pts[i]));            
+                {
+                    coordList.Add(new Coordinate(pts[i]));
+                }
+            }
             return coordList.ToCoordinateArray();
         }
 
@@ -80,17 +75,19 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// </summary>
         /// <param name="i"></param>
         /// <param name="j"></param>
-        private void SimplifySection(int i, int j)
+        private void SimplifySection(Int32 i, Int32 j)
         {
             if ((i + 1) == j)
-                return;            
+            {
+                return;
+            }
             seg.P0 = pts[i];
             seg.P1 = pts[j];
-            double maxDistance = -1.0;
-            int maxIndex = i;
-            for (int k = i + 1; k < j; k++)
+            Double maxDistance = -1.0;
+            Int32 maxIndex = i;
+            for (Int32 k = i + 1; k < j; k++)
             {
-                double distance = seg.Distance(pts[k]);
+                Double distance = seg.Distance(pts[k]);
                 if (distance > maxDistance)
                 {
                     maxDistance = distance;
@@ -98,8 +95,12 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
                 }
             }
             if (maxDistance <= DistanceTolerance)
-                for (int k = i + 1; k < j; k++)                
-                    usePt[k] = false;                            
+            {
+                for (Int32 k = i + 1; k < j; k++)
+                {
+                    usePt[k] = false;
+                }
+            }
             else
             {
                 SimplifySection(i, maxIndex);

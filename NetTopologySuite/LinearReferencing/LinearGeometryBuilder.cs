@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
@@ -17,8 +15,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         private List<IGeometry> lines = new List<IGeometry>();
         private CoordinateList coordList = null;
 
-        private bool ignoreInvalidLines = false;
-        private bool fixInvalidLines = false;
+        private Boolean ignoreInvalidLines = false;
+        private Boolean fixInvalidLines = false;
 
         private ICoordinate lastPt = null;
 
@@ -35,32 +33,20 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Allows invalid lines to be fixed rather than causing Exceptions.
         /// An invalid line is one which has only one unique point.
         /// </summary>
-        public bool FixInvalidLines
+        public Boolean FixInvalidLines
         {
-            get
-            {
-                return fixInvalidLines;
-            }
-            set
-            {
-                fixInvalidLines = value;
-            }
+            get { return fixInvalidLines; }
+            set { fixInvalidLines = value; }
         }
 
         /// <summary>
         /// Allows invalid lines to be ignored rather than causing Exceptions.
         /// An invalid line is one which has only one unique point.
         /// </summary>
-        public bool IgnoreInvalidLines
+        public Boolean IgnoreInvalidLines
         {
-            get
-            {
-                return ignoreInvalidLines;
-            }
-            set
-            {
-                ignoreInvalidLines = value;
-            }
+            get { return ignoreInvalidLines; }
+            set { ignoreInvalidLines = value; }
         }
 
         /// <summary>
@@ -77,10 +63,12 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="pt">The <see cref="Coordinate" /> to add.</param>
         /// <param name="allowRepeatedPoints">If <c>true</c>, allows the insertions of repeated points.</param>
-        public void Add(ICoordinate pt, bool allowRepeatedPoints)
+        public void Add(ICoordinate pt, Boolean allowRepeatedPoints)
         {
             if (coordList == null)
+            {
                 coordList = new CoordinateList();
+            }
             coordList.Add(pt, allowRepeatedPoints);
             lastPt = pt;
         }
@@ -90,10 +78,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         public ICoordinate LastCoordinate
         {
-            get
-            {
-                return lastPt;
-            }
+            get { return lastPt; }
         }
 
         /// <summary>
@@ -102,8 +87,10 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         public void EndLine()
         {
             if (coordList == null)
+            {
                 return;
-            
+            }
+
             if (ignoreInvalidLines && coordList.Count < 2)
             {
                 coordList = null;
@@ -113,7 +100,9 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             ICoordinate[] rawPts = coordList.ToCoordinateArray();
             ICoordinate[] pts = rawPts;
             if (FixInvalidLines)
+            {
                 pts = ValidCoordinateSequence(rawPts);
+            }
 
             coordList = null;
             ILineString line = null;
@@ -126,11 +115,15 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
                 // exception is due to too few points in line.
                 // only propagate if not ignoring short lines
                 if (!IgnoreInvalidLines)
+                {
                     throw ex;
+                }
             }
 
-            if (line != null) 
+            if (line != null)
+            {
                 lines.Add(line);
+            }
         }
 
         /// <summary>
@@ -140,9 +133,11 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <returns></returns>
         private ICoordinate[] ValidCoordinateSequence(ICoordinate[] pts)
         {
-            if (pts.Length >= 2) 
+            if (pts.Length >= 2)
+            {
                 return pts;
-            ICoordinate[] validPts = new ICoordinate[] { pts[0], pts[0] };
+            }
+            ICoordinate[] validPts = new ICoordinate[] {pts[0], pts[0]};
             return validPts;
         }
 
@@ -156,6 +151,5 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             EndLine();
             return geomFact.BuildGeometry(lines);
         }
-
     }
 }

@@ -1,11 +1,6 @@
 using System;
 using System.Collections;
-using System.Diagnostics;
-using System.Text;
-
-using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
+using GeoAPI.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
 {
@@ -19,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Constructs a NodeMap without any Nodes.
         /// </summary>
-        public NodeMap() { }
+        public NodeMap() {}
 
         /// <summary>
         /// Adds a node to the map, replacing any that is already at that location.
@@ -29,9 +24,11 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         public Node Add(Node n)
         {
             ICoordinate key = n.Coordinate;
-            bool contains = nodeMap.Contains(key);            
-            if (!contains) 
-                nodeMap.Add(key, n);            
+            Boolean contains = nodeMap.Contains(key);
+            if (!contains)
+            {
+                nodeMap.Add(key, n);
+            }
             return n;
         }
 
@@ -52,9 +49,9 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>
-        public Node Find(ICoordinate coord) 
+        public Node Find(ICoordinate coord)
         {
-            return (Node) nodeMap[coord]; 
+            return (Node) nodeMap[coord];
         }
 
         /// <summary>
@@ -72,10 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public ICollection Values
         {
-            get
-            {
-                return nodeMap.Values;
-            }
+            get { return nodeMap.Values; }
         }
     }
 }

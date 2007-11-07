@@ -1,10 +1,5 @@
 using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Distance
 {
@@ -22,20 +17,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// Special value of segment-index for locations inside area geometries. These
         /// locations do not have an associated segment index.
         /// </summary>
-        public const int InsideArea = -1;
+        public const Int32 InsideArea = -1;
 
         private IGeometry component = null;
-        private int segIndex;
+        private Int32 segIndex;
         private ICoordinate pt = null;
 
         /// <summary>
         /// Constructs a GeometryLocation specifying a point on a point, as well as the 
         /// segment that the point is on (or InsideArea if the point is not on a segment).
         /// </summary>
-        /// <param name="component"></param>
-        /// <param name="segIndex"></param>
-        /// <param name="pt"></param>
-        public GeometryLocation(IGeometry component, int segIndex, ICoordinate pt)
+        public GeometryLocation(IGeometry component, Int32 segIndex, ICoordinate pt)
         {
             this.component = component;
             this.segIndex = segIndex;
@@ -45,29 +37,23 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <summary> 
         /// Constructs a GeometryLocation specifying a point inside an area point.
         /// </summary>
-        public GeometryLocation(IGeometry component, ICoordinate pt) : this(component, InsideArea, pt) { }
+        public GeometryLocation(IGeometry component, ICoordinate pt) : this(component, InsideArea, pt) {}
 
         /// <summary>
         /// Returns the point associated with this location.
         /// </summary>
         public IGeometry GeometryComponent
         {
-            get
-            {
-                return component;
-            }
+            get { return component; }
         }
 
         /// <summary>
         /// Returns the segment index for this location. If the location is inside an
         /// area, the index will have the value InsideArea;
         /// </summary>
-        public int SegmentIndex
+        public Int32 SegmentIndex
         {
-            get
-            {
-                return segIndex;
-            }
+            get { return segIndex; }
         }
 
         /// <summary>
@@ -75,21 +61,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// </summary>
         public ICoordinate Coordinate
         {
-            get
-            {
-                return pt;
-            }
+            get { return pt; }
         }
 
         /// <summary>
         /// Returns whether this GeometryLocation represents a point inside an area point.
         /// </summary>
-        public bool IsInsideArea
+        public Boolean IsInsideArea
         {
-            get
-            {
-                return segIndex == InsideArea;
-            }
+            get { return segIndex == InsideArea; }
         }
     }
 }

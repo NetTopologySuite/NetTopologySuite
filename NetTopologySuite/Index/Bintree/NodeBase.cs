@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Text;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 {
@@ -13,21 +12,20 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// Returns the index of the subnode that wholely contains the given interval.
         /// If none does, returns -1.
         /// </summary>
-        /// <param name="interval"></param>
-        /// <param name="centre"></param>
-        public static int GetSubnodeIndex(Interval interval, double centre)
+        public static Int32 GetSubnodeIndex(Interval interval, Double centre)
         {
-            int subnodeIndex = -1;
-            if (interval.Min >= centre) 
+            Int32 subnodeIndex = -1;
+            if (interval.Min >= centre)
+            {
                 subnodeIndex = 1;
-            if (interval.Max <= centre) 
+            }
+            if (interval.Max <= centre)
+            {
                 subnodeIndex = 0;
+            }
             return subnodeIndex;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         protected IList items = new ArrayList();
 
         /// <summary>
@@ -36,121 +34,118 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// .
         /// </summary>
         protected Node[] subnode = new Node[2];
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        public NodeBase() { }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public  IList Items
+        public NodeBase() {}
+
+        public IList Items
         {
-            get
-            {                
-                return items;
-            }
+            get { return items; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="item"></param>
-        public  void Add(object item)
+        public void Add(object item)
         {
             items.Add(item);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="items"></param>
-        /// <returns></returns>
-        public  IList AddAllItems(IList items)
+        public IList AddAllItems(IList items)
         {
             // items.addAll(this.items);
             foreach (object o in this.items)
+            {
                 items.Add(o);
-            for (int i = 0; i < 2; i++)
+            }
+
+            for (Int32 i = 0; i < 2; i++)
+            {
                 if (subnode[i] != null)
-                    subnode[i].AddAllItems(items);                            
+                {
+                    subnode[i].AddAllItems(items);
+                }
+            }
             return items;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="interval"></param>
-        /// <returns></returns>
-        protected abstract bool IsSearchMatch(Interval interval);
+        protected abstract Boolean IsSearchMatch(Interval interval);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="interval"></param>
-        /// <param name="resultItems"></param>
-        /// <returns></returns>
-        public  IList AddAllItemsFromOverlapping(Interval interval, IList resultItems)
+        public IList AddAllItemsFromOverlapping(Interval interval, IList resultItems)
         {
             if (!IsSearchMatch(interval))
+            {
                 return items;
+            }
+
             // resultItems.addAll(items);
             foreach (object o in items)
+            {
                 resultItems.Add(o);
-            for (int i = 0; i < 2; i++)
+            }
+
+            for (Int32 i = 0; i < 2; i++)
+            {
                 if (subnode[i] != null)
-                    subnode[i].AddAllItemsFromOverlapping(interval, resultItems);                            
+                {
+                    subnode[i].AddAllItemsFromOverlapping(interval, resultItems);
+                }
+            }
+
             return items;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public  int Depth
+        public Int32 Depth
         {
             get
             {
-                int maxSubDepth = 0;
-                for (int i = 0; i < 2; i++)
+                Int32 maxSubDepth = 0;
+
+                for (Int32 i = 0; i < 2; i++)
                 {
                     if (subnode[i] != null)
                     {
-                        int sqd = subnode[i].Depth;
+                        Int32 sqd = subnode[i].Depth;
+
                         if (sqd > maxSubDepth)
+                        {
                             maxSubDepth = sqd;
+                        }
                     }
                 }
+
                 return maxSubDepth + 1;
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public  int Count
+        public Int32 Count
         {
             get
             {
-                int subSize = 0;
-                for (int i = 0; i < 2; i++)
+                Int32 subSize = 0;
+
+                for (Int32 i = 0; i < 2; i++)
+                {
                     if (subnode[i] != null)
+                    {
                         subSize += subnode[i].Count;
+                    }
+                }
+
                 return subSize + items.Count;
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public  int NodeCount
+        public Int32 NodeCount
         {
             get
             {
-                int subCount = 0;
-                for (int i = 0; i < 2; i++)
+                Int32 subCount = 0;
+
+                for (Int32 i = 0; i < 2; i++)
+                {
                     if (subnode[i] != null)
+                    {
                         subCount += subnode[i].NodeCount;
+                    }
+                }
+
                 return subCount + 1;
             }
         }

@@ -1,10 +1,5 @@
 using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -12,174 +7,131 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// A Depth object records the topological depth of the sides
     /// of an Edge for up to two Geometries.
     /// </summary>
-    public class Depth 
+    public class Depth
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        private const int Null = -1;
+        private const Int32 Null = -1;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="location"></param>
-        /// <returns></returns>
-        public static int DepthAtLocation(Locations location)
+        public static Int32 DepthAtLocation(Locations location)
         {
-            if (location == Locations.Exterior) 
+            if (location == Locations.Exterior)
+            {
                 return 0;
+            }
 
-            if (location == Locations.Interior) 
+            if (location == Locations.Interior)
+            {
                 return 1;
+            }
 
             return Null;
         }
 
-        private int[,] depth = new int[2,3];
+        private Int32[,] depth = new Int32[2,3];
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public Depth() 
+        public Depth()
         {
             // initialize depth array to a sentinel value
-            for (int i = 0; i < 2; i++) 
-                for (int j = 0; j < 3; j++)                 
-                    depth[i,j] = Null;                
+            for (Int32 i = 0; i < 2; i++)
+            {
+                for (Int32 j = 0; j < 3; j++)
+                {
+                    depth[i, j] = Null;
+                }
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="posIndex"></param>
-        /// <returns></returns>
-        public int GetDepth(int geomIndex, Positions posIndex)
+        public Int32 GetDepth(Int32 geomIndex, Positions posIndex)
         {
-            return depth[geomIndex, (int)posIndex];
+            return depth[geomIndex, (Int32) posIndex];
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="posIndex"></param>
-        /// <param name="depthValue"></param>
-        public void SetDepth(int geomIndex, Positions posIndex, int depthValue)
+        public void SetDepth(Int32 geomIndex, Positions posIndex, Int32 depthValue)
         {
-            depth[geomIndex, (int)posIndex] = depthValue;
+            depth[geomIndex, (Int32) posIndex] = depthValue;
         }
 
         /// <summary>
         /// Calls GetDepth and SetDepth.
         /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="posIndex"></param>
-        /// <returns></returns>
-        public int this[int geomIndex, Positions posIndex]
+        public Int32 this[Int32 geomIndex, Positions posIndex]
         {
-            get
-            {
-                return GetDepth(geomIndex, posIndex);
-            }
-            set
-            {
-                SetDepth(geomIndex, posIndex, value);
-            }
+            get { return GetDepth(geomIndex, posIndex); }
+            set { SetDepth(geomIndex, posIndex, value); }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="posIndex"></param>
-        /// <returns></returns>
-        public Locations GetLocation(int geomIndex, Positions posIndex)
+        public Locations GetLocation(Int32 geomIndex, Positions posIndex)
         {
-            if (depth[geomIndex, (int)posIndex] <= 0) 
+            if (depth[geomIndex, (Int32) posIndex] <= 0)
+            {
                 return Locations.Exterior;
+            }
             return Locations.Interior;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="posIndex"></param>
-        /// <param name="location"></param>
-        public void Add(int geomIndex, Positions posIndex, Locations location)
+        public void Add(Int32 geomIndex, Positions posIndex, Locations location)
         {
             if (location == Locations.Interior)
-                depth[geomIndex, (int)posIndex]++;
+            {
+                depth[geomIndex, (Int32) posIndex]++;
+            }
         }
 
         /// <summary>
         /// A Depth object is null (has never been initialized) if all depths are null.
         /// </summary>
-        public bool IsNull()
-        {                        
-                for (int i = 0; i < 2; i++)
+        public Boolean IsNull()
+        {
+            for (Int32 i = 0; i < 2; i++)
+            {
+                for (Int32 j = 0; j < 3; j++)
                 {
-                    for (int j = 0; j < 3; j++)
+                    if (depth[i, j] != Null)
                     {
-                        if (depth[i,j] != Null)
-                            return false;
+                        return false;
                     }
                 }
-                return true;            
+            }
+
+            return true;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <returns></returns>
-        public bool IsNull(int geomIndex)
+        public Boolean IsNull(Int32 geomIndex)
         {
-            return depth[geomIndex,1] == Null;
+            return depth[geomIndex, 1] == Null;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="posIndex"></param>
-        /// <returns></returns>
-        public bool IsNull(int geomIndex, Positions posIndex)
+        public Boolean IsNull(Int32 geomIndex, Positions posIndex)
         {
-            return depth[geomIndex,(int)posIndex] == Null;
+            return depth[geomIndex, (Int32) posIndex] == Null;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="lbl"></param>
         public void Add(Label lbl)
         {
-            for (int i = 0; i < 2; i++)
+            for (Int32 i = 0; i < 2; i++)
             {
-                for (int j = 1; j < 3; j++)
+                for (Int32 j = 1; j < 3; j++)
                 {
-                    Locations loc = lbl.GetLocation(i, (Positions)j);
+                    Locations loc = lbl.GetLocation(i, (Positions) j);
+
                     if (loc == Locations.Exterior || loc == Locations.Interior)
                     {
                         // initialize depth if it is null, otherwise add this location value
-                        if (IsNull(i, (Positions)j))
-                             depth[i,j]  = DepthAtLocation(loc);
-                        else depth[i,j] += DepthAtLocation(loc);
+                        if (IsNull(i, (Positions) j))
+                        {
+                            depth[i, j] = DepthAtLocation(loc);
+                        }
+                        else
+                        {
+                            depth[i, j] += DepthAtLocation(loc);
+                        }
                     }
                 }
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <returns></returns>
-        public int GetDelta(int geomIndex)
+        public Int32 GetDelta(Int32 geomIndex)
         {
-            return depth[geomIndex, (int)Positions.Right] - depth[geomIndex, (int)Positions.Left];
+            return depth[geomIndex, (Int32) Positions.Right] - depth[geomIndex, (Int32) Positions.Left];
         }
 
         /// <summary>
@@ -192,34 +144,41 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public void Normalize()
         {
-            for (int i = 0; i < 2; i++) 
+            for (Int32 i = 0; i < 2; i++)
             {
-                if (! IsNull(i)) 
+                if (! IsNull(i))
                 {
-                    int minDepth = depth[i,1];
-                    if (depth[i,2] < minDepth)
-                    minDepth = depth[i,2];
+                    Int32 minDepth = depth[i, 1];
 
-                    if (minDepth < 0) minDepth = 0;
-                    for (int j = 1; j < 3; j++) 
+                    if (depth[i, 2] < minDepth)
                     {
-                        int newValue = 0;
-                        if (depth[i,j] > minDepth)
+                        minDepth = depth[i, 2];
+                    }
+
+                    if (minDepth < 0)
+                    {
+                        minDepth = 0;
+                    }
+
+                    for (Int32 j = 1; j < 3; j++)
+                    {
+                        Int32 newValue = 0;
+
+                        if (depth[i, j] > minDepth)
+                        {
                             newValue = 1;
-                        depth[i,j] = newValue;
+                        }
+
+                        depth[i, j] = newValue;
                     }
                 }
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
-            return "A: " + depth[0,1] + "," + depth[0,2]
-                 +" B: " + depth[1,1] + "," + depth[1,2];
+            return "A: " + depth[0, 1] + "," + depth[0, 2]
+                   + " B: " + depth[1, 1] + "," + depth[1, 2];
         }
     }
 }

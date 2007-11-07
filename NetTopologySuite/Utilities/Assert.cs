@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Text;
 
 namespace GisSharpBlog.NetTopologySuite.Utilities
 {
@@ -12,29 +10,34 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <summary>
         /// Only static methods!
         /// </summary>
-        private Assert() { }
+        private Assert() {}
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="assertion"></param>
-        public static void IsTrue(bool assertion)
+        public static void IsTrue(Boolean assertion)
         {
             IsTrue(assertion, null);
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="assertion"></param>
         /// <param name="message"></param>
-        public static void IsTrue(bool assertion, string message)
+        public static void IsTrue(Boolean assertion, string message)
         {
             if (!assertion)
             {
-                if (message == null)               
-                     throw new AssertionFailedException();                
-                else throw new AssertionFailedException(message);
+                if (message == null)
+                {
+                    throw new AssertionFailedException();
+                }
+                else
+                {
+                    throw new AssertionFailedException(message);
+                }
             }
         }
 
@@ -43,7 +46,6 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// </summary>
         /// <param name="expectedValue"></param>
         /// <param name="actualValue"></param>
-       
         public static void IsEquals(Object expectedValue, Object actualValue)
         {
             IsEquals(expectedValue, actualValue, null);
@@ -58,8 +60,10 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         public static void IsEquals(Object expectedValue, Object actualValue, string message)
         {
             if (!actualValue.Equals(expectedValue))
+            {
                 throw new AssertionFailedException("Expected " + expectedValue + " but encountered "
-                            + actualValue + (message != null ? ": " + message : String.Empty));            
+                                                   + actualValue + (message != null ? ": " + message : String.Empty));
+            }
         }
 
         /// <summary>
@@ -77,7 +81,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         public static void ShouldNeverReachHere(string message)
         {
             throw new AssertionFailedException("Should never reach here"
-                + (message != null ? ": " + message : String.Empty));
+                                               + (message != null ? ": " + message : String.Empty));
         }
     }
 }

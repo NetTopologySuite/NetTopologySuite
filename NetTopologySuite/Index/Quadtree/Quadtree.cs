@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
-using System.Text;
-
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-
+using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 {
@@ -26,39 +26,45 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
     /// This data structure is also known as an <c>MX-CIF quadtree</c>
     /// following the usage of Samet and others.
     /// </summary>
-    public class Quadtree : ISpatialIndex
+    public class Quadtree<TCoordinate, TItem> : ISpatialIndex<TCoordinate, TItem>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, IComputable<TCoordinate>,
+            IConvertible
     {
         /// <summary>
         /// Ensure that the envelope for the inserted item has non-zero extents.
         /// Use the current minExtent to pad the envelope, if necessary.
         /// </summary>
-        /// <param name="itemEnv"></param>
-        /// <param name="minExtent"></param>
-        public static IExtents EnsureExtent(IExtents itemEnv, double minExtent)
+        public static IExtents EnsureExtent(IExtents itemEnv, Double minExtent)
         {
             //The names "ensureExtent" and "minExtent" are misleading -- sounds like
             //this method ensures that the extents are greater than minExtent.
             //Perhaps we should rename them to "ensurePositiveExtent" and "defaultExtent".
             //[Jon Aquino]
-            double minx = itemEnv.MinX;
-            double maxx = itemEnv.MaxX;
-            double miny = itemEnv.MinY;
-            double maxy = itemEnv.MaxY;            
+            Double minx = itemEnv.MinX;
+            Double maxx = itemEnv.MaxX;
+            Double miny = itemEnv.MinY;
+            Double maxy = itemEnv.MaxY;
+
             // has a non-zero extent
-            if (minx != maxx && miny != maxy) 
+            if (minx != maxx && miny != maxy)
+            {
                 return itemEnv;
+            }
+
             // pad one or both extents
-            if (minx == maxx) 
+            if (minx == maxx)
             {
-                minx = minx - minExtent / 2.0;
-                maxx = minx + minExtent / 2.0;
+                minx = minx - minExtent/2.0;
+                maxx = minx + minExtent/2.0;
             }
-            if (miny == maxy) 
+
+            if (miny == maxy)
             {
-                miny = miny - minExtent / 2.0;
-                maxy = miny + minExtent / 2.0;
+                miny = miny - minExtent/2.0;
+                maxy = miny + minExtent/2.0;
             }
-            return new Envelope(minx, maxx, miny, maxy);
+
+            return new Extents(minx, maxx, miny, maxy);
         }
 
         private Root root;
@@ -71,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// a zero extent in both directions.  This value may be non-optimal, but
         /// only one feature will be inserted with this value.
         /// </summary>
-        private double minExtent = 1.0;
+        private Double minExtent = 1.0;
 
         /// <summary>
         /// Constructs a Quadtree with zero items.
@@ -84,15 +90,18 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary> 
         /// Returns the number of levels in the tree.
         /// </summary>
-        public int Depth
+        public Int32 Depth
         {
             get
             {
                 //I don't think it's possible for root to be null. Perhaps we should
                 //remove the check. [Jon Aquino]
                 //Or make an assertion [Jon Aquino 10/29/2003]
-                if (root != null) 
+                if (root != null)
+                {
                     return root.Depth;
+                }
+
                 return 0;
             }
         }
@@ -100,21 +109,19 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary> 
         /// Returns the number of items in the tree.
         /// </summary>
-        public int Count
+        public Int32 Count
         {
             get
             {
-                if (root != null) 
+                if (root != null)
+                {
                     return root.Count;
+                }
+
                 return 0;
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="itemEnv"></param>
-        /// <param name="item"></param>
         public void Insert(IExtents itemEnv, object item)
         {
             CollectStats(itemEnv);
@@ -128,17 +135,12 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <param name="itemEnv">The Envelope of the item to remove.</param>
         /// <param name="item">The item to remove.</param>
         /// <returns><c>true</c> if the item was found.</returns>
-        public bool Remove(IExtents itemEnv, object item)
+        public Boolean Remove(IExtents itemEnv, object item)
         {
             IExtents posEnv = EnsureExtent(itemEnv, minExtent);
             return root.Remove(posEnv, item);
-        }        
+        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="searchEnv"></param>
-        /// <returns></returns>
         public IList Query(IExtents searchEnv)
         {
             /*
@@ -150,11 +152,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             return visitor.Items;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="searchEnv"></param>
-        /// <param name="visitor"></param>
         public void Query(IExtents searchEnv, IItemVisitor visitor)
         {
             /*
@@ -173,20 +170,22 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             root.AddAllItems(ref foundItems);
             return foundItems;
         }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="itemEnv"></param>
+
         private void CollectStats(IExtents itemEnv)
         {
-            double delX = itemEnv.Width;
-            if (delX < minExtent && delX > 0.0)
-            minExtent = delX;
+            Double delX = itemEnv.Width;
 
-            double delY = itemEnv.Width;
+            if (delX < minExtent && delX > 0.0)
+            {
+                minExtent = delX;
+            }
+
+            Double delY = itemEnv.Width;
+
             if (delY < minExtent && delY > 0.0)
-            minExtent = delY;
+            {
+                minExtent = delY;
+            }
         }
     }
 }

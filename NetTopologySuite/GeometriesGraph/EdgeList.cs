@@ -1,13 +1,6 @@
 using System;
 using System.Collections;
-using System.Text;
 using System.IO;
-
-using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Index;
-using GisSharpBlog.NetTopologySuite.Index.Quadtree;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -28,10 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         private ISpatialIndex index = new Quadtree();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public EdgeList() { }
+        public EdgeList() {}
 
 
         /// <summary>
@@ -46,33 +36,23 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary> 
         /// Insert an edge unless it is already in the list.
         /// </summary>
-        /// <param name="e"></param>
         public void Add(Edge e)
         {
             edges.Add(e);
             index.Insert(e.Envelope, e);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="edgeColl"></param>
         public void AddAll(ICollection edgeColl)
         {
-            for (IEnumerator i = edgeColl.GetEnumerator(); i.MoveNext(); ) 
+            for (IEnumerator i = edgeColl.GetEnumerator(); i.MoveNext();)
+            {
                 Add((Edge) i.Current);
-            
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public IList Edges
         {
-            get
-            {
-                return edges;
-            }
+            get { return edges; }
         }
 
         // <FIX> fast lookup for edges
@@ -80,7 +60,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// If there is an edge equal to e already in the list, return it.
         /// Otherwise return null.
         /// </summary>
-        /// <param name="e"></param>
         /// <returns>  
         /// equal edge, if there is one already in the list,
         /// null otherwise.
@@ -88,86 +67,84 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public Edge FindEqualEdge(Edge e)
         {
             ICollection testEdges = index.Query(e.Envelope);
-            for (IEnumerator i = testEdges.GetEnumerator(); i.MoveNext(); ) 
+
+            for (IEnumerator i = testEdges.GetEnumerator(); i.MoveNext();)
             {
                 Edge testEdge = (Edge) i.Current;
-                if (testEdge.Equals(e)) 
+
+                if (testEdge.Equals(e))
+                {
                     return testEdge;
+                }
             }
+
             return null;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator GetEnumerator() 
-        { 
-            return edges.GetEnumerator(); 
+        public IEnumerator GetEnumerator()
+        {
+            return edges.GetEnumerator();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public Edge this[int index]
+        public Edge this[Int32 index]
         {
-            get
-            {
-                return Get(index);
-            }            
+            get { return Get(index); }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public Edge Get(int i) 
+        public Edge Get(Int32 i)
         {
-            return (Edge) edges[i]; 
+            return (Edge) edges[i];
         }
 
         /// <summary>
         /// If the edge e is already in the list, return its index.
         /// </summary>
-        /// <param name="e"></param>
         /// <returns>  
         /// Index, if e is already in the list,
         /// -1 otherwise.
         /// </returns>
-        public int FindEdgeIndex(Edge e)
+        public Int32 FindEdgeIndex(Edge e)
         {
-            for (int i = 0; i < edges.Count; i++)
+            for (Int32 i = 0; i < edges.Count; i++)
+            {
                 if (((Edge) edges[i]).Equals(e))
-                    return i;            
+                {
+                    return i;
+                }
+            }
+
             return -1;
         }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="outstream"></param>
         public void Write(StreamWriter outstream)
         {
             outstream.Write("MULTILINESTRING ( ");
-            for (int j = 0; j < edges.Count; j++) 
+
+            for (Int32 j = 0; j < edges.Count; j++)
             {
                 Edge e = (Edge) edges[j];
-                if (j > 0) 
+
+                if (j > 0)
+                {
                     outstream.Write(",");
+                }
+
                 outstream.Write("(");
                 ICoordinate[] pts = e.Coordinates;
-                for (int i = 0; i < pts.Length; i++)
+                
+                for (Int32 i = 0; i < pts.Length; i++)
                 {
-                    if (i > 0) 
+                    if (i > 0)
+                    {
                         outstream.Write(",");
+                    }
+
                     outstream.Write(pts[i].X + " " + pts[i].Y);
                 }
+
                 outstream.WriteLine(")");
             }
+
             outstream.Write(")  ");
         }
     }

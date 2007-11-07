@@ -1,10 +1,5 @@
 using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
@@ -33,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        public bool IsInside(ICoordinate pt)
+        public Boolean IsInside(ICoordinate pt)
         {
             return CGAlgorithms.IsPointInRing(pt, pts);
         }

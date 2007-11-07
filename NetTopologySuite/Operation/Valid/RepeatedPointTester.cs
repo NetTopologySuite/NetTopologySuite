@@ -1,10 +1,5 @@
 using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 {
@@ -15,54 +10,52 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// </summary>
     public class RepeatedPointTester
     {
-
         // save the repeated coord found (if any)
         private ICoordinate repeatedCoord;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public RepeatedPointTester() { }
+        public RepeatedPointTester() {}
 
-        /// <summary>
-        /// 
-        /// </summary>
         public ICoordinate Coordinate
         {
-            get
+            get { return repeatedCoord; }
+        }
+
+        public Boolean HasRepeatedPoint(IGeometry g)
+        {
+            if (g.IsEmpty)
             {
-                return repeatedCoord;
+                return false;
+            }
+            if (g is IPoint)
+            {
+                return false;
+            }
+            else if (g is IMultiPoint)
+            {
+                return false;
+            }
+                // LineString also handles LinearRings
+            else if (g is ILineString)
+            {
+                return HasRepeatedPoint(((ILineString) g).Coordinates);
+            }
+            else if (g is IPolygon)
+            {
+                return HasRepeatedPoint((IPolygon) g);
+            }
+            else if (g is IGeometryCollection)
+            {
+                return HasRepeatedPoint((IGeometryCollection) g);
+            }
+            else
+            {
+                throw new NotSupportedException(g.GetType().FullName);
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="g"></param>
-        /// <returns></returns>
-        public bool HasRepeatedPoint(IGeometry g)
+        public Boolean HasRepeatedPoint(ICoordinate[] coord)
         {
-            if (g.IsEmpty)  return false;
-            if (g is IPoint) return false;
-            else if (g is IMultiPoint) return false;
-            // LineString also handles LinearRings
-            else if (g is ILineString) 
-                return HasRepeatedPoint(((ILineString) g).Coordinates);
-            else if (g is IPolygon)
-                return HasRepeatedPoint((IPolygon) g);
-            else if (g is IGeometryCollection) 
-                return HasRepeatedPoint((IGeometryCollection) g);
-            else  throw new NotSupportedException(g.GetType().FullName);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="coord"></param>
-        /// <returns></returns>
-        public bool HasRepeatedPoint(ICoordinate[] coord)
-        {
-            for (int i = 1; i < coord.Length; i++)
+            for (Int32 i = 1; i < coord.Length; i++)
             {
                 if (coord[i - 1].Equals(coord[i]))
                 {
@@ -73,33 +66,31 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             return false;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="p"></param>
-        /// <returns></returns>
-        private bool HasRepeatedPoint(IPolygon p)
+        private Boolean HasRepeatedPoint(IPolygon p)
         {
             if (HasRepeatedPoint(p.ExteriorRing.Coordinates))
+            {
                 return true;
-            for (int i = 0; i < p.NumInteriorRings; i++)
-                if (HasRepeatedPoint(p.GetInteriorRingN(i).Coordinates)) 
-                    return true;            
+            }
+            for (Int32 i = 0; i < p.NumInteriorRings; i++)
+            {
+                if (HasRepeatedPoint(p.GetInteriorRingN(i).Coordinates))
+                {
+                    return true;
+                }
+            }
             return false;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="gc"></param>
-        /// <returns></returns>
-        private bool HasRepeatedPoint(IGeometryCollection gc)
+        private Boolean HasRepeatedPoint(IGeometryCollection gc)
         {
-            for (int i = 0; i < gc.NumGeometries; i++)
+            for (Int32 i = 0; i < gc.NumGeometries; i++)
             {
                 IGeometry g = gc.GetGeometryN(i);
-                if (HasRepeatedPoint(g)) 
+                if (HasRepeatedPoint(g))
+                {
                     return true;
+                }
             }
             return false;
         }

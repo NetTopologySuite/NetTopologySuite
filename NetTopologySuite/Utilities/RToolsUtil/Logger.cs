@@ -168,8 +168,8 @@ namespace RTools_NTS.Util
 		/// <summary>
 		/// A simple static self test method.
 		/// </summary>
-		/// <returns>bool - currently always true</returns>
-		public static bool TestSelf()
+		/// <returns>Boolean - currently always true</returns>
+		public static Boolean TestSelf()
 		{
 			Logger log = new Logger("Logger: TestSelf");
 			log.Debug("A debug message.");
@@ -178,7 +178,7 @@ namespace RTools_NTS.Util
 			log.Error("An error message.");
 
 			log.Write("Some writes: ");
-			for (int i = 0; i < 5; i++) log.Write("{0},", i);
+			for (Int32 i = 0; i < 5; i++) log.Write("{0},", i);
 			log.WriteLine(String.Empty);
 
 			log.WriteLine("This WriteLine message will always be displayed.");

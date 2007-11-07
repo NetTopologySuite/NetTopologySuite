@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-
 using GeoAPI.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
@@ -10,12 +8,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Basic implementation of <c>MultiPolygon</c>.
     /// </summary>
     [Serializable]
-    public class MultiPolygon2D : GeometryCollection, IMultiPolygon<Coordinate2D>
+    public class MultiPolygon : GeometryCollection, IMultiPolygon
     {
         /// <summary>
         /// Represents an empty <c>MultiPolygon</c>.
         /// </summary>
-        public static new readonly IMultiPolygon Empty = new GeometryFactory().CreateMultiPolygon(null);
+        public new static readonly IMultiPolygon Empty = new GeometryFactory().CreateMultiPolygon(null);
 
         /// <summary>
         /// Constructs a <c>MultiPolygon</c>.
@@ -29,10 +27,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Specification for SQL.        
         /// </param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public MultiPolygon(IPolygon[] polygons) : this(polygons, DefaultFactory) { }  
+        public MultiPolygon(IPolygon[] polygons) : this(polygons, DefaultFactory) {}
 
         /// <summary>
         /// Constructs a <c>MultiPolygon</c>.
@@ -45,85 +43,60 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <see href="http://www.opengis.org/techno/specs.htm"/> OpenGIS Simple Features
         /// Specification for SQL.        
         /// </param>
-        /// <param name="factory"></param>
-        public MultiPolygon(IPolygon[] polygons, IGeometryFactory factory) : base(polygons, factory) { }  
+        public MultiPolygon(IPolygon[] polygons, IGeometryFactory factory) : base(polygons, factory) {}
 
-        /// <summary>
-        /// 
-        /// </summary>
         public override Dimensions Dimension
         {
-            get
-            {
-                return Dimensions.Surface;
-            }
+            get { return Dimensions.Surface; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public override Dimensions BoundaryDimension
         {
-            get
-            {
-                return Dimensions.Curve;
-            }
+            get { return Dimensions.Curve; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public override string GeometryType
         {
-            get
-            {
-                return "MultiPolygon";
-            }
+            get { return "MultiPolygon"; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public override bool IsSimple
+        public override Boolean IsSimple
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public override IGeometry Boundary
         {
             get
             {
-                if (IsEmpty)    
+                if (IsEmpty)
+                {
                     return Factory.CreateGeometryCollection(null);
+                }
 
                 List<ILineString> allRings = new List<ILineString>();
-                for (int i = 0; i < geometries.Length; i++)
+                
+                for (Int32 i = 0; i < geometries.Length; i++)
                 {
                     IPolygon polygon = (IPolygon) geometries[i];
                     IGeometry rings = polygon.Boundary;
-                    for (int j = 0; j < rings.NumGeometries; j++)
+                    for (Int32 j = 0; j < rings.NumGeometries; j++)
+                    {
                         allRings.Add((ILineString) rings.GetGeometryN(j));
-                }                
+                    }
+                }
+
                 return Factory.CreateMultiLineString(allRings.ToArray());
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="other"></param>
-        /// <param name="tolerance"></param>
-        /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance) 
+        public override Boolean EqualsExact(IGeometry other, Double tolerance)
         {
-            if (!IsEquivalentClass(other)) 
+            if (!IsEquivalentClass(other))
+            {
                 return false;
+            }
+
             return base.EqualsExact(other, tolerance);
         }
     }

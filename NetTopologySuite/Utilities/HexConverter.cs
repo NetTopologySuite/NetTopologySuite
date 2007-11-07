@@ -2,16 +2,8 @@ using System;
 
 namespace GisSharpBlog.NetTopologySuite.Utilities
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public class HexConverter
+    public static class HexConverter
     {
-        /// <summary>
-        /// Only static methods!
-        /// </summary>
-        private HexConverter() { }
-
         /// <summary>
         /// Convert the given numeric value (passed as string) of the base specified by <c>baseIn</c>
         /// to the value specified by <c>baseOut</c>.
@@ -20,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <param name="baseIn">Base of input value.</param>
         /// <param name="baseOut">Base to use for conversion.</param>
         /// <returns>Converted value, as string.</returns>
-        public static string ConvertAny2Any(string valueIn, int baseIn, int baseOut)
+        public static string ConvertAny2Any(string valueIn, Int32 baseIn, Int32 baseOut)
         {
               string result = "Error";
 
@@ -40,34 +32,34 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
                           return valueIn;
 
              // determinazione del valore totale
-             double valore = 0;
+             Double valore = 0;
              try
              {     
                   // se il campo è in base 10 non c'è bisogno di calcolare il valore
                   if (baseIn == 10)
-                      valore = double.Parse(valueIn);
+                      valore = Double.Parse(valueIn);
                   else
                   {
                         char[] c = valueIn.ToCharArray();
 
                         // mi serve per l'elevazione a potenza e la trasformazione
                         // in valore base 10 della cifra
-                        int posizione = c.Length;
+                        Int32 posizione = c.Length;
 
                         // ciclo sui caratteri di valueIn
                         // calcolo del valore decimale
 
-                        for (int k = 0; k < c.Length; k++)
+                        for (Int32 k = 0; k < c.Length; k++)
                         {
                               // valore posizionale del carattere
-                              int valPos = codice.IndexOf(c[k]);
+                              Int32 valPos = codice.IndexOf(c[k]);
                               
                               // verifica per caratteri errati
                               if ((valPos < 0) || (valPos > baseIn - 1))
                                          return result;
 
                               posizione--;
-                              valore += valPos * Math.Pow((double) baseIn, (double) posizione);
+                              valore += valPos * Math.Pow((Double) baseIn, (Double) posizione);
                         }
                   }
               
@@ -82,7 +74,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
                            result = String.Empty;
                            while (valore > 0)
                           {
-                                int resto = (int) (valore % baseOut);
+                                Int32 resto = (Int32) (valore % baseOut);
                                 valore = (valore - resto) / baseOut;
                                 result = codice.Substring(resto,1) + result;
                            }

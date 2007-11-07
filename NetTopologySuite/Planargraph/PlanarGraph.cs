@@ -1,10 +1,5 @@
 using System;
 using System.Collections;
-using System.Text;
-
-using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
 {
@@ -21,25 +16,16 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// </summary>
     public abstract class PlanarGraph
     {
-        /// <summary>
-        /// 
-        /// </summary>
         protected IList edges = new ArrayList();
-        
-        /// <summary>
-        /// 
-        /// </summary>
+
         protected IList dirEdges = new ArrayList();
-        
-        /// <summary>
-        /// 
-        /// </summary>
+
         protected NodeMap nodeMap = new NodeMap();
 
         /// <summary>
         /// Constructs a PlanarGraph without any Edges, DirectedEdges, or Nodes.
         /// </summary>
-        public PlanarGraph() { }
+        public PlanarGraph() {}
 
         /// <summary>
         /// Returns the Node at the given location, or null if no Node was there.
@@ -55,7 +41,6 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Adds a node to the map, replacing any that is already at that location.
         /// Only subclasses can add Nodes, to ensure Nodes are of the right type.
         /// </summary>
-        /// <param name="node"></param>
         /// <returns>The added node.</returns>
         protected void Add(Node node)
         {
@@ -67,7 +52,6 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Assumes that the Edge has already been created with its associated DirectEdges.
         /// Only subclasses can add Edges, to ensure the edges added are of the right class.
         /// </summary>
-        /// <param name="edge"></param>
         protected void Add(Edge edge)
         {
             edges.Add(edge);
@@ -79,7 +63,6 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Adds the Edge to this PlanarGraph; only subclasses can add DirectedEdges,
         /// to ensure the edges added are of the right class.
         /// </summary>
-        /// <param name="dirEdge"></param>
         protected void Add(DirectedEdge dirEdge)
         {
             dirEdges.Add(dirEdge);
@@ -88,10 +71,9 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Returns an IEnumerator over the Nodes in this PlanarGraph.
         /// </summary>
-        /// <returns></returns>
         public IEnumerator GetNodeEnumerator()
-        {            
-            return nodeMap.GetEnumerator();          
+        {
+            return nodeMap.GetEnumerator();
         }
 
         /// <summary>
@@ -99,30 +81,25 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public ICollection Nodes
         {
-            get
-            {
-                return nodeMap.Values;
-            }
+            get { return nodeMap.Values; }
         }
 
         /// <summary> 
         /// Returns an Iterator over the DirectedEdges in this PlanarGraph, in the order in which they
         /// were added.
         /// </summary>
-        /// <returns></returns>
-        public IEnumerator GetDirEdgeEnumerator() 
-        {            
-            return dirEdges.GetEnumerator();          
+        public IEnumerator GetDirEdgeEnumerator()
+        {
+            return dirEdges.GetEnumerator();
         }
 
         /// <summary>
         /// Returns an Iterator over the Edges in this PlanarGraph, in the order in which they
         /// were added.
         /// </summary>
-        /// <returns></returns>
         public IEnumerator GetEdgeEnumerator()
         {
-            return edges.GetEnumerator(); 
+            return edges.GetEnumerator();
         }
 
         /// <summary>
@@ -130,10 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public IList Edges
         {
-            get
-            {
-                return edges;
-            }
+            get { return edges; }
         }
 
         /// <summary>
@@ -142,7 +116,6 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// with the Edge, even if the removal of the Edge reduces the degree of a
         /// Node to zero.
         /// </summary>
-        /// <param name="edge"></param>
         public void Remove(Edge edge)
         {
             Remove(edge.GetDirEdge(0));
@@ -157,12 +130,13 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// even if the removal of the DirectedEdge reduces the degree of a Node to
         /// zero.
         /// </summary>
-        /// <param name="de"></param>
         public void Remove(DirectedEdge de)
         {
             DirectedEdge sym = de.Sym;
-            if (sym != null) 
+            if (sym != null)
+            {
                 sym.Sym = null;
+            }
             de.FromNode.OutEdges.Remove(de);
             de.Remove();
             dirEdges.Remove(de);
@@ -172,24 +146,27 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Removes a node from the graph, along with any associated DirectedEdges and
         /// Edges.
         /// </summary>
-        /// <param name="node"></param>
         public void Remove(Node node)
         {
             // unhook all directed edges
             IList outEdges = node.OutEdges.Edges;
-            for (IEnumerator i = outEdges.GetEnumerator(); i.MoveNext(); )
+            for (IEnumerator i = outEdges.GetEnumerator(); i.MoveNext();)
             {
                 DirectedEdge de = (DirectedEdge) i.Current;
                 DirectedEdge sym = de.Sym;
                 // remove the diredge that points to this node
-                if (sym != null) 
+                if (sym != null)
+                {
                     Remove(sym);
+                }
                 // remove this diredge from the graph collection
                 dirEdges.Remove(de);
 
                 Edge edge = de.Edge;
-                if (edge != null)                
-                    edges.Remove(edge);                
+                if (edge != null)
+                {
+                    edges.Remove(edge);
+                }
             }
             // remove the node from the graph
             nodeMap.Remove(node.Coordinate);
@@ -199,16 +176,16 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Returns all Nodes with the given number of Edges around it.
         /// </summary>
-        /// <param name="degree"></param>
-        /// <returns></returns>
-        public IList FindNodesOfDegree(int degree)
+        public IList FindNodesOfDegree(Int32 degree)
         {
             IList nodesFound = new ArrayList();
-            for (IEnumerator i = this.GetNodeEnumerator(); i.MoveNext(); )
+            for (IEnumerator i = GetNodeEnumerator(); i.MoveNext();)
             {
                 Node node = (Node) i.Current;
                 if (node.Degree == degree)
+                {
                     nodesFound.Add(node);
+                }
             }
             return nodesFound;
         }

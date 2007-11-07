@@ -1,8 +1,5 @@
 using System;
 using System.Collections;
-using System.Text;
-
-using GeoAPI.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 {
@@ -20,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <summary>
         /// Default empty constructor.
         /// </summary>
-        public EdgeSetIntersector() { }
+        public EdgeSetIntersector() {}
 
         /// <summary>
         /// Computes all self-intersections between edges in a set of edges,
@@ -29,11 +26,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <param name="edges">A list of edges to test for intersections.</param>
         /// <param name="si">The SegmentIntersector to use.</param>
         /// <param name="testAllSegments"><c>true</c> if self-intersections are to be tested as well.</param>
-        abstract public void ComputeIntersections(IList edges, SegmentIntersector si, bool testAllSegments);
+        public abstract void ComputeIntersections(IList edges, SegmentIntersector si, Boolean testAllSegments);
 
         /// <summary> 
         /// Computes all mutual intersections between two sets of edges.
         /// </summary>
-        abstract public void ComputeIntersections(IList edges0, IList edges1, SegmentIntersector si);
+        public abstract void ComputeIntersections(IList edges0, IList edges1, SegmentIntersector si);
     }
 }

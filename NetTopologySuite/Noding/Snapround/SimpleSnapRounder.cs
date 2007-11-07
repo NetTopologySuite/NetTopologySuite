@@ -1,16 +1,11 @@
 using System;
 using System.Collections;
 using System.Diagnostics;
-using System.Text;
-
-using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
 {
-
     /// <summary>
     /// Uses Snap Rounding to compute a rounded,
     /// fully noded arrangement from a set of <see cref="SegmentString" />s.
@@ -26,17 +21,17 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
     /// </para>
     /// </summary>
     public class SimpleSnapRounder : INoder
-    {        
+    {
         private LineIntersector li = null;
-        private readonly double scaleFactor;
+        private readonly Double scaleFactor;
         private IList nodedSegStrings = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleSnapRounder"/> class.
         /// </summary>
         /// <param name="pm">The <see cref="PrecisionModel" /> to use.</param>
-        public SimpleSnapRounder(PrecisionModel pm) 
-        {            
+        public SimpleSnapRounder(PrecisionModel pm)
+        {
             li = new RobustLineIntersector();
             li.PrecisionModel = pm;
             scaleFactor = pm.Scale;
@@ -46,7 +41,6 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// Returns a <see cref="IList"/> of fully noded <see cref="SegmentString"/>s.
         /// The <see cref="SegmentString"/>s have the same context as their parent.
         /// </summary>
-        /// <returns></returns>
         public IList GetNodedSubstrings()
         {
             return SegmentString.GetNodedSubstrings(nodedSegStrings);
@@ -57,17 +51,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// Some Noders may add all these nodes to the input <see cref="SegmentString" />s;
         /// others may only add some or none at all.
         /// </summary>
-        /// <param name="inputSegmentStrings"></param>
         public void ComputeNodes(IList inputSegmentStrings)
         {
-            this.nodedSegStrings = inputSegmentStrings;
-            SnapRound(inputSegmentStrings, li);            
+            nodedSegStrings = inputSegmentStrings;
+            SnapRound(inputSegmentStrings, li);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="inputSegmentStrings"></param>
         private void CheckCorrectness(IList inputSegmentStrings)
         {
             IList resultSegStrings = SegmentString.GetNodedSubstrings(inputSegmentStrings);
@@ -76,14 +65,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             {
                 nv.CheckValid();
             }
-            catch (Exception ex) { Trace.WriteLine(ex.ToString()); }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.ToString());
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="segStrings"></param>
-        /// <param name="li"></param>
         private void SnapRound(IList segStrings, LineIntersector li)
         {
             IList intersections = FindInteriorIntersections(segStrings, li);
@@ -96,13 +83,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// and returns their <see cref="Coordinate" />s.
         /// Does NOT node the segStrings.
         /// </summary>
-        /// <param name="segStrings"></param>
-        /// <param name="li"></param>
         /// <returns>A list of <see cref="Coordinate" />s for the intersections.</returns>
         private IList FindInteriorIntersections(IList segStrings, LineIntersector li)
         {
             IntersectionFinderAdder intFinderAdder = new IntersectionFinderAdder(li);
-            SinglePassNoder noder = new MCIndexNoder(intFinderAdder);            
+            SinglePassNoder noder = new MCIndexNoder(intFinderAdder);
             noder.ComputeNodes(segStrings);
             return intFinderAdder.InteriorIntersections;
         }
@@ -110,26 +95,23 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <summary>
         /// Computes nodes introduced as a result of snapping segments to snap points (hot pixels).
         /// </summary>
-        /// <param name="segStrings"></param>
-        /// <param name="snapPts"></param>
         private void ComputeSnaps(IList segStrings, IList snapPts)
         {
             foreach (SegmentString ss in segStrings)
-                ComputeSnaps(ss, snapPts);            
+            {
+                ComputeSnaps(ss, snapPts);
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ss"></param>
-        /// <param name="snapPts"></param>
         private void ComputeSnaps(SegmentString ss, IList snapPts)
         {
             foreach (ICoordinate snapPt in snapPts)
             {
                 HotPixel hotPixel = new HotPixel(snapPt, scaleFactor, li);
-                for (int i = 0; i < ss.Count - 1; i++)
+                for (Int32 i = 0; i < ss.Count - 1; i++)
+                {
                     AddSnappedNode(hotPixel, ss, i);
+                }
             }
         }
 
@@ -137,38 +119,45 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// Computes nodes introduced as a result of
         /// snapping segments to vertices of other segments.
         /// </summary>
-        /// <param name="edges"></param>
         public void ComputeVertexSnaps(IList edges)
         {
             foreach (SegmentString edge0 in edges)
-                foreach (SegmentString edge1 in edges)                    
-                    ComputeVertexSnaps(edge0, edge1);            
+            {
+                foreach (SegmentString edge1 in edges)
+                {
+                    ComputeVertexSnaps(edge0, edge1);
+                }
+            }
         }
 
         /// <summary>
         /// Performs a brute-force comparison of every segment in each <see cref="SegmentString" />.
         /// This has n^2 performance.
         /// </summary>
-        /// <param name="e0"></param>
-        /// <param name="e1"></param>
         private void ComputeVertexSnaps(SegmentString e0, SegmentString e1)
         {
             ICoordinate[] pts0 = e0.Coordinates;
             ICoordinate[] pts1 = e1.Coordinates;
-            for (int i0 = 0; i0 < pts0.Length - 1; i0++)
+            for (Int32 i0 = 0; i0 < pts0.Length - 1; i0++)
             {
                 HotPixel hotPixel = new HotPixel(pts0[i0], scaleFactor, li);
-                for (int i1 = 0; i1 < pts1.Length - 1; i1++)
+                for (Int32 i1 = 0; i1 < pts1.Length - 1; i1++)
                 {
                     // don't snap a vertex to itself
                     if (e0 == e1)
-                        if (i0 == i1) 
+                    {
+                        if (i0 == i1)
+                        {
                             continue;
-                    
-                    bool isNodeAdded = AddSnappedNode(hotPixel, e1, i1);
+                        }
+                    }
+
+                    Boolean isNodeAdded = AddSnappedNode(hotPixel, e1, i1);
                     // if a node is created for a vertex, that vertex must be noded too
                     if (isNodeAdded)
-                        e0.AddIntersection(pts0[i0], i0);                    
+                    {
+                        e0.AddIntersection(pts0[i0], i0);
+                    }
                 }
             }
         }
@@ -177,11 +166,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// Adds a new node (equal to the snap pt) to the segment
         /// if the segment passes through the hot pixel.
         /// </summary>
-        /// <param name="hotPix"></param>
-        /// <param name="segStr"></param>
-        /// <param name="segIndex"></param>
-        /// <returns></returns>
-        public static bool AddSnappedNode(HotPixel hotPix, SegmentString segStr, int segIndex)
+        public static Boolean AddSnappedNode(HotPixel hotPix, SegmentString segStr, Int32 segIndex)
         {
             ICoordinate p0 = segStr.GetCoordinate(segIndex);
             ICoordinate p1 = segStr.GetCoordinate(segIndex + 1);

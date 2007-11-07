@@ -1,15 +1,8 @@
 using System;
 using System.Collections;
-using System.Text;
-
-using Iesi_NTS.Collections;
-
-using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Utilities;
+using Iesi_NTS.Collections;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 {
@@ -23,38 +16,23 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     public class BufferSubgraph : IComparable
     {
         private RightmostEdgeFinder finder;
-        private IList dirEdgeList  = new ArrayList();
-        private IList nodes        = new ArrayList();
+        private IList dirEdgeList = new ArrayList();
+        private IList nodes = new ArrayList();
         private ICoordinate rightMostCoord = null;
 
-        /// <summary>
-        /// 
-        /// </summary>
         public BufferSubgraph()
         {
             finder = new RightmostEdgeFinder();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public IList DirectedEdges
         {
-            get
-            {
-                return dirEdgeList;
-            }
+            get { return dirEdgeList; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public IList Nodes
         {
-            get
-            {
-                return nodes;
-            }
+            get { return nodes; }
         }
 
         /// <summary>
@@ -62,10 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// </summary>
         public ICoordinate RightMostCoordinate
         {
-            get
-            {
-                return rightMostCoord;
-            }
+            get { return rightMostCoord; }
         }
 
         /// <summary>
@@ -89,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         {
             Stack nodeStack = new Stack();
             nodeStack.Push(startNode);
-            while (nodeStack.Count != 0) 
+            while (nodeStack.Count != 0)
             {
                 Node node = (Node) nodeStack.Pop();
                 Add(node, nodeStack);
@@ -105,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         {
             node.Visited = true;
             nodes.Add(node);
-            for (IEnumerator i = ((DirectedEdgeStar) node.Edges).GetEnumerator(); i.MoveNext(); ) 
+            for (IEnumerator i = ((DirectedEdgeStar) node.Edges).GetEnumerator(); i.MoveNext();)
             {
                 DirectedEdge de = (DirectedEdge) i.Current;
                 dirEdgeList.Add(de);
@@ -116,32 +91,27 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 * This will cause a large depth of recursion.
                 * It might be better to do a breadth-first traversal.
                 */
-                if (! symNode.IsVisited) 
+                if (! symNode.IsVisited)
+                {
                     nodeStack.Push(symNode);
+                }
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         private void ClearVisitedEdges()
         {
-            for (IEnumerator it = dirEdgeList.GetEnumerator(); it.MoveNext(); ) 
+            for (IEnumerator it = dirEdgeList.GetEnumerator(); it.MoveNext();)
             {
                 DirectedEdge de = (DirectedEdge) it.Current;
                 de.Visited = false;
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="outsideDepth"></param>
-        public void ComputeDepth(int outsideDepth)
+        public void ComputeDepth(Int32 outsideDepth)
         {
             ClearVisitedEdges();
             // find an outside edge to assign depth to
-            DirectedEdge de = finder.Edge;            
+            DirectedEdge de = finder.Edge;
             // right side of line returned by finder is on the outside
             de.SetEdgeDepths(Positions.Right, outsideDepth);
             CopySymDepths(de);
@@ -157,43 +127,42 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         {
             ISet nodesVisited = new HashedSet();
             Queue nodeQueue = new Queue();
-            Node startNode = startEdge.Node;                 
-            nodeQueue.Enqueue(startNode);   
+            Node startNode = startEdge.Node;
+            nodeQueue.Enqueue(startNode);
             nodesVisited.Add(startNode);
             startEdge.Visited = true;
             while (nodeQueue.Count != 0)
             {
-                Node n = (Node) nodeQueue.Dequeue();                
+                Node n = (Node) nodeQueue.Dequeue();
                 nodesVisited.Add(n);
                 // compute depths around node, starting at this edge since it has depths assigned
                 ComputeNodeDepth(n);
                 // add all adjacent nodes to process queue, unless the node has been visited already                
-                IEnumerator i = ((DirectedEdgeStar)n.Edges).GetEnumerator();
-                while (i.MoveNext()) 
+                IEnumerator i = ((DirectedEdgeStar) n.Edges).GetEnumerator();
+                while (i.MoveNext())
                 {
                     DirectedEdge de = (DirectedEdge) i.Current;
                     DirectedEdge sym = de.Sym;
-                    if (sym.IsVisited) continue;
+                    if (sym.IsVisited)
+                    {
+                        continue;
+                    }
                     Node adjNode = sym.Node;
-                    if (!(nodesVisited.Contains(adjNode))) 
+                    if (!(nodesVisited.Contains(adjNode)))
                     {
                         nodeQueue.Enqueue(adjNode);
                         nodesVisited.Add(adjNode);
                     }
-                }                
+                }
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="n"></param>
         private void ComputeNodeDepth(Node n)
         {
             // find a visited dirEdge to start at
             DirectedEdge startEdge = null;
             IEnumerator i = ((DirectedEdgeStar) n.Edges).GetEnumerator();
-            while (i.MoveNext()) 
+            while (i.MoveNext())
             {
                 DirectedEdge de = (DirectedEdge) i.Current;
                 if (de.IsVisited || de.Sym.IsVisited)
@@ -217,10 +186,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="de"></param>
         private void CopySymDepths(DirectedEdge de)
         {
             DirectedEdge sym = de.Sym;
@@ -238,7 +203,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// </summary>
         public void FindResultEdges()
         {
-            for (IEnumerator it = dirEdgeList.GetEnumerator(); it.MoveNext(); )
+            for (IEnumerator it = dirEdgeList.GetEnumerator(); it.MoveNext();)
             {
                 DirectedEdge de = (DirectedEdge) it.Current;
                 /*
@@ -249,8 +214,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 * count as "outside".
                 */
                 // <FIX> - handle negative depths
-                if (de.GetDepth(Positions.Right) >= 1 && de.GetDepth(Positions.Left) <= 0 && !de.IsInteriorAreaEdge) 
-                    de.InResult = true;       
+                if (de.GetDepth(Positions.Right) >= 1 && de.GetDepth(Positions.Left) <= 0 && !de.IsInteriorAreaEdge)
+                {
+                    de.InResult = true;
+                }
             }
         }
 
@@ -262,13 +229,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// This relationship is used to sort the BufferSubgraphs so that shells are guaranteed to
         /// be built before holes.
         /// </summary>
-        public int CompareTo(Object o) 
+        public Int32 CompareTo(Object o)
         {
             BufferSubgraph graph = (BufferSubgraph) o;
-            if (this.RightMostCoordinate.X < graph.RightMostCoordinate.X) 
+            if (RightMostCoordinate.X < graph.RightMostCoordinate.X)
+            {
                 return -1;
-            if (this.RightMostCoordinate.X > graph.RightMostCoordinate.X) 
-                return 1;            
+            }
+            if (RightMostCoordinate.X > graph.RightMostCoordinate.X)
+            {
+                return 1;
+            }
             return 0;
         }
     }

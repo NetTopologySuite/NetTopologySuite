@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Iesi_NTS.Collections.Generic
 {
@@ -12,10 +11,10 @@ namespace Iesi_NTS.Collections.Generic
     /// <exception cref="InvalidCastException">
     /// If the wrapped has any item that is not of Type T, InvalidCastException could be thrown at any time
     /// </exception>
-    public  class EnumerableWrapper <T> : IEnumerable<T>
+    public class EnumerableWrapper<T> : IEnumerable<T>
     {
         private IEnumerable innerEnumerable;
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -30,12 +29,16 @@ namespace Iesi_NTS.Collections.Generic
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public override bool Equals(object obj)
-        {            
-            if (!obj.GetType().Equals(GetType())) 
+        public override Boolean Equals(object obj)
+        {
+            if (!obj.GetType().Equals(GetType()))
+            {
                 return false;
-            if (obj == this) 
+            }
+            if (obj == this)
+            {
                 return true;
+            }
             return innerEnumerable.Equals(
                 ((EnumerableWrapper<T>) obj).innerEnumerable);
         }
@@ -44,7 +47,7 @@ namespace Iesi_NTS.Collections.Generic
         /// 
         /// </summary>
         /// <returns></returns>
-        public override int GetHashCode()
+        public override Int32 GetHashCode()
         {
             return innerEnumerable.GetHashCode();
         }
@@ -64,7 +67,7 @@ namespace Iesi_NTS.Collections.Generic
         /// <returns></returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return innerEnumerable.GetEnumerator();    
-        }              
+            return innerEnumerable.GetEnumerator();
+        }
     }
 }

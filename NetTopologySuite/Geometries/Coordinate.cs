@@ -1,7 +1,5 @@
 using System;
 
-using GeoAPI.Geometries;
-
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>
@@ -21,53 +19,35 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     [Serializable]
     public class Coordinate : ICoordinate
     {
-        private double x; // = Double.NaN;
-        private double y; // = Double.NaN;
-        private double z; // = Double.NaN;
+        private Double x; // = Double.NaN;
+        private Double y; // = Double.NaN;
+        private Double z; // = Double.NaN;
 
         /// <summary>
         /// X coordinate.
         /// </summary>
-        public double X
+        public Double X
         {
-            get
-            {
-                return x;
-            }
-            set
-            {
-                x = value;
-            }
+            get { return x; }
+            set { x = value; }
         }
 
         /// <summary>
         /// Y coordinate.
         /// </summary>
-        public double Y
+        public Double Y
         {
-            get
-            {
-                return y;
-            }
-            set
-            {
-                y = value;
-            }
+            get { return y; }
+            set { y = value; }
         }
 
         /// <summary>
         /// Z coordinate.
         /// </summary>
-        public double Z
+        public Double Z
         {
-            get
-            {
-                return z;
-            }
-            set
-            {
-                z = value;
-            }
+            get { return z; }
+            set { z = value; }
         }
 
         /// <summary>
@@ -76,17 +56,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="x">X value.</param>
         /// <param name="y">Y value.</param>
         /// <param name="z">Z value.</param>
-        public Coordinate(double x, double y, double z)
+        public Coordinate(Double x, Double y, Double z)
         {
             this.x = x;
             this.y = y;
             this.z = z;
         }
-        
+
         /// <summary>
         ///  Constructs a <c>Coordinate</c> at (0,0,NaN).
         /// </summary>
-        public Coordinate() : this(0.0, 0.0, Double.NaN) { }        
+        public Coordinate() : this(0.0, 0.0, Double.NaN) { }
 
         /// <summary>
         /// Constructs a <c>Coordinate</c> having the same (x,y,z) values as
@@ -100,17 +80,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="x">X value.</param>
         /// <param name="y">Y value.</param>
-        public Coordinate(double x, double y) : this(x, y, Double.NaN) { }
+        public Coordinate(Double x, Double y) : this(x, y, Double.NaN) { }
 
         /// <summary>
         /// Gets/Sets <c>Coordinate</c>s (x,y,z) values.
         /// </summary>
         public ICoordinate CoordinateValue
         {
-            get
-            {
-                return this;
-            }
+            get { return this; }
             set
             {
                 x = value.X;
@@ -127,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <c>true</c> if the x- and y-coordinates are equal;
         /// the Z coordinates do not have to be equal.
         /// </returns>
-        public bool Equals2D(ICoordinate other)
+        public Boolean Equals2D(ICoordinate other)
         {
             return (x == other.X) && (y == other.Y);
         }
@@ -138,46 +115,35 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other"><c>Coordinate</c> with which to do the comparison.</param>
         /// <returns><c>true</c> if <c>other</c> is a <c>Coordinate</c> with the same values for the x and y ordinates.</returns>
-        public override bool Equals(object other)
+        public override Boolean Equals(object other)
         {
             if (other == null)
+            {
                 return false;
+            }
+
             if (!(other is Coordinate))
+            {
                 return false;
-            return Equals((Coordinate) other);
+            }
+
+            return Equals((Coordinate)other);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="other"></param>
-        /// <returns></returns>
         public Boolean Equals(ICoordinate other)
         {
             return Equals2D(other);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="obj1"></param>
-        /// <param name="obj2"></param>
-        /// <returns></returns>
-        public static bool operator ==(Coordinate obj1, Coordinate obj2)
+        public static Boolean operator ==(Coordinate obj1, Coordinate obj2)
         {
-            return Object.Equals(obj1, obj2);
+            return Equals(obj1, obj2);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="obj1"></param>
-        /// <param name="obj2"></param>
-        /// <returns></returns>
-        public static bool operator !=(Coordinate obj1, Coordinate obj2)
+        public static Boolean operator !=(Coordinate obj1, Coordinate obj2)
         {
             return !(obj1 == obj2);
-        }  
+        }
 
         /// <summary>
         /// Compares this object with the specified object for order.
@@ -192,9 +158,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// A negative integer, zero, or a positive integer as this <c>Coordinate</c>
         ///         is less than, equal to, or greater than the specified <c>Coordinate</c>.
         /// </returns>
-        public int CompareTo(object o)
+        public Int32 CompareTo(object o)
         {
-            ICoordinate other = (ICoordinate) o;
+            ICoordinate other = (ICoordinate)o;
             return CompareTo(other);
         }
 
@@ -211,16 +177,28 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// A negative integer, zero, or a positive integer as this <c>Coordinate</c>
         ///         is less than, equal to, or greater than the specified <c>Coordinate</c>.
         /// </returns>
-        public int CompareTo(ICoordinate other)
+        public Int32 CompareTo(ICoordinate other)
         {
             if (x < other.X)
+            {
                 return -1;
+            }
+
             if (x > other.X)
+            {
                 return 1;
+            }
+
             if (y < other.Y)
+            {
                 return -1;
+            }
+
             if (y > other.Y)
+            {
                 return 1;
+            }
+
             return 0;
         }
 
@@ -229,10 +207,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other"><c>Coordinate</c> with which to do the 3D comparison.</param>
         /// <returns><c>true</c> if <c>other</c> is a <c>Coordinate</c> with the same values for x, y and z.</returns>
-        public bool Equals3D(ICoordinate other)
+        public Boolean Equals3D(ICoordinate other)
         {
-            return  (x == other.X) && (y == other.Y) && 
-                ((z == other.Z) || (Double.IsNaN(Z) && Double.IsNaN(other.Z)));
+            return (x == other.X) && (y == other.Y) &&
+                   ((z == other.Z) || (Double.IsNaN(Z) && Double.IsNaN(other.Z)));
         }
 
         /// <summary>
@@ -247,30 +225,25 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Create a new object as copy of this instance.
         /// </summary>
-        /// <returns></returns>
         public object Clone()
         {
-            return new Coordinate(this.X, this.Y, this.Z);
+            return new Coordinate(X, Y, Z);
         }
 
         /// <summary>
         /// Returns distance from <c>p</c> coordinate.
         /// </summary>
         /// <param name="p"><c>Coordinate</c> with which to do the distance comparison.</param>
-        /// <returns></returns>
-        public double Distance(ICoordinate p)
+        public Double Distance(ICoordinate p)
         {
-            double dx = x - p.X;
-            double dy = y - p.Y;
+            Double dx = x - p.X;
+            Double dy = y - p.Y;
             return Math.Sqrt(dx * dx + dy * dy);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public override int GetHashCode()
+        public override Int32 GetHashCode()
         {
-            int result = 17;            
+            Int32 result = 17;
             result = 37 * result + GetHashCode(X);
             result = 37 * result + GetHashCode(Y);
             return result;
@@ -280,10 +253,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Return HashCode.
         /// </summary>
         /// <param name="value">Value from HashCode computation.</param>
-        private static int GetHashCode(double value)
+        private static Int32 GetHashCode(Double value)
         {
             long f = BitConverter.DoubleToInt64Bits(value);
-            return (int)(f^(f>>32));
+            return (Int32)(f ^ (f >> 32));
         }
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
@@ -299,7 +272,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Overloaded + operator.
         /// </summary>
-        public static Coordinate operator +(Coordinate coord1, double d)
+        public static Coordinate operator +(Coordinate coord1, Double d)
         {
             return new Coordinate(coord1.X + d, coord1.Y + d, coord1.Z + d);
         }
@@ -307,7 +280,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Overloaded + operator.
         /// </summary>
-        public static Coordinate operator +(double d, Coordinate coord1)
+        public static Coordinate operator +(Double d, Coordinate coord1)
         {
             return coord1 + d;
         }
@@ -323,7 +296,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Overloaded * operator.
         /// </summary>
-        public static Coordinate operator *(Coordinate coord1, double d)
+        public static Coordinate operator *(Coordinate coord1, Double d)
         {
             return new Coordinate(coord1.X * d, coord1.Y * d, coord1.Z * d);
         }
@@ -331,7 +304,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Overloaded * operator.
         /// </summary>
-        public static Coordinate operator *(double d, Coordinate coord1)
+        public static Coordinate operator *(Double d, Coordinate coord1)
         {
             return coord1 * d;
         }
@@ -347,7 +320,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Overloaded - operator.
         /// </summary>
-        public static Coordinate operator -(Coordinate coord1, double d)
+        public static Coordinate operator -(Coordinate coord1, Double d)
         {
             return new Coordinate(coord1.X - d, coord1.Y - d, coord1.Z - d);
         }
@@ -355,7 +328,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Overloaded - operator.
         /// </summary>
-        public static Coordinate operator -(double d, Coordinate coord1)
+        public static Coordinate operator -(Double d, Coordinate coord1)
         {
             return coord1 - d;
         }
@@ -367,23 +340,23 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             return new Coordinate(coord1.X / coord2.X, coord1.Y / coord2.Y, coord1.Z / coord2.Z);
         }
-     
-        /// <summary>
-        /// Overloaded / operator.
-        /// </summary>
-        public static Coordinate operator /(Coordinate coord1, double d)
-        {
-            return new Coordinate(coord1.X / d, coord1.Y / d, coord1.Z / d);
-        }  
 
         /// <summary>
         /// Overloaded / operator.
         /// </summary>
-        public static Coordinate operator /(double d, Coordinate coord1)
+        public static Coordinate operator /(Coordinate coord1, Double d)
+        {
+            return new Coordinate(coord1.X / d, coord1.Y / d, coord1.Z / d);
+        }
+
+        /// <summary>
+        /// Overloaded / operator.
+        /// </summary>
+        public static Coordinate operator /(Double d, Coordinate coord1)
         {
             return coord1 / d;
         }
 
-        /* END ADDED BY MPAUL42: monoGIS team */   
+        /* END ADDED BY MPAUL42: monoGIS team */
     }
-} 
+}

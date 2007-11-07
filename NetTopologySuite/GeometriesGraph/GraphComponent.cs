@@ -1,10 +1,5 @@
 using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
@@ -14,24 +9,24 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// that form a graph.  Each GraphComponent can carry a
     /// Label.
     /// </summary>
-    abstract public class GraphComponent
-    {        
+    public abstract class GraphComponent
+    {
         /// <summary>
         /// 
         /// </summary>
         protected Label label;
 
         // isInResult indicates if this component has already been included in the result
-        private bool isInResult = false;
+        private Boolean isInResult = false;
 
-        private bool isCovered = false;
-        private bool isCoveredSet = false;
-        private bool isVisited = false;
+        private Boolean isCovered = false;
+        private Boolean isCoveredSet = false;
+        private Boolean isVisited = false;
 
         /// <summary>
         /// 
         /// </summary>
-        public GraphComponent() { }
+        public GraphComponent() {}
 
         /// <summary>
         /// 
@@ -47,118 +42,85 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public Label Label
         {
-            get
-            {
-                return label;
-            }
-            set
-            {
-                label = value;
-            }
-        }     
-                
+            get { return label; }
+            set { label = value; }
+        }
+
         /// <summary>
         /// 
         /// </summary>
-        public bool InResult
-        { 
-            get
-            {
-                return isInResult;
-            }
-            set
-            {
-                isInResult = value;
-            }           
+        public Boolean InResult
+        {
+            get { return isInResult; }
+            set { isInResult = value; }
         }
 
         /// <summary> 
         /// IsInResult indicates if this component has already been included in the result.
         /// </summary>
-        public bool IsInResult
+        public Boolean IsInResult
         {
-            get
-            {
-                return InResult;
-            }
+            get { return InResult; }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public bool Covered
+        public Boolean Covered
         {
-            get
-            {
-                return this.isCovered;
-            }
+            get { return isCovered; }
             set
             {
                 isCovered = value;
-                isCoveredSet = true;                
+                isCoveredSet = true;
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsCovered
+        public Boolean IsCovered
         {
-            get
-            {
-                return Covered;
-            }
+            get { return Covered; }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsCoveredSet 
+        public Boolean IsCoveredSet
         {
-            get
-            {
-                return isCoveredSet;
-            }
+            get { return isCoveredSet; }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public bool Visited
+        public Boolean Visited
         {
-            get
-            {
-                return isVisited;
-            }
-            set
-            {
-                isVisited = value;
-            }
+            get { return isVisited; }
+            set { isVisited = value; }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsVisited
+        public Boolean IsVisited
         {
-            get
-            {
-                return isVisited;
-            }
+            get { return isVisited; }
         }
-    
+
         /// <summary>
         /// 
         /// </summary>
         /// <returns>
         /// A coordinate in this component (or null, if there are none).
         /// </returns>
-        abstract public ICoordinate Coordinate { get; }
+        public abstract ICoordinate Coordinate { get; }
 
         /// <summary>
         /// Compute the contribution to an IM for this component.
         /// </summary>
-        abstract public void ComputeIM(IntersectionMatrix im);
+        public abstract void ComputeIM(IntersectionMatrix im);
 
         /// <summary>
         /// An isolated component is one that does not intersect or touch any other
@@ -166,7 +128,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// only a single Geometry.
         /// </summary>
         /// <returns><c>true</c> if this component is isolated.</returns>
-        abstract public bool IsIsolated { get; }
+        public abstract Boolean IsIsolated { get; }
 
         /// <summary>
         /// Update the IM with the contribution for this component.

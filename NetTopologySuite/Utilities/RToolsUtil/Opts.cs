@@ -146,7 +146,7 @@ namespace RTools_NTS.Util
 				char[] typeChars = {':', '='};
 				foreach (string word in words)
 				{
-					int nameLen = word.IndexOfAny(typeChars);
+					Int32 nameLen = word.IndexOfAny(typeChars);
 					if (nameLen < 0) nameLen = word.Length;
 					string name = word.Substring(0, nameLen).Trim();
 					if (word.IndexOf(':') >= 0)
@@ -177,7 +177,7 @@ namespace RTools_NTS.Util
 				tokenizer.TokenizeString(value, tokens);
 				StringBuilder sb = new StringBuilder();
 
-				for (int i = 0; i < tokens.Count; i++)
+				for (Int32 i = 0; i < tokens.Count; i++)
 				{
 					Token t = (Token)tokens[i];
 					Token nextToken = null;
@@ -221,7 +221,7 @@ namespace RTools_NTS.Util
 		/// <summary>
 		/// This hashtable is built during Parse.  This contains the results
 		/// of the parse for switches (options). Options which don't take
-		/// arguments will map to bool True.  Options which may have arguments
+		/// arguments will map to Boolean True.  Options which may have arguments
 		/// will map to the argument string if present, and null if not present.
 		/// Options which must have arguments will map to the argument string
 		/// if the Parse succeeds.
@@ -348,8 +348,8 @@ namespace RTools_NTS.Util
 		/// followed by a digit.
 		/// </summary>
 		/// <param name="s">The string to test.</param>
-		/// <returns>bool - true for yes it's a switch</returns>
-		private bool IsSwitch(string s)
+		/// <returns>Boolean - true for yes it's a switch</returns>
+		private Boolean IsSwitch(string s)
 		{
 			if ((s == null) || (s.Length < 2)) return(false);
 			if ((s[0] == '-') && (!Char.IsDigit(s[1]))) return(true);
@@ -365,12 +365,12 @@ namespace RTools_NTS.Util
 		/// <param name="errorMessage">Output error message. This
 		/// is set if the input options don't have all the pieces
 		/// required by the parseSpec string.</param>
-		/// <returns>bool - true if parseSpec requirements are met, 
+		/// <returns>Boolean - true if parseSpec requirements are met, 
 		/// false otherwise.</returns>
-		public bool Parse(string[] args, out string errorMessage)
+		public Boolean Parse(string[] args, out string errorMessage)
 		{
 			errorMessage = null;
-			for (int i = 0; i < args.Length; i++)
+			for (Int32 i = 0; i < args.Length; i++)
 			{
 				string s = args[i].Trim();
 				if (IsSwitch(s))
@@ -440,8 +440,8 @@ namespace RTools_NTS.Util
 		/// <summary>
 		/// Simple self test.
 		/// </summary>
-		/// <returns>bool - true for success, false for failure.</returns>
-		public static bool TestSelf()
+		/// <returns>Boolean - true for success, false for failure.</returns>
+		public static Boolean TestSelf()
 		{
 			Logger log = new Logger("testSelf");
 			log.Verbosity = VerbosityLevel.Debug;

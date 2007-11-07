@@ -1,10 +1,5 @@
 using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Simplify
@@ -22,13 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// </summary>
     public class DouglasPeuckerSimplifier
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geom"></param>
-        /// <param name="distanceTolerance"></param>
-        /// <returns></returns>
-        public static IGeometry Simplify(IGeometry geom, double distanceTolerance)
+        public static IGeometry Simplify(IGeometry geom, Double distanceTolerance)
         {
             DouglasPeuckerSimplifier tss = new DouglasPeuckerSimplifier(geom);
             tss.DistanceTolerance = distanceTolerance;
@@ -36,63 +25,33 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         }
 
         private IGeometry inputGeom;
-        private double distanceTolerance;
+        private Double distanceTolerance;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="inputGeom"></param>
         public DouglasPeuckerSimplifier(IGeometry inputGeom)
         {
             this.inputGeom = inputGeom;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public double DistanceTolerance
+        public Double DistanceTolerance
         {
-            get
-            {
-                return distanceTolerance; 
-            }
-            set
-            {
-                distanceTolerance = value; 
-            }
+            get { return distanceTolerance; }
+            set { distanceTolerance = value; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public IGeometry GetResultGeometry()
         {
             return (new DPTransformer(this)).Transform(inputGeom);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         private class DPTransformer : GeometryTransformer
         {
             private DouglasPeuckerSimplifier container = null;
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="container"></param>
             public DPTransformer(DouglasPeuckerSimplifier container)
             {
                 this.container = container;
             }
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="coords"></param>
-            /// <param name="parent"></param>
-            /// <returns></returns>
             protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
             {
                 ICoordinate[] inputPts = coords.ToCoordinateArray();
@@ -100,27 +59,17 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
                 return factory.CoordinateSequenceFactory.Create(newPts);
             }
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="geom"></param>
-            /// <param name="parent"></param>
-            /// <returns></returns>
             protected override IGeometry TransformPolygon(IPolygon geom, IGeometry parent)
             {
                 IGeometry roughGeom = base.TransformPolygon(geom, parent);
                 // don't try and correct if the parent is going to do this
-                if (parent is IMultiPolygon) 
-                    return roughGeom;            
+                if (parent is IMultiPolygon)
+                {
+                    return roughGeom;
+                }
                 return CreateValidArea(roughGeom);
             }
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="geom"></param>
-            /// <param name="parent"></param>
-            /// <returns></returns>
             protected override IGeometry TransformMultiPolygon(IMultiPolygon geom, IGeometry parent)
             {
                 IGeometry roughGeom = base.TransformMultiPolygon(geom, parent);

@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-using GeoAPI.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -17,26 +13,28 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="seq"></param>
         public static void Reverse(ICoordinateSequence seq)
         {
-            int last = seq.Count - 1;
-            int mid = last / 2;
-            for (int i = 0; i <= mid; i++)
+            Int32 last = seq.Count - 1;
+            Int32 mid = last / 2;
+
+            for (Int32 i = 0; i <= mid; i++)
+            {
                 Swap(seq, i, last - i);
+            }
         }
 
         /// <summary>
         /// Swaps two coordinates in a sequence.
         /// </summary>
-        /// <param name="seq"></param>
-        /// <param name="i"></param>
-        /// <param name="j"></param>
-        public static void Swap(ICoordinateSequence seq, int i, int j)
+        public static void Swap(ICoordinateSequence seq, Int32 i, Int32 j)
         {
-            if (i == j) 
-                return;
-
-            for (int dim = 0; dim < seq.Dimension; dim++)
+            if (i == j)
             {
-                double tmp = seq.GetOrdinate(i, (Ordinates)dim);
+                return;
+            }
+
+            for (Int32 dim = 0; dim < seq.Dimension; dim++)
+            {
+                Double tmp = seq.GetOrdinate(i, (Ordinates)dim);
                 seq.SetOrdinate(i, (Ordinates)dim, seq.GetOrdinate(j, (Ordinates)dim));
                 seq.SetOrdinate(j, (Ordinates)dim, tmp);
             }

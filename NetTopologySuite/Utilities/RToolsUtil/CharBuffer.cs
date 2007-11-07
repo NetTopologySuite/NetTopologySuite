@@ -37,10 +37,10 @@ namespace RTools_NTS.Util
 	{
 		#region Fields
 
-		int capacity = 128;
+		Int32 capacity = 128;
 		char[] buffer;
-		int headIndex;  // index of first char
-		int tailIndex;  // index 1 past last char
+		Int32 headIndex;  // index of first char
+		Int32 tailIndex;  // index 1 past last char
 
 		#endregion
 
@@ -50,7 +50,7 @@ namespace RTools_NTS.Util
 		/// Gets or sets the number of characters in the character buffer.
 		/// Increasing the length this way provides indeterminate results.
 		/// </summary>
-		public int Length
+		public Int32 Length
 		{
 			get { return(tailIndex - headIndex); }
 			set 
@@ -64,7 +64,7 @@ namespace RTools_NTS.Util
 		/// <summary>
 		/// Returns the capacity of this character buffer.
 		/// </summary>
-		public int Capacity
+		public Int32 Capacity
 		{
 			get { return(capacity); }
 		}
@@ -85,7 +85,7 @@ namespace RTools_NTS.Util
 		/// Construct with a specific capacity.
 		/// </summary>
 		/// <param name="capacity"></param>
-		public CharBuffer(int capacity)
+		public CharBuffer(Int32 capacity)
 		{
 			this.capacity = capacity;
 			buffer = new char[capacity];
@@ -97,15 +97,15 @@ namespace RTools_NTS.Util
 
 		/// <summary>
 		/// Reallocate the buffer to be larger. For the new size, this
-		/// uses the max of the requested length and double the current
+		/// uses the max of the requested length and Double the current
 		/// capacity.
 		/// This does not shift, meaning it does not change the head or
 		/// tail indices.
 		/// </summary>
 		/// <param name="requestedLen">The new requested length.</param>
-		protected void Grow(int requestedLen)
+		protected void Grow(Int32 requestedLen)
 		{
-			int newLen = Math.Max(capacity*2, requestedLen);
+			Int32 newLen = Math.Max(capacity*2, requestedLen);
 			newLen = Math.Max(newLen, 16);
 			char[] newBuffer = new char[newLen];
 			Array.Copy(buffer, 0, newBuffer, 0, capacity);
@@ -118,7 +118,7 @@ namespace RTools_NTS.Util
 		/// potentially growing or shifting contents.
 		/// </summary>
 		/// <param name="requestedLength"></param>
-		protected void CheckCapacity(int requestedLength)
+		protected void CheckCapacity(Int32 requestedLength)
 		{
 			if (requestedLength + headIndex >= capacity)
 			{
@@ -143,8 +143,8 @@ namespace RTools_NTS.Util
 		/// </summary>
 		protected void ShiftToZero()
 		{
-			int len = Length;
-			for (int i = 0; i < len; i++)
+			Int32 len = Length;
+			for (Int32 i = 0; i < len; i++)
 			{
 				buffer[i] = buffer[i + headIndex];
 			}
@@ -163,7 +163,7 @@ namespace RTools_NTS.Util
 		/// <param name="b">The character array.</param>
 		/// <param name="len">The number of characters to consider filled
 		/// in the input buffer.</param>
-		public void SetBuffer(char[] b, int len)
+		public void SetBuffer(char[] b, Int32 len)
 		{
 			capacity = b.Length;
 			buffer = b;
@@ -188,7 +188,7 @@ namespace RTools_NTS.Util
 		public void Append(string s)
 		{
 			if (s.Length + tailIndex >= capacity) CheckCapacity(Length + s.Length);
-			for(int i = 0; i < s.Length; i++)
+			for(Int32 i = 0; i < s.Length; i++)
 				buffer[tailIndex++] = s[i];
 		}
 
@@ -199,7 +199,7 @@ namespace RTools_NTS.Util
 		public void Append(CharBuffer s)
 		{
 			if (s.Length + tailIndex >= capacity) CheckCapacity(Length + s.Length);
-			for(int i = 0; i < s.Length; i++)
+			for(Int32 i = 0; i < s.Length; i++)
 				buffer[tailIndex++] = s[i];
 		}
 
@@ -208,7 +208,7 @@ namespace RTools_NTS.Util
 		/// </summary>
 		/// <param name="i">The index of the character to remove.</param>
 		/// <returns></returns>
-		public void Remove(int i)
+		public void Remove(Int32 i)
 		{
 			Remove(i, 1);
 		}
@@ -218,7 +218,7 @@ namespace RTools_NTS.Util
 		/// </summary>
 		/// <param name="i">The index of the characters to remove.</param>
 		/// <param name="n">The number of characters to remove.</param>
-		public void Remove(int i, int n)
+		public void Remove(Int32 i, Int32 n)
 		{
 			n = Math.Min(n, Length);
 			if (i == 0)
@@ -240,9 +240,9 @@ namespace RTools_NTS.Util
 		/// <param name="c">The character to find.</param>
 		/// <returns>The index of the specified character, or -1
 		/// for not found.</returns>
-		public int IndexOf(char c)
+		public Int32 IndexOf(char c)
 		{
-			for (int i = headIndex; i < tailIndex; i++)
+			for (Int32 i = headIndex; i < tailIndex; i++)
 			{
 				if (buffer[i] == c) return(i - headIndex);
 			}
@@ -261,7 +261,7 @@ namespace RTools_NTS.Util
 		/// <summary>
 		/// Indexer.
 		/// </summary>
-		public char this [int index]
+		public char this [Int32 index]
 		{
 			get { return(buffer[index + headIndex]); }
 			set { buffer[index + headIndex] = value; }

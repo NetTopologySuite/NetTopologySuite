@@ -42,7 +42,7 @@ namespace RTools_NTS.Util
 		public static string ChangeBackSlashes(string s)
 		{
 			char[] buffer = new Char[s.Length];
-			for (int i = 0; i < s.Length; i++)
+			for (Int32 i = 0; i < s.Length; i++)
 			{
 				if (s[i] == '\\') buffer[i] = '/';
 				else buffer[i] = s[i];
@@ -64,9 +64,9 @@ namespace RTools_NTS.Util
 		/// and *.bat</param>
 		/// <param name="list">The SortedList to fill.</param>
 		/// <param name="addDirItself">Whether to add the dir name into the list.</param>
-		/// <returns>bool - true for success, false for failure</returns>
-		public static bool FindFiles(string dirName, ArrayList regexps, 
-			ref SortedList list, bool addDirItself)
+		/// <returns>Boolean - true for success, false for failure</returns>
+		public static Boolean FindFiles(string dirName, ArrayList regexps, 
+			ref SortedList list, Boolean addDirItself)
 		{
 			DirectoryInfo dir = new DirectoryInfo(dirName);
 			if (!dir.Exists) return(false);
@@ -108,8 +108,8 @@ namespace RTools_NTS.Util
 		/// <summary>
 		/// Overload with single regular expression.
 		/// </summary>
-		public static bool FindFiles(string dirName, string regexp, ref SortedList list,
-			bool addDirItself)
+		public static Boolean FindFiles(string dirName, string regexp, ref SortedList list,
+			Boolean addDirItself)
 		{
 			ArrayList regexps = new ArrayList();
 			regexps.Add(regexp);
@@ -127,7 +127,7 @@ namespace RTools_NTS.Util
 		/// <param name="list">The SortedList of DictionaryEntry's, with
 		/// string file path keys.</param>
 		/// <returns>true</returns>
-		public static bool AddParents(SortedList list)
+		public static Boolean AddParents(SortedList list)
 		{
 			ArrayList parents = new ArrayList();
 

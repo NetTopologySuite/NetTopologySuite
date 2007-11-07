@@ -1,11 +1,7 @@
 using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Operation;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using GisSharpBlog.NetTopologySuite.Operation;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -17,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Represents an empty <c>MultiLineString</c>.
         /// </summary>
-        public static new readonly IMultiLineString Empty = new GeometryFactory().CreateMultiLineString(null);
+        public new static readonly IMultiLineString Empty = new GeometryFactory().CreateMultiLineString(null);
 
         /// <summary>
         /// Constructs a <c>MultiLineString</c>.
@@ -28,8 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// point. Elements may be empty <c>LineString</c>s,
         /// but not <c>null</c>s.
         /// </param>
-        /// <param name="factory"></param>
-        public MultiLineString(ILineString[] lineStrings, IGeometryFactory factory) : base(lineStrings, factory) { }        
+        public MultiLineString(ILineString[] lineStrings, IGeometryFactory factory) : base(lineStrings, factory) {}
 
         /// <summary>
         /// Constructs a <c>MultiLineString</c>.
@@ -44,85 +39,70 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public MultiLineString(ILineString[] lineStrings) : this(lineStrings, DefaultFactory) { }
+        public MultiLineString(ILineString[] lineStrings) : this(lineStrings, DefaultFactory) {}
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
         public override Dimensions Dimension
         {
-            get
-            {
-                return Dimensions.Curve;
-            }
+            get { return Dimensions.Curve; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
         public override Dimensions BoundaryDimension
         {
             get
             {
                 if (IsClosed)
-                    return Dimensions.False;                
+                {
+                    return Dimensions.False;
+                }
+
                 return Dimensions.Point;
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
         public override string GeometryType
         {
-            get
-            {
-                return "MultiLineString";
-            }
+            get { return "MultiLineString"; }
         }
 
         /// <summary>
         /// Gets a value indicating whether this instance is closed.
         /// </summary>
         /// <value><c>true</c> if this instance is closed; otherwise, <c>false</c>.</value>
-        public bool IsClosed
+        public Boolean IsClosed
         {
             get
             {
-                if (IsEmpty) 
+                if (IsEmpty)
+                {
                     return false;
-                for (int i = 0; i < geometries.Length; i++)
+                }
+
+                for (Int32 i = 0; i < geometries.Length; i++)
+                {
                     if (!((ILineString) geometries[i]).IsClosed)
-                        return false;                
+                    {
+                        return false;
+                    }
+                }
+
                 return true;
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
-        public override bool IsSimple
+        public override Boolean IsSimple
         {
-            get
-            {
-                return (new IsSimpleOp()).IsSimple((IMultiLineString) this);
-            }
+            get { return (new IsSimpleOp()).IsSimple((IMultiLineString) this); }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
         public override IGeometry Boundary
         {
             get
             {
-                if(IsEmpty)
+                if (IsEmpty)
+                {
                     return Factory.CreateGeometryCollection(null);
+                }
+
                 GeometryGraph g = new GeometryGraph(0, this);
                 ICoordinate[] pts = g.GetBoundaryPoints();
                 return Factory.CreateMultiPoint(pts);
@@ -137,23 +117,24 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>a <see cref="MultiLineString" /> in the reverse order.</returns>
         public IMultiLineString Reverse()
         {
-            int nLines = geometries.Length;
+            Int32 nLines = geometries.Length;
             ILineString[] revLines = new ILineString[nLines];
-            for (int i = 0; i < geometries.Length; i++)
-                revLines[nLines - 1 - i] = ((ILineString) geometries[i]).Reverse();            
+            
+            for (Int32 i = 0; i < geometries.Length; i++)
+            {
+                revLines[nLines - 1 - i] = ((ILineString) geometries[i]).Reverse();
+            }
+
             return Factory.CreateMultiLineString(revLines);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="other"></param>
-        /// <param name="tolerance"></param>
-        /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance) 
+        public override Boolean EqualsExact(IGeometry other, Double tolerance)
         {
-            if (!IsEquivalentClass((IGeometry) other)) 
-                return false;            
+            if (!IsEquivalentClass((IGeometry) other))
+            {
+                return false;
+            }
+
             return base.EqualsExact(other, tolerance);
         }
     }

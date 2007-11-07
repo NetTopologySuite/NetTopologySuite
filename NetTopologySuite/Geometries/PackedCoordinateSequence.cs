@@ -1,5 +1,4 @@
 using System;
-
 using GeoAPI.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
@@ -9,7 +8,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// A <c>CoordinateSequence</c> implementation based on a packed arrays.
     /// </summary>
     public abstract class PackedCoordinateSequence : ICoordinateSequence
-    {        
+    {
         /// <summary>
         /// A soft reference to the Coordinate[] representation of this sequence.
         /// Makes repeated coordinate array accesses more efficient.
@@ -19,22 +18,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// The dimensions of the coordinates hold in the packed array
         /// </summary>
-        protected int dimension;
+        protected Int32 dimension;
 
         /// <summary>
         /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
         /// </summary>
-        /// <value></value>
-        public int Dimension
+        public Int32 Dimension
         {
-            get { return dimension; }            
+            get { return dimension; }
         }
 
         /// <summary>
         /// Returns the number of coordinates in this sequence.
         /// </summary>
-        /// <value></value>
-        public abstract int Count { get; }
+        public abstract Int32 Count { get; }
 
         /// <summary>
         /// Returns (possibly a copy of) the ith Coordinate in this collection.
@@ -45,14 +42,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// advised not to assume that they can modify a CoordinateSequence by
         /// modifying the Coordinate returned by this method.
         /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public ICoordinate GetCoordinate(int i) 
+        public ICoordinate GetCoordinate(Int32 i)
         {
             ICoordinate[] arr = GetCachedCoords();
-            if(arr != null)
-                 return arr[i];
-            else return GetCoordinateInternal(i);
+
+            if (arr != null)
+            {
+                return arr[i];
+            }
+            else
+            {
+                return GetCoordinateInternal(i);
+            }
         }
 
         /// <summary>
@@ -65,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>
         /// A copy of the i'th coordinate in the sequence
         /// </returns>
-        public ICoordinate GetCoordinateCopy(int i) 
+        public ICoordinate GetCoordinateCopy(Int32 i)
         {
             return GetCoordinateInternal(i);
         }
@@ -76,11 +77,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="i">The index of the coordinate to copy.</param>
         /// <param name="c">A Coordinate to receive the value.</param>
-        public void GetCoordinate(int i, ICoordinate c) 
+        public void GetCoordinate(Int32 i, ICoordinate c)
         {
             c.X = GetOrdinate(i, Ordinates.X);
             c.Y = GetOrdinate(i, Ordinates.Y);
-        }        
+        }
 
         /// <summary>
         /// Returns (possibly copies of) the Coordinates in this collection.
@@ -90,50 +91,56 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// this method will incur a performance penalty because the array needs to
         /// be built from scratch.
         /// </summary>
-        /// <returns></returns>
-        public ICoordinate[] ToCoordinateArray() 
+        public ICoordinate[] ToCoordinateArray()
         {
             ICoordinate[] arr = GetCachedCoords();
+
             // testing - never cache
             if (arr != null)
+            {
                 return arr;
+            }
 
             arr = new ICoordinate[Count];
-            for (int i = 0; i < arr.Length; i++) 
+
+            for (Int32 i = 0; i < arr.Length; i++)
+            {
                 arr[i] = GetCoordinateInternal(i);
-            
+            }
+
             coordRef = new WeakReference(arr);
             return arr;
-        }        
+        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        private ICoordinate[] GetCachedCoords() 
+        private ICoordinate[] GetCachedCoords()
         {
-            if (coordRef != null) 
+            if (coordRef != null)
             {
                 ICoordinate[] arr = (ICoordinate[]) coordRef.Target;
-                if (arr != null) 
+                
+                if (arr != null)
+                {
                     return arr;
-                else 
-                {            
+                }
+                else
+                {
                     coordRef = null;
                     return null;
                 }
-            } 
-            else return null;            
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
         /// Returns ordinate X (0) of the specified coordinate.
         /// </summary>
-        /// <param name="index"></param>
         /// <returns>
         /// The value of the X ordinate in the index'th coordinate.
         /// </returns>
-        public double GetX(int index) 
+        public Double GetX(Int32 index)
         {
             return GetOrdinate(index, Ordinates.X);
         }
@@ -141,11 +148,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Returns ordinate Y (1) of the specified coordinate.
         /// </summary>
-        /// <param name="index"></param>
         /// <returns>
         /// The value of the Y ordinate in the index'th coordinate.
         /// </returns>
-        public double GetY(int index) 
+        public Double GetY(Int32 index)
         {
             return GetOrdinate(index, Ordinates.Y);
         }
@@ -158,16 +164,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
-        /// <returns></returns>
-        public abstract double GetOrdinate(int index, Ordinates ordinate);
+        public abstract Double GetOrdinate(Int32 index, Ordinates ordinate);
 
 
         /// <summary>
         /// Sets the first ordinate of a coordinate in this sequence.
         /// </summary>
-        /// <param name="index"></param>
-        /// <param name="value"></param>
-        public void SetX(int index, double value) 
+        public void SetX(Int32 index, Double value)
         {
             coordRef = null;
             SetOrdinate(index, Ordinates.X, value);
@@ -176,9 +179,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Sets the second ordinate of a coordinate in this sequence.
         /// </summary>
-        /// <param name="index"></param>
-        /// <param name="value"></param>
-        public void setY(int index, double value) 
+        public void setY(Int32 index, Double value)
         {
             coordRef = null;
             SetOrdinate(index, Ordinates.Y, value);
@@ -195,15 +196,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="ordinate">The ordinate index in the coordinate, 0 based, 
         /// smaller than the number of dimensions.</param>
         /// <param name="value">The new ordinate value.</param>
-        public abstract void SetOrdinate(int index, Ordinates ordinate, double value);
+        public abstract void SetOrdinate(Int32 index, Ordinates ordinate, Double value);
 
         /// <summary>
         /// Returns a Coordinate representation of the specified coordinate, by always
         /// building a new Coordinate object.
         /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        protected abstract ICoordinate GetCoordinateInternal(int index);
+        protected abstract ICoordinate GetCoordinateInternal(Int32 index);
 
         /// <summary>
         /// Creates a new object that is a copy of the current instance.
@@ -225,104 +224,109 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// <summary>
     /// Packed coordinate sequence implementation based on doubles.
     /// </summary>
-    public class PackedDoubleCoordinateSequence : PackedCoordinateSequence 
+    public class PackedDoubleCoordinateSequence : PackedCoordinateSequence
     {
         /// <summary>
         /// The packed coordinate array
         /// </summary>
-        private double[] coords;
+        private Double[] coords;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
         /// </summary>
-        /// <param name="coords"></param>
-        /// <param name="dimensions"></param>
-        public PackedDoubleCoordinateSequence(double[] coords, int dimensions) 
+        public PackedDoubleCoordinateSequence(Double[] coords, Int32 dimensions)
         {
-            if (dimensions < 2) 
+            if (dimensions < 2)
+            {
                 throw new ArgumentException("Must have at least 2 dimensions");
-            
-            if (coords.Length % dimensions != 0) 
-                throw new ArgumentException("Packed array does not contain " + 
-                    "an integral number of coordinates");
-      
-            this.dimension = dimensions;
+            }
+
+            if (coords.Length%dimensions != 0)
+            {
+                throw new ArgumentException("Packed array does not contain " +
+                                            "an integral number of coordinates");
+            }
+
+            dimension = dimensions;
             this.coords = coords;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
         /// </summary>
-        /// <param name="coordinates"></param>
-        /// <param name="dimensions"></param>
-        public PackedDoubleCoordinateSequence(float[] coordinates, int dimensions) 
+        public PackedDoubleCoordinateSequence(float[] coordinates, Int32 dimensions)
         {
-            this.coords = new double[coordinates.Length];
-            this.dimension = dimensions;
-            for (int i = 0; i < coordinates.Length; i++) 
-                this.coords[i] = coordinates[i];
-        }
+            coords = new Double[coordinates.Length];
+            dimension = dimensions;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
-        /// </summary>
-        /// <param name="coordinates"></param>
-        /// <param name="dimension"></param>
-        public PackedDoubleCoordinateSequence(ICoordinate[] coordinates, int dimension) 
-        {
-            if (coordinates == null)
-                coordinates = new ICoordinate[0];
-            this.dimension = dimension;
-
-            coords = new double[coordinates.Length * this.dimension];
-            for (int i = 0; i < coordinates.Length; i++) 
+            for (Int32 i = 0; i < coordinates.Length; i++)
             {
-                coords[i * this.dimension] = coordinates[i].X;
-                if (this.dimension >= 2)
-                    coords[i * this.dimension + 1] = coordinates[i].Y;
-                if (this.dimension >= 3)
-                    coords[i * this.dimension + 2] = coordinates[i].Z;
+                coords[i] = coordinates[i];
             }
         }
-        
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
-        /// </summary>
-        /// <param name="coordinates"></param>
-        public PackedDoubleCoordinateSequence(ICoordinate[] coordinates) : this(coordinates, 3) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
         /// </summary>
-        /// <param name="size"></param>
-        /// <param name="dimension"></param>
-        public PackedDoubleCoordinateSequence(int size, int dimension)
+        public PackedDoubleCoordinateSequence(ICoordinate[] coordinates, Int32 dimension)
+        {
+            if (coordinates == null)
+            {
+                coordinates = new ICoordinate[0];
+            }
+
+            this.dimension = dimension;
+
+            coords = new Double[coordinates.Length*this.dimension];
+
+            for (Int32 i = 0; i < coordinates.Length; i++)
+            {
+                coords[i*this.dimension] = coordinates[i].X;
+
+                if (this.dimension >= 2)
+                {
+                    coords[i*this.dimension + 1] = coordinates[i].Y;
+                }
+
+                if (this.dimension >= 3)
+                {
+                    coords[i*this.dimension + 2] = coordinates[i].Z;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
+        /// </summary>
+        public PackedDoubleCoordinateSequence(ICoordinate[] coordinates) : this(coordinates, 3) {}
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
+        /// </summary>
+        public PackedDoubleCoordinateSequence(Int32 size, Int32 dimension)
         {
             this.dimension = dimension;
-            coords = new double[size * this.dimension];
+            coords = new Double[size*this.dimension];
         }
 
         /// <summary>
         /// Returns a Coordinate representation of the specified coordinate, by always
         /// building a new Coordinate object.
         /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        protected override ICoordinate GetCoordinateInternal(int index) 
+        protected override ICoordinate GetCoordinateInternal(Int32 index)
         {
-            double x = coords[index * dimension];
-            double y = coords[index * dimension + 1];
-            double z = dimension == 2 ? 0.0 : coords[index * dimension + 2];
+            Double x = coords[index*dimension];
+            Double y = coords[index*dimension + 1];
+            Double z = dimension == 2 ? 0.0 : coords[index*dimension + 2];
             return new Coordinate(x, y, z);
         }
 
         /// <summary>
         /// Returns the number of coordinates in this sequence.
         /// </summary>
-        /// <value></value>
-        public override int Count 
+        public override Int32 Count
         {
-            get { return coords.Length / dimension; }
+            get { return coords.Length/dimension; }
         }
 
         /// <summary>
@@ -331,9 +335,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-        public override Object Clone() 
+        public override Object Clone()
         {
-            double[] clone = new double[coords.Length];
+            Double[] clone = new Double[coords.Length];
             Array.Copy(coords, clone, coords.Length);
             return new PackedDoubleCoordinateSequence(clone, dimension);
         }
@@ -346,10 +350,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
-        /// <returns></returns>
-        public override double GetOrdinate(int index, Ordinates ordinate) 
+        public override Double GetOrdinate(Int32 index, Ordinates ordinate)
         {
-            return coords[index * dimension + (int) ordinate];
+            return coords[index*dimension + (Int32) ordinate];
         }
 
         /// <summary>
@@ -363,10 +366,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Warning: for performance reasons the ordinate index is not checked:
         /// if it is over dimensions you may not get an exception but a meaningless value.
         /// </remarks>
-        public override void SetOrdinate(int index, Ordinates ordinate, double value) 
+        public override void SetOrdinate(Int32 index, Ordinates ordinate, Double value)
         {
             coordRef = null;
-            coords[index * dimension + (int) ordinate] = value;
+            coords[index*dimension + (Int32) ordinate] = value;
         }
 
         /// <summary>
@@ -377,8 +380,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>A reference to the expanded envelope.</returns>
         public override IExtents ExpandEnvelope(IExtents env)
         {
-            for (int i = 0; i < coords.Length; i += dimension)
-                env.ExpandToInclude(coords[i], coords[i + 1]);        
+            for (Int32 i = 0; i < coords.Length; i += dimension)
+            {
+                env.ExpandToInclude(coords[i], coords[i + 1]);
+            }
+
             return env;
         }
     }
@@ -386,7 +392,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// <summary>
     /// Packed coordinate sequence implementation based on floats.
     /// </summary>
-    public class PackedFloatCoordinateSequence : PackedCoordinateSequence 
+    public class PackedFloatCoordinateSequence : PackedCoordinateSequence
     {
         /// <summary>
         /// The packed coordinate array
@@ -396,88 +402,94 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedFloatCoordinateSequence"/> class.
         /// </summary>
-        /// <param name="coords"></param>
-        /// <param name="dimensions"></param>
-        public PackedFloatCoordinateSequence(float[] coords, int dimensions) 
+        public PackedFloatCoordinateSequence(float[] coords, Int32 dimensions)
         {
-            if (dimensions < 2) 
-                throw new ArgumentException("Must have at least 2 dimensions");      
-            
-            if (coords.Length % dimensions != 0) 
-                throw new ArgumentException("Packed array does not contain " + 
-                    "an integral number of coordinates");
-      
-            this.dimension = dimensions;
+            if (dimensions < 2)
+            {
+                throw new ArgumentException("Must have at least 2 dimensions");
+            }
+
+            if (coords.Length%dimensions != 0)
+            {
+                throw new ArgumentException("Packed array does not contain " +
+                                            "an integral number of coordinates");
+            }
+
+            dimension = dimensions;
             this.coords = coords;
         }
-    
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PackedFloatCoordinateSequence"/> class.
-        /// </summary>
-        /// <param name="coordinates"></param>
-        /// <param name="dimensions"></param>
-        public PackedFloatCoordinateSequence(double[] coordinates, int dimensions) 
-        {
-            this.coords = new float[coordinates.Length];
-            this.dimension = dimensions;
-            for (int i = 0; i < coordinates.Length; i++) 
-                this.coords[i] = (float) coordinates[i];      
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedFloatCoordinateSequence"/> class.
         /// </summary>
-        /// <param name="coordinates"></param>
-        /// <param name="dimension"></param>
-        public PackedFloatCoordinateSequence(ICoordinate[] coordinates, int dimension) 
+        public PackedFloatCoordinateSequence(Double[] coordinates, Int32 dimensions)
         {
-            if (coordinates == null)
-                coordinates = new ICoordinate[0];
-            this.dimension = dimension;
+            coords = new float[coordinates.Length];
+            dimension = dimensions;
 
-            coords = new float[coordinates.Length * this.dimension];
-            for (int i = 0; i < coordinates.Length; i++) 
+            for (Int32 i = 0; i < coordinates.Length; i++)
             {
-                coords[i * this.dimension] = (float) coordinates[i].X;
-                if (this.dimension >= 2)
-                    coords[i * this.dimension + 1] = (float) coordinates[i].Y;
-                if (this.dimension >= 3)
-                coords[i * this.dimension + 2] = (float) coordinates[i].Z;
+                coords[i] = (float) coordinates[i];
             }
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedFloatCoordinateSequence"/> class.
         /// </summary>
-        /// <param name="size"></param>
-        /// <param name="dimension"></param>
-        public PackedFloatCoordinateSequence(int size, int dimension) 
+        public PackedFloatCoordinateSequence(ICoordinate[] coordinates, Int32 dimension)
+        {
+            if (coordinates == null)
+            {
+                coordinates = new ICoordinate[0];
+            }
+
+            this.dimension = dimension;
+
+            coords = new float[coordinates.Length*this.dimension];
+
+            for (Int32 i = 0; i < coordinates.Length; i++)
+            {
+                coords[i*this.dimension] = (float) coordinates[i].X;
+
+                if (this.dimension >= 2)
+                {
+                    coords[i*this.dimension + 1] = (float) coordinates[i].Y;
+                }
+
+                if (this.dimension >= 3)
+                {
+                    coords[i*this.dimension + 2] = (float) coordinates[i].Z;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PackedFloatCoordinateSequence"/> class.
+        /// </summary>
+        public PackedFloatCoordinateSequence(Int32 size, Int32 dimension)
         {
             this.dimension = dimension;
-            coords = new float[size * this.dimension];
+            coords = new float[size*this.dimension];
         }
 
         /// <summary>
         /// Returns a Coordinate representation of the specified coordinate, by always
         /// building a new Coordinate object.
         /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        protected override ICoordinate GetCoordinateInternal(int index) 
+        protected override ICoordinate GetCoordinateInternal(Int32 index)
         {
-            double x = coords[index * dimension];
-            double y = coords[index * dimension + 1];
-            double z = dimension == 2 ? 0.0 : coords[index * dimension + 2];
+            Double x = coords[index*dimension];
+            Double y = coords[index*dimension + 1];
+            Double z = dimension == 2 ? 0.0 : coords[index*dimension + 2];
             return new Coordinate(x, y, z);
         }
 
         /// <summary>
         /// Returns the number of coordinates in this sequence.
         /// </summary>
-        /// <value></value>
-        public override int Count
+        public override Int32 Count
         {
-            get { return coords.Length / dimension; }
+            get { return coords.Length/dimension; }
         }
 
         /// <summary>
@@ -486,7 +498,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-        public override Object Clone() 
+        public override Object Clone()
         {
             float[] clone = new float[coords.Length];
             Array.Copy(coords, clone, coords.Length);
@@ -501,10 +513,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
-        /// <returns></returns>
-        public override double GetOrdinate(int index, Ordinates ordinate) 
+        public override Double GetOrdinate(Int32 index, Ordinates ordinate)
         {
-            return coords[index * dimension + (int) ordinate];
+            return coords[index*dimension + (Int32) ordinate];
         }
 
         /// <summary>
@@ -518,10 +529,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Warning: for performance reasons the ordinate index is not checked:
         /// if it is over dimensions you may not get an exception but a meaningless value.
         /// </remarks>
-        public override void SetOrdinate(int index, Ordinates ordinate, double value) 
+        public override void SetOrdinate(Int32 index, Ordinates ordinate, Double value)
         {
             coordRef = null;
-            coords[index * dimension + (int) ordinate] = (float) value;
+            coords[index*dimension + (Int32) ordinate] = (float) value;
         }
 
         /// <summary>
@@ -532,9 +543,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>A reference to the expanded envelope.</returns>
         public override IExtents ExpandEnvelope(IExtents env)
         {
-        for (int i = 0; i < coords.Length; i += dimension )
-            env.ExpandToInclude(coords[i], coords[i + 1]);      
-        return env;
+            for (Int32 i = 0; i < coords.Length; i += dimension)
+            {
+                env.ExpandToInclude(coords[i], coords[i + 1]);
+            }
+
+            return env;
         }
     }
 }

@@ -1,7 +1,5 @@
 using System;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
@@ -19,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     public class LengthIndexedLine
     {
         private IGeometry linearGeom = null;
- 
+
         /// <summary>
         /// Constructs an object which allows a linear <see cref="Geometry" />
         /// to be linearly referenced using length as an index.
@@ -38,12 +36,12 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="index">The index of the desired point.</param>
         /// <returns>The <see cref="Coordinate" /> at the given index.</returns>
-        public ICoordinate ExtractPoint(double index)
+        public ICoordinate ExtractPoint(Double index)
         {
             LinearLocation loc = LengthLocationMap.GetLocation(linearGeom, index);
             return loc.GetCoordinate(linearGeom);
         }
-        
+
         /// <summary>
         /// Computes the <see cref="LineString" /> for the interval
         /// on the line between the given indices.
@@ -53,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="startIndex"></param>
         /// <param name="endIndex"></param>
         /// <returns></returns>
-        public IGeometry ExtractLine(double startIndex, double endIndex)
+        public IGeometry ExtractLine(Double startIndex, Double endIndex)
         {
             LocationIndexedLine lil = new LocationIndexedLine(linearGeom);
             LinearLocation startLoc = LocationOf(startIndex);
@@ -61,12 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             return ExtractLineByLocation.Extract(linearGeom, startLoc, endLoc);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        private LinearLocation LocationOf(double index)
+        private LinearLocation LocationOf(Double index)
         {
             return LengthLocationMap.GetLocation(linearGeom, index);
         }
@@ -84,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="pt">A point on the line.</param>
         /// <returns>The minimum index of the point.</returns>
-        public double IndexOf(ICoordinate pt)
+        public Double IndexOf(ICoordinate pt)
         {
             return LengthIndexOfPoint.IndexOf(linearGeom, pt);
         }
@@ -107,7 +100,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="pt">A point on the line.</param>
         /// <param name="minIndex">The value the returned index must be greater than.</param>
         /// <returns>The index of the point greater than the given minimum index.</returns>
-        public double IndexOfAfter(ICoordinate pt, double minIndex)
+        public Double IndexOfAfter(ICoordinate pt, Double minIndex)
         {
             return LengthIndexOfPoint.IndexOfAfter(linearGeom, pt, minIndex);
         }
@@ -120,14 +113,14 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="subLine">A subLine of the line.</param>
         /// <returns>A pair of indices for the start and end of the subline..</returns>
-        public double[] IndicesOf(IGeometry subLine)
+        public Double[] IndicesOf(IGeometry subLine)
         {
             LinearLocation[] locIndex = LocationIndexOfLine.IndicesOf(linearGeom, subLine);
-            double[] index = new double[] 
-            {
-                LengthLocationMap.GetLength(linearGeom, locIndex[0]),
-                LengthLocationMap.GetLength(linearGeom, locIndex[1]), 
-            };
+            Double[] index = new Double[]
+                {
+                    LengthLocationMap.GetLength(linearGeom, locIndex[0]),
+                    LengthLocationMap.GetLength(linearGeom, locIndex[1]),
+                };
             return index;
         }
 
@@ -138,7 +131,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        public double Project(ICoordinate pt)
+        public Double Project(ICoordinate pt)
         {
             return LengthIndexOfPoint.IndexOf(linearGeom, pt);
         }
@@ -146,23 +139,17 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <summary>
         /// Returns the index of the start of the line.
         /// </summary>
-        public double StartIndex
+        public Double StartIndex
         {
-            get
-            {
-                return 0;
-            }
+            get { return 0; }
         }
 
         /// <summary>
         /// Returns the index of the end of the line.
         /// </summary>
-        public double EndIndex
+        public Double EndIndex
         {
-            get
-            {
-                return linearGeom.Length;
-            }
+            get { return linearGeom.Length; }
         }
 
         /// <summary>
@@ -170,7 +157,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="index">The index to test.</param>
         /// <returns><c>true</c> if the index is in the valid range.</returns>
-        public bool IsValidIndex(double index)
+        public Boolean IsValidIndex(Double index)
         {
             return (index >= StartIndex && index <= EndIndex);
         }
@@ -181,12 +168,16 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="index"></param>
         /// <returns>A valid index value.</returns>
-        public double ClampIndex(double index)
-        {            
-            if (index < StartIndex) 
-                return StartIndex;            
-            if (index > EndIndex) 
+        public Double ClampIndex(Double index)
+        {
+            if (index < StartIndex)
+            {
+                return StartIndex;
+            }
+            if (index > EndIndex)
+            {
                 return EndIndex;
+            }
             return index;
         }
     }

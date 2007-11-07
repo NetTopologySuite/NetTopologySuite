@@ -2,19 +2,19 @@ using System;
 
 namespace GisSharpBlog.NetTopologySuite.Utilities
 {
-	/// <summary>
-	/// Converts degrees to radians.
-	/// </summary>
-	public class Degrees
-	{
-		/// <summary>
-		/// Converts degrees to radians.
-		/// </summary>
-		/// <param name="degrees">The angle in degrees.</param>
-		/// <returns>The angle in radians.</returns>
-		public static double ToRadians(double degrees)
-		{
-			return degrees * 0.0174532925199432958;
-		}
-	}
+    /// <summary>
+    /// Converts degrees to radians.
+    /// </summary>
+    public class Degrees
+    {
+        /// <summary>
+        /// Converts degrees to radians.
+        /// </summary>
+        /// <param name="degrees">The angle in degrees.</param>
+        /// <returns>The angle in radians.</returns>
+        public static Double ToRadians(Double degrees)
+        {
+            return degrees * 0.0174532925199432958;
+        }
+    }
 }

@@ -1,10 +1,5 @@
 using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Precision
 {
@@ -18,20 +13,20 @@ namespace GisSharpBlog.NetTopologySuite.Precision
     /// </summary>
     public class CommonBitsOp
     {
-        private bool returnToOriginalPrecision = true;
+        private Boolean returnToOriginalPrecision = true;
         private CommonBitsRemover cbr;
 
         /// <summary>
         /// Creates a new instance of class, which reshifts result <c>Geometry</c>s.
         /// </summary>
-        public CommonBitsOp() : this(true) { }
+        public CommonBitsOp() : this(true) {}
 
         /// <summary>
         /// Creates a new instance of class, specifying whether
         /// the result <c>Geometry</c>s should be reshifted.
         /// </summary>
         /// <param name="returnToOriginalPrecision"></param>
-        public CommonBitsOp(bool returnToOriginalPrecision)
+        public CommonBitsOp(Boolean returnToOriginalPrecision)
         {
             this.returnToOriginalPrecision = returnToOriginalPrecision;
         }
@@ -91,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <param name="geom0">The Geometry to buffer.</param>
         /// <param name="distance">The buffer distance.</param>
         /// <returns>The Geometry representing the buffer of the input Geometry.</returns>
-        public IGeometry Buffer(IGeometry geom0, double distance)
+        public IGeometry Buffer(IGeometry geom0, Double distance)
         {
             IGeometry geom = RemoveCommonBits(geom0);
             return ComputeResultPrecision(geom.Buffer(distance));
@@ -108,7 +103,9 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         private IGeometry ComputeResultPrecision(IGeometry result)
         {
             if (returnToOriginalPrecision)
+            {
                 cbr.AddCommonBits(result);
+            }
             return result;
         }
 

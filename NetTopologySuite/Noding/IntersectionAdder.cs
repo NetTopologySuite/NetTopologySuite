@@ -1,11 +1,6 @@
 using System;
-using System.Collections;
-using System.Text;
-
-using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
+using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Index.Chain;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
@@ -20,13 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public class IntersectionAdder : ISegmentIntersector
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="i1"></param>
-        /// <param name="i2"></param>
-        /// <returns></returns>
-        public static bool IsAdjacentSegments(int i1, int i2)
+        public static Boolean IsAdjacentSegments(Int32 i1, Int32 i2)
         {
             return Math.Abs(i1 - i2) == 1;
         }
@@ -35,54 +24,35 @@ namespace GisSharpBlog.NetTopologySuite.Noding
          * These variables keep track of what types of intersections were
          * found during ALL edges that have been intersected.
          */
-        private bool hasIntersection = false;
-        private bool hasProper = false;
-        private bool hasProperInterior = false;
-        private bool hasInterior = false;
+        private Boolean hasIntersection = false;
+        private Boolean hasProper = false;
+        private Boolean hasProperInterior = false;
+        private Boolean hasInterior = false;
 
         // the proper intersection point found
         private ICoordinate properIntersectionPoint = null;
 
-        private LineIntersector li = null;        
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        public int NumIntersections = 0;
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        public int NumInteriorIntersections = 0;
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        public int NumProperIntersections = 0;
+        private LineIntersector li = null;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public int NumTests = 0;
+        public Int32 NumIntersections = 0;
+
+        public Int32 NumInteriorIntersections = 0;
+
+        public Int32 NumProperIntersections = 0;
+
+        public Int32 NumTests = 0;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IntersectionAdder"/> class.
         /// </summary>
-        /// <param name="li"></param>
         public IntersectionAdder(LineIntersector li)
         {
             this.li = li;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public LineIntersector LineIntersector
         {
-            get
-            {
-                return li;
-            }
+            get { return li; }
         }
 
         /// <summary>
@@ -90,21 +60,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         public ICoordinate ProperIntersectionPoint
         {
-            get
-            {
-                return properIntersectionPoint;
-            }
+            get { return properIntersectionPoint; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool HasIntersection
+        public Boolean HasIntersection
         {
-            get
-            {
-                return hasIntersection;
-            }
+            get { return hasIntersection; }
         }
 
         /// <summary>
@@ -114,36 +75,27 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// an endpoint equal to the intersection, which according to SFS semantics
         /// can result in the point being on the Boundary of the <see cref="Geometry" />.
         /// </summary>
-        public bool HasProperIntersection
+        public Boolean HasProperIntersection
         {
-            get
-            {
-                return hasProper;
-            }
+            get { return hasProper; }
         }
 
         /// <summary>
         /// A proper interior intersection is a proper intersection which is not
         /// contained in the set of boundary nodes set for this <see cref="ISegmentIntersector" />.
         /// </summary>
-        public bool HasProperInteriorIntersection
+        public Boolean HasProperInteriorIntersection
         {
-            get
-            {
-                return hasProperInterior;
-            }
+            get { return hasProperInterior; }
         }
-        
+
         /// <summary>
         /// An interior intersection is an intersection which is
         /// in the interior of some segment.
         /// </summary>
-        public bool HasInteriorIntersection
+        public Boolean HasInteriorIntersection
         {
-            get
-            {
-                return hasInterior;
-            }
+            get { return hasInterior; }
         }
 
         /// <summary>
@@ -151,25 +103,24 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// is simply the point shared by adjacent line segments.
         /// Note that closed edges require a special check for the point shared by the beginning and end segments.
         /// </summary>
-        /// <param name="e0"></param>
-        /// <param name="segIndex0"></param>
-        /// <param name="e1"></param>
-        /// <param name="segIndex1"></param>
-        /// <returns></returns>
-        private bool IsTrivialIntersection(SegmentString e0, int segIndex0, SegmentString e1, int segIndex1)
+        private Boolean IsTrivialIntersection(SegmentString e0, Int32 segIndex0, SegmentString e1, Int32 segIndex1)
         {
-            if(e0 == e1)
+            if (e0 == e1)
             {
-                if(li.IntersectionNum == 1)
+                if (li.IntersectionNum == 1)
                 {
-                    if(IsAdjacentSegments(segIndex0, segIndex1))
+                    if (IsAdjacentSegments(segIndex0, segIndex1))
+                    {
                         return true;
+                    }
                     if (e0.IsClosed)
                     {
-                        int maxSegIndex = e0.Count - 1;
-                        if ( (segIndex0 == 0 && segIndex1 == maxSegIndex) || 
-                             (segIndex1 == 0 && segIndex0 == maxSegIndex) )                        
-                                return true;                        
+                        Int32 maxSegIndex = e0.Count - 1;
+                        if ((segIndex0 == 0 && segIndex1 == maxSegIndex) ||
+                            (segIndex1 == 0 && segIndex0 == maxSegIndex))
+                        {
+                            return true;
+                        }
                     }
                 }
             }
@@ -184,14 +135,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// this call for segment pairs which they have determined do not intersect
         /// (e.g. by an disjoint envelope test).
         /// </summary>
-        /// <param name="e0"></param>
-        /// <param name="segIndex0"></param>
-        /// <param name="e1"></param>
-        /// <param name="segIndex1"></param>
-        public void ProcessIntersections(SegmentString e0, int segIndex0, SegmentString e1, int segIndex1)
+        public void ProcessIntersections(SegmentString e0, Int32 segIndex0, SegmentString e1, Int32 segIndex1)
         {
             if (e0 == e1 && segIndex0 == segIndex1)
+            {
                 return;
+            }
 
             NumTests++;
             ICoordinate p00 = e0.Coordinates[segIndex0];
@@ -199,14 +148,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             ICoordinate p10 = e1.Coordinates[segIndex1];
             ICoordinate p11 = e1.Coordinates[segIndex1 + 1];
 
-            li.ComputeIntersection(p00, p01, p10, p11);            
-            if(li.HasIntersection)
-            {                
+            li.ComputeIntersection(p00, p01, p10, p11);
+            if (li.HasIntersection)
+            {
                 NumIntersections++;
                 if (li.IsInteriorIntersection())
                 {
                     NumInteriorIntersections++;
-                    hasInterior = true;                    
+                    hasInterior = true;
                 }
                 // if the segments are adjacent they have at least one trivial intersection,
                 // the shared endpoint.  Don't bother adding it if it is the

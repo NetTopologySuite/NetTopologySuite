@@ -1,10 +1,5 @@
 using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Precision
 {
@@ -17,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <summary>
         /// Only static methods!
         /// </summary>
-        private EnhancedPrecisionOp() { }
+        private EnhancedPrecisionOp() {}
 
         /// <summary>
         /// Computes the set-theoretic intersection of two <c>Geometry</c>s, using enhanced precision.
@@ -28,6 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         public static IGeometry Intersection(IGeometry geom0, IGeometry geom1)
         {
             ApplicationException originalEx = null;
+
             try
             {
                 IGeometry result = geom0.Intersection(geom1);
@@ -37,6 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             {
                 originalEx = ex;
             }
+
             /*
              * If we are here, the original op encountered a precision problem
              * (or some other problem).  Retry the operation with
@@ -46,9 +43,13 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             {
                 CommonBitsOp cbo = new CommonBitsOp(true);
                 IGeometry resultEP = cbo.Intersection(geom0, geom1);
+                
                 // check that result is a valid point after the reshift to orginal precision
                 if (!resultEP.IsValid)
+                {
                     throw originalEx;
+                }
+
                 return resultEP;
             }
             catch (ApplicationException)
@@ -66,6 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         public static IGeometry Union(IGeometry geom0, IGeometry geom1)
         {
             ApplicationException originalEx = null;
+
             try
             {
                 IGeometry result = geom0.Union(geom1);
@@ -75,6 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             {
                 originalEx = ex;
             }
+
             /*
              * If we are here, the original op encountered a precision problem
              * (or some other problem).  Retry the operation with
@@ -84,9 +87,13 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             {
                 CommonBitsOp cbo = new CommonBitsOp(true);
                 IGeometry resultEP = cbo.Union(geom0, geom1);
+
                 // check that result is a valid point after the reshift to orginal precision
                 if (!resultEP.IsValid)
+                {
                     throw originalEx;
+                }
+
                 return resultEP;
             }
             catch (ApplicationException)
@@ -113,6 +120,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             {
                 originalEx = ex;
             }
+
             /*
              * If we are here, the original op encountered a precision problem
              * (or some other problem).  Retry the operation with
@@ -122,9 +130,13 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             {
                 CommonBitsOp cbo = new CommonBitsOp(true);
                 IGeometry resultEP = cbo.Difference(geom0, geom1);
+
                 // check that result is a valid point after the reshift to orginal precision
                 if (!resultEP.IsValid)
+                {
                     throw originalEx;
+                }
+
                 return resultEP;
             }
             catch (ApplicationException)
@@ -142,6 +154,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         public static IGeometry SymDifference(IGeometry geom0, IGeometry geom1)
         {
             ApplicationException originalEx = null;
+
             try
             {
                 IGeometry result = geom0.SymmetricDifference(geom1);
@@ -151,6 +164,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             {
                 originalEx = ex;
             }
+
             /*
              * If we are here, the original op encountered a precision problem
              * (or some other problem).  Retry the operation with
@@ -160,9 +174,13 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             {
                 CommonBitsOp cbo = new CommonBitsOp(true);
                 IGeometry resultEP = cbo.SymDifference(geom0, geom1);
+
                 // check that result is a valid point after the reshift to orginal precision
                 if (!resultEP.IsValid)
+                {
                     throw originalEx;
+                }
+
                 return resultEP;
             }
             catch (ApplicationException)
@@ -180,9 +198,10 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <param name="distance">The buffer distance.</param>
         /// <returns>The Geometry representing the buffer of the input Geometry.</returns>
         [Obsolete("This method should no longer be necessary, since the buffer algorithm now is highly robust.")]
-        public static IGeometry Buffer(IGeometry geom, double distance)
+        public static IGeometry Buffer(IGeometry geom, Double distance)
         {
             ApplicationException originalEx = null;
+
             try
             {
                 IGeometry result = geom.Buffer(distance);
@@ -192,6 +211,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             {
                 originalEx = ex;
             }
+
             /*
              * If we are here, the original op encountered a precision problem
              * (or some other problem).  Retry the operation with
@@ -201,9 +221,13 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             {
                 CommonBitsOp cbo = new CommonBitsOp(true);
                 IGeometry resultEP = cbo.Buffer(geom, distance);
+
                 // check that result is a valid point after the reshift to orginal precision
                 if (!resultEP.IsValid)
+                {
                     throw originalEx;
+                }
+
                 return resultEP;
             }
             catch (ApplicationException)

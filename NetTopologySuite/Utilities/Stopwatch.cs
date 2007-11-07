@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Text;
 
 namespace GisSharpBlog.NetTopologySuite.Utilities
 {
@@ -12,26 +10,17 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
     {
         private DateTime startTime;
 
-        /// <summary>
-        /// 
-        /// </summary>
         public Stopwatch()
         {
             startTime = DateTime.Now;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public void Start()
         {
             startTime = DateTime.Now;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public int Time
+        public Int32 Time
         {
             get
             {
@@ -41,15 +30,12 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public String TimeAsString
         {
             get
             {
-                int totalTime = Time;
-                string totalTimeStr = totalTime < 10000 ? totalTime + " ms" : (double)totalTime / 1000.0 + " s";
+                Int32 totalTime = Time;
+                string totalTimeStr = totalTime < 10000 ? totalTime + " ms" : (Double)totalTime / 1000.0 + " s";
                 return totalTimeStr;
             }
         }

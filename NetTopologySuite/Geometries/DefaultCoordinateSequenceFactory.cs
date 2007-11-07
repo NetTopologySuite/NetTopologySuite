@@ -1,7 +1,5 @@
 using System;
 
-using GeoAPI.Geometries;
-
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>
@@ -14,18 +12,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     {
         // NOTE: modified for "safe" assembly in Sql 2005
         // Readonly added
-        private static readonly DefaultCoordinateSequenceFactory instance = 
+        private static readonly DefaultCoordinateSequenceFactory instance =
             new DefaultCoordinateSequenceFactory();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private DefaultCoordinateSequenceFactory() { }
+        private DefaultCoordinateSequenceFactory() {}
 
         // see http://www.javaworld.com/javaworld/javatips/jw-javatip122.html
         private object ReadResolve()
         {
-            return DefaultCoordinateSequenceFactory.Instance;
+            return Instance;
         }
 
         /// <summary>
@@ -34,10 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>Singleton instance of DefaultCoordinateSequenceFactory.</returns>
         public static DefaultCoordinateSequenceFactory Instance
         {
-            get
-            {
-                return instance;
-            }
+            get { return instance; }
         }
 
         /// <summary>
@@ -57,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             throw new NotImplementedException();
         }
 
-        public ICoordinateSequence Create(int size, int dimension)
+        public ICoordinateSequence Create(Int32 size, Int32 dimension)
         {
             throw new NotImplementedException();
         }

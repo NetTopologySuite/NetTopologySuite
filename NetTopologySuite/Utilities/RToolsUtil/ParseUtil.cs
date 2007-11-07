@@ -45,10 +45,10 @@ namespace RTools_NTS.Util
 		/// to parse.  If this is negative, then it is not used.</param>
 		/// <param name="log">A Logger to use for messages.</param>
 		/// <returns>The Array, or null for error.</returns>
-		public static Array BuildArray(ArrayList tokens, ref int i, Type type,
-			Token endToken, int maxLength, Logger log)
+		public static Array BuildArray(ArrayList tokens, ref Int32 i, Type type,
+			Token endToken, Int32 maxLength, Logger log)
 		{
-			int len = tokens.Count;
+			Int32 len = tokens.Count;
 			if (i >= len) 
 			{
 				log.Error("BuildArray: Input index too large.");
@@ -64,7 +64,7 @@ namespace RTools_NTS.Util
 
 			Token token = null;
 			token = (Token)tokens[i++];
-			int arrayLength = 0;
+			Int32 arrayLength = 0;
 
 			while ((!(token is EofToken)) && (token != endToken) && (i < len)
 				&& ((maxLength < 0) || (arrayLength < maxLength)))
@@ -80,15 +80,15 @@ namespace RTools_NTS.Util
 		}
 
 		/// <summary>
-		/// Given a Token[] and a reference int, skip forward
+		/// Given a Token[] and a reference Int32, skip forward
 		/// in the token array until a WordToken is found,
-		/// and leave the reference int at that index.
+		/// and leave the reference Int32 at that index.
 		/// </summary>
 		/// <param name="tokens">The token array.</param>
 		/// <param name="i">The start index, and the result index.</param>
-		/// <returns>bool - true for success, false for 
+		/// <returns>Boolean - true for success, false for 
 		/// hit the end of the tokens.</returns>
-		public static bool SkipToWord(Token[] tokens, ref int i)
+		public static Boolean SkipToWord(Token[] tokens, ref Int32 i)
 		{
 			while (!(tokens[i] is WordToken))
 			{
@@ -99,16 +99,16 @@ namespace RTools_NTS.Util
 		}
 
 		/// <summary>
-		/// Given a Token[], a reference int and a string, skip forward
+		/// Given a Token[], a reference Int32 and a string, skip forward
 		/// in the token array until a token matches the string
-		/// and leave the reference int at that index.
+		/// and leave the reference Int32 at that index.
 		/// </summary>
 		/// <param name="tokens">The token array.</param>
 		/// <param name="i">The start index, and the result index.</param>
 		/// <param name="s">The string to look for.</param>
-		/// <returns>bool - true for success, false for 
+		/// <returns>Boolean - true for success, false for 
 		/// hit the end of the tokens.</returns>
-		public static bool SkipToStringValue(Token[] tokens, ref int i,
+		public static Boolean SkipToStringValue(Token[] tokens, ref Int32 i,
 			string s)
 		{
 			while (tokens[i] != s)
@@ -120,16 +120,16 @@ namespace RTools_NTS.Util
 		}
 
 		/// <summary>
-		/// Given a Token[] and a reference int, skip forward
+		/// Given a Token[] and a reference Int32, skip forward
 		/// in the token array until a WordToken is found,
-		/// and leave the reference int at that index.
+		/// and leave the reference Int32 at that index.
 		/// </summary>
 		/// <param name="tokens">The token array.</param>
 		/// <param name="i">The start index, and the result index.</param>
 		/// <param name="c">The char to look for.</param>
-		/// <returns>bool - true for success, false for 
+		/// <returns>Boolean - true for success, false for 
 		/// hit the end of the tokens.</returns>
-		public static bool SkipToChar(Token[] tokens, ref int i,
+		public static Boolean SkipToChar(Token[] tokens, ref Int32 i,
 			char c)
 		{
 			while(tokens[i] != c)
@@ -141,15 +141,15 @@ namespace RTools_NTS.Util
 		}
 
 		/// <summary>
-		/// Given a Token[] and a reference int, skip forward
+		/// Given a Token[] and a reference Int32, skip forward
 		/// in the token array until a WordToken is found,
-		/// and leave the reference int at that index.
+		/// and leave the reference Int32 at that index.
 		/// </summary>
 		/// <param name="tokens">The token array.</param>
 		/// <param name="i">The start index, and the result index.</param>
-		/// <returns>bool - true for success, false for 
+		/// <returns>Boolean - true for success, false for 
 		/// hit the end of the tokens.</returns>
-		public static bool SkipWs(Token[] tokens, ref int i)
+		public static Boolean SkipWs(Token[] tokens, ref Int32 i)
 		{
 			while (tokens[i] is WhitespaceToken) 
 			{ 
@@ -160,15 +160,15 @@ namespace RTools_NTS.Util
 		}
 
 		/// <summary>
-		/// Given a Token[] and a reference int, skip forward
+		/// Given a Token[] and a reference Int32, skip forward
 		/// in the token array until a WordToken is found,
-		/// and leave the reference int at that index.
+		/// and leave the reference Int32 at that index.
 		/// </summary>
 		/// <param name="tokens">The token array.</param>
 		/// <param name="i">The start index, and the result index.</param>
-		/// <returns>bool - true for success, false for 
+		/// <returns>Boolean - true for success, false for 
 		/// hit the end of the tokens.</returns>
-		public static bool SkipToEol(Token[] tokens, ref int i)
+		public static Boolean SkipToEol(Token[] tokens, ref Int32 i)
 		{
 			if ((i < 0) || (i >= tokens.Length)) return(false);
 			while (!(tokens[i] is EolToken))
@@ -180,24 +180,24 @@ namespace RTools_NTS.Util
 		}
 
 		/// <summary>
-		/// Given a Token[] and a reference int, skip forward
+		/// Given a Token[] and a reference Int32, skip forward
 		/// in the token array until a WordToken is found,
-		/// and leave the reference int at that index.
+		/// and leave the reference Int32 at that index.
 		/// </summary>
 		/// <param name="tokens">The token array.</param>
 		/// <param name="dropTokens">The tokens to drop.</param>
-		/// <returns>bool - true for success, false for 
+		/// <returns>Boolean - true for success, false for 
 		/// hit the end of the tokens.</returns>
 		public static Token[] DropTokens(Token[] tokens, 
 			Token[] dropTokens)
 		{
 			ArrayList outputList = new ArrayList();
 			
-			int i = 0;
+			Int32 i = 0;
 			for (i = 0; i < tokens.Length; i++)
 			{
-				bool dropIt = false;
-				for (int j = 0; j < dropTokens.Length; j++)
+				Boolean dropIt = false;
+				for (Int32 j = 0; j < dropTokens.Length; j++)
 				{
 					if (tokens[i].Equals(dropTokens[j])) dropIt = true;
 				}
@@ -216,7 +216,7 @@ namespace RTools_NTS.Util
 		/// Find matching closing character.
 		/// The matchable pairs of characters are parenthesis (), 
 		/// square brackets [], and curly braces {}.
-		/// Given a Token[] and a reference int containing the index
+		/// Given a Token[] and a reference Int32 containing the index
 		/// in the Token[] of a matchable? char, skip forward
 		/// in the token array until the matching character is found.
 		/// </summary>
@@ -229,9 +229,9 @@ namespace RTools_NTS.Util
 		/// <param name="tokens">The token array.</param>
 		/// <param name="i">The start index, and the result index.</param>
 		/// <param name="c">The start character whose match is to be found.</param>
-		/// <returns>bool - true for success, false for 
+		/// <returns>Boolean - true for success, false for 
 		/// hit the end of the tokens.</returns>
-		public static bool FindMatch(Token[] tokens, ref int i,
+		public static Boolean FindMatch(Token[] tokens, ref Int32 i,
 			char c)
 		{
 			char endChar;
@@ -240,7 +240,7 @@ namespace RTools_NTS.Util
 			else if (c == '[') endChar = ']';
 			else return(false);
 
-			int nestLevel = 1; // count first one
+			Int32 nestLevel = 1; // count first one
 
 			// i'th token must be the start character
 			if (tokens[i] != c)
@@ -266,8 +266,8 @@ namespace RTools_NTS.Util
 		/// <summary>
 		/// Simple test of some ParseUtil methods.
 		/// </summary>
-		/// <returns>bool - true for all passed, false otherwise</returns>
-		public static bool TestSelf()
+		/// <returns>Boolean - true for all passed, false otherwise</returns>
+		public static Boolean TestSelf()
 		{
 			Logger log = new Logger("ParseUtil: TestSelf");
 			log.Info("Starting...");
@@ -281,7 +281,7 @@ namespace RTools_NTS.Util
 			foreach(Token t in alist) log.Debug("Token = {0}", t);
 
 			Token[] tarray = (Token[])alist.ToArray(typeof(Token));
-			int i = 0;
+			Int32 i = 0;
 			if (!FindMatch(tarray, ref i, '{'))
 			{
 				log.Error("FindMatch failed to match { char");

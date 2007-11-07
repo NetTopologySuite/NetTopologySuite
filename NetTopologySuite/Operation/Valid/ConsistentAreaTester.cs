@@ -1,14 +1,9 @@
 using System;
 using System.Collections;
-using System.Text;
-
-using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
+using GeoAPI.Coordinates;
+using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
-using GisSharpBlog.NetTopologySuite.Operation;
-using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Operation.Relate;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
@@ -22,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// Testing for duplicate rings.
     /// If an inconsistency if found the location of the problem is recorded.
     /// </summary>
-    public class ConsistentAreaTester 
+    public class ConsistentAreaTester
     {
         private readonly LineIntersector li = new RobustLineIntersector();
         private GeometryGraph geomGraph;
@@ -45,16 +40,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// </summary>        
         public ICoordinate InvalidPoint
         {
-            get
-            {
-                return invalidPoint;
-            }
+            get { return invalidPoint; }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsNodeConsistentArea
+        public Boolean IsNodeConsistentArea
         {
             get
             {
@@ -77,11 +69,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// Check all nodes to see if their labels are consistent.
         /// If any are not, return false.
         /// </summary>
-        private bool IsNodeEdgeAreaLabelsConsistent
+        private Boolean IsNodeEdgeAreaLabelsConsistent
         {
             get
             {
-                for (IEnumerator nodeIt = nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext(); )
+                for (IEnumerator nodeIt = nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext();)
                 {
                     RelateNode node = (RelateNode) nodeIt.Current;
                     if (!node.Edges.IsAreaLabelsConsistent)
@@ -106,14 +98,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// The start point of one of the equal rings will be placed in invalidPoint.
         /// Returns <c>true</c> if this area Geometry is topologically consistent but has two duplicate rings.
         /// </summary>
-        public bool HasDuplicateRings
+        public Boolean HasDuplicateRings
         {
             get
             {
-                for (IEnumerator nodeIt = nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext(); )
+                for (IEnumerator nodeIt = nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext();)
                 {
                     RelateNode node = (RelateNode) nodeIt.Current;
-                    for (IEnumerator i = node.Edges.GetEnumerator(); i.MoveNext(); )
+                    for (IEnumerator i = node.Edges.GetEnumerator(); i.MoveNext();)
                     {
                         EdgeEndBundle eeb = (EdgeEndBundle) i.Current;
                         if (eeb.EdgeEnds.Count > 1)

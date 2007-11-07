@@ -1,66 +1,40 @@
 using System;
-using System.Collections;
-using System.Text;
-
-using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class SweepLineSegment
     {
         private Edge edge;
         private ICoordinate[] pts;
-        int ptIndex;
+        private Int32 ptIndex;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="edge"></param>
-        /// <param name="ptIndex"></param>
-        public SweepLineSegment(Edge edge, int ptIndex)
+        public SweepLineSegment(Edge edge, Int32 ptIndex)
         {
             this.edge = edge;
             this.ptIndex = ptIndex;
             pts = edge.Coordinates;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public double MinX
+        public Double MinX
         {
             get
             {
-                double x1 = pts[ptIndex].X;
-                double x2 = pts[ptIndex + 1].X;
+                Double x1 = pts[ptIndex].X;
+                Double x2 = pts[ptIndex + 1].X;
                 return x1 < x2 ? x1 : x2;
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public double MaxX
+        public Double MaxX
         {
             get
             {
-                double x1 = pts[ptIndex].X;
-                double x2 = pts[ptIndex + 1].X;
+                Double x1 = pts[ptIndex].X;
+                Double x2 = pts[ptIndex + 1].X;
                 return x1 > x2 ? x1 : x2;
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ss"></param>
-        /// <param name="si"></param>
         public void ComputeIntersections(SweepLineSegment ss, SegmentIntersector si)
         {
             si.AddIntersections(edge, ptIndex, ss.edge, ss.ptIndex);

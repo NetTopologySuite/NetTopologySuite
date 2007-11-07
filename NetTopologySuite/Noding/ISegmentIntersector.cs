@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
@@ -19,10 +17,6 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// of the <see cref="ISegmentIntersector" /> interface to process
         /// intersections for two segments of the <see cref="SegmentString" />s being intersected.
         /// </summary>
-        /// <param name="e0"></param>
-        /// <param name="segIndex0"></param>
-        /// <param name="e1"></param>
-        /// <param name="segIndex1"></param>
-        void ProcessIntersections(SegmentString e0, int segIndex0, SegmentString e1, int segIndex1);
+        void ProcessIntersections(SegmentString e0, Int32 segIndex0, SegmentString e1, Int32 segIndex1);
     }
 }

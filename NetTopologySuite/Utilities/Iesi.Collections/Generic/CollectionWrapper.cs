@@ -1,18 +1,17 @@
 using System;
-using System.Collections.Generic;
 using System.Collections;
-using System.Text;
+using System.Collections.Generic;
 
-namespace Iesi_NTS.Collections.Generic 
+namespace Iesi_NTS.Collections.Generic
 {
     public class CollectionWrapper<T> : EnumerableWrapper<T>, ICollection<T>
     {
         private ICollection innerCollection;
-        public CollectionWrapper(ICollection toWrap) :base(toWrap)
+
+        public CollectionWrapper(ICollection toWrap) : base(toWrap)
         {
-            this.innerCollection = toWrap;
+            innerCollection = toWrap;
         }
-        
 
         #region ICollection<T> Members
 
@@ -26,40 +25,44 @@ namespace Iesi_NTS.Collections.Generic
             ThrowReadOnlyException();
         }
 
-        public bool Contains(T item)
+        public Boolean Contains(T item)
         {
             foreach (object o in innerCollection)
-                if ( (object)item == o) return true;
+            {
+                if ((object) item == o)
+                {
+                    return true;
+                }
+            }
             return false;
         }
 
-        public void CopyTo(T[] array, int arrayIndex)
+        public void CopyTo(T[] array, Int32 arrayIndex)
         {
             innerCollection.CopyTo(array, arrayIndex);
         }
 
-        public int Count
+        public Int32 Count
         {
             get { return innerCollection.Count; }
         }
 
-        public bool IsReadOnly
+        public Boolean IsReadOnly
         {
             get { return true; //always return true since the old ICollection does not support mutation 
             }
         }
 
-        public bool Remove(T item)
+        public Boolean Remove(T item)
         {
             return ThrowReadOnlyException();
         }
 
         #endregion
-        
-        private bool ThrowReadOnlyException()
+
+        private Boolean ThrowReadOnlyException()
         {
             throw new NotSupportedException("The ICollection is read-only.");
-        
         }
     }
 }

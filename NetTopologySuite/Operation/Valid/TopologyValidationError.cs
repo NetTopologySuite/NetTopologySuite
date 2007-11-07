@@ -1,9 +1,4 @@
 using System;
-using System.Collections;
-using System.Text;
-
-using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
@@ -13,19 +8,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// a <see cref="Geometry" /> validation error.
     /// </summary>
     public enum TopologyValidationErrors
-    {     
+    {
         /// <summary>
         /// Not used.
         /// </summary>
-        [Obsolete("Not used")]
-        Error = 0,
+        [Obsolete("Not used")] Error = 0,
 
         /// <summary>
         /// No longer used: 
         /// repeated points are considered valid as per the SFS.
         /// </summary>
-        [Obsolete("No longer used: repeated points are considered valid as per the SFS")]
-        RepeatedPoint = 1,
+        [Obsolete("No longer used: repeated points are considered valid as per the SFS")] RepeatedPoint = 1,
 
         /// <summary>
         /// Indicates that a hole of a polygon lies partially 
@@ -93,87 +86,58 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// Contains information about the nature and location of a <c>Geometry</c>
     /// validation error.
     /// </summary>
-    public class TopologyValidationError 
-    {        
+    public class TopologyValidationError
+    {
         // NOTE: modified for "safe" assembly in Sql 2005
         // Added readonly!
 
         /// <summary>
         /// These messages must synch up with the indexes above
         /// </summary>
-        private static readonly string[] errMsg = 
-        {
-            "Topology Validation Error",
-            "Repeated Point",
-            "Hole lies outside shell",
-            "Holes are nested",
-            "Interior is disconnected",
-            "Self-intersection",
-            "Ring Self-intersection",
-            "Nested shells",
-            "Duplicate Rings",
-            "Too few points in geometry component",
-            "Invalid Coordinate"
-        };
+        private static readonly string[] errMsg =
+            {
+                "Topology Validation Error",
+                "Repeated Point",
+                "Hole lies outside shell",
+                "Holes are nested",
+                "Interior is disconnected",
+                "Self-intersection",
+                "Ring Self-intersection",
+                "Nested shells",
+                "Duplicate Rings",
+                "Too few points in geometry component",
+                "Invalid Coordinate"
+            };
 
         private TopologyValidationErrors errorType;
         private ICoordinate pt;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="errorType"></param>
-        /// <param name="pt"></param>
         public TopologyValidationError(TopologyValidationErrors errorType, ICoordinate pt)
         {
             this.errorType = errorType;
-            if(pt != null)
+            if (pt != null)
+            {
                 this.pt = (ICoordinate) pt.Clone();
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="errorType"></param>
-        public TopologyValidationError(TopologyValidationErrors errorType) : this(errorType, null) { }
+        public TopologyValidationError(TopologyValidationErrors errorType) : this(errorType, null) {}
 
-        /// <summary>
-        /// 
-        /// </summary>
         public ICoordinate Coordinate
         {
-            get
-            {
-                return pt;
-            }
+            get { return pt; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public TopologyValidationErrors ErrorType
         {
-            get
-            {
-                return errorType;
-            }
+            get { return errorType; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public String Message
         {
-            get
-            {
-                return errMsg[(int) errorType];
-            }
+            get { return errMsg[(Int32) errorType]; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
             return Message + " at or near point " + pt;

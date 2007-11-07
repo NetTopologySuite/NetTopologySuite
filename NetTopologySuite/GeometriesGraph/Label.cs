@@ -1,10 +1,6 @@
 using System;
-using System.Collections;
 using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -28,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// It is up to the client code to associate the 0 and 1 <c>TopologyLocation</c>s
     /// with specific geometries.
     /// </summary>
-    public class Label 
+    public class Label
     {
         /// <summary>
         /// Converts a Label to a Line label (that is, one with no side Locations).
@@ -38,8 +34,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public static Label ToLineLabel(Label label)
         {
             Label lineLabel = new Label(Locations.Null);
-            for (int i = 0; i < 2; i++) 
-                lineLabel.SetLocation(i, label.GetLocation(i));            
+
+            for (Int32 i = 0; i < 2; i++)
+            {
+                lineLabel.SetLocation(i, label.GetLocation(i));
+            }
+
             return lineLabel;
         }
 
@@ -49,7 +49,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Construct a Label with a single location for both Geometries.
         /// Initialize the locations to Null.
         /// </summary>
-        /// <param name="onLoc"></param>
         public Label(Locations onLoc)
         {
             elt[0] = new TopologyLocation(onLoc);
@@ -60,9 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Construct a Label with a single location for both Geometries.
         /// Initialize the location for the Geometry index.
         /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="onLoc"></param>
-        public Label(int geomIndex, Locations onLoc)
+        public Label(Int32 geomIndex, Locations onLoc)
         {
             elt[0] = new TopologyLocation(Locations.Null);
             elt[1] = new TopologyLocation(Locations.Null);
@@ -73,9 +70,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Construct a Label with On, Left and Right locations for both Geometries.
         /// Initialize the locations for both Geometries to the given values.
         /// </summary>
-        /// <param name="onLoc"></param>
-        /// <param name="leftLoc"></param>
-        /// <param name="rightLoc"></param>
         public Label(Locations onLoc, Locations leftLoc, Locations rightLoc)
         {
             elt[0] = new TopologyLocation(onLoc, leftLoc, rightLoc);
@@ -86,11 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Construct a Label with On, Left and Right locations for both Geometries.
         /// Initialize the locations for the given Geometry index.
         /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="onLoc"></param>
-        /// <param name="leftLoc"></param>
-        /// <param name="rightLoc"></param>
-        public Label(int geomIndex, Locations onLoc, Locations leftLoc, Locations rightLoc)
+        public Label(Int32 geomIndex, Locations onLoc, Locations leftLoc, Locations rightLoc)
         {
             elt[0] = new TopologyLocation(Locations.Null, Locations.Null, Locations.Null);
             elt[1] = new TopologyLocation(Locations.Null, Locations.Null, Locations.Null);
@@ -101,11 +91,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Construct a Label with the same values as the argument for the
         /// given Geometry index.
         /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="gl"></param>
-        public Label(int geomIndex, TopologyLocation gl)
+        public Label(Int32 geomIndex, TopologyLocation gl)
         {
-
             elt[0] = new TopologyLocation(gl.GetLocations());
             elt[1] = new TopologyLocation(gl.GetLocations());
             elt[geomIndex].SetLocations(gl);
@@ -114,89 +101,49 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary> 
         /// Construct a Label with the same values as the argument Label.
         /// </summary>
-        /// <param name="lbl"></param>
         public Label(Label lbl)
         {
             elt[0] = new TopologyLocation(lbl.elt[0]);
             elt[1] = new TopologyLocation(lbl.elt[1]);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public  void Flip()
+        public void Flip()
         {
             elt[0].Flip();
             elt[1].Flip();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="posIndex"></param>
-        /// <returns></returns>
-        public  Locations GetLocation(int geomIndex, Positions posIndex) 
-        { 
-            return elt[geomIndex].Get(posIndex); 
+        public Locations GetLocation(Int32 geomIndex, Positions posIndex)
+        {
+            return elt[geomIndex].Get(posIndex);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <returns></returns>
-        public  Locations GetLocation(int geomIndex) 
-        { 
-            return elt[geomIndex].Get(Positions.On); 
+        public Locations GetLocation(Int32 geomIndex)
+        {
+            return elt[geomIndex].Get(Positions.On);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="posIndex"></param>
-        /// <param name="location"></param>
-        public  void SetLocation(int geomIndex, Positions posIndex, Locations location)
+        public void SetLocation(Int32 geomIndex, Positions posIndex, Locations location)
         {
             elt[geomIndex].SetLocation(posIndex, location);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="location"></param>
-        public  void SetLocation(int geomIndex, Locations location)
+        public void SetLocation(Int32 geomIndex, Locations location)
         {
             elt[geomIndex].SetLocation(Positions.On, location);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="location"></param>
-        public  void SetAllLocations(int geomIndex, Locations location)
+        public void SetAllLocations(Int32 geomIndex, Locations location)
         {
             elt[geomIndex].SetAllLocations(location);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="location"></param>
-        public  void SetAllLocationsIfNull(int geomIndex, Locations location)
+        public void SetAllLocationsIfNull(Int32 geomIndex, Locations location)
         {
             elt[geomIndex].SetAllLocationsIfNull(location);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="location"></param>
-        public  void SetAllLocationsIfNull(Locations location)
+        public void SetAllLocationsIfNull(Locations location)
         {
             SetAllLocationsIfNull(0, location);
             SetAllLocationsIfNull(1, location);
@@ -206,113 +153,81 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Merge this label with another one.
         /// Merging updates any null attributes of this label with the attributes from lbl.
         /// </summary>
-        /// <param name="lbl"></param>
-        public  void Merge(Label lbl)
+        public void Merge(Label lbl)
         {
-            for (int i = 0; i < 2; i++) 
+            for (Int32 i = 0; i < 2; i++)
             {
-                if (elt[i] == null && lbl.elt[i] != null) 
-                     elt[i] = new TopologyLocation(lbl.elt[i]);            
-                else elt[i].Merge(lbl.elt[i]);            
+                if (elt[i] == null && lbl.elt[i] != null)
+                {
+                    elt[i] = new TopologyLocation(lbl.elt[i]);
+                }
+                else
+                {
+                    elt[i].Merge(lbl.elt[i]);
+                }
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="tl"></param>
-        private void SetGeometryLocation(int geomIndex, TopologyLocation tl)
+        private void SetGeometryLocation(Int32 geomIndex, TopologyLocation tl)
         {
-            if (tl == null) 
+            if (tl == null)
+            {
                 return;
+            }
             elt[geomIndex].SetLocations(tl);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public  int GeometryCount
+        public Int32 GeometryCount
         {
             get
             {
-                int count = 0;
-                if (!elt[0].IsNull) 
+                Int32 count = 0;
+
+                if (!elt[0].IsNull)
+                {
                     count++;
-                if (!elt[1].IsNull) 
+                }
+
+                if (!elt[1].IsNull)
+                {
                     count++;
+                }
+
                 return count;
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <returns></returns>
-        public  bool IsNull(int geomIndex) 
+        public Boolean IsNull(Int32 geomIndex)
         {
-            return elt[geomIndex].IsNull; 
+            return elt[geomIndex].IsNull;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <returns></returns>
-        public  bool IsAnyNull(int geomIndex)
-        { 
-            return elt[geomIndex].IsAnyNull; 
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public  bool IsArea()               
-        { 
-            return elt[0].IsArea || elt[1].IsArea;   
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <returns></returns>
-        public  bool IsArea(int geomIndex) 
+        public Boolean IsAnyNull(Int32 geomIndex)
         {
-            return elt[geomIndex].IsArea;   
+            return elt[geomIndex].IsAnyNull;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <returns></returns>
-        public  bool IsLine(int geomIndex)  
+        public Boolean IsArea()
         {
-            return elt[geomIndex].IsLine;   
+            return elt[0].IsArea || elt[1].IsArea;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="lbl"></param>
-        /// <param name="side"></param>
-        /// <returns></returns>
-        public  bool IsEqualOnSide(Label lbl, int side)
+        public Boolean IsArea(Int32 geomIndex)
         {
-            return  this.elt[0].IsEqualOnSide(lbl.elt[0], side)
-                &&  this.elt[1].IsEqualOnSide(lbl.elt[1], side);
+            return elt[geomIndex].IsArea;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="loc"></param>
-        /// <returns></returns>
-        public  bool AllPositionsEqual(int geomIndex, Locations loc)
+        public Boolean IsLine(Int32 geomIndex)
+        {
+            return elt[geomIndex].IsLine;
+        }
+
+        public Boolean IsEqualOnSide(Label lbl, Int32 side)
+        {
+            return elt[0].IsEqualOnSide(lbl.elt[0], side)
+                   && elt[1].IsEqualOnSide(lbl.elt[1], side);
+        }
+
+        public Boolean AllPositionsEqual(Int32 geomIndex, Locations loc)
         {
             return elt[geomIndex].AllPositionsEqual(loc);
         }
@@ -320,30 +235,30 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary> 
         /// Converts one GeometryLocation to a Line location.
         /// </summary>
-        /// <param name="geomIndex"></param>
-        public  void ToLine(int geomIndex)
+        public void ToLine(Int32 geomIndex)
         {
             if (elt[geomIndex].IsArea)
+            {
                 elt[geomIndex] = new TopologyLocation(elt[geomIndex].GetLocations()[0]);
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            if (elt[0] != null) 
+
+            if (elt[0] != null)
             {
                 sb.Append("a:");
                 sb.Append(elt[0].ToString());
             }
-            if (elt[1] != null) 
+
+            if (elt[1] != null)
             {
                 sb.Append(" b:");
                 sb.Append(elt[1].ToString());
             }
+
             return sb.ToString();
         }
     }

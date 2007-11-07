@@ -1,13 +1,9 @@
 using System;
 using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.Index.Quadtree;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
@@ -19,69 +15,57 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// </summary>
     public class QuadtreeNestedRingTester
     {
-        private GeometryGraph graph;  // used to find non-node vertices
+        private GeometryGraph graph; // used to find non-node vertices
         private IList rings = new ArrayList();
-        private IExtents totalEnv = new Envelope();
+        private IExtents totalEnv = new Extents();
         private Quadtree quadtree;
         private ICoordinate nestedPt;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="graph"></param>
         public QuadtreeNestedRingTester(GeometryGraph graph)
         {
             this.graph = graph;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public ICoordinate NestedPoint
         {
-            get
-            {
-                return nestedPt;
-            }
+            get { return nestedPt; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ring"></param>
         public void Add(ILinearRing ring)
         {
             rings.Add(ring);
             totalEnv.ExpandToInclude(ring.EnvelopeInternal);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public bool IsNonNested()
+        public Boolean IsNonNested()
         {
             BuildQuadtree();
 
-            for (int i = 0; i < rings.Count; i++)
+            for (Int32 i = 0; i < rings.Count; i++)
             {
                 ILinearRing innerRing = (ILinearRing) rings[i];
                 ICoordinate[] innerRingPts = innerRing.Coordinates;
 
-                IList results = quadtree.Query((Envelope) innerRing.EnvelopeInternal);
-                for (int j = 0; j < results.Count; j++)
+                IList results = quadtree.Query((Extents) innerRing.EnvelopeInternal);
+                for (Int32 j = 0; j < results.Count; j++)
                 {
                     ILinearRing searchRing = (ILinearRing) results[j];
                     ICoordinate[] searchRingPts = searchRing.Coordinates;
 
-                    if (innerRing == searchRing) continue;
+                    if (innerRing == searchRing)
+                    {
+                        continue;
+                    }
 
-                    if (!innerRing.EnvelopeInternal.Intersects(searchRing.EnvelopeInternal)) continue;
+                    if (!innerRing.EnvelopeInternal.Intersects(searchRing.EnvelopeInternal))
+                    {
+                        continue;
+                    }
 
                     ICoordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, graph);
                     Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
 
-                    bool isInside = CGAlgorithms.IsPointInRing(innerRingPt, searchRingPts);
+                    Boolean isInside = CGAlgorithms.IsPointInRing(innerRingPt, searchRingPts);
                     if (isInside)
                     {
                         nestedPt = innerRingPt;
@@ -92,17 +76,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             return true;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         private void BuildQuadtree()
         {
             quadtree = new Quadtree();
 
-            for (int i = 0; i < rings.Count; i++)
+            for (Int32 i = 0; i < rings.Count; i++)
             {
                 ILinearRing ring = (ILinearRing) rings[i];
-                Envelope env = (Envelope) ring.EnvelopeInternal;
+                Extents env = (Extents) ring.EnvelopeInternal;
                 quadtree.Insert(env, ring);
             }
         }

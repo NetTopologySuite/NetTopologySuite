@@ -1,59 +1,35 @@
 using System;
-using System.Collections;
-using System.Text;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
 {
-    /// <summary>
-    /// 
-    /// </summary>
+    // DESIGN_NOTE: Looks like a value type
     public class SweepLineInterval
     {
-        private double min, max;
-        private object item;
+        private Double min, max;
+        private Object item;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="min"></param>
-        /// <param name="max"></param>
-        public SweepLineInterval(double min, double max) : this(min, max, null) { }
+        public SweepLineInterval(Double min, Double max) : this(min, max, null) {}
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="min"></param>
-        /// <param name="max"></param>
-        /// <param name="item"></param>
-        public SweepLineInterval(double min, double max, object item)
+        public SweepLineInterval(Double min, Double max, object item)
         {
             this.min = min < max ? min : max;
             this.max = max > min ? max : min;
             this.item = item;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public double Min 
-        { 
-            get { return min; } 
-        }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        public double Max 
-        { 
-            get { return max; } 
+        public Double Min
+        {
+            get { return min; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public object Item 
-        { 
-            get { return item; } 
+        public Double Max
+        {
+            get { return max; }
+        }
+
+        public Object Item
+        {
+            get { return item; }
         }
     }
 }

@@ -17,7 +17,6 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// </summary>
     public abstract class GraphComponent
     {
-
         #region Static
 
         /// <summary>
@@ -26,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="i">A <see cref="IEnumerator" /> to scan.</param>
         /// <param name="visited">The state to set the <see cref="GraphComponent.Visited" /> flag to.</param>
-        public static void SetVisited(IEnumerator i, bool visited)
+        public static void SetVisited(IEnumerator i, Boolean visited)
         {
             while (i.MoveNext())
             {
@@ -41,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="i">A <see cref="IEnumerator" /> to scan.</param>
         /// <param name="marked">The state to set the <see cref="GraphComponent.Marked" /> flag to.</param>
-        public static void SetMarked(IEnumerator i, bool marked)
+        public static void SetMarked(IEnumerator i, Boolean marked)
         {
             while (i.MoveNext())
             {
@@ -58,7 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <param name="i">A <see cref="IEnumerator" /> to scan.</param>
         /// <param name="visitedState">The <see cref="GraphComponent.Visited" /> state to test.</param>
         /// <returns>The first <see cref="GraphComponent" /> found, or <c>null</c> if none found.</returns>
-        public static GraphComponent GetComponentWithVisitedState(IEnumerator i, bool visitedState)
+        public static GraphComponent GetComponentWithVisitedState(IEnumerator i, Boolean visitedState)
         {
             while (i.MoveNext())
             {
@@ -71,15 +70,8 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         
         #endregion
 
-        /// <summary>
-        /// 
-        /// </summary>
-        protected bool isMarked = false;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected bool isVisited = false;
+        protected Boolean isMarked = false;
+        protected Boolean isVisited = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GraphComponent"/> class.
@@ -89,7 +81,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Tests if a component has been visited during the course of a graph algorithm.
         /// </summary>              
-        public bool IsVisited
+        public Boolean IsVisited
         {
             get
             {
@@ -98,9 +90,9 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         }
 
         /// <summary> 
-        /// Gets or sets the visited flag for this component.
+        /// Gets/Sets the visited flag for this component.
         /// </summary>
-        public bool Visited
+        public Boolean Visited
         {
             get
             {
@@ -116,7 +108,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Tests if a component has been marked at some point during the processing
         /// involving this graph.
         /// </summary>
-        public bool IsMarked
+        public Boolean IsMarked
         {
             get
             {
@@ -125,9 +117,9 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         }
 
         /// <summary>
-        /// Gets or sets the marked flag for this component.
+        /// Gets/Sets the marked flag for this component.
         /// </summary>
-        public bool Marked
+        public Boolean Marked
         {
             get
             {
@@ -142,6 +134,6 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Tests whether this component has been removed from its containing graph.
         /// </summary>
-        public abstract bool IsRemoved { get; }
+        public abstract Boolean IsRemoved { get; }
     }
 }

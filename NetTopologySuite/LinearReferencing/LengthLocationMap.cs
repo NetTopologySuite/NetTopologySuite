@@ -1,7 +1,5 @@
 using System;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
@@ -13,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     /// Out-of-range values are clamped.
     /// </summary>
     public class LengthLocationMap
-    {        
+    {
         /// <summary>
         /// Computes the <see cref="LinearLocation" /> for a
         /// given length along a linear <see cref="Geometry" />.
@@ -21,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="linearGeom">The linear geometry to use.</param>
         /// <param name="length">The length index of the location.</param>
         /// <returns>The <see cref="LinearLocation" /> for the length.</returns>
-        public static LinearLocation GetLocation(IGeometry linearGeom, double length)
+        public static LinearLocation GetLocation(IGeometry linearGeom, Double length)
         {
             LengthLocationMap locater = new LengthLocationMap(linearGeom);
             return locater.GetLocation(length);
@@ -34,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="linearGeom">The linear geometry to use.</param>
         /// <param name="loc">The <see cref="LinearLocation" /> index of the location.</param>
         /// <returns>The length for the <see cref="LinearLocation" />.</returns>
-        public static double GetLength(IGeometry linearGeom, LinearLocation loc)
+        public static Double GetLength(IGeometry linearGeom, LinearLocation loc)
         {
             LengthLocationMap locater = new LengthLocationMap(linearGeom);
             return locater.GetLength(loc);
@@ -58,28 +56,25 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="length">The length index.</param>
         /// <returns>The corresponding <see cref="LinearLocation" />.</returns>
-        public LinearLocation GetLocation(double length)
+        public LinearLocation GetLocation(Double length)
         {
-            double forwardLength = length;
+            Double forwardLength = length;
             if (length < 0.0)
             {
-                double lineLen = linearGeom.Length;
+                Double lineLen = linearGeom.Length;
                 forwardLength = lineLen + length;
             }
             return GetLocationForward(forwardLength);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="length"></param>
-        /// <returns></returns>
-        private LinearLocation GetLocationForward(double length)
+        private LinearLocation GetLocationForward(Double length)
         {
             if (length <= 0.0)
+            {
                 return new LinearLocation();
+            }
 
-            double totalLength = 0.0;
+            Double totalLength = 0.0;
 
             foreach (LinearIterator.LinearElement element in new LinearIterator(linearGeom))
             {
@@ -87,43 +82,40 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
                 {
                     ICoordinate p0 = element.SegmentStart;
                     ICoordinate p1 = element.SegmentEnd;
-                    double segLen = p1.Distance(p0);
+                    Double segLen = p1.Distance(p0);
                     // length falls in this segment
                     if (totalLength + segLen > length)
                     {
-                        double frac = (length - totalLength) / segLen;
-                        int compIndex = element.ComponentIndex;
-                        int segIndex = element.VertexIndex;
+                        Double frac = (length - totalLength)/segLen;
+                        Int32 compIndex = element.ComponentIndex;
+                        Int32 segIndex = element.VertexIndex;
                         return new LinearLocation(compIndex, segIndex, frac);
                     }
                     totalLength += segLen;
-                }                
+                }
             }
             // length is longer than line - return end location
             return LinearLocation.GetEndLocation(linearGeom);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="loc"></param>
-        /// <returns></returns>
-        public double GetLength(LinearLocation loc)
+        public Double GetLength(LinearLocation loc)
         {
-            double totalLength = 0.0;
-            
+            Double totalLength = 0.0;
+
             foreach (LinearIterator.LinearElement element in new LinearIterator(linearGeom))
             {
                 if (!element.IsEndOfLine)
                 {
                     ICoordinate p0 = element.SegmentStart;
                     ICoordinate p1 = element.SegmentEnd;
-                    double segLen = p1.Distance(p0);
+                    Double segLen = p1.Distance(p0);
                     // length falls in this segment
                     if (loc.ComponentIndex == element.ComponentIndex && loc.SegmentIndex == element.VertexIndex)
-                        return totalLength + segLen * loc.SegmentFraction;                    
+                    {
+                        return totalLength + segLen*loc.SegmentFraction;
+                    }
                     totalLength += segLen;
-                }                
+                }
             }
             return totalLength;
         }

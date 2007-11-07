@@ -1,9 +1,5 @@
 using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -21,40 +17,24 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class InteriorPointArea
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
-        private static double Avg(double a, double b)
+        private static Double Avg(Double a, Double b)
         {
-            return (a + b) / 2.0;
+            return (a + b)/2.0;
         }
 
         private IGeometryFactory factory;
         private ICoordinate interiorPoint = null;
-        private double maxWidth = 0;
+        private Double maxWidth = 0;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="g"></param>
         public InteriorPointArea(IGeometry g)
         {
             factory = g.Factory;
             Add(g);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public ICoordinate InteriorPoint
         {
-            get
-            {
-                return interiorPoint;
-            }
+            get { return interiorPoint; }
         }
 
         /// <summary> 
@@ -65,13 +45,18 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="geom">The point to add.</param>
         private void Add(IGeometry geom)
         {
-            if (geom is Polygon) 
-                AddPolygon(geom);            
-            else if (geom is IGeometryCollection) 
+            if (geom is Polygon)
+            {
+                AddPolygon(geom);
+            }
+            else if (geom is IGeometryCollection)
             {
                 IGeometryCollection gc = (IGeometryCollection) geom;
+                
                 foreach (IGeometry geometry in gc.Geometries)
+                {
                     Add(geometry);
+                }
             }
         }
 
@@ -90,59 +75,57 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             IGeometry intersections = bisector.Intersection(geometry);
             IGeometry widestIntersection = WidestGeometry(intersections);
 
-            double width = widestIntersection.EnvelopeInternal.Width;
+            Double width = widestIntersection.EnvelopeInternal.Width;
+            
             if (interiorPoint == null || width > maxWidth)
             {
                 interiorPoint = Centre(widestIntersection.EnvelopeInternal);
                 maxWidth = width;
             }
         }
-           
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geometry"></param>
+
         /// <returns>
         /// If point is a collection, the widest sub-point; otherwise,
         /// the point itself.
         /// </returns>
-        protected IGeometry WidestGeometry(IGeometry geometry) 
+        protected IGeometry WidestGeometry(IGeometry geometry)
         {
-            if (!(geometry is IGeometryCollection)) 
-                return geometry;        
+            if (!(geometry is IGeometryCollection))
+            {
+                return geometry;
+            }
+
             return WidestGeometry((IGeometryCollection) geometry);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="gc"></param>
-        /// <returns></returns>
         private IGeometry WidestGeometry(IGeometryCollection gc)
         {
-            if (gc.IsEmpty) 
+            if (gc.IsEmpty)
+            {
                 return gc;
+            }
 
             IGeometry widestGeometry = gc.GetGeometryN(0);
-            for (int i = 1; i < gc.NumGeometries; i++) //Start at 1        
+            
+            for (Int32 i = 1; i < gc.NumGeometries; i++) //Start at 1        
+            {
                 if (gc.GetGeometryN(i).EnvelopeInternal.Width > widestGeometry.EnvelopeInternal.Width)
-                    widestGeometry = gc.GetGeometryN(i);                            
+                {
+                    widestGeometry = gc.GetGeometryN(i);
+                }
+            }
+
             return widestGeometry;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geometry"></param>
-        /// <returns></returns>
         protected ILineString HorizontalBisector(IGeometry geometry)
         {
             IExtents envelope = geometry.EnvelopeInternal;
 
             // Assert: for areas, minx <> maxx
-            double avgY = Avg(envelope.MinY, envelope.MaxY);
+            Double avgY = Avg(envelope.MinY, envelope.MaxY);
             return factory.CreateLineString(
-                new ICoordinate[] { new Coordinate(envelope.MinX, avgY), new Coordinate(envelope.MaxX, avgY) });
+                new ICoordinate[] {new Coordinate(envelope.MinX, avgY), new Coordinate(envelope.MaxX, avgY)});
         }
 
         /// <summary> 

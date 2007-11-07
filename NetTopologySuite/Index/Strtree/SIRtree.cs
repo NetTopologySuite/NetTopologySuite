@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Text;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 {
@@ -10,104 +9,72 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
     /// P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
     /// </summary>
-    public class SIRtree : AbstractStrTree 
+    public class SirTree : AbstractStrTree
     {
-        /// <summary>
-        /// 
-        /// </summary>
+        // DESIGN_NOTE: Implement as delegate
         private class AnnonymousComparerImpl : IComparer
-        {    
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="o1"></param>
-            /// <param name="o2"></param>
-            /// <returns></returns>
-    
-            public int Compare(object o1, object o2) 
-            {
-                return new SIRtree().CompareDoubles(((Interval)((IBoundable)o1).Bounds).Centre, 
-                                                    ((Interval)((IBoundable)o2).Bounds).Centre);
-            }
-        }        
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private class AnonymousIntersectsOpImpl : IIntersectsOp
         {
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="aBounds"></param>
-            /// <param name="bBounds"></param>
-            /// <returns></returns>
-            public bool Intersects(object aBounds, object bBounds) 
+            public Int32 Compare(object o1, object o2)
             {
-                return ((Interval)aBounds).Intersects((Interval)bBounds);
+                return new SirTree().CompareDoubles(((Interval) ((IBoundable) o1).Bounds).Centre,
+                                                    ((Interval) ((IBoundable) o2).Bounds).Centre);
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        private class AnonymousIntersectsOpImpl : IIntersectsOp
+        {
+            public Boolean Intersects(object aBounds, object bBounds)
+            {
+                return ((Interval) aBounds).Intersects((Interval) bBounds);
+            }
+        }
+
         private class AnonymousAbstractNodeImpl : AbstractNode
         {
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="nodeCapacity"></param>
-            public AnonymousAbstractNodeImpl(int nodeCapacity) : base(nodeCapacity) { }
+            public AnonymousAbstractNodeImpl(Int32 nodeCapacity) : base(nodeCapacity) {}
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <returns></returns>
             protected override object ComputeBounds()
             {
                 Interval bounds = null;
-                for (IEnumerator i = ChildBoundables.GetEnumerator(); i.MoveNext(); )
+                for (IEnumerator i = ChildBoundables.GetEnumerator(); i.MoveNext();)
                 {
-                    IBoundable childBoundable = (IBoundable)i.Current;
+                    IBoundable childBoundable = (IBoundable) i.Current;
                     if (bounds == null)
-                         bounds = new Interval((Interval)childBoundable.Bounds);
-                    else bounds.ExpandToInclude((Interval)childBoundable.Bounds);
+                    {
+                        bounds = new Interval((Interval) childBoundable.Bounds);
+                    }
+                    else
+                    {
+                        bounds.ExpandToInclude((Interval) childBoundable.Bounds);
+                    }
                 }
                 return bounds;
             }
-        }       
+        }
 
-        private IComparer comparator = new AnnonymousComparerImpl(); 
+        private IComparer comparator = new AnnonymousComparerImpl();
         private IIntersectsOp intersectsOp = new AnonymousIntersectsOpImpl();
 
         /// <summary> 
         /// Constructs an SIRtree with the default (10) node capacity.
         /// </summary>
-        public SIRtree() : this(10) { }
+        public SirTree() : this(10) {}
 
         /// <summary> 
         /// Constructs an SIRtree with the given maximum number of child nodes that
         /// a node may have.
         /// </summary>
-        public SIRtree(int nodeCapacity) : base(nodeCapacity) { }
+        public SirTree(Int32 nodeCapacity) : base(nodeCapacity) {}
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="level"></param>
-        /// <returns></returns>
-        protected override AbstractNode CreateNode(int level) 
-        {                
+        protected override AbstractNode CreateNode(Int32 level)
+        {
             return new AnonymousAbstractNodeImpl(level);
         }
 
         /// <summary> 
         /// Inserts an item having the given bounds into the tree.
         /// </summary>
-        /// <param name="x1"></param>
-        /// <param name="x2"></param>
-        /// <param name="item"></param>
-        public void Insert(double x1, double x2, object item) 
+        public void Insert(Double x1, Double x2, object item)
         {
             base.Insert(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)), item);
         }
@@ -115,8 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <summary>
         /// Returns items whose bounds intersect the given value.
         /// </summary>
-        /// <param name="x"></param>
-        public IList Query(double x) 
+        public IList Query(Double x)
         {
             return Query(x, x);
         }
@@ -126,27 +92,17 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="x1">Possibly equal to x2.</param>
         /// <param name="x2">Possibly equal to x1.</param>
-        public IList Query(double x1, double x2) 
+        public IList Query(Double x1, Double x2)
         {
             return base.Query(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)));
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         protected override IIntersectsOp IntersectsOp
         {
-            get
-            {
-                return intersectsOp;
-            }
+            get { return intersectsOp; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        protected override IComparer GetComparer() 
+        protected override IComparer GetComparer()
         {
             return comparator;
         }

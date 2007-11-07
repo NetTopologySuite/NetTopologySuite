@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Collections;
-using System.Text;
+using System.Collections.Generic;
 
 namespace Iesi_NTS.Collections.Generic
 {
@@ -20,22 +19,23 @@ namespace Iesi_NTS.Collections.Generic
     public sealed class SetWrapper<T> : ISet<T>
     {
         private ISet innerSet;
-        
-        
-        private SetWrapper(){}
-        
+
+
+        private SetWrapper() {}
+
         public SetWrapper(ISet toWrap)
         {
             if (toWrap == null)
+            {
                 throw new ArgumentNullException();
-            this.innerSet = toWrap;
-            
+            }
+            innerSet = toWrap;
         }
-        
+
         #region ISet<T> Members
 
         #region Operators
-        
+
         public ISet<T> Union(ISet<T> a)
         {
             return getSetCopy().Union(a);
@@ -43,7 +43,7 @@ namespace Iesi_NTS.Collections.Generic
 
         public ISet<T> Intersect(ISet<T> a)
         {
-            return getSetCopy().Intersect(a);  
+            return getSetCopy().Intersect(a);
         }
 
         public ISet<T> Minus(ISet<T> a)
@@ -54,46 +54,46 @@ namespace Iesi_NTS.Collections.Generic
         public ISet<T> ExclusiveOr(ISet<T> a)
         {
             return getSetCopy().ExclusiveOr(a);
-        } 
-        
+        }
+
         #endregion
 
-        public bool Contains(T o)
+        public Boolean Contains(T o)
         {
             return innerSet.Contains(o);
         }
 
-        public bool ContainsAll(ICollection<T> c)
+        public Boolean ContainsAll(ICollection<T> c)
         {
             return innerSet.ContainsAll(getSetCopy(c));
         }
 
-        public bool IsEmpty
+        public Boolean IsEmpty
         {
             get { return innerSet.IsEmpty; }
         }
-        
-        public bool Add(T o)
+
+        public Boolean Add(T o)
         {
             return innerSet.Add(o);
         }
 
-        public bool AddAll(ICollection<T> c)
+        public Boolean AddAll(ICollection<T> c)
         {
             return innerSet.AddAll(getSetCopy(c));
         }
 
-        public bool Remove(T o)
+        public Boolean Remove(T o)
         {
             return innerSet.Remove(o);
         }
 
-        public bool RemoveAll(ICollection<T> c)
+        public Boolean RemoveAll(ICollection<T> c)
         {
             return innerSet.RemoveAll(getSetCopy(c));
         }
 
-        public bool RetainAll(ICollection<T> c)
+        public Boolean RetainAll(ICollection<T> c)
         {
             return innerSet.RemoveAll(getSetCopy(c));
         }
@@ -105,17 +105,14 @@ namespace Iesi_NTS.Collections.Generic
 
         public ISet<T> Clone()
         {
-            return new SetWrapper<T>((ISet)innerSet.Clone());
+            return new SetWrapper<T>((ISet) innerSet.Clone());
         }
 
-        public int Count
+        public Int32 Count
         {
-            get {
-                return innerSet.Count;
-            }
+            get { return innerSet.Count; }
         }
 
-    
         #endregion
 
         #region ICollection<T> Members
@@ -125,12 +122,12 @@ namespace Iesi_NTS.Collections.Generic
             Add(item);
         }
 
-        public void CopyTo(T[] array, int arrayIndex)
+        public void CopyTo(T[] array, Int32 arrayIndex)
         {
             innerSet.CopyTo(array, arrayIndex);
         }
 
-        public bool IsReadOnly
+        public Boolean IsReadOnly
         {
             get { return false; }
         }
@@ -148,7 +145,7 @@ namespace Iesi_NTS.Collections.Generic
 
         #region IEnumerable Members
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return innerSet.GetEnumerator();
         }
@@ -165,20 +162,24 @@ namespace Iesi_NTS.Collections.Generic
         #endregion
 
         #region private methods
+
         private Set<T> getSetCopy(ICollection<T> c)
         {
             return new HashedSet<T>(c);
         }
+
         private Set<T> getSetCopy(ICollection c)
         {
             Set<T> retVal = new HashedSet<T>();
-            ((ISet)retVal).AddAll(c);
+            ((ISet) retVal).AddAll(c);
             return retVal;
         }
+
         private Set<T> getSetCopy()
         {
             return getSetCopy(innerSet);
-        } 
+        }
+
         #endregion
     }
 }

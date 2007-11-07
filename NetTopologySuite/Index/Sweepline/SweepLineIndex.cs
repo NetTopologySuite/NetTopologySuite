@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Text;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
 {
@@ -11,20 +10,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
     public class SweepLineIndex
     {
         private ArrayList events = new ArrayList();
-        private bool indexBuilt;
+        private Boolean indexBuilt;
 
         // statistics information
-        private int nOverlaps;
+        private Int32 nOverlaps;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public SweepLineIndex() { }
+        public SweepLineIndex() {}
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sweepInt"></param>
         public void Add(SweepLineInterval sweepInt)
         {
             SweepLineEvent insertEvent = new SweepLineEvent(sweepInt.Min, null, sweepInt);
@@ -39,52 +31,47 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
         /// </summary>
         private void BuildIndex()
         {
-            if (indexBuilt) 
-                return;
-            events.Sort();
-            for (int i = 0; i < events.Count; i++)
+            if (indexBuilt)
             {
-                SweepLineEvent ev = (SweepLineEvent)events[i];
-                if (ev.IsDelete)                
-                    ev.InsertEvent.DeleteEventIndex = i;                
+                return;
+            }
+            events.Sort();
+            for (Int32 i = 0; i < events.Count; i++)
+            {
+                SweepLineEvent ev = (SweepLineEvent) events[i];
+                if (ev.IsDelete)
+                {
+                    ev.InsertEvent.DeleteEventIndex = i;
+                }
             }
             indexBuilt = true;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="action"></param>
         public void ComputeOverlaps(ISweepLineOverlapAction action)
         {
             nOverlaps = 0;
             BuildIndex();
 
-            for (int i = 0; i < events.Count; i++)
+            for (Int32 i = 0; i < events.Count; i++)
             {
-                SweepLineEvent ev = (SweepLineEvent)events[i];
-                if (ev.IsInsert)               
-                    ProcessOverlaps(i, ev.DeleteEventIndex, ev.Interval, action);                
+                SweepLineEvent ev = (SweepLineEvent) events[i];
+                if (ev.IsInsert)
+                {
+                    ProcessOverlaps(i, ev.DeleteEventIndex, ev.Interval, action);
+                }
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
-        /// <param name="s0"></param>
-        /// <param name="action"></param>
-        private void ProcessOverlaps(int start, int end, SweepLineInterval s0, ISweepLineOverlapAction action)
+        private void ProcessOverlaps(Int32 start, Int32 end, SweepLineInterval s0, ISweepLineOverlapAction action)
         {
             /*
              * Since we might need to test for self-intersections,
              * include current insert event object in list of event objects to test.
              * Last index can be skipped, because it must be a Delete event.
              */
-            for (int i = start; i < end; i++)
+            for (Int32 i = start; i < end; i++)
             {
-                SweepLineEvent ev = (SweepLineEvent)events[i];
+                SweepLineEvent ev = (SweepLineEvent) events[i];
                 if (ev.IsInsert)
                 {
                     SweepLineInterval s1 = ev.Interval;
