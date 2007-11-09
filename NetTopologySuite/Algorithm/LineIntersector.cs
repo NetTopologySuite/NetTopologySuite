@@ -1,30 +1,41 @@
 using System;
 using System.Text;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
+    public enum LineIntersectionType
+    {
+        // These numbers indicate the number of intersections
+        // which are present in the intersection between two lines
+        // or segments. Do not reorder.
+        DoesNotIntersect = 0,
+        DoesIntersect = 1,
+        Collinear = 2
+    }
+
     /// <summary> 
     /// A LineIntersector is an algorithm that can both test whether
     /// two line segments intersect and compute the intersection point
     /// if they do.
+    /// </summary>
+    /// <remarks>
     /// The intersection point may be computed in a precise or non-precise manner.
     /// Computing it precisely involves rounding it to an integer.  (This assumes
     /// that the input coordinates have been made precise by scaling them to
     /// an integer grid.)
-    /// </summary>
-    public abstract class LineIntersector
+    /// </remarks>
+    public abstract class LineIntersector<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
-        public const Int32 DontIntersect = 0;
-
-        public const Int32 DoIntersect = 1;
-
-        public const Int32 Collinear = 2;
-
         /// <summary> 
         /// Computes the "edge distance" of an intersection point p along a segment.
+        /// </summary>
+        /// <remarks>
         /// The edge distance is a metric of the point along the edge.
         /// The metric used is a robust and easy to compute metric function.
         /// It is not equivalent to the usual Euclidean metric.
@@ -32,121 +43,115 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// points in the edge are unique, depending on whether the edge is longer in
         /// the horizontal or vertical direction.
         /// NOTE: This function may produce incorrect distances
-        /// for inputs where p is not precisely on p1-p2
-        /// (E.g. p = (139,9) p1 = (139,10), p2 = (280,1) produces distanct 0.0, which is incorrect.
-        /// My hypothesis is that the function is safe to use for points which are the
-        /// result of rounding points which lie on the line, but not safe to use for truncated points.
-        /// </summary>
-        public static Double ComputeEdgeDistance(ICoordinate p, ICoordinate p0, ICoordinate p1)
+        /// for inputs where <paramref name="p"/> is not precisely on 
+        /// <paramref name="p1"/><c>-</c><paramref name="p2"/>
+        /// (E.g. p = (139, 9) p1 = (139, 10), p2 = (280, 1) produces a distance of 0.0, 
+        /// which is incorrect). My hypothesis is that the function is safe to use for 
+        /// points which are the result of rounding points which lie on the line, but not 
+        /// safe to use for truncated points.
+        /// </remarks>
+        public static Double ComputeEdgeDistance(TCoordinate p, TCoordinate p1, TCoordinate p2)
         {
-            Double dx = Math.Abs(p1.X - p0.X);
-            Double dy = Math.Abs(p1.Y - p0.Y);
+            Double dx = Math.Abs(p2[Ordinates.X] - p1[Ordinates.X]);
+            Double dy = Math.Abs(p2[Ordinates.Y] - p1[Ordinates.Y]);
 
-            Double dist = -1.0; // sentinel value
-           
-            if (p.Equals(p0))
+            Double distance;
+
+            if (p.Equals(p1))
             {
-                dist = 0.0;
+                distance = 0.0;
             }
-            else if (p.Equals(p1))
+            else if (p.Equals(p2))
             {
                 if (dx > dy)
                 {
-                    dist = dx;
+                    distance = dx;
                 }
                 else
                 {
-                    dist = dy;
+                    distance = dy;
                 }
             }
             else
             {
-                Double pdx = Math.Abs(p.X - p0.X);
-                Double pdy = Math.Abs(p.Y - p0.Y);
-                
+                Double pdx = Math.Abs(p[Ordinates.X] - p1[Ordinates.X]);
+                Double pdy = Math.Abs(p[Ordinates.Y] - p1[Ordinates.Y]);
+
                 if (dx > dy)
                 {
-                    dist = pdx;
+                    distance = pdx;
                 }
                 else
                 {
-                    dist = pdy;
+                    distance = pdy;
                 }
 
-                // <FIX>: hack to ensure that non-endpoints always have a non-zero distance
-                if (dist == 0.0 && ! p.Equals(p0))
+                // HACK: to ensure that non-endpoints always have a non-zero distance
+                if (distance == 0.0 && !p.Equals(p1))
                 {
-                    dist = Math.Max(pdx, pdy);
+                    distance = Math.Max(pdx, pdy);
                 }
             }
 
-            Assert.IsTrue(!(dist == 0.0 && ! p.Equals(p0)), "Bad distance calculation");
-            return dist;
+            Assert.IsTrue(!(distance == 0.0 && !p.Equals(p1)), "Bad distance calculation");
+            return distance;
         }
 
         /// <summary>
         /// This function is non-robust, since it may compute the square of large numbers.
         /// Currently not sure how to improve this.
         /// </summary>
-        public static Double NonRobustComputeEdgeDistance(ICoordinate p, ICoordinate p1, ICoordinate p2)
+        public static Double NonRobustComputeEdgeDistance(TCoordinate p, TCoordinate p1, TCoordinate p2)
         {
-            Double dx = p.X - p1.X;
-            Double dy = p.Y - p1.Y;
-            Double dist = Math.Sqrt(dx*dx + dy*dy); // dummy value
-            Assert.IsTrue(! (dist == 0.0 && ! p.Equals(p1)), "Invalid distance calculation");
+            Double dx = p[Ordinates.X] - p1[Ordinates.X];
+            Double dy = p[Ordinates.Y] - p1[Ordinates.Y];
+            Double dist = Math.Sqrt(dx * dx + dy * dy); // dummy value
+            Assert.IsTrue(!(dist == 0.0 && !p.Equals(p1)), "Invalid distance calculation");
             return dist;
         }
 
-        protected Int32 result;
+        private LineIntersectionType _result;
+        private readonly TCoordinate[] _points = new TCoordinate[2];
+        private readonly TCoordinate[] _inputLine1 = new TCoordinate[2];
+        private readonly TCoordinate[] _inputLine2 = new TCoordinate[2];
+        private Boolean _isProper;
+        //private TCoordinate _pa;
+        //private TCoordinate _pb;
 
-        protected ICoordinate[,] inputLines = new ICoordinate[2,2];
+        // The indexes of the endpoints of the intersection lines, in order along
+        // the corresponding line
+        private Int32[] _inputLine1EndpointIndexes;
+        private Int32[] _inputLine2EndpointIndexes;
 
-        protected ICoordinate[] intPt = new ICoordinate[2];
-
-        /// <summary> 
-        /// The indexes of the endpoints of the intersection lines, in order along
-        /// the corresponding line
-        /// </summary>
-        protected Int32[,] intLineIndex;
-
-        protected Boolean isProper;
-
-        protected ICoordinate pa;
-
-        protected ICoordinate pb;
-
-        /// <summary> 
-        /// If MakePrecise is true, computed intersection coordinates will be made precise
-        /// using <c>Coordinate.MakePrecise</c>.
-        /// </summary>
-        protected IPrecisionModel precisionModel = null;
+        private IPrecisionModel<TCoordinate> _precisionModel = null;
 
         public LineIntersector()
         {
-            intPt[0] = new Coordinate();
-            intPt[1] = new Coordinate();
+            _points[0] = new TCoordinate();
+            _points[1] = new TCoordinate();
             // alias the intersection points for ease of reference
-            pa = intPt[0];
-            pb = intPt[1];
-            result = 0;
-        }
-
-        /// <summary>
-        /// Force computed intersection to be rounded to a given precision model
-        /// </summary>        
-        [Obsolete("Use PrecisionModel instead")]
-        public IPrecisionModel MakePrecise
-        {
-            set { precisionModel = value; }
+            //_pa = _points[0];
+            //_pb = _points[1];
+            _result = 0;
         }
 
         /// <summary> 
         /// Force computed intersection to be rounded to a given precision model.
-        /// No getter is provided, because the precision model is not required to be specified.
         /// </summary>
-        public IPrecisionModel PrecisionModel
+        /// <remarks>
+        /// <para>
+        /// If the precision model is set, computed intersection coordinates will be made 
+        /// precise using <see cref="IPrecisionModel{TCoordinate}.MakePrecise"/>.
+        /// </para>
+        /// <para>
+        /// No getter is provided, because the precision model is not required to be 
+        /// specified.
+        /// </para>
+        /// </remarks>
+        public IPrecisionModel<TCoordinate> PrecisionModel
         {
-            set { precisionModel = value; }
+            protected get { return _precisionModel; }
+            set { _precisionModel = value; }
         }
 
         /// <summary> 
@@ -155,11 +160,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// The actual value of the intersection (if there is one)
         /// is equal to the value of <c>p</c>.
         /// </summary>
-        public abstract void ComputeIntersection(ICoordinate p, ICoordinate p1, ICoordinate p2);
+        public abstract void ComputeIntersection(TCoordinate p, TCoordinate p1, TCoordinate p2);
 
         protected Boolean IsCollinear
         {
-            get { return result == Collinear; }
+            get { return _result == LineIntersectionType.Collinear; }
         }
 
         /// <summary>
@@ -167,83 +172,74 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// This function computes both the Boolean value of the hasIntersection test
         /// and the (approximate) value of the intersection point itself (if there is one).
         /// </summary>
-        public void ComputeIntersection(ICoordinate p1, ICoordinate p2, ICoordinate p3, ICoordinate p4)
+        public void ComputeIntersection(TCoordinate p1, TCoordinate p2, TCoordinate p3, TCoordinate p4)
         {
-            inputLines[0, 0] = p1;
-            inputLines[0, 1] = p2;
-            inputLines[1, 0] = p3;
-            inputLines[1, 1] = p4;
-            result = ComputeIntersect(p1, p2, p3, p4);
+            _inputLine1[0] = p1;
+            _inputLine1[1] = p2;
+
+            _inputLine2[0] = p3;
+            _inputLine2[1] = p4;
+
+            _result = ComputeIntersect(p1, p2, p3, p4);
         }
 
-        public abstract Int32 ComputeIntersect(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2);
+        public abstract LineIntersectionType ComputeIntersect(TCoordinate p1, TCoordinate p2, TCoordinate q1, TCoordinate q2);
 
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(inputLines[0, 0]).Append("-");
-            sb.Append(inputLines[0, 1]).Append(" ");
-            sb.Append(inputLines[1, 0]).Append("-");
-            sb.Append(inputLines[1, 1]).Append(" : ");
+            StringBuilder buffer = new StringBuilder();
+
+            buffer.Append(_inputLine1[0]).Append("-");
+            buffer.Append(_inputLine1[0]).Append(" ");
+            buffer.Append(_inputLine2[0]).Append("-");
+            buffer.Append(_inputLine2[0]).Append(" : ");
 
             if (IsEndPoint)
             {
-                sb.Append(" endpoint");
+                buffer.Append(" endpoint");
             }
 
-            if (isProper)
+            if (_isProper)
             {
-                sb.Append(" proper");
+                buffer.Append(" proper");
             }
 
             if (IsCollinear)
             {
-                sb.Append(" collinear");
+                buffer.Append(" collinear");
             }
 
-            return sb.ToString();
-        }
-
-        protected Boolean IsEndPoint
-        {
-            get { return HasIntersection && !isProper; }
+            return buffer.ToString();
         }
 
         /// <summary> 
         /// Tests whether the input geometries intersect.
         /// </summary>
-        /// <returns><c>true</c> if the input geometries intersect.</returns>
+        /// <returns><see langword="true"/> if the input geometries intersect.</returns>
         public Boolean HasIntersection
         {
-            get { return result != DontIntersect; }
+            get { return _result != LineIntersectionType.DoesNotIntersect; }
         }
 
         /// <summary>
         /// Returns the number of intersection points found.  This will be either 0, 1 or 2.
         /// </summary>
-        public Int32 IntersectionNum
+        public LineIntersectionType IntersectionType
         {
-            get { return result; }
+            get { return _result; }
+            protected set { _result = value; }
         }
 
         /// <summary> 
-        /// Returns the intIndex'th intersection point.
+        /// Returns the intersection point at index <paramref name="intersectionIndex"/>.
         /// </summary>
-        /// <param name="intIndex">is 0 or 1.</param>
-        /// <returns>The intIndex'th intersection point.</returns>
-        public ICoordinate GetIntersection(Int32 intIndex)
+        /// <param name="intersectionIndex">Index of the intersection: 0 or 1.</param>
+        /// <returns>
+        /// The intersection point at intersection <paramref name="intersectionIndex"/>.
+        /// </returns>
+        public TCoordinate GetIntersection(Int32 intersectionIndex)
         {
-            return intPt[intIndex];
-        }
-
-        protected void ComputeIntLineIndex()
-        {
-            if (intLineIndex == null)
-            {
-                intLineIndex = new Int32[2,2];
-                ComputeIntLineIndex(0);
-                ComputeIntLineIndex(1);
-            }
+            return _points[intersectionIndex];
         }
 
         /// <summary> 
@@ -252,12 +248,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// equality with the endpoints of the intersection segment.
         /// It does not return true if the input point is internal to the intersection segment.
         /// </summary>
-        /// <returns><c>true</c> if the input point is one of the intersection points.</returns>
-        public Boolean IsIntersection(ICoordinate pt)
+        /// <returns><see langword="true"/> if the input point is one of the intersection points.</returns>
+        public Boolean IsIntersection(TCoordinate coordinate)
         {
-            for (Int32 i = 0; i < result; i++)
+            for (Int32 i = 0; i < (Int32)_result; i++)
             {
-                if (intPt[i].Equals2D(pt))
+                if (_points[i].Equals(coordinate))
                 {
                     return true;
                 }
@@ -270,7 +266,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Tests whether either intersection point is an interior point of one of the input segments.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if either intersection point is in the interior of one of the input segment.
+        /// <see langword="true"/> if either intersection point is in the interior of one of the input segment.
         /// </returns>
         public Boolean IsInteriorIntersection()
         {
@@ -278,7 +274,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             {
                 return true;
             }
-            
+
             if (IsInteriorIntersection(1))
             {
                 return true;
@@ -288,17 +284,20 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Tests whether either intersection point is an interior point of the specified input segment.
+        /// Tests whether either intersection point is an interior point 
+        /// of the specified input segment.
         /// </summary>
         /// <returns> 
-        /// <c>true</c> if either intersection point is in the interior of the input segment.
+        /// <see langword="true"/> if either intersection point is in the 
+        /// interior of the input segment.
         /// </returns>
         public Boolean IsInteriorIntersection(Int32 inputLineIndex)
         {
-            for (Int32 i = 0; i < result; i++)
+            for (Int32 i = 0; i < (Int32)_result; i++)
             {
-                if (!(intPt[i].Equals2D(inputLines[inputLineIndex, 0]) ||
-                      intPt[i].Equals2D(inputLines[inputLineIndex, 1])))
+                TCoordinate[] line = GetLineForIndex(inputLineIndex);
+
+                if (!(_points[i].Equals(line[0]) || _points[i].Equals(line[1])))
                 {
                     return true;
                 }
@@ -308,77 +307,148 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Tests whether an intersection is proper.
+        /// Gets a value indicating whether an intersection is proper.
+        /// </summary>
+        /// <remarks>
         /// The intersection between two line segments is considered proper if
         /// they intersect in a single point in the interior of both segments
         /// (e.g. the intersection is a single point and is not equal to any of the endpoints). 
         /// The intersection between a point and a line segment is considered proper
-        /// if the point lies in the interior of the segment (e.g. is not equal to either of the endpoints).
-        /// </summary>
-        /// <returns><c>true</c>  if the intersection is proper.</returns>
+        /// if the point lies in the interior of the segment 
+        /// (e.g. is not equal to either of the endpoints).
+        /// </remarks>
+        /// <returns><see langword="true"/> if the intersection is proper.</returns>
         public Boolean IsProper
         {
-            get { return HasIntersection && isProper; }
+            get { return HasIntersection && _isProper; }
+            protected set { _isProper = value; }
         }
 
         /// <summary> 
-        /// Computes the intIndex'th intersection point in the direction of
-        /// a specified input line segment.
+        /// Computes the intersection point number <paramref name="intersectionIndex"/> 
+        /// in the direction of a specified input line segment.
         /// </summary>
-        /// <param name="segmentIndex">is 0 or 1.</param>
-        /// <param name="intIndex">is 0 or 1.</param>
+        /// <param name="segmentIndex">Index of the line segment: 0 or 1.</param>
+        /// <param name="intersectionIndex">Index of the intersection: 0 or 1.</param>
         /// <returns>
-        /// The intIndex'th intersection point in the direction of the specified input line segment.
+        /// The intersection point at index <paramref name="intersectionIndex"/> 
+        /// in the direction of the specified input line segment.
         /// </returns>
-        public ICoordinate GetIntersectionAlongSegment(Int32 segmentIndex, Int32 intIndex)
+        public TCoordinate GetIntersectionAlongSegment(Int32 segmentIndex, Int32 intersectionIndex)
         {
-            // lazily compute Int32 line array
-            ComputeIntLineIndex();
-            return intPt[intLineIndex[segmentIndex, intIndex]];
+            // lazily compute line intersection index array
+            ComputeIntersectionLineIndexes();
+            Int32[] indexes = GetIndexesForSegmentIndex(segmentIndex);
+            return _points[indexes[intersectionIndex]];
         }
 
         /// <summary>
-        /// Computes the index of the intIndex'th intersection point in the direction of
+        /// Computes the index of the intersection point at index 
+        /// <paramref name="intersectionIndex"/> in the direction of
         /// a specified input line segment.
         /// </summary>
-        /// <param name="segmentIndex">is 0 or 1.</param>
-        /// <param name="intIndex">is 0 or 1.</param>
+        /// <param name="segmentIndex">Index of the line segment: 0 or 1.</param>
+        /// <param name="intersectionIndex">Index of the intersection: 0 or 1.</param>
         /// <returns>
         /// The index of the intersection point along the segment (0 or 1).
         /// </returns>
-        public Int32 GetIndexAlongSegment(Int32 segmentIndex, Int32 intIndex)
+        public Int32 GetIndexAlongSegment(Int32 segmentIndex, Int32 intersectionIndex)
         {
-            ComputeIntLineIndex();
-            return intLineIndex[segmentIndex, intIndex];
-        }
-
-        protected void ComputeIntLineIndex(Int32 segmentIndex)
-        {
-            Double dist0 = GetEdgeDistance(segmentIndex, 0);
-            Double dist1 = GetEdgeDistance(segmentIndex, 1);
-
-            if (dist0 > dist1)
-            {
-                intLineIndex[segmentIndex, 0] = 0;
-                intLineIndex[segmentIndex, 1] = 1;
-            }
-            else
-            {
-                intLineIndex[segmentIndex, 0] = 1;
-                intLineIndex[segmentIndex, 1] = 0;
-            }
+            ComputeIntersectionLineIndexes();
+            Int32[] indexes = GetIndexesForSegmentIndex(segmentIndex);
+            return indexes[intersectionIndex];
         }
 
         /// <summary> 
         /// Computes the "edge distance" of an intersection point along the specified input line segment.
         /// </summary>
-        /// <param name="segmentIndex">is 0 or 1.</param>
-        /// <param name="intIndex">is 0 or 1.</param>
+        /// <param name="segmentIndex">Index of the line segment: 0 or 1.</param>
+        /// <param name="intersectionIndex">Index of the intersection: 0 or 1.</param>
         /// <returns>The edge distance of the intersection point.</returns>
-        public Double GetEdgeDistance(Int32 segmentIndex, Int32 intIndex)
+        public Double GetEdgeDistance(Int32 segmentIndex, Int32 intersectionIndex)
         {
-            Double dist = ComputeEdgeDistance(intPt[intIndex], inputLines[segmentIndex, 0], inputLines[segmentIndex, 1]);
+            TCoordinate[] line = GetLineForIndex(segmentIndex);
+
+            Double dist = ComputeEdgeDistance(_points[intersectionIndex], line[0], line[1]);
             return dist;
+        }
+
+        protected Boolean IsEndPoint
+        {
+            get { return HasIntersection && !_isProper; }
+        }
+
+        protected void ComputeIntersectionLineIndexes()
+        {
+            if (_inputLine1EndpointIndexes == null)
+            {
+                _inputLine1EndpointIndexes = new Int32[2];
+            }
+
+            if (_inputLine2EndpointIndexes == null)
+            {
+                _inputLine2EndpointIndexes = new Int32[2];
+            }
+
+            ComputeIntersectionLineIndex(0);
+            ComputeIntersectionLineIndex(1);
+        }
+
+        protected void ComputeIntersectionLineIndex(Int32 segmentIndex)
+        {
+            Int32[] indexes = GetIndexesForSegmentIndex(segmentIndex);
+
+            Double dist0 = GetEdgeDistance(segmentIndex, 0);
+            Double dist1 = GetEdgeDistance(segmentIndex, 1);
+
+            if (dist0 > dist1)
+            {
+                indexes[0] = 0;
+                indexes[1] = 1;
+            }
+            else
+            {
+                indexes[0] = 1;
+                indexes[1] = 0;
+            }
+        }
+
+        protected Int32[] GetIndexesForSegmentIndex(Int32 segmentIndex)
+        {
+            if (segmentIndex < 0 || segmentIndex > 1)
+            {
+                throw new ArgumentOutOfRangeException("segmentIndex", segmentIndex,
+                                                      "Parameter 'segmentIndex' must be 0 or 1.");
+            }
+
+            return segmentIndex == 0
+                       ? _inputLine1EndpointIndexes
+                       : _inputLine2EndpointIndexes;
+        }
+
+        protected TCoordinate[] GetLineForIndex(Int32 segmentIndex)
+        {
+            if (segmentIndex < 0 || segmentIndex > 1)
+            {
+                throw new ArgumentOutOfRangeException("segmentIndex", segmentIndex,
+                                                      "Parameter 'segmentIndex' must be 0 or 1.");
+            }
+
+            return segmentIndex == 0
+                       ? _inputLine1
+                       : _inputLine2;
+        }
+
+        protected TCoordinate PointA
+        {
+            get { return _points[0]; }
+            set { _points[0] = value; }
+        }
+
+        protected TCoordinate PointB
+        {
+            get { return _points[1]; }
+            set { _points[1] = value; }
         }
     }
 }

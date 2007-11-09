@@ -5,8 +5,8 @@ using GeoAPI.Geometries;
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
-    /// A framework for processes which transform an input <c>Geometry</c> into
-    /// an output <c>Geometry</c>, possibly changing its structure and type(s).
+    /// A framework for processes which transform an input <see cref="Geometry{TCoordinate}"/> into
+    /// an output <see cref="Geometry{TCoordinate}"/>, possibly changing its structure and type(s).
     /// This class is a framework for implementing subclasses
     /// which perform transformations on
     /// various different Geometry subclasses.
@@ -21,9 +21,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
     /// or Points.  This class would likely need to override the TransformMultiPolygon
     /// method to ensure that if input Polygons change type the result is a GeometryCollection,
     /// not a MultiPolygon.
-    /// The default behaviour of this class is to simply recursively transform
+    /// The default behavior of this class is to simply recursively transform
     /// each Geometry component into an identical object by copying.
-    /// Note that all <c>TransformX</c> methods may return <c>null</c>,
+    /// Note that all <c>TransformX</c> methods may return <see langword="null" />,
     /// to avoid creating empty point objects. This will be handled correctly
     /// by the transformer.
     /// The Transform method itself will always
@@ -37,24 +37,23 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         */
 
         private IGeometry inputGeom = null;
-
         protected IGeometryFactory factory = null;
 
         // these could eventually be exposed to clients
         /// <summary>
-        /// <c>true</c> if empty geometries should not be included in the result.
+        /// <see langword="true"/> if empty geometries should not be included in the result.
         /// </summary>
         private Boolean pruneEmptyGeometry = true;
 
         /// <summary> 
-        /// <c>true</c> if a homogenous collection result
+        /// <see langword="true"/> if a homogenous collection result
         /// from a <c>GeometryCollection</c> should still
         /// be a general GeometryCollection.
         /// </summary>
         private Boolean preserveGeometryCollectionType = true;
 
         /// <summary> 
-        /// <c>true</c> if the type of the input should be preserved.
+        /// <see langword="true"/> if the type of the input should be preserved.
         /// </summary>
         private Boolean preserveType = false;
 

@@ -22,22 +22,22 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         protected IGeometry[] geometries = null;
 
         /// <param name="geometries">
-        /// The <c>Geometry</c>s for this <c>GeometryCollection</c>,
-        /// or <c>null</c> or an empty array to create the empty
-        /// point. Elements may be empty <c>Geometry</c>s,
-        /// but not <c>null</c>s.
+        /// The <see cref="Geometry{TCoordinate}"/>s for this <c>GeometryCollection</c>,
+        /// or <see langword="null" /> or an empty array to create the empty
+        /// point. Elements may be empty <see cref="Geometry{TCoordinate}"/>s,
+        /// but not <see langword="null" />s.
         /// </param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="Geometry{TCoordinate}Factory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public GeometryCollection(IGeometry[] geometries) : this(geometries, DefaultFactory) {}
 
         /// <param name="geometries">
-        /// The <c>Geometry</c>s for this <c>GeometryCollection</c>,
-        /// or <c>null</c> or an empty array to create the empty
-        /// point. Elements may be empty <c>Geometry</c>s,
-        /// but not <c>null</c>s.
+        /// The <see cref="Geometry{TCoordinate}"/>s for this <c>GeometryCollection</c>,
+        /// or <see langword="null" /> or an empty array to create the empty
+        /// point. Elements may be empty <see cref="Geometry{TCoordinate}"/>s,
+        /// but not <see langword="null" />s.
         /// </param>
         public GeometryCollection(IGeometry[] geometries, IGeometryFactory factory) : base(factory)
         {
@@ -328,7 +328,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Return <c>true</c> if all features in collection are of the same type.
+        /// Return <see langword="true"/> if all features in collection are of the same type.
         /// </summary>
         public Boolean IsHomogeneous
         {
@@ -371,7 +371,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
-        /// Returns the number of geometries contained by this <see cref="GeometryCollection" />.
+        /// Returns the number of geometries contained by this <see cref="Geometry{TCoordinate}Collection" />.
         /// </summary>
         public Int32 Count
         {

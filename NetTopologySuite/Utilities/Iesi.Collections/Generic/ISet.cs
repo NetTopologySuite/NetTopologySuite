@@ -86,21 +86,21 @@ namespace Iesi_NTS.Collections.Generic
         ISet<T> ExclusiveOr(ISet<T> a);
 
         /// <summary>
-        /// Returns <c>true</c> if this set contains the specified element.
+        /// Returns <see langword="true"/> if this set contains the specified element.
         /// </summary>
         /// <param name="o">The element to look for.</param>
-        /// <returns><c>true</c> if this set contains the specified element, <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if this set contains the specified element, <c>false</c> otherwise.</returns>
         new Boolean Contains(T o);
 
         /// <summary>
-        /// Returns <c>true</c> if the set contains all the elements in the specified collection.
+        /// Returns <see langword="true"/> if the set contains all the elements in the specified collection.
         /// </summary>
         /// <param name="c">A collection of objects.</param>
-        /// <returns><c>true</c> if the set contains all the elements in the specified collection, <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if the set contains all the elements in the specified collection, <c>false</c> otherwise.</returns>
         Boolean ContainsAll(ICollection<T> c);
 
         /// <summary>
-        /// Returns <c>true</c> if this set contains no elements.
+        /// Returns <see langword="true"/> if this set contains no elements.
         /// </summary>
         Boolean IsEmpty { get; }
 
@@ -108,28 +108,28 @@ namespace Iesi_NTS.Collections.Generic
         /// Adds the specified element to this set if it is not already present.
         /// </summary>
         /// <param name="o">The object to add to the set.</param>
-        /// <returns><c>true</c> is the object was added, <c>false</c> if it was already present.</returns>
+        /// <returns><see langword="true"/> is the object was added, <c>false</c> if it was already present.</returns>
         new Boolean Add(T o);
 
         /// <summary>
         /// Adds all the elements in the specified collection to the set if they are not already present.
         /// </summary>
         /// <param name="c">A collection of objects to add to the set.</param>
-        /// <returns><c>true</c> is the set changed as a result of this operation, <c>false</c> if not.</returns>
+        /// <returns><see langword="true"/> is the set changed as a result of this operation, <c>false</c> if not.</returns>
         Boolean AddAll(ICollection<T> c);
 
         /// <summary>
         /// Removes the specified element from the set.
         /// </summary>
         /// <param name="o">The element to be removed.</param>
-        /// <returns><c>true</c> if the set contained the specified element, <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if the set contained the specified element, <c>false</c> otherwise.</returns>
         new Boolean Remove(T o);
 
         /// <summary>
         /// Remove all the specified elements from this set, if they exist in this set.
         /// </summary>
         /// <param name="c">A collection of elements to remove.</param>
-        /// <returns><c>true</c> if the set was modified as a result of this operation.</returns>
+        /// <returns><see langword="true"/> if the set was modified as a result of this operation.</returns>
         Boolean RemoveAll(ICollection<T> c);
 
 
@@ -137,7 +137,7 @@ namespace Iesi_NTS.Collections.Generic
         /// Retains only the elements in this set that are contained in the specified collection.
         /// </summary>
         /// <param name="c">Collection that defines the set of elements to be retained.</param>
-        /// <returns><c>true</c> if this set changed as a result of this operation.</returns>
+        /// <returns><see langword="true"/> if this set changed as a result of this operation.</returns>
         Boolean RetainAll(ICollection<T> c);
 
         /// <summary>

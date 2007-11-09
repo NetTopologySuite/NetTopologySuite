@@ -29,7 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             /// <param name="mergeTarget">The segment string to update.</param>
             /// <param name="ssToMerge">The segment string being dissolved.</param>
             /// <param name="isSameOrientation">
-            /// <c>true</c> if the strings are in the same direction,
+            /// <see langword="true"/> if the strings are in the same direction,
             /// <c>false</c> if they are opposite.
             /// </param>
             void Merge(SegmentString mergeTarget, SegmentString ssToMerge, Boolean isSameOrientation);

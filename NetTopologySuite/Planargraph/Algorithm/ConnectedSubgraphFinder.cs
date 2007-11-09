@@ -35,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
             while(ienum.MoveNext())
             {
                 Edge e = ienum.Current as Edge;
-                Node node = e.GetDirEdge(0).FromNode;
+                Node node = e.GetDirectedEdge(0).FromNode;
                 if (!node.IsVisited)
                     subgraphs.Add(FindSubgraph(node));                
             }

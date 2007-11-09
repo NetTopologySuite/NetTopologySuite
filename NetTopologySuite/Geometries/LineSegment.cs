@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
+using GeoAPI.Coordinates;
 using GisSharpBlog.NetTopologySuite.Algorithm;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -15,7 +18,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// segments defined by arrays or lists of <c>Coordinate</c>s.
     /// </summary>    
     [Serializable]
-    public class LineSegment : IComparable
+    public class LineSegment<TCoordinate> : IComparable<LineSegment<TCoordinate>>
+         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
+                             IComputable<TCoordinate>, IConvertible
     {
         private ICoordinate p0 = null, p1 = null;
 
@@ -37,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             this.p1 = p1;
         }
 
-        public LineSegment(LineSegment ls) : this(ls.p0, ls.p1) {}
+        public LineSegment(LineSegment<TCoordinate> ls) : this(ls.p0, ls.p1) {}
 
         public LineSegment() : this(new Coordinate(), new Coordinate()) {}
 
@@ -51,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return P1;
         }
 
-        public void SetCoordinates(LineSegment ls)
+        public void SetCoordinates(LineSegment<TCoordinate> ls)
         {
             SetCoordinates(ls.P0, ls.P1);
         }
@@ -76,7 +81,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary> 
         /// Tests whether the segment is horizontal.
         /// </summary>
-        /// <returns><c>true</c> if the segment is horizontal.</returns>
+        /// <returns><see langword="true"/> if the segment is horizontal.</returns>
         public Boolean IsHorizontal
         {
             get { return P0.Y == P1.Y; }
@@ -85,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Tests whether the segment is vertical.
         /// </summary>
-        /// <returns><c>true</c> if the segment is vertical.</returns>
+        /// <returns><see langword="true"/> if the segment is vertical.</returns>
         public Boolean IsVertical
         {
             get { return P0.X == P1.X; }
@@ -108,7 +113,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// -1 if <c>seg</c> is to the right of this segment,
         /// 0 if <c>seg</c> has indeterminate orientation relative to this segment.
         /// </returns>
-        public Int32 OrientationIndex(LineSegment seg)
+        public Int32 OrientationIndex(LineSegment<TCoordinate> seg)
         {
             Int32 orient0 = CGAlgorithms.OrientationIndex(P0, P1, seg.P0);
             Int32 orient1 = CGAlgorithms.OrientationIndex(P0, P1, seg.P1);
@@ -163,7 +168,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary> 
         /// Computes the distance between this line segment and another one.
         /// </summary>
-        public Double Distance(LineSegment ls)
+        public Double Distance(LineSegment<TCoordinate> ls)
         {
             return CGAlgorithms.DistanceLineLine(P0, P1, ls.P0, ls.P1);
         }
@@ -251,8 +256,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// This can happen for instance if the lines are perpendicular to one another.
         /// </summary>
         /// <param name="seg">The line segment to project.</param>
-        /// <returns>The projected line segment, or <c>null</c> if there is no overlap.</returns>
-        public LineSegment Project(LineSegment seg)
+        /// <returns>The projected line segment, or <see langword="null" /> if there is no overlap.</returns>
+        public LineSegment<TCoordinate> Project(LineSegment<TCoordinate> seg)
         {
             Double pf0 = ProjectionFactor(seg.P0);
             Double pf1 = ProjectionFactor(seg.P1);
@@ -292,7 +297,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 newp1 = P1;
             }
 
-            return new LineSegment(newp0, newp1);
+            return new LineSegment<TCoordinate>(newp0, newp1);
         }
 
         /// <summary> 
@@ -330,14 +335,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>
         /// A pair of Coordinates which are the closest points on the line segments.
         /// </returns>
-        public ICoordinate[] ClosestPoints(LineSegment line)
+        public IEnumerable<TCoordinate> ClosestPoints(LineSegment<TCoordinate> line)
         {
             // test for intersection
-            ICoordinate intPt = Intersection(line);
+            TCoordinate intersection = Intersection(line);
 
-            if (intPt != null)
+            if (intersection != null)
             {
-                return new ICoordinate[] {intPt, intPt};
+                yield return intersection;
+                yield return intersection;
             }
 
             /*
@@ -394,8 +400,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// more information is required about the details of the intersection,
         /// the {RobustLineIntersector} class should be used.
         /// </summary>
-        /// <returns> An intersection point, or <c>null</c> if there is none.</returns>
-        public ICoordinate Intersection(LineSegment line)
+        /// <returns> An intersection point, or <see langword="null" /> if there is none.</returns>
+        public TCoordinate Intersection(LineSegment<TCoordinate> line)
         {
             LineIntersector li = new RobustLineIntersector();
             li.ComputeIntersection(P0, P1, line.P0, line.P1);
@@ -409,11 +415,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Returns <c>true</c> if <c>o</c> has the same values for its points.
+        /// Returns <see langword="true"/> if <c>o</c> has the same values for its points.
         /// </summary>
         /// <param name="o">A <c>LineSegment</c> with which to do the comparison.</param>
         /// <returns>
-        /// <c>true</c> if <c>o</c> is a <c>LineSegment</c>
+        /// <see langword="true"/> if <c>o</c> is a <c>LineSegment</c>
         /// with the same values for the x and y ordinates.
         /// </returns>
         public override Boolean Equals(object o)
@@ -468,7 +474,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if <c>other</c> is
+        /// Returns <see langword="true"/> if <c>other</c> is
         /// topologically equal to this LineSegment (e.g. irrespective
         /// of orientation).
         /// </summary>
@@ -476,7 +482,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// A <c>LineSegment</c> with which to do the comparison.
         /// </param>
         /// <returns>
-        /// <c>true</c> if <c>other</c> is a <c>LineSegment</c>
+        /// <see langword="true"/> if <c>other</c> is a <c>LineSegment</c>
         /// with the same values for the x and y ordinates.
         /// </returns>
         public Boolean EqualsTopologically(LineSegment other)

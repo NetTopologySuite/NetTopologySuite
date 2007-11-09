@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -14,51 +13,48 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// intersection or the end of the edge.
     /// The intersection point must be precise.
     /// </summary>
-    public class EdgeIntersection : IComparable
+    public class EdgeIntersection<TCoordinate> : IComparable<EdgeIntersection<TCoordinate>>
     {
-        private ICoordinate coordinate;
+        private TCoordinate _coordinate;
+        private Double _distance;
+        private Int32 _segmentIndex;
 
         /// <summary>
         /// The point of intersection.
         /// </summary>
-        public ICoordinate Coordinate
+        public TCoordinate Coordinate
         {
-            get { return coordinate; }
-            set { coordinate = value; }
+            get { return _coordinate; }
+            set { _coordinate = value; }
         }
-
-        private Int32 segmentIndex;
 
         /// <summary>
         /// The index of the containing line segment in the parent edge.
         /// </summary>
         public Int32 SegmentIndex
         {
-            get { return segmentIndex; }
-            set { segmentIndex = value; }
+            get { return _segmentIndex; }
+            set { _segmentIndex = value; }
         }
-
-        private Double dist;
 
         /// <summary>
         /// The edge distance of this point along the containing line segment.
         /// </summary>
         public Double Distance
         {
-            get { return dist; }
-            set { dist = value; }
+            get { return _distance; }
+            set { _distance = value; }
         }
 
-        public EdgeIntersection(ICoordinate coord, Int32 segmentIndex, Double dist)
+        public EdgeIntersection(TCoordinate coord, Int32 segmentIndex, Double distance)
         {
-            coordinate = new Coordinate(coord);
-            this.segmentIndex = segmentIndex;
-            this.dist = dist;
+            _coordinate = new TCoordinate(coord);
+            _segmentIndex = segmentIndex;
+            _distance = distance;
         }
 
-        public Int32 CompareTo(object obj)
+        public Int32 CompareTo(EdgeIntersection<TCoordinate> other)
         {
-            EdgeIntersection other = (EdgeIntersection) obj;
             return Compare(other.SegmentIndex, other.Distance);
         }
 
@@ -67,24 +63,28 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 0 this EdgeIntersection is at the argument location,
         /// 1 this EdgeIntersection is located after the argument location.
         /// </returns>
-        public Int32 Compare(Int32 segmentIndex, Double dist)
+        public Int32 Compare(Int32 segmentIndex, Double distance)
         {
             if (SegmentIndex < segmentIndex)
             {
                 return -1;
             }
+
             if (SegmentIndex > segmentIndex)
             {
                 return 1;
             }
-            if (Distance < dist)
+
+            if (Distance < distance)
             {
                 return -1;
             }
-            if (Distance > dist)
+
+            if (Distance > distance)
             {
                 return 1;
             }
+
             return 0;
         }
 
@@ -94,10 +94,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             {
                 return true;
             }
+
             if (SegmentIndex == maxSegmentIndex)
             {
                 return true;
             }
+
             return false;
         }
 

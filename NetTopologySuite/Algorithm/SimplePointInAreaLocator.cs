@@ -7,7 +7,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     /// <summary>
     /// Computes whether a point
-    /// lies in the interior of an area <c>Geometry</c>.
+    /// lies in the interior of an area <see cref="Geometry{TCoordinate}"/>.
     /// The algorithm used is only guaranteed to return correct results
     /// for points which are not on the boundary of the Geometry.
     /// </summary>

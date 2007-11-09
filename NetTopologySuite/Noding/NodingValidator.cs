@@ -107,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             }
         }
 
-        /// <returns><c>true</c> if there is an intersection point which is not an endpoint of the segment p0-p1.</returns>
+        /// <returns><see langword="true"/> if there is an intersection point which is not an endpoint of the segment p0-p1.</returns>
         private Boolean HasInteriorIntersection(LineIntersector li, ICoordinate p0, ICoordinate p1)
         {
             for (Int32 i = 0; i < li.IntersectionNum; i++)

@@ -20,8 +20,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="points">
         /// The <c>Point</c>s for this <c>MultiPoint</c>
-        /// , or <c>null</c> or an empty array to create the empty point.
-        /// Elements may be empty <c>Point</c>s, but not <c>null</c>s.
+        /// , or <see langword="null" /> or an empty array to create the empty point.
+        /// Elements may be empty <c>Point</c>s, but not <see langword="null" />s.
         /// </param>
         public MultiPoint(IPoint[] points, IGeometryFactory factory) : base(points, factory) {}
 
@@ -30,11 +30,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="points">
         /// The <c>Point</c>s for this <c>MultiPoint</c>
-        /// , or <c>null</c> or an empty array to create the empty point.
-        /// Elements may be empty <c>Point</c>s, but not <c>null</c>s.
+        /// , or <see langword="null" /> or an empty array to create the empty point.
+        /// Elements may be empty <c>Point</c>s, but not <see langword="null" />s.
         /// </param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
+        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="Geometry{TCoordinate}Factory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public MultiPoint(IPoint[] points) : this(points, DefaultFactory) {}

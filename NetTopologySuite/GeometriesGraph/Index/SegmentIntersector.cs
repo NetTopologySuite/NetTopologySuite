@@ -49,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <returns> 
-        /// The proper intersection point, or <c>null</c> if none was found.
+        /// The proper intersection point, or <see langword="null" /> if none was found.
         /// </returns>
         public ICoordinate ProperIntersectionPoint
         {

@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     }
 
     /// <summary>
-    /// Computes the overlay of two <c>Geometry</c>s.  The overlay
+    /// Computes the overlay of two <see cref="Geometry{TCoordinate}"/>s.  The overlay
     /// can be used to determine any Boolean combination of the geometries.
     /// </summary>
     public class OverlayOp : GeometryGraphOperation
@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <summary>
         /// This method will handle arguments of Location.NULL correctly.
         /// </summary>
-        /// <returns><c>true</c> if the locations correspond to the opCode.</returns>
+        /// <returns><see langword="true"/> if the locations correspond to the opCode.</returns>
         public static Boolean IsResultOfOp(Locations loc0, Locations loc1, SpatialFunctions opCode)
         {
             if (loc0 == Locations.Boundary)
@@ -462,7 +462,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <summary>
         /// This method is used to decide if a point node should be included in the result or not.
         /// </summary>
-        /// <returns><c>true</c> if the coord point is covered by a result Line or Area point.</returns>
+        /// <returns><see langword="true"/> if the coord point is covered by a result Line or Area point.</returns>
         public Boolean IsCoveredByLA(ICoordinate coord)
         {
             if (IsCovered(coord, resultLineList))
@@ -479,7 +479,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <summary>
         /// This method is used to decide if an L edge should be included in the result or not.
         /// </summary>
-        /// <returns><c>true</c> if the coord point is covered by a result Area point.</returns>
+        /// <returns><see langword="true"/> if the coord point is covered by a result Area point.</returns>
         public Boolean IsCoveredByA(ICoordinate coord)
         {
             if (IsCovered(coord, resultPolyList))
@@ -490,7 +490,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         }
 
         /// <returns>
-        /// <c>true</c> if the coord is located in the interior or boundary of
+        /// <see langword="true"/> if the coord is located in the interior or boundary of
         /// a point in the list.
         /// </returns>
         private Boolean IsCovered(ICoordinate coord, IList geomList)

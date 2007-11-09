@@ -9,7 +9,7 @@ using GisSharpBlog.NetTopologySuite.Geometries;
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
     /// <summary> 
-    /// Extracts all the 0-dimensional (<c>Point</c>) components from a <c>Geometry</c>.    
+    /// Extracts all the 0-dimensional (<c>Point</c>) components from a <see cref="Geometry{TCoordinate}"/>.    
     /// </summary>
     public class PointExtracter : IGeometryFilter
     {

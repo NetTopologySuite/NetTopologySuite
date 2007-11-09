@@ -55,8 +55,8 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         protected void Add(Edge edge)
         {
             edges.Add(edge);
-            Add(edge.GetDirEdge(0));
-            Add(edge.GetDirEdge(1));
+            Add(edge.GetDirectedEdge(0));
+            Add(edge.GetDirectedEdge(1));
         }
 
         /// <summary>
@@ -118,8 +118,8 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public void Remove(Edge edge)
         {
-            Remove(edge.GetDirEdge(0));
-            Remove(edge.GetDirEdge(1));
+            Remove(edge.GetDirectedEdge(0));
+            Remove(edge.GetDirectedEdge(1));
             edges.Remove(edge);
             edge.Remove();
         }

@@ -79,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <param name="pts">An array of <c>Coordinate</c>s to test the input points against.</param>
         /// <returns>
         /// A <c>Coordinate</c> from <c>testPts</c> which is not in <c>pts</c>, 
-        /// or <c>null</c>.</returns>
+        /// or <see langword="null" />.</returns>
         public static ICoordinate PointNotInList(ICoordinate[] testPts, ICoordinate[] pts)
         {
             for (Int32 i = 0; i < testPts.Length; i++)
@@ -99,7 +99,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// </summary>
         /// <param name="pt">A <c>Coordinate</c> for the test point.</param>
         /// <param name="pts">An array of <c>Coordinate</c>s to test,</param>
-        /// <returns><c>true</c> if the point is in the array.</returns>
+        /// <returns><see langword="true"/> if the point is in the array.</returns>
         public static Boolean IsInList(ICoordinate pt, ICoordinate[] pts)
         {
             for (Int32 i = 0; i < pts.Length; i++)
@@ -140,7 +140,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Due to the way the edges in the polyongization graph are linked,
         /// a ring is a hole if it is oriented counter-clockwise.
         /// </summary>
-        /// <returns><c>true</c> if this ring is a hole.</returns>
+        /// <returns><see langword="true"/> if this ring is a hole.</returns>
         public Boolean IsHole
         {
             get { return CGAlgorithms.IsCCW(Ring.Coordinates); }

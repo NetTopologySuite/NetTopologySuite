@@ -56,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// Returns the proper intersection point, or <c>null</c> if none was found.
+        /// Returns the proper intersection point, or <see langword="null" /> if none was found.
         /// </summary>
         public ICoordinate ProperIntersectionPoint
         {
@@ -71,9 +71,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <summary>
         /// A proper intersection is an intersection which is interior to at least two
         /// line segments.  Note that a proper intersection is not necessarily
-        /// in the interior of the entire <see cref="Geometry" />, since another edge may have
+        /// in the interior of the entire <see cref="Geometry{TCoordinate}" />, since another edge may have
         /// an endpoint equal to the intersection, which according to SFS semantics
-        /// can result in the point being on the Boundary of the <see cref="Geometry" />.
+        /// can result in the point being on the Boundary of the <see cref="Geometry{TCoordinate}" />.
         /// </summary>
         public Boolean HasProperIntersection
         {

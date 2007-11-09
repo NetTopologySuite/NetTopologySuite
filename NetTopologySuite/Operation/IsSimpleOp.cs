@@ -9,8 +9,8 @@ using Iesi_NTS.Collections;
 namespace GisSharpBlog.NetTopologySuite.Operation
 {
     /// <summary>
-    /// Tests whether a <c>Geometry</c> is simple.
-    /// Only <c>Geometry</c>s whose definition allows them
+    /// Tests whether a <see cref="Geometry{TCoordinate}"/> is simple.
+    /// Only <see cref="Geometry{TCoordinate}"/>s whose definition allows them
     /// to be simple or non-simple are tested.  (E.g. Polygons must be simple
     /// by definition, so no test is provided.  To test whether a given Polygon is valid,
     /// use <c>Geometry.IsValid</c>)

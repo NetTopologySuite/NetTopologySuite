@@ -1,14 +1,19 @@
 using System;
+using GeoAPI.Coordinates;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     /// <summary> 
-    /// A non-robust version of <c>LineIntersector</c>.
+    /// A non-robust version of <see cref="LineIntersector{TCoordinate}"/>.
     /// </summary>   
-    public class NonRobustLineIntersector : LineIntersector
+    /// <typeparam name="TCoordinate">The coordinate type to use.</typeparam>
+    public class NonRobustLineIntersector<TCoordinate> : LineIntersector<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
         /// <returns> 
-        /// <c>true</c> if both numbers are positive or if both numbers are negative, 
+        /// <see langword="true"/> if both numbers are positive or if both numbers are negative, 
         /// <c>false</c> if both numbers are zero.
         /// </returns>
         public static Boolean IsSameSignAndNonZero(Double a, Double b)
@@ -21,9 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return (a < 0 && b < 0) || (a > 0 && b > 0);
         }
 
-        public NonRobustLineIntersector() {}
-
-        public override void ComputeIntersection(ICoordinate p, ICoordinate p1, ICoordinate p2)
+        public override void ComputeIntersection(TCoordinate p, TCoordinate p1, TCoordinate p2)
         {
             Double a1;
             Double b1;
@@ -37,49 +40,49 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             *  'Sign' values
             */
 
-            isProper = false;
+            IsProper = false;
 
             /*
             *  Compute a1, b1, c1, where line joining points 1 and 2
             *  is "a1 x  +  b1 y  +  c1  =  0".
             */
-            a1 = p2.Y - p1.Y;
-            b1 = p1.X - p2.X;
-            c1 = p2.X*p1.Y - p1.X*p2.Y;
+            a1 = p2[Ordinates.Y] - p1[Ordinates.Y];
+            b1 = p1[Ordinates.X] - p2[Ordinates.X];
+            c1 = p2[Ordinates.X] * p1[Ordinates.Y] - p1[Ordinates.X] * p2[Ordinates.Y];
 
             /*
             *  Compute r3 and r4.
             */
-            r = a1*p.X + b1*p.Y + c1;
+            r = a1 * p[Ordinates.X] + b1 * p[Ordinates.Y] + c1;
 
             // if r != 0 the point does not lie on the line
             if (r != 0)
             {
-                result = DontIntersect;
+                IntersectionType = LineIntersectionType.DoesNotIntersect;
                 return;
             }
 
             // Point lies on line - check to see whether it lies in line segment.
 
             Double dist = RParameter(p1, p2, p);
-            
+
             if (dist < 0.0 || dist > 1.0)
             {
-                result = DontIntersect;
+                IntersectionType = LineIntersectionType.DoesNotIntersect;
                 return;
             }
 
-            isProper = true;
-            
+            IsProper = true;
+
             if (p.Equals(p1) || p.Equals(p2))
             {
-                isProper = false;
+                IsProper = false;
             }
 
-            result = DoIntersect;
+            IntersectionType = LineIntersectionType.DoesIntersect;
         }
 
-        public override Int32 ComputeIntersect(ICoordinate p1, ICoordinate p2, ICoordinate p3, ICoordinate p4)
+        public override LineIntersectionType ComputeIntersect(TCoordinate p1, TCoordinate p2, TCoordinate p3, TCoordinate p4)
         {
             Double a1;
             Double b1;
@@ -100,21 +103,21 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             *  'Sign' values
             */
 
-            isProper = false;
+            IsProper = false;
 
             /*
             *  Compute a1, b1, c1, where line joining points 1 and 2
             *  is "a1 x  +  b1 y  +  c1  =  0".
             */
-            a1 = p2.Y - p1.Y;
-            b1 = p1.X - p2.X;
-            c1 = p2.X*p1.Y - p1.X*p2.Y;
+            a1 = p2[Ordinates.Y] - p1[Ordinates.Y];
+            b1 = p1[Ordinates.X] - p2[Ordinates.X];
+            c1 = p2[Ordinates.X] * p1[Ordinates.Y] - p1[Ordinates.X] * p2[Ordinates.Y];
 
             /*
             *  Compute r3 and r4.
             */
-            r3 = a1*p3.X + b1*p3.Y + c1;
-            r4 = a1*p4.X + b1*p4.Y + c1;
+            r3 = a1 * p3[Ordinates.X] + b1 * p3[Ordinates.Y] + c1;
+            r4 = a1 * p4[Ordinates.X] + b1 * p4[Ordinates.Y] + c1;
 
             /*
             *  Check signs of r3 and r4.  If both point 3 and point 4 lie on
@@ -122,21 +125,21 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             */
             if (r3 != 0 && r4 != 0 && IsSameSignAndNonZero(r3, r4))
             {
-                return DontIntersect;
+                return LineIntersectionType.DoesNotIntersect;
             }
 
             /*
             *  Compute a2, b2, c2
             */
-            a2 = p4.Y - p3.Y;
-            b2 = p3.X - p4.X;
-            c2 = p4.X*p3.Y - p3.X*p4.Y;
+            a2 = p4[Ordinates.Y] - p3[Ordinates.Y];
+            b2 = p3[Ordinates.X] - p4[Ordinates.X];
+            c2 = p4[Ordinates.X] * p3[Ordinates.Y] - p3[Ordinates.X] * p4[Ordinates.Y];
 
             /*
             *  Compute r1 and r2
             */
-            r1 = a2*p1.X + b2*p1.Y + c2;
-            r2 = a2*p2.X + b2*p2.Y + c2;
+            r1 = a2 * p1[Ordinates.X] + b2 * p1[Ordinates.Y] + c2;
+            r2 = a2 * p2[Ordinates.X] + b2 * p2[Ordinates.Y] + c2;
 
             /*
             *  Check signs of r1 and r2.  If both point 1 and point 2 lie
@@ -145,52 +148,50 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             */
             if (r1 != 0 && r2 != 0 && IsSameSignAndNonZero(r1, r2))
             {
-                return DontIntersect;
+                return LineIntersectionType.DoesNotIntersect;
             }
 
             /*
             *  Line segments intersect: compute intersection point.
             */
-            Double denom = a1*b2 - a2*b1;
-            
+            Double denom = a1 * b2 - a2 * b1;
+
             if (denom == 0)
             {
                 return ComputeCollinearIntersection(p1, p2, p3, p4);
             }
 
-            Double numX = b1*c2 - b2*c1;
-            pa.X = numX/denom;
-
-            Double numY = a2*c1 - a1*c2;
-            pa.Y = numY/denom;
+            Double x = (b1 * c2 - b2 * c1) / denom;
+            Double y = (a2 * c1 - a1 * c2) / denom;
+            PointA = new TCoordinate(x, y);
 
             // check if this is a proper intersection BEFORE truncating values,
             // to avoid spurious equality comparisons with endpoints
-            isProper = true;
-           
-            if (pa.Equals(p1) || pa.Equals(p2) || pa.Equals(p3) || pa.Equals(p4))
+            IsProper = true;
+
+            if (PointA.Equals(p1) || PointA.Equals(p2) || PointA.Equals(p3) || PointA.Equals(p4))
             {
-                isProper = false;
+                IsProper = false;
             }
 
             // truncate computed point to precision grid            
-            if (precisionModel != null)
+            if (PrecisionModel != null)
             {
-                precisionModel.MakePrecise(pa);
+                PrecisionModel.MakePrecise(PointA);
             }
 
-            return DoIntersect;
+            return LineIntersectionType.DoesIntersect;
         }
 
-        private Int32 ComputeCollinearIntersection(ICoordinate p1, ICoordinate p2, ICoordinate p3, ICoordinate p4)
+        private LineIntersectionType ComputeCollinearIntersection(TCoordinate p1, TCoordinate p2, TCoordinate p3, TCoordinate p4)
         {
             Double r1;
             Double r2;
             Double r3;
             Double r4;
 
-            ICoordinate q3;
-            ICoordinate q4;
+            TCoordinate q3;
+            TCoordinate q4;
 
             Double t3;
             Double t4;
@@ -219,38 +220,38 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             // check for no intersection
             if (t3 > r2 || t4 < r1)
             {
-                return DontIntersect;
+                return LineIntersectionType.DoesNotIntersect;
             }
 
             // check for single point intersection
-            if (q4 == p1)
+            if (q4.Equals(p1))
             {
-                pa.CoordinateValue = p1;
-                return DoIntersect;
+                PointA = p1;
+                return LineIntersectionType.DoesIntersect;
             }
-           
-            if (q3 == p2)
+
+            if (q3.Equals(p2))
             {
-                pa.CoordinateValue = p2;
-                return DoIntersect;
+                PointA = p2;
+                return LineIntersectionType.DoesIntersect;
             }
 
             // intersection MUST be a segment - compute endpoints
-            pa.CoordinateValue = p1;
-           
+            PointA = p1;
+
             if (t3 > r1)
             {
-                pa.CoordinateValue = q3;
+                PointA = q3;
             }
 
-            pb.CoordinateValue = p2;
-           
+            PointB = p2;
+
             if (t4 < r2)
             {
-                pb.CoordinateValue = q4;
+                PointB = q4;
             }
 
-            return Collinear;
+            return LineIntersectionType.Collinear;
         }
 
         /// <summary> 
@@ -259,21 +260,21 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// of the line from p1 to p2.
         /// This is equal to the 'distance' of p along p1-p2.
         /// </summary>
-        private Double RParameter(ICoordinate p1, ICoordinate p2, ICoordinate p)
+        private Double RParameter(TCoordinate p1, TCoordinate p2, TCoordinate p)
         {
             // compute maximum delta, for numerical stability
             // also handle case of p1-p2 being vertical or horizontal
             Double r;
-            Double dx = Math.Abs(p2.X - p1.X);
-            Double dy = Math.Abs(p2.Y - p1.Y);
+            Double dx = Math.Abs(p2[Ordinates.X] - p1[Ordinates.X]);
+            Double dy = Math.Abs(p2[Ordinates.Y] - p1[Ordinates.Y]);
 
             if (dx > dy)
             {
-                r = (p.X - p1.X)/(p2.X - p1.X);
+                r = (p[Ordinates.X] - p1[Ordinates.X]) / (p2[Ordinates.X] - p1[Ordinates.X]);
             }
             else
             {
-                r = (p.Y - p1.Y)/(p2.Y - p1.Y);
+                r = (p[Ordinates.Y] - p1[Ordinates.Y]) / (p2[Ordinates.Y] - p1[Ordinates.Y]);
             }
 
             return r;

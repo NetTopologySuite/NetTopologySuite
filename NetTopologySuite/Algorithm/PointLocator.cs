@@ -27,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="p">The coordinate to test.</param>
         /// <param name="geom">The Geometry to test.</param>
-        /// <returns><c>true</c> if the point is in the interior or boundary of the Geometry.</returns>
+        /// <returns><see langword="true"/> if the point is in the interior or boundary of the Geometry.</returns>
         public Boolean Intersects(ICoordinate p, IGeometry geom)
         {
             return Locate(p, geom) != Locations.Exterior;

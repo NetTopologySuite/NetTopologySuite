@@ -51,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <summary>
         /// Executes a function on each item in a <see cref="ICollection" />
         /// and collects all the entries for which the result
-        /// of the function is equal to <c>true</c>.
+        /// of the function is equal to <see langword="true"/>.
         /// </summary>
         /// <param name="coll"></param>
         /// <param name="func"></param>

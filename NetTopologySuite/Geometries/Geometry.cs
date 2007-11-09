@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -10,11 +11,12 @@ using GisSharpBlog.NetTopologySuite.Operation.Predicate;
 using GisSharpBlog.NetTopologySuite.Operation.Relate;
 using GisSharpBlog.NetTopologySuite.Operation.Valid;
 using GisSharpBlog.NetTopologySuite.Utilities;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>  
-    /// Basic implementation of <c>Geometry</c>.
+    /// Basic implementation of <see cref="Geometry{TCoordinate}"/>.
     /// <c>Clone</c> returns a deep copy of the object.
     /// <para>
     /// Binary Predicates: 
@@ -38,12 +40,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// The SFS states that the result
     /// of a set-theoretic method is the "point-set" result of the usual
     /// set-theoretic definition of the operation (SFS 3.2.21.1). However, there are
-    /// sometimes many ways of representing a point set as a <c>Geometry</c>.
+    /// sometimes many ways of representing a point set as a <see cref="Geometry{TCoordinate}"/>.
     /// The SFS does not specify an unambiguous representation of a given point set
     /// returned from a spatial analysis method. One goal of NTS is to make this
     /// specification precise and unambiguous. NTS will use a canonical form for
-    /// <c>Geometry</c>s returned from spatial analysis methods. The canonical
-    /// form is a <c>Geometry</c> which is simple and noded:
+    /// <see cref="Geometry{TCoordinate}"/>s returned from spatial analysis methods. The canonical
+    /// form is a <see cref="Geometry{TCoordinate}"/> which is simple and noded:
     /// Simple means that the Geometry returned will be simple according to
     /// the NTS definition of <c>IsSimple</c>.
     /// Noded applies only to overlays involving <c>LineString</c>s. It
@@ -56,14 +58,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// <para>
     /// Constructed Points And The Precision Model: 
     /// The results computed by the set-theoretic methods may
-    /// contain constructed points which are not present in the input <c>Geometry</c>s. 
+    /// contain constructed points which are not present in the input <see cref="Geometry{TCoordinate}"/>s. 
     /// These new points arise from intersections between line segments in the
-    /// edges of the input <c>Geometry</c>s. In the general case it is not
+    /// edges of the input <see cref="Geometry{TCoordinate}"/>s. In the general case it is not
     /// possible to represent constructed points exactly. This is due to the fact
     /// that the coordinates of an intersection point may contain twice as many bits
     /// of precision as the coordinates of the input line segments. In order to
     /// represent these constructed points explicitly, NTS must truncate them to fit
-    /// the <c>PrecisionModel</c>. 
+    /// the <see cref="PrecisionModel{TCoordinate}"/>. 
     /// Unfortunately, truncating coordinates moves them slightly. Line segments
     /// which would not be coincident in the exact result may become coincident in
     /// the truncated representation. This in turn leads to "topology collapses" --
@@ -75,32 +77,35 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </para>
     /// </summary>
     /// <remarks>
-    /// <see cref="object.Equals(object)" /> and <see cref="object.GetHashCode" /> are not overridden, so that when two
-    /// topologically equal Geometries are added to Collections and Dictionaries, they
-    /// remain distinct. This behaviour is desired in many cases.
+    /// <see cref="object.Equals(object)" /> and <see cref="object.GetHashCode" /> 
+    /// are not overridden, so that when two topologically equal Geometries are added 
+    /// to Collections and Dictionaries, they remain distinct. 
+    /// This behavior is desired in many cases.
     /// </remarks>
     [Serializable]
-    public abstract class Geometry : IGeometry
+    public abstract class Geometry<TCoordinate> : IGeometry<TCoordinate>
+         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
+                             IComputable<TCoordinate>, IConvertible
     {
-        private static readonly Type[] SortedClasses = new Type[]
-            {
-                typeof (Point),
-                typeof (MultiPoint),
-                typeof (LineString),
-                typeof (LinearRing),
-                typeof (MultiLineString),
-                typeof (Polygon),
-                typeof (MultiPolygon),
-                typeof (GeometryCollection),
-            };
+        //private static readonly Type[] SortedClasses = new Type[]
+        //    {
+        //        typeof (Point),
+        //        typeof (MultiPoint),
+        //        typeof (LineString),
+        //        typeof (LinearRing),
+        //        typeof (MultiLineString),
+        //        typeof (Polygon),
+        //        typeof (MultiPolygon),
+        //        typeof (GeometryCollection),
+        //    };
 
-        private IGeometryFactory factory = null;
+        private IGeometryFactory<TCoordinate> factory = null;
 
         /// <summary> 
         /// Gets the factory which contains the context in which this point was created.
         /// </summary>
         /// <returns>The factory for this point.</returns>
-        public IGeometryFactory Factory
+        public IGeometryFactory<TCoordinate> Factory
         {
             get { return factory; }
         }
@@ -120,28 +125,36 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             set { userData = value; }
         }
 
-        /// <summary>
-        /// The bounding box of this <c>Geometry</c>.
-        /// </summary>
-        protected IExtents envelope;
+        private IExtents<TCoordinate> _extents;
+        private Int32? _srid;
 
-        // The ID of the Spatial Reference System used by this <c>Geometry</c>
-        private Int32? srid;
+        /// <summary>
+        /// Gets the bounding box of the <see cref="Geometry{TCoordinate}"/>.
+        /// </summary>
+        protected IExtents<TCoordinate> Extents
+        {
+            get { return _extents; }
+        }
 
         /// <summary>  
-        /// Gets/Sets the ID of the Spatial Reference System used by the <c>Geometry</c>. 
+        /// Gets or sets the ID of the Spatial Reference System used by the 
+        /// <see cref="Geometry{TCoordinate}"/>.
+        /// </summary>   
+        /// <remarks>
         /// NTS supports Spatial Reference System information in the simple way
         /// defined in the SFS. A Spatial Reference System ID (SRID) is present in
-        /// each <c>Geometry</c> object. <c>Geometry</c> provides basic
+        /// each <see cref="Geometry{TCoordinate}"/> object. 
+        /// <see cref="Geometry{TCoordinate}"/> provides basic
         /// accessor operations for this field, but no others. The SRID is represented
-        /// as an integer.
-        /// </summary>        
+        /// as a nullable <see cref="Int32"/>.
+        /// </remarks>     
         public Int32? Srid
         {
-            get { return srid; }
+            get { return _srid; }
             set
             {
-                srid = value;
+                _srid = value;
+
                 IGeometryCollection collection = this as IGeometryCollection;
 
                 if (collection != null)
@@ -159,21 +172,21 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public Geometry(IGeometryFactory factory)
         {
             this.factory = factory;
-            srid = factory.SRID;
+            _srid = factory.SRID;
         }
 
         /// <summary>  
         /// Returns the name of this object's interface.
         /// </summary>
-        /// <returns>The name of this <c>Geometry</c>s most specific interface.</returns>
+        /// <returns>The name of this <see cref="Geometry{TCoordinate}"/>s most specific interface.</returns>
         public abstract string GeometryType { get; }
 
         /// <summary>  
-        /// Returns true if the array contains any non-empty <c>Geometry</c>s.
+        /// Returns true if the array contains any non-empty <see cref="Geometry{TCoordinate}"/>s.
         /// </summary>
-        /// <param name="geometries"> an array of <c>Geometry</c>s; no elements may be <c>null</c></param>
+        /// <param name="geometries"> an array of <see cref="Geometry{TCoordinate}"/>s; no elements may be <see langword="null" /></param>
         /// <returns>            
-        /// <c>true</c> if any of the <c>Geometry</c>s
+        /// <see langword="true"/> if any of the <see cref="Geometry{TCoordinate}"/>s
         /// <c>IsEmpty</c> methods return <c>false</c>.
         /// </returns>
         protected static Boolean HasNonEmptyElements(IGeometry[] geometries)
@@ -190,10 +203,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Returns true if the array contains any <c>null</c> elements.
+        /// Returns true if the array contains any <see langword="null" /> elements.
         /// </summary>
         /// <param name="array"> an array to validate.</param>
-        /// <returns><c>true</c> if any of <c>array</c>s elements are <c>null</c>.</returns>
+        /// <returns><see langword="true"/> if any of <c>array</c>s elements are <see langword="null" />.</returns>
         public static Boolean HasNullElements(object[] array)
         {
             foreach (object o in array)
@@ -208,11 +221,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Returns the <c>PrecisionModel</c> used by the <c>Geometry</c>.
+        /// Returns the <see cref="PrecisionModel{TCoordinate}"/> used by the <see cref="Geometry{TCoordinate}"/>.
         /// </summary>
         /// <returns>    
         /// the specification of the grid of allowable points, for this
-        /// <c>Geometry</c> and all other <c>Geometry</c>s.
+        /// <see cref="Geometry{TCoordinate}"/> and all other <see cref="Geometry{TCoordinate}"/>s.
         /// </returns>
         public IPrecisionModel PrecisionModel
         {
@@ -220,29 +233,29 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Returns a vertex of this <c>Geometry</c>.
+        /// Returns a vertex of this <see cref="Geometry{TCoordinate}"/>.
         /// </summary>
         /// <returns>    
-        /// a Coordinate which is a vertex of this <c>Geometry</c>.
-        /// Returns <c>null</c> if this Geometry is empty.
+        /// a Coordinate which is a vertex of this <see cref="Geometry{TCoordinate}"/>.
+        /// Returns <see langword="null" /> if this Geometry is empty.
         /// </returns>
         public abstract ICoordinate Coordinate { get; }
 
         /// <summary>  
-        /// Returns this <c>Geometry</c> s vertices. If you modify the coordinates
+        /// Returns this <see cref="Geometry{TCoordinate}"/> s vertices. If you modify the coordinates
         /// in this array, be sure to call GeometryChanged afterwards.
-        /// The <c>Geometry</c>s contained by composite <c>Geometry</c>s
+        /// The <see cref="Geometry{TCoordinate}"/>s contained by composite <see cref="Geometry{TCoordinate}"/>s
         /// must be Geometry's; that is, they must implement <c>Coordinates</c>.
         /// </summary>
-        /// <returns>The vertices of this <c>Geometry</c>.</returns>
+        /// <returns>The vertices of this <see cref="Geometry{TCoordinate}"/>.</returns>
         public abstract ICoordinate[] Coordinates { get; }
 
         /// <summary>  
-        /// Returns the count of this <c>Geometry</c>s vertices. The <c>Geometry</c>
-        /// s contained by composite <c>Geometry</c>s must be
+        /// Returns the count of this <see cref="Geometry{TCoordinate}"/>s vertices. The <see cref="Geometry{TCoordinate}"/>
+        /// s contained by composite <see cref="Geometry{TCoordinate}"/>s must be
         /// Geometry's; that is, they must implement <c>NumPoints</c>.
         /// </summary>
-        /// <returns>The number of vertices in this <c>Geometry</c>.</returns>
+        /// <returns>The number of vertices in this <see cref="Geometry{TCoordinate}"/>.</returns>
         public abstract Int32 NumPoints { get; }
 
         /// <summary>
@@ -266,25 +279,25 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary> 
-        /// Returns false if the <c>Geometry</c> not simple.
+        /// Returns false if the <see cref="Geometry{TCoordinate}"/> not simple.
         /// Subclasses provide their own definition of "simple". If
-        /// this <c>Geometry</c> is empty, returns <c>true</c>. 
+        /// this <see cref="Geometry{TCoordinate}"/> is empty, returns <see langword="true"/>. 
         /// In general, the SFS specifications of simplicity seem to follow the
         /// following rule:
         ///  A Geometry is simple if the only self-intersections are at boundary points.
-        /// For all empty <c>Geometry</c>s, <c>IsSimple==true</c>.
+        /// For all empty <see cref="Geometry{TCoordinate}"/>s, <c>IsSimple==true</c>.
         /// </summary>
         /// <returns>    
-        /// <c>true</c> if this <c>Geometry</c> has any points of
+        /// <see langword="true"/> if this <see cref="Geometry{TCoordinate}"/> has any points of
         /// self-tangency, self-intersection or other anomalous points.
         /// </returns>
         public abstract Boolean IsSimple { get; }
 
         /// <summary>  
-        /// Tests the validity of this <c>Geometry</c>.
+        /// Tests the validity of this <see cref="Geometry{TCoordinate}"/>.
         /// Subclasses provide their own definition of "valid".
         /// </summary>
-        /// <returns><c>true</c> if this <c>Geometry</c> is valid.</returns>
+        /// <returns><see langword="true"/> if this <see cref="Geometry{TCoordinate}"/> is valid.</returns>
         public virtual Boolean IsValid
         {
             get
@@ -295,28 +308,28 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary> 
-        /// Returns whether or not the set of points in this <c>Geometry</c> is empty.
+        /// Returns whether or not the set of points in this <see cref="Geometry{TCoordinate}"/> is empty.
         /// </summary>
-        /// <returns><c>true</c> if this <c>Geometry</c> equals the empty point.</returns>
+        /// <returns><see langword="true"/> if this <see cref="Geometry{TCoordinate}"/> equals the empty point.</returns>
         public abstract Boolean IsEmpty { get; }
 
         /// <summary>  
-        /// Returns the minimum distance between this <c>Geometry</c>
-        /// and the <c>Geometry</c> g.
+        /// Returns the minimum distance between this <see cref="Geometry{TCoordinate}"/>
+        /// and the <see cref="Geometry{TCoordinate}"/> g.
         /// </summary>
-        /// <param name="g">The <c>Geometry</c> from which to compute the distance.</param>
+        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> from which to compute the distance.</param>
         public Double Distance(IGeometry g)
         {
             return DistanceOp.Distance(this, g);
         }
 
         /// <summary> 
-        /// Tests whether the distance from this <c>Geometry</c>
+        /// Tests whether the distance from this <see cref="Geometry{TCoordinate}"/>
         /// to another is less than or equal to a specified value.
         /// </summary>
         /// <param name="geom">the Geometry to check the distance to.</param>
         /// <param name="distance">the distance value to compare.</param>
-        /// <returns><c>true</c> if the geometries are less than <c>distance</c> apart.</returns>
+        /// <returns><see langword="true"/> if the geometries are less than <c>distance</c> apart.</returns>
         public Boolean IsWithinDistance(IGeometry geom, Double distance)
         {
             Double envDist = EnvelopeInternal.Distance(geom.EnvelopeInternal);
@@ -330,7 +343,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Returns the area of this <c>Geometry</c>.
+        /// Returns the area of this <see cref="Geometry{TCoordinate}"/>.
         /// Areal Geometries have a non-zero area.
         /// They override this function to compute the area.
         /// Others return 0.0
@@ -342,7 +355,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary> 
-        /// Returns the length of this <c>Geometry</c>.
+        /// Returns the length of this <see cref="Geometry{TCoordinate}"/>.
         /// Linear geometries return their length.
         /// Areal geometries return their perimeter.
         /// They override this function to compute the length.
@@ -355,7 +368,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary> 
-        /// Computes the centroid of this <c>Geometry</c>.
+        /// Computes the centroid of this <see cref="Geometry{TCoordinate}"/>.
         /// The centroid is equal to the centroid of the set of component Geometries of highest
         /// dimension (since the lower-dimension geometries contribute zero "weight" to the centroid).
         /// </summary>
@@ -396,7 +409,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Computes an interior point of this <c>Geometry</c>.
+        /// Computes an interior point of this <see cref="Geometry{TCoordinate}"/>.
         /// An interior point is guaranteed to lie in the interior of the Geometry,
         /// if it possible to calculate such a point exactly. Otherwise,
         /// the point may lie on the boundary of the point.
@@ -437,7 +450,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         private Dimensions dimension;
 
         /// <summary> 
-        /// Returns the dimension of this <c>Geometry</c>.
+        /// Returns the dimension of this <see cref="Geometry{TCoordinate}"/>.
         /// </summary>
         /// <returns>  
         /// The dimension of the class implementing this interface, whether
@@ -453,12 +466,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         private IGeometry boundary;
 
         /// <summary>  
-        /// Returns the boundary, or the empty point if this <c>Geometry</c>
+        /// Returns the boundary, or the empty point if this <see cref="Geometry{TCoordinate}"/>
         /// is empty. For a discussion of this function, see the OpenGIS Simple
         /// Features Specification. As stated in SFS Section 2.1.13.1, "the boundary
         /// of a Geometry is a set of Geometries of the next lower dimension."
         /// </summary>
-        /// <returns>The closure of the combinatorial boundary of this <c>Geometry</c>.</returns>
+        /// <returns>The closure of the combinatorial boundary of this <see cref="Geometry{TCoordinate}"/>.</returns>
         public virtual IGeometry Boundary
         {
             get { return boundary; }
@@ -468,7 +481,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         private Dimensions boundaryDimension;
 
         /// <summary> 
-        /// Returns the dimension of this <c>Geometry</c>s inherent boundary.
+        /// Returns the dimension of this <see cref="Geometry{TCoordinate}"/>s inherent boundary.
         /// </summary>
         /// <returns>    
         /// The dimension of the boundary of the class implementing this
@@ -482,14 +495,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Returns this <c>Geometry</c>s bounding box. If this <c>Geometry</c>
-        /// is the empty point, returns an empty <c>Point</c>. If the <c>Geometry</c>
+        /// Returns this <see cref="Geometry{TCoordinate}"/>s bounding box. If this <see cref="Geometry{TCoordinate}"/>
+        /// is the empty point, returns an empty <c>Point</c>. If the <see cref="Geometry{TCoordinate}"/>
         /// is a point, returns a non-empty <c>Point</c>. Otherwise, returns a
         /// <c>Polygon</c> whose points are (minx, miny), (maxx, miny), (maxx,
         /// maxy), (minx, maxy), (minx, miny).
         /// </summary>
         /// <returns>    
-        /// An empty <c>Point</c> (for empty <c>Geometry</c>s), a
+        /// An empty <c>Point</c> (for empty <see cref="Geometry{TCoordinate}"/>s), a
         /// <c>Point</c> (for <c>Point</c>s) or a <c>Polygon</c>
         /// (in all other cases).
         /// </returns>
@@ -499,12 +512,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary> 
-        /// Returns the minimum and maximum x and y values in this <c>Geometry</c>
-        /// , or a null <c>Envelope</c> if this <c>Geometry</c> is empty.
+        /// Returns the minimum and maximum x and y values in this <see cref="Geometry{TCoordinate}"/>
+        /// , or a null <see cref="Extents{TCoordinate}"/> if this <see cref="Geometry{TCoordinate}"/> is empty.
         /// </summary>
         /// <returns>    
-        /// This <c>Geometry</c>s bounding box; if the <c>Geometry</c>
-        /// is empty, <c>Envelope.IsNull</c> will return <c>true</c>.
+        /// This <see cref="Geometry{TCoordinate}"/>s bounding box; if the <see cref="Geometry{TCoordinate}"/>
+        /// is empty, <c>Envelope.IsNull</c> will return <see langword="true"/>.
         /// </returns>
         public IExtents EnvelopeInternal
         {
@@ -549,11 +562,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Returns <c>true</c> if the DE-9IM intersection matrix for the two
-        /// <c>Geometry</c>s is FF*FF****.
+        /// Returns <see langword="true"/> if the DE-9IM intersection matrix for the two
+        /// <see cref="Geometry{TCoordinate}"/>s is FF*FF****.
         /// </summary>
-        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
-        /// <returns><c>true</c> if the two <c>Geometry</c>s are disjoint.</returns>
+        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/>.</param>
+        /// <returns><see langword="true"/> if the two <see cref="Geometry{TCoordinate}"/>s are disjoint.</returns>
         public Boolean Disjoint(IGeometry g)
         {
             // short-circuit test
@@ -566,13 +579,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Returns <c>true</c> if the DE-9IM intersection matrix for the two
-        /// <c>Geometry</c>s is FT*******, F**T***** or F***T****.
+        /// Returns <see langword="true"/> if the DE-9IM intersection matrix for the two
+        /// <see cref="Geometry{TCoordinate}"/>s is FT*******, F**T***** or F***T****.
         /// </summary>
-        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
+        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/>.</param>
         /// <returns>
-        /// <c>true</c> if the two <c>Geometry</c>s touch;
-        /// Returns false if both <c>Geometry</c>s are points.
+        /// <see langword="true"/> if the two <see cref="Geometry{TCoordinate}"/>s touch;
+        /// Returns false if both <see cref="Geometry{TCoordinate}"/>s are points.
         /// </returns>
         public Boolean Touches(IGeometry g)
         {
@@ -586,10 +599,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Returns <c>true</c> if <c>disjoint</c> returns false.
+        /// Returns <see langword="true"/> if <c>disjoint</c> returns false.
         /// </summary>
-        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
-        /// <returns><c>true</c> if the two <c>Geometry</c>s intersect.</returns>
+        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/>.</param>
+        /// <returns><see langword="true"/> if the two <see cref="Geometry{TCoordinate}"/>s intersect.</returns>
         public Boolean Intersects(IGeometry g)
         {
             // short-circuit test
@@ -613,15 +626,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Returns <c>true</c> if the DE-9IM intersection matrix for the two
-        /// <c>Geometry</c>s is
+        /// Returns <see langword="true"/> if the DE-9IM intersection matrix for the two
+        /// <see cref="Geometry{TCoordinate}"/>s is
         ///  T*T****** (for a point and a curve, a point and an area or a line
         /// and an area) 0******** (for two curves).
         /// </summary>
-        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
+        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/>.</param>
         /// <returns>
-        /// <c>true</c> if the two <c>Geometry</c>s cross.
-        /// For this function to return <c>true</c>, the <c>Geometry</c>
+        /// <see langword="true"/> if the two <see cref="Geometry{TCoordinate}"/>s cross.
+        /// For this function to return <see langword="true"/>, the <see cref="Geometry{TCoordinate}"/>
         /// s must be a point and a curve; a point and a surface; two curves; or a
         /// curve and a surface.
         /// </returns>
@@ -637,21 +650,21 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if the DE-9IM intersection matrix for the two
-        /// <c>Geometry</c>s is T*F**F***.
+        /// Returns <see langword="true"/> if the DE-9IM intersection matrix for the two
+        /// <see cref="Geometry{TCoordinate}"/>s is T*F**F***.
         /// </summary>
-        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
-        /// <returns><c>true</c> if this <c>Geometry</c> is within <c>other</c>.</returns>
+        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/>.</param>
+        /// <returns><see langword="true"/> if this <see cref="Geometry{TCoordinate}"/> is within <c>other</c>.</returns>
         public Boolean Within(IGeometry g)
         {
             return g.Contains(this);
         }
 
         /// <summary>
-        /// Returns <c>true</c> if <c>other.within(this)</c> returns <c>true</c>.
+        /// Returns <see langword="true"/> if <c>other.within(this)</c> returns <see langword="true"/>.
         /// </summary>
-        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
-        /// <returns><c>true</c> if this <c>Geometry</c> contains <c>other</c>.</returns>
+        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/>.</param>
+        /// <returns><see langword="true"/> if this <see cref="Geometry{TCoordinate}"/> contains <c>other</c>.</returns>
         public Boolean Contains(IGeometry g)
         {
             // short-circuit test
@@ -671,15 +684,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if the DE-9IM intersection matrix for the two
-        /// <c>Geometry</c>s is
+        /// Returns <see langword="true"/> if the DE-9IM intersection matrix for the two
+        /// <see cref="Geometry{TCoordinate}"/>s is
         ///  T*T***T** (for two points or two surfaces)
         ///  1*T***T** (for two curves).
         /// </summary>
-        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
+        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/>.</param>
         /// <returns>
-        /// <c>true</c> if the two <c>Geometry</c>s overlap.
-        /// For this function to return <c>true</c>, the <c>Geometry</c>
+        /// <see langword="true"/> if the two <see cref="Geometry{TCoordinate}"/>s overlap.
+        /// For this function to return <see langword="true"/>, the <see cref="Geometry{TCoordinate}"/>
         /// s must be two points, two curves or two surfaces.
         /// </returns>
         public Boolean Overlaps(IGeometry g)
@@ -694,7 +707,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if this geometry covers the specified geometry.
+        /// Returns <see langword="true"/> if this geometry covers the specified geometry.
         /// <para>
         /// The <c>Covers</c> predicate has the following equivalent definitions:
         ///     - Every point of the other geometry is a point of this geometry.
@@ -709,8 +722,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// For most situations, <c>Covers</c> should be used in preference to <c>Contains</c>.
         /// As an added benefit, <c>Covers</c> is more amenable to optimization, and hence should be more performant.
         /// </remarks>
-        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c></param>
-        /// <returns><c>true</c> if this <c>Geometry</c> covers <paramref name="g" /></returns>
+        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/></param>
+        /// <returns><see langword="true"/> if this <see cref="Geometry{TCoordinate}"/> covers <paramref name="g" /></returns>
         /// <seealso cref="Geometry.Contains" />
         /// <seealso cref="Geometry.CoveredBy" />
         public Boolean Covers(IGeometry g)
@@ -731,7 +744,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if this geometry is covered by the specified geometry.
+        /// Returns <see langword="true"/> if this geometry is covered by the specified geometry.
         /// <para>
         /// The <c>CoveredBy</c> predicate has the following equivalent definitions:
         ///     - Every point of this geometry is a point of the other geometry.
@@ -740,8 +753,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </para>
         /// Note the difference between <c>CoveredBy</c> and <c>Within</c>: <c>CoveredBy</c> is a more inclusive relation.
         /// </summary>
-        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c></param>.
-        /// <returns><c>true</c> if this <c>Geometry</c> is covered by <paramref name="g" />.</returns>
+        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/></param>.
+        /// <returns><see langword="true"/> if this <see cref="Geometry{TCoordinate}"/> is covered by <paramref name="g" />.</returns>
         /// <seealso cref="Geometry.Within" />
         /// <seealso cref="Geometry.Covers" />
         public Boolean CoveredBy(IGeometry g)
@@ -750,8 +763,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Returns <c>true</c> if the elements in the DE-9IM intersection
-        /// matrix for the two <c>Geometry</c>s match the elements in <c>intersectionPattern</c>
+        /// Returns <see langword="true"/> if the elements in the DE-9IM intersection
+        /// matrix for the two <see cref="Geometry{TCoordinate}"/>s match the elements in <c>intersectionPattern</c>
         /// , which may be:
         ///  0
         ///  1
@@ -762,21 +775,21 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// For more information on the DE-9IM, see the OpenGIS Simple Features
         /// Specification.
         /// </summary>
-        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
-        /// <param name="intersectionPattern">The pattern against which to check the intersection matrix for the two <c>Geometry</c>s.</param>
-        /// <returns><c>true</c> if the DE-9IM intersection matrix for the two <c>Geometry</c>s match <c>intersectionPattern</c>.</returns>
+        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/>.</param>
+        /// <param name="intersectionPattern">The pattern against which to check the intersection matrix for the two <see cref="Geometry{TCoordinate}"/>s.</param>
+        /// <returns><see langword="true"/> if the DE-9IM intersection matrix for the two <see cref="Geometry{TCoordinate}"/>s match <c>intersectionPattern</c>.</returns>
         public Boolean Relate(IGeometry g, string intersectionPattern)
         {
             return Relate(g).Matches(intersectionPattern);
         }
 
         /// <summary>
-        /// Returns the DE-9IM intersection matrix for the two <c>Geometry</c>s.
+        /// Returns the DE-9IM intersection matrix for the two <see cref="Geometry{TCoordinate}"/>s.
         /// </summary>
-        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c></param>
+        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/></param>
         /// <returns>
         /// A matrix describing the intersections of the interiors,
-        /// boundaries and exteriors of the two <c>Geometry</c>s.
+        /// boundaries and exteriors of the two <see cref="Geometry{TCoordinate}"/>s.
         /// </returns>
         public IntersectionMatrix Relate(IGeometry g)
         {
@@ -787,11 +800,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if the DE-9IM intersection matrix for the two
-        /// <c>Geometry</c>s is T*F**FFF*.
+        /// Returns <see langword="true"/> if the DE-9IM intersection matrix for the two
+        /// <see cref="Geometry{TCoordinate}"/>s is T*F**FFF*.
         /// </summary>
-        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
-        /// <returns><c>true</c> if the two <c>Geometry</c>s are equal.</returns>
+        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/>.</param>
+        /// <returns><see langword="true"/> if the two <see cref="Geometry{TCoordinate}"/>s are equal.</returns>
         public Boolean Equals(IGeometry g)
         {
             if (IsEmpty && g.IsEmpty)
@@ -884,12 +897,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns the Well-known Text representation of this <c>Geometry</c>.
+        /// Returns the Well-known Text representation of this <see cref="Geometry{TCoordinate}"/>.
         /// For a definition of the Well-known Text format, see the OpenGIS Simple
         /// Features Specification.
         /// </summary>
         /// <returns>
-        /// The Well-known Text representation of this <c>Geometry</c>.
+        /// The Well-known Text representation of this <see cref="Geometry{TCoordinate}"/>.
         /// </returns>
         public override string ToString()
         {
@@ -897,12 +910,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns the Well-known Text representation of this <c>Geometry</c>.
+        /// Returns the Well-known Text representation of this <see cref="Geometry{TCoordinate}"/>.
         /// For a definition of the Well-known Text format, see the OpenGIS Simple
         /// Features Specification.
         /// </summary>
         /// <returns>
-        /// The Well-known Text representation of this <c>Geometry</c>.
+        /// The Well-known Text representation of this <see cref="Geometry{TCoordinate}"/>.
         /// </returns>
         public string ToText()
         {
@@ -916,11 +929,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns the Well-known Binary representation of this <c>Geometry</c>.
+        /// Returns the Well-known Binary representation of this <see cref="Geometry{TCoordinate}"/>.
         /// For a definition of the Well-known Binary format, see the OpenGIS Simple
         /// Features Specification.
         /// </summary>
-        /// <returns>The Well-known Binary representation of this <c>Geometry</c>.</returns>
+        /// <returns>The Well-known Binary representation of this <see cref="Geometry{TCoordinate}"/>.</returns>
         public Byte[] ToBinary()
         {
             WKBWriter writer = new WKBWriter();
@@ -944,15 +957,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns a buffer region around this <c>Geometry</c> having the given width.
+        /// Returns a buffer region around this <see cref="Geometry{TCoordinate}"/> having the given width.
         /// The buffer of a Geometry is the Minkowski sum or difference of the Geometry with a disc of radius <c>distance</c>.
         /// </summary>
         /// <param name="distance">
         /// The width of the buffer, interpreted according to the
-        /// <c>PrecisionModel</c> of the <c>Geometry</c>.
+        /// <see cref="PrecisionModel{TCoordinate}"/> of the <see cref="Geometry{TCoordinate}"/>.
         /// </param>
         /// <returns>
-        /// All points whose distance from this <c>Geometry</c>
+        /// All points whose distance from this <see cref="Geometry{TCoordinate}"/>
         /// are less than or equal to <c>distance</c>.
         /// </returns>
         public IGeometry Buffer(Double distance)
@@ -961,16 +974,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns a buffer region around this <c>Geometry</c> having the given width.
+        /// Returns a buffer region around this <see cref="Geometry{TCoordinate}"/> having the given width.
         /// The buffer of a Geometry is the Minkowski sum or difference of the Geometry with a disc of radius <c>distance</c>.
         /// </summary>
         /// <param name="distance">
         /// The width of the buffer, interpreted according to the
-        /// <c>PrecisionModel</c> of the <c>Geometry</c>.
+        /// <see cref="PrecisionModel{TCoordinate}"/> of the <see cref="Geometry{TCoordinate}"/>.
         /// </param>
         /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
         /// <returns>
-        /// All points whose distance from this <c>Geometry</c>
+        /// All points whose distance from this <see cref="Geometry{TCoordinate}"/>
         /// are less than or equal to <c>distance</c>.
         /// </returns>
         public IGeometry Buffer(Double distance, BufferStyle endCapStyle)
@@ -979,7 +992,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns a buffer region around this <c>Geometry</c> having the given
+        /// Returns a buffer region around this <see cref="Geometry{TCoordinate}"/> having the given
         /// width and with a specified number of segments used to approximate curves.
         /// The buffer of a Geometry is the Minkowski sum of the Geometry with
         /// a disc of radius <c>distance</c>.  Curves in the buffer polygon are
@@ -988,11 +1001,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="distance">
         /// The width of the buffer, interpreted according to the
-        /// <c>PrecisionModel</c> of the <c>Geometry</c>.
+        /// <see cref="PrecisionModel{TCoordinate}"/> of the <see cref="Geometry{TCoordinate}"/>.
         /// </param>
         /// <param name="quadrantSegments">The number of segments to use to approximate a quadrant of a circle.</param>
         /// <returns>
-        /// All points whose distance from this <c>Geometry</c>
+        /// All points whose distance from this <see cref="Geometry{TCoordinate}"/>
         /// are less than or equal to <c>distance</c>.
         /// </returns>
         public IGeometry Buffer(Double distance, Int32 quadrantSegments)
@@ -1001,7 +1014,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns a buffer region around this <c>Geometry</c> having the given
+        /// Returns a buffer region around this <see cref="Geometry{TCoordinate}"/> having the given
         /// width and with a specified number of segments used to approximate curves.
         /// The buffer of a Geometry is the Minkowski sum of the Geometry with
         /// a disc of radius <c>distance</c>.  Curves in the buffer polygon are
@@ -1010,12 +1023,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="distance">
         /// The width of the buffer, interpreted according to the
-        /// <c>PrecisionModel</c> of the <c>Geometry</c>.
+        /// <see cref="PrecisionModel{TCoordinate}"/> of the <see cref="Geometry{TCoordinate}"/>.
         /// </param>
         /// <param name="quadrantSegments">The number of segments to use to approximate a quadrant of a circle.</param>
         /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
         /// <returns>
-        /// All points whose distance from this <c>Geometry</c>
+        /// All points whose distance from this <see cref="Geometry{TCoordinate}"/>
         /// are less than or equal to <c>distance</c>.
         /// </returns>
         public IGeometry Buffer(Double distance, Int32 quadrantSegments, BufferStyle endCapStyle)
@@ -1025,21 +1038,21 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /// <summary>
         /// Returns the smallest convex <c>Polygon</c> that contains all the
-        /// points in the <c>Geometry</c>. This obviously applies only to <c>Geometry</c>
+        /// points in the <see cref="Geometry{TCoordinate}"/>. This obviously applies only to <see cref="Geometry{TCoordinate}"/>
         /// s which contain 3 or more points.
         /// </summary>
-        /// <returns>the minimum-area convex polygon containing this <c>Geometry</c>'s points.</returns>
+        /// <returns>the minimum-area convex polygon containing this <see cref="Geometry{TCoordinate}"/>'s points.</returns>
         public virtual IGeometry ConvexHull()
         {
             return (new ConvexHull(this)).GetConvexHull();
         }
 
         /// <summary>
-        /// Returns a <c>Geometry</c> representing the points shared by this
-        /// <c>Geometry</c> and <c>other</c>.
+        /// Returns a <see cref="Geometry{TCoordinate}"/> representing the points shared by this
+        /// <see cref="Geometry{TCoordinate}"/> and <c>other</c>.
         /// </summary>
-        /// <param name="other">The <c>Geometry</c> with which to compute the intersection.</param>
-        /// <returns>The points common to the two <c>Geometry</c>s.</returns>
+        /// <param name="other">The <see cref="Geometry{TCoordinate}"/> with which to compute the intersection.</param>
+        /// <returns>The points common to the two <see cref="Geometry{TCoordinate}"/>s.</returns>
         public IGeometry Intersection(IGeometry other)
         {
             CheckNotGeometryCollection(this);
@@ -1049,11 +1062,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns a <c>Geometry</c> representing all the points in this <c>Geometry</c>
+        /// Returns a <see cref="Geometry{TCoordinate}"/> representing all the points in this <see cref="Geometry{TCoordinate}"/>
         /// and <c>other</c>.
         /// </summary>
-        /// <param name="other">The <c>Geometry</c> with which to compute the union.</param>
-        /// <returns>A set combining the points of this <c>Geometry</c> and the points of <c>other</c>.</returns>
+        /// <param name="other">The <see cref="Geometry{TCoordinate}"/> with which to compute the union.</param>
+        /// <returns>A set combining the points of this <see cref="Geometry{TCoordinate}"/> and the points of <c>other</c>.</returns>
         public IGeometry Union(IGeometry other)
         {
             CheckNotGeometryCollection(this);
@@ -1063,12 +1076,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns a <c>Geometry</c> representing the points making up this
-        /// <c>Geometry</c> that do not make up <c>other</c>. This method
-        /// returns the closure of the resultant <c>Geometry</c>.
+        /// Returns a <see cref="Geometry{TCoordinate}"/> representing the points making up this
+        /// <see cref="Geometry{TCoordinate}"/> that do not make up <c>other</c>. This method
+        /// returns the closure of the resultant <see cref="Geometry{TCoordinate}"/>.
         /// </summary>
-        /// <param name="other">The <c>Geometry</c> with which to compute the difference.</param>
-        /// <returns>The point set difference of this <c>Geometry</c> with <c>other</c>.</returns>
+        /// <param name="other">The <see cref="Geometry{TCoordinate}"/> with which to compute the difference.</param>
+        /// <returns>The point set difference of this <see cref="Geometry{TCoordinate}"/> with <c>other</c>.</returns>
         public IGeometry Difference(IGeometry other)
         {
             CheckNotGeometryCollection(this);
@@ -1078,13 +1091,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns a set combining the points in this <c>Geometry</c> not in
+        /// Returns a set combining the points in this <see cref="Geometry{TCoordinate}"/> not in
         /// <c>other</c>, and the points in <c>other</c> not in this
-        /// <c>Geometry</c>. This method returns the closure of the resultant
-        /// <c>Geometry</c>.
+        /// <see cref="Geometry{TCoordinate}"/>. This method returns the closure of the resultant
+        /// <see cref="Geometry{TCoordinate}"/>.
         /// </summary>
-        /// <param name="other">The <c>Geometry</c> with which to compute the symmetric difference.</param>
-        /// <returns>The point set symmetric difference of this <c>Geometry</c> with <c>other</c>.</returns>
+        /// <param name="other">The <see cref="Geometry{TCoordinate}"/> with which to compute the symmetric difference.</param>
+        /// <returns>The point set symmetric difference of this <see cref="Geometry{TCoordinate}"/> with <c>other</c>.</returns>
         public IGeometry SymmetricDifference(IGeometry other)
         {
             CheckNotGeometryCollection(this);
@@ -1094,39 +1107,39 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns true if the two <c>Geometry</c>s are exactly equal,
+        /// Returns true if the two <see cref="Geometry{TCoordinate}"/>s are exactly equal,
         /// up to a specified tolerance.
         /// Two Geometries are exactly within a tolerance equal iff:
         /// they have the same class,
         /// they have the same values of Coordinates,
         /// within the given tolerance distance, in their internal
         /// Coordinate lists, in exactly the same order.
-        /// If this and the other <c>Geometry</c>s are
-        /// composites and any children are not <c>Geometry</c>s, returns
+        /// If this and the other <see cref="Geometry{TCoordinate}"/>s are
+        /// composites and any children are not <see cref="Geometry{TCoordinate}"/>s, returns
         /// false.
         /// </summary>
-        /// <param name="other">The <c>Geometry</c> with which to compare this <c>Geometry</c></param>
+        /// <param name="other">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/></param>
         /// <param name="tolerance">Distance at or below which two Coordinates will be considered equal.</param>
         /// <returns>
-        /// <c>true</c> if this and the other <c>Geometry</c>
+        /// <see langword="true"/> if this and the other <see cref="Geometry{TCoordinate}"/>
         /// are of the same class and have equal internal data.
         /// </returns>
         public abstract Boolean EqualsExact(IGeometry other, Double tolerance);
 
         /// <summary>
-        /// Returns true if the two <c>Geometry</c>s are exactly equal.
+        /// Returns true if the two <see cref="Geometry{TCoordinate}"/>s are exactly equal.
         /// Two Geometries are exactly equal iff:
         /// they have the same class,
         /// they have the same values of Coordinates in their internal
         /// Coordinate lists, in exactly the same order.
-        /// If this and the other <c>Geometry</c>s are
-        /// composites and any children are not <c>Geometry</c>s, returns
+        /// If this and the other <see cref="Geometry{TCoordinate}"/>s are
+        /// composites and any children are not <see cref="Geometry{TCoordinate}"/>s, returns
         /// false.
         /// This provides a stricter test of equality than <c>equals</c>.
         /// </summary>
-        /// <param name="other">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
+        /// <param name="other">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/>.</param>
         /// <returns>
-        /// <c>true</c> if this and the other <c>Geometry</c>
+        /// <see langword="true"/> if this and the other <see cref="Geometry{TCoordinate}"/>
         /// are of the same class and have equal internal data.
         /// </returns>
         public Boolean EqualsExact(IGeometry other)
@@ -1135,7 +1148,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Performs an operation with or on this <c>Geometry</c>'s
+        /// Performs an operation with or on this <see cref="Geometry{TCoordinate}"/>'s
         /// coordinates. If you are using this method to modify the point, be sure
         /// to call GeometryChanged() afterwards. Note that you cannot use this
         /// method to
@@ -1143,17 +1156,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// returns a copy of the Coordinate, rather than the actual Coordinate stored
         /// (if it even stores Coordinates at all).
         /// </summary>
-        /// <param name="filter">The filter to apply to this <c>Geometry</c>'s coordinates</param>
+        /// <param name="filter">The filter to apply to this <see cref="Geometry{TCoordinate}"/>'s coordinates</param>
         public abstract void Apply(ICoordinateFilter filter);
 
         /// <summary>
-        /// Performs an operation with or on this <c>Geometry</c> and its
-        /// subelement <c>Geometry</c>s (if any).
+        /// Performs an operation with or on this <see cref="Geometry{TCoordinate}"/> and its
+        /// subelement <see cref="Geometry{TCoordinate}"/>s (if any).
         /// Only GeometryCollections and subclasses
         /// have subelement Geometry's.
         /// </summary>
         /// <param name="filter">
-        /// The filter to apply to this <c>Geometry</c> (and
+        /// The filter to apply to this <see cref="Geometry{TCoordinate}"/> (and
         /// its children, if it is a <c>GeometryCollection</c>).
         /// </param>
         public abstract void Apply(IGeometryFilter filter);
@@ -1164,7 +1177,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Polygons have component Geometry's; for Polygons they are the LinearRings
         /// of the shell and holes.
         /// </summary>
-        /// <param name="filter">The filter to apply to this <c>Geometry</c>.</param>
+        /// <param name="filter">The filter to apply to this <see cref="Geometry{TCoordinate}"/>.</param>
         public abstract void Apply(IGeometryComponentFilter filter);
 
         public virtual object Clone()
@@ -1180,9 +1193,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Converts this <c>Geometry</c> to normal form (or 
-        /// canonical form ). Normal form is a unique representation for <c>Geometry</c>
-        /// s. It can be used to test whether two <c>Geometry</c>s are equal
+        /// Converts this <see cref="Geometry{TCoordinate}"/> to normal form (or 
+        /// canonical form ). Normal form is a unique representation for <see cref="Geometry{TCoordinate}"/>
+        /// s. It can be used to test whether two <see cref="Geometry{TCoordinate}"/>s are equal
         /// in a way that is independent of the ordering of the coordinates within
         /// them. Normal form equality is a stronger condition than topological
         /// equality, but weaker than pointwise equality. The definitions for normal
@@ -1193,8 +1206,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public abstract void Normalize();
 
         /// <summary>
-        /// Returns whether this <c>Geometry</c> is greater than, equal to,
-        /// or less than another <c>Geometry</c>. 
+        /// Returns whether this <see cref="Geometry{TCoordinate}"/> is greater than, equal to,
+        /// or less than another <see cref="Geometry{TCoordinate}"/>. 
         /// If their classes are different, they are compared using the following
         /// ordering:
         ///     Point (lowest),
@@ -1205,11 +1218,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         ///     Polygon,
         ///     MultiPolygon,
         ///     GeometryCollection (highest).
-        /// If the two <c>Geometry</c>s have the same class, their first
+        /// If the two <see cref="Geometry{TCoordinate}"/>s have the same class, their first
         /// elements are compared. If those are the same, the second elements are
         /// compared, etc.
         /// </summary>
-        /// <param name="o">A <c>Geometry</c> with which to compare this <c>Geometry</c></param>
+        /// <param name="o">A <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/></param>
         /// <returns>
         /// A positive number, 0, or a negative number, depending on whether
         /// this object is greater than, equal to, or less than <c>o</c>, as
@@ -1249,15 +1262,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns whether the two <c>Geometry</c>s are equal, from the point
+        /// Returns whether the two <see cref="Geometry{TCoordinate}"/>s are equal, from the point
         /// of view of the <c>EqualsExact</c> method. Called by <c>EqualsExact</c>
-        /// . In general, two <c>Geometry</c> classes are considered to be
+        /// . In general, two <see cref="Geometry{TCoordinate}"/> classes are considered to be
         /// "equivalent" only if they are the same class. An exception is <c>LineString</c>
         /// , which is considered to be equivalent to its subclasses.
         /// </summary>
-        /// <param name="other">The <c>Geometry</c> with which to compare this <c>Geometry</c> for equality.</param>
+        /// <param name="other">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/> for equality.</param>
         /// <returns>
-        /// <c>true</c> if the classes of the two <c>Geometry</c>
+        /// <see langword="true"/> if the classes of the two <see cref="Geometry{TCoordinate}"/>
         /// s are considered to be equal by the <c>equalsExact</c> method.
         /// </returns>
         protected Boolean IsEquivalentClass(IGeometry other)
@@ -1269,7 +1282,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Throws an exception if <c>g</c>'s class is <c>GeometryCollection</c>. 
         /// (its subclasses do not trigger an exception).
         /// </summary>
-        /// <param name="g">The <c>Geometry</c> to check.</param>
+        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> to check.</param>
         /// <exception cref="ArgumentException">
         /// if <c>g</c> is a <c>GeometryCollection</c>, but not one of its subclasses.
         /// </exception>
@@ -1282,10 +1295,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if <c>g</c>'s class is <c>GeometryCollection</c>. 
+        /// Returns <see langword="true"/> if <c>g</c>'s class is <c>GeometryCollection</c>. 
         /// (its subclasses do not trigger an exception).
         /// </summary>
-        /// <param name="g">The <c>Geometry</c> to check.</param>
+        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> to check.</param>
         /// <exception cref="ArgumentException">
         /// If <c>g</c> is a <c>GeometryCollection</c>, but not one of its subclasses.
         /// </exception>        
@@ -1295,23 +1308,23 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns the minimum and maximum x and y values in this <c>Geometry</c>
-        /// , or a null <c>Envelope</c> if this <c>Geometry</c> is empty.
-        /// Unlike <c>EnvelopeInternal</c>, this method calculates the <c>Envelope</c>
+        /// Returns the minimum and maximum x and y values in this <see cref="Geometry{TCoordinate}"/>
+        /// , or a null <see cref="Extents{TCoordinate}"/> if this <see cref="Geometry{TCoordinate}"/> is empty.
+        /// Unlike <c>EnvelopeInternal</c>, this method calculates the <see cref="Extents{TCoordinate}"/>
         /// each time it is called; <c>EnvelopeInternal</c> caches the result
         /// of this method.        
         /// </summary>
         /// <returns>
-        /// This <c>Geometry</c>s bounding box; if the <c>Geometry</c>
-        /// is empty, <c>Envelope.IsNull</c> will return <c>true</c>.
+        /// This <see cref="Geometry{TCoordinate}"/>s bounding box; if the <see cref="Geometry{TCoordinate}"/>
+        /// is empty, <c>Envelope.IsNull</c> will return <see langword="true"/>.
         /// </returns>
         protected abstract IExtents ComputeEnvelopeInternal();
 
         /// <summary>
-        /// Returns whether this <c>Geometry</c> is greater than, equal to,
-        /// or less than another <c>Geometry</c> having the same class.
+        /// Returns whether this <see cref="Geometry{TCoordinate}"/> is greater than, equal to,
+        /// or less than another <see cref="Geometry{TCoordinate}"/> having the same class.
         /// </summary>
-        /// <param name="o">A <c>Geometry</c> having the same class as this <c>Geometry</c>.</param>
+        /// <param name="o">A <see cref="Geometry{TCoordinate}"/> having the same class as this <see cref="Geometry{TCoordinate}"/>.</param>
         /// <returns>
         /// A positive number, 0, or a negative number, depending on whether
         /// this object is greater than, equal to, or less than <c>o</c>, as
@@ -1406,7 +1419,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Fixed" />.
+        /// A predefined <see cref="Geometry{TCoordinate}Factory{TCoordinate}" /> with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Fixed" />.
         /// </summary>
         /// <seealso cref="GeometryFactory.Default" />
         /// <seealso cref="GeometryFactory.Fixed"/>

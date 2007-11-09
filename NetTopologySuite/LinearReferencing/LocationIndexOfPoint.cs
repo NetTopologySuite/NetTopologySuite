@@ -7,7 +7,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 {
     /// <summary>
     /// Computes the <see cref="LinearLocation" /> of the point
-    /// on a linear <see cref="Geometry" />nearest a given <see cref="Coordinate"/>.
+    /// on a linear <see cref="Geometry{TCoordinate}" />nearest a given <see cref="Coordinate"/>.
     /// The nearest point is not necessarily unique; this class
     /// always computes the nearest point closest to the start of the geometry.
     /// </summary>
@@ -41,8 +41,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Find the nearest <see cref="LinearLocation" /> along the linear <see cref="Geometry" />
-        /// to a given <see cref="Geometry" /> after the specified minimum <see cref="LinearLocation" />.
+        /// Find the nearest <see cref="LinearLocation" /> along the linear <see cref="Geometry{TCoordinate}" />
+        /// to a given <see cref="Geometry{TCoordinate}" /> after the specified minimum <see cref="LinearLocation" />.
         /// If possible the location returned will be strictly greater than the <paramref name="minIndex" />.
         /// If this is not possible, the value returned will equal <paramref name="minIndex" />.
         /// (An example where this is not possible is when <paramref name="minIndex" /> = [end of line] ).

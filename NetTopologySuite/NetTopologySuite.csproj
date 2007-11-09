@@ -51,6 +51,8 @@
       <HintPath>..\ExternalReferences\NPack.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithm\CentroidArea.cs" />
@@ -58,7 +60,6 @@
     <Compile Include="Algorithm\CentroidPoint.cs" />
     <Compile Include="Algorithm\CGAlgorithms.cs" />
     <Compile Include="Algorithm\ConvexHull.cs" />
-    <Compile Include="Algorithm\HCoordinate.cs" />
     <Compile Include="Algorithm\InteriorPointArea.cs" />
     <Compile Include="Algorithm\InteriorPointLine.cs" />
     <Compile Include="Algorithm\InteriorPointPoint.cs" />
@@ -82,9 +83,7 @@
     </Compile>
     <Compile Include="Features\Feature.cs" />
     <Compile Include="Features\IAttributesTable.cs" />
-    <Compile Include="Geometries\Coordinate.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="GeometriesGraph\Positions.cs" />
     <Compile Include="Geometries\CoordinateArrays.cs" />
     <Compile Include="Geometries\CoordinateArraySequence.cs" />
     <Compile Include="Geometries\CoordinateArraySequenceFactory.cs" />
@@ -108,6 +107,7 @@
     <Compile Include="Geometries\Point.cs" />
     <Compile Include="Geometries\Polygon.cs" />
     <Compile Include="Geometries\PrecisionModel.cs" />
+    <Compile Include="Geometries\PrecisionModels.cs" />
     <Compile Include="Geometries\TopologyException.cs" />
     <Compile Include="Geometries\Triangle.cs" />
     <Compile Include="Geometries\Utilities\GeometryEditor.cs" />
@@ -209,6 +209,7 @@
     <Compile Include="Noding\Snapround\MCIndexPointSnapper.cs" />
     <Compile Include="Noding\Snapround\MCIndexSnapRounder.cs" />
     <Compile Include="Noding\Snapround\SimpleSnapRounder.cs" />
+    <Compile Include="NtsException.cs" />
     <Compile Include="Operation\Buffer\BufferBuilder.cs" />
     <Compile Include="Operation\Buffer\BufferOp.cs" />
     <Compile Include="Operation\Buffer\BufferSubgraph.cs" />

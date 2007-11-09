@@ -20,14 +20,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="polygons">
         /// The <c>Polygon</c>s for this <c>MultiPolygon</c>
-        /// , or <c>null</c> or an empty array to create the empty point.
-        /// Elements may be empty <c>Polygon</c>s, but not <c>null</c>
+        /// , or <see langword="null" /> or an empty array to create the empty point.
+        /// Elements may be empty <c>Polygon</c>s, but not <see langword="null" />
         /// s. The polygons must conform to the assertions specified in the 
         /// <see href="http://www.opengis.org/techno/specs.htm"/> OpenGIS Simple Features
         /// Specification for SQL.        
         /// </param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="Geometry{TCoordinate}Factory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public MultiPolygon(IPolygon[] polygons) : this(polygons, DefaultFactory) {}
@@ -37,8 +37,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="polygons">
         /// The <c>Polygon</c>s for this <c>MultiPolygon</c>
-        /// , or <c>null</c> or an empty array to create the empty point.
-        /// Elements may be empty <c>Polygon</c>s, but not <c>null</c>
+        /// , or <see langword="null" /> or an empty array to create the empty point.
+        /// Elements may be empty <c>Polygon</c>s, but not <see langword="null" />
         /// s. The polygons must conform to the assertions specified in the 
         /// <see href="http://www.opengis.org/techno/specs.htm"/> OpenGIS Simple Features
         /// Specification for SQL.        

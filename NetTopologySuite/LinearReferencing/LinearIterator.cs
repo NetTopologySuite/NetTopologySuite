@@ -44,13 +44,13 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         private readonly Int32 startVertexIndex = 0;
 
         /// <summary>
-        /// Creates an iterator initialized to the start of a linear <see cref="Geometry" />.
+        /// Creates an iterator initialized to the start of a linear <see cref="Geometry{TCoordinate}" />.
         /// </summary>
         /// <param name="linear">The linear geometry to iterate over.</param>
         public LinearIterator(IGeometry linear) : this(linear, 0, 0) {}
 
         /// <summary>
-        /// Creates an iterator starting at a <see cref="LinearLocation" /> on a linear <see cref="Geometry" />.
+        /// Creates an iterator starting at a <see cref="LinearLocation" /> on a linear <see cref="Geometry{TCoordinate}" />.
         /// </summary>
         /// <param name="linear">The linear geometry to iterate over.</param>
         /// <param name="start">The location to start at.</param>
@@ -59,7 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
         /// <summary>
         /// Creates an iterator starting at
-        /// a component and vertex in a linear <see cref="Geometry" />.
+        /// a component and vertex in a linear <see cref="Geometry{TCoordinate}" />.
         /// </summary>
         /// <param name="linear">The linear geometry to iterate over.</param>
         /// <param name="componentIndex">The component to start at.</param>
@@ -90,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Does not perform the step at all.
         /// </summary>
         /// <returns></returns>
-        /// <returns><c>true</c> if there are more vertices to scan.</returns>
+        /// <returns><see langword="true"/> if there are more vertices to scan.</returns>
         protected Boolean HasNext()
         {
             if (componentIndex >= numLines)
@@ -179,7 +179,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <summary>
         /// Gets the second <see cref="Coordinate" /> of the current segment
         /// (the coordinate of the next vertex).
-        /// If the iterator is at the end of a line, <c>null</c> is returned.
+        /// If the iterator is at the end of a line, <see langword="null" /> is returned.
         /// </summary>
         private ICoordinate SegmentEnd
         {
@@ -215,10 +215,10 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
         /// <summary>
         /// Tests whether there are any vertices left to iterator over.
-        /// If <c>true</c>, then moves the iterator ahead to the next vertex and (possibly) linear component,
+        /// If <see langword="true"/>, then moves the iterator ahead to the next vertex and (possibly) linear component,
         /// so that <see cref="Current" /> exposes the elements.
         /// </summary>
-        /// <returns><c>true</c> if there are more vertices to scan.</returns>
+        /// <returns><see langword="true"/> if there are more vertices to scan.</returns>
         public Boolean MoveNext()
         {
             // We must call HasNext() twice because, when in the Next() method
@@ -391,7 +391,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             /// <summary>
             /// Gets the second <see cref="Coordinate" /> of the current segment
             /// (the coordinate of the next vertex).
-            /// If the iterator is at the end of a line, <c>null</c> is returned.
+            /// If the iterator is at the end of a line, <see langword="null" /> is returned.
             /// </summary>
             public ICoordinate SegmentEnd
             {

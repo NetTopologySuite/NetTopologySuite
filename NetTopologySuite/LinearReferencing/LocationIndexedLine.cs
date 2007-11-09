@@ -5,7 +5,7 @@ using GisSharpBlog.NetTopologySuite.Geometries;
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 {
     /// <summary>
-    /// Supports linear referencing along a linear <see cref="Geometry" />
+    /// Supports linear referencing along a linear <see cref="Geometry{TCoordinate}" />
     /// using <see cref="LinearLocation" />s as the index.
     /// </summary>
     public class LocationIndexedLine
@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
         /// <summary>
         /// Constructs an object which allows linear referencing along
-        /// a given linear <see cref="Geometry" />.
+        /// a given linear <see cref="Geometry{TCoordinate}" />.
         /// </summary>
         /// <param name="linearGeom"></param>
         public LocationIndexedLine(IGeometry linearGeom)
@@ -118,7 +118,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Tests whether an index is in the valid index range for the line.
         /// </summary>
         /// <param name="index">The index to test.</param>
-        /// <returns><c>true</c> if the index is in the valid range.</returns>
+        /// <returns><see langword="true"/> if the index is in the valid range.</returns>
         public Boolean isValidIndex(LinearLocation index)
         {
             return index.IsValid(linearGeom);

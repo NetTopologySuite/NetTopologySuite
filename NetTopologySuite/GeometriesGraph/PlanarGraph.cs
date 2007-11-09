@@ -1,25 +1,30 @@
 using System;
 using System.Collections;
 using System.IO;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
+using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     /// <summary> 
     /// The computation of the <c>IntersectionMatrix</c> relies on the use of a structure
     /// called a "topology graph". The topology graph contains nodes and edges
-    /// corresponding to the nodes and line segments of a <c>Geometry</c>. Each
+    /// corresponding to the nodes and line segments of a <see cref="Geometry{TCoordinate}"/>. Each
     /// node and edge in the graph is labeled with its topological location relative to
     /// the source point.
     /// Note that there is no requirement that points of self-intersection be a vertex.
-    /// Thus to obtain a correct topology graph, <c>Geometry</c>s must be
+    /// Thus to obtain a correct topology graph, <see cref="Geometry{TCoordinate}"/>s must be
     /// self-noded before constructing their graphs.
     /// Two fundamental operations are supported by topology graphs:
     /// Computing the intersections between all the edges and nodes of a single graph
     /// Computing the intersections between the edges and nodes of two different graphs
     /// </summary>
-    public class PlanarGraph
+    public class PlanarGraph<TCoordinate>
+         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
+                             IComputable<TCoordinate>, IConvertible
     {
         /// <summary> 
         /// For nodes in the Collection, link the DirectedEdges at the node that are in the result.
@@ -36,9 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         }
 
         protected IList edges = new ArrayList();
-
         protected NodeMap nodes = null;
-
         protected IList edgeEndList = new ArrayList();
 
         public PlanarGraph(NodeFactory nodeFact)
@@ -64,15 +67,19 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public Boolean IsBoundaryNode(Int32 geomIndex, ICoordinate coord)
         {
             Node node = nodes.Find(coord);
+
             if (node == null)
             {
                 return false;
             }
+
             Label label = node.Label;
+
             if (label != null && label.GetLocation(geomIndex) == Locations.Boundary)
             {
                 return true;
             }
+
             return false;
         }
 
@@ -169,7 +176,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Returns the EdgeEnd which has edge e as its base edge
         /// (MD 18 Feb 2002 - this should return a pair of edges).
         /// </summary>
-        /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
+        /// <returns> The edge, if found <see langword="null" /> if the edge was not found.</returns>
         public EdgeEnd FindEdgeEnd(Edge e)
         {
             for (IEnumerator i = EdgeEnds.GetEnumerator(); i.MoveNext();)
@@ -186,7 +193,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// Returns the edge whose first two coordinates are p0 and p1.
         /// </summary>
-        /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
+        /// <returns> The edge, if found <see langword="null" /> if the edge was not found.</returns>
         public Edge FindEdge(ICoordinate p0, ICoordinate p1)
         {
             for (Int32 i = 0; i < edges.Count; i++)
@@ -205,7 +212,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Returns the edge which starts at p0 and whose first segment is
         /// parallel to p1.
         /// </summary>
-        /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
+        /// <returns> The edge, if found <see langword="null" /> if the edge was not found.</returns>
         public Edge FindEdgeInSameDirection(ICoordinate p0, ICoordinate p1)
         {
             for (Int32 i = 0; i < edges.Count; i++)
@@ -229,7 +236,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// E.g. the segments are parallel and in the same quadrant
         /// (as opposed to parallel and opposite!).
         /// </summary>
-        private Boolean MatchInSameDirection(ICoordinate p0, ICoordinate p1, ICoordinate ep0, ICoordinate ep1)
+        private Boolean MatchInSameDirection(TCoordinate p0, TCoordinate p1, TCoordinate ep0, TCoordinate ep1)
         {
             if (! p0.Equals(ep0))
             {

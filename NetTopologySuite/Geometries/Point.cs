@@ -35,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinate">The coordinate used for create this <see cref="Point" />.</param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="Geometry{TCoordinate}Factory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public Point(ICoordinate coordinate) :
@@ -47,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">
         /// Contains the single coordinate on which to base this <c>Point</c>,
-        /// or <c>null</c> to create the empty point.
+        /// or <see langword="null" /> to create the empty point.
         /// </param>
         public Point(ICoordinateSequence coordinates, IGeometryFactory factory) : base(factory)
         {
@@ -207,7 +207,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="y">The y coordinate.</param>
         /// <param name="z">The z coordinate.</param>
         /// /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="Geometry{TCoordinate}Factory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public Point(Double x, Double y, Double z) :
@@ -221,7 +221,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
         /// /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="Geometry{TCoordinate}Factory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public Point(Double x, Double y)

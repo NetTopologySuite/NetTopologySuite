@@ -57,7 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Finds the nearest index along the linear <see cref="Geometry" />
+        /// Finds the nearest index along the linear <see cref="Geometry{TCoordinate}" />
         /// to a given <see cref="Coordinate"/> after the specified minimum index.
         /// If possible the location returned will be strictly 
         /// greater than the <paramref name="minIndex" />.

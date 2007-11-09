@@ -62,7 +62,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Adds a point to the current line.
         /// </summary>
         /// <param name="pt">The <see cref="Coordinate" /> to add.</param>
-        /// <param name="allowRepeatedPoints">If <c>true</c>, allows the insertions of repeated points.</param>
+        /// <param name="allowRepeatedPoints">If <see langword="true"/>, allows the insertions of repeated points.</param>
         public void Add(ICoordinate pt, Boolean allowRepeatedPoints)
         {
             if (coordList == null)
@@ -142,7 +142,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Builds and returns the <see cref="Geometry" />.
+        /// Builds and returns the <see cref="Geometry{TCoordinate}" />.
         /// </summary>
         /// <returns></returns>
         public IGeometry GetGeometry()

@@ -5,7 +5,7 @@ using GeoAPI.Geometries;
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>
-    /// Iterates over all <c>Geometry</c>'s in a <c>GeometryCollection</c>. 
+    /// Iterates over all <see cref="Geometry{TCoordinate}"/>'s in a <c>GeometryCollection</c>. 
     /// Implements a pre-order depth-first traversal of the <c>GeometryCollection</c>
     /// (which may be nested). The original <c>GeometryCollection</c> is
     /// returned as well (as the first object), as are all sub-collections. It is
@@ -26,18 +26,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         private Boolean atStart;
 
         /// <summary>
-        /// The number of <c>Geometry</c>s in the the <c>GeometryCollection</c>.
+        /// The number of <see cref="Geometry{TCoordinate}"/>s in the the <c>GeometryCollection</c>.
         /// </summary>
         private Int32 max;
 
         /// <summary>
-        /// The index of the <c>Geometry</c> that will be returned when <c>next</c>
+        /// The index of the <see cref="Geometry{TCoordinate}"/> that will be returned when <c>next</c>
         /// is called.
         /// </summary>
         private Int32 index;
 
         /// <summary>
-        /// The iterator over a nested <c>GeometryCollection</c>, or <c>null</c>
+        /// The iterator over a nested <c>GeometryCollection</c>, or <see langword="null" />
         /// if this <c>GeometryCollectionIterator</c> is not currently iterating
         /// over a nested <c>GeometryCollection</c>.
         /// </summary>

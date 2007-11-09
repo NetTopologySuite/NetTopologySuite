@@ -68,11 +68,11 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
 
             edges.Add(e);
 
-            dirEdges.Add(e.GetDirEdge(0));
-            dirEdges.Add(e.GetDirEdge(1));
+            dirEdges.Add(e.GetDirectedEdge(0));
+            dirEdges.Add(e.GetDirectedEdge(1));
 
-            nodeMap.Add(e.GetDirEdge(0).FromNode);
-            nodeMap.Add(e.GetDirEdge(1).FromNode);
+            nodeMap.Add(e.GetDirectedEdge(0).FromNode);
+            nodeMap.Add(e.GetDirectedEdge(1).FromNode);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Tests whether an <see cref="Edge" /> is contained in this subgraph.
         /// </summary>
         /// <param name="e">The <see cref="Edge" /> to test.</param>
-        /// <returns><c>true</c> if the <see cref="Edge" /> is contained in this subgraph.</returns>
+        /// <returns><see langword="true"/> if the <see cref="Edge" /> is contained in this subgraph.</returns>
         public Boolean Contains(Edge e)
         {
             return edges.Contains(e);

@@ -7,6 +7,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// <summary> 
     /// A TopologyLocation is the labelling of a
     /// GraphComponent's topological relationship to a single Geometry.
+    /// </summary>
+    /// <remarks>
     /// If the parent component is an area edge, each side and the edge itself
     /// have a topological location.  These locations are named:
     ///  On: on the edge
@@ -18,10 +20,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// { Location.Null, Location.Exterior, Location.Boundary, Location.Interior } 
     /// The labelling is stored in an array location[j] where
     /// where j has the values On, Left, Right.
-    /// </summary>
+    /// </remarks>
     public class TopologyLocation
     {
-        private Locations[] location;
+        private Locations[] _location;
 
         public TopologyLocation(Locations[] location)
         {
@@ -37,43 +39,47 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public TopologyLocation(Locations on, Locations left, Locations right)
         {
             Init(3);
-            location[(Int32) Positions.On] = on;
-            location[(Int32) Positions.Left] = left;
-            location[(Int32) Positions.Right] = right;
+            _location[(Int32) Positions.On] = on;
+            _location[(Int32) Positions.Left] = left;
+            _location[(Int32) Positions.Right] = right;
         }
 
         public TopologyLocation(Locations on)
         {
             Init(1);
-            location[(Int32) Positions.On] = on;
+            _location[(Int32) Positions.On] = on;
         }
 
         public TopologyLocation(TopologyLocation gl)
         {
-            Init(gl.location.Length);
-
-            if (gl != null)
+            if (gl == null)
             {
-                for (Int32 i = 0; i < location.Length; i++)
-                {
-                    location[i] = gl.location[i];
-                }
+                throw new ArgumentNullException("gl");
+            }
+
+            Init(gl._location.Length);
+
+            for (Int32 i = 0; i < _location.Length; i++)
+            {
+                _location[i] = gl._location[i];
             }
         }
 
         private void Init(Int32 size)
         {
-            location = new Locations[size];
+            _location = new Locations[size];
             SetAllLocations(Locations.Null);
         }
 
         public Locations Get(Positions posIndex)
         {
             Int32 index = (Int32) posIndex;
-            if (index < location.Length)
+
+            if (index < _location.Length)
             {
-                return location[index];
+                return _location[index];
             }
+
             return Locations.Null;
         }
 
@@ -81,97 +87,99 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Get calls Get(Positions posIndex),
         /// Set calls SetLocation(Positions locIndex, Locations locValue)
         /// </summary>
-        public Locations this[Positions posIndex]
+        public Locations this[Positions positionIndex]
         {
-            get { return Get(posIndex); }
-            set { SetLocation(posIndex, value); }
+            get { return Get(positionIndex); }
+            set { SetLocation(positionIndex, value); }
         }
 
         /// <returns>
-        /// <c>true</c> if all locations are Null.
+        /// <see langword="true"/> if all locations are Null.
         /// </returns>
         public Boolean IsNull
         {
             get
             {
-                for (Int32 i = 0; i < location.Length; i++)
+                foreach (Locations location in _location)
                 {
-                    if (location[i] != Locations.Null)
+                    if (location != Locations.Null)
                     {
                         return false;
                     }
                 }
+
                 return true;
             }
         }
 
         /// <returns> 
-        /// <c>true</c> if any locations are Null.
+        /// <see langword="true"/> if any locations are Null.
         /// </returns>
         public Boolean IsAnyNull
         {
             get
             {
-                for (Int32 i = 0; i < location.Length; i++)
+                foreach (Locations location in _location)
                 {
-                    if (location[i] == Locations.Null)
+                    if (location == Locations.Null)
                     {
                         return true;
                     }
                 }
+
                 return false;
             }
         }
 
         public Boolean IsEqualOnSide(TopologyLocation le, Int32 locIndex)
         {
-            return location[locIndex] == le.location[locIndex];
+            return _location[locIndex] == le._location[locIndex];
         }
 
         public Boolean IsArea
         {
-            get { return location.Length > 1; }
+            get { return _location.Length > 1; }
         }
 
         public Boolean IsLine
         {
-            get { return location.Length == 1; }
+            get { return _location.Length == 1; }
         }
 
         public void Flip()
         {
-            if (location.Length <= 1)
+            if (_location.Length <= 1)
             {
                 return;
             }
 
-            Locations temp = location[(Int32) Positions.Left];
-            location[(Int32) Positions.Left] = location[(Int32) Positions.Right];
-            location[(Int32) Positions.Right] = temp;
+            Locations temp = _location[(Int32) Positions.Left];
+            _location[(Int32) Positions.Left] = _location[(Int32) Positions.Right];
+            _location[(Int32) Positions.Right] = temp;
         }
 
         public void SetAllLocations(Locations locValue)
         {
-            for (Int32 i = 0; i < location.Length; i++)
+            for (Int32 i = 0; i < _location.Length; i++)
             {
-                location[i] = locValue;
+                _location[i] = locValue;
             }
         }
 
         public void SetAllLocationsIfNull(Locations locValue)
         {
-            for (Int32 i = 0; i < location.Length; i++)
+            for (Int32 i = 0; i < _location.Length; i++)
             {
-                if (location[i] == Locations.Null)
+                if (_location[i] == Locations.Null)
                 {
-                    location[i] = locValue;
+                    _location[i] = locValue;
                 }
             }
         }
 
         public void SetLocation(Positions locIndex, Locations locValue)
         {
-            location[(Int32) locIndex] = locValue;
+            _location[(Int32) locIndex] = locValue;
         }
 
         public void SetLocation(Locations locValue)
@@ -181,29 +189,29 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public Locations[] GetLocations()
         {
-            return location;
+            return _location;
         }
 
         public void SetLocations(Locations on, Locations left, Locations right)
         {
-            location[(Int32) Positions.On] = on;
-            location[(Int32) Positions.Left] = left;
-            location[(Int32) Positions.Right] = right;
+            _location[(Int32) Positions.On] = on;
+            _location[(Int32) Positions.Left] = left;
+            _location[(Int32) Positions.Right] = right;
         }
 
         public void SetLocations(TopologyLocation gl)
         {
-            for (Int32 i = 0; i < gl.location.Length; i++)
+            for (Int32 i = 0; i < gl._location.Length; i++)
             {
-                location[i] = gl.location[i];
+                _location[i] = gl._location[i];
             }
         }
 
         public Boolean AllPositionsEqual(Locations loc)
         {
-            for (Int32 i = 0; i < location.Length; i++)
+            for (Int32 i = 0; i < _location.Length; i++)
             {
-                if (location[i] != loc)
+                if (_location[i] != loc)
                 {
                     return false;
                 }
@@ -219,20 +227,20 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public void Merge(TopologyLocation gl)
         {
             // if the src is an Area label & and the dest is not, increase the dest to be an Area
-            if (gl.location.Length > location.Length)
+            if (gl._location.Length > _location.Length)
             {
                 Locations[] newLoc = new Locations[3];
-                newLoc[(Int32) Positions.On] = location[(Int32) Positions.On];
+                newLoc[(Int32) Positions.On] = _location[(Int32) Positions.On];
                 newLoc[(Int32) Positions.Left] = Locations.Null;
                 newLoc[(Int32) Positions.Right] = Locations.Null;
-                location = newLoc;
+                _location = newLoc;
             }
 
-            for (Int32 i = 0; i < location.Length; i++)
+            for (Int32 i = 0; i < _location.Length; i++)
             {
-                if (location[i] == Locations.Null && i < gl.location.Length)
+                if (_location[i] == Locations.Null && i < gl._location.Length)
                 {
-                    location[i] = gl.location[i];
+                    _location[i] = gl._location[i];
                 }
             }
         }
@@ -241,16 +249,16 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             StringBuilder sb = new StringBuilder();
 
-            if (location.Length > 1)
+            if (_location.Length > 1)
             {
-                sb.Append(Location.ToLocationSymbol(location[(Int32) Positions.Left]));
+                sb.Append(LocationTypeConverter.ToLocationSymbol(_location[(Int32)Positions.Left]));
             }
 
-            sb.Append(Location.ToLocationSymbol(location[(Int32) Positions.On]));
+            sb.Append(LocationTypeConverter.ToLocationSymbol(_location[(Int32)Positions.On]));
             
-            if (location.Length > 1)
+            if (_location.Length > 1)
             {
-                sb.Append(Location.ToLocationSymbol(location[(Int32) Positions.Right]));
+                sb.Append(LocationTypeConverter.ToLocationSymbol(_location[(Int32)Positions.Right]));
             }
 
             return sb.ToString();

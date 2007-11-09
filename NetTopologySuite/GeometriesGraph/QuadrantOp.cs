@@ -1,4 +1,6 @@
 using System;
+using GeoAPI.Coordinates;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -10,7 +12,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// 2 | 3
     /// </para>
     /// </summary>
-    public static class QuadrantOp
+    public static class QuadrantOp<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
         /// <summary> 
         /// Returns the quadrant of a directed line segment (specified as x and y
@@ -48,16 +52,27 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         }
 
         /// <summary> 
+        /// Returns the quadrant of the <paramref name="coordinate"/>.
+        /// </summary>
+        /// <param name="coordinate">The coordinate to compute the quadrant for.</param>
+        public static Int32 Quadrant(TCoordinate coordinate)
+        {
+            return Quadrant(coordinate[Ordinates.X], coordinate[Ordinates.Y]);
+        }
+
+        /// <summary> 
         /// Returns the quadrant of a directed line segment from p0 to p1.
         /// </summary>
         public static Int32 Quadrant(ICoordinate p0, ICoordinate p1)
         {
-            Double dx = p1.X - p0.X;
-            Double dy = p1.Y - p0.Y;
+            Double dx = p1[Ordinates.X] - p0[Ordinates.X];
+            Double dy = p1[Ordinates.Y] - p0[Ordinates.Y];
+
             if (dx == 0.0 && dy == 0.0)
             {
                 throw new ArgumentException("Cannot compute the quadrant for two identical points " + p0);
             }
+
             return Quadrant(dx, dy);
         }
 

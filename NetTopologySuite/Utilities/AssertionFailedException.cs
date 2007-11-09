@@ -1,23 +1,17 @@
 using System;
-using System.Collections;
-using System.Text;
+using System.Runtime.Serialization;
 
 namespace GisSharpBlog.NetTopologySuite.Utilities
 {
-   /// <summary>
-   /// 
-   /// </summary>
-    public class AssertionFailedException : ApplicationException 
+    [Serializable]
+    public class AssertionFailedException : NtsException
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        public AssertionFailedException() : base() { }
+        public AssertionFailedException() {}
+        public AssertionFailedException(string message) : base(message) {}
+        public AssertionFailedException(string message, Exception inner) 
+            : base(message, inner) {}
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="message"></param>
-        public AssertionFailedException(string message) : base(message) { }
+        protected AssertionFailedException(SerializationInfo info, StreamingContext context)
+            : base(info, context) {}
     }
 }

@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public static readonly IPolygon Empty = new GeometryFactory().CreatePolygon(null, null);
 
         /// <summary>
-        /// The exterior boundary, or <c>null</c> if this <c>Polygon</c>
+        /// The exterior boundary, or <see langword="null" /> if this <c>Polygon</c>
         /// is the empty point.
         /// </summary>
         protected ILinearRing shell = null;
@@ -37,16 +37,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="shell">
         /// The outer boundary of the new <c>Polygon</c>,
-        /// or <c>null</c> or an empty <c>LinearRing</c> if the empty
+        /// or <see langword="null" /> or an empty <c>LinearRing</c> if the empty
         /// point is to be created.
         /// </param>
         /// <param name="holes">
         /// The inner boundaries of the new <c>Polygon</c>
-        /// , or <c>null</c> or empty <c>LinearRing</c>s if the empty
+        /// , or <see langword="null" /> or empty <c>LinearRing</c>s if the empty
         /// point is to be created.
         /// </param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="Geometry{TCoordinate}Factory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public Polygon(ILinearRing shell, ILinearRing[] holes) : this(shell, holes, DefaultFactory) {}
@@ -57,12 +57,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>       
         /// <param name="shell">
         /// The outer boundary of the new <c>Polygon</c>,
-        /// or <c>null</c> or an empty <c>LinearRing</c> if the empty
+        /// or <see langword="null" /> or an empty <c>LinearRing</c> if the empty
         /// point is to be created.
         /// </param>
         /// <param name="holes">
         /// The inner boundaries of the new <c>Polygon</c>
-        /// , or <c>null</c> or empty <c>LinearRing</c>s if the empty
+        /// , or <see langword="null" /> or empty <c>LinearRing</c>s if the empty
         /// point is to be created.
         /// </param>
         public Polygon(ILinearRing shell, ILinearRing[] holes, IGeometryFactory factory) : base(factory)
@@ -447,7 +447,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="shell">
         /// The outer boundary of the new <c>Polygon</c>,
-        /// or <c>null</c> or an empty <c>LinearRing</c> if the empty
+        /// or <see langword="null" /> or an empty <c>LinearRing</c> if the empty
         /// polygon is to be created.
         /// </param>
         public Polygon(LinearRing shell, GeometryFactory factory) : this(shell, null, factory) {}
@@ -457,7 +457,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="shell">
         /// The outer boundary of the new <c>Polygon</c>,
-        /// or <c>null</c> or an empty <c>LinearRing</c> if the empty
+        /// or <see langword="null" /> or an empty <c>LinearRing</c> if the empty
         /// polygon is to be created.
         /// </param>
         public Polygon(LinearRing shell) : this(shell, null, DefaultFactory) {}

@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GeoAPI.Coordinates;
+using GeoAPI.CoordinateSystems;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using GisSharpBlog.NetTopologySuite.Utilities;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -12,75 +15,62 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// from lists of Coordinates.
     /// </summary>            
     [Serializable]
-    public class GeometryFactory : IGeometryFactory
+    public class GeometryFactory<TCoordinate> : IGeometryFactory<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
-        /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
-        /// <c> == </c> <see cref="PrecisionModels.Floating" />.
-        /// </summary>
-        public static readonly IGeometryFactory Default = new GeometryFactory();
+        #region Static precision models
 
         /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
+        /// A predefined <see cref="Geometry{TCoordinate}Factory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModels.Floating" />.
         /// </summary>
-        /// <remarks>A shortcut for <see cref="GeometryFactory.Default" />.</remarks>
-        public static readonly IGeometryFactory Floating = Default;
+        public static readonly IGeometryFactory<TCoordinate> Default = new GeometryFactory<TCoordinate>();
 
         /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
+        /// A predefined <see cref="Geometry{TCoordinate}Factory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
+        /// <c> == </c> <see cref="PrecisionModels.Floating" />.
+        /// </summary>
+        /// <remarks>A shortcut for <see cref="Geometry{TCoordinate}Factory{TCoordinate}.Default" />.</remarks>
+        public static readonly IGeometryFactory<TCoordinate> Floating = Default;
+
+        /// <summary>
+        /// A predefined <see cref="Geometry{TCoordinate}Factory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModels.FloatingSingle" />.
         /// </summary>
-        public static readonly IGeometryFactory FloatingSingle =
-            new GeometryFactory(new PrecisionModel(PrecisionModels.FloatingSingle));
+        public static readonly IGeometryFactory<TCoordinate> FloatingSingle =
+            new GeometryFactory<TCoordinate>(new PrecisionModel<TCoordinate>(PrecisionModels.FloatingSingle));
 
         /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
+        /// A predefined <see cref="Geometry{TCoordinate}Factory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModels.Fixed" />.
         /// </summary>
-        public static readonly IGeometryFactory Fixed = new GeometryFactory(new PrecisionModel(PrecisionModels.Fixed));
+        public static readonly IGeometryFactory<TCoordinate> Fixed =
+            new GeometryFactory<TCoordinate>(new PrecisionModel<TCoordinate>(PrecisionModels.Fixed));
 
-        private IPrecisionModel precisionModel;
+        #endregion
 
-        /// <summary>
-        /// Returns the PrecisionModel that Geometries created by this factory
-        /// will be associated with.
-        /// </summary>
-        public IPrecisionModel PrecisionModel
-        {
-            get { return precisionModel; }
-        }
 
-        private ICoordinateSequenceFactory coordinateSequenceFactory;
+        private readonly ICoordinateSequenceFactory<TCoordinate> _coordinateSequenceFactory;
+        private readonly IPrecisionModel<TCoordinate> _precisionModel;
+        private readonly Int32? _srid;
 
-        public ICoordinateSequenceFactory CoordinateSequenceFactory
-        {
-            get { return coordinateSequenceFactory; }
-        }
-
-        private Int32? srid;
-
-        public Int32? Srid
-        {
-            get { return srid; }
-        }
-
-        public static IPoint CreatePointFromInternalCoord(ICoordinate coord, IGeometry exemplar)
-        {
-            exemplar.PrecisionModel.MakePrecise(coord);
-            return exemplar.Factory.CreatePoint(coord);
-        }
+        //public static IPoint CreatePointFromInternalCoord(ICoordinate coord, IGeometry exemplar)
+        //{
+        //    exemplar.PrecisionModel.MakePrecise(coord);
+        //    return exemplar.Factory.CreatePoint(coord);
+        //}
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
         /// PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.
         /// </summary>    
-        public GeometryFactory(IPrecisionModel precisionModel, Int32 SRID,
-                               ICoordinateSequenceFactory coordinateSequenceFactory)
+        public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel, Int32 srid,
+                               ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory)
         {
-            this.precisionModel = precisionModel;
-            this.coordinateSequenceFactory = coordinateSequenceFactory;
-            srid = SRID;
+            _precisionModel = precisionModel;
+            _coordinateSequenceFactory = coordinateSequenceFactory;
+            _srid = srid;
         }
 
         /// <summary>
@@ -89,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// spatial-reference ID of 0.
         /// </summary>
         public GeometryFactory(ICoordinateSequenceFactory coordinateSequenceFactory)
-            : this(new PrecisionModel(), 0, coordinateSequenceFactory) {}
+            : this(new PrecisionModel<TCoordinate>(), 0, coordinateSequenceFactory) {}
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
@@ -102,356 +92,23 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
-        /// <c>PrecisionModel</c> and spatial-reference ID, and the default CoordinateSequence
+        /// <see cref="PrecisionModel{TCoordinate}"/> and spatial-reference ID, and the default CoordinateSequence
         /// implementation.
         /// </summary>
         /// <param name="precisionModel">The PrecisionModel to use.</param>
         /// <param name="SRID">The SRID to use.</param>
-        public GeometryFactory(PrecisionModel precisionModel, Int32 SRID)
+        public GeometryFactory(PrecisionModel<TCoordinate> precisionModel, Int32 SRID)
             : this(precisionModel, SRID, GetDefaultCoordinateSequenceFactory()) {}
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having a floating
         /// PrecisionModel and a spatial-reference ID of 0.
         /// </summary>
-        public GeometryFactory() : this(new PrecisionModel(), 0) {}
-
-        /// <summary>
-        /// Converts the <c>ICollection</c> to an array.
-        /// </summary>
-        /// <param name="points">The <c>ICollection</c> of Points to convert.</param>
-        /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static IPoint[] ToPointArray(ICollection points)
-        {
-            IPoint[] list = new IPoint[points.Count];
-            Int32 i = 0;
-            foreach (IPoint p in points)
-            {
-                list[i++] = p;
-            }
-            return list;
-        }
-
-        /// <summary>
-        /// Converts the <c>ICollection</c> to an array.
-        /// </summary>
-        /// <param name="geometries">The <c>ICollection</c> of <c>Geometry</c>'s to convert.</param>
-        /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static IGeometry[] ToGeometryArray(ICollection geometries)
-        {
-            IGeometry[] list = new IGeometry[geometries.Count];
-            Int32 i = 0;
-            foreach (IGeometry g in geometries)
-            {
-                list[i++] = g;
-            }
-            return list;
-        }
-
-        /// <summary>
-        /// Converts the <c>ICollection</c> to an array.
-        /// </summary>
-        /// <param name="lineStrings">The <c>ICollection</c> of LineStrings to convert.</param>
-        /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static ILineString[] ToLineStringArray(ICollection lineStrings)
-        {
-            ILineString[] list = new ILineString[lineStrings.Count];
-            Int32 i = 0;
-            foreach (ILineString ls in lineStrings)
-            {
-                list[i++] = ls;
-            }
-            return list;
-        }
-
-        /// <summary>
-        /// Converts the <c>ICollection</c> to an array.
-        /// </summary>
-        /// <param name="linearRings">The <c>ICollection</c> of LinearRings to convert.</param>
-        /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static ILinearRing[] ToLinearRingArray(ICollection linearRings)
-        {
-            ILinearRing[] list = new ILinearRing[linearRings.Count];
-            Int32 i = 0;
-            foreach (ILinearRing lr in linearRings)
-            {
-                list[i++] = lr;
-            }
-            return list;
-        }
-
-        /// <summary>
-        /// Converts the <c>ICollection</c> to an array.
-        /// </summary>
-        /// <param name="polygons">The <c>ICollection</c> of Polygons to convert.</param>
-        /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static IPolygon[] ToPolygonArray(ICollection polygons)
-        {
-            IPolygon[] list = new IPolygon[polygons.Count];
-            Int32 i = 0;
-            foreach (IPolygon p in polygons)
-            {
-                list[i++] = p;
-            }
-            return list;
-        }
-
-        /// <summary>
-        /// Converts the <c>ICollection</c> to an array.
-        /// </summary>
-        /// <param name="multiPoints">The <c>ICollection</c> of MultiPoints to convert.</param>
-        /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static IMultiPoint[] ToMultiPointArray(ICollection multiPoints)
-        {
-            IMultiPoint[] list = new IMultiPoint[multiPoints.Count];
-            Int32 i = 0;
-            foreach (IMultiPoint mp in multiPoints)
-            {
-                list[i++] = mp;
-            }
-            return list;
-        }
-
-        /// <summary>
-        /// Converts the <c>ICollection</c> to an array.
-        /// </summary>
-        /// <param name="multiLineStrings">The <c>ICollection</c> of MultiLineStrings to convert.</param>
-        /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static IMultiLineString[] ToMultiLineStringArray(ICollection multiLineStrings)
-        {
-            IMultiLineString[] list = new IMultiLineString[multiLineStrings.Count];
-            Int32 i = 0;
-            foreach (IMultiLineString mls in multiLineStrings)
-            {
-                list[i++] = mls;
-            }
-            return list;
-        }
-
-        /// <summary>
-        /// Converts the <c>ICollection</c> to an array.
-        /// </summary>
-        /// <param name="multiPolygons">The <c>ICollection</c> of MultiPolygons to convert.</param>
-        /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static IMultiPolygon[] ToMultiPolygonArray(ICollection multiPolygons)
-        {
-            IMultiPolygon[] list = new IMultiPolygon[multiPolygons.Count];
-            Int32 i = 0;
-            foreach (IMultiPolygon mp in multiPolygons)
-            {
-                list[i++] = mp;
-            }
-            return list;
-        }
-
-        /// <summary>
-        /// If the <c>Envelope</c> is a null <c>Envelope</c>, returns an
-        /// empty <c>Point</c>. If the <c>Envelope</c> is a point, returns
-        /// a non-empty <c>Point</c>. If the <c>Envelope</c> is a
-        /// rectangle, returns a <c>Polygon</c> whose points are (minx, miny),
-        /// (maxx, miny), (maxx, maxy), (minx, maxy), (minx, miny).
-        /// </summary>
-        /// <param name="envelope">The <c>Envelope</c> to convert to a <c>Geometry</c>.</param>       
-        /// <returns>
-        /// An empty <c>Point</c> (for null <c>Envelope</c>
-        /// s), a <c>Point</c> (when min x = max x and min y = max y) or a
-        /// <c>Polygon</c> (in all other cases)
-        /// throws a <c>TopologyException</c> if <c>coordinates</c>
-        /// is not a closed linestring, that is, if the first and last coordinates
-        /// are not equal.
-        /// </returns>
-        public IGeometry ToGeometry(IExtents envelope)
-        {
-            if (envelope.IsNull)
-            {
-                return CreatePoint((ICoordinateSequence) null);
-            }
-
-            if (envelope.MinX == envelope.MaxX && envelope.MinY == envelope.MaxY)
-            {
-                return CreatePoint(new Coordinate(envelope.MinX, envelope.MinY));
-            }
-
-            return CreatePolygon(
-                CreateLinearRing(new ICoordinate[]
-                                     {
-                                         new Coordinate(envelope.MinX, envelope.MinY),
-                                         new Coordinate(envelope.MaxX, envelope.MinY),
-                                         new Coordinate(envelope.MaxX, envelope.MaxY),
-                                         new Coordinate(envelope.MinX, envelope.MaxY),
-                                         new Coordinate(envelope.MinX, envelope.MinY),
-                                     }),
-                null);
-        }
-
-        /// <summary>
-        /// Creates a Point using the given Coordinate; a null Coordinate will create
-        /// an empty Geometry.
-        /// </summary>
-        /// <param name="coordinate"></param>
-        public IPoint CreatePoint(ICoordinate coordinate)
-        {
-            return CreatePoint(coordinate != null
-                                   ?
-                                       CoordinateSequenceFactory.Create(new ICoordinate[] {coordinate})
-                                   : null);
-        }
-
-        /// <summary>
-        /// Creates a <c>Point</c> using the given <c>CoordinateSequence</c>; a null or empty
-        /// CoordinateSequence will create an empty Point.
-        /// </summary>
-        public IPoint CreatePoint(ICoordinateSequence coordinates)
-        {
-            return new Point(coordinates, this);
-        }
-
-        /// <summary> 
-        /// Creates a LineString using the given Coordinates; a null or empty array will
-        /// create an empty LineString. Consecutive points must not be equal.
-        /// </summary>
-        /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
-        public ILineString CreateLineString(ICoordinate[] coordinates)
-        {
-            return CreateLineString(coordinates != null
-                                        ?
-                                            CoordinateSequenceFactory.Create(coordinates)
-                                        : null);
-        }
-
-        /// <summary>
-        /// Creates a LineString using the given CoordinateSequence; a null or empty CoordinateSequence will
-        /// create an empty LineString. Consecutive points must not be equal.
-        /// </summary>
-        /// <param name="coordinates">A CoordinateSequence possibly empty, or null.</param>
-        public ILineString CreateLineString(ICoordinateSequence coordinates)
-        {
-            return new LineString(coordinates, this);
-        }
-
-        /// <summary>
-        /// Creates a <c>LinearRing</c> using the given <c>Coordinates</c>; a null or empty array will
-        /// create an empty LinearRing. The points must form a closed and simple
-        /// linestring. Consecutive points must not be equal.
-        /// </summary>
-        /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
-        public ILinearRing CreateLinearRing(ICoordinate[] coordinates)
-        {
-            return CreateLinearRing(coordinates != null
-                                        ?
-                                            CoordinateSequenceFactory.Create(coordinates)
-                                        : null);
-        }
-
-        /// <summary> 
-        /// Creates a <c>LinearRing</c> using the given <c>CoordinateSequence</c>; a null or empty CoordinateSequence will
-        /// create an empty LinearRing. The points must form a closed and simple
-        /// linestring. Consecutive points must not be equal.
-        /// </summary>
-        /// <param name="coordinates">A CoordinateSequence possibly empty, or null.</param>
-        public ILinearRing CreateLinearRing(ICoordinateSequence coordinates)
-        {
-            return new LinearRing(coordinates, this);
-        }
-
-        /// <summary> 
-        /// Constructs a <c>Polygon</c> with the given exterior boundary and
-        /// interior boundaries.
-        /// </summary>
-        /// <param name="shell">
-        /// The outer boundary of the new <c>Polygon</c>, or
-        /// <c>null</c> or an empty <c>LinearRing</c> if
-        /// the empty point is to be created.
-        /// </param>
-        /// <param name="holes">
-        /// The inner boundaries of the new <c>Polygon</c>, or
-        /// <c>null</c> or empty <c>LinearRing</c> s if
-        /// the empty point is to be created.        
-        /// </param>
-        public IPolygon CreatePolygon(ILinearRing shell, ILinearRing[] holes)
-        {
-            return new Polygon(shell, holes, this);
-        }
-
-        /// <summary> 
-        /// Creates a MultiPoint using the given Points; a null or empty array will
-        /// create an empty MultiPoint.
-        /// </summary>
-        /// <param name="point">An array without null elements, or an empty array, or null.</param>
-        public IMultiPoint CreateMultiPoint(IPoint[] point)
-        {
-            return new MultiPoint(point, this);
-        }
-
-        /// <summary> 
-        /// Creates a MultiPoint using the given Coordinates; a null or empty array will create an empty MultiPoint.
-        /// </summary>
-        /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
-        public IMultiPoint CreateMultiPoint(ICoordinate[] coordinates)
-        {
-            return CreateMultiPoint(coordinates != null
-                                        ?
-                                            CoordinateSequenceFactory.Create(coordinates)
-                                        : null);
-        }
-
-        /// <summary> 
-        /// Creates a MultiPoint using the given CoordinateSequence; a null or empty CoordinateSequence will
-        /// create an empty MultiPoint.
-        /// </summary>
-        /// <param name="coordinates">A CoordinateSequence possibly empty, or null.</param>
-        public IMultiPoint CreateMultiPoint(ICoordinateSequence coordinates)
-        {
-            if (coordinates == null)
-            {
-                coordinates = CoordinateSequenceFactory.Create(new ICoordinate[] {});
-            }
-
-            List<IPoint> points = new List<IPoint>();
-
-            for (Int32 i = 0; i < coordinates.Count; i++)
-            {
-                points.Add(CreatePoint(coordinates.GetCoordinate(i)));
-            }
-
-            return CreateMultiPoint(points.ToArray());
-        }
-
-        /// <summary>
-        /// Creates a <c>MultiLineString</c> using the given <c>LineStrings</c>; a null or empty
-        /// array will create an empty MultiLineString.
-        /// </summary>
-        /// <param name="lineStrings">LineStrings, each of which may be empty but not null-</param>
-        public IMultiLineString CreateMultiLineString(ILineString[] lineStrings)
-        {
-            return new MultiLineString(lineStrings, this);
-        }
-
-        /// <summary>
-        /// Creates a <c>MultiPolygon</c> using the given <c>Polygons</c>; a null or empty array
-        /// will create an empty Polygon. The polygons must conform to the
-        /// assertions specified in the <see href="http://www.opengis.org/techno/specs.htm"/> OpenGIS Simple Features
-        /// Specification for SQL.
-        /// </summary>
-        /// <param name="polygons">Polygons, each of which may be empty but not null.</param>
-        public IMultiPolygon CreateMultiPolygon(IPolygon[] polygons)
-        {
-            return new MultiPolygon(polygons, this);
-        }
-
-        /// <summary>
-        /// Creates a <c>GeometryCollection</c> using the given <c>Geometries</c>; a null or empty
-        /// array will create an empty GeometryCollection.
-        /// </summary>
-        /// <param name="geometries">Geometries, each of which may be empty but not null.</param>
-        public IGeometryCollection CreateGeometryCollection(IGeometry[] geometries)
-        {
-            return new GeometryCollection(geometries, this);
-        }
+        public GeometryFactory() : this(new PrecisionModel<TCoordinate>(), 0) {}
 
         /// <summary>  
-        /// Build an appropriate <c>Geometry</c>, <c>MultiGeometry</c>, or
-        /// <c>GeometryCollection</c> to contain the <c>Geometry</c>s in
+        /// Build an appropriate <see cref="Geometry{TCoordinate}"/>, <c>MultiGeometry</c>, or
+        /// <c>GeometryCollection</c> to contain the <see cref="Geometry{TCoordinate}"/>s in
         /// it.
         /// <example>
         ///  If <c>geomList</c> contains a single <c>Polygon</c>,
@@ -468,89 +125,324 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// them will be returned.
         /// </example>
         /// </summary>
-        /// <param name="geomList">The <c>Geometry</c> to combine.</param>
+        /// <param name="geometries">The <see cref="Geometry{TCoordinate}"/> to combine.</param>
         /// <returns>
-        /// A <c>Geometry</c> of the "smallest", "most type-specific" 
+        /// A <see cref="Geometry{TCoordinate}"/> of the "smallest", "most type-specific" 
         /// class that can contain the elements of <c>geomList</c>.
         /// </returns>
-        public IGeometry BuildGeometry(ICollection geomList)
+        public IGeometry<TCoordinate> BuildGeometry(IEnumerable<IGeometry<TCoordinate>> geometries)
         {
-            Type geomClass = null;
+            Type geometryType = null;
             Boolean isHeterogeneous = false;
 
-            foreach (IGeometry geom in geomList)
+            foreach (IGeometry<TCoordinate> g in geometries)
             {
-                Type partClass = geom.GetType();
+                Type partClass = g.GetType();
 
-                if (geomClass == null)
+                if (geometryType == null)
                 {
-                    geomClass = partClass;
+                    geometryType = partClass;
                 }
 
-                if (partClass != geomClass)
+                if (partClass != geometryType)
                 {
                     isHeterogeneous = true;
                 }
             }
 
             // for the empty point, return an empty GeometryCollection
-            if (geomClass == null)
+            if (geometryType == null)
             {
                 return CreateGeometryCollection(null);
             }
 
             if (isHeterogeneous)
             {
-                return CreateGeometryCollection(ToGeometryArray(geomList));
+                return CreateGeometryCollection(geometries);
             }
 
             // at this point we know the collection is hetereogenous.
             // Determine the type of the result from the first Geometry in the list
             // this should always return a point, since otherwise an empty collection would have already been returned
-            IEnumerator ienum = geomList.GetEnumerator();
+            IEnumerator ienum = geometries.GetEnumerator();
             ienum.MoveNext();
-            IGeometry geom0 = (IGeometry) ienum.Current;
-            Boolean isCollection = geomList.Count > 1;
+            IGeometry geom0 = (IGeometry)ienum.Current;
+            Boolean isCollection = geometries.Count > 1;
 
             if (isCollection)
             {
                 if (geom0 is IPolygon)
                 {
-                    return CreateMultiPolygon(ToPolygonArray(geomList));
+                    return CreateMultiPolygon(geometries);
                 }
                 else if (geom0 is ILineString)
                 {
-                    return CreateMultiLineString(ToLineStringArray(geomList));
+                    return CreateMultiLineString(geometries);
                 }
                 else if (geom0 is IPoint)
                 {
-                    return CreateMultiPoint(ToPointArray(geomList));
+                    return CreateMultiPoint(geometries);
                 }
+
                 Assert.ShouldNeverReachHere();
             }
 
             return geom0;
         }
 
+        /// <summary>
+        /// If the <see cref="Extents{TCoordinate}"/> is a null <see cref="Extents{TCoordinate}"/>, returns an
+        /// empty <c>Point</c>. If the <see cref="Extents{TCoordinate}"/> is a point, returns
+        /// a non-empty <c>Point</c>. If the <see cref="Extents{TCoordinate}"/> is a
+        /// rectangle, returns a <c>Polygon</c> whose points are (minx, miny),
+        /// (maxx, miny), (maxx, maxy), (minx, maxy), (minx, miny).
+        /// </summary>
+        /// <param name="envelope">The <see cref="Extents{TCoordinate}"/> to convert to a <see cref="Geometry{TCoordinate}"/>.</param>       
+        /// <returns>
+        /// An empty <c>Point</c> (for null <see cref="Extents{TCoordinate}"/>
+        /// s), a <c>Point</c> (when min x = max x and min y = max y) or a
+        /// <c>Polygon</c> (in all other cases)
+        /// throws a <c>TopologyException</c> if <c>coordinates</c>
+        /// is not a closed linestring, that is, if the first and last coordinates
+        /// are not equal.
+        /// </returns>
+        public IGeometry<TCoordinate> ToGeometry(IExtents<TCoordinate> envelope)
+        {
+            if (envelope.IsEmpty)
+            {
+                return CreateEmpty();
+            }
+
+            if (envelope.MinX == envelope.MaxX && envelope.MinY == envelope.MaxY)
+            {
+                return CreatePoint(new Coordinate(envelope.MinX, envelope.MinY));
+            }
+
+            return CreatePolygon(
+                CreateLinearRing(new TCoordinate[]
+                                     {
+                                         new Coordinate(envelope.MinX, envelope.MinY),
+                                         new Coordinate(envelope.MaxX, envelope.MinY),
+                                         new Coordinate(envelope.MaxX, envelope.MaxY),
+                                         new Coordinate(envelope.MinX, envelope.MaxY),
+                                         new Coordinate(envelope.MinX, envelope.MinY),
+                                     }),
+                null);
+        }
+
+        public ICoordinateSequenceFactory<TCoordinate> CoordinateSequenceFactory
+        {
+            get { return _coordinateSequenceFactory; }
+        }
+
+        private IGeometry<TCoordinate> CreateEmpty()
+        {
+            return new Point<TCoordinate>();
+        }
+
+        /// <summary>
+        /// Creates a Point using the given Coordinate; a null Coordinate will create
+        /// an empty Geometry.
+        /// </summary>
+        /// <param name="coordinate"></param>
+        public IPoint<TCoordinate> CreatePoint(TCoordinate coordinate)
+        {
+            return CreatePoint(CoordinateSequenceFactory.Create(coordinate));
+        }
+
+        public IPoint<TCoordinate> CreatePoint(IEnumerable<TCoordinate> coordinates)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Creates a <c>Point</c> using the given <c>CoordinateSequence</c>; a null or empty
+        /// CoordinateSequence will create an empty Point.
+        /// </summary>
+        public IPoint<TCoordinate> CreatePoint(ICoordinateSequence<TCoordinate> coordinates)
+        {
+            return new Point<TCoordinate>(coordinates, this);
+        }
+
+        /// <summary> 
+        /// Creates a LineString using the given Coordinates; a null or empty array will
+        /// create an empty LineString. Consecutive points must not be equal.
+        /// </summary>
+        /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
+        public ILineString<TCoordinate> CreateLineString(IEnumerable<TCoordinate> coordinates)
+        {
+            return CreateLineString(CoordinateSequenceFactory.Create(coordinates));
+        }
+
+        /// <summary>
+        /// Creates a LineString using the given CoordinateSequence; a null or empty CoordinateSequence will
+        /// create an empty LineString. Consecutive points must not be equal.
+        /// </summary>
+        /// <param name="coordinates">A CoordinateSequence possibly empty, or null.</param>
+        public ILineString<TCoordinate> CreateLineString(ICoordinateSequence<TCoordinate> coordinates)
+        {
+            return new LineString<TCoordinate>(coordinates, this);
+        }
+
+        /// <summary>
+        /// Creates a <c>LinearRing</c> using the given <c>Coordinates</c>; a null or empty array will
+        /// create an empty LinearRing. The points must form a closed and simple
+        /// linestring. Consecutive points must not be equal.
+        /// </summary>
+        /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
+        public ILinearRing<TCoordinate> CreateLinearRing(IEnumerable<TCoordinate> coordinates)
+        {
+            return CreateLinearRing(CoordinateSequenceFactory.Create(coordinates));
+        }
+
+        /// <summary> 
+        /// Creates a <c>LinearRing</c> using the given <c>CoordinateSequence</c>; a null or empty CoordinateSequence will
+        /// create an empty LinearRing. The points must form a closed and simple
+        /// linestring. Consecutive points must not be equal.
+        /// </summary>
+        /// <param name="coordinates">A CoordinateSequence possibly empty, or null.</param>
+        public ILinearRing<TCoordinate> CreateLinearRing(ICoordinateSequence<TCoordinate> coordinates)
+        {
+            return new LinearRing<TCoordinate>(coordinates, this);
+        }
+
+        /// <summary> 
+        /// Constructs a <c>Polygon</c> with the given exterior boundary and
+        /// interior boundaries.
+        /// </summary>
+        /// <param name="shell">
+        /// The outer boundary of the new <c>Polygon</c>, or
+        /// <see langword="null" /> or an empty <c>LinearRing</c> if
+        /// the empty point is to be created.
+        /// </param>
+        /// <param name="holes">
+        /// The inner boundaries of the new <c>Polygon</c>, or
+        /// <see langword="null" /> or empty <c>LinearRing</c> s if
+        /// the empty point is to be created.        
+        /// </param>
+        public IPolygon<TCoordinate> CreatePolygon(ILinearRing<TCoordinate> shell,
+                                                   IEnumerable<ILinearRing<TCoordinate>> holes)
+        {
+            return new Polygon<TCoordinate>(shell, holes, this);
+        }
+
+        /// <summary> 
+        /// Creates a MultiPoint using the given Points; a null or empty array will
+        /// create an empty MultiPoint.
+        /// </summary>
+        /// <param name="point">An array without null elements, or an empty array, or null.</param>
+        public IMultiPoint<TCoordinate> CreateMultiPoint(IEnumerable<IPoint<TCoordinate>> point)
+        {
+            return new MultiPoint<TCoordinate>(point, this);
+        }
+
+        /// <summary> 
+        /// Creates a MultiPoint using the given Coordinates; a null or empty array will create an empty MultiPoint.
+        /// </summary>
+        /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
+        public IMultiPoint<TCoordinate> CreateMultiPoint(IEnumerable<TCoordinate> coordinates)
+        {
+            return CreateMultiPoint(CoordinateSequenceFactory.Create(coordinates));
+        }
+
+        /// <summary> 
+        /// Creates a MultiPoint using the given CoordinateSequence; a null or empty CoordinateSequence will
+        /// create an empty MultiPoint.
+        /// </summary>
+        /// <param name="coordinates">A CoordinateSequence possibly empty, or null.</param>
+        public IMultiPoint<TCoordinate> CreateMultiPoint(ICoordinateSequence<TCoordinate> coordinates)
+        {
+            if (coordinates == null)
+            {
+                coordinates = CoordinateSequenceFactory.Create();
+            }
+
+            List<IPoint> points = new List<IPoint>();
+
+            foreach (TCoordinate coordinate in coordinates)
+            {
+                points.Add(CreatePoint(coordinate));
+            }
+
+            return CreateMultiPoint(points);
+        }
+
+        /// <summary>
+        /// Creates a <c>MultiLineString</c> using the given <c>LineStrings</c>; a null or empty
+        /// array will create an empty MultiLineString.
+        /// </summary>
+        /// <param name="lineStrings">LineStrings, each of which may be empty but not null-</param>
+        public IMultiLineString<TCoordinate> CreateMultiLineString(IEnumerable<ILineString<TCoordinate>> lineStrings)
+        {
+            return new MultiLineString<TCoordinate>(lineStrings, this);
+        }
+
+        /// <summary>
+        /// Creates a <c>MultiPolygon</c> using the given <c>Polygons</c>; a null or empty array
+        /// will create an empty Polygon. The polygons must conform to the
+        /// assertions specified in the <see href="http://www.opengis.org/techno/specs.htm"/> 
+        /// OpenGIS Simple Features Specification for SQL.
+        /// </summary>
+        /// <param name="polygons">Polygons, each of which may be empty but not null.</param>
+        public IMultiPolygon<TCoordinate> CreateMultiPolygon(IEnumerable<IPolygon<TCoordinate>> polygons)
+        {
+            return new MultiPolygon<TCoordinate>(polygons, this);
+        }
+
+        /// <summary>
+        /// Creates a <c>GeometryCollection</c> using the given <c>Geometries</c>; a null or empty
+        /// array will create an empty GeometryCollection.
+        /// </summary>
+        /// <param name="geometries">Geometries, each of which may be empty but not null.</param>
+        public IGeometryCollection<TCoordinate> CreateGeometryCollection(IEnumerable<IGeometry<TCoordinate>> geometries)
+        {
+            return new GeometryCollection<TCoordinate>(geometries, this);
+        }
+
         /// <returns>
         /// A clone of g based on a CoordinateSequence created by this
         /// GeometryFactory's CoordinateSequenceFactory.
         /// </returns>
-        public IGeometry CreateGeometry(IGeometry g)
+        public IGeometry<TCoordinate> CreateGeometry(IGeometry<TCoordinate> g)
         {
             // could this be cached to make this more efficient? Or maybe it isn't enough overhead to bother
-            GeometryEditor editor = new GeometryEditor(this);
-            return editor.Edit(g, new AnonymousCoordinateOperationImpl());
+            GeometryEditor<TCoordinate> editor = new GeometryEditor<TCoordinate>(this);
+            return editor.Edit(g, new NoOpCoordinateOperation<TCoordinate>());
         }
 
-        private static ICoordinateSequenceFactory GetDefaultCoordinateSequenceFactory()
+        /// <summary>
+        /// Returns the PrecisionModel that Geometries created by this factory
+        /// will be associated with.
+        /// </summary>
+        public IPrecisionModel<TCoordinate> PrecisionModel
         {
-            return CoordinateArraySequenceFactory.Instance;
+            get { return _precisionModel; }
         }
 
-        private class AnonymousCoordinateOperationImpl : GeometryEditor.CoordinateOperation
+        public ICoordinateSystem<TCoordinate> SpatialReference
         {
-            public override ICoordinate[] Edit(ICoordinate[] coordinates, IGeometry geometry)
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public Int32? Srid
+        {
+            get { return _srid; }
+        }
+
+        private static ICoordinateSequenceFactory<TCoordinate> GetDefaultCoordinateSequenceFactory<TCoordinate>()
+            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                IComputable<TCoordinate>, IConvertible
+        {
+            return CoordinateArraySequenceFactory<TCoordinate>.Instance;
+        }
+
+        private class NoOpCoordinateOperation<TCoordinate> : GeometryEditor<TCoordinate>.CoordinateOperation
+            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                IComputable<TCoordinate>, IConvertible
+        {
+            public override IEnumerable<TCoordinate> Edit(IEnumerable<TCoordinate> coordinates,
+                                                          IGeometry<TCoordinate> geometry)
             {
                 return coordinates;
             }

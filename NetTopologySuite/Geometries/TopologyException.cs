@@ -1,57 +1,37 @@
 using System;
-using System.Collections;
-using System.Text;
-
-using GeoAPI.Geometries;
+using GeoAPI.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary> 
-    /// Indicates an invalid or inconsistent topological situation encountered during processing
+    /// Indicates an invalid or inconsistent topological 
+    /// situation encountered during processing.
     /// </summary>
-    public class TopologyException : ApplicationException
+    public class TopologyException : NtsException
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="msg"></param>
-        /// <param name="pt"></param>
-        /// <returns></returns>
-        private static string MsgWithCoord(string msg, ICoordinate pt)
+        private readonly ICoordinate _coordinate = null;
+
+        public TopologyException(string msg) : base(msg) {}
+
+        public TopologyException(string msg, ICoordinate pt)
+            : base(formatMessageAndCoordinate(msg, pt))
         {
-            if (pt != null)
-            return msg + " [ " + pt + " ]";
-            return msg;
+            _coordinate = pt.Clone() as ICoordinate;
         }
 
-        private ICoordinate pt = null;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="msg"></param>
-        public TopologyException(string msg) : base(msg) { }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="msg"></param>
-        /// <param name="pt"></param>
-        public TopologyException(string msg, ICoordinate pt) 
-            : base (MsgWithCoord(msg, pt))
-        {            
-            this.pt = new Coordinate(pt);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         public ICoordinate Coordinate
         {
-            get
+            get { return _coordinate; }
+        }
+
+        private static string formatMessageAndCoordinate(string msg, ICoordinate pt)
+        {
+            if (pt != null && !pt.IsEmpty)
             {
-                return pt;
+                return String.Format("{0} [{1}]", msg, pt);
             }
+
+            return msg;
         }
     }
 }

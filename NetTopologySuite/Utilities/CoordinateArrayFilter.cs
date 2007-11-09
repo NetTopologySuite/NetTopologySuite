@@ -1,14 +1,21 @@
+using System;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Utilities
 {
     /// <summary>
-    /// A <c>CoordinateFilter</c> that creates an array containing every coordinate in a <c>Geometry</c>.
+    /// A <see cref="ICoordinateFilter{TCoordinate}"/> that creates an array 
+    /// containing every coordinate in a <see cref="Geometry{TCoordinate}"/>.
     /// </summary>
-    public class CoordinateArrayFilter : ICoordinateFilter 
+    public class CoordinateArrayFilter<TCoordinate> : ICoordinateFilter<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
+                            IComputable<TCoordinate>, IConvertible
     {
-        ICoordinate[] pts = null;
-        Int32 n = 0;
+        private readonly TCoordinate[] _points = null;
+        private Int32 _count = 0;
 
         /// <summary>
         /// Constructs a <c>CoordinateArrayFilter</c>.
@@ -16,27 +23,24 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <param name="size">The number of points that the <c>CoordinateArrayFilter</c> will collect.</param>
         public CoordinateArrayFilter(Int32 size) 
         {
-            pts = new ICoordinate[size];
+            _points = new TCoordinate[size];
         }
 
         /// <summary>
-        /// Returns the <c>Coordinate</c>s collected by this <c>CoordinateArrayFilter</c>.
+        /// Returns the <typeparam name="TCoordinate">s collected by this 
+        /// <see cref="CoordinateArrayFilter{TCoordinate}"/>.
         /// </summary>
-        public ICoordinate[] Coordinates
+        public TCoordinate[] Coordinates
         {
             get
             {
-                return pts;
+                return _points;
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="coord"></param>
-        public void Filter(ICoordinate coord) 
+        public void Filter(TCoordinate coord) 
         {
-            pts[n++] = (ICoordinate) coord;
+            _points[_count++] = coord;
         }
     }
 }

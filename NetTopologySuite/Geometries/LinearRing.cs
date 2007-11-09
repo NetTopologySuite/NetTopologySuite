@@ -17,8 +17,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="points">
         /// Points forming a closed and simple linestring, or
-        /// <c>null</c> or an empty array to create the empty point.
-        /// This array must not contain <c>null</c> elements.
+        /// <see langword="null" /> or an empty array to create the empty point.
+        /// This array must not contain <see langword="null" /> elements.
         /// </param>
         /// <param name="factory"></param>
         public LinearRing(ICoordinateSequence points, IGeometryFactory factory) : base(points, factory)
@@ -72,7 +72,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="points">The points used for create this instance.</param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
+        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="Geometry{TCoordinate}Factory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public LinearRing(ICoordinate[] points) :

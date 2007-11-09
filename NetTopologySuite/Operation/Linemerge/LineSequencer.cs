@@ -50,15 +50,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     public class LineSequencer
     {
         /// <summary>
-        /// Tests whether a <see cref="Geometry" /> is sequenced correctly.
+        /// Tests whether a <see cref="Geometry{TCoordinate}" /> is sequenced correctly.
         /// <see cref="LineString" />s are trivially sequenced.
         /// <see cref="MultiLineString" />s are checked for correct sequencing.
         /// Otherwise, <c>IsSequenced</c> is defined
-        /// to be <c>true</c> for geometries that are not lineal.
+        /// to be <see langword="true"/> for geometries that are not lineal.
         /// </summary>
-        /// <param name="geom">The <see cref="Geometry" /> to test.</param>
+        /// <param name="geom">The <see cref="Geometry{TCoordinate}" /> to test.</param>
         /// <returns>
-        /// <c>true</c> if the <see cref="Geometry" /> is sequenced or is not lineal.
+        /// <see langword="true"/> if the <see cref="Geometry{TCoordinate}" /> is sequenced or is not lineal.
         /// </returns>
         public static Boolean IsSequenced(IGeometry geom)
         {
@@ -124,7 +124,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         public LineSequencer() {}
 
         /// <summary>
-        /// Adds a <see cref="IEnumerable" /> of <see cref="Geometry" />s to be sequenced.
+        /// Adds a <see cref="IEnumerable" /> of <see cref="Geometry{TCoordinate}" />s to be sequenced.
         /// May be called multiple times.
         /// Any dimension of Geometry may be added; the constituent linework will be extracted.
         /// </summary>
@@ -138,9 +138,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         }
 
         /// <summary>
-        /// Adds a <see cref="Geometry" /> to be sequenced.
+        /// Adds a <see cref="Geometry{TCoordinate}" /> to be sequenced.
         /// May be called multiple times.
-        /// Any dimension of <see cref="Geometry" /> may be added; 
+        /// Any dimension of <see cref="Geometry{TCoordinate}" /> may be added; 
         /// the constituent linework will be extracted.
         /// </summary>
         /// <param name="geometry"></param>
@@ -157,7 +157,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             private LineSequencer sequencer = null;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="GeometryComponentFilterImpl"/> class.
+            /// Initializes a new instance of the <see cref="Geometry{TCoordinate}ComponentFilterImpl"/> class.
             /// </summary>
             /// <param name="sequencer">The sequencer.</param>
             internal GeometryComponentFilterImpl(LineSequencer sequencer)
@@ -169,7 +169,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             /// Performs an operation with or on <paramref name="component" />
             /// </summary>
             /// <param name="component">
-            /// A <see cref="Geometry" /> to which the filter is applied.
+            /// A <see cref="Geometry{TCoordinate}" /> to which the filter is applied.
             /// </param>
             public void Filter(IGeometry component)
             {
@@ -194,7 +194,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// <summary>
         /// Tests whether the arrangement of linestrings has a valid sequence.
         /// </summary>
-        /// <returns><c>true</c> if a valid sequence exists.</returns>
+        /// <returns><see langword="true"/> if a valid sequence exists.</returns>
         public Boolean IsSequenceable()
         {
             ComputeSequence();
@@ -206,7 +206,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// built by the sequencing process, if one exists.
         /// </summary>
         /// <returns>The sequenced linestrings,
-        /// or <c>null</c> if a valid sequence does not exist.</returns>
+        /// or <see langword="null" /> if a valid sequence does not exist.</returns>
         public IGeometry GetSequencedLineStrings()
         {
             ComputeSequence();
@@ -263,7 +263,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// using Euler's Theorem.
         /// </summary>
         /// <param name="graph">The <see cref="Subgraph" /> containing the edges.</param>
-        /// <returns><c>true</c> if a sequence exists.</returns>
+        /// <returns><see langword="true"/> if a sequence exists.</returns>
         private Boolean HasSequence(Subgraph graph)
         {
             Int32 oddDegreeCount = 0;
@@ -327,7 +327,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// <param name="node">The <see cref="Node" /> to examine.</param>
         /// <returns>
         /// The <see cref="DirectedEdge" /> found, 
-        /// or <c>null</c> if none were unvisited.
+        /// or <see langword="null" /> if none were unvisited.
         /// </returns>
         private static DirectedEdge FindUnvisitedBestOrientedDE(Node node)
         {
@@ -501,7 +501,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// with <see cref="LineMergeEdge" />s as their parent edges.
         /// </param>
         /// <returns>
-        /// The sequenced geometry, or <c>null</c> if no sequence exists.
+        /// The sequenced geometry, or <see langword="null" /> if no sequence exists.
         /// </returns>
         private IGeometry BuildSequencedGeometry(IList sequences)
         {

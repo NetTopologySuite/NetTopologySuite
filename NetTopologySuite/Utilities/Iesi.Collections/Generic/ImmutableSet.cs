@@ -41,7 +41,7 @@ namespace Iesi_NTS.Collections.Generic
         /// Adds the specified element to this set if it is not already present.
         /// </summary>
         /// <param name="o">The object to add to the set.</param>
-        /// <returns><c>true</c> is the object was added, <c>false</c> if it was already present.</returns>
+        /// <returns><see langword="true"/> is the object was added, <c>false</c> if it was already present.</returns>
         public override sealed Boolean Add(T o)
         {
             throw new NotSupportedException(ERROR_MESSAGE);
@@ -51,7 +51,7 @@ namespace Iesi_NTS.Collections.Generic
         /// Adds all the elements in the specified collection to the set if they are not already present.
         /// </summary>
         /// <param name="c">A collection of objects to add to the set.</param>
-        /// <returns><c>true</c> is the set changed as a result of this operation, <c>false</c> if not.</returns>
+        /// <returns><see langword="true"/> is the set changed as a result of this operation, <c>false</c> if not.</returns>
         public override sealed Boolean AddAll(ICollection<T> c)
         {
             throw new NotSupportedException(ERROR_MESSAGE);
@@ -66,27 +66,27 @@ namespace Iesi_NTS.Collections.Generic
         }
 
         /// <summary>
-        /// Returns <c>true</c> if this set contains the specified element.
+        /// Returns <see langword="true"/> if this set contains the specified element.
         /// </summary>
         /// <param name="o">The element to look for.</param>
-        /// <returns><c>true</c> if this set contains the specified element, <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if this set contains the specified element, <c>false</c> otherwise.</returns>
         public override sealed Boolean Contains(T o)
         {
             return mBasisSet.Contains(o);
         }
 
         /// <summary>
-        /// Returns <c>true</c> if the set contains all the elements in the specified collection.
+        /// Returns <see langword="true"/> if the set contains all the elements in the specified collection.
         /// </summary>
         /// <param name="c">A collection of objects.</param>
-        /// <returns><c>true</c> if the set contains all the elements in the specified collection, <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if the set contains all the elements in the specified collection, <c>false</c> otherwise.</returns>
         public override sealed Boolean ContainsAll(ICollection<T> c)
         {
             return mBasisSet.ContainsAll(c);
         }
 
         /// <summary>
-        /// Returns <c>true</c> if this set contains no elements.
+        /// Returns <see langword="true"/> if this set contains no elements.
         /// </summary>
         public override sealed Boolean IsEmpty
         {
@@ -98,7 +98,7 @@ namespace Iesi_NTS.Collections.Generic
         /// Removes the specified element from the set.
         /// </summary>
         /// <param name="o">The element to be removed.</param>
-        /// <returns><c>true</c> if the set contained the specified element, <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if the set contained the specified element, <c>false</c> otherwise.</returns>
         public override sealed Boolean Remove(T o)
         {
             throw new NotSupportedException(ERROR_MESSAGE);
@@ -108,7 +108,7 @@ namespace Iesi_NTS.Collections.Generic
         /// Remove all the specified elements from this set, if they exist in this set.
         /// </summary>
         /// <param name="c">A collection of elements to remove.</param>
-        /// <returns><c>true</c> if the set was modified as a result of this operation.</returns>
+        /// <returns><see langword="true"/> if the set was modified as a result of this operation.</returns>
         public override sealed Boolean RemoveAll(ICollection<T> c)
         {
             throw new NotSupportedException(ERROR_MESSAGE);
@@ -118,7 +118,7 @@ namespace Iesi_NTS.Collections.Generic
         /// Retains only the elements in this set that are contained in the specified collection.
         /// </summary>
         /// <param name="c">Collection that defines the set of elements to be retained.</param>
-        /// <returns><c>true</c> if this set changed as a result of this operation.</returns>
+        /// <returns><see langword="true"/> if this set changed as a result of this operation.</returns>
         public override sealed Boolean RetainAll(ICollection<T> c)
         {
             throw new NotSupportedException(ERROR_MESSAGE);

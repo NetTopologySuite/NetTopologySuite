@@ -5,7 +5,7 @@ using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 namespace GisSharpBlog.NetTopologySuite.Simplify
 {
     /// <summary>
-    /// Simplifies a <c>Geometry</c> using the standard Douglas-Peucker algorithm.
+    /// Simplifies a <see cref="Geometry{TCoordinate}"/> using the standard Douglas-Peucker algorithm.
     /// Ensures that any polygonal geometries returned are valid.
     /// Simple lines are not guaranteed to remain simple after simplification.
     /// Note that in general D-P does not preserve topology -

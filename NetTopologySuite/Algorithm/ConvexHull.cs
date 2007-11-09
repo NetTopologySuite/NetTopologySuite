@@ -8,7 +8,7 @@ using Iesi_NTS.Collections.Generic;
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     /// <summary> 
-    /// Computes the convex hull of a <see cref="Geometry" />.
+    /// Computes the convex hull of a <see cref="Geometry{TCoordinate}" />.
     /// The convex hull is the smallest convex Geometry that contains all the
     /// points in the input Geometry.
     /// Uses the Graham Scan algorithm.
@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private ICoordinate[] inputPts = null;
 
         /// <summary> 
-        /// Create a new convex hull construction for the input <c>Geometry</c>.
+        /// Create a new convex hull construction for the input <see cref="Geometry{TCoordinate}"/>.
         /// </summary>
         public ConvexHull(IGeometry geometry)
             : this(ExtractCoordinates(geometry), geometry.Factory) {}
@@ -41,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         }
 
         /// <summary> 
-        /// Returns a <c>Geometry</c> that represents the convex hull of the input point.
+        /// Returns a <see cref="Geometry{TCoordinate}"/> that represents the convex hull of the input point.
         /// The point will contain the minimal number of points needed to
         /// represent the convex hull.  In particular, no more than two consecutive
         /// points will be collinear.

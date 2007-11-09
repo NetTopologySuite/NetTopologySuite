@@ -3,75 +3,90 @@ using System;
 namespace GisSharpBlog.NetTopologySuite.Planargraph
 {
     /// <summary>
-    /// Represents an undirected edge of a {PlanarGraph}. An undirected edge
-    /// in fact simply acts as a central point of reference for two opposite
-    /// <c>DirectedEdge</c>s.
-    /// Usually a client using a <c>PlanarGraph</c> will subclass <c>Edge</c>
-    /// to add its own application-specific data and methods.
+    /// Represents an undirected edge of a <see cref="PlanarGraph"/>. 
+    /// An undirected edge in fact simply acts as a central point of reference 
+    /// for two opposite <see cref="DirectedEdge"/>s.
     /// </summary>
+    /// <remarks>
+    /// Usually a client using a <see cref="PlanarGraph"/> will subclass <see cref="Edge"/>
+    /// to add its own application-specific data and methods.
+    /// </remarks>
     public class Edge : GraphComponent
     {
-        /// <summary>
-        /// The two DirectedEdges associated with this Edge. 
-        /// </summary>
-        protected DirectedEdge[] dirEdge;
+        // The two DirectedEdges associated with this Edge.
+        private DirectedEdge _directedEdge1;
+        private DirectedEdge _directedEdge2;
 
         /// <summary>
         /// Constructs an Edge whose DirectedEdges are not yet set. Be sure to call
         /// <c>SetDirectedEdges(DirectedEdge, DirectedEdge)</c>.
         /// </summary>
-        public Edge() {}
+        public Edge() { }
 
         /// <summary>
         /// Constructs an Edge initialized with the given DirectedEdges, and for each
         /// DirectedEdge: sets the Edge, sets the symmetric DirectedEdge, and adds
         /// this Edge to its from-Node.
         /// </summary>
-        /// <param name="de0"></param>
-        /// <param name="de1"></param>
-        public Edge(DirectedEdge de0, DirectedEdge de1)
+        public Edge(DirectedEdge directedEdge1, DirectedEdge directedEdge2)
         {
-            SetDirectedEdges(de0, de1);
+            SetDirectedEdges(directedEdge1, directedEdge2);
         }
 
         /// <summary>
         /// Initializes this Edge's two DirectedEdges, and for each DirectedEdge: sets the
         /// Edge, sets the symmetric DirectedEdge, and adds this Edge to its from-Node.
         /// </summary>
-        public void SetDirectedEdges(DirectedEdge de0, DirectedEdge de1)
+        public void SetDirectedEdges(DirectedEdge directedEdge1, DirectedEdge directedEdge2)
         {
-            dirEdge = new DirectedEdge[] {de0, de1,};
-            de0.Edge = this;
-            de1.Edge = this;
-            de0.Sym = de1;
-            de1.Sym = de0;
-            de0.FromNode.AddOutEdge(de0);
-            de1.FromNode.AddOutEdge(de1);
+            _directedEdge1 = directedEdge1;
+            _directedEdge2 = directedEdge2;
+
+            _directedEdge1.Edge = this;
+            _directedEdge2.Edge = this;
+            _directedEdge1.Sym = _directedEdge2;
+            _directedEdge2.Sym = _directedEdge1;
+            _directedEdge1.FromNode.AddOutEdge(_directedEdge1);
+            _directedEdge2.FromNode.AddOutEdge(_directedEdge2);
         }
 
         /// <summary> 
         /// Returns one of the DirectedEdges associated with this Edge.
         /// </summary>
         /// <param name="i">0 or 1.</param>
-        public DirectedEdge GetDirEdge(Int32 i)
+        public DirectedEdge GetDirectedEdge(Int32 i)
         {
-            return dirEdge[i];
+            if (i == 0)
+            {
+                return _directedEdge1;
+            }
+            else if (i == 1)
+            {
+                return _directedEdge2;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("i", i, 
+                    "Parameter 'i' must be 0 or 1.");
+            }
         }
 
         /// <summary>
         /// Returns the DirectedEdge that starts from the given node, or null if the
         /// node is not one of the two nodes associated with this Edge.
         /// </summary>
-        public DirectedEdge GetDirEdge(Node fromNode)
+        public DirectedEdge GetDirectedEdge(Node fromNode)
         {
-            if (dirEdge[0].FromNode == fromNode)
+            if (_directedEdge1.FromNode == fromNode)
             {
-                return dirEdge[0];
+                return _directedEdge1;
             }
-            if (dirEdge[1].FromNode == fromNode)
+
+            if (_directedEdge2.FromNode == fromNode)
             {
-                return dirEdge[1];
+                return _directedEdge2;
             }
+
             // node not found
             // possibly should throw an exception here?
             return null;
@@ -83,14 +98,16 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public Node GetOppositeNode(Node node)
         {
-            if (dirEdge[0].FromNode == node)
+            if (_directedEdge1.FromNode == node)
             {
-                return dirEdge[0].ToNode;
+                return _directedEdge1.ToNode;
             }
-            if (dirEdge[1].FromNode == node)
+
+            if (_directedEdge2.FromNode == node)
             {
-                return dirEdge[1].ToNode;
+                return _directedEdge2.ToNode;
             }
+
             // node not found
             // possibly should throw an exception here?
             return null;
@@ -101,7 +118,8 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         internal void Remove()
         {
-            dirEdge = null;
+            _directedEdge1 = null;
+            _directedEdge2 = null;
         }
 
         /// <summary>
@@ -109,7 +127,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public override Boolean IsRemoved
         {
-            get { return dirEdge == null; }
+            get { return (_directedEdge1 ?? _directedEdge2) == null; }
         }
     }
 }

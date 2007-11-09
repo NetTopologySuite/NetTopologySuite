@@ -84,7 +84,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="itemEnv">The envelope containing the item.</param>
         /// <param name="item">The item to remove.</param>
-        /// <returns><c>true</c> if the item was found and removed.</returns>
+        /// <returns><see langword="true"/> if the item was found and removed.</returns>
         public Boolean Remove(IExtents itemEnv, object item)
         {
             // use envelope to restrict nodes scanned

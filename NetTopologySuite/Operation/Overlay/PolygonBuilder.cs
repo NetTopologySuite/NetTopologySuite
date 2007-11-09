@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 {
@@ -11,14 +14,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// Forms <c>Polygon</c>s out of a graph of {DirectedEdge}s.
     /// The edges to use are marked as being in the result Area.
     /// </summary>
-    public class PolygonBuilder
+    public class PolygonBuilder<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        private IGeometryFactory geometryFactory;
-        private IList shellList = new ArrayList();
+        private readonly IGeometryFactory<TCoordinate> _geometryFactory;
+        private readonly List<ILinearRing<TCoordinate>> _shellList = new List<ILinearRing<TCoordinate>>();
 
-        public PolygonBuilder(IGeometryFactory geometryFactory)
+        public PolygonBuilder(IGeometryFactory<TCoordinate> geometryFactory)
         {
-            this.geometryFactory = geometryFactory;
+            this._geometryFactory = geometryFactory;
         }
 
         /// <summary>
@@ -36,14 +41,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// The graph is assumed to contain one or more polygons,
         /// possibly with holes.
         /// </summary>
-        public void Add(IList dirEdges, IList nodes)
+        public void Add(IEnumerable<Edge> dirEdges, IList nodes)
         {
             PlanarGraph.LinkResultDirectedEdges(nodes);
             IList maxEdgeRings = BuildMaximalEdgeRings(dirEdges);
             IList freeHoleList = new ArrayList();
-            IList edgeRings = BuildMinimalEdgeRings(maxEdgeRings, shellList, freeHoleList);
-            SortShellsAndHoles(edgeRings, shellList, freeHoleList);
-            PlaceFreeHoles(shellList, freeHoleList);
+            IList edgeRings = BuildMinimalEdgeRings(maxEdgeRings, _shellList, freeHoleList);
+            SortShellsAndHoles(edgeRings, _shellList, freeHoleList);
+            PlaceFreeHoles(_shellList, freeHoleList);
             //Assert: every hole on freeHoleList has a shell assigned to it
         }
 
@@ -51,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         {
             get
             {
-                IList resultPolyList = ComputePolygons(shellList);
+                IList resultPolyList = ComputePolygons(_shellList);
                 return resultPolyList;
             }
         }
@@ -70,7 +75,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                     // if this edge has not yet been processed
                     if (de.EdgeRing == null)
                     {
-                        MaximalEdgeRing er = new MaximalEdgeRing(de, geometryFactory);
+                        MaximalEdgeRing er = new MaximalEdgeRing(de, _geometryFactory);
                         maxEdgeRings.Add(er);
                         er.SetInResult();
                     }
@@ -121,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// no shell is returned.
         /// </summary>
         /// <returns>The shell EdgeRing, if there is one.</returns>
-        /// <returns><c>null</c>, if all the rings are holes.</returns>
+        /// <returns><see langword="null" />, if all the rings are holes.</returns>
         private EdgeRing FindShell(IList minEdgeRings)
         {
             Int32 shellCount = 0;
@@ -262,7 +267,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             for (IEnumerator it = shellList.GetEnumerator(); it.MoveNext();)
             {
                 EdgeRing er = (EdgeRing) it.Current;
-                IPolygon poly = er.ToPolygon(geometryFactory);
+                IPolygon poly = er.ToPolygon(_geometryFactory);
                 resultPolyList.Add(poly);
             }
             return resultPolyList;
@@ -274,7 +279,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         public Boolean ContainsPoint(ICoordinate p)
         {
-            for (IEnumerator it = shellList.GetEnumerator(); it.MoveNext();)
+            for (IEnumerator it = _shellList.GetEnumerator(); it.MoveNext();)
             {
                 EdgeRing er = (EdgeRing) it.Current;
                 if (er.ContainsPoint(p))

@@ -25,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// Computes the canonical orientation for a coordinate array.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if the points are oriented forwards, or
+        /// <see langword="true"/> if the points are oriented forwards, or
         /// <c>false</c>if the points are oriented in reverse.
         /// </returns>
         private static Boolean Orientation(ICoordinate[] pts)

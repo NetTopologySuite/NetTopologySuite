@@ -93,7 +93,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
 
         /// <summary>
         /// Create a polygonizer with the same {GeometryFactory}
-        /// as the input <c>Geometry</c>s.
+        /// as the input <see cref="Geometry{TCoordinate}"/>s.
         /// </summary>
         public Polygonizer() 
         {
@@ -106,7 +106,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Any dimension of Geometry may be added;
         /// the constituent linework will be extracted and used.
         /// </summary>
-        /// <param name="geomList">A list of <c>Geometry</c>s with linework to be polygonized.</param>
+        /// <param name="geomList">A list of <see cref="Geometry{TCoordinate}"/>s with linework to be polygonized.</param>
         public void Add(IList geomList)
         {
             for (IEnumerator i = geomList.GetEnumerator(); i.MoveNext(); ) 
@@ -122,7 +122,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Any dimension of Geometry may be added;
         /// the constituent linework will be extracted and used
         /// </summary>
-        /// <param name="g">A <c>Geometry</c> with linework to be polygonized.</param>
+        /// <param name="g">A <see cref="Geometry{TCoordinate}"/> with linework to be polygonized.</param>
 		public void Add(IGeometry g)
         {
             g.Apply(lineStringAdder);

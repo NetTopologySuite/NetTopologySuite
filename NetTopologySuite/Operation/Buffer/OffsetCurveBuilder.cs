@@ -10,7 +10,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 {
     /// <summary>
     /// Computes the raw offset curve for a
-    /// single <c>Geometry</c> component (ring, line or point).
+    /// single <see cref="Geometry{TCoordinate}"/> component (ring, line or point).
     /// A raw offset curve line is not noded -
     /// it may contain self-intersections (and usually will).
     /// The final buffer polygon is computed by forming a topological graph

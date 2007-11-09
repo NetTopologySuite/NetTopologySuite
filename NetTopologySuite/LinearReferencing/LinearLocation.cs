@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     public class LinearLocation : IComparable<LinearLocation>, IComparable, ICloneable
     {
         /// <summary>
-        /// Gets a location which refers to the end of a linear <see cref="Geometry" />.
+        /// Gets a location which refers to the end of a linear <see cref="Geometry{TCoordinate}" />.
         /// </summary>
         /// <param name="linear">The linear geometry.</param>
         /// <returns>A new <c>LinearLocation</c>.</returns>
@@ -130,7 +130,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Ensures the indexes are valid for a given linear <see cref="Geometry" />.
+        /// Ensures the indexes are valid for a given linear <see cref="Geometry{TCoordinate}" />.
         /// </summary>
         /// <param name="linear">A linear geometry.</param>
         public void Clamp(IGeometry linear)
@@ -151,7 +151,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
         /// <summary>
         /// Snaps the value of this location to
-        /// the nearest vertex on the given linear <see cref="Geometry" />,
+        /// the nearest vertex on the given linear <see cref="Geometry{TCoordinate}" />,
         /// if the vertex is closer than <paramref name="minDistance" />.
         /// </summary>
         /// <param name="linearGeom">A linear geometry.</param>
@@ -238,7 +238,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
         /// <summary>
         /// Tests whether this location refers to a vertex:
-        /// returns <c>true</c> if the location is a vertex.
+        /// returns <see langword="true"/> if the location is a vertex.
         /// </summary>        
         public Boolean IsVertex
         {
@@ -247,7 +247,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
         /// <summary>
         /// Gets the <see cref="Coordinate" /> along the
-        /// given linear <see cref="Geometry" /> which is
+        /// given linear <see cref="Geometry{TCoordinate}" /> which is
         /// referenced by this location.
         /// </summary>
         /// <param name="linearGeom">A linear geometry.</param>
@@ -266,10 +266,10 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
         /// <summary>
         /// Tests whether this location refers to a valid
-        /// location on the given linear <see cref="Geometry" />.
+        /// location on the given linear <see cref="Geometry{TCoordinate}" />.
         /// </summary>
         /// <param name="linearGeom">A linear geometry.</param>
-        /// <returns><c>true</c> if this location is valid.</returns>
+        /// <returns><see langword="true"/> if this location is valid.</returns>
         public Boolean IsValid(IGeometry linearGeom)
         {
             if (componentIndex < 0 || componentIndex >= linearGeom.NumGeometries)

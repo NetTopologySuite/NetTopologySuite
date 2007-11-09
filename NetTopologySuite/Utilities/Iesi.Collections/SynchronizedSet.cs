@@ -34,7 +34,7 @@ namespace Iesi_NTS.Collections
         /// Adds the specified element to this set if it is not already present.
         /// </summary>
         /// <param name="o">The object to add to the set.</param>
-        /// <returns><c>true</c> is the object was added, <c>false</c> if it was already present.</returns>
+        /// <returns><see langword="true"/> is the object was added, <c>false</c> if it was already present.</returns>
         public override sealed Boolean Add(object o)
         {
             lock (mSyncRoot)
@@ -47,7 +47,7 @@ namespace Iesi_NTS.Collections
         /// Adds all the elements in the specified collection to the set if they are not already present.
         /// </summary>
         /// <param name="c">A collection of objects to add to the set.</param>
-        /// <returns><c>true</c> is the set changed as a result of this operation, <c>false</c> if not.</returns>
+        /// <returns><see langword="true"/> is the set changed as a result of this operation, <c>false</c> if not.</returns>
         public override sealed Boolean AddAll(ICollection c)
         {
             Set temp;
@@ -74,10 +74,10 @@ namespace Iesi_NTS.Collections
         }
 
         /// <summary>
-        /// Returns <c>true</c> if this set contains the specified element.
+        /// Returns <see langword="true"/> if this set contains the specified element.
         /// </summary>
         /// <param name="o">The element to look for.</param>
-        /// <returns><c>true</c> if this set contains the specified element, <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if this set contains the specified element, <c>false</c> otherwise.</returns>
         public override sealed Boolean Contains(object o)
         {
             lock (mSyncRoot)
@@ -87,10 +87,10 @@ namespace Iesi_NTS.Collections
         }
 
         /// <summary>
-        /// Returns <c>true</c> if the set contains all the elements in the specified collection.
+        /// Returns <see langword="true"/> if the set contains all the elements in the specified collection.
         /// </summary>
         /// <param name="c">A collection of objects.</param>
-        /// <returns><c>true</c> if the set contains all the elements in the specified collection, <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if the set contains all the elements in the specified collection, <c>false</c> otherwise.</returns>
         public override sealed Boolean ContainsAll(ICollection c)
         {
             Set temp;
@@ -105,7 +105,7 @@ namespace Iesi_NTS.Collections
         }
 
         /// <summary>
-        /// Returns <c>true</c> if this set contains no elements.
+        /// Returns <see langword="true"/> if this set contains no elements.
         /// </summary>
         public override sealed Boolean IsEmpty
         {
@@ -123,7 +123,7 @@ namespace Iesi_NTS.Collections
         /// Removes the specified element from the set.
         /// </summary>
         /// <param name="o">The element to be removed.</param>
-        /// <returns><c>true</c> if the set contained the specified element, <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if the set contained the specified element, <c>false</c> otherwise.</returns>
         public override sealed Boolean Remove(object o)
         {
             lock (mSyncRoot)
@@ -136,7 +136,7 @@ namespace Iesi_NTS.Collections
         /// Remove all the specified elements from this set, if they exist in this set.
         /// </summary>
         /// <param name="c">A collection of elements to remove.</param>
-        /// <returns><c>true</c> if the set was modified as a result of this operation.</returns>
+        /// <returns><see langword="true"/> if the set was modified as a result of this operation.</returns>
         public override sealed Boolean RemoveAll(ICollection c)
         {
             Set temp;
@@ -154,7 +154,7 @@ namespace Iesi_NTS.Collections
         /// Retains only the elements in this set that are contained in the specified collection.
         /// </summary>
         /// <param name="c">Collection that defines the set of elements to be retained.</param>
-        /// <returns><c>true</c> if this set changed as a result of this operation.</returns>
+        /// <returns><see langword="true"/> if this set changed as a result of this operation.</returns>
         public override sealed Boolean RetainAll(ICollection c)
         {
             Set temp;
@@ -197,7 +197,7 @@ namespace Iesi_NTS.Collections
         }
 
         /// <summary>
-        /// Returns <c>true</c>, indicating that this object is thread-safe.  The exception to this
+        /// Returns <see langword="true"/>, indicating that this object is thread-safe.  The exception to this
         /// is enumeration, which is inherently not thread-safe.  Use the <c>SyncRoot</c> object to
         /// lock this object for the entire duration of the enumeration.
         /// </summary>

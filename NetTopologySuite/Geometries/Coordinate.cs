@@ -5,7 +5,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// <summary>
     /// A lightweight class used to store coordinates
     /// on the 2-dimensional Cartesian plane.
-    /// It is distinct from <c>Point</c>, which is a subclass of <c>Geometry</c>.
+    /// It is distinct from <c>Point</c>, which is a subclass of <see cref="Geometry{TCoordinate}"/>.
     /// Unlike objects of type <c>Point</c> (which contain additional
     /// information such as an envelope, a precision model, and spatial reference
     /// system information), a <c>Coordinate</c> only contains ordinate values

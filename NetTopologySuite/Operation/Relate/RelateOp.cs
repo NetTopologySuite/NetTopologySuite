@@ -11,7 +11,7 @@ using GisSharpBlog.NetTopologySuite.Operation;
 namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 {
     /// <summary>
-    /// Implements the <c>Relate()</c> operation on <c>Geometry</c>s.
+    /// Implements the <c>Relate()</c> operation on <see cref="Geometry{TCoordinate}"/>s.
     /// </summary>
     public class RelateOp : GeometryGraphOperation
     {

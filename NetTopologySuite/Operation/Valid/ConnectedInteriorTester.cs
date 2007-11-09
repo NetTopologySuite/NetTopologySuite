@@ -9,7 +9,7 @@ using GisSharpBlog.NetTopologySuite.Utilities;
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 {
     /// <summary> 
-    /// This class tests that the interior of an area <see cref="Geometry" />
+    /// This class tests that the interior of an area <see cref="Geometry{TCoordinate}" />
     /// (<see cref="Polygon" /> or <see cref="MultiPolygon" />)
     /// is connected.  An area Geometry is invalid if the interior is disconnected.
     /// This can happen if:
@@ -181,7 +181,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// since the interior of holes will also be polygonized into CW rings
         /// by the <c>LinkAllDirectedEdges()</c> step).
         /// </summary>
-        /// <returns><c>true</c> if there is an unvisited edge in a non-hole ring.</returns>
+        /// <returns><see langword="true"/> if there is an unvisited edge in a non-hole ring.</returns>
         private Boolean HasUnvisitedShellEdge(IList edgeRings)
         {
             for (Int32 i = 0; i < edgeRings.Count; i++)

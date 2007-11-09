@@ -1,34 +1,34 @@
 using System;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Precision
 {
     /// <summary>
-    /// Reduces the precision of a <c>Geometry</c>
-    /// according to the supplied {PrecisionModel}, without
+    /// Reduces the precision of a <see cref="Geometry{TCoordinate}"/>
+    /// according to the supplied <see cref="IPrecisionModel"/>, without
     /// attempting to preserve valid topology.
+    /// </summary>
+    /// <remarks>
     /// The topology of the resulting point may be invalid if
     /// topological collapse occurs due to coordinates being shifted.
     /// It is up to the client to check this and handle it if necessary.
     /// Collapses may not matter for some uses. An example
     /// is simplifying the input to the buffer algorithm.
     /// The buffer algorithm does not depend on the validity of the input point.
-    /// </summary>
-    public class SimpleGeometryPrecisionReducer
+    /// </remarks>
+    public class SimpleGeometryPrecisionReducer<TCoordinate>
     {
-        private PrecisionModel newPrecisionModel = null;
-        private Boolean removeCollapsed = true;
-        private Boolean changePrecisionModel = false;
+        private IPrecisionModel _newPrecisionModel = null;
+        private Boolean _removeCollapsed = true;
+        private Boolean _changePrecisionModel = false;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pm"></param>
-        public SimpleGeometryPrecisionReducer(PrecisionModel pm)
+        public SimpleGeometryPrecisionReducer(IPrecisionModel pm)
         {
-            newPrecisionModel = pm;
+            _newPrecisionModel = pm;
         }
 
         /// <summary>
@@ -38,8 +38,8 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// </summary>
         public Boolean RemoveCollapsedComponents
         {
-            get { return removeCollapsed; }
-            set { removeCollapsed = value; }
+            get { return _removeCollapsed; }
+            set { _removeCollapsed = value; }
         }
 
         /// <summary>
@@ -50,54 +50,42 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// </summary>
         public Boolean ChangePrecisionModel
         {
-            get { return changePrecisionModel; }
-            set { changePrecisionModel = value; }
+            get { return _changePrecisionModel; }
+            set { _changePrecisionModel = value; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geom"></param>
-        /// <returns></returns>
         public IGeometry Reduce(IGeometry geom)
         {
-            GeometryEditor geomEdit;
-            if (changePrecisionModel)
+            GeometryEditor<TCoordinate> geometryEditor;
+
+            if (_changePrecisionModel)
             {
-                GeometryFactory newFactory = new GeometryFactory(newPrecisionModel);
-                geomEdit = new GeometryEditor(newFactory);
+                GeometryFactory<TCoordinate> newFactory 
+                    = new GeometryFactory<TCoordinate>(_newPrecisionModel);
+
+                geometryEditor = new GeometryEditor<TCoordinate>(newFactory);
             }
             else
             {
                 // don't change point factory
-                geomEdit = new GeometryEditor();
+                geometryEditor = new GeometryEditor();
             }
-            return geomEdit.Edit(geom, new PrecisionReducerCoordinateOperation(this));
+
+            return geometryEditor.Edit(geom, new PrecisionReducerCoordinateOperation<TCoordinate>(this));
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private class PrecisionReducerCoordinateOperation : GeometryEditor.CoordinateOperation
+        private class PrecisionReducerCoordinateOperation<TCoordinate> : GeometryEditor<TCoordinate>.CoordinateOperation
+            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
+                                IComputable<TCoordinate>, IConvertible
         {
-            private SimpleGeometryPrecisionReducer container = null;
+            private SimpleGeometryPrecisionReducer<TCoordinate> _container = null;
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="container"></param>
-            public PrecisionReducerCoordinateOperation(SimpleGeometryPrecisionReducer container)
+            public PrecisionReducerCoordinateOperation(SimpleGeometryPrecisionReducer<TCoordinate> container)
             {
-                this.container = container;
+                _container = container;
             }
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="coordinates"></param>
-            /// <param name="geom"></param>
-            /// <returns></returns>
-            public override ICoordinate[] Edit(ICoordinate[] coordinates, IGeometry geom)
+            public override TCoordinate[] Edit(TCoordinate[] coordinates, IGeometry geom)
             {
                 if (coordinates.Length == 0)
                 {
@@ -109,7 +97,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
                 for (Int32 i = 0; i < coordinates.Length; i++)
                 {
                     ICoordinate coord = new Coordinate(coordinates[i]);
-                    container.newPrecisionModel.MakePrecise(coord);
+                    _container._newPrecisionModel.MakePrecise(coord);
                     reducedCoords[i] = coord;
                 }
 
@@ -138,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
                 }
 
                 ICoordinate[] collapsedCoords = reducedCoords;
-                if (container.removeCollapsed)
+                if (_container._removeCollapsed)
                 {
                     collapsedCoords = null;
                 }

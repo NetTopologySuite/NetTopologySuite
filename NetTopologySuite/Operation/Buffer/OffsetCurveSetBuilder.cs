@@ -9,7 +9,7 @@ using GisSharpBlog.NetTopologySuite.Noding;
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 {
     /// <summary>
-    /// Creates all the raw offset curves for a buffer of a <c>Geometry</c>.
+    /// Creates all the raw offset curves for a buffer of a <see cref="Geometry{TCoordinate}"/>.
     /// Raw curves need to be noded together and polygonized to form the final buffer area.
     /// </summary>
     public class OffsetCurveSetBuilder

@@ -127,8 +127,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// VisitedEdge get property returns <c>true</c> if bot Visited 
-        /// and Sym.Visited are <c>true</c>.
+        /// VisitedEdge get property returns <see langword="true"/> if bot Visited 
+        /// and Sym.Visited are <see langword="true"/>.
         /// VisitedEdge set property marks both DirectedEdges attached to a given Edge.
         /// This is used for edges corresponding to lines, which will only
         /// appear oriented in a single direction in the result.
@@ -189,7 +189,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// its label is an Area label for both Geometries
         /// and for each Geometry both sides are in the interior.
         /// </summary>
-        /// <returns><c>true</c> if this is an interior Area edge.</returns>
+        /// <returns><see langword="true"/> if this is an interior Area edge.</returns>
         public Boolean IsInteriorAreaEdge
         {
             get

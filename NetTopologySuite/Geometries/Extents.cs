@@ -1,11 +1,13 @@
 using System;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>
     /// Defines a rectangular region of the 2D coordinate plane.
-    /// It is often used to represent the bounding box of a <c>Geometry</c>,
+    /// It is often used to represent the bounding box of a <see cref="Geometry{TCoordinate}"/>,
     /// e.g. the minimum and maximum x and y values of the <c>Coordinate</c>s.
     /// Note that Envelopes support infinite or half-infinite regions, by using the values of
     /// <c>Double.PositiveInfinity</c> and <c>Double.NegativeInfinity</c>.
@@ -13,7 +15,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// the supplies extent values are automatically sorted into the correct order.    
     /// </summary>
     [Serializable]
-    public class Extents : IExtents
+    public class Extents<TCoordinate> : IExtents<TCoordinate>
+            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                IComputable<TCoordinate>, IConvertible
     {
         /// <summary>
         /// Test the point q to see whether it intersects the Envelope
@@ -22,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="p1">One extremal point of the envelope.</param>
         /// <param name="p2">Another extremal point of the envelope.</param>
         /// <param name="q">Point to test for intersection.</param>
-        /// <returns><c>true</c> if q intersects the envelope p1-p2.</returns>
+        /// <returns><see langword="true"/> if q intersects the envelope p1-p2.</returns>
         public static Boolean Intersects(ICoordinate p1, ICoordinate p2, ICoordinate q)
         {
             if (((q.X >= (p1.X < p2.X ? p1.X : p2.X)) && (q.X <= (p1.X > p2.X ? p1.X : p2.X))) &&
@@ -42,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="p2">Another extremal point of the envelope Point.</param>
         /// <param name="q1">One extremal point of the envelope Q.</param>
         /// <param name="q2">Another extremal point of the envelope Q.</param>
-        /// <returns><c>true</c> if Q intersects Point</returns>
+        /// <returns><see langword="true"/> if Q intersects Point</returns>
         public static Boolean Intersects(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2)
         {
             Double minq = Math.Min(q1.X, q2.X);
@@ -99,7 +103,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         private Double maxy;
 
         /// <summary>
-        /// Creates a null <c>Envelope</c>.
+        /// Creates a null <see cref="Extents{TCoordinate}"/>.
         /// </summary>
         public Extents()
         {
@@ -107,7 +111,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Creates an <c>Envelope</c> for a region defined by maximum and minimum values.
+        /// Creates an <see cref="Extents{TCoordinate}"/> for a region defined by maximum and minimum values.
         /// </summary>
         /// <param name="x1">The first x-value.</param>
         /// <param name="x2">The second x-value.</param>
@@ -119,43 +123,43 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Creates an <c>Envelope</c> for a region defined by two Coordinates.
+        /// Creates an <see cref="Extents{TCoordinate}"/> for a region defined by two Coordinates.
         /// </summary>
         /// <param name="p1">The first Coordinate.</param>
         /// <param name="p2">The second Coordinate.</param>
-        public Extents(ICoordinate p1, ICoordinate p2)
+        public Extents(TCoordinate p1, TCoordinate p2)
         {
             Init(p1, p2);
         }
 
         /// <summary>
-        /// Creates an <c>Envelope</c> for a region defined by a single Coordinate.
+        /// Creates an <see cref="Extents{TCoordinate}"/> for a region defined by a single Coordinate.
         /// </summary>
         /// <param name="p">The Coordinate.</param>
-        public Extents(ICoordinate p)
+        public Extents(TCoordinate p)
         {
             Init(p);
         }
 
         /// <summary>
-        /// Create an <c>Envelope</c> from an existing Envelope.
+        /// Create an <see cref="Extents{TCoordinate}"/> from an existing Envelope.
         /// </summary>
         /// <param name="env">The Envelope to initialize from.</param>
-        public Extents(IExtents env)
+        public Extents(IExtents<TCoordinate> env)
         {
             Init(env);
         }
 
         /// <summary>
-        /// Initialize to a null <c>Envelope</c>.
+        /// Initialize to a null <see cref="Extents{TCoordinate}"/>.
         /// </summary>
         public void Init()
         {
-            SetToNull();
+            SetToEmpty();
         }
 
         /// <summary>
-        /// Initialize an <c>Envelope</c> for a region defined by maximum and minimum values.
+        /// Initialize an <see cref="Extents{TCoordinate}"/> for a region defined by maximum and minimum values.
         /// </summary>
         /// <param name="x1">The first x-value.</param>
         /// <param name="x2">The second x-value.</param>
@@ -187,7 +191,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Initialize an <c>Envelope</c> for a region defined by two Coordinates.
+        /// Initialize an <see cref="Extents{TCoordinate}"/> for a region defined by two Coordinates.
         /// </summary>
         /// <param name="p1">The first Coordinate.</param>
         /// <param name="p2">The second Coordinate.</param>
@@ -197,7 +201,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Initialize an <c>Envelope</c> for a region defined by a single Coordinate.
+        /// Initialize an <see cref="Extents{TCoordinate}"/> for a region defined by a single Coordinate.
         /// </summary>
         /// <param name="p">The Coordinate.</param>
         public void Init(ICoordinate p)
@@ -206,7 +210,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Initialize an <c>Envelope</c> from an existing Envelope.
+        /// Initialize an <see cref="Extents{TCoordinate}"/> from an existing Envelope.
         /// </summary>
         /// <param name="env">The Envelope to initialize from.</param>
         public void Init(IExtents env)
@@ -218,9 +222,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Makes this <c>Envelope</c> a "null" envelope..
+        /// Makes this <see cref="Extents{TCoordinate}"/> a "null" envelope..
         /// </summary>
-        public void SetToNull()
+        public void SetToEmpty()
         {
             minx = 0;
             maxx = -1;
@@ -229,10 +233,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if this <c>Envelope</c> is a "null" envelope.
+        /// Returns <see langword="true"/> if this <see cref="Extents{TCoordinate}"/> 
+        /// is an empty envelope.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if this <c>Envelope</c> is uninitialized
+        /// <see langword="true"/> if this <see cref="Extents{TCoordinate}"/> is uninitialized
         /// or is the envelope of the empty point.
         /// </returns>
         public Boolean IsNull
@@ -243,7 +248,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Returns the difference between the maximum and minimum x values.
         /// </summary>
-        /// <returns>max x - min x, or 0 if this is a null <c>Envelope</c>.</returns>
+        /// <returns>max x - min x, or 0 if this is a null <see cref="Extents{TCoordinate}"/>.</returns>
         public Double Width
         {
             get
@@ -260,7 +265,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Returns the difference between the maximum and minimum y values.
         /// </summary>
-        /// <returns>max y - min y, or 0 if this is a null <c>Envelope</c>.</returns>
+        /// <returns>max y - min y, or 0 if this is a null <see cref="Extents{TCoordinate}"/>.</returns>
         public Double Height
         {
             get
@@ -275,8 +280,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns the <c>Envelope</c>s minimum x-value. min x > max x
-        /// indicates that this is a null <c>Envelope</c>.
+        /// Returns the <see cref="Extents{TCoordinate}"/>s minimum x-value. min x > max x
+        /// indicates that this is a null <see cref="Extents{TCoordinate}"/>.
         /// </summary>
         /// <returns>The minimum x-coordinate.</returns>
         public Double MinX
@@ -285,8 +290,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns the <c>Envelope</c>s maximum x-value. min x > max x
-        /// indicates that this is a null <c>Envelope</c>.
+        /// Returns the <see cref="Extents{TCoordinate}"/>s maximum x-value. min x > max x
+        /// indicates that this is a null <see cref="Extents{TCoordinate}"/>.
         /// </summary>
         /// <returns>The maximum x-coordinate.</returns>
         public Double MaxX
@@ -295,8 +300,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns the <c>Envelope</c>s minimum y-value. min y > max y
-        /// indicates that this is a null <c>Envelope</c>.
+        /// Returns the <see cref="Extents{TCoordinate}"/>s minimum y-value. min y > max y
+        /// indicates that this is a null <see cref="Extents{TCoordinate}"/>.
         /// </summary>
         /// <returns>The minimum y-coordinate.</returns>
         public Double MinY
@@ -305,8 +310,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns the <c>Envelope</c>s maximum y-value. min y > max y
-        /// indicates that this is a null <c>Envelope</c>.
+        /// Returns the <see cref="Extents{TCoordinate}"/>s maximum y-value. min y > max y
+        /// indicates that this is a null <see cref="Extents{TCoordinate}"/>.
         /// </summary>
         /// <returns>The maximum y-coordinate.</returns>
         public Double MaxY
@@ -345,12 +350,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             // check for envelope disappearing
             if (minx > maxx || miny > maxy)
             {
-                SetToNull();
+                SetToEmpty();
             }
         }
 
         /// <summary>
-        /// Enlarges the boundary of the <c>Envelope</c> so that it contains (p).
+        /// Enlarges the boundary of the <see cref="Extents{TCoordinate}"/> so that it contains (p).
         /// Does nothing if (p) is already on or within the boundaries.
         /// </summary>
         /// <param name="p">The Coordinate.</param>
@@ -360,7 +365,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Enlarges the boundary of the <c>Envelope</c> so that it contains
+        /// Enlarges the boundary of the <see cref="Extents{TCoordinate}"/> so that it contains
         /// (x,y). Does nothing if (x,y) is already on or within the boundaries.
         /// </summary>
         /// <param name="x">The value to lower the minimum x to or to raise the maximum x to.</param>
@@ -399,11 +404,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Enlarges the boundary of the <c>Envelope</c> so that it contains
+        /// Enlarges the boundary of the <see cref="Extents{TCoordinate}"/> so that it contains
         /// <c>other</c>. Does nothing if <c>other</c> is wholly on or
         /// within the boundaries.
         /// </summary>
-        /// <param name="other">the <c>Envelope</c> to merge with.</param>        
+        /// <param name="other">the <see cref="Extents{TCoordinate}"/> to merge with.</param>        
         public void ExpandToInclude(IExtents other)
         {
             if (other.IsNull)
@@ -462,7 +467,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <returns>
         /// The centre coordinate of this envelope, 
-        /// or <c>null</c> if the envelope is null.
+        /// or <see langword="null" /> if the envelope is null.
         /// </returns>.
         public ICoordinate Centre
         {
@@ -497,13 +502,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /// <summary> 
         /// Check if the region defined by <c>other</c>
-        /// overlaps (intersects) the region of this <c>Envelope</c>.
+        /// overlaps (intersects) the region of this <see cref="Extents{TCoordinate}"/>.
         /// </summary>
-        /// <param name="other"> the <c>Envelope</c> which this <c>Envelope</c> is
+        /// <param name="other"> the <see cref="Extents{TCoordinate}"/> which this <see cref="Extents{TCoordinate}"/> is
         /// being checked for overlapping.
         /// </param>
         /// <returns>        
-        /// <c>true</c> if the <c>Envelope</c>s overlap.
+        /// <see langword="true"/> if the <see cref="Extents{TCoordinate}"/>s overlap.
         /// </returns>
         public Boolean Intersects(IExtents other)
         {
@@ -552,34 +557,34 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Check if the point <c>p</c> overlaps (lies inside) the region of this <c>Envelope</c>.
+        /// Check if the point <c>p</c> overlaps (lies inside) the region of this <see cref="Extents{TCoordinate}"/>.
         /// </summary>
         /// <param name="p"> the <c>Coordinate</c> to be tested.</param>
-        /// <returns><c>true</c> if the point overlaps this <c>Envelope</c>.</returns>
+        /// <returns><see langword="true"/> if the point overlaps this <see cref="Extents{TCoordinate}"/>.</returns>
         public Boolean Intersects(ICoordinate p)
         {
             return Intersects(p.X, p.Y);
         }
 
         /// <summary>  
-        /// Check if the point <c>(x, y)</c> overlaps (lies inside) the region of this <c>Envelope</c>.
+        /// Check if the point <c>(x, y)</c> overlaps (lies inside) the region of this <see cref="Extents{TCoordinate}"/>.
         /// </summary>
         /// <param name="x"> the x-ordinate of the point.</param>
         /// <param name="y"> the y-ordinate of the point.</param>
-        /// <returns><c>true</c> if the point overlaps this <c>Envelope</c>.</returns>
+        /// <returns><see langword="true"/> if the point overlaps this <see cref="Extents{TCoordinate}"/>.</returns>
         public Boolean Intersects(Double x, Double y)
         {
             return !(x > maxx || x < minx || y > maxy || y < miny);
         }
 
         /// <summary>  
-        /// Returns <c>true</c> if the given point lies in or on the envelope.
+        /// Returns <see langword="true"/> if the given point lies in or on the envelope.
         /// </summary>
-        /// <param name="p"> the point which this <c>Envelope</c> is
+        /// <param name="p"> the point which this <see cref="Extents{TCoordinate}"/> is
         /// being checked for containing.</param>
         /// <returns>    
-        /// <c>true</c> if the point lies in the interior or
-        /// on the boundary of this <c>Envelope</c>.
+        /// <see langword="true"/> if the point lies in the interior or
+        /// on the boundary of this <see cref="Extents{TCoordinate}"/>.
         /// </returns>                
         public Boolean Contains(ICoordinate p)
         {
@@ -587,25 +592,25 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Returns <c>true</c> if the given point lies in or on the envelope.
+        /// Returns <see langword="true"/> if the given point lies in or on the envelope.
         /// </summary>
-        /// <param name="x"> the x-coordinate of the point which this <c>Envelope</c> is
+        /// <param name="x"> the x-coordinate of the point which this <see cref="Extents{TCoordinate}"/> is
         /// being checked for containing.</param>
-        /// <param name="y"> the y-coordinate of the point which this <c>Envelope</c> is
+        /// <param name="y"> the y-coordinate of the point which this <see cref="Extents{TCoordinate}"/> is
         /// being checked for containing.</param>
-        /// <returns><c>true</c> if <c>(x, y)</c> lies in the interior or
-        /// on the boundary of this <c>Envelope</c>.</returns>
+        /// <returns><see langword="true"/> if <c>(x, y)</c> lies in the interior or
+        /// on the boundary of this <see cref="Extents{TCoordinate}"/>.</returns>
         public Boolean Contains(Double x, Double y)
         {
             return x >= minx && x <= maxx && y >= miny && y <= maxy;
         }
 
         /// <summary>  
-        /// Returns <c>true</c> if the <c>Envelope other</c>
-        /// lies wholely inside this <c>Envelope</c> (inclusive of the boundary).
+        /// Returns <see langword="true"/> if the <c>Envelope other</c>
+        /// lies wholely inside this <see cref="Extents{TCoordinate}"/> (inclusive of the boundary).
         /// </summary>
-        /// <param name="other"> the <c>Envelope</c> which this <c>Envelope</c> is being checked for containing.</param>
-        /// <returns><c>true</c> if <c>other</c> is contained in this <c>Envelope</c>.</returns>
+        /// <param name="other"> the <see cref="Extents{TCoordinate}"/> which this <see cref="Extents{TCoordinate}"/> is being checked for containing.</param>
+        /// <returns><see langword="true"/> if <c>other</c> is contained in this <see cref="Extents{TCoordinate}"/>.</returns>
         public Boolean Contains(IExtents other)
         {
             if (IsNull || other.IsNull)
@@ -619,11 +624,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /// <summary> 
         /// Computes the distance between this and another
-        /// <c>Envelope</c>.
+        /// <see cref="Extents{TCoordinate}"/>.
         /// The distance between overlapping Envelopes is 0.  Otherwise, the
         /// distance is the Euclidean distance between the closest points.
         /// </summary>
-        /// <returns>The distance between this and another <c>Envelope</c>.</returns>
+        /// <returns>The distance between this and another <see cref="Extents{TCoordinate}"/>.</returns>
         public Double Distance(IExtents env)
         {
             if (Intersects(env))

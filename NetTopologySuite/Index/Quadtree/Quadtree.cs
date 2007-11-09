@@ -134,7 +134,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="itemEnv">The Envelope of the item to remove.</param>
         /// <param name="item">The item to remove.</param>
-        /// <returns><c>true</c> if the item was found.</returns>
+        /// <returns><see langword="true"/> if the item was found.</returns>
         public Boolean Remove(IExtents itemEnv, object item)
         {
             IExtents posEnv = EnsureExtent(itemEnv, minExtent);

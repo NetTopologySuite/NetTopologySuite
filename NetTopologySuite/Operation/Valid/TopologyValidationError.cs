@@ -5,7 +5,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 {
     /// <summary>
     /// Contains information about the nature and location of 
-    /// a <see cref="Geometry" /> validation error.
+    /// a <see cref="Geometry{TCoordinate}" /> validation error.
     /// </summary>
     public enum TopologyValidationErrors
     {
@@ -83,7 +83,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     }
 
     /// <summary>
-    /// Contains information about the nature and location of a <c>Geometry</c>
+    /// Contains information about the nature and location of a <see cref="Geometry{TCoordinate}"/>
     /// validation error.
     /// </summary>
     public class TopologyValidationError

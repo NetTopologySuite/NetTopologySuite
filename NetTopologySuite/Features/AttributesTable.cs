@@ -4,7 +4,7 @@ using System.Collections;
 namespace GisSharpBlog.NetTopologySuite.Features
 {
     /// <summary>
-    /// Stores all attributes associated with a single <c>Geometry</c> feature.
+    /// Stores all attributes associated with a single <see cref="Geometry{TCoordinate}"/> feature.
     /// </summary>
     [Serializable]
     public class AttributesTable : IAttributesTable

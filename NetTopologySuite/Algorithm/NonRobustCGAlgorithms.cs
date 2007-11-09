@@ -59,7 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="ring">an array of coordinates forming a ring.</param>
         /// <returns>
-        /// <c>true</c> if the ring is oriented counter-clockwise.
+        /// <see langword="true"/> if the ring is oriented counter-clockwise.
         /// throws <c>ArgumentException</c> if the ring is degenerate (does not contain 3 different points)
         /// </returns>
         public static Boolean IsCCW(ICoordinate[] ring)

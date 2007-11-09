@@ -5,7 +5,7 @@ using GisSharpBlog.NetTopologySuite.Geometries;
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 {
     /// <summary>
-    /// Supports linear referencing along a linear <see cref="Geometry" />
+    /// Supports linear referencing along a linear <see cref="Geometry{TCoordinate}" />
     /// using the length along the line as the index.
     /// Negative length values are taken as measured in the reverse direction
     /// from the end of the geometry.
@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         private IGeometry linearGeom = null;
 
         /// <summary>
-        /// Constructs an object which allows a linear <see cref="Geometry" />
+        /// Constructs an object which allows a linear <see cref="Geometry{TCoordinate}" />
         /// to be linearly referenced using length as an index.
         /// </summary>
         /// <param name="linearGeom">The linear geometry to reference along.</param>
@@ -156,7 +156,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Tests whether an index is in the valid index range for the line.
         /// </summary>
         /// <param name="index">The index to test.</param>
-        /// <returns><c>true</c> if the index is in the valid range.</returns>
+        /// <returns><see langword="true"/> if the index is in the valid range.</returns>
         public Boolean IsValidIndex(Double index)
         {
             return (index >= StartIndex && index <= EndIndex);

@@ -6,7 +6,7 @@ using GisSharpBlog.NetTopologySuite.Utilities;
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 {
     /// <summary>
-    /// Extracts the subline of a linear <see cref="Geometry" /> between
+    /// Extracts the subline of a linear <see cref="Geometry{TCoordinate}" /> between
     /// two <see cref="LinearLocation" />s on the line.
     /// </summary>
     public class ExtractLineByLocation

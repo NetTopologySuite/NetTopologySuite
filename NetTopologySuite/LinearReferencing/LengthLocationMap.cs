@@ -6,7 +6,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 {
     /// <summary>
     /// Computes the <see cref="LinearLocation" /> for a given length
-    /// along a linear <see cref="Geometry" />
+    /// along a linear <see cref="Geometry{TCoordinate}" />
     /// Negative lengths are measured in reverse from end of the linear geometry.
     /// Out-of-range values are clamped.
     /// </summary>
@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     {
         /// <summary>
         /// Computes the <see cref="LinearLocation" /> for a
-        /// given length along a linear <see cref="Geometry" />.
+        /// given length along a linear <see cref="Geometry{TCoordinate}" />.
         /// </summary>
         /// <param name="linearGeom">The linear geometry to use.</param>
         /// <param name="length">The length index of the location.</param>
@@ -27,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
         /// <summary>
         /// Computes the length for a given <see cref="LinearLocation" />
-        /// on a linear <see cref="Geometry" />.
+        /// on a linear <see cref="Geometry{TCoordinate}" />.
         /// </summary>
         /// <param name="linearGeom">The linear geometry to use.</param>
         /// <param name="loc">The <see cref="LinearLocation" /> index of the location.</param>

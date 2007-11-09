@@ -6,7 +6,7 @@ using GisSharpBlog.NetTopologySuite.Geometries;
 namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 {
     /// <summary>
-    /// Helper class for transforming <see cref="Geometry" /> objects.
+    /// Helper class for transforming <see cref="Geometry{TCoordinate}" /> objects.
     /// </summary>
     public class GeometryTransform
     {
@@ -47,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
         }
 
         /// <summary>
-        /// Transforms a <see cref="Geometry" /> object.
+        /// Transforms a <see cref="Geometry{TCoordinate}" /> object.
         /// </summary>
         public static IGeometry TransformGeometry(IGeometry g, IMathTransform transform)
         {
@@ -216,7 +216,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
         }
 
         /// <summary>
-        /// Transforms a <see cref="GeometryCollection" /> object.
+        /// Transforms a <see cref="Geometry{TCoordinate}Collection" /> object.
         /// </summary>
         public static IGeometryCollection TransformGeometryCollection(GeometryCollection geoms, IMathTransform transform)
         {

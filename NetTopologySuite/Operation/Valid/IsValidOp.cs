@@ -10,8 +10,8 @@ using Iesi_NTS.Collections;
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 {
     /// <summary>
-    /// Implements the algorithsm required to compute the <see cref="Geometry.IsValid" />
-    /// method for <see cref="Geometry" />s.
+    /// Implements the algorithsm required to compute the <see cref="Geometry{TCoordinate}.IsValid" />
+    /// method for <see cref="Geometry{TCoordinate}" />s.
     /// See the documentation for the various geometry types for a specification of validity.
     /// </summary>
     public class IsValidOp
@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// range of the floating point representation.
         /// </summary>
         /// <param name="coord">The coordinate to validate.</param>
-        /// <returns><c>true</c> if the coordinate is valid.</returns>
+        /// <returns><see langword="true"/> if the coordinate is valid.</returns>
         public static Boolean IsValidCoordinate(ICoordinate coord)
         {
             if (Double.IsNaN(coord.X))
@@ -48,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// Find a point from the list of testCoords
         /// that is NOT a node in the edge for the list of searchCoords.
         /// </summary>
-        /// <returns>The point found, or <c>null</c> if none found.</returns>
+        /// <returns>The point found, or <see langword="null" /> if none found.</returns>
         public static ICoordinate FindPointNotNode(ICoordinate[] testCoords, ILinearRing searchRing, GeometryGraph graph)
         {
             // find edge corresponding to searchRing.
@@ -632,7 +632,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// properly intersect.
         /// </summary>
         /// <returns>
-        /// <c>null</c> if the shell is properly contained, or
+        /// <see langword="null" /> if the shell is properly contained, or
         /// a Coordinate which is not inside the hole if it is not.
         /// </returns>
         private ICoordinate CheckShellInsideHole(ILinearRing shell, ILinearRing hole, GeometryGraph graph)

@@ -32,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <param name="points">
-        /// The points of the linestring, or <c>null</c>
+        /// The points of the linestring, or <see langword="null" />
         /// to create the empty point. Consecutive points may not be equal.
         /// </param>
         public LineString(ICoordinateSequence points, IGeometryFactory factory) : base(factory)
@@ -200,7 +200,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Returns true if the given point is a vertex of this <c>LineString</c>.
         /// </summary>
         /// <param name="pt">The <c>Coordinate</c> to check.</param>
-        /// <returns><c>true</c> if <c>pt</c> is one of this <c>LineString</c>'s vertices.</returns>
+        /// <returns><see langword="true"/> if <c>pt</c> is one of this <c>LineString</c>'s vertices.</returns>
         public Boolean IsCoordinate(ICoordinate pt)
         {
             for (Int32 i = 0; i < points.Count; i++)
@@ -354,7 +354,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Initializes a new instance of the <see cref="T:LineString"/> class.
         /// </summary>        
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="Geometry{TCoordinate}Factory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         /// <param name="points">The coordinates used for create this <see cref="LineString" />.</param>

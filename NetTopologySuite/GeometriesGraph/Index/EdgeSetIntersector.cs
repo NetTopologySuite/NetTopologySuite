@@ -25,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         /// <param name="edges">A list of edges to test for intersections.</param>
         /// <param name="si">The SegmentIntersector to use.</param>
-        /// <param name="testAllSegments"><c>true</c> if self-intersections are to be tested as well.</param>
+        /// <param name="testAllSegments"><see langword="true"/> if self-intersections are to be tested as well.</param>
         public abstract void ComputeIntersections(IList edges, SegmentIntersector si, Boolean testAllSegments);
 
         /// <summary> 

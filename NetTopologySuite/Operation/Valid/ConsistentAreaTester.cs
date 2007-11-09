@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// Returns the intersection point, or <c>null</c> if none was found.
+        /// Returns the intersection point, or <see langword="null" /> if none was found.
         /// </summary>        
         public ICoordinate InvalidPoint
         {
@@ -96,7 +96,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// (This is because topologically consistent areas cannot have two rings sharing
         /// the same line segment, unless the rings are equal).
         /// The start point of one of the equal rings will be placed in invalidPoint.
-        /// Returns <c>true</c> if this area Geometry is topologically consistent but has two duplicate rings.
+        /// Returns <see langword="true"/> if this area Geometry is topologically consistent but has two duplicate rings.
         /// </summary>
         public Boolean HasDuplicateRings
         {

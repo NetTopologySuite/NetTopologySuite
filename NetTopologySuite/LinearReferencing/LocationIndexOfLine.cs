@@ -7,7 +7,7 @@ using GisSharpBlog.NetTopologySuite.Geometries;
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 {
     /// <summary>
-    /// Determines the location of a subline along a linear <see cref="Geometry" />.
+    /// Determines the location of a subline along a linear <see cref="Geometry{TCoordinate}" />.
     /// The location is reported as a pair of <see cref="LinearLocation" />s.
     /// NOTE: Currently this algorithm is not guaranteed to
     /// return the correct substring in some situations where

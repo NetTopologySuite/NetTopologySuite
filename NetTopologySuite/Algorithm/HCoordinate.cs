@@ -1,12 +1,15 @@
 using System;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using GeoAPI.Coordinates;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     /// <summary> 
     /// Represents a homogeneous coordinate for 2-D coordinates.
     /// </summary>
-    public class HCoordinate
+    public class HCoordinate<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
         /// <summary> 
         /// Computes the (approximate) intersection point between two line segments
@@ -17,12 +20,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// to increase the precision of the calculation input points should be normalized
         /// before passing them to this routine.
         /// </summary>
-        public static ICoordinate Intersection(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2)
+        public static TCoordinate Intersection(TCoordinate p1, TCoordinate p2, TCoordinate q1, TCoordinate q2)
         {
-            HCoordinate l1 = new HCoordinate(new HCoordinate(p1), new HCoordinate(p2));
-            HCoordinate l2 = new HCoordinate(new HCoordinate(q1), new HCoordinate(q2));
-            HCoordinate intHCoord = new HCoordinate(l1, l2);
-            ICoordinate intPt = intHCoord.Coordinate;
+            HCoordinate<TCoordinate> l1 = new HCoordinate<TCoordinate>(new HCoordinate<TCoordinate>(p1), new HCoordinate<TCoordinate>(p2));
+            HCoordinate<TCoordinate> l2 = new HCoordinate<TCoordinate>(new HCoordinate<TCoordinate>(q1), new HCoordinate<TCoordinate>(q2));
+            HCoordinate<TCoordinate> intHCoord = new HCoordinate<TCoordinate>(l1, l2);
+            TCoordinate intPt = intHCoord.Coordinate;
             return intPt;
         }
 
@@ -74,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             this.w = w;
         }
 
-        public HCoordinate(ICoordinate p)
+        public HCoordinate(TCoordinate p)
         {
             x = p.X;
             y = p.Y;
@@ -108,7 +111,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return a;
         }
 
-        public ICoordinate Coordinate
+        public TCoordinate Coordinate
         {
             get { return new Coordinate(GetX(), GetY()); }
         }

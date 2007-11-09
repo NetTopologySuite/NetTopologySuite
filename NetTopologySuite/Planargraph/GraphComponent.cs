@@ -5,16 +5,27 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
 {
     /// <summary>
     /// The base class for all graph component classes.
+    /// </summary>
+    /// <remarks>
     /// Maintains flags of use in generic graph algorithms.
     /// Provides two flags:
-    /// marked - typically this is used to indicate a state that persists
+    /// <list type="table">
+    /// <item>
+    /// <term>Marked</term>
+    /// <description>
+    /// Typically this is used to indicate a state that persists
     /// for the course of the graph's lifetime.  For instance, it can be
     /// used to indicate that a component has been logically deleted from the graph.
-    /// visited - this is used to indicate that a component has been processed
+    /// </description>
+    /// <term>Visited</term>
+    /// <description>
+    /// This is used to indicate that a component has been processed
     /// or visited by an single graph algorithm.  For instance, a breadth-first traversal of the
     /// graph might use this to indicate that a node has already been traversed.
     /// The visited flag may be set and cleared many times during the lifetime of a graph.
-    /// </summary>
+    /// </description>
+    /// </list>
+    /// </remarks>
     public abstract class GraphComponent
     {
         #region Static
@@ -56,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="i">A <see cref="IEnumerator" /> to scan.</param>
         /// <param name="visitedState">The <see cref="GraphComponent.Visited" /> state to test.</param>
-        /// <returns>The first <see cref="GraphComponent" /> found, or <c>null</c> if none found.</returns>
+        /// <returns>The first <see cref="GraphComponent" /> found, or <see langword="null" /> if none found.</returns>
         public static GraphComponent GetComponentWithVisitedState(IEnumerator i, Boolean visitedState)
         {
             while (i.MoveNext())
@@ -70,13 +81,8 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         
         #endregion
 
-        protected Boolean isMarked = false;
-        protected Boolean isVisited = false;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GraphComponent"/> class.
-        /// </summary>
-        public GraphComponent() { }
+        protected Boolean _isMarked = false;
+        protected Boolean _isVisited = false;
 
         /// <summary>
         /// Tests if a component has been visited during the course of a graph algorithm.
@@ -96,11 +102,11 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         {
             get
             {
-                return isVisited;
+                return _isVisited;
             }
             set
             {
-                isVisited = value;
+                _isVisited = value;
             }
         }
 
@@ -123,11 +129,11 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         {
             get
             {
-                return isMarked;
+                return _isMarked;
             }
             set
             {
-                isMarked = value;
+                _isMarked = value;
             }
         }
 

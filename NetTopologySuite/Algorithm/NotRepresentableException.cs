@@ -1,15 +1,13 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public class NotRepresentableException : ApplicationException
+    [Serializable]
+    public class NotRepresentableException : Exception
     {
-        /// <summary>
-        /// 
-        /// </summary>
         public NotRepresentableException() : base("Projective point not representable on the Cartesian plane.") { }
+        protected NotRepresentableException(SerializationInfo info, StreamingContext context)
+            : base(info, context) { }
     }
 }

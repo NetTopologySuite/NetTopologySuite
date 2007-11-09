@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="pts">An array of <see cref="Coordinate" />s to test the input points against.</param>
         /// <returns>
         /// A <see cref="Coordinate" /> from <paramref name="testPts" /> 
-        /// which is not in <paramref name="pts" />, or <c>null</c>.
+        /// which is not in <paramref name="pts" />, or <see langword="null" />.
         /// </returns>
         public static ICoordinate PointNotInList(ICoordinate[] testPts, ICoordinate[] pts)
         {
@@ -245,12 +245,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if the two arrays are identical, both <c>null</c>, or pointwise
+        /// Returns <see langword="true"/> if the two arrays are identical, both <see langword="null" />, or pointwise
         /// equal (as compared using Coordinate.Equals).
         /// </summary>
         /// <param name="coord1">First array of Coordinates.</param>
         /// <param name="coord2">Second array of Coordinates.</param>
-        /// <returns><c>true</c> if two Coordinates array are equals; false otherwise</returns>
+        /// <returns><see langword="true"/> if two Coordinates array are equals; false otherwise</returns>
         public static Boolean Equals(ICoordinate[] coord1, ICoordinate[] coord2)
         {
             if (coord1 == coord2)
@@ -373,7 +373,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if the two arrays are identical, both <c>null</c>, or pointwise
+        /// Returns <see langword="true"/> if the two arrays are identical, both <see langword="null" />, or pointwise
         /// equal, using a user-defined <see cref="IComparer" /> 
         /// for <see cref="Coordinate" />s.
         /// </summary>

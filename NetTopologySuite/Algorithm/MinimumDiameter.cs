@@ -5,7 +5,7 @@ using GisSharpBlog.NetTopologySuite.Geometries;
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     /// <summary>
-    /// Computes the minimum diameter of a <c>Geometry</c>.
+    /// Computes the minimum diameter of a <see cref="Geometry{TCoordinate}"/>.
     /// The minimum diameter is defined to be the
     /// width of the smallest band that contains the point,
     /// where a band is a strip of the plane defined
@@ -27,21 +27,21 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private Double minWidth = 0.0;
 
         /// <summary> 
-        /// Compute a minimum diameter for a giver <c>Geometry</c>.
+        /// Compute a minimum diameter for a giver <see cref="Geometry{TCoordinate}"/>.
         /// </summary>
         /// <param name="inputGeom">a Geometry.</param>
         public MinimumDiameter(IGeometry inputGeom)
             : this(inputGeom, false) {}
 
         /// <summary> 
-        /// Compute a minimum diameter for a giver <c>Geometry</c>,
+        /// Compute a minimum diameter for a giver <see cref="Geometry{TCoordinate}"/>,
         /// with a hint if
         /// the Geometry is convex
         /// (e.g. a convex Polygon or LinearRing,
         /// or a two-point LineString, or a Point).
         /// </summary>
         /// <param name="inputGeom">a Geometry which is convex.</param>
-        /// <param name="isConvex"><c>true</c> if the input point is convex.</param>
+        /// <param name="isConvex"><see langword="true"/> if the input point is convex.</param>
         public MinimumDiameter(IGeometry inputGeom, Boolean isConvex)
         {
             this.inputGeom = inputGeom;

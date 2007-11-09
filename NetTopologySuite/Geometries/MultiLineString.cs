@@ -20,9 +20,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="lineStrings">
         /// The <c>LineString</c>s for this <c>MultiLineString</c>,
-        /// or <c>null</c> or an empty array to create the empty
+        /// or <see langword="null" /> or an empty array to create the empty
         /// point. Elements may be empty <c>LineString</c>s,
-        /// but not <c>null</c>s.
+        /// but not <see langword="null" />s.
         /// </param>
         public MultiLineString(ILineString[] lineStrings, IGeometryFactory factory) : base(lineStrings, factory) {}
 
@@ -31,12 +31,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="lineStrings">
         /// The <c>LineString</c>s for this <c>MultiLineString</c>,
-        /// or <c>null</c> or an empty array to create the empty
+        /// or <see langword="null" /> or an empty array to create the empty
         /// point. Elements may be empty <c>LineString</c>s,
-        /// but not <c>null</c>s.
+        /// but not <see langword="null" />s.
         /// </param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
+        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="Geometry{TCoordinate}Factory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public MultiLineString(ILineString[] lineStrings) : this(lineStrings, DefaultFactory) {}
@@ -67,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating whether this instance is closed.
         /// </summary>
-        /// <value><c>true</c> if this instance is closed; otherwise, <c>false</c>.</value>
+        /// <value><see langword="true"/> if this instance is closed; otherwise, <c>false</c>.</value>
         public Boolean IsClosed
         {
             get

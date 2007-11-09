@@ -6,7 +6,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
 {
     /// <summary>
     /// Optimized implementation of spatial predicate "contains"
-    /// for cases where the first <c>Geometry</c> is a rectangle.    
+    /// for cases where the first <see cref="Geometry{TCoordinate}"/> is a rectangle.    
     /// As a further optimization,
     /// this class can be used directly to test many geometries against a single rectangle.
     /// </summary>

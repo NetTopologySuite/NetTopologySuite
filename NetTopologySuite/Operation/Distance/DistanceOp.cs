@@ -9,7 +9,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
 {
     /// <summary>
     /// Computes the distance and
-    /// closest points between two <c>Geometry</c>s.
+    /// closest points between two <see cref="Geometry{TCoordinate}"/>s.
+    /// </summary>
+    /// <remarks>
     /// The distance computation finds a pair of points in the input geometries
     /// which have minimum distance between them.  These points may
     /// not be vertices of the geometries, but may lie in the interior of
@@ -18,14 +20,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
     /// The algorithms used are straightforward O(n^2)
     /// comparisons.  This worst-case performance could be improved on
     /// by using Voronoi techniques.
-    /// </summary>
+    /// </remarks>
     public class DistanceOp
     {
         /// <summary>
         /// Compute the distance between the closest points of two geometries.
         /// </summary>
-        /// <param name="g0">A <c>Geometry</c>.</param>
-        /// <param name="g1">Another <c>Geometry</c>.</param>
+        /// <param name="g0">A <see cref="Geometry{TCoordinate}"/>.</param>
+        /// <param name="g1">Another <see cref="Geometry{TCoordinate}"/>.</param>
         /// <returns>The distance between the geometries.</returns>
         public static Double Distance(IGeometry g0, IGeometry g1)
         {
@@ -46,8 +48,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// Compute the the closest points of two geometries.
         /// The points are presented in the same order as the input Geometries.
         /// </summary>
-        /// <param name="g0">A <c>Geometry</c>.</param>
-        /// <param name="g1">Another <c>Geometry</c>.</param>
+        /// <param name="g0">A <see cref="Geometry{TCoordinate}"/>.</param>
+        /// <param name="g1">Another <see cref="Geometry{TCoordinate}"/>.</param>
         /// <returns>The closest points in the geometries.</returns>
         public static ICoordinate[] ClosestPoints(IGeometry g0, IGeometry g1)
         {

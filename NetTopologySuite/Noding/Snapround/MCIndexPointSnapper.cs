@@ -52,9 +52,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// of not noding the vertex itself
         /// </summary>
         /// <param name="hotPixel">The hot pixel to snap to.</param>
-        /// <param name="parentEdge">The edge containing the vertex, if applicable, or <c>null</c>.</param>
+        /// <param name="parentEdge">The edge containing the vertex, if applicable, or <see langword="null" />.</param>
         /// <param name="vertexIndex"></param>
-        /// <returns><c>true</c> if a node was added for this pixel.</returns>
+        /// <returns><see langword="true"/> if a node was added for this pixel.</returns>
         public Boolean Snap(HotPixel hotPixel, SegmentString parentEdge, Int32 vertexIndex)
         {
             IExtents pixelEnv = hotPixel.GetSafeEnvelope();
