@@ -1,12 +1,9 @@
 using System;
 using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
+using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
-using GisSharpBlog.NetTopologySuite.Algorithm;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
 {
@@ -70,12 +67,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// or <c>null</c>.</returns>
         public static ICoordinate PointNotInList(ICoordinate[] testPts, ICoordinate[] pts)
         {
-            for (int i = 0; i < testPts.Length; i++)
-            {
-                ICoordinate testPt = testPts[i];
+            foreach (ICoordinate testPt in testPts)
                 if (!IsInList(testPt, pts))
                     return testPt;
-            }
             return null;
         }
 
@@ -88,9 +82,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <returns><c>true</c> if the point is in the array.</returns>
         public static bool IsInList(ICoordinate pt, ICoordinate[] pts)
         {
-            for (int i = 0; i < pts.Length; i++)            
-                if (pt.Equals(pts[i]))
-                    return false;            
+            foreach (ICoordinate p in pts)
+                if (pt.Equals(p))
+                    return true;
             return true;
         }
         
