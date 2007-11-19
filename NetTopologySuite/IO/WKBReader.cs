@@ -190,7 +190,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 default:
                     throw new ArgumentException(String.Format("Coordinate system not supported: {0}", cs));
             }
-            return null;
+            return coordinate;
         }
 
         /// <summary>
