@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 
@@ -25,27 +24,26 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			protected string[] _fieldNames = null;
 
             /// <summary>
-            /// 
+            /// Initializes a new instance of the <see cref="DbaseFileEnumerator"/> class.
             /// </summary>
             /// <param name="parent"></param>
-			public DbaseFileEnumerator(DbaseFileReader parent)
+            public DbaseFileEnumerator(DbaseFileReader parent)
 			{
 				_parent = parent;
 				FileStream stream = new FileStream(parent._filename, FileMode.Open, FileAccess.Read, FileShare.Read);
 				_dbfStream = new BinaryReader(stream);
 				ReadHeader();
-			}
-
-            ~DbaseFileEnumerator()
-            {
-                _dbfStream.Close();
-            }
+			}            
 
 			#region Implementation of IEnumerator
 
             /// <summary>
-            /// 
+            /// Sets the enumerator to its initial position, which is 
+            /// before the first element in the collection.
             /// </summary>
+            /// <exception cref="T:System.InvalidOperationException">
+            /// The collection was modified after the enumerator was created. 
+            /// </exception>
 			public void Reset()
 			{
                 _dbfStream.BaseStream.Seek(_header.HeaderLength, SeekOrigin.Begin);
@@ -54,9 +52,15 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			}
 
             /// <summary>
-            /// 
+            /// Advances the enumerator to the next element of the collection.
             /// </summary>
-            /// <returns></returns>
+            /// <returns>
+            /// true if the enumerator was successfully advanced to the next element; 
+            /// false if the enumerator has passed the end of the collection.
+            /// </returns>
+            /// <exception cref="T:System.InvalidOperationException">
+            /// The collection was modified after the enumerator was created.
+            ///  </exception>
 			public bool MoveNext()
 			{
 				_iCurrentRecord++;
@@ -72,8 +76,14 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			}
 
             /// <summary>
-            /// 
+            /// Gets the current element in the collection.
             /// </summary>
+            /// <value></value>
+            /// <returns>The current element in the collection.</returns>
+            /// <exception cref="T:System.InvalidOperationException">
+            /// The enumerator is positioned before the first element of the collection
+            /// or after the last element.
+            /// </exception>
 			public object Current
 			{
 				get
@@ -98,7 +108,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			/// <summary>
 			/// Read a single dbase record
 			/// </summary>
-			/// <returns>return the read shapefile record or null if there are no more records</returns>
+			/// <returns>
+			/// The read shapefile record,
+			///  or null if there are no more records.
+			///  </returns>
 			private ArrayList Read()  
 			{
 				ArrayList attrs = null;
@@ -203,6 +216,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
 
             #region IDisposable Members
 
+            /// <summary>
+            /// Performs application-defined tasks associated with freeing, releasing, 
+            /// or resetting unmanaged resources.
+            /// </summary>
             public void Dispose()
             {
                 _dbfStream.Close();
@@ -216,9 +233,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
 
 		#region Constructors
 
-		/// <summary>
-		/// Initializes a new instance of the DbaseFileReader class.
-		/// </summary>
+        /// <summary>
+        /// Initializes a new instance of the DbaseFileReader class.
+        /// </summary>
+        /// <param name="filename"></param>
 		public DbaseFileReader(string filename) 
 		{
 			if (filename==null)
@@ -265,10 +283,12 @@ namespace GisSharpBlog.NetTopologySuite.IO
 
 		#region Implementation of IEnumerable
 
-		/// <summary>
-		/// Gets the object that allows iterating through the members of the collection.
-		/// </summary>
-		/// <returns>An object that implements the IEnumerator interface.</returns>
+        /// <summary>
+        /// Gets the object that allows iterating through the members of the collection.
+        /// </summary>
+        /// <returns>
+        /// An object that implements the IEnumerator interface.
+        /// </returns>
 		public System.Collections.IEnumerator GetEnumerator()
 		{
 			return new DbaseFileEnumerator(this);

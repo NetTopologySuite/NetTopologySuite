@@ -1,12 +1,7 @@
 using System;
-using System.Data;
-using System.IO;
-using System.ComponentModel;
 using System.Collections;
-using System.Diagnostics;
-
+using System.IO;
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.IO
@@ -26,8 +21,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
             private ShapeHandler _handler;
             private BigEndianBinaryReader _shpBinaryReader = null;
 
+
             /// <summary>
-            /// Initializes a new instance of the ShapefileEnumerator class.
+            /// Initializes a new instance of the <see cref="ShapefileEnumerator"/> class.
             /// </summary>
             /// <param name="shapefile"></param>
             public ShapefileEnumerator(ShapefileReader shapefile)
@@ -48,14 +44,14 @@ namespace GisSharpBlog.NetTopologySuite.IO
                     throw new NotSupportedException("Unsuported shape type:" + type);
             }
 
-            ~ShapefileEnumerator()
-            {
-                _shpBinaryReader.Close();
-            }
 
             /// <summary>
-            /// 
+            /// Sets the enumerator to its initial position, which is 
+            /// before the first element in the collection.
             /// </summary>
+            /// <exception cref="T:System.InvalidOperationException">
+            /// The collection was modified after the enumerator was created. 
+            /// </exception>
             public void Reset()
             {
                 _shpBinaryReader.BaseStream.Seek(100, SeekOrigin.Begin);
@@ -63,9 +59,13 @@ namespace GisSharpBlog.NetTopologySuite.IO
             }
 
             /// <summary>
-            /// 
+            /// Advances the enumerator to the next element of the collection.
             /// </summary>
-            /// <returns></returns>
+            /// <returns>
+            /// true if the enumerator was successfully advanced to the next element; 
+            /// false if the enumerator has passed the end of the collection.
+            /// </returns>
+            /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
             public bool MoveNext()
             {
                 if (_shpBinaryReader.PeekChar() != -1)
@@ -89,8 +89,14 @@ namespace GisSharpBlog.NetTopologySuite.IO
             }
 
             /// <summary>
-            /// 
+            /// Gets the current element in the collection.
             /// </summary>
+            /// <value></value>
+            /// <returns>The current element in the collection.</returns>
+            /// <exception cref="T:System.InvalidOperationException">
+            /// The enumerator is positioned before the first element 
+            /// of the collection or after the last element. 
+            /// </exception>
             public object Current
             {
                 get
@@ -101,6 +107,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
 
             #region IDisposable Members
 
+            /// <summary>
+            /// Performs application-defined tasks associated with freeing, 
+            /// releasing, or resetting unmanaged resources.
+            /// </summary>
             public void Dispose()
             {
                 _shpBinaryReader.Close();
@@ -150,10 +160,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// </summary>
 		public ShapefileHeader Header
 		{
-			get
-			{
-				return _mainHeader;
-			}
+			get { return _mainHeader; }
 		}	
 		
 		/// <summary>
@@ -177,12 +184,15 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			
 	        IGeometry[] geomArray = GeometryFactory.ToGeometryArray(list);
 			return _geometryFactory.CreateGeometryCollection(geomArray);
-		}		
-		
+		}
+
         /// <summary>
-        /// 
+        /// Returns an enumerator that iterates through a collection.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"></see> object 
+        /// that can be used to iterate through the collection.
+        /// </returns>
         public IEnumerator GetEnumerator()
 		{
 			return new ShapefileEnumerator(this);
