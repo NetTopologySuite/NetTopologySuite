@@ -1,56 +1,57 @@
 using System;
 using System.IO;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
-    public class Node : GraphComponent
+    public class Node<TCoordinate> : GraphComponent<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        /// <summary>
-        /// Only non-null if this node is precise.
-        /// </summary>
-        protected ICoordinate coord = null;
+        // Only valid if this node is precise.
+        private readonly TCoordinate _coord;
+        private readonly EdgeEndStar<TCoordinate> _edges;
 
-        protected EdgeEndStar edges = null;
-
-        public Node(ICoordinate coord, EdgeEndStar edges)
+        public Node(TCoordinate coord, EdgeEndStar<TCoordinate> edges)
         {
-            this.coord = coord;
-            this.edges = edges;
-            label = new Label(0, Locations.Null);
+            _coord = coord;
+            _edges = edges;
+            Label = new Label(0, Locations.None);
         }
 
-        public override ICoordinate Coordinate
+        public override TCoordinate Coordinate
         {
-            get { return coord; }
+            get { return _coord; }
         }
 
-        public EdgeEndStar Edges
+        public EdgeEndStar<TCoordinate> Edges
         {
-            get { return edges; }
+            get { return _edges; }
         }
 
         public override Boolean IsIsolated
         {
-            get { return (label.GeometryCount == 1); }
+            get { return (Label.GeometryCount == 1); }
         }
 
         /// <summary>
-        /// Basic nodes do not compute IMs.
+        /// Basic nodes do not compute intersection matrixes.
         /// </summary>
-        public override void ComputeIM(IntersectionMatrix im) {}
+        public override void ComputeIntersectionMatrix(IntersectionMatrix matrix) {}
 
         /// <summary> 
         /// Add the edge to the list of edges at this node.
         /// </summary>
-        public void Add(EdgeEnd e)
+        public void Add(EdgeEnd<TCoordinate> e)
         {
             // Assert: start pt of e is equal to node point
-            edges.Insert(e);
+            _edges.Insert(e);
             e.Node = this;
         }
 
-        public void MergeLabel(Node n)
+        public void MergeLabel(Node<TCoordinate> n)
         {
             MergeLabel(n.Label);
         }
@@ -66,23 +67,23 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             for (Int32 i = 0; i < 2; i++)
             {
                 Locations loc = ComputeMergedLocation(label2, i);
-                Locations thisLoc = label.GetLocation(i);
-                if (thisLoc == Locations.Null)
+                Locations thisLoc = Label.GetLocation(i);
+                if (thisLoc == Locations.None)
                 {
-                    label.SetLocation(i, loc);
+                    Label.SetLocation(i, loc);
                 }
             }
         }
 
         public void SetLabel(Int32 argIndex, Locations onLocation)
         {
-            if (label == null)
+            if (Label == null)
             {
-                label = new Label(argIndex, onLocation);
+                Label = new Label(argIndex, onLocation);
             }
             else
             {
-                label.SetLocation(argIndex, onLocation);
+                Label.SetLocation(argIndex, onLocation);
             }
         }
 
@@ -93,11 +94,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public void SetLabelBoundary(Int32 argIndex)
         {
             // determine the current location for the point (if any)
-            Locations loc = Locations.Null;
+            Locations loc = Locations.None;
 
-            if (label != null)
+            if (Label != null)
             {
-                loc = label.GetLocation(argIndex);
+                loc = Label.GetLocation(argIndex);
             }
 
             // flip the loc
@@ -116,7 +117,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                     break;
             }
 
-            label.SetLocation(argIndex, newLoc);
+            Label.SetLocation(argIndex, newLoc);
         }
 
         /// <summary> 
@@ -128,8 +129,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public Locations ComputeMergedLocation(Label label2, Int32 eltIndex)
         {
-            Locations loc = Locations.Null;
-            loc = label.GetLocation(eltIndex);
+            Locations loc = Label.GetLocation(eltIndex);
 
             if (!label2.IsNull(eltIndex))
             {
@@ -145,12 +145,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public void Write(StreamWriter outstream)
         {
-            outstream.WriteLine("node " + coord + " lbl: " + label);
+            outstream.WriteLine("node " + Coordinate + " lbl: " + Label);
         }
 
         public override string ToString()
         {
-            return coord + " " + edges;
+            return Coordinate + " " + _edges;
         }
     }
 }

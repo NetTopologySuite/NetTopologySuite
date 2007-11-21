@@ -1,5 +1,7 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 {
@@ -12,13 +14,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// It uses a <c>SegmentIntersector</c> to compute the intersections between
     /// segments and to record statistics about what kinds of intersections were found.
     /// </summary>
-    public abstract class EdgeSetIntersector
+    public abstract class EdgeSetIntersector<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
-        /// <summary>
-        /// Default empty constructor.
-        /// </summary>
-        public EdgeSetIntersector() {}
-
         /// <summary>
         /// Computes all self-intersections between edges in a set of edges,
         /// allowing client to choose whether self-intersections are computed.
@@ -26,11 +25,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <param name="edges">A list of edges to test for intersections.</param>
         /// <param name="si">The SegmentIntersector to use.</param>
         /// <param name="testAllSegments"><see langword="true"/> if self-intersections are to be tested as well.</param>
-        public abstract void ComputeIntersections(IList edges, SegmentIntersector si, Boolean testAllSegments);
+        public abstract void ComputeIntersections(IEnumerable<Edge<TCoordinate>> edges, SegmentIntersector<TCoordinate> si, Boolean testAllSegments);
 
         /// <summary> 
         /// Computes all mutual intersections between two sets of edges.
         /// </summary>
-        public abstract void ComputeIntersections(IList edges0, IList edges1, SegmentIntersector si);
+        public abstract void ComputeIntersections(IEnumerable<Edge<TCoordinate>> edges0, IEnumerable<Edge<TCoordinate>> edges1, SegmentIntersector<TCoordinate> si);
     }
 }

@@ -55,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <summary>
         /// Fully nodes a list of <see cref="SegmentString" />s, i.e. peforms noding iteratively
         /// until no intersections are found between segments.
-        /// Maintains labelling of edges correctly through the noding.
+        /// Maintains labeling of edges correctly through the noding.
         /// </summary>
         /// <param name="segStrings">A collection of SegmentStrings to be noded.</param>
         /// <exception cref="TopologyException">If the iterated noding fails to converge.</exception>

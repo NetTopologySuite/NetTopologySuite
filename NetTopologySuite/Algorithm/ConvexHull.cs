@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
-using Iesi_NTS.Collections.Generic;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
@@ -13,31 +14,34 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// points in the input Geometry.
     /// Uses the Graham Scan algorithm.
     /// </summary>
-    public class ConvexHull
+    public class ConvexHull<TCoordinate>
+         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                             IComputable<TCoordinate>, IConvertible
     {
-        private IGeometryFactory geomFactory = null;
-        private ICoordinate[] inputPts = null;
+        private static IEnumerable<TCoordinate> ExtractCoordinates(IGeometry<TCoordinate> geom)
+        {
+            UniqueCoordinateArrayFilter<TCoordinate> filter = new UniqueCoordinateArrayFilter<TCoordinate>();
+            geom.Apply(filter);
+            return filter.Coordinates;
+        }
+
+        private readonly IGeometryFactory<TCoordinate> _geomFactory = null;
+        private readonly IEnumerable<TCoordinate> _inputPts = null;
 
         /// <summary> 
         /// Create a new convex hull construction for the input <see cref="Geometry{TCoordinate}"/>.
         /// </summary>
-        public ConvexHull(IGeometry geometry)
+        public ConvexHull(IGeometry<TCoordinate> geometry)
             : this(ExtractCoordinates(geometry), geometry.Factory) {}
 
         /// <summary>
-        /// Create a new convex hull construction for the input <see cref="Coordinate" /> array.
+        /// Create a new convex hull construction for the input 
+        /// <typeparamref name="TCoordinate"/> set.
         /// </summary>
-        public ConvexHull(ICoordinate[] pts, IGeometryFactory geomFactory)
+        public ConvexHull(IEnumerable<TCoordinate> points, IGeometryFactory<TCoordinate> geomFactory)
         {
-            inputPts = pts;
-            this.geomFactory = geomFactory;
-        }
-
-        private static ICoordinate[] ExtractCoordinates(IGeometry geom)
-        {
-            UniqueCoordinateArrayFilter filter = new UniqueCoordinateArrayFilter();
-            geom.Apply(filter);
-            return filter.Coordinates;
+            _inputPts = points;
+            _geomFactory = geomFactory;
         }
 
         /// <summary> 
@@ -47,34 +51,34 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// points will be collinear.
         /// </summary>
         /// <returns> 
-        /// If the convex hull contains 3 or more points, a <c>Polygon</c>;
+        /// If the convex hull contains 3 or more points, a <see cref="Polygon{TCoordinate}" />;
         /// 2 points, a <c>LineString</c>;
         /// 1 point, a <c>Point</c>;
-        /// 0 points, an empty <c>GeometryCollection</c>.
+        /// 0 points, an empty <see cref="GeometryCollection{TCoordinate}" />.
         /// </returns>
-        public IGeometry GetConvexHull()
+        public IGeometry<TCoordinate> GetConvexHull()
         {
-            if (inputPts.Length == 0)
+            if (_inputPts.Length == 0)
             {
-                return geomFactory.CreateGeometryCollection(null);
+                return _geomFactory.CreateGeometryCollection(null);
             }
 
-            if (inputPts.Length == 1)
+            if (_inputPts.Length == 1)
             {
-                return geomFactory.CreatePoint(inputPts[0]);
+                return _geomFactory.CreatePoint(_inputPts[0]);
             }
 
-            if (inputPts.Length == 2)
+            if (_inputPts.Length == 2)
             {
-                return geomFactory.CreateLineString(inputPts);
+                return _geomFactory.CreateLineString(_inputPts);
             }
 
-            ICoordinate[] reducedPts = inputPts;
+            IEnumerable<TCoordinate> reducedPts = _inputPts;
             
             // use heuristic to reduce points, if large
-            if (inputPts.Length > 50)
+            if (_inputPts.Length > 50)
             {
-                reducedPts = Reduce(inputPts);
+                reducedPts = Reduce(_inputPts);
             }
 
             // sort points for Graham scan.
@@ -103,12 +107,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         private ICoordinate[] Reduce(ICoordinate[] pts)
         {
-            ICoordinate[] polyPts = ComputeOctRing(inputPts);
+            ICoordinate[] polyPts = ComputeOctRing(_inputPts);
 
             // unable to compute interior polygon for some reason
             if (polyPts == null)
             {
-                return inputPts;
+                return _inputPts;
             }
 
             // add points defining polygon
@@ -125,11 +129,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
              * but this doesn't matter since the points of the interior polygon
              * are forced to be in the reduced set.
              */
-            for (Int32 i = 0; i < inputPts.Length; i++)
+            for (Int32 i = 0; i < _inputPts.Length; i++)
             {
-                if (!CGAlgorithms.IsPointInRing(inputPts[i], polyPts))
+                if (!CGAlgorithms.IsPointInRing(_inputPts[i], polyPts))
                 {
-                    reducedSet.Add(inputPts[i]);
+                    reducedSet.Add(_inputPts[i]);
                 }
             }
 
@@ -318,18 +322,18 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
         /// <param name="coordinates"> The vertices of a linear ring, which may or may not be flattened (i.e. vertices collinear).</param>
         /// <returns>A 2-vertex <c>LineString</c> if the vertices are collinear; 
-        /// otherwise, a <c>Polygon</c> with unnecessary (collinear) vertices removed. </returns>       
+        /// otherwise, a <see cref="Polygon{TCoordinate}" /> with unnecessary (collinear) vertices removed. </returns>       
         private IGeometry LineOrPolygon(ICoordinate[] coordinates)
         {
             coordinates = CleanRing(coordinates);
            
             if (coordinates.Length == 3)
             {
-                return geomFactory.CreateLineString(new ICoordinate[] {coordinates[0], coordinates[1]});
+                return _geomFactory.CreateLineString(new ICoordinate[] {coordinates[0], coordinates[1]});
             }
 
-            ILinearRing linearRing = geomFactory.CreateLinearRing(coordinates);
-            return geomFactory.CreatePolygon(linearRing, null);
+            ILinearRing linearRing = _geomFactory.CreateLinearRing(coordinates);
+            return _geomFactory.CreatePolygon(linearRing, null);
         }
 
         /// <param name="original">The vertices of a linear ring, which may or may not be flattened (i.e. vertices collinear).</param>

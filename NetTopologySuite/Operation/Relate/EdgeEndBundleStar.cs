@@ -1,26 +1,24 @@
 using System;
 using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NPack.Interfaces;
+using GeoAPI.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 {
     /// <summary>
-    /// An ordered list of <c>EdgeEndBundle</c>s around a <c>RelateNode</c>.
+    /// An ordered list of <see cref="EdgeEndBundle{TCoordinate}"/>s around a 
+    /// <see cref="RelateNode{TCoordinate}"/>.
+    /// </summary>
+    /// <remarks>
     /// They are maintained in CCW order (starting with the positive x-axis) around the node
     /// for efficient lookup and topology building.
-    /// </summary>
-    public class EdgeEndBundleStar : EdgeEndStar
+    /// </remarks>
+    public class EdgeEndBundleStar<TCoordinate> : EdgeEndStar<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        public EdgeEndBundleStar() { }
-
         /// <summary>
         /// Insert a EdgeEnd in order in the list.
         /// If there is an existing EdgeStubBundle which is parallel, the EdgeEnd is
@@ -28,17 +26,19 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// to contain the EdgeEnd.
         /// </summary>
         /// <param name="e"></param>
-        public override void Insert(EdgeEnd e)
+        public override void Insert(EdgeEnd<TCoordinate> e)
         {
-            EdgeEndBundle eb = (EdgeEndBundle) edgeMap[e];
-            if (eb == null) 
+            EdgeEndBundle<TCoordinate> eb = EdgeMap[e];
+
+            if (eb == null)
             {
                 eb = new EdgeEndBundle(e);
                 InsertEdgeEnd(e, eb);
             }
-            else 
+            else
+            {
                 eb.Insert(e);
-            
+            }
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// <param name="im"></param>
         public void UpdateIM(IntersectionMatrix im)
         {
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
+            for (IEnumerator it = GetEnumerator(); it.MoveNext();)
             {
                 EdgeEndBundle esb = (EdgeEndBundle) it.Current;
                 esb.UpdateIM(im);

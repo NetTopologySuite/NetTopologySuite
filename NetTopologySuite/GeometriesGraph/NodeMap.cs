@@ -1,46 +1,51 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     /// <summary> 
     /// A map of nodes, indexed by the coordinate of the node.
     /// </summary>
-    public class NodeMap
+    public class NodeMap<TCoordinate> : IEnumerable<Node<TCoordinate>>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
-        private IDictionary nodeMap = new SortedList();
-        private NodeFactory nodeFact;
+        private readonly SortedList<TCoordinate, Node<TCoordinate>> _nodeMap 
+            = new SortedList<TCoordinate, Node<TCoordinate>>();
+        private readonly NodeFactory<TCoordinate> _nodeFactory;
 
-        public NodeMap(NodeFactory nodeFact)
+        public NodeMap(NodeFactory<TCoordinate> nodeFact)
         {
-            this.nodeFact = nodeFact;
+            _nodeFactory = nodeFact;
         }
 
         /// <summary> 
         /// This method expects that a node has a coordinate value.
         /// </summary>
-        public Node AddNode(ICoordinate coord)
+        public Node<TCoordinate> AddNode(TCoordinate coord)
         {
-            Node node = (Node) nodeMap[coord];
+            Node<TCoordinate> node;
 
-            if (node == null)
+            if (!_nodeMap.TryGetValue(coord, out node))
             {
-                node = nodeFact.CreateNode(coord);
-                nodeMap.Add(coord, node);
+                node = _nodeFactory.CreateNode(coord);
+                _nodeMap.Add(coord, node);
             }
 
             return node;
         }
 
-        public Node AddNode(Node n)
+        public Node<TCoordinate> AddNode(Node<TCoordinate> n)
         {
-            Node node = (Node) nodeMap[n.Coordinate];
+            Node<TCoordinate> node;
 
-            if (node == null)
+            if(!_nodeMap.TryGetValue(n.Coordinate, out node))
             {
-                nodeMap.Add(n.Coordinate, n);
+                _nodeMap.Add(n.Coordinate, n);
                 return n;
             }
 
@@ -53,52 +58,54 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// (if one does not already exist in this map).
         /// Adds the EdgeEnd to the (possibly new) node.
         /// </summary>
-        public void Add(EdgeEnd e)
+        public void Add(EdgeEnd<TCoordinate> e)
         {
-            ICoordinate p = e.Coordinate;
-            Node n = AddNode(p);
+            TCoordinate p = e.Coordinate;
+            Node<TCoordinate> n = AddNode(p);
             n.Add(e);
         }
 
         /// <returns> 
         /// The node if found; null otherwise.
         /// </returns>
-        public Node Find(ICoordinate coord)
+        public Node<TCoordinate> Find(TCoordinate coord)
         {
-            return (Node) nodeMap[coord];
+            Node<TCoordinate> node;
+            _nodeMap.TryGetValue(coord, out node);
+            return node;
         }
 
-        public IEnumerator GetEnumerator()
+        public IEnumerator<Node<TCoordinate>> GetEnumerator()
         {
-            return nodeMap.Values.GetEnumerator();
+            return _nodeMap.Values.GetEnumerator();
         }
 
-        public IList Values
+        public IEnumerable<Node<TCoordinate>> GetBoundaryNodes(Int32 geomIndex)
         {
-            get { return new ArrayList(nodeMap.Values); }
-        }
-
-        public IList GetBoundaryNodes(Int32 geomIndex)
-        {
-            IList bdyNodes = new ArrayList();
-            for (IEnumerator i = GetEnumerator(); i.MoveNext();)
+            foreach (Node<TCoordinate> node in this)
             {
-                Node node = (Node) i.Current;
                 if (node.Label.GetLocation(geomIndex) == Locations.Boundary)
                 {
-                    bdyNodes.Add(node);
+                    yield return node;
                 }
             }
-            return bdyNodes;
         }
 
         public void Write(StreamWriter outstream)
         {
-            for (IEnumerator i = GetEnumerator(); i.MoveNext();)
+            foreach (Node<TCoordinate> node in this)
             {
-                Node n = (Node) i.Current;
-                n.Write(outstream);
+                node.Write(outstream);
             }
         }
+
+        #region IEnumerable Members
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
     }
 }

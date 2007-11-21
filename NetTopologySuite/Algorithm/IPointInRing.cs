@@ -1,17 +1,15 @@
 using System;
+using GeoAPI.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     /// <summary> 
-    /// An interface for classes which test whether a <c>Coordinate</c> lies inside a ring.
+    /// An interface for classes which test whether a <typeparamref name="TCoordinate"/>
+    /// lies inside a ring.
     /// </summary>
-    public interface IPointInRing
+    public interface IPointInRing<TCoordinate>
+        where TCoordinate : ICoordinate
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pt"></param>
-        /// <returns></returns>
-        Boolean IsInside(ICoordinate pt);
+        Boolean IsInside(TCoordinate pt);
     }
 }

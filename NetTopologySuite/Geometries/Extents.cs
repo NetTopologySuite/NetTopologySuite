@@ -19,6 +19,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                 IComputable<TCoordinate>, IConvertible
     {
+
+        // the minimum x-coordinate
+        private Double _minX;
+
+        // the maximum x-coordinate
+        private Double _maxX;
+
+        // the minimum y-coordinate
+        private Double _minY;
+
+        // the maximum y-coordinate
+        private Double _maxY;
+
         /// <summary>
         /// Test the point q to see whether it intersects the Envelope
         /// defined by p1-p2.
@@ -81,26 +94,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             return true;
         }
-
-        /*
-        *  the minimum x-coordinate
-        */
-        private Double minx;
-
-        /*
-        *  the maximum x-coordinate
-        */
-        private Double maxx;
-
-        /*
-        * the minimum y-coordinate
-        */
-        private Double miny;
-
-        /*
-        *  the maximum y-coordinate
-        */
-        private Double maxy;
 
         /// <summary>
         /// Creates a null <see cref="Extents{TCoordinate}"/>.
@@ -169,24 +162,24 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (x1 < x2)
             {
-                minx = x1;
-                maxx = x2;
+                _minX = x1;
+                _maxX = x2;
             }
             else
             {
-                minx = x2;
-                maxx = x1;
+                _minX = x2;
+                _maxX = x1;
             }
 
             if (y1 < y2)
             {
-                miny = y1;
-                maxy = y2;
+                _minY = y1;
+                _maxY = y2;
             }
             else
             {
-                miny = y2;
-                maxy = y1;
+                _minY = y2;
+                _maxY = y1;
             }
         }
 
@@ -215,10 +208,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="env">The Envelope to initialize from.</param>
         public void Init(IExtents env)
         {
-            minx = env.MinX;
-            maxx = env.MaxX;
-            miny = env.MinY;
-            maxy = env.MaxY;
+            _minX = env.MinX;
+            _maxX = env.MaxX;
+            _minY = env.MinY;
+            _maxY = env.MaxY;
         }
 
         /// <summary>
@@ -226,10 +219,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public void SetToEmpty()
         {
-            minx = 0;
-            maxx = -1;
-            miny = 0;
-            maxy = -1;
+            _minX = 0;
+            _maxX = -1;
+            _minY = 0;
+            _maxY = -1;
         }
 
         /// <summary>
@@ -240,9 +233,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <see langword="true"/> if this <see cref="Extents{TCoordinate}"/> is uninitialized
         /// or is the envelope of the empty point.
         /// </returns>
-        public Boolean IsNull
+        public Boolean IsEmpty
         {
-            get { return maxx < minx; }
+            get { return _maxX < _minX; }
         }
 
         /// <summary>
@@ -253,12 +246,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                if (IsNull)
+                if (IsEmpty)
                 {
                     return 0;
                 }
 
-                return maxx - minx;
+                return _maxX - _minX;
             }
         }
 
@@ -270,12 +263,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                if (IsNull)
+                if (IsEmpty)
                 {
                     return 0;
                 }
 
-                return maxy - miny;
+                return _maxY - _minY;
             }
         }
 
@@ -286,7 +279,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The minimum x-coordinate.</returns>
         public Double MinX
         {
-            get { return minx; }
+            get { return _minX; }
         }
 
         /// <summary>
@@ -296,7 +289,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The maximum x-coordinate.</returns>
         public Double MaxX
         {
-            get { return maxx; }
+            get { return _maxX; }
         }
 
         /// <summary>
@@ -306,7 +299,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The minimum y-coordinate.</returns>
         public Double MinY
         {
-            get { return miny; }
+            get { return _minY; }
         }
 
         /// <summary>
@@ -316,7 +309,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The maximum y-coordinate.</returns>
         public Double MaxY
         {
-            get { return maxy; }
+            get { return _maxY; }
         }
 
         /// <summary>
@@ -337,18 +330,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="deltaY">The distance to expand the envelope along the the Y axis.</param>
         public void ExpandBy(Double deltaX, Double deltaY)
         {
-            if (IsNull)
+            if (IsEmpty)
             {
                 return;
             }
 
-            minx -= deltaX;
-            maxx += deltaX;
-            miny -= deltaY;
-            maxy += deltaY;
+            _minX -= deltaX;
+            _maxX += deltaX;
+            _minY -= deltaY;
+            _maxY += deltaY;
 
             // check for envelope disappearing
-            if (minx > maxx || miny > maxy)
+            if (_minX > _maxX || _minY > _maxY)
             {
                 SetToEmpty();
             }
@@ -372,33 +365,33 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="y">The value to lower the minimum y to or to raise the maximum y to.</param>
         public void ExpandToInclude(Double x, Double y)
         {
-            if (IsNull)
+            if (IsEmpty)
             {
-                minx = x;
-                maxx = x;
-                miny = y;
-                maxy = y;
+                _minX = x;
+                _maxX = x;
+                _minY = y;
+                _maxY = y;
             }
             else
             {
-                if (x < minx)
+                if (x < _minX)
                 {
-                    minx = x;
+                    _minX = x;
                 }
 
-                if (x > maxx)
+                if (x > _maxX)
                 {
-                    maxx = x;
+                    _maxX = x;
                 }
 
-                if (y < miny)
+                if (y < _minY)
                 {
-                    miny = y;
+                    _minY = y;
                 }
 
-                if (y > maxy)
+                if (y > _maxY)
                 {
-                    maxy = y;
+                    _maxY = y;
                 }
             }
         }
@@ -416,33 +409,33 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return;
             }
 
-            if (IsNull)
+            if (IsEmpty)
             {
-                minx = other.MinX;
-                maxx = other.MaxX;
-                miny = other.MinY;
-                maxy = other.MaxY;
+                _minX = other.MinX;
+                _maxX = other.MaxX;
+                _minY = other.MinY;
+                _maxY = other.MaxY;
             }
             else
             {
-                if (other.MinX < minx)
+                if (other.MinX < _minX)
                 {
-                    minx = other.MinX;
+                    _minX = other.MinX;
                 }
 
-                if (other.MaxX > maxx)
+                if (other.MaxX > _maxX)
                 {
-                    maxx = other.MaxX;
+                    _maxX = other.MaxX;
                 }
 
-                if (other.MinY < miny)
+                if (other.MinY < _minY)
                 {
-                    miny = other.MinY;
+                    _minY = other.MinY;
                 }
 
-                if (other.MaxY > maxy)
+                if (other.MaxY > _maxY)
                 {
-                    maxy = other.MaxY;
+                    _maxY = other.MaxY;
                 }
             }
         }
@@ -454,7 +447,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="transY">The amount to translate along the Y axis.</param>
         public void Translate(Double transX, Double transY)
         {
-            if (IsNull)
+            if (IsEmpty)
             {
                 return;
             }
@@ -473,7 +466,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                if (IsNull)
+                if (IsEmpty)
                 {
                     return null;
                 }
@@ -489,7 +482,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public IExtents Intersection(IExtents env)
         {
-            if (IsNull || env.IsNull || !Intersects(env))
+            if (IsEmpty || env.IsNull || !Intersects(env))
             {
                 return new Extents();
             }
@@ -512,12 +505,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public Boolean Intersects(IExtents other)
         {
-            if (IsNull || other.IsNull)
+            if (IsEmpty || other.IsNull)
             {
                 return false;
             }
 
-            return !(other.MinX > maxx || other.MaxX < minx || other.MinY > maxy || other.MaxY < miny);
+            return !(other.MinX > _maxX || other.MaxX < _minX || other.MinY > _maxY || other.MaxY < _minY);
         }
 
         /// <summary>
@@ -574,7 +567,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns><see langword="true"/> if the point overlaps this <see cref="Extents{TCoordinate}"/>.</returns>
         public Boolean Intersects(Double x, Double y)
         {
-            return !(x > maxx || x < minx || y > maxy || y < miny);
+            return !(x > _maxX || x < _minX || y > _maxY || y < _minY);
         }
 
         /// <summary>  
@@ -602,7 +595,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// on the boundary of this <see cref="Extents{TCoordinate}"/>.</returns>
         public Boolean Contains(Double x, Double y)
         {
-            return x >= minx && x <= maxx && y >= miny && y <= maxy;
+            return x >= _minX && x <= _maxX && y >= _minY && y <= _maxY;
         }
 
         /// <summary>  
@@ -613,13 +606,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns><see langword="true"/> if <c>other</c> is contained in this <see cref="Extents{TCoordinate}"/>.</returns>
         public Boolean Contains(IExtents other)
         {
-            if (IsNull || other.IsNull)
+            if (IsEmpty || other.IsNull)
             {
                 return false;
             }
 
-            return other.MinX >= minx && other.MaxX <= maxx &&
-                   other.MinY >= miny && other.MaxY <= maxy;
+            return other.MinX >= _minX && other.MaxX <= _maxX &&
+                   other.MinY >= _minY && other.MaxY <= _maxY;
         }
 
         /// <summary> 
@@ -638,26 +631,26 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             Double dx = 0.0;
 
-            if (maxx < env.MinX)
+            if (_maxX < env.MinX)
             {
-                dx = env.MinX - maxx;
+                dx = env.MinX - _maxX;
             }
 
-            if (minx > env.MaxX)
+            if (_minX > env.MaxX)
             {
-                dx = minx - env.MaxX;
+                dx = _minX - env.MaxX;
             }
 
             Double dy = 0.0;
 
-            if (maxy < env.MinY)
+            if (_maxY < env.MinY)
             {
-                dy = env.MinY - maxy;
+                dy = env.MinY - _maxY;
             }
 
-            if (miny > env.MaxY)
+            if (_minY > env.MaxY)
             {
-                dy = miny - env.MaxY;
+                dy = _minY - env.MaxY;
             }
 
             // if either is zero, the envelopes overlap either vertically or horizontally
@@ -701,13 +694,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public Boolean Equals(IExtents other)
         {
-            if (IsNull)
+            if (IsEmpty)
             {
                 return other.IsNull;
             }
 
-            return maxx == other.MaxX && maxy == other.MaxY &&
-                   minx == other.MinX && miny == other.MinY;
+            return _maxX == other.MaxX && _maxY == other.MaxY &&
+                   _minX == other.MinX && _minY == other.MinY;
         }
 
         public Int32 CompareTo(object other)
@@ -717,15 +710,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Int32 CompareTo(IExtents other)
         {
-            if (IsNull && other.IsNull)
+            if (IsEmpty && other.IsNull)
             {
                 return 0;
             }
-            else if (!IsNull && other.IsNull)
+            else if (!IsEmpty && other.IsNull)
             {
                 return 1;
             }
-            else if (IsNull && !other.IsNull)
+            else if (IsEmpty && !other.IsNull)
             {
                 return -1;
             }
@@ -746,10 +739,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public override Int32 GetHashCode()
         {
             Int32 result = 17;
-            result = 37 * result + GetHashCode(minx);
-            result = 37 * result + GetHashCode(maxx);
-            result = 37 * result + GetHashCode(miny);
-            result = 37 * result + GetHashCode(maxy);
+            result = 37 * result + GetHashCode(_minX);
+            result = 37 * result + GetHashCode(_maxX);
+            result = 37 * result + GetHashCode(_minY);
+            result = 37 * result + GetHashCode(_maxY);
             return result;
         }
 
@@ -775,7 +768,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public override string ToString()
         {
-            return "Env[" + minx + " : " + maxx + ", " + miny + " : " + maxy + "]";
+            return "Env[" + _minX + " : " + _maxX + ", " + _minY + " : " + _maxY + "]";
         }
 
         /// <summary>
@@ -797,8 +790,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get
             {
                 Double area = 1;
-                area = area * (maxx - minx);
-                area = area * (maxy - miny);
+                area = area * (_maxX - _minX);
+                area = area * (_maxY - _minY);
                 return area;
             }
         }
@@ -809,7 +802,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public IExtents Clone()
         {
-            return new Extents(minx, maxx, miny, maxy);
+            return new Extents(_minX, _maxX, _minY, _maxY);
         }
 
         /// <summary>
@@ -840,15 +833,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return this;
             }
 
-            if (IsNull)
+            if (IsEmpty)
             {
                 return box;
             }
 
-            return new Extents(Math.Min(minx, box.MinX),
-                                Math.Max(maxx, box.MaxX),
-                                Math.Min(miny, box.MinY),
-                                Math.Max(maxy, box.MaxY));
+            return new Extents(Math.Min(_minX, box.MinX),
+                                Math.Max(_maxX, box.MaxX),
+                                Math.Min(_minY, box.MinY),
+                                Math.Max(_maxY, box.MaxY));
         }
 
         /// <summary>
@@ -898,10 +891,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="height">The new height.</param>
         public void SetCentre(ICoordinate centre, Double width, Double height)
         {
-            minx = centre.X - (width / 2);
-            maxx = centre.X + (width / 2);
-            miny = centre.Y - (height / 2);
-            maxy = centre.Y + (height / 2);
+            _minX = centre.X - (width / 2);
+            _maxX = centre.X + (width / 2);
+            _minY = centre.Y - (height / 2);
+            _maxY = centre.Y + (height / 2);
         }
 
         /// <summary>

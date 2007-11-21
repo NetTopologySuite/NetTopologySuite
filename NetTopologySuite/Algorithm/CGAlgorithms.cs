@@ -1,9 +1,43 @@
 using System;
+using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
+    public enum Orientation
+    {
+        /// <summary> 
+        /// A value that indicates an orientation of clockwise, or a right turn.
+        /// </summary>
+        Clockwise = -1,
+
+        /// <summary> 
+        /// A value that indicates an orientation of clockwise, or a right turn.
+        /// </summary>
+        Right = Clockwise,
+
+        /// <summary>
+        /// A value that indicates an orientation of counterclockwise, or a left turn.
+        /// </summary>
+        CounterClockwise = 1,
+
+        /// <summary>
+        /// A value that indicates an orientation of counterclockwise, or a left turn.
+        /// </summary>
+        Left = CounterClockwise,
+
+        /// <summary>
+        /// A value that indicates an orientation of collinear, or no turn (straight).
+        /// </summary>
+        Collinear = 0,
+
+        /// <summary>
+        /// A value that indicates an orientation of collinear, or no turn (straight).
+        /// </summary>
+        Straight = Collinear
+    }
+
     /// <summary>
     /// Specifies and implements various fundamental Computational Geometric algorithms.
     /// The algorithms supplied in this class are robust for Double-precision floating point.
@@ -12,36 +46,6 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
     {
-        /// <summary> 
-        /// A value that indicates an orientation of clockwise, or a right turn.
-        /// </summary>
-        public const Int32 Clockwise = -1;
-
-        /// <summary> 
-        /// A value that indicates an orientation of clockwise, or a right turn.
-        /// </summary>
-        public const Int32 Right = Clockwise;
-
-        /// <summary>
-        /// A value that indicates an orientation of counterclockwise, or a left turn.
-        /// </summary>
-        public const Int32 CounterClockwise = 1;
-
-        /// <summary>
-        /// A value that indicates an orientation of counterclockwise, or a left turn.
-        /// </summary>
-        public const Int32 Left = CounterClockwise;
-
-        /// <summary>
-        /// A value that indicates an orientation of collinear, or no turn (straight).
-        /// </summary>
-        public const Int32 Collinear = 0;
-
-        /// <summary>
-        /// A value that indicates an orientation of collinear, or no turn (straight).
-        /// </summary>
-        public const Int32 Straight = Collinear;
-
         /// <summary> 
         /// Returns the index of the direction of the point <paramref name="q"/>
         /// relative to a vector specified by 
@@ -79,23 +83,22 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="p">Point to check for ring inclusion.</param>
         /// <param name="ring">Assumed to have first point identical to last point.</param>
         /// <returns><see langword="true"/> if p is inside ring.</returns>
-        public static Boolean IsPointInRing(TCoordinate p, TCoordinate[] ring)
+        public static Boolean IsPointInRing(TCoordinate p, IEnumerable<TCoordinate> ring)
         {
             Int32 i;
-            Int32 i1; // point index; i1 = i-1
-            Double xInt; // x intersection of segment with ray
-            Int32 crossings = 0; // number of segment/ray crossings
-            Double x1; // translated coordinates
-            Double y1;
-            Double x2;
-            Double y2;
+            Int32 crossings = 0;        // number of segment/ray crossings
             Int32 nPts = ring.Length;
 
-            /*
-            *  For each segment l = (i-1, i), see if it crosses ray from test point in positive x direction.
-            */
+            // For each segment l = (i-1, i), see if it crosses ray 
+            // from test point in positive x direction.
             for (i = 1; i < nPts; i++)
             {
+                Int32 i1;   // point index; i1 = i-1
+                Double x1;  // translated coordinates
+                Double y1;
+                Double x2;
+                Double y2;
+
                 i1 = i - 1;
                 TCoordinate p1 = ring[i];
                 TCoordinate p2 = ring[i1];
@@ -107,15 +110,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
                 if (((y1 > 0) && (y2 <= 0)) || ((y2 > 0) && (y1 <= 0)))
                 {
-                    /*
-                    *  segment straddles x axis, so compute intersection.
-                    */
+                    Double xInt; // x intersection of segment with ray
+
+                    // segment straddles x axis, so compute intersection.
                     // NOTE: Can this be moved down to NPack?
                     xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2) / (y2 - y1);
 
-                    /*
-                    *  crosses ray if strictly positive intersection.
-                    */
+                    // crosses ray if strictly positive intersection.
                     if (0.0 < xInt)
                     {
                         crossings++;
@@ -123,9 +124,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 }
             }
 
-            /*
-            *  p is inside if number of crossings is odd.
-            */
+            // p is inside if number of crossings is odd.
             if ((crossings % 2) == 1)
             {
                 return true;
@@ -145,14 +144,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// the point is a vertex of the line or lies in the interior of a line
         /// segment in the linestring.
         /// </returns>
-        public static Boolean IsOnLine(TCoordinate p, TCoordinate[] pt)
+        public static Boolean IsOnLine(TCoordinate p, IEnumerable<TCoordinate> line)
         {
             LineIntersector<TCoordinate> lineIntersector = new RobustLineIntersector<TCoordinate>();
 
-            for (Int32 i = 1; i < pt.Length; i++)
+            for (Int32 i = 1; i < line.Length; i++)
             {
-                TCoordinate p0 = pt[i - 1];
-                TCoordinate p1 = pt[i];
+                TCoordinate p0 = line[i - 1];
+                TCoordinate p1 = line[i];
                 lineIntersector.ComputeIntersection(p, p0, p1);
 
                 if (lineIntersector.HasIntersection)
@@ -175,48 +174,52 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// If the ring is invalid (e.g. self-crosses or touches),
         /// the computed result may not be correct.
         /// </remarks>
-        public static Boolean IsCCW(TCoordinate[] ring)
+        public static Boolean IsCCW(IEnumerable<TCoordinate> ring)
         {
-            // # of points without closing endpoint
-            Int32 nPts = ring.Length - 1;
+            TCoordinate first = default(TCoordinate);
+            TCoordinate previous = default(TCoordinate);
+            TCoordinate current = default(TCoordinate);
+            //TCoordinate next = default(TCoordinate);
 
-            // find highest point
-            TCoordinate hiPt = ring[0];
-            Int32 hiIndex = 0;
+            TCoordinate beforeHighPoint = default(TCoordinate);
+            TCoordinate highPoint = default(TCoordinate);
+            TCoordinate afterHighPoint = default(TCoordinate);
 
-            for (Int32 i = 1; i <= nPts; i++)
+            Boolean firstIsSet = false;
+            Boolean needToSetNextPoint = false;
+
+            // find highest point and the points to either side
+            foreach (TCoordinate coordinate in ring)
             {
-                TCoordinate p = ring[i];
+                if (!firstIsSet)
+	            {
+	                firstIsSet = true;
+	                first = coordinate;
+	            }
 
-                if (p[Ordinates.Y] > hiPt[Ordinates.Y])
+                previous = current;
+                current = coordinate;
+
+                if (needToSetNextPoint)
                 {
-                    hiPt = p;
-                    hiIndex = i;
+                    needToSetNextPoint = false;
+                    afterHighPoint = current;
+                }
+
+                if (current[Ordinates.Y] > highPoint[Ordinates.Y])
+                {
+                    beforeHighPoint = previous;
+                    highPoint = current;
+                    needToSetNextPoint = true;
                 }
             }
 
-            // find distinct point before highest point
-            Int32 iPrev = hiIndex;
-
-            do
+            // The high point was the last point, so wrap the next point
+            // in the ring around to the first point
+            if (needToSetNextPoint)
             {
-                iPrev = iPrev - 1;
-                if (iPrev < 0)
-                {
-                    iPrev = nPts;
-                }
-            } while (ring[iPrev].Equals(hiPt) && iPrev != hiIndex);
-
-            // find distinct point after highest point
-            Int32 iNext = hiIndex;
-
-            do
-            {
-                iNext = (iNext + 1) % nPts;
-            } while (ring[iNext].Equals(hiPt) && iNext != hiIndex);
-
-            TCoordinate prev = ring[iPrev];
-            TCoordinate next = ring[iNext];
+                afterHighPoint = first;
+            }
 
             /*
              * This check catches cases where the ring contains an A-B-A configuration of points.
@@ -224,12 +227,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
              * (including the case where the input array has fewer than 4 elements),
              * or it contains coincident line segments.
              */
-            if (prev.Equals(hiPt) || next.Equals(hiPt) || prev.Equals(next))
+            if (beforeHighPoint.Equals(highPoint) || afterHighPoint.Equals(highPoint) 
+                || beforeHighPoint.Equals(afterHighPoint))
             {
                 return false;
             }
 
-            Int32 disc = ComputeOrientation(prev, hiPt, next);
+            Int32 disc = (Int32)ComputeOrientation(beforeHighPoint, highPoint, afterHighPoint);
 
             /*
              *  If disc is exactly 0, lines are collinear.  There are two possible cases:
@@ -245,7 +249,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             if (disc == 0)
             {
                 // poly is CCW if prev x is right of next x
-                isCCW = (prev[Ordinates.X] > next[Ordinates.X]);
+                isCCW = (beforeHighPoint[Ordinates.X] > afterHighPoint[Ordinates.X]);
             }
             else
             {
@@ -258,17 +262,19 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
         /// <summary>
         /// Computes the orientation of a point q to the directed line segment p1-p2.
+        /// </summary>
+        /// <remarks>
         /// The orientation of a point relative to a directed line segment indicates
         /// which way you turn to get to q after travelling from p1 to p2.
-        /// </summary>
+        /// </remarks>
         /// <returns> 
         /// 1 if q is counter-clockwise from p1-p2,
         /// -1 if q is clockwise from p1-p2,
         /// 0 if q is collinear with p1-p2-
         /// </returns>
-        public static Int32 ComputeOrientation(TCoordinate p1, TCoordinate p2, TCoordinate q)
+        public static Orientation ComputeOrientation(TCoordinate p1, TCoordinate p2, TCoordinate q)
         {
-            return OrientationIndex(p1, p2, q);
+            return (Orientation)OrientationIndex(p1, p2, q);
         }
 
 #warning Non-robust method

@@ -1,71 +1,64 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
+using GeoAPI.Utilities;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 {
-    /// <summary> 
-    /// MonotoneChains are a way of partitioning the segments of an edge to
-    /// allow for fast searching of intersections.
-    /// They have the following properties:
-    /// the segments within a monotone chain will never intersect each other, and
-    /// the envelope of any contiguous subset of the segments in a monotone chain
-    /// is simply the envelope of the endpoints of the subset.
-    /// Property 1 means that there is no need to test pairs of segments from within
-    /// the same monotone chain for intersection.
-    /// Property 2 allows
-    /// binary search to be used to find the intersection points of two monotone chains.
-    /// For many types of real-world data, these properties eliminate a large number of
-    /// segment comparisons, producing substantial speed gains.
-    /// </summary>
-    public class MonotoneChainIndexer
+    public class MonotoneChainIndexer<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
-        public static Int32[] ToIntArray(IList list)
-        {
-            Int32[] array = new Int32[list.Count];
-            for (Int32 i = 0; i < array.Length; i++)
-            {
-                array[i] = Convert.ToInt32(list[i]);
-            }
-            return array;
-        }
+        //public static Int32[] ToIntArray(IList list)
+        //{
+        //    Int32[] array = new Int32[list.Count];
 
-        /// <summary>
-        /// Default empty constructor.
-        /// </summary>
-        public MonotoneChainIndexer() {}
+        //    for (Int32 i = 0; i < array.Length; i++)
+        //    {
+        //        array[i] = Convert.ToInt32(list[i]);
+        //    }
 
-        public Int32[] GetChainStartIndices(ICoordinate[] pts)
+        //    return array;
+        //}
+
+        private Int32 _pointCount;
+
+        public IList<Int32> GetChainStartIndices(IEnumerable<TCoordinate> points)
         {
             // find the startpoint (and endpoints) of all monotone chains in this edge
             Int32 start = 0;
-            IList startIndexList = new ArrayList();
+            List<Int32> startIndexList = new List<Int32>();
             startIndexList.Add(start);
+            _pointCount = Slice.GetLength(points);
 
             do
             {
-                Int32 last = FindChainEnd(pts, start);
+                Int32 last = findChainEnd(points, start);
                 startIndexList.Add(last);
                 start = last;
-            } while (start < pts.Length - 1);
+            } while (start < _pointCount);
 
-            // copy list to an array of ints, for efficiency
-            Int32[] startIndex = ToIntArray(startIndexList);
-            return startIndex;
+            return startIndexList.AsReadOnly();
         }
 
         /// <returns> 
         /// The index of the last point in the monotone chain.
         /// </returns>
-        private Int32 FindChainEnd(ICoordinate[] pts, Int32 start)
+        private Int32 findChainEnd(IEnumerable<TCoordinate> points, Int32 start)
         {
             // determine quadrant for chain
-            Int32 chainQuad = QuadrantOp.Quadrant(pts[start], pts[start + 1]);
+            Pair<TCoordinate> startPair = Slice.GetPairAt(points, start);
+            Int32 chainQuad = QuadrantOp<TCoordinate>.Quadrant(startPair.First, startPair.Second);
             Int32 last = start + 1;
 
-            while (last < pts.Length)
+            while (last < _pointCount)
             {
                 // compute quadrant for next possible segment in chain
-                Int32 quad = QuadrantOp.Quadrant(pts[last - 1], pts[last]);
+                Pair<TCoordinate> endPair = Slice.GetPairAt(points, last - 1);
+                Int32 quad = QuadrantOp<TCoordinate>.Quadrant(endPair.First, endPair.Second);
+
                 if (quad != chainQuad)
                 {
                     break;

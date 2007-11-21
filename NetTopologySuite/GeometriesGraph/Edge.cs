@@ -38,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         private readonly EdgeIntersectionList<TCoordinate> _edgeIntersectionList = null;
         private IExtents<TCoordinate> _extents;
         private string _name;
-        private MonotoneChainEdge _monotoneChainEdge;
+        private MonotoneChainEdge<TCoordinate> _monotoneChainEdge;
         private Boolean _isIsolated = true;
         private readonly Depth _depth = new Depth();
         private Int32 _depthDelta = 0; // the change in area depth from the R to Curve side of this edge
@@ -73,9 +73,26 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             set { _name = value; }
         }
 
-        public IList<TCoordinate> Coordinates
+        public IEnumerable<TCoordinate> Coordinates
         {
-            get { return Points; }
+            get
+            {
+                foreach (TCoordinate coordinate in _coordinates)
+                {
+                    yield return coordinate;
+                }
+            }
+        }
+
+        public IEnumerable<TCoordinate> CoordinatesReversed
+        {
+            get
+            {
+                for (int i = _coordinates.Count - 1; i >= 0; i--)
+                {
+                    yield return _coordinates[i];
+                }
+            }
         }
 
         public TCoordinate GetCoordinate(Int32 i)
@@ -137,13 +154,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             get { return _edgeIntersectionList; }
         }
 
-        public MonotoneChainEdge MonotoneChainEdge
+        public MonotoneChainEdge<TCoordinate> MonotoneChainEdge
         {
             get
             {
                 if (_monotoneChainEdge == null)
                 {
-                    _monotoneChainEdge = new MonotoneChainEdge(this);
+                    _monotoneChainEdge = new MonotoneChainEdge<TCoordinate>(this);
                 }
 
                 return _monotoneChainEdge;
@@ -251,7 +268,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         /// <summary>
         /// Update the IM with the contribution for this component.
-        /// A component only contributes if it has a labelling for both parent geometries.
+        /// A component only contributes if it has a labeling for both parent geometries.
         /// </summary>
         public override void ComputeIntersectionMatrix(IntersectionMatrix im)
         {

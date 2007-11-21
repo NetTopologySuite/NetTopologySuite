@@ -1,6 +1,10 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using GeoAPI.Coordinates;
+using GeoAPI.Indexing;
+using GisSharpBlog.NetTopologySuite.Index.Quadtree;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -8,9 +12,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// A EdgeList is a list of Edges.  It supports locating edges
     /// that are pointwise equals to a target edge.
     /// </summary>
-    public class EdgeList
+    public class EdgeList<TCoordinate> : IList<Edge<TCoordinate>>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        private IList edges = new ArrayList();
+        private readonly List<Edge<TCoordinate>> _edges = new List<Edge<TCoordinate>>();
 
         /// <summary>
         /// An index of the edges, for fast lookup.
@@ -19,41 +25,42 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// An alternative would be to use an ordered set based on the values
         /// of the edge coordinates.
         /// </summary>
-        private ISpatialIndex index = new Quadtree();
+        private readonly ISpatialIndex<TCoordinate, Edge<TCoordinate>> _index 
+            = new Quadtree<TCoordinate, Edge<TCoordinate>>();
 
-        public EdgeList() {}
 
-
-        /// <summary>
-        /// Remove the selected Edge element from the list if present.
-        /// </summary>
-        /// <param name="e">Edge element to remove from list</param>
-        public void Remove(Edge e)
-        {
-            edges.Remove(e);
-        }
+        #region IList<Edge<TCoordinate>> Members
 
         /// <summary> 
         /// Insert an edge unless it is already in the list.
         /// </summary>
-        public void Add(Edge e)
+        public void Add(Edge<TCoordinate> e)
         {
-            edges.Add(e);
-            index.Insert(e.Envelope, e);
+            _edges.Add(e);
+            _index.Insert(e.Extents, e);
         }
 
-        public void AddAll(ICollection edgeColl)
+        public void AddRange(IEnumerable<Edge<TCoordinate>> edges)
         {
-            for (IEnumerator i = edgeColl.GetEnumerator(); i.MoveNext();)
-            {
-                Add((Edge) i.Current);
-            }
+            _edges.AddRange(edges);
         }
 
-        public IList Edges
+        public int IndexOf(Edge<TCoordinate> item)
         {
-            get { return edges; }
+            return _edges.IndexOf(item);
         }
+
+        public void Insert(int index, Edge<TCoordinate> item)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void RemoveAt(int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
 
         // <FIX> fast lookup for edges
         /// <summary>
@@ -64,36 +71,25 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// equal edge, if there is one already in the list,
         /// null otherwise.
         /// </returns>
-        public Edge FindEqualEdge(Edge e)
+        public Edge<TCoordinate> FindEqualEdge(Edge<TCoordinate> e)
         {
-            ICollection testEdges = index.Query(e.Envelope);
+            IEnumerable<Edge<TCoordinate>> result = _index.Query(e.Extents);
 
-            for (IEnumerator i = testEdges.GetEnumerator(); i.MoveNext();)
+            foreach (Edge<TCoordinate> edge in result)
             {
-                Edge testEdge = (Edge) i.Current;
-
-                if (testEdge.Equals(e))
+                if (edge.Equals(e))
                 {
-                    return testEdge;
+                    return edge;
                 }
             }
 
             return null;
         }
 
-        public IEnumerator GetEnumerator()
+        public Edge<TCoordinate> this[Int32 index]
         {
-            return edges.GetEnumerator();
-        }
-
-        public Edge this[Int32 index]
-        {
-            get { return Get(index); }
-        }
-
-        public Edge Get(Int32 i)
-        {
-            return (Edge) edges[i];
+            get { return _edges[index]; }
+            set { throw new NotSupportedException(); }
         }
 
         /// <summary>
@@ -103,43 +99,47 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Index, if e is already in the list,
         /// -1 otherwise.
         /// </returns>
-        public Int32 FindEdgeIndex(Edge e)
+        public Int32 FindEdgeIndex(Edge<TCoordinate> e)
         {
-            for (Int32 i = 0; i < edges.Count; i++)
-            {
-                if (((Edge) edges[i]).Equals(e))
-                {
-                    return i;
-                }
-            }
-
-            return -1;
+            return _edges.FindIndex(delegate(Edge<TCoordinate> match)
+                                    {
+                                        return e == match;
+                                    });
         }
 
         public void Write(StreamWriter outstream)
         {
             outstream.Write("MULTILINESTRING ( ");
 
-            for (Int32 j = 0; j < edges.Count; j++)
-            {
-                Edge e = (Edge) edges[j];
+            Boolean pastFirstEdge = false;
 
-                if (j > 0)
+            foreach (Edge<TCoordinate> e in _edges)
+            {
+                if (pastFirstEdge)
                 {
                     outstream.Write(",");
                 }
+                else
+                {
+                    pastFirstEdge = true;
+                }
 
                 outstream.Write("(");
-                ICoordinate[] pts = e.Coordinates;
-                
-                for (Int32 i = 0; i < pts.Length; i++)
+
+                Boolean pastFirstCoordinate = false;
+
+                foreach (TCoordinate coordinate in e.Coordinates)
                 {
-                    if (i > 0)
+                    if (pastFirstCoordinate)
                     {
                         outstream.Write(",");
                     }
+                    else
+                    {
+                        pastFirstCoordinate = true;
+                    }
 
-                    outstream.Write(pts[i].X + " " + pts[i].Y);
+                    outstream.Write(coordinate[Ordinates.X] + " " + coordinate[Ordinates.Y]);
                 }
 
                 outstream.WriteLine(")");
@@ -147,5 +147,60 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             outstream.Write(")  ");
         }
+
+        #region ICollection<Edge<TCoordinate>> Members
+
+        public void Clear()
+        {
+            _edges.Clear();
+        }
+
+        public Boolean Contains(Edge<TCoordinate> item)
+        {
+            return _edges.Contains(item);
+        }
+
+        public void CopyTo(Edge<TCoordinate>[] array, Int32 arrayIndex)
+        {
+            _edges.CopyTo(array, arrayIndex);
+        }
+
+        public Int32 Count
+        {
+            get { return _edges.Count; }
+        }
+
+        public Boolean IsReadOnly
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Remove the selected Edge element from the list if present.
+        /// </summary>
+        /// <param name="e">Edge element to remove from list.</param>
+        public Boolean Remove(Edge<TCoordinate> e)
+        {
+            return _edges.Remove(e);
+        }
+
+        #endregion
+
+        #region IEnumerable<Edge<TCoordinate>> Members
+
+        public IEnumerator<Edge<TCoordinate>> GetEnumerator()
+        {
+            return _edges.GetEnumerator();
+        }
+        #endregion
+
+        #region IEnumerable Members
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return _edges.GetEnumerator();
+        }
+
+        #endregion
     }
 }

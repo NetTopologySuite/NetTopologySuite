@@ -1,31 +1,20 @@
 using System;
+using System.Diagnostics;
 
 namespace GisSharpBlog.NetTopologySuite.Utilities
 {
     /// <summary>
     /// A utility for making programming assertions.
     /// </summary>
-    public class Assert
+    public static class Assert
     {
-        /// <summary>
-        /// Only static methods!
-        /// </summary>
-        private Assert() {}
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="assertion"></param>
+        [Conditional("DEBUG")]
         public static void IsTrue(Boolean assertion)
         {
             IsTrue(assertion, null);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="assertion"></param>
-        /// <param name="message"></param>
+        [Conditional("DEBUG")]
         public static void IsTrue(Boolean assertion, string message)
         {
             if (!assertion)
@@ -41,22 +30,13 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="expectedValue"></param>
-        /// <param name="actualValue"></param>
+        [Conditional("DEBUG")]
         public static void IsEquals(Object expectedValue, Object actualValue)
         {
             IsEquals(expectedValue, actualValue, null);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="expectedValue"></param>
-        /// <param name="actualValue"></param>
-        /// <param name="message"></param>
+        [Conditional("DEBUG")]
         public static void IsEquals(Object expectedValue, Object actualValue, string message)
         {
             if (!actualValue.Equals(expectedValue))
@@ -66,22 +46,19 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        [Conditional("DEBUG")]
         public static void ShouldNeverReachHere()
         {
             ShouldNeverReachHere(null);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="message"></param>
+        [Conditional("DEBUG")]
         public static void ShouldNeverReachHere(string message)
         {
             throw new AssertionFailedException("Should never reach here"
-                                               + (message != null ? ": " + message : String.Empty));
+                                               + (message != null 
+                                                    ? ": " + message 
+                                                    : String.Empty));
         }
     }
 }

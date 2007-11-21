@@ -1,25 +1,19 @@
 using System;
-using System.Collections;
-using System.Text;
-
-using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
+using GeoAPI.Coordinates;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public class NodeFactory
+    public class NodeFactory<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
         /// <summary> 
         /// The basic node constructor does not allow for incident edges.
         /// </summary>
-        /// <param name="coord"></param>
-        public virtual Node CreateNode(ICoordinate coord)
+        public virtual Node<TCoordinate> CreateNode(TCoordinate coord)
         {
-            return new Node(coord, null);
+            return new Node<TCoordinate>(coord, null);
         }
     }
 }

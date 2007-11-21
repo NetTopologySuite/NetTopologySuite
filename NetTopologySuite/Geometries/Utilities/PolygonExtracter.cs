@@ -9,7 +9,7 @@ using GisSharpBlog.NetTopologySuite.Geometries;
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
     /// <summary> 
-    /// Extracts all the 2-dimensional (<c>Polygon</c>) components from a <see cref="Geometry{TCoordinate}"/>.
+    /// Extracts all the 2-dimensional (<see cref="Polygon{TCoordinate}" />) components from a <see cref="Geometry{TCoordinate}"/>.
     /// </summary>
     public class PolygonExtracter : IGeometryFilter
     {

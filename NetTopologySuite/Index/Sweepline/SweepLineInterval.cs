@@ -5,31 +5,32 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
     // DESIGN_NOTE: Looks like a value type
     public class SweepLineInterval
     {
-        private Double min, max;
-        private Object item;
+        private readonly Double _min;
+        private readonly Double _max;
+        private readonly Object _item;
 
         public SweepLineInterval(Double min, Double max) : this(min, max, null) {}
 
         public SweepLineInterval(Double min, Double max, object item)
         {
-            this.min = min < max ? min : max;
-            this.max = max > min ? max : min;
-            this.item = item;
+            _min = min < max ? min : max;
+            _max = max > min ? max : min;
+            _item = item;
         }
 
         public Double Min
         {
-            get { return min; }
+            get { return _min; }
         }
 
         public Double Max
         {
-            get { return max; }
+            get { return _max; }
         }
 
         public Object Item
         {
-            get { return item; }
+            get { return _item; }
         }
     }
 }

@@ -1,23 +1,29 @@
 using System;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     /// <summary> 
     /// Computes a point in the interior of an point point.
+    /// </summary>
+    /// <remarks>
     /// Algorithm:
     /// Find a point which is closest to the centroid of the point.
-    /// </summary>
-    public class InteriorPointPoint
+    /// </remarks>
+    public class InteriorPointPoint<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        private ICoordinate centroid;
-        private Double minDistance = Double.MaxValue;
-        private ICoordinate interiorPoint = null;
+        private readonly TCoordinate _centroid;
+        private Double _minDistance = Double.MaxValue;
+        private TCoordinate _interiorPoint = default(TCoordinate);
 
-        public InteriorPointPoint(IGeometry g)
+        public InteriorPointPoint(IGeometry<TCoordinate> g)
         {
-            centroid = g.Centroid.Coordinate;
+            _centroid = g.Centroid.Coordinate;
             Add(g);
         }
 
@@ -26,17 +32,18 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// point. If a Geometry is not of dimension 0 it is not tested.
         /// </summary>
         /// <param name="geom">The point to add.</param>
-        private void Add(IGeometry geom)
+        private void Add(IGeometry<TCoordinate> geom)
         {
-            if (geom is IPoint)
+            if (geom is IPoint<TCoordinate>)
             {
-                Add(geom.Coordinate);
+                IPoint<TCoordinate> point = geom as IPoint<TCoordinate>;
+                Add(point.Coordinate);
             }
-            else if (geom is IGeometryCollection)
+            else if (geom is IGeometryCollection<TCoordinate>)
             {
-                IGeometryCollection gc = (IGeometryCollection) geom;
+                IGeometryCollection<TCoordinate> gc = geom as IGeometryCollection<TCoordinate>;
 
-                foreach (IGeometry geometry in gc.Geometries)
+                foreach (IGeometry<TCoordinate> geometry in gc)
                 {
                     Add(geometry);
                 }
@@ -45,18 +52,18 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
         private void Add(ICoordinate point)
         {
-            Double dist = point.Distance(centroid);
+            Double dist = point.Distance(_centroid);
 
-            if (dist < minDistance)
+            if (dist < _minDistance)
             {
-                interiorPoint = new Coordinate(point);
-                minDistance = dist;
+                _interiorPoint = new TCoordinate(point);
+                _minDistance = dist;
             }
         }
 
         public ICoordinate InteriorPoint
         {
-            get { return interiorPoint; }
+            get { return _interiorPoint; }
         }
     }
 }

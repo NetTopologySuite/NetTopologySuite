@@ -1,11 +1,13 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using Iesi_NTS.Collections;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 {
@@ -14,7 +16,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// method for <see cref="Geometry{TCoordinate}" />s.
     /// See the documentation for the various geometry types for a specification of validity.
     /// </summary>
-    public class IsValidOp
+    public class IsValidOp<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
         /// <summary>
         /// Checks whether a coordinate is valid for processing.
@@ -23,24 +27,28 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// </summary>
         /// <param name="coord">The coordinate to validate.</param>
         /// <returns><see langword="true"/> if the coordinate is valid.</returns>
-        public static Boolean IsValidCoordinate(ICoordinate coord)
+        public static Boolean IsValidCoordinate(TCoordinate coord)
         {
-            if (Double.IsNaN(coord.X))
+            if (Double.IsNaN(coord[Ordinates.X]))
             {
                 return false;
             }
-            if (Double.IsInfinity(coord.X))
+
+            if (Double.IsInfinity(coord[Ordinates.X]))
             {
                 return false;
             }
-            if (Double.IsNaN(coord.Y))
+
+            if (Double.IsNaN(coord[Ordinates.Y]))
             {
                 return false;
             }
-            if (Double.IsInfinity(coord.Y))
+
+            if (Double.IsInfinity(coord[Ordinates.Y]))
             {
                 return false;
             }
+
             return true;
         }
 
@@ -49,12 +57,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// that is NOT a node in the edge for the list of searchCoords.
         /// </summary>
         /// <returns>The point found, or <see langword="null" /> if none found.</returns>
-        public static ICoordinate FindPointNotNode(ICoordinate[] testCoords, ILinearRing searchRing, GeometryGraph graph)
+        public static TCoordinate FindPointNotNode(IEnumerable<TCoordinate> testCoords, ILinearRing<TCoordinate> searchRing, GeometryGraph<TCoordinate> graph)
         {
             // find edge corresponding to searchRing.
-            Edge searchEdge = graph.FindEdge(searchRing);
+            Edge<TCoordinate> searchEdge = graph.FindEdge(searchRing);
+            
             // find a point in the testCoords which is not a node of the searchRing
-            EdgeIntersectionList eiList = searchEdge.EdgeIntersectionList;
+            EdgeIntersectionList<TCoordinate> eiList = searchEdge.EdgeIntersectionList;
+            
             // somewhat inefficient - is there a better way? (Use a node map, for instance?)
             foreach (ICoordinate pt in testCoords)
             {

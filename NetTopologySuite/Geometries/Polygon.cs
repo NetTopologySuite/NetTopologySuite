@@ -1,6 +1,8 @@
 using System;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -14,15 +16,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// <see href="http://www.opengis.org/techno/specs.htm"/> OpenGIS Simple Features Specification for SQL.     
     /// </summary>
     [Serializable]
-    public class Polygon : Geometry, IPolygon
+    public class Polygon<TCoordinate> : Geometry<TCoordinate>, IPolygon<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
         /// <summary>
-        /// Represents an empty <c>Polygon</c>.
+        /// Represents an empty <see cref="Polygon{TCoordinate"/>.
         /// </summary>
-        public static readonly IPolygon Empty = new GeometryFactory().CreatePolygon(null, null);
+        public static readonly IPolygon<TCoordinate> Empty = new GeometryFactory().CreatePolygon(null, null);
 
         /// <summary>
-        /// The exterior boundary, or <see langword="null" /> if this <c>Polygon</c>
+        /// The exterior boundary, or <see langword="null" /> if this <see cref="Polygon{TCoordinate}" />
         /// is the empty point.
         /// </summary>
         protected ILinearRing shell = null;
@@ -36,13 +40,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Initializes a new instance of the <see cref="T:Polygon"/> class.
         /// </summary>
         /// <param name="shell">
-        /// The outer boundary of the new <c>Polygon</c>,
-        /// or <see langword="null" /> or an empty <c>LinearRing</c> if the empty
+        /// The outer boundary of the new <see cref="Polygon{TCoordinate}" />,
+        /// or <see langword="null" /> or an empty <see cref="LinearRing{TCoordinate}" /> if the empty
         /// point is to be created.
         /// </param>
         /// <param name="holes">
-        /// The inner boundaries of the new <c>Polygon</c>
-        /// , or <see langword="null" /> or empty <c>LinearRing</c>s if the empty
+        /// The inner boundaries of the new <see cref="Polygon{TCoordinate}" />
+        /// , or <see langword="null" /> or empty <see cref="LinearRing{TCoordinate}" />s if the empty
         /// point is to be created.
         /// </param>
         /// <remarks>
@@ -52,17 +56,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public Polygon(ILinearRing shell, ILinearRing[] holes) : this(shell, holes, DefaultFactory) {}
 
         /// <summary>
-        /// Constructs a <c>Polygon</c> with the given exterior boundary and
+        /// Constructs a <see cref="Polygon{TCoordinate}" /> with the given exterior boundary and
         /// interior boundaries.
         /// </summary>       
         /// <param name="shell">
-        /// The outer boundary of the new <c>Polygon</c>,
-        /// or <see langword="null" /> or an empty <c>LinearRing</c> if the empty
+        /// The outer boundary of the new <see cref="Polygon{TCoordinate}" />,
+        /// or <see langword="null" /> or an empty <see cref="LinearRing{TCoordinate}" /> if the empty
         /// point is to be created.
         /// </param>
         /// <param name="holes">
-        /// The inner boundaries of the new <c>Polygon</c>
-        /// , or <see langword="null" /> or empty <c>LinearRing</c>s if the empty
+        /// The inner boundaries of the new <see cref="Polygon{TCoordinate}" />
+        /// , or <see langword="null" /> or empty <see cref="LinearRing{TCoordinate}" />s if the empty
         /// point is to be created.
         /// </param>
         public Polygon(ILinearRing shell, ILinearRing[] holes, IGeometryFactory factory) : base(factory)
@@ -207,7 +211,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns the perimeter of this <c>Polygon</c>.
+        /// Returns the perimeter of this <see cref="Polygon{TCoordinate}" />.
         /// </summary>
         public override Double Length
         {
@@ -443,21 +447,21 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
-        /// Constructs a <c>Polygon</c> with the given exterior boundary.
+        /// Constructs a <see cref="Polygon{TCoordinate}" /> with the given exterior boundary.
         /// </summary>
         /// <param name="shell">
-        /// The outer boundary of the new <c>Polygon</c>,
-        /// or <see langword="null" /> or an empty <c>LinearRing</c> if the empty
+        /// The outer boundary of the new <see cref="Polygon{TCoordinate}" />,
+        /// or <see langword="null" /> or an empty <see cref="LinearRing{TCoordinate}" /> if the empty
         /// polygon is to be created.
         /// </param>
         public Polygon(LinearRing shell, GeometryFactory factory) : this(shell, null, factory) {}
 
         /// <summary>
-        /// Constructs a <c>Polygon</c> with the given exterior boundary.
+        /// Constructs a <see cref="Polygon{TCoordinate}" /> with the given exterior boundary.
         /// </summary>
         /// <param name="shell">
-        /// The outer boundary of the new <c>Polygon</c>,
-        /// or <see langword="null" /> or an empty <c>LinearRing</c> if the empty
+        /// The outer boundary of the new <see cref="Polygon{TCoordinate}" />,
+        /// or <see langword="null" /> or an empty <see cref="LinearRing{TCoordinate}" /> if the empty
         /// polygon is to be created.
         /// </param>
         public Polygon(LinearRing shell) : this(shell, null, DefaultFactory) {}

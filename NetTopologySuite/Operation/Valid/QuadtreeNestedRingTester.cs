@@ -9,7 +9,7 @@ using GisSharpBlog.NetTopologySuite.Utilities;
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 {
     /// <summary>
-    /// Tests whether any of a set of <c>LinearRing</c>s are
+    /// Tests whether any of a set of <see cref="LinearRing{TCoordinate}" />s are
     /// nested inside another ring in the set, using a <c>Quadtree</c>
     /// index to speed up the comparisons.
     /// </summary>

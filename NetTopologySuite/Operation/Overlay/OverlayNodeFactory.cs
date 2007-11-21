@@ -1,28 +1,21 @@
 using System;
-using System.Collections;
-using System.Text;
-
-using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
+using GeoAPI.Coordinates;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 {
     /// <summary>
-    /// Creates nodes for use in the <c>PlanarGraph</c>s constructed during
-    /// overlay operations.
+    /// Creates nodes for use in the <see cref="PlanarGraph{TCoordinate}"/>s 
+    /// constructed during overlay operations.
     /// </summary>
-    public class OverlayNodeFactory : NodeFactory
+    public class OverlayNodeFactory<TCoordinate> : NodeFactory<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="coord"></param>
-        /// <returns></returns>
-        public override Node CreateNode(ICoordinate coord)
+        public override Node<TCoordinate> CreateNode(TCoordinate coord)
         {
-            return new Node(coord, new DirectedEdgeStar());
+            return new Node<TCoordinate>(coord, new DirectedEdgeStar<TCoordinate>());
         }
     }
 }

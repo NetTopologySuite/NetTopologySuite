@@ -6,7 +6,8 @@ using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 {
     /// <summary>
-    /// Implements the simple graph of Nodes and EdgeEnd which is all that is
+    /// Implements a simple graph of <see cref="Node{TCoordinate}"/>s and 
+    /// <see cref="EdgeEnd{TCoordinates}"/>s which is all that is
     /// required to determine topological relationships between Geometries.
     /// Also supports building a topological graph of a single Geometry, to
     /// allow verification of valid topology.    
@@ -22,15 +23,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// have their topology determined implicitly, without creating a Node object
     /// to represent them.
     /// </summary>
-    public class RelateNodeGraph
+    public class RelateNodeGraph<TCoordinate>
     {
-        private NodeMap nodes = new NodeMap(new RelateNodeFactory());
+        private NodeMap<TCoordinate> _nodes = new NodeMap<TCoordinate>(new RelateNodeFactory());
 
         public RelateNodeGraph() {}
 
         public IEnumerator GetNodeEnumerator()
         {
-            return nodes.GetEnumerator();
+            return _nodes.GetEnumerator();
         }
 
         public void Build(GeometryGraph geomGraph)
@@ -38,7 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             // compute nodes for intersections between previously noded edges
             ComputeIntersectionNodes(geomGraph, 0);
             /*
-            * Copy the labelling for the nodes in the parent Geometry.  These override
+            * Copy the labeling for the nodes in the parent Geometry.  These override
             * any labels determined by intersections.
             */
             CopyNodesAndLabels(geomGraph, 0);
@@ -55,8 +56,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// Insert nodes for all intersections on the edges of a Geometry.
         /// Label the created nodes the same as the edge label if they do not already have a label.
         /// This allows nodes created by either self-intersections or
-        /// mutual intersections to be labelled.
-        /// Endpoint nodes will already be labelled from when they were inserted.
+        /// mutual intersections to be labeled.
+        /// Endpoint nodes will already be labeled from when they were inserted.
         /// Precondition: edge intersections have been computed.
         /// </summary>
         public void ComputeIntersectionNodes(GeometryGraph geomGraph, Int32 argIndex)
@@ -68,7 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                 for (IEnumerator eiIt = e.EdgeIntersectionList.GetEnumerator(); eiIt.MoveNext();)
                 {
                     EdgeIntersection ei = (EdgeIntersection) eiIt.Current;
-                    RelateNode n = (RelateNode) nodes.AddNode(ei.Coordinate);
+                    RelateNode n = (RelateNode) _nodes.AddNode(ei.Coordinate);
                     if (eLoc == Locations.Boundary)
                     {
                         n.SetLabelBoundary(argIndex);
@@ -95,7 +96,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             for (IEnumerator nodeIt = geomGraph.GetNodeEnumerator(); nodeIt.MoveNext();)
             {
                 Node graphNode = (Node) nodeIt.Current;
-                Node newNode = nodes.AddNode(graphNode.Coordinate);
+                Node newNode = _nodes.AddNode(graphNode.Coordinate);
                 newNode.SetLabel(argIndex, graphNode.Label.GetLocation(argIndex));
             }
         }
@@ -105,7 +106,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             for (IEnumerator i = ee.GetEnumerator(); i.MoveNext();)
             {
                 EdgeEnd e = (EdgeEnd) i.Current;
-                nodes.Add(e);
+                _nodes.Add(e);
             }
         }
     }

@@ -131,7 +131,7 @@ namespace RTools_NTS.Util
             }
             else
             {
-                return (obj.Equals(((Token) other).obj));
+                return (obj.Equals(((Token)other).obj));
             }
         }
 
@@ -175,7 +175,7 @@ namespace RTools_NTS.Util
         /// <returns>Boolean</returns>
         public static Boolean operator ==(Token t, Object o)
         {
-            if ((object) t == null)
+            if ((object)t == null)
             {
                 if (o == null)
                 {
@@ -201,7 +201,7 @@ namespace RTools_NTS.Util
         /// <returns>Boolean</returns>
         public static Boolean operator !=(Token t, Object o)
         {
-            if ((object) t == null)
+            if ((object)t == null)
             {
                 if (o == null)
                 {
@@ -223,7 +223,7 @@ namespace RTools_NTS.Util
         /// <returns>Boolean</returns>
         public static Boolean operator ==(Token t, char c)
         {
-            if ((object) t == null)
+            if ((object)t == null)
             {
                 return (false);
             }
@@ -238,7 +238,7 @@ namespace RTools_NTS.Util
         /// <returns>Boolean</returns>
         public static Boolean operator !=(Token t, char c)
         {
-            if ((object) t == null)
+            if ((object)t == null)
             {
                 return (false);
             }
@@ -253,7 +253,7 @@ namespace RTools_NTS.Util
         /// <returns>Boolean</returns>
         public static Boolean operator ==(Token t, string s)
         {
-            if ((object) t == null)
+            if ((object)t == null)
             {
                 if (s == null)
                 {
@@ -275,7 +275,7 @@ namespace RTools_NTS.Util
         /// <returns>Boolean</returns>
         public static Boolean operator !=(Token t, string s)
         {
-            if ((object) t == null)
+            if ((object)t == null)
             {
                 if (s == null)
                 {
@@ -351,10 +351,10 @@ namespace RTools_NTS.Util
     public class EolToken : Token
     {
         /// <summary>Default constructor.</summary>
-        public EolToken() : base(0) {}
+        public EolToken() : base(0) { }
 
         /// <summary>Constructor that takes line number.</summary>
-        public EolToken(Int32 line) : base(line) {}
+        public EolToken(Int32 line) : base(line) { }
 
         /// <summary>Override, see base <see cref="Token"/></summary>
         public override string ToDebugString()
@@ -404,10 +404,10 @@ namespace RTools_NTS.Util
     public class EofToken : Token
     {
         /// <summary>Default constructor.</summary>
-        public EofToken() : base(0) {}
+        public EofToken() : base(0) { }
 
         /// <summary>Constructor that takes line number.</summary>
-        public EofToken(Int32 line) : base(line) {}
+        public EofToken(Int32 line) : base(line) { }
 
         /// <summary>Override, see base <see cref="Token"/></summary>
         public override string ToString()
@@ -457,14 +457,16 @@ namespace RTools_NTS.Util
     public abstract class StringToken : Token
     {
         /// <summary>Default constructor.</summary>
-        public StringToken(string s) : base(0)
+        public StringToken(string s)
+            : base(0)
         {
             obj = s;
         }
 
         /// <summary>Constructor with the specified value
         /// and line number.</summary>
-        public StringToken(string s, Int32 line) : base(line)
+        public StringToken(string s, Int32 line)
+            : base(line)
         {
             obj = s;
         }
@@ -472,19 +474,19 @@ namespace RTools_NTS.Util
         /// <summary>Override, see base <see cref="Token"/></summary>
         public override string ToDebugString()
         {
-            return (GetType().Name + ":'" + (string) obj + "'");
+            return (GetType().Name + ":'" + (string)obj + "'");
         }
 
         /// <summary>Override, see base <see cref="Token"/></summary>
         public override string ToString()
         {
-            return ((string) obj);
+            return ((string)obj);
         }
 
         /// <summary>Override, see base <see cref="Token"/></summary>
         public override string StringValue
         {
-            get { return ((string) obj); }
+            get { return ((string)obj); }
         }
 
         /// <summary>Override, see base <see cref="Token"/></summary>
@@ -505,11 +507,11 @@ namespace RTools_NTS.Util
     public class WordToken : StringToken
     {
         /// <summary>Constructor with the specified value.</summary>
-        public WordToken(string s) : base(s) {}
+        public WordToken(string s) : base(s) { }
 
         /// <summary>Constructor with the specified value
         /// and line number.</summary>
-        public WordToken(string s, Int32 line) : base(s, line) {}
+        public WordToken(string s, Int32 line) : base(s, line) { }
     }
 
     #endregion
@@ -522,11 +524,11 @@ namespace RTools_NTS.Util
     public class QuoteToken : StringToken
     {
         /// <summary>Constructor with the specified value.</summary>
-        public QuoteToken(string s) : base(s) {}
+        public QuoteToken(string s) : base(s) { }
 
         /// <summary>Constructor with the specified value
         /// and line number.</summary>
-        public QuoteToken(string s, Int32 line) : base(s, line) {}
+        public QuoteToken(string s, Int32 line) : base(s, line) { }
     }
 
     #endregion
@@ -540,11 +542,11 @@ namespace RTools_NTS.Util
     public class CommentToken : StringToken
     {
         /// <summary>Constructor with the specified value.</summary>
-        public CommentToken(string s) : base(s) {}
+        public CommentToken(string s) : base(s) { }
 
         /// <summary>Constructor with the specified value
         /// and line number.</summary>
-        public CommentToken(string s, Int32 line) : base(s, line) {}
+        public CommentToken(string s, Int32 line) : base(s, line) { }
     }
 
     #endregion
@@ -557,11 +559,11 @@ namespace RTools_NTS.Util
     public class WhitespaceToken : StringToken
     {
         /// <summary>Constructor with the specified value.</summary>
-        public WhitespaceToken(string s) : base(s) {}
+        public WhitespaceToken(string s) : base(s) { }
 
         /// <summary>Constructor with the specified value
         /// and line number.</summary>
-        public WhitespaceToken(string s, Int32 line) : base(s, line) {}
+        public WhitespaceToken(string s, Int32 line) : base(s, line) { }
     }
 
     #endregion
@@ -575,7 +577,8 @@ namespace RTools_NTS.Util
     {
         /// <summary>Constructor with the specified value
         /// and line number.</summary>
-        public CharToken(string s, Int32 line) : base(line)
+        public CharToken(string s, Int32 line)
+            : base(line)
         {
             if (s.Length > 0)
             {
@@ -584,13 +587,15 @@ namespace RTools_NTS.Util
         }
 
         /// <summary>Constructor with the specified value.</summary>
-        public CharToken(char c) : base(0)
+        public CharToken(char c)
+            : base(0)
         {
             obj = c;
         }
 
         /// <summary>Constructor with the specified value.</summary>
-        public CharToken(char c, Int32 line) : base(line)
+        public CharToken(char c, Int32 line)
+            : base(line)
         {
             obj = c;
         }
@@ -598,13 +603,13 @@ namespace RTools_NTS.Util
         /// <summary>Override, see base <see cref="Token"/></summary>
         public override string ToDebugString()
         {
-            return (String.Format("CharToken: {0}", (Char) obj));
+            return (String.Format("CharToken: {0}", (Char)obj));
         }
 
         /// <summary>Override, see base <see cref="Token"/></summary>
         public override string ToString()
         {
-            return (String.Format("{0}", (Char) obj));
+            return (String.Format("{0}", (Char)obj));
         }
 
         /// <summary>Override, see base <see cref="Token"/></summary>
@@ -616,13 +621,13 @@ namespace RTools_NTS.Util
         /// <summary>Override, see base <see cref="Token"/></summary>
         public override string StringValue
         {
-            get { return (String.Format("{0}", (Char) obj)); }
+            get { return (String.Format("{0}", (Char)obj)); }
         }
 
         /// <summary>Override, see base <see cref="Token"/></summary>
         public override Boolean Equals(object other)
         {
-            if ((object) other == null)
+            if ((object)other == null)
             {
                 return (false);
             }
@@ -630,11 +635,11 @@ namespace RTools_NTS.Util
             {
                 return (false);
             }
-            if ((obj == null) || (((CharToken) other).obj == null))
+            if ((obj == null) || (((CharToken)other).obj == null))
             {
                 return (false);
             }
-            if (((Char) obj).Equals((Char) ((CharToken) other).Object))
+            if (((Char)obj).Equals((Char)((CharToken)other).Object))
             {
                 return (true);
             }
@@ -647,7 +652,7 @@ namespace RTools_NTS.Util
 
     #endregion
 
-    #region FloatToken   
+    #region FloatToken
 
     /// <summary>
     /// Token type for floating point numbers, stored internally as a Double.
@@ -672,76 +677,76 @@ namespace RTools_NTS.Util
         /// <summary>
         /// Constructor with the specified value.
         /// </summary>
-        public FloatToken(string s) : base(0)
+        public FloatToken(string s)
+            : base(0)
         {
+            obj = null;
+
             try
             {
                 obj = Double.Parse(s, GetNumberFormatInfo());
             }
-            catch (Exception)
-            {
-                obj = null;
-            }
+            catch (ArgumentNullException) { }
+            catch (FormatException) { }
+            catch (OverflowException) { }
         }
 
         /// <summary>
         /// Constructor with the specified value.
         /// </summary>
-        public FloatToken(float f) : base(0)
+        public FloatToken(float f)
+            : base(0)
         {
+            obj = null;
+
             try
             {
-                obj = (Double) f;
+                obj = (Double)f;
             }
-            catch (Exception)
-            {
-                obj = null;
-            }
+            catch (ArgumentNullException) { }
+            catch (FormatException) { }
+            catch (OverflowException) { }
         }
 
         /// <summary>
         /// Constructor with the specified value.
         /// </summary>
-        public FloatToken(Double d) : base(0)
+        public FloatToken(Double d)
+            : base(0)
         {
-            try
-            {
-                obj = d;
-            }
-            catch (Exception)
-            {
-                obj = null;
-            }
+            obj = d;
         }
 
         /// <summary>
         /// Constructor with the specified value and line number.
         /// </summary>
-        public FloatToken(string s, Int32 line) : base(line)
+        public FloatToken(string s, Int32 line)
+            : base(line)
         {
+            obj = null;
+
             try
             {
                 obj = Double.Parse(s, GetNumberFormatInfo());
             }
-            catch (Exception)
-            {
-                obj = null;
-            }
+            catch (ArgumentNullException) { }
+            catch (FormatException) { }
+            catch (OverflowException) { }
         }
 
         /// <summary>
         /// Constructor with the specified value and line number.
         /// </summary>
-        public FloatToken(Double f, Int32 line) : base(line)
+        public FloatToken(Double f, Int32 line)
+            : base(line)
         {
+            obj = null;
+
             try
             {
-                obj = (Double) f;
+                obj = (Double)f;
             }
-            catch (Exception)
-            {
-                obj = null;
-            }
+            catch (InvalidCastException) { }
         }
 
         /// <summary>
@@ -751,7 +756,7 @@ namespace RTools_NTS.Util
         {
             if (obj != null)
             {
-                return (String.Format("FloatToken: {0}", (Double) obj));
+                return (String.Format("FloatToken: {0}", (Double)obj));
             }
             else
             {
@@ -766,7 +771,7 @@ namespace RTools_NTS.Util
         {
             if (obj != null)
             {
-                return (String.Format("{0}", (Double) obj));
+                return (String.Format("{0}", (Double)obj));
             }
             else
             {
@@ -792,7 +797,7 @@ namespace RTools_NTS.Util
                 if (obj != null)
                 {
                     // return(String.Format("{0:f9}", (Double)obj)); 
-                    return (String.Format("{0}", (Double) obj));
+                    return (String.Format("{0}", (Double)obj));
                 }
                 else
                 {
@@ -806,7 +811,7 @@ namespace RTools_NTS.Util
         /// </summary>
         public override Boolean Equals(object other)
         {
-            if ((object) other == null)
+            if ((object)other == null)
             {
                 return (false);
             }
@@ -814,11 +819,11 @@ namespace RTools_NTS.Util
             {
                 return (false);
             }
-            if ((obj == null) || (((FloatToken) other).obj == null))
+            if ((obj == null) || (((FloatToken)other).obj == null))
             {
                 return (false);
             }
-            if (((Double) obj).Equals((Double) ((FloatToken) other).Object))
+            if (((Double)obj).Equals((Double)((FloatToken)other).Object))
             {
                 return (true);
             }
@@ -839,33 +844,38 @@ namespace RTools_NTS.Util
     public class IntToken : Token
     {
         /// <summary>Constructor with the specified value.</summary>
-        public IntToken(Int32 i) : base(0)
+        public IntToken(Int32 i)
+            : base(0)
         {
             obj = i;
         }
 
         /// <summary>Constructor with the specified value.</summary>
-        public IntToken(long i) : base(0)
+        public IntToken(long i)
+            : base(0)
         {
             obj = i;
         }
 
         /// <summary>Constructor with the specified value.</summary>
-        public IntToken(string s) : base(0)
+        public IntToken(string s)
+            : base(0)
         {
             Parse(s);
         }
 
         /// <summary>Constructor with the specified value
         /// and line number.</summary>
-        public IntToken(string s, Int32 line) : base(line)
+        public IntToken(string s, Int32 line)
+            : base(line)
         {
             Parse(s);
         }
 
         /// <summary>Constructor with the specified value
         /// and line number.</summary>
-        public IntToken(Int32 i, Int32 line) : base(line)
+        public IntToken(Int32 i, Int32 line)
+            : base(line)
         {
             obj = i;
         }
@@ -873,7 +883,8 @@ namespace RTools_NTS.Util
         /// <summary> 
         /// Constructor for a 64 bit Int32 
         /// </summary> 
-        public IntToken(long l, Int32 line) : base(line)
+        public IntToken(long l, Int32 line)
+            : base(line)
         {
             obj = l;
         }
@@ -914,19 +925,35 @@ namespace RTools_NTS.Util
                 obj = Int32.Parse(s);
                 return;
             }
-            catch (Exception)
+            catch (Exception ex1)
             {
-                // try 64 bit base 10
-                try
+                if (ex1 is FormatException || ex1 is OverflowException)
                 {
-                    obj = Int64.Parse(s);
-                    return;
+                    // try 64 bit base 10
+                    try
+                    {
+                        obj = Int64.Parse(s);
+                        return;
+                    }
+                    catch (Exception ex2)
+                    {
+                        if (!(ex2 is FormatException || ex2 is OverflowException))
+                        {
+                            throw;
+                        }
+
+                        // don't give up yet
+                    }
                 }
-                catch (Exception) {} // don't give up yet
+                else
+                {
+                    throw;
+                }
             }
 
             // not a normal Int32, try other bases
-            Int32[] bases = {16, 2, 8};
+            Int32[] bases = { 16, 2, 8 };
+
             foreach (Int32 b in bases)
             {
                 try
@@ -934,15 +961,28 @@ namespace RTools_NTS.Util
                     obj = Convert.ToInt32(s, b);
                     return;
                 }
-                catch
+                catch(Exception ex1)
                 {
+                    if (!(ex1 is FormatException || ex1 is OverflowException))
+                    {
+                        throw;
+                    }
+
                     // try 64 bit base 10
                     try
                     {
                         obj = Convert.ToInt64(s, b);
                         return;
                     }
-                    catch {} // don't give up yet
+                    catch
+                    {
+                        if (!(ex1 is FormatException || ex1 is OverflowException))
+                        {
+                            throw;
+                        }
+
+                        // don't give up yet
+                    } 
                 }
             }
 
@@ -1000,7 +1040,7 @@ namespace RTools_NTS.Util
         /// <summary>Override, see base <see cref="Token"/></summary>
         public override Boolean Equals(object other)
         {
-            if ((object) other == null)
+            if ((object)other == null)
             {
                 return (false);
             }
@@ -1008,24 +1048,24 @@ namespace RTools_NTS.Util
             {
                 return (false);
             }
-            if ((obj == null) || (((IntToken) other).obj == null))
+            if ((obj == null) || (((IntToken)other).obj == null))
             {
                 return (false);
             }
-            if (!obj.GetType().Equals(((IntToken) other).obj.GetType()))
+            if (!obj.GetType().Equals(((IntToken)other).obj.GetType()))
             {
                 return (false);
             }
             if (obj is Int32)
             {
-                if (((Int32) obj).Equals((Int32) ((IntToken) other).Object))
+                if (((Int32)obj).Equals((Int32)((IntToken)other).Object))
                 {
                     return (true);
                 }
             }
             else
             {
-                if (((Int64) obj).Equals((Int64) ((IntToken) other).Object))
+                if (((Int64)obj).Equals((Int64)((IntToken)other).Object))
                 {
                     return (true);
                 }

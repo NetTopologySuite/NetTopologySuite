@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// The default merging strategy is simply to discard the merged string.
     ///<para>
     /// A common use for this class is to merge noded edges
-    /// while preserving topological labelling.
+    /// while preserving topological labeling.
     /// </para>
     /// </summary>
     public class SegmentStringDissolver

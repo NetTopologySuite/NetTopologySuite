@@ -1,6 +1,6 @@
 ﻿namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
-    public enum Positions
+    public enum Positions : sbyte
     {
         /// <summary>
         ///  An indicator that a Location is <c>on</c> a GraphComponent (0)

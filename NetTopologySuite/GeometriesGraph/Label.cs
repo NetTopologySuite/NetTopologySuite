@@ -40,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns>Label as Line label.</returns>
         public static Label ToLineLabel(Label label)
         {
-            Label lineLabel = new Label(Locations.Null);
+            Label lineLabel = new Label(Locations.None);
 
             for (Int32 i = 0; i < 2; i++)
             {
@@ -68,9 +68,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public Label(Int32 geomIndex, Locations onLoc)
         {
-            _elt[0] = new TopologyLocation(Locations.Null);
-            _elt[1] = new TopologyLocation(Locations.Null);
-            _elt[geomIndex].SetLocation(onLoc);
+            _elt[0] = new TopologyLocation(Locations.None);
+            _elt[1] = new TopologyLocation(Locations.None);
+            _elt[geomIndex].setLocation(onLoc);
         }
 
         /// <summary>
@@ -89,9 +89,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public Label(Int32 geomIndex, Locations onLoc, Locations leftLoc, Locations rightLoc)
         {
-            _elt[0] = new TopologyLocation(Locations.Null, Locations.Null, Locations.Null);
-            _elt[1] = new TopologyLocation(Locations.Null, Locations.Null, Locations.Null);
-            _elt[geomIndex].SetLocations(onLoc, leftLoc, rightLoc);
+            _elt[0] = new TopologyLocation(Locations.None, Locations.None, Locations.None);
+            _elt[1] = new TopologyLocation(Locations.None, Locations.None, Locations.None);
+            _elt[geomIndex].setLocations(onLoc, leftLoc, rightLoc);
         }
 
         /// <summary> 
@@ -102,7 +102,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             _elt[0] = new TopologyLocation(gl.GetLocations());
             _elt[1] = new TopologyLocation(gl.GetLocations());
-            _elt[geomIndex].SetLocations(gl);
+            _elt[geomIndex].setLocations(gl);
         }
 
         /// <summary> 
@@ -132,22 +132,22 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public void SetLocation(Int32 geomIndex, Positions posIndex, Locations location)
         {
-            _elt[geomIndex].SetLocation(posIndex, location);
+            _elt[geomIndex].setLocation(posIndex, location);
         }
 
         public void SetLocation(Int32 geomIndex, Locations location)
         {
-            _elt[geomIndex].SetLocation(Positions.On, location);
+            _elt[geomIndex].setLocation(Positions.On, location);
         }
 
         public void SetAllLocations(Int32 geomIndex, Locations location)
         {
-            _elt[geomIndex].SetAllLocations(location);
+            _elt[geomIndex].setAllLocations(location);
         }
 
         public void SetAllLocationsIfNull(Int32 geomIndex, Locations location)
         {
-            _elt[geomIndex].SetAllLocationsIfNull(location);
+            _elt[geomIndex].setAllLocationsIfNull(location);
         }
 
         public void SetAllLocationsIfNull(Locations location)
@@ -270,7 +270,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 return;
             }
 
-            _elt[geomIndex].SetLocations(tl);
+            _elt[geomIndex].setLocations(tl);
         }
     }
 }

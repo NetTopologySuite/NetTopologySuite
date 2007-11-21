@@ -33,13 +33,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         private Int32? _depth11;
         private Int32? _depth12;
 
-        [Obsolete("Use indexer instead.")]
+        [Obsolete("V2.0: Use indexer instead.")]
         public Int32? GetDepth(Int32 geometryIndex, Positions position)
         {
             return this[geometryIndex, position];
         }
 
-        [Obsolete("Use indexer instead.")]
+        [Obsolete("V2.0: Use indexer instead.")]
         public void SetDepth(Int32 geometryIndex, Positions position, Int32? depthValue)
         {
             this[geometryIndex, position] = depthValue;

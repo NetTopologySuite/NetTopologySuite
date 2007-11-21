@@ -1,191 +1,210 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 {
     /// <summary>
-    /// A collection of EdgeStubs which obey the following invariant:
+    /// A collection of <see cref="EdgeEnd{TCoordinate}"/>s which obey the following invariant:
     /// They originate at the same node and have the same direction.
     /// Contains all <c>EdgeEnd</c>s which start at the same point and are parallel.
     /// </summary>
-    public class EdgeEndBundle : EdgeEnd
+    public class EdgeEndBundle<TCoordinate> : EdgeEnd<TCoordinate>, IEnumerable<EdgeEnd<TCoordinate>>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        private IList edgeEnds = new ArrayList();
+        private readonly List<EdgeEnd<TCoordinate>> _edgeEnds = new List<EdgeEnd<TCoordinate>>();
 
-        public EdgeEndBundle(EdgeEnd e) : base(e.Edge, e.Coordinate, e.DirectedCoordinate, new Label(e.Label))
+        public EdgeEndBundle(EdgeEnd<TCoordinate> e)
+            : base(e.Edge, e.Coordinate, e.DirectedCoordinate, new Label(e.Label))
         {
             Insert(e);
         }
 
-        public IEnumerator GetEnumerator()
+        public IEnumerator<EdgeEnd<TCoordinate>> GetEnumerator()
         {
-            return edgeEnds.GetEnumerator();
+            foreach (EdgeEnd<TCoordinate> edgeEnd in _edgeEnds)
+            {
+                yield return edgeEnd;
+            }
         }
 
-        public IList EdgeEnds
+        public ReadOnlyCollection<EdgeEnd<TCoordinate>> EdgeEnds
         {
-            get { return edgeEnds; }
+            get { return _edgeEnds.AsReadOnly(); }
         }
 
-        public void Insert(EdgeEnd e)
+        public void Insert(EdgeEnd<TCoordinate> e)
         {
             // Assert: start point is the same
             // Assert: direction is the same
-            edgeEnds.Add(e);
+            _edgeEnds.Add(e);
         }
 
         /// <summary>
         /// This computes the overall edge label for the set of
         /// edges in this EdgeStubBundle.  It essentially merges
         /// the ON and side labels for each edge. 
-        /// These labels must be compatible
+        /// These labels must be compatible.
         /// </summary>
         public override void ComputeLabel()
         {
             // create the label.  If any of the edges belong to areas,
             // the label must be an area label
             Boolean isArea = false;
-            for (IEnumerator it = GetEnumerator(); it.MoveNext();)
+
+            foreach (EdgeEnd<TCoordinate> e in _edgeEnds)
             {
-                EdgeEnd e = (EdgeEnd) it.Current;
                 if (e.Label.IsArea())
                 {
                     isArea = true;
                 }
             }
+
             if (isArea)
             {
-                label = new Label(Locations.Null, Locations.Null, Locations.Null);
+                Label = new Label(Locations.None, Locations.None, Locations.None);
             }
+
             else
             {
-                label = new Label(Locations.Null);
+                Label = new Label(Locations.None);
             }
 
             // compute the On label, and the side labels if present
             for (Int32 i = 0; i < 2; i++)
             {
-                ComputeLabelOn(i);
+                computeLabelOn(i);
                 if (isArea)
                 {
-                    ComputeLabelSides(i);
+                    computeLabelSides(i);
                 }
             }
         }
 
         /// <summary>
-        /// Compute the overall ON location for the list of EdgeStubs.
-        /// (This is essentially equivalent to computing the self-overlay of a single Geometry)
-        /// edgeStubs can be either on the boundary (eg Polygon edge)
-        /// OR in the interior (e.g. segment of a LineString)
-        /// of their parent Geometry.
-        /// In addition, GeometryCollections use the mod-2 rule to determine
-        /// whether a segment is on the boundary or not.
-        /// Finally, in GeometryCollections it can still occur that an edge is both
-        /// on the boundary and in the interior (e.g. a LineString segment lying on
-        /// top of a Polygon edge.) In this case as usual the Boundary is given precendence.
-        /// These observations result in the following rules for computing the ON location:
-        ///  if there are an odd number of Bdy edges, the attribute is Bdy
-        ///  if there are an even number >= 2 of Bdy edges, the attribute is Int
-        ///  if there are any Int edges, the attribute is Int
-        ///  otherwise, the attribute is Null.
+        /// Update the intersection matrix with the contribution for 
+        /// the computed label for the <see cref="EdgeEnd{TCoordinate}"/>s.
         /// </summary>
-        private void ComputeLabelOn(Int32 geomIndex)
+        public void UpdateIntersectionMatrix(IntersectionMatrix im)
+        {
+            Edge<TCoordinate>.UpdateIntersectionMatrix(Label, im);
+        }
+
+        public override void Write(StreamWriter outstream)
+        {
+            outstream.WriteLine("EdgeEndBundle--> Label: " + Label);
+            foreach (EdgeEnd<TCoordinate> edgeEnd in _edgeEnds)
+            {
+                edgeEnd.Write(outstream);
+                outstream.WriteLine();
+            }
+        }
+
+        // Compute the overall ON location for the list of EdgeStubs.
+        // (This is essentially equivalent to computing the self-overlay of a single Geometry)
+        // edgeStubs can be either on the boundary (eg Polygon edge)
+        // OR in the interior (e.g. segment of a LineString)
+        // of their parent Geometry.
+        // In addition, GeometryCollections use the mod-2 rule to determine
+        // whether a segment is on the boundary or not.
+        // Finally, in GeometryCollections it can still occur that an edge is both
+        // on the boundary and in the interior (e.g. a LineString segment lying on
+        // top of a Polygon edge.) In this case as usual the Boundary is given precendence.
+        // These observations result in the following rules for computing the ON location:
+        //  if there are an odd number of Bdy edges, the attribute is Bdy
+        //  if there are an even number >= 2 of Bdy edges, the attribute is Int
+        //  if there are any Int edges, the attribute is Int
+        //  otherwise, the attribute is Null.
+        private void computeLabelOn(Int32 geomIndex)
         {
             // compute the On location value
             Int32 boundaryCount = 0;
             Boolean foundInterior = false;
-            Locations loc = Locations.Null;
+            Locations loc;
 
-            for (IEnumerator it = GetEnumerator(); it.MoveNext();)
+            foreach (EdgeEnd<TCoordinate> e in _edgeEnds)
             {
-                EdgeEnd e = (EdgeEnd) it.Current;
                 loc = e.Label.GetLocation(geomIndex);
+
                 if (loc == Locations.Boundary)
                 {
                     boundaryCount++;
                 }
+
                 if (loc == Locations.Interior)
                 {
                     foundInterior = true;
                 }
             }
 
-            loc = Locations.Null;
+            loc = Locations.None;
+
             if (foundInterior)
             {
                 loc = Locations.Interior;
             }
+
             if (boundaryCount > 0)
             {
-                loc = GeometryGraph.DetermineBoundary(boundaryCount);
+                loc = GeometryGraph<TCoordinate>.DetermineBoundary(boundaryCount);
             }
-            label.SetLocation(geomIndex, loc);
+
+            Label.SetLocation(geomIndex, loc);
         }
 
-        /// <summary>
-        /// Compute the labelling for each side
-        /// </summary>
-        private void ComputeLabelSides(Int32 geomIndex)
+        // Compute the labeling for each side
+        private void computeLabelSides(Int32 geomIndex)
         {
-            ComputeLabelSide(geomIndex, Positions.Left);
-            ComputeLabelSide(geomIndex, Positions.Right);
+            computeLabelSide(geomIndex, Positions.Left);
+            computeLabelSide(geomIndex, Positions.Right);
         }
 
-        /// <summary>
-        /// To compute the summary label for a side, the algorithm is:
-        /// FOR all edges
-        /// IF any edge's location is Interior for the side, side location = Interior
-        /// ELSE IF there is at least one Exterior attribute, side location = Exterior
-        /// ELSE  side location = Null
-        /// Note that it is possible for two sides to have apparently contradictory information
-        /// i.e. one edge side may indicate that it is in the interior of a point, while
-        /// another edge side may indicate the exterior of the same point.  This is
-        /// not an incompatibility - GeometryCollections may contain two Polygons that touch
-        /// along an edge.  This is the reason for Interior-primacy rule above - it
-        /// results in the summary label having the Geometry interior on both sides.
-        /// </summary>
-        private void ComputeLabelSide(Int32 geomIndex, Positions side)
+        // To compute the summary label for a side, the algorithm is:
+        // FOR all edges
+        // IF any edge's location is Interior for the side, side location = Interior
+        // ELSE IF there is at least one Exterior attribute, side location = Exterior
+        // ELSE  side location = Null
+        // Note that it is possible for two sides to have apparently contradictory information
+        // i.e. one edge side may indicate that it is in the interior of a point, while
+        // another edge side may indicate the exterior of the same point.  This is
+        // not an incompatibility - GeometryCollections may contain two Polygons that touch
+        // along an edge.  This is the reason for Interior-primacy rule above - it
+        // results in the summary label having the Geometry interior on both sides.
+        private void computeLabelSide(Int32 geomIndex, Positions side)
         {
-            for (IEnumerator it = GetEnumerator(); it.MoveNext();)
+            foreach (EdgeEnd<TCoordinate> e in _edgeEnds)
             {
-                EdgeEnd e = (EdgeEnd) it.Current;
                 if (e.Label.IsArea())
                 {
                     Locations loc = e.Label.GetLocation(geomIndex, side);
+
                     if (loc == Locations.Interior)
                     {
-                        label.SetLocation(geomIndex, side, Locations.Interior);
+                        Label.SetLocation(geomIndex, side, Locations.Interior);
                         return;
                     }
                     else if (loc == Locations.Exterior)
                     {
-                        label.SetLocation(geomIndex, side, Locations.Exterior);
+                        Label.SetLocation(geomIndex, side, Locations.Exterior);
                     }
                 }
             }
         }
 
-        /// <summary>
-        /// Update the IM with the contribution for the computed label for the EdgeStubs.
-        /// </summary>
-        public void UpdateIM(IntersectionMatrix im)
+        #region IEnumerable Members
+
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            Edge.UpdateIM(label, im);
+            return GetEnumerator();
         }
 
-        public override void Write(StreamWriter outstream)
-        {
-            outstream.WriteLine("EdgeEndBundle--> Label: " + label);
-            for (IEnumerator it = GetEnumerator(); it.MoveNext();)
-            {
-                EdgeEnd ee = (EdgeEnd) it.Current;
-                ee.Write(outstream);
-                outstream.WriteLine();
-            }
-        }
+        #endregion
     }
 }

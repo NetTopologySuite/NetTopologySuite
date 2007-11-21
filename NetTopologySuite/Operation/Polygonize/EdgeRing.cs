@@ -1,9 +1,15 @@
 using System;
 using System.Collections;
+using System.Diagnostics;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
+using GisSharpBlog.NetTopologySuite.Utilities;
+using NPack;
+using NPack.Interfaces;
+using System.Collections.Generic;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
 {
@@ -11,8 +17,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
     /// Represents a ring of <c>PolygonizeDirectedEdge</c>s which form
     /// a ring of a polygon.  The ring may be either an outer shell or a hole.
     /// </summary>
-    public class EdgeRing
+    public class EdgeRing<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        IComputable<TCoordinate>, IConvertible
     {
+        // cache the following data for efficiency
+        private ILinearRing<TCoordinate> _ring = null;
+        private readonly IGeometryFactory<TCoordinate> _factory = null;
+        private readonly List<DirectedEdge> _deList = new List<DirectedEdge>();
+        private readonly List<TCoordinate> _ringPoints = new List<TCoordinate>();
+        private List<ILinearRing<TCoordinate>> _holes;
+
         /// <summary>
         /// Find the innermost enclosing shell EdgeRing containing the argument EdgeRing, if any.
         /// The innermost enclosing ring is the <i>smallest</i> enclosing ring.
@@ -26,19 +41,19 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Containing EdgeRing, if there is one, OR
         /// null if no containing EdgeRing is found.
         /// </returns>
-        public static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IList shellList)
+        public static EdgeRing<TCoordinate> FindEdgeRingContaining(EdgeRing<TCoordinate> testEr, IEnumerable<EdgeRing<TCoordinate>> shellList)
         {
-            ILinearRing teString = testEr.Ring;
-            IExtents testEnv = teString.EnvelopeInternal;
-            ICoordinate testPt = teString.GetCoordinateN(0);
+            ILinearRing<TCoordinate> teString = testEr.Ring;
+            IExtents<TCoordinate> testEnv = teString.EnvelopeInternal;
+            TCoordinate testPt = teString.GetCoordinateN(0);
 
-            EdgeRing minShell = null;
-            IExtents minEnv = null;
-            for (IEnumerator it = shellList.GetEnumerator(); it.MoveNext();)
+            EdgeRing<TCoordinate> minShell = null;
+            IExtents<TCoordinate> minEnv = null;
+
+            foreach (EdgeRing<TCoordinate> shell in shellList)
             {
-                EdgeRing tryShell = (EdgeRing) it.Current;
-                ILinearRing tryRing = tryShell.Ring;
-                IExtents tryEnv = tryRing.EnvelopeInternal;
+                ILinearRing<TCoordinate> tryRing = shell.Ring;
+                IExtents<TCoordinate> tryEnv = tryRing.EnvelopeInternal;
 
                 if (minShell != null)
                 {
@@ -54,7 +69,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
                 }
 
                 testPt = PointNotInList(teString.Coordinates, tryRing.Coordinates);
-                if (tryEnv.Contains(testEnv) && CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates))
+
+                if (tryEnv.Contains(testEnv) && CGAlgorithms<TCoordinate>.IsPointInRing(testPt, tryRing.Coordinates))
                 {
                     isContained = true;
                 }
@@ -64,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
                 {
                     if (minShell == null || minEnv.Contains(tryEnv))
                     {
-                        minShell = tryShell;
+                        minShell = shell;
                     }
                 }
             }
@@ -75,55 +91,50 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Finds a point in a list of points which is not contained in another list of points.
         /// </summary>
-        /// <param name="testPts">The <c>Coordinate</c>s to test.</param>
-        /// <param name="pts">An array of <c>Coordinate</c>s to test the input points against.</param>
+        /// <param name="testPoints">The <typeparamref name="TCoordinate"/>s to test.</param>
+        /// <param name="points">
+        /// An array of <typeparamref name="TCoordinate"/>s 
+        /// to test the input points against.
+        /// </param>
         /// <returns>
         /// A <c>Coordinate</c> from <c>testPts</c> which is not in <c>pts</c>, 
         /// or <see langword="null" />.</returns>
-        public static ICoordinate PointNotInList(ICoordinate[] testPts, ICoordinate[] pts)
+        public static TCoordinate PointNotInList(IEnumerable<TCoordinate> testPoints, IEnumerable<TCoordinate> points)
         {
-            for (Int32 i = 0; i < testPts.Length; i++)
+            foreach (TCoordinate testPoint in testPoints)
             {
-                ICoordinate testPt = testPts[i];
-                if (!IsInList(testPt, pts))
+                if (!IsInList(testPoint, points))
                 {
-                    return testPt;
+                    return testPoint;
                 }
             }
-            return null;
+
+            return default(TCoordinate);
         }
 
         /// <summary>
         /// Tests whether a given point is in an array of points.
         /// Uses a value-based test.
         /// </summary>
-        /// <param name="pt">A <c>Coordinate</c> for the test point.</param>
-        /// <param name="pts">An array of <c>Coordinate</c>s to test,</param>
+        /// <param name="testPoint">A <typeparamref name="TCoordinate"/> for the test point.</param>
+        /// <param name="points">An array of <typeparamref name="TCoordinate"/>s to test,</param>
         /// <returns><see langword="true"/> if the point is in the array.</returns>
-        public static Boolean IsInList(ICoordinate pt, ICoordinate[] pts)
+        public static Boolean IsInList(TCoordinate testPoint, IEnumerable<TCoordinate> points)
         {
-            for (Int32 i = 0; i < pts.Length; i++)
+            foreach (TCoordinate point in points)
             {
-                if (pt.Equals(pts[i]))
+                if (testPoint.Equals(point))
                 {
-                    return false;
+                    return true;
                 }
             }
-            return true;
+
+            return false;
         }
 
-        private IGeometryFactory factory = null;
-        private IList deList = new ArrayList();
-
-        // cache the following data for efficiency
-        private ILinearRing ring = null;
-
-        private ICoordinate[] ringPts = null;
-        private IList holes;
-
-        public EdgeRing(IGeometryFactory factory)
+        public EdgeRing(IGeometryFactory<TCoordinate> factory)
         {
-            this.factory = factory;
+            _factory = factory;
         }
 
         /// <summary>
@@ -132,7 +143,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <param name="de">The DirectedEdge to add.</param>
         public void Add(DirectedEdge de)
         {
-            deList.Add(de);
+            _deList.Add(de);
         }
 
         /// <summary>
@@ -143,39 +154,32 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <returns><see langword="true"/> if this ring is a hole.</returns>
         public Boolean IsHole
         {
-            get { return CGAlgorithms.IsCCW(Ring.Coordinates); }
+            get { return CGAlgorithms<TCoordinate>.IsCCW(Ring.Coordinates); }
         }
 
         /// <summary>
         /// Adds a hole to the polygon formed by this ring.
         /// </summary>
         /// <param name="hole">The LinearRing forming the hole.</param>
-        public void AddHole(ILinearRing hole)
+        public void AddHole(ILinearRing<TCoordinate> hole)
         {
-            if (holes == null)
+            if (_holes == null)
             {
-                holes = new ArrayList();
+                _holes = new List<ILinearRing<TCoordinate>>();
             }
-            holes.Add(hole);
+
+            _holes.Add(hole);
         }
 
         /// <summary>
-        /// Computes and returns the Polygon formed by this ring and any contained holes.
+        /// Computes and returns the Polygon formed by this ring and any 
+        /// contained holes.
         /// </summary>
-        public IPolygon Polygon
+        public IPolygon<TCoordinate> Polygon
         {
             get
             {
-                ILinearRing[] holeLR = null;
-                if (holes != null)
-                {
-                    holeLR = new ILinearRing[holes.Count];
-                    for (Int32 i = 0; i < holes.Count; i++)
-                    {
-                        holeLR[i] = (ILinearRing) holes[i];
-                    }
-                }
-                IPolygon poly = factory.CreatePolygon(ring, holeLR);
+                IPolygon<TCoordinate> poly = _factory.CreatePolygon(_ring, _holes);
                 return poly;
             }
         }
@@ -187,15 +191,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         {
             get
             {
-                ICoordinate[] tempcoords = Coordinates;
-                tempcoords = null;
-                if (ringPts.Length <= 3)
+                if (_ringPoints.Count <= 3)
                 {
                     return false;
                 }
-                ILinearRing tempring = Ring;
-                tempring = null;
-                return ring.IsValid;
+
+                return _ring.IsValid;
             }
         }
 
@@ -203,22 +204,22 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Computes and returns the list of coordinates which are contained in this ring.
         /// The coordinatea are computed once only and cached.
         /// </summary>
-        private ICoordinate[] Coordinates
+        private IEnumerable<TCoordinate> Coordinates
         {
             get
             {
-                if (ringPts == null)
+                if (_ringPoints == null)
                 {
-                    CoordinateList coordList = new CoordinateList();
-                    for (IEnumerator i = deList.GetEnumerator(); i.MoveNext();)
+                    for (IEnumerator i = _deList.GetEnumerator(); i.MoveNext(); )
                     {
-                        DirectedEdge de = (DirectedEdge) i.Current;
-                        PolygonizeEdge edge = (PolygonizeEdge) de.Edge;
-                        AddEdge(edge.Line.Coordinates, de.EdgeDirection, coordList);
+                        DirectedEdge de = (DirectedEdge)i.Current;
+                        PolygonizeEdge<TCoordinate> edge = de.Edge as PolygonizeEdge<TCoordinate>;
+                        Debug.Assert(edge != null);
+                        addEdge(edge.Line.Coordinates, de.EdgeDirection, _ringPoints);
                     }
-                    ringPts = coordList.ToCoordinateArray();
                 }
-                return ringPts;
+
+                return _ringPoints;
             }
         }
 
@@ -232,9 +233,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         {
             get
             {
-                ICoordinate[] tempcoords = Coordinates;
-                tempcoords = null;
-                return factory.CreateLineString(ringPts);
+                return _factory.CreateLineString(_ringPoints);
             }
         }
 
@@ -243,38 +242,39 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// creating it (such as a topology problem). Details of problems are written to
         /// standard output.
         /// </summary>
-        public ILinearRing Ring
+        public ILinearRing<TCoordinate> Ring
         {
             get
             {
-                if (ring != null)
+                if (_ring != null)
                 {
-                    return ring;
+                    return _ring;
                 }
-                ICoordinate[] tempcoords = Coordinates;
+
                 try
                 {
-                    ring = factory.CreateLinearRing(ringPts);
+                    _ring = _factory.CreateLinearRing(_ringPoints);
                 }
-                catch (Exception) {}
-                return ring;
+                catch (NtsException) { }
+
+                return _ring;
             }
         }
 
-        private static void AddEdge(ICoordinate[] coords, Boolean isForward, CoordinateList coordList)
+        private static void addEdge(IEnumerable<TCoordinate> coords, Boolean isForward, IList<TCoordinate> coordinates)
         {
-            if (isForward)
+            foreach (TCoordinate coord in coords)
             {
-                for (Int32 i = 0; i < coords.Length; i++)
+                if (!coordinates.Contains(coord))
                 {
-                    coordList.Add(coords[i], false);
-                }
-            }
-            else
-            {
-                for (Int32 i = coords.Length - 1; i >= 0; i--)
-                {
-                    coordList.Add(coords[i], false);
+                    if (isForward)
+                    {
+                        coordinates.Add(coord);
+                    }
+                    else
+                    {
+                        coordinates.Insert(0, coord);
+                    }
                 }
             }
         }

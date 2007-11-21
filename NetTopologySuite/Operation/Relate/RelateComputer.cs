@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// Computes the topological relationship between two Geometries.
     /// RelateComputer does not need to build a complete graph structure to compute
     /// the IntersectionMatrix.  The relationship between the geometries can
-    /// be computed by simply examining the labelling of edges incident on each node.
+    /// be computed by simply examining the labeling of edges incident on each node.
     /// RelateComputer does not currently support arbitrary GeometryCollections.
     /// This is because GeometryCollections can contain overlapping Polygons.
     /// In order to correct compute relate on overlapping Polygons, they
@@ -53,13 +53,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             ComputeIntersectionNodes(1);
 
             /*
-             * Copy the labelling for the nodes in the parent Geometries.  These override
+             * Copy the labeling for the nodes in the parent Geometries.  These override
              * any labels determined by intersections between the geometries.
              */
             CopyNodesAndLabels(0);
             CopyNodesAndLabels(1);
 
-            // complete the labelling for any nodes which only have a label for a single point
+            // complete the labeling for any nodes which only have a label for a single point
             LabelIsolatedNodes();
 
             // If a proper intersection was found, we can set a lower bound on the IM.
@@ -199,8 +199,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// Insert nodes for all intersections on the edges of a Geometry.
         /// Label the created nodes the same as the edge label if they do not already have a label.
         /// This allows nodes created by either self-intersections or
-        /// mutual intersections to be labelled.
-        /// Endpoint nodes will already be labelled from when they were inserted.
+        /// mutual intersections to be labeled.
+        /// Endpoint nodes will already be labeled from when they were inserted.
         /// </summary>
         private void ComputeIntersectionNodes(Int32 argIndex)
         {
@@ -231,8 +231,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// For all intersections on the edges of a Geometry,
         /// label the corresponding node IF it doesn't already have a label.
         /// This allows nodes created by either self-intersections or
-        /// mutual intersections to be labelled.
-        /// Endpoint nodes will already be labelled from when they were inserted.
+        /// mutual intersections to be labeled.
+        /// Endpoint nodes will already be labeled from when they were inserted.
         /// </summary>
         private void LabelIntersectionNodes(Int32 argIndex)
         {
@@ -284,7 +284,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             for (IEnumerator ni = nodes.GetEnumerator(); ni.MoveNext();)
             {
                 RelateNode node = (RelateNode) ni.Current;
-                node.Edges.ComputeLabelling(arg);
+                node.Edges.Computelabeling(arg);
             }
         }
 
@@ -307,7 +307,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         }
 
         /// <summary> 
-        /// Processes isolated edges by computing their labelling and adding them
+        /// Processes isolated edges by computing their labeling and adding them
         /// to the isolated edges list.
         /// Isolated edges are guaranteed not to touch the boundary of the target (since if they
         /// did, they would have caused an intersection to be computed and hence would
@@ -355,9 +355,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// Isolated nodes are nodes whose labels are incomplete
         /// (e.g. the location for one Geometry is null).
         /// This is the case because nodes in one graph which don't intersect
-        /// nodes in the other are not completely labelled by the initial process
+        /// nodes in the other are not completely labeled by the initial process
         /// of adding nodes to the nodeList.
-        /// To complete the labelling we need to check for nodes that lie in the
+        /// To complete the labeling we need to check for nodes that lie in the
         /// interior of edges, and in the interior of areas.
         /// </summary>
         private void LabelIsolatedNodes()

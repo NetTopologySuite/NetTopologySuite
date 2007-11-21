@@ -1,6 +1,10 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GeoAPI.Utilities;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
@@ -29,88 +33,88 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
     /// The Transform method itself will always
     /// return a point object.
     /// </summary>    
-    public class GeometryTransformer
+    public class GeometryTransformer<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
         /*
         * Possible extensions:
         * GetParent() method to return immediate parent e.g. of LinearRings in Polygons
         */
 
-        private IGeometry inputGeom = null;
-        protected IGeometryFactory factory = null;
+        private IGeometry<TCoordinate> _inputGeometry = null;
+        private IGeometryFactory<TCoordinate> _factory = null;
 
         // these could eventually be exposed to clients
         /// <summary>
         /// <see langword="true"/> if empty geometries should not be included in the result.
         /// </summary>
-        private Boolean pruneEmptyGeometry = true;
+        private Boolean _pruneEmptyGeometry = true;
 
         /// <summary> 
         /// <see langword="true"/> if a homogenous collection result
-        /// from a <c>GeometryCollection</c> should still
+        /// from a <see cref="GeometryCollection{TCoordinate}" /> should still
         /// be a general GeometryCollection.
         /// </summary>
-        private Boolean preserveGeometryCollectionType = true;
+        private Boolean _preserveGeometryCollectionType = true;
 
         /// <summary> 
         /// <see langword="true"/> if the type of the input should be preserved.
         /// </summary>
-        private Boolean preserveType = false;
+        private Boolean _preserveType = false;
 
-        public GeometryTransformer() {}
-
-        public IGeometry InputGeometry
+        public IGeometry<TCoordinate> InputGeometry
         {
-            get { return inputGeom; }
+            get { return _inputGeometry; }
         }
 
-        public IGeometry Transform(IGeometry inputGeom)
+        public IGeometry<TCoordinate> Transform(IGeometry<TCoordinate> inputGeom)
         {
-            this.inputGeom = inputGeom;
-            factory = inputGeom.Factory;
+            _inputGeometry = inputGeom;
+            _factory = inputGeom.Factory;
 
-            if (inputGeom is IPoint)
+            if (inputGeom is IPoint<TCoordinate>)
             {
-                return TransformPoint((IPoint) inputGeom, null);
+                return TransformPoint((IPoint<TCoordinate>)inputGeom, null);
             }
 
-            if (inputGeom is IMultiPoint)
+            if (inputGeom is IMultiPoint<TCoordinate>)
             {
-                return TransformMultiPoint((IMultiPoint) inputGeom, null);
+                return TransformMultiPoint((IMultiPoint<TCoordinate>)inputGeom, null);
             }
 
-            if (inputGeom is ILinearRing)
+            if (inputGeom is ILinearRing<TCoordinate>)
             {
-                return TransformLineString((ILinearRing) inputGeom, null);
+                return TransformLineString((ILinearRing<TCoordinate>)inputGeom, null);
             }
 
-            if (inputGeom is ILineString)
+            if (inputGeom is ILineString<TCoordinate>)
             {
-                return TransformLineString((ILineString) inputGeom, null);
+                return TransformLineString((ILineString<TCoordinate>)inputGeom, null);
             }
 
-            if (inputGeom is IMultiLineString)
+            if (inputGeom is IMultiLineString<TCoordinate>)
             {
-                return TransformMultiLineString((IMultiLineString) inputGeom, null);
+                return TransformMultiLineString((IMultiLineString<TCoordinate>)inputGeom, null);
             }
 
-            if (inputGeom is IPolygon)
+            if (inputGeom is IPolygon<TCoordinate>)
             {
-                return TransformPolygon((IPolygon) inputGeom, null);
+                return TransformPolygon((IPolygon<TCoordinate>)inputGeom, null);
             }
 
-            if (inputGeom is IMultiPolygon)
+            if (inputGeom is IMultiPolygon<TCoordinate>)
             {
-                return TransformMultiPolygon((IMultiPolygon) inputGeom, null);
+                return TransformMultiPolygon((IMultiPolygon<TCoordinate>)inputGeom, null);
             }
 
-            if (inputGeom is IGeometryCollection)
+            if (inputGeom is IGeometryCollection<TCoordinate>)
             {
-                return TransformGeometryCollection((IGeometryCollection) inputGeom, null);
+                return TransformGeometryCollection((IGeometryCollection<TCoordinate>)inputGeom, null);
             }
 
-            throw new ArgumentException("Unknown Geometry subtype: " 
-                + inputGeom.GetType().FullName);
+            throw new ArgumentException(String.Format("Unknown Geometry subtype: {0}",
+                inputGeom.GetType()));
         }
 
         /// <summary> 
@@ -119,165 +123,228 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="coords">The coordinate array to copy.</param>
         /// <returns>A coordinate sequence for the array.</returns>
-        protected virtual ICoordinateSequence CreateCoordinateSequence(ICoordinate[] coords)
+        protected virtual ICoordinateSequence<TCoordinate> CreateCoordinateSequence(IEnumerable<TCoordinate> coords)
         {
-            return factory.CoordinateSequenceFactory.Create(coords);
+            return _factory.CoordinateSequenceFactory.Create(coords);
         }
 
-        /// <summary> 
-        /// Convenience method which provides statndard way of copying {CoordinateSequence}s
-        /// </summary>
-        /// <param name="seq">The sequence to copy.</param>
-        /// <returns>A deep copy of the sequence.</returns>
-        protected virtual ICoordinateSequence Copy(ICoordinateSequence seq)
-        {
-            return (ICoordinateSequence) seq.Clone();
-        }
-
-        protected virtual ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
+        protected virtual IEnumerable<TCoordinate> TransformCoordinates(IEnumerable<TCoordinate> coords, IGeometry<TCoordinate> parent)
         {
             return Copy(coords);
         }
 
-        protected virtual IGeometry TransformPoint(IPoint geom, IGeometry parent)
+        protected virtual IGeometry<TCoordinate> TransformPoint(IPoint<TCoordinate> point, IGeometry<TCoordinate> parent)
         {
-            return factory.CreatePoint(TransformCoordinates(geom.CoordinateSequence, geom));
+            return _factory.CreatePoint(TransformCoordinates(point.Coordinates, point));
         }
 
-        protected virtual IGeometry TransformMultiPoint(IMultiPoint geom, IGeometry parent)
+        protected virtual IGeometry<TCoordinate> TransformMultiPoint(IMultiPoint<TCoordinate> multipoint, IGeometry<TCoordinate> parent)
         {
-            ArrayList transGeomList = new ArrayList();
-            
-            for (Int32 i = 0; i < geom.NumGeometries; i++)
+            List<IGeometry<TCoordinate>> transGeomList = new List<IGeometry<TCoordinate>>();
+
+            foreach (IPoint<TCoordinate> point in multipoint)
             {
-                IGeometry transformGeom = TransformPoint((IPoint) geom.GetGeometryN(i), geom);
-               
-                if (transformGeom == null)
+                IGeometry<TCoordinate> transformed = TransformPoint(point, multipoint);
+
+                if (transformed == null)
                 {
                     continue;
                 }
 
-                if (transformGeom.IsEmpty)
+                if (transformed.IsEmpty)
                 {
                     continue;
                 }
 
-                transGeomList.Add(transformGeom);
+                transGeomList.Add(transformed);
             }
 
-            return factory.BuildGeometry(transGeomList);
+            return _factory.BuildGeometry(transGeomList);
         }
 
-        protected virtual IGeometry TransformLinearRing(ILinearRing geom, IGeometry parent)
+        private class LineStringCoordinateEnumerator<TCoordinate> : IEnumerable<TCoordinate>
         {
-            ICoordinateSequence seq = TransformCoordinates(geom.CoordinateSequence, geom);
-            Int32 seqSize = seq.Count;
-            
+            private readonly IEnumerable<TCoordinate> _coordinates;
+            private readonly List<TCoordinate> _ringTestList = new List<TCoordinate>();
+
+            public LineStringCoordinateEnumerator(IEnumerable<TCoordinate> coordinates)
+            {
+                _coordinates = coordinates;
+
+                foreach (TCoordinate coordinate in coordinates)
+                {
+                    _ringTestList.Add(coordinate);
+
+                    if (_ringTestList.Count >= 4)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            public Boolean IsValidRing
+            {
+                get { return _ringTestList.Count >= 4; }
+            }
+
+            #region IEnumerable<TCoordinate> Members
+
+            public IEnumerator<TCoordinate> GetEnumerator()
+            {
+                foreach (TCoordinate coordinate in _coordinates)
+                {
+                    yield return coordinate;
+                }
+            }
+
+            #endregion
+
+            #region IEnumerable Members
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+
+            #endregion
+        }
+
+        protected virtual IGeometry<TCoordinate> TransformLinearRing(ILinearRing<TCoordinate> ring, IGeometry<TCoordinate> parent)
+        {
+            IEnumerable<TCoordinate> transformed = TransformCoordinates(ring.Coordinates, ring);
+
+            LineStringCoordinateEnumerator<TCoordinate> lineEnumerator =
+                new LineStringCoordinateEnumerator<TCoordinate>(transformed);
+
             // ensure a valid LinearRing
-            if (seqSize > 0 && seqSize < 4 && ! preserveType)
+            if (!_preserveType && lineEnumerator.IsValidRing)
             {
-                return factory.CreateLineString(seq);
+                return _factory.CreateLineString(lineEnumerator);
             }
-            
-            return factory.CreateLinearRing(seq);
+
+            return _factory.CreateLinearRing(lineEnumerator);
         }
 
-        protected virtual IGeometry TransformLineString(ILineString geom, IGeometry parent)
+        protected virtual IGeometry<TCoordinate> TransformLineString(ILineString<TCoordinate> line, IGeometry<TCoordinate> parent)
         {
             // should check for 1-point sequences and downgrade them to points
-            return factory.CreateLineString(TransformCoordinates(geom.CoordinateSequence, geom));
+            return _factory.CreateLineString(TransformCoordinates(line.Coordinates, line));
         }
 
-        protected virtual IGeometry TransformMultiLineString(IMultiLineString geom, IGeometry parent)
+        protected virtual IGeometry<TCoordinate> TransformMultiLineString(IMultiLineString<TCoordinate> lines, Geometry<TCoordinate> parent)
         {
-            ArrayList transGeomList = new ArrayList();
-            
-            for (Int32 i = 0; i < geom.NumGeometries; i++)
+            List<IGeometry<TCoordinate>> transGeomList = new List<IGeometry<TCoordinate>>();
+
+            foreach (ILineString<TCoordinate> line in lines)
             {
-                IGeometry transformGeom = TransformLineString((ILineString) geom.GetGeometryN(i), geom);
-                
-                if (transformGeom == null)
+                IGeometry<TCoordinate> transformed = TransformLineString(line, lines);
+
+                if (transformed == null)
                 {
                     continue;
                 }
 
-                if (transformGeom.IsEmpty)
+                if (transformed.IsEmpty)
                 {
                     continue;
                 }
 
-                transGeomList.Add(transformGeom);
+                transGeomList.Add(transformed);
             }
 
-            return factory.BuildGeometry(transGeomList);
+            return _factory.BuildGeometry(transGeomList);
         }
 
-        protected virtual IGeometry TransformPolygon(IPolygon geom, IGeometry parent)
+        protected virtual IGeometry<TCoordinate> TransformPolygon(IPolygon<TCoordinate> polygon, IGeometry<TCoordinate> parent)
         {
-            Boolean isAllValidLinearRings = true;
-            IGeometry shell = TransformLinearRing(geom.Shell, geom);
+            Boolean areAllValidLinearRings = true;
+            IGeometry<TCoordinate> shell = TransformLinearRing(polygon.Shell, polygon);
 
-            if (shell == null || ! (shell is ILinearRing) || shell.IsEmpty)
+            if (shell == null || !(shell is ILinearRing) || shell.IsEmpty)
             {
-                isAllValidLinearRings = false;
+                areAllValidLinearRings = false;
             }
 
-            ArrayList holes = new ArrayList();
-            
-            for (Int32 i = 0; i < geom.NumInteriorRings; i++)
+            List<IGeometry<TCoordinate>> holes = new List<IGeometry<TCoordinate>>();
+
+            foreach (ILinearRing<TCoordinate> hole in polygon.Holes)
             {
-                IGeometry hole = TransformLinearRing(geom.Holes[i], geom);
-               
-                if (hole == null || hole.IsEmpty)
+                IGeometry<TCoordinate> transformed = TransformLinearRing(hole, polygon);
+
+                if (transformed == null || transformed.IsEmpty)
                 {
                     continue;
                 }
 
-                if (!(hole is ILinearRing))
+                if (!(transformed is ILinearRing<TCoordinate>))
                 {
-                    isAllValidLinearRings = false;
+                    areAllValidLinearRings = false;
                 }
 
-                holes.Add(hole);
+                holes.Add(transformed);
             }
 
-            if (isAllValidLinearRings)
+            if (areAllValidLinearRings)
             {
-                return factory.CreatePolygon((ILinearRing) shell,
-                                             (ILinearRing[]) holes.ToArray(typeof (ILinearRing)));
+                return _factory.CreatePolygon(shell as ILinearRing<TCoordinate>,
+                    EnumerableConverter.Downcast<ILinearRing<TCoordinate>, IGeometry<TCoordinate>>(holes));
             }
             else
             {
-                ArrayList components = new ArrayList();
+                List<IGeometry<TCoordinate>> components = new List<IGeometry<TCoordinate>>();
 
                 if (shell != null)
                 {
                     components.Add(shell);
                 }
 
-                foreach (object hole in holes)
+                foreach (IGeometry<TCoordinate> hole in holes)
                 {
                     components.Add(hole);
                 }
 
-                return factory.BuildGeometry(components);
+                return _factory.BuildGeometry(components);
             }
         }
 
-        protected virtual IGeometry TransformMultiPolygon(IMultiPolygon geom, IGeometry parent)
+        protected virtual IGeometry<TCoordinate> TransformMultiPolygon(IMultiPolygon<TCoordinate> multiPolygon, IGeometry<TCoordinate> parent)
         {
-            ArrayList transGeomList = new ArrayList();
+            List<IGeometry<TCoordinate>> transGeomList = new List<IGeometry<TCoordinate>>();
 
-            for (Int32 i = 0; i < geom.NumGeometries; i++)
+            foreach (IPolygon<TCoordinate> polygon in multiPolygon)
             {
-                IGeometry transformGeom = TransformPolygon((IPolygon) geom.GetGeometryN(i), geom);
-               
+                IGeometry<TCoordinate> transformed = TransformPolygon(polygon, multiPolygon);
+
+                if (transformed == null)
+                {
+                    continue;
+                }
+
+                if (transformed.IsEmpty)
+                {
+                    continue;
+                }
+
+                transGeomList.Add(transformed);
+            }
+
+            return _factory.BuildGeometry(transGeomList);
+        }
+
+        protected virtual IGeometry<TCoordinate> TransformGeometryCollection(IGeometryCollection<TCoordinate> geometryCollection, IGeometry<TCoordinate> parent)
+        {
+            List<IGeometry<TCoordinate>> transGeomList = new List<IGeometry<TCoordinate>>();
+
+            foreach (IGeometry<TCoordinate> geometry in geometryCollection)
+            {
+                IGeometry<TCoordinate> transformGeom = Transform(geometry);
+
                 if (transformGeom == null)
                 {
                     continue;
                 }
 
-                if (transformGeom.IsEmpty)
+                if (_pruneEmptyGeometry && transformGeom.IsEmpty)
                 {
                     continue;
                 }
@@ -285,36 +352,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                 transGeomList.Add(transformGeom);
             }
 
-            return factory.BuildGeometry(transGeomList);
-        }
-
-        protected virtual IGeometry TransformGeometryCollection(IGeometryCollection geom, IGeometry parent)
-        {
-            ArrayList transGeomList = new ArrayList();
-
-            for (Int32 i = 0; i < geom.NumGeometries; i++)
+            if (_preserveGeometryCollectionType)
             {
-                IGeometry transformGeom = Transform(geom.GetGeometryN(i));
-
-                if (transformGeom == null)
-                {
-                    continue;
-                }
-
-                if (pruneEmptyGeometry && transformGeom.IsEmpty)
-                {
-                    continue;
-                }
-
-                transGeomList.Add(transformGeom);
+                return _factory.CreateGeometryCollection(transGeomList);
             }
 
-            if (preserveGeometryCollectionType)
-            {
-                return factory.CreateGeometryCollection(GeometryFactory.ToGeometryArray(transGeomList));
-            }
-
-            return factory.BuildGeometry(transGeomList);
+            return _factory.BuildGeometry(transGeomList);
         }
     }
 }

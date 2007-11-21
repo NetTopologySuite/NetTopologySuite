@@ -1,7 +1,9 @@
 using System;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Operation;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -9,22 +11,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Basic implementation of <c>LineString</c>.
     /// </summary>  
     [Serializable]
-    public class LineString : Geometry, ILineString
+    public class LineString<TCoordinate> : Geometry<TCoordinate>, ILineString<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
+
     {
         /// <summary>
         /// Represents an empty <c>LineString</c>.
         /// </summary>
         public static readonly ILineString Empty = new GeometryFactory().CreateLineString(new ICoordinate[] {});
 
-        /// <summary>  
-        /// The points of this <c>LineString</c>.
-        /// </summary>
-        private ICoordinateSequence points;
-
-        public override ICoordinate[] Coordinates
-        {
-            get { return points.ToCoordinateArray(); }
-        }
+        // The points of this LineString.
+        private ICoordinateSequence<TCoordinate> _points;
 
         public ICoordinateSequence CoordinateSequence
         {

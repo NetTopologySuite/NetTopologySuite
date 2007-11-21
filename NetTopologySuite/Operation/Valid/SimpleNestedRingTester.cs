@@ -1,31 +1,37 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
+using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 {
     /// <summary>
-    /// Tests whether any of a set of <c>LinearRing</c>s are
+    /// Tests whether any of a set of <see cref="LinearRing{TCoordinate}" />s are
     /// nested inside another ring in the set, using a simple O(n^2)
     /// comparison.
     /// </summary>
-    public class SimpleNestedRingTester
+    public class SimpleNestedRingTester<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        private GeometryGraph graph; // used to find non-node vertices
-        private IList rings = new ArrayList();
-        private ICoordinate nestedPt;
+        private GeometryGraph<TCoordinate> _graph; // used to find non-node vertices
+        private List<ILinearRing<TCoordinate>> _rings = new List<ILinearRing<TCoordinate>>();
+        private TCoordinate nestedPt;
 
-        public SimpleNestedRingTester(GeometryGraph graph)
+        public SimpleNestedRingTester(GeometryGraph<TCoordinate> graph)
         {
-            this.graph = graph;
+            _graph = graph;
         }
 
-        public void Add(ILinearRing ring)
+        public void Add(ILinearRing<TCoordinate> ring)
         {
-            rings.Add(ring);
+            _rings.Add(ring);
         }
 
         public ICoordinate NestedPoint
@@ -35,30 +41,27 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
         public Boolean IsNonNested()
         {
-            for (Int32 i = 0; i < rings.Count; i++)
+            foreach (ILinearRing<TCoordinate> innerRing in _rings)
             {
-                ILinearRing innerRing = (ILinearRing) rings[i];
-                ICoordinate[] innerRingPts = innerRing.Coordinates;
-
-                for (Int32 j = 0; j < rings.Count; j++)
+                foreach (ILinearRing<TCoordinate> searchRing in _rings)
                 {
-                    ILinearRing searchRing = (ILinearRing) rings[j];
-                    ICoordinate[] searchRingPts = searchRing.Coordinates;
-
                     if (innerRing == searchRing)
                     {
                         continue;
                     }
 
-                    if (!innerRing.EnvelopeInternal.Intersects(searchRing.EnvelopeInternal))
+                    IEnumerable<TCoordinate> innerRingPts = innerRing.Coordinates;
+                    IEnumerable<TCoordinate> searchRingPts = searchRing.Coordinates;
+
+                    if (!innerRing.Extents.Intersects(searchRing.Extents))
                     {
                         continue;
                     }
 
-                    ICoordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, graph);
+                    TCoordinate innerRingPt = IsValidOp<TCoordinate>.FindPointNotNode(innerRingPts, searchRing, _graph);
                     Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
 
-                    Boolean isInside = CGAlgorithms.IsPointInRing(innerRingPt, searchRingPts);
+                    Boolean isInside = CGAlgorithms<TCoordinate>.IsPointInRing(innerRingPt, searchRingPts);
                     if (isInside)
                     {
                         nestedPt = innerRingPt;
@@ -66,6 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                     }
                 }
             }
+
             return true;
         }
     }

@@ -1,28 +1,34 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>
-    /// Basic implementation of <c>GeometryCollection</c>.
+    /// Basic implementation of <see cref="GeometryCollection{TCoordinate}" />.
     /// </summary>
     [Serializable]
-    public class GeometryCollection : Geometry, IGeometryCollection
+    public class GeometryCollection<TCoordinate> : Geometry<TCoordinate>, IGeometryCollection<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                    IComputable<TCoordinate>, IConvertible
+
     {
         /// <summary>
-        /// Represents an empty <c>GeometryCollection</c>.
+        /// Represents an empty <see cref="GeometryCollection{TCoordinate}" />.
         /// </summary>
         public static readonly IGeometryCollection Empty = DefaultFactory.CreateGeometryCollection(null);
 
         /// <summary>
-        /// Internal representation of this <c>GeometryCollection</c>.        
+        /// Internal representation of this <see cref="GeometryCollection{TCoordinate}" />.        
         /// </summary>
-        protected IGeometry[] geometries = null;
+        private List<IGeometry<TCoordinate>> _geometries = null;
 
         /// <param name="geometries">
-        /// The <see cref="Geometry{TCoordinate}"/>s for this <c>GeometryCollection</c>,
+        /// The <see cref="Geometry{TCoordinate}"/>s for this <see cref="GeometryCollection{TCoordinate}" />,
         /// or <see langword="null" /> or an empty array to create the empty
         /// point. Elements may be empty <see cref="Geometry{TCoordinate}"/>s,
         /// but not <see langword="null" />s.
@@ -34,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public GeometryCollection(IGeometry[] geometries) : this(geometries, DefaultFactory) {}
 
         /// <param name="geometries">
-        /// The <see cref="Geometry{TCoordinate}"/>s for this <c>GeometryCollection</c>,
+        /// The <see cref="Geometry{TCoordinate}"/>s for this <see cref="GeometryCollection{TCoordinate}" />,
         /// or <see langword="null" /> or an empty array to create the empty
         /// point. Elements may be empty <see cref="Geometry{TCoordinate}"/>s,
         /// but not <see langword="null" />s.
@@ -196,7 +202,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Returns the area of this <c>GeometryCollection</c>.
+        /// Returns the area of this <see cref="GeometryCollection{TCoordinate}" />.
         /// </summary>        
         public override Double Area
         {
@@ -214,7 +220,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Returns the length of this <c>GeometryCollection</c>.
+        /// Returns the length of this <see cref="GeometryCollection{TCoordinate}" />.
         /// </summary>        
         public override Double Length
         {

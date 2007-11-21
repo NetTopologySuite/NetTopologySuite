@@ -1,19 +1,25 @@
 using System;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>  
-    /// Basic implementation of <c>LinearRing</c>.
+    /// Basic implementation of <see cref="LinearRing{TCoordinate}" />.
+    /// </summary>
+    /// <remarks>
     /// The first and last point in the coordinate sequence must be equal.
     /// Either orientation of the ring is allowed.
     /// A valid ring must not self-intersect.
-    /// </summary>
+    /// </remarks>
     [Serializable]
-    public class LinearRing : LineString, ILinearRing
+    public class LinearRing<TCoordinate> : LineString<TCoordinate>, ILinearRing<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
         /// <summary>
-        /// Constructs a <c>LinearRing</c> with the given points.
+        /// Constructs a <see cref="LinearRing{TCoordinate}" /> with the given points.
         /// </summary>
         /// <param name="points">
         /// Points forming a closed and simple linestring, or

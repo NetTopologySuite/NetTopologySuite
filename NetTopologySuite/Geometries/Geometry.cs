@@ -21,8 +21,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// <para>
     /// Binary Predicates: 
     /// Because it is not clear at this time what semantics for spatial
-    /// analysis methods involving <c>GeometryCollection</c>s would be useful,
-    /// <c>GeometryCollection</c>s are not supported as arguments to binary
+    /// analysis methods involving <see cref="GeometryCollection{TCoordinate}" />s would be useful,
+    /// <see cref="GeometryCollection{TCoordinate}" />s are not supported as arguments to binary
     /// predicates (other than <c>ConvexHull</c>) or the <c>Relate</c> method.
     /// </para>
     /// <para>
@@ -30,10 +30,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// The spatial analysis methods will
     /// return the most specific class possible to represent the result. If the
     /// result is homogeneous, a <c>Point</c>, <c>LineString</c>, or
-    /// <c>Polygon</c> will be returned if the result contains a single
+    /// <see cref="Polygon{TCoordinate}" /> will be returned if the result contains a single
     /// element; otherwise, a <c>MultiPoint</c>, <c>MultiLineString</c>,
     /// or <c>MultiPolygon</c> will be returned. If the result is
-    /// heterogeneous a <c>GeometryCollection</c> will be returned.
+    /// heterogeneous a <see cref="GeometryCollection{TCoordinate}" /> will be returned.
     /// </para>
     /// <para>
     /// Representation of Computed Geometries:  
@@ -99,7 +99,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         //        typeof (GeometryCollection),
         //    };
 
-        private IGeometryFactory<TCoordinate> factory = null;
+        private IGeometryFactory<TCoordinate> _factory = null;
+        private object _userData = null;
+        private IExtents<TCoordinate> _extents;
+        private Int32? _srid;
 
         /// <summary> 
         /// Gets the factory which contains the context in which this point was created.
@@ -107,10 +110,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The factory for this point.</returns>
         public IGeometryFactory<TCoordinate> Factory
         {
-            get { return factory; }
+            get { return _factory; }
         }
-
-        private object userData = null;
 
         /// <summary> 
         /// Gets/Sets the user data object for this point, if any.
@@ -121,17 +122,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public object UserData
         {
-            get { return userData; }
-            set { userData = value; }
+            get { return _userData; }
+            set { _userData = value; }
         }
-
-        private IExtents<TCoordinate> _extents;
-        private Int32? _srid;
 
         /// <summary>
         /// Gets the bounding box of the <see cref="Geometry{TCoordinate}"/>.
         /// </summary>
-        protected IExtents<TCoordinate> Extents
+        public IExtents<TCoordinate> Extents
         {
             get { return _extents; }
         }
@@ -165,13 +163,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     }
                 }
 
-                factory = new GeometryFactory(factory.PrecisionModel, value, factory.CoordinateSequenceFactory);
+                _factory = new GeometryFactory<TCoordinate>(_factory.PrecisionModel, value, _factory.CoordinateSequenceFactory);
             }
         }
 
         public Geometry(IGeometryFactory factory)
         {
-            this.factory = factory;
+            this._factory = factory;
             _srid = factory.SRID;
         }
 
@@ -231,24 +229,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get { return Factory.PrecisionModel; }
         }
-
-        /// <summary>  
-        /// Returns a vertex of this <see cref="Geometry{TCoordinate}"/>.
-        /// </summary>
-        /// <returns>    
-        /// a Coordinate which is a vertex of this <see cref="Geometry{TCoordinate}"/>.
-        /// Returns <see langword="null" /> if this Geometry is empty.
-        /// </returns>
-        public abstract ICoordinate Coordinate { get; }
-
-        /// <summary>  
-        /// Returns this <see cref="Geometry{TCoordinate}"/> s vertices. If you modify the coordinates
-        /// in this array, be sure to call GeometryChanged afterwards.
-        /// The <see cref="Geometry{TCoordinate}"/>s contained by composite <see cref="Geometry{TCoordinate}"/>s
-        /// must be Geometry's; that is, they must implement <c>Coordinates</c>.
-        /// </summary>
-        /// <returns>The vertices of this <see cref="Geometry{TCoordinate}"/>.</returns>
-        public abstract ICoordinate[] Coordinates { get; }
 
         /// <summary>  
         /// Returns the count of this <see cref="Geometry{TCoordinate}"/>s vertices. The <see cref="Geometry{TCoordinate}"/>
@@ -498,12 +478,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Returns this <see cref="Geometry{TCoordinate}"/>s bounding box. If this <see cref="Geometry{TCoordinate}"/>
         /// is the empty point, returns an empty <c>Point</c>. If the <see cref="Geometry{TCoordinate}"/>
         /// is a point, returns a non-empty <c>Point</c>. Otherwise, returns a
-        /// <c>Polygon</c> whose points are (minx, miny), (maxx, miny), (maxx,
+        /// <see cref="Polygon{TCoordinate}" /> whose points are (minx, miny), (maxx, miny), (maxx,
         /// maxy), (minx, maxy), (minx, miny).
         /// </summary>
         /// <returns>    
         /// An empty <c>Point</c> (for empty <see cref="Geometry{TCoordinate}"/>s), a
-        /// <c>Point</c> (for <c>Point</c>s) or a <c>Polygon</c>
+        /// <c>Point</c> (for <c>Point</c>s) or a <see cref="Polygon{TCoordinate}" />
         /// (in all other cases).
         /// </returns>
         public IGeometry Envelope
@@ -1037,7 +1017,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns the smallest convex <c>Polygon</c> that contains all the
+        /// Returns the smallest convex <see cref="Polygon{TCoordinate}" /> that contains all the
         /// points in the <see cref="Geometry{TCoordinate}"/>. This obviously applies only to <see cref="Geometry{TCoordinate}"/>
         /// s which contain 3 or more points.
         /// </summary>
@@ -1167,7 +1147,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="filter">
         /// The filter to apply to this <see cref="Geometry{TCoordinate}"/> (and
-        /// its children, if it is a <c>GeometryCollection</c>).
+        /// its children, if it is a <see cref="GeometryCollection{TCoordinate}" />).
         /// </param>
         public abstract void Apply(IGeometryFilter filter);
 
@@ -1279,12 +1259,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Throws an exception if <c>g</c>'s class is <c>GeometryCollection</c>. 
+        /// Throws an exception if <c>g</c>'s class is <see cref="GeometryCollection{TCoordinate}" />. 
         /// (its subclasses do not trigger an exception).
         /// </summary>
         /// <param name="g">The <see cref="Geometry{TCoordinate}"/> to check.</param>
         /// <exception cref="ArgumentException">
-        /// if <c>g</c> is a <c>GeometryCollection</c>, but not one of its subclasses.
+        /// if <c>g</c> is a <see cref="GeometryCollection{TCoordinate}" />, but not one of its subclasses.
         /// </exception>
         protected void CheckNotGeometryCollection(IGeometry g)
         {
@@ -1295,12 +1275,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns <see langword="true"/> if <c>g</c>'s class is <c>GeometryCollection</c>. 
+        /// Returns <see langword="true"/> if <c>g</c>'s class is <see cref="GeometryCollection{TCoordinate}" />. 
         /// (its subclasses do not trigger an exception).
         /// </summary>
         /// <param name="g">The <see cref="Geometry{TCoordinate}"/> to check.</param>
         /// <exception cref="ArgumentException">
-        /// If <c>g</c> is a <c>GeometryCollection</c>, but not one of its subclasses.
+        /// If <c>g</c> is a <see cref="GeometryCollection{TCoordinate}" />, but not one of its subclasses.
         /// </exception>        
         private static Boolean isGeometryCollection(IGeometry g)
         {

@@ -1,42 +1,53 @@
 using System;
 using System.IO;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using GeoAPI.Coordinates;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
     /// <summary>
-    /// Represents an intersection point between two <see cref="SegmentString" />s.
+    /// Represents an intersection point between two 
+    /// <see cref="SegmentString{TCoordinate}" />s.
     /// </summary>
-    public class SegmentNode : IComparable
+    public class SegmentNode<TCoordinate> : IComparable<SegmentNode<TCoordinate>>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        public readonly ICoordinate Coordinate = null; // the point of intersection
+        private readonly TCoordinate _coordinate; // the point of intersection
+        
+        // the index of the containing line segment in the parent edge
+        public readonly Int32 SegmentIndex = 0; 
 
-        public readonly Int32 SegmentIndex = 0; // the index of the containing line segment in the parent edge
-
-        private readonly SegmentString segString = null;
-        private readonly Octants segmentOctant = Octants.Null;
-        private readonly Boolean isInterior = false;
+        private readonly SegmentString<TCoordinate> _segString = null;
+        private readonly Octants _segmentOctant = Octants.Null;
+        private readonly Boolean _isInterior = false;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SegmentNode"/> class.
+        /// Initializes a new instance of the 
+        /// <see cref="SegmentNode{TCoordinate}"/> class.
         /// </summary>
-        public SegmentNode(SegmentString segString, ICoordinate coord, Int32 segmentIndex, Octants segmentOctant)
+        public SegmentNode(SegmentString<TCoordinate> segString, TCoordinate coord, Int32 segmentIndex, Octants segmentOctant)
         {
-            this.segString = segString;
-            Coordinate = new Coordinate(coord);
+            _segString = segString;
+            _coordinate = new TCoordinate(coord);
             SegmentIndex = segmentIndex;
-            this.segmentOctant = segmentOctant;
-            isInterior = !coord.Equals2D(segString.GetCoordinate(segmentIndex));
+            _segmentOctant = segmentOctant;
+            _isInterior = !coord.Equals(segString.GetCoordinate(segmentIndex));
+        }
+
+        public TCoordinate Coordinate
+        {
+            get { return _coordinate; }
         }
 
         public Boolean IsInterior
         {
-            get { return isInterior; }
+            get { return _isInterior; }
         }
 
         public Boolean IsEndPoint(Int32 maxSegmentIndex)
         {
-            if (SegmentIndex == 0 && ! isInterior)
+            if (SegmentIndex == 0 && ! _isInterior)
             {
                 return true;
             }
@@ -52,27 +63,34 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         ///  0 this SegmentNode is at the argument location, or
         ///  1 this SegmentNode is located after the argument location.   
         /// </returns>
-        public Int32 CompareTo(object obj)
+        public Int32 CompareTo(SegmentNode<TCoordinate> other)
         {
-            SegmentNode other = (SegmentNode) obj;
+            if (other == null)
+            {
+                throw new ArgumentNullException("other");
+            }
+
             if (SegmentIndex < other.SegmentIndex)
             {
                 return -1;
             }
+
             if (SegmentIndex > other.SegmentIndex)
             {
                 return 1;
             }
-            if (Coordinate.Equals2D(other.Coordinate))
+
+            if (_coordinate.Equals(other._coordinate))
             {
                 return 0;
             }
-            return SegmentPointComparator.Compare(segmentOctant, Coordinate, other.Coordinate);
+
+            return SegmentPointComparator.Compare(_segmentOctant, _coordinate, other._coordinate);
         }
 
         public void Write(StreamWriter outstream)
         {
-            outstream.Write(Coordinate);
+            outstream.Write(_coordinate);
             outstream.Write(" seg # = " + SegmentIndex);
         }
     }

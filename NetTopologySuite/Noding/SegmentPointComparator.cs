@@ -1,6 +1,7 @@
 using System;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using GeoAPI.Coordinates;
 using GisSharpBlog.NetTopologySuite.Utilities;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
@@ -14,24 +15,26 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     public class SegmentPointComparator
     {
         /// <summary>
-        ///  Compares two <see cref="Coordinate" />s for their relative position along a segment
-        /// lying in the specified <see cref="Octant" />.
+        /// Compares two <typeparamref name="TCoordinate"/>s for their relative 
+        /// position along a segment lying in the specified <see cref="Octant" />.
         /// </summary>
         /// <returns>
         /// -1 if node0 occurs first, or
         ///  0 if the two nodes are equal, or
         ///  1 if node1 occurs first.
         /// </returns>
-        public static Int32 Compare(Octants octant, ICoordinate p0, ICoordinate p1)
+        public static Int32 Compare<TCoordinate>(Octants octant, TCoordinate p0, TCoordinate p1)
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
         {
             // nodes can only be equal if their coordinates are equal
-            if (p0.Equals2D(p1))
+            if (p0.Equals(p1))
             {
                 return 0;
             }
 
-            Int32 xSign = RelativeSign(p0.X, p1.X);
-            Int32 ySign = RelativeSign(p0.Y, p1.Y);
+            Int32 xSign = RelativeSign(p0[Ordinates.X], p1[Ordinates.X]);
+            Int32 ySign = RelativeSign(p0[Ordinates.Y], p1[Ordinates.Y]);
 
             switch (octant)
             {
@@ -63,10 +66,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             {
                 return -1;
             }
+
             if (x0 > x1)
             {
                 return 1;
             }
+
             return 0;
         }
 

@@ -2,88 +2,95 @@ using System;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
 {
-    public enum SweepLineEvents
+    public enum SweepLineEventType
     {
         Insert = 1,
-
         Delete = 2,
     }
 
-    public class SweepLineEvent : IComparable
+    public class SweepLineEvent : IComparable<SweepLineEvent>
     {
-        private Double xValue;
-        private SweepLineEvents eventType;
-        private SweepLineEvent insertEvent = null; // null if this is an Insert event
-        private Int32 deleteEventIndex;
-
-        private SweepLineInterval sweepInt;
+        private readonly Double _xValue;
+        private readonly SweepLineEventType _eventType;
+        private readonly SweepLineEvent _insertEvent = null; // null if this is an Insert event
+        private Int32 _deleteEventIndex;
+        private readonly SweepLineInterval _sweepLineInterval;
 
         public SweepLineEvent(Double x, SweepLineEvent insertEvent, SweepLineInterval sweepInt)
         {
-            xValue = x;
-            this.insertEvent = insertEvent;
+            _xValue = x;
+            _insertEvent = insertEvent;
+
             if (insertEvent != null)
             {
-                eventType = SweepLineEvents.Delete;
+                _eventType = SweepLineEventType.Delete;
             }
             else
             {
-                eventType = SweepLineEvents.Insert;
+                _eventType = SweepLineEventType.Insert;
             }
-            this.sweepInt = sweepInt;
+
+            _sweepLineInterval = sweepInt;
         }
 
         public Boolean IsInsert
         {
-            get { return insertEvent == null; }
+            get { return _insertEvent == null; }
         }
 
         public Boolean IsDelete
         {
-            get { return insertEvent != null; }
+            get { return _insertEvent != null; }
         }
 
         public SweepLineEvent InsertEvent
         {
-            get { return insertEvent; }
+            get { return _insertEvent; }
         }
 
         public Int32 DeleteEventIndex
         {
-            get { return deleteEventIndex; }
-            set { deleteEventIndex = value; }
+            get { return _deleteEventIndex; }
+            set { _deleteEventIndex = value; }
         }
 
         public SweepLineInterval Interval
         {
-            get { return sweepInt; }
+            get { return _sweepLineInterval; }
         }
 
         /// <summary>
+        /// Compares two <see cref="SweepLineEvent"/>s to sort them according to 
+        /// coordinate value and <see cref="SweepLineEventType"/>.
+        /// </summary>
+        /// <remarks>
         /// ProjectionEvents are ordered first by their x-value, and then by their eventType.
         /// It is important that Insert events are sorted before Delete events, so that
         /// items whose Insert and Delete events occur at the same x-value will be
         /// correctly handled.
-        /// </summary>
-        public Int32 CompareTo(object o)
-        {
-            SweepLineEvent pe = (SweepLineEvent) o;
-            if (xValue < pe.xValue)
+        /// </remarks>
+        public Int32 CompareTo(SweepLineEvent other)
+        { 
+            if (_xValue < other._xValue)
             {
                 return -1;
             }
-            if (xValue > pe.xValue)
+
+            if (_xValue > other._xValue)
             {
                 return 1;
             }
-            if (eventType < pe.eventType)
+
+            if (_eventType < other._eventType)
             {
                 return -1;
             }
-            if (eventType > pe.eventType)
+
+            if (_eventType > other._eventType)
             {
                 return 1;
             }
+
             return 0;
         }
     }

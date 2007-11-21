@@ -1,14 +1,17 @@
 using System;
+using GeoAPI.DataStructures;
 using GisSharpBlog.NetTopologySuite.Index.Quadtree;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 {
     /// <summary>
-    /// A Key is a unique identifier for a node in a tree.
+    /// A <see cref="Key"/> is a unique identifier for a node in a tree.
+    /// </summary>
+    /// <remarks>
     /// It contains a lower-left point and a level number. The level number
     /// is the power of two for the size of the node envelope.
-    /// </summary>
-    public class Key
+    /// </remarks>
+    public struct Key
     {
         public static Int32 ComputeLevel(Interval interval)
         {
@@ -18,55 +21,59 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         }
 
         // the fields which make up the key
-        private Double pt = 0.0;
-        private Int32 level = 0;
+        private Double _value;
+        private Int32 _level;
 
         // auxiliary data which is derived from the key for use in computation
-        private Interval interval;
+        private Interval _interval;
 
         public Key(Interval interval)
         {
-            ComputeKey(interval);
+            _interval = new Interval();
+            _level = 0;
+            _value = 0;
+
+            computeKey(interval);
         }
 
         public Double Point
         {
-            get { return pt; }
+            get { return _value; }
         }
 
         public Int32 Level
         {
-            get { return level; }
+            get { return _level; }
         }
 
         public Interval Interval
         {
-            get { return interval; }
+            get { return _interval; }
         }
 
         /// <summary>
         /// Return a square envelope containing the argument envelope,
         /// whose extent is a power of two and which is based at a power of 2.
         /// </summary>
-        public void ComputeKey(Interval itemInterval)
+        private void computeKey(Interval itemInterval)
         {
-            level = ComputeLevel(itemInterval);
-            interval = new Interval();
-            ComputeInterval(level, itemInterval);
+            _level = ComputeLevel(itemInterval);
+            _interval = new Interval();
+            computeInterval(_level, itemInterval);
 
             // MD - would be nice to have a non-iterative form of this algorithm
-            while (!interval.Contains(itemInterval))
+            while (!_interval.Contains(itemInterval))
             {
-                level += 1;
-                ComputeInterval(level, itemInterval);
+                _level += 1;
+                computeInterval(_level, itemInterval);
             }
         }
 
-        private void ComputeInterval(Int32 level, Interval itemInterval)
+        private void computeInterval(Int32 level, Interval itemInterval)
         {
             Double size = DoubleBits.PowerOf2(level);
-            pt = Math.Floor(itemInterval.Min/size)*size;
-            interval.Init(pt, pt + size);
+            _value = Math.Floor(itemInterval.Min / size) * size;
+            _interval = new Interval(_value, _value + size);
         }
     }
 }

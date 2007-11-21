@@ -79,18 +79,8 @@
     <Compile Include="CoordinateSystems\Transformations\GeometryTransform.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Features\AttributesTable.cs">
-    </Compile>
-    <Compile Include="Features\Feature.cs" />
-    <Compile Include="Features\IAttributesTable.cs" />
     <Compile Include="GeometriesGraph\Positions.cs" />
-    <Compile Include="Geometries\CoordinateArrays.cs" />
-    <Compile Include="Geometries\CoordinateArraySequence.cs" />
-    <Compile Include="Geometries\CoordinateArraySequenceFactory.cs" />
-    <Compile Include="Geometries\CoordinateList.cs" />
     <Compile Include="Geometries\CoordinateSequences.cs" />
-    <Compile Include="Geometries\DefaultCoordinateSequence.cs" />
-    <Compile Include="Geometries\DefaultCoordinateSequenceFactory.cs" />
     <Compile Include="Geometries\Extents.cs" />
     <Compile Include="Geometries\Geometry.cs" />
     <Compile Include="Geometries\GeometryCollection.cs" />
@@ -110,6 +100,7 @@
     <Compile Include="Geometries\PrecisionModels.cs" />
     <Compile Include="Geometries\TopologyException.cs" />
     <Compile Include="Geometries\Triangle.cs" />
+    <Compile Include="Geometries\Utilities\CoordinateHelper.cs" />
     <Compile Include="Geometries\Utilities\GeometryEditor.cs" />
     <Compile Include="Geometries\Utilities\GeometryTransformer.cs" />
     <Compile Include="Geometries\Utilities\LinearComponentExtracter.cs" />
@@ -149,7 +140,6 @@
     <Compile Include="GeometriesGraph\TopologyLocation.cs" />
     <Compile Include="Index\ArrayListVisitor.cs" />
     <Compile Include="Index\Bintree\Bintree.cs" />
-    <Compile Include="Index\Bintree\Interval.cs" />
     <Compile Include="Index\Bintree\Key.cs" />
     <Compile Include="Index\Bintree\Node.cs" />
     <Compile Include="Index\Bintree\NodeBase.cs" />
@@ -170,7 +160,6 @@
     <Compile Include="Index\Strtree\AbstractNode.cs" />
     <Compile Include="Index\Strtree\AbstractSTRtree.cs" />
     <Compile Include="Index\Strtree\IBoundable.cs" />
-    <Compile Include="Index\Strtree\Interval.cs" />
     <Compile Include="Index\Strtree\ItemBoundable.cs" />
     <Compile Include="Index\Strtree\SIRtree.cs" />
     <Compile Include="Index\Strtree\STRtree.cs" />
@@ -261,15 +250,6 @@
     <Compile Include="Operation\Valid\SimpleNestedRingTester.cs" />
     <Compile Include="Operation\Valid\SweeplineNestedRingTester.cs" />
     <Compile Include="Operation\Valid\TopologyValidationError.cs" />
-    <Compile Include="Planargraph\Algorithm\ConnectedSubgraphFinder.cs" />
-    <Compile Include="Planargraph\DirectedEdge.cs" />
-    <Compile Include="Planargraph\DirectedEdgeStar.cs" />
-    <Compile Include="Planargraph\Edge.cs" />
-    <Compile Include="Planargraph\GraphComponent.cs" />
-    <Compile Include="Planargraph\Node.cs" />
-    <Compile Include="Planargraph\NodeMap.cs" />
-    <Compile Include="Planargraph\PlanarGraph.cs" />
-    <Compile Include="Planargraph\Subgraph.cs" />
     <Compile Include="Precision\CommonBits.cs" />
     <Compile Include="Precision\CommonBitsOp.cs" />
     <Compile Include="Precision\CommonBitsRemover.cs" />
@@ -295,28 +275,6 @@
     <Compile Include="Utilities\GeometricShapeFactory.cs" />
     <Compile Include="Utilities\HexConverter.cs" />
     <Compile Include="Utilities\Global.cs" />
-    <Compile Include="Utilities\Iesi.Collections\DictionarySet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\CollectionWrapper.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\DictionarySet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\EnumerableWrapper.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\EnumeratorWrapper.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\HashedSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\HybridSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\ImmutableSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\ISet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\ListSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\ListWrapper.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\Set.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\SetWrapper.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\SortedSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\HashedSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\HybridSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\ImmutableSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\ISet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\ListSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Set.cs" />
-    <Compile Include="Utilities\Iesi.Collections\SortedSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\SynchronizedSet.cs" />
     <Compile Include="Utilities\Radians.cs" />
     <Compile Include="Utilities\ReverseOrder.cs" />
     <Compile Include="Utilities\RToolsUtil\BufferedTextReader.cs" />
@@ -336,7 +294,6 @@
   <ItemGroup>
     <Content Include="License.txt" />
     <Content Include="ReadMe.txt" />
-    <Content Include="Utilities\Iesi.Collections\Iesi.Collections.License.txt" />
     <Content Include="Utilities\RToolsUtil\Rtools.Util.License.txt" />
   </ItemGroup>
   <ItemGroup>

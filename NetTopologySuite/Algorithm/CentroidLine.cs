@@ -1,6 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
+using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
@@ -10,63 +16,73 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// Compute the average of the midpoints
     /// of all line segments weighted by the segment length.
     /// </summary>
-    public class CentroidLine
+    public class CentroidLine<TCoordinate>
+         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                             IComputable<TCoordinate>, IConvertible
     {
-        private ICoordinate centSum = new Coordinate();
+        private TCoordinate _centSum = new TCoordinate();
         private Double totalLength = 0.0;
-
-        public CentroidLine() {}
 
         /// <summary> 
         /// Adds the linestring(s) defined by a Geometry to the centroid total.
-        /// If the point is not linear it does not contribute to the centroid.
+        /// If the geometry is not linear it does not contribute to the centroid.
         /// </summary>
-        /// <param name="geom">The point to add.</param>
-        public void Add(IGeometry geom)
+        /// <param name="geom">The geometry to add.</param>
+        public void Add(IGeometry<TCoordinate> geom)
         {
-            if (geom is ILineString)
+            if (geom is ILineString<TCoordinate>)
             {
                 Add(geom.Coordinates);
             }
 
-            else if (geom is IGeometryCollection)
+            else if (geom is IGeometryCollection<TCoordinate>)
             {
-                IGeometryCollection gc = (IGeometryCollection) geom;
-                
-                foreach (IGeometry geometry in gc.Geometries)
+                IGeometryCollection<TCoordinate> gc = geom as IGeometryCollection<TCoordinate>;
+
+                Debug.Assert(gc != null);
+
+                foreach (IGeometry<TCoordinate> geometry in gc)
                 {
                     Add(geometry);
                 }
             }
         }
 
-        public ICoordinate Centroid
+        public TCoordinate Centroid
         {
             get
             {
-                ICoordinate cent = new Coordinate();
-                cent.X = centSum.X/totalLength;
-                cent.Y = centSum.Y/totalLength;
-                return cent;
+                Double x = _centSum[Ordinates.X] / totalLength;
+                Double y = _centSum[Ordinates.Y] / totalLength;
+                return new TCoordinate(x, y);
             }
         }
 
         /// <summary> 
-        /// Adds the length defined by an array of coordinates.
+        /// Adds the length defined by a set of coordinates.
         /// </summary>
-        /// <param name="pts">An array of <c>Coordinate</c>s.</param>
-        public void Add(ICoordinate[] pts)
+        /// <param name="points">A set of <typeparamref name="TCoordinate"/>s.</param>
+        public void Add(IEnumerable<TCoordinate> points)
         {
-            for (Int32 i = 0; i < pts.Length - 1; i++)
+            Double x = _centSum[Ordinates.X];
+            Double y = _centSum[Ordinates.Y];
+
+            foreach (Pair<TCoordinate> pair in Slice.GetOverlappingPairs(points))
             {
-                Double segmentLen = pts[i].Distance(pts[i + 1]);
+                TCoordinate point1 = pair.First;
+                TCoordinate point2 = pair.Second;
+
+                Double segmentLen = point1.Distance(point2);
                 totalLength += segmentLen;
 
-                Double midx = (pts[i].X + pts[i + 1].X)/2;
-                centSum.X += segmentLen*midx;
-                Double midy = (pts[i].Y + pts[i + 1].Y)/2;
-                centSum.Y += segmentLen*midy;
+                Double midx = (point1[Ordinates.X] + point2[Ordinates.X]) / 2;
+                x += segmentLen * midx;
+
+                Double midy = (point1[Ordinates.Y] + point2[Ordinates.Y]) / 2;
+                y += segmentLen * midy;
             }
+
+            _centSum = new TCoordinate(x, y);
         }
     }
 }

@@ -23,38 +23,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             _edge = edge;
         }
 
-        public Int32 Count
-        {
-            get { return _nodeMap.Count; }
-        }
-
-        /// <summary> 
-        /// Adds an intersection into the list, if it isn't already there.
-        /// The input segmentIndex and dist are expected to be normalized.
-        /// </summary>
-        /// <returns>The EdgeIntersection found or added.</returns>
-        public EdgeIntersection<TCoordinate> Add(TCoordinate intersection, Int32 segmentIndex, Double dist)
-        {
-            EdgeIntersection<TCoordinate> eiNew = new EdgeIntersection<TCoordinate>(intersection, segmentIndex, dist);
-            EdgeIntersection<TCoordinate> ei = _nodeMap[eiNew];
-
-            if (ei != null)
-            {
-                return ei;
-            }
-
-            _nodeMap.Add(eiNew, eiNew);
-            return eiNew;
-        }
-
-        /// <summary> 
-        /// Returns an iterator of EdgeIntersections.
-        /// </summary>
-        public IEnumerator<EdgeIntersection<TCoordinate>> GetEnumerator()
-        {
-            return _nodeMap.Values.GetEnumerator();
-        }
-
         public Boolean IsIntersection(TCoordinate point)
         {
             foreach (EdgeIntersection<TCoordinate> intersection in this)
@@ -73,18 +41,16 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public void AddEndpoints()
         {
-            Int32 maxSegIndex = _edge.Points.Length - 1;
+            Int32 maxSegIndex = _edge.Points.Count - 1;
             Add(_edge.Points[0], 0, 0.0);
             Add(_edge.Points[maxSegIndex], maxSegIndex, 0.0);
         }
 
         /// <summary> 
-        /// Creates new edges for all the edges that the intersections in this
+        /// Creates and returns new edges for all the edges that the intersections in this
         /// list split the parent edge into.
-        /// Adds the edges to the input list (this is so a single list
-        /// can be used to accumulate all split edges for a Geometry).
         /// </summary>
-        public void AddSplitEdges(IEnumerable<EdgeIntersection<TCoordinate>> edgeList)
+        public IEnumerable<Edge<TCoordinate>> GetSplitEdges()
         {
             // ensure that the list has entries for the first and last point of the edge
             AddEndpoints();
@@ -99,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             {
                 EdgeIntersection<TCoordinate> ei = it.Current;
                 Edge<TCoordinate> newEdge = CreateSplitEdge(eiPrev, ei);
-                edgeList.Add(newEdge);
+                yield return newEdge;
 
                 eiPrev = ei;
             }
@@ -152,5 +118,113 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 intersection.Write(outstream);
             }
         }
+
+        #region IList<EdgeIntersection<TCoordinate>> Members
+
+        public int IndexOf(EdgeIntersection<TCoordinate> item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Insert(int index, EdgeIntersection<TCoordinate> item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveAt(int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        public EdgeIntersection<TCoordinate> this[int index]
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        #endregion
+
+        #region ICollection<EdgeIntersection<TCoordinate>> Members
+
+        public void Add(EdgeIntersection<TCoordinate> item)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary> 
+        /// Adds an intersection into the list, if it isn't already there.
+        /// The input segmentIndex and dist are expected to be normalized.
+        /// </summary>
+        /// <returns>The EdgeIntersection found or added.</returns>
+        public EdgeIntersection<TCoordinate> Add(TCoordinate intersection, Int32 segmentIndex, Double dist)
+        {
+            EdgeIntersection<TCoordinate> eiNew = new EdgeIntersection<TCoordinate>(intersection, segmentIndex, dist);
+            EdgeIntersection<TCoordinate> ei = _nodeMap[eiNew];
+
+            if (ei != null)
+            {
+                return ei;
+            }
+
+            _nodeMap.Add(eiNew, eiNew);
+            return eiNew;
+        }
+
+        public void Clear()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Contains(EdgeIntersection<TCoordinate> item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CopyTo(EdgeIntersection<TCoordinate>[] array, int arrayIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Int32 Count
+        {
+            get { return _nodeMap.Count; }
+        }
+
+        public bool IsReadOnly
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public bool Remove(EdgeIntersection<TCoordinate> item)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IEnumerable<EdgeIntersection<TCoordinate>> Members
+        /// <summary> 
+        /// Returns an iterator of EdgeIntersections.
+        /// </summary>
+        public IEnumerator<EdgeIntersection<TCoordinate>> GetEnumerator()
+        {
+            return _nodeMap.Values.GetEnumerator();
+        }
+        #endregion
+
+        #region IEnumerable Members
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

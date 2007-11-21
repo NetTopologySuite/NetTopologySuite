@@ -1,4 +1,5 @@
 using System;
+using GeoAPI.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {

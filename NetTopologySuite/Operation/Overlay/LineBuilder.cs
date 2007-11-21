@@ -128,7 +128,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                 return; // if the edge linework is already included, don't include it again
             }
 
-            // sanity check for labelling of result edgerings
+            // sanity check for labeling of result edgerings
             Assert.IsTrue(!(de.IsInResult || de.Sym.IsInResult) || !de.Edge.IsInResult);
             // include the linework if it's in the result of the operation
             if (OverlayOp.IsResultOfOp(label, opCode) && opCode == SpatialFunctions.Intersection)

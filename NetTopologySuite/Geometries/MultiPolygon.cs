@@ -19,9 +19,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Constructs a <c>MultiPolygon</c>.
         /// </summary>
         /// <param name="polygons">
-        /// The <c>Polygon</c>s for this <c>MultiPolygon</c>
+        /// The <see cref="Polygon{TCoordinate}" />s for this <c>MultiPolygon</c>
         /// , or <see langword="null" /> or an empty array to create the empty point.
-        /// Elements may be empty <c>Polygon</c>s, but not <see langword="null" />
+        /// Elements may be empty <see cref="Polygon{TCoordinate}" />s, but not <see langword="null" />
         /// s. The polygons must conform to the assertions specified in the 
         /// <see href="http://www.opengis.org/techno/specs.htm"/> OpenGIS Simple Features
         /// Specification for SQL.        
@@ -36,9 +36,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Constructs a <c>MultiPolygon</c>.
         /// </summary>
         /// <param name="polygons">
-        /// The <c>Polygon</c>s for this <c>MultiPolygon</c>
+        /// The <see cref="Polygon{TCoordinate}" />s for this <c>MultiPolygon</c>
         /// , or <see langword="null" /> or an empty array to create the empty point.
-        /// Elements may be empty <c>Polygon</c>s, but not <see langword="null" />
+        /// Elements may be empty <see cref="Polygon{TCoordinate}" />s, but not <see langword="null" />
         /// s. The polygons must conform to the assertions specified in the 
         /// <see href="http://www.opengis.org/techno/specs.htm"/> OpenGIS Simple Features
         /// Specification for SQL.        

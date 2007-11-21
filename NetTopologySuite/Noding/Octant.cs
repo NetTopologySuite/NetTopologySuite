@@ -1,4 +1,5 @@
 using System;
+using GeoAPI.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
@@ -105,13 +106,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <summary>
         /// Returns the octant of a directed line segment from p0 to p1.
         /// </summary>
-        /// <param name="p0"></param>
-        /// <param name="p1"></param>
-        /// <returns></returns>
-        public static Octants GetOctant(ICoordinate p0, ICoordinate p1)
+        public static Octants GetOctant<TCoordinate>(TCoordinate p0, TCoordinate p1)
+            where TCoordinate : ICoordinate
         {
-            Double dx = p1.X - p0.X;
-            Double dy = p1.Y - p0.Y;
+            Double dx = p1[Ordinates.X] - p0[Ordinates.X];
+            Double dy = p1[Ordinates.Y] - p0[Ordinates.Y];
 
             if (dx == 0.0 && dy == 0.0)
             {

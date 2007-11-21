@@ -1,6 +1,8 @@
 using System;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Utilities
 {
@@ -9,9 +11,11 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
     /// Allows various ways of specifying the location and extent of the shapes,
     /// as well as number of line segments used to form them.
     /// </summary>
-    public class GeometricShapeFactory
+    public class GeometricShapeFactory<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        private GeometryFactory geomFact;
+        private GeometryFactory<TCoordinate> geomFact;
         private Dimensions dim = new Dimensions();
         private Int32 nPts = 100;
 
@@ -123,7 +127,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Creates a rectangular <c>Polygon</c>.
+        /// Creates a rectangular <see cref="Polygon{TCoordinate}" />.
         /// </summary>
         /// <returns>A rectangular polygon.</returns>
         public IPolygon CreateRectangle()
@@ -170,7 +174,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Creates a circular <c>Polygon</c>.
+        /// Creates a circular <see cref="Polygon{TCoordinate}" />.
         /// </summary>
         /// <returns>A circular polygon.</returns>
         public IPolygon CreateCircle()

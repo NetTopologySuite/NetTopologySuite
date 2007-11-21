@@ -1,19 +1,27 @@
 using System;
 using System.IO;
+using GeoAPI.Coordinates;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     /// <summary> 
     /// An EdgeIntersection represents a point on an
     /// edge which intersects with another edge.
+    /// </summary>
+    /// <remarks>
+    /// <para>
     /// The intersection may either be a single point, or a line segment
     /// (in which case this point is the start of the line segment)
     /// The label attached to this intersection point applies to
     /// the edge from this point forwards, until the next
     /// intersection or the end of the edge.
+    /// </para>
     /// The intersection point must be precise.
-    /// </summary>
+    /// </remarks>
     public class EdgeIntersection<TCoordinate> : IComparable<EdgeIntersection<TCoordinate>>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
         private TCoordinate _coordinate;
         private Double _distance;

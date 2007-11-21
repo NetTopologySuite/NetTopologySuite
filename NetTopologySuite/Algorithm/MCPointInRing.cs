@@ -1,36 +1,41 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Index.Bintree;
 using GisSharpBlog.NetTopologySuite.Index.Chain;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     /// <summary>
-    /// Implements <c>IPointInRing</c>
-    /// using a <c>MonotoneChain</c>s and a <c>BinTree</c> index to increase performance.
+    /// Implements <see cref="IPointInRing{TCoordinate}"/>
+    /// using a <see cref="MonotoneChain{TCoordinate}"/> and a <see cref="BinTree{TCoordinate}"/> 
+    /// index to increase performance.
     /// </summary>
-    public class MCPointInRing : IPointInRing
+    public class MCPointInRing<TCoordinate> : IPointInRing<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        private class MCSelecter : MonotoneChainSelectAction
+        private class MCSelector : MonotoneChainSelectAction<TCoordinate>
         {
-            private MCPointInRing container = null;
-            private ICoordinate p = null;
+            private readonly MCPointInRing<TCoordinate> _container = null;
+            private TCoordinate _p = default(TCoordinate);
 
-            public MCSelecter(MCPointInRing container, ICoordinate p)
+            public MCSelector(MCPointInRing<TCoordinate> container, TCoordinate p)
             {
-                this.container = container;
-                this.p = p;
+                _container = container;
+                _p = p;
             }
 
-            public override void Select(LineSegment ls)
+            public override void Select(LineSegment<TCoordinate> ls)
             {
-                container.TestLineSegment(p, ls);
+                _container.TestLineSegment(_p, ls);
             }
         }
 
-        private ILinearRing ring;
+        private ILinearRing<TCoordinate> ring;
         private Bintree tree;
         private Int32 crossings = 0; // number of segment/ray crossings
 
@@ -67,14 +72,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             IExtents rayEnv = new Extents(Double.NegativeInfinity, Double.PositiveInfinity, pt.Y, pt.Y);
             interval.Min = pt.Y;
             interval.Max = pt.Y;
-            IList segs = tree.Query(interval);
+            IEnumerable<MonotoneChain<TCoordinate>> segs = tree.Query(interval);
 
-            MCSelecter mcSelecter = new MCSelecter(this, pt);
+            MCSelector mcSelecter = new MCSelector(this, pt);
            
             for (IEnumerator i = segs.GetEnumerator(); i.MoveNext();)
             {
-                MonotoneChain mc = (MonotoneChain) i.Current;
-                TestMonotoneChain(rayEnv, mcSelecter, mc);
+                MonotoneChain<TCoordinate> mc = (MonotoneChain) i.Current;
+                testMonotoneChain(rayEnv, mcSelecter, mc);
             }
 
             /*
@@ -88,12 +93,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return false;
         }
 
-        private void TestMonotoneChain(IExtents rayEnv, MCSelecter mcSelecter, MonotoneChain mc)
+        private static void testMonotoneChain(IExtents<TCoordinate> rayExtents, MCSelector mcSelecter, MonotoneChain<TCoordinate> mc)
         {
-            mc.Select(rayEnv, mcSelecter);
+            mc.Select(rayExtents, mcSelecter);
         }
 
-        private void TestLineSegment(ICoordinate p, LineSegment seg)
+        private void TestLineSegment(ICoordinate p, LineSegment<TCoordinate> seg)
         {
             Double xInt; // x intersection of segment with ray
             Double x1; // translated coordinates
@@ -104,12 +109,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             /*
             *  Test if segment crosses ray from test point in positive x direction.
             */
-            ICoordinate p1 = seg.P0;
-            ICoordinate p2 = seg.P1;
-            x1 = p1.X - p.X;
-            y1 = p1.Y - p.Y;
-            x2 = p2.X - p.X;
-            y2 = p2.Y - p.Y;
+            TCoordinate p1 = seg.P0;
+            TCoordinate p2 = seg.P1;
+            x1 = p1[Ordinates.X] - p[Ordinates.X];
+            y1 = p1[Ordinates.Y] - p[Ordinates.Y];
+            x2 = p2[Ordinates.X] - p[Ordinates.X];
+            y2 = p2[Ordinates.Y] - p[Ordinates.Y];
 
             if (((y1 > 0) && (y2 <= 0)) || ((y2 > 0) && (y1 <= 0)))
             {

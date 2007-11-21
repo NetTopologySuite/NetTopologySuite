@@ -12,9 +12,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// Models the end of an edge incident on a node.
     /// </summary>
     /// <remarks>
-    /// EdgeEnds have a direction
-    /// determined by the direction of the ray from the initial
-    /// point to the next point.
+    /// EdgeEnds have a direction determined by the direction of the ray 
+    /// from the initial point to the next point.
     /// EdgeEnds are <see cref="IComparable{EdgeEnd}"/> under the ordering
     /// "a has a greater angle with the x-axis than b".
     /// This ordering is used to sort EdgeEnds around a node.
@@ -25,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     {
         private Edge<TCoordinate> _edge = null;
         private Label _label = null;
-        private Node _origin; // the node this edge end originates at
+        private Node<TCoordinate> _origin; // the node this edge end originates at
         private TCoordinate _p0, _p1; // points of initial line segment
         private TCoordinate _direction; // the direction vector for this edge from its starting point
         private Int32 _quadrant;
@@ -49,8 +48,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             _p0 = p0;
             _p1 = p1;
-            _direction = new TCoordinate(p1[Ordinates.X] - p0[Ordinates.Y], p1[Ordinates.Y] - p0[Ordinates.Y]);
+            Double dx = p1[Ordinates.X] - p0[Ordinates.X];
+            Double dy = p1[Ordinates.Y] - p0[Ordinates.Y];
+            _direction = new TCoordinate(dx, dy);
             _quadrant = QuadrantOp<TCoordinate>.Quadrant(_direction);
+
             Assert.IsTrue(!(_direction[Ordinates.X] == 0 && _direction[Ordinates.Y] == 0), 
                 "EdgeEnd with identical endpoints found");
         }
@@ -97,7 +99,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             get { return _direction; }
         }
 
-        public Node Node
+        public Node<TCoordinate> Node
         {
             get { return _origin; }
             set { _origin = value; }
@@ -139,7 +141,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             // vectors are in the same quadrant - check relative orientation of direction vectors
             // this is > e if it is CCW of e
-            return CGAlgorithms<TCoordinate>.ComputeOrientation(
+            return (Int32)CGAlgorithms<TCoordinate>.ComputeOrientation(
                 e.Coordinate, e.DirectedCoordinate, _p1);
         }
 

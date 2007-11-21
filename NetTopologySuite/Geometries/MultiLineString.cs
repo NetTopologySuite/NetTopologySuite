@@ -1,14 +1,19 @@
 using System;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Operation;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>
     /// Basic implementation of <c>MultiLineString</c>.
     /// </summary>    
-    public class MultiLineString : GeometryCollection, IMultiLineString
+    public class MultiLineString<TCoordinate> : GeometryCollection<TCoordinate>, IMultiLineString<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                    IComputable<TCoordinate>, IConvertible
+
     {
         /// <summary>
         /// Represents an empty <c>MultiLineString</c>.

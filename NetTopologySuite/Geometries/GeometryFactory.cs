@@ -65,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Constructs a GeometryFactory that generates Geometries having the given
         /// PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.
         /// </summary>    
-        public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel, Int32 srid,
+        public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel, Int32? srid,
                                ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory)
         {
             _precisionModel = precisionModel;
@@ -78,7 +78,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// CoordinateSequence implementation, a Double-precision floating PrecisionModel and a
         /// spatial-reference ID of 0.
         /// </summary>
-        public GeometryFactory(ICoordinateSequenceFactory coordinateSequenceFactory)
+        public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory)
             : this(new PrecisionModel<TCoordinate>(), 0, coordinateSequenceFactory) {}
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// implementation.
         /// </summary>
         /// <param name="precisionModel">The PrecisionModel to use.</param>
-        public GeometryFactory(IPrecisionModel precisionModel)
+        public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel)
             : this(precisionModel, 0, GetDefaultCoordinateSequenceFactory()) {}
 
         /// <summary>
@@ -97,8 +97,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="precisionModel">The PrecisionModel to use.</param>
         /// <param name="SRID">The SRID to use.</param>
-        public GeometryFactory(PrecisionModel<TCoordinate> precisionModel, Int32 SRID)
-            : this(precisionModel, SRID, GetDefaultCoordinateSequenceFactory()) {}
+        public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel, Int32 SRID)
+            : this(precisionModel, SRID, GetDefaultCoordinateSequenceFactory<TCoordinate>()) {}
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having a floating
@@ -108,17 +108,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /// <summary>  
         /// Build an appropriate <see cref="Geometry{TCoordinate}"/>, <c>MultiGeometry</c>, or
-        /// <c>GeometryCollection</c> to contain the <see cref="Geometry{TCoordinate}"/>s in
+        /// <see cref="GeometryCollection{TCoordinate}" /> to contain the <see cref="Geometry{TCoordinate}"/>s in
         /// it.
         /// <example>
-        ///  If <c>geomList</c> contains a single <c>Polygon</c>,
-        /// the <c>Polygon</c> is returned.
-        ///  If <c>geomList</c> contains several <c>Polygon</c>s, a
+        ///  If <c>geomList</c> contains a single <see cref="Polygon{TCoordinate}" />,
+        /// the <see cref="Polygon{TCoordinate}" /> is returned.
+        ///  If <c>geomList</c> contains several <see cref="Polygon{TCoordinate}" />s, a
         /// <c>MultiPolygon</c> is returned.
-        ///  If <c>geomList</c> contains some <c>Polygon</c>s and
-        /// some <c>LineString</c>s, a <c>GeometryCollection</c> is
+        ///  If <c>geomList</c> contains some <see cref="Polygon{TCoordinate}" />s and
+        /// some <c>LineString</c>s, a <see cref="GeometryCollection{TCoordinate}" /> is
         /// returned.
-        ///  If <c>geomList</c> is empty, an empty <c>GeometryCollection</c>
+        ///  If <c>geomList</c> is empty, an empty <see cref="GeometryCollection{TCoordinate}" />
         /// is returned.
         /// Note that this method does not "flatten" Geometries in the input, and hence if
         /// any MultiGeometries are contained in the input a GeometryCollection containing
@@ -194,14 +194,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// If the <see cref="Extents{TCoordinate}"/> is a null <see cref="Extents{TCoordinate}"/>, returns an
         /// empty <c>Point</c>. If the <see cref="Extents{TCoordinate}"/> is a point, returns
         /// a non-empty <c>Point</c>. If the <see cref="Extents{TCoordinate}"/> is a
-        /// rectangle, returns a <c>Polygon</c> whose points are (minx, miny),
+        /// rectangle, returns a <see cref="Polygon{TCoordinate}" /> whose points are (minx, miny),
         /// (maxx, miny), (maxx, maxy), (minx, maxy), (minx, miny).
         /// </summary>
         /// <param name="envelope">The <see cref="Extents{TCoordinate}"/> to convert to a <see cref="Geometry{TCoordinate}"/>.</param>       
         /// <returns>
         /// An empty <c>Point</c> (for null <see cref="Extents{TCoordinate}"/>
         /// s), a <c>Point</c> (when min x = max x and min y = max y) or a
-        /// <c>Polygon</c> (in all other cases)
+        /// <see cref="Polygon{TCoordinate}" /> (in all other cases)
         /// throws a <c>TopologyException</c> if <c>coordinates</c>
         /// is not a closed linestring, that is, if the first and last coordinates
         /// are not equal.
@@ -285,7 +285,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Creates a <c>LinearRing</c> using the given <c>Coordinates</c>; a null or empty array will
+        /// Creates a <see cref="LinearRing{TCoordinate}" /> using the given <c>Coordinates</c>; a null or empty array will
         /// create an empty LinearRing. The points must form a closed and simple
         /// linestring. Consecutive points must not be equal.
         /// </summary>
@@ -296,7 +296,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary> 
-        /// Creates a <c>LinearRing</c> using the given <c>CoordinateSequence</c>; a null or empty CoordinateSequence will
+        /// Creates a <see cref="LinearRing{TCoordinate}" /> using the given <c>CoordinateSequence</c>; a null or empty CoordinateSequence will
         /// create an empty LinearRing. The points must form a closed and simple
         /// linestring. Consecutive points must not be equal.
         /// </summary>
@@ -307,17 +307,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary> 
-        /// Constructs a <c>Polygon</c> with the given exterior boundary and
+        /// Constructs a <see cref="Polygon{TCoordinate}" /> with the given exterior boundary and
         /// interior boundaries.
         /// </summary>
         /// <param name="shell">
-        /// The outer boundary of the new <c>Polygon</c>, or
-        /// <see langword="null" /> or an empty <c>LinearRing</c> if
+        /// The outer boundary of the new <see cref="Polygon{TCoordinate}" />, or
+        /// <see langword="null" /> or an empty <see cref="LinearRing{TCoordinate}" /> if
         /// the empty point is to be created.
         /// </param>
         /// <param name="holes">
-        /// The inner boundaries of the new <c>Polygon</c>, or
-        /// <see langword="null" /> or empty <c>LinearRing</c> s if
+        /// The inner boundaries of the new <see cref="Polygon{TCoordinate}" />, or
+        /// <see langword="null" /> or empty <see cref="LinearRing{TCoordinate}" /> s if
         /// the empty point is to be created.        
         /// </param>
         public IPolygon<TCoordinate> CreatePolygon(ILinearRing<TCoordinate> shell,
@@ -390,7 +390,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Creates a <c>GeometryCollection</c> using the given <c>Geometries</c>; a null or empty
+        /// Creates a <see cref="GeometryCollection{TCoordinate}" /> using the given <c>Geometries</c>; a null or empty
         /// array will create an empty GeometryCollection.
         /// </summary>
         /// <param name="geometries">Geometries, each of which may be empty but not null.</param>

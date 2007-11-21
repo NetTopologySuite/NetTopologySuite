@@ -1,57 +1,56 @@
 using System;
+using GeoAPI.DataStructures;
 using GisSharpBlog.NetTopologySuite.Index.Quadtree;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 {
     /// <summary> 
-    /// The root node of a single <c>Bintree</c>.
-    /// It is centred at the origin,
-    /// and does not have a defined extent.
+    /// The root node of a single <see cref="BinTree{TItem}"/>.
+    /// It is centred at the origin, and does not have a defined extent.
     /// </summary>
-    public class Root : NodeBase
+    public class Root<TItem> : NodeBase<TItem>
     {
         // the singleton root node is centred at the origin.
-        private const Double origin = 0.0;
-
-        public Root() {}
+        private static readonly Double Origin = 0.0;
 
         /// <summary> 
         /// Insert an item into the tree this is the root of.
         /// </summary>
-        public void Insert(Interval itemInterval, object item)
+        public void Insert(Interval itemInterval, TItem item)
         {
-            Int32 index = GetSubnodeIndex(itemInterval, origin);
-            
-            // if index is -1, itemEnv must contain the origin.
-            if (index == -1)
+            Int32 index = GetSubNodeIndex(itemInterval, Origin);
+            Node<TItem> subNode = GetSubNode(itemInterval, Origin);
+
+            // if index is -1, itemInterval must contain the origin.
+            if (subNode == null)
             {
                 Add(item);
                 return;
             }
 
-            /*
-            * the item must be contained in one interval, so insert it into the
-            * tree for that interval (which may not yet exist)
-            */
-            Node node = subnode[index];
-
-            /*
-            *  If the subnode doesn't exist or this item is not contained in it,
-            *  have to expand the tree upward to contain the item.
-            */
-
-            if (node == null || ! node.Interval.Contains(itemInterval))
+            
+            // If the subnode doesn't exist or this item is not contained in it,
+            // have to expand the tree upward to contain the item.
+            if (!subNode.Interval.Contains(itemInterval))
             {
-                Node largerNode = Node.CreateExpanded(node, itemInterval);
-                subnode[index] = largerNode;
+                Node<TItem> largerNode = Node<TItem>.CreateExpanded(subNode, itemInterval);
+                SetSubNode(index, largerNode);
             }
 
-            /*
-            * At this point we have a subnode which exists and must contain
-            * contains the env for the item.  Insert the item into the tree.
-            */
-            InsertContained(subnode[index], itemInterval, item);
+            
+            // At this point we have a subnode which exists and must contain
+            // contains the extents for the item.  Insert the item into the tree.
+            subNode = GetSubNode(index);
+            insertContained(subNode, itemInterval, item);
+        }
+
+        /// <summary>
+        /// The root node matches all searches.
+        /// </summary>
+        protected override Boolean IsSearchMatch(Interval interval)
+        {
+            return true;
         }
 
         /// <summary> 
@@ -59,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// the given Node.  Lower levels of the tree will be created
         /// if necessary to hold the item.
         /// </summary>
-        private void InsertContained(Node tree, Interval itemInterval, object item)
+        private static void insertContained(Node<TItem> tree, Interval itemInterval, TItem item)
         {
             Assert.IsTrue(tree.Interval.Contains(itemInterval));
             
@@ -69,7 +68,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             * the smallest existing node containing the query
             */
             Boolean isZeroArea = IntervalSize.IsZeroWidth(itemInterval.Min, itemInterval.Max);
-            NodeBase node;
+            NodeBase<TItem> node;
 
             if (isZeroArea)
             {
@@ -81,14 +80,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             }
 
             node.Add(item);
-        }
-
-        /// <summary>
-        /// The root node matches all searches.
-        /// </summary>
-        protected override Boolean IsSearchMatch(Interval interval)
-        {
-            return true;
         }
     }
 }

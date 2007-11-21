@@ -1,52 +1,60 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
+using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
     /// <summary>
     /// Represents a list of contiguous line segments, and supports noding the segments.
-    /// The line segments are represented by an array of <see cref="Coordinate" />s.
+    /// The line segments are represented by an array of <typeparamref name="TCoordinate"/>s.
     /// Intended to optimize the noding of contiguous segments by
     /// reducing the number of allocated objects.
-    /// <see cref="SegmentString" />s can carry a context object, which is useful
+    /// <see cref="SegmentString{TCoordinate}" />s can carry a context object, which is useful
     /// for preserving topological or parentage information.
     /// All noded substrings are initialized with the same context object.
     /// </summary>
-    public class SegmentString
+    public class SegmentString<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        public static IList GetNodedSubstrings(IList segStrings)
+        public static IEnumerable<SegmentString<TCoordinate>> GetNodedSubstrings(IEnumerable<SegmentString<TCoordinate>> segStrings)
         {
-            IList resultEdgelist = new ArrayList();
-            GetNodedSubstrings(segStrings, resultEdgelist);
-            return resultEdgelist;
-        }
-
-        public static void GetNodedSubstrings(IList segStrings, IList resultEdgelist)
-        {
-            foreach (object obj in segStrings)
+            foreach (SegmentString<TCoordinate> ss in segStrings)
             {
-                SegmentString ss = (SegmentString) obj;
-                ss.NodeList.AddSplitEdges(resultEdgelist);
+                foreach (SegmentString<TCoordinate> segmentString in ss.NodeList.GetSplitEdges())
+                {
+                    yield return segmentString;
+                }
             }
         }
 
-        private SegmentNodeList nodeList = null;
-        private ICoordinate[] pts;
-        private object data;
+        //public static void GetNodedSubstrings(IList segStrings, IList resultEdgelist)
+        //{
+        //    foreach (object obj in segStrings)
+        //    {
+        //        SegmentString ss = (SegmentString) obj;
+        //        ss.NodeList.AddSplitEdges(resultEdgelist);
+        //    }
+        //}
+
+        private readonly SegmentNodeList<TCoordinate> _nodeList = null;
+        private readonly IEnumerable<TCoordinate> _coordinates;
+        private Object _data;
 
         /// <summary>
         /// Creates a new segment string from a list of vertices.
         /// </summary>
-        /// <param name="pts">The vertices of the segment string.</param>
+        /// <param name="coordinates">The vertices of the segment string.</param>
         /// <param name="data">The user-defined data of this segment string (may be null).</param>
-        public SegmentString(ICoordinate[] pts, Object data)
+        public SegmentString(IEnumerable<TCoordinate> coordinates, Object data)
         {
-            nodeList = new SegmentNodeList(this);
+            _nodeList = new SegmentNodeList<TCoordinate>(this);
 
-            this.pts = pts;
-            this.data = data;
+            _coordinates = coordinates;
+            _data = data;
         }
 
         /// <summary>
@@ -54,49 +62,53 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         public object Data
         {
-            get { return data; }
-            set { data = value; }
+            get { return _data; }
+            set { _data = value; }
         }
 
-        public SegmentNodeList NodeList
+        public SegmentNodeList<TCoordinate> NodeList
         {
-            get { return nodeList; }
+            get { return _nodeList; }
         }
 
         public Int32 Count
         {
-            get { return pts.Length; }
+            get { return _coordinates.Length; }
         }
 
-        public ICoordinate GetCoordinate(Int32 i)
+        public TCoordinate GetCoordinate(Int32 i)
         {
-            return pts[i];
+            return _coordinates[i];
         }
 
-        public ICoordinate[] Coordinates
+        public IEnumerable<TCoordinate> Coordinates
         {
-            get { return pts; }
+            get { return _coordinates; }
         }
 
         public Boolean IsClosed
         {
-            get { return pts[0].Equals(pts[pts.Length - 1]); }
+            get 
+            { 
+                return Slice.GetFirst(_coordinates).Equals(Slice.GetLast(_coordinates)); 
+            }
         }
 
         /// <summary>
-        ///  Gets the octant of the segment starting at vertex <c>index</c>.
+        /// Gets the octant of the segment starting at vertex <c>index</c>.
         /// </summary>
         /// <param name="index">
         /// The index of the vertex starting the segment.  
         /// Must not be the last index in the vertex list
         /// </param>
-        /// <returns>The octant of the segment at the vertex</returns>
+        /// <returns>The octant of the segment at the vertex.</returns>
         public Octants GetSegmentOctant(Int32 index)
         {
-            if (index == pts.Length - 1)
+            if (index == _coordinates.Count - 1)
             {
                 return Octants.Null;
             }
+
             return Octant.GetOctant(GetCoordinate(index), GetCoordinate(index + 1));
         }
 
@@ -104,45 +116,51 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// Adds EdgeIntersections for one or both
         /// intersections found for a segment of an edge to the edge intersection list.   
         /// </summary>
-        public void AddIntersections(LineIntersector li, Int32 segmentIndex, Int32 geomIndex)
+        public void AddIntersections(LineIntersector<TCoordinate> li, Int32 segmentIndex, Int32 geomIndex)
         {
-            for (Int32 i = 0; i < li.IntersectionNum; i++)
+            Int32 intersection = (Int32)li.IntersectionType;
+
+            for (Int32 i = 0; i < intersection; i++)
             {
                 AddIntersection(li, segmentIndex, geomIndex, i);
             }
         }
 
         /// <summary>
-        /// Add an <see cref="SegmentNode" /> for intersection intIndex.
-        /// An intersection that falls exactly on a vertex
-        /// of the <see cref="SegmentString" /> is normalized
-        /// to use the higher of the two possible segmentIndexes.
+        /// Add a <see cref="SegmentNode{TCoordinate}" /> for intersection
+        /// <paramref name="intIndex"/>.
         /// </summary>
-        public void AddIntersection(LineIntersector li, Int32 segmentIndex, Int32 geomIndex, Int32 intIndex)
+        /// <remarks>
+        /// An intersection that falls exactly on a vertex
+        /// of the <see cref="SegmentString{TCoordinate}" /> is normalized
+        /// to use the higher of the two possible segmentIndexes.
+        /// </remarks>
+        public void AddIntersection(LineIntersector<TCoordinate> li, Int32 segmentIndex, Int32 geomIndex, Int32 intIndex)
         {
-            ICoordinate intPt = new Coordinate(li.GetIntersection(intIndex));
+            TCoordinate intPt = new TCoordinate(li.GetIntersection(intIndex));
             AddIntersection(intPt, segmentIndex);
         }
 
-        public void AddIntersection(ICoordinate intPt, Int32 segmentIndex)
+        public void AddIntersection(TCoordinate intPt, Int32 segmentIndex)
         {
             Int32 normalizedSegmentIndex = segmentIndex;
             // normalize the intersection point location
             Int32 nextSegIndex = normalizedSegmentIndex + 1;
-            if (nextSegIndex < pts.Length)
+
+            if (nextSegIndex < _coordinates.Length)
             {
-                ICoordinate nextPt = pts[nextSegIndex];
+                TCoordinate nextPt = _coordinates[nextSegIndex];
 
                 // Normalize segment index if intPt falls on vertex
                 // The check for point equality is 2D only - Z values are ignored
-                if (intPt.Equals2D(nextPt))
+                if (intPt.Equals(nextPt))
                 {
                     normalizedSegmentIndex = nextSegIndex;
                 }
             }
 
             // Add the intersection point to edge intersection list.
-            SegmentNode ei = nodeList.Add(intPt, normalizedSegmentIndex);
+            SegmentNode<TCoordinate> ei = _nodeList.Add(intPt, normalizedSegmentIndex);
         }
     }
 }

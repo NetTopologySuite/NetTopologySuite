@@ -1,8 +1,11 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
@@ -12,15 +15,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// whether the point lies on the boundary or not.
     /// Note that instances of this class are not reentrant.
     /// </summary>
-    public class PointLocator
+    public class PointLocator<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        private Boolean isIn; // true if the point lies in or on any Geometry element
-        private Int32 numBoundaries; // the number of sub-elements whose boundaries the point lies in
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PointLocator"/> class.
-        /// </summary>
-        public PointLocator() {}
+        // true if the point lies in or on any Geometry element
+        private Boolean _isIn; 
+        // the number of sub-elements whose boundaries the point lies in
+        private Int32 _boundaryCount; 
 
         /// <summary> 
         /// Convenience method to test a point for intersection with a Geometry
@@ -28,43 +30,44 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="p">The coordinate to test.</param>
         /// <param name="geom">The Geometry to test.</param>
         /// <returns><see langword="true"/> if the point is in the interior or boundary of the Geometry.</returns>
-        public Boolean Intersects(ICoordinate p, IGeometry geom)
+        public Boolean Intersects(TCoordinate p, IGeometry<TCoordinate> geom)
         {
             return Locate(p, geom) != Locations.Exterior;
         }
 
         /// <summary> 
-        /// Computes the topological relationship ({Location}) of a single point to a Geometry.
+        /// Computes the topological relationship (<see cref="Locations"/>) of a single point to a Geometry.
         /// It handles both single-element and multi-element Geometries.
         /// The algorithm for multi-part Geometries takes into account the boundaryDetermination rule.
         /// </summary>
         /// <returns>The Location of the point relative to the input Geometry.</returns>
-        public Locations Locate(ICoordinate p, IGeometry geom)
+        public Locations Locate(TCoordinate p, IGeometry<TCoordinate> geom)
         {
             if (geom.IsEmpty)
             {
                 return Locations.Exterior;
             }
 
-            if (geom is ILineString)
+            if (geom is ILineString<TCoordinate>)
             {
-                return Locate(p, (ILineString) geom);
+                return Locate(p, geom as ILineString<TCoordinate>);
             }
-            else if (geom is IPolygon)
+            else if (geom is IPolygon<TCoordinate>)
             {
-                return Locate(p, (IPolygon) geom);
+                return locate(p, geom as IPolygon<TCoordinate>);
             }
 
-            isIn = false;
-            numBoundaries = 0;
-            ComputeLocation(p, geom);
+            _isIn = false;
+            _boundaryCount = 0;
 
-            if (GeometryGraph.IsInBoundary(numBoundaries))
+            computeLocation(p, geom);
+
+            if (GeometryGraph<TCoordinate>.IsInBoundary(_boundaryCount))
             {
                 return Locations.Boundary;
             }
 
-            if (numBoundaries > 0 || isIn)
+            if (_boundaryCount > 0 || _isIn)
             {
                 return Locations.Interior;
             }
@@ -72,76 +75,82 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return Locations.Exterior;
         }
 
-        private void ComputeLocation(ICoordinate p, IGeometry geom)
+        private void computeLocation(TCoordinate p, IGeometry<TCoordinate> geom)
         {
-            if (geom is ILineString)
+            if (geom is ILineString<TCoordinate>)
             {
-                UpdateLocationInfo(Locate(p, (ILineString) geom));
+                updateLocationInfo(Locate(p, geom as ILineString<TCoordinate>));
             }
-            else if (geom is Polygon)
+            else if (geom is IPolygon<TCoordinate>)
             {
-                UpdateLocationInfo(Locate(p, (IPolygon) geom));
+                updateLocationInfo(locate(p, geom as IPolygon<TCoordinate>));
             }
-            else if (geom is IMultiLineString)
+            else if (geom is IMultiLineString<TCoordinate>)
             {
-                IMultiLineString ml = (IMultiLineString) geom;
-                
-                foreach (ILineString l in ml.Geometries)
+                IMultiLineString<TCoordinate> ml = geom as IMultiLineString<TCoordinate>;
+
+                foreach (ILineString<TCoordinate> l in ml)
                 {
-                    UpdateLocationInfo(Locate(p, l));
+                    updateLocationInfo(Locate(p, l));
                 }
             }
-            else if (geom is IMultiPolygon)
+            else if (geom is IMultiPolygon<TCoordinate>)
             {
-                IMultiPolygon mpoly = (IMultiPolygon) geom;
+                IMultiPolygon<TCoordinate> mpoly = geom as IMultiPolygon<TCoordinate>;
                 
-                foreach (IPolygon poly in mpoly.Geometries)
+                foreach (IPolygon<TCoordinate> poly in mpoly)
                 {
-                    UpdateLocationInfo(Locate(p, poly));
+                    updateLocationInfo(locate(p, poly));
                 }
             }
-            else if (geom is IGeometryCollection)
+            else if (geom is IGeometryCollection<TCoordinate>)
             {
-                IEnumerator geomi = new GeometryCollectionEnumerator((IGeometryCollection) geom);
+                IGeometryCollection<TCoordinate> collection = geom as IGeometryCollection<TCoordinate>;
+
+                IEnumerator<IGeometry<TCoordinate>> geomi 
+                    = new GeometryCollectionEnumerator<TCoordinate>(collection);
                
                 while (geomi.MoveNext())
                 {
-                    IGeometry g2 = (IGeometry) geomi.Current;
-                    
-                    if (g2 != geom)
+                    IGeometry<TCoordinate> computeGeometry = geomi.Current;
+
+                    if (computeGeometry != geom)
                     {
-                        ComputeLocation(p, g2);
+                        computeLocation(p, computeGeometry);
                     }
                 }
             }
         }
 
-        private void UpdateLocationInfo(Locations loc)
+        private void updateLocationInfo(Locations loc)
         {
             if (loc == Locations.Interior)
             {
-                isIn = true;
+                _isIn = true;
             }
 
             if (loc == Locations.Boundary)
             {
-                numBoundaries++;
+                _boundaryCount++;
             }
         }
 
-        private Locations Locate(ICoordinate p, ILineString l)
+        private Locations locate(TCoordinate p, ILineString<TCoordinate> l)
         {
-            ICoordinate[] pt = l.Coordinates;
+            IEnumerable<TCoordinate> line = l.Coordinates;
 
             if (!l.IsClosed)
             {
-                if (p.Equals(pt[0]) || p.Equals(pt[pt.Length - 1]))
+                TCoordinate start = Slice.GetFirst(line);
+                TCoordinate end = Slice.GetLast(line);
+
+                if (p.Equals(start) || p.Equals(end))
                 {
                     return Locations.Boundary;
                 }
             }
 
-            if (CGAlgorithms.IsOnLine(p, pt))
+            if (CGAlgorithms<TCoordinate>.IsOnLine(p, line))
             {
                 return Locations.Interior;
             }
@@ -149,15 +158,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return Locations.Exterior;
         }
 
-        private Locations LocateInPolygonRing(ICoordinate p, ILinearRing ring)
+        private Locations locateInPolygonRing(TCoordinate p, ILinearRing<TCoordinate> ring)
         {
             // can this test be folded into IsPointInRing?
-            if (CGAlgorithms.IsOnLine(p, ring.Coordinates))
+            if (CGAlgorithms<TCoordinate>.IsOnLine(p, ring.Coordinates))
             {
                 return Locations.Boundary;
             }
 
-            if (CGAlgorithms.IsPointInRing(p, ring.Coordinates))
+            if (CGAlgorithms<TCoordinate>.IsPointInRing(p, ring.Coordinates))
             {
                 return Locations.Interior;
             }
@@ -165,15 +174,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return Locations.Exterior;
         }
 
-        private Locations Locate(ICoordinate p, IPolygon poly)
+        private Locations locate(TCoordinate p, IPolygon<TCoordinate> poly)
         {
             if (poly.IsEmpty)
             {
                 return Locations.Exterior;
             }
 
-            ILinearRing shell = poly.Shell;
-            Locations shellLoc = LocateInPolygonRing(p, shell);
+            ILinearRing<TCoordinate> shell = poly.Shell;
+            Locations shellLoc = locateInPolygonRing(p, shell);
            
             if (shellLoc == Locations.Exterior)
             {
@@ -186,9 +195,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
 
             // now test if the point lies in or on the holes
-            foreach (ILinearRing hole in poly.InteriorRings)
+            foreach (ILinearRing<TCoordinate> hole in poly.InteriorRings)
             {
-                Locations holeLoc = LocateInPolygonRing(p, hole);
+                Locations holeLoc = locateInPolygonRing(p, hole);
 
                 if (holeLoc == Locations.Interior)
                 {

@@ -214,7 +214,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Completes the building of the input subgraphs by depth-labelling them,
+        /// Completes the building of the input subgraphs by depth-labeling them,
         /// and adds them to the <see cref="PolygonBuilder" />.
         /// The subgraph list must be sorted in rightmost-coordinate order.
         /// </summary>

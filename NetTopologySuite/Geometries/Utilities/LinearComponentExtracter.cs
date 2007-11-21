@@ -1,52 +1,51 @@
 using System;
-using System.Collections;
-using System.Text;
-
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
     /// <summary> 
-    /// Extracts all the 1-dimensional (<c>LineString</c>) components from a <see cref="Geometry{TCoordinate}"/>.
+    /// Extracts all the 1-dimensional (<see cref="LineString{TCoordinate}"/>) 
+    /// components from a <see cref="Geometry{TCoordinate}"/>.
     /// </summary>
-    public class LinearComponentExtracter : IGeometryComponentFilter
+    public class LinearComponentExtracter<TCoordinate> : IGeometryComponentFilter<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
+        private readonly List<ILineString<TCoordinate>> _lines
+            = new List<ILineString<TCoordinate>>();
+
         /// <summary> 
         /// Extracts the linear components from a single point.
         /// If more than one point is to be processed, it is more
-        /// efficient to create a single <c>LineExtracterFilter</c> instance
-        /// and pass it to multiple geometries.
+        /// efficient to create a single <see cref="LinearComponentExtracter{TCoordinate}"/> 
+        /// instance and pass it to multiple geometries.
         /// </summary>
         /// <param name="geom">The point from which to extract linear components.</param>
         /// <returns>The list of linear components.</returns>
-        public static IList GetLines(IGeometry geom)
+        public static IEnumerable<ILineString<TCoordinate>> GetLines(IGeometry<TCoordinate> geom)
         {
-            IList lines = new ArrayList();
-            geom.Apply(new LinearComponentExtracter(lines));
+            List<ILineString<TCoordinate>> lines = new List<ILineString<TCoordinate>>();
+            geom.Apply(new LinearComponentExtracter<TCoordinate>(lines));
             return lines;
         }
-
-        private IList lines;
 
         /// <summary> 
         /// Constructs a LineExtracterFilter with a list in which to store LineStrings found.
         /// </summary>
-        /// <param name="lines"></param>
-        public LinearComponentExtracter(IList lines)
+        public LinearComponentExtracter(IEnumerable<ILineString<TCoordinate>> lines)
         {
-            this.lines = lines;
+            _lines.AddRange(lines);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geom"></param>
-        public void Filter(IGeometry geom)
+        public void Filter(IGeometry<TCoordinate> geom)
         {
-            if (geom is ILineString) 
-                lines.Add(geom);
+            if (geom is ILineString<TCoordinate>)
+            {
+                _lines.Add(geom as ILineString<TCoordinate>);
+            }
         }
     }
 }

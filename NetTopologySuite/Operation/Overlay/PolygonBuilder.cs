@@ -11,7 +11,7 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 {
     /// <summary>
-    /// Forms <c>Polygon</c>s out of a graph of {DirectedEdge}s.
+    /// Forms <see cref="Polygon{TCoordinate}" />s out of a graph of {DirectedEdge}s.
     /// The edges to use are marked as being in the result Area.
     /// </summary>
     public class PolygonBuilder<TCoordinate>

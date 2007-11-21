@@ -1,31 +1,25 @@
 using System;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation
 {
     /// <summary>
-    /// The base class for operations that require <c>GeometryGraph</c>s.
+    /// The base class for operations that require <see cref="GeometryGraph{TCoordinate}"/>s.
     /// </summary>
-    public class GeometryGraphOperation
+    public class GeometryGraphOperation<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        private LineIntersector li = new RobustLineIntersector();
+        private LineIntersector<TCoordinate> _lineIntersector = new RobustLineIntersector<TCoordinate>();
+        private IPrecisionModel<TCoordinate> _resultPrecisionModel;
+        private readonly GeometryGraph<TCoordinate> _arg1;
+        private readonly GeometryGraph<TCoordinate> _arg2;
 
-        protected LineIntersector lineIntersector
-        {
-            get { return li; }
-            set { li = value; }
-        }
-
-        protected IPrecisionModel resultPrecisionModel;
-
-        /// <summary>
-        /// The operation args into an array so they can be accessed by index.
-        /// </summary>
-        protected GeometryGraph[] arg;
-
-        public GeometryGraphOperation(IGeometry g0, IGeometry g1)
+        public GeometryGraphOperation(IGeometry<TCoordinate> g0, IGeometry<TCoordinate> g1)
         {
             // use the most precise model for the result
             if (g0.PrecisionModel.CompareTo(g1.PrecisionModel) >= 0)
@@ -37,31 +31,54 @@ namespace GisSharpBlog.NetTopologySuite.Operation
                 ComputationPrecision = g1.PrecisionModel;
             }
 
-            arg = new GeometryGraph[2];
-            arg[0] = new GeometryGraph(0, g0);
-            arg[1] = new GeometryGraph(1, g1);
+            _arg1 = new GeometryGraph<TCoordinate>(0, g0);
+            _arg2 = new GeometryGraph<TCoordinate>(1, g1);
         }
 
-        public GeometryGraphOperation(IGeometry g0)
+        public GeometryGraphOperation(IGeometry<TCoordinate> g0)
         {
             ComputationPrecision = g0.PrecisionModel;
 
-            arg = new GeometryGraph[1];
-            arg[0] = new GeometryGraph(0, g0);
+            _arg1 = new GeometryGraph<TCoordinate>(0, g0);
         }
 
-        public IGeometry GetArgGeometry(Int32 i)
+        protected LineIntersector<TCoordinate> LineIntersector
         {
-            return arg[i].Geometry;
+            get { return _lineIntersector; }
+            set { _lineIntersector = value; }
         }
 
-        protected IPrecisionModel ComputationPrecision
+        protected GeometryGraph<TCoordinate> Argument1
         {
-            get { return resultPrecisionModel; }
+            get { return _arg1; }
+        }
+
+        protected GeometryGraph<TCoordinate> Argument2
+        {
+            get { return _arg2; }
+        }
+
+        public IGeometry<TCoordinate> GetArgumentGeometry(Int32 i)
+        {
+            if (i == 0)
+            {
+                return _arg1.Geometry;
+            }
+            else if (i == 1)
+            {
+                return _arg2.Geometry;
+            }
+
+            return null;
+        }
+
+        protected IPrecisionModel<TCoordinate> ComputationPrecision
+        {
+            get { return _resultPrecisionModel; }
             set
             {
-                resultPrecisionModel = value;
-                lineIntersector.PrecisionModel = resultPrecisionModel;
+                _resultPrecisionModel = value;
+                LineIntersector.PrecisionModel = _resultPrecisionModel;
             }
         }
     }

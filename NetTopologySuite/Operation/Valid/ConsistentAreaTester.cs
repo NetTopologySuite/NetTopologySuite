@@ -10,7 +10,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 {
     /// <summary> 
     /// Checks that a {GeometryGraph} representing an area
-    /// (a <c>Polygon</c> or <c>MultiPolygon</c> )
+    /// (a <see cref="Polygon{TCoordinate}" /> or <c>MultiPolygon</c> )
     /// is consistent with the SFS semantics for area geometries.
     /// Checks include:
     /// Testing for rings which self-intersect (both properly and at nodes).

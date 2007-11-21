@@ -1,39 +1,28 @@
 using System;
-using System.Collections;
-using System.Text;
-
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
 {
     /// <summary>
     /// An edge of a polygonization graph.
     /// </summary>
-    public class PolygonizeEdge : Edge
+    public class PolygonizeEdge<TCoordinate> : Edge
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
-        private ILineString line;
+        private readonly ILineString<TCoordinate> _line;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="line"></param>
-        public PolygonizeEdge(ILineString line)
+        public PolygonizeEdge(ILineString<TCoordinate> line)
         {
-            this.line = line;
+            _line = line;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public ILineString Line
+        public ILineString<TCoordinate> Line
         {
-            get
-            {
-                return line;
-            }
+            get { return _line; }
         }
     }
 }

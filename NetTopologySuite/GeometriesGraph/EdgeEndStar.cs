@@ -1,125 +1,118 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     /// <summary>
-    /// A EdgeEndStar is an ordered list of EdgeEnds around a node.
-    /// They are maintained in CCW order (starting with the positive x-axis) around the node
-    /// for efficient lookup and topology building.
+    /// An <see cref="EdgeEndStar{TCoordinate, TEdgeEnd}"/> is an ordered list of 
+    /// <see cref="EdgeEnd{TCoordinate}"/> around a node.
+    /// They are maintained in CCW order (starting with the positive x-axis) 
+    /// around the node for efficient lookup and topology building.
     /// </summary>
-    public abstract class EdgeEndStar
+    public abstract class EdgeEndStar<TCoordinate, TEdgeEnd> : IEnumerable<EdgeEnd<TCoordinate>>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
+        where TEdgeEnd : EdgeEnd<TCoordinate>
     {
-        /// <summary>
-        /// A map which maintains the edges in sorted order around the node.
-        /// </summary>
-        protected IDictionary edgeMap = new SortedList();
+        // A map which maintains the edges in sorted order around the node.
+        private readonly SortedList<EdgeEnd<TCoordinate>, TEdgeEnd> _edgeMap
+            = new SortedList<EdgeEnd<TCoordinate>, TEdgeEnd>();
 
-        /// <summary> 
-        /// A list of all outgoing edges in the result, in CCW order.
-        /// </summary>
-        protected IList edgeList;
+        // A list of all outgoing edges in the result, in CCW order.
+        private readonly List<TEdgeEnd> _edgeList = new List<TEdgeEnd>();
 
-        /// <summary>
-        /// The location of the point for this star in Geometry i Areas.
-        /// </summary>
-        private Locations[] ptInAreaLocation = new Locations[] {Locations.Null, Locations.Null};
-
-        public EdgeEndStar() {}
+        // The location of the point for this star in Geometry i Areas.
+        private Locations[] _ptInAreaLocation = new Locations[] { Locations.None, Locations.None };
 
         /// <summary> 
         /// Insert a EdgeEnd into this EdgeEndStar.
         /// </summary>
-        public abstract void Insert(EdgeEnd e);
+        public abstract void Insert(EdgeEnd<TCoordinate> e);
 
         /// <summary> 
-        /// Insert an EdgeEnd into the map, and clear the edgeList cache,
+        /// Insert an EdgeEnd into the map, and clear the <see cref="Edges"/> cache,
         /// since the list of edges has now changed.
         /// </summary>
-        protected void InsertEdgeEnd(EdgeEnd e, object obj)
+        protected void InsertEdgeEnd(EdgeEnd<TCoordinate> e, TEdgeEnd obj)
         {
-            // Diego Guidi says: i have inserted this line because if i try to add an object already present
+            // Diego Guidi says: i have inserted this line because if 
+            // i try to add an object already present
             // in the list, a System.ArgumentException was thrown.
-            if (edgeMap.Contains(e))
+            if (_edgeMap.ContainsKey(e))
             {
                 return;
             }
 
-            edgeMap.Add(e, obj);
-            edgeList = null; // edge list has changed - clear the cache
+            _edgeMap.Add(e, obj);
+            _edgeList.Clear();   // edge list has changed - clear the cache
         }
 
         /// <returns>
-        /// The coordinate for the node this star is based at.
+        /// Gets the coordinate for the node this star is based at.
         /// </returns>
-        public ICoordinate Coordinate
+        public TCoordinate Coordinate
         {
             get
             {
-                IEnumerator it = GetEnumerator();
-
-                if (!it.MoveNext())
+                if (_edgeList.Count == 0)
                 {
-                    return null;
+                    return default(TCoordinate);
                 }
-
-                EdgeEnd e = (EdgeEnd) it.Current;
-                return e.Coordinate;
+                else
+                {
+                    return _edgeList[0].Coordinate;
+                }
             }
         }
 
         public Int32 Degree
         {
-            get { return edgeMap.Count; }
+            get { return _edgeMap.Count; }
         }
 
-        /// <summary>
-        /// Iterator access to the ordered list of edges is optimized by
-        /// copying the map collection to a list.  (This assumes that
-        /// once an iterator is requested, it is likely that insertion into
-        /// the map is complete).
-        /// </summary>
-        public IEnumerator GetEnumerator()
+        public IEnumerator<EdgeEnd<TCoordinate>> GetEnumerator()
         {
-            return Edges.GetEnumerator();
-        }
+            ComputeEdgeList();
 
-        public IList Edges
-        {
-            get
+            foreach (TEdgeEnd edge in _edgeList)
             {
-                if (edgeList == null)
-                {
-                    edgeList = new ArrayList(edgeMap.Values);
-                }
-
-                return edgeList;
+                yield return edge;
             }
         }
 
-        public EdgeEnd GetNextCW(EdgeEnd ee)
+        public ReadOnlyCollection<TEdgeEnd> Edges
         {
-            IList temp = Edges;
-            temp = null; // Hack for calling property
-            Int32 i = edgeList.IndexOf(ee);
+            get
+            {
+                return _edgeList.AsReadOnly();
+            }
+        }
+
+        public EdgeEnd<TCoordinate> GetNextCW(EdgeEnd<TCoordinate> ee)
+        {
+            Int32 i = _edgeList.IndexOf(ee);
             Int32 iNextCW = i - 1;
 
             if (i == 0)
             {
-                iNextCW = edgeList.Count - 1;
+                iNextCW = _edgeList.Count - 1;
             }
 
-            return (EdgeEnd) edgeList[iNextCW];
+            return _edgeList[iNextCW];
         }
 
-        public virtual void ComputeLabelling(GeometryGraph[] geom)
+        public virtual void ComputeLabeling(IEnumerable<GeometryGraph<TCoordinate>> geom)
         {
-            ComputeEdgeEndLabels();
+            computeEdgeEndLabels();
+
             // Propagate side labels  around the edges in the star
             // for each parent Geometry        
             PropagateSideLabels(0);
@@ -136,8 +129,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             * has the location Exterior for the point.
             * 
             * Note that the edge cannot be on the Boundary of the point, since then
-            * there would have been a parallel edge from the Geometry at this node also labelled Boundary
-            * and this edge would have been labelled in the previous step.
+            * there would have been a parallel edge from the Geometry at this node also labeled Boundary
+            * and this edge would have been labeled in the previous step.
             * 
             * This code causes a problem when dimensional collapses are present, since it may try and
             * determine the location of a node where a dimensional collapse has occurred.
@@ -145,93 +138,199 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             * of the polygon, but locate() will return Interior, since it is passed
             * the original Geometry, not the collapsed version.
             *
-            * If there are incident edges which are Line edges labelled Boundary,
+            * If there are incident edges which are Line edges labeled Boundary,
             * then they must be edges resulting from dimensional collapses.
-            * In this case the other edges can be labelled Exterior for this Geometry.
+            * In this case the other edges can be labeled Exterior for this Geometry.
             *
             * MD 8/11/01 - NOT True!  The collapsed edges may in fact be in the interior of the Geometry,
-            * which means the other edges should be labelled Interior for this Geometry.
-            * Not sure how solve this...  Possibly labelling needs to be split into several phases:
+            * which means the other edges should be labeled Interior for this Geometry.
+            * Not sure how solve this...  Possibly labeling needs to be split into several phases:
             * area label propagation, symLabel merging, then finally null label resolution.
             */
-            Boolean[] hasDimensionalCollapseEdge = {false, false};
-            
-            for (IEnumerator it = GetEnumerator(); it.MoveNext();)
+            Boolean[] hasDimensionalCollapseEdge = { false, false };
+
+            foreach (EdgeEnd<TCoordinate> e in this)
             {
-                EdgeEnd e = (EdgeEnd) it.Current;
                 Label label = e.Label;
 
-                for (Int32 geomi = 0; geomi < 2; geomi++)
+                for (Int32 geometryIndex = 0; geometryIndex < 2; geometryIndex++)
                 {
-                    if (label.IsLine(geomi) && label.GetLocation(geomi) == Locations.Boundary)
+                    if (label.IsLine(geometryIndex)
+                        && label.GetLocation(geometryIndex) == Locations.Boundary)
                     {
-                        hasDimensionalCollapseEdge[geomi] = true;
+                        hasDimensionalCollapseEdge[geometryIndex] = true;
                     }
                 }
             }
 
-            for (IEnumerator it = GetEnumerator(); it.MoveNext();)
+            foreach (EdgeEnd<TCoordinate> e in this)
             {
-                EdgeEnd e = (EdgeEnd) it.Current;
                 Label label = e.Label;
 
-                for (Int32 geomi = 0; geomi < 2; geomi++)
+                for (Int32 geometryIndex = 0; geometryIndex < 2; geometryIndex++)
                 {
-                    if (label.IsAnyNull(geomi))
+                    if (label.IsAnyNull(geometryIndex))
                     {
-                        Locations loc = Locations.Null;
+                        Locations loc;
 
-                        if (hasDimensionalCollapseEdge[geomi])
+                        if (hasDimensionalCollapseEdge[geometryIndex])
                         {
                             loc = Locations.Exterior;
                         }
                         else
                         {
-                            ICoordinate p = e.Coordinate;
-                            loc = GetLocation(geomi, p, geom);
+                            TCoordinate p = e.Coordinate;
+                            loc = GetLocation(geometryIndex, p, geom);
                         }
 
-                        label.SetAllLocationsIfNull(geomi, loc);
+                        label.SetAllLocationsIfNull(geometryIndex, loc);
                     }
                 }
             }
         }
 
-        private void ComputeEdgeEndLabels()
-        {
-            // Compute edge label for each EdgeEnd
-            for (IEnumerator it = GetEnumerator(); it.MoveNext();)
-            {
-                EdgeEnd ee = (EdgeEnd) it.Current;
-                ee.ComputeLabel();
-            }
-        }
-
-        public Locations GetLocation(Int32 geomIndex, ICoordinate p, GeometryGraph[] geom)
+        public Locations GetLocation(Int32 geomIndex, TCoordinate p, IEnumerable<GeometryGraph<TCoordinate>> geom)
         {
             // compute location only on demand
-            if (ptInAreaLocation[geomIndex] == Locations.Null)
+            if (_ptInAreaLocation[geomIndex] == Locations.None)
             {
-                ptInAreaLocation[geomIndex] = SimplePointInAreaLocator.Locate(p, geom[geomIndex].Geometry);
+                _ptInAreaLocation[geomIndex] = SimplePointInAreaLocator.Locate(p, geom[geomIndex].Geometry);
             }
 
-            return ptInAreaLocation[geomIndex];
+            return _ptInAreaLocation[geomIndex];
         }
 
         public Boolean IsAreaLabelsConsistent
         {
             get
             {
-                ComputeEdgeEndLabels();
-                return CheckAreaLabelsConsistent(0);
+                computeEdgeEndLabels();
+                return checkAreaLabelsConsistent(0);
             }
         }
 
-        private Boolean CheckAreaLabelsConsistent(Int32 geomIndex)
+        public void PropagateSideLabels(Int32 geomIndex)
         {
             // Since edges are stored in CCW order around the node,
             // As we move around the ring we move from the right to the left side of the edge
-            IList edges = Edges;
+            Locations startLoc = Locations.None;
+
+            // initialize loc to location of last Curve side (if any)
+            foreach (EdgeEnd<TCoordinate> e in this)
+            {
+                Label label = e.Label;
+
+                if (label.IsArea(geomIndex) && label.GetLocation(geomIndex, Positions.Left) != Locations.None)
+                {
+                    startLoc = label.GetLocation(geomIndex, Positions.Left);
+                }
+            }
+
+            // no labeled sides found, so no labels to propagate
+            if (startLoc == Locations.None)
+            {
+                return;
+            }
+
+            Locations currLoc = startLoc;
+
+            foreach (EdgeEnd<TCoordinate> e in this)
+            {
+                Label label = e.Label;
+
+                // set null On values to be in current location
+                if (label.GetLocation(geomIndex, Positions.On) == Locations.None)
+                {
+                    label.SetLocation(geomIndex, Positions.On, currLoc);
+                }
+
+                // set side labels (if any)
+                if (label.IsArea(geomIndex))
+                {
+                    Locations leftLoc = label.GetLocation(geomIndex, Positions.Left);
+                    Locations rightLoc = label.GetLocation(geomIndex, Positions.Right);
+
+                    // if there is a right location, that is the next location to propagate
+                    if (rightLoc != Locations.None)
+                    {
+                        if (rightLoc != currLoc)
+                        {
+                            throw new TopologyException("side location conflict", e.Coordinate);
+                        }
+
+                        if (leftLoc == Locations.None)
+                        {
+                            Assert.ShouldNeverReachHere("found single null side (at " + e.Coordinate + ")");
+                        }
+
+                        currLoc = leftLoc;
+                    }
+                    else
+                    {
+                        /* RHS is null - LHS must be null too.
+                        *  This must be an edge from the other point, which has no location
+                        *  labeling for this point.  This edge must lie wholly inside or outside
+                        *  the other point (which is determined by the current location).
+                        *  Assign both sides to be the current location.
+                        */
+                        Assert.IsTrue(label.GetLocation(geomIndex, Positions.Left) == Locations.None,
+                                      "found single null side");
+                        label.SetLocation(geomIndex, Positions.Right, currLoc);
+                        label.SetLocation(geomIndex, Positions.Left, currLoc);
+                    }
+                }
+            }
+        }
+
+        public Int32 FindIndex(EdgeEnd<TCoordinate> search)
+        {
+            ComputeEdgeList();
+
+            return _edgeList.FindIndex(delegate(TEdgeEnd match)
+                                {
+                                    return match == search;
+                                });
+        }
+
+        public virtual void Write(StreamWriter outstream)
+        {
+            foreach (EdgeEnd<TCoordinate> edgeEnd in this)
+            {
+                edgeEnd.Write(outstream);
+            }
+        }
+
+        protected List<TEdgeEnd> EdgesInternal
+        {
+            get
+            {
+                ComputeEdgeList();
+                return _edgeList;
+            }
+        }
+
+        protected void ComputeEdgeList()
+        {
+            if (_edgeList.Count == 0)
+            {
+                _edgeList.AddRange(_edgeMap.Values);
+            }
+        }
+
+        private void computeEdgeEndLabels()
+        {
+            // Compute edge label for each EdgeEnd
+            foreach (EdgeEnd<TCoordinate> edgeEnd in this)
+            {
+                edgeEnd.ComputeLabel();
+            }
+        }
+
+        private Boolean checkAreaLabelsConsistent(Int32 geomIndex)
+        {
+            // Since edges are stored in CCW order around the node,
+            // as we move around the ring we move from the right to the left side of the edge
+            IList<TEdgeEnd> edges = _edgeList;
 
             // if no edges, trivially consistent
             if (edges.Count <= 0)
@@ -241,21 +340,22 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             // initialize startLoc to location of last Curve side (if any)
             Int32 lastEdgeIndex = edges.Count - 1;
-            Label startLabel = ((EdgeEnd) edges[lastEdgeIndex]).Label;
+            Label startLabel = edges[lastEdgeIndex].Label;
             Locations startLoc = startLabel.GetLocation(geomIndex, Positions.Left);
-            Assert.IsTrue(startLoc != Locations.Null, "Found unlabelled area edge");
+
+            Assert.IsTrue(startLoc != Locations.None, "Found unlabelled area edge");
 
             Locations currLoc = startLoc;
 
-            for (IEnumerator it = GetEnumerator(); it.MoveNext();)
+            foreach (EdgeEnd<TCoordinate> e in this)
             {
-                EdgeEnd e = (EdgeEnd) it.Current;
                 Label label = e.Label;
+
                 // we assume that we are only checking a area
                 Assert.IsTrue(label.IsArea(geomIndex), "Found non-area edge");
                 Locations leftLoc = label.GetLocation(geomIndex, Positions.Left);
                 Locations rightLoc = label.GetLocation(geomIndex, Positions.Right);
-                
+
                 // check that edge is really a boundary between inside and outside!
                 if (leftLoc == rightLoc)
                 {
@@ -274,103 +374,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             return true;
         }
 
-        public void PropagateSideLabels(Int32 geomIndex)
+        #region IEnumerable Members
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            // Since edges are stored in CCW order around the node,
-            // As we move around the ring we move from the right to the left side of the edge
-            Locations startLoc = Locations.Null;
-            
-            // initialize loc to location of last Curve side (if any)
-            for (IEnumerator it = GetEnumerator(); it.MoveNext();)
-            {
-                EdgeEnd e = (EdgeEnd) it.Current;
-                Label label = e.Label;
-                if (label.IsArea(geomIndex) && label.GetLocation(geomIndex, Positions.Left) != Locations.Null)
-                {
-                    startLoc = label.GetLocation(geomIndex, Positions.Left);
-                }
-            }
-
-            // no labelled sides found, so no labels to propagate
-            if (startLoc == Locations.Null)
-            {
-                return;
-            }
-
-            Locations currLoc = startLoc;
-
-            for (IEnumerator it = GetEnumerator(); it.MoveNext();)
-            {
-                EdgeEnd e = (EdgeEnd) it.Current;
-                Label label = e.Label;
-                
-                // set null On values to be in current location
-                if (label.GetLocation(geomIndex, Positions.On) == Locations.Null)
-                {
-                    label.SetLocation(geomIndex, Positions.On, currLoc);
-                }
-                
-                // set side labels (if any)
-                if (label.IsArea(geomIndex))
-                {
-                    Locations leftLoc = label.GetLocation(geomIndex, Positions.Left);
-                    Locations rightLoc = label.GetLocation(geomIndex, Positions.Right);
-                   
-                    // if there is a right location, that is the next location to propagate
-                    if (rightLoc != Locations.Null)
-                    {
-                        if (rightLoc != currLoc)
-                        {
-                            throw new TopologyException("side location conflict", e.Coordinate);
-                        }
-                        
-                        if (leftLoc == Locations.Null)
-                        {
-                            Assert.ShouldNeverReachHere("found single null side (at " + e.Coordinate + ")");
-                        }
-
-                        currLoc = leftLoc;
-                    }
-                    else
-                    {
-                        /* RHS is null - LHS must be null too.
-                        *  This must be an edge from the other point, which has no location
-                        *  labelling for this point.  This edge must lie wholly inside or outside
-                        *  the other point (which is determined by the current location).
-                        *  Assign both sides to be the current location.
-                        */
-                        Assert.IsTrue(label.GetLocation(geomIndex, Positions.Left) == Locations.Null,
-                                      "found single null side");
-                        label.SetLocation(geomIndex, Positions.Right, currLoc);
-                        label.SetLocation(geomIndex, Positions.Left, currLoc);
-                    }
-                }
-            }
+            return GetEnumerator();
         }
 
-        public Int32 FindIndex(EdgeEnd eSearch)
-        {
-            GetEnumerator(); // force edgelist to be computed
-           
-            for (Int32 i = 0; i < edgeList.Count; i++)
-            {
-                EdgeEnd e = (EdgeEnd) edgeList[i];
-                if (e == eSearch)
-                {
-                    return i;
-                }
-            }
-
-            return -1;
-        }
-
-        public virtual void Write(StreamWriter outstream)
-        {
-            for (IEnumerator it = GetEnumerator(); it.MoveNext();)
-            {
-                EdgeEnd e = (EdgeEnd) it.Current;
-                e.Write(outstream);
-            }
-        }
+        #endregion
     }
 }
