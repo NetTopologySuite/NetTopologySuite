@@ -281,7 +281,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             double sizeBasedScaleFactor = PrecisionScaleFactor(argGeom, distance, precisionDigits);
             // Debug.WriteLine(String.Format("recomputing with precision scale factor = {0}", sizeBasedScaleFactor));
 
-            PrecisionModel fixedPM = new PrecisionModel(sizeBasedScaleFactor);
+            IPrecisionModel fixedPM = new PrecisionModel(sizeBasedScaleFactor);
             BufferFixedPrecision(fixedPM);
         }
     }
