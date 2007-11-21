@@ -80,6 +80,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             set { endCapStyle = value; }
         }
 
+        public INoder Noder
+        {
+            get { return workingNoder; }
+            set { workingNoder = value; }
+        }
+
         public IGeometry Buffer(IGeometry g, Double distance)
         {
             IPrecisionModel precisionModel = workingPrecisionModel;

@@ -2,6 +2,8 @@ using System;
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Noding;
+using GisSharpBlog.NetTopologySuite.Noding.Snapround;
 using GisSharpBlog.NetTopologySuite.Precision;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
@@ -173,30 +175,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         {
             BufferOriginalPrecision();
             if (resultGeometry != null)
-            {
                 return;
-            }
 
-            // try and compute with decreasing precision
-            for (Int32 precDigits = MaxPrecisionDigits; precDigits >= 0; precDigits--)
-            {
-                try
-                {
-                    BufferFixedPrecision(precDigits);
-                }
-                catch (TopologyException ex)
-                {
-                    saveException = ex;
-                    // don't propagate the exception - it will be detected by fact that resultGeometry is null
-                }
-                if (resultGeometry != null)
-                {
-                    return;
-                }
-            }
-
-            // tried everything - have to bail
-            throw saveException;
+            IPrecisionModel argPM = argGeom.Factory.PrecisionModel;
+            if (argPM.PrecisionModelType == PrecisionModels.Fixed)
+                 BufferFixedPrecision(argPM);
+            else BufferReducedPrecision();
         }
 
         private void BufferOriginalPrecision()
@@ -215,22 +199,59 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             }
         }
 
-        private void BufferFixedPrecision(Int32 precisionDigits)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fixedPM"></param>
+        private void BufferFixedPrecision(IPrecisionModel fixedPM)
         {
-            Double sizeBasedScaleFactor = PrecisionScaleFactor(argGeom, distance, precisionDigits);
-
-            PrecisionModel fixedPM = new PrecisionModel(sizeBasedScaleFactor);
-
-            // don't change the precision model of the Geometry, just reduce the precision
-            SimpleGeometryPrecisionReducer reducer = new SimpleGeometryPrecisionReducer(fixedPM);
-            IGeometry reducedGeom = reducer.Reduce(argGeom);
+            INoder noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)), fixedPM.Scale);
 
             BufferBuilder bufBuilder = new BufferBuilder();
             bufBuilder.WorkingPrecisionModel = fixedPM;
+            bufBuilder.Noder = noder;
             bufBuilder.QuadrantSegments = quadrantSegments;
-
+            bufBuilder.EndCapStyle = endCapStyle;
             // this may throw an exception, if robustness errors are encountered
-            resultGeometry = bufBuilder.Buffer(reducedGeom, distance);
+            resultGeometry = bufBuilder.Buffer(argGeom, distance);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void BufferReducedPrecision()
+        {
+            // try and compute with decreasing precision
+            for (int precDigits = MaxPrecisionDigits; precDigits >= 0; precDigits--)
+            {
+                try
+                {
+                    BufferReducedPrecision(precDigits);
+                }
+                catch (TopologyException ex)
+                {
+                    saveException = ex;
+                    // don't propagate the exception - it will be detected by fact that resultGeometry is null
+                }
+                if (resultGeometry != null)
+                    return;
+            }
+
+            // tried everything - have to bail
+            throw saveException;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="precisionDigits"></param>
+        private void BufferReducedPrecision(int precisionDigits)
+        {
+            double sizeBasedScaleFactor = PrecisionScaleFactor(argGeom, distance, precisionDigits);
+            // Debug.WriteLine(String.Format("recomputing with precision scale factor = {0}", sizeBasedScaleFactor));
+
+            PrecisionModel fixedPM = new PrecisionModel(sizeBasedScaleFactor);
+            BufferFixedPrecision(fixedPM);
         }
     }
 }
