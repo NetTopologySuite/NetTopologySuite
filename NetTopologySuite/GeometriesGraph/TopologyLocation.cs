@@ -1,10 +1,6 @@
 using System;
-using System.Collections;
 using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -48,9 +44,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public TopologyLocation(Locations on, Locations left, Locations right) 
         {
             Init(3);
-            location[(int)Positions.On] = on;
-            location[(int)Positions.Left] = left;
-            location[(int)Positions.Right] = right;
+            location[(int) Positions.On] = on;
+            location[(int) Positions.Left] = left;
+            location[(int) Positions.Right] = right;
         }
 
         /// <summary>
@@ -60,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public TopologyLocation(Locations on) 
         {
             Init(1);
-            location[(int)Positions.On] = on;
+            location[(int) Positions.On] = on;
         }
 
         /// <summary>
@@ -69,12 +65,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="gl"></param>
         public TopologyLocation(TopologyLocation gl) 
         {
+            if (gl == null)
+                throw new ArgumentNullException("gl", "null topology location specified");
+
             Init(gl.location.Length);
-            if (gl != null) 
-            {
-                for (int i = 0; i < location.Length; i++) 
-                    location[i] = gl.location[i];                
-            }
+            for (int i = 0; i < location.Length; i++) 
+                location[i] = gl.location[i];                            
         }
 
         /// <summary>

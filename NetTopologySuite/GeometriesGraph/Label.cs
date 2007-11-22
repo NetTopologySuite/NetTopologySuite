@@ -1,10 +1,5 @@
-using System;
-using System.Collections;
 using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -95,21 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             elt[0] = new TopologyLocation(Locations.Null, Locations.Null, Locations.Null);
             elt[1] = new TopologyLocation(Locations.Null, Locations.Null, Locations.Null);
             elt[geomIndex].SetLocations(onLoc, leftLoc, rightLoc);
-        }
-
-        /// <summary> 
-        /// Construct a Label with the same values as the argument for the
-        /// given Geometry index.
-        /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="gl"></param>
-        public Label(int geomIndex, TopologyLocation gl)
-        {
-
-            elt[0] = new TopologyLocation(gl.GetLocations());
-            elt[1] = new TopologyLocation(gl.GetLocations());
-            elt[geomIndex].SetLocations(gl);
-        }
+        }        
 
         /// <summary> 
         /// Construct a Label with the same values as the argument Label.
