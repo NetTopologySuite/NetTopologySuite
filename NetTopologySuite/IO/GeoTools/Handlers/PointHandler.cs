@@ -1,7 +1,5 @@
 using System;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.IO
@@ -11,9 +9,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
 	/// </summary>
 	public class PointHandler : ShapeHandler
 	{
-		/// <summary>
-		/// Initializes a new instance of the PointHandler class.
-		/// </summary>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PointHandler"/> class.
+        /// </summary>
 		public PointHandler() : base() { }
 	
 		/// <summary>
@@ -21,10 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// </summary>
         public override ShapeGeometryTypes ShapeType
 		{
-			get
-			{
-                return ShapeGeometryTypes.Point;
-			}
+			get { return ShapeGeometryTypes.Point; }
 		}
 		
 		/// <summary>
@@ -37,8 +32,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		{
 			int shapeTypeNum = file.ReadInt32();
             ShapeGeometryTypes shapeType = (ShapeGeometryTypes) Enum.Parse(typeof(ShapeGeometryTypes), shapeTypeNum.ToString());
-            if ( ! ( shapeType == ShapeGeometryTypes.Point  || shapeType == ShapeGeometryTypes.PointM   ||
-                     shapeType == ShapeGeometryTypes.PointZ || shapeType == ShapeGeometryTypes.PointZM  ))	
+            if (!( shapeType == ShapeGeometryTypes.Point  || shapeType == ShapeGeometryTypes.PointM ||
+                   shapeType == ShapeGeometryTypes.PointZ || shapeType == ShapeGeometryTypes.PointZM))	
 				throw new ShapefileException("Attempting to load a point as point.");
 			double x= file.ReadDouble();
 			double y= file.ReadDouble();
@@ -68,7 +63,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <returns>The length in bytes the Geometry will use when represented as a shape file record.</returns>
 		public override int GetLength(IGeometry geometry)
 		{
-			return 10; // The length of two doubles in 16bit words + the shapeType
+			return 10; // 10 => shapetyppe(2)+ xy(4*2)
 		}		
 	}
 }

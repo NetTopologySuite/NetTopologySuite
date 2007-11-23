@@ -1,7 +1,5 @@
 using System;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.IO
@@ -11,20 +9,17 @@ namespace GisSharpBlog.NetTopologySuite.IO
 	/// </summary>
 	public class MultiLineHandler : ShapeHandler
 	{
-		/// <summary>
-		/// Initializes a new instance of the MultiLineHandler class.
-		/// </summary>
-		public MultiLineHandler() : base() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MultiLineHandler"/> class.
+        /// </summary>
+        public MultiLineHandler() : base() { }
 	
 		/// <summary>
 		/// Returns the ShapeType the handler handles.
 		/// </summary>
         public override ShapeGeometryTypes ShapeType
 		{
-			get
-			{
-                return ShapeGeometryTypes.LineString;
-			}
+			get { return ShapeGeometryTypes.LineString; }
 		}
 
 		/// <summary>
@@ -37,11 +32,11 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		{
 			int shapeTypeNum = file.ReadInt32();
             ShapeGeometryTypes shapeType = (ShapeGeometryTypes)Enum.Parse(typeof(ShapeGeometryTypes), shapeTypeNum.ToString());
-            if( ! ( shapeType == ShapeGeometryTypes.LineString  || shapeType == ShapeGeometryTypes.LineStringM   ||
-                    shapeType == ShapeGeometryTypes.LineStringZ || shapeType == ShapeGeometryTypes.LineStringZM  ))
+            if(!(shapeType == ShapeGeometryTypes.LineString  || shapeType == ShapeGeometryTypes.LineStringM ||
+                 shapeType == ShapeGeometryTypes.LineStringZ || shapeType == ShapeGeometryTypes.LineStringZM))
 				throw new ShapefileException("Attempting to load a non-arc as arc.");
 
-			//read and for now ignore bounds.
+			// Read and for now ignore bounds.
 			double[] box = new double[4];
 			for (int i = 0; i < 4; i++) 
 			{
@@ -55,10 +50,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			for (int i = 0; i < numParts; i++)
 				partOffsets[i] = file.ReadInt32();
 			
-			ILineString[] lines = new ILineString[numParts];
-			int start, finish, length;
+			ILineString[] lines = new ILineString[numParts];			
 			for (int part = 0; part < numParts; part++)
-			{
+            {
+                int start, finish, length;
 				start = partOffsets[part];
 				if (part == numParts - 1)
 					 finish = numPoints;
@@ -66,10 +61,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
 				length = finish - start;
                 CoordinateList points = new CoordinateList();
 				points.Capacity=length;
-				ICoordinate external;
 				for (int i = 0; i < length; i++)
 				{
-					external = new Coordinate(file.ReadDouble(),file.ReadDouble());
+                    ICoordinate external = new Coordinate(file.ReadDouble(), file.ReadDouble());
 					geometryFactory.PrecisionModel.MakePrecise( external);
                     points.Add(external);
 				}
@@ -101,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			file.Write(numParts);		
 			file.Write(numPoints);      
         
-			// write the offsets
+			// Write the offsets
 			int offset=0;
 			for (int i = 0; i < numParts; i++)
 			{
@@ -110,13 +104,12 @@ namespace GisSharpBlog.NetTopologySuite.IO
 				offset = offset + g.NumPoints;
 			}
         
-			ICoordinate	external;
 			for (int part = 0; part < numParts; part++)
 			{
                 CoordinateList points = new CoordinateList(multi.GetGeometryN(part).Coordinates);
 				for (int i = 0; i < points.Count; i++)
 				{
-					external = points[i];
+                    ICoordinate external = points[i];
 					file.Write(external.X);
 					file.Write(external.Y);
 				}
@@ -132,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		public override int GetLength(IGeometry geometry)
 		{
 			int numParts = GetNumParts(geometry);
-			return (22 + (2 * numParts) + geometry.NumPoints * 8);
+            return (22 + (2 * numParts) + geometry.NumPoints * 8); // 22 => shapetype(2) + bbox(4*4) + numparts(2) + numpoints(2)
 		}
 
         /// <summary>
