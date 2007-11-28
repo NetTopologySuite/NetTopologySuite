@@ -13,29 +13,29 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// Returns the index of the subquad that wholly contains the given envelope.
         /// If none does, returns -1.
         /// </summary>
-        public static Int32 GetSubnodeIndex(IExtents env, ICoordinate centre)
+        public static Int32 GetSubnodeIndex(IExtents env, ICoordinate center)
         {
             Int32 subnodeIndex = -1;
 
-            if (env.MinX >= centre.X)
+            if (env.MinX >= center.X)
             {
-                if (env.MinY >= centre.Y)
+                if (env.MinY >= center.Y)
                 {
                     subnodeIndex = 3;
                 }
-                if (env.MaxY <= centre.Y)
+                if (env.MaxY <= center.Y)
                 {
                     subnodeIndex = 1;
                 }
             }
 
-            if (env.MaxX <= centre.X)
+            if (env.MaxX <= center.X)
             {
-                if (env.MinY >= centre.Y)
+                if (env.MinY >= center.Y)
                 {
                     subnodeIndex = 2;
                 }
-                if (env.MaxY <= centre.Y)
+                if (env.MaxY <= center.Y)
                 {
                     subnodeIndex = 0;
                 }

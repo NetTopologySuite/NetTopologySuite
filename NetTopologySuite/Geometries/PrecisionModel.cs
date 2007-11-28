@@ -238,9 +238,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return coord;
             }
 
-            coord.X = MakePrecise(coord.X);
-            coord.Y = MakePrecise(coord.Y);
+            Double x = MakePrecise(coord[Ordinates.X]);
+            Double y = MakePrecise(coord[Ordinates.Y]);
+
             // MD says it's OK that we're not makePrecise'ing the z [Jon Aquino]
+            // TODO: codekaizen - reevaluate making Z precise for 3D
+
+            return new TCoordinate(x, y);
         }
         #endregion
 

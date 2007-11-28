@@ -154,11 +154,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
             if (g is IPoint)
             {
-                CheckValid((IPoint) g);
+                checkValid((IPoint) g);
             }
             else if (g is IMultiPoint)
             {
-                CheckValid((IMultiPoint) g);
+                checkValid((IMultiPoint) g);
             }
             else if (g is ILinearRing) // LineString also handles LinearRings
             {
@@ -166,7 +166,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             }
             else if (g is ILineString)
             {
-                CheckValid((ILineString) g);
+                checkValid((ILineString) g);
             }
             else if (g is IPolygon)
             {
@@ -189,59 +189,66 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <summary>
         /// Checks validity of a Point.
         /// </summary>
-        private void CheckValid(IPoint g)
+        private void checkValid(IPoint<TCoordinate> g)
         {
-            CheckInvalidCoordinates(g.Coordinates);
+            checkInvalidCoordinates(g.Coordinates);
         }
 
         /// <summary>
         /// Checks validity of a MultiPoint.
         /// </summary>
-        private void CheckValid(IMultiPoint g)
+        private void checkValid(IMultiPoint<TCoordinate> g)
         {
-            CheckInvalidCoordinates(g.Coordinates);
+            checkInvalidCoordinates(g.Coordinates);
         }
 
         /// <summary>
         /// Checks validity of a LineString.  
         /// Almost anything goes for lineStrings!
         /// </summary>
-        private void CheckValid(ILineString g)
+        private void checkValid(ILineString<TCoordinate> g)
         {
-            CheckInvalidCoordinates(g.Coordinates);
+            checkInvalidCoordinates(g.Coordinates);
+
             if (validErr != null)
             {
                 return;
             }
+
             GeometryGraph graph = new GeometryGraph(0, g);
-            CheckTooFewPoints(graph);
+            checkTooFewPoints(graph);
         }
 
         /// <summary>
         /// Checks validity of a LinearRing.
         /// </summary>
-        private void CheckValid(ILinearRing g)
+        private void checkValid(ILinearRing<TCoordinate> g)
         {
-            CheckInvalidCoordinates(g.Coordinates);
-            if (validErr != null)
-            {
-                return;
-            }
-            CheckClosedRing(g);
+            checkInvalidCoordinates(g.Coordinates);
+
             if (validErr != null)
             {
                 return;
             }
 
-            GeometryGraph graph = new GeometryGraph(0, g);
-            CheckTooFewPoints(graph);
+            checkClosedRing(g);
+
             if (validErr != null)
             {
                 return;
             }
-            LineIntersector li = new RobustLineIntersector();
+
+            GeometryGraph<TCoordinate> graph = new GeometryGraph<TCoordinate>(0, g);
+            checkTooFewPoints(graph);
+
+            if (validErr != null)
+            {
+                return;
+            }
+
+            LineIntersector<TCoordinate> li = new RobustLineIntersector<TCoordinate>();
             graph.ComputeSelfNodes(li, true);
-            CheckNoSelfIntersectingRings(graph);
+            checkNoSelfIntersectingRings(graph);
         }
 
         /// <summary>
@@ -249,31 +256,31 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// </summary>
         private void CheckValid(IPolygon g)
         {
-            CheckInvalidCoordinates(g);
+            checkInvalidCoordinates(g);
             if (validErr != null)
             {
                 return;
             }
-            CheckClosedRings(g);
+            checkClosedRings(g);
             if (validErr != null)
             {
                 return;
             }
 
             GeometryGraph graph = new GeometryGraph(0, g);
-            CheckTooFewPoints(graph);
+            checkTooFewPoints(graph);
             if (validErr != null)
             {
                 return;
             }
-            CheckConsistentArea(graph);
+            checkConsistentArea(graph);
             if (validErr != null)
             {
                 return;
             }
             if (!IsSelfTouchingRingFormingHoleValid)
             {
-                CheckNoSelfIntersectingRings(graph);
+                checkNoSelfIntersectingRings(graph);
                 if (validErr != null)
                 {
                     return;
@@ -296,12 +303,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         {
             foreach (IPolygon p in g.Geometries)
             {
-                CheckInvalidCoordinates(p);
+                checkInvalidCoordinates(p);
                 if (validErr != null)
                 {
                     return;
                 }
-                CheckClosedRings(p);
+                checkClosedRings(p);
                 if (validErr != null)
                 {
                     return;
@@ -309,19 +316,19 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             }
 
             GeometryGraph graph = new GeometryGraph(0, g);
-            CheckTooFewPoints(graph);
+            checkTooFewPoints(graph);
             if (validErr != null)
             {
                 return;
             }
-            CheckConsistentArea(graph);
+            checkConsistentArea(graph);
             if (validErr != null)
             {
                 return;
             }
             if (!IsSelfTouchingRingFormingHoleValid)
             {
-                CheckNoSelfIntersectingRings(graph);
+                checkNoSelfIntersectingRings(graph);
                 if (validErr != null)
                 {
                     return;
@@ -363,9 +370,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             }
         }
 
-        private void CheckInvalidCoordinates(ICoordinate[] coords)
+        private void checkInvalidCoordinates(IEnumerable<TCoordinate> coords)
         {
-            foreach (ICoordinate c in coords)
+            foreach (TCoordinate c in coords)
             {
                 if (!IsValidCoordinate(c))
                 {
@@ -375,16 +382,19 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             }
         }
 
-        private void CheckInvalidCoordinates(IPolygon poly)
+        private void checkInvalidCoordinates(IPolygon<TCoordinate> poly)
         {
-            CheckInvalidCoordinates(poly.ExteriorRing.Coordinates);
+            checkInvalidCoordinates(poly.ExteriorRing.Coordinates);
+
             if (validErr != null)
             {
                 return;
             }
-            foreach (ILineString ls in poly.InteriorRings)
+
+            foreach (ILineString<TCoordinate> ls in poly.InteriorRings)
             {
-                CheckInvalidCoordinates(ls.Coordinates);
+                checkInvalidCoordinates(ls.Coordinates);
+
                 if (validErr != null)
                 {
                     return;
@@ -392,16 +402,19 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             }
         }
 
-        private void CheckClosedRings(IPolygon poly)
+        private void checkClosedRings(IPolygon<TCoordinate> poly)
         {
-            CheckClosedRing(poly.Shell);
+            checkClosedRing(poly.Shell);
+
             if (validErr != null)
             {
                 return;
             }
+
             foreach (ILinearRing hole in poly.Holes)
             {
-                CheckClosedRing(hole);
+                checkClosedRing(hole);
+
                 if (validErr != null)
                 {
                     return;
@@ -409,7 +422,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             }
         }
 
-        private void CheckClosedRing(ILinearRing ring)
+        private void checkClosedRing(ILinearRing ring)
         {
             if (!ring.IsClosed)
             {
@@ -418,7 +431,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             }
         }
 
-        private void CheckTooFewPoints(GeometryGraph graph)
+        private void checkTooFewPoints(GeometryGraph<TCoordinate> graph)
         {
             if (graph.HasTooFewPoints)
             {
@@ -428,15 +441,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             }
         }
 
-        private void CheckConsistentArea(GeometryGraph graph)
+        private void checkConsistentArea(GeometryGraph<TCoordinate> graph)
         {
             ConsistentAreaTester cat = new ConsistentAreaTester(graph);
             Boolean isValidArea = cat.IsNodeConsistentArea;
+
             if (!isValidArea)
             {
                 validErr = new TopologyValidationError(TopologyValidationErrors.SelfIntersection, cat.InvalidPoint);
                 return;
             }
+
             if (cat.HasDuplicateRings)
             {
                 validErr = new TopologyValidationError(TopologyValidationErrors.DuplicateRings, cat.InvalidPoint);
@@ -449,12 +464,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// This is required by OGC topology rules (but not by other models
         /// such as ESRI SDE, which allow inverted shells and exverted holes).
         /// </summary>
-        private void CheckNoSelfIntersectingRings(GeometryGraph graph)
+        private void checkNoSelfIntersectingRings(GeometryGraph<TCoordinate> graph)
         {
-            for (IEnumerator i = graph.GetEdgeEnumerator(); i.MoveNext();)
+            foreach (Edge<TCoordinate> e in graph.Edges)
             {
-                Edge e = (Edge) i.Current;
-                CheckNoSelfIntersectingRing(e.EdgeIntersectionList);
+                checkNoSelfIntersectingRing(e.EdgeIntersectionList);
+
                 if (validErr != null)
                 {
                     return;
@@ -467,10 +482,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// Algorithm is to count the number of times each node along edge occurs.
         /// If any occur more than once, that must be a self-intersection.
         /// </summary>
-        private void CheckNoSelfIntersectingRing(EdgeIntersectionList eiList)
+        private void checkNoSelfIntersectingRing(EdgeIntersectionList<TCoordinate> eiList)
         {
             ISet nodeSet = new ListSet();
             Boolean isFirst = true;
+
             foreach (EdgeIntersection ei in eiList)
             {
                 if (isFirst)
@@ -478,6 +494,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                     isFirst = false;
                     continue;
                 }
+
                 if (nodeSet.Contains(ei.Coordinate))
                 {
                     validErr = new TopologyValidationError(TopologyValidationErrors.RingSelfIntersection, ei.Coordinate);
@@ -500,27 +517,29 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// </summary>
         /// <param name="p">The polygon to be tested for hole inclusion.</param>
         /// <param name="graph">A GeometryGraph incorporating the polygon.</param>
-        private void CheckHolesInShell(IPolygon p, GeometryGraph graph)
+        private void CheckHolesInShell(IPolygon<TCoordinate> p, GeometryGraph<TCoordinate> graph)
         {
-            ILinearRing shell = p.Shell;
+            ILinearRing<TCoordinate> shell = p.Shell;
 
-            IPointInRing pir = new MCPointInRing(shell);
-            for (Int32 i = 0; i < p.NumInteriorRings; i++)
+            IPointInRing<TCoordinate> pir = new MCPointInRing<TCoordinate>(shell);
+            
+            for (Int32 i = 0; i < p.InteriorRingsCount; i++)
             {
-                ILinearRing hole = p.Holes[i];
-                ICoordinate holePt = FindPointNotNode(hole.Coordinates, shell, graph);
+                ILinearRing<TCoordinate> hole = p.Holes[i];
+                TCoordinate holePt = FindPointNotNode(hole.Coordinates, shell, graph);
 
                 /*
                  * If no non-node hole vertex can be found, the hole must
                  * split the polygon into disconnected interiors.
                  * This will be caught by a subsequent check.
                  */
-                if (holePt == null)
+                if (holePt.Equals(default(TCoordinate)))
                 {
                     return;
                 }
 
-                Boolean outside = !pir.IsInside((Coordinate) holePt);
+                Boolean outside = !pir.IsInside(holePt);
+
                 if (outside)
                 {
                     validErr = new TopologyValidationError(TopologyValidationErrors.HoleOutsideShell, holePt);

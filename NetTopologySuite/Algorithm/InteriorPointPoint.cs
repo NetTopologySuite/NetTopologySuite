@@ -1,7 +1,6 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -61,7 +60,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
         }
 
-        public ICoordinate InteriorPoint
+        public TCoordinate InteriorPoint
         {
             get { return _interiorPoint; }
         }

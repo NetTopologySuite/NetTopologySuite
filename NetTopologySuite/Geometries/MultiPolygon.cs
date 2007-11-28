@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -8,12 +10,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Basic implementation of <c>MultiPolygon</c>.
     /// </summary>
     [Serializable]
-    public class MultiPolygon : GeometryCollection, IMultiPolygon
+    public class MultiPolygon<TCoordinate> : GeometryCollection<TCoordinate>, IMultiPolygon<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                    IComputable<TCoordinate>, IConvertible
     {
         /// <summary>
         /// Represents an empty <c>MultiPolygon</c>.
         /// </summary>
-        public new static readonly IMultiPolygon Empty = new GeometryFactory().CreateMultiPolygon(null);
+        public new static readonly IMultiPolygon<TCoordinate> Empty = new GeometryFactory<TCoordinate>().CreateMultiPolygon(null);
 
         /// <summary>
         /// Constructs a <c>MultiPolygon</c>.
@@ -27,10 +31,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Specification for SQL.        
         /// </param>
         /// <remarks>
-        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="Geometry{TCoordinate}Factory{TCoordinate}"/> 
-        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
+        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
+        /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public MultiPolygon(IPolygon[] polygons) : this(polygons, DefaultFactory) {}
+        public MultiPolygon(params IPolygon<TCoordinate>[] polygons) : this(polygons, DefaultFactory) {}
 
         /// <summary>
         /// Constructs a <c>MultiPolygon</c>.
@@ -43,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <see href="http://www.opengis.org/techno/specs.htm"/> OpenGIS Simple Features
         /// Specification for SQL.        
         /// </param>
-        public MultiPolygon(IPolygon[] polygons, IGeometryFactory factory) : base(polygons, factory) {}
+        public MultiPolygon(IEnumerable<IPolygon<TCoordinate>> polygons, IGeometryFactory<TCoordinate> factory) : base(polygons, factory) {}
 
         public override Dimensions Dimension
         {

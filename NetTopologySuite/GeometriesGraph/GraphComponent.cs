@@ -103,9 +103,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         /// <summary>
         /// Update the IM with the contribution for this component.
-        /// A component only contributes if it has a labeling for both parent geometries.
+        /// A component only contributes if it has a labeling for both 
+        /// parent geometries.
         /// </summary>
-        /// <param name="im"></param>
         public void UpdateIntersectionMatrix(IntersectionMatrix im)
         {
             Assert.IsTrue(_label.GeometryCount >= 2, "found partial label");

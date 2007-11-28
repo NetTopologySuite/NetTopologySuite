@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using GeoAPI.Coordinates;
 using GisSharpBlog.NetTopologySuite.Index.Chain;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
@@ -11,7 +13,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// envelope (range) queries efficiently (such as a <see cref="Quadtree" />
     /// or <see cref="STRtree" />.
     /// </summary>
-    public class MCIndexNoder : SinglePassNoder
+    public class MCIndexNoder<TCoordinate> : SinglePassNoder<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
         private IList monoChains = new ArrayList();
         private ISpatialIndex index = new STRtree();
@@ -28,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// Initializes a new instance of the <see cref="MCIndexNoder"/> class.
         /// </summary>
         /// <param name="segInt">The <see cref="ISegmentIntersector"/> to use.</param>
-        public MCIndexNoder(ISegmentIntersector segInt)
+        public MCIndexNoder(ISegmentIntersector<TCoordinate> segInt)
             : base(segInt) {}
 
         public IList MonotoneChains

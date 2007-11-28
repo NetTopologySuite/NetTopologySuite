@@ -36,16 +36,16 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         }
 
         private IExtents env;
-        private ICoordinate centre;
+        private ICoordinate center;
         private Int32 level;
 
         public Node(IExtents env, Int32 level)
         {
             this.env = env;
             this.level = level;
-            centre = new Coordinate();
-            centre.X = (env.MinX + env.MaxX)/2;
-            centre.Y = (env.MinY + env.MaxY)/2;
+            center = new Coordinate();
+            center.X = (env.MinX + env.MaxX)/2;
+            center.Y = (env.MinY + env.MaxY)/2;
         }
 
         public IExtents Envelope
@@ -65,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         public Node GetNode(IExtents searchEnv)
         {
-            Int32 subnodeIndex = GetSubnodeIndex(searchEnv, centre);
+            Int32 subnodeIndex = GetSubnodeIndex(searchEnv, center);
             // if subquadIndex is -1 searchEnv is not contained in a subquad
             if (subnodeIndex != -1)
             {
@@ -86,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         public NodeBase Find(IExtents searchEnv)
         {
-            Int32 subnodeIndex = GetSubnodeIndex(searchEnv, centre);
+            Int32 subnodeIndex = GetSubnodeIndex(searchEnv, center);
             if (subnodeIndex == -1)
             {
                 return this;
@@ -104,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         public void InsertNode(Node node)
         {
             Assert.IsTrue(env == null || env.Contains(node.Envelope));
-            Int32 index = GetSubnodeIndex(node.env, centre);
+            Int32 index = GetSubnodeIndex(node.env, center);
             if (node.level == level - 1)
             {
                 subnode[index] = node;
@@ -144,29 +144,29 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             {
                 case 0:
                     minx = env.MinX;
-                    maxx = centre.X;
+                    maxx = center.X;
                     miny = env.MinY;
-                    maxy = centre.Y;
+                    maxy = center.Y;
                     break;
 
                 case 1:
-                    minx = centre.X;
+                    minx = center.X;
                     maxx = env.MaxX;
                     miny = env.MinY;
-                    maxy = centre.Y;
+                    maxy = center.Y;
                     break;
 
                 case 2:
                     minx = env.MinX;
-                    maxx = centre.X;
-                    miny = centre.Y;
+                    maxx = center.X;
+                    miny = center.Y;
                     maxy = env.MaxY;
                     break;
 
                 case 3:
-                    minx = centre.X;
+                    minx = center.X;
                     maxx = env.MaxX;
-                    miny = centre.Y;
+                    miny = center.Y;
                     maxy = env.MaxY;
                     break;
 

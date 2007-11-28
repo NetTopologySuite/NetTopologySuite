@@ -385,7 +385,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                     {
                         // add endpoint of this segment offset
                         addCoordinate(_offset0.P1);
-                        // <FIX> MD - add in centre point of corner, to make sure offset closer lines have correct topology
+                        // <FIX> MD - add in center point of corner, to make sure offset closer lines have correct topology
                         addCoordinate(_s1);
                         addCoordinate(_offset1.P0);
                     }

@@ -22,27 +22,27 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         #region Static precision models
 
         /// <summary>
-        /// A predefined <see cref="Geometry{TCoordinate}Factory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
+        /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModels.Floating" />.
         /// </summary>
         public static readonly IGeometryFactory<TCoordinate> Default = new GeometryFactory<TCoordinate>();
 
         /// <summary>
-        /// A predefined <see cref="Geometry{TCoordinate}Factory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
+        /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModels.Floating" />.
         /// </summary>
-        /// <remarks>A shortcut for <see cref="Geometry{TCoordinate}Factory{TCoordinate}.Default" />.</remarks>
+        /// <remarks>A shortcut for <see cref="GeometryFactory{TCoordinate}.Default" />.</remarks>
         public static readonly IGeometryFactory<TCoordinate> Floating = Default;
 
         /// <summary>
-        /// A predefined <see cref="Geometry{TCoordinate}Factory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
+        /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModels.FloatingSingle" />.
         /// </summary>
         public static readonly IGeometryFactory<TCoordinate> FloatingSingle =
             new GeometryFactory<TCoordinate>(new PrecisionModel<TCoordinate>(PrecisionModels.FloatingSingle));
 
         /// <summary>
-        /// A predefined <see cref="Geometry{TCoordinate}Factory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
+        /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModels.Fixed" />.
         /// </summary>
         public static readonly IGeometryFactory<TCoordinate> Fixed =
@@ -88,7 +88,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="precisionModel">The PrecisionModel to use.</param>
         public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel)
-            : this(precisionModel, 0, GetDefaultCoordinateSequenceFactory()) {}
+            : this(precisionModel, 0, getDefaultCoordinateSequenceFactory()) {}
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
@@ -98,7 +98,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="precisionModel">The PrecisionModel to use.</param>
         /// <param name="SRID">The SRID to use.</param>
         public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel, Int32 SRID)
-            : this(precisionModel, SRID, GetDefaultCoordinateSequenceFactory<TCoordinate>()) {}
+            : this(precisionModel, SRID, getDefaultCoordinateSequenceFactory<TCoordinate>()) {}
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having a floating
@@ -430,7 +430,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return _srid; }
         }
 
-        private static ICoordinateSequenceFactory<TCoordinate> GetDefaultCoordinateSequenceFactory<TCoordinate>()
+        private static ICoordinateSequenceFactory<TCoordinate> getDefaultCoordinateSequenceFactory<TCoordinate>()
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                 IComputable<TCoordinate>, IConvertible
         {

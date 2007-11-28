@@ -212,7 +212,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return false;
         }
 
-        protected override IExtents ComputeEnvelopeInternal()
+        protected override IExtents ComputeExtentsInternal()
         {
             if (IsEmpty)
             {
@@ -352,7 +352,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Initializes a new instance of the <see cref="T:LineString"/> class.
         /// </summary>        
         /// <remarks>
-        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="Geometry{TCoordinate}Factory{TCoordinate}"/> 
+        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         /// <param name="points">The coordinates used for create this <see cref="LineString" />.</param>

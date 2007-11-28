@@ -6,15 +6,16 @@ using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
-    public class Node<TCoordinate> : GraphComponent<TCoordinate>
+    public class Node<TCoordinate, TEdgeEnd> : GraphComponent<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
+        where TEdgeEnd : EdgeEnd<TCoordinate>
     {
         // Only valid if this node is precise.
         private readonly TCoordinate _coord;
-        private readonly EdgeEndStar<TCoordinate> _edges;
+        private readonly EdgeEndStar<TCoordinate, TEdgeEnd> _edges;
 
-        public Node(TCoordinate coord, EdgeEndStar<TCoordinate> edges)
+        public Node(TCoordinate coord, EdgeEndStar<TCoordinate, TEdgeEnd> edges)
         {
             _coord = coord;
             _edges = edges;
@@ -26,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             get { return _coord; }
         }
 
-        public EdgeEndStar<TCoordinate> Edges
+        public EdgeEndStar<TCoordinate, TEdgeEnd> Edges
         {
             get { return _edges; }
         }
@@ -51,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             e.Node = this;
         }
 
-        public void MergeLabel(Node<TCoordinate> n)
+        public void MergeLabel(Node<TCoordinate, TEdgeEnd> n)
         {
             MergeLabel(n.Label);
         }
@@ -67,7 +68,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             for (Int32 i = 0; i < 2; i++)
             {
                 Locations loc = ComputeMergedLocation(label2, i);
-                Locations thisLoc = Label.GetLocation(i);
+                Locations thisLoc = Label[i];
+
                 if (thisLoc == Locations.None)
                 {
                     Label.SetLocation(i, loc);
@@ -148,7 +150,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             outstream.WriteLine("node " + Coordinate + " lbl: " + Label);
         }
 
-        public override string ToString()
+        public override String ToString()
         {
             return Coordinate + " " + _edges;
         }

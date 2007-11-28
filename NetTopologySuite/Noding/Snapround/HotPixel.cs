@@ -1,8 +1,10 @@
 using System;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
 {
@@ -15,68 +17,71 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
     /// The hot pixel operations are all computed in the integer domain
     /// to avoid rounding problems.
     /// </remarks>
-    public class HotPixel
+    public class HotPixel<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        private LineIntersector li = null;
+        private LineIntersector<TCoordinate> _li = null;
 
-        private ICoordinate pt = null;
-        private ICoordinate originalPt = null;
+        private TCoordinate _pt;
+        private TCoordinate _originalPt;
 
-        private ICoordinate p0Scaled = null;
-        private ICoordinate p1Scaled = null;
+        private TCoordinate _p0Scaled;
+        private TCoordinate _p1Scaled;
 
-        private Double scaleFactor;
+        private Double _scaleFactor;
 
-        private Double minx;
-        private Double maxx;
-        private Double miny;
-        private Double maxy;
+        private Double _minx;
+        private Double _maxx;
+        private Double _miny;
+        private Double _maxy;
 
         /*
          * The corners of the hot pixel, in the order:
          *  10
          *  23
          */
-        private ICoordinate[] corner = new ICoordinate[4];
+        private TCoordinate[] corner = new TCoordinate[4];
 
-        private Extents safeEnv = null;
+        private Extents<TCoordinate> safeEnv = null;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HotPixel"/> class.
+        /// Initializes a new instance of the <see cref="HotPixel{TCoordinate}"/> class.
         /// </summary>
-        public HotPixel(ICoordinate pt, Double scaleFactor, LineIntersector li)
+        public HotPixel(TCoordinate pt, Double scaleFactor, LineIntersector<TCoordinate> li)
         {
-            originalPt = pt;
-            this.pt = pt;
-            this.scaleFactor = scaleFactor;
-            this.li = li;
+            _originalPt = pt;
+            _pt = pt;
+            _scaleFactor = scaleFactor;
+            _li = li;
 
             if (scaleFactor != 1.0)
             {
-                this.pt = new Coordinate(Scale(pt.X), Scale(pt.Y));
-                p0Scaled = new Coordinate();
-                p1Scaled = new Coordinate();
+                _pt = new TCoordinate(scale(pt[Ordinates.X]), scale(pt[Ordinates.Y]));
+                _p0Scaled = new TCoordinate();
+                _p1Scaled = new TCoordinate();
             }
 
-            InitCorners(this.pt);
+            InitCorners(_pt);
         }
 
-        public ICoordinate Coordinate
+        public TCoordinate Coordinate
         {
-            get { return originalPt; }
+            get { return _originalPt; }
         }
 
         /// <summary>
         /// Returns a "safe" envelope that is guaranteed to contain the 
         /// hot pixel.
         /// </summary>
-        public IExtents GetSafeEnvelope()
+        public IExtents<TCoordinate> GetSafeEnvelope()
         {
             if (safeEnv == null)
             {
-                Double safeTolerance = 0.75 / scaleFactor;
-                safeEnv = new Extents(originalPt.X - safeTolerance, originalPt.X + safeTolerance,
-                                       originalPt.Y - safeTolerance, originalPt.Y + safeTolerance);
+                Double safeTolerance = 0.75 / _scaleFactor;
+                safeEnv = new Extents<TCoordinate>(
+                    _originalPt[Ordinates.X] - safeTolerance, _originalPt[Ordinates.X] + safeTolerance,
+                    _originalPt[Ordinates.Y] - safeTolerance, _originalPt[Ordinates.Y] + safeTolerance);
             }
             return safeEnv;
         }
@@ -84,55 +89,54 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         private void InitCorners(ICoordinate pt)
         {
             Double tolerance = 0.5;
-            minx = pt.X - tolerance;
-            maxx = pt.X + tolerance;
-            miny = pt.Y - tolerance;
-            maxy = pt.Y + tolerance;
+            _minx = pt[Ordinates.X] - tolerance;
+            _maxx = pt[Ordinates.X] + tolerance;
+            _miny = pt[Ordinates.Y] - tolerance;
+            _maxy = pt[Ordinates.Y] + tolerance;
 
-            corner[0] = new Coordinate(maxx, maxy);
-            corner[1] = new Coordinate(minx, maxy);
-            corner[2] = new Coordinate(minx, miny);
-            corner[3] = new Coordinate(maxx, miny);
+            corner[0] = new TCoordinate(_maxx, _maxy);
+            corner[1] = new TCoordinate(_minx, _maxy);
+            corner[2] = new TCoordinate(_minx, _miny);
+            corner[3] = new TCoordinate(_maxx, _miny);
         }
 
-        private Double Scale(Double val)
+        private Double scale(Double val)
         {
-            return Math.Round(val * scaleFactor);
+            return Math.Round(val * _scaleFactor);
         }
 
-        public Boolean Intersects(ICoordinate p0, ICoordinate p1)
+        public Boolean Intersects(TCoordinate p0, TCoordinate p1)
         {
-            if (scaleFactor == 1.0)
+            if (_scaleFactor == 1.0)
             {
                 return IntersectsScaled(p0, p1);
             }
 
-            CopyScaled(p0, p0Scaled);
-            CopyScaled(p1, p1Scaled);
-            return IntersectsScaled(p0Scaled, p1Scaled);
+            _p0Scaled = copyScaled(p0);
+            _p1Scaled = copyScaled(p1);
+            return IntersectsScaled(_p0Scaled, _p1Scaled);
         }
 
-        private void CopyScaled(ICoordinate p, ICoordinate pScaled)
+        private TCoordinate copyScaled(TCoordinate p)
         {
-            pScaled.X = Scale(p.X);
-            pScaled.Y = Scale(p.Y);
+            return new TCoordinate(scale(p[Ordinates.X]), scale(p[Ordinates.Y]));
         }
 
         public Boolean IntersectsScaled(ICoordinate p0, ICoordinate p1)
         {
-            Double segMinx = Math.Min(p0.X, p1.X);
-            Double segMaxx = Math.Max(p0.X, p1.X);
-            Double segMiny = Math.Min(p0.Y, p1.Y);
-            Double segMaxy = Math.Max(p0.Y, p1.Y);
+            Double segMinx = Math.Min(p0[Ordinates.X], p1[Ordinates.X]);
+            Double segMaxx = Math.Max(p0[Ordinates.X], p1[Ordinates.X]);
+            Double segMiny = Math.Min(p0[Ordinates.Y], p1[Ordinates.Y]);
+            Double segMaxy = Math.Max(p0[Ordinates.Y], p1[Ordinates.Y]);
 
-            Boolean isOutsidePixelEnv = maxx < segMinx || minx > segMaxx ||
-                                        maxy < segMiny || miny > segMaxy;
+            Boolean isOutsidePixelEnv = _maxx < segMinx || _minx > segMaxx ||
+                                        _maxy < segMiny || _miny > segMaxy;
             if (isOutsidePixelEnv)
             {
                 return false;
             }
 
-            Boolean intersects = IntersectsToleranceSquare(p0, p1);
+            Boolean intersects = intersectsToleranceSquare(p0, p1);
             Assert.IsTrue(!(isOutsidePixelEnv && intersects), "Found bad envelope test");
             return intersects;
         }
@@ -147,45 +151,45 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         //  - a proper intersection with the segment and any hot pixel edge.
         //  - an intersection between the segment and both the left and bottom edges.
         //  - an intersection between a segment endpoint and the hot pixel coordinate.
-        private Boolean IntersectsToleranceSquare(ICoordinate p0, ICoordinate p1)
+        private Boolean intersectsToleranceSquare(TCoordinate p0, TCoordinate p1)
         {
             Boolean intersectsLeft = false;
             Boolean intersectsBottom = false;
 
-            li.ComputeIntersection(p0, p1, corner[0], corner[1]);
+            _li.ComputeIntersection(p0, p1, corner[0], corner[1]);
 
-            if (li.IsProper)
+            if (_li.IsProper)
             {
                 return true;
             }
 
-            li.ComputeIntersection(p0, p1, corner[1], corner[2]);
+            _li.ComputeIntersection(p0, p1, corner[1], corner[2]);
 
-            if (li.IsProper)
+            if (_li.IsProper)
             {
                 return true;
             }
 
-            if (li.HasIntersection)
+            if (_li.HasIntersection)
             {
                 intersectsLeft = true;
             }
 
-            li.ComputeIntersection(p0, p1, corner[2], corner[3]);
+            _li.ComputeIntersection(p0, p1, corner[2], corner[3]);
 
-            if (li.IsProper)
+            if (_li.IsProper)
             {
                 return true;
             }
 
-            if (li.HasIntersection)
+            if (_li.HasIntersection)
             {
                 intersectsBottom = true;
             }
 
-            li.ComputeIntersection(p0, p1, corner[3], corner[0]);
+            _li.ComputeIntersection(p0, p1, corner[3], corner[0]);
 
-            if (li.IsProper)
+            if (_li.IsProper)
             {
                 return true;
             }
@@ -195,12 +199,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
                 return true;
             }
 
-            if (p0.Equals(pt))
+            if (p0.Equals(_pt))
             {
                 return true;
             }
 
-            if (p1.Equals(pt))
+            if (p1.Equals(_pt))
             {
                 return true;
             }
@@ -213,32 +217,32 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         // This is NOT the test used in the standard snap-rounding
         // algorithm, which uses the partially closed tolerance square instead.
         // This routine is provided for testing purposes only.
-        private Boolean IntersectsPixelClosure(ICoordinate p0, ICoordinate p1)
+        private Boolean intersectsPixelClosure(TCoordinate p0, TCoordinate p1)
         {
-            li.ComputeIntersection(p0, p1, corner[0], corner[1]);
+            _li.ComputeIntersection(p0, p1, corner[0], corner[1]);
             
-            if (li.HasIntersection)
+            if (_li.HasIntersection)
             {
                 return true;
             }
 
-            li.ComputeIntersection(p0, p1, corner[1], corner[2]);
+            _li.ComputeIntersection(p0, p1, corner[1], corner[2]);
 
-            if (li.HasIntersection)
+            if (_li.HasIntersection)
             {
                 return true;
             }
 
-            li.ComputeIntersection(p0, p1, corner[2], corner[3]);
+            _li.ComputeIntersection(p0, p1, corner[2], corner[3]);
 
-            if (li.HasIntersection)
+            if (_li.HasIntersection)
             {
                 return true;
             }
 
-            li.ComputeIntersection(p0, p1, corner[3], corner[0]);
+            _li.ComputeIntersection(p0, p1, corner[3], corner[0]);
 
-            if (li.HasIntersection)
+            if (_li.HasIntersection)
             {
                 return true;
             }

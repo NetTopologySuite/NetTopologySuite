@@ -41,6 +41,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         private static readonly UInt32 LeftMask = 0xFFFF00FF;
         private static readonly UInt32 RightMask = 0xFFFFFF00;
 
+        public static readonly TopologyLocation None = new TopologyLocation(AllLocationsNull);
+
         private Int32 _locations;
 
         /// <summary> 
@@ -64,6 +66,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public TopologyLocation(TopologyLocation location)
         {
             _locations = location._locations;
+        }
+
+        private TopologyLocation(Int32 locations)
+        {
+            _locations = locations;
         }
 
         /// <summary>
@@ -91,7 +98,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         /// <summary>
         /// Gets <see langword="true"/> if all locations are 
-        /// <see cref="Locations.Null"/>.
+        /// <see cref="Locations.None"/>.
         /// </summary>
         public Boolean IsNull
         {
@@ -103,9 +110,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         /// <summary>
         /// Gets <see langword="true"/> if any locations are 
-        /// <see cref="Locations.Null"/>.
+        /// <see cref="Locations.None"/>.
         /// </summary>
-        public Boolean IsAnyNull
+        public Boolean AreAnyNull
         {
             get
             {
@@ -174,6 +181,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
+        public Boolean AllPositionsEqual(Locations loc)
+        {
+            return On == loc &&
+                Left == loc &&
+                Right == loc;
+        }
+
         /// <summary>
         /// Merge updates only the Null attributes of this <see cref="TopologyLocation"/>
         /// with the attributes of another, and returns the result.
@@ -222,31 +236,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         }
 
         #endregion
-
-        private void setAllLocations(Locations locValue)
-        {
-            setLocation(Positions.On, locValue);
-            setLocation(Positions.Left, locValue);
-            setLocation(Positions.Right, locValue);
-        }
-
-        private void setAllLocationsIfNull(Locations locValue)
-        {
-            if (On == Locations.None)
-            {
-                setLocation(Positions.On, locValue);
-            }
-
-            if (Left == Locations.None)
-            {
-                setLocation(Positions.Left, locValue);
-            }
-
-            if (Right == Locations.None)
-            {
-                setLocation(Positions.Right, locValue);
-            }
-        }
 
         private void setLocation(Positions locIndex, Locations locValue)
         {

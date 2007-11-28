@@ -1,6 +1,8 @@
 using System;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 {
@@ -9,32 +11,34 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
     /// It contains a lower-left point and a level number. The level number
     /// is the power of two for the size of the node envelope.
     /// </summary>
-    public class Key
+    public class Key<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        public static Int32 ComputeQuadLevel(IExtents env)
+        public static Int32 ComputeQuadLevel(IExtents<TCoordinate> extents)
         {
-            Double dx = env.Width;
-            Double dy = env.Height;
+            Double dx = extents.GetSize(Ordinates.X);
+            Double dy = extents.GetSize(Ordinates.Y);
             Double dMax = dx > dy ? dx : dy;
             Int32 level = DoubleBits.GetExponent(dMax) + 1;
             return level;
         }
 
         // the fields which make up the key
-        private ICoordinate pt = new Coordinate();
+        private TCoordinate _coordinate = new TCoordinate();
         private Int32 level = 0;
 
         // auxiliary data which is derived from the key for use in computation
-        private IExtents env = null;
+        private IExtents<TCoordinate> _extents = null;
 
-        public Key(IExtents itemEnv)
+        public Key(IExtents<TCoordinate> itemExtents)
         {
-            ComputeKey(itemEnv);
+            ComputeKey(itemExtents);
         }
 
-        public ICoordinate Point
+        public TCoordinate Point
         {
-            get { return pt; }
+            get { return _coordinate; }
         }
 
         public Int32 Level
@@ -42,39 +46,49 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             get { return level; }
         }
 
-        public IExtents Envelope
+        public IExtents<TCoordinate> Extents
         {
-            get { return env; }
+            get { return _extents; }
         }
 
-        public ICoordinate Centre
+        public TCoordinate Center
         {
-            get { return new Coordinate((env.MinX + env.MaxX)/2, (env.MinY + env.MaxY)/2); }
+            get
+            {
+                return new TCoordinate(
+                    (_extents.Min[Ordinates.X] + _extents.Max[Ordinates.X]) / 2,
+                    (_extents.Min[Ordinates.Y] + _extents.Max[Ordinates.Y]) / 2);
+            }
         }
 
         /// <summary>
         /// Return a square envelope containing the argument envelope,
         /// whose extent is a power of two and which is based at a power of 2.
         /// </summary>
-        public void ComputeKey(IExtents itemEnv)
+        public void ComputeKey(IExtents<TCoordinate> itemExtents)
         {
-            level = ComputeQuadLevel(itemEnv);
-            env = new Extents();
-            ComputeKey(level, itemEnv);
+            level = ComputeQuadLevel(itemExtents);
+            _extents = new Extents<TCoordinate>();
+
+            computeKey(level, itemExtents);
+
             // MD - would be nice to have a non-iterative form of this algorithm
-            while (!env.Contains(itemEnv))
+            while (!_extents.Contains(itemExtents))
             {
                 level += 1;
-                ComputeKey(level, itemEnv);
+                computeKey(level, itemExtents);
             }
         }
 
-        private void ComputeKey(Int32 level, IExtents itemEnv)
+        private void computeKey(Int32 level, IExtents<TCoordinate> itemExtents)
         {
             Double quadSize = DoubleBits.PowerOf2(level);
-            pt.X = Math.Floor(itemEnv.MinX/quadSize)*quadSize;
-            pt.Y = Math.Floor(itemEnv.MinY/quadSize)*quadSize;
-            env.Init(pt.X, pt.X + quadSize, pt.Y, pt.Y + quadSize);
+            Double x = Math.Floor(itemExtents.Min[Ordinates.X] / quadSize) * quadSize;
+            Double y = Math.Floor(itemExtents.Min[Ordinates.Y] / quadSize) * quadSize;
+            _coordinate = new TCoordinate(x, y);
+            TCoordinate quadPoint = new TCoordinate(x + quadSize, y + quadSize);
+            _extents.SetToEmpty();
+            _extents.ExpandToInclude(_coordinate, quadPoint);
         }
     }
 }

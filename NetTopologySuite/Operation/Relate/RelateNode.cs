@@ -1,11 +1,8 @@
 using System;
-using System.Collections;
-using System.Text;
-
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 {
@@ -13,12 +10,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// A RelateNode is a Node that maintains a list of EdgeStubs
     /// for the edges that are incident on it.
     /// </summary>
-    public class RelateNode<TCoordinate> : Node<TCoordinate>
+    public class RelateNode<TCoordinate, TEdgeEnd> : Node<TCoordinate, TEdgeEnd>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+            IComputable<TCoordinate>, IConvertible
+        where TEdgeEnd : EdgeEnd<TCoordinate>
     {
-        public RelateNode(TCoordinate coord, EdgeEndStar<TCoordinate> edges) :
-            base(coord, edges) { }
+        public RelateNode(TCoordinate coord, EdgeEndStar<TCoordinate, TEdgeEnd> edges) :
+            base(coord, edges) {}
 
         /// <summary>
         /// Update the IM with the contribution for this component.
@@ -30,12 +28,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         }
 
         /// <summary>
-        /// Update the IM with the contribution for the EdgeEnds incident on this node.
+        /// Update the IM with the contribution for the EdgeEnds incident 
+        /// on this node.
         /// </summary>
-        /// <param name="im"></param>
         public void UpdateIntersectionMatrixFromEdges(IntersectionMatrix im)
         {
-            ((EdgeEndBundleStar) Edges).UpdateIM(im);
+            ((EdgeEndBundleStar<TCoordinate>) Edges).UpdateIntersectionMatrix(im);
         }
     }
 }

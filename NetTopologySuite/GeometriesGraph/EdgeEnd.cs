@@ -23,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             IComputable<TCoordinate>, IConvertible
     {
         private Edge<TCoordinate> _edge = null;
-        private Label _label = null;
+        private Label _label;
         private Node<TCoordinate> _origin; // the node this edge end originates at
         private TCoordinate _p0, _p1; // points of initial line segment
         private TCoordinate _direction; // the direction vector for this edge from its starting point

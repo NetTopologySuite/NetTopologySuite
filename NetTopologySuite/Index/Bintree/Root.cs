@@ -7,11 +7,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 {
     /// <summary> 
     /// The root node of a single <see cref="BinTree{TItem}"/>.
-    /// It is centred at the origin, and does not have a defined extent.
+    /// It is centered at the origin, and does not have a defined extent.
     /// </summary>
     public class Root<TItem> : NodeBase<TItem>
     {
-        // the singleton root node is centred at the origin.
+        // the singleton root node is centered at the origin.
         private static readonly Double Origin = 0.0;
 
         /// <summary> 

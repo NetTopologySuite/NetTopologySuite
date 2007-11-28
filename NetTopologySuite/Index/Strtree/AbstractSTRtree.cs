@@ -5,27 +5,32 @@ using GisSharpBlog.NetTopologySuite.Utilities;
 namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 {
     /// <summary>
-    /// Base class for STRtree and SIRtree. STR-packed R-trees are described in:
+    /// Base class for STRtree and SIRtree. 
+    /// <remarks>
+    /// <para>
+    /// STR-packed R-trees are described in:
     /// P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
+    /// </para>
     /// <para>
     /// This implementation is based on Boundables rather than just AbstractNodes,
     /// because the STR algorithm operates on both nodes and
     /// data, both of which are treated here as Boundables.
     /// </para>
+    /// </remarks>
     /// </summary>
     public abstract class AbstractStrTree
     {
         /// <returns>
         /// A test for intersection between two bounds, necessary because subclasses
-        /// of AbstractSTRtree have different implementations of bounds.
+        /// of AbstractStrTree have different implementations of bounds.
         /// </returns>
         protected interface IIntersectsOp
         {
             /// <summary>
             /// For STRtrees, the bounds will be Envelopes; 
             /// for SIRtrees, Intervals;
-            /// for other subclasses of AbstractSTRtree, some other class.
+            /// for other subclasses of AbstractStrTree, some other class.
             /// </summary>
             /// <param name="aBounds">The bounds of one spatial object.</param>
             /// <param name="bBounds">The bounds of another spatial object.</param>                        
@@ -40,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         private Int32 nodeCapacity;
 
         /// <summary> 
-        /// Constructs an AbstractSTRtree with the specified maximum number of child
+        /// Constructs an AbstractStrTree with the specified maximum number of child
         /// nodes that a node may have.
         /// </summary>
         public AbstractStrTree(Int32 nodeCapacity)
@@ -322,7 +327,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
         /// <returns>
         /// A test for intersection between two bounds, necessary because subclasses
-        /// of AbstractSTRtree have different implementations of bounds.
+        /// of AbstractStrTree have different implementations of bounds.
         /// </returns>
         protected abstract IIntersectsOp IntersectsOp { get; }
 

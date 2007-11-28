@@ -1,11 +1,14 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
+using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Noding;
 using GisSharpBlog.NetTopologySuite.Operation.Overlay;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 {
@@ -19,7 +22,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// Retrying the computation in a fixed precision
     /// can produce more robust results.    
     /// </summary>
-    public class BufferBuilder
+    public class BufferBuilder<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
+                            IComputable<TCoordinate>, IConvertible
     {
         /// <summary>
         /// Compute the change in depth as an edge is crossed from R to L.
@@ -39,27 +44,22 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             return 0;
         }
 
-        private Int32 quadrantSegments = OffsetCurveBuilder.DefaultQuadrantSegments;
-        private BufferStyle endCapStyle = BufferStyle.CapRound;
+        private Int32 _quadrantSegments = OffsetCurveBuilder<TCoordinate>.DefaultQuadrantSegments;
+        private BufferStyle _endCapStyle = BufferStyle.CapRound;
 
-        private IPrecisionModel workingPrecisionModel = null;
-        private INoder workingNoder = null;
-        private IGeometryFactory geomFact = null;
-        private PlanarGraph graph = null;
-        private EdgeList edgeList = new EdgeList();
-
-        /// <summary> 
-        /// Creates a new BufferBuilder.
-        /// </summary>
-        public BufferBuilder() {}
+        private IPrecisionModel<TCoordinate> _workingPrecisionModel = null;
+        private INoder<TCoordinate> _workingNoder = null;
+        private IGeometryFactory<TCoordinate> _geometryFactory = null;
+        private PlanarGraph<TCoordinate> _graph = null;
+        private readonly EdgeList<TCoordinate> _edgeList = new EdgeList<TCoordinate>();
 
         /// <summary>
         /// Gets or sets the number of segments used to approximate a angle fillet.
         /// </summary>
         public Int32 QuadrantSegments
         {
-            get { return quadrantSegments; }
-            set { quadrantSegments = value; }
+            get { return _quadrantSegments; }
+            set { _quadrantSegments = value; }
         }
 
         /// <summary>
@@ -68,78 +68,81 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// If the precision model is less than the precision of the Geometry precision model,
         /// the Geometry must have previously been rounded to that precision.
         /// </summary>
-        public IPrecisionModel WorkingPrecisionModel
+        public IPrecisionModel<TCoordinate> WorkingPrecisionModel
         {
-            get { return workingPrecisionModel; }
-            set { workingPrecisionModel = value; }
+            get { return _workingPrecisionModel; }
+            set { _workingPrecisionModel = value; }
         }
 
         public BufferStyle EndCapStyle
         {
-            get { return endCapStyle; }
-            set { endCapStyle = value; }
+            get { return _endCapStyle; }
+            set { _endCapStyle = value; }
         }
 
-        public INoder Noder
+        public INoder<TCoordinate> Noder
         {
-            get { return workingNoder; }
-            set { workingNoder = value; }
+            get { return _workingNoder; }
+            set { _workingNoder = value; }
         }
 
-        public IGeometry Buffer(IGeometry g, Double distance)
+        public IGeometry<TCoordinate> Buffer(IGeometry<TCoordinate> g, Double distance)
         {
-            IPrecisionModel precisionModel = workingPrecisionModel;
+            IPrecisionModel<TCoordinate> precisionModel = _workingPrecisionModel;
+
             if (precisionModel == null)
             {
                 precisionModel = g.PrecisionModel;
             }
 
             // factory must be the same as the one used by the input
-            geomFact = g.Factory;
+            _geometryFactory = g.Factory;
 
-            OffsetCurveBuilder curveBuilder = new OffsetCurveBuilder(precisionModel, quadrantSegments);
-            curveBuilder.EndCapStyle = endCapStyle;
-            OffsetCurveSetBuilder curveSetBuilder = new OffsetCurveSetBuilder(g, distance, curveBuilder);
+            OffsetCurveBuilder<TCoordinate> curveBuilder 
+                = new OffsetCurveBuilder<TCoordinate>(precisionModel, _quadrantSegments);
+            curveBuilder.EndCapStyle = _endCapStyle;
+            OffsetCurveSetBuilder<TCoordinate> curveSetBuilder 
+                = new OffsetCurveSetBuilder<TCoordinate>(g, distance, curveBuilder);
 
-            IList bufferSegStrList = curveSetBuilder.GetCurves();
+            IEnumerable<SegmentString<TCoordinate>> bufferSegStrList = curveSetBuilder.GetCurves();
 
             // short-circuit test
-            if (bufferSegStrList.Count <= 0)
+            if (!Slice.CountGreaterThan(0, bufferSegStrList))
             {
-                IGeometry emptyGeom = geomFact.CreateGeometryCollection(new IGeometry[0]);
+                IGeometry<TCoordinate> emptyGeom = _geometryFactory.CreateGeometryCollection(new IGeometry<TCoordinate>[0]);
                 return emptyGeom;
             }
 
-            ComputeNodedEdges(bufferSegStrList, precisionModel);
-            graph = new PlanarGraph(new OverlayNodeFactory());
-            graph.AddEdges(edgeList.Edges);
+            computeNodedEdges(bufferSegStrList, precisionModel);
+            _graph = new PlanarGraph<TCoordinate>(new OverlayNodeFactory<TCoordinate>());
+            _graph.AddEdges(_edgeList.Edges);
 
-            IList subgraphList = CreateSubgraphs(graph);
-            PolygonBuilder polyBuilder = new PolygonBuilder(geomFact);
+            IList subgraphList = CreateSubgraphs(_graph);
+            PolygonBuilder<TCoordinate> polyBuilder = new PolygonBuilder<TCoordinate>(_geometryFactory);
             BuildSubgraphs(subgraphList, polyBuilder);
             IList resultPolyList = polyBuilder.Polygons;
 
-            IGeometry resultGeom = geomFact.BuildGeometry(resultPolyList);
+            IGeometry resultGeom = _geometryFactory.BuildGeometry(resultPolyList);
             return resultGeom;
         }
 
-        private INoder GetNoder(IPrecisionModel precisionModel)
+        private INoder<TCoordinate> getNoder(IPrecisionModel<TCoordinate> precisionModel)
         {
-            if (workingNoder != null)
+            if (_workingNoder != null)
             {
-                return workingNoder;
+                return _workingNoder;
             }
 
             // otherwise use a fast (but non-robust) noder
-            LineIntersector li = new RobustLineIntersector();
+            LineIntersector<TCoordinate> li = new RobustLineIntersector<TCoordinate>();
             li.PrecisionModel = precisionModel;
             MCIndexNoder noder = new MCIndexNoder(new IntersectionAdder(li));
             return noder;
         }
 
-        private void ComputeNodedEdges(IList bufferSegStrList, IPrecisionModel precisionModel)
+        private void computeNodedEdges(IEnumerable<SegmentString<TCoordinate>> bufferSegStrList, IPrecisionModel<TCoordinate> precisionModel)
         {
-            INoder noder = GetNoder(precisionModel);
+            INoder noder = getNoder(precisionModel);
             noder.ComputeNodes(bufferSegStrList);
             IList nodedSegStrings = noder.GetNodedSubstrings();
 
@@ -161,7 +164,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         {
             //<FIX> MD 8 Oct 03  speed up identical edge lookup
             // fast lookup
-            Edge existingEdge = edgeList.FindEqualEdge(e);
+            Edge existingEdge = _edgeList.FindEqualEdge(e);
 
             // If an identical edge already exists, simply update its label
             if (existingEdge != null)
@@ -189,17 +192,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 // no matching existing edge was found
                 // add this new edge to the list of edges in this graph
                 //e.setName(name + edges.size());
-                edgeList.Add(e);
+                _edgeList.Add(e);
                 e.DepthDelta = DepthDelta(e.Label);
             }
         }
 
-        private IList CreateSubgraphs(PlanarGraph graph)
+        private IList CreateSubgraphs(PlanarGraph<TCoordinate> graph)
         {
             ArrayList subgraphList = new ArrayList();
-            foreach (object obj in graph.Nodes)
+            foreach (Node<TCoordinate> obj in graph.Nodes)
             {
-                Node node = (Node) obj;
                 if (!node.IsVisited)
                 {
                     BufferSubgraph subgraph = new BufferSubgraph();

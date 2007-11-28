@@ -20,12 +20,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Represents an empty <see cref="GeometryCollection{TCoordinate}" />.
         /// </summary>
-        public static readonly IGeometryCollection Empty = DefaultFactory.CreateGeometryCollection(null);
+        public static readonly IGeometryCollection<TCoordinate> Empty = DefaultFactory.CreateGeometryCollection(null);
 
         /// <summary>
         /// Internal representation of this <see cref="GeometryCollection{TCoordinate}" />.        
         /// </summary>
-        private List<IGeometry<TCoordinate>> _geometries = null;
+        private List<IGeometry<TCoordinate>> _geometries = new List<IGeometry<TCoordinate>>();
 
         /// <param name="geometries">
         /// The <see cref="Geometry{TCoordinate}"/>s for this <see cref="GeometryCollection{TCoordinate}" />,
@@ -34,8 +34,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// but not <see langword="null" />s.
         /// </param>
         /// <remarks>
-        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="Geometry{TCoordinate}Factory{TCoordinate}"/> 
-        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
+        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
+        /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public GeometryCollection(IGeometry[] geometries) : this(geometries, DefaultFactory) {}
 
@@ -45,16 +45,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// point. Elements may be empty <see cref="Geometry{TCoordinate}"/>s,
         /// but not <see langword="null" />s.
         /// </param>
-        public GeometryCollection(IGeometry[] geometries, IGeometryFactory factory) : base(factory)
+        public GeometryCollection(IEnumerable<IGeometry<TCoordinate>> geometries, IGeometryFactory<TCoordinate> factory) 
+            : base(factory)
         {
             if (geometries == null)
             {
-                geometries = new IGeometry[] {};
-            }
-
-            if (HasNullElements(geometries))
-            {
-                throw new ArgumentException("geometries must not contain null elements");
+                geometries = new IGeometry<TCoordinate>[] {};
             }
 
             this.geometries = geometries;
@@ -314,7 +310,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             Array.Sort(geometries);
         }
 
-        protected override IExtents ComputeEnvelopeInternal()
+        protected override IExtents ComputeExtentsInternal()
         {
             IExtents envelope = new Extents();
 

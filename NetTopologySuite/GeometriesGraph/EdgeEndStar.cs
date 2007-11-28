@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
@@ -96,7 +97,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        public EdgeEnd<TCoordinate> GetNextCW(EdgeEnd<TCoordinate> ee)
+        public EdgeEnd<TCoordinate> GetNextCW(TEdgeEnd ee)
         {
             Int32 i = _edgeList.IndexOf(ee);
             Int32 iNextCW = i - 1;
@@ -169,7 +170,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
                 for (Int32 geometryIndex = 0; geometryIndex < 2; geometryIndex++)
                 {
-                    if (label.IsAnyNull(geometryIndex))
+                    if (label.AreAnyNull(geometryIndex))
                     {
                         Locations loc;
 
@@ -189,15 +190,16 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        public Locations GetLocation(Int32 geomIndex, TCoordinate p, IEnumerable<GeometryGraph<TCoordinate>> geom)
+        public Locations GetLocation(Int32 geometryIndex, TCoordinate p, IEnumerable<GeometryGraph<TCoordinate>> geometries)
         {
             // compute location only on demand
-            if (_ptInAreaLocation[geomIndex] == Locations.None)
+            if (_ptInAreaLocation[geometryIndex] == Locations.None)
             {
-                _ptInAreaLocation[geomIndex] = SimplePointInAreaLocator.Locate(p, geom[geomIndex].Geometry);
+                IGeometry<TCoordinate> g = Slice.GetAt(geometries, geometryIndex).Geometry;
+                _ptInAreaLocation[geometryIndex] = SimplePointInAreaLocator.Locate(p, g);
             }
 
-            return _ptInAreaLocation[geomIndex];
+            return _ptInAreaLocation[geometryIndex];
         }
 
         public Boolean IsAreaLabelsConsistent
@@ -307,6 +309,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 ComputeEdgeList();
                 return _edgeList;
             }
+        }
+
+        protected IDictionary<EdgeEnd<TCoordinate>, TEdgeEnd> EdgeMap
+        {
+            get { return _edgeMap; }
         }
 
         protected void ComputeEdgeList()

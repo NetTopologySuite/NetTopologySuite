@@ -1,8 +1,10 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
+using GeoAPI.Coordinates;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
 {
@@ -21,22 +23,25 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
     /// results are not 100% guaranteed to be correctly noded.
     /// </para>
     /// </summary>
-    public class MCIndexSnapRounder : INoder
+    public class MCIndexSnapRounder<TCoordinate> : INoder<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        private LineIntersector li = null;
+        private LineIntersector<TCoordinate> _li = null;
         private readonly Double scaleFactor;
-        private MCIndexNoder noder = null;
-        private MCIndexPointSnapper pointSnapper = null;
+        private MCIndexNoder _noder = null;
+        private MCIndexPointSnapper _pointSnapper = null;
         private IList nodedSegStrings = null;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MCIndexSnapRounder"/> class.
+        /// Initializes a new instance of the 
+        /// <see cref="MCIndexSnapRounder{TCoordinate}"/> class.
         /// </summary>
-        /// <param name="pm">The <see cref="PrecisionModel" /> to use.</param>
-        public MCIndexSnapRounder(PrecisionModel pm)
+        /// <param name="pm">The <see cref="PrecisionModel{TCoordinate}" /> to use.</param>
+        public MCIndexSnapRounder(PrecisionModel<TCoordinate> pm)
         {
-            li = new RobustLineIntersector();
-            li.PrecisionModel = pm;
+            _li = new RobustLineIntersector<TCoordinate>();
+            _li.PrecisionModel = pm;
             scaleFactor = pm.Scale;
         }
 
@@ -46,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// </summary>
         public IList GetNodedSubstrings()
         {
-            return SegmentString.GetNodedSubstrings(nodedSegStrings);
+            return SegmentString<TCoordinate>.GetNodedSubstrings(nodedSegStrings);
         }
 
         /// <summary>
@@ -57,15 +62,16 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         public void ComputeNodes(IList inputSegmentStrings)
         {
             nodedSegStrings = inputSegmentStrings;
-            noder = new MCIndexNoder();
-            pointSnapper = new MCIndexPointSnapper(noder.MonotoneChains, noder.Index);
-            SnapRound(inputSegmentStrings, li);
+            _noder = new MCIndexNoder();
+            _pointSnapper = new MCIndexPointSnapper(_noder.MonotoneChains, _noder.Index);
+            snapRound(inputSegmentStrings, _li);
         }
 
-        private void CheckCorrectness(IList inputSegmentStrings)
+        private void checkCorrectness(IList inputSegmentStrings)
         {
             IList resultSegStrings = SegmentString.GetNodedSubstrings(inputSegmentStrings);
             NodingValidator nv = new NodingValidator(resultSegStrings);
+            
             try
             {
                 nv.CheckValid();
@@ -76,10 +82,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             }
         }
 
-        private void SnapRound(IList segStrings, LineIntersector li)
+        private void snapRound(IList segStrings, LineIntersector<TCoordinate> li)
         {
-            IList intersections = FindInteriorIntersections(segStrings, li);
-            ComputeIntersectionSnaps(intersections);
+            IList intersections = findInteriorIntersections(segStrings, li);
+            computeIntersectionSnaps(intersections);
             ComputeVertexSnaps(segStrings);
         }
 
@@ -90,23 +96,25 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// Does NOT node the segStrings.
         /// </summary>
         /// <returns>A list of Coordinates for the intersections.</returns>
-        private IList FindInteriorIntersections(IList segStrings, LineIntersector li)
+        private IList findInteriorIntersections(IList segStrings, LineIntersector li)
         {
             IntersectionFinderAdder intFinderAdder = new IntersectionFinderAdder(li);
-            noder.SegmentIntersector = intFinderAdder;
-            noder.ComputeNodes(segStrings);
+            _noder.SegmentIntersector = intFinderAdder;
+            _noder.ComputeNodes(segStrings);
             return intFinderAdder.InteriorIntersections;
         }
 
         /// <summary>
         /// Computes nodes introduced as a result of snapping segments to snap points (hot pixels).
         /// </summary>
-        private void ComputeIntersectionSnaps(IList snapPts)
+        private void computeIntersectionSnaps(IEnumerable<TCoordinate> snapPts)
         {
-            foreach (ICoordinate snapPt in snapPts)
+            foreach (TCoordinate snapPt in snapPts)
             {
-                HotPixel hotPixel = new HotPixel(snapPt, scaleFactor, li);
-                pointSnapper.Snap(hotPixel);
+                HotPixel<TCoordinate> hotPixel = new HotPixel<TCoordinate>(
+                    snapPt, scaleFactor, _li);
+
+                _pointSnapper.Snap(hotPixel);
             }
         }
 
@@ -114,25 +122,27 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// Computes nodes introduced as a result of
         /// snapping segments to vertices of other segments.
         /// </summary>
-        public void ComputeVertexSnaps(IList edges)
+        public void ComputeVertexSnaps(IEnumerable<SegmentString<TCoordinate>> edges)
         {
-            foreach (SegmentString edge in edges)
+            foreach (SegmentString<TCoordinate> edge in edges)
             {
-                ComputeVertexSnaps(edge);
+                computeVertexSnaps(edge);
             }
         }
 
         /// <summary>
-        /// Performs a brute-force comparison of every segment in each <see cref="SegmentString" />.
-        /// This has n^2 performance.
+        /// Performs a brute-force comparison of every segment in each 
+        /// <see cref="SegmentString{TCoordinate}" />.
+        /// This has O(n^2).
         /// </summary>
-        private void ComputeVertexSnaps(SegmentString e)
+        private void computeVertexSnaps(SegmentString<TCoordinate> e)
         {
-            ICoordinate[] pts0 = e.Coordinates;
+            IEnumerable<TCoordinate> pts0 = e.Coordinates;
+
             for (Int32 i = 0; i < pts0.Length - 1; i++)
             {
-                HotPixel hotPixel = new HotPixel(pts0[i], scaleFactor, li);
-                Boolean isNodeAdded = pointSnapper.Snap(hotPixel, e, i);
+                HotPixel hotPixel = new HotPixel(pts0[i], scaleFactor, _li);
+                Boolean isNodeAdded = _pointSnapper.Snap(hotPixel, e, i);
                 // if a node is created for a vertex, that vertex must be noded too
                 if (isNodeAdded)
                 {

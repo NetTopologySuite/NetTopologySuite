@@ -7,7 +7,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 {
     /// <summary>
     /// QuadRoot is the root of a single Quadtree.  
-    /// It is centred at the origin,
+    /// It is centered at the origin,
     /// and does not have a defined extent.
     /// </summary>
     public class Root : NodeBase

@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
@@ -21,12 +23,14 @@ namespace GisSharpBlog.NetTopologySuite.Precision
     /// The buffer algorithm does not depend on the validity of the input point.
     /// </remarks>
     public class SimpleGeometryPrecisionReducer<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
+                            IComputable<TCoordinate>, IConvertible
     {
-        private IPrecisionModel _newPrecisionModel = null;
+        private readonly IPrecisionModel<TCoordinate> _newPrecisionModel = null;
         private Boolean _removeCollapsed = true;
         private Boolean _changePrecisionModel = false;
 
-        public SimpleGeometryPrecisionReducer(IPrecisionModel pm)
+        public SimpleGeometryPrecisionReducer(IPrecisionModel<TCoordinate> pm)
         {
             _newPrecisionModel = pm;
         }
@@ -54,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             set { _changePrecisionModel = value; }
         }
 
-        public IGeometry Reduce(IGeometry geom)
+        public IGeometry<TCoordinate> Reduce(IGeometry<TCoordinate> geom)
         {
             GeometryEditor<TCoordinate> geometryEditor;
 
@@ -68,7 +72,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             else
             {
                 // don't change point factory
-                geometryEditor = new GeometryEditor();
+                geometryEditor = new GeometryEditor<TCoordinate>();
             }
 
             return geometryEditor.Edit(geom, new PrecisionReducerCoordinateOperation<TCoordinate>(this));
@@ -85,14 +89,15 @@ namespace GisSharpBlog.NetTopologySuite.Precision
                 _container = container;
             }
 
-            public override TCoordinate[] Edit(TCoordinate[] coordinates, IGeometry geom)
+            public override IEnumerable<TCoordinate> Edit(IEnumerable<TCoordinate> coordinates, IGeometry<TCoordinate> geom)
             {
-                if (coordinates.Length == 0)
+                if (!Slice.CountGreaterThan(0, coordinates))
                 {
                     return null;
                 }
 
-                ICoordinate[] reducedCoords = new ICoordinate[coordinates.Length];
+                IEnumerable<TCoordinate> reducedCoords = new ICoordinate[coordinates.Length];
+
                 // copy coordinates and reduce
                 for (Int32 i = 0; i < coordinates.Length; i++)
                 {
@@ -116,6 +121,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
                 * (This may create an invalid point - the client must handle this.)
                 */
                 Int32 minLength = 0;
+
                 if (geom is ILineString)
                 {
                     minLength = 2;
@@ -126,6 +132,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
                 }
 
                 ICoordinate[] collapsedCoords = reducedCoords;
+
                 if (_container._removeCollapsed)
                 {
                     collapsedCoords = null;

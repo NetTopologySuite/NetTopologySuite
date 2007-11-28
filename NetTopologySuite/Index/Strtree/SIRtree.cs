@@ -1,14 +1,18 @@
 using System;
 using System.Collections;
+using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 {
     /// <summary>
-    /// One-dimensional version of an STR-packed R-tree. SIR stands for
+    /// One-dimensional version of an STR-packed R-tree.
+    /// </summary>
+    /// <remarks>
+    /// SIR stands for
     /// "Sort-Interval-Recursive". STR-packed R-trees are described in:
     /// P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
-    /// </summary>
+    /// </remarks>
     public class SirTree : AbstractStrTree
     {
         // DESIGN_NOTE: Implement as delegate
@@ -16,8 +20,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             public Int32 Compare(object o1, object o2)
             {
-                return new SirTree().CompareDoubles(((Interval) ((IBoundable) o1).Bounds).Centre,
-                                                    ((Interval) ((IBoundable) o2).Bounds).Centre);
+                return new SirTree().CompareDoubles(((Interval) ((IBoundable) o1).Bounds).Center,
+                                                    ((Interval) ((IBoundable) o2).Bounds).Center);
             }
         }
 
@@ -25,7 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             public Boolean Intersects(object aBounds, object bBounds)
             {
-                return ((Interval) aBounds).Intersects((Interval) bBounds);
+                return ((Interval) aBounds).Overlaps((Interval) bBounds);
             }
         }
 
@@ -35,19 +39,21 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
             protected override object ComputeBounds()
             {
-                Interval bounds = null;
+                Interval? bounds = null;
                 for (IEnumerator i = ChildBoundables.GetEnumerator(); i.MoveNext();)
                 {
                     IBoundable childBoundable = (IBoundable) i.Current;
+                    
                     if (bounds == null)
                     {
                         bounds = new Interval((Interval) childBoundable.Bounds);
                     }
                     else
                     {
-                        bounds.ExpandToInclude((Interval) childBoundable.Bounds);
+                        bounds.Value.ExpandToInclude((Interval) childBoundable.Bounds);
                     }
                 }
+
                 return bounds;
             }
         }
@@ -76,7 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         public void Insert(Double x1, Double x2, object item)
         {
-            base.Insert(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)), item);
+            Insert(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)), item);
         }
 
         /// <summary>
@@ -94,7 +100,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <param name="x2">Possibly equal to x1.</param>
         public IList Query(Double x1, Double x2)
         {
-            return base.Query(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)));
+            return Query(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)));
         }
 
         protected override IIntersectsOp IntersectsOp
