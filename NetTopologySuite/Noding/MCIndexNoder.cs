@@ -1,32 +1,30 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Index.Chain;
+using GisSharpBlog.NetTopologySuite.Index.Strtree;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
     /// <summary>
-    /// Nodes a set of <see cref="SegmentString" />s using a index based
-    /// on <see cref="MonotoneChain" />s and a <see cref="ISpatialIndex" />.
-    /// The <see cref="ISpatialIndex" /> used should be something that supports
-    /// envelope (range) queries efficiently (such as a <see cref="Quadtree" />
-    /// or <see cref="STRtree" />.
+    /// Nodes a set of <see cref="SegmentString{TCoordinate}" />s using a index based
+    /// on <see cref="MonotoneChain{TCoordinate}" />s and a <see cref="ISpatialIndex{TCoordinate,TItem}" />.
+    /// The <see cref="ISpatialIndex{TCoordinate, TItem}" /> used should be something that supports
+    /// envelope (range) queries efficiently (such as a <see cref="Quadtree{TCoordinate, TItem}" />
+    /// or <see cref="StrTree{TCoordinate, TItem}" />.
     /// </summary>
     public class MCIndexNoder<TCoordinate> : SinglePassNoder<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
     {
-        private IList monoChains = new ArrayList();
-        private ISpatialIndex index = new STRtree();
-        private Int32 idCounter = 0;
-        private IList nodedSegStrings = null;
-        private Int32 nOverlaps = 0; // statistics
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MCIndexNoder"/> class.
-        /// </summary>
-        public MCIndexNoder() {}
+        private readonly List<MonotoneChain<TCoordinate>> _monoChains = new List<MonotoneChain<TCoordinate>>();
+        private readonly StrTree<TCoordinate, SegmentString<TCoordinate>> _index 
+            = new StrTree<TCoordinate, SegmentString<TCoordinate>>();
+        private List<SegmentString<TCoordinate>> _nodedSegStrings = null;
+        private Int32 _idCount = 0;
+        private Int32 _overlapCount = 0; // statistics
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MCIndexNoder"/> class.
@@ -35,14 +33,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         public MCIndexNoder(ISegmentIntersector<TCoordinate> segInt)
             : base(segInt) {}
 
-        public IList MonotoneChains
+        public IEnumerable<MonotoneChain<TCoordinate>> MonotoneChains
         {
-            get { return monoChains; }
+            get { return _monoChains; }
         }
 
-        public ISpatialIndex Index
+        public ISpatialIndex<TCoordinate, SegmentString<TCoordinate>> Index
         {
-            get { return index; }
+            get { return _index; }
         }
 
         /// <summary>
@@ -51,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         public override IList GetNodedSubstrings()
         {
-            return SegmentString.GetNodedSubstrings(nodedSegStrings);
+            return SegmentString<TCoordinate>.GetNodedSubstrings(_nodedSegStrings);
         }
 
         /// <summary>
@@ -61,7 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         public override void ComputeNodes(IList inputSegStrings)
         {
-            nodedSegStrings = inputSegStrings;
+            _nodedSegStrings = inputSegStrings;
             foreach (object obj in inputSegStrings)
             {
                 Add((SegmentString) obj);
@@ -72,10 +70,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         private void IntersectChains()
         {
             MonotoneChainOverlapAction overlapAction = new SegmentOverlapAction(SegmentIntersector);
-            foreach (object obj in monoChains)
+            foreach (object obj in _monoChains)
             {
                 MonotoneChain queryChain = (MonotoneChain) obj;
-                IList overlapChains = index.Query(queryChain.Envelope);
+                IList overlapChains = _index.Query(queryChain.Envelope);
                 foreach (object j in overlapChains)
                 {
                     MonotoneChain testChain = (MonotoneChain) j;
@@ -86,21 +84,21 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                     if (testChain.Id > queryChain.Id)
                     {
                         queryChain.ComputeOverlaps(testChain, overlapAction);
-                        nOverlaps++;
+                        _overlapCount++;
                     }
                 }
             }
         }
 
-        private void Add(SegmentString segStr)
+        private void Add(SegmentString<TCoordinate> segStr)
         {
             IList segChains = MonotoneChainBuilder.GetChains(segStr.Coordinates, segStr);
             foreach (object obj in segChains)
             {
                 MonotoneChain mc = (MonotoneChain) obj;
-                mc.Id = idCounter++;
-                index.Insert(mc.Envelope, mc);
-                monoChains.Add(mc);
+                mc.Id = _idCount++;
+                _index.Insert(mc.Extents, mc);
+                _monoChains.Add(mc);
             }
         }
 

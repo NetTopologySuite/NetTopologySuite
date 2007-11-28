@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
@@ -22,34 +22,16 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         // Public in java code... temporary modified for "safe assembly" in Sql2005
         internal static readonly Int32 numberSnaps = 0;
 
-        private IList monoChains = null;
-        private StrTree<TCoordinate, > index = null;
+        private readonly List<MonotoneChain<TCoordinate>> _monoChains = new List<MonotoneChain<TCoordinate>>();
+        private readonly ISpatialIndex<TCoordinate, SegmentString<TCoordinate>> _index = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MCIndexPointSnapper"/> class.
         /// </summary>
-        public MCIndexPointSnapper(IList monoChains, ISpatialIndex<TCoordinate, > index)
+        public MCIndexPointSnapper(IEnumerable<MonotoneChain<TCoordinate>> chains, ISpatialIndex<TCoordinate, SegmentString<TCoordinate>> index)
         {
-            this.monoChains = monoChains;
-            this.index = (STRtree) index;
-        }
-
-        private class QueryVisitor : IItemVisitor
-        {
-            private IExtents<TCoordinate> _extents = null;
-            private HotPixelSnapAction _action = null;
-
-            public QueryVisitor(IExtents<TCoordinate> extents, HotPixelSnapAction action)
-            {
-                _extents = extents;
-                _action = action;
-            }
-
-            public void VisitItem(object item)
-            {
-                MonotoneChain<TCoordinate> testChain = (MonotoneChain<TCoordinate>) item;
-                testChain.Select(_extents, _action);
-            }
+            _monoChains.AddRange(chains);
+            _index = index;
         }
 
         /// <summary>
@@ -66,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         {
             IExtents<TCoordinate> pixelEnv = hotPixel.GetSafeEnvelope();
             HotPixelSnapAction hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, vertexIndex);
-            index.Query(pixelEnv, new QueryVisitor(pixelEnv, hotPixelSnapAction));
+            _index.Query(pixelEnv, new QueryVisitor(pixelEnv, hotPixelSnapAction));
             return hotPixelSnapAction.IsNodeAdded;
         }
 
@@ -75,11 +57,29 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             return Snap(hotPixel, null, -1);
         }
 
+        private class QueryVisitor : IItemVisitor
+        {
+            private readonly IExtents<TCoordinate> _extents = null;
+            private readonly HotPixelSnapAction _action = null;
+
+            public QueryVisitor(IExtents<TCoordinate> extents, HotPixelSnapAction action)
+            {
+                _extents = extents;
+                _action = action;
+            }
+
+            public void VisitItem(object item)
+            {
+                MonotoneChain<TCoordinate> testChain = (MonotoneChain<TCoordinate>) item;
+                testChain.Select(_extents, _action);
+            }
+        }
+
         public class HotPixelSnapAction : MonotoneChainSelectAction<TCoordinate>
         {
-            private HotPixel<TCoordinate> _hotPixel = null;
-            private SegmentString<TCoordinate> _parentEdge = null;
-            private Int32 _vertexIndex;
+            private readonly HotPixel<TCoordinate> _hotPixel = null;
+            private readonly SegmentString<TCoordinate> _parentEdge = null;
+            private readonly Int32 _vertexIndex;
             private Boolean _isNodeAdded = false;
 
             /// <summary>
@@ -110,7 +110,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
                     }
                 }
 
-                _isNodeAdded = SimpleSnapRounder.AddSnappedNode(_hotPixel, ss, startIndex);
+                _isNodeAdded = SimpleSnapRounder<TCoordinate>.AddSnappedNode(_hotPixel, ss, startIndex);
             }
         }
     }

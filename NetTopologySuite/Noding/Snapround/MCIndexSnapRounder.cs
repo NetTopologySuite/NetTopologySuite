@@ -10,11 +10,15 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
 {
     /// <summary>
     /// Uses Snap Rounding to compute a rounded,
-    /// fully noded arrangement from a set of {@link SegmentString}s.
+    /// fully noded arrangement from a set of <see cref="SegmentString"/>s.
+    /// </summary>
+    /// <remarks>
+    /// <para>
     /// Implements the Snap Rounding technique described in Hobby, Guibas and Marimont, and Goodrich et al.
     /// Snap Rounding assumes that all vertices lie on a uniform grid
     /// (hence the precision model of the input must be fixed precision,
     /// and all the input vertices must be rounded to that precision).
+    /// </para>
     /// <para>
     /// This implementation uses a monotone chains and a spatial index to
     /// speed up the intersection tests.
@@ -22,12 +26,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
     /// It will function with non-integer precision models, but the
     /// results are not 100% guaranteed to be correctly noded.
     /// </para>
-    /// </summary>
+    /// </remarks>
     public class MCIndexSnapRounder<TCoordinate> : INoder<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
     {
-        private LineIntersector<TCoordinate> _li = null;
+        private readonly LineIntersector<TCoordinate> _li = null;
         private readonly Double scaleFactor;
         private MCIndexNoder _noder = null;
         private MCIndexPointSnapper _pointSnapper = null;
@@ -56,9 +60,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
 
         /// <summary>
         /// Computes the noding for a collection of <see cref="SegmentString" />s.
+        /// </summary>
+        /// <remarks>
         /// Some Noders may add all these nodes to the input <see cref="SegmentString" />s;
         /// others may only add some or none at all.
-        /// </summary>
+        /// </remarks>
         public void ComputeNodes(IList inputSegmentStrings)
         {
             nodedSegStrings = inputSegmentStrings;
