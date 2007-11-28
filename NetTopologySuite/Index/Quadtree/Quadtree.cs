@@ -184,7 +184,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             if (delX < minExtent && delX > 0.0)
             minExtent = delX;
 
-            double delY = itemEnv.Width;
+            double delY = itemEnv.Height;
             if (delY < minExtent && delY > 0.0)
             minExtent = delY;
         }
