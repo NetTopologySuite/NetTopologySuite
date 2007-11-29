@@ -9,7 +9,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 {
     /// <summary>
     /// Represents a list of contiguous line segments, and supports noding the segments.
-    /// The line segments are represented by an array of <typeparamref name="TCoordinate"/>s.
+    /// The line segments are represented by an set of <typeparamref name="TCoordinate"/>s.
     /// Intended to optimize the noding of contiguous segments by
     /// reducing the number of allocated objects.
     /// <see cref="SegmentString{TCoordinate}" />s can carry a context object, which is useful

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
+using GeoAPI.Utilities;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -456,23 +458,27 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Returns the signed area for a ring.  The area is positive ifthe ring is oriented CW.
+        /// Returns the signed area for a ring.  The area is positive if
+        /// the ring is oriented CW.
         /// </summary>
-        public static Double SignedArea(TCoordinate[] ring)
+        public static Double SignedArea(IEnumerable<TCoordinate> ring)
         {
-            if (ring.Length < 3)
+            if (!Slice.CountGreaterThan(2, ring))
             {
                 return 0.0;
             }
 
             Double sum = 0.0;
 
-            for (Int32 i = 0; i < ring.Length - 1; i++)
+            foreach (Pair<TCoordinate> pair in Slice.GetOverlappingPairs(ring))
             {
-                Double bx = ring[i][Ordinates.X];
-                Double by = ring[i][Ordinates.Y];
-                Double cx = ring[i + 1][Ordinates.X];
-                Double cy = ring[i + 1][Ordinates.Y];
+                TCoordinate p1 = pair.First;
+                TCoordinate p2 = pair.Second;
+
+                Double bx = p1[Ordinates.X];
+                Double by = p1[Ordinates.Y];
+                Double cx = p2[Ordinates.X];
+                Double cy = p2[Ordinates.Y];
                 sum += (bx + cx) * (cy - by);
             }
 

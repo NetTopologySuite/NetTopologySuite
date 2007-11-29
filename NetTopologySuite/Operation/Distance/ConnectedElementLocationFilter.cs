@@ -1,10 +1,5 @@
-using System;
 using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Distance
 {
@@ -32,23 +27,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
 
         private IList locations = null;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="locations"></param>
-        ConnectedElementLocationFilter(IList locations)
+        private ConnectedElementLocationFilter(IList locations)
         {
             this.locations = locations;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geom"></param>
         public void Filter(IGeometry geom)
         {
             if (geom is IPoint || geom is ILineString || geom is IPolygon)
+            {
                 locations.Add(new GeometryLocation(geom, 0, geom.Coordinate));
+            }
         }
     }
 }

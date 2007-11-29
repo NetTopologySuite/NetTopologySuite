@@ -1,10 +1,5 @@
-using System;
 using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
@@ -19,7 +14,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// efficient to create a single <c>PointExtracterFilter</c> instance
         /// and pass it to multiple geometries.
         /// </summary>
-        /// <param name="geom"></param>
         public static IList GetPoints(IGeometry geom)
         {
             IList pts = new ArrayList();
@@ -32,20 +26,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <summary> 
         /// Constructs a PointExtracterFilter with a list in which to store Points found.
         /// </summary>
-        /// <param name="pts"></param>
         public PointExtracter(IList pts)
         {
             this.pts = pts;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geom"></param>
         public void Filter(IGeometry geom)
         {
             if (geom is IPoint)
+            {
                 pts.Add(geom);
+            }
         }
     }
 }

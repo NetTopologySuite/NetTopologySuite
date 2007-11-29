@@ -5,87 +5,109 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
     public static class HexConverter
     {
         /// <summary>
-        /// Convert the given numeric value (passed as string) of the base specified by <c>baseIn</c>
-        /// to the value specified by <c>baseOut</c>.
+        /// Convert the given numeric value (passed as <see cref="String"/>) 
+        /// of the base specified by <paramref name="baseIn"/> to the value specified by 
+        /// <paramref name="baseOut"/>.
         /// </summary>
-        /// <param name="valueIn">Numeric value to be converted, as string.</param>
+        /// <param name="value">Numeric value to be converted, as <see cref="String"/>.</param>
         /// <param name="baseIn">Base of input value.</param>
         /// <param name="baseOut">Base to use for conversion.</param>
-        /// <returns>Converted value, as string.</returns>
-        public static string ConvertAny2Any(string valueIn, Int32 baseIn, Int32 baseOut)
+        /// <returns>Converted value, as String.</returns>
+        public static String ConvertAnyToAny(String value, Int32 baseIn, Int32 baseOut)
         {
-              string result = "Error";
+            String result = "Error";
 
-              valueIn = valueIn.ToUpper();
-              const string codice = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            value = value.ToUpper();
+            const String codice = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-              // test per limite errato sulle basi in input e/o in output
-             if ((baseIn < 2) || (baseIn > 36) ||
-                  (baseOut < 2) || (baseOut > 36))
-                            return result;
+            // test per limite errato sulle basi in input e/o in output
+            if ((baseIn < 2) || (baseIn > 36) ||
+                (baseOut < 2) || (baseOut > 36))
+            {
+                return result;
+            }
 
-             if (valueIn.Trim().Length == 0)
-                           return result;
+            if (value.Trim().Length == 0)
+            {
+                return result;
+            }
 
-             // se baseIn e baseOut sono uguali la conversione è già fatta!
-             if (baseIn == baseOut)
-                          return valueIn;
+            // se baseIn e baseOut sono uguali la conversione è già fatta!
+            if (baseIn == baseOut)
+            {
+                return value;
+            }
 
-             // determinazione del valore totale
-             Double valore = 0;
-             try
-             {     
-                  // se il campo è in base 10 non c'è bisogno di calcolare il valore
-                  if (baseIn == 10)
-                      valore = Double.Parse(valueIn);
-                  else
-                  {
-                        char[] c = valueIn.ToCharArray();
+            // determinazione del valore totale
+            Double valore = 0;
 
-                        // mi serve per l'elevazione a potenza e la trasformazione
-                        // in valore base 10 della cifra
-                        Int32 posizione = c.Length;
+            try
+            {
+                // se il campo è in base 10 non c'è bisogno di calcolare il valore
+                if (baseIn == 10)
+                {
+                    valore = Double.Parse(value);
+                }
+                else
+                {
+                    Char[] c = value.ToCharArray();
 
-                        // ciclo sui caratteri di valueIn
-                        // calcolo del valore decimale
+                    // mi serve per l'elevazione a potenza e la trasformazione
+                    // in valore base 10 della cifra
+                    Int32 posizione = c.Length;
 
-                        for (Int32 k = 0; k < c.Length; k++)
+                    // ciclo sui caratteri di valueIn
+                    // calcolo del valore decimale
+
+                    for (Int32 k = 0; k < c.Length; k++)
+                    {
+                        // valore posizionale del carattere
+                        Int32 valPos = codice.IndexOf(c[k]);
+
+                        // verifica per caratteri errati
+                        if ((valPos < 0) || (valPos > baseIn - 1))
                         {
-                              // valore posizionale del carattere
-                              Int32 valPos = codice.IndexOf(c[k]);
-                              
-                              // verifica per caratteri errati
-                              if ((valPos < 0) || (valPos > baseIn - 1))
-                                         return result;
-
-                              posizione--;
-                              valore += valPos * Math.Pow((Double) baseIn, (Double) posizione);
+                            return result;
                         }
-                  }
-              
-                  // generazione del risultato final
-                  // se il risultato da generare è in base 10 non c'è
-                  // bisogno di calcoli
-                  if (baseOut == 10)
-                           result = valore.ToString();
 
-                  else
-                  {
-                           result = String.Empty;
-                           while (valore > 0)
-                          {
-                                Int32 resto = (Int32) (valore % baseOut);
-                                valore = (valore - resto) / baseOut;
-                                result = codice.Substring(resto,1) + result;
-                           }
-                  }
+                        posizione--;
+                        valore += valPos * Math.Pow(baseIn, posizione);
+                    }
+                }
 
-             }
-             catch (Exception ex)
-             {
-                      result = ex.Message;
-             }
-             return result;
+                // generazione del risultato final
+                // se il risultato da generare è in base 10 non c'è
+                // bisogno di calcoli
+                if (baseOut == 10)
+                {
+                    result = valore.ToString();
+                }
+
+                else
+                {
+                    result = String.Empty;
+                    
+                    while (valore > 0)
+                    {
+                        Int32 resto = (Int32)(valore % baseOut);
+                        valore = (valore - resto) / baseOut;
+                        result = codice.Substring(resto, 1) + result;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if(ex is OverflowException || ex is FormatException || ex is ArithmeticException)
+                {
+                    result = ex.Message;   
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return result;
         }
     }
 }

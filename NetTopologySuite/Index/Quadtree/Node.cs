@@ -1,7 +1,9 @@
 using System;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 {
@@ -10,69 +12,72 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
     /// items which have a spatial extent corresponding to the node's position
     /// in the quadtree.
     /// </summary>
-    public class Node : NodeBase
+    public class Node<TCoordinate, TItem> : NodeBase<TCoordinate, TItem>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        public static Node CreateNode(IExtents env)
+        public static Node<TCoordinate, TItem> CreateNode(IExtents<TCoordinate> extents)
         {
-            Key key = new Key(env);
-            Node node = new Node(key.Envelope, key.Level);
+            Key<TCoordinate> key = new Key<TCoordinate>(extents);
+            Node<TCoordinate, TItem> node = new Node<TCoordinate, TItem>(key.Extents, key.Level);
             return node;
         }
 
-        public static Node CreateExpanded(Node node, IExtents addEnv)
+        public static Node<TCoordinate, TItem> CreateExpanded(Node<TCoordinate, TItem> node, IExtents<TCoordinate> addEnv)
         {
-            IExtents expandEnv = new Extents(addEnv);
+            IExtents<TCoordinate> expandEnv = new Extents<TCoordinate>(addEnv);
+
             if (node != null)
             {
-                expandEnv.ExpandToInclude(node.env);
+                expandEnv.ExpandToInclude(node.Extents);
             }
 
-            Node largerNode = CreateNode(expandEnv);
+            Node<TCoordinate, TItem> largerNode = CreateNode(expandEnv);
+
             if (node != null)
             {
                 largerNode.InsertNode(node);
             }
+
             return largerNode;
         }
 
-        private IExtents env;
-        private ICoordinate center;
-        private Int32 level;
+        private readonly IExtents<TCoordinate> _extents;
+        private readonly TCoordinate _center;
+        private readonly Int32 _level;
 
-        public Node(IExtents env, Int32 level)
+        public Node(IExtents<TCoordinate> extents, Int32 level)
         {
-            this.env = env;
-            this.level = level;
-            center = new Coordinate();
-            center.X = (env.MinX + env.MaxX)/2;
-            center.Y = (env.MinY + env.MaxY)/2;
+            _extents = extents;
+            _level = level;
+            _center = _extents.Center;
         }
 
-        public IExtents Envelope
+        public IExtents Extents
         {
-            get { return env; }
+            get { return _extents; }
         }
 
-        protected override Boolean IsSearchMatch(IExtents searchEnv)
+        protected override Boolean IsSearchMatch(IExtents<TCoordinate> query)
         {
-            return env.Intersects(searchEnv);
+            return _extents.Intersects(query);
         }
 
         /// <summary> 
         /// Returns the subquad containing the envelope.
-        /// Creates the subquad if
-        /// it does not already exist.
+        /// Creates the subquad if it does not already exist.
         /// </summary>
-        public Node GetNode(IExtents searchEnv)
+        public Node<TCoordinate, TItem> GetNode(IExtents<TCoordinate> query)
         {
-            Int32 subnodeIndex = GetSubnodeIndex(searchEnv, center);
+            Int32 subnodeIndex = GetSubnodeIndex(query, _center);
+
             // if subquadIndex is -1 searchEnv is not contained in a subquad
             if (subnodeIndex != -1)
             {
                 // create the quad if it does not exist
-                Node node = GetSubnode(subnodeIndex);
+                Node<TCoordinate, TItem> node = getSubnode(subnodeIndex);
                 // recursively search the found/created quad
-                return node.GetNode(searchEnv);
+                return node.GetNode(query);
             }
             else
             {
@@ -84,38 +89,41 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// Returns the smallest <i>existing</i>
         /// node containing the envelope.
         /// </summary>
-        public NodeBase Find(IExtents searchEnv)
+        public NodeBase<TCoordinate, TItem> Find(IExtents<TCoordinate> query)
         {
-            Int32 subnodeIndex = GetSubnodeIndex(searchEnv, center);
+            Int32 subnodeIndex = GetSubnodeIndex(query, _center);
+
             if (subnodeIndex == -1)
             {
                 return this;
             }
-            if (subnode[subnodeIndex] != null)
+
+            if (SubNodes[subnodeIndex] != null)
             {
                 // query lies in subquad, so search it
-                Node node = subnode[subnodeIndex];
-                return node.Find(searchEnv);
+                Node<TCoordinate, TItem> node = SubNodes[subnodeIndex];
+                return node.Find(query);
             }
+
             // no existing subquad, so return this one anyway
             return this;
         }
 
-        public void InsertNode(Node node)
+        public void InsertNode(Node<TCoordinate, TItem> node)
         {
-            Assert.IsTrue(env == null || env.Contains(node.Envelope));
-            Int32 index = GetSubnodeIndex(node.env, center);
-            if (node.level == level - 1)
+            Assert.IsTrue(_extents == null || _extents.Contains(node.Extents));
+            Int32 index = GetSubnodeIndex(node._extents, _center);
+            if (node._level == _level - 1)
             {
-                subnode[index] = node;
+                SubNodes[index] = node;
             }
             else
             {
                 // the quad is not a direct child, so make a new child quad to contain it
                 // and recursively insert the quad
-                Node childNode = CreateSubnode(index);
+                Node<TCoordinate, TItem> childNode = createSubnode(index);
                 childNode.InsertNode(node);
-                subnode[index] = childNode;
+                SubNodes[index] = childNode;
             }
         }
 
@@ -123,16 +131,17 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// Get the subquad for the index.
         /// If it doesn't exist, create it.
         /// </summary>
-        private Node GetSubnode(Int32 index)
+        private Node<TCoordinate, TItem> getSubnode(Int32 index)
         {
-            if (subnode[index] == null)
+            if (SubNodes[index] == null)
             {
-                subnode[index] = CreateSubnode(index);
+                SubNodes[index] = createSubnode(index);
             }
-            return subnode[index];
+
+            return SubNodes[index];
         }
 
-        private Node CreateSubnode(Int32 index)
+        private Node<TCoordinate, TItem> createSubnode(Int32 index)
         {
             // create a new subquad in the appropriate quadrant
             Double minx = 0.0;
@@ -143,38 +152,39 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             switch (index)
             {
                 case 0:
-                    minx = env.MinX;
-                    maxx = center.X;
-                    miny = env.MinY;
-                    maxy = center.Y;
+                    minx = _extents.GetMin(Ordinates.X);
+                    maxx = _center[Ordinates.X];
+                    miny = _extents.GetMin(Ordinates.Y);
+                    maxy = _center[Ordinates.Y];
                     break;
 
                 case 1:
-                    minx = center.X;
-                    maxx = env.MaxX;
-                    miny = env.MinY;
-                    maxy = center.Y;
+                    minx = _center[Ordinates.X];
+                    maxx = _extents.GetMax(Ordinates.X);
+                    miny = _extents.GetMin(Ordinates.Y);
+                    maxy = _center[Ordinates.Y];
                     break;
 
                 case 2:
-                    minx = env.MinX;
-                    maxx = center.X;
-                    miny = center.Y;
-                    maxy = env.MaxY;
+                    minx = _extents.GetMin(Ordinates.X);
+                    maxx = _center[Ordinates.X];
+                    miny = _center[Ordinates.Y];
+                    maxy = _extents.GetMax(Ordinates.Y);
                     break;
 
                 case 3:
-                    minx = center.X;
-                    maxx = env.MaxX;
-                    miny = center.Y;
-                    maxy = env.MaxY;
+                    minx = _center[Ordinates.X];
+                    maxx = _extents.GetMax(Ordinates.X);
+                    miny = _center[Ordinates.Y];
+                    maxy = _extents.GetMax(Ordinates.Y);
                     break;
 
                 default:
                     break;
             }
-            IExtents sqEnv = new Extents(minx, maxx, miny, maxy);
-            Node node = new Node(sqEnv, level - 1);
+
+            IExtents<TCoordinate> sqEnv = new Extents<TCoordinate>(minx, maxx, miny, maxy);
+            Node<TCoordinate, TItem> node = new Node<TCoordinate, TItem>(sqEnv, _level - 1);
             return node;
         }
     }

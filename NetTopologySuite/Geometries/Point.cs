@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
@@ -22,18 +23,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public static readonly IPoint<TCoordinate> Empty = new GeometryFactory<TCoordinate>().CreatePoint(emptyCoordinate);
 
-        private TCoordinate _coordinate;
+        private readonly TCoordinate _coordinate;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Point{TCoordinate}"/> class.
         /// </summary>
-        /// <param name="coordinate">The coordinate used for create this <see cref="Point" />.</param>
+        /// <param name="coordinate">The coordinate used for create this <see cref="Point{TCoordinate}" />.</param>
         /// <remarks>
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public Point(TCoordinate coordinate) :
-            this(coordinate, GeometryFactory<TCoordinate>.Default) {}
+            this(coordinate, GeometryFactory<TCoordinate>.Default) { }
 
         /// <summary>
         /// Constructs a <see cref="Point{TCoordinate}"/> with the given coordinate.
@@ -42,17 +43,28 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Contains the single coordinate on which to base this <see cref="Point{TCoordinate}"/>,
         /// or <see langword="null" /> to create the empty point.
         /// </param>
-        public Point(TCoordinate coordinate, IGeometryFactory<TCoordinate> factory) : base(factory)
+        public Point(TCoordinate coordinate, IGeometryFactory<TCoordinate> factory)
+            : base(factory)
         {
             _coordinate = coordinate;
         }
 
         public override IEnumerable<TCoordinate> Coordinates
         {
-            get { return IsEmpty ? new ICoordinate[] {} : new ICoordinate[] {Coordinate}; }
+            get
+            {
+                if (IsEmpty)
+                {
+                    yield break;
+                }
+                else
+                {
+                    yield return Coordinate;
+                }
+            }
         }
 
-        public override Int32 NumPoints
+        public override Int32 PointCount
         {
             get { return IsEmpty ? 0 : 1; }
         }
@@ -81,63 +93,68 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get { return Dimensions.False; }
         }
-       
+
         public Double X
         {
             get
             {
-                if (Coordinate == null)
+                if (CoordinateHelper.IsEmpty(Coordinate))
                 {
-                    throw new ArgumentOutOfRangeException("X called on empty Point");
+                    throw new InvalidOperationException("X called on empty Point");
                 }
 
-                return Coordinate.X;
+                return Coordinate[Ordinates.X];
             }
-            set { Coordinate.X = value; }
         }
-      
+
         public Double Y
         {
             get
             {
-                if (Coordinate == null)
+                if (CoordinateHelper.IsEmpty(Coordinate))
                 {
-                    throw new ArgumentOutOfRangeException("Y called on empty Point");
+                    throw new InvalidOperationException("Y called on empty Point");
                 }
 
-                return Coordinate.Y;
+                return Coordinate[Ordinates.Y];
             }
-            set { Coordinate.Y = value; }
         }
 
-        public override ICoordinate Coordinate
+        public TCoordinate Coordinate
         {
-            get { return coordinates.Count != 0 ? coordinates.GetCoordinate(0) : null; }
+            get { return _coordinate; }
         }
 
-        public override string GeometryType
+        public override OgcGeometryType GeometryType
         {
-            get { return "Point"; }
+            get { return OgcGeometryType.Point; }
         }
 
-        public override IGeometry Boundary
+        public override IGeometry<TCoordinate> Boundary
         {
             get { return Factory.CreateGeometryCollection(null); }
         }
 
-        protected override IExtents ComputeExtentsInternal()
+        protected override Extents<TCoordinate> ComputeExtentsInternal()
         {
             if (IsEmpty)
             {
-                return new Extents();
+                return new Extents<TCoordinate>();
             }
 
-            return new Extents(Coordinate.X, Coordinate.X, Coordinate.Y, Coordinate.Y);
+            return new Extents<TCoordinate>(Coordinate, Coordinate);
         }
 
-        public override Boolean EqualsExact(IGeometry other, Double tolerance)
+        public override Boolean Equals(IGeometry<TCoordinate> other, Tolerance tolerance)
         {
             if (!IsEquivalentClass(other))
+            {
+                return false;
+            }
+
+            IPoint<TCoordinate> otherPoint = other as IPoint<TCoordinate>;
+
+            if (otherPoint == null)
             {
                 return false;
             }
@@ -147,89 +164,125 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return true;
             }
 
-            return Equal(((IPoint) other).Coordinate, Coordinate, tolerance);
+            return Equal(otherPoint.Coordinate, Coordinate, tolerance);
         }
 
-        public override void Apply(ICoordinateFilter filter)
+        public override void Apply(ICoordinateFilter<TCoordinate> filter)
         {
             if (IsEmpty)
             {
                 return;
             }
 
-            filter.Filter((Coordinate) Coordinate);
+            filter.Filter(Coordinate);
         }
 
-        public override void Apply(IGeometryFilter filter)
+        public override void Apply(IGeometryFilter<TCoordinate> filter)
         {
             filter.Filter(this);
         }
 
-        public override void Apply(IGeometryComponentFilter filter)
+        public override void Apply(IGeometryComponentFilter<TCoordinate> filter)
         {
             filter.Filter(this);
         }
 
-        public override object Clone()
+        public override IGeometry<TCoordinate> Clone()
         {
-            Point p = (Point) base.Clone();
-            p.coordinates = (ICoordinateSequence) coordinates.Clone();
-            return p;
+            return Factory.CreatePoint(Coordinate);
         }
 
-        public override void Normalize() {}
+        public override void Normalize() { }
 
-        protected internal override Int32 CompareToSameClass(object other)
+        protected internal override Int32 CompareToSameClass(IGeometry<TCoordinate> other)
         {
-            Point point = (Point) other;
+            IPoint<TCoordinate> point = other as IPoint<TCoordinate>;
+
+            if (point == null)
+            {
+                throw new ArgumentException("Parameter must be of type IPoint<TCoordinate>.");
+            }
+
             return Coordinate.CompareTo(point.Coordinate);
         }
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Point"/> class.
+        /// Initializes a new instance of the <see cref="Point{TCoordinate}"/> class.
         /// </summary>
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
         /// <param name="z">The z coordinate.</param>
         /// /// <remarks>
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
+        /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public Point(Double x, Double y, Double z) :
-            this(
-            DefaultFactory.CoordinateSequenceFactory.Create(new ICoordinate[] {new Coordinate(x, y, z)}), DefaultFactory
-            ) {}
+            this(new TCoordinate(x, y, z), DefaultFactory) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Point"/> class.
+        /// Initializes a new instance of the <see cref="Point{TCoordinate}"/> class.
         /// </summary>
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
         /// /// <remarks>
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
+        /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public Point(Double x, Double y)
-            : this(
-                DefaultFactory.CoordinateSequenceFactory.Create(new ICoordinate[] {new Coordinate(x, y)}),
-                DefaultFactory) {}
-     
-        public Double Z
+            : this(new TCoordinate(x, y), DefaultFactory) { }
+
+        //public Double Z
+        //{
+        //    get
+        //    {
+        //        if (CoordinateHelper.IsEmpty(Coordinate))
+        //        {
+        //            throw new InvalidOperationException("Z called on empty Point");
+        //        }
+
+        //        if (!Coordinate.ContainsOrdinate(Ordinates.Z))
+        //        {
+        //            return 0;
+        //        }
+        //        else
+        //        {
+        //            return Coordinate[Ordinates.Z];
+        //        }
+        //    }
+        //}
+
+        /* END ADDED BY MPAUL42: monoGIS team */
+
+        #region IPoint Members
+
+        public Double this[Ordinates ordinate]
         {
             get
             {
-                if (Coordinate == null)
+                if(CoordinateHelper.IsEmpty(Coordinate))
                 {
-                    throw new ArgumentOutOfRangeException("Z called on empty Point");
+                    throw new InvalidOperationException("Point is empty.");
                 }
 
-                return Coordinate.Z;
+                if(Coordinate.ContainsOrdinate(ordinate))
+                {
+                    return Coordinate[ordinate];
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException("ordinate", ordinate,
+                                                          "Ordinate value doesn't exist in this point");
+                }
             }
-            set { Coordinate.Z = value; }
         }
 
-        /* END ADDED BY MPAUL42: monoGIS team */
+        ICoordinate IPoint.Coordinate
+        {
+            get { return Coordinate; }
+        }
+
+        #endregion
     }
 }

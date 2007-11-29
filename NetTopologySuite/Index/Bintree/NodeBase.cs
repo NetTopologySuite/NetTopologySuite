@@ -169,19 +169,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 
         protected Node<TItem> SubNode1
         {
-            get
-            {
-                return _subNode1;
-            }
+            get { return _subNode1; }
             set { _subNode1 = value; }
         }
 
         protected Node<TItem> SubNode2
         {
-            get
-            {
-                return _subNode2;
-            }
+            get { return _subNode2;}
             set { _subNode2 = value; }
         }
 

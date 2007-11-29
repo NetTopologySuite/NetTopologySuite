@@ -136,7 +136,6 @@
     <Compile Include="GeometriesGraph\Position.cs" />
     <Compile Include="GeometriesGraph\QuadrantOp.cs" />
     <Compile Include="GeometriesGraph\TopologyLocation.cs" />
-    <Compile Include="Index\ArrayListVisitor.cs" />
     <Compile Include="Index\Bintree\Bintree.cs" />
     <Compile Include="Index\Bintree\Key.cs" />
     <Compile Include="Index\Bintree\Node.cs" />
@@ -179,8 +178,8 @@
     <Compile Include="Noding\IntersectionFinderAdder.cs" />
     <Compile Include="Noding\ISegmentIntersector.cs" />
     <Compile Include="Noding\IteratedNoder.cs" />
-    <Compile Include="Noding\MCIndexNoder.cs" />
     <Compile Include="Noding\INoder.cs" />
+    <Compile Include="Noding\MonotoneChainIndexNoder.cs" />
     <Compile Include="Noding\NodingValidator.cs" />
     <Compile Include="Noding\Octant.cs" />
     <Compile Include="Noding\OrientedCoordinateArray.cs" />

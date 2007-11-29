@@ -1,5 +1,4 @@
 using System;
-using GisSharpBlog.NetTopologySuite.Planargraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
@@ -37,10 +36,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                 {
                     return null;
                 }
+
                 if (ToNode.OutEdges.Edges[0] == Sym)
                 {
                     return (LineMergeDirectedEdge) ToNode.OutEdges.Edges[1];
                 }
+
                 Assert.IsTrue(ToNode.OutEdges.Edges[1] == Sym);
                 return (LineMergeDirectedEdge) ToNode.OutEdges.Edges[0];
             }

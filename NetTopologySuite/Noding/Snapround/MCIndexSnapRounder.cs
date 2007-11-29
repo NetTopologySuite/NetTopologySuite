@@ -10,7 +10,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
 {
     /// <summary>
     /// Uses Snap Rounding to compute a rounded,
-    /// fully noded arrangement from a set of <see cref="SegmentString"/>s.
+    /// fully noded arrangement from a set of <see cref="SegmentString{TCoordinate}"/>s.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -27,57 +27,70 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
     /// results are not 100% guaranteed to be correctly noded.
     /// </para>
     /// </remarks>
-    public class MCIndexSnapRounder<TCoordinate> : INoder<TCoordinate>
+    public class MonotoneChainIndexSnapRounder<TCoordinate> : INoder<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
     {
         private readonly LineIntersector<TCoordinate> _li = null;
-        private readonly Double scaleFactor;
-        private MCIndexNoder _noder = null;
-        private MCIndexPointSnapper _pointSnapper = null;
-        private IList nodedSegStrings = null;
+        private readonly Double _scaleFactor;
+        private MonotoneChainIndexNoder<TCoordinate> _noder = null;
+        private MonotoneChaintIndexPointSnapper<TCoordinate> _pointSnapper = null;
+        private IEnumerable<SegmentString<TCoordinate>> _nodedSegStrings = null;
 
         /// <summary>
         /// Initializes a new instance of the 
-        /// <see cref="MCIndexSnapRounder{TCoordinate}"/> class.
+        /// <see cref="MonotoneChainIndexSnapRounder{TCoordinate}"/> class.
         /// </summary>
         /// <param name="pm">The <see cref="PrecisionModel{TCoordinate}" /> to use.</param>
-        public MCIndexSnapRounder(PrecisionModel<TCoordinate> pm)
+        public MonotoneChainIndexSnapRounder(PrecisionModel<TCoordinate> pm)
         {
             _li = new RobustLineIntersector<TCoordinate>();
             _li.PrecisionModel = pm;
-            scaleFactor = pm.Scale;
+            _scaleFactor = pm.Scale;
         }
 
         /// <summary>
-        /// Returns a <see cref="IList"/> of fully noded <see cref="SegmentString"/>s.
-        /// The <see cref="SegmentString"/>s have the same context as their parent.
+        /// Returns a set of fully noded <see cref="SegmentString{TCoordinate}"/>s.
+        /// The <see cref="SegmentString{TCoordinate}"/>s have the same context as 
+        /// their parent.
         /// </summary>
-        public IList GetNodedSubstrings()
+        public IEnumerable<SegmentString<TCoordinate>> GetNodedSubstrings()
         {
-            return SegmentString<TCoordinate>.GetNodedSubstrings(nodedSegStrings);
+            return SegmentString<TCoordinate>.GetNodedSubstrings(_nodedSegStrings);
         }
 
         /// <summary>
-        /// Computes the noding for a collection of <see cref="SegmentString" />s.
+        /// Computes the noding for a collection of <see cref="SegmentString{TCoordinate}" />s.
         /// </summary>
         /// <remarks>
-        /// Some Noders may add all these nodes to the input <see cref="SegmentString" />s;
+        /// Some Noders may add all these nodes to the input <see cref="SegmentString{TCoordinate}" />s;
         /// others may only add some or none at all.
         /// </remarks>
-        public void ComputeNodes(IList inputSegmentStrings)
+        public void ComputeNodes(IEnumerable<SegmentString<TCoordinate>> inputSegmentStrings)
         {
-            nodedSegStrings = inputSegmentStrings;
-            _noder = new MCIndexNoder();
-            _pointSnapper = new MCIndexPointSnapper(_noder.MonotoneChains, _noder.Index);
+            _nodedSegStrings = inputSegmentStrings;
+            _noder = new MonotoneChainIndexNoder<TCoordinate>();
+            _pointSnapper = new MonotoneChaintIndexPointSnapper<TCoordinate>(_noder.MonotoneChains, _noder.Index);
             snapRound(inputSegmentStrings, _li);
+        }
+
+        /// <summary>
+        /// Computes nodes introduced as a result of
+        /// snapping segments to vertices of other segments.
+        /// </summary>
+        public void ComputeVertexSnaps(IEnumerable<SegmentString<TCoordinate>> edges)
+        {
+            foreach (SegmentString<TCoordinate> edge in edges)
+            {
+                computeVertexSnaps(edge);
+            }
         }
 
         private void checkCorrectness(IList inputSegmentStrings)
         {
             IList resultSegStrings = SegmentString.GetNodedSubstrings(inputSegmentStrings);
             NodingValidator nv = new NodingValidator(resultSegStrings);
-            
+
             try
             {
                 nv.CheckValid();
@@ -96,8 +109,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         }
 
         /// <summary>
-        /// Computes all interior intersections in the collection of <see cref="SegmentString" />s,
-        /// and returns their <see cref="Coordinate" />s.
+        /// Computes all interior intersections in the collection of <see cref="SegmentString{TCoordinate}" />s,
+        /// and returns their <typeparamref name="TCoordinate"/>s.
         ///
         /// Does NOT node the segStrings.
         /// </summary>
@@ -118,21 +131,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             foreach (TCoordinate snapPt in snapPts)
             {
                 HotPixel<TCoordinate> hotPixel = new HotPixel<TCoordinate>(
-                    snapPt, scaleFactor, _li);
+                    snapPt, _scaleFactor, _li);
 
                 _pointSnapper.Snap(hotPixel);
-            }
-        }
-
-        /// <summary>
-        /// Computes nodes introduced as a result of
-        /// snapping segments to vertices of other segments.
-        /// </summary>
-        public void ComputeVertexSnaps(IEnumerable<SegmentString<TCoordinate>> edges)
-        {
-            foreach (SegmentString<TCoordinate> edge in edges)
-            {
-                computeVertexSnaps(edge);
             }
         }
 
@@ -147,7 +148,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
 
             for (Int32 i = 0; i < pts0.Length - 1; i++)
             {
-                HotPixel hotPixel = new HotPixel(pts0[i], scaleFactor, _li);
+                HotPixel hotPixel = new HotPixel(pts0[i], _scaleFactor, _li);
                 Boolean isNodeAdded = _pointSnapper.Snap(hotPixel, e, i);
                 // if a node is created for a vertex, that vertex must be noded too
                 if (isNodeAdded)

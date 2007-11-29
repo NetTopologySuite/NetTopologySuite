@@ -125,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         public string ToString(long bits)
         {
             Double x = BitConverter.Int64BitsToDouble(bits);
-            string numStr = HexConverter.ConvertAny2Any(bits.ToString(), 10, 2);
+            string numStr = HexConverter.ConvertAnyToAny(bits.ToString(), 10, 2);
             string padStr = "0000000000000000000000000000000000000000000000000000000000000000" + numStr;
             string bitStr = padStr.Substring(padStr.Length - 64);
             string str = bitStr.Substring(0, 1) + "  " + bitStr.Substring(1, 12) + "(exp) "

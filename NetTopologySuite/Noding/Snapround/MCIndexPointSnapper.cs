@@ -15,20 +15,21 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
     /// <see cref="MonotoneChain{TCoordinate}" />s to a given
     /// <see cref="HotPixel{TCoordinate}" />.
     /// </summary>
-    public class MCIndexPointSnapper<TCoordinate>
+    public class MonotoneChaintIndexPointSnapper<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
     {
+        // [codekaizen] This doesn't appear to be used at all...
         // Public in java code... temporary modified for "safe assembly" in Sql2005
-        internal static readonly Int32 numberSnaps = 0;
+        //internal static readonly Int32 numberSnaps = 0;
 
         private readonly List<MonotoneChain<TCoordinate>> _monoChains = new List<MonotoneChain<TCoordinate>>();
-        private readonly ISpatialIndex<TCoordinate, SegmentString<TCoordinate>> _index = null;
+        private readonly ISpatialIndex<TCoordinate, MonotoneChain<TCoordinate>> _index = null;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MCIndexPointSnapper"/> class.
+        /// Initializes a new instance of the <see cref="MonotoneChaintIndexPointSnapper{TCoordinate}"/> class.
         /// </summary>
-        public MCIndexPointSnapper(IEnumerable<MonotoneChain<TCoordinate>> chains, ISpatialIndex<TCoordinate, SegmentString<TCoordinate>> index)
+        public MonotoneChaintIndexPointSnapper(IEnumerable<MonotoneChain<TCoordinate>> chains, ISpatialIndex<TCoordinate, MonotoneChain<TCoordinate>> index)
         {
             _monoChains.AddRange(chains);
             _index = index;

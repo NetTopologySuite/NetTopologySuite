@@ -1,11 +1,4 @@
-using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Planargraph;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 {
@@ -31,10 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// </summary>
         public ILineString Line
         {
-            get
-            {
-                return line;
-            }
+            get { return line; }
         }
     }
 }

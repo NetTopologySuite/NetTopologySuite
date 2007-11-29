@@ -37,7 +37,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <summary> 
         /// Constructs a GeometryLocation specifying a point inside an area point.
         /// </summary>
-        public GeometryLocation(IGeometry component, ICoordinate pt) : this(component, InsideArea, pt) {}
+        public GeometryLocation(IGeometry component, ICoordinate pt) : this(component, InsideArea, pt)
+        {
+        }
 
         /// <summary>
         /// Returns the point associated with this location.

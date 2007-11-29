@@ -1,15 +1,11 @@
-using System;
 using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
     /// <summary> 
-    /// Extracts all the 2-dimensional (<see cref="Polygon{TCoordinate}" />) components from a <see cref="Geometry{TCoordinate}"/>.
+    /// Extracts all the 2-dimensional (<see cref="Polygon{TCoordinate}" />) components from 
+    /// a <see cref="Geometry{TCoordinate}"/>.
     /// </summary>
     public class PolygonExtracter : IGeometryFilter
     {
@@ -19,7 +15,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// efficient to create a single <c>PolygonExtracterFilter</c> instance
         /// and pass it to multiple geometries.
         /// </summary>
-        /// <param name="geom"></param>
         public static IList GetPolygons(IGeometry geom)
         {
             IList comps = new ArrayList();
@@ -32,19 +27,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <summary> 
         /// Constructs a PolygonExtracterFilter with a list in which to store Polygons found.
         /// </summary>
-        /// <param name="comps"></param>
         public PolygonExtracter(IList comps)
         {
             this.comps = comps;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geom"></param>
         public void Filter(IGeometry geom)
         {
-            if (geom is IPolygon) 
+            if (geom is IPolygon)
                 comps.Add(geom);
         }
     }

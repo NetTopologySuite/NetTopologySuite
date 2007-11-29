@@ -11,8 +11,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
     {
         private Boolean isDone = false;
 
-        public ShortCircuitedGeometryVisitor() {}
-
         public void ApplyTo(IGeometry geom)
         {
             for (Int32 i = 0; i < geom.NumGeometries && ! isDone; i++)

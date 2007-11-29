@@ -216,7 +216,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
         }
 
         /// <summary>
-        /// Transforms a <see cref="Geometry{TCoordinate}Collection" /> object.
+        /// Transforms a <see cref="GeometryCollection{TCoordinate}" /> object.
         /// </summary>
         public static IGeometryCollection TransformGeometryCollection(GeometryCollection geoms, IMathTransform transform)
         {

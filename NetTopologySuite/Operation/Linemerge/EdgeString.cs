@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 {
@@ -42,6 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                     Int32 reverseDirectedEdges = 0;
                     CoordinateList coordinateList = new CoordinateList();
                     IEnumerator i = directedEdges.GetEnumerator();
+
                     while (i.MoveNext())
                     {
                         LineMergeDirectedEdge directedEdge = (LineMergeDirectedEdge) i.Current;
@@ -56,12 +56,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                         coordinateList.Add(((LineMergeEdge) directedEdge.Edge).Line.Coordinates, false,
                                            directedEdge.EdgeDirection);
                     }
+                    
                     coordinates = coordinateList.ToCoordinateArray();
+                   
                     if (reverseDirectedEdges > forwardDirectedEdges)
                     {
                         CoordinateArrays.Reverse(coordinates);
                     }
                 }
+
                 return coordinates;
             }
         }
