@@ -1,15 +1,12 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
-using GisSharpBlog.NetTopologySuite.Utilities;
-using NPack;
 using NPack.Interfaces;
-using System.Collections.Generic;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
 {
@@ -19,12 +16,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
     /// </summary>
     public class EdgeRing<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-        IComputable<TCoordinate>, IConvertible
+            IComputable<TCoordinate>, IConvertible
     {
         // cache the following data for efficiency
         private ILinearRing<TCoordinate> _ring = null;
         private readonly IGeometryFactory<TCoordinate> _factory = null;
-        private readonly List<DirectedEdge> _deList = new List<DirectedEdge>();
+        private readonly List<DirectedEdge<TCoordinate>> _deList = new List<DirectedEdge<TCoordinate>>();
         private readonly List<TCoordinate> _ringPoints = new List<TCoordinate>();
         private List<ILinearRing<TCoordinate>> _holes;
 
@@ -41,11 +38,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Containing EdgeRing, if there is one, OR
         /// null if no containing EdgeRing is found.
         /// </returns>
-        public static EdgeRing<TCoordinate> FindEdgeRingContaining(EdgeRing<TCoordinate> testEr, IEnumerable<EdgeRing<TCoordinate>> shellList)
+        public static EdgeRing<TCoordinate> FindEdgeRingContaining(EdgeRing<TCoordinate> testEr,
+                                                                   IEnumerable<EdgeRing<TCoordinate>> shellList)
         {
             ILinearRing<TCoordinate> teString = testEr.Ring;
-            IExtents<TCoordinate> testEnv = teString.EnvelopeInternal;
-            TCoordinate testPt = teString.GetCoordinateN(0);
+            IExtents<TCoordinate> testEnv = teString.Extents;
+            TCoordinate testPt = teString.Coordinates[0];
 
             EdgeRing<TCoordinate> minShell = null;
             IExtents<TCoordinate> minEnv = null;
@@ -53,11 +51,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             foreach (EdgeRing<TCoordinate> shell in shellList)
             {
                 ILinearRing<TCoordinate> tryRing = shell.Ring;
-                IExtents<TCoordinate> tryEnv = tryRing.EnvelopeInternal;
+                IExtents<TCoordinate> tryEnv = tryRing.Extents;
 
                 if (minShell != null)
                 {
-                    minEnv = minShell.Ring.EnvelopeInternal;
+                    minEnv = minShell.Ring.Extents;
                 }
 
                 Boolean isContained = false;
@@ -141,7 +139,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Adds a DirectedEdge which is known to form part of this ring.
         /// </summary>
         /// <param name="de">The DirectedEdge to add.</param>
-        public void Add(DirectedEdge de)
+        public void Add(DirectedEdge<TCoordinate> de)
         {
             _deList.Add(de);
         }
@@ -200,28 +198,28 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             }
         }
 
-        /// <summary>
-        /// Computes and returns the list of coordinates which are contained in this ring.
-        /// The coordinatea are computed once only and cached.
-        /// </summary>
-        private IEnumerable<TCoordinate> Coordinates
-        {
-            get
-            {
-                if (_ringPoints == null)
-                {
-                    for (IEnumerator i = _deList.GetEnumerator(); i.MoveNext(); )
-                    {
-                        DirectedEdge de = (DirectedEdge)i.Current;
-                        PolygonizeEdge<TCoordinate> edge = de.Edge as PolygonizeEdge<TCoordinate>;
-                        Debug.Assert(edge != null);
-                        addEdge(edge.Line.Coordinates, de.EdgeDirection, _ringPoints);
-                    }
-                }
+        ///// <summary>
+        ///// Computes and returns the list of coordinates which are contained in this ring.
+        ///// The coordinatea are computed once only and cached.
+        ///// </summary>
+        //private IEnumerable<TCoordinate> Coordinates
+        //{
+        //    get
+        //    {
+        //        if (_ringPoints == null)
+        //        {
+        //            for (IEnumerator i = _deList.GetEnumerator(); i.MoveNext();)
+        //            {
+        //                DirectedEdge de = (DirectedEdge) i.Current;
+        //                PolygonizeEdge<TCoordinate> edge = de.Edge as PolygonizeEdge<TCoordinate>;
+        //                Debug.Assert(edge != null);
+        //                addEdge(edge.Line.Coordinates, de.EdgeDirection, _ringPoints);
+        //            }
+        //        }
 
-                return _ringPoints;
-            }
-        }
+        //        return _ringPoints;
+        //    }
+        //}
 
         /// <summary>
         /// Gets the coordinates for this ring as a <c>LineString</c>.
@@ -231,10 +229,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// </summary>        
         public ILineString LineString
         {
-            get
-            {
-                return _factory.CreateLineString(_ringPoints);
-            }
+            get { return _factory.CreateLineString(_ringPoints); }
         }
 
         /// <summary>
@@ -255,7 +250,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
                 {
                     _ring = _factory.CreateLinearRing(_ringPoints);
                 }
-                catch (NtsException) { }
+                catch (NtsException) {}
 
                 return _ring;
             }

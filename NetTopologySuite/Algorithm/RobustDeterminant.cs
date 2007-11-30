@@ -35,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             Int32 sign;
             Double swap;
             Double k;
-            long count = 0;
+            Int64 count = 0;
 
             sign = 1;
 

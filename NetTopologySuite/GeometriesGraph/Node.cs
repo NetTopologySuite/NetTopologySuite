@@ -6,16 +6,15 @@ using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
-    public class Node<TCoordinate, TEdgeEnd> : GraphComponent<TCoordinate>
+    public class Node<TCoordinate> : GraphComponent<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
-        where TEdgeEnd : EdgeEnd<TCoordinate>
     {
         // Only valid if this node is precise.
         private readonly TCoordinate _coord;
-        private readonly EdgeEndStar<TCoordinate, TEdgeEnd> _edges;
+        private readonly EdgeEndStar<TCoordinate> _edges;
 
-        public Node(TCoordinate coord, EdgeEndStar<TCoordinate, TEdgeEnd> edges)
+        public Node(TCoordinate coord, EdgeEndStar<TCoordinate> edges)
         {
             _coord = coord;
             _edges = edges;
@@ -27,20 +26,20 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             get { return _coord; }
         }
 
-        public EdgeEndStar<TCoordinate, TEdgeEnd> Edges
+        public EdgeEndStar<TCoordinate> Edges
         {
             get { return _edges; }
         }
 
         public override Boolean IsIsolated
         {
-            get { return (Label.GeometryCount == 1); }
+            get { return Label == null || Label.Value.GeometryCount == 1; }
         }
 
         /// <summary>
         /// Basic nodes do not compute intersection matrixes.
         /// </summary>
-        public override void ComputeIntersectionMatrix(IntersectionMatrix matrix) {}
+        public override void ComputeIntersectionMatrix(IntersectionMatrix matrix) { }
 
         /// <summary> 
         /// Add the edge to the list of edges at this node.
@@ -52,9 +51,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             e.Node = this;
         }
 
-        public void MergeLabel(Node<TCoordinate, TEdgeEnd> n)
+        public void MergeLabel(Node<TCoordinate> n)
         {
-            MergeLabel(n.Label);
+            if (n.Label != null)
+            {
+                MergeLabel(n.Label.Value);
+            }
         }
 
         /// <summary>
@@ -63,12 +65,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// The location for the corresponding node LabelElement is set to the result,
         /// as long as the location is non-null.
         /// </summary>
-        public void MergeLabel(Label label2)
+        public void MergeLabel(Label other)
         {
             for (Int32 i = 0; i < 2; i++)
             {
-                Locations loc = ComputeMergedLocation(label2, i);
-                Locations thisLoc = Label[i];
+                Locations loc = ComputeMergedLocation(other, i);
+                Locations thisLoc = Label == null ? Locations.None : Label.Value[i];
 
                 if (thisLoc == Locations.None)
                 {
@@ -77,15 +79,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        public void SetLabel(Int32 argIndex, Locations onLocation)
+        public void SetLabel(Int32 geometryIndex, Locations onLocation)
         {
             if (Label == null)
             {
-                Label = new Label(argIndex, onLocation);
+                Label = new Label(geometryIndex, onLocation);
             }
             else
             {
-                Label.SetLocation(argIndex, onLocation);
+                Label.SetLocation(geometryIndex, onLocation);
             }
         }
 
@@ -93,14 +95,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Updates the label of a node to BOUNDARY,
         /// obeying the mod-2 boundaryDetermination rule.
         /// </summary>
-        public void SetLabelBoundary(Int32 argIndex)
+        public void SetLabelBoundary(Int32 geometryIndex)
         {
             // determine the current location for the point (if any)
             Locations loc = Locations.None;
 
             if (Label != null)
             {
-                loc = Label.GetLocation(argIndex);
+                loc = Label.Value[geometryIndex];
             }
 
             // flip the loc
@@ -119,7 +121,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                     break;
             }
 
-            Label.SetLocation(argIndex, newLoc);
+            Label.SetLocation(geometryIndex, newLoc);
         }
 
         /// <summary> 
@@ -131,11 +133,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public Locations ComputeMergedLocation(Label label2, Int32 eltIndex)
         {
-            Locations loc = Label.GetLocation(eltIndex);
+            Locations loc = Label == null ? Locations.None : Label.Value[eltIndex];
 
             if (!label2.IsNull(eltIndex))
             {
-                Locations nLoc = label2.GetLocation(eltIndex);
+                Locations nLoc = label2[eltIndex];
+
                 if (loc != Locations.Boundary)
                 {
                     loc = nLoc;

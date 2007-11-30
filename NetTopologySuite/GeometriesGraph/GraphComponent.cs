@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
@@ -15,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<TCoordinate>, IConvertible
     {
-        private Label _label;
+        private Label? _label;
 
         // isInResult indicates if this component has already been included in the result
         private Boolean _isInResult = false;
@@ -31,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             _label = label;
         }
 
-        public Label Label
+        public Label? Label
         {
             get { return _label; }
             set { _label = value; }
@@ -108,7 +109,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public void UpdateIntersectionMatrix(IntersectionMatrix im)
         {
-            Assert.IsTrue(_label.GeometryCount >= 2, "found partial label");
+            Debug.Assert(_label.HasValue);
+            Assert.IsTrue(_label.Value.GeometryCount >= 2, "found partial label");
             ComputeIntersectionMatrix(im);
         }
     }

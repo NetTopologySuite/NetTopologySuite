@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
@@ -111,7 +112,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         private IEnumerable<TCoordinate> findInteriorIntersections(IEnumerable<SegmentString<TCoordinate>> segStrings, LineIntersector<TCoordinate> li)
         {
             IntersectionFinderAdder<TCoordinate> intFinderAdder = new IntersectionFinderAdder<TCoordinate>(li);
-            SinglePassNoder noder = new MCIndexNoder(intFinderAdder);
+            SinglePassNoder<TCoordinate> noder = new MonotoneChainIndexNoder<TCoordinate>(intFinderAdder);
             noder.ComputeNodes(segStrings);
             return intFinderAdder.InteriorIntersections;
         }

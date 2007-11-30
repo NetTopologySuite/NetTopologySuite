@@ -1,5 +1,7 @@
 using System;
+using GeoAPI.Coordinates;
 using GisSharpBlog.NetTopologySuite.Planargraph;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
 {
@@ -8,11 +10,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
     /// an edge of a polygon formed by the graph.
     /// May be logically deleted from the graph by setting the <c>marked</c> flag.
     /// </summary>
-    public class PolygonizeDirectedEdge : DirectedEdge
+    public class PolygonizeDirectedEdge<TCoordinate> : DirectedEdge<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                    IComputable<TCoordinate>, IConvertible
     {
-        private EdgeRing edgeRing = null;
-        private PolygonizeDirectedEdge next = null;
-        private long label = -1;
+        private EdgeRing<TCoordinate> _edgeRing = null;
+        private PolygonizeDirectedEdge<TCoordinate> _next = null;
+        private Int64 _label = -1;
 
         /// <summary>
         /// Constructs a directed edge connecting the <c>from</c> node to the
@@ -28,27 +32,27 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Whether this DirectedEdge's direction is the same as or
         /// opposite to that of the parent Edge (if any).
         /// </param>
-        public PolygonizeDirectedEdge(Node from, Node to, ICoordinate directionPt, Boolean edgeDirection)
+        public PolygonizeDirectedEdge(Node<TCoordinate> from, Node<TCoordinate> to, TCoordinate directionPt, Boolean edgeDirection)
             : base(from, to, directionPt, edgeDirection) {}
 
         /// <summary> 
         /// Returns the identifier attached to this directed edge.
         /// Attaches an identifier to this directed edge.
         /// </summary>
-        public long Label
+        public Int64 Label
         {
-            get { return label; }
-            set { label = value; }
+            get { return _label; }
+            set { _label = value; }
         }
 
         /// <summary>
         /// Returns the next directed edge in the EdgeRing that this directed edge is a member of.
         /// Sets the next directed edge in the EdgeRing that this directed edge is a member of.
         /// </summary>
-        public PolygonizeDirectedEdge Next
+        public PolygonizeDirectedEdge<TCoordinate> Next
         {
-            get { return next; }
-            set { next = value; }
+            get { return _next; }
+            set { _next = value; }
         }
 
         /// <summary>
@@ -64,10 +68,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Gets or sets the ring of directed edges that this directed edge is
         /// a member of.
         /// </summary>
-        public EdgeRing Ring
+        public EdgeRing<TCoordinate> Ring
         {
-            get { return edgeRing; }
-            set { edgeRing = value; }
+            get { return _edgeRing; }
+            set { _edgeRing = value; }
         }
     }
 }

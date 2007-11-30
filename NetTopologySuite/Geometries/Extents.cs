@@ -444,7 +444,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Computes the coordinate of the center of this envelope (as long as it is non-null).
+        /// Computes the coordinate of the center of this envelope 
+        /// (as long as it is non-null).
         /// </summary>
         /// <returns>
         /// The center coordinate of this envelope, 

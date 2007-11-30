@@ -7,7 +7,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     /// <summary> 
     /// A <see cref="Label"/> indicates the topological relationship of a component
-    /// of a topology graph to a given <see cref="Geometry{TCoordinate}"/>.
+    /// of a topology graph to a given <see cref="Geometry{TCoordinate}"/> or pair of 
+    /// <see cref="Geometry{TCoordinate}"/> instances.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -44,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             for (Int32 i = 0; i < 2; i++)
             {
-                lineLabel.SetLocation(i, label.GetLocation(i));
+                lineLabel.SetLocation(i, label[i]);
             }
 
             return lineLabel;

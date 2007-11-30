@@ -1,54 +1,36 @@
 using System;
-using System.Collections;
-using System.Text;
-
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.Operation;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 {
     /// <summary>
     /// Implements the <c>Relate()</c> operation on <see cref="Geometry{TCoordinate}"/>s.
     /// </summary>
-    public class RelateOp : GeometryGraphOperation
+    public class RelateOp<TCoordinate> : GeometryGraphOperation<TCoordinate>
+         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
+                             IComputable<TCoordinate>, IConvertible
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
-        public static IntersectionMatrix Relate(IGeometry a, IGeometry b)
+        public static IntersectionMatrix Relate(IGeometry<TCoordinate> a, IGeometry<TCoordinate> b)
         {
-            RelateOp relOp = new RelateOp(a, b);
+            RelateOp<TCoordinate> relOp = new RelateOp<TCoordinate>(a, b);
             IntersectionMatrix im = relOp.IntersectionMatrix;
             return im;
         }
 
-        private RelateComputer relate = null;
+        private RelateComputer<TCoordinate> relate = null;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="g0"></param>
-        /// <param name="g1"></param>
-        public RelateOp(IGeometry g0, IGeometry g1) : base(g0, g1)
-        {            
-            relate = new RelateComputer(arg);
+        public RelateOp(IGeometry<TCoordinate> g0, IGeometry<TCoordinate> g1)
+            : base(g0, g1)
+        {
+            relate = new RelateComputer<TCoordinate>(arg);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public IntersectionMatrix IntersectionMatrix
         {
-            get
-            {
-                return relate.ComputeIM();
-            }
+            get { return relate.ComputeIntersectionMatrix(); }
         }
     }
 }

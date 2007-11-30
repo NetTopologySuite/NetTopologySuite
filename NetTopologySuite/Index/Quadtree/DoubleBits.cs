@@ -48,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             return db.ToString();
         }
 
-        public static Double MaximumCommonMantissa(Double d1, Double d2)
+        public static Double MaximumCommonSignificand(Double d1, Double d2)
         {
             if (d1 == 0.0 || d2 == 0.0)
             {
@@ -63,7 +63,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
                 return 0.0;
             }
 
-            Int32 maxCommon = db1.CommonMantissaBitsCount(db2);
+            Int32 maxCommon = db1.CommonSignificandBitsCount(db2);
             db1.ZeroLowerBits(64 - (12 + maxCommon));
             return db1.Double;
         }
@@ -123,13 +123,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         }
 
         /// <summary> 
-        /// This computes the number of common most-significant bits in the mantissa.
+        /// This computes the number of common most-significant bits in the significand.
         /// It does not count the hidden bit, which is always 1.
         /// It does not determine whether the numbers have the same exponent - if they do
         /// not, the value computed by this function is meaningless.
         /// </summary>
-        /// <returns> The number of common most-significant mantissa bits.</returns>
-        public Int32 CommonMantissaBitsCount(DoubleBits db)
+        /// <returns> The number of common most-significant significand bits.</returns>
+        public Int32 CommonSignificandBitsCount(DoubleBits db)
         {
             for (Int32 i = 0; i < 52; i++)
             {

@@ -1,10 +1,5 @@
 using System;
-using System.Collections;
-using System.Text;
 using GeoAPI.Coordinates;
-using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
@@ -17,11 +12,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// </summary>
     public class RelateNodeFactory<TCoordinate> : NodeFactory<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+            IComputable<TCoordinate>, IConvertible
     {
         public override Node<TCoordinate> CreateNode(TCoordinate coord)
         {
-            return new RelateNode(coord, new EdgeEndBundleStar());
+            return new RelateNode<TCoordinate>(coord, new EdgeEndBundleStar<TCoordinate>());
         }
     }
 }

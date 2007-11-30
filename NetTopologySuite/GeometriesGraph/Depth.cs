@@ -186,7 +186,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             {
                 for (Int32 j = 1; j < 3; j++)
                 {
-                    Locations loc = label.GetLocation(i, (Positions)j);
+                    Locations loc = label[i, (Positions)j];
 
                     if (loc == Locations.Exterior || loc == Locations.Interior)
                     {

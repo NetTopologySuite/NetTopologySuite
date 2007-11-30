@@ -8,13 +8,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 {
     /// <summary>
     /// An ordered list of <see cref="EdgeEndBundle{TCoordinate}"/>s around a 
-    /// <see cref="RelateNode{TCoordinate, TEdgeEnd}"/>.
+    /// <see cref="RelateNode{TCoordinate}"/>.
     /// </summary>
     /// <remarks>
     /// They are maintained in CCW order (starting with the positive x-axis) around the node
     /// for efficient lookup and topology building.
     /// </remarks>
-    public class EdgeEndBundleStar<TCoordinate> : EdgeEndStar<TCoordinate, EdgeEndBundle<TCoordinate>>
+    public class EdgeEndBundleStar<TCoordinate> : EdgeEndStar<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<TCoordinate>, IConvertible
     {
@@ -26,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// </summary>
         public override void Insert(EdgeEnd<TCoordinate> e)
         {
-            EdgeEndBundle<TCoordinate> eb = EdgeMap[e];
+            EdgeEndBundle<TCoordinate> eb = EdgeMap[e] as EdgeEndBundle<TCoordinate>;
 
             if (eb == null)
             {

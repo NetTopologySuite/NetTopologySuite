@@ -84,7 +84,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             foreach (Node<TCoordinate> node in this)
             {
-                if (node.Label.GetLocation(geomIndex) == Locations.Boundary)
+                if(node.Label == null)
+                {
+                    continue;
+                }
+
+                if (node.Label.Value[geomIndex] == Locations.Boundary)
                 {
                     yield return node;
                 }

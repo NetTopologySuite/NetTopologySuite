@@ -1,49 +1,48 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using GeoAPI.Coordinates;
 using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
 {
     /// <summary>
-    /// Represents a directed edge in a <c>PlanarGraph</c>. A DirectedEdge may or
-    /// may not have a reference to a parent Edge (some applications of
-    /// planar graphs may not require explicit Edge objects to be created). Usually
-    /// a client using a <c>PlanarGraph</c> will subclass <c>DirectedEdge</c>
-    /// to add its own application-specific data and methods.    
+    /// Represents a directed edge in a <see cref="PlanarGraph{TCoordinate}"/>. 
     /// </summary>
-    public class DirectedEdge : GraphComponent, IComparable
+    /// <remarks>
+    /// A <see cref="DirectedEdge{TCoordinate}"/> may or
+    /// may not have a reference to a parent <see cref="Edge{TCoordinate}"/> (some applications of
+    /// planar graphs may not require explicit Edge objects to be created). Usually
+    /// a client using a <see cref="PlanarGraph{TCoordinate}"/> will subclass 
+    /// <see cref="DirectedEdge{TCoordinate}"/> to add its own application-specific 
+    /// data and methods.    
+    /// </remarks>
+    public class DirectedEdge<TCoordinate> : GraphComponent<TCoordinate>, IComparable<DirectedEdge<TCoordinate>>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
         /// <summary>
-        /// Returns a List containing the parent Edge (possibly null) for each of the given
-        /// DirectedEdges.
+        /// Returns a set containing the parent <see cref="Edge"/> 
+        /// (possibly <see langword="null"/>) for each of the given 
+        /// <see cref="DirectedEdge{TCoordinate}"/>s.
         /// </summary>
-        public static IList ToEdges(IList dirEdges)
+        public static IEnumerable<Edge<TCoordinate>> ToEdges(IEnumerable<DirectedEdge<TCoordinate>> dirEdges)
         {
-            IList edges = new ArrayList();
-            for (IEnumerator i = dirEdges.GetEnumerator(); i.MoveNext();)
+            foreach (DirectedEdge<TCoordinate> directedEdge in dirEdges)
             {
-                edges.Add(((DirectedEdge) i.Current).parentEdge);
+                yield return directedEdge._parentEdge;
             }
-            return edges;
         }
 
-        protected Edge parentEdge;
-
-        protected Node from;
-
-        protected Node to;
-
-        protected ICoordinate p0, p1;
-
-        protected DirectedEdge sym = null; // optional
-
-        protected Boolean edgeDirection;
-
-        protected Int32 quadrant;
-
-        protected Double angle;
+        private Edge<TCoordinate> _parentEdge;
+        private readonly Node<TCoordinate> _from;
+        private readonly Node<TCoordinate> _to;
+        private readonly TCoordinate _p0, _p1;
+        private DirectedEdge<TCoordinate> _sym = null; // optional
+        private readonly Boolean _edgeDirection;
+        private readonly Int32 _quadrant;
+        private readonly Double _angle;
 
         /// <summary>
         /// Constructs a DirectedEdge connecting the <c>from</c> node to the
@@ -57,17 +56,17 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Whether this DirectedEdge's direction is the same as or
         /// opposite to that of the parent Edge (if any).
         /// </param>
-        public DirectedEdge(Node from, Node to, ICoordinate directionPt, Boolean edgeDirection)
+        public DirectedEdge(Node<TCoordinate> from, Node<TCoordinate> to, TCoordinate directionPt, Boolean edgeDirection)
         {
-            this.from = from;
-            this.to = to;
-            this.edgeDirection = edgeDirection;
-            p0 = from.Coordinate;
-            p1 = directionPt;
-            Double dx = p1.X - p0.X;
-            Double dy = p1.Y - p0.Y;
-            quadrant = QuadrantOp.Quadrant(dx, dy);
-            angle = Math.Atan2(dy, dx);
+            _from = from;
+            _to = to;
+            _edgeDirection = edgeDirection;
+            _p0 = from.Coordinate;
+            _p1 = directionPt;
+            Double dx = _p1[Ordinates.X] - _p0[Ordinates.X];
+            Double dy = _p1[Ordinates.Y] - _p0[Ordinates.Y];
+            _quadrant = QuadrantOp<TCoordinate>.Quadrant(dx, dy);
+            _angle = Math.Atan2(dy, dx);
         }
 
         /// <summary>
@@ -75,10 +74,10 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Associates this DirectedEdge with an Edge (possibly null, indicating no associated
         /// Edge).
         /// </summary>
-        public Edge Edge
+        public Edge<TCoordinate> Edge
         {
-            get { return parentEdge; }
-            set { parentEdge = value; }
+            get { return _parentEdge; }
+            set { _parentEdge = value; }
         }
 
         /// <summary>
@@ -87,16 +86,16 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public Int32 Quadrant
         {
-            get { return quadrant; }
+            get { return _quadrant; }
         }
 
         /// <summary>
         /// Returns a point to which an imaginary line is drawn from the from-node to
         /// specify this DirectedEdge's orientation.
         /// </summary>
-        public ICoordinate DirectionPt
+        public TCoordinate DirectionVector
         {
-            get { return p1; }
+            get { return _p1; }
         }
 
         /// <summary>
@@ -105,31 +104,31 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public Boolean EdgeDirection
         {
-            get { return edgeDirection; }
+            get { return _edgeDirection; }
         }
 
         /// <summary>
         /// Returns the node from which this DirectedEdge leaves.
         /// </summary>
-        public Node FromNode
+        public Node<TCoordinate> FromNode
         {
-            get { return from; }
+            get { return _from; }
         }
 
         /// <summary>
         /// Returns the node to which this DirectedEdge goes.
         /// </summary>
-        public Node ToNode
+        public Node<TCoordinate> ToNode
         {
-            get { return to; }
+            get { return _to; }
         }
 
         /// <summary>
         /// Returns the coordinate of the from-node.
         /// </summary>
-        public ICoordinate Coordinate
+        public TCoordinate Coordinate
         {
-            get { return from.Coordinate; }
+            get { return _from.Coordinate; }
         }
 
         /// <summary>
@@ -138,7 +137,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public Double Angle
         {
-            get { return angle; }
+            get { return _angle; }
         }
 
         /// <summary>
@@ -147,10 +146,10 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Sets this DirectedEdge's symmetric DirectedEdge, which runs in the opposite
         /// direction.
         /// </summary>
-        public DirectedEdge Sym
+        public DirectedEdge<TCoordinate> Sym
         {
-            get { return sym; }
-            set { sym = value; }
+            get { return _sym; }
+            set { _sym = value; }
         }
 
         /// <summary>
@@ -165,51 +164,51 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <c>RobustCGAlgorithms.ComputeOrientation(Coordinate, Coordinate, Coordinate)</c>
         /// function can be used to decide the relative orientation of the vectors.
         /// </summary>
-        public Int32 CompareTo(Object obj)
+        public Int32 CompareTo(DirectedEdge<TCoordinate> other)
         {
-            DirectedEdge de = (DirectedEdge) obj;
-            return CompareDirection(de);
+            return (Int32) CompareDirection(other);
         }
 
         /// <summary>
         /// Returns 1 if this DirectedEdge has a greater angle with the
         /// positive x-axis than b", 0 if the DirectedEdges are collinear, and -1 otherwise.
+        /// </summary>
+        /// <remarks>
         /// Using the obvious algorithm of simply computing the angle is not robust,
         /// since the angle calculation is susceptible to roundoff. A robust algorithm
-        /// is:
-        /// first compare the quadrants. If the quadrants are different, it it
-        /// trivial to determine which vector is "greater".
-        /// if the vectors lie in the same quadrant, the robust
-        /// <c>RobustCGAlgorithms.ComputeOrientation(Coordinate, Coordinate, Coordinate)</c>
+        /// is to first compare the quadrants. If the quadrants are different, it it
+        /// trivial to determine which vector is "greater". 
+        /// If the vectors lie in the same quadrant, the robust
+        /// <see cref="CGAlgorithms{TCoordinate}.ComputeOrientation"/>
         /// function can be used to decide the relative orientation of the vectors.
-        /// </summary>
-        public Int32 CompareDirection(DirectedEdge e)
+        /// </remarks>
+        public Orientation CompareDirection(DirectedEdge<TCoordinate> e)
         {
-            Int32 i = 0;
             // if the rays are in different quadrants, determining the ordering is trivial
-            if (quadrant > e.Quadrant)
+            if (_quadrant > e.Quadrant)
             {
-                i = 1;
+                return Orientation.Left;
             }
-            if (quadrant < e.Quadrant)
+
+            if (_quadrant < e.Quadrant)
             {
-                i = -1;
+                return Orientation.Right;
             }
+
             // vectors are in the same quadrant - check relative orientation of direction vectors
             // this is > e if it is CCW of e
-            i = CGAlgorithms.ComputeOrientation(e.p0, e.p1, p1);
-            return i;
+            return CGAlgorithms<TCoordinate>.ComputeOrientation(e._p0, e._p1, _p1);
         }
 
         /// <summary>
-        /// Writes a detailed string representation of this DirectedEdge to the given PrintStream.
+        /// Writes a detailed String representation of this DirectedEdge to the given PrintStream.
         /// </summary>
         public void Write(StreamWriter outstream)
         {
-            string className = GetType().FullName;
+            String className = GetType().FullName;
             Int32 lastDotPos = className.LastIndexOf('.');
-            string name = className.Substring(lastDotPos + 1);
-            outstream.Write("  " + name + ": " + p0 + " - " + p1 + " " + quadrant + ":" + angle);
+            String name = className.Substring(lastDotPos + 1);
+            outstream.Write("  " + name + ": " + _p0 + " - " + _p1 + " " + _quadrant + ":" + _angle);
         }
 
         /// <summary>
@@ -217,7 +216,12 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public override Boolean IsRemoved
         {
-            get { return parentEdge == null; }
+            get { return _parentEdge == null; }
+        }
+
+        public override String ToString()
+        {
+            return "DirectedEdge: " + _p0 + " - " + _p1 + " " + _quadrant + ":" + _angle;
         }
 
         /// <summary>
@@ -225,13 +229,8 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         internal void Remove()
         {
-            sym = null;
-            parentEdge = null;
-        }
-
-        public override string ToString()
-        {
-            return "DirectedEdge: " + p0 + " - " + p1 + " " + quadrant + ":" + angle;
+            _sym = null;
+            _parentEdge = null;
         }
     }
 }

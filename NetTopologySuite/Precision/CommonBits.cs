@@ -1,12 +1,12 @@
 using System;
 using GisSharpBlog.NetTopologySuite.Utilities;
-using BitConverter=System.BitConverter;
+using BitConverter = System.BitConverter;
 
 namespace GisSharpBlog.NetTopologySuite.Precision
 {
     /// <summary> 
     /// Determines the maximum number of common most-significant
-    /// bits in the mantissa of one or numbers.
+    /// bits in the significand of one or numbers.
     /// Can be used to compute the Double-precision number which
     /// is represented by the common bits.
     /// If there are no common bits, the number computed is 0.0.
@@ -19,32 +19,35 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// </summary>
         /// <param name="num"></param>
         /// <returns>The bit pattern for the sign and exponent.</returns>
-        public static long SignExpBits(long num)
+        public static Int64 SignExpBits(Int64 num)
         {
             return num >> 52;
         }
 
         /// <summary>
-        /// This computes the number of common most-significant bits in the mantissas
+        /// This computes the number of common most-significant bits in the significand
         /// of two Double-precision numbers.
         /// It does not count the hidden bit, which is always 1.
         /// It does not determine whether the numbers have the same exponent - if they do
         /// not, the value computed by this function is meaningless.
         /// </summary>
         /// <param name="num1"></param>
-        /// /// <param name="num2"></param>
-        /// <returns>The number of common most-significant mantissa bits.</returns>
-        public static Int32 NumCommonMostSigMantissaBits(long num1, long num2)
+        /// <param name="num2"></param>
+        /// <returns>The number of common most-significant significand bits.</returns>
+        public static Int32 CommonMostSignificantSignificandBitsCount(Int64 num1, Int64 num2)
         {
             Int32 count = 0;
+
             for (Int32 i = 52; i >= 0; i--)
             {
                 if (GetBit(num1, i) != GetBit(num2, i))
                 {
                     return count;
                 }
+
                 count++;
             }
+
             return 52;
         }
 
@@ -54,11 +57,11 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <param name="bits">The bitstring to alter.</param>
         /// <param name="nBits">the number of bits to zero.</param>
         /// <returns>The zeroed bitstring.</returns>
-        public static long ZeroLowerBits(long bits, Int32 nBits)
+        public static Int64 ZeroLowerBits(Int64 bits, Int32 nBits)
         {
-            long invMask = (1L << nBits) - 1L;
-            long mask = ~invMask;
-            long zeroed = bits & mask;
+            Int64 invMask = (1L << nBits) - 1L;
+            Int64 mask = ~invMask;
+            Int64 zeroed = bits & mask;
             return zeroed;
         }
 
@@ -68,29 +71,21 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <param name="bits">The bitstring to extract from.</param>
         /// <param name="i">The bit to extract.</param>
         /// <returns>The value of the extracted bit.</returns>
-        public static Int32 GetBit(long bits, Int32 i)
+        public static Int32 GetBit(Int64 bits, Int32 i)
         {
-            long mask = (1L << i);
+            Int64 mask = (1L << i);
             return (bits & mask) != 0 ? 1 : 0;
         }
 
         private Boolean isFirst = true;
-        private Int32 commonMantissaBitsCount = 53;
-        private long commonBits = 0;
-        private long commonSignExp;
+        private Int32 commonSignificandBitsCount = 53;
+        private Int64 commonBits = 0;
+        private Int64 commonSignExp;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public CommonBits() {}
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="num"></param>
         public void Add(Double num)
         {
-            long numBits = BitConverter.DoubleToInt64Bits(num);
+            Int64 numBits = BitConverter.DoubleToInt64Bits(num);
+
             if (isFirst)
             {
                 commonBits = numBits;
@@ -99,30 +94,27 @@ namespace GisSharpBlog.NetTopologySuite.Precision
                 return;
             }
 
-            long numSignExp = SignExpBits(numBits);
+            Int64 numSignExp = SignExpBits(numBits);
+
             if (numSignExp != commonSignExp)
             {
                 commonBits = 0;
                 return;
             }
-            commonMantissaBitsCount = NumCommonMostSigMantissaBits(commonBits, numBits);
-            commonBits = ZeroLowerBits(commonBits, 64 - (12 + commonMantissaBitsCount));
+
+            commonSignificandBitsCount = CommonMostSignificantSignificandBitsCount(commonBits, numBits);
+            commonBits = ZeroLowerBits(commonBits, 64 - (12 + commonSignificandBitsCount));
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public Double Common
         {
             get { return BitConverter.Int64BitsToDouble(commonBits); }
         }
 
         /// <summary>
-        /// A representation of the Double bits formatted for easy readability
+        /// A representation of the Double bits formatted for easy readability.
         /// </summary>
-        /// <param name="bits"></param>
-        /// <returns></returns>
-        public string ToString(long bits)
+        public string ToString(Int64 bits)
         {
             Double x = BitConverter.Int64BitsToDouble(bits);
             string numStr = HexConverter.ConvertAnyToAny(bits.ToString(), 10, 2);

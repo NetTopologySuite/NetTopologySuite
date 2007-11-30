@@ -1,12 +1,17 @@
+using System;
 using System.Collections;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
     /// <summary> 
     /// Extracts all the 0-dimensional (<c>Point</c>) components from a <see cref="Geometry{TCoordinate}"/>.    
     /// </summary>
-    public class PointExtracter : IGeometryFilter
+    public class PointExtracter<TCoordinate> : IGeometryFilter<TCoordinate>
+         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
+                             IComputable<TCoordinate>, IConvertible
     {
         /// <summary> 
         /// Returns the Point components from a single point.
@@ -31,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             this.pts = pts;
         }
 
-        public void Filter(IGeometry geom)
+        public void Filter(IGeometry<TCoordinate> geom)
         {
             if (geom is IPoint)
             {

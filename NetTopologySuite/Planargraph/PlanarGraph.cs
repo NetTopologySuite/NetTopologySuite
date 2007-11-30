@@ -1,113 +1,77 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using NPack.Interfaces;
+using GeoAPI.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
 {
     /// <summary>
     /// Represents a directed graph which is embeddable in a planar surface.
+    /// </summary>
+    /// <remarks>
     /// This class and the other classes in this package serve as a framework for
     /// building planar graphs for specific algorithms. This class must be
     /// subclassed to expose appropriate methods to construct the graph. This allows
-    /// controlling the types of graph components ({DirectedEdge}s,
-    /// <c>Edge</c>s and <c>Node</c>s) which can be added to the graph. An
+    /// controlling the types of graph components (<see cref="DirectedEdge{TCoordinate}"/>s,
+    /// <see cref="Edge{TCoordinate}"/>s and <see cref="Node{TCoordinate}"/>s) which can be added to the graph. An
     /// application which uses the graph framework will almost always provide
     /// subclasses for one or more graph components, which hold application-specific
     /// data and graph algorithms.
-    /// </summary>
-    public abstract class PlanarGraph
+    /// </remarks>
+    public abstract class PlanarGraph<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        protected IList edges = new ArrayList();
-
-        protected IList dirEdges = new ArrayList();
-
-        protected NodeMap nodeMap = new NodeMap();
+        private readonly List<Edge<TCoordinate>> _edges = new List<Edge<TCoordinate>>();
+        private readonly List<DirectedEdge<TCoordinate>> _dirEdges = new List<DirectedEdge<TCoordinate>>();
+        private readonly NodeMap<TCoordinate> _nodeMap = new NodeMap<TCoordinate>();
 
         /// <summary>
-        /// Constructs a PlanarGraph without any Edges, DirectedEdges, or Nodes.
+        /// Returns the Node at the given location, or null if no Node is there.
         /// </summary>
-        public PlanarGraph() {}
-
-        /// <summary>
-        /// Returns the Node at the given location, or null if no Node was there.
-        /// </summary>
-        /// <param name="pt"></param>
-        /// <returns></returns>
-        public Node FindNode(ICoordinate pt)
+        public Node<TCoordinate> FindNode(TCoordinate pt)
         {
-            return (Node) nodeMap.Find(pt);
+            return _nodeMap.Find(pt);
         }
 
         /// <summary>
-        /// Adds a node to the map, replacing any that is already at that location.
-        /// Only subclasses can add Nodes, to ensure Nodes are of the right type.
+        /// Tests whether an <see cref="Edge{TCoordinate}" /> 
+        /// is contained in this graph.
         /// </summary>
-        /// <returns>The added node.</returns>
-        protected void Add(Node node)
+        /// <param name="e">The <see cref="Edge{TCoordinate}" /> to test.</param>
+        /// <returns>
+        /// <see langword="true"/> if the <see cref="Edge{TCoordinate}" /> 
+        /// is contained in this graph.
+        /// </returns>
+        public Boolean Contains(Edge<TCoordinate> e)
         {
-            nodeMap.Add(node);
-        }
-
-        /// <summary>
-        /// Adds the Edge and its DirectedEdges with this PlanarGraph.
-        /// Assumes that the Edge has already been created with its associated DirectEdges.
-        /// Only subclasses can add Edges, to ensure the edges added are of the right class.
-        /// </summary>
-        protected void Add(Edge edge)
-        {
-            edges.Add(edge);
-            Add(edge.GetDirectedEdge(0));
-            Add(edge.GetDirectedEdge(1));
-        }
-
-        /// <summary>
-        /// Adds the Edge to this PlanarGraph; only subclasses can add DirectedEdges,
-        /// to ensure the edges added are of the right class.
-        /// </summary>
-        protected void Add(DirectedEdge dirEdge)
-        {
-            dirEdges.Add(dirEdge);
-        }
-
-        /// <summary>
-        /// Returns an IEnumerator over the Nodes in this PlanarGraph.
-        /// </summary>
-        public IEnumerator GetNodeEnumerator()
-        {
-            return nodeMap.GetEnumerator();
+            return _edges.Contains(e);
         }
 
         /// <summary>
         /// Returns the Nodes in this PlanarGraph.
         /// </summary>
-        public ICollection Nodes
+        public IEnumerable<Node<TCoordinate>> Nodes
         {
-            get { return nodeMap.Values; }
+            get { return _nodeMap.Values; }
         }
 
         /// <summary> 
-        /// Returns an Iterator over the DirectedEdges in this PlanarGraph, in the order in which they
+        /// Returns a set of the <see cref="DirectedEdge{TCoordinate}"/>s 
+        /// in this <see cref="PlanarGraph{TCoordinate}"/>, in the order in which they
         /// were added.
         /// </summary>
-        public IEnumerator GetDirEdgeEnumerator()
+        public IList<DirectedEdge<TCoordinate>> DirectedEdges
         {
-            return dirEdges.GetEnumerator();
-        }
-
-        /// <summary>
-        /// Returns an Iterator over the Edges in this PlanarGraph, in the order in which they
-        /// were added.
-        /// </summary>
-        public IEnumerator GetEdgeEnumerator()
-        {
-            return edges.GetEnumerator();
+            get { return _dirEdges; }
         }
 
         /// <summary>
         /// Returns the Edges that have been added to this PlanarGraph.
         /// </summary>
-        public IList Edges
+        public IList<Edge<TCoordinate>> Edges
         {
-            get { return edges; }
+            get { return _edges; }
         }
 
         /// <summary>
@@ -116,11 +80,11 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// with the Edge, even if the removal of the Edge reduces the degree of a
         /// Node to zero.
         /// </summary>
-        public void Remove(Edge edge)
+        public void Remove(Edge<TCoordinate> edge)
         {
             Remove(edge.GetDirectedEdge(0));
             Remove(edge.GetDirectedEdge(1));
-            edges.Remove(edge);
+            _edges.Remove(edge);
             edge.Remove();
         }
 
@@ -130,64 +94,109 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// even if the removal of the DirectedEdge reduces the degree of a Node to
         /// zero.
         /// </summary>
-        public void Remove(DirectedEdge de)
+        public void Remove(DirectedEdge<TCoordinate> de)
         {
-            DirectedEdge sym = de.Sym;
+            DirectedEdge<TCoordinate> sym = de.Sym;
+
             if (sym != null)
             {
                 sym.Sym = null;
             }
+
             de.FromNode.OutEdges.Remove(de);
             de.Remove();
-            dirEdges.Remove(de);
+            _dirEdges.Remove(de);
         }
 
         /// <summary>
         /// Removes a node from the graph, along with any associated DirectedEdges and
         /// Edges.
         /// </summary>
-        public void Remove(Node node)
+        public void Remove(Node<TCoordinate> node)
         {
             // unhook all directed edges
-            IList outEdges = node.OutEdges.Edges;
-            for (IEnumerator i = outEdges.GetEnumerator(); i.MoveNext();)
+            IList<DirectedEdge<TCoordinate>> outEdges = node.OutEdges.Edges;
+
+            foreach (DirectedEdge<TCoordinate> directedEdge in outEdges)
             {
-                DirectedEdge de = (DirectedEdge) i.Current;
-                DirectedEdge sym = de.Sym;
+                DirectedEdge<TCoordinate> sym = directedEdge.Sym;
+
                 // remove the diredge that points to this node
                 if (sym != null)
                 {
                     Remove(sym);
                 }
-                // remove this diredge from the graph collection
-                dirEdges.Remove(de);
 
-                Edge edge = de.Edge;
+                // remove this diredge from the graph collection
+                _dirEdges.Remove(directedEdge);
+
+                Edge<TCoordinate> edge = directedEdge.Edge;
+
                 if (edge != null)
                 {
-                    edges.Remove(edge);
-                }
+                    _edges.Remove(edge);
+                }   
             }
+
             // remove the node from the graph
-            nodeMap.Remove(node.Coordinate);
+            _nodeMap.Remove(node.Coordinate);
             node.Remove();
         }
 
         /// <summary>
-        /// Returns all Nodes with the given number of Edges around it.
+        /// Returns all <see cref="Node{TCoordinate}"/>s with the 
+        /// given number of <see cref="Edge{TCoordinate}"/>s around it.
         /// </summary>
-        public IList FindNodesOfDegree(Int32 degree)
+        public IEnumerable<Node<TCoordinate>> FindNodesOfDegree(Int32 degree)
         {
-            IList nodesFound = new ArrayList();
-            for (IEnumerator i = GetNodeEnumerator(); i.MoveNext();)
+            foreach (Node<TCoordinate> node in Nodes)
             {
-                Node node = (Node) i.Current;
                 if (node.Degree == degree)
                 {
-                    nodesFound.Add(node);
+                    yield return node;
                 }
             }
-            return nodesFound;
+        }
+
+        /// <summary>
+        /// Adds a node to the map, replacing any that is already at that location.
+        /// Only subclasses can add Nodes, to ensure Nodes are of the right type.
+        /// </summary>
+        /// <returns>The added node.</returns>
+        protected void Add(Node<TCoordinate> node)
+        {
+            _nodeMap.Add(node);
+        }
+
+        /// <summary>
+        /// Adds the Edge and its DirectedEdges with this PlanarGraph.
+        /// Assumes that the Edge has already been created with its associated DirectEdges.
+        /// Only subclasses can add Edges, to ensure the edges added are of the right class.
+        /// </summary>
+        protected void AddInternal(Edge<TCoordinate> edge)
+        {
+            if (_edges.Contains(edge))
+            {
+                return;
+            }
+
+            _edges.Add(edge);
+            Add(edge.GetDirectedEdge(0));
+            Add(edge.GetDirectedEdge(1));
+        }
+
+        /// <summary>
+        /// Adds the Edge to this PlanarGraph; only subclasses can add DirectedEdges,
+        /// to ensure the edges added are of the right class.
+        /// </summary>
+        protected void Add(DirectedEdge<TCoordinate> dirEdge)
+        {
+            _dirEdges.Add(dirEdge);
+        }
+
+        protected NodeMap<TCoordinate> NodeMap
+        {
+            get { return _nodeMap; }
         }
     }
 }

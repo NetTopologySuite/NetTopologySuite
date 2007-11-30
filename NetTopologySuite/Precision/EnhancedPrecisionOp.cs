@@ -1,5 +1,8 @@
+using System;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Precision
 {
@@ -18,13 +21,16 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <returns>
         /// The Geometry representing the set-theoretic intersection of the input Geometries.
         /// </returns>
-        public static IGeometry Intersection(IGeometry geom0, IGeometry geom1)
+        public static IGeometry<TCoordinate> Intersection<TCoordinate>(IGeometry<TCoordinate> geom0,
+                                                                       IGeometry<TCoordinate> geom1)
+            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                IComputable<TCoordinate>, IConvertible
         {
             NtsException originalEx;
 
             try
             {
-                IGeometry result = geom0.Intersection(geom1);
+                IGeometry<TCoordinate> result = geom0.Intersection(geom1);
                 return result;
             }
             catch (NtsException ex)
@@ -39,9 +45,9 @@ namespace GisSharpBlog.NetTopologySuite.Precision
              */
             try
             {
-                CommonBitsOp cbo = new CommonBitsOp(true);
-                IGeometry resultEP = cbo.Intersection(geom0, geom1);
-                
+                CommonBitsOp<TCoordinate> cbo = new CommonBitsOp<TCoordinate>(true);
+                IGeometry<TCoordinate> resultEP = cbo.Intersection(geom0, geom1);
+
                 // check that result is a valid point after the reshift to orginal precision
                 if (!resultEP.IsValid)
                 {
@@ -65,13 +71,16 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <returns>
         /// The Geometry representing the set-theoretic union of the input Geometries.
         /// </returns>
-        public static IGeometry Union(IGeometry geom0, IGeometry geom1)
+        public static IGeometry<TCoordinate> Union<TCoordinate>(IGeometry<TCoordinate> geom0,
+                                                                IGeometry<TCoordinate> geom1)
+            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                IComputable<TCoordinate>, IConvertible
         {
             NtsException originalEx;
 
             try
             {
-                IGeometry result = geom0.Union(geom1);
+                IGeometry<TCoordinate> result = geom0.Union(geom1);
                 return result;
             }
             catch (NtsException ex)
@@ -86,8 +95,8 @@ namespace GisSharpBlog.NetTopologySuite.Precision
              */
             try
             {
-                CommonBitsOp cbo = new CommonBitsOp(true);
-                IGeometry resultEP = cbo.Union(geom0, geom1);
+                CommonBitsOp<TCoordinate> cbo = new CommonBitsOp<TCoordinate>(true);
+                IGeometry<TCoordinate> resultEP = cbo.Union(geom0, geom1);
 
                 // check that result is a valid point after the reshift to orginal precision
                 if (!resultEP.IsValid)
@@ -112,13 +121,16 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <returns>
         /// The Geometry representing the set-theoretic difference of the input Geometries.
         /// </returns>
-        public static IGeometry Difference(IGeometry geom0, IGeometry geom1)
+        public static IGeometry<TCoordinate> Difference<TCoordinate>(IGeometry<TCoordinate> geom0,
+                                                                     IGeometry<TCoordinate> geom1)
+            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                IComputable<TCoordinate>, IConvertible
         {
             NtsException originalEx;
 
             try
             {
-                IGeometry result = geom0.Difference(geom1);
+                IGeometry<TCoordinate> result = geom0.Difference(geom1);
                 return result;
             }
             catch (NtsException ex)
@@ -133,8 +145,8 @@ namespace GisSharpBlog.NetTopologySuite.Precision
              */
             try
             {
-                CommonBitsOp cbo = new CommonBitsOp(true);
-                IGeometry resultEP = cbo.Difference(geom0, geom1);
+                CommonBitsOp<TCoordinate> cbo = new CommonBitsOp<TCoordinate>(true);
+                IGeometry<TCoordinate> resultEP = cbo.Difference(geom0, geom1);
 
                 // check that result is a valid point after the reshift to orginal precision
                 if (!resultEP.IsValid)
@@ -159,13 +171,16 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <returns>
         /// The Geometry representing the set-theoretic symmetric difference of the input Geometries.
         /// </returns>
-        public static IGeometry SymDifference(IGeometry geom0, IGeometry geom1)
+        public static IGeometry<TCoordinate> SymDifference<TCoordinate>(IGeometry<TCoordinate> geom0,
+                                                                        IGeometry<TCoordinate> geom1)
+            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                IComputable<TCoordinate>, IConvertible
         {
-             NtsException originalEx = null;
+            NtsException originalEx;
 
             try
             {
-                IGeometry result = geom0.SymmetricDifference(geom1);
+                IGeometry<TCoordinate> result = geom0.SymmetricDifference(geom1);
                 return result;
             }
             catch (NtsException ex)
@@ -180,8 +195,8 @@ namespace GisSharpBlog.NetTopologySuite.Precision
              */
             try
             {
-                CommonBitsOp cbo = new CommonBitsOp(true);
-                IGeometry resultEP = cbo.SymDifference(geom0, geom1);
+                CommonBitsOp<TCoordinate> cbo = new CommonBitsOp<TCoordinate>(true);
+                IGeometry<TCoordinate> resultEP = cbo.SymDifference(geom0, geom1);
 
                 // check that result is a valid point after the reshift to orginal precision
                 if (!resultEP.IsValid)

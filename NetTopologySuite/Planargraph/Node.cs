@@ -1,76 +1,87 @@
 using System;
-using System.Collections;
-using Iesi_NTS.Collections;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
+using GeoAPI.DataStructures.Collections.Generic;
+using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
 {
     /// <summary>
-    /// A node in a <c>PlanarGraph</c> is a location where 0 or more <c>Edge</c>s
-    /// meet. A node is connected to each of its incident Edges via an outgoing
-    /// DirectedEdge. Some clients using a <c>PlanarGraph</c> may want to
-    /// subclass <c>Node</c> to add their own application-specific
-    /// data and methods.
+    /// A node in a <see cref="PlanarGraph{TCoordinate}"/> is a location 
+    /// where 0 or more <see cref="Edge{TCoordinate}"/>s meet. 
     /// </summary>
-    public class Node : GraphComponent
+    /// <remarks>
+    /// A node is connected to each of its incident <see cref="Edge{TCoordinate}"/>s 
+    /// via an outgoing <see cref="DirectedEdge{TCoordinate}"/>. 
+    /// Some clients using a <see cref="PlanarGraph{TCoordinate}"/> may want to
+    /// subclass <see cref="Node{TCoordinate}"/> to add their own application-specific
+    /// data and methods.
+    /// </remarks>
+    public class Node<TCoordinate> : GraphComponent<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
         /// <summary>
         /// Returns all Edges that connect the two nodes (which are assumed to be different).
         /// </summary>
-        public static IList getEdgesBetween(Node node0, Node node1)
+        public static IEnumerable<Edge<TCoordinate>> GetEdgesBetween(Node<TCoordinate> node0, Node<TCoordinate> node1)
         {
-            IList edges0 = DirectedEdge.ToEdges(node0.OutEdges.Edges);
-            ISet commonEdges = new HashedSet(edges0);
-            IList edges1 = DirectedEdge.ToEdges(node1.OutEdges.Edges);
+            IEnumerable<Edge<TCoordinate>> edges0 = DirectedEdge<TCoordinate>.ToEdges(node0.OutEdges.Edges);
+            ISet<Edge<TCoordinate>> commonEdges = new HashedSet<Edge<TCoordinate>>(edges0);
+            IEnumerable<Edge<TCoordinate>> edges1 = DirectedEdge<TCoordinate>.ToEdges(node1.OutEdges.Edges);
+
             commonEdges.RetainAll(edges1);
-            return new ArrayList(commonEdges);
+            return commonEdges;
         }
 
         /// <summary>
         /// The location of this Node.
         /// </summary>
-        protected ICoordinate pt;
+        private TCoordinate _coordinate;
 
         /// <summary>
         /// The collection of DirectedEdges that leave this Node.
         /// </summary>
-        protected DirectedEdgeStar deStar;
+        private readonly DirectedEdgeStar<TCoordinate> _directedEdgeStar;
 
         /// <summary>
         /// Constructs a Node with the given location.
         /// </summary>
-        public Node(ICoordinate pt) : this(pt, new DirectedEdgeStar()) {}
+        public Node(TCoordinate coordinate) 
+            : this(coordinate, new DirectedEdgeStar<TCoordinate>()) {}
 
         /// <summary>
         /// Constructs a Node with the given location and collection of outgoing DirectedEdges.
         /// </summary>
-        public Node(ICoordinate pt, DirectedEdgeStar deStar)
+        public Node(TCoordinate coordinate, DirectedEdgeStar<TCoordinate> deStar)
         {
-            this.pt = pt;
-            this.deStar = deStar;
+            _coordinate = coordinate;
+            _directedEdgeStar = deStar;
         }
 
         /// <summary>
         /// Returns the location of this Node.
         /// </summary>
-        public ICoordinate Coordinate
+        public TCoordinate Coordinate
         {
-            get { return pt; }
+            get { return _coordinate; }
         }
 
         /// <summary>
         /// Adds an outgoing DirectedEdge to this Node.
         /// </summary>
-        public void AddOutEdge(DirectedEdge de)
+        public void AddOutEdge(DirectedEdge<TCoordinate> de)
         {
-            deStar.Add(de);
+            _directedEdgeStar.Add(de);
         }
 
         /// <summary>
         /// Returns the collection of DirectedEdges that leave this Node.
         /// </summary>
-        public DirectedEdgeStar OutEdges
+        public DirectedEdgeStar<TCoordinate> OutEdges
         {
-            get { return deStar; }
+            get { return _directedEdgeStar; }
         }
 
         /// <summary>
@@ -78,16 +89,16 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public Int32 Degree
         {
-            get { return deStar.Degree; }
+            get { return _directedEdgeStar.Degree; }
         }
 
         /// <summary>
         /// Returns the zero-based index of the given Edge, after sorting in ascending order
         /// by angle with the positive x-axis.
         /// </summary>
-        public Int32 GetIndex(Edge edge)
+        public Int32 GetIndex(Edge<TCoordinate> edge)
         {
-            return deStar.GetIndex(edge);
+            return _directedEdgeStar.GetIndex(edge);
         }
 
         /// <summary>
@@ -95,7 +106,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         internal void Remove()
         {
-            pt = null;
+            _coordinate = default(TCoordinate);
         }
 
         /// <summary>
@@ -103,12 +114,12 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public override Boolean IsRemoved
         {
-            get { return pt == null; }
+            get { return CoordinateHelper.IsEmpty(_coordinate); }
         }
 
         public override string ToString()
         {
-            return "NODE: " + pt.ToString() + ": " + Degree;
+            return "NODE: " + _coordinate + ": " + Degree;
         }
     }
 }

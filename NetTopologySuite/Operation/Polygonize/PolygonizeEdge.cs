@@ -9,7 +9,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
     /// <summary>
     /// An edge of a polygonization graph.
     /// </summary>
-    public class PolygonizeEdge<TCoordinate> : Edge
+    public class PolygonizeEdge<TCoordinate> : Edge<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<TCoordinate>, IConvertible
     {

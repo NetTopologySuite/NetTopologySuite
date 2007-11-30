@@ -851,7 +851,7 @@ namespace RTools_NTS.Util
         }
 
         /// <summary>Constructor with the specified value.</summary>
-        public IntToken(long i)
+        public IntToken(Int64 i)
             : base(0)
         {
             obj = i;
@@ -883,7 +883,7 @@ namespace RTools_NTS.Util
         /// <summary> 
         /// Constructor for a 64 bit Int32 
         /// </summary> 
-        public IntToken(long l, Int32 line)
+        public IntToken(Int64 l, Int32 line)
             : base(line)
         {
             obj = l;

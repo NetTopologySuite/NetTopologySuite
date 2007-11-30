@@ -1,7 +1,9 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 {
@@ -24,17 +26,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// to represent them.
     /// </summary>
     public class RelateNodeGraph<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
-        private NodeMap<TCoordinate> _nodes = new NodeMap<TCoordinate>(new RelateNodeFactory());
+        private readonly NodeMap<TCoordinate> _nodes = new NodeMap<TCoordinate>(new RelateNodeFactory<TCoordinate>());
 
-        public RelateNodeGraph() {}
+        //public IEnumerator GetNodeEnumerator()
+        //{
+        //    return _nodes.GetEnumerator();
+        //}
 
-        public IEnumerator GetNodeEnumerator()
-        {
-            return _nodes.GetEnumerator();
-        }
-
-        public void Build(GeometryGraph geomGraph)
+        public void Build(GeometryGraph<TCoordinate> geomGraph)
         {
             // compute nodes for intersections between previously noded edges
             ComputeIntersectionNodes(geomGraph, 0);
@@ -47,8 +49,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             /*
             * Build EdgeEnds for all intersections.
             */
-            EdgeEndBuilder eeBuilder = new EdgeEndBuilder();
-            IList eeList = eeBuilder.ComputeEdgeEnds(geomGraph.GetEdgeEnumerator());
+            EdgeEndBuilder<TCoordinate> eeBuilder = new EdgeEndBuilder<TCoordinate>();
+            IEnumerable<EdgeEnd<TCoordinate>> eeList = eeBuilder.ComputeEdgeEnds(geomGraph.Edges);
             InsertEdgeEnds(eeList);
         }
 
@@ -60,11 +62,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// Endpoint nodes will already be labeled from when they were inserted.
         /// Precondition: edge intersections have been computed.
         /// </summary>
-        public void ComputeIntersectionNodes(GeometryGraph geomGraph, Int32 argIndex)
+        public void ComputeIntersectionNodes(GeometryGraph<TCoordinate> geomGraph, Int32 argIndex)
         {
             for (IEnumerator edgeIt = geomGraph.GetEdgeEnumerator(); edgeIt.MoveNext();)
             {
-                Edge e = (Edge) edgeIt.Current;
+                Edge<TCoordinate> e = (Edge)edgeIt.Current;
                 Locations eLoc = e.Label.GetLocation(argIndex);
                 for (IEnumerator eiIt = e.EdgeIntersectionList.GetEnumerator(); eiIt.MoveNext();)
                 {
@@ -91,13 +93,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// but in the original arg Geometry it is actually
         /// in the interior due to the Boundary Determination Rule).
         /// </summary>
-        public void CopyNodesAndLabels(GeometryGraph geomGraph, Int32 argIndex)
+        public void CopyNodesAndLabels(GeometryGraph<TCoordinate> geomGraph, Int32 argIndex)
         {
-            for (IEnumerator nodeIt = geomGraph.GetNodeEnumerator(); nodeIt.MoveNext();)
-            {
-                Node graphNode = (Node) nodeIt.Current;
-                Node newNode = _nodes.AddNode(graphNode.Coordinate);
-                newNode.SetLabel(argIndex, graphNode.Label.GetLocation(argIndex));
+            foreach (Node<TCoordinate> node in geomGraph.Nodes)
+            {   
+                Node<TCoordinate> newNode = _nodes.AddNode(node.Coordinate);
+                newNode.SetLabel(argIndex, node.Label.Value[argIndex]);
             }
         }
 

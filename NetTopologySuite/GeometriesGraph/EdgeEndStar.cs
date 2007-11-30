@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
@@ -13,25 +14,24 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     /// <summary>
-    /// An <see cref="EdgeEndStar{TCoordinate, TEdgeEnd}"/> is an ordered list of 
+    /// An <see cref="EdgeEndStar{TCoordinate}"/> is an ordered list of 
     /// <see cref="EdgeEnd{TCoordinate}"/> around a node.
     /// They are maintained in CCW order (starting with the positive x-axis) 
     /// around the node for efficient lookup and topology building.
     /// </summary>
-    public abstract class EdgeEndStar<TCoordinate, TEdgeEnd> : IEnumerable<EdgeEnd<TCoordinate>>
+    public abstract class EdgeEndStar<TCoordinate> : IEnumerable<EdgeEnd<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<TCoordinate>, IConvertible
-        where TEdgeEnd : EdgeEnd<TCoordinate>
     {
         // A map which maintains the edges in sorted order around the node.
-        private readonly SortedList<EdgeEnd<TCoordinate>, TEdgeEnd> _edgeMap
-            = new SortedList<EdgeEnd<TCoordinate>, TEdgeEnd>();
+        private readonly SortedList<EdgeEnd<TCoordinate>, EdgeEnd<TCoordinate>> _edgeMap
+            = new SortedList<EdgeEnd<TCoordinate>, EdgeEnd<TCoordinate>>();
 
         // A list of all outgoing edges in the result, in CCW order.
-        private readonly List<TEdgeEnd> _edgeList = new List<TEdgeEnd>();
+        private readonly List<EdgeEnd<TCoordinate>> _edgeList = new List<EdgeEnd<TCoordinate>>();
 
         // The location of the point for this star in Geometry i Areas.
-        private Locations[] _ptInAreaLocation = new Locations[] { Locations.None, Locations.None };
+        private readonly Locations[] _ptInAreaLocation = new Locations[] { Locations.None, Locations.None };
 
         /// <summary> 
         /// Insert a EdgeEnd into this EdgeEndStar.
@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Insert an EdgeEnd into the map, and clear the <see cref="Edges"/> cache,
         /// since the list of edges has now changed.
         /// </summary>
-        protected void InsertEdgeEnd(EdgeEnd<TCoordinate> e, TEdgeEnd obj)
+        protected void InsertEdgeEnd(EdgeEnd<TCoordinate> e, EdgeEnd<TCoordinate> edgeEnd)
         {
             // Diego Guidi says: i have inserted this line because if 
             // i try to add an object already present
@@ -52,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 return;
             }
 
-            _edgeMap.Add(e, obj);
+            _edgeMap.Add(e, edgeEnd);
             _edgeList.Clear();   // edge list has changed - clear the cache
         }
 
@@ -83,13 +83,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             ComputeEdgeList();
 
-            foreach (TEdgeEnd edge in _edgeList)
+            foreach (EdgeEnd<TCoordinate> edge in _edgeList)
             {
                 yield return edge;
             }
         }
 
-        public ReadOnlyCollection<TEdgeEnd> Edges
+        public ReadOnlyCollection<EdgeEnd<TCoordinate>> Edges
         {
             get
             {
@@ -97,7 +97,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        public EdgeEnd<TCoordinate> GetNextCW(TEdgeEnd ee)
+        public EdgeEnd<TCoordinate> GetNextCW(EdgeEnd<TCoordinate> ee)
         {
             Int32 i = _edgeList.IndexOf(ee);
             Int32 iNextCW = i - 1;
@@ -152,12 +152,17 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             foreach (EdgeEnd<TCoordinate> e in this)
             {
-                Label label = e.Label;
+                if(e.Label == null)
+                {
+                    continue;
+                }
+
+                Label label = e.Label.Value;
 
                 for (Int32 geometryIndex = 0; geometryIndex < 2; geometryIndex++)
                 {
                     if (label.IsLine(geometryIndex)
-                        && label.GetLocation(geometryIndex) == Locations.Boundary)
+                        && label[geometryIndex] == Locations.Boundary)
                     {
                         hasDimensionalCollapseEdge[geometryIndex] = true;
                     }
@@ -166,7 +171,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             foreach (EdgeEnd<TCoordinate> e in this)
             {
-                Label label = e.Label;
+                if (e.Label == null)
+                {
+                    continue;
+                }
+
+                Label label = e.Label.Value;
 
                 for (Int32 geometryIndex = 0; geometryIndex < 2; geometryIndex++)
                 {
@@ -220,11 +230,16 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             // initialize loc to location of last Curve side (if any)
             foreach (EdgeEnd<TCoordinate> e in this)
             {
-                Label label = e.Label;
-
-                if (label.IsArea(geomIndex) && label.GetLocation(geomIndex, Positions.Left) != Locations.None)
+                if (e.Label == null)
                 {
-                    startLoc = label.GetLocation(geomIndex, Positions.Left);
+                    continue;
+                }
+
+                Label label = e.Label.Value;
+
+                if (label.IsArea(geomIndex) && label[geomIndex, Positions.Left] != Locations.None)
+                {
+                    startLoc = label[geomIndex, Positions.Left];
                 }
             }
 
@@ -238,34 +253,41 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             foreach (EdgeEnd<TCoordinate> e in this)
             {
-                Label label = e.Label;
+                if (e.Label == null)
+                {
+                    continue;
+                }
+
+                Label label = e.Label.Value;
 
                 // set null On values to be in current location
-                if (label.GetLocation(geomIndex, Positions.On) == Locations.None)
+                if (label[geomIndex, Positions.On] == Locations.None)
                 {
-                    label.SetLocation(geomIndex, Positions.On, currLoc);
+                    Locations left = label[geomIndex, Positions.Left];
+                    Locations right = label[geomIndex, Positions.Right];
+                    label = new Label(geomIndex, currLoc, left, right);
                 }
 
                 // set side labels (if any)
                 if (label.IsArea(geomIndex))
                 {
-                    Locations leftLoc = label.GetLocation(geomIndex, Positions.Left);
-                    Locations rightLoc = label.GetLocation(geomIndex, Positions.Right);
+                    Locations left = label[geomIndex, Positions.Left];
+                    Locations right = label[geomIndex, Positions.Right];
 
                     // if there is a right location, that is the next location to propagate
-                    if (rightLoc != Locations.None)
+                    if (right != Locations.None)
                     {
-                        if (rightLoc != currLoc)
+                        if (right != currLoc)
                         {
-                            throw new TopologyException("side location conflict", e.Coordinate);
+                            throw new TopologyException("Side location conflict", e.Coordinate);
                         }
 
-                        if (leftLoc == Locations.None)
+                        if (left == Locations.None)
                         {
-                            Assert.ShouldNeverReachHere("found single null side (at " + e.Coordinate + ")");
+                            Assert.ShouldNeverReachHere("Found single null side (at " + e.Coordinate + ").");
                         }
 
-                        currLoc = leftLoc;
+                        currLoc = left;
                     }
                     else
                     {
@@ -275,12 +297,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                         *  the other point (which is determined by the current location).
                         *  Assign both sides to be the current location.
                         */
-                        Assert.IsTrue(label.GetLocation(geomIndex, Positions.Left) == Locations.None,
+                        Assert.IsTrue(label[geomIndex, Positions.Left] == Locations.None,
                                       "found single null side");
-                        label.SetLocation(geomIndex, Positions.Right, currLoc);
-                        label.SetLocation(geomIndex, Positions.Left, currLoc);
+
+                        Locations on = label[geomIndex, Positions.On];
+                        label = new Label(geomIndex, on, currLoc, currLoc);
                     }
                 }
+
+                e.Label = label;
             }
         }
 
@@ -288,7 +313,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             ComputeEdgeList();
 
-            return _edgeList.FindIndex(delegate(TEdgeEnd match)
+            return _edgeList.FindIndex(delegate(EdgeEnd<TCoordinate> match)
                                 {
                                     return match == search;
                                 });
@@ -302,7 +327,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        protected List<TEdgeEnd> EdgesInternal
+        protected List<EdgeEnd<TCoordinate>> EdgesInternal
         {
             get
             {
@@ -311,7 +336,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        protected IDictionary<EdgeEnd<TCoordinate>, TEdgeEnd> EdgeMap
+        protected IDictionary<EdgeEnd<TCoordinate>, EdgeEnd<TCoordinate>> EdgeMap
         {
             get { return _edgeMap; }
         }
@@ -337,7 +362,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             // Since edges are stored in CCW order around the node,
             // as we move around the ring we move from the right to the left side of the edge
-            IList<TEdgeEnd> edges = _edgeList;
+            IList<EdgeEnd<TCoordinate>> edges = _edgeList;
 
             // if no edges, trivially consistent
             if (edges.Count <= 0)
@@ -347,8 +372,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             // initialize startLoc to location of last Curve side (if any)
             Int32 lastEdgeIndex = edges.Count - 1;
-            Label startLabel = edges[lastEdgeIndex].Label;
-            Locations startLoc = startLabel.GetLocation(geomIndex, Positions.Left);
+            Debug.Assert(edges[lastEdgeIndex].Label != null);
+            Label startLabel = edges[lastEdgeIndex].Label.Value;
+            Locations startLoc = startLabel[geomIndex, Positions.Left];
 
             Assert.IsTrue(startLoc != Locations.None, "Found unlabelled area edge");
 
@@ -356,12 +382,17 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             foreach (EdgeEnd<TCoordinate> e in this)
             {
-                Label label = e.Label;
+                if (e.Label == null)
+                {
+                    continue;
+                }
+
+                Label label = e.Label.Value;
 
                 // we assume that we are only checking a area
                 Assert.IsTrue(label.IsArea(geomIndex), "Found non-area edge");
-                Locations leftLoc = label.GetLocation(geomIndex, Positions.Left);
-                Locations rightLoc = label.GetLocation(geomIndex, Positions.Right);
+                Locations leftLoc = label[geomIndex, Positions.Left];
+                Locations rightLoc = label[geomIndex, Positions.Right];
 
                 // check that edge is really a boundary between inside and outside!
                 if (leftLoc == rightLoc)

@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
@@ -7,7 +10,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
     /// Extracts all the 2-dimensional (<see cref="Polygon{TCoordinate}" />) components from 
     /// a <see cref="Geometry{TCoordinate}"/>.
     /// </summary>
-    public class PolygonExtracter : IGeometryFilter
+    public class PolygonExtracter<TCoordinate> : IGeometryFilter<TCoordinate>
+         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
+                             IComputable<TCoordinate>, IConvertible
     {
         /// <summary> 
         /// Returns the Polygon components from a single point.
@@ -15,10 +20,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// efficient to create a single <c>PolygonExtracterFilter</c> instance
         /// and pass it to multiple geometries.
         /// </summary>
-        public static IList GetPolygons(IGeometry geom)
+        public static IList GetPolygons(IGeometry<TCoordinate> geom)
         {
             IList comps = new ArrayList();
-            geom.Apply(new PolygonExtracter(comps));
+            geom.Apply(new PolygonExtracter<TCoordinate>(comps));
             return comps;
         }
 
@@ -32,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             this.comps = comps;
         }
 
-        public void Filter(IGeometry geom)
+        public void Filter(IGeometry<TCoordinate> geom)
         {
             if (geom is IPolygon)
                 comps.Add(geom);

@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
             return value;
         }
 
-        public static Double Int64BitsToDouble(long x)
+        public static Double Int64BitsToDouble(Int64 x)
         {
             Byte[] bytes = System.BitConverter.GetBytes(x);
             Double value = System.BitConverter.ToDouble(bytes, 0);

@@ -82,7 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
                                 IComputable<TCoordinate>, IConvertible
         {
-            private SimpleGeometryPrecisionReducer<TCoordinate> _container = null;
+            private readonly SimpleGeometryPrecisionReducer<TCoordinate> _container = null;
 
             public PrecisionReducerCoordinateOperation(SimpleGeometryPrecisionReducer<TCoordinate> container)
             {

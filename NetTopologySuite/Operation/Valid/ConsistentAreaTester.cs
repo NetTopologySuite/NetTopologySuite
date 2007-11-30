@@ -5,6 +5,7 @@ using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
 using GisSharpBlog.NetTopologySuite.Operation.Relate;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 {
@@ -17,22 +18,20 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// Testing for duplicate rings.
     /// If an inconsistency if found the location of the problem is recorded.
     /// </summary>
-    public class ConsistentAreaTester
+    public class ConsistentAreaTester<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        private readonly LineIntersector li = new RobustLineIntersector();
-        private GeometryGraph geomGraph;
-        private RelateNodeGraph nodeGraph = new RelateNodeGraph();
+        private readonly LineIntersector<TCoordinate> _li = new RobustLineIntersector<TCoordinate>();
+        private readonly GeometryGraph<TCoordinate> _geomGraph;
+        private readonly RelateNodeGraph<TCoordinate> _nodeGraph = new RelateNodeGraph<TCoordinate>();
 
         // the intersection point found (if any)
         private ICoordinate invalidPoint;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomGraph"></param>
-        public ConsistentAreaTester(GeometryGraph geomGraph)
+        public ConsistentAreaTester(GeometryGraph<TCoordinate> geomGraph)
         {
-            this.geomGraph = geomGraph;
+            this._geomGraph = geomGraph;
         }
 
         /// <summary>
@@ -43,9 +42,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             get { return invalidPoint; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public Boolean IsNodeConsistentArea
         {
             get
@@ -54,13 +50,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                 * To fully check validity, it is necessary to
                 * compute ALL intersections, including self-intersections within a single edge.
                 */
-                SegmentIntersector intersector = geomGraph.ComputeSelfNodes(li, true);
+                SegmentIntersector<TCoordinate> intersector = _geomGraph.ComputeSelfNodes(_li, true);
+
                 if (intersector.HasProperIntersection)
                 {
                     invalidPoint = intersector.ProperIntersectionPoint;
                     return false;
                 }
-                nodeGraph.Build(geomGraph);
+
+                _nodeGraph.Build(_geomGraph);
                 return IsNodeEdgeAreaLabelsConsistent;
             }
         }
@@ -73,9 +71,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         {
             get
             {
-                for (IEnumerator nodeIt = nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext();)
+                for (IEnumerator nodeIt = _nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext();)
                 {
                     RelateNode node = (RelateNode) nodeIt.Current;
+
                     if (!node.Edges.IsAreaLabelsConsistent)
                     {
                         invalidPoint = (ICoordinate) node.Coordinate.Clone();
@@ -102,7 +101,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         {
             get
             {
-                for (IEnumerator nodeIt = nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext();)
+                for (IEnumerator nodeIt = _nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext();)
                 {
                     RelateNode node = (RelateNode) nodeIt.Current;
                     for (IEnumerator i = node.Edges.GetEnumerator(); i.MoveNext();)

@@ -1,4 +1,6 @@
 using System;
+using GeoAPI.Coordinates;
+using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
@@ -10,15 +12,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     public enum TopologyValidationErrors
     {
         /// <summary>
-        /// Not used.
+        /// Unknown error; default value.
         /// </summary>
-        [Obsolete("Not used")] Error = 0,
+        Unknown = 0,
 
-        /// <summary>
-        /// No longer used: 
-        /// repeated points are considered valid as per the SFS.
-        /// </summary>
-        [Obsolete("No longer used: repeated points are considered valid as per the SFS")] RepeatedPoint = 1,
+        GenericTopologyValidationError = 1,
 
         /// <summary>
         /// Indicates that a hole of a polygon lies partially 
@@ -51,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
         /// <summary>
         /// Indicates that a polygon component of a 
-        /// <see cref="MultiPolygon" /> lies inside another polygonal component.
+        /// <see cref="IMultiPolygon" /> lies inside another polygonal component.
         /// </summary>
         NestedShells = 7,
 
@@ -63,15 +61,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
         /// <summary>
         /// Indicates that either:
-        /// - A <see cref="LineString" /> contains a single point.
-        /// - A <see cref="LinearRing" /> contains 2 or 3 points.
+        /// - An <see cref="ILineString" /> contains a single point.
+        /// - An <see cref="ILinearRing" /> contains 2 or 3 points.
         /// </summary>
         TooFewPoints = 9,
 
         /// <summary>
-        /// Indicates that the <c>X</c> or <c>Y</c> ordinate of
-        /// a <see cref="Coordinate" /> is not a valid 
-        /// numeric value (e.g. <see cref="Double.NaN" />).
+        /// Indicates that the <see cref="Ordinates.X">X</see>
+        /// or <see cref="Ordinates.Y">Y</see> ordinate of
+        /// an <see cref="ICoordinate" /> is not a valid 
+        /// numeric value (e.g. <see cref="double.NaN" />).
         /// </summary>
         InvalidCoordinate = 10,
 
@@ -91,33 +90,36 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         // NOTE: modified for "safe" assembly in Sql 2005
         // Added readonly!
 
+        // TODO: localize these strings
         /// <summary>
         /// These messages must synch up with the indexes above
         /// </summary>
-        private static readonly string[] errMsg =
+        private static readonly String[] _errMsg =
             {
-                "Topology Validation Error",
-                "Repeated Point",
+                "Unknown error",
+                "Topology validation error",
                 "Hole lies outside shell",
                 "Holes are nested",
                 "Interior is disconnected",
                 "Self-intersection",
-                "Ring Self-intersection",
+                "Ring self-intersection",
                 "Nested shells",
                 "Duplicate Rings",
                 "Too few points in geometry component",
-                "Invalid Coordinate"
+                "Invalid Coordinate",
+                "Ring not closed: first and last points are different"
             };
 
-        private TopologyValidationErrors errorType;
-        private ICoordinate pt;
+        private readonly TopologyValidationErrors _errorType;
+        private readonly ICoordinate _coordinate;
 
-        public TopologyValidationError(TopologyValidationErrors errorType, ICoordinate pt)
+        public TopologyValidationError(TopologyValidationErrors errorType, ICoordinate coordinate)
         {
-            this.errorType = errorType;
-            if (pt != null)
+            _errorType = errorType;
+
+            if (coordinate != null)
             {
-                this.pt = (ICoordinate) pt.Clone();
+                _coordinate = (ICoordinate) coordinate.Clone();
             }
         }
 
@@ -125,22 +127,22 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
         public ICoordinate Coordinate
         {
-            get { return pt; }
+            get { return _coordinate; }
         }
 
         public TopologyValidationErrors ErrorType
         {
-            get { return errorType; }
+            get { return _errorType; }
         }
 
         public String Message
         {
-            get { return errMsg[(Int32) errorType]; }
+            get { return _errMsg[(Int32) _errorType]; }
         }
 
-        public override string ToString()
+        public override String ToString()
         {
-            return Message + " at or near point " + pt;
+            return Message + " at or near point " + _coordinate;
         }
     }
 }

@@ -247,6 +247,15 @@
     <Compile Include="Operation\Valid\SimpleNestedRingTester.cs" />
     <Compile Include="Operation\Valid\SweeplineNestedRingTester.cs" />
     <Compile Include="Operation\Valid\TopologyValidationError.cs" />
+    <Compile Include="Planargraph\Algorithm\ConnectedSubgraphFinder.cs" />
+    <Compile Include="Planargraph\DirectedEdge.cs" />
+    <Compile Include="Planargraph\DirectedEdgeStar.cs" />
+    <Compile Include="Planargraph\Edge.cs" />
+    <Compile Include="Planargraph\GraphComponent.cs" />
+    <Compile Include="Planargraph\Node.cs" />
+    <Compile Include="Planargraph\NodeMap.cs" />
+    <Compile Include="Planargraph\PlanarGraph.cs" />
+    <Compile Include="Planargraph\Subgraph.cs" />
     <Compile Include="Precision\CommonBits.cs" />
     <Compile Include="Precision\CommonBitsOp.cs" />
     <Compile Include="Precision\CommonBitsRemover.cs" />
@@ -285,7 +294,6 @@
     <Compile Include="Utilities\RToolsUtil\Token.cs" />
     <Compile Include="Utilities\RToolsUtil\VerbosityLevel.cs" />
     <Compile Include="Utilities\Stopwatch.cs" />
-    <Compile Include="Utilities\GeoToolsStreamTokenizer.cs" />
     <Compile Include="Utilities\UniqueCoordinateArrayFilter.cs" />
   </ItemGroup>
   <ItemGroup>

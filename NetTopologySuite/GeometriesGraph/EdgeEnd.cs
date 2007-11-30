@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// Models the end of an edge incident on a node.
     /// </summary>
     /// <remarks>
-    /// EdgeEnds have a direction determined by the direction of the ray 
+    /// <see cref="EdgeEnd{TCoordinate}"/>s have a direction determined by the direction of the ray 
     /// from the initial point to the next point.
     /// EdgeEnds are <see cref="IComparable{EdgeEnd}"/> under the ordering
     /// "a has a greater angle with the x-axis than b".
@@ -23,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             IComputable<TCoordinate>, IConvertible
     {
         private Edge<TCoordinate> _edge = null;
-        private Label _label;
+        private Label? _label;
         private Node<TCoordinate> _origin; // the node this edge end originates at
         private TCoordinate _p0, _p1; // points of initial line segment
         private TCoordinate _direction; // the direction vector for this edge from its starting point
@@ -37,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public EdgeEnd(Edge<TCoordinate> edge, TCoordinate p0, TCoordinate p1) :
             this(edge, p0, p1, null) { }
 
-        public EdgeEnd(Edge<TCoordinate> edge, TCoordinate p0, TCoordinate p1, Label label)
+        public EdgeEnd(Edge<TCoordinate> edge, TCoordinate p0, TCoordinate p1, Label? label)
             : this(edge)
         {
             Init(p0, p1);
@@ -63,7 +63,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             protected set { _edge = value; }
         }
 
-        public Label Label
+        public Label? Label
         {
             get { return _label; }
             protected set { _label = value; }

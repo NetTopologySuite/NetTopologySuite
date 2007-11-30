@@ -1,18 +1,21 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GeoAPI.Coordinates;
+using GeoAPI.DataStructures.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using GisSharpBlog.NetTopologySuite.Planargraph.Algorithm;
 using GisSharpBlog.NetTopologySuite.Utilities;
-using Iesi_NTS.Collections.Generic;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 {
     /// <summary>
     /// <para>
-    /// Builds a sequence from a set of <see cref="LineString" />s,
+    /// Builds a sequence from a set of <see cref="ILineString" />s,
     /// so that they are ordered end to end.
     /// A sequence is a complete non-repeating list of the linear
     /// components of the input.  Each linestring is oriented
@@ -24,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     /// The input linestrings may form one or more connected sets.
     /// The input linestrings should be correctly noded, or the results may
     /// not be what is expected.
-    /// The output of this method is a single <see cref="MultiLineString" />,
+    /// The output of this method is a single <see cref="IMultiLineString" />,
     /// containing the ordered linestrings in the sequence.
     /// </para>
     /// <para>
@@ -47,12 +50,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     /// property will return <c>false</c>.
     /// </para>
     /// </remarks>
-    public class LineSequencer
+    public class LineSequencer<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
         /// <summary>
         /// Tests whether a <see cref="Geometry{TCoordinate}" /> is sequenced correctly.
-        /// <see cref="LineString" />s are trivially sequenced.
-        /// <see cref="MultiLineString" />s are checked for correct sequencing.
+        /// <see cref="ILineString" />s are trivially sequenced.
+        /// <see cref="IMultiLineString" />s are checked for correct sequencing.
         /// Otherwise, <c>IsSequenced</c> is defined
         /// to be <see langword="true"/> for geometries that are not lineal.
         /// </summary>
@@ -60,25 +65,26 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// <returns>
         /// <see langword="true"/> if the <see cref="Geometry{TCoordinate}" /> is sequenced or is not lineal.
         /// </returns>
-        public static Boolean IsSequenced(IGeometry geom)
+        public static Boolean IsSequenced(IGeometry<TCoordinate> geom)
         {
-            if (!(geom is IMultiLineString))
+            if (!(geom is IMultiLineString<TCoordinate>))
             {
                 return true;
             }
 
-            IMultiLineString mls = geom as IMultiLineString;
+            IMultiLineString<TCoordinate> mls = geom as IMultiLineString<TCoordinate>;
 
             // The nodes in all subgraphs which have been completely scanned
-            ISet<ICoordinate> prevSubgraphNodes = new SortedSet<ICoordinate>();
+            ISet<TCoordinate> prevSubgraphNodes = new SortedSet<TCoordinate>();
 
-            ICoordinate lastNode = null;
-            IList<ICoordinate> currNodes = new List<ICoordinate>();
-            for (Int32 i = 0; i < mls.NumGeometries; i++)
+            TCoordinate lastNode = default(TCoordinate);
+            List<TCoordinate> currNodes = new List<TCoordinate>();
+
+            for (Int32 i = 0; i < mls.Count; i++)
             {
-                ILineString line = (ILineString) mls.GetGeometryN(i);
-                ICoordinate startNode = line.GetCoordinateN(0);
-                ICoordinate endNode = line.GetCoordinateN(line.NumPoints - 1);
+                ILineString<TCoordinate> line = mls[i];
+                TCoordinate startNode = line.Coordinates[0];
+                TCoordinate endNode = line.Coordinates[line.PointCount - 1];
 
                 /*
                  * If this linestring is connected to a previous subgraph, geom is not sequenced
@@ -87,12 +93,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                 {
                     return false;
                 }
+
                 if (prevSubgraphNodes.Contains(endNode))
                 {
                     return false;
                 }
 
-                if (lastNode != null && startNode != lastNode)
+                if (!CoordinateHelper.IsEmpty(lastNode) && !lastNode.Equals(startNode))
                 {
                     // start new connected sequence
                     prevSubgraphNodes.AddAll(currNodes);
@@ -107,21 +114,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             return true;
         }
 
-        private LineMergeGraph graph = new LineMergeGraph();
+        private readonly LineMergeGraph _graph = new LineMergeGraph();
 
         // Initialize with default, in case no lines are input        
-        private IGeometryFactory factory = GeometryFactory.Default;
+        private IGeometryFactory<TCoordinate> factory = GeometryFactory<TCoordinate>.Default;
 
-        private IGeometry sequencedGeometry = null;
+        private IGeometry<TCoordinate> _sequencedGeometry = null;
 
-        private Int32 lineCount = 0;
-        private Boolean isRun = false;
-        private Boolean isSequenceable = false;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LineSequencer"/> class.
-        /// </summary>
-        public LineSequencer() {}
+        private Int32 _lineCount = 0;
+        private Boolean _isRun = false;
+        private Boolean _isSequenceable = false;
 
         /// <summary>
         /// Adds a <see cref="IEnumerable" /> of <see cref="Geometry{TCoordinate}" />s to be sequenced.
@@ -144,25 +146,28 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// the constituent linework will be extracted.
         /// </summary>
         /// <param name="geometry"></param>
-        public void Add(IGeometry geometry)
+        public void Add(IGeometry<TCoordinate> geometry)
         {
-            geometry.Apply(new GeometryComponentFilterImpl(this));
+            geometry.Apply(new GeometryComponentFilterImpl<TCoordinate>(this));
         }
 
         /// <summary>
-        /// A private implementation for <see cref="IGeometryComponentFilter" />
+        /// A private implementation for <see cref="IGeometryComponentFilter{TCoordinate}" />
         /// </summary>
-        internal class GeometryComponentFilterImpl : IGeometryComponentFilter
+        internal class GeometryComponentFilterImpl<TCoordinate> : IGeometryComponentFilter<TCoordinate>
+            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
+                                IComputable<TCoordinate>, IConvertible
         {
-            private LineSequencer sequencer = null;
+            private readonly LineSequencer<TCoordinate> _sequencer = null;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="Geometry{TCoordinate}ComponentFilterImpl"/> class.
+            /// Initializes a new instance of the 
+            /// <see cref="GeometryComponentFilterImpl{TCoordinate}"/> class.
             /// </summary>
             /// <param name="sequencer">The sequencer.</param>
-            internal GeometryComponentFilterImpl(LineSequencer sequencer)
+            internal GeometryComponentFilterImpl(LineSequencer<TCoordinate> sequencer)
             {
-                this.sequencer = sequencer;
+                _sequencer = sequencer;
             }
 
             /// <summary>
@@ -171,24 +176,24 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             /// <param name="component">
             /// A <see cref="Geometry{TCoordinate}" /> to which the filter is applied.
             /// </param>
-            public void Filter(IGeometry component)
+            public void Filter(IGeometry<TCoordinate> component)
             {
-                if (component is ILineString)
+                if (component is ILineString<TCoordinate>)
                 {
-                    sequencer.AddLine(component as ILineString);
+                    _sequencer.AddLine(component as ILineString<TCoordinate>);
                 }
             }
         }
 
-        internal void AddLine(ILineString lineString)
+        internal void AddLine(ILineString<TCoordinate> lineString)
         {
             if (factory == null)
             {
                 factory = lineString.Factory;
             }
 
-            graph.AddEdge(lineString);
-            lineCount++;
+            _graph.AddEdge(lineString);
+            _lineCount++;
         }
 
         /// <summary>
@@ -197,56 +202,60 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// <returns><see langword="true"/> if a valid sequence exists.</returns>
         public Boolean IsSequenceable()
         {
-            ComputeSequence();
-            return isSequenceable;
+            computeSequence();
+            return _isSequenceable;
         }
 
         /// <summary>
-        /// Returns the <see cref="LineString" /> or <see cref="MultiLineString" />
+        /// Returns the <see cref="LineString{TCoordinate}" /> or <see cref="MultiLineString{TCoordinate}" />
         /// built by the sequencing process, if one exists.
         /// </summary>
         /// <returns>The sequenced linestrings,
         /// or <see langword="null" /> if a valid sequence does not exist.</returns>
-        public IGeometry GetSequencedLineStrings()
+        public IGeometry<TCoordinate> GetSequencedLineStrings()
         {
-            ComputeSequence();
-            return sequencedGeometry;
+            computeSequence();
+            return _sequencedGeometry;
         }
 
-        private void ComputeSequence()
+        private void computeSequence()
         {
-            if (isRun)
+            if (_isRun)
             {
                 return;
             }
-            isRun = true;
 
-            IList sequences = FindSequences();
+            _isRun = true;
+
+            IList sequences = findSequences();
+
             if (sequences == null)
             {
                 return;
             }
 
-            sequencedGeometry = BuildSequencedGeometry(sequences);
-            isSequenceable = true;
+            _sequencedGeometry = buildSequencedGeometry(sequences);
+            _isSequenceable = true;
 
-            Int32 finalLineCount = sequencedGeometry.NumGeometries;
-            Assert.IsTrue(lineCount == finalLineCount, "Lines were missing from result");
-            Assert.IsTrue(sequencedGeometry is ILineString || sequencedGeometry is IMultiLineString,
+            Int32 finalLineCount = (_sequencedGeometry is IGeometryCollection)
+                ? ((IGeometryCollection)_sequencedGeometry).Count 
+                : 1;
+
+            Assert.IsTrue(_lineCount == finalLineCount, "Lines were missing from result");
+            Assert.IsTrue(_sequencedGeometry is ILineString || _sequencedGeometry is IMultiLineString,
                           "Result is not lineal");
         }
 
-        private IList FindSequences()
+        private IEnumerable findSequences()
         {
-            IList sequences = new ArrayList();
-            ConnectedSubgraphFinder csFinder = new ConnectedSubgraphFinder(graph);
+            ConnectedSubgraphFinder csFinder = new ConnectedSubgraphFinder(_graph);
             IList subgraphs = csFinder.GetConnectedSubgraphs();
+
             foreach (Subgraph subgraph in subgraphs)
             {
-                if (HasSequence(subgraph))
+                if (hasSequence(subgraph))
                 {
-                    IList seq = FindSequence(subgraph);
-                    sequences.Add(seq);
+                    IList seq = findSequence(subgraph);
                 }
                 else
                 {
@@ -254,8 +263,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                     return null;
                 }
             }
-
-            return sequences;
         }
 
         /// <summary>
@@ -264,14 +271,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// </summary>
         /// <param name="graph">The <see cref="Subgraph" /> containing the edges.</param>
         /// <returns><see langword="true"/> if a sequence exists.</returns>
-        private Boolean HasSequence(Subgraph graph)
+        private Boolean hasSequence(Subgraph graph)
         {
             Int32 oddDegreeCount = 0;
             IEnumerator i = graph.GetNodeEnumerator();
             while (i.MoveNext())
             {
-                Node node = (Node) i.Current;
-                if (node.Degree%2 == 1)
+                Node node = (Node)i.Current;
+                if (node.Degree % 2 == 1)
                 {
                     oddDegreeCount++;
                 }
@@ -279,32 +286,32 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             return oddDegreeCount <= 2;
         }
 
-        private IList FindSequence(Subgraph graph)
+        private IEnumerable findSequence(Subgraph graph)
         {
             GraphComponent.SetVisited(graph.GetEdgeEnumerator(), false);
 
-            Node startNode = FindLowestDegreeNode(graph);
+            Node startNode = findLowestDegreeNode(graph);
 
             // HACK: we need to reverse manually the order: maybe sorting error?
-            ArrayList list = (ArrayList) startNode.OutEdges.Edges;
+            ArrayList list = (ArrayList)startNode.OutEdges.Edges;
             list.Reverse();
 
             IEnumerator ie = list.GetEnumerator();
             ie.MoveNext();
 
-            DirectedEdge startDE = (DirectedEdge) ie.Current;
+            DirectedEdge startDE = (DirectedEdge)ie.Current;
             DirectedEdge startDESym = startDE.Sym;
 
             LinkedList<DirectedEdge> seq = new LinkedList<DirectedEdge>();
-            LinkedListNode<DirectedEdge> pos = AddReverseSubpath(startDESym, null, seq, false);
+            LinkedListNode<DirectedEdge> pos = addReverseSubpath(startDESym, null, seq, false);
             while (pos != null)
             {
                 DirectedEdge prev = pos.Value;
-                DirectedEdge unvisitedOutDE = FindUnvisitedBestOrientedDE(prev.FromNode);
+                DirectedEdge unvisitedOutDE = findUnvisitedBestOrientedDE(prev.FromNode);
                 if (unvisitedOutDE != null)
                 {
                     DirectedEdge toInsert = unvisitedOutDE.Sym;
-                    pos = AddReverseSubpath(toInsert, pos, seq, true);
+                    pos = addReverseSubpath(toInsert, pos, seq, true);
                 }
                 else
                 {
@@ -316,7 +323,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
              * At this point, we have a valid sequence of graph DirectedEdges, but it
              * is not necessarily appropriately oriented relative to the underlying geometry.
              */
-            IList orientedSeq = Orient(new ArrayList(seq));
+            IList orientedSeq = orient(new ArrayList(seq));
             return orientedSeq;
         }
 
@@ -329,13 +336,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// The <see cref="DirectedEdge" /> found, 
         /// or <see langword="null" /> if none were unvisited.
         /// </returns>
-        private static DirectedEdge FindUnvisitedBestOrientedDE(Node node)
+        private static DirectedEdge findUnvisitedBestOrientedDE(Node node)
         {
             DirectedEdge wellOrientedDE = null;
             DirectedEdge unvisitedDE = null;
             foreach (object obj in node.OutEdges)
             {
-                DirectedEdge de = (DirectedEdge) obj;
+                DirectedEdge de = (DirectedEdge)obj;
                 if (!de.Edge.IsVisited)
                 {
                     unvisitedDE = de;
@@ -352,7 +359,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             return unvisitedDE;
         }
 
-        private LinkedListNode<DirectedEdge> AddReverseSubpath(DirectedEdge de, LinkedListNode<DirectedEdge> pos,
+        private LinkedListNode<DirectedEdge> addReverseSubpath(DirectedEdge de, LinkedListNode<DirectedEdge> pos,
                                                                LinkedList<DirectedEdge> list, Boolean expectedClosed)
         {
             // trace an unvisited path *backwards* from this de
@@ -370,7 +377,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                 }
                 de.Edge.Visited = true;
                 fromNode = de.FromNode;
-                DirectedEdge unvisitedOutDE = FindUnvisitedBestOrientedDE(fromNode);
+                DirectedEdge unvisitedOutDE = findUnvisitedBestOrientedDE(fromNode);
                 // this must terminate, since we are continually marking edges as visited
                 if (unvisitedOutDE == null)
                 {
@@ -386,14 +393,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             return pos;
         }
 
-        private static Node FindLowestDegreeNode(Subgraph graph)
+        private static Node findLowestDegreeNode(Subgraph graph)
         {
             Int32 minDegree = Int32.MaxValue;
             Node minDegreeNode = null;
             IEnumerator i = graph.GetNodeEnumerator();
             while (i.MoveNext())
             {
-                Node node = (Node) i.Current;
+                Node node = (Node)i.Current;
                 if (minDegreeNode == null || node.Degree < minDegree)
                 {
                     minDegree = node.Degree;
@@ -421,10 +428,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// <returns>
         /// A <see cref="IList" /> of <see cref="DirectedEdge" />s oriented appropriately.
         /// </returns>
-        private IList Orient(IList seq)
+        private IList orient(IList seq)
         {
-            DirectedEdge startEdge = (DirectedEdge) seq[0];
-            DirectedEdge endEdge = (DirectedEdge) seq[seq.Count - 1];
+            DirectedEdge startEdge = (DirectedEdge)seq[0];
+            DirectedEdge endEdge = (DirectedEdge)seq[seq.Count - 1];
             Node startNode = startEdge.FromNode;
             Node endNode = endEdge.ToNode;
 
@@ -486,7 +493,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             IEnumerator i = seq.GetEnumerator();
             while (i.MoveNext())
             {
-                DirectedEdge de = (DirectedEdge) i.Current;
+                DirectedEdge de = (DirectedEdge)i.Current;
                 newSeq.AddFirst(de.Sym);
             }
             return new ArrayList(newSeq);
@@ -497,28 +504,29 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// representing the sequence.
         /// </summary>
         /// <param name="sequences">
-        /// A <see cref="IList" /> of <see cref="IList" />s of <see cref="DirectedEdge" />s
+        /// A set of sets of <see cref="DirectedEdge" />s
         /// with <see cref="LineMergeEdge" />s as their parent edges.
         /// </param>
         /// <returns>
         /// The sequenced geometry, or <see langword="null" /> if no sequence exists.
         /// </returns>
-        private IGeometry BuildSequencedGeometry(IList sequences)
+        private IGeometry<TCoordinate> buildSequencedGeometry(IEnumerable<IEnumerable<DirectedEdge>> sequences)
         {
             IList lines = new ArrayList();
 
             IEnumerator i1 = sequences.GetEnumerator();
             while (i1.MoveNext())
             {
-                IList seq = (IList) i1.Current;
+                IList seq = (IList)i1.Current;
                 IEnumerator i2 = seq.GetEnumerator();
+
                 while (i2.MoveNext())
                 {
-                    DirectedEdge de = (DirectedEdge) i2.Current;
-                    LineMergeEdge e = (LineMergeEdge) de.Edge;
+                    DirectedEdge de = (DirectedEdge)i2.Current;
+                    LineMergeEdge e = (LineMergeEdge)de.Edge;
                     ILineString line = e.Line;
-
                     ILineString lineToAdd = line;
+
                     if (!de.EdgeDirection && !line.IsClosed)
                     {
                         lineToAdd = Reverse(line);
@@ -530,16 +538,18 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 
             if (lines.Count == 0)
             {
-                return factory.CreateMultiLineString(new ILineString[] {});
+                return factory.CreateMultiLineString(new ILineString[] { });
             }
+
             return factory.BuildGeometry(lines);
         }
 
-        private static ILineString Reverse(ILineString line)
+        private static ILineString<TCoordinate> Reverse(ILineString<TCoordinate> line)
         {
-            ICoordinate[] pts = line.Coordinates;
-            Array.Reverse(pts);
-            return line.Factory.CreateLineString(pts);
+            return line.Reverse();
+            //ICoordinate[] pts = line.Coordinates;
+            //Array.Reverse(pts);
+            //return line.Factory.CreateLineString(pts);
         }
     }
 }
