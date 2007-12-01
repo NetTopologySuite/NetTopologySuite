@@ -1,53 +1,49 @@
 using System;
-using System.Collections;
-using System.Text;
-
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.Algorithm;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 {
     /// <summary>
     /// A ring of edges which may contain nodes of degree > 2.
-    /// A MaximalEdgeRing may represent two different spatial entities:
+    /// </summary>
+    /// <remarks>
+    /// A <see cref="MaximalEdgeRing{TCoordinate}"/> may represent two different spatial entities:
+    /// <list type="bullet">
+    /// <item>
+    /// <description>
     /// a single polygon possibly containing inversions (if the ring is oriented CW)
+    /// </description>
+    /// </item>
+    /// <item>
+    /// <description>
     /// a single hole possibly containing exversions (if the ring is oriented CCW)    
-    /// If the MaximalEdgeRing represents a polygon,
+    /// </description>
+    /// </item>
+    /// </list>
+    /// If the <see cref="MaximalEdgeRing{TCoordinate}"/> represents a polygon,
     /// the interior of the polygon is strongly connected.
     /// These are the form of rings used to define polygons under some spatial data models.
-    /// However, under the OGC SFS model, MinimalEdgeRings are required.
-    /// A MaximalEdgeRing can be converted to a list of MinimalEdgeRings using the
-    /// <c>BuildMinimalRings()</c> method.
-    /// </summary>
-    public class MaximalEdgeRing : EdgeRing
+    /// However, under the OGC SFS model, <see cref="MinimalEdgeRing{TCoordinate}"/>s are required.
+    /// A MaximalEdgeRing can be converted to a list of MinimalEdgeRings using
+    /// <see cref="BuildMinimalRings"/>.
+    /// </remarks>
+    public class MaximalEdgeRing<TCoordinate> : EdgeRing<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="start"></param>
-        /// <param name="geometryFactory"></param>
-        public MaximalEdgeRing(DirectedEdge start, IGeometryFactory geometryFactory) 
-            : base(start, geometryFactory) { }
+        public MaximalEdgeRing(DirectedEdge<TCoordinate> start, IGeometryFactory<TCoordinate> geometryFactory)
+            : base(start, geometryFactory) {}
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="de"></param>
-        /// <returns></returns>
-        public override DirectedEdge GetNext(DirectedEdge de)
+        public override DirectedEdge<TCoordinate> GetNext(DirectedEdge<TCoordinate> de)
         {
             return de.Next;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="de"></param>
-        /// <param name="er"></param>
-        public override void SetEdgeRing(DirectedEdge de, EdgeRing er)
+        public override void SetEdgeRing(DirectedEdge<TCoordinate> de, EdgeRing<TCoordinate> er)
         {
             de.EdgeRing = er;
         }
@@ -58,35 +54,29 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         public void LinkDirectedEdgesForMinimalEdgeRings()
         {
-            DirectedEdge de = startDe;
-            do 
+            DirectedEdge<TCoordinate> de = StartingEdge;
+
+            do
             {
-                Node node = de.Node;
-                ((DirectedEdgeStar) node.Edges).LinkMinimalDirectedEdges(this);
+                Node<TCoordinate> node = de.Node;
+                ((DirectedEdgeStar<TCoordinate>) node.Edges).LinkMinimalDirectedEdges(this);
                 de = de.Next;
-            }
-            while (de != startDe);
+            } while (de != StartingEdge);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public IList BuildMinimalRings()
+        public IEnumerable<MinimalEdgeRing<TCoordinate>> BuildMinimalRings()
         {
-            IList minEdgeRings = new ArrayList();
-            DirectedEdge de = startDe;
-            do 
+            DirectedEdge<TCoordinate> de = StartingEdge;
+
+            do
             {
-                if (de.MinEdgeRing == null) 
+                if (de.MinEdgeRing == null)
                 {
-                    EdgeRing minEr = new MinimalEdgeRing(de, geometryFactory);
-                    minEdgeRings.Add(minEr);
+                    yield return new MinimalEdgeRing<TCoordinate>(de, GeometryFactory);
                 }
+
                 de = de.Next;
-            } 
-            while (de != startDe);
-            return minEdgeRings;
+            } while (de != StartingEdge);
         }
     }
 }

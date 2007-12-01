@@ -12,17 +12,17 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// from the index.
     /// </summary>
     public class TaggedLineSegment<TCoordinate> : LineSegment<TCoordinate>
-         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                             IComputable<TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
-        private IGeometry<TCoordinate> parent;
-        private Int32 index;
+        private readonly IGeometry<TCoordinate> _parent;
+        private readonly Int32 _index;
 
         public TaggedLineSegment(TCoordinate p0, TCoordinate p1, IGeometry<TCoordinate> parent, Int32 index)
             : base(p0, p1)
         {
-            this.parent = parent;
-            this.index = index;
+            _parent = parent;
+            _index = index;
         }
 
         public TaggedLineSegment(TCoordinate p0, TCoordinate p1)
@@ -30,12 +30,12 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
 
         public IGeometry Parent
         {
-            get { return parent; }
+            get { return _parent; }
         }
 
         public Int32 Index
         {
-            get { return index; }
+            get { return _index; }
         }
     }
 }

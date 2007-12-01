@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
@@ -40,8 +42,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 
         public static Boolean IsResultOfOp(Label label, SpatialFunctions opCode)
         {
-            Locations loc0 = label.GetLocation(0);
-            Locations loc1 = label.GetLocation(1);
+            Locations loc0 = label[0];
+            Locations loc1 = label[1];
             return IsResultOfOp(loc0, loc1, opCode);
         }
 
@@ -77,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             }
         }
 
-        private readonly PointLocator _pointtLocator = new PointLocator();
+        private readonly PointLocator<TCoordinate> _pointtLocator = new PointLocator<TCoordinate>();
         private readonly IGeometryFactory<TCoordinate> _geometryFactory;
         private IGeometry<TCoordinate> _resultGeometry;
 
@@ -112,6 +114,53 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             get { return _graph; }
         }
 
+        /// <summary>
+        /// This method is used to decide if a point node should be included in the result or not.
+        /// </summary>
+        /// <returns>
+        /// <see langword="true"/> if the coord point is covered by a result Line or Area point.
+        /// </returns>
+        public Boolean IsCoveredByLineOrArea(TCoordinate coord)
+        {
+            IEnumerable<IGeometry<TCoordinate>> geometries;
+
+            geometries = EnumerableConverter.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(_resultLineList);
+
+            if (isCovered(coord, geometries))
+            {
+                return true;
+            }
+
+            geometries = EnumerableConverter.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(_resultPolyList);
+
+            if (isCovered(coord, geometries))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// This method is used to decide if an 
+        /// L edge should be included in the result or not.
+        /// </summary>
+        /// <returns>
+        /// <see langword="true"/> if the coord point is covered by a result Area point.
+        /// </returns>
+        public Boolean IsCoveredByArea(TCoordinate coord)
+        {
+            IEnumerable<IGeometry<TCoordinate>> geometries 
+                = EnumerableConverter.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(_resultPolyList);
+
+            if (isCovered(coord, geometries))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         private void computeOverlay(SpatialFunctions opCode)
         {
             // copy points from input Geometries.
@@ -137,9 +186,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             ComputeLabelsFromDepths();
             ReplaceCollapsedEdges();
 
-            _graph.AddEdges(_edgeList.Edges);
-            Computelabeling();
-            LabelIncompleteNodes();
+            _graph.AddEdges(_edgeList);
+            computeLabeling();
+            labelIncompleteNodes();
 
             /*
             * The ordering of building the result Geometries is important.
@@ -147,9 +196,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             * This is so that lines which are covered by areas are not included
             * explicitly, and similarly for points.
             */
-            FindResultAreaEdges(opCode);
-            CancelDuplicateResultEdges();
-            PolygonBuilder polyBuilder = new PolygonBuilder(_geometryFactory);
+            findResultAreaEdges(opCode);
+            cancelDuplicateResultEdges();
+            PolygonBuilder<TCoordinate> polyBuilder = new PolygonBuilder<TCoordinate>(_geometryFactory);
             polyBuilder.Add(_graph);
             _resultPolyList = polyBuilder.Polygons;
 
@@ -160,7 +209,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             _resultPointList = pointBuilder.Build(opCode);
 
             // gather the results from all calculations into a single Geometry for the result set
-            _resultGeometry = ComputeGeometry(_resultPointList, _resultLineList, _resultPolyList);
+            _resultGeometry = computeGeometry(_resultPointList, _resultLineList, _resultPolyList);
         }
 
         private void InsertUniqueEdges(IList edges)
@@ -338,16 +387,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// only if they
         /// are incident on a node which has edges for both Geometries
         /// </summary>
-        private void Computelabeling()
+        private void computeLabeling()
         {
             IEnumerator nodeit = _graph.Nodes.GetEnumerator();
             while (nodeit.MoveNext())
             {
                 Node node = (Node) nodeit.Current;
-                node.Edges.Computelabeling(arg);
+                node.Edges.ComputeLabeling(arg);
             }
-            MergeSymLabels();
-            UpdateNodelabeling();
+            mergeSymLabels();
+            updateNodeLabeling();
         }
 
         /// <summary> 
@@ -356,7 +405,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// Geometry.  However, the sym dirEdge may have a labeling for the other
         /// Geometry, so merge the two labels.
         /// </summary>
-        private void MergeSymLabels()
+        private void mergeSymLabels()
         {
             IEnumerator nodeit = _graph.Nodes.GetEnumerator();
             while (nodeit.MoveNext())
@@ -366,18 +415,19 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             }
         }
 
-        private void UpdateNodelabeling()
+        private void updateNodeLabeling()
         {
             // update the labels for nodes
             // The label for a node is updated from the edges incident on it
             // (Note that a node may have already been labeled
             // because it is a point in one of the input geometries)
-            IEnumerator nodeit = _graph.Nodes.GetEnumerator();
-            while (nodeit.MoveNext())
+            foreach (Node<TCoordinate> node in _graph.Nodes)
             {
-                Node node = (Node) nodeit.Current;
-                Label lbl = ((DirectedEdgeStar) node.Edges).Label;
-                node.Label.Merge(lbl);
+                DirectedEdgeStar<TCoordinate> edges = node.Edges as DirectedEdgeStar<TCoordinate>;
+                Debug.Assert(edges != null);
+                Label lbl = edges.Label;
+                Debug.Assert(node.Label.HasValue);
+                node.Label = node.Label.Value.Merge(lbl);
             }
         }
 
@@ -394,33 +444,36 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// When each node labeling is completed, the labeling of the incident
         /// edges is updated, to complete their labeling as well.
         /// </summary>
-        private void LabelIncompleteNodes()
+        private void labelIncompleteNodes()
         {
-            IEnumerator ni = _graph.Nodes.GetEnumerator();
-            while (ni.MoveNext())
+            foreach (Node<TCoordinate> node in _graph.Nodes)
             {
-                Node n = (Node) ni.Current;
-                Label label = n.Label;
-                if (n.IsIsolated)
+                Debug.Assert(node.Label.HasValue);
+                Label label = node.Label.Value;
+
+                if (node.IsIsolated)
                 {
                     if (label.IsNull(0))
                     {
-                        LabelIncompleteNode(n, 0);
+                        labelIncompleteNode(node, 0);
                     }
                     else
                     {
-                        LabelIncompleteNode(n, 1);
+                        labelIncompleteNode(node, 1);
                     }
                 }
+
                 // now update the labeling for the DirectedEdges incident on this node
-                ((DirectedEdgeStar) n.Edges).Updatelabeling(label);
+                DirectedEdgeStar<TCoordinate> edges = node.Edges as DirectedEdgeStar<TCoordinate>;
+                Debug.Assert(edges != null);
+                edges.UpdateLabeling(label);
             }
         }
 
         /// <summary>
         /// Label an isolated node with its relationship to the target point.
         /// </summary>
-        private void LabelIncompleteNode(Node n, Int32 targetIndex)
+        private void labelIncompleteNode(Node<TCoordinate> n, Int32 targetIndex)
         {
             Locations loc = _pointtLocator.Locate(n.Coordinate, arg[targetIndex].Geometry);
             n.Label.SetLocation(targetIndex, loc);
@@ -434,16 +487,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// Interior Area edges are the result of dimensional collapses.
         /// They do not form part of the result area boundary.
         /// </summary>
-        private void FindResultAreaEdges(SpatialFunctions opCode)
+        private void findResultAreaEdges(SpatialFunctions opCode)
         {
-            IEnumerator it = _graph.EdgeEnds.GetEnumerator();
-            while (it.MoveNext())
+            foreach (DirectedEdge<TCoordinate> de in _graph.EdgeEnds)
             {
-                DirectedEdge de = (DirectedEdge) it.Current;
                 // mark all dirEdges with the appropriate label
-                Label label = de.Label;
+                Debug.Assert(de.Label.HasValue);
+                Label label = de.Label.Value;
+
                 if (label.IsArea() && !de.IsInteriorAreaEdge &&
-                    IsResultOfOp(label.GetLocation(0, Positions.Right), label.GetLocation(1, Positions.Right), opCode))
+                    IsResultOfOp(label[0, Positions.Right], label[1, Positions.Right], opCode))
                 {
                     de.InResult = true;
                 }
@@ -451,18 +504,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         }
 
         /// <summary>
-        /// If both a dirEdge and its sym are marked as being in the result, cancel
-        /// them out.
+        /// If both a <see cref="DirectedEdge{TCoordinate}"/> and its 
+        /// sym are marked as being in the result, cancel them out.
         /// </summary>
-        private void CancelDuplicateResultEdges()
+        private void cancelDuplicateResultEdges()
         {
             // remove any dirEdges whose sym is also included
             // (they "cancel each other out")
-            IEnumerator it = _graph.EdgeEnds.GetEnumerator();
-            while (it.MoveNext())
+            foreach (DirectedEdge<TCoordinate> de in _graph.EdgeEnds)
             {
-                DirectedEdge de = (DirectedEdge) it.Current;
-                DirectedEdge sym = de.Sym;
+                DirectedEdge<TCoordinate> sym = de.Sym;
+
                 if (de.IsInResult && sym.IsInResult)
                 {
                     de.InResult = false;
@@ -471,76 +523,34 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             }
         }
 
-        /// <summary>
-        /// This method is used to decide if a point node should be included in the result or not.
-        /// </summary>
-        /// <returns><see langword="true"/> if the coord point is covered by a result Line or Area point.</returns>
-        public Boolean IsCoveredByLA(ICoordinate coord)
-        {
-            if (IsCovered(coord, _resultLineList))
-            {
-                return true;
-            }
-            if (IsCovered(coord, _resultPolyList))
-            {
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// This method is used to decide if an L edge should be included in the result or not.
-        /// </summary>
-        /// <returns><see langword="true"/> if the coord point is covered by a result Area point.</returns>
-        public Boolean IsCoveredByA(ICoordinate coord)
-        {
-            if (IsCovered(coord, _resultPolyList))
-            {
-                return true;
-            }
-            return false;
-        }
-
         /// <returns>
         /// <see langword="true"/> if the coord is located in the interior or boundary of
         /// a point in the list.
         /// </returns>
-        private Boolean IsCovered(ICoordinate coord, IList geomList)
+        private Boolean isCovered(TCoordinate coord, IEnumerable<IGeometry<TCoordinate>> geometries)
         {
-            IEnumerator it = geomList.GetEnumerator();
-            while (it.MoveNext())
+            foreach (IGeometry<TCoordinate> geometry in geometries)
             {
-                IGeometry geom = (IGeometry) it.Current;
-                Locations loc = _pointtLocator.Locate(coord, geom);
+                Locations loc = _pointtLocator.Locate(coord, geometry);
+
                 if (loc != Locations.Exterior)
                 {
                     return true;
                 }
             }
+
             return false;
         }
 
-        private IGeometry ComputeGeometry(IList resultPointList, IList resultLineList, IList resultPolyList)
+        private IGeometry computeGeometry(IEnumerable<IPoint<TCoordinate>> points,
+            IEnumerable<ILineString<TCoordinate>> lines, IEnumerable<IPolygon<TCoordinate>> polys)
         {
-            ArrayList geomList = new ArrayList();
-            // element geometries of the result are always in the order Point,Curve,A
-            //geomList.addAll(resultPointList);
-            foreach (object obj in resultPointList)
-            {
-                geomList.Add(obj);
-            }
+            List<IGeometry<TCoordinate>> geomList = new List<IGeometry<TCoordinate>>();
 
-            //geomList.addAll(resultLineList);
-            foreach (object obj in resultLineList)
-            {
-                geomList.Add(obj);
-            }
-
-            //geomList.addAll(resultPolyList);
-            foreach (object obj in resultPolyList)
-            {
-                geomList.Add(obj);
-            }
+            // element geometries of the result are always in the order Point, Curve, Surface
+            geomList.AddRange(EnumerableConverter.Upcast<IGeometry<TCoordinate>, IPoint<TCoordinate>>(points));
+            geomList.AddRange(EnumerableConverter.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(lines));
+            geomList.AddRange(EnumerableConverter.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(polys));
 
             // build the most specific point possible
             return _geometryFactory.BuildGeometry(geomList);

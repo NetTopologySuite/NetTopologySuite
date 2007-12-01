@@ -1,158 +1,106 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
+using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Simplify
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public class TaggedLineString
+    public class TaggedLineString<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
-        private ILineString parentLine;
-        private TaggedLineSegment[] segs;
-        private IList resultSegs = new ArrayList();
-        private Int32 minimumSize;
+        private readonly ILineString<TCoordinate> _parentLine;
+        private readonly List<TaggedLineSegment<TCoordinate>> _segs;
+        private readonly List<LineSegment<TCoordinate>> _resultSegs = new List<LineSegment<TCoordinate>>();
+        private readonly Int32 _minimumSize;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="parentLine"></param>
-        public TaggedLineString(ILineString parentLine) : this(parentLine, 2) {}
+        public TaggedLineString(ILineString<TCoordinate> parentLine) : this(parentLine, 2) {}
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="parentLine"></param>
-        /// <param name="minimumSize"></param>
-        public TaggedLineString(ILineString parentLine, Int32 minimumSize)
+        public TaggedLineString(ILineString<TCoordinate> parentLine, Int32 minimumSize)
         {
-            this.parentLine = parentLine;
-            this.minimumSize = minimumSize;
-            Init();
+            _parentLine = parentLine;
+            _minimumSize = minimumSize;
+
+            Int32 index = 0;
+
+            foreach (Pair<TCoordinate> pair in Slice.GetOverlappingPairs(_parentLine.Coordinates))
+            {
+                TaggedLineSegment<TCoordinate> seg = new TaggedLineSegment<TCoordinate>(
+                    pair.First, pair.Second, _parentLine, index);
+
+                _segs.Add(seg);
+
+                index += 1;
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public Int32 MinimumSize
         {
-            get { return minimumSize; }
+            get { return _minimumSize; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public ILineString Parent
         {
-            get { return parentLine; }
+            get { return _parentLine; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public ICoordinate[] ParentCoordinates
+        public IList<TCoordinate> ParentCoordinates
         {
-            get { return parentLine.Coordinates; }
+            get { return _parentLine.Coordinates; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public ICoordinate[] ResultCoordinates
+        public IEnumerable<TCoordinate> ResultCoordinates
         {
-            get { return ExtractCoordinates(resultSegs); }
+            get { return extractCoordinates(_resultSegs); }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public Int32 ResultSize
         {
             get
             {
-                Int32 resultSegsSize = resultSegs.Count;
+                Int32 resultSegsSize = _resultSegs.Count;
                 return resultSegsSize == 0 ? 0 : resultSegsSize + 1;
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        public TaggedLineSegment GetSegment(Int32 i)
+        public IList<TaggedLineSegment<TCoordinate>> Segments
         {
-            return segs[i];
+            get { return _segs.AsReadOnly(); }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private void Init()
+        public void AddToResult(LineSegment<TCoordinate> seg)
         {
-            ICoordinate[] pts = parentLine.Coordinates;
-            segs = new TaggedLineSegment[pts.Length - 1];
-            for (Int32 i = 0; i < pts.Length - 1; i++)
+            _resultSegs.Add(seg);
+        }
+
+        public ILineString<TCoordinate> AsLineString()
+        {
+            return _parentLine.Factory.CreateLineString(ResultCoordinates);
+        }
+
+        public ILinearRing<TCoordinate> AsLinearRing()
+        {
+            return _parentLine.Factory.CreateLinearRing(ResultCoordinates);
+        }
+
+        private static IEnumerable<TCoordinate> extractCoordinates(IEnumerable<LineSegment<TCoordinate>> segs)
+        {
+            LineSegment<TCoordinate> lastSegment = null;
+
+            foreach (LineSegment<TCoordinate> segment in segs)
             {
-                TaggedLineSegment seg = new TaggedLineSegment(pts[i], pts[i + 1], parentLine, i);
-                segs[i] = seg;
+                yield return segment.P0;
+                lastSegment = segment;
             }
-        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public TaggedLineSegment[] Segments
-        {
-            get { return segs; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="seg"></param>
-        public void AddToResult(LineSegment seg)
-        {
-            resultSegs.Add(seg);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public ILineString AsLineString()
-        {
-            return parentLine.Factory.CreateLineString(ExtractCoordinates(resultSegs));
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public ILinearRing AsLinearRing()
-        {
-            return parentLine.Factory.CreateLinearRing(ExtractCoordinates(resultSegs));
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="segs"></param>
-        /// <returns></returns>
-        private static ICoordinate[] ExtractCoordinates(IList segs)
-        {
-            ICoordinate[] pts = new ICoordinate[segs.Count + 1];
-            LineSegment seg = null;
-            for (Int32 i = 0; i < segs.Count; i++)
+            if (lastSegment != null)
             {
-                seg = (LineSegment) segs[i];
-                pts[i] = seg.P0;
+                yield return lastSegment.P1;
             }
-            // add last point
-            pts[pts.Length - 1] = seg.P1;
-            return pts;
         }
     }
 }

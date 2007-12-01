@@ -1,47 +1,43 @@
 using System;
 using System.Collections.Generic;
+using GeoAPI.Coordinates;
+using GeoAPI.CoordinateSystems.Transformations;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
 {
     /// <summary>
     /// Helper class for transforming <see cref="Geometry{TCoordinate}" /> objects.
     /// </summary>
-    public class GeometryTransform
+    public class GeometryTransform<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
+                            IComputable<TCoordinate>, IConvertible
     {
-        private static IPoint ToNTS(Double x, Double y)
-        {
-            return new Point(x, y);
-        }
+        //private static IPoint<TCoordinate> ToNTS(Double x, Double y)
+        //{
+        //    return new Point<TCoordinate>(x, y);
+        //}
 
-        private static Double[] ToArray(Double x, Double y)
-        {
-            return new Double[] {x, y,};
-        }
+        //private static Double[] ToArray(Double x, Double y)
+        //{
+        //    return new Double[] {x, y,};
+        //}
 
         /// <summary>
         /// Transforms a <see cref="IExtents" /> object.
         /// </summary>
-        public static IExtents TransformBox(IExtents box, IMathTransform transform)
+        public static IExtents<TCoordinate> TransformBox(IExtents<TCoordinate> box, IMathTransform<TCoordinate> transform)
         {
             if (box == null)
             {
                 return null;
             }
 
-            Double[][] corners = new Double[4][];
-            corners[0] = transform.Transform(ToArray(box.MinX, box.MinY)); //LL
-            corners[1] = transform.Transform(ToArray(box.MaxX, box.MaxY)); //UR
-            corners[2] = transform.Transform(ToArray(box.MinX, box.MaxY)); //UL
-            corners[3] = transform.Transform(ToArray(box.MaxX, box.MinY)); //LR
-
-            IExtents result = new Extents();
-
-            foreach (Double[] p in corners)
-            {
-                result.ExpandToInclude(p[0], p[1]);
-            }
+            IExtents<TCoordinate> result = new Extents<TCoordinate>(
+                transform.Transform(box.Min),
+                transform.Transform(box.Max));
 
             return result;
         }
@@ -49,35 +45,35 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
         /// <summary>
         /// Transforms a <see cref="Geometry{TCoordinate}" /> object.
         /// </summary>
-        public static IGeometry TransformGeometry(IGeometry g, IMathTransform transform)
+        public static IGeometry<TCoordinate> TransformGeometry(IGeometry<TCoordinate> g, IMathTransform<TCoordinate> transform)
         {
             if (g == null)
             {
                 return null;
             }
-            else if (g is IPoint)
+            else if (g is IPoint<TCoordinate>)
             {
-                return TransformPoint(g as IPoint, transform);
+                return TransformPoint(g as IPoint<TCoordinate>, transform);
             }
-            else if (g is ILineString)
+            else if (g is ILineString<TCoordinate>)
             {
-                return TransformLineString(g as ILineString, transform);
+                return TransformLineString(g as ILineString<TCoordinate>, transform);
             }
-            else if (g is IPolygon)
+            else if (g is IPolygon<TCoordinate>)
             {
-                return TransformPolygon(g as IPolygon, transform);
+                return TransformPolygon(g as IPolygon<TCoordinate>, transform);
             }
-            else if (g is IMultiPoint)
+            else if (g is IMultiPoint<TCoordinate>)
             {
-                return TransformMultiPoint(g as IMultiPoint, transform);
+                return TransformMultiPoint(g as IMultiPoint<TCoordinate>, transform);
             }
-            else if (g is IMultiLineString)
+            else if (g is IMultiLineString<TCoordinate>)
             {
-                return TransformMultiLineString(g as IMultiLineString, transform);
+                return TransformMultiLineString(g as IMultiLineString<TCoordinate>, transform);
             }
-            else if (g is IMultiPolygon)
+            else if (g is IMultiPolygon<TCoordinate>)
             {
-                return TransformMultiPolygon(g as IMultiPolygon, transform);
+                return TransformMultiPolygon(g as IMultiPolygon<TCoordinate>, transform);
             }
             else
             {
@@ -88,12 +84,12 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
         /// <summary>
         /// Transforms a <see cref="Point" /> object.
         /// </summary>
-        public static IPoint TransformPoint(IPoint p, IMathTransform transform)
+        public static IPoint<TCoordinate> TransformPoint(IPoint<TCoordinate> p, IMathTransform<TCoordinate> transform)
         {
             try
             {
-                Double[] point = transform.Transform(ToArray(p.X, p.Y));
-                return ToNTS(point[0], point[1]);
+                TCoordinate point = transform.Transform(p.Coordinate);
+                return new Point<TCoordinate>(point);
             }
             catch
             {
@@ -104,12 +100,12 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
         /// <summary>
         /// Transforms a <see cref="LineString" /> object.
         /// </summary>
-        public static ILineString TransformLineString(ILineString l, IMathTransform transform)
+        public static ILineString<TCoordinate> TransformLineString(ILineString<TCoordinate> l, IMathTransform<TCoordinate> transform)
         {
             try
             {
                 List<ICoordinate> coords = ExtractCoordinates(l, transform);
-                return new LineString(coords.ToArray());
+                return new LineString<TCoordinate>(coords.ToArray());
             }
             catch
             {
@@ -120,12 +116,12 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
         /// <summary>
         /// Transforms a <see cref="LinearRing" /> object.
         /// </summary>
-        public static ILinearRing TransformLinearRing(ILinearRing r, IMathTransform transform)
+        public static ILinearRing<TCoordinate> TransformLinearRing(ILinearRing<TCoordinate> r, IMathTransform<TCoordinate> transform)
         {
             try
             {
-                List<ICoordinate> coords = ExtractCoordinates(r, transform);
-                return new LinearRing(coords.ToArray());
+                IEnumerable<TCoordinate> coords = ExtractCoordinates(r, transform);
+                return new LinearRing<TCoordinate>(coords);
             }
             catch
             {
@@ -133,56 +129,40 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
             }
         }
 
-        private static List<ICoordinate> ExtractCoordinates(ILineString ls, IMathTransform transform)
+        private static IEnumerable<TCoordinate> ExtractCoordinates(IGeometry<TCoordinate> g, IMathTransform<TCoordinate> transform)
         {
-            List<Double[]> points = new List<Double[]>(ls.NumPoints);
-            foreach (ICoordinate c in ls.Coordinates)
-            {
-                points.Add(ToArray(c.X, c.Y));
-            }
-            points = transform.TransformList(points);
-            List<ICoordinate> coords = new List<ICoordinate>(points.Count);
-            foreach (Double[] p in points)
-            {
-                coords.Add(new Coordinate(p[0], p[1]));
-            }
-            return coords;
+            return transform.Transform(g.Coordinates);
         }
 
         /// <summary>
         /// Transforms a <see cref="Polygon" /> object.
         /// </summary>
-        public static IPolygon TransformPolygon(IPolygon p, IMathTransform transform)
+        public static IPolygon<TCoordinate> TransformPolygon(IPolygon<TCoordinate> p, IMathTransform<TCoordinate> transform)
         {
-            List<ILinearRing> rings = new List<ILinearRing>(p.InteriorRings.Length);
-            for (Int32 i = 0; i < p.InteriorRings.Length; i++)
+            List<ILinearRing<TCoordinate>> rings = new List<ILinearRing<TCoordinate>>(p.InteriorRings.Count);
+
+            foreach (ILinearRing<TCoordinate> hole in p.InteriorRings)
             {
-                rings.Add(TransformLinearRing((ILinearRing) p.InteriorRings[i], transform));
+                rings.Add(hole);
             }
-            return new Polygon(TransformLinearRing((ILinearRing) p.ExteriorRing, transform), rings.ToArray());
+
+            ILinearRing<TCoordinate> shell = TransformLinearRing(p.ExteriorRing as ILinearRing<TCoordinate>, transform);
+            return new Polygon<TCoordinate>(shell, rings);
         }
 
         /// <summary>
         /// Transforms a <see cref="MultiPoint" /> object.
         /// </summary>
-        public static IMultiPoint TransformMultiPoint(IMultiPoint points, IMathTransform transform)
+        public static IMultiPoint<TCoordinate> TransformMultiPoint(IMultiPoint<TCoordinate> points, IMathTransform<TCoordinate> transform)
         {
-            List<Double[]> pointList = new List<Double[]>(points.Geometries.Length);
+            List<TCoordinate> pointList = new List<TCoordinate>(points.Count);
 
-            foreach (IPoint p in points.Geometries)
+            foreach (IPoint<TCoordinate> p in points)
             {
-                pointList.Add(ToArray(p.X, p.Y));
+                pointList.Add(p.Coordinate);
             }
 
-            pointList = transform.TransformList(pointList);
-            IPoint[] array = new IPoint[pointList.Count];
-
-            for (Int32 i = 0; i < pointList.Count; i++)
-            {
-                array[i] = ToNTS(pointList[i][0], pointList[i][1]);
-            }
-
-            return new MultiPoint(array);
+            return new MultiPoint(transform.Transform(pointList));
         }
 
         /// <summary>

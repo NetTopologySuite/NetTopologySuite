@@ -1,17 +1,21 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 {
     /// <summary>
     /// An iterator over the components and coordinates of a linear geometry
-    /// (<see cref="LineString" />s and <see cref="MultiLineString" />s.
+    /// (<see cref="ILineString{TCoordinate}" />s 
+    /// and <see cref="IMultiLineString{TCoordinate}" />s.
     /// </summary>
-    public class LinearIterator : IEnumerator<LinearIterator.LinearElement>,
-                                  IEnumerable<LinearIterator.LinearElement>
+    public class LinearIterator<TCoordinate> : IEnumerable<LinearIterator<TCoordinate>.LinearElement>
+            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                IComputable<TCoordinate>, IConvertible
     {
         private static Int32 SegmentEndVertexIndex(LinearLocation loc)
         {
@@ -22,39 +26,39 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             return loc.SegmentIndex;
         }
 
-        private IGeometry linear;
-        private Int32 numLines;
+        private readonly IGeometry<TCoordinate> _linear;
+        private Int32 _lineCount;
 
         /*
          * Invariant: currentLine <> null if the iterator is pointing at a valid coordinate
          */
-        private ILineString currentLine;
+        private ILineString<TCoordinate> _currentLine;
 
-        private Int32 componentIndex = 0;
-        private Int32 vertexIndex = 0;
+        private Int32 _componentIndex = 0;
+        private Int32 _vertexIndex = 0;
 
         // Used for avoid the first call to Next() in MoveNext()
-        private Boolean atStart;
+        private Boolean _atStart;
 
         // Returned by Ienumerator.Current
-        private LinearElement current = null;
+        private LinearElement _current = null;
 
         // Cached start values - for Reset() call
-        private readonly Int32 startComponentIndex = 0;
-        private readonly Int32 startVertexIndex = 0;
+        private readonly Int32 _startComponentIndex = 0;
+        private readonly Int32 _startVertexIndex = 0;
 
         /// <summary>
         /// Creates an iterator initialized to the start of a linear <see cref="Geometry{TCoordinate}" />.
         /// </summary>
         /// <param name="linear">The linear geometry to iterate over.</param>
-        public LinearIterator(IGeometry linear) : this(linear, 0, 0) {}
+        public LinearIterator(IGeometry<TCoordinate> linear) : this(linear, 0, 0) { }
 
         /// <summary>
         /// Creates an iterator starting at a <see cref="LinearLocation" /> on a linear <see cref="Geometry{TCoordinate}" />.
         /// </summary>
         /// <param name="linear">The linear geometry to iterate over.</param>
         /// <param name="start">The location to start at.</param>
-        public LinearIterator(IGeometry linear, LinearLocation start) :
+        public LinearIterator(IGeometry<TCoordinate> linear, LinearLocation start) :
             this(linear, start.ComponentIndex, SegmentEndVertexIndex(start)) {}
 
         /// <summary>
@@ -64,25 +68,26 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="linear">The linear geometry to iterate over.</param>
         /// <param name="componentIndex">The component to start at.</param>
         /// <param name="vertexIndex">The vertex to start at.</param>
-        public LinearIterator(IGeometry linear, Int32 componentIndex, Int32 vertexIndex)
+        public LinearIterator(IGeometry<TCoordinate> linear, Int32 componentIndex, Int32 vertexIndex)
         {
-            startComponentIndex = componentIndex;
-            startVertexIndex = vertexIndex;
+            _startComponentIndex = componentIndex;
+            _startVertexIndex = vertexIndex;
 
-            this.linear = linear;
+            this._linear = linear;
             Reset();
 
-            current = new LinearElement(this);
+            _current = new LinearElement(this);
         }
 
         private void LoadCurrentLine()
         {
-            if (componentIndex >= numLines)
+            if (_componentIndex >= _lineCount)
             {
-                currentLine = null;
+                _currentLine = null;
                 return;
             }
-            currentLine = (ILineString) linear.GetGeometryN(componentIndex);
+
+            _currentLine = (ILineString) _linear.GetGeometryN(_componentIndex);
         }
 
         /// <summary>
@@ -93,14 +98,16 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <returns><see langword="true"/> if there are more vertices to scan.</returns>
         protected Boolean HasNext()
         {
-            if (componentIndex >= numLines)
+            if (_componentIndex >= _lineCount)
             {
                 return false;
             }
-            if ((componentIndex == numLines - 1) && (vertexIndex >= currentLine.NumPoints))
+
+            if ((_componentIndex == _lineCount - 1) && (_vertexIndex >= _currentLine.PointCount))
             {
                 return false;
             }
+            
             return true;
         }
 
@@ -114,12 +121,13 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
                 return;
             }
 
-            vertexIndex++;
-            if (vertexIndex >= currentLine.NumPoints)
+            _vertexIndex++;
+
+            if (_vertexIndex >= _currentLine.PointCount)
             {
-                componentIndex++;
+                _componentIndex++;
                 LoadCurrentLine();
-                vertexIndex = 0;
+                _vertexIndex = 0;
             }
         }
 
@@ -131,14 +139,16 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         {
             get
             {
-                if (componentIndex >= numLines)
+                if (_componentIndex >= _lineCount)
                 {
                     return false;
                 }
-                if (vertexIndex < currentLine.NumPoints - 1)
+
+                if (_vertexIndex < _currentLine.PointCount - 1)
                 {
                     return false;
                 }
+                
                 return true;
             }
         }
@@ -148,7 +158,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         private Int32 ComponentIndex
         {
-            get { return componentIndex; }
+            get { return _componentIndex; }
         }
 
         /// <summary>
@@ -156,24 +166,24 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         private Int32 VertexIndex
         {
-            get { return vertexIndex; }
+            get { return _vertexIndex; }
         }
 
         /// <summary>
         /// Gets the <see cref="LineString" /> component the iterator is current at.
         /// </summary>
-        private ILineString Line
+        private ILineString<TCoordinate> Line
         {
-            get { return currentLine; }
+            get { return _currentLine; }
         }
 
         /// <summary>
         /// Gets the first <see cref="Coordinate" /> of the current segment
         /// (the coordinate of the current vertex).
         /// </summary>
-        private ICoordinate SegmentStart
+        private TCoordinate SegmentStart
         {
-            get { return currentLine.GetCoordinateN(vertexIndex); }
+            get { return _currentLine.Coordinates[_vertexIndex]; }
         }
 
         /// <summary>
@@ -181,15 +191,16 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// (the coordinate of the next vertex).
         /// If the iterator is at the end of a line, <see langword="null" /> is returned.
         /// </summary>
-        private ICoordinate SegmentEnd
+        private TCoordinate SegmentEnd
         {
             get
             {
-                if (vertexIndex < Line.NumPoints - 1)
+                if (_vertexIndex < Line.PointCount - 1)
                 {
-                    return currentLine.GetCoordinateN(vertexIndex + 1);
+                    return _currentLine.Coordinates[_vertexIndex + 1];
                 }
-                return null;
+
+                return default(TCoordinate);
             }
         }
 
@@ -206,7 +217,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </returns>
         public LinearElement Current
         {
-            get { return current; }
+            get { return _current; }
         }
 
         #endregion
@@ -225,9 +236,9 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             // another line is loaded, it's necessary to re-ckeck with the new conditions.
             if (HasNext())
             {
-                if (atStart)
+                if (_atStart)
                 {
-                    atStart = false;
+                    _atStart = false;
                 }
                 else
                 {
@@ -260,12 +271,12 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </exception>
         public void Reset()
         {
-            numLines = linear.NumGeometries;
-            componentIndex = startComponentIndex;
-            vertexIndex = startVertexIndex;
+            _lineCount = _linear.NumGeometries;
+            _componentIndex = _startComponentIndex;
+            _vertexIndex = _startVertexIndex;
             LoadCurrentLine();
 
-            atStart = true;
+            _atStart = true;
         }
 
         #endregion
@@ -289,8 +300,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             }
 
             // Dispose managed resources
-            current = null;
-            currentLine = null;
+            _current = null;
+            _currentLine = null;
         }
 
         #endregion
@@ -335,15 +346,15 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         public class LinearElement
         {
-            private LinearIterator iterator = null;
+            private readonly LinearIterator<TCoordinate> _iterator = null;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="LinearElement"/> class.
             /// </summary>
             /// <param name="iterator">The iterator.</param>
-            public LinearElement(LinearIterator iterator)
+            public LinearElement(LinearIterator<TCoordinate> iterator)
             {
-                this.iterator = iterator;
+                this._iterator = iterator;
             }
 
             /// <summary>
@@ -351,7 +362,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             /// </summary>
             public Int32 ComponentIndex
             {
-                get { return iterator.ComponentIndex; }
+                get { return _iterator.ComponentIndex; }
             }
 
             /// <summary>
@@ -359,15 +370,15 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             /// </summary>
             public Int32 VertexIndex
             {
-                get { return iterator.VertexIndex; }
+                get { return _iterator.VertexIndex; }
             }
 
             /// <summary>
-            /// Gets the <see cref="LineString" /> component the iterator is current at.
+            /// Gets the <see cref="ILineString{TCoordinate}" /> component the iterator is current at.
             /// </summary>
-            public ILineString Line
+            public ILineString<TCoordinate> Line
             {
-                get { return iterator.Line; }
+                get { return _iterator.Line; }
             }
 
             /// <summary>
@@ -376,26 +387,26 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             /// </summary>
             public Boolean IsEndOfLine
             {
-                get { return iterator.IsEndOfLine; }
+                get { return _iterator.IsEndOfLine; }
             }
 
             /// <summary>
-            /// Gets the first <see cref="Coordinate" /> of the current segment
+            /// Gets the first <typeparamref name="TCoordinate"/> of the current segment
             /// (the coordinate of the current vertex).
             /// </summary>
-            public ICoordinate SegmentStart
+            public TCoordinate SegmentStart
             {
-                get { return iterator.SegmentStart; }
+                get { return _iterator.SegmentStart; }
             }
 
             /// <summary>
-            /// Gets the second <see cref="Coordinate" /> of the current segment
+            /// Gets the second <typeparamref name="TCoordinate"/> of the current segment
             /// (the coordinate of the next vertex).
             /// If the iterator is at the end of a line, <see langword="null" /> is returned.
             /// </summary>
-            public ICoordinate SegmentEnd
+            public TCoordinate SegmentEnd
             {
-                get { return iterator.SegmentEnd; }
+                get { return _iterator.SegmentEnd; }
             }
         }
 

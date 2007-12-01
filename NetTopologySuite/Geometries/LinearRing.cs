@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
@@ -81,7 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public LinearRing(ICoordinate[] points) :
+        public LinearRing(IEnumerable<TCoordinate> points) :
             this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) {}
 
         /* END ADDED BY MPAUL42: monoGIS team */

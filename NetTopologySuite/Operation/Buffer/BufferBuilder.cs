@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
 using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
+using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Noding;
 using GisSharpBlog.NetTopologySuite.Operation.Overlay;
@@ -14,36 +16,20 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 {
     /// <summary> 
     /// Builds the buffer point for a given input point and precision model.
+    /// </summary>
+    /// <remarks>
     /// Allows setting the level of approximation for circular arcs,
     /// and the precision model in which to carry out the computation.
     /// When computing buffers in floating point Double-precision
     /// it can happen that the process of iterated noding can fail to converge (terminate).
-    /// In this case a TopologyException will be thrown.
+    /// In this case a <see cref="TopologyException"/> will be thrown.
     /// Retrying the computation in a fixed precision
     /// can produce more robust results.    
-    /// </summary>
+    /// </remarks>
     public class BufferBuilder<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
     {
-        /// <summary>
-        /// Compute the change in depth as an edge is crossed from R to L.
-        /// </summary>
-        private static Int32 DepthDelta(Label label)
-        {
-            Locations lLoc = label.GetLocation(0, Positions.Left);
-            Locations rLoc = label.GetLocation(0, Positions.Right);
-            if (lLoc == Locations.Interior && rLoc == Locations.Exterior)
-            {
-                return 1;
-            }
-            else if (lLoc == Locations.Exterior && rLoc == Locations.Interior)
-            {
-                return -1;
-            }
-            return 0;
-        }
-
         private Int32 _quadrantSegments = OffsetCurveBuilder<TCoordinate>.DefaultQuadrantSegments;
         private BufferStyle _endCapStyle = BufferStyle.CapRound;
 
@@ -98,10 +84,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             // factory must be the same as the one used by the input
             _geometryFactory = g.Factory;
 
-            OffsetCurveBuilder<TCoordinate> curveBuilder 
+            OffsetCurveBuilder<TCoordinate> curveBuilder
                 = new OffsetCurveBuilder<TCoordinate>(precisionModel, _quadrantSegments);
             curveBuilder.EndCapStyle = _endCapStyle;
-            OffsetCurveSetBuilder<TCoordinate> curveSetBuilder 
+            OffsetCurveSetBuilder<TCoordinate> curveSetBuilder
                 = new OffsetCurveSetBuilder<TCoordinate>(g, distance, curveBuilder);
 
             IEnumerable<SegmentString<TCoordinate>> bufferSegStrList = curveSetBuilder.GetCurves();
@@ -109,17 +95,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             // short-circuit test
             if (!Slice.CountGreaterThan(0, bufferSegStrList))
             {
-                IGeometry<TCoordinate> emptyGeom = _geometryFactory.CreateGeometryCollection(new IGeometry<TCoordinate>[0]);
+                IGeometry<TCoordinate> emptyGeom = _geometryFactory.CreateGeometryCollection();
                 return emptyGeom;
             }
 
             computeNodedEdges(bufferSegStrList, precisionModel);
             _graph = new PlanarGraph<TCoordinate>(new OverlayNodeFactory<TCoordinate>());
-            _graph.AddEdges(_edgeList.Edges);
+            _graph.AddEdges(_edgeList);
 
-            IList subgraphList = CreateSubgraphs(_graph);
+            IEnumerable<BufferSubgraph<TCoordinate>> subgraphs = createSubgraphs(_graph);
             PolygonBuilder<TCoordinate> polyBuilder = new PolygonBuilder<TCoordinate>(_geometryFactory);
-            BuildSubgraphs(subgraphList, polyBuilder);
+            buildSubgraphs(subgraphs, polyBuilder);
             IList resultPolyList = polyBuilder.Polygons;
 
             IGeometry resultGeom = _geometryFactory.BuildGeometry(resultPolyList);
@@ -140,49 +126,38 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             return noder;
         }
 
-        private void computeNodedEdges(IEnumerable<SegmentString<TCoordinate>> bufferSegStrList, IPrecisionModel<TCoordinate> precisionModel)
-        {
-            INoder noder = getNoder(precisionModel);
-            noder.ComputeNodes(bufferSegStrList);
-            IList nodedSegStrings = noder.GetNodedSubstrings();
-
-            foreach (object obj in nodedSegStrings)
-            {
-                SegmentString segStr = (SegmentString) obj;
-                Label oldLabel = (Label) segStr.Data;
-                Edge edge = new Edge(segStr.Coordinates, new Label(oldLabel));
-                InsertEdge(edge);
-            }
-        }
-
         /// <summary>
         /// Inserted edges are checked to see if an identical edge already exists.
         /// If so, the edge is not inserted, but its label is merged
         /// with the existing edge.
         /// </summary>
-        protected void InsertEdge(Edge e)
+        protected void InsertEdge(Edge<TCoordinate> e)
         {
             //<FIX> MD 8 Oct 03  speed up identical edge lookup
             // fast lookup
-            Edge existingEdge = _edgeList.FindEqualEdge(e);
+            Edge<TCoordinate> existingEdge = _edgeList.FindEqualEdge(e);
+
+            Debug.Assert(e.Label.HasValue);
 
             // If an identical edge already exists, simply update its label
             if (existingEdge != null)
             {
-                Label existingLabel = existingEdge.Label;
+                Debug.Assert(existingEdge.Label.HasValue);
 
-                Label labelToMerge = e.Label;
+                Label existingLabel = existingEdge.Label.Value;
+                Label labelToMerge = e.Label.Value;
+
                 // check if new edge is in reverse direction to existing edge
                 // if so, must flip the label before merging it
                 if (!existingEdge.IsPointwiseEqual(e))
                 {
-                    labelToMerge = new Label(e.Label);
-                    labelToMerge.Flip();
+                    labelToMerge = new Label(e.Label.Value).Flip();
                 }
-                existingLabel.Merge(labelToMerge);
+
+                existingEdge.Label = existingLabel.Merge(labelToMerge);
 
                 // compute new depth delta of sum of edges
-                Int32 mergeDelta = DepthDelta(labelToMerge);
+                Int32 mergeDelta = depthDelta(labelToMerge);
                 Int32 existingDelta = existingEdge.DepthDelta;
                 Int32 newDelta = existingDelta + mergeDelta;
                 existingEdge.DepthDelta = newDelta;
@@ -193,18 +168,76 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 // add this new edge to the list of edges in this graph
                 //e.setName(name + edges.size());
                 _edgeList.Add(e);
-                e.DepthDelta = DepthDelta(e.Label);
+                e.DepthDelta = depthDelta(e.Label.Value);
             }
         }
 
-        private IList CreateSubgraphs(PlanarGraph<TCoordinate> graph)
+        private void computeNodedEdges(IEnumerable<SegmentString<TCoordinate>> bufferSegStrList, IPrecisionModel<TCoordinate> precisionModel)
         {
-            ArrayList subgraphList = new ArrayList();
-            foreach (Node<TCoordinate> obj in graph.Nodes)
+            INoder<TCoordinate> noder = getNoder(precisionModel);
+            noder.ComputeNodes(bufferSegStrList);
+            IEnumerable<SegmentString<TCoordinate>> nodedSegStrings = noder.GetNodedSubstrings();
+
+            foreach (SegmentString<TCoordinate> segStr in nodedSegStrings)
+            {
+                Label oldLabel = (Label)segStr.Data;
+                Edge<TCoordinate> edge = new Edge<TCoordinate>(segStr.Coordinates, new Label(oldLabel));
+                InsertEdge(edge);
+            }
+        }
+
+        /// <summary>
+        /// Completes the building of the input subgraphs by depth-labeling them,
+        /// and adds them to the <see cref="PolygonBuilder{TCoordinate}" />.
+        /// The subgraph list must be sorted in rightmost-coordinate order.
+        /// </summary>
+        /// <param name="subgraphList">The subgraphs to build.</param>
+        /// <param name="polyBuilder">The PolygonBuilder which will build the final polygons.</param>
+        private static void buildSubgraphs(IEnumerable<BufferSubgraph<TCoordinate>> subgraphList, PolygonBuilder<TCoordinate> polyBuilder)
+        {
+            List<BufferSubgraph<TCoordinate>> processedGraphs = new List<BufferSubgraph<TCoordinate>>();
+
+            foreach (BufferSubgraph<TCoordinate> subgraph in subgraphList)
+            {
+                TCoordinate p = subgraph.RightMostCoordinate;
+                SubgraphDepthLocater<TCoordinate> locater = new SubgraphDepthLocater<TCoordinate>(processedGraphs);
+                Int32 outsideDepth = locater.GetDepth(p);
+                subgraph.ComputeDepth(outsideDepth);
+                subgraph.FindResultEdges();
+                processedGraphs.Add(subgraph);
+                polyBuilder.Add(subgraph.DirectedEdges, subgraph.Nodes);
+            }
+        }
+
+        /// <summary>
+        /// Compute the change in depth as an edge is crossed from R to L.
+        /// </summary>
+        private static Int32 depthDelta(Label label)
+        {
+            Locations left = label[0, Positions.Left];
+            Locations right = label[0, Positions.Right];
+
+            if (left == Locations.Interior && right == Locations.Exterior)
+            {
+                return 1;
+            }
+            else if (left == Locations.Exterior && right == Locations.Interior)
+            {
+                return -1;
+            }
+
+            return 0;
+        }
+
+        private static IEnumerable<BufferSubgraph<TCoordinate>> createSubgraphs(PlanarGraph<TCoordinate> graph)
+        {
+            List<BufferSubgraph<TCoordinate>> subgraphList = new List<BufferSubgraph<TCoordinate>>();
+
+            foreach (Node<TCoordinate> node in graph.Nodes)
             {
                 if (!node.IsVisited)
                 {
-                    BufferSubgraph subgraph = new BufferSubgraph();
+                    BufferSubgraph<TCoordinate> subgraph = new BufferSubgraph<TCoordinate>();
                     subgraph.Create(node);
                     subgraphList.Add(subgraph);
                 }
@@ -219,29 +252,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             subgraphList.Sort();
             subgraphList.Reverse();
             return subgraphList;
-        }
-
-        /// <summary>
-        /// Completes the building of the input subgraphs by depth-labeling them,
-        /// and adds them to the <see cref="PolygonBuilder" />.
-        /// The subgraph list must be sorted in rightmost-coordinate order.
-        /// </summary>
-        /// <param name="subgraphList">The subgraphs to build.</param>
-        /// <param name="polyBuilder">The PolygonBuilder which will build the final polygons.</param>
-        private void BuildSubgraphs(IList subgraphList, PolygonBuilder polyBuilder)
-        {
-            IList processedGraphs = new ArrayList();
-            foreach (object obj in subgraphList)
-            {
-                BufferSubgraph subgraph = (BufferSubgraph) obj;
-                ICoordinate p = subgraph.RightMostCoordinate;
-                SubgraphDepthLocater locater = new SubgraphDepthLocater(processedGraphs);
-                Int32 outsideDepth = locater.GetDepth(p);
-                subgraph.ComputeDepth(outsideDepth);
-                subgraph.FindResultEdges();
-                processedGraphs.Add(subgraph);
-                polyBuilder.Add(subgraph.DirectedEdges, subgraph.Nodes);
-            }
         }
     }
 }

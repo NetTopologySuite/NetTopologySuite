@@ -8,13 +8,11 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
     /// </summary>
     public static class Assert
     {
-        [Conditional("DEBUG")]
         public static void IsTrue(Boolean assertion)
         {
             IsTrue(assertion, null);
         }
 
-        [Conditional("DEBUG")]
         public static void IsTrue(Boolean assertion, string message)
         {
             if (!assertion)
@@ -30,13 +28,11 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
             }
         }
 
-        [Conditional("DEBUG")]
         public static void IsEquals(Object expectedValue, Object actualValue)
         {
             IsEquals(expectedValue, actualValue, null);
         }
 
-        [Conditional("DEBUG")]
         public static void IsEquals(Object expectedValue, Object actualValue, string message)
         {
             if (!actualValue.Equals(expectedValue))

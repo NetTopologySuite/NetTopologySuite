@@ -1,108 +1,82 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Index;
+using GisSharpBlog.NetTopologySuite.Index.Quadtree;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Simplify
 {
     /// <summary>
-    /// An index of LineSegments.
+    /// An index of <see cref="LineSegment{TCoordinate}"/>s.
     /// </summary>
-    public class LineSegmentIndex
+    public class LineSegmentIndex<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        private Quadtree index = new Quadtree();
+        private readonly Quadtree<TCoordinate, LineSegment<TCoordinate>> _index 
+            = new Quadtree<TCoordinate, LineSegment<TCoordinate>>();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public LineSegmentIndex() {}
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="line"></param>
-        public void Add(TaggedLineString line)
+        public void Add(TaggedLineString<TCoordinate> line)
         {
-            TaggedLineSegment[] segs = line.Segments;
-            for (Int32 i = 0; i < segs.Length - 1; i++)
+            foreach (TaggedLineSegment<TCoordinate> segment in line.Segments)
             {
-                TaggedLineSegment seg = segs[i];
-                Add(seg);
+                Add(segment);
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="seg"></param>
-        public void Add(LineSegment seg)
+        public void Add(LineSegment<TCoordinate> seg)
         {
-            index.Insert(new Extents(seg.P0, seg.P1), seg);
+            _index.Insert(new Extents<TCoordinate>(seg.P0, seg.P1), seg);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="seg"></param>
-        public void Remove(LineSegment seg)
+        public void Remove(LineSegment<TCoordinate> seg)
         {
-            index.Remove(new Extents(seg.P0, seg.P1), seg);
+            _index.Remove(new Extents<TCoordinate>(seg.P0, seg.P1), seg);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="querySeg"></param>
-        /// <returns></returns>
-        public IList Query(LineSegment querySeg)
+        public IEnumerable<LineSegment<TCoordinate>> Query(LineSegment<TCoordinate> querySeg)
         {
-            Extents env = new Extents(querySeg.P0, querySeg.P1);
+            Extents<TCoordinate> env = new Extents<TCoordinate>(querySeg.P0, querySeg.P1);
 
-            LineSegmentVisitor visitor = new LineSegmentVisitor(querySeg);
-            index.Query(env, visitor);
-            IList itemsFound = visitor.Items;
+            Predicate<LineSegment<TCoordinate>> predicate =
+                delegate(LineSegment<TCoordinate> seg)
+                {
+                    return Extents<TCoordinate>.Intersects(seg.P0, seg.P1, querySeg.P0, querySeg.P1);
+                };
 
-            return itemsFound;
+            return _index.Query(env, predicate);
         }
     }
 
-    /// <summary>
-    /// ItemVisitor subclass to reduce volume of query results.
-    /// </summary>
-    public class LineSegmentVisitor : IItemVisitor
-    {
-        // MD - only seems to make about a 10% difference in overall time.
-        private LineSegment querySeg;
-        private ArrayList items = new ArrayList();
+    ///// <summary>
+    ///// ItemVisitor subclass to reduce volume of query results.
+    ///// </summary>
+    //public class LineSegmentVisitor<TCoordinate> : IItemVisitor
+    //    where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+    //        IComputable<TCoordinate>, IConvertible
+    //{
+    //    // MD - only seems to make about a 10% difference in overall time.
+    //    private LineSegment<TCoordinate> querySeg;
+    //    private ArrayList items = new ArrayList();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="querySeg"></param>
-        public LineSegmentVisitor(LineSegment querySeg)
-        {
-            this.querySeg = querySeg;
-        }
+    //    public LineSegmentVisitor(LineSegment<TCoordinate> querySeg)
+    //    {
+    //        this.querySeg = querySeg;
+    //    }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="item"></param>
-        public void VisitItem(Object item)
-        {
-            LineSegment seg = (LineSegment) item;
-            if (Extents.Intersects(seg.P0, seg.P1, querySeg.P0, querySeg.P1))
-            {
-                items.Add(item);
-            }
-        }
+    //    public void VisitItem(Object item)
+    //    {
+    //        LineSegment seg = (LineSegment) item;
+    //        if ()
+    //        {
+    //            items.Add(item);
+    //        }
+    //    }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public ArrayList Items
-        {
-            get { return items; }
-        }
-    }
+    //    public ArrayList Items
+    //    {
+    //        get { return items; }
+    //    }
+    //}
 }

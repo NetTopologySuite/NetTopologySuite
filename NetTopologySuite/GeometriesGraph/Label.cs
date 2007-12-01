@@ -68,10 +68,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Construct a Label with a single location for both Geometries.
         /// Initialize the location for the Geometry index.
         /// </summary>
-        public Label(Int32 geomIndex, Locations on)
+        public Label(Locations onGeometry1, Locations onGeometry2)
         {
-            _g0 = new TopologyLocation(geomIndex == 0 ? on : Locations.None);
-            _g1 = new TopologyLocation(geomIndex == 1 ? on : Locations.None);
+            _g0 = new TopologyLocation(onGeometry1);
+            _g1 = new TopologyLocation(onGeometry2);
         }
 
         /// <summary>
@@ -88,25 +88,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Construct a Label with On, Left and Right locations for both Geometries.
         /// Initialize the locations for the given Geometry index.
         /// </summary>
-        public Label(Int32 geometryIndex, Locations on, Locations left, Locations right)
+        public Label(Locations onGeometry1, Locations leftGeometry1, Locations rightGeometry1, Locations onGeometry2, Locations leftGeometry2, Locations rightGeometry2)
         {
-            TopologyLocation none = TopologyLocation.None;
-            TopologyLocation set = new TopologyLocation(on, left, right);
-
-            _g0 = geometryIndex == 0 ? set : none;
-            _g1 = geometryIndex == 1 ? set : none;
-        }
-
-        /// <summary> 
-        /// Construct a <see cref="Label"/> with the same values 
-        /// as the argument for the given Geometry index.
-        /// </summary>
-        public Label(Int32 geometryIndex, TopologyLocation geometryLabel)
-        {
-            TopologyLocation none = TopologyLocation.None;
-
-            _g0 = geometryIndex == 0 ? geometryLabel : none;
-            _g1 = geometryIndex == 1 ? geometryLabel : none;
+            _g0 = new TopologyLocation(onGeometry1, leftGeometry1, rightGeometry1);
+            _g1 = new TopologyLocation(onGeometry2, leftGeometry2, rightGeometry2);
         }
 
         public Label(TopologyLocation geometry1Label, TopologyLocation geometry2Label)
@@ -115,14 +100,36 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             _g1 = geometry2Label;
         }
 
-        /// <summary> 
-        /// Construct a <see cref="Label"/> with the same values 
-        /// as <paramref name="other"/>.
-        /// </summary>
-        public Label(Label other)
+        public Label(Label other, Int32 geometryIndex, Locations on)
         {
-            _g0 = other._g0;
-            _g1 = other._g1;
+            TopologyLocation newLocation = new TopologyLocation(on);
+
+            if(geometryIndex == 0)
+            {
+                _g0 = newLocation;
+                _g1 = other._g1;
+            }
+            else
+            {
+                _g1 = newLocation;
+                _g0 = other._g0;
+            }
+        }
+
+        public Label(Label other, Int32 geometryIndex, Locations on, Locations left, Locations right)
+        {
+            TopologyLocation newLocation = new TopologyLocation(on, left, right);
+
+            if (geometryIndex == 0)
+            {
+                _g0 = newLocation;
+                _g1 = other._g1;
+            }
+            else
+            {
+                _g1 = newLocation;
+                _g0 = other._g0;
+            }
         }
 
         public Label Flip()

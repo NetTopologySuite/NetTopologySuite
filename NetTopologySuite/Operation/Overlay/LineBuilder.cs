@@ -1,9 +1,11 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 {
@@ -11,32 +13,33 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// Forms NTS LineStrings out of a the graph of <c>DirectedEdge</c>s
     /// created by an <c>OverlayOp</c>.
     /// </summary>
-    public class LineBuilder
+    public class LineBuilder<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
-        private OverlayOp op;
-        private IGeometryFactory geometryFactory;
-        private PointLocator ptLocator;
+        private readonly OverlayOp<TCoordinate> _op;
+        private readonly IGeometryFactory<TCoordinate> _geometryFactory;
+        //private readonly PointLocator<TCoordinate> _ptLocator;
 
-        private IList lineEdgesList = new ArrayList();
-        private IList resultLineList = new ArrayList();
+        private IEnumerable<Edge<TCoordinate>> lineEdges;
+        //private IEnumerable<ILineString<TCoordinate>> resultLines;
 
-        public LineBuilder(OverlayOp op, IGeometryFactory geometryFactory, PointLocator ptLocator)
+        public LineBuilder(OverlayOp<TCoordinate> op, IGeometryFactory<TCoordinate> geometryFactory)
         {
-            this.op = op;
-            this.geometryFactory = geometryFactory;
-            this.ptLocator = ptLocator;
+            _op = op;
+            _geometryFactory = geometryFactory;
+            //_ptLocator = ptLocator;
         }
 
-        /// <param name="opCode"></param>
-        /// <returns>
-        /// A list of the LineStrings in the result of the specified overlay operation.
-        /// </returns>
-        public IList Build(SpatialFunctions opCode)
+        /// <summary>
+        /// Returns a list of the <see cref="ILineString{TCoordinate}"/>s 
+        /// in the result of the specified overlay operation.
+        /// </summary>
+        public IEnumerable<ILineString<TCoordinate>> Build(SpatialFunctions opCode)
         {
-            FindCoveredLineEdges();
-            CollectLines(opCode);
-            BuildLines(opCode);
-            return resultLineList;
+            findCoveredLineEdges();
+            collectLines(opCode);
+            return buildLines(opCode);
         }
 
         /// <summary>
@@ -46,53 +49,51 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// L edges at nodes which do not have A edges can be checked by doing a
         /// point-in-polygon test with the previously computed result areas.
         /// </summary>
-        private void FindCoveredLineEdges()
+        private void findCoveredLineEdges()
         {
             // first set covered for all L edges at nodes which have A edges too
-            IEnumerator nodeit = op.Graph.Nodes.GetEnumerator();
-            while (nodeit.MoveNext())
+            foreach (Node<TCoordinate> node in _op.Graph.Nodes)
             {
-                Node node = (Node) nodeit.Current;
-                ((DirectedEdgeStar) node.Edges).FindCoveredLineEdges();
+                DirectedEdgeStar<TCoordinate> edges = node.Edges as DirectedEdgeStar<TCoordinate>;
+                Debug.Assert(edges != null);
+                edges.FindCoveredLineEdges();   
             }
 
             /*
              * For all Curve edges which weren't handled by the above,
              * use a point-in-poly test to determine whether they are covered
              */
-            IEnumerator it = op.Graph.EdgeEnds.GetEnumerator();
-
-            while (it.MoveNext())
+            foreach (DirectedEdge<TCoordinate> de in _op.Graph.EdgeEnds)
             {
-                DirectedEdge de = (DirectedEdge) it.Current;
-                Edge e = de.Edge;
+                Edge<TCoordinate> e = de.Edge;
+
                 if (de.IsLineEdge && !e.IsCoveredSet)
                 {
-                    Boolean isCovered = op.IsCoveredByA(de.Coordinate);
+                    Boolean isCovered = _op.IsCoveredByArea(de.Coordinate);
                     e.Covered = isCovered;
-                }
+                }   
             }
         }
 
-        private void CollectLines(SpatialFunctions opCode)
+        private void collectLines(SpatialFunctions opCode)
         {
-            IEnumerator it = op.Graph.EdgeEnds.GetEnumerator();
-            while (it.MoveNext())
+            foreach (DirectedEdge<TCoordinate> de in _op.Graph.EdgeEnds)
             {
-                DirectedEdge de = (DirectedEdge) it.Current;
-                CollectLineEdge(de, opCode, lineEdgesList);
-                CollectBoundaryTouchEdge(de, opCode, lineEdgesList);
+                collectLineEdge(de, opCode, lineEdgesList);
+                collectBoundaryTouchEdge(de, opCode, lineEdgesList);
             }
         }
 
-        public void CollectLineEdge(DirectedEdge de, SpatialFunctions opCode, IList edges)
+        private static void collectLineEdge(DirectedEdge<TCoordinate> de, SpatialFunctions opCode, ICollection<Edge<TCoordinate>> edges)
         {
-            Label label = de.Label;
-            Edge e = de.Edge;
+            Debug.Assert(de.Label.HasValue);
+            Label label = de.Label.Value;
+            Edge<TCoordinate> e = de.Edge;
+
             // include Curve edges which are in the result
             if (de.IsLineEdge)
             {
-                if (!de.IsVisited && OverlayOp.IsResultOfOp(label, opCode) && !e.IsCovered)
+                if (!de.IsVisited && OverlayOp<TCoordinate>.IsResultOfOp(label, opCode) && !e.IsCovered)
                 {
                     edges.Add(e);
                     de.VisitedEdge = true;
@@ -108,21 +109,23 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// areas touch in a line segment
         /// OR as a result of a dimensional collapse.
         /// </summary>
-        public void CollectBoundaryTouchEdge(DirectedEdge de, SpatialFunctions opCode, IList edges)
+        private static void collectBoundaryTouchEdge(DirectedEdge<TCoordinate> de, SpatialFunctions opCode, ICollection<Edge<TCoordinate>> edges)
         {
-            Label label = de.Label;
             if (de.IsLineEdge)
             {
                 return; // only interested in area edges         
             }
+
             if (de.IsVisited)
             {
                 return; // already processed
             }
+
             if (de.IsInteriorAreaEdge)
             {
                 return; // added to handle dimensional collapses            
             }
+
             if (de.Edge.IsInResult)
             {
                 return; // if the edge linework is already included, don't include it again
@@ -130,53 +133,57 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 
             // sanity check for labeling of result edgerings
             Assert.IsTrue(!(de.IsInResult || de.Sym.IsInResult) || !de.Edge.IsInResult);
+
+            Debug.Assert(de.Label.HasValue);
+            Label label = de.Label.Value;
+
             // include the linework if it's in the result of the operation
-            if (OverlayOp.IsResultOfOp(label, opCode) && opCode == SpatialFunctions.Intersection)
+            if (OverlayOp<TCoordinate>.IsResultOfOp(label, opCode) 
+                && opCode == SpatialFunctions.Intersection)
             {
                 edges.Add(de.Edge);
                 de.VisitedEdge = true;
             }
         }
 
-        private void BuildLines(SpatialFunctions opCode)
+        private IEnumerable<ILineString<TCoordinate>> buildLines(SpatialFunctions opCode)
         {
-            for (IEnumerator it = lineEdgesList.GetEnumerator(); it.MoveNext();)
+            foreach (Edge<TCoordinate> edge in lineEdges)
             {
-                Edge e = (Edge) it.Current;
-                ILineString line = geometryFactory.CreateLineString(e.Coordinates);
-                resultLineList.Add(line);
-                e.InResult = true;
+                ILineString<TCoordinate> line = _geometryFactory.CreateLineString(edge.Coordinates);
+                yield return line;
+                edge.InResult = true;
             }
         }
 
-        private void LabelIsolatedLines(IList edgesList)
-        {
-            IEnumerator it = edgesList.GetEnumerator();
-            while (it.MoveNext())
-            {
-                Edge e = (Edge) it.Current;
-                Label label = e.Label;
-                if (e.IsIsolated)
-                {
-                    if (label.IsNull(0))
-                    {
-                        LabelIsolatedLine(e, 0);
-                    }
-                    else
-                    {
-                        LabelIsolatedLine(e, 1);
-                    }
-                }
-            }
-        }
+        //private void labelIsolatedLines(IEnumerable<Edge<TCoordinate>> edgesList)
+        //{
+        //    foreach (Edge<TCoordinate> edge in edgesList)
+        //    {
+        //        Debug.Assert(edge.Label.HasValue);
+        //        Label label = edge.Label.Value;
+                
+        //        if (edge.IsIsolated)
+        //        {
+        //            if (label.IsNull(0))
+        //            {
+        //                labelIsolatedLine(edge, 0);
+        //            }
+        //            else
+        //            {
+        //                labelIsolatedLine(edge, 1);
+        //            }
+        //        }   
+        //    }
+        //}
 
-        /// <summary>
-        /// Label an isolated node with its relationship to the target point.
-        /// </summary>
-        private void LabelIsolatedLine(Edge e, Int32 targetIndex)
-        {
-            Locations loc = ptLocator.Locate(e.Coordinate, op.GetArgGeometry(targetIndex));
-            e.Label.SetLocation(targetIndex, loc);
-        }
+        ///// <summary>
+        ///// Label an isolated node with its relationship to the target point.
+        ///// </summary>
+        //private void labelIsolatedLine(Edge<TCoordinate> e, Int32 targetIndex)
+        //{
+        //    Locations loc = _ptLocator.Locate(e.Coordinate, _op.GetArgGeometry(targetIndex));
+        //    e.Label.SetLocation(targetIndex, loc);
+        //}
     }
 }

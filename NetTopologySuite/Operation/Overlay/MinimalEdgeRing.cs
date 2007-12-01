@@ -1,12 +1,8 @@
 using System;
-using System.Collections;
-using System.Text;
-
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.Algorithm;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 {
@@ -15,32 +11,19 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// has degree greater than 2.  These are the form of rings required
     /// to represent polygons under the OGC SFS spatial data model.
     /// </summary>
-    public class MinimalEdgeRing : EdgeRing
+    public class MinimalEdgeRing<TCoordinate> : EdgeRing<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="start"></param>
-        /// <param name="geometryFactory"></param>
-        public MinimalEdgeRing(DirectedEdge start, IGeometryFactory geometryFactory) 
-            : base(start, geometryFactory) { }
+        public MinimalEdgeRing(DirectedEdge<TCoordinate> start, IGeometryFactory<TCoordinate> geometryFactory)
+            : base(start, geometryFactory) {}
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="de"></param>
-        /// <returns></returns>
-        public override DirectedEdge GetNext(DirectedEdge de)
+        public override DirectedEdge<TCoordinate> GetNext(DirectedEdge<TCoordinate> de)
         {
             return de.NextMin;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="de"></param>
-        /// <param name="er"></param>
-        public override void SetEdgeRing(DirectedEdge de, EdgeRing er)
+        public override void SetEdgeRing(DirectedEdge<TCoordinate> de, EdgeRing<TCoordinate> er)
         {
             de.MinEdgeRing = er;
         }

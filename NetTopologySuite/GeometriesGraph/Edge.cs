@@ -77,10 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                foreach (TCoordinate coordinate in _coordinates)
-                {
-                    yield return coordinate;
-                }
+                return _coordinates.AsReadOnly();
             }
         }
 

@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
     /// following the usage of Samet and others.
     /// </para>
     /// </remarks>
-    public class Quadtree<TCoordinate, TItem> : ISpatialIndex<TCoordinate, TItem>
+    public class Quadtree<TCoordinate, TItem> : ISpatialIndex<TCoordinate, TItem>, IEnumerable<TItem>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, IComputable<TCoordinate>,
             IConvertible
     {
@@ -138,29 +138,26 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             * the items that are matched are the items in quads which
             * overlap the search envelope
             */
-            ArrayListVisitor visitor = new ArrayListVisitor();
-            Query(query, visitor);
-            return visitor.Items;
+            return _root.Query(query);
         }
 
-        public void Query(IExtents<TCoordinate> query, IItemVisitor visitor)
+        public IEnumerable<TItem> Query(IExtents<TCoordinate> query, Predicate<TItem> visitor)
         {
             /*
             * the items that are matched are the items in quads which
             * overlap the search envelope
             */
-            _root.Visit(query, visitor);
+            return _root.Query(query, visitor);
         }
 
-        /// <summary>
-        /// Return a list of all items in the Quadtree.
-        /// </summary>
-        public IEnumerable<TItem> QueryAll()
+        #region IEnumerable<TItem> Members
+
+        public IEnumerator<TItem> GetEnumerator()
         {
-            IList foundItems = new ArrayList();
-            _root.AddAllItems(ref foundItems);
-            return foundItems;
+            return _root.GetEnumerator();
         }
+
+        #endregion
 
         private void collectStats(IExtents itemExtents)
         {
@@ -178,5 +175,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
                 minExtent = delY;
             }
         }
+
+        #region IEnumerable Members
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

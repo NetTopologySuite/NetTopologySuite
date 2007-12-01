@@ -1,7 +1,9 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Simplify
 {
@@ -10,73 +12,59 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// (in the sense that no new intersections are introduced).
     /// Uses the recursive D-P algorithm.
     /// </summary>
-    public class TaggedLineStringSimplifier
+    public class TaggedLineStringSimplifier<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
         // NOTE: modified for "safe" assembly in Sql 2005
         // Added readonly!
-        private static readonly LineIntersector li = new RobustLineIntersector();
+        private static readonly LineIntersector<TCoordinate> li = new RobustLineIntersector<TCoordinate>();
 
-        private LineSegmentIndex inputIndex = new LineSegmentIndex();
-        private LineSegmentIndex outputIndex = new LineSegmentIndex();
-        private TaggedLineString line;
-        private ICoordinate[] linePts;
-        private Double distanceTolerance = 0.0;
+        private readonly LineSegmentIndex<TCoordinate> _inputIndex = new LineSegmentIndex<TCoordinate>();
+        private readonly LineSegmentIndex<TCoordinate> _outputIndex = new LineSegmentIndex<TCoordinate>();
+        private TaggedLineString<TCoordinate> _line;
+        private IList<TCoordinate> _linePts;
+        private Double _distanceTolerance = 0.0;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="inputIndex"></param>
-        /// <param name="outputIndex"></param>
-        public TaggedLineStringSimplifier(LineSegmentIndex inputIndex, LineSegmentIndex outputIndex)
+        public TaggedLineStringSimplifier(LineSegmentIndex<TCoordinate> inputIndex,
+                                          LineSegmentIndex<TCoordinate> outputIndex)
         {
-            this.inputIndex = inputIndex;
-            this.outputIndex = outputIndex;
+            _inputIndex = inputIndex;
+            _outputIndex = outputIndex;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public Double DistanceTolerance
         {
-            get { return distanceTolerance; }
-            set { distanceTolerance = value; }
+            get { return _distanceTolerance; }
+            set { _distanceTolerance = value; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="line"></param>
-        public void Simplify(TaggedLineString line)
+        public void Simplify(TaggedLineString<TCoordinate> line)
         {
-            this.line = line;
-            linePts = line.ParentCoordinates;
-            SimplifySection(0, linePts.Length - 1, 0);
+            _line = line;
+            _linePts = line.ParentCoordinates;
+            SimplifySection(0, _linePts.Count - 1, 0);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="i"></param>
-        /// <param name="j"></param>
-        /// <param name="depth"></param>
         private void SimplifySection(Int32 i, Int32 j, Int32 depth)
         {
             depth += 1;
             Int32[] sectionIndex = new Int32[2];
+
             if ((i + 1) == j)
             {
-                LineSegment newSeg = line.GetSegment(i);
-                line.AddToResult(newSeg);
+                LineSegment<TCoordinate> newSeg = _line.Segments[i];
+                _line.AddToResult(newSeg);
                 // leave this segment in the input index, for efficiency
                 return;
             }
 
             Double[] distance = new Double[1];
-            Int32 furthestPtIndex = FindFurthestPoint(linePts, i, j, distance);
+            Int32 furthestPtIndex = findFurthestPoint(_linePts, i, j, distance);
             Boolean isValidToFlatten = true;
 
             // must have enough points in the output line
-            if (line.ResultSize < line.MinimumSize && depth < 2)
+            if (_line.ResultSize < _line.MinimumSize && depth < 2)
             {
                 isValidToFlatten = false;
             }
@@ -86,172 +74,145 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
                 isValidToFlatten = false;
             }
             // test if flattened section would cause intersection
-            LineSegment candidateSeg = new LineSegment();
-            candidateSeg.P0 = linePts[i];
-            candidateSeg.P1 = linePts[j];
+            LineSegment<TCoordinate> candidateSeg = new LineSegment<TCoordinate>();
+            candidateSeg.P0 = _linePts[i];
+            candidateSeg.P1 = _linePts[j];
             sectionIndex[0] = i;
             sectionIndex[1] = j;
-            if (HasBadIntersection(line, sectionIndex, candidateSeg))
+            if (hasBadIntersection(_line, sectionIndex, candidateSeg))
             {
                 isValidToFlatten = false;
             }
 
             if (isValidToFlatten)
             {
-                LineSegment newSeg = Flatten(i, j);
-                line.AddToResult(newSeg);
+                LineSegment<TCoordinate> newSeg = flatten(i, j);
+                _line.AddToResult(newSeg);
                 return;
             }
+
             SimplifySection(i, furthestPtIndex, depth);
             SimplifySection(furthestPtIndex, j, depth);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pts"></param>
-        /// <param name="i"></param>
-        /// <param name="j"></param>
-        /// <param name="maxDistance"></param>
-        /// <returns></returns>
-        private Int32 FindFurthestPoint(ICoordinate[] pts, Int32 i, Int32 j, Double[] maxDistance)
+        private static Int32 findFurthestPoint(IList<TCoordinate> pts, Int32 i, Int32 j, Double[] maxDistance)
         {
-            LineSegment seg = new LineSegment();
+            LineSegment<TCoordinate> seg = new LineSegment<TCoordinate>();
             seg.P0 = pts[i];
             seg.P1 = pts[j];
             Double maxDist = -1.0;
             Int32 maxIndex = i;
+
             for (Int32 k = i + 1; k < j; k++)
             {
-                ICoordinate midPt = pts[k];
+                TCoordinate midPt = pts[k];
+                
                 Double distance = seg.Distance(midPt);
+
                 if (distance > maxDist)
                 {
                     maxDist = distance;
                     maxIndex = k;
                 }
             }
+
             maxDistance[0] = maxDist;
             return maxIndex;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
-        /// <returns></returns>
-        private LineSegment Flatten(Int32 start, Int32 end)
+        private LineSegment<TCoordinate> flatten(Int32 start, Int32 end)
         {
             // make a new segment for the simplified point
-            ICoordinate p0 = linePts[start];
-            ICoordinate p1 = linePts[end];
-            LineSegment newSeg = new LineSegment(p0, p1);
+            TCoordinate p0 = _linePts[start];
+            TCoordinate p1 = _linePts[end];
+            LineSegment<TCoordinate> newSeg = new LineSegment<TCoordinate>(p0, p1);
+
             // update the indexes
-            Remove(line, start, end);
-            outputIndex.Add(newSeg);
+            remove(_line, start, end);
+            _outputIndex.Add(newSeg);
             return newSeg;
         }
 
         /*
         * Index of section to be tested for flattening - reusable
         */
-        private Int32[] validSectionIndex = new Int32[2];
+        //private Int32[] validSectionIndex = new Int32[2];
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="parentLine"></param>
-        /// <param name="sectionIndex"></param>
-        /// <param name="candidateSeg"></param>
-        /// <returns></returns>
-        private Boolean HasBadIntersection(TaggedLineString parentLine, Int32[] sectionIndex, LineSegment candidateSeg)
+        private Boolean hasBadIntersection(TaggedLineString<TCoordinate> parentLine, Int32[] sectionIndex,
+                                           LineSegment<TCoordinate> candidateSeg)
         {
-            if (HasBadOutputIntersection(candidateSeg))
+            if (hasBadOutputIntersection(candidateSeg))
             {
                 return true;
             }
-            if (HasBadInputIntersection(parentLine, sectionIndex, candidateSeg))
+
+            if (hasBadInputIntersection(parentLine, sectionIndex, candidateSeg))
             {
                 return true;
             }
+
             return false;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="candidateSeg"></param>
-        /// <returns></returns>
-        private Boolean HasBadOutputIntersection(LineSegment candidateSeg)
+        private Boolean hasBadOutputIntersection(LineSegment<TCoordinate> candidateSeg)
         {
-            IList querySegs = outputIndex.Query(candidateSeg);
-            for (IEnumerator i = querySegs.GetEnumerator(); i.MoveNext();)
+            IEnumerable<LineSegment<TCoordinate>> querySegs = _outputIndex.Query(candidateSeg);
+
+            foreach (LineSegment<TCoordinate> querySeg in querySegs)
             {
-                LineSegment querySeg = (LineSegment) i.Current;
-                if (HasInteriorIntersection(querySeg, candidateSeg))
+                if (hasInteriorIntersection(querySeg, candidateSeg))
                 {
                     return true;
                 }
             }
+
             return false;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="parentLine"></param>
-        /// <param name="sectionIndex"></param>
-        /// <param name="candidateSeg"></param>
-        /// <returns></returns>
-        private Boolean HasBadInputIntersection(TaggedLineString parentLine, Int32[] sectionIndex,
-                                                LineSegment candidateSeg)
+        private Boolean hasBadInputIntersection(TaggedLineString<TCoordinate> parentLine, Int32[] sectionIndex,
+                                                LineSegment<TCoordinate> candidateSeg)
         {
-            IList querySegs = inputIndex.Query(candidateSeg);
-            for (IEnumerator i = querySegs.GetEnumerator(); i.MoveNext();)
+            IEnumerable<LineSegment<TCoordinate>> querySegs = _inputIndex.Query(candidateSeg);
+
+            foreach (TaggedLineSegment<TCoordinate> querySeg in querySegs)
             {
-                TaggedLineSegment querySeg = (TaggedLineSegment) i.Current;
-                if (HasInteriorIntersection(querySeg, candidateSeg))
+                if (hasInteriorIntersection(querySeg, candidateSeg))
                 {
-                    if (IsInLineSection(parentLine, sectionIndex, querySeg))
+                    if (isInLineSection(parentLine, sectionIndex, querySeg))
                     {
                         continue;
                     }
+
                     return true;
                 }
             }
+
             return false;
         }
 
         /// <summary>
         /// Tests whether a segment is in a section of a TaggedLineString-
         /// </summary>
-        /// <param name="line"></param>
-        /// <param name="sectionIndex"></param>
-        /// <param name="seg"></param>
-        /// <returns></returns>
-        private static Boolean IsInLineSection(TaggedLineString line, Int32[] sectionIndex, TaggedLineSegment seg)
+        private static Boolean isInLineSection(TaggedLineString<TCoordinate> line, Int32[] sectionIndex,
+                                               TaggedLineSegment<TCoordinate> seg)
         {
             // not in this line
             if (seg.Parent != line.Parent)
             {
                 return false;
             }
+
             Int32 segIndex = seg.Index;
+
             if (segIndex >= sectionIndex[0] && segIndex < sectionIndex[1])
             {
                 return true;
             }
+
             return false;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="seg0"></param>
-        /// <param name="seg1"></param>
-        /// <returns></returns>
-        private Boolean HasInteriorIntersection(LineSegment seg0, LineSegment seg1)
+        private static Boolean hasInteriorIntersection(LineSegment<TCoordinate> seg0, LineSegment<TCoordinate> seg1)
         {
             li.ComputeIntersection(seg0.P0, seg0.P1, seg1.P0, seg1.P1);
             return li.IsInteriorIntersection();
@@ -260,15 +221,12 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <summary>
         /// Remove the segs in the section of the line.
         /// </summary>
-        /// <param name="line"></param>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
-        private void Remove(TaggedLineString line, Int32 start, Int32 end)
+        private void remove(TaggedLineString<TCoordinate> line, Int32 start, Int32 end)
         {
             for (Int32 i = start; i < end; i++)
             {
-                TaggedLineSegment seg = line.GetSegment(i);
-                inputIndex.Remove(seg);
+                TaggedLineSegment<TCoordinate> seg = line.Segments[i];
+                _inputIndex.Remove(seg);
             }
         }
     }

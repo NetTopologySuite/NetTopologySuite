@@ -9,7 +9,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
     /// <summary>
     /// The base class for nodes in a <see cref="Quadtree{TCoordinate, TItem}"/>.
     /// </summary>
-    public abstract class NodeBase<TCoordinate, TItem>
+    public abstract class NodeBase<TCoordinate, TItem> : IEnumerable<TItem>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
     {
@@ -223,22 +223,54 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         //    }
         //}
 
-        public void Visit(IExtents<TCoordinate> query, IItemVisitor visitor)
+        public IEnumerable<TItem> Query(IExtents<TCoordinate> query)
         {
             if (!IsSearchMatch(query))
             {
-                return;
+                yield break;
             }
 
             // this node may have items as well as subnodes (since items may not
             // be wholely contained in any single subnode
-            visitItems(query, visitor);
+            foreach (TItem item in _items)
+            {
+                yield return item;
+            }
 
             for (Int32 i = 0; i < 4; i++)
             {
                 if (_subNodes[i] != null)
                 {
-                    _subNodes[i].Visit(query, visitor);
+                    foreach (TItem item in _subNodes[i].Query(query))
+                    {
+                        yield return item;
+                    }
+                }
+            }
+        }
+
+        public IEnumerable<TItem> Query(IExtents<TCoordinate> query, Predicate<TItem> predicate)
+        {
+            if (!IsSearchMatch(query))
+            {
+                yield break;
+            }
+
+            // this node may have items as well as subnodes (since items may not
+            // be wholely contained in any single subnode
+            foreach (TItem item in visitItems(query, predicate))
+            {
+                yield return item;
+            }
+
+            for (Int32 i = 0; i < 4; i++)
+            {
+                if (_subNodes[i] != null)
+                {
+                    foreach (TItem item in _subNodes[i].Query(query, predicate))
+                    {
+                        yield return item;
+                    }
                 }
             }
         }
@@ -301,6 +333,26 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             }
         }
 
+        #region IEnumerable<TItem> Members
+
+        public IEnumerator<TItem> GetEnumerator()
+        {
+            foreach (TItem item in _items)
+            {
+                yield return item;
+            }
+
+            foreach (Node<TCoordinate, TItem> node in _subNodes)
+            {
+                foreach (TItem item in node)
+                {
+                    yield return item;
+                }
+            }
+        }
+
+        #endregion
+
         protected abstract Boolean IsSearchMatch(IExtents<TCoordinate> query);
 
         protected List<TItem> ItemsInternal
@@ -313,13 +365,26 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             get { return _subNodes; }
         }
 
-        private void visitItems(IExtents query, IItemVisitor visitor)
+        private IEnumerable<TItem> visitItems(IExtents<TCoordinate> query, Predicate<TItem> predicate)
         {
-            // would be nice to filter items based on search envelope, but can't until they contain an envelope
+            // would be nice to filter items based on search envelope, 
+            // but can't until they contain an envelope
             foreach (TItem item in _items)
             {
-                visitor.VisitItem(item);
+                if(predicate(item))
+                {
+                    yield return item;
+                }
             }
         }
+
+        #region IEnumerable Members
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
     }
 }

@@ -7,7 +7,6 @@ using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
-using NPack;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
@@ -26,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         private readonly List<TCoordinate> _coordinates = new List<TCoordinate>();
         
         // label stores the locations of each point on the face surrounded by this ring
-        private readonly Label _label = new Label(Locations.None);
+        private Label _label = new Label(Locations.None);
 
         private ILinearRing<TCoordinate> _ring; // the ring created for this EdgeRing
         private Boolean _isHole;
@@ -131,6 +130,16 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
+        protected DirectedEdge<TCoordinate> StartingEdge
+        {
+            get { return _startingEdge; }
+        }
+
+        protected IGeometryFactory<TCoordinate> GeometryFactory
+        {
+            get { return _geometryFactory; }
+        }
+
         /// <summary> 
         /// Collect all the points from the DirectedEdges of this ring into a contiguous list.
         /// </summary>
@@ -142,7 +151,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             do
             {
-                Assert.IsTrue(de != null, "found null Directed Edge");
+                Debug.Assert(de != null);
+                //Assert.IsTrue(de != null, "found null Directed Edge");
 
                 if (de.EdgeRing == this)
                 {
@@ -150,7 +160,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 }
 
                 _edges.Add(de);
-                Label label = de.Label;
+                Debug.Assert(de.Label.HasValue);
+                Label label = de.Label.Value;
                 Assert.IsTrue(label.IsArea());
                 MergeLabel(label);
                 AddPoints(de.Edge, de.IsForward, isFirstEdge);
@@ -173,29 +184,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        private void computeMaxNodeDegree()
-        {
-            maxNodeDegree = 0;
-            DirectedEdge<TCoordinate> de = _startingEdge;
-
-            do
-            {
-                Node<TCoordinate> node = de.Node;
-                DirectedEdgeStar<TCoordinate> star = node.Edges as DirectedEdgeStar<TCoordinate>;
-                Debug.Assert(star != null);
-                Int32 degree = star.GetOutgoingDegree(this);
-
-                if (degree > maxNodeDegree)
-                {
-                    maxNodeDegree = degree;
-                }
-
-                de = GetNext(de);
-            } while (de != _startingEdge);
-
-            maxNodeDegree *= 2;
-        }
-
         public void SetInResult()
         {
             DirectedEdge<TCoordinate> de = _startingEdge;
@@ -205,6 +193,36 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 de.Edge.InResult = true;
                 de = de.Next;
             } while (de != _startingEdge);
+        }
+
+        /// <summary> 
+        /// This method will cause the ring to be computed.
+        /// It will also check any holes, if they have been assigned.
+        /// </summary>
+        public Boolean ContainsPoint(TCoordinate p)
+        {
+            ILinearRing<TCoordinate> shell = LinearRing;
+            IExtents<TCoordinate> extents = shell.Extents;
+
+            if (!extents.Contains(p))
+            {
+                return false;
+            }
+
+            if (!CGAlgorithms<TCoordinate>.IsPointInRing(p, shell.Coordinates))
+            {
+                return false;
+            }
+
+            foreach (EdgeRing<TCoordinate> hole in _holes)
+            {
+                if (hole.ContainsPoint(p))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         protected void MergeLabel(Label deLabel)
@@ -222,7 +240,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         protected void MergeLabel(Label deLabel, Int32 geomIndex)
         {
-            Locations loc = deLabel.GetLocation(geomIndex, Positions.Right);
+            Locations loc = deLabel[geomIndex, Positions.Right];
 
             // no information to be had from this label
             if (loc == Locations.None)
@@ -231,9 +249,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
 
             // if there is no current RHS value, set it
-            if (_label.GetLocation(geomIndex) == Locations.None)
+            if (_label[geomIndex] == Locations.None)
             {
-                _label.SetLocation(geomIndex, loc);
+                _label = new Label(_label, geomIndex, loc);
                 return;
             }
         }
@@ -270,34 +288,27 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        /// <summary> 
-        /// This method will cause the ring to be computed.
-        /// It will also check any holes, if they have been assigned.
-        /// </summary>
-        public Boolean ContainsPoint(TCoordinate p)
+        private void computeMaxNodeDegree()
         {
-            ILinearRing<TCoordinate> shell = LinearRing;
-            IExtents<TCoordinate> extents = shell.Extents;
+            maxNodeDegree = 0;
+            DirectedEdge<TCoordinate> de = _startingEdge;
 
-            if (!extents.Contains(p))
+            do
             {
-                return false;
-            }
+                Node<TCoordinate> node = de.Node;
+                DirectedEdgeStar<TCoordinate> star = node.Edges as DirectedEdgeStar<TCoordinate>;
+                Debug.Assert(star != null);
+                Int32 degree = star.GetOutgoingDegree(this);
 
-            if (!CGAlgorithms<TCoordinate>.IsPointInRing(p, shell.Coordinates))
-            {
-                return false;
-            }
-
-            foreach (EdgeRing<TCoordinate> hole in _holes)
-            {
-                if (hole.ContainsPoint(p))
+                if (degree > maxNodeDegree)
                 {
-                    return false;
+                    maxNodeDegree = degree;
                 }
-            }
 
-            return true;
+                de = GetNext(de);
+            } while (de != _startingEdge);
+
+            maxNodeDegree *= 2;
         }
 
         private static IEnumerable<ILinearRing<TCoordinate>> getLinearRings(IEnumerable<EdgeRing<TCoordinate>> rings)

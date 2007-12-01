@@ -1,49 +1,37 @@
 using System;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public class LengthIndexOfPoint
+    public class LengthIndexOfPoint<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="linearGeom"></param>
-        /// <param name="inputPt"></param>
-        /// <returns></returns>
-        public static Double IndexOf(IGeometry linearGeom, ICoordinate inputPt)
+        public static Double IndexOf(IGeometry<TCoordinate> linearGeometry, TCoordinate inputPt)
         {
-            LengthIndexOfPoint locater = new LengthIndexOfPoint(linearGeom);
+            LengthIndexOfPoint<TCoordinate> locater = new LengthIndexOfPoint<TCoordinate>(linearGeometry);
             return locater.IndexOf(inputPt);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="linearGeom"></param>
-        /// <param name="inputPt"></param>
-        /// <param name="minIndex"></param>
-        /// <returns></returns>
-        public static Double IndexOfAfter(IGeometry linearGeom, ICoordinate inputPt, Double minIndex)
+        public static Double IndexOfAfter(IGeometry<TCoordinate> linearGeometry, ICoordinate inputPt, Double minIndex)
         {
-            LengthIndexOfPoint locater = new LengthIndexOfPoint(linearGeom);
+            LengthIndexOfPoint<TCoordinate> locater = new LengthIndexOfPoint<TCoordinate>(linearGeometry);
             return locater.IndexOfAfter(inputPt, minIndex);
         }
 
-        private IGeometry linearGeom;
+        private readonly ICurve<TCoordinate> _linearGeometry;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LengthIndexOfPoint"/> class.
+        /// Initializes a new instance of the <see cref="LengthIndexOfPoint{TCoordinate}"/> class.
         /// </summary>
         /// <param name="linearGeom">A linear geometry.</param>
-        public LengthIndexOfPoint(IGeometry linearGeom)
+        public LengthIndexOfPoint(IGeometry<TCoordinate> linearGeom)
         {
-            this.linearGeom = linearGeom;
+            this._linearGeometry = linearGeom;
         }
 
         /// <summary>
@@ -58,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
         /// <summary>
         /// Finds the nearest index along the linear <see cref="Geometry{TCoordinate}" />
-        /// to a given <see cref="Coordinate"/> after the specified minimum index.
+        /// to a given <typeparamref name="TCoordinate"/> after the specified minimum index.
         /// If possible the location returned will be strictly 
         /// greater than the <paramref name="minIndex" />.
         /// If this is not possible, the value returned 
@@ -77,7 +65,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             }
 
             // sanity check for minIndex at or past end of line
-            Double endIndex = linearGeom.Length;
+            Double endIndex = _linearGeometry.Length;
+
             if (endIndex < minIndex)
             {
                 return endIndex;
@@ -93,15 +82,16 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             return closestAfter;
         }
 
-        private Double IndexOfFromStart(ICoordinate inputPt, Double minIndex)
+        private Double IndexOfFromStart(TCoordinate inputPt, Double minIndex)
         {
             Double minDistance = Double.MaxValue;
 
             Double ptMeasure = minIndex;
             Double segmentStartMeasure = 0.0;
 
-            LineSegment seg = new LineSegment();
-            foreach (LinearIterator.LinearElement element in new LinearIterator(linearGeom))
+            LineSegment<TCoordinate> seg = new LineSegment<TCoordinate>();
+
+            foreach (LinearIterator.LinearElement element in new LinearIterator(_linearGeometry))
             {
                 if (!element.IsEndOfLine)
                 {

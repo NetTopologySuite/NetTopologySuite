@@ -66,7 +66,6 @@
     <Compile Include="Algorithm\LineIntersector.cs" />
     <Compile Include="Algorithm\MCPointInRing.cs" />
     <Compile Include="Algorithm\MinimumDiameter.cs" />
-    <Compile Include="Algorithm\NonRobustCGAlgorithms.cs" />
     <Compile Include="Algorithm\NonRobustLineIntersector.cs" />
     <Compile Include="Algorithm\NotRepresentableException.cs" />
     <Compile Include="Algorithm\IPointInRing.cs" />
@@ -145,8 +144,6 @@
     <Compile Include="Index\Chain\MonotoneChainBuilder.cs" />
     <Compile Include="Index\Chain\MonotoneChainOverlapAction.cs" />
     <Compile Include="Index\Chain\MonotoneChainSelectAction.cs" />
-    <Compile Include="Index\IIndexVisitor.cs" />
-    <Compile Include="Index\IItemVisitor.cs" />
     <Compile Include="Index\Quadtree\DoubleBits.cs" />
     <Compile Include="Index\Quadtree\IntervalSize.cs" />
     <Compile Include="Index\Quadtree\Key.cs" />
