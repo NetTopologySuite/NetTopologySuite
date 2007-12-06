@@ -272,9 +272,9 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             if (componentIndex < 0 || componentIndex >= linearGeom.NumGeometries)
                 return false;
             ILineString lineComp = (ILineString) linearGeom.GetGeometryN(componentIndex);
-            if (segmentIndex < 0 || segmentIndex > lineComp.NumGeometries)
+            if (segmentIndex < 0 || segmentIndex > lineComp.NumPoints)
                 return false;
-            if (segmentIndex == lineComp.NumGeometries && segmentFraction != 0.0)
+            if (segmentIndex == lineComp.NumPoints && segmentFraction != 0.0)
                 return false;
             if (segmentFraction < 0.0 || segmentFraction > 1.0)
                 return false;
