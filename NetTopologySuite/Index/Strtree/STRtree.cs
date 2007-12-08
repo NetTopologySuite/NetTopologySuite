@@ -7,6 +7,7 @@ using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
+using GeoAPI.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 {
@@ -21,66 +22,64 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
     /// Described in: P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
     /// </summary>
-    public class StrTree<TCoordinate, TItem> : AbstractStrTree, ISpatialIndex<TCoordinate, TItem>
+    public class StrTree<TCoordinate, TItem> : AbstractStrTree<IExtents<TCoordinate>, TItem>, ISpatialIndex<IExtents<TCoordinate>, TItem>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, IComputable<TCoordinate>,
             IConvertible
     {
         #region Nested types
 
-        // TODO: Make this a delegate
-        private class AnonymousXComparerImpl : IComparer
+        //// TODO: Make this a delegate
+        //private class AnonymousXComparerImpl : IComparer
+        //{
+        //    private StrTree<TCoordinate, TItem> container = null;
+
+        //    public AnonymousXComparerImpl(StrTree<TCoordinate, TItem> container)
+        //    {
+        //        this.container = container;
+        //    }
+
+        //    public Int32 Compare(object o1, object o2)
+        //    {
+        //        return container.CompareDoubles(container.getCenterX((IExtents) ((IBoundable) o1).Bounds),
+        //                                        container.getCenterX((IExtents) ((IBoundable) o2).Bounds));
+        //    }
+        //}
+
+        //// TODO: Make this a delegate
+        //private class AnonymousYComparerImpl : IComparer
+        //{
+        //    private StrTree<TCoordinate, TItem> container = null;
+
+        //    public AnonymousYComparerImpl(StrTree<TCoordinate, TItem> container)
+        //    {
+        //        this.container = container;
+        //    }
+
+        //    public Int32 Compare(object o1, object o2)
+        //    {
+        //        return container.CompareDoubles(container.getCenterY((IExtents) ((IBoundable) o1).Bounds),
+        //                                        container.getCenterY((IExtents) ((IBoundable) o2).Bounds));
+        //    }
+        //}
+
+        private class StrNode : AbstractNode<IExtents<TCoordinate>>
         {
-            private StrTree<TCoordinate, TItem> container = null;
-
-            public AnonymousXComparerImpl(StrTree<TCoordinate, TItem> container)
-            {
-                this.container = container;
-            }
-
-            public Int32 Compare(object o1, object o2)
-            {
-                return container.CompareDoubles(container.getCenterX((IExtents) ((IBoundable) o1).Bounds),
-                                                container.getCenterX((IExtents) ((IBoundable) o2).Bounds));
-            }
-        }
-
-        // TODO: Make this a delegate
-        private class AnonymousYComparerImpl : IComparer
-        {
-            private StrTree<TCoordinate, TItem> container = null;
-
-            public AnonymousYComparerImpl(StrTree<TCoordinate, TItem> container)
-            {
-                this.container = container;
-            }
-
-            public Int32 Compare(object o1, object o2)
-            {
-                return container.CompareDoubles(container.getCenterY((IExtents) ((IBoundable) o1).Bounds),
-                                                container.getCenterY((IExtents) ((IBoundable) o2).Bounds));
-            }
-        }
-
-        private class AnonymousAbstractNodeImpl : AbstractNode
-        {
-            public AnonymousAbstractNodeImpl(Int32 nodeCapacity) :
+            public StrNode(Int32 nodeCapacity) :
                 base(nodeCapacity) {}
 
-            protected override object ComputeBounds()
+            protected override IExtents<TCoordinate> ComputeBounds()
             {
-                IExtents bounds = null;
-               
-                for (IEnumerator i = ChildBoundables.GetEnumerator(); i.MoveNext();)
+                IExtents<TCoordinate> bounds = null;
+
+                foreach (IBoundable<IExtents<TCoordinate>> childBoundable in ChildBoundables)
                 {
-                    IBoundable childBoundable = (IBoundable) i.Current;
-                    
                     if (bounds == null)
                     {
-                        bounds = new Extents((IExtents) childBoundable.Bounds);
+                        bounds = new Extents<TCoordinate>(childBoundable.Bounds);
                     }
                     else
                     {
-                        bounds.ExpandToInclude((IExtents) childBoundable.Bounds);
+                        bounds.ExpandToInclude(childBoundable.Bounds);
                     }
                 }
 
@@ -88,21 +87,21 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             }
         }
 
-        // TODO: Make this a delegate
-        private class AnonymousIntersectsOpImpl : IIntersectsOp
-        {
-            private StrTree<TCoordinate, TItem> container = null;
+        //// TODO: Make this a delegate
+        //private class AnonymousIntersectsOpImpl : IIntersectsOp
+        //{
+        //    private StrTree<TCoordinate, TItem> container = null;
 
-            public AnonymousIntersectsOpImpl(StrTree<TCoordinate, TItem> container)
-            {
-                this.container = container;
-            }
+        //    public AnonymousIntersectsOpImpl(StrTree<TCoordinate, TItem> container)
+        //    {
+        //        this.container = container;
+        //    }
 
-            public Boolean Intersects(object aBounds, object bBounds)
-            {
-                return ((IExtents) aBounds).Intersects((IExtents) bBounds);
-            }
-        }
+        //    public Boolean Intersects(object aBounds, object bBounds)
+        //    {
+        //        return ((IExtents) aBounds).Intersects((IExtents) bBounds);
+        //    }
+        //}
 
         #endregion
 
@@ -121,35 +120,35 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <summary>
         /// Inserts an item having the given bounds into the tree.
         /// </summary>
-        public void Insert(IExtents<TCoordinate> itemEnv, TItem item)
+        public void Insert(IExtents<TCoordinate> bounds, TItem item)
         {
-            if (itemEnv.IsEmpty)
+            if (bounds.IsEmpty)
             {
                 return;
             }
 
-            base.Insert(itemEnv, item);
+            base.Insert(bounds, item);
         }
 
         /// <summary>
         /// Returns items whose bounds intersect the given envelope.
         /// </summary>
-        public IEnumerable<TItem> Query(IExtents<TCoordinate> searchEnv)
+        public IEnumerable<TItem> Query(IExtents<TCoordinate> bounds)
         {
             //Yes this method does something. It specifies that the bounds is an
             //Envelope. super.query takes an object, not an Envelope. [Jon Aquino 10/24/2003]
-            return base.Query(searchEnv);
+            return base.Query(bounds);
         }
 
-        /// <summary>
-        /// Returns items whose bounds intersect the given envelope.
-        /// </summary>
-        public void Query(IExtents<TCoordinate> searchEnv, Action<TItem> visitor)
-        {
-            //Yes this method does something. It specifies that the bounds is an
-            //Envelope. super.query takes an Object, not an Envelope. [Jon Aquino 10/24/2003]
-            base.Query(searchEnv, visitor);
-        }
+        ///// <summary>
+        ///// Returns items whose bounds intersect the given envelope.
+        ///// </summary>
+        //public void Query(IExtents<TCoordinate> searchEnv, Action<TItem> visitor)
+        //{
+        //    //Yes this method does something. It specifies that the bounds is an
+        //    //Envelope. super.query takes an Object, not an Envelope. [Jon Aquino 10/24/2003]
+        //    base.Query(searchEnv, visitor);
+        //}
 
         /// <summary> 
         /// Removes a single item from the tree.
@@ -162,9 +161,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return base.Remove(itemEnv, item);
         }
 
-        protected override AbstractNode CreateNode(Int32 level)
+        protected override AbstractNode<IExtents<TCoordinate>> CreateNode(Int32 level)
         {
-            return new AnonymousAbstractNodeImpl(level);
+            return new StrNode(level);
         }
 
         /// <summary>
@@ -174,16 +173,50 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// group them into runs of size M (the node capacity). For each run, creates
         /// a new (parent) node.
         /// </summary>
-        protected override IList CreateParentBoundables(IList childBoundables, Int32 newLevel)
+        protected override IList<IBoundable<IExtents<TCoordinate>>> CreateParentBoundables(
+            IList<IBoundable<IExtents<TCoordinate>>> childBoundables, Int32 newLevel)
         {
             Assert.IsTrue(childBoundables.Count != 0);
-            Int32 minLeafCount = (Int32) Math.Ceiling((childBoundables.Count/(Double) NodeCapacity));
-            ArrayList sortedChildBoundables = new ArrayList(childBoundables);
-            sortedChildBoundables.Sort(new AnonymousXComparerImpl(this));
+
+            Int32 minLeafCount = (Int32)Math.Ceiling((childBoundables.Count / (Double)NodeCapacity));
+
+            List<IBoundable<IExtents<TCoordinate>>> sortedChildBoundables 
+                = new List<IBoundable<IExtents<TCoordinate>>>(childBoundables);
+
+            sortedChildBoundables.Sort(XOrdinateComparer);
+            
             IList[] verticalSlices = VerticalSlices(sortedChildBoundables,
-                                                    (Int32) Math.Ceiling(Math.Sqrt(minLeafCount)));
+                                                    (Int32)Math.Ceiling(Math.Sqrt(minLeafCount)));
+            
             IList tempList = CreateParentBoundablesFromVerticalSlices(verticalSlices, newLevel);
             return tempList;
+        }
+
+        protected static Comparison<IBoundable<IExtents<TCoordinate>>> XOrdinateComparer
+        {
+            get
+            {
+                return delegate(IBoundable<IExtents<TCoordinate>> left, IBoundable<IExtents<TCoordinate>> right)
+                       {
+                           return left.Bounds.Center[Ordinates.X].CompareTo(right.Bounds.Center[Ordinates.X]);
+                       };
+            }
+        }
+
+        protected static Comparison<IBoundable<IExtents<TCoordinate>>> YOrdinateComparer
+        {
+            get
+            {
+                return delegate(IBoundable<IExtents<TCoordinate>> left, IBoundable<IExtents<TCoordinate>> right)
+                {
+                    return left.Bounds.Center[Ordinates.Y].CompareTo(right.Bounds.Center[Ordinates.Y]);
+                };
+            }
+        }
+
+        protected override Comparison<IBoundable<IExtents<TCoordinate>>> CompareOp
+        {
+            get { return YOrdinateComparer; }
         }
 
         protected IList CreateParentBoundablesFromVerticalSlices(IList[] verticalSlices, Int32 newLevel)
@@ -204,19 +237,21 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return parentBoundables;
         }
 
-        protected IList CreateParentBoundablesFromVerticalSlice(IList childBoundables, Int32 newLevel)
+        protected IList<IBoundable<IExtents<TCoordinate>>> CreateParentBoundablesFromVerticalSlice(
+            IList<IBoundable<IExtents<TCoordinate>>> childBoundables, Int32 newLevel)
         {
             return base.CreateParentBoundables(childBoundables, newLevel);
         }
 
-        protected override IComparer GetComparer()
+        protected override Func<IExtents<TCoordinate>, IExtents<TCoordinate>, Boolean> IntersectsOp
         {
-            return new AnonymousYComparerImpl(this);
-        }
-
-        protected override IIntersectsOp IntersectsOp
-        {
-            get { return new AnonymousIntersectsOpImpl(this); }
+            get 
+            {
+                return delegate(IExtents<TCoordinate> left, IExtents<TCoordinate> right)
+                       {
+                           return left.Intersects(right);
+                       };
+            }
         }
 
         /// <param name="childBoundables">

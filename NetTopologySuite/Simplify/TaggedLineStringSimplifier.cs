@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     {
         // NOTE: modified for "safe" assembly in Sql 2005
         // Added readonly!
-        private static readonly LineIntersector<TCoordinate> li = new RobustLineIntersector<TCoordinate>();
+        private static readonly LineIntersector<TCoordinate> _li = new RobustLineIntersector<TCoordinate>();
 
         private readonly LineSegmentIndex<TCoordinate> _inputIndex = new LineSegmentIndex<TCoordinate>();
         private readonly LineSegmentIndex<TCoordinate> _outputIndex = new LineSegmentIndex<TCoordinate>();
@@ -43,10 +43,10 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         {
             _line = line;
             _linePts = line.ParentCoordinates;
-            SimplifySection(0, _linePts.Count - 1, 0);
+            simplifySection(0, _linePts.Count - 1, 0);
         }
 
-        private void SimplifySection(Int32 i, Int32 j, Int32 depth)
+        private void simplifySection(Int32 i, Int32 j, Int32 depth)
         {
             depth += 1;
             Int32[] sectionIndex = new Int32[2];
@@ -68,17 +68,20 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             {
                 isValidToFlatten = false;
             }
+
             // flattening must be less than distanceTolerance
             if (distance[0] > DistanceTolerance)
             {
                 isValidToFlatten = false;
             }
+
             // test if flattened section would cause intersection
             LineSegment<TCoordinate> candidateSeg = new LineSegment<TCoordinate>();
             candidateSeg.P0 = _linePts[i];
             candidateSeg.P1 = _linePts[j];
             sectionIndex[0] = i;
             sectionIndex[1] = j;
+
             if (hasBadIntersection(_line, sectionIndex, candidateSeg))
             {
                 isValidToFlatten = false;
@@ -91,8 +94,8 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
                 return;
             }
 
-            SimplifySection(i, furthestPtIndex, depth);
-            SimplifySection(furthestPtIndex, j, depth);
+            simplifySection(i, furthestPtIndex, depth);
+            simplifySection(furthestPtIndex, j, depth);
         }
 
         private static Int32 findFurthestPoint(IList<TCoordinate> pts, Int32 i, Int32 j, Double[] maxDistance)
@@ -214,8 +217,8 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
 
         private static Boolean hasInteriorIntersection(LineSegment<TCoordinate> seg0, LineSegment<TCoordinate> seg1)
         {
-            li.ComputeIntersection(seg0.P0, seg0.P1, seg1.P0, seg1.P1);
-            return li.IsInteriorIntersection();
+            _li.ComputeIntersection(seg0.P0, seg0.P1, seg1.P0, seg1.P1);
+            return _li.IsInteriorIntersection();
         }
 
         /// <summary>

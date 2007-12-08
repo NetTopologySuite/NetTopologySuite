@@ -1,5 +1,7 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Indexing;
+using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Strtree
@@ -19,30 +21,30 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
     /// </para>
     /// </remarks>
     /// </summary>
-    public abstract class AbstractStrTree
+    public abstract class AbstractStrTree<TBounds, TItem> : ISpatialIndex<TBounds, TItem>
     {
-        /// <returns>
-        /// A test for intersection between two bounds, necessary because subclasses
-        /// of AbstractStrTree have different implementations of bounds.
-        /// </returns>
-        protected interface IIntersectsOp
-        {
-            /// <summary>
-            /// For STRtrees, the bounds will be Envelopes; 
-            /// for SIRtrees, Intervals;
-            /// for other subclasses of AbstractStrTree, some other class.
-            /// </summary>
-            /// <param name="aBounds">The bounds of one spatial object.</param>
-            /// <param name="bBounds">The bounds of another spatial object.</param>                        
-            /// <returns>Whether the two bounds intersect.</returns>
-            Boolean Intersects(object aBounds, object bBounds);
-        }
+        ///// <returns>
+        ///// A test for intersection between two bounds, necessary because subclasses
+        ///// of AbstractStrTree have different implementations of bounds.
+        ///// </returns>
+        //protected interface IIntersectsOp
+        //{
+        //    /// <summary>
+        //    /// For STRtrees, the bounds will be Envelopes; 
+        //    /// for SIRtrees, Intervals;
+        //    /// for other subclasses of AbstractStrTree, some other class.
+        //    /// </summary>
+        //    /// <param name="aBounds">The bounds of one spatial object.</param>
+        //    /// <param name="bBounds">The bounds of another spatial object.</param>                        
+        //    /// <returns>Whether the two bounds intersect.</returns>
+        //    Boolean Intersects(object aBounds, object bBounds);
+        //}
 
-        protected AbstractNode root;
+        protected AbstractNode<TBounds> _root;
 
-        private Boolean built = false;
-        private ArrayList itemBoundables = new ArrayList();
-        private Int32 nodeCapacity;
+        private Boolean _built = false;
+        private readonly List<IBoundable<TBounds>> _itemBoundables = new List<IBoundable<TBounds>>();
+        private readonly Int32 _nodeCapacity;
 
         /// <summary> 
         /// Constructs an AbstractStrTree with the specified maximum number of child
@@ -51,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         public AbstractStrTree(Int32 nodeCapacity)
         {
             Assert.IsTrue(nodeCapacity > 1, "Node capacity must be greater than 1");
-            this.nodeCapacity = nodeCapacity;
+            _nodeCapacity = nodeCapacity;
         }
 
         /// <summary> 
@@ -62,75 +64,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         public void Build()
         {
-            Assert.IsTrue(!built);
-            root = (itemBoundables.Count == 0)
+            Assert.IsTrue(!_built);
+            _root = (_itemBoundables.Count == 0)
                        ? CreateNode(0)
-                       : CreateHigherLevels(itemBoundables, -1);
-            built = true;
-        }
-
-        protected abstract AbstractNode CreateNode(Int32 level);
-
-        /// <summary>
-        /// Sorts the childBoundables then divides them into groups of size M, where
-        /// M is the node capacity.
-        /// </summary>
-        protected virtual IList CreateParentBoundables(IList childBoundables, Int32 newLevel)
-        {
-            Assert.IsTrue(childBoundables.Count != 0);
-            ArrayList parentBoundables = new ArrayList();
-            parentBoundables.Add(CreateNode(newLevel));
-            ArrayList sortedChildBoundables = new ArrayList(childBoundables);
-            sortedChildBoundables.Sort(GetComparer());
-
-            for (IEnumerator i = sortedChildBoundables.GetEnumerator(); i.MoveNext();)
-            {
-                IBoundable childBoundable = (IBoundable) i.Current;
-
-                if (LastNode(parentBoundables).ChildBoundables.Count == NodeCapacity)
-                {
-                    parentBoundables.Add(CreateNode(newLevel));
-                }
-
-                LastNode(parentBoundables).AddChildBoundable(childBoundable);
-            }
-
-            return parentBoundables;
-        }
-
-        protected AbstractNode LastNode(IList nodes)
-        {
-            return (AbstractNode) nodes[nodes.Count - 1];
-        }
-
-        protected Int32 CompareDoubles(Double a, Double b)
-        {
-            return a > b ? 1 : a < b ? -1 : 0;
-        }
-
-        /// <summary>
-        /// Creates the levels higher than the given level.
-        /// </summary>
-        /// <param name="boundablesOfALevel">The level to build on.</param>
-        /// <param name="level">the level of the Boundables, or -1 if the boundables are item
-        /// boundables (that is, below level 0).</param>
-        /// <returns>The root, which may be a ParentNode or a LeafNode.</returns>
-        private AbstractNode CreateHigherLevels(IList boundablesOfALevel, Int32 level)
-        {
-            Assert.IsTrue(boundablesOfALevel.Count != 0);
-            IList parentBoundables = CreateParentBoundables(boundablesOfALevel, level + 1);
-           
-            if (parentBoundables.Count == 1)
-            {
-                return (AbstractNode) parentBoundables[0];
-            }
-
-            return CreateHigherLevels(parentBoundables, level + 1);
-        }
-
-        protected AbstractNode Root
-        {
-            get { return root; }
+                       : createHigherLevels(_itemBoundables, -1);
+            _built = true;
         }
 
         /// <summary> 
@@ -138,40 +76,141 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         public Int32 NodeCapacity
         {
-            get { return nodeCapacity; }
+            get { return _nodeCapacity; }
         }
 
         public Int32 Count
         {
             get
             {
-                if (!built)
+                if (!_built)
                 {
                     Build();
                 }
 
-                if (itemBoundables.Count == 0)
+                if (_itemBoundables.Count == 0)
                 {
                     return 0;
                 }
 
-                return GetSize(root);
+                return GetSize(_root);
             }
         }
 
-        protected Int32 GetSize(AbstractNode node)
+        public Int32 Depth
+        {
+            get
+            {
+                if (!_built)
+                {
+                    Build();
+                }
+
+                if (_itemBoundables.Count == 0)
+                {
+                    return 0;
+                }
+
+                return GetDepth(_root);
+            }
+        }
+
+        public void Insert(TBounds bounds, TItem item)
+        {
+            Assert.IsTrue(!_built, "Cannot insert items into an STR packed R-tree after it has been built.");
+            _itemBoundables.Add(new ItemBoundable<TBounds, TItem>(bounds, item));
+        }
+
+        /// <remarks>
+        /// Also builds the tree, if necessary.
+        /// </remarks>
+        public IEnumerable<TItem> Query(TBounds searchBounds)
+        {
+            return Query(searchBounds, null);
+        }
+
+        /// <remarks>
+        /// Also builds the tree, if necessary.
+        /// </remarks>
+        public IEnumerable<TItem> Query(TBounds searchBounds, Predicate<TItem> filter)
+        {
+            if (!_built)
+            {
+                Build();
+            }
+
+            if (_itemBoundables.Count == 0)
+            {
+                Assert.IsTrue(Equals(_root.Bounds, default(TBounds)));
+                yield break;
+            }
+
+            if (IntersectsOp(_root.Bounds, searchBounds))
+            {
+                foreach (TItem item in query(searchBounds, _root, filter))
+                {
+                    yield return item;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Also builds the tree, if necessary.
+        /// </summary>
+        public Boolean Remove(TBounds searchBounds, TItem item)
+        {
+            if (!_built)
+            {
+                Build();
+            }
+
+            if (_itemBoundables.Count == 0)
+            {
+                Assert.IsTrue(_root.Bounds == null);
+            }
+
+            if (IntersectsOp(_root.Bounds, searchBounds))
+            {
+                return remove(searchBounds, _root, item);
+            }
+
+            return false;
+        }
+
+        //protected AbstractNode LastNode(IList nodes)
+        //{
+        //    return (AbstractNode) nodes[nodes.Count - 1];
+        //}
+
+        //protected static Int32 CompareDoubles(Double a, Double b)
+        //{
+        //    return a > b ? 1 : a < b ? -1 : 0;
+        //}
+
+        /// <returns>
+        /// A test for intersection between two bounds, necessary because subclasses
+        /// of AbstractStrTree have different implementations of bounds.
+        /// </returns>
+        protected abstract Func<TBounds, TBounds, Boolean> IntersectsOp { get; }
+
+        protected abstract Comparison<IBoundable<TBounds>> CompareOp { get; }
+
+        protected IEnumerable<IBoundable<TBounds>> BoundablesAtLevel(Int32 level)
+        {
+            return boundablesAtLevel(level, _root);
+        }
+
+        protected static Int32 GetSize(AbstractNode<TBounds> node)
         {
             Int32 size = 0;
 
-            for (IEnumerator i = node.ChildBoundables.GetEnumerator(); i.MoveNext();)
+            foreach (IBoundable<TBounds> boundable in node.ChildBoundables)
             {
-                IBoundable childBoundable = (IBoundable) i.Current;
-
-                if (childBoundable is AbstractNode)
+                if (boundable is AbstractNode<TBounds>)
                 {
-                    size += GetSize((AbstractNode) childBoundable);
+                    size += GetSize(boundable as AbstractNode<TBounds>);
                 }
-                else if (childBoundable is ItemBoundable)
+                else if (boundable is ItemBoundable<TBounds, TItem>)
                 {
                     size += 1;
                 }
@@ -180,117 +219,110 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return size;
         }
 
-        public Int32 Depth
-        {
-            get
-            {
-                if (!built)
-                {
-                    Build();
-                }
-
-                if (itemBoundables.Count == 0)
-                {
-                    return 0;
-                }
-
-                return GetDepth(root);
-            }
-        }
-
-        protected Int32 GetDepth(AbstractNode node)
+        protected static Int32 GetDepth(AbstractNode<TBounds> node)
         {
             Int32 maxChildDepth = 0;
 
-            for (IEnumerator i = node.ChildBoundables.GetEnumerator(); i.MoveNext();)
+            foreach (AbstractNode<TBounds> childBoundable in node.ChildBoundables)
             {
-                IBoundable childBoundable = (IBoundable) i.Current;
-
-                if (childBoundable is AbstractNode)
+                if (childBoundable == null)
                 {
-                    Int32 childDepth = GetDepth((AbstractNode) childBoundable);
+                    continue;
+                }
 
-                    if (childDepth > maxChildDepth)
-                    {
-                        maxChildDepth = childDepth;
-                    }
+                Int32 childDepth = GetDepth(childBoundable);
+
+                if (childDepth > maxChildDepth)
+                {
+                    maxChildDepth = childDepth;
                 }
             }
 
             return maxChildDepth + 1;
         }
 
-        protected void Insert(object bounds, object item)
-        {
-            Assert.IsTrue(!built, "Cannot insert items into an STR packed R-tree after it has been built.");
-            itemBoundables.Add(new ItemBoundable(bounds, item));
-        }
+        protected abstract AbstractNode<TBounds> CreateNode(Int32 level);
 
         /// <summary>
-        /// Also builds the tree, if necessary.
+        /// Sorts the childBoundables then divides them into groups of size M, where
+        /// M is the node capacity.
         /// </summary>
-        protected IList Query(object searchBounds)
+        protected virtual IList<IBoundable<TBounds>> CreateParentBoundables(IList<IBoundable<TBounds>> childBoundables, Int32 newLevel)
         {
-            if (!built)
+            Assert.IsTrue(childBoundables.Count != 0);
+            List<IBoundable<TBounds>> parentBoundables = new List<IBoundable<TBounds>>();
+            parentBoundables.Add(CreateNode(newLevel));
+            List<IBoundable<TBounds>> sortedChildBoundables = new List<IBoundable<TBounds>>(childBoundables);
+            sortedChildBoundables.Sort(GetComparer());
+
+            foreach (IBoundable<TBounds> childBoundable in sortedChildBoundables)
             {
-                Build();
+                AbstractNode<TBounds> lastNode = Slice.GetLast(parentBoundables) as AbstractNode<TBounds>;
+
+                if (lastNode.ChildBoundables.Count == NodeCapacity)
+                {
+                    parentBoundables.Add(CreateNode(newLevel));
+                }
+
+                lastNode = Slice.GetLast(parentBoundables) as AbstractNode<TBounds>;
+                lastNode.AddChildBoundable(childBoundable);
             }
-          
-            ArrayList matches = new ArrayList();
-          
-            if (itemBoundables.Count == 0)
-            {
-                Assert.IsTrue(root.Bounds == null);
-                return matches;
-            }
-           
-            if (IntersectsOp.Intersects(root.Bounds, searchBounds))
-            {
-                Query(searchBounds, root, matches);
-            }
-          
-            return matches;
+
+            return parentBoundables;
         }
 
-        /// <summary>
-        /// Also builds the tree, if necessary.
-        /// </summary>
-        protected void Query(Object searchBounds, IItemVisitor visitor)
+        protected AbstractNode<TBounds> Root
         {
-            if (!built)
-            {
-                Build();
-            }
-
-            if (itemBoundables.Count == 0)
-            {
-                Assert.IsTrue(root.Bounds == null);
-            }
-
-            if (IntersectsOp.Intersects(root.Bounds, searchBounds))
-            {
-                Query(searchBounds, root, visitor);
-            }
+            get { return _root; }
         }
 
-        private void Query(object searchBounds, AbstractNode node, IList matches)
+        //private void query(object searchBounds, AbstractNode node, IItemVisitor visitor)
+        //{
+        //    foreach (object obj in node.ChildBoundables)
+        //    {
+        //        IBoundable childBoundable = (IBoundable)obj;
+
+        //        if (!IntersectsOp.Intersects(childBoundable.Bounds, searchBounds))
+        //        {
+        //            continue;
+        //        }
+
+        //        if (childBoundable is AbstractNode)
+        //        {
+        //            Query(searchBounds, (AbstractNode)childBoundable, visitor);
+        //        }
+        //        else if (childBoundable is ItemBoundable)
+        //        {
+        //            visitor.VisitItem(((ItemBoundable)childBoundable).Item);
+        //        }
+        //        else
+        //        {
+        //            Assert.ShouldNeverReachHere();
+        //        }
+        //    }
+        //}
+
+        private IEnumerable<TItem> query(TBounds searchBounds, AbstractNode<TBounds> node, Predicate<TItem> filter)
         {
-            foreach (object obj in node.ChildBoundables)
+            foreach (IBoundable<TBounds> childBoundable in node.ChildBoundables)
             {
-                IBoundable childBoundable = (IBoundable) obj;
-              
-                if (!IntersectsOp.Intersects(childBoundable.Bounds, searchBounds))
+                if (!IntersectsOp(childBoundable.Bounds, searchBounds))
                 {
                     continue;
                 }
 
-                if (childBoundable is AbstractNode)
+                if (childBoundable is AbstractNode<TBounds>)
                 {
-                    Query(searchBounds, (AbstractNode) childBoundable, matches);
+                    query(searchBounds, childBoundable as AbstractNode<TBounds>, filter);
                 }
-                else if (childBoundable is ItemBoundable)
+                else if (childBoundable is ItemBoundable<TBounds, TItem>)
                 {
-                    matches.Add(((ItemBoundable) childBoundable).Item);
+                    ItemBoundable<TBounds, TItem> itemBoundable = (ItemBoundable<TBounds, TItem>)childBoundable;
+
+                    if (filter(itemBoundable.Item))
+                    {
+                        yield return itemBoundable.Item;
+                    }
                 }
                 else
                 {
@@ -299,71 +331,15 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             }
         }
 
-        private void Query(object searchBounds, AbstractNode node, IItemVisitor visitor)
+        private static Boolean removeItem(AbstractNode<TBounds> node, TItem item)
         {
-            foreach (object obj in node.ChildBoundables)
-            {
-                IBoundable childBoundable = (IBoundable) obj;
-               
-                if (!IntersectsOp.Intersects(childBoundable.Bounds, searchBounds))
-                {
-                    continue;
-                }
-               
-                if (childBoundable is AbstractNode)
-                {
-                    Query(searchBounds, (AbstractNode) childBoundable, visitor);
-                }
-                else if (childBoundable is ItemBoundable)
-                {
-                    visitor.VisitItem(((ItemBoundable) childBoundable).Item);
-                }
-                else
-                {
-                    Assert.ShouldNeverReachHere();
-                }
-            }
-        }
+            IBoundable<TBounds> childToRemove = null;
 
-        /// <returns>
-        /// A test for intersection between two bounds, necessary because subclasses
-        /// of AbstractStrTree have different implementations of bounds.
-        /// </returns>
-        protected abstract IIntersectsOp IntersectsOp { get; }
-
-        /// <summary>
-        /// Also builds the tree, if necessary.
-        /// </summary>
-        protected Boolean Remove(object searchBounds, object item)
-        {
-            if (!built)
+            foreach (IBoundable<TBounds> childBoundable in node.ChildBoundables)
             {
-                Build();
-            }
-           
-            if (itemBoundables.Count == 0)
-            {
-                Assert.IsTrue(root.Bounds == null);
-            }
-            
-            if (IntersectsOp.Intersects(root.Bounds, searchBounds))
-            {
-                return Remove(searchBounds, root, item);
-            }
-           
-            return false;
-        }
-
-        private Boolean RemoveItem(AbstractNode node, object item)
-        {
-            IBoundable childToRemove = null;
-            
-            for (IEnumerator i = node.ChildBoundables.GetEnumerator(); i.MoveNext();)
-            {
-                IBoundable childBoundable = (IBoundable) i.Current;
-                if (childBoundable is ItemBoundable)
+                if (childBoundable is ItemBoundable<TBounds, TItem>)
                 {
-                    if (((ItemBoundable) childBoundable).Item == item)
+                    if (Equals(((ItemBoundable<TBounds, TItem>)childBoundable).Item, item))
                     {
                         childToRemove = childBoundable;
                     }
@@ -379,36 +355,33 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return false;
         }
 
-        private Boolean Remove(object searchBounds, AbstractNode node, object item)
+        private Boolean remove(TBounds searchBounds, AbstractNode<TBounds> node, TItem item)
         {
             // first try removing item from this node
-            Boolean found = RemoveItem(node, item);
+            Boolean found = removeItem(node, item);
 
             if (found)
             {
                 return true;
             }
 
-            AbstractNode childToPrune = null;
+            AbstractNode<TBounds> childToPrune = null;
 
             // next try removing item from lower nodes
-            for (IEnumerator i = node.ChildBoundables.GetEnumerator(); i.MoveNext();)
+            foreach (AbstractNode<TBounds> childBoundable in node.ChildBoundables)
             {
-                IBoundable childBoundable = (IBoundable) i.Current;
-                if (!IntersectsOp.Intersects(childBoundable.Bounds, searchBounds))
+                if (childBoundable == null || !IntersectsOp(childBoundable.Bounds, searchBounds))
                 {
                     continue;
                 }
 
-                if (childBoundable is AbstractNode)
+                found = remove(searchBounds, childBoundable, item);
+
+                // if found, record child for pruning and exit
+                if (found)
                 {
-                    found = Remove(searchBounds, (AbstractNode) childBoundable, item);
-                    // if found, record child for pruning and exit
-                    if (found)
-                    {
-                        childToPrune = (AbstractNode) childBoundable;
-                        break;
-                    }
+                    childToPrune = childBoundable;
+                    break;
                 }
             }
 
@@ -424,46 +397,59 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return found;
         }
 
-        protected IList BoundablesAtLevel(Int32 level)
-        {
-            IList boundables = new ArrayList();
-            BoundablesAtLevel(level, root, ref boundables);
-            return boundables;
-        }
-
         /// <param name="level">-1 to get items.</param>
-        private void BoundablesAtLevel(Int32 level, AbstractNode top, ref IList boundables)
+        private static IEnumerable<IBoundable<TBounds>> boundablesAtLevel(Int32 level, AbstractNode<TBounds> top)
         {
             Assert.IsTrue(level > -2);
-            
+
             if (top.Level == level)
             {
-                boundables.Add(top);
-                return;
+                yield return top;
+                yield break;
             }
 
-            for (IEnumerator i = top.ChildBoundables.GetEnumerator(); i.MoveNext();)
+            foreach (IBoundable<TBounds> boundable in top.ChildBoundables)
             {
-                IBoundable boundable = (IBoundable) i.Current;
-                
-                if (boundable is AbstractNode)
+                if (boundable is AbstractNode<TBounds>)
                 {
-                    BoundablesAtLevel(level, (AbstractNode) boundable, ref boundables);
+                    IEnumerable<IBoundable<TBounds>> nextLevelBoundables =
+                        boundablesAtLevel(level, boundable as AbstractNode<TBounds>);
+
+                    foreach (IBoundable<TBounds> nextLevelBoundable in nextLevelBoundables)
+                    {
+                        yield return nextLevelBoundable;
+                    }
                 }
                 else
                 {
-                    Assert.IsTrue(boundable is ItemBoundable);
-                    
+                    Assert.IsTrue(boundable is ItemBoundable<TBounds, TItem>);
+
                     if (level == -1)
                     {
-                        boundables.Add(boundable);
+                        yield return boundable;
                     }
                 }
             }
-
-            return;
         }
 
-        protected abstract IComparer GetComparer();
+        /// <summary>
+        /// Creates the levels higher than the given level.
+        /// </summary>
+        /// <param name="boundablesOfALevel">The level to build on.</param>
+        /// <param name="level">The level of the boundables, or -1 if the boundables are item
+        /// boundables (that is, below level 0).</param>
+        /// <returns>The root, which may be a ParentNode or a LeafNode.</returns>
+        private AbstractNode<TBounds> createHigherLevels(IList<IBoundable<TBounds>> boundablesOfALevel, Int32 level)
+        {
+            Assert.IsTrue(boundablesOfALevel.Count != 0);
+            IList<IBoundable<TBounds>> parentBoundables = CreateParentBoundables(boundablesOfALevel, level + 1);
+
+            if (parentBoundables.Count == 1)
+            {
+                return Slice.GetFirst(parentBoundables) as AbstractNode<TBounds>;
+            }
+
+            return createHigherLevels(parentBoundables, level + 1);
+        }
     }
 }

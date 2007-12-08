@@ -1,11 +1,19 @@
 using System;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
+using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     /// <summary>
     /// Computes the minimum diameter of a <see cref="Geometry{TCoordinate}"/>.
+    /// </summary>
+    /// <remarks>
     /// The minimum diameter is defined to be the
     /// width of the smallest band that contains the point,
     /// where a band is a strip of the plane defined
@@ -15,37 +23,38 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// The first step in the algorithm is computing the convex hull of the Geometry.
     /// If the input Geometry is known to be convex, a hint can be supplied to
     /// avoid this computation.
-    /// </summary>
-    public class MinimumDiameter
+    /// </remarks>
+    public class MinimumDiameter<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
-        private readonly IGeometry inputGeom;
-        private readonly Boolean isConvex;
+        private readonly IGeometry<TCoordinate> _inputGeom;
+        private readonly Boolean _isConvex;
 
-        private LineSegment minBaseSeg = new LineSegment();
-        private ICoordinate minWidthPt = null;
-        private Int32 minPtIndex;
-        private Double minWidth = 0.0;
+        private LineSegment<TCoordinate> _minBaseSeg = new LineSegment<TCoordinate>();
+        private TCoordinate _minWidthPt = default(TCoordinate);
+        private Int32 _minPtIndex;
+        private Double _minWidth = 0.0;
 
         /// <summary> 
         /// Compute a minimum diameter for a giver <see cref="Geometry{TCoordinate}"/>.
         /// </summary>
         /// <param name="inputGeom">a Geometry.</param>
-        public MinimumDiameter(IGeometry inputGeom)
+        public MinimumDiameter(IGeometry<TCoordinate> inputGeom)
             : this(inputGeom, false) {}
 
         /// <summary> 
         /// Compute a minimum diameter for a giver <see cref="Geometry{TCoordinate}"/>,
-        /// with a hint if
-        /// the Geometry is convex
+        /// with a hint if the Geometry is convex
         /// (e.g. a convex Polygon or LinearRing,
         /// or a two-point LineString, or a Point).
         /// </summary>
         /// <param name="inputGeom">a Geometry which is convex.</param>
         /// <param name="isConvex"><see langword="true"/> if the input point is convex.</param>
-        public MinimumDiameter(IGeometry inputGeom, Boolean isConvex)
+        public MinimumDiameter(IGeometry<TCoordinate> inputGeom, Boolean isConvex)
         {
-            this.inputGeom = inputGeom;
-            this.isConvex = isConvex;
+            _inputGeom = inputGeom;
+            _isConvex = isConvex;
         }
 
         /// <summary> 
@@ -56,21 +65,21 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             get
             {
-                ComputeMinimumDiameter();
-                return minWidth;
+                computeMinimumDiameter();
+                return _minWidth;
             }
         }
 
         /// <summary>
-        /// Gets the <c>Coordinate</c> forming one end of the minimum diameter.
+        /// Gets the <typeparamref name="TCoordinate"/> forming one end of the minimum diameter.
         /// </summary>
         /// <returns>A coordinate forming one end of the minimum diameter.</returns>
-        public ICoordinate WidthCoordinate
+        public TCoordinate WidthCoordinate
         {
             get
             {
-                ComputeMinimumDiameter();
-                return minWidthPt;
+                computeMinimumDiameter();
+                return _minWidthPt;
             }
         }
 
@@ -78,12 +87,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Gets the segment forming the base of the minimum diameter.
         /// </summary>
         /// <returns>The segment forming the base of the minimum diameter.</returns>
-        public ILineString SupportingSegment
+        public ILineString<TCoordinate> SupportingSegment
         {
             get
             {
-                ComputeMinimumDiameter();
-                return inputGeom.Factory.CreateLineString(new ICoordinate[] {minBaseSeg.P0, minBaseSeg.P1});
+                computeMinimumDiameter();
+                return _inputGeom.Factory.CreateLineString(_minBaseSeg.P0, _minBaseSeg.P1);
             }
         }
 
@@ -91,50 +100,51 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Gets a <c>LineString</c> which is a minimum diameter.
         /// </summary>
         /// <returns>A <c>LineString</c> which is a minimum diameter.</returns>
-        public ILineString Diameter
+        public ILineString<TCoordinate> Diameter
         {
             get
             {
-                ComputeMinimumDiameter();
+                computeMinimumDiameter();
 
                 // return empty linearRing if no minimum width calculated
-                if (minWidthPt == null)
+                if (CoordinateHelper.IsEmpty(_minWidthPt))
                 {
-                    ICoordinate[] nullCoords = null;
-                    return inputGeom.Factory.CreateLineString(nullCoords);
+                    return _inputGeom.Factory.CreateLineString();
                 }
 
-                ICoordinate basePt = minBaseSeg.Project(minWidthPt);
-                return inputGeom.Factory.CreateLineString(new ICoordinate[] {basePt, minWidthPt});
+                TCoordinate basePt = _minBaseSeg.Project(_minWidthPt);
+                return _inputGeom.Factory.CreateLineString(basePt, _minWidthPt);
             }
         }
 
-        private void ComputeMinimumDiameter()
+        private void computeMinimumDiameter()
         {
             // check if computation is cached
-            if (minWidthPt != null)
+            if (_minWidthPt != null)
             {
                 return;
             }
 
-            if (isConvex)
+            if (_isConvex)
             {
-                ComputeWidthConvex(inputGeom);
+                computeWidthConvex(_inputGeom);
             }
             else
             {
-                IGeometry convexGeom = (new ConvexHull(inputGeom)).GetConvexHull();
-                ComputeWidthConvex(convexGeom);
+                //ConvexHull<TCoordinate> hull = new ConvexHull<TCoordinate>(_inputGeom);
+                IGeometry<TCoordinate> convexGeom = _inputGeom.ConvexHull();
+                computeWidthConvex(convexGeom);
             }
         }
 
-        private void ComputeWidthConvex(IGeometry geom)
+        private void computeWidthConvex(IGeometry<TCoordinate> geom)
         {
-            ICoordinate[] pts = null;
+            IEnumerable<TCoordinate> pts;
 
-            if (geom is IPolygon)
+            if (geom is IPolygon<TCoordinate>)
             {
-                pts = ((IPolygon) geom).ExteriorRing.Coordinates;
+                IPolygon<TCoordinate> poly = geom as IPolygon<TCoordinate>;
+                pts = poly.ExteriorRing.Coordinates;
             }
             else
             {
@@ -142,29 +152,30 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
 
             // special cases for lines or points or degenerate rings
-            if (pts.Length == 0)
+            if (!Slice.CountGreaterThan(0, pts))
             {
-                minWidth = 0.0;
-                minWidthPt = null;
-                minBaseSeg = null;
+                _minWidth = 0.0;
+                _minWidthPt = default(TCoordinate);
+                _minBaseSeg = null;
             }
-            else if (pts.Length == 1)
+            else if (!Slice.CountGreaterThan(1, pts))
             {
-                minWidth = 0.0;
-                minWidthPt = pts[0];
-                minBaseSeg.P0 = pts[0];
-                minBaseSeg.P1 = pts[0];
+                _minWidth = 0.0;
+                TCoordinate point = Slice.GetFirst(pts);
+                _minWidthPt = point;
+                _minBaseSeg.P0 = point;
+                _minBaseSeg.P1 = point;
             }
-            else if (pts.Length == 2 || pts.Length == 3)
+            else if (!Slice.CountGreaterThan(3, pts))
             {
-                minWidth = 0.0;
-                minWidthPt = pts[0];
-                minBaseSeg.P0 = pts[0];
-                minBaseSeg.P1 = pts[1];
+                _minWidth = 0.0;
+                Pair<TCoordinate> pair = Slice.GetPair(pts);
+                _minWidthPt = _minBaseSeg.P0 = pair.First;
+                _minBaseSeg.P1 = pair.Second;
             }
             else
             {
-                ComputeConvexRingMinDiameter(pts);
+                computeConvexRingMinDiameter(pts);
             }
         }
 
@@ -172,56 +183,57 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Compute the width information for a ring of <c>Coordinate</c>s.
         /// Leaves the width information in the instance variables.
         /// </summary>
-        private void ComputeConvexRingMinDiameter(ICoordinate[] pts)
+        private void computeConvexRingMinDiameter(IEnumerable<TCoordinate> pts)
         {
             // for each segment in the ring
-            minWidth = Double.MaxValue;
+            _minWidth = Double.MaxValue;
             Int32 currMaxIndex = 1;
+            Int32 count = Slice.GetLength(pts);
 
-            LineSegment seg = new LineSegment();
-           
+            LineSegment<TCoordinate> seg = new LineSegment<TCoordinate>();
+
             // compute the max distance for all segments in the ring, and pick the minimum
-            for (Int32 i = 0; i < pts.Length - 1; i++)
+            foreach (Pair<TCoordinate> pair in Slice.GetOverlappingPairs(pts))
             {
-                seg.P0 = pts[i];
-                seg.P1 = pts[i + 1];
-                currMaxIndex = FindMaxPerpDistance(pts, seg, currMaxIndex);
+                seg.P0 = pair.First;
+                seg.P1 = pair.Second;
+                currMaxIndex = findMaxPerpendicularDistance(pts, seg, currMaxIndex, count);
             }
         }
 
-        private Int32 FindMaxPerpDistance(ICoordinate[] pts, LineSegment seg, Int32 startIndex)
+        private Int32 findMaxPerpendicularDistance(IEnumerable<TCoordinate> pts, LineSegment<TCoordinate> seg, Int32 startIndex, Int32 count)
         {
-            Double maxPerpDistance = seg.DistancePerpendicular(pts[startIndex]);
+            Double maxPerpDistance = seg.DistancePerpendicular(Slice.GetAt(pts, startIndex));
             Double nextPerpDistance = maxPerpDistance;
             Int32 maxIndex = startIndex;
             Int32 nextIndex = maxIndex;
-            
+
             while (nextPerpDistance >= maxPerpDistance)
             {
                 maxPerpDistance = nextPerpDistance;
                 maxIndex = nextIndex;
 
-                nextIndex = NextIndex(pts, maxIndex);
-                nextPerpDistance = seg.DistancePerpendicular(pts[nextIndex]);
+                nextIndex = computeNextIndex(pts, maxIndex, count);
+                nextPerpDistance = seg.DistancePerpendicular(Slice.GetAt(pts, nextIndex));
             }
 
             // found maximum width for this segment - update global min dist if appropriate
-            if (maxPerpDistance < minWidth)
+            if (maxPerpDistance < _minWidth)
             {
-                minPtIndex = maxIndex;
-                minWidth = maxPerpDistance;
-                minWidthPt = pts[minPtIndex];
-                minBaseSeg = new LineSegment(seg);
+                _minPtIndex = maxIndex;
+                _minWidth = maxPerpDistance;
+                _minWidthPt = Slice.GetAt(pts, _minPtIndex);
+                _minBaseSeg = new LineSegment<TCoordinate>(seg);
             }
 
             return maxIndex;
         }
 
-        private static Int32 NextIndex(ICoordinate[] pts, Int32 index)
+        private static Int32 computeNextIndex(IEnumerable<TCoordinate> pts, Int32 index, Int32 count)
         {
             index++;
 
-            if (index >= pts.Length)
+            if (index >= count)
             {
                 index = 0;
             }

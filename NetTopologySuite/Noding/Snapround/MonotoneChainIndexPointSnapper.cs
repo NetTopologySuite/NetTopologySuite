@@ -47,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <returns><see langword="true"/> if a node was added for this pixel.</returns>
         public Boolean Snap(HotPixel<TCoordinate> hotPixel, SegmentString<TCoordinate> parentEdge, Int32 vertexIndex)
         {
-            IExtents<TCoordinate> pixelEnv = hotPixel.GetSafeEnvelope();
+            IExtents<TCoordinate> pixelEnv = hotPixel.GetSafeExtents();
             HotPixelSnapAction hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, vertexIndex);
             _index.Query(pixelEnv, new QueryVisitor(pixelEnv, hotPixelSnapAction));
             return hotPixelSnapAction.IsNodeAdded;
@@ -58,27 +58,27 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             return Snap(hotPixel, null, -1);
         }
 
-        private class QueryVisitor : IItemVisitor
-        {
-            private readonly IExtents<TCoordinate> _extents = null;
-            private readonly HotPixelSnapAction _action = null;
+        //private class QueryVisitor : IItemVisitor
+        //{
+        //    private readonly IExtents<TCoordinate> _extents = null;
+        //    private readonly HotPixelSnapAction _action = null;
 
-            public QueryVisitor(IExtents<TCoordinate> extents, HotPixelSnapAction action)
-            {
-                _extents = extents;
-                _action = action;
-            }
+        //    public QueryVisitor(IExtents<TCoordinate> extents, HotPixelSnapAction action)
+        //    {
+        //        _extents = extents;
+        //        _action = action;
+        //    }
 
-            public void VisitItem(object item)
-            {
-                MonotoneChain<TCoordinate> testChain = (MonotoneChain<TCoordinate>) item;
-                testChain.Select(_extents, _action);
-            }
-        }
+        //    public void VisitItem(object item)
+        //    {
+        //        MonotoneChain<TCoordinate> testChain = (MonotoneChain<TCoordinate>) item;
+        //        testChain.Select(_extents, _action);
+        //    }
+        //}
 
         public class HotPixelSnapAction : MonotoneChainSelectAction<TCoordinate>
         {
-            private readonly HotPixel<TCoordinate> _hotPixel = null;
+            private readonly HotPixel<TCoordinate> _hotPixel;
             private readonly SegmentString<TCoordinate> _parentEdge = null;
             private readonly Int32 _vertexIndex;
             private Boolean _isNodeAdded = false;

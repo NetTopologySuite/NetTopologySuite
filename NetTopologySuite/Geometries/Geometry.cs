@@ -676,29 +676,29 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region IGeometry<TCoordinate> Members
 
-        /// <summary>
-        /// Performs an operation with or on this <see cref="Geometry{TCoordinate}"/>'s
-        /// coordinates. If you are using this method to modify the point, be sure
-        /// to call GeometryChanged() afterwards. Note that you cannot use this
-        /// method to
-        /// modify this Geometry if its underlying CoordinateSequence's Get method
-        /// returns a copy of the Coordinate, rather than the actual Coordinate stored
-        /// (if it even stores Coordinates at all).
-        /// </summary>
-        /// <param name="filter">The filter to apply to this <see cref="Geometry{TCoordinate}"/>'s coordinates</param>
-        public abstract void Apply(ICoordinateFilter<TCoordinate> filter);
+        ///// <summary>
+        ///// Performs an operation with or on this <see cref="Geometry{TCoordinate}"/>'s
+        ///// coordinates. If you are using this method to modify the point, be sure
+        ///// to call GeometryChanged() afterwards. Note that you cannot use this
+        ///// method to
+        ///// modify this Geometry if its underlying CoordinateSequence's Get method
+        ///// returns a copy of the Coordinate, rather than the actual Coordinate stored
+        ///// (if it even stores Coordinates at all).
+        ///// </summary>
+        ///// <param name="filter">The filter to apply to this <see cref="Geometry{TCoordinate}"/>'s coordinates</param>
+        //public abstract void Apply(ICoordinateFilter<TCoordinate> filter);
 
-        /// <summary>
-        /// Performs an operation with or on this <see cref="Geometry{TCoordinate}"/> and its
-        /// subelement <see cref="Geometry{TCoordinate}"/>s (if any).
-        /// Only GeometryCollections and subclasses
-        /// have subelement Geometry's.
-        /// </summary>
-        /// <param name="filter">
-        /// The filter to apply to this <see cref="Geometry{TCoordinate}"/> (and
-        /// its children, if it is a <see cref="GeometryCollection{TCoordinate}" />).
-        /// </param>
-        public abstract void Apply(IGeometryFilter<TCoordinate> filter);
+        ///// <summary>
+        ///// Performs an operation with or on this <see cref="Geometry{TCoordinate}"/> and its
+        ///// subelement <see cref="Geometry{TCoordinate}"/>s (if any).
+        ///// Only GeometryCollections and subclasses
+        ///// have subelement Geometry's.
+        ///// </summary>
+        ///// <param name="filter">
+        ///// The filter to apply to this <see cref="Geometry{TCoordinate}"/> (and
+        ///// its children, if it is a <see cref="GeometryCollection{TCoordinate}" />).
+        ///// </param>
+        //public abstract void Apply(IGeometryFilter<TCoordinate> filter);
 
         /// <summary>
         /// Performs an operation with or on this Geometry and its
@@ -762,7 +762,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return clone;
         }
 
-        public abstract IEnumerable<TCoordinate> Coordinates { get; }
+        public abstract IList<TCoordinate> Coordinates { get; }
 
         /// <summary>  
         /// Returns this <see cref="Geometry{TCoordinate}"/>s bounding box. If this <see cref="Geometry{TCoordinate}"/>
@@ -866,7 +866,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Clone();
         }
 
-        IEnumerable<ICoordinate> IGeometry.Coordinates
+        IList<ICoordinate> IGeometry.Coordinates
         {
             get
             {

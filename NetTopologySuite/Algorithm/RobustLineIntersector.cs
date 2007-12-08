@@ -32,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                         IsProper = false;
                     }
 
-                    IntersectionType = LineIntersectionType.DoesIntersect;
+                    IntersectionType = LineIntersectionType.Intersects;
                     return;
                 }
             }
@@ -114,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 PointA = Intersection(p1, p2, q1, q2);
             }
 
-            return LineIntersectionType.DoesIntersect;
+            return LineIntersectionType.Intersects;
         }
 
         /// <summary> 
@@ -235,7 +235,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 PointA = q1;
                 PointB = p1;
                 return q1.Equals(p1) && !p1q2p2 && !q1p2q2
-                           ? LineIntersectionType.DoesIntersect
+                           ? LineIntersectionType.Intersects
                            : LineIntersectionType.Collinear;
             }
 
@@ -244,7 +244,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 PointA = q1;
                 PointB = p2;
                 return q1.Equals(p2) && !p1q2p2 && !q1p1q2
-                           ? LineIntersectionType.DoesIntersect
+                           ? LineIntersectionType.Intersects
                            : LineIntersectionType.Collinear;
             }
 
@@ -253,7 +253,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 PointA = q2;
                 PointB = p1;
                 return q2.Equals(p1) && !p1q1p2 && !q1p2q2
-                           ? LineIntersectionType.DoesIntersect
+                           ? LineIntersectionType.Intersects
                            : LineIntersectionType.Collinear;
             }
 
@@ -262,7 +262,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 PointA = q2;
                 PointB = p2;
                 return q2.Equals(p2) && !p1q1p2 && !q1p1q2
-                           ? LineIntersectionType.DoesIntersect
+                           ? LineIntersectionType.Intersects
                            : LineIntersectionType.Collinear;
             }
 

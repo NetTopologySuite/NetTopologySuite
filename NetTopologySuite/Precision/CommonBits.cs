@@ -15,9 +15,8 @@ namespace GisSharpBlog.NetTopologySuite.Precision
     {
         /// <summary>
         /// Computes the bit pattern for the sign and exponent of a
-        /// Double-precision number.
+        /// double-precision number.
         /// </summary>
-        /// <param name="num"></param>
         /// <returns>The bit pattern for the sign and exponent.</returns>
         public static Int64 SignExpBits(Int64 num)
         {
@@ -26,13 +25,11 @@ namespace GisSharpBlog.NetTopologySuite.Precision
 
         /// <summary>
         /// This computes the number of common most-significant bits in the significand
-        /// of two Double-precision numbers.
+        /// of two double-precision numbers.
         /// It does not count the hidden bit, which is always 1.
         /// It does not determine whether the numbers have the same exponent - if they do
         /// not, the value computed by this function is meaningless.
         /// </summary>
-        /// <param name="num1"></param>
-        /// <param name="num2"></param>
         /// <returns>The number of common most-significant significand bits.</returns>
         public static Int32 CommonMostSignificantSignificandBitsCount(Int64 num1, Int64 num2)
         {
@@ -55,14 +52,12 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// Zeroes the lower n bits of a bitstring.
         /// </summary>
         /// <param name="bits">The bitstring to alter.</param>
-        /// <param name="nBits">the number of bits to zero.</param>
+        /// <param name="bitCount">the number of bits to zero.</param>
         /// <returns>The zeroed bitstring.</returns>
-        public static Int64 ZeroLowerBits(Int64 bits, Int32 nBits)
+        public static Int64 ZeroLowerBits(Int64 bits, Int32 bitCount)
         {
-            Int64 invMask = (1L << nBits) - 1L;
-            Int64 mask = ~invMask;
-            Int64 zeroed = bits & mask;
-            return zeroed;
+            Int64 mask = ~((1L << bitCount) - 1L);
+            return bits & mask;
         }
 
         /// <summary>
@@ -77,38 +72,38 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             return (bits & mask) != 0 ? 1 : 0;
         }
 
-        private Boolean isFirst = true;
-        private Int32 commonSignificandBitsCount = 53;
-        private Int64 commonBits = 0;
-        private Int64 commonSignExp;
+        private Boolean _isFirst = true;
+        private Int32 _commonSignificandBitsCount = 53;
+        private Int64 _commonBits = 0;
+        private Int64 _commonSignExp;
 
         public void Add(Double num)
         {
             Int64 numBits = BitConverter.DoubleToInt64Bits(num);
 
-            if (isFirst)
+            if (_isFirst)
             {
-                commonBits = numBits;
-                commonSignExp = SignExpBits(commonBits);
-                isFirst = false;
+                _commonBits = numBits;
+                _commonSignExp = SignExpBits(_commonBits);
+                _isFirst = false;
                 return;
             }
 
             Int64 numSignExp = SignExpBits(numBits);
 
-            if (numSignExp != commonSignExp)
+            if (numSignExp != _commonSignExp)
             {
-                commonBits = 0;
+                _commonBits = 0;
                 return;
             }
 
-            commonSignificandBitsCount = CommonMostSignificantSignificandBitsCount(commonBits, numBits);
-            commonBits = ZeroLowerBits(commonBits, 64 - (12 + commonSignificandBitsCount));
+            _commonSignificandBitsCount = CommonMostSignificantSignificandBitsCount(_commonBits, numBits);
+            _commonBits = ZeroLowerBits(_commonBits, 64 - (12 + _commonSignificandBitsCount));
         }
 
         public Double Common
         {
-            get { return BitConverter.Int64BitsToDouble(commonBits); }
+            get { return BitConverter.Int64BitsToDouble(_commonBits); }
         }
 
         /// <summary>

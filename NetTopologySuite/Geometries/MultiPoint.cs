@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Operation;
 using NPack.Interfaces;
 
@@ -21,6 +22,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public new static readonly IMultiPoint Empty = new GeometryFactory<TCoordinate>().CreateMultiPoint();
 
         /// <summary>
+        /// Constructs an empty <see cref="MultiPoint{TCoordinate}"/>.
+        /// </summary>
+        public MultiPoint(IGeometryFactory<TCoordinate> factory)
+            : base(factory) { }
+
+        /// <summary>
         /// Constructs a <c>MultiPoint</c>.
         /// </summary>
         /// <param name="points">
@@ -28,8 +35,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// , or <see langword="null" /> or an empty array to create the empty point.
         /// Elements may be empty <c>Point</c>s, but not <see langword="null" />s.
         /// </param>
-        public MultiPoint(IEnumerable<IPoint<TCoordinate>> points, IGeometryFactory<TCoordinate> factory) 
-            : base(points, factory) { }
+        public MultiPoint(IEnumerable<IPoint<TCoordinate>> points, IGeometryFactory<TCoordinate> factory)
+            : base(EnumerableConverter.Upcast<IGeometry<TCoordinate>, IPoint<TCoordinate>>(points), factory) { }
 
         /// <summary>
         /// Constructs a <c>MultiPoint</c>.
@@ -41,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </param>
         /// <remarks>
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
+        /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public MultiPoint(IEnumerable<IPoint<TCoordinate>> points) : this(points, DefaultFactory) {}
 
@@ -96,161 +103,40 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return this[n].Coordinate;
         }
 
+        public new IEnumerator<IPoint<TCoordinate>> GetEnumerator()
+        {
+            foreach (IPoint<TCoordinate> point in this)
+            {
+                yield return point;
+            }
+        }
+
         #region IMultiPoint<TCoordinate> Members
 
-        public IPoint<TCoordinate> this[int index]
+        public new IPoint<TCoordinate> this[Int32 index]
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        #endregion
-
-        #region IList<IGeometry> Members
-
-        public int IndexOf(IGeometry item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Insert(int index, IGeometry item)
-        {
-            throw new NotImplementedException();
-        }
-
-        #region ICollection<IGeometry> Members
-
-        public void Add(IGeometry item)
-        {
-            throw new NotImplementedException();
-        }
-
-        #region IEnumerable<IGeometry> Members
-
-        IEnumerator<IGeometry> IEnumerable<IGeometry>.GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IGeometryCollection<TCoordinate> Members
-
-        IEnumerator<IGeometry<TCoordinate>> IGeometryCollection<TCoordinate>.GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IGeometry<TCoordinate> Members
-
-        public IList<TCoordinate> Coordinates
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        #endregion
-
-        #region IList<IGeometry<TCoordinate>> Members
-
-        public int IndexOf(IGeometry<TCoordinate> item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Insert(int index, IGeometry<TCoordinate> item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveAt(int index)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IList<IGeometry>.RemoveAt(int index)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #endregion
-
-        #region ICollection<IGeometry<TCoordinate>> Members
-
-        public void Add(IGeometry<TCoordinate> item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Clear()
-        {
-            throw new NotImplementedException();
-        }
-
-        void ICollection<IGeometry>.Clear()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Contains(IGeometry item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CopyTo(IGeometry[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Remove(IGeometry item)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool ICollection<IGeometry>.IsReadOnly
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        #endregion
-
-        public void CopyTo(IGeometry<TCoordinate>[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Remove(IGeometry<TCoordinate> item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsReadOnly
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        #endregion
-
-        #region IEnumerable<IGeometry<TCoordinate>> Members
-
-        public IEnumerator<IGeometry<TCoordinate>> GetEnumerator()
-        {
-            throw new NotImplementedException();
+            get { return base[index] as IPoint<TCoordinate>; }
+            set { base[index] = value; }
         }
 
         #endregion
 
         #region IMultiPoint Members
 
-        IPoint IMultiPoint.this[int index]
+        IPoint IMultiPoint.this[Int32 index]
         {
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }
         }
 
         #endregion
+
+        IEnumerator<IPoint> IEnumerable<IPoint>.GetEnumerator()
+        {
+            foreach (IPoint point in this)
+            {
+                yield return point;
+            }
+        }
     }
 }

@@ -1,122 +1,135 @@
 using System;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 {
     /// <summary>
-    /// Computes the <see cref="LinearLocation" /> for a given length
+    /// Computes the <see cref="LinearLocation{TCoordinate}" /> for a given length
     /// along a linear <see cref="Geometry{TCoordinate}" />
     /// Negative lengths are measured in reverse from end of the linear geometry.
     /// Out-of-range values are clamped.
     /// </summary>
-    public class LengthLocationMap
+    public class LengthLocationMap<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
         /// <summary>
-        /// Computes the <see cref="LinearLocation" /> for a
+        /// Computes the <see cref="LinearLocation{TCoordinate}" /> for a
         /// given length along a linear <see cref="Geometry{TCoordinate}" />.
         /// </summary>
         /// <param name="linearGeom">The linear geometry to use.</param>
         /// <param name="length">The length index of the location.</param>
-        /// <returns>The <see cref="LinearLocation" /> for the length.</returns>
-        public static LinearLocation GetLocation(IGeometry linearGeom, Double length)
+        /// <returns>The <see cref="LinearLocation{TCoordinate}" /> for the length.</returns>
+        public static LinearLocation<TCoordinate> GetLocation(IGeometry<TCoordinate> linearGeom, Double length)
         {
-            LengthLocationMap locater = new LengthLocationMap(linearGeom);
+            LengthLocationMap<TCoordinate> locater = new LengthLocationMap<TCoordinate>(linearGeom);
             return locater.GetLocation(length);
         }
 
         /// <summary>
-        /// Computes the length for a given <see cref="LinearLocation" />
+        /// Computes the length for a given <see cref="LinearLocation{TCoordinate}" />
         /// on a linear <see cref="Geometry{TCoordinate}" />.
         /// </summary>
         /// <param name="linearGeom">The linear geometry to use.</param>
-        /// <param name="loc">The <see cref="LinearLocation" /> index of the location.</param>
-        /// <returns>The length for the <see cref="LinearLocation" />.</returns>
-        public static Double GetLength(IGeometry linearGeom, LinearLocation loc)
+        /// <param name="loc">The <see cref="LinearLocation{TCoordinate}" /> index of the location.</param>
+        /// <returns>The length for the <see cref="LinearLocation{TCoordinate}" />.</returns>
+        public static Double GetLength(IGeometry<TCoordinate> linearGeom, LinearLocation<TCoordinate> loc)
         {
-            LengthLocationMap locater = new LengthLocationMap(linearGeom);
+            LengthLocationMap<TCoordinate> locater = new LengthLocationMap<TCoordinate>(linearGeom);
             return locater.GetLength(loc);
         }
 
-        private IGeometry linearGeom;
+        private readonly IGeometry<TCoordinate> _linearGeom;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LengthLocationMap"/> class.
+        /// Initializes a new instance of the <see cref="LengthLocationMap{TCoordinate}"/> class.
         /// </summary>
         /// <param name="linearGeom">A linear geometry.</param>
-        public LengthLocationMap(IGeometry linearGeom)
+        public LengthLocationMap(IGeometry<TCoordinate> linearGeom)
         {
-            this.linearGeom = linearGeom;
+            _linearGeom = linearGeom;
         }
 
         /// <summary>
-        /// Compute the <see cref="LinearLocation" /> corresponding to a length.
+        /// Compute the <see cref="LinearLocation{TCoordinate}" /> corresponding to a length.
         /// Negative lengths are measured in reverse from end of the linear geometry.
         /// Out-of-range values are clamped.
         /// </summary>
         /// <param name="length">The length index.</param>
-        /// <returns>The corresponding <see cref="LinearLocation" />.</returns>
-        public LinearLocation GetLocation(Double length)
+        /// <returns>The corresponding <see cref="LinearLocation{TCoordinate}" />.</returns>
+        public LinearLocation<TCoordinate> GetLocation(Double length)
         {
             Double forwardLength = length;
+
             if (length < 0.0)
             {
-                Double lineLen = linearGeom.Length;
+                Double lineLen = _linearGeom.Length;
                 forwardLength = lineLen + length;
             }
+
             return GetLocationForward(forwardLength);
         }
 
-        private LinearLocation GetLocationForward(Double length)
+        private LinearLocation<TCoordinate> GetLocationForward(Double length)
         {
             if (length <= 0.0)
             {
-                return new LinearLocation();
+                return new LinearLocation<TCoordinate>();
             }
 
             Double totalLength = 0.0;
 
-            foreach (LinearIterator.LinearElement element in new LinearIterator(linearGeom))
+            foreach (LinearIterator<TCoordinate>.LinearElement element in new LinearIterator<TCoordinate>(_linearGeom))
             {
                 if (!element.IsEndOfLine)
                 {
-                    ICoordinate p0 = element.SegmentStart;
-                    ICoordinate p1 = element.SegmentEnd;
+                    TCoordinate p0 = element.SegmentStart;
+                    TCoordinate p1 = element.SegmentEnd;
+
                     Double segLen = p1.Distance(p0);
+
                     // length falls in this segment
                     if (totalLength + segLen > length)
                     {
                         Double frac = (length - totalLength)/segLen;
                         Int32 compIndex = element.ComponentIndex;
                         Int32 segIndex = element.VertexIndex;
-                        return new LinearLocation(compIndex, segIndex, frac);
+                        return new LinearLocation<TCoordinate>(compIndex, segIndex, frac);
                     }
+
                     totalLength += segLen;
                 }
             }
             // length is longer than line - return end location
-            return LinearLocation.GetEndLocation(linearGeom);
+            return LinearLocation<TCoordinate>.GetEndLocation(_linearGeom);
         }
 
-        public Double GetLength(LinearLocation loc)
+        public Double GetLength(LinearLocation<TCoordinate> loc)
         {
             Double totalLength = 0.0;
 
-            foreach (LinearIterator.LinearElement element in new LinearIterator(linearGeom))
+            foreach (LinearIterator<TCoordinate>.LinearElement element in new LinearIterator<TCoordinate>(_linearGeom))
             {
                 if (!element.IsEndOfLine)
                 {
-                    ICoordinate p0 = element.SegmentStart;
-                    ICoordinate p1 = element.SegmentEnd;
+                    TCoordinate p0 = element.SegmentStart;
+                    TCoordinate p1 = element.SegmentEnd;
+
                     Double segLen = p1.Distance(p0);
+
                     // length falls in this segment
                     if (loc.ComponentIndex == element.ComponentIndex && loc.SegmentIndex == element.VertexIndex)
                     {
                         return totalLength + segLen*loc.SegmentFraction;
                     }
+
                     totalLength += segLen;
                 }
             }
+
             return totalLength;
         }
     }

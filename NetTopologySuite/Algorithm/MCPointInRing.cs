@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Index.Bintree;
@@ -35,57 +36,58 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
         }
 
-        private ILinearRing<TCoordinate> ring;
-        private Bintree tree;
+        private readonly ILinearRing<TCoordinate> _ring;
+        private readonly BinTree<MonotoneChain<TCoordinate>> _tree = new BinTree<MonotoneChain<TCoordinate>>();
         private Int32 crossings = 0; // number of segment/ray crossings
 
-        private Interval interval = new Interval();
+        private Interval _interval = new Interval();
 
-        public MCPointInRing(ILinearRing ring)
+        public MCPointInRing(ILinearRing<TCoordinate> ring)
         {
-            this.ring = ring;
-            BuildIndex();
+            _ring = ring;
+            buildIndex();
         }
 
-        private void BuildIndex()
+        private void buildIndex()
         {
-            tree = new Bintree();
+            IEnumerable<TCoordinate> coordinates = CoordinateArrays.RemoveRepeatedPoints(_ring.Coordinates);
+            IEnumerable<MonotoneChain<TCoordinate>> mcList = MonotoneChainBuilder.GetChains(coordinates);
 
-            ICoordinate[] pts = CoordinateArrays.RemoveRepeatedPoints(ring.Coordinates);
-            IList mcList = MonotoneChainBuilder.GetChains(pts);
-
-            for (Int32 i = 0; i < mcList.Count; i++)
+            foreach (MonotoneChain<TCoordinate> chain in mcList)
             {
-                MonotoneChain mc = (MonotoneChain) mcList[i];
-                IExtents mcEnv = mc.Envelope;
-                interval.Min = mcEnv.MinY;
-                interval.Max = mcEnv.MaxY;
-                tree.Insert(interval, mc);
+                IExtents<TCoordinate> extents = chain.Extents;
+                Double min = extents.GetMin(Ordinates.Y);
+                Double max = extents.GetMax(Ordinates.Y);
+                _interval = new Interval(min, max);
+                _tree.Insert(_interval, chain);
             }
         }
 
-        public Boolean IsInside(ICoordinate pt)
+        public Boolean IsInside(TCoordinate pt)
         {
             crossings = 0;
 
-            // test all segments intersected by ray from pt in positive x direction
-            IExtents rayEnv = new Extents(Double.NegativeInfinity, Double.PositiveInfinity, pt.Y, pt.Y);
-            interval.Min = pt.Y;
-            interval.Max = pt.Y;
-            IEnumerable<MonotoneChain<TCoordinate>> segs = tree.Query(interval);
+            Double y = pt[Ordinates.Y];
 
-            MCSelector mcSelecter = new MCSelector(this, pt);
-           
-            for (IEnumerator i = segs.GetEnumerator(); i.MoveNext();)
+            // test all segments intersected by ray from pt in positive x direction
+            IExtents<TCoordinate> rayExtents = new Extents<TCoordinate>(
+                Double.NegativeInfinity, Double.PositiveInfinity, y, y);
+
+            _interval = new Interval(y, y);
+
+            IEnumerable<MonotoneChain<TCoordinate>> segs = _tree.Query(_interval);
+
+            MCSelector mcSelector = new MCSelector(this, pt);
+
+            foreach (MonotoneChain<TCoordinate> chain in segs)
             {
-                MonotoneChain<TCoordinate> mc = (MonotoneChain) i.Current;
-                testMonotoneChain(rayEnv, mcSelecter, mc);
+                testMonotoneChain(rayExtents, mcSelector, chain);
             }
 
             /*
             *  p is inside if number of crossings is odd.
             */
-            if ((crossings%2) == 1)
+            if ((crossings % 2) == 1)
             {
                 return true;
             }
@@ -100,7 +102,6 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
         private void TestLineSegment(ICoordinate p, LineSegment<TCoordinate> seg)
         {
-            Double xInt; // x intersection of segment with ray
             Double x1; // translated coordinates
             Double y1;
             Double x2;
@@ -118,10 +119,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             if (((y1 > 0) && (y2 <= 0)) || ((y2 > 0) && (y1 <= 0)))
             {
+                Double xInt; // x intersection of segment with ray
+
                 /*
                 *  segment straddles x axis, so compute intersection.
                 */
-                xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2)/(y2 - y1);
+                xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2) / (y2 - y1);
 
                 /*
                 *  crosses ray if strictly positive intersection.

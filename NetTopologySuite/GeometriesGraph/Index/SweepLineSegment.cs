@@ -1,26 +1,34 @@
 using System;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
+using GeoAPI.Utilities;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 {
-    public class SweepLineSegment
+    public class SweepLineSegment<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
-        private Edge edge;
-        private ICoordinate[] pts;
-        private Int32 ptIndex;
+        private readonly Edge<TCoordinate> _edge;
+        private readonly IEnumerable<TCoordinate> _pts;
+        private readonly Int32 _ptIndex;
 
-        public SweepLineSegment(Edge edge, Int32 ptIndex)
+        public SweepLineSegment(Edge<TCoordinate> edge, Int32 ptIndex)
         {
-            this.edge = edge;
-            this.ptIndex = ptIndex;
-            pts = edge.Coordinates;
+            _edge = edge;
+            _ptIndex = ptIndex;
+            _pts = edge.Coordinates;
         }
 
         public Double MinX
         {
             get
             {
-                Double x1 = pts[ptIndex].X;
-                Double x2 = pts[ptIndex + 1].X;
+                Pair<TCoordinate> pair = Slice.GetPairAt(_pts, _ptIndex);
+                Double x1 = pair.First[Ordinates.X];
+                Double x2 = pair.Second[Ordinates.X];
                 return x1 < x2 ? x1 : x2;
             }
         }
@@ -29,15 +37,16 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         {
             get
             {
-                Double x1 = pts[ptIndex].X;
-                Double x2 = pts[ptIndex + 1].X;
+                Pair<TCoordinate> pair = Slice.GetPairAt(_pts, _ptIndex);
+                Double x1 = pair.First[Ordinates.X];
+                Double x2 = pair.Second[Ordinates.X];
                 return x1 > x2 ? x1 : x2;
             }
         }
 
-        public void ComputeIntersections(SweepLineSegment ss, SegmentIntersector si)
+        public void ComputeIntersections(SweepLineSegment<TCoordinate> ss, SegmentIntersector<TCoordinate> si)
         {
-            si.AddIntersections(edge, ptIndex, ss.edge, ss.ptIndex);
+            si.AddIntersections(_edge, _ptIndex, ss._edge, ss._ptIndex);
         }
     }
 }

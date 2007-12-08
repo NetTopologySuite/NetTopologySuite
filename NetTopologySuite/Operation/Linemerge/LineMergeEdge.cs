@@ -1,30 +1,36 @@
+using System;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Planargraph;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 {
     /// <summary>
-    /// An edge of a <c>LineMergeGraph</c>. The <c>marked</c> field indicates
-    /// whether this Edge has been logically deleted from the graph.
+    /// An edge of a <see cref="LineMergeGraph{TCoordinate}"/>. 
+    /// The <c>marked</c> field indicates whether this 
+    /// Edge has been logically deleted from the graph.
     /// </summary>
-    public class LineMergeEdge : Edge
+    public class LineMergeEdge<TCoordinate> : Edge<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
-        private ILineString line;
+        private readonly ILineString<TCoordinate> _line;
 
         /// <summary>
         /// Constructs a LineMergeEdge with vertices given by the specified LineString.
         /// </summary>
-        /// <param name="line"></param>
-        public LineMergeEdge(ILineString line)
+        public LineMergeEdge(ILineString<TCoordinate> line)
         {
-            this.line = line;
+            _line = line;
         }
 
         /// <summary>
         /// Returns the LineString specifying the vertices of this edge.
         /// </summary>
-        public ILineString Line
+        public ILineString<TCoordinate> Line
         {
-            get { return line; }
+            get { return _line; }
         }
     }
 }

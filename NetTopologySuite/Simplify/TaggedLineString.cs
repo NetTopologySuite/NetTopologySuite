@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             IComputable<TCoordinate>, IConvertible
     {
         private readonly ILineString<TCoordinate> _parentLine;
-        private readonly List<TaggedLineSegment<TCoordinate>> _segs;
+        private readonly List<TaggedLineSegment<TCoordinate>> _segs = new List<TaggedLineSegment<TCoordinate>>();
         private readonly List<LineSegment<TCoordinate>> _resultSegs = new List<LineSegment<TCoordinate>>();
         private readonly Int32 _minimumSize;
 
@@ -43,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             get { return _minimumSize; }
         }
 
-        public ILineString Parent
+        public ILineString<TCoordinate> Parent
         {
             get { return _parentLine; }
         }

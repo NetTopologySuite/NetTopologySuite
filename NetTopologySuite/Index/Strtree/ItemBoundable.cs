@@ -4,25 +4,25 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
     /// Boundable wrapper for a non-Boundable spatial object. Used internally by
     /// AbstractStrTree.
     /// </summary>
-    public class ItemBoundable : IBoundable
+    public struct ItemBoundable<TBounds, TItem> : IBoundable<TBounds>
     {
-        private object bounds;
-        private object item;
+        private readonly TBounds _bounds;
+        private readonly TItem _item;
 
-        public ItemBoundable(object bounds, object item)
+        public ItemBoundable(TBounds bounds, TItem item)
         {
-            this.bounds = bounds;
-            this.item = item;
+            _bounds = bounds;
+            _item = item;
         }
 
-        public object Bounds
+        public TBounds Bounds
         {
-            get { return bounds; }
+            get { return _bounds; }
         }
 
-        public object Item
+        public TItem Item
         {
-            get { return item; }
+            get { return _item; }
         }
     }
 }

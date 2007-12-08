@@ -82,7 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
         }
 
         /// <summary>
-        /// Transforms a <see cref="Point" /> object.
+        /// Transforms a <see cref="IPoint{TCoordinate}" /> object.
         /// </summary>
         public static IPoint<TCoordinate> TransformPoint(IPoint<TCoordinate> p, IMathTransform<TCoordinate> transform)
         {
@@ -98,14 +98,14 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
         }
 
         /// <summary>
-        /// Transforms a <see cref="LineString" /> object.
+        /// Transforms a <see cref="ILineString{TCoordinate}" /> object.
         /// </summary>
         public static ILineString<TCoordinate> TransformLineString(ILineString<TCoordinate> l, IMathTransform<TCoordinate> transform)
         {
             try
             {
-                List<ICoordinate> coords = ExtractCoordinates(l, transform);
-                return new LineString<TCoordinate>(coords.ToArray());
+                IEnumerable<TCoordinate> coords = extractCoordinates(l, transform);
+                return new LineString<TCoordinate>(coords);
             }
             catch
             {
@@ -114,13 +114,13 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
         }
 
         /// <summary>
-        /// Transforms a <see cref="LinearRing" /> object.
+        /// Transforms a <see cref="ILinearRing{TCoordinate}" /> object.
         /// </summary>
         public static ILinearRing<TCoordinate> TransformLinearRing(ILinearRing<TCoordinate> r, IMathTransform<TCoordinate> transform)
         {
             try
             {
-                IEnumerable<TCoordinate> coords = ExtractCoordinates(r, transform);
+                IEnumerable<TCoordinate> coords = extractCoordinates(r, transform);
                 return new LinearRing<TCoordinate>(coords);
             }
             catch
@@ -129,13 +129,8 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
             }
         }
 
-        private static IEnumerable<TCoordinate> ExtractCoordinates(IGeometry<TCoordinate> g, IMathTransform<TCoordinate> transform)
-        {
-            return transform.Transform(g.Coordinates);
-        }
-
         /// <summary>
-        /// Transforms a <see cref="Polygon" /> object.
+        /// Transforms a <see cref="IPolygon{TCoordinate}" /> object.
         /// </summary>
         public static IPolygon<TCoordinate> TransformPolygon(IPolygon<TCoordinate> p, IMathTransform<TCoordinate> transform)
         {
@@ -151,7 +146,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
         }
 
         /// <summary>
-        /// Transforms a <see cref="MultiPoint" /> object.
+        /// Transforms a <see cref="IMultiPoint{TCoordinate}" /> object.
         /// </summary>
         public static IMultiPoint<TCoordinate> TransformMultiPoint(IMultiPoint<TCoordinate> points, IMathTransform<TCoordinate> transform)
         {
@@ -162,52 +157,57 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
                 pointList.Add(p.Coordinate);
             }
 
-            return new MultiPoint(transform.Transform(pointList));
+            return new MultiPoint<TCoordinate>(transform.Transform(pointList));
         }
 
         /// <summary>
-        /// Transforms a <see cref="MultiLineString" /> object.
+        /// Transforms a <see cref="IMultiLineString{TCoordinate}" /> object.
         /// </summary>
-        public static IMultiLineString TransformMultiLineString(IMultiLineString lines, IMathTransform transform)
+        public static IMultiLineString<TCoordinate> TransformMultiLineString(IMultiLineString<TCoordinate> lines, IMathTransform<TCoordinate> transform)
         {
-            List<ILineString> strings = new List<ILineString>(lines.Geometries.Length);
-            
-            foreach (ILineString ls in lines.Geometries)
+            List<ILineString<TCoordinate>> strings = new List<ILineString<TCoordinate>>(lines.Count);
+
+            foreach (ILineString<TCoordinate> ls in lines)
             {
                 strings.Add(TransformLineString(ls, transform));
             }
 
-            return new MultiLineString(strings.ToArray());
+            return new MultiLineString<TCoordinate>(strings);
         }
 
         /// <summary>
-        /// Transforms a <see cref="MultiPolygon" /> object.
+        /// Transforms a <see cref="IMultiPolygon{TCoordinate}" /> object.
         /// </summary>
-        public static IMultiPolygon TransformMultiPolygon(IMultiPolygon polys, IMathTransform transform)
+        public static IMultiPolygon<TCoordinate> TransformMultiPolygon(IMultiPolygon<TCoordinate> polys, IMathTransform<TCoordinate> transform)
         {
-            List<IPolygon> polygons = new List<IPolygon>(polys.Geometries.Length);
-            
-            foreach (IPolygon p in polys.Geometries)
+            List<IPolygon<TCoordinate>> polygons = new List<IPolygon<TCoordinate>>(polys.Count);
+
+            foreach (IPolygon<TCoordinate> p in polys)
             {
                 polygons.Add(TransformPolygon(p, transform));
             }
 
-            return new MultiPolygon(polygons.ToArray());
+            return new MultiPolygon<TCoordinate>(polygons);
         }
 
         /// <summary>
-        /// Transforms a <see cref="GeometryCollection{TCoordinate}" /> object.
+        /// Transforms a <see cref="IGeometryCollection{TCoordinate}" /> object.
         /// </summary>
-        public static IGeometryCollection TransformGeometryCollection(GeometryCollection geoms, IMathTransform transform)
+        public static IGeometryCollection<TCoordinate> TransformGeometryCollection(IGeometryCollection<TCoordinate> geoms, IMathTransform<TCoordinate> transform)
         {
-            List<IGeometry> coll = new List<IGeometry>(geoms.Geometries.Length);
+            List<IGeometry<TCoordinate>> coll = new List<IGeometry<TCoordinate>>(geoms.Count);
 
-            foreach (IGeometry g in geoms.Geometries)
+            foreach (IGeometry<TCoordinate> g in geoms)
             {
                 coll.Add(TransformGeometry(g, transform));
             }
 
-            return new GeometryCollection(coll.ToArray());
+            return new GeometryCollection<TCoordinate>(coll);
+        }
+
+        private static IEnumerable<TCoordinate> extractCoordinates(IGeometry<TCoordinate> g, IMathTransform<TCoordinate> transform)
+        {
+            return transform.Transform(g.Coordinates);
         }
     }
 }

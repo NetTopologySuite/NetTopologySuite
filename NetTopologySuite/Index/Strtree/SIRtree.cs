@@ -1,6 +1,8 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.DataStructures;
+using GeoAPI.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 {
@@ -13,53 +15,32 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
     /// P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
     /// </remarks>
-    public class SirTree : AbstractStrTree
+    public class SirTree<TItem> : AbstractStrTree<Interval, TItem>
     {
-        // DESIGN_NOTE: Implement as delegate
-        private class AnnonymousComparerImpl : IComparer
+        private class SirTreeNode : AbstractNode<Interval>
         {
-            public Int32 Compare(object o1, object o2)
-            {
-                return new SirTree().CompareDoubles(((Interval) ((IBoundable) o1).Bounds).Center,
-                                                    ((Interval) ((IBoundable) o2).Bounds).Center);
-            }
-        }
+            public SirTreeNode(Int32 nodeCapacity) : base(nodeCapacity) {}
 
-        private class AnonymousIntersectsOpImpl : IIntersectsOp
-        {
-            public Boolean Intersects(object aBounds, object bBounds)
-            {
-                return ((Interval) aBounds).Overlaps((Interval) bBounds);
-            }
-        }
-
-        private class AnonymousAbstractNodeImpl : AbstractNode
-        {
-            public AnonymousAbstractNodeImpl(Int32 nodeCapacity) : base(nodeCapacity) {}
-
-            protected override object ComputeBounds()
+            protected override Interval ComputeBounds()
             {
                 Interval? bounds = null;
-                for (IEnumerator i = ChildBoundables.GetEnumerator(); i.MoveNext();)
+                foreach (IBoundable<Interval> childBoundable in ChildBoundables)
                 {
-                    IBoundable childBoundable = (IBoundable) i.Current;
-                    
+
                     if (bounds == null)
                     {
-                        bounds = new Interval((Interval) childBoundable.Bounds);
+                        bounds = childBoundable.Bounds;
                     }
                     else
                     {
-                        bounds.Value.ExpandToInclude((Interval) childBoundable.Bounds);
+                        bounds.Value.ExpandToInclude(childBoundable.Bounds);
                     }
                 }
 
-                return bounds;
+                Debug.Assert(bounds != null);
+                return bounds.Value;
             }
         }
-
-        private IComparer comparator = new AnnonymousComparerImpl();
-        private IIntersectsOp intersectsOp = new AnonymousIntersectsOpImpl();
 
         /// <summary> 
         /// Constructs an SIRtree with the default (10) node capacity.
@@ -72,15 +53,15 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         public SirTree(Int32 nodeCapacity) : base(nodeCapacity) {}
 
-        protected override AbstractNode CreateNode(Int32 level)
+        protected override AbstractNode<Interval> CreateNode(Int32 level)
         {
-            return new AnonymousAbstractNodeImpl(level);
+            return new SirTreeNode(level);
         }
 
         /// <summary> 
         /// Inserts an item having the given bounds into the tree.
         /// </summary>
-        public void Insert(Double x1, Double x2, object item)
+        public void Insert(Double x1, Double x2, TItem item)
         {
             Insert(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)), item);
         }
@@ -88,7 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <summary>
         /// Returns items whose bounds intersect the given value.
         /// </summary>
-        public IList Query(Double x)
+        public IEnumerable<TItem> Query(Double x)
         {
             return Query(x, x);
         }
@@ -98,19 +79,31 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="x1">Possibly equal to x2.</param>
         /// <param name="x2">Possibly equal to x1.</param>
-        public IList Query(Double x1, Double x2)
+        public IEnumerable<TItem> Query(Double x1, Double x2)
         {
             return Query(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)));
         }
 
-        protected override IIntersectsOp IntersectsOp
+        protected override Func<Interval, Interval, Boolean> IntersectsOp
         {
-            get { return intersectsOp; }
+            get
+            {
+                return delegate(Interval left, Interval right)
+                       {
+                           return left.Overlaps(right);
+                       };
+            }
         }
 
-        protected override IComparer GetComparer()
+        protected override Comparison<IBoundable<Interval>> CompareOp
         {
-            return comparator;
+            get
+            {
+                return delegate(IBoundable<Interval> left, IBoundable<Interval> right)
+                {
+                    return left.Bounds.Center.CompareTo(right.Bounds.Center);
+                };
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
+using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
@@ -42,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <see cref="MonotoneChainIndexSnapRounder{TCoordinate}"/> class.
         /// </summary>
         /// <param name="pm">The <see cref="PrecisionModel{TCoordinate}" /> to use.</param>
-        public MonotoneChainIndexSnapRounder(PrecisionModel<TCoordinate> pm)
+        public MonotoneChainIndexSnapRounder(IPrecisionModel<TCoordinate> pm)
         {
             _li = new RobustLineIntersector<TCoordinate>();
             _li.PrecisionModel = pm;
@@ -86,24 +87,26 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             }
         }
 
-        private void checkCorrectness(IList inputSegmentStrings)
-        {
-            IList resultSegStrings = SegmentString.GetNodedSubstrings(inputSegmentStrings);
-            NodingValidator nv = new NodingValidator(resultSegStrings);
+        //private void checkCorrectness(IEnumerable<SegmentString<TCoordinate>> inputSegmentStrings)
+        //{
+        //    IEnumerable<SegmentString<TCoordinate>> resultSegStrings 
+        //        = SegmentString<TCoordinate>.GetNodedSubstrings(inputSegmentStrings);
 
-            try
-            {
-                nv.CheckValid();
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex.ToString());
-            }
-        }
+        //    NodingValidator<TCoordinate> nv = new NodingValidator<TCoordinate>(resultSegStrings);
 
-        private void snapRound(IList segStrings, LineIntersector<TCoordinate> li)
+        //    try
+        //    {
+        //        nv.CheckValid();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Trace.WriteLine(ex.ToString());
+        //    }
+        //}
+
+        private void snapRound(IEnumerable<SegmentString<TCoordinate>>  segStrings, LineIntersector<TCoordinate> li)
         {
-            IList intersections = findInteriorIntersections(segStrings, li);
+            IList<TCoordinate> intersections = findInteriorIntersections(segStrings, li);
             computeIntersectionSnaps(intersections);
             ComputeVertexSnaps(segStrings);
         }
@@ -115,9 +118,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// Does NOT node the segStrings.
         /// </summary>
         /// <returns>A list of Coordinates for the intersections.</returns>
-        private IList findInteriorIntersections(IList segStrings, LineIntersector li)
+        private IList<TCoordinate> findInteriorIntersections(IEnumerable<SegmentString<TCoordinate>> segStrings, LineIntersector<TCoordinate> li)
         {
-            IntersectionFinderAdder intFinderAdder = new IntersectionFinderAdder(li);
+            IntersectionFinderAdder<TCoordinate> intFinderAdder = new IntersectionFinderAdder<TCoordinate>(li);
             _noder.SegmentIntersector = intFinderAdder;
             _noder.ComputeNodes(segStrings);
             return intFinderAdder.InteriorIntersections;
@@ -144,16 +147,19 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// </summary>
         private void computeVertexSnaps(SegmentString<TCoordinate> e)
         {
-            IEnumerable<TCoordinate> pts0 = e.Coordinates;
+            IEnumerable<TCoordinate> coordinates = e.Coordinates;
 
-            for (Int32 i = 0; i < pts0.Length - 1; i++)
+            Int32 index = 0;
+
+            foreach (TCoordinate coordinate in coordinates)
             {
-                HotPixel hotPixel = new HotPixel(pts0[i], _scaleFactor, _li);
-                Boolean isNodeAdded = _pointSnapper.Snap(hotPixel, e, i);
+                HotPixel<TCoordinate> hotPixel = new HotPixel<TCoordinate>(coordinate, _scaleFactor, _li);
+                Boolean isNodeAdded = _pointSnapper.Snap(hotPixel, e, index);
+
                 // if a node is created for a vertex, that vertex must be noded too
                 if (isNodeAdded)
                 {
-                    e.AddIntersection(pts0[i], i);
+                    e.AddIntersection(coordinate, index);
                 }
             }
         }

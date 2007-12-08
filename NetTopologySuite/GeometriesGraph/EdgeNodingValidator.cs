@@ -22,11 +22,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        private readonly NodingValidator _nodingValidator;
+        private readonly NodingValidator<TCoordinate> _nodingValidator;
 
         public EdgeNodingValidator(IEnumerable<Edge<TCoordinate>> edges)
         {
-            _nodingValidator = new NodingValidator(toSegmentStrings(edges));
+            _nodingValidator = new NodingValidator<TCoordinate>(toSegmentStrings(edges));
         }
 
         public void CheckValid()

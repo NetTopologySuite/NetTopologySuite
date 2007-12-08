@@ -102,7 +102,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         {
             if (ReferenceEquals(e0, e1))
             {
-                if (_lineIntersector.IntersectionType == LineIntersectionType.DoesIntersect)
+                if (_lineIntersector.IntersectionType == LineIntersectionType.Intersects)
                 {
                     if (IsAdjacentSegments(segIndex0, segIndex1))
                     {

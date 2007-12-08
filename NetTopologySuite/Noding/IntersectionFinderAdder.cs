@@ -39,10 +39,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// of the <see cref="ISegmentIntersector{TCoordinate}" /> class to process
         /// intersections for two segments of the <see cref="SegmentString{TCoordinate}" />s 
         /// being intersected.
-        /// Note that some clients (such as <see cref="MonotoneChain" />s) may optimize away
+        /// </summary>
+        /// <remarks>
+        /// Note that some clients (such as <see cref="MonotoneChain{TCoordinate}" />s) may optimize away
         /// this call for segment pairs which they have determined do not intersect
         /// (e.g. by an disjoint envelope test).
-        /// </summary>
+        /// </remarks>
         public void ProcessIntersections(SegmentString<TCoordinate> e0, Int32 segIndex0, SegmentString<TCoordinate> e1, Int32 segIndex1)
         {
             // don't bother intersecting a segment with itself

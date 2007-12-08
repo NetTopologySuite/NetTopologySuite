@@ -17,12 +17,13 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                 IComputable<TCoordinate>, IConvertible
     {
-        private static Int32 SegmentEndVertexIndex(LinearLocation loc)
+        private static Int32 SegmentEndVertexIndex(LinearLocation<TCoordinate> loc)
         {
             if (loc.SegmentFraction > 0.0)
             {
                 return loc.SegmentIndex + 1;
             }
+
             return loc.SegmentIndex;
         }
 
@@ -54,11 +55,12 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         public LinearIterator(IGeometry<TCoordinate> linear) : this(linear, 0, 0) { }
 
         /// <summary>
-        /// Creates an iterator starting at a <see cref="LinearLocation" /> on a linear <see cref="Geometry{TCoordinate}" />.
+        /// Creates an iterator starting at a <see cref="LinearLocation{TCoordinate}" /> 
+        /// on a linear <see cref="Geometry{TCoordinate}" />.
         /// </summary>
         /// <param name="linear">The linear geometry to iterate over.</param>
         /// <param name="start">The location to start at.</param>
-        public LinearIterator(IGeometry<TCoordinate> linear, LinearLocation start) :
+        public LinearIterator(IGeometry<TCoordinate> linear, LinearLocation<TCoordinate> start) :
             this(linear, start.ComponentIndex, SegmentEndVertexIndex(start)) {}
 
         /// <summary>
@@ -73,7 +75,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             _startComponentIndex = componentIndex;
             _startVertexIndex = vertexIndex;
 
-            this._linear = linear;
+            _linear = linear;
             Reset();
 
             _current = new LinearElement(this);
@@ -94,7 +96,6 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Evaluate if the iterator could step over.
         /// Does not perform the step at all.
         /// </summary>
-        /// <returns></returns>
         /// <returns><see langword="true"/> if there are more vertices to scan.</returns>
         protected Boolean HasNext()
         {
@@ -170,7 +171,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Gets the <see cref="LineString" /> component the iterator is current at.
+        /// Gets the <see cref="ILineString{TCoordinate}" /> component the iterator is current at.
         /// </summary>
         private ILineString<TCoordinate> Line
         {
@@ -178,7 +179,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Gets the first <see cref="Coordinate" /> of the current segment
+        /// Gets the first <typeparamref name="TCoordinate"/> of the current segment
         /// (the coordinate of the current vertex).
         /// </summary>
         private TCoordinate SegmentStart
@@ -187,7 +188,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Gets the second <see cref="Coordinate" /> of the current segment
+        /// Gets the second <typeparamref name="TCoordinate"/> of the current segment
         /// (the coordinate of the next vertex).
         /// If the iterator is at the end of a line, <see langword="null" /> is returned.
         /// </summary>
@@ -245,22 +246,10 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
                     Next();
                 }
             }
+
             return HasNext();
         }
 
-        /// <summary>
-        /// Gets the <see cref="LinearElement">element</see> in the collection 
-        /// at the current position of the enumerator.
-        /// </summary>
-        /// <value></value>
-        /// <returns>
-        /// The <see cref="LinearElement">element</see> in the collection 
-        /// at the current position of the enumerator.
-        /// </returns>
-        object IEnumerator.Current
-        {
-            get { return Current; }
-        }
 
         /// <summary>
         /// Sets the enumerator to its initial position, 
@@ -312,12 +301,11 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.Collections.Generic.IEnumerator`1"></see> that can be used 
+        /// A <see cref="System.Collections.Generic.IEnumerator{T}" /> that can be used 
         /// to iterate through the collection.
         /// </returns>
         public IEnumerator<LinearElement> GetEnumerator()
         {
-            return this;
         }
 
         #endregion

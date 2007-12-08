@@ -78,6 +78,7 @@
     <Compile Include="CoordinateSystems\Transformations\GeometryTransform.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GeometriesGraph\Index\SimpleMonotoneChainSweepLineIntersector.cs" />
     <Compile Include="GeometriesGraph\Positions.cs" />
     <Compile Include="Geometries\CoordinateSequences.cs" />
     <Compile Include="Geometries\Extents.cs" />
@@ -99,10 +100,8 @@
     <Compile Include="Geometries\Triangle.cs" />
     <Compile Include="Geometries\Utilities\CoordinateHelper.cs" />
     <Compile Include="Geometries\Utilities\GeometryEditor.cs" />
+    <Compile Include="Geometries\Utilities\GeometryFilter.cs" />
     <Compile Include="Geometries\Utilities\GeometryTransformer.cs" />
-    <Compile Include="Geometries\Utilities\LinearComponentExtracter.cs" />
-    <Compile Include="Geometries\Utilities\PointExtracter.cs" />
-    <Compile Include="Geometries\Utilities\PolygonExtracter.cs" />
     <Compile Include="Geometries\Utilities\ShortCircuitedGeometryVisitor.cs" />
     <Compile Include="GeometriesGraph\Depth.cs" />
     <Compile Include="GeometriesGraph\DirectedEdge.cs" />
@@ -123,7 +122,6 @@
     <Compile Include="GeometriesGraph\Index\MonotoneChainIndexer.cs" />
     <Compile Include="GeometriesGraph\Index\SegmentIntersector.cs" />
     <Compile Include="GeometriesGraph\Index\SimpleEdgeSetIntersector.cs" />
-    <Compile Include="GeometriesGraph\Index\SimpleMCSweepLineIntersector.cs" />
     <Compile Include="GeometriesGraph\Index\SimpleSweepLineIntersector.cs" />
     <Compile Include="GeometriesGraph\Index\SweepLineEvent.cs" />
     <Compile Include="GeometriesGraph\Index\SweepLineSegment.cs" />
@@ -153,7 +151,9 @@
     <Compile Include="Index\Quadtree\Root.cs" />
     <Compile Include="Index\Strtree\AbstractNode.cs" />
     <Compile Include="Index\Strtree\AbstractSTRtree.cs" />
-    <Compile Include="Index\Strtree\IBoundable.cs" />
+    <Compile Include="Index\Strtree\IBoundable.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Index\Strtree\ItemBoundable.cs" />
     <Compile Include="Index\Strtree\SIRtree.cs" />
     <Compile Include="Index\Strtree\STRtree.cs" />
@@ -189,8 +189,8 @@
     <Compile Include="Noding\SimpleNoder.cs" />
     <Compile Include="Noding\SinglePassNoder.cs" />
     <Compile Include="Noding\Snapround\HotPixel.cs" />
-    <Compile Include="Noding\Snapround\MCIndexPointSnapper.cs" />
-    <Compile Include="Noding\Snapround\MCIndexSnapRounder.cs" />
+    <Compile Include="Noding\Snapround\MonotoneChainIndexPointSnapper.cs" />
+    <Compile Include="Noding\Snapround\MonotoneChainIndexSnapRounder.cs" />
     <Compile Include="Noding\Snapround\SimpleSnapRounder.cs" />
     <Compile Include="NtsException.cs" />
     <Compile Include="Operation\Buffer\BufferBuilder.cs" />
@@ -200,8 +200,6 @@
     <Compile Include="Operation\Buffer\OffsetCurveSetBuilder.cs" />
     <Compile Include="Operation\Buffer\RightmostEdgeFinder.cs" />
     <Compile Include="Operation\Buffer\SubgraphDepthLocater.cs" />
-    <Compile Include="Operation\Distance\ConnectedElementLocationFilter.cs" />
-    <Compile Include="Operation\Distance\ConnectedElementPointFilter.cs" />
     <Compile Include="Operation\Distance\DistanceOp.cs" />
     <Compile Include="Operation\Distance\GeometryLocation.cs" />
     <Compile Include="Operation\GeometryGraphOperation.cs" />
@@ -253,10 +251,6 @@
     <Compile Include="Planargraph\NodeMap.cs" />
     <Compile Include="Planargraph\PlanarGraph.cs" />
     <Compile Include="Planargraph\Subgraph.cs" />
-    <Compile Include="Precision\CommonBits.cs" />
-    <Compile Include="Precision\CommonBitsOp.cs" />
-    <Compile Include="Precision\CommonBitsRemover.cs" />
-    <Compile Include="Precision\EnhancedPrecisionOp.cs" />
     <Compile Include="Precision\SimpleGeometryPrecisionReducer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Simplify\DouglasPeuckerLineSimplifier.cs" />
@@ -271,9 +265,6 @@
     <Compile Include="Utilities\AssertionFailedException.cs" />
     <Compile Include="Utilities\BitConverter.cs" />
     <Compile Include="Utilities\CollectionUtil.cs" />
-    <Compile Include="Utilities\CoordinateArrayFilter.cs" />
-    <Compile Include="Utilities\CoordinateCompare.cs" />
-    <Compile Include="Utilities\CoordinateCountFilter.cs" />
     <Compile Include="Utilities\Degrees.cs" />
     <Compile Include="Utilities\GeometricShapeFactory.cs" />
     <Compile Include="Utilities\HexConverter.cs" />
@@ -291,7 +282,6 @@
     <Compile Include="Utilities\RToolsUtil\Token.cs" />
     <Compile Include="Utilities\RToolsUtil\VerbosityLevel.cs" />
     <Compile Include="Utilities\Stopwatch.cs" />
-    <Compile Include="Utilities\UniqueCoordinateArrayFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="License.txt" />

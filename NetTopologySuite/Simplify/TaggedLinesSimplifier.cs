@@ -1,5 +1,7 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Simplify
 {
@@ -7,13 +9,13 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// Simplifies a collection of TaggedLineStrings, preserving topology
     /// (in the sense that no new intersections are introduced).
     /// </summary>
-    public class TaggedLinesSimplifier
+    public class TaggedLinesSimplifier<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        private LineSegmentIndex inputIndex = new LineSegmentIndex();
-        private LineSegmentIndex outputIndex = new LineSegmentIndex();
-        private Double distanceTolerance = 0.0;
-
-        public TaggedLinesSimplifier() {}
+        private readonly LineSegmentIndex<TCoordinate> _inputIndex = new LineSegmentIndex<TCoordinate>();
+        private readonly LineSegmentIndex<TCoordinate> _outputIndex = new LineSegmentIndex<TCoordinate>();
+        private Double _distanceTolerance = 0.0;
 
         /// <summary>
         /// Gets or sets the distance tolerance for the simplification.
@@ -22,26 +24,27 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// </summary>        
         public Double DistanceTolerance
         {
-            get { return distanceTolerance; }
-            set { distanceTolerance = value; }
+            get { return _distanceTolerance; }
+            set { _distanceTolerance = value; }
         }
 
         /// <summary>
-        /// Simplify a collection of <c>TaggedLineString</c>s.
+        /// Simplify a collection of <see cref="TaggedLineString{TCoordinate}"/>s.
         /// </summary>
         /// <param name="taggedLines">The collection of lines to simplify.</param>
-        public void Simplify(IList taggedLines)
+        public void Simplify(IEnumerable<TaggedLineString<TCoordinate>> taggedLines)
         {
-            for (IEnumerator i = taggedLines.GetEnumerator(); i.MoveNext();)
+            foreach (TaggedLineString<TCoordinate> taggedLine in taggedLines)
             {
-                inputIndex.Add((TaggedLineString) i.Current);
+                _inputIndex.Add(taggedLine);
             }
-            for (IEnumerator i = taggedLines.GetEnumerator(); i.MoveNext();)
+
+            foreach (TaggedLineString<TCoordinate> taggedLine in taggedLines)
             {
-                TaggedLineStringSimplifier tlss
-                    = new TaggedLineStringSimplifier(inputIndex, outputIndex);
-                tlss.DistanceTolerance = distanceTolerance;
-                tlss.Simplify((TaggedLineString) i.Current);
+                TaggedLineStringSimplifier<TCoordinate> tlss
+                    = new TaggedLineStringSimplifier<TCoordinate>(_inputIndex, _outputIndex);
+                tlss.DistanceTolerance = _distanceTolerance;
+                tlss.Simplify(taggedLine);
             }
         }
     }

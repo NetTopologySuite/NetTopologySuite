@@ -1,5 +1,7 @@
 using System;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
@@ -7,34 +9,42 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
     /// A visitor to Geometry elements which can
     /// be short-circuited by a given condition.
     /// </summary>
-    public abstract class ShortCircuitedGeometryVisitor
+    public abstract class ShortCircuitedGeometryVisitor<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
-        private Boolean isDone = false;
+        private Boolean _isDone = false;
 
-        public void ApplyTo(IGeometry geom)
+        public void ApplyTo(IGeometry<TCoordinate> geom)
         {
-            for (Int32 i = 0; i < geom.NumGeometries && ! isDone; i++)
+            // Short-circuit any more comparisons if the visitor has been set
+            // to done.
+            if (_isDone)
             {
-                IGeometry element = geom.GetGeometryN(i);
+                return;
+            }
 
-                if (!(element is IGeometryCollection))
+            if(geom is IGeometryCollection<TCoordinate>)
+            {
+                IGeometryCollection<TCoordinate> collection = geom as IGeometryCollection<TCoordinate>;
+
+                foreach (IGeometry<TCoordinate> geometry in collection)
                 {
-                    Visit(element);
-
-                    if (IsDone())
-                    {
-                        isDone = true;
-                        return;
-                    }
+                    ApplyTo(geometry);
                 }
-                else
+            }
+            else
+            {
+                Visit(geom);
+
+                if (IsDone())
                 {
-                    ApplyTo(element);
+                    _isDone = true;
                 }
             }
         }
 
-        protected abstract void Visit(IGeometry element);
+        protected abstract void Visit(IGeometry<TCoordinate> element);
 
         protected abstract Boolean IsDone();
     }

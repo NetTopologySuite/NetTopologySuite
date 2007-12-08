@@ -31,6 +31,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             _p1 = p1;
         }
 
+        public LineSegment(Pair<TCoordinate> coordinates)
+        {
+            _p0 = coordinates.First;
+            _p1 = coordinates.Second;
+        }
+
         public TCoordinate P1
         {
             get { return _p1; }

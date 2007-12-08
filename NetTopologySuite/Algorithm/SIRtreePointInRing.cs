@@ -1,60 +1,50 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
+using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Index.Strtree;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     /// <summary> 
-    /// Implements <c>PointInRing</c> using a <c>SIRtree</c> index to increase performance.
+    /// Implements <see cref="IPointInRing{TCoordinate}"/> using 
+    /// an <see cref="SirTree{TItem}"/> index to increase performance.
     /// </summary>
-    public class SirTreePointInRing : IPointInRing
+    public class SirTreePointInRing<TCoordinate> : IPointInRing<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        private ILinearRing ring;
-        private SirTree sirTree;
-        private Int32 crossings = 0; // number of segment/ray crossings
+        private readonly ILinearRing<TCoordinate> _ring;
+        private readonly SirTree<LineSegment<TCoordinate>> _sirTree
+            = new SirTree<LineSegment<TCoordinate>>();
+        private Int32 _crossings = 0; // number of segment/ray crossings
 
-        public SirTreePointInRing(ILinearRing ring)
+        public SirTreePointInRing(ILinearRing<TCoordinate> ring)
         {
-            this.ring = ring;
-            BuildIndex();
+            _ring = ring;
+            buildIndex();
         }
 
-        private void BuildIndex()
+        public Boolean IsInside(TCoordinate coordinate)
         {
-            sirTree = new SirTree();
-            ICoordinate[] pts = ring.Coordinates;
-
-            for (Int32 i = 1; i < pts.Length; i++)
-            {
-                if (pts[i - 1].Equals(pts[i]))
-                {
-                    continue;
-                }
-
-                LineSegment seg = new LineSegment(pts[i - 1], pts[i]);
-                sirTree.Insert(seg.P0.Y, seg.P1.Y, seg);
-            }
-        }
-
-        public Boolean IsInside(ICoordinate pt)
-        {
-            crossings = 0;
+            _crossings = 0;
 
             // test all segments intersected by vertical ray at pt
-            IList segs = sirTree.Query(pt.Y);
-            
-            for (IEnumerator i = segs.GetEnumerator(); i.MoveNext();)
+            IEnumerable<LineSegment<TCoordinate>> segs = _sirTree.Query(coordinate[Ordinates.Y]);
+
+            foreach (LineSegment<TCoordinate> seg in segs)
             {
-                LineSegment seg = (LineSegment) i.Current;
-                TestLineSegment(pt, seg);
+                testLineSegment(coordinate, seg);
             }
 
             /*
             *  p is inside if number of crossings is odd.
             */
-            if ((crossings%2) == 1)
+            if ((_crossings % 2) == 1)
             {
                 return true;
             }
@@ -62,9 +52,24 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return false;
         }
 
-        private void TestLineSegment(ICoordinate p, LineSegment seg)
+        private void buildIndex()
         {
-            Double xInt; // x intersection of segment with ray
+            IEnumerable<TCoordinate> pts = _ring.Coordinates;
+
+            foreach (Pair<TCoordinate> pair in Slice.GetOverlappingPairs(pts))
+            {
+                if (pair.First.Equals(pair.Second))
+                {
+                    continue;
+                }
+
+                LineSegment<TCoordinate> seg = new LineSegment<TCoordinate>(pair.First, pair.Second);
+                _sirTree.Insert(seg.P0[Ordinates.Y], seg.P1[Ordinates.Y], seg);
+            }
+        }
+
+        private void testLineSegment(TCoordinate p, LineSegment<TCoordinate> seg)
+        {
             Double x1; // translated coordinates
             Double y1;
             Double x2;
@@ -73,26 +78,29 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             /*
             *  Test if segment crosses ray from test point in positive x direction.
             */
-            ICoordinate p1 = seg.P0;
-            ICoordinate p2 = seg.P1;
-            x1 = p1.X - p.X;
-            y1 = p1.Y - p.Y;
-            x2 = p2.X - p.X;
-            y2 = p2.Y - p.Y;
+            TCoordinate p1 = seg.P0;
+            TCoordinate p2 = seg.P1;
+
+            x1 = p1[Ordinates.X] - p[Ordinates.X];
+            y1 = p1[Ordinates.Y] - p[Ordinates.Y];
+            x2 = p2[Ordinates.X] - p[Ordinates.X];
+            y2 = p2[Ordinates.Y] - p[Ordinates.Y];
 
             if (((y1 > 0) && (y2 <= 0)) || ((y2 > 0) && (y1 <= 0)))
             {
+                Double xInt; // x intersection of segment with ray
+
                 /*
                 *  segment straddles x axis, so compute intersection.
                 */
-                xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2)/(y2 - y1);
+                xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2) / (y2 - y1);
 
                 /*
                 *  crosses ray if strictly positive intersection.
                 */
                 if (0.0 < xInt)
                 {
-                    crossings++;
+                    _crossings++;
                 }
             }
         }

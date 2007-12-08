@@ -1,29 +1,34 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
     /// <summary>
-    /// Dissolves a noded collection of <see cref="SegmentString" />s to produce
+    /// Dissolves a noded collection of <see cref="SegmentString{TCoordinate}" />s to produce
     /// a set of merged linework with unique segments.
+    /// </summary>
+    /// <remarks>
+    /// <para>
     /// A custom merging strategy can be applied when two identical (up to orientation)
     /// strings are dissolved together.
     /// The default merging strategy is simply to discard the merged string.
-    ///<para>
+    /// </para>
+    /// <para>
     /// A common use for this class is to merge noded edges
     /// while preserving topological labeling.
     /// </para>
-    /// </summary>
-    public class SegmentStringDissolver
+    /// </remarks>
+    public class SegmentStringDissolver<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        /// <summary>
-        /// 
-        /// </summary>
         public interface ISegmentStringMerger
         {
             /// <summary>
-            /// Updates the context data of a <see cref="SegmentString" />
+            /// Updates the context data of a <see cref="SegmentString{TCoordinate}" />
             /// when an identical (up to orientation) one is found during dissolving.
             /// </summary>
             /// <param name="mergeTarget">The segment string to update.</param>
@@ -32,19 +37,20 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             /// <see langword="true"/> if the strings are in the same direction,
             /// <c>false</c> if they are opposite.
             /// </param>
-            void Merge(SegmentString mergeTarget, SegmentString ssToMerge, Boolean isSameOrientation);
+            void Merge(SegmentString<TCoordinate> mergeTarget, SegmentString<TCoordinate> ssToMerge, Boolean isSameOrientation);
         }
 
-        private ISegmentStringMerger merger;
-        private IDictionary ocaMap = new SortedList();
+        private readonly ISegmentStringMerger _merger;
+
+        private readonly SortedDictionary<OrientedCoordinateArray<TCoordinate>, SegmentString<TCoordinate>> _ocaMap =
+            new SortedDictionary<OrientedCoordinateArray<TCoordinate>, SegmentString<TCoordinate>>();
 
         /// <summary>
         /// Creates a dissolver with a user-defined merge strategy.
         /// </summary>
-        /// <param name="merger"></param>
         public SegmentStringDissolver(ISegmentStringMerger merger)
         {
-            this.merger = merger;
+            _merger = merger;
         }
 
         /// <summary>
@@ -54,66 +60,53 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             : this(null) {}
 
         /// <summary>
-        /// Dissolve all <see cref="SegmentString" />s in the input <see cref="ICollection"/>.
+        /// Dissolve all <see cref="SegmentString{TCoordinate}" />s 
+        /// in the input set.
         /// </summary>
-        /// <param name="segStrings"></param>
-        public void Dissolve(ICollection segStrings)
+        public void Dissolve(IEnumerable<SegmentString<TCoordinate>> segStrings)
         {
-            foreach (object obj in segStrings)
+            foreach (SegmentString<TCoordinate> segmentString in segStrings)
             {
-                Dissolve((SegmentString) obj);
+                Dissolve(segmentString);
             }
         }
 
         /// <summary>
-        /// 
+        /// Dissolve the given <see cref="SegmentString{TCoordinate}" />.
         /// </summary>
-        /// <param name="oca"></param>
         /// <param name="segString"></param>
-        private void Add(OrientedCoordinateArray oca, SegmentString segString)
+        public void Dissolve(SegmentString<TCoordinate> segString)
         {
-            ocaMap.Add(oca, segString);
-        }
+            OrientedCoordinateArray<TCoordinate> oca = new OrientedCoordinateArray<TCoordinate>(segString.Coordinates);
 
-        /// <summary>
-        /// Dissolve the given <see cref="SegmentString" />.
-        /// </summary>
-        /// <param name="segString"></param>
-        public void Dissolve(SegmentString segString)
-        {
-            OrientedCoordinateArray oca = new OrientedCoordinateArray(segString.Coordinates);
-            SegmentString existing = FindMatching(oca, segString);
+            SegmentString<TCoordinate> existing;
+            _ocaMap.TryGetValue(oca, out existing);
+
             if (existing == null)
             {
-                Add(oca, segString);
+                add(oca, segString);
             }
             else
             {
-                if (merger != null)
+                if (_merger != null)
                 {
                     Boolean isSameOrientation = CoordinateArrays.Equals(existing.Coordinates, segString.Coordinates);
-                    merger.Merge(existing, segString, isSameOrientation);
+                    _merger.Merge(existing, segString, isSameOrientation);
                 }
             }
         }
 
         /// <summary>
-        /// 
+        /// Gets the collection of dissolved (i.e. unique) <see cref="SegmentString{TCoordinate}" />s
         /// </summary>
-        /// <param name="oca"></param>
-        /// <param name="segString"></param>
-        /// <returns></returns>
-        private SegmentString FindMatching(OrientedCoordinateArray oca, SegmentString segString)
+        public IEnumerable<SegmentString<TCoordinate>> Dissolved
         {
-            return (SegmentString) ocaMap[oca];
+            get { return _ocaMap.Values; }
         }
 
-        /// <summary>
-        /// Gets the collection of dissolved (i.e. unique) <see cref="SegmentString" />s
-        /// </summary>
-        public ICollection Dissolved
+        private void add(OrientedCoordinateArray<TCoordinate> oca, SegmentString<TCoordinate> segString)
         {
-            get { return ocaMap.Values; }
+            _ocaMap.Add(oca, segString);
         }
     }
 }

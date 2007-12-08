@@ -1,32 +1,34 @@
 using System;
 using System.Collections.Generic;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack.Interfaces;
+using GeoAPI.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 {
     /// <summary>
-    /// Builds a linear geometry (<see cref="LineString" /> or <see cref="MultiLineString" />)
+    /// Builds a linear geometry (<see cref="ILineString{TCoordinate}" /> 
+    /// or <see cref="IMultiLineString{TCoordinate}" />)
     /// incrementally (point-by-point).
     /// </summary>
-    public class LinearGeometryBuilder
+    public class LinearGeometryBuilder<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
-        private IGeometryFactory geomFact = null;
-        private List<IGeometry> lines = new List<IGeometry>();
-        private CoordinateList coordList = null;
+        private readonly IGeometryFactory<TCoordinate> _geometryFactory = null;
+        private readonly List<IGeometry<TCoordinate>> _lines = new List<IGeometry<TCoordinate>>();
+        private List<TCoordinate> _coordList = null;
 
-        private Boolean ignoreInvalidLines = false;
-        private Boolean fixInvalidLines = false;
+        private Boolean _ignoreInvalidLines = false;
+        private Boolean _fixInvalidLines = false;
 
-        private ICoordinate lastPt = null;
+        private TCoordinate _lastPt = default(TCoordinate);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geomFact"></param>
-        public LinearGeometryBuilder(IGeometryFactory geomFact)
+        public LinearGeometryBuilder(IGeometryFactory<TCoordinate> geomFact)
         {
-            this.geomFact = geomFact;
+            _geometryFactory = geomFact;
         }
 
         /// <summary>
@@ -35,8 +37,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         public Boolean FixInvalidLines
         {
-            get { return fixInvalidLines; }
-            set { fixInvalidLines = value; }
+            get { return _fixInvalidLines; }
+            set { _fixInvalidLines = value; }
         }
 
         /// <summary>
@@ -45,15 +47,15 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         public Boolean IgnoreInvalidLines
         {
-            get { return ignoreInvalidLines; }
-            set { ignoreInvalidLines = value; }
+            get { return _ignoreInvalidLines; }
+            set { _ignoreInvalidLines = value; }
         }
 
         /// <summary>
         /// Adds a point to the current line.
         /// </summary>
-        /// <param name="pt">The <see cref="Coordinate" /> to add.</param>
-        public void Add(ICoordinate pt)
+        /// <param name="pt">The <typeparamref name="TCoordinate"/> to add.</param>
+        public void Add(TCoordinate pt)
         {
             Add(pt, true);
         }
@@ -61,95 +63,96 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <summary>
         /// Adds a point to the current line.
         /// </summary>
-        /// <param name="pt">The <see cref="Coordinate" /> to add.</param>
+        /// <param name="pt">The <typeparamref name="TCoordinate"/> to add.</param>
         /// <param name="allowRepeatedPoints">If <see langword="true"/>, allows the insertions of repeated points.</param>
-        public void Add(ICoordinate pt, Boolean allowRepeatedPoints)
+        public void Add(TCoordinate pt, Boolean allowRepeatedPoints)
         {
-            if (coordList == null)
+            if (_coordList == null)
             {
-                coordList = new CoordinateList();
+                _coordList = new List<TCoordinate>();
             }
-            coordList.Add(pt, allowRepeatedPoints);
-            lastPt = pt;
+
+            if (allowRepeatedPoints || _coordList.IndexOf(pt) < 0)
+            {
+                _coordList.Add(pt);
+            }
+
+            _lastPt = pt;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public ICoordinate LastCoordinate
+        public TCoordinate LastCoordinate
         {
-            get { return lastPt; }
+            get { return _lastPt; }
         }
 
         /// <summary>
-        /// Terminate the current <see cref="LineString" />.
+        /// Terminate the current <see cref="ILineString{TCoordinate}" />.
         /// </summary>
         public void EndLine()
         {
-            if (coordList == null)
+            if (_coordList == null)
             {
                 return;
             }
 
-            if (ignoreInvalidLines && coordList.Count < 2)
+            if (_ignoreInvalidLines && _coordList.Count < 2)
             {
-                coordList = null;
+                _coordList = null;
                 return;
             }
 
-            ICoordinate[] rawPts = coordList.ToCoordinateArray();
-            ICoordinate[] pts = rawPts;
+            IEnumerable<TCoordinate> rawPts = _coordList;
+            IEnumerable<TCoordinate> pts = rawPts;
+
             if (FixInvalidLines)
             {
-                pts = ValidCoordinateSequence(rawPts);
+                pts = validCoordinateSequence(rawPts);
             }
 
-            coordList = null;
-            ILineString line = null;
+            _coordList = null;
+            ILineString<TCoordinate> line = null;
+
             try
             {
-                line = geomFact.CreateLineString(pts);
+                line = _geometryFactory.CreateLineString(pts);
             }
-            catch (ArgumentException ex)
+            catch (ArgumentException)
             {
                 // exception is due to too few points in line.
                 // only propagate if not ignoring short lines
                 if (!IgnoreInvalidLines)
                 {
-                    throw ex;
+                    throw;
                 }
             }
 
             if (line != null)
             {
-                lines.Add(line);
+                _lines.Add(line);
             }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pts"></param>
-        /// <returns></returns>
-        private ICoordinate[] ValidCoordinateSequence(ICoordinate[] pts)
-        {
-            if (pts.Length >= 2)
-            {
-                return pts;
-            }
-            ICoordinate[] validPts = new ICoordinate[] {pts[0], pts[0]};
-            return validPts;
         }
 
         /// <summary>
         /// Builds and returns the <see cref="Geometry{TCoordinate}" />.
         /// </summary>
         /// <returns></returns>
-        public IGeometry GetGeometry()
+        public IGeometry<TCoordinate> GetGeometry()
         {
             // end last line in case it was not done by user
             EndLine();
-            return geomFact.BuildGeometry(lines);
+
+            return _geometryFactory.BuildGeometry(_lines);
+        }
+
+        private IEnumerable<TCoordinate> validCoordinateSequence(IEnumerable<TCoordinate> pts)
+        {
+            if (Slice.CountGreaterThan(1, pts))
+            {
+                return pts;
+            }
+
+            TCoordinate coordinate = Slice.GetFirst(pts);
+            return Slice.Append(pts, coordinate);
         }
     }
 }

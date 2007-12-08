@@ -1,6 +1,8 @@
 using System;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
 {
@@ -10,36 +12,38 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
     /// As a further optimization,
     /// this class can be used directly to test many geometries against a single rectangle.
     /// </summary>
-    public class RectangleContains
+    public class RectangleContains<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
-        public static Boolean Contains(IPolygon rectangle, IGeometry b)
+        public static Boolean Contains(IPolygon<TCoordinate> rectangle, IGeometry<TCoordinate> b)
         {
-            RectangleContains rc = new RectangleContains(rectangle);
+            RectangleContains<TCoordinate> rc = new RectangleContains<TCoordinate>(rectangle);
             return rc.Contains(b);
         }
 
-        private IPolygon rectangle;
-        private IExtents rectEnv;
+        private IPolygon<TCoordinate> _rectangle;
+        private readonly IExtents<TCoordinate> _rectExtents;
 
         /// <summary>
         /// Create a new contains computer for two geometries.
         /// </summary>
         /// <param name="rectangle">A rectangular geometry.</param>
-        public RectangleContains(IPolygon rectangle)
+        public RectangleContains(IPolygon<TCoordinate> rectangle)
         {
-            this.rectangle = rectangle;
-            rectEnv = rectangle.EnvelopeInternal;
+            _rectangle = rectangle;
+            _rectExtents = rectangle.Extents;
         }
 
-        public Boolean Contains(IGeometry geom)
+        public Boolean Contains(IGeometry<TCoordinate> geom)
         {
-            if (!rectEnv.Contains(geom.EnvelopeInternal))
+            if (!_rectExtents.Contains(geom.Extents))
             {
                 return false;
             }
 
             // check that geom is not contained entirely in the rectangle boundary
-            if (IsContainedInBoundary(geom))
+            if (isContainedInBoundary(geom))
             {
                 return false;
             }
@@ -47,88 +51,98 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
             return true;
         }
 
-        private Boolean IsContainedInBoundary(IGeometry geom)
+        private Boolean isContainedInBoundary(IGeometry<TCoordinate> geom)
         {
             // polygons can never be wholely contained in the boundary
-            if (geom is IPolygon)
+            if (geom is IPolygon<TCoordinate>)
             {
                 return false;
             }
-            if (geom is IPoint)
+            if (geom is IPoint<TCoordinate>)
             {
-                return IsPointContainedInBoundary((IPoint) geom);
+                return isPointContainedInBoundary(geom as IPoint<TCoordinate>);
             }
-            if (geom is ILineString)
+            if (geom is ILineString<TCoordinate>)
             {
-                return IsLineStringContainedInBoundary((ILineString) geom);
+                return isLineStringContainedInBoundary(geom as ILineString<TCoordinate>);
             }
-
-            for (Int32 i = 0; i < geom.NumGeometries; i++)
+            if(geom is IGeometryCollection<TCoordinate>)
             {
-                IGeometry comp = geom.GetGeometryN(i);
-                if (!IsContainedInBoundary(comp))
+                foreach (IGeometry<TCoordinate> geometry in (geom as IGeometryCollection<TCoordinate>))
                 {
-                    return false;
+                    if (!isContainedInBoundary(geometry))
+                    {
+                        return false;
+                    }
                 }
             }
+
             return true;
         }
 
-        private Boolean IsPointContainedInBoundary(IPoint point)
+        private Boolean isPointContainedInBoundary(IPoint<TCoordinate> point)
         {
-            return IsPointContainedInBoundary(point.Coordinate);
+            return isPointContainedInBoundary(point.Coordinate);
         }
 
-        private Boolean IsPointContainedInBoundary(ICoordinate pt)
+        private Boolean isPointContainedInBoundary(TCoordinate pt)
         {
             // we already know that the point is contained in the rectangle envelope
-            if (!(pt.X == rectEnv.MinX || pt.X == rectEnv.MaxX))
+            if (!(pt[Ordinates.X] == _rectExtents.GetMin(Ordinates.X) 
+                || pt[Ordinates.X] == _rectExtents.GetMax(Ordinates.X)))
             {
                 return false;
             }
-            if (!(pt.Y == rectEnv.MinY || pt.Y == rectEnv.MaxY))
+            
+            if (!(pt[Ordinates.Y] == _rectExtents.GetMin(Ordinates.Y)
+                || pt[Ordinates.Y] == _rectExtents.GetMax(Ordinates.Y)))
             {
                 return false;
             }
+
             return true;
         }
 
-        private Boolean IsLineStringContainedInBoundary(ILineString line)
+        private Boolean isLineStringContainedInBoundary(ILineString<TCoordinate> line)
         {
             ICoordinateSequence seq = line.CoordinateSequence;
-            ICoordinate p0 = new Coordinate();
-            ICoordinate p1 = new Coordinate();
+            TCoordinate p0 = new Coordinate();
+            TCoordinate p1 = new Coordinate();
+
             for (Int32 i = 0; i < seq.Count - 1; i++)
             {
                 seq.GetCoordinate(i, p0);
                 seq.GetCoordinate(i + 1, p1);
+
                 if (!IsLineSegmentContainedInBoundary(p0, p1))
                 {
                     return false;
                 }
             }
+
             return true;
         }
 
-        private Boolean IsLineSegmentContainedInBoundary(ICoordinate p0, ICoordinate p1)
+        private Boolean IsLineSegmentContainedInBoundary(TCoordinate p0, TCoordinate p1)
         {
             if (p0.Equals(p1))
             {
-                return IsPointContainedInBoundary(p0);
+                return isPointContainedInBoundary(p0);
             }
+
             // we already know that the segment is contained in the rectangle envelope
-            if (p0.X == p1.X)
+            if (p0[Ordinates.X] == p1[Ordinates.X])
             {
-                if (p0.X == rectEnv.MinX ||
-                    p0.X == rectEnv.MaxX)
+                if (p0[Ordinates.X] == _rectExtents.GetMin(Ordinates.X) ||
+                    p0[Ordinates.X] == _rectExtents.GetMax(Ordinates.X))
                 {
                     return true;
                 }
             }
-            else if (p0.Y == p1.Y)
+            else if (p0[Ordinates.Y] == p1[Ordinates.Y])
             {
-                if (p0.Y == rectEnv.MinY ||
-                    p0.Y == rectEnv.MaxY)
+                if (p0[Ordinates.Y] == _rectExtents.GetMin(Ordinates.Y) ||
+                    p0[Ordinates.Y] == _rectExtents.GetMax(Ordinates.Y))
                 {
                     return true;
                 }

@@ -380,28 +380,33 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return Math.Abs(s) * Math.Sqrt(((B[Ordinates.X] - A[Ordinates.X]) * (B[Ordinates.X] - A[Ordinates.X]) + (B[Ordinates.Y] - A[Ordinates.Y]) * (B[Ordinates.Y] - A[Ordinates.Y])));
         }
 
+        public static Double DistanceLineLine(Pair<TCoordinate> line0, Pair<TCoordinate> line1)
+        {
+            return DistanceLineLine(line0.First, line0.Second, line1.First, line1.Second);
+        }
+
 #warning Non-robust method
         // NOTE: Can this be moved down to NPack?
         /// <summary> 
         /// Computes the distance from a line segment AB to a line segment CD.
         /// Note: NON-ROBUST!
         /// </summary>
-        /// <param name="A">A point of one line.</param>
-        /// <param name="B">The second point of the line (must be different to A).</param>
-        /// <param name="C">One point of the line.</param>
-        /// <param name="D">Another point of the line (must be different to A).</param>
+        /// <param name="a">A point of one line.</param>
+        /// <param name="b">The second point of the line (must be different to A).</param>
+        /// <param name="c">One point of the line.</param>
+        /// <param name="d">Another point of the line (must be different to A).</param>
         /// <returns>The distance from line segment AB to line segment CD.</returns>
-        public static Double DistanceLineLine(TCoordinate A, TCoordinate B, TCoordinate C, TCoordinate D)
+        public static Double DistanceLineLine(TCoordinate a, TCoordinate b, TCoordinate c, TCoordinate d)
         {
             // check for zero-length segments
-            if (A.Equals(B))
+            if (a.Equals(b))
             {
-                return DistancePointLine(A, C, D);
+                return DistancePointLine(a, c, d);
             }
 
-            if (C.Equals(D))
+            if (c.Equals(d))
             {
-                return DistancePointLine(D, A, B);
+                return DistancePointLine(d, a, b);
             }
 
             // AB and CD are line segments
@@ -427,18 +432,18 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 		            If the numerator in eqn 1 is also zero, AB & CD are collinear.
 
 	        */
-            Double r_top = (A[Ordinates.Y] - C[Ordinates.Y]) * (D[Ordinates.X] - C[Ordinates.X]) - (A[Ordinates.X] - C[Ordinates.X]) * (D[Ordinates.Y] - C[Ordinates.Y]);
-            Double r_bot = (B[Ordinates.X] - A[Ordinates.X]) * (D[Ordinates.Y] - C[Ordinates.Y]) - (B[Ordinates.Y] - A[Ordinates.Y]) * (D[Ordinates.X] - C[Ordinates.X]);
+            Double r_top = (a[Ordinates.Y] - c[Ordinates.Y]) * (d[Ordinates.X] - c[Ordinates.X]) - (a[Ordinates.X] - c[Ordinates.X]) * (d[Ordinates.Y] - c[Ordinates.Y]);
+            Double r_bot = (b[Ordinates.X] - a[Ordinates.X]) * (d[Ordinates.Y] - c[Ordinates.Y]) - (b[Ordinates.Y] - a[Ordinates.Y]) * (d[Ordinates.X] - c[Ordinates.X]);
 
-            Double s_top = (A[Ordinates.Y] - C[Ordinates.Y]) * (B[Ordinates.X] - A[Ordinates.X]) - (A[Ordinates.X] - C[Ordinates.X]) * (B[Ordinates.Y] - A[Ordinates.Y]);
-            Double s_bot = (B[Ordinates.X] - A[Ordinates.X]) * (D[Ordinates.Y] - C[Ordinates.Y]) - (B[Ordinates.Y] - A[Ordinates.Y]) * (D[Ordinates.X] - C[Ordinates.X]);
+            Double s_top = (a[Ordinates.Y] - c[Ordinates.Y]) * (b[Ordinates.X] - a[Ordinates.X]) - (a[Ordinates.X] - c[Ordinates.X]) * (b[Ordinates.Y] - a[Ordinates.Y]);
+            Double s_bot = (b[Ordinates.X] - a[Ordinates.X]) * (d[Ordinates.Y] - c[Ordinates.Y]) - (b[Ordinates.Y] - a[Ordinates.Y]) * (d[Ordinates.X] - c[Ordinates.X]);
 
             if ((r_bot == 0) || (s_bot == 0))
             {
-                return Math.Min(DistancePointLine(A, C, D),
-                                Math.Min(DistancePointLine(B, C, D),
-                                         Math.Min(DistancePointLine(C, A, B),
-                                                  DistancePointLine(D, A, B))));
+                return Math.Min(DistancePointLine(a, c, d),
+                                Math.Min(DistancePointLine(b, c, d),
+                                         Math.Min(DistancePointLine(c, a, b),
+                                                  DistancePointLine(d, a, b))));
             }
 
 
@@ -448,10 +453,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             if ((r < 0) || (r > 1) || (s < 0) || (s > 1))
             {
                 //no intersection
-                return Math.Min(DistancePointLine(A, C, D),
-                                Math.Min(DistancePointLine(B, C, D),
-                                         Math.Min(DistancePointLine(C, A, B),
-                                                  DistancePointLine(D, A, B))));
+                return Math.Min(DistancePointLine(a, c, d),
+                                Math.Min(DistancePointLine(b, c, d),
+                                         Math.Min(DistancePointLine(c, a, b),
+                                                  DistancePointLine(d, a, b))));
             }
 
             return 0.0; //intersection exists

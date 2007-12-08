@@ -37,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// The exterior boundary, or <see langword="null" /> if this <see cref="Polygon{TCoordinate}" />
         /// is the empty point.
         /// </summary>
-        private readonly ILinearRing<TCoordinate> _shell;
+        private readonly LinearRing<TCoordinate> _shell;
 
         /// <summary>
         /// The interior boundaries, if any.
@@ -108,27 +108,29 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             _holes = new List<ILineString<TCoordinate>>(holes);
         }
 
-        public override IEnumerable<TCoordinate> Coordinates
+        public override IList<TCoordinate> Coordinates
         {
             get
             {
-                if (IsEmpty)
-                {
-                    yield break;
-                }
+                //if (IsEmpty)
+                //{
+                //    yield break;
+                //}
 
-                foreach (TCoordinate coordinate in _shell.Coordinates)
-                {
-                    yield return coordinate;
-                }
+                //foreach (TCoordinate coordinate in _shell.Coordinates)
+                //{
+                //    yield return coordinate;
+                //}
 
-                foreach (ILinearRing<TCoordinate> ring in _holes)
-                {
-                    foreach (TCoordinate coordinate in ring.Coordinates)
-                    {
-                        yield return coordinate;
-                    }
-                }
+                //foreach (ILinearRing<TCoordinate> ring in _holes)
+                //{
+                //    foreach (TCoordinate coordinate in ring.Coordinates)
+                //    {
+                //        yield return coordinate;
+                //    }
+                //}
+
+                return null;
             }
         }
 
@@ -167,7 +169,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return true; }
         }
 
-        public ILineString ExteriorRing
+        public ILineString<TCoordinate> ExteriorRing
         {
             get { return _shell; }
         }
@@ -249,12 +251,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        protected override Extents<TCoordinate> ComputeExtentsInternal()
-        {
-            Debug.Assert(_shell.Extents is Extents<TCoordinate>);
-            return _shell.Extents as Extents<TCoordinate>;
-        }
-
         public override Boolean Equals(IGeometry<TCoordinate> other, Tolerance tolerance)
         {
             if (!IsEquivalentClass(other))
@@ -270,7 +266,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
 
             IGeometry<TCoordinate> thisShell = _shell;
-            IGeometry<TCoordinate> otherPolygonShell = otherPolygon.Shell;
+            IGeometry<TCoordinate> otherPolygonShell = otherPolygon.ExteriorRing;
 
             if (!thisShell.Equals(otherPolygonShell, tolerance))
             {
@@ -293,20 +289,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return true;
         }
 
-        public override void Apply(ICoordinateFilter<TCoordinate> filter)
-        {
-            _shell.Apply(filter);
+        //public override void Apply(ICoordinateFilter<TCoordinate> filter)
+        //{
+        //    _shell.Apply(filter);
 
-            foreach (ILineString<TCoordinate> lineString in _holes)
-            {
-                lineString.Apply(filter);
-            }
-        }
+        //    foreach (ILineString<TCoordinate> lineString in _holes)
+        //    {
+        //        lineString.Apply(filter);
+        //    }
+        //}
 
-        public override void Apply(IGeometryFilter<TCoordinate> filter)
-        {
-            filter.Filter(this);
-        }
+        //public override void Apply(IGeometryFilter<TCoordinate> filter)
+        //{
+        //    filter.Filter(this);
+        //}
 
         public override void Apply(IGeometryComponentFilter<TCoordinate> filter)
         {
@@ -326,11 +322,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Factory.CreatePolygon(shell, cloneLines(_holes));
         }
 
-        private IEnumerable<ILinearRing<TCoordinate>> cloneLines(List<ILineString<TCoordinate>> _holes)
-        {
-            throw new NotImplementedException();
-        }
-
         public override IGeometry<TCoordinate> ConvexHull()
         {
             return (ExteriorRing as ISpatialOperator<TCoordinate>).ConvexHull();
@@ -338,11 +329,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public override void Normalize()
         {
-            Normalize(_shell, true);
+            normalize(_shell, true);
 
             foreach (ILinearRing<TCoordinate> ring in InteriorRings)
             {
-                Normalize(ring, false);
+                normalize(ring, false);
             }
 
             if (InteriorRingsCount > 0)
@@ -351,14 +342,26 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        protected internal override Int32 CompareToSameClass(IGeometry<TCoordinate> o)
+        protected override Extents<TCoordinate> ComputeExtentsInternal()
         {
-            LinearRing<TCoordinate> thisShell = (LinearRing<TCoordinate>)_shell;
-            ILinearRing otherShell = ((IPolygon) o).Shell;
-            return thisShell.CompareToSameClass(otherShell);
+            Debug.Assert(_shell.Extents is Extents<TCoordinate>);
+            return _shell.Extents as Extents<TCoordinate>;
         }
 
-        private void Normalize(ILinearRing<TCoordinate> ring, Boolean clockwise)
+        protected internal override Int32 CompareToSameClass(IGeometry<TCoordinate> other)
+        {
+            Debug.Assert(other is IPolygon<TCoordinate>);
+            IPolygon<TCoordinate> otherPolygon = other as IPolygon<TCoordinate>;
+            ILineString<TCoordinate> otherShell = otherPolygon.ExteriorRing;
+            return _shell.CompareToSameClass(otherShell);
+        }
+
+        private static IEnumerable<ILinearRing<TCoordinate>> cloneLines(List<ILineString<TCoordinate>> _holes)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void normalize(ILinearRing<TCoordinate> ring, Boolean clockwise)
         {
             if (ring.IsEmpty)
             {
@@ -477,5 +480,31 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         //}
 
         /*END ADDED BY MPAUL42 */
+
+        #region IPolygon Members
+
+        ILineString IPolygon.ExteriorRing
+        {
+            get { return _shell; }
+        }
+
+
+        IList<ILineString> IPolygon.InteriorRings
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        #endregion
+
+        #region ISurface Members
+
+
+        IPoint ISurface.PointOnSurface
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        #endregion
+
     }
 }

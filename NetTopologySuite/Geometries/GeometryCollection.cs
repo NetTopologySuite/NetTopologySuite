@@ -26,6 +26,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         private readonly List<IGeometry<TCoordinate>> _geometries = new List<IGeometry<TCoordinate>>();
 
+        public GeometryCollection() : this(DefaultFactory) { }
+
+        public GeometryCollection(IGeometryFactory<TCoordinate> factory) : base(factory) { }
+
         /// <param name="geometries">
         /// The <see cref="Geometry{TCoordinate}"/>s for this <see cref="GeometryCollection{TCoordinate}" />,
         /// or <see langword="null" /> or an empty array to create the empty
@@ -62,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// is only a temporary container which is not synchronized back.
         /// </summary>
         /// <returns>The collected coordinates.</returns>
-        public override IEnumerable<TCoordinate> Coordinates
+        public override IList<TCoordinate> Coordinates
         {
             get
             {
@@ -134,12 +138,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get { return _geometries.Count; }
         }
-
-        //public override IGeometry<TCoordinate> this[Int32 index]
-        //{
-        //    get { return _geometries[index]; }
-        //    set { throw new NotSupportedException("GeometryCollection is immutable."); }
-        //}
 
         public IList<IGeometry<TCoordinate>> Geometries
         {
@@ -258,23 +256,23 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return true;
         }
 
-        public override void Apply(ICoordinateFilter<TCoordinate> filter)
-        {
-            foreach (IGeometry<TCoordinate> geometry in _geometries)
-            {
-                geometry.Apply(filter);
-            }
-        }
+        //public override void Apply(ICoordinateFilter<TCoordinate> filter)
+        //{
+        //    foreach (IGeometry<TCoordinate> geometry in _geometries)
+        //    {
+        //        geometry.Apply(filter);
+        //    }
+        //}
 
-        public override void Apply(IGeometryFilter<TCoordinate> filter)
-        {
-            filter.Filter(this);
+        //public override void Apply(IGeometryFilter<TCoordinate> filter)
+        //{
+        //    filter.Filter(this);
 
-            foreach (IGeometry<TCoordinate> geometry in _geometries)
-            {
-                geometry.Apply(filter);
-            }
-        }
+        //    foreach (IGeometry<TCoordinate> geometry in _geometries)
+        //    {
+        //        geometry.Apply(filter);
+        //    }
+        //}
 
         public override void Apply(IGeometryComponentFilter<TCoordinate> filter)
         {
@@ -354,18 +352,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns a <c>GeometryCollectionEnumerator</c>:
-        /// this IEnumerator returns the parent geometry as first element.
-        /// In most cases is more useful the code
-        /// <c>geometryCollectionInstance.Geometries.GetEnumerator()</c>: 
-        /// this returns an IEnumerator over geometries composing GeometryCollection.
-        /// </summary>
-        public IEnumerator GetEnumerator()
-        {
-            return new GeometryCollectionEnumerator<TCoordinate>(this);
-        }
-
-        /// <summary>
         /// Returns an element Geometry from a GeometryCollection.
         /// </summary>
         /// <param name="index">The index of the geometry element.</param>
@@ -377,17 +363,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                if (index == 0)
+                if(index < 0 || index > _geometries.Count)
                 {
-                    return this;
+                    throw new ArgumentOutOfRangeException("index", index, 
+                        "Index must be 0 or greater and less than Count.");
                 }
-                else
-                {
-                    throw new ArgumentOutOfRangeException("index", index,
-                        "Index must be 0.");
-                }
+
+                return _geometries[index];
             }
-            set { throw new NotSupportedException("GeometryCollection is immutable."); }
+            set { throw new NotSupportedException(GetType() + " is immutable."); }
         }
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
@@ -401,5 +385,152 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /* END ADDED BY MPAUL42: monoGIS team */
+
+        protected List<IGeometry<TCoordinate>> GeometriesInternal
+        {
+            get { return _geometries; }
+        }
+
+        #region IList<IGeometry> Members
+
+        public Int32 IndexOf(IGeometry item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Insert(Int32 index, IGeometry item)
+        {
+            throw new NotImplementedException();
+        }
+
+        #region ICollection<IGeometry> Members
+
+        public void Add(IGeometry item)
+        {
+            throw new NotImplementedException();
+        }
+
+        #region IEnumerable<IGeometry> Members
+
+        /// <summary>
+        /// Returns a <see cref="GeometryCollectionEnumerator{TCoordinate}"/>:
+        /// this IEnumerator returns the parent geometry as first element.
+        /// </summary>
+        public IEnumerator<IGeometry<TCoordinate>> GetEnumerator()
+        {
+            return new GeometryCollectionEnumerator<TCoordinate>(this);
+        }
+
+        #endregion
+
+        #region IList<IGeometry<TCoordinate>> Members
+
+        public Int32 IndexOf(IGeometry<TCoordinate> item)
+        {
+            return _geometries.IndexOf(item);
+        }
+
+        void IList<IGeometry<TCoordinate>>.Insert(Int32 index, IGeometry<TCoordinate> item)
+        {
+            throw new NotSupportedException("Collection is read only.");
+        }
+
+        void IList<IGeometry<TCoordinate>>.RemoveAt(Int32 index)
+        {
+            throw new NotSupportedException("Collection is read only.");
+        }
+
+        void IList<IGeometry>.RemoveAt(Int32 index)
+        {
+            throw new NotSupportedException("Collection is read only.");
+        }
+
+        #endregion
+
+        #endregion
+
+        #region ICollection<IGeometry<TCoordinate>> Members
+
+        void ICollection<IGeometry<TCoordinate>>.Add(IGeometry<TCoordinate> item)
+        {
+            throw new NotSupportedException("Collection is read only.");
+        }
+
+        void ICollection<IGeometry<TCoordinate>>.Clear()
+        {
+            throw new NotSupportedException("Collection is read only.");
+        }
+
+        void ICollection<IGeometry>.Clear()
+        {
+            throw new NotSupportedException("Collection is read only.");
+        }
+
+        bool ICollection<IGeometry>.Contains(IGeometry item)
+        {
+            return Contains(item as IGeometry<TCoordinate>);
+        }
+
+        void ICollection<IGeometry>.CopyTo(IGeometry[] array, Int32 arrayIndex)
+        {
+            // TODO: implement
+            throw new NotImplementedException();
+        }
+
+        bool ICollection<IGeometry>.Remove(IGeometry item)
+        {
+            throw new NotSupportedException("Collection is read only.");
+        }
+
+        bool ICollection<IGeometry>.IsReadOnly
+        {
+            get { return true; }
+        }
+
+        #endregion
+
+        public void CopyTo(IGeometry<TCoordinate>[] array, Int32 arrayIndex)
+        {
+            _geometries.CopyTo(array, arrayIndex);
+        }
+
+        bool ICollection<IGeometry<TCoordinate>>.Remove(IGeometry<TCoordinate> item)
+        {
+            throw new NotSupportedException("Collection is read only.");
+        }
+
+        public bool IsReadOnly
+        {
+            get { return true; }
+        }
+
+        IGeometry IList<IGeometry>.this[Int32 index]
+        {
+            get { return this[index]; }
+            set { this[index] = value as IGeometry<TCoordinate>; }
+        }
+
+        #endregion
+
+        #region IEnumerable Members
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
+
+        #region IEnumerable<IGeometry> Members
+
+        IEnumerator<IGeometry> IEnumerable<IGeometry>.GetEnumerator()
+        {
+            foreach (IGeometry<TCoordinate> geometry in this)
+            {
+                yield return geometry;
+            }
+        }
+
+        #endregion
     }
 }

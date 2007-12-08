@@ -24,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// seems to offer an improvement in performance over a sweep-line alone.
     /// </para>
     /// </remarks>
-    public class SimpleMCSweepLineIntersector<TCoordinate> : EdgeSetIntersector<TCoordinate>
+    public class SimpleMonotoneChaingSweepLineIntersector<TCoordinate> : EdgeSetIntersector<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<TCoordinate>, IConvertible
     {

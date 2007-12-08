@@ -1,5 +1,7 @@
+using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Precision
 {
@@ -8,7 +10,8 @@ namespace GisSharpBlog.NetTopologySuite.Precision
     /// <see cref="IGeometry{TCoordinate}"/> instances.
     /// </summary>
     public class CommonBitsRemover<TCoordinate>
-        where TCoordinate : ICoordinate
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
         private TCoordinate _commonCoordinate;
         private readonly CommonCoordinateFilter<TCoordinate> _filter = new CommonCoordinateFilter<TCoordinate>();
@@ -50,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             TCoordinate invCoord = new TCoordinate(_commonCoordinate.Negative());
             Translater<TCoordinate> trans = new Translater<TCoordinate>(invCoord);
             geom.Apply(trans);
-            geom.GeometryChanged();
+            //geom.GeometryChanged();
             return geom;
         }
 
@@ -64,29 +67,48 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         {
             Translater<TCoordinate> trans = new Translater<TCoordinate>(_commonCoordinate);
             geom.Apply(trans);
-            geom.GeometryChanged();
+            //geom.GeometryChanged();
         }
 
         public class CommonCoordinateFilter<TCoordinate> : ICoordinateFilter<TCoordinate>
-            where TCoordinate : ICoordinate
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
         {
-            private CommonBits commonBitsX = new CommonBits();
-            private CommonBits commonBitsY = new CommonBits();
+            private readonly CommonBits _commonBitsX = new CommonBits();
+            private readonly CommonBits _commonBitsY = new CommonBits();
+            private readonly CommonBits _commonBitsZ = new CommonBits();
+            private readonly CommonBits _commonBitsM = new CommonBits();
+            private Boolean _hasZ = false;
+            private Boolean _hasM = false;
+
 
             public void Filter(TCoordinate coord)
             {
-                commonBitsX.Add(coord[Ordinates.X]);
-                commonBitsY.Add(coord[Ordinates.Y]);
+                _commonBitsX.Add(coord[Ordinates.X]);
+                _commonBitsY.Add(coord[Ordinates.Y]);
+
+                if (_hasZ || coord.ContainsOrdinate(Ordinates.Z))
+                {
+                    _hasZ = true;
+                    _commonBitsZ.Add(coord[Ordinates.Z]);
+                }
+
+                if (_hasM || coord.ContainsOrdinate(Ordinates.M))
+                {
+                    _hasM = true;
+                    _commonBitsM.Add(coord[Ordinates.M]);
+                }
             }
 
             public TCoordinate CommonCoordinate
             {
-                get { return new TCoordinate(commonBitsX.Common, commonBitsY.Common); }
+                get { return new TCoordinate(_commonBitsX.Common, _commonBitsY.Common); }
             }
         }
 
         private class Translater<TCoordinate> : ICoordinateFilter<TCoordinate>
-            where TCoordinate : ICoordinate
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
         {
             private readonly TCoordinate _trans;
 

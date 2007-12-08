@@ -227,7 +227,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// as a valid point, when it has been detected that the ring is topologically
         /// invalid.
         /// </summary>        
-        public ILineString LineString
+        public ILineString<TCoordinate> LineString
         {
             get { return _factory.CreateLineString(_ringPoints); }
         }

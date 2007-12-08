@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
@@ -64,19 +65,22 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// </summary>
         public void ComputeIntersectionNodes(GeometryGraph<TCoordinate> geomGraph, Int32 argIndex)
         {
-            for (IEnumerator edgeIt = geomGraph.GetEdgeEnumerator(); edgeIt.MoveNext();)
+            foreach (Edge<TCoordinate> e in geomGraph.Edges)
             {
-                Edge<TCoordinate> e = (Edge)edgeIt.Current;
-                Locations eLoc = e.Label.GetLocation(argIndex);
-                for (IEnumerator eiIt = e.EdgeIntersectionList.GetEnumerator(); eiIt.MoveNext();)
+                Debug.Assert(e.Label.HasValue);
+                Locations eLoc = e.Label.Value[argIndex];
+
+                foreach (EdgeIntersection<TCoordinate> ei in e.EdgeIntersectionList)
                 {
-                    EdgeIntersection ei = (EdgeIntersection) eiIt.Current;
-                    RelateNode n = (RelateNode) _nodes.AddNode(ei.Coordinate);
+                    RelateNode<TCoordinate> n = _nodes.AddNode(ei.Coordinate) as RelateNode<TCoordinate>;
+
+                    Debug.Assert(n != null);
+
                     if (eLoc == Locations.Boundary)
                     {
                         n.SetLabelBoundary(argIndex);
                     }
-                    else if (n.Label.IsNull(argIndex))
+                    else if (n.Label.Value.IsNull(argIndex))
                     {
                         n.SetLabel(argIndex, Locations.Interior);
                     }
@@ -102,12 +106,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             }
         }
 
-        public void InsertEdgeEnds(IList ee)
+        public void InsertEdgeEnds(IEnumerable<EdgeEnd<TCoordinate>> ee)
         {
-            for (IEnumerator i = ee.GetEnumerator(); i.MoveNext();)
+            foreach (EdgeEnd<TCoordinate> end in ee)
             {
-                EdgeEnd e = (EdgeEnd) i.Current;
-                _nodes.Add(e);
+                _nodes.Add(end);   
             }
         }
     }

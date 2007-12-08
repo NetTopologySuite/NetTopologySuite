@@ -1,101 +1,132 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using GeoAPI.Coordinates;
+using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
+using NPack;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
     /// <summary>
-    /// Wraps a <see cref="INoder" /> and transforms its input into the integer domain.
+    /// Wraps a <see cref="INoder{TCoordinate}" /> and transforms its input into the integer domain.
     /// This is intended for use with Snap-Rounding noders,
     /// which typically are only intended to work in the integer domain.
     /// Offsets can be provided to increase the number of digits of available precision.
     /// </summary>
-    public class ScaledNoder : INoder
+    public class ScaledNoder<TCoordinate> : INoder<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        private INoder noder = null;
-        private Double scaleFactor = 0;
-        private Double offsetX = 0;
-        private Double offsetY = 0;
-        private Boolean isScaled = false;
+        private readonly INoder<TCoordinate> _noder = null;
+        private readonly Double _scaleFactor = 0;
+        private readonly Double _offsetX = 0;
+        private readonly Double _offsetY = 0;
+        private readonly IAffineTransformMatrix<DoubleComponent> _transform;
+        private readonly IAffineTransformMatrix<DoubleComponent> _inverse;
+        private readonly Boolean _isScaled = false;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScaledNoder"/> class.
+        /// Initializes a new instance of the <see cref="ScaledNoder{TCoordinate}"/> class.
         /// </summary>
-        public ScaledNoder(INoder noder, Double scaleFactor)
+        public ScaledNoder(INoder<TCoordinate> noder, Double scaleFactor)
             : this(noder, scaleFactor, 0, 0) {}
 
-        public ScaledNoder(INoder noder, Double scaleFactor, Double offsetX, Double offsetY)
+        public ScaledNoder(INoder<TCoordinate> noder, Double scaleFactor, Double offsetX, Double offsetY)
         {
-            this.noder = noder;
-            this.scaleFactor = scaleFactor;
+            _noder = noder;
+            ICoordinateFactory<TCoordinate> coordinateFactory = null;
+            Debug.Assert(coordinateFactory != null);
+            TCoordinate scaleVector = coordinateFactory.Create(scaleFactor, scaleFactor);
+            TCoordinate offsetVector = coordinateFactory.Create(offsetX, offsetY);
+
+            _transform = coordinateFactory.CreateTransform(scaleVector, 0, offsetVector);
+            _inverse = _transform.Inverse;
+
             // no need to scale if input precision is already integral
-            isScaled = ! isIntegerPrecision;
+            _isScaled = ! IsIntegerPrecision;
         }
 
-        public Boolean isIntegerPrecision
+        public Boolean IsIntegerPrecision
         {
-            get { return scaleFactor == 1.0; }
+            get { return _scaleFactor == 1.0; }
         }
 
-        public IList GetNodedSubstrings()
+        public IEnumerable<SegmentString<TCoordinate>> GetNodedSubstrings()
         {
-            IList splitSS = noder.GetNodedSubstrings();
-            if (isScaled)
+            IEnumerable<SegmentString<TCoordinate>> splitSS = _noder.GetNodedSubstrings();
+
+            if (_isScaled)
             {
-                Rescale(splitSS);
+                rescale(splitSS);
             }
+
             return splitSS;
         }
 
-        public void ComputeNodes(IList inputSegStrings)
+        public void ComputeNodes(IEnumerable<SegmentString<TCoordinate>> inputSegStrings)
         {
-            IList intSegStrings = inputSegStrings;
-            if (isScaled)
+            IEnumerable<SegmentString<TCoordinate>> intSegStrings = inputSegStrings;
+
+            if (_isScaled)
             {
                 intSegStrings = Scale(inputSegStrings);
             }
-            noder.ComputeNodes(intSegStrings);
+
+            _noder.ComputeNodes(intSegStrings);
         }
 
-        private IList Scale(IList segStrings)
+        private IEnumerable<SegmentString<TCoordinate>> Scale(IEnumerable<SegmentString<TCoordinate>> segStrings)
         {
-            return CollectionUtil.Transform(segStrings, delegate(object obj)
+            return CollectionUtil.Transform(segStrings, delegate(SegmentString<TCoordinate> segmentString)
                                                         {
-                                                            SegmentString ss = (SegmentString) obj;
-                                                            return new SegmentString(Scale(ss.Coordinates), ss.Data);
+                                                            return new SegmentString<TCoordinate>(
+                                                                scale(segmentString.Coordinates), segmentString.Data);
                                                         });
         }
 
-        private ICoordinate[] Scale(ICoordinate[] pts)
+        private IEnumerable<TCoordinate> scale(IEnumerable<TCoordinate> pts)
         {
-            ICoordinate[] roundPts = new ICoordinate[pts.Length];
-            for (Int32 i = 0; i < pts.Length; i++)
+            // TODO: figure out how to get rid of boxing...
+            IEnumerable<IVector<DoubleComponent>> vectors =
+                EnumerableConverter.Upcast<IVector<DoubleComponent>, TCoordinate>(pts);
+
+            IEnumerable<IVector<DoubleComponent>> transformed = _transform.TransformVectors(vectors);
+
+            foreach (IVector<DoubleComponent> vector in transformed)
             {
-                roundPts[i] = new Coordinate(Math.Round((pts[i].X - offsetX)*scaleFactor),
-                                             Math.Round((pts[i].Y - offsetY)*scaleFactor));
+                yield return Math.Round(new TCoordinate(vector));
             }
-            ICoordinate[] roundPtsNoDup = CoordinateArrays.RemoveRepeatedPoints(roundPts);
-            return roundPtsNoDup;
         }
 
-        private void Rescale(IList segStrings)
+        private static IEnumerable<SegmentString<TCoordinate>> rescale(IEnumerable<SegmentString<TCoordinate>> segStrings)
         {
-            CollectionUtil.Apply(segStrings, delegate(object obj)
-                                             {
-                                                 SegmentString ss = (SegmentString) obj;
-                                                 Rescale(ss.Coordinates);
-                                                 return null;
-                                             });
+            yield break;
+
+            // TODO rescale the cooridnates...
+
+            //CollectionUtil.Apply(segStrings, delegate(object obj)
+            //                                 {
+            //                                     SegmentString ss = (SegmentString) obj;
+            //                                     rescale(ss.Coordinates);
+            //                                     return null;
+            //                                 });
         }
 
-        private void Rescale(ICoordinate[] pts)
+        private IEnumerable<TCoordinate> rescale(IEnumerable<TCoordinate> pts)
         {
-            for (Int32 i = 0; i < pts.Length; i++)
-            {
-                pts[i].X = pts[i].X/scaleFactor + offsetX;
-                pts[i].Y = pts[i].Y/scaleFactor + offsetY;
-            }
+            yield break;
+
+            // TODO compute inverse of cooridnates
+            // _inverse.Transform(pts)...
+            //
+            //for (Int32 i = 0; i < pts.Length; i++)
+            //{
+            //    pts[i].X = pts[i].X/_scaleFactor + _offsetX;
+            //    pts[i].Y = pts[i].Y/_scaleFactor + _offsetY;
+            //}
         }
     }
 }

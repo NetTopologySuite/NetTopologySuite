@@ -79,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 IsProper = false;
             }
 
-            IntersectionType = LineIntersectionType.DoesIntersect;
+            IntersectionType = LineIntersectionType.Intersects;
         }
 
         public override LineIntersectionType ComputeIntersect(TCoordinate p1, TCoordinate p2, TCoordinate p3, TCoordinate p4)
@@ -180,7 +180,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 PrecisionModel.MakePrecise(PointA);
             }
 
-            return LineIntersectionType.DoesIntersect;
+            return LineIntersectionType.Intersects;
         }
 
         private LineIntersectionType ComputeCollinearIntersection(TCoordinate p1, TCoordinate p2, TCoordinate p3, TCoordinate p4)
@@ -227,13 +227,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             if (q4.Equals(p1))
             {
                 PointA = p1;
-                return LineIntersectionType.DoesIntersect;
+                return LineIntersectionType.Intersects;
             }
 
             if (q3.Equals(p2))
             {
                 PointA = p2;
-                return LineIntersectionType.DoesIntersect;
+                return LineIntersectionType.Intersects;
             }
 
             // intersection MUST be a segment - compute endpoints

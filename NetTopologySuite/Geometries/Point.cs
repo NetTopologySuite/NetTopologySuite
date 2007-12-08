@@ -49,18 +49,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             _coordinate = coordinate;
         }
 
-        public override IEnumerable<TCoordinate> Coordinates
+        public override IList<TCoordinate> Coordinates
         {
             get
             {
-                if (IsEmpty)
-                {
-                    yield break;
-                }
-                else
-                {
-                    yield return Coordinate;
-                }
+                return new TCoordinate[] { Coordinate };
             }
         }
 
@@ -71,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public override Boolean IsEmpty
         {
-            get { return Coordinate == null; }
+            get { return CoordinateHelper.IsEmpty(Coordinate); }
         }
 
         public override Boolean IsSimple
@@ -167,20 +160,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Equal(otherPoint.Coordinate, Coordinate, tolerance);
         }
 
-        public override void Apply(ICoordinateFilter<TCoordinate> filter)
-        {
-            if (IsEmpty)
-            {
-                return;
-            }
+        //public override void Apply(ICoordinateFilter<TCoordinate> filter)
+        //{
+        //    if (IsEmpty)
+        //    {
+        //        return;
+        //    }
 
-            filter.Filter(Coordinate);
-        }
+        //    filter.Filter(Coordinate);
+        //}
 
-        public override void Apply(IGeometryFilter<TCoordinate> filter)
-        {
-            filter.Filter(this);
-        }
+        //public override void Apply(IGeometryFilter<TCoordinate> filter)
+        //{
+        //    filter.Filter(this);
+        //}
 
         public override void Apply(IGeometryComponentFilter<TCoordinate> filter)
         {
@@ -261,12 +254,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                if(CoordinateHelper.IsEmpty(Coordinate))
+                if (CoordinateHelper.IsEmpty(Coordinate))
                 {
                     throw new InvalidOperationException("Point is empty.");
                 }
 
-                if(Coordinate.ContainsOrdinate(ordinate))
+                if (Coordinate.ContainsOrdinate(ordinate))
                 {
                     return Coordinate[ordinate];
                 }

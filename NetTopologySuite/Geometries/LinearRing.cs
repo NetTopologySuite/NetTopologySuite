@@ -48,20 +48,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public override Boolean IsSimple
         {
             get { return true; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public override string GeometryType
+        public override OgcGeometryType GeometryType
         {
-            get { return "LinearRing"; }
+            // NOTE: this was "LinearRing", but this value should suffice
+            get { return OgcGeometryType.LineString; }
         }
 
         /// <summary>
@@ -75,7 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LinearRing"/> class.
+        /// Initializes a new instance of the <see cref="LinearRing{TCoordinate}"/> class.
         /// </summary>
         /// <param name="points">The points used for create this instance.</param>
         /// <remarks>

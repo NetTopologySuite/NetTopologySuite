@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
     /// following the usage of Samet and others.
     /// </para>
     /// </remarks>
-    public class Quadtree<TCoordinate, TItem> : ISpatialIndex<TCoordinate, TItem>, IEnumerable<TItem>
+    public class Quadtree<TCoordinate, TItem> : ISpatialIndex<IExtents<TCoordinate>, TItem>, IEnumerable<TItem>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, IComputable<TCoordinate>,
             IConvertible
     {

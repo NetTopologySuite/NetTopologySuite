@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Operation;
 using NPack.Interfaces;
@@ -14,30 +17,25 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     public class LineString<TCoordinate> : Geometry<TCoordinate>, ILineString<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
-
     {
         /// <summary>
         /// Represents an empty <c>LineString</c>.
         /// </summary>
-        public static readonly ILineString Empty = new GeometryFactory().CreateLineString(new ICoordinate[] {});
+        public static readonly ILineString Empty = new GeometryFactory<TCoordinate>().CreateLineString();
 
         // The points of this LineString.
-        private ICoordinateSequence<TCoordinate> _points;
-
-        public ICoordinateSequence CoordinateSequence
-        {
-            get { return points; }
-        }
+        private readonly ICoordinateSequence<TCoordinate> _points;
 
         /// <param name="points">
         /// The points of the linestring, or <see langword="null" />
         /// to create the empty point. Consecutive points may not be equal.
         /// </param>
-        public LineString(ICoordinateSequence points, IGeometryFactory factory) : base(factory)
+        public LineString(ICoordinateSequence<TCoordinate> points, IGeometryFactory<TCoordinate> factory)
+            : base(factory)
         {
             if (points == null)
             {
-                points = factory.CoordinateSequenceFactory.Create(new ICoordinate[] {});
+                points = factory.CoordinateSequenceFactory.Create(4, 2);
             }
 
             if (points.Count == 1)
@@ -45,24 +43,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 throw new ArgumentException("point array must contain 0 or >1 elements", "points");
             }
 
-            this.points = points;
+            _points = points;
         }
 
-        public ICoordinate GetCoordinateN(Int32 n)
-        {
-            return points.GetCoordinate(n);
-        }
-
-        public override ICoordinate Coordinate
+        public override IList<TCoordinate> Coordinates
         {
             get
             {
-                if (IsEmpty)
-                {
-                    return null;
-                }
-
-                return points.GetCoordinate(0);
+                throw new NotImplementedException();
             }
         }
 
@@ -86,20 +74,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public override Boolean IsEmpty
         {
-            get { return points.Count == 0; }
+            get { return _points.Count == 0; }
         }
 
-        public override Int32 NumPoints
+        public override Int32 PointCount
         {
-            get { return points.Count; }
+            get { return _points.Count; }
         }
 
-        public IPoint GetPointN(Int32 n)
+        public IPoint<TCoordinate> GetPoint(Int32 index)
         {
-            return Factory.CreatePoint(points.GetCoordinate(n));
+            return Factory.CreatePoint(_points[index]);
         }
 
-        public IPoint StartPoint
+        public IPoint<TCoordinate> StartPoint
         {
             get
             {
@@ -108,11 +96,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     return null;
                 }
 
-                return GetPointN(0);
+                return GetPoint(0);
             }
         }
 
-        public IPoint EndPoint
+        public IPoint<TCoordinate> EndPoint
         {
             get
             {
@@ -121,7 +109,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     return null;
                 }
 
-                return GetPointN(NumPoints - 1);
+                return GetPoint(PointCount - 1);
             }
         }
 
@@ -134,7 +122,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     return false;
                 }
 
-                return GetCoordinateN(0).Equals2D(GetCoordinateN(NumPoints - 1));
+                TCoordinate first = Slice.GetFirst(Coordinates);
+                TCoordinate last = Slice.GetLast(Coordinates);
+
+                return first.Equals(last);
             }
         }
 
@@ -143,9 +134,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return IsClosed && IsSimple; }
         }
 
-        public override string GeometryType
+        public override OgcGeometryType GeometryType
         {
-            get { return "LineString"; }
+            get { return OgcGeometryType.LineString; }
         }
 
         /// <summary>  
@@ -154,56 +145,57 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The length of the polygon.</returns>
         public override Double Length
         {
-            get { return CGAlgorithms.Length(points); }
+            get { return CGAlgorithms<TCoordinate>.Length(_points); }
         }
 
         public override Boolean IsSimple
         {
-            get { return (new IsSimpleOp()).IsSimple(this); }
+            get { return (new IsSimpleOp<TCoordinate>()).IsSimple(this); }
         }
 
-        public override IGeometry Boundary
+        public override IGeometry<TCoordinate> Boundary
         {
             get
             {
                 if (IsEmpty)
                 {
-                    return Factory.CreateGeometryCollection(null);
+                    return Factory.CreateGeometryCollection();
                 }
 
                 if (IsClosed)
                 {
-                    return Factory.CreateMultiPoint((ICoordinate[]) null);
+                    return Factory.CreateMultiPoint();
                 }
 
-                return Factory.CreateMultiPoint(new IPoint[] {StartPoint, EndPoint});
+                return Factory.CreateMultiPoint(StartPoint, EndPoint);
             }
         }
 
         /// <summary>
-        /// Creates a <see cref="LineString" /> whose coordinates are in the reverse order of this objects.
+        /// Creates an <see cref="ILineString{TCoordinate}" /> whose coordinates 
+        /// are in the reverse order of this objects.
         /// </summary>
-        /// <returns>A <see cref="LineString" /> with coordinates in the reverse order.</returns>
-        public ILineString Reverse()
+        /// <returns>
+        /// An <see cref="ILineString{TCoordinate}" /> with coordinates 
+        /// in the reverse order.
+        /// </returns>
+        public ILineString<TCoordinate> Reverse()
         {
-            ICoordinateSequence seq = (ICoordinateSequence) points.Clone();
-
-            // Personalized implementation using Array.Reverse: maybe it's faster?
-            ICoordinate[] array = seq.ToCoordinateArray();
-            Array.Reverse(array);
-            return Factory.CreateLineString(array);
+            ICoordinateSequence<TCoordinate> seq = _points.Clone() as ICoordinateSequence<TCoordinate>;
+            seq.Reverse();
+            return Factory.CreateLineString(seq);
         }
 
         /// <summary>
-        /// Returns true if the given point is a vertex of this <c>LineString</c>.
+        /// Returns true if the given point is a vertex of this <see cref="LineString{TCoordinate}"/>.
         /// </summary>
         /// <param name="pt">The <c>Coordinate</c> to check.</param>
         /// <returns><see langword="true"/> if <c>pt</c> is one of this <c>LineString</c>'s vertices.</returns>
-        public Boolean IsCoordinate(ICoordinate pt)
+        public Boolean IsCoordinate(TCoordinate pt)
         {
-            for (Int32 i = 0; i < points.Count; i++)
+            foreach (TCoordinate coordinate in _points)
             {
-                if (points.GetCoordinate(i).Equals(pt))
+                if(coordinate.Equals(pt))
                 {
                     return true;
                 }
@@ -212,22 +204,23 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return false;
         }
 
-        protected override IExtents ComputeExtentsInternal()
+        protected override Extents<TCoordinate> ComputeExtentsInternal()
         {
             if (IsEmpty)
             {
-                return new Extents();
+                return new Extents<TCoordinate>();
             }
 
-            //Convert to array, then access array directly, to avoid the function-call overhead
-            //of calling Getter millions of times. ToArray may be inefficient for
-            //non-BasicCoordinateSequence CoordinateSequences. [Jon Aquino]
-            ICoordinate[] coordinates = points.ToCoordinateArray();
+            // Convert to array, then access array directly, to avoid the function-call overhead
+            // of calling Getter millions of times. ToArray may be inefficient for
+            // non-BasicCoordinateSequence CoordinateSequences. [Jon Aquino]
+            TCoordinate[] coordinates = points.ToCoordinateArray();
+
             Double minx = coordinates[0].X;
             Double miny = coordinates[0].Y;
             Double maxx = coordinates[0].X;
             Double maxy = coordinates[0].Y;
-            
+
             for (Int32 i = 1; i < coordinates.Length; i++)
             {
                 minx = minx < coordinates[i].X ? minx : coordinates[i].X;
@@ -236,26 +229,31 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 maxy = maxy > coordinates[i].Y ? maxy : coordinates[i].Y;
             }
 
-            return new Extents(minx, maxx, miny, maxy);
+            return new Extents<TCoordinate>(minx, maxx, miny, maxy);
         }
 
-        public override Boolean EqualsExact(IGeometry other, Double tolerance)
+        public override Boolean Equals(IGeometry<TCoordinate> other, Tolerance tolerance)
         {
             if (!IsEquivalentClass(other))
             {
                 return false;
             }
 
-            ILineString otherLineString = (ILineString) other;
-          
-            if (points.Count != otherLineString.NumPoints)
+            ILineString<TCoordinate> otherLineString = other as ILineString<TCoordinate>;
+
+            if (ReferenceEquals(otherLineString, null))
             {
                 return false;
             }
 
-            for (Int32 i = 0; i < points.Count; i++)
+            if (PointCount != otherLineString.PointCount)
             {
-                if (!Equal(points.GetCoordinate(i), otherLineString.GetCoordinateN(i), tolerance))
+                return false;
+            }
+
+            for (Int32 i = 0; i < _points.Count; i++)
+            {
+                if (!Equal(Coordinates[i], otherLineString.Coordinates[i], tolerance))
                 {
                     return false;
                 }
@@ -264,29 +262,27 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return true;
         }
 
-        public override void Apply(ICoordinateFilter filter)
-        {
-            for (Int32 i = 0; i < points.Count; i++)
-            {
-                filter.Filter(points.GetCoordinate(i));
-            }
-        }
+        //public override void Apply(ICoordinateFilter filter)
+        //{
+        //    for (Int32 i = 0; i < points.Count; i++)
+        //    {
+        //        filter.Filter(points.GetCoordinate(i));
+        //    }
+        //}
 
-        public override void Apply(IGeometryFilter filter)
+        //public override void Apply(IGeometryFilter filter)
+        //{
+        //    filter.Filter(this);
+        //}
+
+        public override void Apply(IGeometryComponentFilter<TCoordinate> filter)
         {
             filter.Filter(this);
         }
 
-        public override void Apply(IGeometryComponentFilter filter)
+        public override IGeometry<TCoordinate> Clone()
         {
-            filter.Filter(this);
-        }
-
-        public override object Clone()
-        {
-            LineString ls = (LineString) base.Clone();
-            ls.points = (ICoordinateSequence) points.Clone();
-            return ls;
+            return Factory.CreateLineString(Coordinates);
         }
 
         /// <summary> 
@@ -296,14 +292,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public override void Normalize()
         {
-            for (Int32 i = 0; i < points.Count/2; i++)
+            for (Int32 i = 0; i < _points.Count / 2; i++)
             {
-                Int32 j = points.Count - 1 - i;
+                Int32 j = _points.Count - 1 - i;
 
                 // skip equal points on both ends
-                if (!points.GetCoordinate(i).Equals(points.GetCoordinate(j)))
+                if (!_points[i].Equals(_points[j]))
                 {
-                    if (points.GetCoordinate(i).CompareTo(points.GetCoordinate(j)) > 0)
+                    if (_points[i].CompareTo(_points[j]) > 0)
                     {
                         CoordinateArrays.Reverse(Coordinates);
                     }
@@ -313,17 +309,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        protected internal override Int32 CompareToSameClass(object o)
+        protected internal override Int32 CompareToSameClass(IGeometry<TCoordinate> other)
         {
-            LineString line = (LineString) o;
+            LineString<TCoordinate> line = other as LineString<TCoordinate>;
+
+            Debug.Assert(line != null);
+
             // MD - optimized implementation
             Int32 i = 0;
             Int32 j = 0;
 
-            while (i < points.Count && j < line.points.Count)
+            while (i < _points.Count && j < line._points.Count)
             {
-                Int32 comparison = points.GetCoordinate(i).CompareTo(line.points.GetCoordinate(j));
-                
+                Int32 comparison = _points[i].CompareTo(line._points[j]);
+
                 if (comparison != 0)
                 {
                     return comparison;
@@ -333,12 +332,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 j++;
             }
 
-            if (i < points.Count)
+            if (i < _points.Count)
             {
                 return 1;
             }
 
-            if (j < line.points.Count)
+            if (j < line._points.Count)
             {
                 return -1;
             }
@@ -349,30 +348,30 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:LineString"/> class.
+        /// Initializes a new instance of the <see cref="LineString{TCoordinate}"/> class.
         /// </summary>        
         /// <remarks>
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
+        /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        /// <param name="points">The coordinates used for create this <see cref="LineString" />.</param>
-        public LineString(ICoordinate[] points) :
-            this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) {}
+        /// <param name="points">The coordinates used for create this <see cref="LineString{TCoordinate}" />.</param>
+        public LineString(IEnumerable<TCoordinate> points) :
+            this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
 
-        public ICoordinate this[Int32 n]
+        public TCoordinate this[Int32 index]
         {
-            get { return points.GetCoordinate(n); }
+            get { return _points[index]; }
             set
             {
-                points.SetOrdinate(n, Ordinates.X, value.X);
-                points.SetOrdinate(n, Ordinates.Y, value.Y);
-                points.SetOrdinate(n, Ordinates.Z, value.Z);
+                _points.SetOrdinate(index, Ordinates.X, value.X);
+                _points.SetOrdinate(index, Ordinates.Y, value.Y);
+                _points.SetOrdinate(index, Ordinates.Z, value.Z);
             }
         }
 
         public Int32 Count
         {
-            get { return points.Count; }
+            get { return _points.Count; }
         }
 
         /// <summary>
@@ -383,14 +382,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                Double deltaX = EndPoint.X - StartPoint.X;
-                Double deltaY = EndPoint.Y - StartPoint.Y;
-                Double length = Math.Sqrt(deltaX*deltaX + deltaY*deltaY);
-                Double angleRAD = Math.Asin(Math.Abs(EndPoint.Y - StartPoint.Y)/length);
-                Double angle = (angleRAD*180)/Math.PI;
+                TCoordinate startPoint = Slice.GetFirst(_points);
+                TCoordinate endPoint = Slice.GetLast(_points);
 
-                if (((StartPoint.X < EndPoint.X) && (StartPoint.Y > EndPoint.Y)) ||
-                    ((StartPoint.X > EndPoint.X) && (StartPoint.Y < EndPoint.Y)))
+                Double startX = startPoint[Ordinates.X], startY = startPoint[Ordinates.Y];
+                Double endX = endPoint[Ordinates.X], endY = endPoint[Ordinates.Y];
+
+                Double deltaX = endPoint[Ordinates.X] - startPoint[Ordinates.X];
+                Double deltaY = endPoint[Ordinates.Y] - startPoint[Ordinates.Y];
+                Double length = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
+                Double angleRadians = Math.Asin(Math.Abs(endY - startY) / length);
+                Double angle = (angleRadians * 180) / Math.PI;
+
+                if (((startX < endX) && (startY > endY)) ||
+                    ((startX > endX) && (startY < endY)))
                 {
                     angle = 360 - angle;
                 }
@@ -400,5 +405,33 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /* END ADDED BY MPAUL42: monoGIS team */
+
+        #region ILineString Members
+
+        IPoint ILineString.GetPoint(Int32 index)
+        {
+            return GetPoint(index);
+        }
+
+        ILineString ILineString.Reverse()
+        {
+            return Reverse();
+        }
+
+        #endregion
+
+        #region ICurve Members
+
+        IPoint ICurve.StartPoint
+        {
+            get { return StartPoint; }
+        }
+
+        IPoint ICurve.EndPoint
+        {
+            get { return EndPoint; }
+        }
+
+        #endregion
     }
 }

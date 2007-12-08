@@ -3,7 +3,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
     /// <summary>
     /// A spatial object in an AbstractStrTree.
     /// </summary>
-    public interface IBoundable
+    public interface IBoundable<TBounds>
     {
         /// <summary> 
         /// Returns a representation of space that encloses this Boundable, preferably
@@ -15,6 +15,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// An Envelope (for STRtrees), an Interval (for SIRtrees), or other object
         /// (for other subclasses of AbstractStrTree).
         /// </returns>
-        object Bounds { get; }
+        TBounds Bounds { get; }
     }
 }

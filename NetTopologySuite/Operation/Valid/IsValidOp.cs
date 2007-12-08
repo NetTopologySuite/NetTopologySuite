@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
@@ -157,27 +159,27 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             }
             else if (g is IMultiPoint<TCoordinate>)
             {
-                checkValid((IMultiPoint) g);
+                checkValid(g as IMultiPoint<TCoordinate>);
             }
-            //else if (g is ILinearRing<TCoordinate>) // LineString also handles LinearRings
-            //{
-            //    CheckValid((ILinearRing) g);
-            //}
+            else if (g is ILinearRing<TCoordinate>) // LineString also handles LinearRings
+            {
+                checkValid(g as ILinearRing<TCoordinate>);
+            }
             else if (g is ILineString<TCoordinate>)
             {
-                checkValid((ILineString) g);
+                checkValid(g as ILineString<TCoordinate>);
             }
             else if (g is IPolygon<TCoordinate>)
             {
-                CheckValid((IPolygon) g);
+                checkValid(g as IPolygon<TCoordinate>);
             }
             else if (g is IMultiPolygon<TCoordinate>)
             {
-                CheckValid((IMultiPolygon) g);
+                checkValid(g as IMultiPolygon<TCoordinate>);
             }
             else if (g is IGeometryCollection<TCoordinate>)
             {
-                CheckValid((IGeometryCollection) g);
+                checkValid(g as IGeometryCollection<TCoordinate>);
             }
             else
             {
@@ -301,14 +303,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                 return;
             }
 
-            CheckHolesNotNested(g, graph);
+            checkHolesNotNested(g, graph);
 
             if (_validErr != null)
             {
                 return;
             }
 
-            CheckConnectedInteriors(graph);
+            checkConnectedInteriors(graph);
         }
 
         private void checkValid(IMultiPolygon<TCoordinate> g)
@@ -367,7 +369,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
             foreach (IPolygon<TCoordinate> p in g)
             {
-                CheckHolesNotNested(p, graph);
+                checkHolesNotNested(p, graph);
 
                 if (_validErr != null)
                 {
@@ -375,14 +377,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                 }
             }
 
-            CheckShellsNotNested(g, graph);
+            checkShellsNotNested(g, graph);
             
             if (_validErr != null)
             {
                 return;
             }
             
-            CheckConnectedInteriors(graph);
+            checkConnectedInteriors(graph);
         }
 
         private void checkValid(IGeometryCollection<TCoordinate> gc)
@@ -471,7 +473,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
         private void checkConsistentArea(GeometryGraph<TCoordinate> graph)
         {
-            ConsistentAreaTester cat = new ConsistentAreaTester(graph);
+            ConsistentAreaTester<TCoordinate> cat = new ConsistentAreaTester<TCoordinate>(graph);
             Boolean isValidArea = cat.IsNodeConsistentArea;
 
             if (!isValidArea)
@@ -512,10 +514,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// </summary>
         private void checkNoSelfIntersectingRing(EdgeIntersectionList<TCoordinate> eiList)
         {
-            ISet nodeSet = new ListSet();
+            ISet<TCoordinate> nodeSet = new ListSet<TCoordinate>();
             Boolean isFirst = true;
 
-            foreach (EdgeIntersection ei in eiList)
+            foreach (EdgeIntersection<TCoordinate> ei in eiList)
             {
                 if (isFirst)
                 {
@@ -586,14 +588,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// They are not identical
         /// (checked by <c>checkRelateConsistency</c>).
         /// </summary>
-        private void CheckHolesNotNested(IPolygon p, GeometryGraph graph)
+        private void checkHolesNotNested(IPolygon<TCoordinate> p, GeometryGraph<TCoordinate> graph)
         {
-            QuadtreeNestedRingTester nestedTester = new QuadtreeNestedRingTester(graph);
-            foreach (ILinearRing innerHole in p.Holes)
+            QuadtreeNestedRingTester<TCoordinate> nestedTester = new QuadtreeNestedRingTester<TCoordinate>(graph);
+
+            foreach (ILinearRing<TCoordinate> innerHole in p.Holes)
             {
                 nestedTester.Add(innerHole);
             }
+
             Boolean isNonNested = nestedTester.IsNonNested();
+
             if (!isNonNested)
             {
                 _validErr = new TopologyValidationError(TopologyValidationErrors.NestedHoles,
@@ -610,20 +615,21 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// This routine relies on the fact that while polygon shells may touch at one or
         /// more vertices, they cannot touch at ALL vertices.
         /// </summary>
-        private void CheckShellsNotNested(IMultiPolygon mp, GeometryGraph graph)
+        private void checkShellsNotNested(IMultiPolygon<TCoordinate> mp, GeometryGraph<TCoordinate> graph)
         {
-            for (Int32 i = 0; i < mp.NumGeometries; i++)
+            foreach (IPolygon<TCoordinate> p in mp)
             {
-                IPolygon p = (IPolygon) mp.GetGeometryN(i);
-                ILinearRing shell = p.Shell;
-                for (Int32 j = 0; j < mp.NumGeometries; j++)
+                ILinearRing<TCoordinate> shell = p.Shell;
+
+                foreach (IPolygon<TCoordinate> p2 in mp)
                 {
-                    if (i == j)
+                    if (ReferenceEquals(p, p2))
                     {
                         continue;
                     }
-                    IPolygon p2 = (IPolygon) mp.GetGeometryN(j);
-                    CheckShellNotNested(shell, p2, graph);
+
+                    checkShellNotNested(shell, p2, graph);
+                    
                     if (_validErr != null)
                     {
                         return;
@@ -640,25 +646,31 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// E.g. they cannot partially overlap (this has been previously checked by
         /// <c>CheckRelateConsistency</c>).
         /// </summary>
-        private void CheckShellNotNested(ILinearRing shell, IPolygon p, GeometryGraph graph)
+        private void checkShellNotNested(ILinearRing<TCoordinate> shell, IPolygon<TCoordinate> p, GeometryGraph<TCoordinate> graph)
         {
-            ICoordinate[] shellPts = shell.Coordinates;
+            IEnumerable<TCoordinate> shellPts = shell.Coordinates;
+
             // test if shell is inside polygon shell
-            ILinearRing polyShell = p.Shell;
-            ICoordinate[] polyPts = polyShell.Coordinates;
-            ICoordinate shellPt = FindPointNotNode(shellPts, polyShell, graph);
+            ILinearRing<TCoordinate> polyShell = p.Shell;
+            IEnumerable<TCoordinate> polyPts = polyShell.Coordinates;
+            
+            TCoordinate shellPt = FindPointNotNode(shellPts, polyShell, graph);
+
             // if no point could be found, we can assume that the shell is outside the polygon
-            if (shellPt == null)
+            if (CoordinateHelper.IsEmpty(shellPt))
             {
                 return;
             }
-            Boolean insidePolyShell = CGAlgorithms.IsPointInRing(shellPt, polyPts);
+            
+            Boolean insidePolyShell = CGAlgorithms<TCoordinate>.IsPointInRing(shellPt, polyPts);
+            
             if (!insidePolyShell)
             {
                 return;
             }
+            
             // if no holes, this is an error!
-            if (p.NumInteriorRings <= 0)
+            if (p.InteriorRingsCount <= 0)
             {
                 _validErr = new TopologyValidationError(TopologyValidationErrors.NestedShells, shellPt);
                 return;
@@ -670,16 +682,19 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
              * returns a null coordinate.
              * Otherwise, the shell is not properly contained in a hole, which is an error.
              */
-            ICoordinate badNestedPt = null;
-            for (Int32 i = 0; i < p.NumInteriorRings; i++)
+            TCoordinate badNestedPt = default(TCoordinate);
+
+            for (Int32 i = 0; i < p.InteriorRingsCount; i++)
             {
-                ILinearRing hole = p.Holes[i];
-                badNestedPt = CheckShellInsideHole(shell, hole, graph);
-                if (badNestedPt == null)
+                ILinearRing<TCoordinate> hole = p.Holes[i];
+                badNestedPt = checkShellInsideHole(shell, hole, graph);
+
+                if (CoordinateHelper.IsEmpty(badNestedPt))
                 {
                     return;
                 }
             }
+
             _validErr = new TopologyValidationError(TopologyValidationErrors.NestedShells, badNestedPt);
         }
 
@@ -692,39 +707,47 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <see langword="null" /> if the shell is properly contained, or
         /// a Coordinate which is not inside the hole if it is not.
         /// </returns>
-        private ICoordinate CheckShellInsideHole(ILinearRing shell, ILinearRing hole, GeometryGraph graph)
+        private static TCoordinate checkShellInsideHole(ILinearRing<TCoordinate> shell, ILinearRing<TCoordinate> hole, GeometryGraph<TCoordinate> graph)
         {
-            ICoordinate[] shellPts = shell.Coordinates;
-            ICoordinate[] holePts = hole.Coordinates;
+            IEnumerable<TCoordinate> shellPts = shell.Coordinates;
+            IEnumerable<TCoordinate> holePts = hole.Coordinates;
             // TODO: improve performance of this - by sorting pointlists?
-            ICoordinate shellPt = FindPointNotNode(shellPts, hole, graph);
+            TCoordinate shellPt = FindPointNotNode(shellPts, hole, graph);
+
             // if point is on shell but not hole, check that the shell is inside the hole
-            if (shellPt != null)
+            if (!CoordinateHelper.IsEmpty(shellPt))
             {
-                Boolean insideHole = CGAlgorithms.IsPointInRing(shellPt, holePts);
+                Boolean insideHole = CGAlgorithms<TCoordinate>.IsPointInRing(shellPt, holePts);
+
                 if (!insideHole)
                 {
                     return shellPt;
                 }
             }
-            ICoordinate holePt = FindPointNotNode(holePts, shell, graph);
+
+            TCoordinate holePt = FindPointNotNode(holePts, shell, graph);
+
             // if point is on hole but not shell, check that the hole is outside the shell
-            if (holePt != null)
+            if (!CoordinateHelper.IsEmpty(holePt))
             {
-                Boolean insideShell = CGAlgorithms.IsPointInRing(holePt, shellPts);
+                Boolean insideShell = CGAlgorithms<TCoordinate>.IsPointInRing(holePt, shellPts);
+
                 if (insideShell)
                 {
                     return holePt;
                 }
-                return null;
+
+                return default(TCoordinate);
             }
+
             Assert.ShouldNeverReachHere("points in shell and hole appear to be equal");
-            return null;
+            return default(TCoordinate);
         }
 
-        private void CheckConnectedInteriors(GeometryGraph graph)
+        private void checkConnectedInteriors(GeometryGraph<TCoordinate> graph)
         {
-            ConnectedInteriorTester cit = new ConnectedInteriorTester(graph);
+            ConnectedInteriorTester<TCoordinate> cit = new ConnectedInteriorTester<TCoordinate>(graph);
+
             if (!cit.IsInteriorsConnected())
             {
                 _validErr = new TopologyValidationError(TopologyValidationErrors.DisconnectedInteriors,

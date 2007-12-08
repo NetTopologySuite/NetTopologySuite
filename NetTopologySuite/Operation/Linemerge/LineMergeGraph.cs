@@ -1,4 +1,12 @@
+using System;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
+using GeoAPI.Utilities;
+using GisSharpBlog.NetTopologySuite.Planargraph;
+using NPack.Interfaces;
+
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 {
@@ -8,42 +16,48 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     /// and <c>com.vividsolutions.planargraph.Node</c>s indicates whether they have been
     /// logically deleted from the graph.
     /// </summary>
-    public class LineMergeGraph : PlanarGraph
+    public class LineMergeGraph<TCoordinate> : PlanarGraph<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
         /// <summary>
         /// Adds an Edge, DirectedEdges, and Nodes for the given LineString representation
         /// of an edge. 
         /// </summary>
-        public void AddEdge(ILineString lineString)
+        public void AddEdge(ILineString<TCoordinate> lineString)
         {
             if (lineString.IsEmpty)
             {
                 return;
             }
 
-            ICoordinate[] coordinates = CoordinateArrays.RemoveRepeatedPoints(lineString.Coordinates);
-            ICoordinate startCoordinate = coordinates[0];
-            ICoordinate endCoordinate = coordinates[coordinates.Length - 1];
-            Node startNode = getNode(startCoordinate);
-            Node endNode = getNode(endCoordinate);
-            DirectedEdge directedEdge0 = new LineMergeDirectedEdge(startNode, endNode,
-                                                                   coordinates[1], true);
-            DirectedEdge directedEdge1 = new LineMergeDirectedEdge(endNode, startNode,
-                                                                   coordinates[coordinates.Length - 2], false);
-            Edge edge = new LineMergeEdge(lineString);
+            IEnumerable<TCoordinate> coordinates = CoordinateArrays.RemoveRepeatedPoints(lineString.Coordinates);
+            Pair<TCoordinate> startPair = Slice.GetPair(coordinates);
+            Pair<TCoordinate> endPair = Slice.GetLastPair(coordinates);
+
+            Node<TCoordinate> startNode = getNode(startPair.First);
+            Node<TCoordinate> endNode = getNode(endPair.Second);
+
+            DirectedEdge<TCoordinate> directedEdge0 = new LineMergeDirectedEdge<TCoordinate>(startNode, endNode,
+                                                                   startPair.Second, true);
+
+            DirectedEdge<TCoordinate> directedEdge1 = new LineMergeDirectedEdge<TCoordinate>(endNode, startNode,
+                                                                   endPair.First, false);
+            Edge<TCoordinate> edge = new LineMergeEdge<TCoordinate>(lineString);
             edge.SetDirectedEdges(directedEdge0, directedEdge1);
-            Add(edge);
+            AddInternal(edge);
         }
 
-
-        private Node getNode(ICoordinate coordinate)
+        private Node<TCoordinate> getNode(TCoordinate coordinate)
         {
-            Node node = FindNode(coordinate);
+            Node<TCoordinate> node = FindNode(coordinate);
+
             if (node == null)
             {
-                node = new Node(coordinate);
+                node = new Node<TCoordinate>(coordinate);
                 Add(node);
             }
+
             return node;
         }
     }

@@ -1,9 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.CoordinateSystems;
 using GeoAPI.Geometries;
+using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
@@ -49,7 +49,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             new GeometryFactory<TCoordinate>(new PrecisionModel<TCoordinate>(PrecisionModels.Fixed));
 
         #endregion
-
 
         private readonly ICoordinateSequenceFactory<TCoordinate> _coordinateSequenceFactory;
         private readonly IPrecisionModel<TCoordinate> _precisionModel;
@@ -164,30 +163,49 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             // at this point we know the collection is hetereogenous.
             // Determine the type of the result from the first Geometry in the list
             // this should always return a point, since otherwise an empty collection would have already been returned
-            IEnumerator ienum = geometries.GetEnumerator();
-            ienum.MoveNext();
-            IGeometry geom0 = (IGeometry)ienum.Current;
-            Boolean isCollection = geometries.Count > 1;
+            IGeometry<TCoordinate> geom0 = Slice.GetFirst(geometries);
+            Boolean isCollection = Slice.CountGreaterThan(1, geometries);
 
             if (isCollection)
             {
                 if (geom0 is IPolygon)
                 {
-                    return CreateMultiPolygon(geometries);
+                    IEnumerable<IPolygon<TCoordinate>> polygons =
+                        EnumerableConverter.Downcast<IPolygon<TCoordinate>, IGeometry<TCoordinate>>(geometries);
+
+                    return CreateMultiPolygon(polygons);
                 }
                 else if (geom0 is ILineString)
                 {
-                    return CreateMultiLineString(geometries);
+                    IEnumerable<ILineString<TCoordinate>> lines =
+                        EnumerableConverter.Downcast<ILineString<TCoordinate>, IGeometry<TCoordinate>>(geometries);
+
+                    return CreateMultiLineString(lines);
                 }
                 else if (geom0 is IPoint)
                 {
-                    return CreateMultiPoint(geometries);
+                    IEnumerable<IPoint<TCoordinate>> points =
+                        EnumerableConverter.Downcast<IPoint<TCoordinate>, IGeometry<TCoordinate>>(geometries);
+
+                    return CreateMultiPoint(points);
                 }
 
                 Assert.ShouldNeverReachHere();
             }
 
             return geom0;
+        }
+
+        #region IGeometryFactory<TCoordinate> Members
+
+        public IExtents<TCoordinate> CreateExtents(ICoordinate min, ICoordinate max)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IExtents<TCoordinate> CreateExtents(TCoordinate min, TCoordinate max)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -213,21 +231,30 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return CreateEmpty();
             }
 
-            if (envelope.MinX == envelope.MaxX && envelope.MinY == envelope.MaxY)
+            Double xMin = envelope.GetMin(Ordinates.X);
+            Double xMax = envelope.GetMax(Ordinates.X);
+            Double yMin = envelope.GetMin(Ordinates.Y);
+            Double yMax = envelope.GetMax(Ordinates.Y);
+
+            if (xMin == xMax && yMin == yMax)
             {
-                return CreatePoint(new Coordinate(envelope.MinX, envelope.MinY));
+                return CreatePoint(new TCoordinate(xMin, yMin));
             }
 
             return CreatePolygon(
                 CreateLinearRing(new TCoordinate[]
                                      {
-                                         new Coordinate(envelope.MinX, envelope.MinY),
-                                         new Coordinate(envelope.MaxX, envelope.MinY),
-                                         new Coordinate(envelope.MaxX, envelope.MaxY),
-                                         new Coordinate(envelope.MinX, envelope.MaxY),
-                                         new Coordinate(envelope.MinX, envelope.MinY),
+                                         new TCoordinate(xMin, yMin),
+                                         new TCoordinate(xMax, yMin),
+                                         new TCoordinate(xMax, yMax),
+                                         new TCoordinate(xMin, yMin),
                                      }),
                 null);
+        }
+
+        public ICoordinateFactory<TCoordinate> CoordinateFactory
+        {
+            get { throw new NotImplementedException(); }
         }
 
         public ICoordinateSequenceFactory<TCoordinate> CoordinateSequenceFactory
@@ -237,7 +264,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         private IGeometry<TCoordinate> CreateEmpty()
         {
-            return new Point<TCoordinate>();
+            return new GeometryCollection<TCoordinate>();
         }
 
         /// <summary>
@@ -247,7 +274,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coordinate"></param>
         public IPoint<TCoordinate> CreatePoint(TCoordinate coordinate)
         {
-            return CreatePoint(CoordinateSequenceFactory.Create(coordinate));
+            return new Point<TCoordinate>(coordinate);
         }
 
         public IPoint<TCoordinate> CreatePoint(IEnumerable<TCoordinate> coordinates)
@@ -262,6 +289,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public IPoint<TCoordinate> CreatePoint(ICoordinateSequence<TCoordinate> coordinates)
         {
             return new Point<TCoordinate>(coordinates, this);
+        }
+
+        public ILineString<TCoordinate> CreateLineString(params TCoordinate[] coordinates)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary> 
@@ -327,6 +359,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary> 
+        /// Creates an empty MultiPoint.
+        /// </summary>
+        public IMultiPoint<TCoordinate> CreateMultiPoint()
+        {
+            return new MultiPoint<TCoordinate>(this);
+        }
+
+        /// <summary> 
         /// Creates a MultiPoint using the given Points; a null or empty array will
         /// create an empty MultiPoint.
         /// </summary>
@@ -334,6 +374,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public IMultiPoint<TCoordinate> CreateMultiPoint(IEnumerable<IPoint<TCoordinate>> point)
         {
             return new MultiPoint<TCoordinate>(point, this);
+        }
+
+        public IMultiPoint<TCoordinate> CreateMultiPoint(params IPoint<TCoordinate>[] points)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary> 
@@ -367,6 +412,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return CreateMultiPoint(points);
         }
 
+        public IMultiLineString<TCoordinate> CreateMultiLineString()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Creates a <c>MultiLineString</c> using the given <c>LineStrings</c>; a null or empty
         /// array will create an empty MultiLineString.
@@ -375,6 +425,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public IMultiLineString<TCoordinate> CreateMultiLineString(IEnumerable<ILineString<TCoordinate>> lineStrings)
         {
             return new MultiLineString<TCoordinate>(lineStrings, this);
+        }
+
+        public IMultiPolygon<TCoordinate> CreateMultiPolygon()
+        {
+            return new MultiPolygon<TCoordinate>(this);
         }
 
         /// <summary>
@@ -388,6 +443,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             return new MultiPolygon<TCoordinate>(polygons, this);
         }
+
+        public IGeometryCollection<TCoordinate> CreateGeometryCollection()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
 
         /// <summary>
         /// Creates a <see cref="GeometryCollection{TCoordinate}" /> using the given <c>Geometries</c>; a null or empty
@@ -447,5 +509,173 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return coordinates;
             }
         }
+
+        #region IGeometryFactory Members
+
+        ICoordinateFactory IGeometryFactory.CoordinateFactory
+        {
+            get { return CoordinateFactory; }
+        }
+
+        ICoordinateSequenceFactory IGeometryFactory.CoordinateSequenceFactory
+        {
+            get { return CoordinateSequenceFactory; }
+        }
+
+        /// <summary>
+        /// Gets or sets the spatial reference system to associate with the geometry.
+        /// </summary>
+        ICoordinateSystem IGeometryFactory.SpatialReference
+        {
+            get { return SpatialReference; }
+            set { SpatialReference = value as ICoordinateSystem<TCoordinate>; }
+        }
+
+        IPrecisionModel IGeometryFactory.PrecisionModel
+        {
+            get { return PrecisionModel; }
+        }
+
+        IGeometry IGeometryFactory.BuildGeometry(IEnumerable<IGeometry> geometryList)
+        {
+            throw new NotImplementedException();
+        }
+
+        IExtents IGeometryFactory.CreateExtents(ICoordinate min, ICoordinate max)
+        {
+            throw new NotImplementedException();
+        }
+
+        IGeometry IGeometryFactory.CreateGeometry(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        IGeometry IGeometryFactory.CreateGeometry(ICoordinateSequence coordinates, OgcGeometryType type)
+        {
+            throw new NotImplementedException();
+        }
+
+        IPoint IGeometryFactory.CreatePoint()
+        {
+            throw new NotImplementedException();
+        }
+
+        IPoint IGeometryFactory.CreatePoint(ICoordinate coordinate)
+        {
+            throw new NotImplementedException();
+        }
+
+        IPoint IGeometryFactory.CreatePoint(ICoordinateSequence coordinates)
+        {
+            throw new NotImplementedException();
+        }
+
+        ILineString IGeometryFactory.CreateLineString()
+        {
+            throw new NotImplementedException();
+        }
+
+        ILineString IGeometryFactory.CreateLineString(IEnumerable<ICoordinate> coordinates)
+        {
+            throw new NotImplementedException();
+        }
+
+        ILineString IGeometryFactory.CreateLineString(ICoordinateSequence coordinates)
+        {
+            throw new NotImplementedException();
+        }
+
+        ILinearRing IGeometryFactory.CreateLinearRing()
+        {
+            throw new NotImplementedException();
+        }
+
+        ILinearRing IGeometryFactory.CreateLinearRing(IEnumerable<ICoordinate> coordinates)
+        {
+            throw new NotImplementedException();
+        }
+
+        ILinearRing IGeometryFactory.CreateLinearRing(ICoordinateSequence coordinates)
+        {
+            throw new NotImplementedException();
+        }
+
+        IPolygon IGeometryFactory.CreatePolygon()
+        {
+            throw new NotImplementedException();
+        }
+
+        IPolygon IGeometryFactory.CreatePolygon(IEnumerable<ICoordinate> shell)
+        {
+            throw new NotImplementedException();
+        }
+
+        IPolygon IGeometryFactory.CreatePolygon(ILinearRing shell)
+        {
+            throw new NotImplementedException();
+        }
+
+        IPolygon IGeometryFactory.CreatePolygon(ILinearRing shell, IEnumerable<ILinearRing> holes)
+        {
+            throw new NotImplementedException();
+        }
+
+        IMultiPoint IGeometryFactory.CreateMultiPoint()
+        {
+            throw new NotImplementedException();
+        }
+
+        IMultiPoint IGeometryFactory.CreateMultiPoint(IEnumerable<ICoordinate> coordinates)
+        {
+            throw new NotImplementedException();
+        }
+
+        IMultiPoint IGeometryFactory.CreateMultiPoint(IEnumerable<IPoint> point)
+        {
+            throw new NotImplementedException();
+        }
+
+        IMultiPoint IGeometryFactory.CreateMultiPoint(ICoordinateSequence coordinates)
+        {
+            throw new NotImplementedException();
+        }
+
+        IMultiLineString IGeometryFactory.CreateMultiLineString()
+        {
+            throw new NotImplementedException();
+        }
+
+        IMultiLineString IGeometryFactory.CreateMultiLineString(IEnumerable<ILineString> lineStrings)
+        {
+            throw new NotImplementedException();
+        }
+
+        IMultiPolygon IGeometryFactory.CreateMultiPolygon()
+        {
+            throw new NotImplementedException();
+        }
+
+        IMultiPolygon IGeometryFactory.CreateMultiPolygon(IEnumerable<IPolygon> polygons)
+        {
+            throw new NotImplementedException();
+        }
+
+        IGeometryCollection IGeometryFactory.CreateGeometryCollection()
+        {
+            throw new NotImplementedException();
+        }
+
+        IGeometryCollection IGeometryFactory.CreateGeometryCollection(IEnumerable<IGeometry> geometries)
+        {
+            throw new NotImplementedException();
+        }
+
+        IGeometry IGeometryFactory.ToGeometry(IExtents envelopeInternal)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

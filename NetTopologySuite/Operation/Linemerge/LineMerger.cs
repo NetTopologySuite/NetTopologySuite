@@ -1,7 +1,8 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Planargraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
 
@@ -48,31 +49,38 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             }
         }
 
-        private LineMergeGraph _graph = new LineMergeGraph();
-        private IList mergedLineStrings = null;
-        private IList edgeStrings = null;
-        private IGeometryFactory factory = null;
+        private readonly LineMergeGraph<TCoordinate> _graph = new LineMergeGraph<TCoordinate>();
+        private List<ILineString<TCoordinate>> mergedLineStrings = new List<ILineString<TCoordinate>>();
+        private readonly List<EdgeString<TCoordinate>> edgeStrings = new List<EdgeString<TCoordinate>>();
+        private IGeometryFactory<TCoordinate> _factory = null;
+
+        /// <summary>
+        /// Adds a Geometry to be processed. May be called multiple times.
+        /// Any dimension of Geometry may be added; the constituent linework will be
+        /// extracted.
+        /// </summary>
+        public void Add(IGeometry<TCoordinate> geometry)
+        {
+            geometry.Apply(new AnonymousGeometryComponentFilterImpl(this));
+        }
 
         /// <summary>
         /// Adds a collection of Geometries to be processed. May be called multiple times.
         /// Any dimension of Geometry may be added; the constituent linework will be
         /// extracted.
         /// </summary>
-        public void Add(IList geometries)
+        public void Add(IEnumerable<IGeometry<TCoordinate>> geometries)
         {
-            IEnumerator i = geometries.GetEnumerator();
-
-            while (i.MoveNext())
+            foreach (IGeometry<TCoordinate> geometry in geometries)
             {
-                IGeometry geometry = (IGeometry) i.Current;
                 Add(geometry);
             }
         }
 
         /// <summary>
-        /// Returns the LineStrings built by the merging process.
+        /// Gets the <see cref="ILineString{TCoordinate}"/>s built by the merging process.
         /// </summary>
-        public IList MergedLineStrings
+        public IEnumerable<ILineString<TCoordinate>> MergedLineStrings
         {
             get
             {
@@ -81,21 +89,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             }
         }
 
-        /// <summary>
-        /// Adds a Geometry to be processed. May be called multiple times.
-        /// Any dimension of Geometry may be added; the constituent linework will be
-        /// extracted.
-        /// </summary>
-        public void Add(IGeometry geometry)
+        private void add(ILineString<TCoordinate> lineString)
         {
-            geometry.Apply(new AnonymousGeometryComponentFilterImpl(this));
-        }
-
-        private void add(ILineString lineString)
-        {
-            if (factory == null)
+            if (_factory == null)
             {
-                factory = lineString.Factory;
+                _factory = lineString.Factory;
             }
 
             _graph.AddEdge(lineString);
@@ -108,14 +106,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                 return;
             }
 
-            edgeStrings = new ArrayList();
             buildEdgeStringsForObviousStartNodes();
             buildEdgeStringsForIsolatedLoops();
-            mergedLineStrings = new ArrayList();
+            mergedLineStrings = new List<ILineString<TCoordinate>>();
 
-            for (IEnumerator i = edgeStrings.GetEnumerator(); i.MoveNext();)
+            foreach (EdgeString<TCoordinate> edgeString in edgeStrings)
             {
-                EdgeString edgeString = (EdgeString) i.Current;
                 mergedLineStrings.Add(edgeString.ToLineString());
             }
         }
@@ -132,12 +128,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 
         private void buildEdgeStringsForUnprocessedNodes()
         {
-            IEnumerator i = _graph.Nodes.GetEnumerator();
-
-            while (i.MoveNext())
+            foreach (Node<TCoordinate> node in _graph.Nodes)
             {
-                Node node = (Node) i.Current;
-
                 if (!node.IsMarked)
                 {
                     Assert.IsTrue(node.Degree == 2);
@@ -149,28 +141,20 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 
         private void buildEdgeStringsForNonDegree2Nodes()
         {
-            IEnumerator i = _graph.Nodes.GetEnumerator();
-
-            while (i.MoveNext())
+            foreach (Node<TCoordinate> node in _graph.Nodes)
             {
-                Node node = (Node) i.Current;
-
                 if (node.Degree != 2)
                 {
                     buildEdgeStringsStartingAt(node);
                     node.Marked = true;
-                }
+                } 
             }
         }
 
-        private void buildEdgeStringsStartingAt(Node node)
+        private void buildEdgeStringsStartingAt(Node<TCoordinate> node)
         {
-            IEnumerator i = node.OutEdges.GetEnumerator();
-
-            while (i.MoveNext())
+            foreach (LineMergeDirectedEdge<TCoordinate> directedEdge in node.OutEdges)
             {
-                LineMergeDirectedEdge directedEdge = (LineMergeDirectedEdge) i.Current;
-
                 if (directedEdge.Edge.IsMarked)
                 {
                     continue;
@@ -180,10 +164,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             }
         }
 
-        private EdgeString buildEdgeStringStartingWith(LineMergeDirectedEdge start)
+        private EdgeString<TCoordinate> buildEdgeStringStartingWith(LineMergeDirectedEdge<TCoordinate> start)
         {
-            EdgeString edgeString = new EdgeString(factory);
-            LineMergeDirectedEdge current = start;
+            EdgeString<TCoordinate> edgeString = new EdgeString<TCoordinate>(_factory);
+            LineMergeDirectedEdge<TCoordinate> current = start;
 
             do
             {

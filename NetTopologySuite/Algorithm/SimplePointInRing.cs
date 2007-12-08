@@ -1,5 +1,8 @@
 using System;
 using GeoAPI.Geometries;
+using NPack.Interfaces;
+using GeoAPI.Coordinates;
+using System.Collections.Generic;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
@@ -7,30 +10,20 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// Tests whether a <c>Coordinate</c> lies inside
     /// a ring, using a linear-time algorithm.
     /// </summary>
-    public class SimplePointInRing : IPointInRing
+    public class SimplePointInRing<TCoordinate> : IPointInRing<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<TCoordinate>, IConvertible
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        private ICoordinate[] pts;
+        private readonly IEnumerable<TCoordinate> _ring;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ring"></param>
-        public SimplePointInRing(ILinearRing ring)
+        public SimplePointInRing(ILinearRing<TCoordinate> ring)
         {
-            pts = ring.Coordinates;
+            _ring = ring.Coordinates;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pt"></param>
-        /// <returns></returns>
-        public Boolean IsInside(ICoordinate pt)
+        public Boolean IsInside(TCoordinate coordinate)
         {
-            return CGAlgorithms.IsPointInRing(pt, pts);
+            return CGAlgorithms<TCoordinate>.IsPointInRing(coordinate, _ring);
         }
     }
 }

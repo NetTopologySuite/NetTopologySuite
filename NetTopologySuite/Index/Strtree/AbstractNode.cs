@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Strtree
@@ -9,11 +9,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
     /// (AbstractNodes) or real data (ItemBoundables). If this node contains real data
     /// (rather than nodes), then we say that this node is a "leaf node".
     /// </summary>
-    public abstract class AbstractNode : IBoundable
+    public abstract class AbstractNode<TBounds> : IBoundable<TBounds>
     {
-        private ArrayList childBoundables = new ArrayList();
-        private object bounds = null;
-        private Int32 level;
+        private readonly List<IBoundable<TBounds>> _childBoundables = new List<IBoundable<TBounds>>();
+        private TBounds bounds = default(TBounds);
+        private readonly Int32 _level;
 
         /// <summary> 
         /// Constructs an AbstractNode at the given level in the tree
@@ -24,16 +24,16 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </param>
         public AbstractNode(Int32 level)
         {
-            this.level = level;
+            _level = level;
         }
 
         /// <summary> 
         /// Returns either child AbstractNodes, or if this is a leaf node, real data (wrapped
         /// in ItemBoundables).
         /// </summary>
-        public IList ChildBoundables
+        public IList<IBoundable<TBounds>> ChildBoundables
         {
-            get { return childBoundables; }
+            get { return _childBoundables; }
         }
 
         /// <summary>
@@ -46,16 +46,17 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// An Envelope (for STRtrees), an Interval (for SIRtrees), or other
         /// object (for other subclasses of AbstractStrTree).
         /// </returns>        
-        protected abstract object ComputeBounds();
+        protected abstract TBounds ComputeBounds();
 
-        public object Bounds
+        public TBounds Bounds
         {
             get
             {
-                if (bounds == null)
+                if (Equals(bounds, default(TBounds)))
                 {
                     bounds = ComputeBounds();
                 }
+
                 return bounds;
             }
         }
@@ -66,17 +67,17 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         public Int32 Level
         {
-            get { return level; }
+            get { return _level; }
         }
 
         /// <summary>
         /// Adds either an AbstractNode, or if this is a leaf node, a data object
         /// (wrapped in an ItemBoundable).
         /// </summary>
-        public void AddChildBoundable(IBoundable childBoundable)
+        public void AddChildBoundable(IBoundable<TBounds> childBoundable)
         {
-            Assert.IsTrue(bounds == null);
-            childBoundables.Add(childBoundable);
+            Assert.IsTrue(Equals(bounds, default(TBounds)));
+            _childBoundables.Add(childBoundable);
         }
     }
 }

@@ -21,15 +21,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public static void UpdateIntersectionMatrix(Label label, IntersectionMatrix im)
         {
-            im.SetAtLeastIfValid(label.GetLocation(0, Positions.On), label.GetLocation(1, Positions.On),
+            im.SetAtLeastIfValid(label[0, Positions.On], label[1, Positions.On],
                                  Dimensions.Curve);
 
             if (label.IsArea())
             {
-                im.SetAtLeastIfValid(label.GetLocation(0, Positions.Left), label.GetLocation(1, Positions.Left),
+                im.SetAtLeastIfValid(label[0, Positions.Left], label[1, Positions.Left],
                                      Dimensions.Surface);
 
-                im.SetAtLeastIfValid(label.GetLocation(0, Positions.Right), label.GetLocation(1, Positions.Right),
+                im.SetAtLeastIfValid(label[0, Positions.Right], label[1, Positions.Right],
                                      Dimensions.Surface);
             }
         }
@@ -43,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         private readonly Depth _depth = new Depth();
         private Int32 _depthDelta = 0; // the change in area depth from the R to Curve side of this edge
 
-        public Edge(IEnumerable<TCoordinate> coordinates, Label label)
+        public Edge(IEnumerable<TCoordinate> coordinates, Label? label)
         {
             _edgeIntersectionList = new EdgeIntersectionList<TCoordinate>(this);
             _coordinates.AddRange(coordinates);

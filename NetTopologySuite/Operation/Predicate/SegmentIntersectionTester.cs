@@ -1,8 +1,11 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
+using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
 {
@@ -11,47 +14,69 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
     /// Optimized for small geometry size.
     /// Short-circuited to return as soon an intersection is found.
     /// </summary>
-    public class SegmentIntersectionTester 
+    public class SegmentIntersectionTester<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<TCoordinate>, IConvertible
     {
         // for purposes of intersection testing, don't need to set precision model
-        private LineIntersector li = new RobustLineIntersector();
+        private readonly LineIntersector<TCoordinate> _li = new RobustLineIntersector<TCoordinate>();
 
-        private Boolean hasIntersection = false;
-        private ICoordinate pt00 = new Coordinate();
-        private ICoordinate pt01 = new Coordinate();
-        private ICoordinate pt10 = new Coordinate();
-        private ICoordinate pt11 = new Coordinate();
+        private Boolean _hasIntersection = false;
+        //private TCoordinate pt00;
+        //private TCoordinate pt01;
+        //private TCoordinate pt10;
+        //private TCoordinate pt11;
 
-        public SegmentIntersectionTester() { }
-
-        public Boolean HasIntersectionWithLineStrings(ICoordinateSequence seq, IList lines)
+        public Boolean HasIntersectionWithLineStrings(IEnumerable<TCoordinate> seq,
+                                                      IEnumerable<ILineString<TCoordinate>> lines)
         {
-            for (IEnumerator i = lines.GetEnumerator(); i.MoveNext(); ) 
+            foreach (ILineString<TCoordinate> line in lines)
             {
-                ILineString line = (ILineString) i.Current;
-                HasIntersection(seq, line.CoordinateSequence);
-                if (hasIntersection)
-                    break;
-            }
-            return hasIntersection;
-        }
+                HasIntersection(seq, line.Coordinates);
 
-        public Boolean HasIntersection(ICoordinateSequence seq0, ICoordinateSequence seq1) 
-        {
-            for (Int32 i = 1; i < seq0.Count && ! hasIntersection; i++) 
-            {
-                seq0.GetCoordinate(i - 1, pt00);
-                seq0.GetCoordinate(i, pt01);
-                for (Int32 j = 1; j < seq1.Count && ! hasIntersection; j++) 
+                if (_hasIntersection)
                 {
-                    seq1.GetCoordinate(j - 1, pt10);
-                    seq1.GetCoordinate(j, pt11);
-                    li.ComputeIntersection(pt00, pt01, pt10, pt11);
-                    if (li.HasIntersection)
-                        hasIntersection = true;
+                    break;
                 }
             }
-            return hasIntersection;
+
+            return _hasIntersection;
+        }
+
+        public Boolean HasIntersection(IEnumerable<TCoordinate> seq0, IEnumerable<TCoordinate> seq1)
+        {
+            foreach (Pair<TCoordinate> pair0 in Slice.GetOverlappingPairs(seq0))
+            {
+                TCoordinate pt00;
+                TCoordinate pt01;
+
+                pt00 = pair0.First;
+                pt01 = pair0.Second;
+
+                foreach (Pair<TCoordinate> pair1 in Slice.GetOverlappingPairs(seq1))
+                {
+                    TCoordinate pt10;
+                    TCoordinate pt11;
+
+                    pt10 = pair1.First;
+                    pt11 = pair1.Second;
+
+                    _li.ComputeIntersection(pt00, pt01, pt10, pt11);
+
+                    if (_li.HasIntersection)
+                    {
+                        _hasIntersection = true;
+                        break;
+                    }
+                }
+
+                if(_hasIntersection)
+                {
+                    break;
+                }
+            }
+
+            return _hasIntersection;
         }
     }
 }

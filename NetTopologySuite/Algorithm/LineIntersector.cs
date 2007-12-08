@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         // which are present in the intersection between two lines
         // or segments. Do not reorder.
         DoesNotIntersect = 0,
-        DoesIntersect = 1,
+        Intersects = 1,
         Collinear = 2
     }
 
