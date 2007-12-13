@@ -31,7 +31,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                 return;
             }
 
-            IEnumerable<TCoordinate> coordinates = CoordinateArrays.RemoveRepeatedPoints(lineString.Coordinates);
+            IEnumerable<TCoordinate> coordinates = lineString.Coordinates.WithoutRepeatedPoints();
             Pair<TCoordinate> startPair = Slice.GetPair(coordinates);
             Pair<TCoordinate> endPair = Slice.GetLastPair(coordinates);
 

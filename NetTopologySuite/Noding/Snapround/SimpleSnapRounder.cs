@@ -35,8 +35,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// </summary>
         public static Boolean AddSnappedNode(HotPixel<TCoordinate> hotPix, SegmentString<TCoordinate> segStr, Int32 segIndex)
         {
-            TCoordinate p0 = segStr.GetCoordinate(segIndex);
-            TCoordinate p1 = segStr.GetCoordinate(segIndex + 1);
+            TCoordinate p0 = segStr[segIndex];
+            TCoordinate p1 = segStr[segIndex + 1];
 
             if (hotPix.Intersects(p0, p1))
             {

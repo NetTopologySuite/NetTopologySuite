@@ -46,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             _points = points;
         }
 
-        public override IList<TCoordinate> Coordinates
+        public override ICoordinateSequence<TCoordinate> Coordinates
         {
             get
             {
@@ -214,19 +214,21 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             // Convert to array, then access array directly, to avoid the function-call overhead
             // of calling Getter millions of times. ToArray may be inefficient for
             // non-BasicCoordinateSequence CoordinateSequences. [Jon Aquino]
-            TCoordinate[] coordinates = points.ToCoordinateArray();
+            // TCoordinate[] coordinates = _points.ToCoordinateArray();
 
-            Double minx = coordinates[0].X;
-            Double miny = coordinates[0].Y;
-            Double maxx = coordinates[0].X;
-            Double maxy = coordinates[0].Y;
+            ICoordinateSequence<TCoordinate> coordinates = _points;
 
-            for (Int32 i = 1; i < coordinates.Length; i++)
+            Double minx = coordinates[0][Ordinates.X];
+            Double miny = coordinates[0][Ordinates.Y];
+            Double maxx = coordinates[0][Ordinates.X];
+            Double maxy = coordinates[0][Ordinates.Y];
+
+            for (Int32 i = 1; i < coordinates.Count; i++)
             {
-                minx = minx < coordinates[i].X ? minx : coordinates[i].X;
-                maxx = maxx > coordinates[i].X ? maxx : coordinates[i].X;
-                miny = miny < coordinates[i].Y ? miny : coordinates[i].Y;
-                maxy = maxy > coordinates[i].Y ? maxy : coordinates[i].Y;
+                minx = minx < coordinates[i][Ordinates.X] ? minx : coordinates[i][Ordinates.X];
+                maxx = maxx > coordinates[i][Ordinates.X] ? maxx : coordinates[i][Ordinates.X];
+                miny = miny < coordinates[i][Ordinates.Y] ? miny : coordinates[i][Ordinates.Y];
+                maxy = maxy > coordinates[i][Ordinates.Y] ? maxy : coordinates[i][Ordinates.Y];
             }
 
             return new Extents<TCoordinate>(minx, maxx, miny, maxy);
@@ -286,8 +288,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary> 
-        /// Normalizes a <c>LineString</c>.  A normalized linestring
-        /// has the first point which is not equal to it's reflected point
+        /// Normalizes a <see cref="LineString{TCoordinate}"/>.  
+        /// A normalized <see cref="LineString{TCoordinate}"/> 
+        /// has the first point which 
+        /// is not equal to it's reflected point
         /// less than the reflected point.
         /// </summary>
         public override void Normalize()
@@ -301,7 +305,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 {
                     if (_points[i].CompareTo(_points[j]) > 0)
                     {
-                        CoordinateArrays.Reverse(Coordinates);
+                        Coordinates.Reverse();
                     }
 
                     return;
@@ -352,7 +356,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>        
         /// <remarks>
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
+        /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         /// <param name="points">The coordinates used for create this <see cref="LineString{TCoordinate}" />.</param>
         public LineString(IEnumerable<TCoordinate> points) :
@@ -363,9 +367,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return _points[index]; }
             set
             {
-                _points.SetOrdinate(index, Ordinates.X, value.X);
-                _points.SetOrdinate(index, Ordinates.Y, value.Y);
-                _points.SetOrdinate(index, Ordinates.Z, value.Z);
+                _points[index] = value;
             }
         }
 

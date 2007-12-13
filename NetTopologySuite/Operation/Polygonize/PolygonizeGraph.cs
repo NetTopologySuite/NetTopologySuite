@@ -89,7 +89,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             // clear labels of all edges in graph
             IEnumerable<PolygonizeDirectedEdge<TCoordinate>> directedEdges
                 =
-                EnumerableConverter.Downcast<PolygonizeDirectedEdge<TCoordinate>, DirectedEdge<TCoordinate>>(
+                Enumerable.Downcast<PolygonizeDirectedEdge<TCoordinate>, DirectedEdge<TCoordinate>>(
                     DirectedEdges);
 
             label(directedEdges, -1);
@@ -126,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
 
             IEnumerable<PolygonizeDirectedEdge<TCoordinate>> directedEdges
                 =
-                EnumerableConverter.Downcast<PolygonizeDirectedEdge<TCoordinate>, DirectedEdge<TCoordinate>>(
+                Enumerable.Downcast<PolygonizeDirectedEdge<TCoordinate>, DirectedEdge<TCoordinate>>(
                     DirectedEdges);
 
             // label the current set of edgerings

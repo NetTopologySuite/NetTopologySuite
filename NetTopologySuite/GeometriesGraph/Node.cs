@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
@@ -70,11 +71,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             for (Int32 i = 0; i < 2; i++)
             {
                 Locations loc = ComputeMergedLocation(other, i);
-                Locations thisLoc = Label == null ? Locations.None : Label.Value[i];
+                Locations thisLoc = Label == null ? Locations.None : Label.Value[i].On;
 
                 if (thisLoc == Locations.None)
                 {
-                    Label.SetLocation(i, loc);
+                    Label = Label == null ? new Label(i, loc) : new Label(Label.Value, i, loc);
                 }
             }
         }
@@ -87,7 +88,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
             else
             {
-                Label.SetLocation(geometryIndex, onLocation);
+                Label = new Label(Label.Value, geometryIndex, onLocation);
             }
         }
 
@@ -97,13 +98,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public void SetLabelBoundary(Int32 geometryIndex)
         {
-            // determine the current location for the point (if any)
-            Locations loc = Locations.None;
+            Debug.Assert(Label.HasValue);
 
-            if (Label != null)
-            {
-                loc = Label.Value[geometryIndex];
-            }
+            // determine the current location for the point (if any)
+            Locations loc = Label.Value[geometryIndex].On;
 
             // flip the loc
             Locations newLoc;
@@ -121,7 +119,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                     break;
             }
 
-            Label.SetLocation(geometryIndex, newLoc);
+            Label = new Label(Label.Value, geometryIndex, newLoc);
         }
 
         /// <summary> 
@@ -131,13 +129,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// in this case, the rule is that the node is considered to be in the boundary.
         /// The merged location is the maximum of the two input values.
         /// </summary>
-        public Locations ComputeMergedLocation(Label label2, Int32 eltIndex)
+        public Locations ComputeMergedLocation(Label label2, Int32 elementIndex)
         {
-            Locations loc = Label == null ? Locations.None : Label.Value[eltIndex];
+            Locations loc = Label == null ? Locations.None : Label.Value[elementIndex].On;
 
-            if (!label2.IsNull(eltIndex))
+            if (!label2.IsNull(elementIndex))
             {
-                Locations nLoc = label2[eltIndex];
+                Locations nLoc = label2[elementIndex].On;
 
                 if (loc != Locations.Boundary)
                 {

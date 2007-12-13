@@ -1,9 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
+using GeoAPI.DataStructures.Collections.Generic;
 using GeoAPI.Geometries;
+using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Utilities;
+using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NPack;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -18,12 +23,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
          where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                              IComputable<TCoordinate>, IConvertible
     {
-        private static IEnumerable<TCoordinate> ExtractCoordinates(IGeometry<TCoordinate> geom)
-        {
-            UniqueCoordinateArrayFilter<TCoordinate> filter = new UniqueCoordinateArrayFilter<TCoordinate>();
-            geom.Apply(filter);
-            return filter.Coordinates;
-        }
+        //private static IEnumerable<TCoordinate> extractCoordinates(IGeometry<TCoordinate> geom)
+        //{
+        //    UniqueCoordinateArrayFilter<TCoordinate> filter = new UniqueCoordinateArrayFilter<TCoordinate>();
+        //    geom.Apply(filter);
+        //    return filter.Coordinates;
+        //}
 
         private readonly IGeometryFactory<TCoordinate> _geomFactory = null;
         private readonly IEnumerable<TCoordinate> _inputPts = null;
@@ -32,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Create a new convex hull construction for the input <see cref="Geometry{TCoordinate}"/>.
         /// </summary>
         public ConvexHull(IGeometry<TCoordinate> geometry)
-            : this(ExtractCoordinates(geometry), geometry.Factory) {}
+            : this(extractCoordinates(geometry), geometry.Factory) { }
 
         /// <summary>
         /// Create a new convex hull construction for the input 
@@ -74,24 +79,21 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
 
             IEnumerable<TCoordinate> reducedPts = _inputPts;
-            
+
             // use heuristic to reduce points, if large
             if (_inputPts.Length > 50)
             {
-                reducedPts = Reduce(_inputPts);
+                reducedPts = reduce(_inputPts);
             }
 
             // sort points for Graham scan.
-            ICoordinate[] sortedPts = PreSort(reducedPts);
+            IEnumerable<TCoordinate> sortedPts = preSort(reducedPts);
 
             // Use Graham scan to find convex hull.
-            Stack<ICoordinate> cHS = GrahamScan(sortedPts);
-
-            // Convert stack to an array.
-            ICoordinate[] cH = cHS.ToArray();
+            Stack<TCoordinate> cHS = grahamScan(sortedPts);
 
             // Convert array to appropriate output geometry.
-            return LineOrPolygon(cH);
+            return lineOrPolygon(cHS);
         }
 
         /// <summary>
@@ -105,22 +107,22 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Note that even if the method used to determine the polygon vertices
         /// is not 100% robust, this does not affect the robustness of the convex hull.
         /// </summary>
-        private ICoordinate[] Reduce(ICoordinate[] pts)
+        private IEnumerable<TCoordinate> reduce(IEnumerable<TCoordinate> pts)
         {
-            ICoordinate[] polyPts = ComputeOctRing(_inputPts);
+            IEnumerable<TCoordinate> polyPts = computeOctRing(pts);
 
             // unable to compute interior polygon for some reason
             if (polyPts == null)
             {
-                return _inputPts;
+                return pts;
             }
 
             // add points defining polygon
-            SortedSet<ICoordinate> reducedSet = new SortedSet<ICoordinate>();
+            SortedSet<TCoordinate> reducedSet = new SortedSet<TCoordinate>();
 
-            for (Int32 i = 0; i < polyPts.Length; i++)
+            foreach (TCoordinate pt in polyPts)
             {
-                reducedSet.Add(polyPts[i]);
+                reducedSet.Add(pt);
             }
 
             /*
@@ -129,118 +131,121 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
              * but this doesn't matter since the points of the interior polygon
              * are forced to be in the reduced set.
              */
-            for (Int32 i = 0; i < _inputPts.Length; i++)
+            foreach (TCoordinate pt in pts)
             {
-                if (!CGAlgorithms.IsPointInRing(_inputPts[i], polyPts))
+                if (!CGAlgorithms<TCoordinate>.IsPointInRing(pt, polyPts))
                 {
-                    reducedSet.Add(_inputPts[i]);
+                    reducedSet.Add(pt);
                 }
             }
 
-            ICoordinate[] arr = new ICoordinate[reducedSet.Count];
-            reducedSet.CopyTo(arr, 0);
-            return arr;
+            return reducedSet;
         }
 
-        private ICoordinate[] PreSort(ICoordinate[] pts)
+        private static IEnumerable<TCoordinate> preSort(IEnumerable<TCoordinate> pts)
         {
-            ICoordinate t;
+            TCoordinate first = Slice.GetFirst(pts);
 
             // find the lowest point in the set. If two or more points have
             // the same minimum y coordinate choose the one with the minimu x.
-            // This focal point is put in array location pts[0].
-            for (Int32 i = 1; i < pts.Length; i++)
+            // This focal point is put in array location first.
+            foreach (TCoordinate coordinate in Slice.StartAt(1, pts))
             {
-                if ((pts[i].Y < pts[0].Y) || ((pts[i].Y == pts[0].Y)
-                                              && (pts[i].X < pts[0].X)))
+                if ((coordinate[Ordinates.Y] < first[Ordinates.Y]) ||
+                    ((coordinate[Ordinates.Y] == first[Ordinates.Y]) && (coordinate[Ordinates.X] < first[Ordinates.X])))
                 {
-                    t = pts[0];
-                    pts[0] = pts[i];
-                    pts[i] = t;
+                    TCoordinate t;
+                    t = first;
+                    first = coordinate;
+                    coordinate = t;
                 }
             }
 
             // sort the points radially around the focal point.
-            Array.Sort(pts, 1, pts.Length - 1, new RadialComparator(pts[0]));
+            Array.Sort(pts, 1, pts.Length - 1, new RadialComparator(first));
             return pts;
         }
 
-        private Stack<ICoordinate> GrahamScan(ICoordinate[] c)
+        private static Stack<TCoordinate> grahamScan(IEnumerable<TCoordinate> c)
         {
-            ICoordinate p;
-            Stack<ICoordinate> ps = new Stack<ICoordinate>(c.Length);
-            ps.Push(c[0]);
-            ps.Push(c[1]);
-            ps.Push(c[2]);
+            TCoordinate p;
+            Stack<TCoordinate> ps = new Stack<TCoordinate>();
+            Triple<TCoordinate> triple = Slice.GetTriple(c);
 
-            for (Int32 i = 3; i < c.Length; i++)
+            ps.Push(triple.First);
+            ps.Push(triple.Second);
+            ps.Push(triple.Third);
+
+            foreach (TCoordinate coordinate in Slice.StartAt(3, c))
             {
                 p = ps.Pop();
 
-                while (CGAlgorithms.ComputeOrientation(ps.Peek(), p, c[i]) > 0)
+                while (CGAlgorithms<TCoordinate>.ComputeOrientation(ps.Peek(), p, coordinate) > 0)
                 {
                     p = ps.Pop();
                 }
 
                 ps.Push(p);
-                ps.Push(c[i]);
+                ps.Push(coordinate);
             }
 
-            ps.Push(c[0]);
+            ps.Push(triple.First);
             return ps;
         }
 
-        private Stack<ICoordinate> ReverseStack(Stack<ICoordinate> ps)
-        {
-            // Do a manual reverse of the stack
-            Int32 size = ps.Count;
-            ICoordinate[] tempArray = new ICoordinate[size];
+        //private Stack<TCoordinate> reverseStack(Stack<TCoordinate> ps)
+        //{
+        //    // Do a manual reverse of the stack
+        //    Int32 size = ps.Count;
+        //    ICoordinate[] tempArray = new ICoordinate[size];
 
-            for (Int32 i = 0; i < size; i++)
-            {
-                tempArray[i] = ps.Pop();
-            }
+        //    for (Int32 i = 0; i < size; i++)
+        //    {
+        //        tempArray[i] = ps.Pop();
+        //    }
 
-            Stack<ICoordinate> returnStack = new Stack<ICoordinate>(size);
+        //    Stack<ICoordinate> returnStack = new Stack<ICoordinate>(size);
 
-            foreach (ICoordinate obj in tempArray)
-            {
-                returnStack.Push(obj);
-            }
+        //    foreach (ICoordinate obj in tempArray)
+        //    {
+        //        returnStack.Push(obj);
+        //    }
 
-            return returnStack;
-        }
+        //    return returnStack;
+        //}
 
         /// <returns>
         /// Whether the three coordinates are collinear 
         /// and c2 lies between c1 and c3 inclusive.
         /// </returns>        
-        private Boolean IsBetween(ICoordinate c1, ICoordinate c2, ICoordinate c3)
+        private static Boolean isBetween(TCoordinate c1, TCoordinate c2, TCoordinate c3)
         {
-            if (CGAlgorithms.ComputeOrientation(c1, c2, c3) != 0)
+            if (CGAlgorithms<TCoordinate>.ComputeOrientation(c1, c2, c3) != 0)
             {
                 return false;
             }
 
-            if (c1.X != c3.X)
+            if (c1[Ordinates.X] != c3[Ordinates.X])
             {
-                if (c1.X <= c2.X && c2.X <= c3.X)
+                if (c1[Ordinates.X] <= c2[Ordinates.X] && c2[Ordinates.X] <= c3[Ordinates.X])
                 {
                     return true;
                 }
-                if (c3.X <= c2.X && c2.X <= c1.X)
+
+                if (c3[Ordinates.X] <= c2[Ordinates.X] && c2[Ordinates.X] <= c1[Ordinates.X])
                 {
                     return true;
                 }
             }
 
-            if (c1.Y != c3.Y)
+            if (c1[Ordinates.Y] != c3[Ordinates.Y])
             {
-                if (c1.Y <= c2.Y && c2.Y <= c3.Y)
+                if (c1[Ordinates.Y] <= c2[Ordinates.Y] && c2[Ordinates.Y] <= c3[Ordinates.Y])
                 {
                     return true;
                 }
-                if (c3.Y <= c2.Y && c2.Y <= c1.Y)
+
+                if (c3[Ordinates.Y] <= c2[Ordinates.Y] && c2[Ordinates.Y] <= c1[Ordinates.Y])
                 {
                     return true;
                 }
@@ -249,71 +254,75 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return false;
         }
 
-        private ICoordinate[] ComputeOctRing(ICoordinate[] inputPts)
+        private IEnumerable<TCoordinate> computeOctRing(IEnumerable<TCoordinate> inputPts)
         {
-            ICoordinate[] octPts = ComputeOctPts(inputPts);
-            CoordinateList coordList = new CoordinateList();
-            coordList.Add(octPts, false);
+            IEnumerable<TCoordinate> octPts = computeOctPts(inputPts);
+            ICoordinateSequence<TCoordinate> coords = CoordinateSequences.Create(octPts, false);
 
             // points must all lie in a line
-            if (coordList.Count < 3)
+            if (coords.Count < 3)
             {
                 return null;
             }
 
-            coordList.CloseRing();
-            return coordList.ToCoordinateArray();
+            coords.CloseRing();
+            return coords;
         }
 
-        private ICoordinate[] ComputeOctPts(ICoordinate[] inputPts)
+        private static IEnumerable<TCoordinate> computeOctPts(IEnumerable<TCoordinate> inputPts)
         {
-            ICoordinate[] pts = new ICoordinate[8];
+            TCoordinate[] pts = new TCoordinate[8];
+
+            TCoordinate first = Slice.GetFirst(inputPts);
 
             for (Int32 j = 0; j < pts.Length; j++)
             {
-                pts[j] = inputPts[0];
+                pts[j] = first;
             }
 
-            for (Int32 i = 1; i < inputPts.Length; i++)
+            foreach (TCoordinate coordinate in inputPts)
             {
-                if (inputPts[i].X < pts[0].X)
+                Double x = coordinate[Ordinates.X];
+                Double y = coordinate[Ordinates.Y];
+
+                if (x < pts[0][Ordinates.X])
                 {
-                    pts[0] = inputPts[i];
+                    pts[0] = coordinate;
                 }
 
-                if (inputPts[i].X - inputPts[i].Y < pts[1].X - pts[1].Y)
+                if (x - y < pts[1][Ordinates.X] - pts[1][Ordinates.Y])
                 {
-                    pts[1] = inputPts[i];
+                    pts[1] = coordinate;
                 }
 
-                if (inputPts[i].Y > pts[2].Y)
+                if (y > pts[2][Ordinates.Y])
                 {
-                    pts[2] = inputPts[i];
+                    pts[2] = coordinate;
                 }
 
-                if (inputPts[i].X + inputPts[i].Y > pts[3].X + pts[3].Y)
+                if (x + y > pts[3][Ordinates.X] + pts[3][Ordinates.Y])
                 {
-                    pts[3] = inputPts[i];
+                    pts[3] = coordinate;
                 }
 
-                if (inputPts[i].X > pts[4].X)
+                if (x > pts[4][Ordinates.X])
                 {
-                    pts[4] = inputPts[i];
+                    pts[4] = coordinate;
                 }
 
-                if (inputPts[i].X - inputPts[i].Y > pts[5].X - pts[5].Y)
+                if (x - y > pts[5][Ordinates.X] - pts[5][Ordinates.Y])
                 {
-                    pts[5] = inputPts[i];
+                    pts[5] = coordinate;
                 }
 
-                if (inputPts[i].Y < pts[6].Y)
+                if (y < pts[6][Ordinates.Y])
                 {
-                    pts[6] = inputPts[i];
+                    pts[6] = coordinate;
                 }
 
-                if (inputPts[i].X + inputPts[i].Y < pts[7].X + pts[7].Y)
+                if (x + y < pts[7][Ordinates.X] + pts[7][Ordinates.Y])
                 {
-                    pts[7] = inputPts[i];
+                    pts[7] = coordinate;
                 }
             }
 
@@ -321,96 +330,101 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         }
 
         /// <param name="coordinates"> The vertices of a linear ring, which may or may not be flattened (i.e. vertices collinear).</param>
-        /// <returns>A 2-vertex <c>LineString</c> if the vertices are collinear; 
-        /// otherwise, a <see cref="Polygon{TCoordinate}" /> with unnecessary (collinear) vertices removed. </returns>       
-        private IGeometry LineOrPolygon(ICoordinate[] coordinates)
+        /// <returns>
+        /// A 2-vertex <c>LineString</c> if the vertices are collinear; 
+        /// otherwise, a <see cref="Polygon{TCoordinate}" /> with unnecessary (collinear) vertices removed.
+        /// </returns>       
+        private IGeometry<TCoordinate> lineOrPolygon(IEnumerable<TCoordinate> coordinates)
         {
-            coordinates = CleanRing(coordinates);
-           
-            if (coordinates.Length == 3)
+            coordinates = cleanRing(coordinates);
+
+            if (!Slice.CountGreaterThan(3, coordinates))
             {
-                return _geomFactory.CreateLineString(new ICoordinate[] {coordinates[0], coordinates[1]});
+                Pair<TCoordinate> points = Slice.GetPair(coordinates);
+                return _geomFactory.CreateLineString(points.First, points.Second);
             }
 
-            ILinearRing linearRing = _geomFactory.CreateLinearRing(coordinates);
+            ILinearRing<TCoordinate> linearRing = _geomFactory.CreateLinearRing(coordinates);
             return _geomFactory.CreatePolygon(linearRing, null);
         }
 
         /// <param name="original">The vertices of a linear ring, which may or may not be flattened (i.e. vertices collinear).</param>
         /// <returns>The coordinates with unnecessary (collinear) vertices removed.</returns>
-        private ICoordinate[] CleanRing(ICoordinate[] original)
+        private IEnumerable<TCoordinate> cleanRing(IEnumerable<TCoordinate> original)
         {
-            Equals(original[0], original[original.Length - 1]);
-            List<ICoordinate> cleanedRing = new List<ICoordinate>();
-            ICoordinate previousDistinctCoordinate = null;
-           
-            for (Int32 i = 0; i <= original.Length - 2; i++)
+            Debug.Assert(Equals(Slice.GetFirst(original), Slice.GetLast(original)));
+
+            List<TCoordinate> cleanedRing = new List<TCoordinate>();
+            TCoordinate previousDistinctCoordinate = default(TCoordinate);
+
+            foreach (Pair<TCoordinate> pair in Slice.GetOverlappingPairs(original))
             {
-                ICoordinate currentCoordinate = original[i];
-                ICoordinate nextCoordinate = original[i + 1];
-              
+                TCoordinate currentCoordinate = pair.First;
+                TCoordinate nextCoordinate = pair.Second;
+
                 if (currentCoordinate.Equals(nextCoordinate))
                 {
                     continue;
                 }
-              
-                if (previousDistinctCoordinate != null &&
-                    IsBetween(previousDistinctCoordinate, currentCoordinate, nextCoordinate))
+
+                if (!CoordinateHelper.IsEmpty(previousDistinctCoordinate) &&
+                    isBetween(previousDistinctCoordinate, currentCoordinate, nextCoordinate))
                 {
                     continue;
                 }
-               
+
                 cleanedRing.Add(currentCoordinate);
                 previousDistinctCoordinate = currentCoordinate;
             }
 
-            cleanedRing.Add(original[original.Length - 1]);
-            return cleanedRing.ToArray();
+            cleanedRing.Add(Slice.GetLast(original));
+            return cleanedRing;
         }
 
         /// <summary>
-        /// Compares <see cref="Coordinate" />s for their angle and distance
+        /// Compares <typeparamref name="TCoordinate" />s for their angle and distance
         /// relative to an origin.
         /// </summary>
-        private class RadialComparator : IComparer<ICoordinate>
+        private class RadialComparator : IComparer<TCoordinate>
         {
-            private ICoordinate origin = null;
+            private readonly TCoordinate _origin = default(TCoordinate);
 
             /// <summary>
             /// Initializes a new instance of the <see cref="RadialComparator"/> class.
             /// </summary>
-            public RadialComparator(ICoordinate origin)
+            public RadialComparator(TCoordinate origin)
             {
-                this.origin = origin;
+                _origin = origin;
             }
 
-            public Int32 Compare(ICoordinate p1, ICoordinate p2)
+            public Int32 Compare(TCoordinate p1, TCoordinate p2)
             {
-                return PolarCompare(origin, p1, p2);
+                return polarCompare(_origin, p1, p2);
             }
 
-            private static Int32 PolarCompare(ICoordinate o, ICoordinate p, ICoordinate q)
+            private static Int32 polarCompare(TCoordinate o, TCoordinate p, TCoordinate q)
             {
-                Double dxp = p.X - o.X;
-                Double dyp = p.Y - o.Y;
-                Double dxq = q.X - o.X;
-                Double dyq = q.Y - o.Y;
+                Double dxp = p[Ordinates.X] - o[Ordinates.X];
+                Double dyp = p[Ordinates.Y] - o[Ordinates.Y];
+                Double dxq = q[Ordinates.X] - o[Ordinates.X];
+                Double dyq = q[Ordinates.Y] - o[Ordinates.Y];
 
-                Int32 orient = CGAlgorithms.ComputeOrientation(o, p, q);
+                Orientation orient = CGAlgorithms<TCoordinate>.ComputeOrientation(o, p, q);
 
-                if (orient == CGAlgorithms.CounterClockwise)
+                if (orient == Orientation.CounterClockwise)
                 {
                     return 1;
                 }
 
-                if (orient == CGAlgorithms.Clockwise)
+                if (orient == Orientation.Clockwise)
                 {
                     return -1;
                 }
 
                 // points are collinear - check distance
-                Double op = dxp*dxp + dyp*dyp;
-                Double oq = dxq*dxq + dyq*dyq;
+                Double op = dxp * dxp + dyp * dyp;
+                Double oq = dxq * dxq + dyq * dyq;
+
                 if (op < oq)
                 {
                     return -1;

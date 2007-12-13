@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
@@ -44,23 +45,24 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// The depth of each side (position) of this edge.
         /// The 0 element of the array is never used.
         /// </summary>
-        private Int32[] _depth = {0, -999, -999};
+        private Int32[] _depth = { 0, -999, -999 };
 
-        public DirectedEdge(Edge<TCoordinate> edge, Boolean isForward) : base(edge)
+        public DirectedEdge(Edge<TCoordinate> edge, Boolean isForward)
+            : base(edge)
         {
             _isForward = isForward;
 
             if (isForward)
             {
-                Init(edge.GetCoordinate(0), edge.GetCoordinate(1));
+                Init(edge.Coordinates[0], edge.Coordinates[1]);
             }
             else
             {
                 Int32 n = edge.PointCount - 1;
-                Init(edge.GetCoordinate(n), edge.GetCoordinate(n - 1));
+                Init(edge.Coordinates[n], edge.Coordinates[n - 1]);
             }
 
-            ComputeDirectedLabel();
+            computeDirectedLabel();
         }
 
         public Boolean InResult
@@ -99,20 +101,20 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public Int32 GetDepth(Positions position)
         {
-            return _depth[(Int32) position];
+            return _depth[(Int32)position];
         }
 
         public void SetDepth(Positions position, Int32 depthVal)
         {
-            if (_depth[(Int32) position] != -999)
+            if (_depth[(Int32)position] != -999)
             {
-                if (_depth[(Int32) position] != depthVal)
+                if (_depth[(Int32)position] != depthVal)
                 {
                     throw new TopologyException("assigned depths do not match", Coordinate);
                 }
             }
 
-            _depth[(Int32) position] = depthVal;
+            _depth[(Int32)position] = depthVal;
         }
 
         public Int32 DepthDelta
@@ -179,13 +181,17 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                Boolean isLine = Label.IsLine(0) || Label.IsLine(1);
+                Debug.Assert(Label.HasValue);
+
+                Label label = Label.Value;
+
+                Boolean isLine = label.IsLine(0) || label.IsLine(1);
 
                 Boolean isExteriorIfArea0 =
-                    !Label.IsArea(0) || Label.AllPositionsEqual(0, Locations.Exterior);
+                    !label.IsArea(0) || label.AllPositionsEqual(0, Locations.Exterior);
 
                 Boolean isExteriorIfArea1 =
-                    !Label.IsArea(1) || Label.AllPositionsEqual(1, Locations.Exterior);
+                    !label.IsArea(1) || label.AllPositionsEqual(1, Locations.Exterior);
 
                 return isLine && isExteriorIfArea0 && isExteriorIfArea1;
             }
@@ -203,11 +209,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             {
                 Boolean isInteriorAreaEdge = true;
 
+                Debug.Assert(Label.HasValue);
+
+                Label label = Label.Value;
+
                 for (Int32 i = 0; i < 2; i++)
                 {
-                    if (!(Label.IsArea(i)
-                          && Label.GetLocation(i, Positions.Left) == Locations.Interior
-                          && Label.GetLocation(i, Positions.Right) == Locations.Interior))
+                    if (!(label.IsArea(i)
+                          && label[i, Positions.Left] == Locations.Interior
+                          && label[i, Positions.Right] == Locations.Interior))
                     {
                         isInteriorAreaEdge = false;
                     }
@@ -220,13 +230,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// Compute the label in the appropriate orientation for this DirEdge.
         /// </summary>
-        private void ComputeDirectedLabel()
+        private void computeDirectedLabel()
         {
-            Label = new Label(Edge.Label);
+            Debug.Assert(Edge.Label.HasValue);
+
+            Label = Edge.Label.Value;
 
             if (!_isForward)
             {
-                Label.Flip();
+                Label = Label.Value.Flip();
             }
         }
 
@@ -240,7 +252,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             // get the depth transition delta from R to Curve for this directed Edge
             Int32 depthDelta = Edge.DepthDelta;
-           
+
             if (!_isForward)
             {
                 depthDelta = -depthDelta;
@@ -255,7 +267,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
 
             Positions oppositePos = Position.Opposite(position);
-            Int32 delta = depthDelta*directionFactor;
+            Int32 delta = depthDelta * directionFactor;
             Int32 oppositeDepth = depth + delta;
             SetDepth(position, depth);
             SetDepth(oppositePos, oppositeDepth);
@@ -264,7 +276,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public override void Write(StreamWriter outstream)
         {
             base.Write(outstream);
-            outstream.Write(" " + _depth[(Int32) Positions.Left] + "/" + _depth[(Int32) Positions.Right]);
+            outstream.Write(" " + _depth[(Int32)Positions.Left] + "/" + _depth[(Int32)Positions.Right]);
             outstream.Write(" (" + DepthDelta + ")");
 
             if (_isInResult)

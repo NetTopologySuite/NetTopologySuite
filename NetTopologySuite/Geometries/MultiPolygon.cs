@@ -34,7 +34,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </param>
         /// <remarks>
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
+        /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public MultiPolygon(params IPolygon<TCoordinate>[] polygons) : this(polygons, DefaultFactory) { }
 
@@ -51,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </param>
         /// <remarks>
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
+        /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public MultiPolygon(IEnumerable<IPolygon<TCoordinate>> polygons) : this(polygons, DefaultFactory) { }
 
@@ -67,7 +67,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Specification for SQL.        
         /// </param>
         public MultiPolygon(IEnumerable<IPolygon<TCoordinate>> polygons, IGeometryFactory<TCoordinate> factory)
-            : base(EnumerableConverter.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(polygons), factory) { }
+            : base(Enumerable.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(polygons), factory) { }
+
+        public MultiPolygon(IGeometryFactory<TCoordinate> factory)
+            : base(factory) { }
 
         public override IGeometry<TCoordinate> Boundary
         {

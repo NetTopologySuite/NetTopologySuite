@@ -9,7 +9,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 {
     /// <summary>
     /// Supports linear referencing along a linear <see cref="Geometry{TCoordinate}" />
-    /// using <see cref="LinearLocation" />s as the index.
+    /// using <see cref="LinearLocation{TCoordinate}" />s as the index.
     /// </summary>
     public class LocationIndexedLine<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
@@ -125,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Computes a valid index for this line by clamping 
         /// the given index to the valid range of index values.
         /// </summary>
-        /// <param name="index"></param>
+        /// <param name="index">The index value to clamp to a valid value.</param>
         /// <returns>A valid index value.</returns>
         public LinearLocation<TCoordinate> ClampIndex(LinearLocation<TCoordinate> index)
         {

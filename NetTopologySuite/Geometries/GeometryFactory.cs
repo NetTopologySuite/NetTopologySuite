@@ -29,24 +29,24 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
-        /// <c> == </c> <see cref="PrecisionModels.Floating" />.
+        /// <c> == </c> <see cref="PrecisionModelType.Floating" />.
         /// </summary>
         /// <remarks>A shortcut for <see cref="GeometryFactory{TCoordinate}.Default" />.</remarks>
         public static readonly IGeometryFactory<TCoordinate> Floating = Default;
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
-        /// <c> == </c> <see cref="PrecisionModels.FloatingSingle" />.
+        /// <c> == </c> <see cref="PrecisionModelType.FloatingSingle" />.
         /// </summary>
         public static readonly IGeometryFactory<TCoordinate> FloatingSingle =
-            new GeometryFactory<TCoordinate>(new PrecisionModel<TCoordinate>(PrecisionModels.FloatingSingle));
+            new GeometryFactory<TCoordinate>(new PrecisionModel<TCoordinate>(PrecisionModelType.FloatingSingle));
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
-        /// <c> == </c> <see cref="PrecisionModels.Fixed" />.
+        /// <c> == </c> <see cref="PrecisionModelType.Fixed" />.
         /// </summary>
         public static readonly IGeometryFactory<TCoordinate> Fixed =
-            new GeometryFactory<TCoordinate>(new PrecisionModel<TCoordinate>(PrecisionModels.Fixed));
+            new GeometryFactory<TCoordinate>(new PrecisionModel<TCoordinate>(PrecisionModelType.Fixed));
 
         #endregion
 
@@ -78,7 +78,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// spatial-reference ID of 0.
         /// </summary>
         public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory)
-            : this(new PrecisionModel<TCoordinate>(), 0, coordinateSequenceFactory) {}
+            : this(new PrecisionModel<TCoordinate>(), 0, coordinateSequenceFactory) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
@@ -87,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="precisionModel">The PrecisionModel to use.</param>
         public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel)
-            : this(precisionModel, 0, getDefaultCoordinateSequenceFactory()) {}
+            : this(precisionModel, 0, getDefaultCoordinateSequenceFactory<TCoordinate>()) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
@@ -97,13 +97,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="precisionModel">The PrecisionModel to use.</param>
         /// <param name="SRID">The SRID to use.</param>
         public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel, Int32 SRID)
-            : this(precisionModel, SRID, getDefaultCoordinateSequenceFactory<TCoordinate>()) {}
+            : this(precisionModel, SRID, getDefaultCoordinateSequenceFactory<TCoordinate>()) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having a floating
         /// PrecisionModel and a spatial-reference ID of 0.
         /// </summary>
-        public GeometryFactory() : this(new PrecisionModel<TCoordinate>(), 0) {}
+        public GeometryFactory() : this(new PrecisionModel<TCoordinate>(), 0) { }
 
         /// <summary>  
         /// Build an appropriate <see cref="Geometry{TCoordinate}"/>, <c>MultiGeometry</c>, or
@@ -171,21 +171,21 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 if (geom0 is IPolygon)
                 {
                     IEnumerable<IPolygon<TCoordinate>> polygons =
-                        EnumerableConverter.Downcast<IPolygon<TCoordinate>, IGeometry<TCoordinate>>(geometries);
+                        Enumerable.Downcast<IPolygon<TCoordinate>, IGeometry<TCoordinate>>(geometries);
 
                     return CreateMultiPolygon(polygons);
                 }
                 else if (geom0 is ILineString)
                 {
                     IEnumerable<ILineString<TCoordinate>> lines =
-                        EnumerableConverter.Downcast<ILineString<TCoordinate>, IGeometry<TCoordinate>>(geometries);
+                        Enumerable.Downcast<ILineString<TCoordinate>, IGeometry<TCoordinate>>(geometries);
 
                     return CreateMultiLineString(lines);
                 }
                 else if (geom0 is IPoint)
                 {
                     IEnumerable<IPoint<TCoordinate>> points =
-                        EnumerableConverter.Downcast<IPoint<TCoordinate>, IGeometry<TCoordinate>>(geometries);
+                        Enumerable.Downcast<IPoint<TCoordinate>, IGeometry<TCoordinate>>(geometries);
 
                     return CreateMultiPoint(points);
                 }
@@ -288,7 +288,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public IPoint<TCoordinate> CreatePoint(ICoordinateSequence<TCoordinate> coordinates)
         {
-            return new Point<TCoordinate>(coordinates, this);
+            if (coordinates.Count == 0)
+            {
+                return Point<TCoordinate>.Empty;
+            }
+
+            return new Point<TCoordinate>(coordinates[0], this);
         }
 
         public ILineString<TCoordinate> CreateLineString(params TCoordinate[] coordinates)
@@ -355,7 +360,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public IPolygon<TCoordinate> CreatePolygon(ILinearRing<TCoordinate> shell,
                                                    IEnumerable<ILinearRing<TCoordinate>> holes)
         {
-            return new Polygon<TCoordinate>(shell, holes, this);
+            return new Polygon<TCoordinate>(shell, 
+                Enumerable.Upcast<ILineString<TCoordinate>, ILinearRing<TCoordinate>>(holes), 
+                this);
         }
 
         /// <summary> 
@@ -402,7 +409,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 coordinates = CoordinateSequenceFactory.Create();
             }
 
-            List<IPoint> points = new List<IPoint>();
+            List<IPoint<TCoordinate>> points = new List<IPoint<TCoordinate>>();
 
             foreach (TCoordinate coordinate in coordinates)
             {
@@ -469,7 +476,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             // could this be cached to make this more efficient? Or maybe it isn't enough overhead to bother
             GeometryEditor<TCoordinate> editor = new GeometryEditor<TCoordinate>(this);
-            return editor.Edit(g, new NoOpCoordinateOperation<TCoordinate>());
+            return editor.Edit(g, new NoOpCoordinateOperation());
         }
 
         /// <summary>
@@ -499,9 +506,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return CoordinateArraySequenceFactory<TCoordinate>.Instance;
         }
 
-        private class NoOpCoordinateOperation<TCoordinate> : GeometryEditor<TCoordinate>.CoordinateOperation
-            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<TCoordinate>, IConvertible
+        private class NoOpCoordinateOperation : GeometryEditor<TCoordinate>.CoordinateOperation
         {
             public override IEnumerable<TCoordinate> Edit(IEnumerable<TCoordinate> coordinates,
                                                           IGeometry<TCoordinate> geometry)

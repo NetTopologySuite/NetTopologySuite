@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
@@ -21,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         private readonly IGeometryFactory<TCoordinate> _geometryFactory;
         //private readonly PointLocator<TCoordinate> _ptLocator;
 
-        private IEnumerable<Edge<TCoordinate>> lineEdges;
+        private IEnumerable<Edge<TCoordinate>> _lineEdges;
         //private IEnumerable<ILineString<TCoordinate>> resultLines;
 
         public LineBuilder(OverlayOp<TCoordinate> op, IGeometryFactory<TCoordinate> geometryFactory)
@@ -75,16 +76,21 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             }
         }
 
-        private void collectLines(SpatialFunctions opCode)
+        private IEnumerable<Edge<TCoordinate>> collectLines(SpatialFunctions opCode)
         {
             foreach (DirectedEdge<TCoordinate> de in _op.Graph.EdgeEnds)
             {
-                collectLineEdge(de, opCode, lineEdgesList);
-                collectBoundaryTouchEdge(de, opCode, lineEdgesList);
+                IEnumerable<Edge<TCoordinate>> edges = collectLineEdge(de, opCode);
+                edges = Slice.Append(collectBoundaryTouchEdge(de, opCode), edges);
+
+                foreach (Edge<TCoordinate> edge in edges)
+                {
+                    yield return edge;
+                }
             }
         }
 
-        private static void collectLineEdge(DirectedEdge<TCoordinate> de, SpatialFunctions opCode, ICollection<Edge<TCoordinate>> edges)
+        private static IEnumerable<Edge<TCoordinate>> collectLineEdge(DirectedEdge<TCoordinate> de, SpatialFunctions opCode)
         {
             Debug.Assert(de.Label.HasValue);
             Label label = de.Label.Value;
@@ -95,7 +101,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             {
                 if (!de.IsVisited && OverlayOp<TCoordinate>.IsResultOfOp(label, opCode) && !e.IsCovered)
                 {
-                    edges.Add(e);
+                    yield return e;
                     de.VisitedEdge = true;
                 }
             }
@@ -109,26 +115,26 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// areas touch in a line segment
         /// OR as a result of a dimensional collapse.
         /// </summary>
-        private static void collectBoundaryTouchEdge(DirectedEdge<TCoordinate> de, SpatialFunctions opCode, ICollection<Edge<TCoordinate>> edges)
+        private static IEnumerable<Edge<TCoordinate>> collectBoundaryTouchEdge(DirectedEdge<TCoordinate> de, SpatialFunctions opCode)
         {
             if (de.IsLineEdge)
             {
-                return; // only interested in area edges         
+                yield break; // only interested in area edges         
             }
 
             if (de.IsVisited)
             {
-                return; // already processed
+                yield break; // already processed
             }
 
             if (de.IsInteriorAreaEdge)
             {
-                return; // added to handle dimensional collapses            
+                yield break; // added to handle dimensional collapses            
             }
 
             if (de.Edge.IsInResult)
             {
-                return; // if the edge linework is already included, don't include it again
+                yield break; // if the edge linework is already included, don't include it again
             }
 
             // sanity check for labeling of result edgerings
@@ -141,14 +147,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             if (OverlayOp<TCoordinate>.IsResultOfOp(label, opCode) 
                 && opCode == SpatialFunctions.Intersection)
             {
-                edges.Add(de.Edge);
+                yield return de.Edge;
                 de.VisitedEdge = true;
             }
         }
 
         private IEnumerable<ILineString<TCoordinate>> buildLines(SpatialFunctions opCode)
         {
-            foreach (Edge<TCoordinate> edge in lineEdges)
+            foreach (Edge<TCoordinate> edge in _lineEdges)
             {
                 ILineString<TCoordinate> line = _geometryFactory.CreateLineString(edge.Coordinates);
                 yield return line;

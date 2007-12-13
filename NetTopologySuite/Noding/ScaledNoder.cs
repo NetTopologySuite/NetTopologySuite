@@ -91,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         {
             // TODO: figure out how to get rid of boxing...
             IEnumerable<IVector<DoubleComponent>> vectors =
-                EnumerableConverter.Upcast<IVector<DoubleComponent>, TCoordinate>(pts);
+                Enumerable.Upcast<IVector<DoubleComponent>, TCoordinate>(pts);
 
             IEnumerable<IVector<DoubleComponent>> transformed = _transform.TransformVectors(vectors);
 

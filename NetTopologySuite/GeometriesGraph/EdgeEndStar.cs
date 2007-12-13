@@ -110,6 +110,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             return _edgeList[iNextCW];
         }
 
+        public void ComputeLabeling(params GeometryGraph<TCoordinate>[] geom)
+        {
+            ComputeLabeling(geom);
+        }
+
         public virtual void ComputeLabeling(IEnumerable<GeometryGraph<TCoordinate>> geom)
         {
             computeEdgeEndLabels();
@@ -162,7 +167,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 for (Int32 geometryIndex = 0; geometryIndex < 2; geometryIndex++)
                 {
                     if (label.IsLine(geometryIndex)
-                        && label[geometryIndex] == Locations.Boundary)
+                        && label[geometryIndex].On == Locations.Boundary)
                     {
                         hasDimensionalCollapseEdge[geometryIndex] = true;
                     }
@@ -265,7 +270,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 {
                     Locations left = label[geomIndex, Positions.Left];
                     Locations right = label[geomIndex, Positions.Right];
-                    label = new Label(geomIndex, currLoc, left, right);
+                    label = new Label(label, geomIndex, currLoc, left, right);
                 }
 
                 // set side labels (if any)
@@ -301,7 +306,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                                       "found single null side");
 
                         Locations on = label[geomIndex, Positions.On];
-                        label = new Label(geomIndex, on, currLoc, currLoc);
+                        label = new Label(label, geomIndex, on, currLoc, currLoc);
                     }
                 }
 

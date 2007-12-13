@@ -1,13 +1,12 @@
 using System;
-using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Noding;
 using GisSharpBlog.NetTopologySuite.Noding.Snapround;
-using GisSharpBlog.NetTopologySuite.Precision;
 using NPack.Interfaces;
+//using GisSharpBlog.NetTopologySuite.Precision;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 {
@@ -33,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// </summary>
     public class BufferOp<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+            IComputable<TCoordinate>, IConvertible
     {
         // NOTE: modified for "safe" assembly in Sql 2005
         // Const added!
@@ -119,7 +118,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="quadrantSegments">The number of segments used to approximate a quarter circle.</param>
         /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
         /// <returns>The buffer of the input point.</returns>
-        public static IGeometry<TCoordinate> Buffer(IGeometry<TCoordinate> g, Double distance, Int32 quadrantSegments, BufferStyle endCapStyle)
+        public static IGeometry<TCoordinate> Buffer(IGeometry<TCoordinate> g, Double distance, Int32 quadrantSegments,
+                                                    BufferStyle endCapStyle)
         {
             BufferOp<TCoordinate> bufOp = new BufferOp<TCoordinate>(g);
             bufOp.EndCapStyle = endCapStyle;
@@ -183,19 +183,27 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             bufferOriginalPrecision();
 
             if (_resultGeometry != null)
+            {
                 return;
+            }
 
-            IPrecisionModel argPM = argGeom.Factory.PrecisionModel;
-            if (argPM.PrecisionModelType == PrecisionModels.Fixed)
-                 bufferFixedPrecision(argPM);
-            else BufferReducedPrecision();
+            IPrecisionModel<TCoordinate> argPM = _argGeom.Factory.PrecisionModel;
+
+            if (argPM.PrecisionModelType == PrecisionModelType.Fixed)
+            {
+                bufferFixedPrecision(argPM);
+            }
+            else
+            {
+                bufferReducedPrecision();
+            }
         }
 
         private void bufferOriginalPrecision()
         {
             try
             {
-                BufferBuilder bufBuilder = new BufferBuilder();
+                BufferBuilder<TCoordinate> bufBuilder = new BufferBuilder<TCoordinate>();
                 bufBuilder.QuadrantSegments = _quadrantSegments;
                 bufBuilder.EndCapStyle = _endCapStyle;
                 _resultGeometry = bufBuilder.Buffer(_argGeom, _distance);
@@ -209,49 +217,51 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
         private void bufferFixedPrecision(IPrecisionModel<TCoordinate> fixedPM)
         {
-            INoder<TCoordinate> noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel<TCoordinate>(1.0)), fixedPM.Scale);
+            INoder<TCoordinate> noder = new ScaledNoder<TCoordinate>(
+                new MonotoneChainIndexSnapRounder<TCoordinate>(
+                    new PrecisionModel<TCoordinate>(1.0)), fixedPM.Scale);
 
-            BufferBuilder bufBuilder = new BufferBuilder();
+            BufferBuilder<TCoordinate> bufBuilder = new BufferBuilder<TCoordinate>();
             bufBuilder.WorkingPrecisionModel = fixedPM;
             bufBuilder.Noder = noder;
-            bufBuilder.QuadrantSegments = quadrantSegments;
-            bufBuilder.EndCapStyle = endCapStyle;
+            bufBuilder.QuadrantSegments = _quadrantSegments;
+            bufBuilder.EndCapStyle = _endCapStyle;
+
             // this may throw an exception, if robustness errors are encountered
-            resultGeometry = bufBuilder.Buffer(argGeom, distance);
+            _resultGeometry = bufBuilder.Buffer(_argGeom, _distance);
         }
 
-        private void BufferReducedPrecision()
+        private void bufferReducedPrecision()
         {
             // try and compute with decreasing precision
-            for (int precDigits = MaxPrecisionDigits; precDigits >= 0; precDigits--)
+            for (Int32 precDigits = MaxPrecisionDigits; precDigits >= 0; precDigits--)
             {
                 try
                 {
-                    BufferReducedPrecision(precDigits);
+                    bufferReducedPrecision(precDigits);
                 }
                 catch (TopologyException ex)
                 {
-                    saveException = ex;
+                    _saveException = ex;
                     // don't propagate the exception - it will be detected by fact that resultGeometry is null
                 }
-                if (resultGeometry != null)
+
+                if (_resultGeometry != null)
+                {
                     return;
+                }
             }
 
             // tried everything - have to bail
-            throw saveException;
+            throw _saveException;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="precisionDigits"></param>
-        private void BufferReducedPrecision(int precisionDigits)
+        private void bufferReducedPrecision(Int32 precisionDigits)
         {
-            double sizeBasedScaleFactor = PrecisionScaleFactor(argGeom, distance, precisionDigits);
+            Double sizeBasedScaleFactor = precisionScaleFactor(_argGeom, _distance, precisionDigits);
             // Debug.WriteLine(String.Format("recomputing with precision scale factor = {0}", sizeBasedScaleFactor));
 
-            IPrecisionModel fixedPM = new PrecisionModel(sizeBasedScaleFactor);
+            IPrecisionModel<TCoordinate> fixedPM = new PrecisionModel<TCoordinate>(sizeBasedScaleFactor);
             bufferFixedPrecision(fixedPM);
         }
     }

@@ -48,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private Double _maxCurveSegmentError = 0.0;
 
         // TODO: assign the coordinates somehow
-        private IEnumerable<TCoordinate> _coordinates;
+        private List<TCoordinate> _coordinates = new List<TCoordinate>();
         private Double _distance = 0.0;
         private readonly IPrecisionModel<TCoordinate> _precisionModel;
         private BufferStyle _endCapStyle = BufferStyle.CapRound;

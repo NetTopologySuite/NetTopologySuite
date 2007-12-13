@@ -134,7 +134,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
         /// </summary>
         public static IPolygon<TCoordinate> TransformPolygon(IPolygon<TCoordinate> p, IMathTransform<TCoordinate> transform)
         {
-            List<ILinearRing<TCoordinate>> rings = new List<ILinearRing<TCoordinate>>(p.InteriorRings.Count);
+            List<ILineString<TCoordinate>> rings = new List<ILineString<TCoordinate>>(p.InteriorRings.Count);
 
             foreach (ILinearRing<TCoordinate> hole in p.InteriorRings)
             {

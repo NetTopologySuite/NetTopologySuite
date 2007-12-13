@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Utilities;
@@ -142,7 +143,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         {
             List<IGeometry<TCoordinate>> transGeomList = new List<IGeometry<TCoordinate>>();
 
-            foreach (IPoint<TCoordinate> point in multipoint)
+            IEnumerable<IPoint<TCoordinate>> points = multipoint;
+
+            foreach (IPoint<TCoordinate> point in points)
             {
                 IGeometry<TCoordinate> transformed = TransformPoint(point, multipoint);
 
@@ -231,13 +234,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             return _factory.CreateLineString(TransformCoordinates(line.Coordinates, line));
         }
 
-        protected virtual IGeometry<TCoordinate> TransformMultiLineString(IMultiLineString<TCoordinate> lines, Geometry<TCoordinate> parent)
+        protected virtual IGeometry<TCoordinate> TransformMultiLineString(IMultiLineString<TCoordinate> multiLine, Geometry<TCoordinate> parent)
         {
             List<IGeometry<TCoordinate>> transGeomList = new List<IGeometry<TCoordinate>>();
-
+            
+            IEnumerable<ILineString<TCoordinate>> lines = multiLine;
+            
             foreach (ILineString<TCoordinate> line in lines)
             {
-                IGeometry<TCoordinate> transformed = TransformLineString(line, lines);
+                IGeometry<TCoordinate> transformed = TransformLineString(line, multiLine);
 
                 if (transformed == null)
                 {
@@ -258,7 +263,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         protected virtual IGeometry<TCoordinate> TransformPolygon(IPolygon<TCoordinate> polygon, IGeometry<TCoordinate> parent)
         {
             Boolean areAllValidLinearRings = true;
-            IGeometry<TCoordinate> shell = TransformLinearRing(polygon.Shell, polygon);
+            IGeometry<TCoordinate> shell = TransformLinearRing(
+                polygon.ExteriorRing as ILinearRing<TCoordinate>, polygon);
 
             if (shell == null || !(shell is ILinearRing) || shell.IsEmpty)
             {
@@ -267,8 +273,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 
             List<IGeometry<TCoordinate>> holes = new List<IGeometry<TCoordinate>>();
 
-            foreach (ILinearRing<TCoordinate> hole in polygon.Holes)
+            foreach (ILinearRing<TCoordinate> hole in polygon.InteriorRings)
             {
+                Debug.Assert(hole != null);
+
                 IGeometry<TCoordinate> transformed = TransformLinearRing(hole, polygon);
 
                 if (transformed == null || transformed.IsEmpty)
@@ -287,7 +295,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             if (areAllValidLinearRings)
             {
                 return _factory.CreatePolygon(shell as ILinearRing<TCoordinate>,
-                    EnumerableConverter.Downcast<ILinearRing<TCoordinate>, IGeometry<TCoordinate>>(holes));
+                    Enumerable.Downcast<ILinearRing<TCoordinate>, IGeometry<TCoordinate>>(holes));
             }
             else
             {

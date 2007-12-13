@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.Geometries;
 using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Index.Chain;
 using GisSharpBlog.NetTopologySuite.Index.Strtree;
@@ -39,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             get { return _monoChains; }
         }
 
-        public ISpatialIndex<TCoordinate, MonotoneChain<TCoordinate>> Index
+        public ISpatialIndex<IExtents<TCoordinate>, MonotoneChain<TCoordinate>> Index
         {
             get { return _index; }
         }

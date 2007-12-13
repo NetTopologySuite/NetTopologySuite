@@ -106,7 +106,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 pts[ipt] = ei1.Coordinate;
             }
 
-            return new Edge<TCoordinate>(pts, new Label(_edge.Label));
+            return new Edge<TCoordinate>(pts, _edge.Label.Value);
         }
 
         public void Write(StreamWriter outstream)

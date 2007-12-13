@@ -132,6 +132,22 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
+        public Label(Label other, Int32 geometryIndex, Positions side, Locations location)
+        {
+            TopologyLocation newLocation = new TopologyLocation(other[geometryIndex], side, location);
+
+            if (geometryIndex == 0)
+            {
+                _g0 = newLocation;
+                _g1 = other._g1;
+            }
+            else
+            {
+                _g1 = newLocation;
+                _g0 = other._g0;
+            }
+        }
+
         public Label Flip()
         {
             Label flipped = new Label(_g0.Flip(), _g1.Flip());
@@ -154,11 +170,22 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        public Locations this[Int32 geometryIndex]
+        public TopologyLocation this[Int32 geometryIndex]
         {
             get
             {
-                return this[geometryIndex, Positions.On];
+                switch (geometryIndex)
+                {
+                    case 0:
+                        return _g0;
+                    case 1:
+                        return _g1;
+                    default:
+                        break;
+                }
+
+                throw new ArgumentOutOfRangeException("geometryIndex", 
+                    geometryIndex, "Index must be 0 or 1.");
             }
         }
 

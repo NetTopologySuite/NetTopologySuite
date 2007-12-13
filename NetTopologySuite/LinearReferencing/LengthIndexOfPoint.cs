@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
@@ -35,7 +38,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Find the nearest location along a linear {@link Geometry} to a given point.
+        /// Find the nearest location along a linear 
+        /// <see cref="IGeometry{TCoordinate}"/> to a given point.
         /// </summary>
         /// <param name="inputPt">The coordinate to locate.</param>
         /// <returns>The location of the nearest point.</returns>
@@ -64,8 +68,17 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
                 return IndexOf(inputPt);
             }
 
+            Func<ILineString<TCoordinate>, Double> getLength = delegate(ILineString<TCoordinate> line)
+                                                         {
+                                                             return line.Length;
+                                                         };
+
+            Debug.Assert(_linearGeometry is ILineString || _linearGeometry is IEnumerable<ILineString<TCoordinate>>);
+
             // sanity check for minIndex at or past end of line
-            Double endIndex = _linearGeometry.Length;
+            Double endIndex = _linearGeometry is IEnumerable<ILineString<TCoordinate>>
+                                  ? Enumerable.Sum(_linearGeometry as IEnumerable<ILineString<TCoordinate>>, getLength)
+                                  : ((ILineString)_linearGeometry).Length;
 
             if (endIndex < minIndex)
             {

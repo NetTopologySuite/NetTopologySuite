@@ -1,5 +1,6 @@
 using System;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
@@ -116,12 +117,15 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <returns>A pair of indices for the start and end of the subline..</returns>
         public Double[] IndicesOf(IGeometry<TCoordinate> subLine)
         {
-            LinearLocation<TCoordinate>[] locIndex = LocationIndexOfLine.IndicesOf(_linearGeom, subLine);
+            Pair<LinearLocation<TCoordinate>> locIndex
+                = LocationIndexOfLine<TCoordinate>.IndicesOf(_linearGeom, subLine);
+
             Double[] index = new Double[]
                 {
-                    LengthLocationMap.GetLength(_linearGeom, locIndex[0]),
-                    LengthLocationMap.GetLength(_linearGeom, locIndex[1]),
+                    LengthLocationMap<TCoordinate>.GetLength(_linearGeom, locIndex.First),
+                    LengthLocationMap<TCoordinate>.GetLength(_linearGeom, locIndex.Second),
                 };
+
             return index;
         }
 

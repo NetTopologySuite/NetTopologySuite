@@ -63,9 +63,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             setLocation(Positions.On, on);
         }
 
-        public TopologyLocation(TopologyLocation location)
+        public TopologyLocation(TopologyLocation other)
         {
-            _locations = location._locations;
+            _locations = other._locations;
+        }
+
+        public TopologyLocation(TopologyLocation other, Positions position, Locations location)
+        {
+            _locations = other._locations;
+            setLocation(position, location);
         }
 
         private TopologyLocation(Int32 locations)

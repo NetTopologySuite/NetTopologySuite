@@ -122,7 +122,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                     else
                     {
                         IEnumerable<EdgeRing<TCoordinate>> holes =
-                            EnumerableConverter.Upcast<EdgeRing<TCoordinate>, MinimalEdgeRing<TCoordinate>>(minEdgeRings);
+                            Enumerable.Upcast<EdgeRing<TCoordinate>, MinimalEdgeRing<TCoordinate>>(minEdgeRings);
 
                         foreach (EdgeRing<TCoordinate> hole in holes)
                         {

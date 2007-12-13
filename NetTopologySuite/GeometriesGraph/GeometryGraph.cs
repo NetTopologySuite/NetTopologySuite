@@ -267,9 +267,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// If the ring is in the opposite orientation,
         /// the left and right locations must be interchanged.
         /// </summary>
-        private void addPolygonRing(ILinearRing<TCoordinate> ring, Locations cwLeft, Locations cwRight)
+        private void addPolygonRing(ILineString<TCoordinate> ring, Locations cwLeft, Locations cwRight)
         {
-            IList<TCoordinate> coord = CoordinateArrays.RemoveRepeatedPoints(ring.Coordinates);
+            IList<TCoordinate> coord = ring.Coordinates.WithoutRepeatedPoints();
 
             if (coord.Count < 4)
             {
@@ -303,20 +303,20 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         private void addPolygon(IPolygon<TCoordinate> p)
         {
-            addPolygonRing(p.Shell, Locations.Exterior, Locations.Interior);
+            addPolygonRing(p.ExteriorRing, Locations.Exterior, Locations.Interior);
 
             for (Int32 i = 0; i < p.InteriorRingsCount; i++)
             {
                 // Holes are topologically labeled opposite to the shell, since
                 // the interior of the polygon lies on their opposite side
                 // (on the left, if the hole is oriented CW)
-                addPolygonRing(p.Holes[i], Locations.Interior, Locations.Exterior);
+                addPolygonRing(p.InteriorRings[i], Locations.Interior, Locations.Exterior);
             }
         }
 
         private void addLineString(ILineString<TCoordinate> line)
         {
-            IList<TCoordinate> coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
+            IList<TCoordinate> coord = line.Coordinates.WithoutRepeatedPoints();
 
             if (coord.Count < 2)
             {
@@ -390,8 +390,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             // determine the boundary status of the point according to the Boundary Determination Rule
             Locations newLoc = DetermineBoundary(boundaryCount);
-            n.Label = currentLabel == null 
-                ? new Label(currentLabel, argIndex, newLoc)
+
+            n.Label = currentLabel != null 
+                ? new Label(currentLabel.Value, argIndex, newLoc)
                 : new Label(argIndex, newLoc);
         }
 
@@ -400,7 +401,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             foreach (Edge<TCoordinate> edge in Edges)
             {
                 Debug.Assert(edge.Label.HasValue);
-                Locations eLoc = edge.Label.Value[argIndex];
+                Locations eLoc = edge.Label.Value[argIndex].On;
 
                 foreach (EdgeIntersection<TCoordinate> intersection in edge.EdgeIntersectionList)
                 {

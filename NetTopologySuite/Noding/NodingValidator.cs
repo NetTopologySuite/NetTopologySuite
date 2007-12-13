@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -9,15 +10,15 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
     /// <summary>
-    /// Validates that a collection of <see cref="SegmentString" />s is correctly noded.
+    /// Validates that a collection of <see cref="SegmentString{TCoordinate}" />s is correctly noded.
     /// Throws an appropriate exception if an noding error is found.
     /// </summary>
     public class NodingValidator<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
     {
-        private LineIntersector<TCoordinate> _li = new RobustLineIntersector<TCoordinate>();
-        private List<SegmentString<TCoordinate>> _segStrings = new List<SegmentString<TCoordinate>>();
+        private readonly LineIntersector<TCoordinate> _li = new RobustLineIntersector<TCoordinate>();
+        private readonly List<SegmentString<TCoordinate>> _segStrings = new List<SegmentString<TCoordinate>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NodingValidator{TCoordinate}"/> 
@@ -47,17 +48,17 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             }
         }
 
-        private void checkCollapses(SegmentString<TCoordinate> ss)
+        private static void checkCollapses(SegmentString<TCoordinate> ss)
         {
             IEnumerable<TCoordinate> pts = ss.Coordinates;
 
-            for (Int32 i = 0; i < pts.Length - 2; i++)
+            foreach (Triple<TCoordinate> triple in Slice.GetOverlappingTriples(pts))
             {
-                checkCollapse(pts[i], pts[i + 1], pts[i + 2]);
+                checkCollapse(triple.First, triple.Second, triple.Third);
             }
         }
 
-        private void checkCollapse(TCoordinate p0, TCoordinate p1, TCoordinate p2)
+        private static void checkCollapse(TCoordinate p0, TCoordinate p1, TCoordinate p2)
         {
             if (p0.Equals(p2))
             {
@@ -84,26 +85,21 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             IEnumerable<TCoordinate> pts0 = ss0.Coordinates;
             IEnumerable<TCoordinate> pts1 = ss1.Coordinates;
 
-            for (Int32 i0 = 0; i0 < pts0.Length - 1; i0++)
+            foreach (Pair<TCoordinate> p0 in Slice.GetOverlappingPairs(pts0))
             {
-                for (Int32 i1 = 0; i1 < pts1.Length - 1; i1++)
+                foreach (Pair<TCoordinate> p1 in Slice.GetOverlappingPairs(pts1))
                 {
-                    checkInteriorIntersections(ss0, i0, ss1, i1);
+                    checkInteriorIntersections(ss0, p0.First, p0.Second, ss1, p1.First, p1.Second);
                 }
             }
         }
 
-        private void checkInteriorIntersections(SegmentString<TCoordinate> e0, Int32 segIndex0, SegmentString<TCoordinate> e1, Int32 segIndex1)
+        private void checkInteriorIntersections(SegmentString<TCoordinate> e0, TCoordinate p00, TCoordinate p01, SegmentString<TCoordinate> e1, TCoordinate p10, TCoordinate p11)
         {
-            if (e0 == e1 && segIndex0 == segIndex1)
+            if (e0 == e1 && p00.Equals(p10) && p01.Equals(p11))
             {
                 return;
             }
-
-            TCoordinate p00 = e0.GetCoordinate(segIndex0);
-            TCoordinate p01 = e0.GetCoordinate(segIndex0 + 1);
-            TCoordinate p10 = e1.GetCoordinate(segIndex1);
-            TCoordinate p11 = e1.GetCoordinate(segIndex1 + 1);
 
             _li.ComputeIntersection(p00, p01, p10, p11);
 
@@ -118,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         }
 
         /// <returns><see langword="true"/> if there is an intersection point which is not an endpoint of the segment p0-p1.</returns>
-        private Boolean hasInteriorIntersection(LineIntersector<TCoordinate> li, TCoordinate p0, TCoordinate p1)
+        private static Boolean hasInteriorIntersection(LineIntersector<TCoordinate> li, TCoordinate p0, TCoordinate p1)
         {
             for (Int32 i = 0; i < (Int32)li.IntersectionType; i++)
             {
@@ -147,7 +143,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             }
         }
 
-        private void checkEndPtVertexIntersections(ICoordinate testPt, IEnumerable<SegmentString<TCoordinate>> segStrings)
+        private static void checkEndPtVertexIntersections(ICoordinate testPt, IEnumerable<SegmentString<TCoordinate>> segStrings)
         {
             foreach (SegmentString<TCoordinate> ss in segStrings)
             {

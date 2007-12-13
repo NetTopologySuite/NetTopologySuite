@@ -12,7 +12,6 @@ using GisSharpBlog.NetTopologySuite.Operation.Overlay;
 using GisSharpBlog.NetTopologySuite.Operation.Predicate;
 using GisSharpBlog.NetTopologySuite.Operation.Relate;
 using GisSharpBlog.NetTopologySuite.Operation.Valid;
-using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
 using GeoAPI.CoordinateSystems;
 
@@ -94,13 +93,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                              IComputable<TCoordinate>, IConvertible
     {
         // DESIGN_NOTE: To event delegate
-        private class GeometryChangedFilter : IGeometryComponentFilter<TCoordinate>
-        {
-            public void Filter(IGeometry<TCoordinate> geom)
-            {
-                geom.GeometryChangedAction();
-            }
-        }
+        //private class GeometryChangedFilter : IGeometryComponentFilter<TCoordinate>
+        //{
+        //    public void Filter(IGeometry<TCoordinate> geom)
+        //    {
+        //        geom.GeometryChangedAction();
+        //    }
+        //}
 
         //private static readonly Type[] SortedClasses = new Type[]
         //    {
@@ -532,19 +531,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return exemplar.Factory.CreatePoint(coord);
         }
 
-        private Int32 getClassSortIndex()
-        {
-            for (Int32 i = 0; i < SortedClasses.Length; i++)
-            {
-                if (GetType().Equals(SortedClasses[i]))
-                {
-                    return i;
-                }
-            }
+        //private Int32 getClassSortIndex()
+        //{
+        //    for (Int32 i = 0; i < SortedClasses.Length; i++)
+        //    {
+        //        if (GetType().Equals(SortedClasses[i]))
+        //        {
+        //            return i;
+        //        }
+        //    }
 
-            Assert.ShouldNeverReachHere("Class not supported: " + GetType().FullName);
-            return -1;
-        }
+        //    Assert.ShouldNeverReachHere("Class not supported: " + GetType().FullName);
+        //    return -1;
+        //}
 
         // ============= BEGIN ADDED BY MPAUL42: monoGIS team
 
@@ -577,7 +576,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// elements are compared. If those are the same, the second elements are
         /// compared, etc.
         /// </summary>
-        /// <param name="o">A <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/></param>
+        /// <param name="other">
+        /// A <see cref="Geometry{TCoordinate}"/> with which to 
+        /// compare this <see cref="Geometry{TCoordinate}"/>.
+        /// </param>
         /// <returns>
         /// A positive number, 0, or a negative number, depending on whether
         /// this object is greater than, equal to, or less than <c>o</c>, as
@@ -762,7 +764,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return clone;
         }
 
-        public abstract IList<TCoordinate> Coordinates { get; }
+        public abstract ICoordinateSequence<TCoordinate> Coordinates { get; }
 
         /// <summary>  
         /// Returns this <see cref="Geometry{TCoordinate}"/>s bounding box. If this <see cref="Geometry{TCoordinate}"/>
@@ -866,15 +868,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Clone();
         }
 
-        IList<ICoordinate> IGeometry.Coordinates
+        ICoordinateSequence IGeometry.Coordinates
         {
-            get
-            {
-                foreach (TCoordinate coordinate in Coordinates)
-                {
-                    yield return coordinate;
-                }
-            }
+            get { return Coordinates; }
         }
 
         /// <summary> 
@@ -1086,7 +1082,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="g">The <see cref="Geometry{TCoordinate}"/> from which to compute the distance.</param>
         public Double Distance(IGeometry<TCoordinate> g)
         {
-            return DistanceOp.Distance(this, g);
+            return DistanceOp<TCoordinate>.Distance(this, g);
         }
 
         /// <summary>
@@ -1314,7 +1310,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             // optimizations for rectangle arguments
             if (IsRectangle)
             {
-                return RectangleContains.Contains((IPolygon)this, g);
+                return RectangleContains<TCoordinate>.Contains(this as IPolygon<TCoordinate>, g);
             }
 
             // general case
@@ -1443,12 +1439,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             // optimizations for rectangle arguments
             if (IsRectangle)
             {
-                return RectangleIntersects.Intersects((IPolygon)this, g);
+                return RectangleIntersects<TCoordinate>.Intersects(this as IPolygon<TCoordinate>, g);
             }
 
             if (g.IsRectangle)
             {
-                return RectangleIntersects.Intersects((IPolygon)g, this);
+                return RectangleIntersects<TCoordinate>.Intersects(g as IPolygon<TCoordinate>, this);
             }
 
             return Relate(g).IsIntersects();
@@ -1475,7 +1471,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
             }
 
-            return DistanceOp.IsWithinDistance(this, geom, distance);
+            return DistanceOp<TCoordinate>.IsWithinDistance(this, geom, distance);
         }
 
         public bool IsWithinDistance(IGeometry<TCoordinate> g, Double distance, Tolerance tolerance)
@@ -1610,7 +1606,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
 
-            return RelateOp.Relate(this, other);
+            return RelateOp<TCoordinate>.Relate(this, other);
         }
 
         #endregion

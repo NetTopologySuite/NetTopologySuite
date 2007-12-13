@@ -29,7 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
         public IEnumerable<Subgraph<TCoordinate>> FindConnectedSubgraphs()
         {
             IEnumerable<GraphComponent<TCoordinate>> components
-                = EnumerableConverter.Upcast<GraphComponent<TCoordinate>, Node<TCoordinate>>(_graph.Nodes);
+                = Enumerable.Upcast<GraphComponent<TCoordinate>, Node<TCoordinate>>(_graph.Nodes);
 
             GraphComponent<TCoordinate>.SetVisited(components, false);
 

@@ -50,7 +50,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
         private void buildIndex()
         {
-            IEnumerable<TCoordinate> coordinates = CoordinateArrays.RemoveRepeatedPoints(_ring.Coordinates);
+            IEnumerable<TCoordinate> coordinates = _ring.Coordinates.WithoutRepeatedPoints();
             IEnumerable<MonotoneChain<TCoordinate>> mcList = MonotoneChainBuilder.GetChains(coordinates);
 
             foreach (MonotoneChain<TCoordinate> chain in mcList)

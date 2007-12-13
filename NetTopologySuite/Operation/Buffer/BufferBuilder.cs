@@ -86,7 +86,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             OffsetCurveBuilder<TCoordinate> curveBuilder
                 = new OffsetCurveBuilder<TCoordinate>(precisionModel, _quadrantSegments);
+
             curveBuilder.EndCapStyle = _endCapStyle;
+
             OffsetCurveSetBuilder<TCoordinate> curveSetBuilder
                 = new OffsetCurveSetBuilder<TCoordinate>(g, distance, curveBuilder);
 
@@ -106,9 +108,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             IEnumerable<BufferSubgraph<TCoordinate>> subgraphs = createSubgraphs(_graph);
             PolygonBuilder<TCoordinate> polyBuilder = new PolygonBuilder<TCoordinate>(_geometryFactory);
             buildSubgraphs(subgraphs, polyBuilder);
-            IList resultPolyList = polyBuilder.Polygons;
 
-            IGeometry resultGeom = _geometryFactory.BuildGeometry(resultPolyList);
+            IEnumerable<IGeometry<TCoordinate>> resultPolyList 
+                = Enumerable.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(polyBuilder.Polygons);
+
+            IGeometry<TCoordinate> resultGeom = _geometryFactory.BuildGeometry(resultPolyList);
             return resultGeom;
         }
 
@@ -122,7 +126,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             // otherwise use a fast (but non-robust) noder
             LineIntersector<TCoordinate> li = new RobustLineIntersector<TCoordinate>();
             li.PrecisionModel = precisionModel;
-            MCIndexNoder noder = new MCIndexNoder(new IntersectionAdder(li));
+            MonotoneChainIndexNoder<TCoordinate> noder 
+                = new MonotoneChainIndexNoder<TCoordinate>(new IntersectionAdder<TCoordinate>(li));
             return noder;
         }
 
@@ -151,7 +156,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 // if so, must flip the label before merging it
                 if (!existingEdge.IsPointwiseEqual(e))
                 {
-                    labelToMerge = new Label(e.Label.Value).Flip();
+                    labelToMerge = e.Label.Value.Flip();
                 }
 
                 existingEdge.Label = existingLabel.Merge(labelToMerge);
@@ -181,7 +186,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             foreach (SegmentString<TCoordinate> segStr in nodedSegStrings)
             {
                 Label oldLabel = (Label)segStr.Data;
-                Edge<TCoordinate> edge = new Edge<TCoordinate>(segStr.Coordinates, new Label(oldLabel));
+                Edge<TCoordinate> edge = new Edge<TCoordinate>(segStr.Coordinates, oldLabel);
                 InsertEdge(edge);
             }
         }
@@ -205,7 +210,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 subgraph.ComputeDepth(outsideDepth);
                 subgraph.FindResultEdges();
                 processedGraphs.Add(subgraph);
-                polyBuilder.Add(subgraph.DirectedEdges, subgraph.Nodes);
+                IEnumerable<EdgeEnd<TCoordinate>> edges =
+                    Enumerable.Upcast<EdgeEnd<TCoordinate>, DirectedEdge<TCoordinate>>(subgraph.DirectedEdges);
+                polyBuilder.Add(edges, subgraph.Nodes);
             }
         }
 

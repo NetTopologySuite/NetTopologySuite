@@ -66,25 +66,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// is only a temporary container which is not synchronized back.
         /// </summary>
         /// <returns>The collected coordinates.</returns>
-        public override IList<TCoordinate> Coordinates
+        public override ICoordinateSequence<TCoordinate> Coordinates
         {
             get
             {
-                ICoordinate[] coordinates = new ICoordinate[NumPoints];
-                Int32 k = -1;
+                // TODO: cache this to improve performance?
+                ICoordinateSequence<TCoordinate> sequence = CoordinateSequences.CreateEmpty<TCoordinate>();
 
-                for (Int32 i = 0; i < _geometries.Count; i++)
+                foreach (IGeometry<TCoordinate> geometry in this)
                 {
-                    ICoordinate[] childCoordinates = _geometries[i].Coordinates;
-
-                    for (Int32 j = 0; j < childCoordinates.Length; j++)
-                    {
-                        k++;
-                        coordinates[k] = childCoordinates[j];
-                    }
+                    sequence.AddSequence(geometry.Coordinates);
                 }
 
-                return coordinates;
+                return sequence;
             }
         }
 
@@ -318,11 +312,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return extents;
         }
 
-        protected internal override int CompareToSameClass(IGeometry<TCoordinate> other)
+        protected internal override Int32 CompareToSameClass(IGeometry<TCoordinate> other)
         {
-            ArrayList theseElements = new ArrayList(geometries);
-            ArrayList otherElements = new ArrayList(((GeometryCollection)o).geometries);
-            return Compare(theseElements, otherElements);
+            throw new NotImplementedException();
+            //ArrayList theseElements = new ArrayList(geometries);
+            //IGeometryCollection<TCoordinate> collection = other as IGeometryCollection<TCoordinate>;
+            //ArrayList otherElements = new ArrayList(collection._geometries);
+            //return Compare(theseElements, otherElements);
         }
 
         /// <summary>

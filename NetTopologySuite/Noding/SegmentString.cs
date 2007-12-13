@@ -41,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         //}
 
         private readonly SegmentNodeList<TCoordinate> _nodeList = null;
-        private readonly IEnumerable<TCoordinate> _coordinates;
+        private readonly ICoordinateSequence<TCoordinate> _coordinates;
         private Object _data;
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         /// <param name="coordinates">The vertices of the segment string.</param>
         /// <param name="data">The user-defined data of this segment string (may be null).</param>
-        public SegmentString(IEnumerable<TCoordinate> coordinates, Object data)
+        public SegmentString(ICoordinateSequence<TCoordinate> coordinates, Object data)
         {
             _nodeList = new SegmentNodeList<TCoordinate>(this);
 
@@ -73,12 +73,15 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
         public Int32 Count
         {
-            get { return _coordinates.Length; }
+            get { return _coordinates.Count; }
         }
 
-        public TCoordinate GetCoordinate(Int32 i)
+        public TCoordinate this[Int32 index]
         {
-            return _coordinates[i];
+            get
+            {
+                return _coordinates[index];
+            }
         }
 
         public IEnumerable<TCoordinate> Coordinates
@@ -109,7 +112,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                 return Octants.Null;
             }
 
-            return Octant.GetOctant(GetCoordinate(index), GetCoordinate(index + 1));
+            return Octant.GetOctant(this[index], this[index + 1]);
         }
 
         /// <summary>
@@ -147,7 +150,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             // normalize the intersection point location
             Int32 nextSegIndex = normalizedSegmentIndex + 1;
 
-            if (nextSegIndex < _coordinates.Length)
+            if (nextSegIndex < _coordinates.Count)
             {
                 TCoordinate nextPt = _coordinates[nextSegIndex];
 

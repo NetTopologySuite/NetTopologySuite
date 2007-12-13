@@ -33,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// but not <see langword="null" />s.
         /// </param>
         public MultiLineString(IEnumerable<ILineString<TCoordinate>> lineStrings, IGeometryFactory<TCoordinate> factory)
-            : base(EnumerableConverter.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(lineStrings), factory) { }
+            : base(Enumerable.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(lineStrings), factory) { }
 
         /// <summary>
         /// Constructs a <c>MultiLineString</c>.

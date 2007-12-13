@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Utilities;
@@ -89,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             {
                 IMultiLineString<TCoordinate> ml = geom as IMultiLineString<TCoordinate>;
 
-                foreach (ILineString<TCoordinate> l in ml)
+                foreach (ILineString<TCoordinate> l in (ml as IEnumerable<ILineString<TCoordinate>>))
                 {
                     updateLocationInfo(Locate(p, l));
                 }
@@ -181,7 +182,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 return Locations.Exterior;
             }
 
-            ILinearRing<TCoordinate> shell = poly.Shell;
+            ILinearRing<TCoordinate> shell = poly.ExteriorRing as ILinearRing<TCoordinate>;
+            Debug.Assert(shell != null);
             Locations shellLoc = locateInPolygonRing(p, shell);
            
             if (shellLoc == Locations.Exterior)

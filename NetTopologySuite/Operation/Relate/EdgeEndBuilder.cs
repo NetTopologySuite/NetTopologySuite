@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
@@ -104,7 +105,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                 iPrev--;
             }
 
-            TCoordinate pPrev = edge.GetCoordinate(iPrev);
+            TCoordinate pPrev = edge.Coordinates[iPrev];
 
             // if prev intersection is past the previous vertex, use it instead
             if (eiPrev != null && eiPrev.SegmentIndex >= iPrev)
@@ -112,13 +113,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                 pPrev = eiPrev.Coordinate;
             }
 
-            Label label = new Label(edge.Label);
+            Debug.Assert(edge.Label.HasValue);
 
-            // since edgeStub is oriented opposite to it's parent edge, 
+            Label label = edge.Label.Value;
+
+            // since edgeStub is oriented opposite to its parent edge, 
             // have to flip sides for edge label
             label.Flip();
+
             EdgeEnd<TCoordinate> e = new EdgeEnd<TCoordinate>(
                 edge, eiCurr.Coordinate, pPrev, label);
+
             yield return e;
         }
 
@@ -143,7 +148,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                 yield break;
             }
 
-            TCoordinate pNext = edge.GetCoordinate(iNext);
+            TCoordinate pNext = edge.Coordinates[iNext];
 
             // if the next intersection is in the same segment as the current, use it as the endpoint
             if (eiNext != null && eiNext.SegmentIndex == eiCurr.SegmentIndex)
@@ -151,8 +156,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                 pNext = eiNext.Coordinate;
             }
 
+            Debug.Assert(edge.Label.HasValue);
+
             EdgeEnd<TCoordinate> e = new EdgeEnd<TCoordinate>(
-                edge, eiCurr.Coordinate, pNext, new Label(edge.Label));
+                edge, eiCurr.Coordinate, pNext, edge.Label.Value);
+
             yield return e;
         }
     }

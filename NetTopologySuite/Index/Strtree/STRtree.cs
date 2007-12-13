@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
@@ -65,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         private class StrNode : AbstractNode<IExtents<TCoordinate>>
         {
             public StrNode(Int32 nodeCapacity) :
-                base(nodeCapacity) {}
+                base(nodeCapacity) { }
 
             protected override IExtents<TCoordinate> ComputeBounds()
             {
@@ -108,14 +107,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <summary> 
         /// Constructs an STRtree with the default (10) node capacity.
         /// </summary>
-        public StrTree() : this(10) {}
+        public StrTree() : this(10) { }
 
         /// <summary> 
         /// Constructs an STRtree with the given maximum number of child nodes that
         /// a node may have.
         /// </summary>
         public StrTree(Int32 nodeCapacity) :
-            base(nodeCapacity) {}
+            base(nodeCapacity) { }
 
         /// <summary>
         /// Inserts an item having the given bounds into the tree.
@@ -180,15 +179,17 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
             Int32 minLeafCount = (Int32)Math.Ceiling((childBoundables.Count / (Double)NodeCapacity));
 
-            List<IBoundable<IExtents<TCoordinate>>> sortedChildBoundables 
+            List<IBoundable<IExtents<TCoordinate>>> sortedChildBoundables
                 = new List<IBoundable<IExtents<TCoordinate>>>(childBoundables);
 
             sortedChildBoundables.Sort(XOrdinateComparer);
-            
-            IList[] verticalSlices = VerticalSlices(sortedChildBoundables,
-                                                    (Int32)Math.Ceiling(Math.Sqrt(minLeafCount)));
-            
-            IList tempList = CreateParentBoundablesFromVerticalSlices(verticalSlices, newLevel);
+
+            IList<IList<IBoundable<IExtents<TCoordinate>>>> verticalSlices 
+                = VerticalSlices(sortedChildBoundables, (Int32)Math.Ceiling(Math.Sqrt(minLeafCount)));
+
+            IList<IBoundable<IExtents<TCoordinate>>> tempList 
+                = CreateParentBoundablesFromVerticalSlices(verticalSlices, newLevel);
+
             return tempList;
         }
 
@@ -219,19 +220,18 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             get { return YOrdinateComparer; }
         }
 
-        protected IList CreateParentBoundablesFromVerticalSlices(IList[] verticalSlices, Int32 newLevel)
+        protected IList<IBoundable<IExtents<TCoordinate>>> CreateParentBoundablesFromVerticalSlices(
+            IEnumerable<IList<IBoundable<IExtents<TCoordinate>>>> verticalSlices,
+            Int32 newLevel)
         {
-            Assert.IsTrue(verticalSlices.Length > 0);
-            IList parentBoundables = new ArrayList();
+            Assert.IsTrue(Slice.CountGreaterThan(0, verticalSlices));
+            List<IBoundable<IExtents<TCoordinate>>> parentBoundables 
+                = new List<IBoundable<IExtents<TCoordinate>>>();
 
-            for (Int32 i = 0; i < verticalSlices.Length; i++)
+            foreach (IList<IBoundable<IExtents<TCoordinate>>> verticalSlice in verticalSlices)
             {
-                IList tempList = CreateParentBoundablesFromVerticalSlice(verticalSlices[i], newLevel);
-                
-                foreach (object o in tempList)
-                {
-                    parentBoundables.Add(o);
-                }
+                parentBoundables.AddRange(
+                    CreateParentBoundablesFromVerticalSlice(verticalSlice, newLevel));
             }
 
             return parentBoundables;
@@ -245,7 +245,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
         protected override Func<IExtents<TCoordinate>, IExtents<TCoordinate>, Boolean> IntersectsOp
         {
-            get 
+            get
             {
                 return delegate(IExtents<TCoordinate> left, IExtents<TCoordinate> right)
                        {
@@ -257,27 +257,26 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <param name="childBoundables">
         /// Must be sorted by the x-value of the envelope midpoints.
         /// </param>
-        protected IList[] VerticalSlices(IList childBoundables, Int32 sliceCount)
+        protected IList<IList<IBoundable<IExtents<TCoordinate>>>> VerticalSlices(
+            ICollection<IBoundable<IExtents<TCoordinate>>> childBoundables, Int32 sliceCount)
         {
-            Int32 sliceCapacity = (Int32) Math.Ceiling(childBoundables.Count/(Double) sliceCount);
-            IList[] slices = new IList[sliceCount];
-            IEnumerator i = childBoundables.GetEnumerator();
+            Int32 sliceCapacity = (Int32)Math.Ceiling(childBoundables.Count / (Double)sliceCount);
+            IList<IList<IBoundable<IExtents<TCoordinate>>>> slices = new IList<IBoundable<IExtents<TCoordinate>>>[sliceCount];
 
             for (Int32 j = 0; j < sliceCount; j++)
             {
-                slices[j] = new ArrayList();
+                List<IBoundable<IExtents<TCoordinate>>> sliceChildren
+                    = new List<IBoundable<IExtents<TCoordinate>>>();
+                slices[j] = sliceChildren;
                 Int32 boundablesAddedToSlice = 0;
 
-                /* 
-                 *          Diego Guidi says:
-                 *          the line below introduce an error: 
-                 *          the first element at the iteration (not the first) is lost! 
-                 *          This is simply a different implementation of Iteration in .NET against Java
-                 */
-                // while (i.MoveNext() && boundablesAddedToSlice < sliceCapacity)
-                while (boundablesAddedToSlice < sliceCapacity && i.MoveNext())
+                foreach (IBoundable<IExtents<TCoordinate>> childBoundable in childBoundables)
                 {
-                    IBoundable childBoundable = (IBoundable) i.Current;
+                    if (boundablesAddedToSlice >= sliceCapacity)
+                    {
+                        break;
+                    }
+
                     slices[j].Add(childBoundable);
                     boundablesAddedToSlice++;
                 }
@@ -286,19 +285,19 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return slices;
         }
 
-        private Double avg(Double a, Double b)
-        {
-            return (a + b)/2D;
-        }
+        //private Double avg(Double a, Double b)
+        //{
+        //    return (a + b) / 2D;
+        //}
 
-        private Double getCenterX(IExtents<TCoordinate> e)
-        {
-            return avg(e.MinX, e.MaxX);
-        }
+        //private Double getCenterX(IExtents<TCoordinate> e)
+        //{
+        //    return avg(e.GetMin(Ordinates.X, e.MaxX);
+        //}
 
-        private Double getCenterY(IExtents<TCoordinate> e)
-        {
-            return avg(e.MinY, e.MaxY);
-        }
+        //private Double getCenterY(IExtents<TCoordinate> e)
+        //{
+        //    return avg(e.MinY, e.MaxY);
+        //}
     }
 }

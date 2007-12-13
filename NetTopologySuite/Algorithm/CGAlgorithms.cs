@@ -87,13 +87,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns><see langword="true"/> if p is inside ring.</returns>
         public static Boolean IsPointInRing(TCoordinate p, IEnumerable<TCoordinate> ring)
         {
-            Int32 i;
             Int32 crossings = 0;        // number of segment/ray crossings
-            Int32 nPts = ring.Length;
 
             // For each segment l = (i-1, i), see if it crosses ray 
             // from test point in positive x direction.
-            for (i = 1; i < nPts; i++)
+            foreach (Pair<TCoordinate> pair in Slice.GetOverlappingPairs(ring))
             {
                 Int32 i1;   // point index; i1 = i-1
                 Double x1;  // translated coordinates
@@ -101,9 +99,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 Double x2;
                 Double y2;
 
-                i1 = i - 1;
-                TCoordinate p1 = ring[i];
-                TCoordinate p2 = ring[i1];
+                TCoordinate p1 = pair.Second;
+                TCoordinate p2 = pair.First;
 
                 x1 = p1[Ordinates.X] - p[Ordinates.X];
                 y1 = p1[Ordinates.Y] - p[Ordinates.Y];
@@ -150,10 +147,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             LineIntersector<TCoordinate> lineIntersector = new RobustLineIntersector<TCoordinate>();
 
-            for (Int32 i = 1; i < line.Length; i++)
+            foreach (Pair<TCoordinate> pair in Slice.GetOverlappingPairs(line))
             {
-                TCoordinate p0 = line[i - 1];
-                TCoordinate p1 = line[i];
+                TCoordinate p0 = pair.First;
+                TCoordinate p1 = pair.Second;
                 lineIntersector.ComputeIntersection(p, p0, p1);
 
                 if (lineIntersector.HasIntersection)

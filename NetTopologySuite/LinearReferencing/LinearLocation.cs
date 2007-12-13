@@ -37,9 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
                 throw new ArgumentException(message, "linear");
             }
 
-            LinearLocation<TCoordinate> loc = new LinearLocation<TCoordinate>();
-            loc.SetToEnd(linear);
-            return loc;
+            return setToEnd(linear);
         }
 
         /// <summary>
@@ -134,7 +132,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// Ensures the indexes are valid for a given linear <see cref="IGeometry{TCoordinate}" />.
         /// </summary>
         /// <param name="linear">A linear geometry.</param>
-        private LinearLocation<TCoordinate> Clamp(IGeometry<TCoordinate> linear)
+        public LinearLocation<TCoordinate> Clamp(IGeometry<TCoordinate> linear)
         {
             ILineString line = linear as ILineString;
 
@@ -146,7 +144,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
                 if (_componentIndex >= multiLine.Count)
                 {
-                    return SetToEnd(linear);
+                    return setToEnd(linear);
                 }
                 else
                 {
@@ -169,7 +167,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="linearGeom">A linear geometry.</param>
         /// <param name="minDistance">The minimum allowable distance to a vertex.</param>
-        private LinearLocation<TCoordinate> SnapToVertex(IGeometry<TCoordinate> linearGeom, Double minDistance)
+        public LinearLocation<TCoordinate> SnapToVertex(IGeometry<TCoordinate> linearGeom, Double minDistance)
         {
             if (_segmentFraction <= 0.0 || _segmentFraction >= 1.0)
             {
@@ -224,7 +222,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// the value of this location to moved to refer the end of a linear geometry.
         /// </summary>
         /// <param name="linear">The linear geometry to create a location for.</param>
-        private LinearLocation<TCoordinate> SetToEnd(IGeometry<TCoordinate> linear)
+        private static LinearLocation<TCoordinate> setToEnd(IGeometry<TCoordinate> linear)
         {
             Int32 componentIndex = getLineCount(linear) - 1;
             ILineString<TCoordinate> line = getLine(linear, componentIndex);

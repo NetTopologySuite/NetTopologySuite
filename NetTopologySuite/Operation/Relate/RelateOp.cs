@@ -25,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         public RelateOp(IGeometry<TCoordinate> g0, IGeometry<TCoordinate> g1)
             : base(g0, g1)
         {
-            relate = new RelateComputer<TCoordinate>(arg);
+            relate = new RelateComputer<TCoordinate>(Argument1, Argument2);
         }
 
         public IntersectionMatrix IntersectionMatrix

@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Elements may be empty <c>Point</c>s, but not <see langword="null" />s.
         /// </param>
         public MultiPoint(IEnumerable<IPoint<TCoordinate>> points, IGeometryFactory<TCoordinate> factory)
-            : base(EnumerableConverter.Upcast<IGeometry<TCoordinate>, IPoint<TCoordinate>>(points), factory) { }
+            : base(Enumerable.Upcast<IGeometry<TCoordinate>, IPoint<TCoordinate>>(points), factory) { }
 
         /// <summary>
         /// Constructs a <c>MultiPoint</c>.
@@ -48,9 +48,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </param>
         /// <remarks>
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
+        /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
-        public MultiPoint(IEnumerable<IPoint<TCoordinate>> points) : this(points, DefaultFactory) {}
+        public MultiPoint(IEnumerable<IPoint<TCoordinate>> points) 
+            : this(points, DefaultFactory) {}
 
         public override Dimensions Dimension
         {

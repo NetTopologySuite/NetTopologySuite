@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.Utilities;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
@@ -52,28 +53,18 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         private static Int32 compareOriented(IEnumerable<TCoordinate> pts1, Boolean orientation1, 
             IEnumerable<TCoordinate> pts2, Boolean orientation2)
         {
-            Int32 dir1 = orientation1 ? 1 : -1;
-            Int32 dir2 = orientation2 ? 1 : -1;
+            pts1 = orientation1 ? pts1 : Slice.Reverse(pts1);
+            pts2 = orientation2 ? pts2 : Slice.Reverse(pts2);
 
-            Int32 limit1 = orientation1 ? pts1.Length : -1;
-            Int32 limit2 = orientation2 ? pts2.Length : -1;
+            IEnumerator<TCoordinate> p1Enumerator = pts1.GetEnumerator();
+            IEnumerator<TCoordinate> p2Enumerator = pts2.GetEnumerator();
 
-            Int32 i1 = orientation1 ? 0 : pts1.Length - 1;
-            Int32 i2 = orientation2 ? 0 : pts2.Length - 1;
+            Boolean done1, done2;
 
-            while (true)
+            do
             {
-                Int32 compPt = pts1[i1].CompareTo(pts2[i2]);
-
-                if (compPt != 0)
-                {
-                    return compPt;
-                }
-
-                i1 += dir1;
-                i2 += dir2;
-                Boolean done1 = i1 == limit1;
-                Boolean done2 = i2 == limit2;
+                done1 = p1Enumerator.MoveNext();
+                done2 = p2Enumerator.MoveNext();
 
                 if (done1 && !done2)
                 {
@@ -85,11 +76,16 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                     return 1;
                 }
 
-                if (done1 && done2)
+                Int32 compare = p1Enumerator.Current.CompareTo(p2Enumerator.Current);
+
+                if (compare != 0)
                 {
-                    return 0;
+                    return compare;
                 }
-            }
+
+            } while (!(done1 & done2));
+
+            return 0;
         }
 
         #region IEquatable<OrientedCoordinateArray<TCoordinate>> Members

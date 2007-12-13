@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             IComputable<TCoordinate>, IConvertible
     {
         /// <summary>
-        /// Represents an empty <see cref="Polygon{TCoordinate"/>.
+        /// Represents an empty <see cref="Polygon{TCoordinate}"/>.
         /// </summary>
         public static readonly IPolygon<TCoordinate> Empty =
             new GeometryFactory<TCoordinate>().CreatePolygon(null, null);
@@ -37,12 +37,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// The exterior boundary, or <see langword="null" /> if this <see cref="Polygon{TCoordinate}" />
         /// is the empty point.
         /// </summary>
-        private readonly LinearRing<TCoordinate> _shell;
+        private readonly ILinearRing<TCoordinate> _shell;
 
         /// <summary>
         /// The interior boundaries, if any.
         /// </summary>
-        private List<ILineString<TCoordinate>> _holes;
+        private readonly List<ILineString<TCoordinate>> _holes = new List<ILineString<TCoordinate>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Polygon{TCoordinate}"/> class.
@@ -63,9 +63,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// For create this <see cref="Geometry{TCoordinate}"/> 
         /// is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> 
-        /// <see cref="PrecisionModels.Floating"/>.
+        /// <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
-        public Polygon(ILinearRing<TCoordinate> shell, IEnumerable<ILinearRing<TCoordinate>> holes)
+        public Polygon(ILinearRing<TCoordinate> shell, IEnumerable<ILineString<TCoordinate>> holes)
             : this(shell, holes, DefaultFactory) {}
 
         /// <summary>
@@ -94,21 +94,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 shell = Factory.CreateLinearRing(null);
             }
 
-            if (holes == null)
-            {
-                holes = new ILinearRing<TCoordinate>[] {};
-            }
-
             if (shell.IsEmpty && HasNonEmptyElements(holes))
             {
                 throw new ArgumentException("shell is empty but holes are not");
             }
 
             _shell = shell;
-            _holes = new List<ILineString<TCoordinate>>(holes);
+            _holes.AddRange(holes);
         }
 
-        public override IList<TCoordinate> Coordinates
+        public override ICoordinateSequence<TCoordinate> Coordinates
         {
             get
             {
@@ -368,7 +363,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return;
             }
 
-            ICoordinate[] uniqueCoordinates = new ICoordinate[ring.Coordinates.Length - 1];
+            ICoordinate[] uniqueCoordinates = new ICoordinate[ring.Coordinates.Count - 1];
             Array.Copy(ring.Coordinates, 0, uniqueCoordinates, 0, uniqueCoordinates.Length);
             ICoordinate minCoordinate = CoordinateArrays.MinCoordinate(ring.Coordinates);
             CoordinateArrays.Scroll(uniqueCoordinates, minCoordinate);
@@ -401,34 +396,34 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 }
 
                 // check vertices have correct values
-                ICoordinateSequence seq = ExteriorRing.CoordinateSequence;
+                ICoordinateSequence seq = ExteriorRing.Coordinates;
                 Extents<TCoordinate> env = ExtentsInternal;
 
                 for (Int32 i = 0; i < 5; i++)
                 {
-                    Double x = seq.GetX(i);
+                    Double x = seq[i, Ordinates.X];
 
-                    if (!(x == env.MinX || x == env.MaxX))
+                    if (!(x == env.GetMin(Ordinates.X) || x == env.GetMax(Ordinates.X)))
                     {
                         return false;
                     }
 
-                    Double y = seq.GetY(i);
+                    Double y = seq[i, Ordinates.Y];
 
-                    if (!(y == env.MinY || y == env.MaxY))
+                    if (!(y == env.GetMin(Ordinates.Y) || y == env.GetMax(Ordinates.Y)))
                     {
                         return false;
                     }
                 }
 
                 // check vertices are in right order
-                Double prevX = seq.GetX(0);
-                Double prevY = seq.GetY(0);
+                Double prevX = seq[0, Ordinates.X];
+                Double prevY = seq[0, Ordinates.Y];
 
                 for (Int32 i = 1; i <= 4; i++)
                 {
-                    Double x = seq.GetX(i);
-                    Double y = seq.GetY(i);
+                    Double x = seq[i, Ordinates.X];
+                    Double y = seq[i, Ordinates.Y];
 
                     Boolean xChanged = x != prevX;
                     Boolean yChanged = y != prevY;

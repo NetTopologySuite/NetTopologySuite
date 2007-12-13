@@ -66,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public Label? Label
         {
             get { return _label; }
-            protected set { _label = value; }
+            set { _label = value; }
         }
 
         public TCoordinate Coordinate

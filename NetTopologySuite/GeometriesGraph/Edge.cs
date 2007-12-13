@@ -34,7 +34,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        private readonly List<TCoordinate> _coordinates = new List<TCoordinate>();
+        private readonly ICoordinateSequence<TCoordinate> _coordinates 
+            = CoordinateSequences.CreateEmpty<TCoordinate>();
         private readonly EdgeIntersectionList<TCoordinate> _edgeIntersectionList = null;
         private IExtents<TCoordinate> _extents;
         private string _name;
@@ -52,19 +53,19 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public Edge(IEnumerable<TCoordinate> coordinates) : this(coordinates, null) { }
 
-        public IList<TCoordinate> Points
-        {
-            get { return _coordinates; }
-            set
-            {
-                _coordinates.Clear();
-                _coordinates.AddRange(value);
-            }
-        }
+        //public IList<TCoordinate> Points
+        //{
+        //    get { return _coordinates; }
+        //    set
+        //    {
+        //        _coordinates.Clear();
+        //        _coordinates.AddRange(value);
+        //    }
+        //}
 
         public Int32 PointCount
         {
-            get { return Points.Count; }
+            get { return _coordinates.Count; }
         }
 
         public string Name
@@ -73,29 +74,26 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             set { _name = value; }
         }
 
-        public IEnumerable<TCoordinate> Coordinates
+        public ICoordinateSequence<TCoordinate> Coordinates
         {
             get
             {
-                return _coordinates.AsReadOnly();
+                return _coordinates;
             }
         }
 
-        public IEnumerable<TCoordinate> CoordinatesReversed
+        public ICoordinateSequence<TCoordinate> CoordinatesReversed
         {
             get
             {
-                for (int i = _coordinates.Count - 1; i >= 0; i--)
-                {
-                    yield return _coordinates[i];
-                }
+                return _coordinates.Reversed;
             }
         }
 
-        public TCoordinate GetCoordinate(Int32 i)
-        {
-            return Points[i];
-        }
+        //public TCoordinate GetCoordinate(Int32 i)
+        //{
+        //    return Points[i];
+        //}
 
         public override TCoordinate Coordinate
         {
@@ -177,7 +175,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                if (!Label.IsArea())
+                if (!Label.Value.IsArea())
                 {
                     return false;
                 }
@@ -203,7 +201,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 TCoordinate[] newPts = new TCoordinate[2];
                 newPts[0] = Points[0];
                 newPts[1] = Points[1];
-                Edge<TCoordinate> newEdge = new Edge<TCoordinate>(newPts, Label.ToLineLabel(Label));
+                Label lineLabel = GeometriesGraph.Label.ToLineLabel(Label.Value);
+                Edge<TCoordinate> newEdge = new Edge<TCoordinate>(newPts, lineLabel);
                 return newEdge;
             }
         }
@@ -269,7 +268,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public override void ComputeIntersectionMatrix(IntersectionMatrix im)
         {
-            UpdateIntersectionMatrix(Label, im);
+            UpdateIntersectionMatrix(Label.Value, im);
         }
 
         /// <summary>

@@ -185,12 +185,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
                 return;
             }
 
-            // test each corner of rectangle for inclusion
-            TCoordinate rectPt = new TCoordinate();
-
             for (Int32 i = 0; i < 4; i++)
             {
-                _rectSeq.GetCoordinate(i, rectPt);
+                // test each corner of rectangle for inclusion
+                TCoordinate rectPt;
+
+                rectPt = _rectSeq[i];
 
                 if (!elementExtents.Contains(rectPt))
                 {

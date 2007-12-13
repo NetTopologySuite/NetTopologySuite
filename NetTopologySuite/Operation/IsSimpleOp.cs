@@ -62,12 +62,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation
 
         public Boolean IsSimple(ILineString<TCoordinate> geom)
         {
-            return IsSimpleLinearGeometry(geom);
+            return isSimpleLinearGeometry(geom);
         }
 
         public Boolean IsSimple(IMultiLineString<TCoordinate> geom)
         {
-            return IsSimpleLinearGeometry(geom);
+            return isSimpleLinearGeometry(geom);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
             return true;
         }
 
-        private Boolean IsSimpleLinearGeometry(IGeometry<TCoordinate> geom)
+        private static Boolean isSimpleLinearGeometry(IGeometry<TCoordinate> geom)
         {
             if (geom.IsEmpty)
             {
@@ -159,16 +159,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// degree of each endpoint. The degree of endpoints of closed lines
         /// must be exactly 2.
         /// </summary>
-        private Boolean hasClosedEndpointIntersection(PlanarGraph<TCoordinate> graph)
+        private static Boolean hasClosedEndpointIntersection(PlanarGraph<TCoordinate> graph)
         {
             SortedList<TCoordinate, EndpointInfo> endPoints = new SortedList<TCoordinate, EndpointInfo>();
 
             foreach (Edge<TCoordinate> e in graph.Edges)
             {
                 Boolean isClosed = e.IsClosed;
-                TCoordinate p0 = e.GetCoordinate(0);
+                TCoordinate p0 = e.Coordinates[0];
                 addEndpoint(endPoints, p0, isClosed);
-                TCoordinate p1 = e.GetCoordinate(e.PointCount - 1);
+                TCoordinate p1 = e.Coordinates[e.PointCount - 1];
                 addEndpoint(endPoints, p1, isClosed);
             }
 

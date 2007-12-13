@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         private readonly List<EdgeEnd<TCoordinate>> _edgeEnds = new List<EdgeEnd<TCoordinate>>();
 
         public EdgeEndBundle(EdgeEnd<TCoordinate> e)
-            : base(e.Edge, e.Coordinate, e.DirectedCoordinate, new Label(e.Label))
+            : base(e.Edge, e.Coordinate, e.DirectedCoordinate, e.Label)
         {
             Insert(e);
         }
@@ -61,9 +61,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 
             foreach (EdgeEnd<TCoordinate> e in _edgeEnds)
             {
-                if (e.Label.IsArea())
+                if (e.Label.Value.IsArea())
                 {
                     isArea = true;
+                    break;
                 }
             }
 
@@ -94,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// </summary>
         public void UpdateIntersectionMatrix(IntersectionMatrix im)
         {
-            Edge<TCoordinate>.UpdateIntersectionMatrix(Label, im);
+            Edge<TCoordinate>.UpdateIntersectionMatrix(Label.Value, im);
         }
 
         public override void Write(StreamWriter outstream)
@@ -131,7 +132,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 
             foreach (EdgeEnd<TCoordinate> e in _edgeEnds)
             {
-                loc = e.Label.GetLocation(geomIndex);
+                loc = e.Label.Value[geomIndex][Positions.On];
 
                 if (loc == Locations.Boundary)
                 {
@@ -156,7 +157,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                 loc = GeometryGraph<TCoordinate>.DetermineBoundary(boundaryCount);
             }
 
-            Label.SetLocation(geomIndex, loc);
+            Label = new Label(Label.Value, geomIndex, loc);
         }
 
         // Compute the labeling for each side
@@ -181,18 +182,18 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         {
             foreach (EdgeEnd<TCoordinate> e in _edgeEnds)
             {
-                if (e.Label.IsArea())
+                if (e.Label.Value.IsArea())
                 {
-                    Locations loc = e.Label.GetLocation(geomIndex, side);
+                    Locations loc = e.Label.Value[geomIndex, side];
 
                     if (loc == Locations.Interior)
                     {
-                        Label.SetLocation(geomIndex, side, Locations.Interior);
+                        Label = new Label(Label.Value, geomIndex, side, loc);
                         return;
                     }
                     else if (loc == Locations.Exterior)
                     {
-                        Label.SetLocation(geomIndex, side, Locations.Exterior);
+                        Label = new Label(Label.Value, geomIndex, side, loc);
                     }
                 }
             }

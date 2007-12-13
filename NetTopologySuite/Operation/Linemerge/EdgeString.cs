@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
@@ -18,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         private readonly List<LineMergeDirectedEdge<TCoordinate>> _directedEdges 
             = new List<LineMergeDirectedEdge<TCoordinate>>();
 
-        private List<TCoordinate> _coordinates;
+        private ICoordinateSequence<TCoordinate> _coordinates;
 
         /// <summary>
         /// Constructs an EdgeString with the given factory used to convert this EdgeString
@@ -52,7 +54,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                 Int32 forwardDirectedEdges = 0;
                 Int32 reverseDirectedEdges = 0;
 
-                List<TCoordinate> coordinateList = new List<TCoordinate>();
+                ICoordinateSequence<TCoordinate> coordinateList =
+                    CoordinateSequences.CreateEmpty<TCoordinate>();
 
                 foreach (LineMergeDirectedEdge<TCoordinate> directedEdge in _directedEdges)
                 {
@@ -66,16 +69,18 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                     }
 
                     LineMergeEdge<TCoordinate> edge = directedEdge.Edge as LineMergeEdge<TCoordinate>;
-
+                    Debug.Assert(edge != null);
                     coordinateList.Add(edge.Line.Coordinates, false, directedEdge.EdgeDirection);
                 }
 
                 if (reverseDirectedEdges > forwardDirectedEdges)
                 {
-                    coordinateList.Reverse();
+                    _coordinates = coordinateList.Reversed;
                 }
-
-                _coordinates = coordinateList;
+                else
+                {
+                    _coordinates = coordinateList;
+                }
             }
 
             return _coordinates;

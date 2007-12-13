@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using GeoAPI.Coordinates;
@@ -23,13 +22,13 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             return simp.Simplify();
         }
 
-        private readonly IEnumerable<TCoordinate> _coordinates;
+        private readonly ICoordinateSequence<TCoordinate> _coordinates;
         private Double _distanceTolerance;
         private Int32 _outputCoordinateCount;
-        private LineSegment<TCoordinate> _segment = new LineSegment<TCoordinate>();
+        private readonly LineSegment<TCoordinate> _segment = new LineSegment<TCoordinate>();
         private readonly List<BitVector32> _useCoordinate = new List<BitVector32>();
 
-        public DouglasPeuckerLineSimplifier(IEnumerable<TCoordinate> coordinates)
+        public DouglasPeuckerLineSimplifier(ICoordinateSequence<TCoordinate> coordinates)
         {
             _coordinates = coordinates;
         }
@@ -42,15 +41,18 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
 
         public IEnumerable<TCoordinate> Simplify()
         {
-            simplifySection(0, _coordinates.Length - 1);
-            List<TCoordinate> coordList = new List<TCoordinate>();
+            simplifySection(0, _coordinates.Count - 1);
 
-            for (Int32 i = 0; i < _coordinates.Length; i++)
+            Int32 index = 0;
+
+            foreach (TCoordinate coordinate in _coordinates)
             {
-                if (getUseCoordinate(i))
+                if (getUseCoordinate(index))
                 {
-                    coordList.Add(new TCoordinate(_coordinates[i]));
+                    yield return coordinate;
                 }
+
+                index += 1;
             }
         }
 
@@ -61,14 +63,14 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
                 return;
             }
 
-            seg.P0 = _coordinates[i];
-            seg.P1 = _coordinates[j];
+            _segment.P0 = _coordinates[i];
+            _segment.P1 = _coordinates[j];
             Double maxDistance = -1.0;
             Int32 maxIndex = i;
 
             for (Int32 k = i + 1; k < j; k++)
             {
-                Double distance = seg.Distance(_coordinates[k]);
+                Double distance = _segment.Distance(_coordinates[k]);
 
                 if (distance > maxDistance)
                 {

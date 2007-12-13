@@ -30,7 +30,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<TCoordinate>, IConvertible
     {
-        private readonly NodeMap<TCoordinate> _nodes = new NodeMap<TCoordinate>(new RelateNodeFactory<TCoordinate>());
+        private readonly NodeMap<TCoordinate> _nodes 
+            = new NodeMap<TCoordinate>(new RelateNodeFactory<TCoordinate>());
 
         //public IEnumerator GetNodeEnumerator()
         //{
@@ -111,6 +112,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             foreach (EdgeEnd<TCoordinate> end in ee)
             {
                 _nodes.Add(end);   
+            }
+        }
+
+        public IEnumerable<RelateNode<TCoordinate>> Nodes
+        {
+            get
+            {
+                foreach (Node<TCoordinate> node in _nodes)
+                {
+                    yield return node as RelateNode<TCoordinate>;
+                }
             }
         }
     }

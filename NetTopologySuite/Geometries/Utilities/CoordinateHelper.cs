@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
-using NPack;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities

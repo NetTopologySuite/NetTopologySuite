@@ -28,24 +28,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// This array must not contain <see langword="null" /> elements.
         /// </param>
         /// <param name="factory"></param>
-        public LinearRing(ICoordinateSequence points, IGeometryFactory factory) : base(points, factory)
+        public LinearRing(ICoordinateSequence<TCoordinate> points, IGeometryFactory<TCoordinate> factory) 
+            : base(points, factory)
         {
-            ValidateConstruction();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void ValidateConstruction()
-        {
-            if (!IsEmpty && !base.IsClosed)
-            {
-                throw new ArgumentException("points must form a closed linestring");
-            }
-            if (CoordinateSequence.Count >= 1 && CoordinateSequence.Count <= 3)
-            {
-                throw new ArgumentException("Number of points must be 0 or >3");
-            }
+            validateConstruction();
         }
 
         public override Boolean IsSimple
@@ -59,9 +45,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return OgcGeometryType.LineString; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public override Boolean IsClosed
         {
             get { return true; }
@@ -75,11 +58,24 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="points">The points used for create this instance.</param>
         /// <remarks>
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
+        /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public LinearRing(IEnumerable<TCoordinate> points) :
             this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) {}
 
         /* END ADDED BY MPAUL42: monoGIS team */
+
+        private void validateConstruction()
+        {
+            if (!IsEmpty && !base.IsClosed)
+            {
+                throw new ArgumentException("points must form a closed linestring");
+            }
+
+            if (Coordinates.Count >= 1 && Coordinates.Count <= 3)
+            {
+                throw new ArgumentException("Number of points must be 0 or > 3");
+            }
+        }
     }
 }

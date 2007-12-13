@@ -160,7 +160,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             if (newCollection is IMultiPoint)
             {
                 IEnumerable<IPoint<TCoordinate>> points =
-                    EnumerableConverter.Downcast<IPoint<TCoordinate>, IGeometry<TCoordinate>>(editedGeometries);
+                    Enumerable.Downcast<IPoint<TCoordinate>, IGeometry<TCoordinate>>(editedGeometries);
 
                 return _factory.CreateMultiPoint(points);
             }
@@ -168,7 +168,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             if (newCollection is IMultiLineString)
             {
                 IEnumerable<ILineString<TCoordinate>> lines =
-                    EnumerableConverter.Downcast<ILineString<TCoordinate>, IGeometry<TCoordinate>>(editedGeometries);
+                    Enumerable.Downcast<ILineString<TCoordinate>, IGeometry<TCoordinate>>(editedGeometries);
 
                 return _factory.CreateMultiLineString(lines);
             }
@@ -176,7 +176,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             if (newCollection is IMultiPolygon)
             {
                 IEnumerable<IPolygon<TCoordinate>> polygons =
-                    EnumerableConverter.Downcast<IPolygon<TCoordinate>, IGeometry<TCoordinate>>(editedGeometries);
+                    Enumerable.Downcast<IPolygon<TCoordinate>, IGeometry<TCoordinate>>(editedGeometries);
 
                 return _factory.CreateMultiPolygon(polygons);
             }

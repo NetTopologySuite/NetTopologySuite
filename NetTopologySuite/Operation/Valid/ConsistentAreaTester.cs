@@ -5,6 +5,7 @@ using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
 using GisSharpBlog.NetTopologySuite.Operation.Relate;
+using NPack;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
@@ -27,19 +28,19 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         private readonly RelateNodeGraph<TCoordinate> _nodeGraph = new RelateNodeGraph<TCoordinate>();
 
         // the intersection point found (if any)
-        private ICoordinate invalidPoint;
-
+        private TCoordinate _invalidPoint;
+         
         public ConsistentAreaTester(GeometryGraph<TCoordinate> geomGraph)
         {
-            this._geomGraph = geomGraph;
+            _geomGraph = geomGraph;
         }
 
         /// <summary>
         /// Returns the intersection point, or <see langword="null" /> if none was found.
         /// </summary>        
-        public ICoordinate InvalidPoint
+        public TCoordinate InvalidPoint
         {
-            get { return invalidPoint; }
+            get { return _invalidPoint; }
         }
 
         public Boolean IsNodeConsistentArea
@@ -54,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
                 if (intersector.HasProperIntersection)
                 {
-                    invalidPoint = intersector.ProperIntersectionPoint;
+                    _invalidPoint = intersector.ProperIntersectionPoint;
                     return false;
                 }
 
@@ -71,16 +72,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         {
             get
             {
-                for (IEnumerator nodeIt = _nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext();)
+                foreach (RelateNode<TCoordinate> node in _nodeGraph.Nodes)
                 {
-                    RelateNode node = (RelateNode) nodeIt.Current;
 
                     if (!node.Edges.IsAreaLabelsConsistent)
                     {
-                        invalidPoint = (ICoordinate) node.Coordinate.Clone();
+                        _invalidPoint = (TCoordinate)node.Coordinate.Clone();
                         return false;
                     }
                 }
+
                 return true;
             }
         }
@@ -101,19 +102,18 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         {
             get
             {
-                for (IEnumerator nodeIt = _nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext();)
+                foreach (RelateNode<TCoordinate> node in _nodeGraph.Nodes)
                 {
-                    RelateNode node = (RelateNode) nodeIt.Current;
-                    for (IEnumerator i = node.Edges.GetEnumerator(); i.MoveNext();)
+                    foreach (EdgeEndBundle<TCoordinate> eeb in node.Edges)
                     {
-                        EdgeEndBundle eeb = (EdgeEndBundle) i.Current;
                         if (eeb.EdgeEnds.Count > 1)
                         {
-                            invalidPoint = eeb.Edge.GetCoordinate(0);
+                            _invalidPoint = eeb.Edge.Coordinates[0];
                             return true;
                         }
                     }
                 }
+
                 return false;
             }
         }

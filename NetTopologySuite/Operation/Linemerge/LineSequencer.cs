@@ -286,7 +286,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         private static IEnumerable<DirectedEdge<TCoordinate>> findSequence(Subgraph<TCoordinate> graph)
         {
             IEnumerable<GraphComponent<TCoordinate>> edges =
-                EnumerableConverter.Upcast<GraphComponent<TCoordinate>, Edge<TCoordinate>>(graph.Edges);
+                Enumerable.Upcast<GraphComponent<TCoordinate>, Edge<TCoordinate>>(graph.Edges);
 
             GraphComponent<TCoordinate>.SetVisited(edges, false);
 

@@ -65,17 +65,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public const Double MaximumPreciseValue = 9007199254740992.0;
 
-        private readonly PrecisionModels _modelType;
+        private readonly PrecisionModelType _modelType;
         private readonly Double _scale;
 
         /// <summary> 
         /// Creates a <see cref="PrecisionModel{TCoordinate}"/> with a default precision
-        /// of <see cref="PrecisionModels.Floating"/>.
+        /// of <see cref="PrecisionModelType.Floating"/>.
         /// </summary>
         public PrecisionModel()
         {
             // default is floating precision
-            _modelType = PrecisionModels.Floating;
+            _modelType = PrecisionModelType.Floating;
         }
 
         /// <summary>
@@ -86,11 +86,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="modelType">
         /// The type of the precision model.
         /// </param>
-        public PrecisionModel(PrecisionModels modelType)
+        public PrecisionModel(PrecisionModelType modelType)
         {
             _modelType = modelType;
 
-            if (modelType == PrecisionModels.Fixed)
+            if (modelType == PrecisionModelType.Fixed)
             {
                 _scale = 1.0;
             }
@@ -109,7 +109,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </remarks>
         public PrecisionModel(Double scale)
         {
-            _modelType = PrecisionModels.Fixed;
+            _modelType = PrecisionModelType.Fixed;
             _scale = Math.Abs(scale);
         }
 
@@ -140,7 +140,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary> 
         /// Gets the type of this <see cref="PrecisionModel{TCoordinate}"/>.
         /// </summary>
-        public PrecisionModels PrecisionModelType
+        public PrecisionModelType PrecisionModelType
         {
             get
             {
@@ -158,7 +158,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public Boolean IsFloating
         {
-            get { return _modelType == PrecisionModels.Floating || _modelType == PrecisionModels.FloatingSingle; }
+            get
+            {
+                return _modelType == PrecisionModelType.Floating
+                    || _modelType == PrecisionModelType.FloatingSingle;
+            }
         }
 
         public ICoordinate MakePrecise(ICoordinate coord)
@@ -178,13 +182,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </param>
         public Double MakePrecise(Double val)
         {
-            if (_modelType == PrecisionModels.FloatingSingle)
+            if (_modelType == PrecisionModelType.FloatingSingle)
             {
                 float floatSingleVal = (float)val;
                 return floatSingleVal;
             }
 
-            if (_modelType == PrecisionModels.Fixed)
+            if (_modelType == PrecisionModelType.Fixed)
             {
                 // return Math.Round(val * scale) / scale;         
                 // Diego Guidi say's: i use the Java Round algorithm (used in JTS 1.6)
@@ -209,11 +213,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             {
                 switch (_modelType)
                 {
-                    case PrecisionModels.Floating:
+                    case PrecisionModelType.Floating:
                         return FloatingPrecisionDigits;
-                    case PrecisionModels.FloatingSingle:
+                    case PrecisionModelType.FloatingSingle:
                         return FloatingSinglePrecisionDigits;
-                    case PrecisionModels.Fixed:
+                    case PrecisionModelType.Fixed:
                         return FixedPrecisionDigits + (Int32)Math.Ceiling(Math.Log(Scale) / Math.Log(10));
                     default:
                         throw new ArgumentOutOfRangeException(_modelType.ToString());
@@ -233,7 +237,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public TCoordinate MakePrecise(TCoordinate coord)
         {
             // optimization for full precision
-            if (_modelType == PrecisionModels.Floating)
+            if (_modelType == PrecisionModelType.Floating)
             {
                 return coord;
             }
@@ -252,15 +256,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             string description = "UNKNOWN";
 
-            if (_modelType == PrecisionModels.Floating)
+            if (_modelType == PrecisionModelType.Floating)
             {
                 description = "Floating";
             }
-            else if (_modelType == PrecisionModels.FloatingSingle)
+            else if (_modelType == PrecisionModelType.FloatingSingle)
             {
                 description = "Floating-Single";
             }
-            else if (_modelType == PrecisionModels.Fixed)
+            else if (_modelType == PrecisionModelType.Fixed)
             {
                 description = "Fixed (Scale=" + Scale + ")";
             }
@@ -340,7 +344,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Int32 CompareTo(IPrecisionModel<TCoordinate> other)
         {
-            return CompareTo((IPrecisionModel) other);
+            return CompareTo((IPrecisionModel)other);
         }
 
         #endregion

@@ -91,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             Label? label = node.Label;
 
-            if (label != null && label.Value[geomIndex] == Locations.Boundary)
+            if (label != null && label.Value[geomIndex][Positions.On] == Locations.Boundary)
             {
                 return true;
             }

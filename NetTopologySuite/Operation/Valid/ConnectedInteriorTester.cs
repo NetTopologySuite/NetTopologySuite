@@ -95,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
             do
             {
-                Assert.IsTrue(de != null, "found null Directed Edge");
+                Debug.Assert(de != null);
                 de.Visited = true;
                 de = de.Next;
             } while (de != startDe);
@@ -151,7 +151,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             if (g is IPolygon<TCoordinate>)
             {
                 IPolygon<TCoordinate> p = g as IPolygon<TCoordinate>;
-                visitInteriorRing(p.Shell, graph);
+                visitInteriorRing(p.ExteriorRing, graph);
             }
 
             if (g is IMultiPolygon<TCoordinate>)
@@ -160,7 +160,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
                 foreach (IPolygon<TCoordinate> p in mp)
                 {
-                    visitInteriorRing(p.Shell, graph);
+                    visitInteriorRing(p.ExteriorRing, graph);
                 }
             }
         }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Coordinates;
+using GeoAPI.Geometries;
 using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Index.Quadtree;
 using NPack.Interfaces;
@@ -25,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// An alternative would be to use an ordered set based on the values
         /// of the edge coordinates.
         /// </summary>
-        private readonly ISpatialIndex<TCoordinate, Edge<TCoordinate>> _index 
+        private readonly ISpatialIndex<IExtents<TCoordinate>, Edge<TCoordinate>> _index 
             = new Quadtree<TCoordinate, Edge<TCoordinate>>();
 
 
@@ -61,6 +62,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         }
 
         #endregion
+
+        public void RemoveRange(IEnumerable<Edge<TCoordinate>> items)
+        {
+            foreach (Edge<TCoordinate> item in items)
+            {
+                Remove(item);
+            }
+        }
 
         // <FIX> fast lookup for edges
         /// <summary>

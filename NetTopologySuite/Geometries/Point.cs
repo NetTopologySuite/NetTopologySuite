@@ -49,11 +49,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             _coordinate = coordinate;
         }
 
-        public override IList<TCoordinate> Coordinates
+        public override ICoordinateSequence<TCoordinate> Coordinates
         {
             get
             {
-                return new TCoordinate[] { Coordinate };
+                return CoordinateSequences.Create(Coordinate);
             }
         }
 
@@ -209,7 +209,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="z">The z coordinate.</param>
         /// /// <remarks>
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
+        /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> set to </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public Point(Double x, Double y, Double z) :
             this(new TCoordinate(x, y, z), DefaultFactory) { }
@@ -221,7 +221,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="y">The y coordinate.</param>
         /// /// <remarks>
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
+        /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> set to </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public Point(Double x, Double y)
             : this(new TCoordinate(x, y), DefaultFactory) { }

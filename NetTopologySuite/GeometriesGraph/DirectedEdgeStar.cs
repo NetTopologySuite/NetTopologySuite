@@ -141,11 +141,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
                 for (Int32 i = 0; i < 2; i++)
                 {
-                    Locations eLoc = eLabel[i];
+                    Locations eLoc = eLabel[i].On;
 
                     if (eLoc == Locations.Interior || eLoc == Locations.Boundary)
                     {
-                        _label.SetLocation(i, Locations.Interior);
+                        _label = new Label(_label, i, Locations.Interior);
                     }
                 }
             }

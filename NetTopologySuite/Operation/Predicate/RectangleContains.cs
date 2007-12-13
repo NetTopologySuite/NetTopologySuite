@@ -105,16 +105,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
 
         private Boolean isLineStringContainedInBoundary(ILineString<TCoordinate> line)
         {
-            ICoordinateSequence seq = line.CoordinateSequence;
-            TCoordinate p0 = new Coordinate();
-            TCoordinate p1 = new Coordinate();
+            ICoordinateSequence<TCoordinate> seq = line.Coordinates;
 
             for (Int32 i = 0; i < seq.Count - 1; i++)
             {
-                seq.GetCoordinate(i, p0);
-                seq.GetCoordinate(i + 1, p1);
+                TCoordinate p0 = seq[i];
+                TCoordinate p1= seq[i + 1];
 
-                if (!IsLineSegmentContainedInBoundary(p0, p1))
+                if (!isLineSegmentContainedInBoundary(p0, p1))
                 {
                     return false;
                 }
@@ -123,7 +121,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
             return true;
         }
 
-        private Boolean IsLineSegmentContainedInBoundary(TCoordinate p0, TCoordinate p1)
+        private Boolean isLineSegmentContainedInBoundary(TCoordinate p0, TCoordinate p1)
         {
             if (p0.Equals(p1))
             {

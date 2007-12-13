@@ -5,6 +5,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
+using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
@@ -92,7 +93,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             if (!_minDe.IsForward)
             {
                 _minDe = _minDe.Sym;
-                _minIndex = _minDe.Edge.Coordinates.Length - 1;
+                _minIndex = _minDe.Edge.Coordinates.Count - 1;
             }
         }
 
@@ -103,8 +104,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
              * If these segments are both above or below the rightmost point, we need to
              * determine their relative orientation to decide which is rightmost.
              */
-            IEnumerable<TCoordinate> pts = _minDe.Edge.Coordinates;
-            Assert.IsTrue(_minIndex > 0 && _minIndex < pts.Length,
+            ICoordinateSequence<TCoordinate> pts = _minDe.Edge.Coordinates;
+            Assert.IsTrue(_minIndex > 0 && _minIndex < pts.Count,
                           "rightmost point expected to be interior vertex of edge");
             
             TCoordinate pPrev = pts[_minIndex - 1];
@@ -139,17 +140,22 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private void checkForRightmostCoordinate(DirectedEdge<TCoordinate> de)
         {
             IEnumerable<TCoordinate> coordinates = de.Edge.Coordinates;
+
+            Int32 i = 0;
+
             foreach (TCoordinate coordinate in coordinates)
             {
                 // only check vertices which are the start or end point of a non-horizontal segment
                 // <FIX> MD 19 Sep 03 - NO!  we can test all vertices, since the rightmost 
                 //                    - must have a non-horiz segment adjacent to it
-                if (_minCoord == null || coordinate.X > _minCoord.X)
+                if (CoordinateHelper.IsEmpty(_minCoord) || coordinate[Ordinates.X] > _minCoord[Ordinates.X])
                 {
                     _minDe = de;
                     _minIndex = i;
                     _minCoord = coordinate;
                 }
+
+                i += 1;
             }
         }
 

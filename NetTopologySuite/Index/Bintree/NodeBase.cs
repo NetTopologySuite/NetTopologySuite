@@ -229,7 +229,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             {
                 if (SubNode2 == null)
                 {
-                    SubNode2 = CreateSubNode(0);
+                    SubNode2 = CreateSubNode(1);
                 }
 
                 return SubNode2;
