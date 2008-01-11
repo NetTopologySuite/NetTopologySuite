@@ -7,11 +7,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
     /// <summary>
     /// A node of a <see cref="BinTree{TCoordinates}"/>.
     /// </summary>
-    public class Node<TItem> : NodeBase<TItem>
+    public class Node<TItem> : BaseBinNode<TItem>
     {
         public static Node<TItem> CreateNode(Interval itemInterval)
         {
-            Key key = new Key(itemInterval);
+            BinTreeKey key = new BinTreeKey(itemInterval);
 
             Node<TItem> node = new Node<TItem>(key.Interval, key.Level);
             return node;
@@ -85,7 +85,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// Returns the smallest existing
         /// node containing the envelope.
         /// </summary>
-        public NodeBase<TItem> Find(Interval searchInterval)
+        public BaseBinNode<TItem> Find(Interval searchInterval)
         {
             Node<TItem> subNode = GetSubNode(searchInterval, _center);
 

@@ -20,10 +20,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     {
         private readonly OverlayOp<TCoordinate> _op;
         private readonly IGeometryFactory<TCoordinate> _geometryFactory;
-        //private readonly PointLocator<TCoordinate> _ptLocator;
 
-        private IEnumerable<Edge<TCoordinate>> _lineEdges;
-        //private IEnumerable<ILineString<TCoordinate>> resultLines;
+        // [codekaizen 2008-01-06] field '_ptLocator' isn't used in JTS source LineBuilder.java rev. 1.15
+        //private readonly PointLocator<TCoordinate> _ptLocator;
 
         public LineBuilder(OverlayOp<TCoordinate> op, IGeometryFactory<TCoordinate> geometryFactory)
         {
@@ -39,8 +38,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         public IEnumerable<ILineString<TCoordinate>> Build(SpatialFunctions opCode)
         {
             findCoveredLineEdges();
-            collectLines(opCode);
-            return buildLines(opCode);
+            IEnumerable<Edge<TCoordinate>> edges = collectLines(opCode);
+            return buildLines(opCode, edges);
         }
 
         /// <summary>
@@ -152,9 +151,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             }
         }
 
-        private IEnumerable<ILineString<TCoordinate>> buildLines(SpatialFunctions opCode)
+        // [codekaizen 2008-01-06] parameter 'opCode' isn't used in JTS source LineBuilder.java rev. 1.15
+        private IEnumerable<ILineString<TCoordinate>> buildLines(SpatialFunctions opCode, IEnumerable<Edge<TCoordinate>> edges)
         {
-            foreach (Edge<TCoordinate> edge in _lineEdges)
+            foreach (Edge<TCoordinate> edge in edges)
             {
                 ILineString<TCoordinate> line = _geometryFactory.CreateLineString(edge.Coordinates);
                 yield return line;
@@ -162,6 +162,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             }
         }
 
+        // [codekaizen 2008-01-06] method isn't used in JTS source LineBuilder.java rev. 1.15
         //private void labelIsolatedLines(IEnumerable<Edge<TCoordinate>> edgesList)
         //{
         //    foreach (Edge<TCoordinate> edge in edgesList)

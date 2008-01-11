@@ -1512,27 +1512,6 @@
             Gets an identity matrix with the same row rank.
             </summary>
         </member>
-        <member name="T:NPack.Interfaces.IInvertible`1">
-            <summary>
-            Every class that defines an unary inverse operation such that
-            <c>x * inverse(x) ~= e</c> and <c>inverse(inverse(x)) ~= x</c> for all x except Zero
-            should consider implementing this interface. 
-            Types that might want to implement this would be non-integral types <see cref="T:System.Single"/>, 
-            <see cref="T:System.Double"/>, <see cref="T:System.Decimal"/>, but not integral types like <see cref="T:System.Int16"/>, 
-            <see cref="T:System.Int32"/>, or <see cref="T:System.Int64"/>, etc.
-            </summary>
-            <typeparam name="T">Type which is invertible.</typeparam>
-            <remarks>
-            Adapted from an article on lambda-computing.com: 
-            http://www.lambda-computing.com/publications/articles/generics/IArithmetic.cs.
-            </remarks>
-        </member>
-        <member name="M:NPack.Interfaces.IInvertible`1.Inverse">
-            <summary>
-            Returns the inverse.
-            </summary>
-            <returns>The inverse.</returns>
-        </member>
         <member name="T:NPack.DoubleComplexComponent">
             <summary>
             A matrix component or matrix element which represents a complex number with a 
@@ -1890,6 +1869,27 @@
             <returns>
             Sum of the diagonal elements.
             </returns>
+        </member>
+        <member name="T:NPack.Interfaces.IInvertible`1">
+            <summary>
+            Every class that defines an unary inverse operation such that
+            <c>x * inverse(x) ~= e</c> and <c>inverse(inverse(x)) ~= x</c> for all x except Zero
+            should consider implementing this interface. 
+            Types that might want to implement this would be non-integral types <see cref="T:System.Single"/>, 
+            <see cref="T:System.Double"/>, <see cref="T:System.Decimal"/>, but not integral types like <see cref="T:System.Int16"/>, 
+            <see cref="T:System.Int32"/>, or <see cref="T:System.Int64"/>, etc.
+            </summary>
+            <typeparam name="T">Type which is invertible.</typeparam>
+            <remarks>
+            Adapted from an article on lambda-computing.com: 
+            http://www.lambda-computing.com/publications/articles/generics/IArithmetic.cs.
+            </remarks>
+        </member>
+        <member name="M:NPack.Interfaces.IInvertible`1.Inverse">
+            <summary>
+            Returns the inverse.
+            </summary>
+            <returns>The inverse.</returns>
         </member>
         <member name="T:NPack.Interfaces.IEigenvalueDecomposition`1">
             <summary>
@@ -2710,6 +2710,29 @@
             <param name="row">The index of the row of the element.</param>
             <param name="column">The index of the column of the element.</param>
             <returns>The value of the element at the specified row and column.</returns>
+        </member>
+        <member name="T:NPack.Interfaces.IDivisible`2">
+            <summary>
+            Every class that defines a / operation 
+            like <c>T operator / (T a, T b)</c> should consider
+            implementing this interface.
+            </summary>
+            <typeparam name="TDivisor">
+            Type which divides the <see cref="T:NPack.Interfaces.IDivisible`2"/> instance.
+            </typeparam>
+            <typeparam name="TQuotient">Result type of the division operation.</typeparam>
+            <remarks>
+            Adapted from an article on lambda-computing.com: 
+            http://www.lambda-computing.com/publications/articles/generics/IArithmetic.cs.
+            </remarks>
+        </member>
+        <member name="M:NPack.Interfaces.IDivisible`2.Divide(`0)">
+            <summary>
+            Returns the quotient of the Object and <paramref name="b"/>.
+            It must not modify the value of the Object.
+            </summary>
+            <param name="b">The second operand.</param>
+            <returns>The quotient.</returns>
         </member>
         <member name="T:NPack.SingleComplexComponent">
             <summary>
@@ -4124,6 +4147,26 @@
             Gets the length, or number of components, in the vectors stored
             in the buffer.
             </summary>
+        </member>
+        <member name="T:NPack.Interfaces.IComputable`2">
+            <summary>
+            Defines a type which has typical numerically computable properties.
+            </summary>
+            <typeparam name="TInput">Input type of argument.</typeparam>
+            <typeparam name="TOutput">Result type of computation.</typeparam>
+        </member>
+        <member name="M:NPack.Interfaces.IComputable`2.Abs">
+            <summary>
+            Computes the absolute value of the value.
+            </summary>
+            <returns>The absolute value of the IComputable value.</returns>
+        </member>
+        <member name="M:NPack.Interfaces.IComputable`2.Set(`0)">
+            <summary>
+            Sets the value of the IComputable value.
+            </summary>
+            <param name="value">Value used to set the IComputable.</param>
+            <returns>The value of the IComputable converted from <paramref name="value"/>.</returns>
         </member>
     </members>
 </doc>

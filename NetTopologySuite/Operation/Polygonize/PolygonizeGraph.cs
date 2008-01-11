@@ -5,6 +5,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures.Collections.Generic;
 using GeoAPI.Geometries;
 using GeoAPI.Utilities;
+using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
@@ -61,17 +62,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
                 return;
             }
 
-            ICoordinate[] linePts = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
+            ICoordinateSequence<TCoordinate> linePts = line.Coordinates.WithoutRepeatedPoints();
 
-            ICoordinate startPt = linePts[0];
-            ICoordinate endPt = linePts[linePts.Length - 1];
+            TCoordinate startPt = Slice.GetFirst(linePts);
+            TCoordinate endPt = Slice.GetLast(linePts);
 
             Node<TCoordinate> nStart = GetNode(startPt);
             Node<TCoordinate> nEnd = GetNode(endPt);
 
             DirectedEdge<TCoordinate> de0 = new PolygonizeDirectedEdge<TCoordinate>(nStart, nEnd, linePts[1], true);
             DirectedEdge<TCoordinate> de1 =
-                new PolygonizeDirectedEdge<TCoordinate>(nEnd, nStart, linePts[linePts.Length - 2], false);
+                new PolygonizeDirectedEdge<TCoordinate>(nEnd, nStart, linePts[linePts.Count - 2], false);
             Edge<TCoordinate> edge = new PolygonizeEdge<TCoordinate>(line);
             edge.SetDirectedEdges(de0, de1);
             Add(edge);

@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -45,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             for (Int32 i = 0; i < 2; i++)
             {
-                lineLabel.SetLocation(i, label[i]);
+                lineLabel = new Label(lineLabel, i, label[i].On);
             }
 
             return lineLabel;
@@ -88,10 +89,31 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Construct a Label with On, Left and Right locations for both Geometries.
         /// Initialize the locations for the given Geometry index.
         /// </summary>
-        public Label(Locations onGeometry1, Locations leftGeometry1, Locations rightGeometry1, Locations onGeometry2, Locations leftGeometry2, Locations rightGeometry2)
+        public Label(Locations onGeometry1, Locations leftGeometry1, Locations rightGeometry1, 
+            Locations onGeometry2, Locations leftGeometry2, Locations rightGeometry2)
         {
             _g0 = new TopologyLocation(onGeometry1, leftGeometry1, rightGeometry1);
             _g1 = new TopologyLocation(onGeometry2, leftGeometry2, rightGeometry2);
+        }
+
+        public Label(Int32 geometryIndex, Locations on)
+            : this(geometryIndex, on, Locations.None, Locations.None)
+        { }
+
+        public Label(Int32 geometryIndex, Locations on, Locations left, Locations right)
+        {
+            checkIndex(geometryIndex);
+
+            if (geometryIndex == 0)
+            {
+                _g0 = new TopologyLocation(on, left, right);
+                _g1 = TopologyLocation.None;
+            }
+            else
+            {
+                _g0 = TopologyLocation.None;
+                _g1 = new TopologyLocation(on, left, right);
+            }
         }
 
         public Label(TopologyLocation geometry1Label, TopologyLocation geometry2Label)
@@ -118,6 +140,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public Label(Label other, Int32 geometryIndex, Locations on, Locations left, Locations right)
         {
+            checkIndex(geometryIndex);
+
             TopologyLocation newLocation = new TopologyLocation(on, left, right);
 
             if (geometryIndex == 0)
@@ -134,6 +158,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public Label(Label other, Int32 geometryIndex, Positions side, Locations location)
         {
+            checkIndex(geometryIndex);
+
             TopologyLocation newLocation = new TopologyLocation(other[geometryIndex], side, location);
 
             if (geometryIndex == 0)
@@ -165,6 +191,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                     case 1:
                         return _g1[position];
                     default:
+                        checkIndex(geometryIndex);
+                        Assert.ShouldNeverReachHere();
                         return Locations.None;
                 }
             }
@@ -184,8 +212,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                         break;
                 }
 
-                throw new ArgumentOutOfRangeException("geometryIndex", 
-                    geometryIndex, "Index must be 0 or 1.");
+                checkIndex(geometryIndex);
+                Assert.ShouldNeverReachHere();
+                return TopologyLocation.None;
             }
         }
 
@@ -199,21 +228,50 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         //    _elt[geomIndex].setLocation(Positions.On, location);
         //}
 
-        //public void SetAllLocations(Int32 geomIndex, Locations location)
-        //{
-        //    _elt[geomIndex].setAllLocations(location);
-        //}
+        public static Label SetAllLocations(Label label, Int32 geometryIndex, Locations location)
+        {
+            checkIndex(geometryIndex);
 
-        //public void SetAllLocationsIfNull(Int32 geomIndex, Locations location)
-        //{
-        //    _elt[geomIndex].setAllLocationsIfNull(location);
-        //}
+            // Real estate!
+            TopologyLocation newLocation = new TopologyLocation(location, location, location);
 
-        //public void SetAllLocationsIfNull(Locations location)
-        //{
-        //    SetAllLocationsIfNull(0, location);
-        //    SetAllLocationsIfNull(1, location);
-        //}
+            if (geometryIndex == 0)
+            {
+                return new Label(newLocation, label._g1);
+            }
+            else
+            {
+                return new Label(label._g0, newLocation);
+            }
+        }
+
+        public static Label SetAllLocationsIfNull(Label label, Int32 geometryIndex, Locations location)
+        {
+            checkIndex(geometryIndex);
+
+            TopologyLocation labelLocation = label[geometryIndex];
+
+            TopologyLocation newLocation = new TopologyLocation(
+                labelLocation.On == Locations.None ? location : labelLocation.On, 
+                labelLocation.Left == Locations.None ? location : labelLocation.Left, 
+                labelLocation.Right == Locations.None ? location : labelLocation.Right);
+
+            if (geometryIndex == 0)
+	        {
+	            return new Label(newLocation, label._g1);
+	        }
+            else
+            {
+                return new Label(label._g0, newLocation);
+            }
+        }
+
+        public static Label SetAllLocationsIfNull(Label label, Locations location)
+        {
+            label = SetAllLocationsIfNull(label, 0, location);
+            label = SetAllLocationsIfNull(label, 1, location);
+            return label;
+        }
 
         /// <summary> 
         /// Merge this label with another one.
@@ -275,8 +333,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 case 1:
                     return _g1.IsNull;
                 default:
-                    throw new ArgumentOutOfRangeException("geometryIndex",
-                                                          geometryIndex, "Must be index of 0 or 1.");
+                    checkIndex(geometryIndex);
+                    Assert.ShouldNeverReachHere();
+                    return false;
             }
         }
 
@@ -289,8 +348,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 case 1:
                     return _g1.AreAnyNull;
                 default:
-                    throw new ArgumentOutOfRangeException("geometryIndex",
-                                                          geometryIndex, "Must be index of 0 or 1.");
+                    checkIndex(geometryIndex);
+                    Assert.ShouldNeverReachHere();
+                    return false;
             }
         }
 
@@ -308,8 +368,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 case 1:
                     return _g1.IsArea;
                 default:
-                    throw new ArgumentOutOfRangeException("geometryIndex",
-                                                          geometryIndex, "Must be index of 0 or 1.");
+                    checkIndex(geometryIndex);
+                    Assert.ShouldNeverReachHere();
+                    return false;
             }
         }
 
@@ -322,8 +383,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 case 1:
                     return _g1.IsLine;
                 default:
-                    throw new ArgumentOutOfRangeException("geometryIndex",
-                                                          geometryIndex, "Must be index of 0 or 1.");
+                    checkIndex(geometryIndex);
+                    Assert.ShouldNeverReachHere();
+                    return false;
             }
         }
 
@@ -342,8 +404,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 case 1:
                     return _g1.AllPositionsEqual(location);
                 default:
-                    throw new ArgumentOutOfRangeException("geometryIndex",
-                                                          geometryIndex, "Must be index of 0 or 1.");
+                    checkIndex(geometryIndex);
+                    Assert.ShouldNeverReachHere();
+                    return false;
             }
         }
 
@@ -367,8 +430,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                     }
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("geometryIndex",
-                                                          geometryIndex, "Must be index of 0 or 1.");
+                    checkIndex(geometryIndex);
+                    Assert.ShouldNeverReachHere();
+                    break;
             }
 
             return this;
@@ -396,5 +460,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         //    _elt[geomIndex].setLocations(tl);
         //}
+
+        private static void checkIndex(Int32 geometryIndex)
+        {
+            if (geometryIndex != 0 && geometryIndex != 1)
+            {
+                throw new ArgumentOutOfRangeException("geometryIndex", geometryIndex,
+                                                      "Geometry index must be 0 or 1.");
+            }
+        }
     }
 }

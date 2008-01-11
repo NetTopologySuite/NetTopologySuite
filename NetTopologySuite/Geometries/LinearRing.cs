@@ -50,6 +50,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return true; }
         }
 
+        public Boolean IsCcw
+        {
+            get { throw new NotImplementedException(); }
+        }
+
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>

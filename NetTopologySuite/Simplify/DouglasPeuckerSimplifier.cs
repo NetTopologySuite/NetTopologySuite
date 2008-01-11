@@ -57,10 +57,10 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
                 this.container = container;
             }
 
-            protected override IEnumerable<TCoordinate> TransformCoordinates(IEnumerable<TCoordinate> coords, IGeometry<TCoordinate> parent)
+            protected override ICoordinateSequence<TCoordinate> TransformCoordinates(ICoordinateSequence<TCoordinate> coords, IGeometry<TCoordinate> parent)
             {
-                return DouglasPeuckerLineSimplifier<TCoordinate>
-                    .Simplify(coords, container.DistanceTolerance);
+                return DouglasPeuckerLineSimplifier<TCoordinate>.Simplify(
+                    coords, container.DistanceTolerance);
             }
 
             protected override IGeometry<TCoordinate> TransformPolygon(IPolygon<TCoordinate> geom, IGeometry<TCoordinate> parent)

@@ -9,7 +9,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// <summary>
     /// A list of edge intersections along an Edge.
     /// </summary>
-    public class EdgeIntersectionList<TCoordinate> : IList<EdgeIntersection<TCoordinate>>
+    public class EdgeIntersectionList<TCoordinate> : IEnumerable<EdgeIntersection<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
     {
@@ -41,9 +41,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public void AddEndpoints()
         {
-            Int32 maxSegIndex = _edge.Points.Count - 1;
-            Add(_edge.Points[0], 0, 0.0);
-            Add(_edge.Points[maxSegIndex], maxSegIndex, 0.0);
+            Int32 maxSegIndex = _edge.Coordinates.Count - 1;
+            Add(_edge.Coordinates[0], 0, 0.0);
+            Add(_edge.Coordinates[maxSegIndex], maxSegIndex, 0.0);
         }
 
         /// <summary> 
@@ -79,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public Edge<TCoordinate> CreateSplitEdge(EdgeIntersection<TCoordinate> ei0, EdgeIntersection<TCoordinate> ei1)
         {
             Int32 npts = ei1.SegmentIndex - ei0.SegmentIndex + 2;
-            ICoordinate lastSegStartPt = _edge.Points[ei1.SegmentIndex];
+            TCoordinate lastSegStartPt = _edge.Coordinates[ei1.SegmentIndex];
 
             // if the last intersection point is not equal to the its segment start pt,
             // add it to the points list as well.
@@ -91,14 +91,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             {
                 npts--;
             }
-
-            TCoordinate[] pts = new TCoordinate[npts];
+            
+            ICoordinateSequenceFactory<TCoordinate> factory = _edge.Coordinates.CoordinateSequenceFactory;
+            ICoordinateSequence<TCoordinate> pts = factory.Create(npts);
             Int32 ipt = 0;
-            pts[ipt++] = new TCoordinate(ei0.Coordinate);
+            pts[ipt++] = factory.CoordinateFactory.Create(ei0.Coordinate);
 
             for (Int32 i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
             {
-                pts[ipt++] = _edge.Points[i];
+                pts[ipt++] = _edge.Coordinates[i];
             }
 
             if (useIntPt1)
@@ -119,44 +120,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        #region IList<EdgeIntersection<TCoordinate>> Members
-
-        public int IndexOf(EdgeIntersection<TCoordinate> item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Insert(int index, EdgeIntersection<TCoordinate> item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveAt(int index)
-        {
-            throw new NotImplementedException();
-        }
-
-        public EdgeIntersection<TCoordinate> this[int index]
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        #endregion
-
-        #region ICollection<EdgeIntersection<TCoordinate>> Members
-
-        public void Add(EdgeIntersection<TCoordinate> item)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary> 
         /// Adds an intersection into the list, if it isn't already there.
         /// The input segmentIndex and dist are expected to be normalized.
@@ -165,9 +128,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public EdgeIntersection<TCoordinate> Add(TCoordinate intersection, Int32 segmentIndex, Double dist)
         {
             EdgeIntersection<TCoordinate> eiNew = new EdgeIntersection<TCoordinate>(intersection, segmentIndex, dist);
-            EdgeIntersection<TCoordinate> ei = _nodeMap[eiNew];
+            EdgeIntersection<TCoordinate> ei;
 
-            if (ei != null)
+            if (_nodeMap.TryGetValue(eiNew, out ei))
             {
                 return ei;
             }
@@ -178,35 +141,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public void Clear()
         {
-            throw new NotImplementedException();
-        }
-
-        public bool Contains(EdgeIntersection<TCoordinate> item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CopyTo(EdgeIntersection<TCoordinate>[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
+            _nodeMap.Clear();
         }
 
         public Int32 Count
         {
             get { return _nodeMap.Count; }
         }
-
-        public bool IsReadOnly
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public bool Remove(EdgeIntersection<TCoordinate> item)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
 
         #region IEnumerable<EdgeIntersection<TCoordinate>> Members
         /// <summary> 

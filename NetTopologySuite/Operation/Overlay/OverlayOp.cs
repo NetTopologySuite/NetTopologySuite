@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
@@ -7,7 +6,6 @@ using GeoAPI.Geometries;
 using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
@@ -42,8 +40,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 
         public static Boolean IsResultOfOp(Label label, SpatialFunctions opCode)
         {
-            Locations loc0 = label[0];
-            Locations loc1 = label[1];
+            Locations loc0 = label[0].On;
+            Locations loc1 = label[1].On;
             return IsResultOfOp(loc0, loc1, opCode);
         }
 
@@ -202,10 +200,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             polyBuilder.Add(_graph);
             _resultPolyList.AddRange(polyBuilder.Polygons);
 
-            LineBuilder<TCoordinate> lineBuilder = new LineBuilder<TCoordinate>(this, _geometryFactory, _pointtLocator);
+            LineBuilder<TCoordinate> lineBuilder = new LineBuilder<TCoordinate>(this, _geometryFactory);
             _resultLineList.AddRange(lineBuilder.Build(opCode));
 
-            PointBuilder<TCoordinate> pointBuilder = new PointBuilder<TCoordinate>(this, _geometryFactory, _pointtLocator);
+            PointBuilder<TCoordinate> pointBuilder = new PointBuilder<TCoordinate>(this, _geometryFactory);
             _resultPointList.AddRange(pointBuilder.Build(opCode));
 
             // gather the results from all calculations into a single Geometry for the result set
@@ -368,7 +366,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             foreach (Node<TCoordinate> graphNode in graph.Nodes)
             {
                 Node<TCoordinate> newNode = _graph.AddNode(graphNode.Coordinate);
-                newNode.SetLabel(argIndex, graphNode.Label.Value[argIndex]);
+                newNode.SetLabel(argIndex, graphNode.Label.Value[argIndex].On);
             }
         }
 

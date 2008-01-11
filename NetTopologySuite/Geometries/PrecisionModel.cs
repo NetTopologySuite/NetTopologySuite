@@ -1,6 +1,7 @@
 ﻿using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
@@ -248,7 +249,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             // MD says it's OK that we're not makePrecise'ing the z [Jon Aquino]
             // TODO: codekaizen - reevaluate making Z precise for 3D
 
-            return new TCoordinate(x, y);
+            return Coordinates<TCoordinate>.DefaultCoordinateFactory.Create(x, y);
         }
         #endregion
 

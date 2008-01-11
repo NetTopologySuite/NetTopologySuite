@@ -19,26 +19,26 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
     {
-        private class MCSelector : MonotoneChainSelectAction<TCoordinate>
-        {
-            private readonly MCPointInRing<TCoordinate> _container = null;
-            private TCoordinate _p = default(TCoordinate);
+        //private class MCSelector : MonotoneChainSelectAction<TCoordinate>
+        //{
+        //    private readonly MCPointInRing<TCoordinate> _container = null;
+        //    private readonly TCoordinate _p = default(TCoordinate);
 
-            public MCSelector(MCPointInRing<TCoordinate> container, TCoordinate p)
-            {
-                _container = container;
-                _p = p;
-            }
+        //    public MCSelector(MCPointInRing<TCoordinate> container, TCoordinate p)
+        //    {
+        //        _container = container;
+        //        _p = p;
+        //    }
 
-            public override void Select(LineSegment<TCoordinate> ls)
-            {
-                _container.TestLineSegment(_p, ls);
-            }
-        }
+        //    public override void Select(LineSegment<TCoordinate> ls)
+        //    {
+        //        _container.testLineSegment(_p, ls);
+        //    }
+        //}
 
         private readonly ILinearRing<TCoordinate> _ring;
         private readonly BinTree<MonotoneChain<TCoordinate>> _tree = new BinTree<MonotoneChain<TCoordinate>>();
-        private Int32 crossings = 0; // number of segment/ray crossings
+        private Int32 _crossings = 0; // number of segment/ray crossings
 
         private Interval _interval = new Interval();
 
@@ -50,10 +50,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
         private void buildIndex()
         {
-            IEnumerable<TCoordinate> coordinates = _ring.Coordinates.WithoutRepeatedPoints();
-            IEnumerable<MonotoneChain<TCoordinate>> mcList = MonotoneChainBuilder.GetChains(coordinates);
+            ICoordinateSequence<TCoordinate> coordinates = _ring.Coordinates.WithoutRepeatedPoints();
+            IEnumerable<MonotoneChain<TCoordinate>> chains = MonotoneChainBuilder.GetChains(coordinates);
 
-            foreach (MonotoneChain<TCoordinate> chain in mcList)
+            foreach (MonotoneChain<TCoordinate> chain in chains)
             {
                 IExtents<TCoordinate> extents = chain.Extents;
                 Double min = extents.GetMin(Ordinates.Y);
@@ -65,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
         public Boolean IsInside(TCoordinate pt)
         {
-            crossings = 0;
+            _crossings = 0;
 
             Double y = pt[Ordinates.Y];
 
@@ -75,19 +75,17 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             _interval = new Interval(y, y);
 
-            IEnumerable<MonotoneChain<TCoordinate>> segs = _tree.Query(_interval);
+            IEnumerable<MonotoneChain<TCoordinate>> chains = _tree.Query(_interval);
 
-            MCSelector mcSelector = new MCSelector(this, pt);
-
-            foreach (MonotoneChain<TCoordinate> chain in segs)
+            foreach (MonotoneChain<TCoordinate> chain in chains)
             {
-                testMonotoneChain(rayExtents, mcSelector, chain);
+                testMonotoneChain(rayExtents, pt, chain);
             }
 
             /*
             *  p is inside if number of crossings is odd.
             */
-            if ((crossings % 2) == 1)
+            if ((_crossings % 2) == 1)
             {
                 return true;
             }
@@ -95,12 +93,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return false;
         }
 
-        private static void testMonotoneChain(IExtents<TCoordinate> rayExtents, MCSelector mcSelecter, MonotoneChain<TCoordinate> mc)
+        private void testMonotoneChain(IExtents<TCoordinate> rayExtents, TCoordinate point, MonotoneChain<TCoordinate> chain)
         {
-            mc.Select(rayExtents, mcSelecter);
+            foreach (LineSegment<TCoordinate> segment in chain.Select(rayExtents))
+            {
+                testLineSegment(point, segment);
+            }
         }
 
-        private void TestLineSegment(ICoordinate p, LineSegment<TCoordinate> seg)
+        private void testLineSegment(TCoordinate p, LineSegment<TCoordinate> seg)
         {
             Double x1; // translated coordinates
             Double y1;
@@ -112,6 +113,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             */
             TCoordinate p1 = seg.P0;
             TCoordinate p2 = seg.P1;
+
             x1 = p1[Ordinates.X] - p[Ordinates.X];
             y1 = p1[Ordinates.Y] - p[Ordinates.Y];
             x2 = p2[Ordinates.X] - p[Ordinates.X];
@@ -131,7 +133,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 */
                 if (0.0 < xInt)
                 {
-                    crossings++;
+                    _crossings++;
                 }
             }
         }

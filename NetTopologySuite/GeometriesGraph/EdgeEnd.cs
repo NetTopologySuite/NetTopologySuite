@@ -27,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         private Node<TCoordinate> _origin; // the node this edge end originates at
         private TCoordinate _p0, _p1; // points of initial line segment
         private TCoordinate _direction; // the direction vector for this edge from its starting point
-        private Int32 _quadrant;
+        private Quadrants _quadrant;
 
         protected EdgeEnd(Edge<TCoordinate> edge)
         {
@@ -48,13 +48,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             _p0 = p0;
             _p1 = p1;
-            Double dx = p1[Ordinates.X] - p0[Ordinates.X];
-            Double dy = p1[Ordinates.Y] - p0[Ordinates.Y];
-            _direction = new TCoordinate(dx, dy);
+            //Double dx = p1[Ordinates.X] - p0[Ordinates.X];
+            //Double dy = p1[Ordinates.Y] - p0[Ordinates.Y];
+            //_direction = _edge.Coordinates.CoordinateFactory.Create(dx, dy);
+            _direction = p1.Subtract(p0);
             _quadrant = QuadrantOp<TCoordinate>.Quadrant(_direction);
 
-            Assert.IsTrue(!(_direction[Ordinates.X] == 0 && _direction[Ordinates.Y] == 0), 
-                "EdgeEnd with identical endpoints found");
+            Assert.IsTrue(!_direction.Equals(((ICoordinate)_direction).Zero), 
+                "EdgeEnd with identical endpoints found.");
         }
 
         public Edge<TCoordinate> Edge
@@ -79,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             get { return _p1; }
         }
 
-        public Int32 Quadrant
+        public Quadrants Quadrant
         {
             get { return _quadrant; }
         }

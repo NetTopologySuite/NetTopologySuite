@@ -13,14 +13,16 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
     /// <summary>  
     /// A query-only R-tree created using the Sort-Tile-Recursive (STR) algorithm.
     /// For two-dimensional spatial data. 
+    /// </summary>
+    /// <remarks>
     /// The STR packed R-tree is simple to implement and maximizes space
     /// utilization; that is, as many leaves as possible are filled to capacity.
     /// Overlap between nodes is far less than in a basic R-tree. However, once the
-    /// tree has been built (explicitly or on the first call to #query), items may
-    /// not be added or removed. 
+    /// tree has been built (explicitly or on the first call to <see cref="Query"/>), 
+    /// items may not be added or removed. 
     /// Described in: P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
-    /// </summary>
+    /// </remarks>
     public class StrTree<TCoordinate, TItem> : AbstractStrTree<IExtents<TCoordinate>, TItem>, ISpatialIndex<IExtents<TCoordinate>, TItem>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, IComputable<TCoordinate>,
             IConvertible
@@ -61,31 +63,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         //    }
         //}
 
-        private class StrNode : AbstractNode<IExtents<TCoordinate>>
-        {
-            public StrNode(Int32 nodeCapacity) :
-                base(nodeCapacity) { }
-
-            protected override IExtents<TCoordinate> ComputeBounds()
-            {
-                IExtents<TCoordinate> bounds = null;
-
-                foreach (IBoundable<IExtents<TCoordinate>> childBoundable in ChildBoundables)
-                {
-                    if (bounds == null)
-                    {
-                        bounds = new Extents<TCoordinate>(childBoundable.Bounds);
-                    }
-                    else
-                    {
-                        bounds.ExpandToInclude(childBoundable.Bounds);
-                    }
-                }
-
-                return bounds;
-            }
-        }
-
         //// TODO: Make this a delegate
         //private class AnonymousIntersectsOpImpl : IIntersectsOp
         //{
@@ -101,6 +78,62 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         //        return ((IExtents) aBounds).Intersects((IExtents) bBounds);
         //    }
         //}
+
+        private class StrItemBoundable : ItemBoundable<IExtents<TCoordinate>, TItem>
+        {
+            public StrItemBoundable(IExtents<TCoordinate> bounds, TItem item)
+                : base(bounds, item) { }
+
+            public override Boolean Intersects(IExtents<TCoordinate> bounds)
+            {
+                if (bounds == null || Bounds == null)
+                {
+                    return false;
+                }
+
+                return bounds.Intersects(Bounds);
+            }
+        }
+
+        private class StrNode : AbstractNode<IExtents<TCoordinate>, IBoundable<IExtents<TCoordinate>>>
+        {
+            public StrNode(Int32 nodeCapacity) :
+                base(nodeCapacity) { }
+
+            protected override IExtents<TCoordinate> ComputeBounds()
+            {
+                IExtents<TCoordinate> bounds = null;
+
+                foreach (IBoundable<IExtents<TCoordinate>> childBoundable in Children)
+                {
+                    if (bounds == null)
+                    {
+                        bounds = new Extents<TCoordinate>(childBoundable.Bounds);
+                    }
+                    else
+                    {
+                        bounds.ExpandToInclude(childBoundable.Bounds);
+                    }
+                }
+
+                return bounds;
+            }
+
+            public override Boolean Intersects(IExtents<TCoordinate> bounds)
+            {
+                if (bounds == null || Bounds == null)
+                {
+                    return false;
+                }
+
+                return bounds.Intersects(Bounds);
+            }
+
+            protected override Boolean IsSearchMatch(IExtents<TCoordinate> query)
+            {
+                return query.Intersects(Bounds);
+            }
+        }
 
         #endregion
 
@@ -160,7 +193,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return base.Remove(itemEnv, item);
         }
 
-        protected override AbstractNode<IExtents<TCoordinate>> CreateNode(Int32 level)
+        protected override AbstractNode<IExtents<TCoordinate>, IBoundable<IExtents<TCoordinate>>> CreateNode(Int32 level)
         {
             return new StrNode(level);
         }
@@ -224,7 +257,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             IEnumerable<IList<IBoundable<IExtents<TCoordinate>>>> verticalSlices,
             Int32 newLevel)
         {
-            Assert.IsTrue(Slice.CountGreaterThan(0, verticalSlices));
+            Assert.IsTrue(Slice.CountGreaterThan(verticalSlices, 0));
             List<IBoundable<IExtents<TCoordinate>>> parentBoundables 
                 = new List<IBoundable<IExtents<TCoordinate>>>();
 
@@ -243,16 +276,21 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return base.CreateParentBoundables(childBoundables, newLevel);
         }
 
-        protected override Func<IExtents<TCoordinate>, IExtents<TCoordinate>, Boolean> IntersectsOp
+        protected override IBoundable<IExtents<TCoordinate>> CreateItemBoundable(IExtents<TCoordinate> bounds, TItem item)
         {
-            get
-            {
-                return delegate(IExtents<TCoordinate> left, IExtents<TCoordinate> right)
-                       {
-                           return left.Intersects(right);
-                       };
-            }
+            return new StrItemBoundable(bounds, item);
         }
+
+        //protected override Func<IExtents<TCoordinate>, IExtents<TCoordinate>, Boolean> IntersectsOp
+        //{
+        //    get
+        //    {
+        //        return delegate(IExtents<TCoordinate> left, IExtents<TCoordinate> right)
+        //               {
+        //                   return left.Intersects(right);
+        //               };
+        //    }
+        //}
 
         /// <param name="childBoundables">
         /// Must be sorted by the x-value of the envelope midpoints.

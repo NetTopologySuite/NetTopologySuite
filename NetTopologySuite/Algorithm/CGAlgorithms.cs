@@ -3,51 +3,24 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Utilities;
+using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
-    public enum Orientation
-    {
-        /// <summary> 
-        /// A value that indicates an orientation of clockwise, or a right turn.
-        /// </summary>
-        Clockwise = -1,
-
-        /// <summary> 
-        /// A value that indicates an orientation of clockwise, or a right turn.
-        /// </summary>
-        Right = Clockwise,
-
-        /// <summary>
-        /// A value that indicates an orientation of counterclockwise, or a left turn.
-        /// </summary>
-        CounterClockwise = 1,
-
-        /// <summary>
-        /// A value that indicates an orientation of counterclockwise, or a left turn.
-        /// </summary>
-        Left = CounterClockwise,
-
-        /// <summary>
-        /// A value that indicates an orientation of collinear, or no turn (straight).
-        /// </summary>
-        Collinear = 0,
-
-        /// <summary>
-        /// A value that indicates an orientation of collinear, or no turn (straight).
-        /// </summary>
-        Straight = Collinear
-    }
-
     /// <summary>
-    /// Specifies and implements various fundamental Computational Geometric algorithms.
-    /// The algorithms supplied in this class are robust for Double-precision floating point.
+    /// Specifies and implements various fundamental computational geometric algorithms.
+    /// The algorithms supplied in this class are robust for double-precision floating point.
     /// </summary>
     public static class CGAlgorithms<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
     {
+        public static RobustLineIntersector<TCoordinate> CreateRobustLineIntersector()
+        {
+            return new RobustLineIntersector<TCoordinate>(Coordinates<TCoordinate>.DefaultCoordinateFactory); 
+        }
+
         /// <summary> 
         /// Returns the index of the direction of the point <paramref name="q"/>
         /// relative to a vector specified by 
@@ -145,15 +118,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </returns>
         public static Boolean IsOnLine(TCoordinate p, IEnumerable<TCoordinate> line)
         {
-            LineIntersector<TCoordinate> lineIntersector = new RobustLineIntersector<TCoordinate>();
+            LineIntersector<TCoordinate> lineIntersector = CreateRobustLineIntersector();
 
-            foreach (Pair<TCoordinate> pair in Slice.GetOverlappingPairs(line))
+            foreach (Pair<TCoordinate> segment in Slice.GetOverlappingPairs(line))
             {
-                TCoordinate p0 = pair.First;
-                TCoordinate p1 = pair.Second;
-                lineIntersector.ComputeIntersection(p, p0, p1);
+                Intersection<TCoordinate> intersection = lineIntersector.ComputeIntersection(p, segment);
 
-                if (lineIntersector.HasIntersection)
+                if (intersection.HasIntersection)
                 {
                     return true;
                 }
@@ -465,7 +436,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         public static Double SignedArea(IEnumerable<TCoordinate> ring)
         {
-            if (!Slice.CountGreaterThan(2, ring))
+            if (!Slice.CountGreaterThan(ring, 2))
             {
                 return 0.0;
             }

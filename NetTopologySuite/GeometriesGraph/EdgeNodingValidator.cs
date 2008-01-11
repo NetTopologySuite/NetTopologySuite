@@ -14,11 +14,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
     {
-        private static IEnumerable<SegmentString<TCoordinate>> toSegmentStrings(IEnumerable<Edge<TCoordinate>> edges)
+        private static IEnumerable<NodedSegmentString<TCoordinate>> toSegmentStrings(IEnumerable<Edge<TCoordinate>> edges)
         {
             foreach (Edge<TCoordinate> e in edges)
             {
-                yield return new SegmentString<TCoordinate>(e.Coordinates, e);
+                yield return new NodedSegmentString<TCoordinate>(e.Coordinates, e);
             }
         }
 

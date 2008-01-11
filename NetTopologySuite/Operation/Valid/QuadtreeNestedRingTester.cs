@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// </summary>
     public class QuadtreeNestedRingTester<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<TCoordinate>, IDivisible<Double, TCoordinate>, IConvertible
     {
         private readonly GeometryGraph<TCoordinate> _graph; // used to find non-node vertices
         private readonly List<ILinearRing<TCoordinate>> _rings = new List<ILinearRing<TCoordinate>>();
@@ -70,7 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                     TCoordinate innerRingPt = IsValidOp<TCoordinate>.FindPointNotNode(
                         innerRingCoordinates, searchRing, _graph);
 
-                    Assert.IsTrue(!CoordinateHelper.IsEmpty(innerRingPt),
+                    Assert.IsTrue(!Coordinates<TCoordinate>.IsEmpty(innerRingPt),
                                   "Unable to find a ring point not a node of the search ring");
 
                     Boolean isInside = CGAlgorithms<TCoordinate>.IsPointInRing(innerRingPt, searchRingCoordinates);

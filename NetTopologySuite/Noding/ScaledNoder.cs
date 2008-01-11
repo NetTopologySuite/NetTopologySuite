@@ -54,9 +54,16 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             get { return _scaleFactor == 1.0; }
         }
 
-        public IEnumerable<SegmentString<TCoordinate>> GetNodedSubstrings()
+        public IEnumerable<NodedSegmentString<TCoordinate>> Node(IEnumerable<NodedSegmentString<TCoordinate>> inputSegStrings)
         {
-            IEnumerable<SegmentString<TCoordinate>> splitSS = _noder.GetNodedSubstrings();
+            IEnumerable<NodedSegmentString<TCoordinate>> intSegStrings = inputSegStrings;
+
+            if (_isScaled)
+            {
+                intSegStrings = scale(inputSegStrings);
+            }
+
+            IEnumerable<NodedSegmentString<TCoordinate>> splitSS = _noder.Node(intSegStrings);
 
             if (_isScaled)
             {
@@ -66,28 +73,16 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             return splitSS;
         }
 
-        public void ComputeNodes(IEnumerable<SegmentString<TCoordinate>> inputSegStrings)
+        private IEnumerable<NodedSegmentString<TCoordinate>> scale(IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
         {
-            IEnumerable<SegmentString<TCoordinate>> intSegStrings = inputSegStrings;
-
-            if (_isScaled)
-            {
-                intSegStrings = Scale(inputSegStrings);
-            }
-
-            _noder.ComputeNodes(intSegStrings);
-        }
-
-        private IEnumerable<SegmentString<TCoordinate>> Scale(IEnumerable<SegmentString<TCoordinate>> segStrings)
-        {
-            return CollectionUtil.Transform(segStrings, delegate(SegmentString<TCoordinate> segmentString)
+            return CollectionUtil.Transform(segStrings, delegate(NodedSegmentString<TCoordinate> segmentString)
                                                         {
-                                                            return new SegmentString<TCoordinate>(
-                                                                scale(segmentString.Coordinates), segmentString.Data);
+                                                            return new NodedSegmentString<TCoordinate>(
+                                                                scale(segmentString.Coordinates), segmentString.Context);
                                                         });
         }
 
-        private IEnumerable<TCoordinate> scale(IEnumerable<TCoordinate> pts)
+        private ICoordinateSequence<TCoordinate> scale(ICoordinateSequence<TCoordinate> pts)
         {
             // TODO: figure out how to get rid of boxing...
             IEnumerable<IVector<DoubleComponent>> vectors =
@@ -101,7 +96,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             }
         }
 
-        private static IEnumerable<SegmentString<TCoordinate>> rescale(IEnumerable<SegmentString<TCoordinate>> segStrings)
+        private static IEnumerable<NodedSegmentString<TCoordinate>> rescale(IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
         {
             yield break;
 

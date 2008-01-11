@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GeoAPI.Indexing;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
@@ -9,9 +11,16 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
     /// <summary>
     /// The base class for nodes in a <see cref="Quadtree{TCoordinate, TItem}"/>.
     /// </summary>
-    public abstract class NodeBase<TCoordinate, TItem> : IEnumerable<TItem>
+    /// <summary>
+    /// Subquads are numbered as follows:
+    /// 2 | 3
+    /// --+--
+    /// 0 | 1
+    /// </summary>
+    public abstract class BaseQuadNode<TCoordinate, TItem> : AbstractNode<IExtents<TCoordinate>, TItem>, IEnumerable<TItem>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<TCoordinate>, IDivisible<Double, TCoordinate>, IConvertible
+        where TItem : IBoundable<IExtents<TCoordinate>>
     {
         /// <summary> 
         /// Returns the index of the subquad that wholly contains the given envelope.
@@ -48,32 +57,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             return subnodeIndex;
         }
 
-        private readonly List<TItem> _items = new List<TItem>();
-
-        /// <summary>
-        /// subquads are numbered as follows:
-        /// 2 | 3
-        /// --+--
-        /// 0 | 1
-        /// </summary>
-        private readonly Node<TCoordinate, TItem>[] _subNodes = new Node<TCoordinate, TItem>[4];
-
-        public IEnumerable<TItem> Items
+        protected BaseQuadNode(IExtents<TCoordinate> bounds)
+            : base(bounds, -1)
         {
-            get { return _items; }
-        }
-
-        public Boolean HasItems
-        {
-            get
-            {
-                return _items.Count == 0;
-            }
-        }
-
-        public void Add(TItem item)
-        {
-            _items.Add(item);
         }
 
         /// <summary> 
@@ -94,16 +80,16 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 
             for (Int32 i = 0; i < 4; i++)
             {
-                if (_subNodes[i] != null)
+                if (ChildrenInternal[i] != null)
                 {
-                    found = _subNodes[i].Remove(itemExtents, item);
+                    found = ChildrenInternal[i].RemoveItem(item);
 
                     if (found)
                     {
                         // trim subtree if empty
-                        if (_subNodes[i].IsPrunable)
+                        if (ChildrenInternal[i].IsPrunable)
                         {
-                            _subNodes[i] = null;
+                            ChildrenInternal[i] = null;
                         }
 
                         break;
@@ -118,18 +104,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             }
 
             // otherwise, try and remove the item from the list of items in this node
-            if (_items.Contains(item))
+            if (ItemsInternal.Contains(item))
             {
-                _items.Remove(item);
+                RemoveItem(item);
                 found = true;
             }
 
             return found;
-        }
-
-        public Boolean IsPrunable
-        {
-            get { return !(HasChildren || HasItems); }
         }
 
         public Boolean HasChildren
@@ -138,39 +119,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             {
                 for (Int32 i = 0; i < 4; i++)
                 {
-                    if (_subNodes[i] != null)
+                    if (ChildrenInternal[i] != null)
                     {
                         return true;
                     }
                 }
 
                 return false;
-            }
-        }
-
-        public Boolean IsEmpty
-        {
-            get
-            {
-                Boolean isEmpty = true;
-
-                if (_items.Count != 0)
-                {
-                    isEmpty = false;
-                }
-
-                for (Int32 i = 0; i < 4; i++)
-                {
-                    if (_subNodes[i] != null)
-                    {
-                        if (!_subNodes[i].IsEmpty)
-                        {
-                            isEmpty = false;
-                        }
-                    }
-                }
-
-                return isEmpty;
             }
         }
 
@@ -223,69 +178,18 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         //    }
         //}
 
-        public IEnumerable<TItem> Query(IExtents<TCoordinate> query)
-        {
-            if (!IsSearchMatch(query))
-            {
-                yield break;
-            }
-
-            // this node may have items as well as subnodes (since items may not
-            // be wholely contained in any single subnode
-            foreach (TItem item in _items)
-            {
-                yield return item;
-            }
-
-            for (Int32 i = 0; i < 4; i++)
-            {
-                if (_subNodes[i] != null)
-                {
-                    foreach (TItem item in _subNodes[i].Query(query))
-                    {
-                        yield return item;
-                    }
-                }
-            }
-        }
-
-        public IEnumerable<TItem> Query(IExtents<TCoordinate> query, Predicate<TItem> predicate)
-        {
-            if (!IsSearchMatch(query))
-            {
-                yield break;
-            }
-
-            // this node may have items as well as subnodes (since items may not
-            // be wholely contained in any single subnode
-            foreach (TItem item in visitItems(query, predicate))
-            {
-                yield return item;
-            }
-
-            for (Int32 i = 0; i < 4; i++)
-            {
-                if (_subNodes[i] != null)
-                {
-                    foreach (TItem item in _subNodes[i].Query(query, predicate))
-                    {
-                        yield return item;
-                    }
-                }
-            }
-        }
-
         public Int32 Depth
         {
             get
             {
                 Int32 maxSubDepth = 0;
-                
-                for (Int32 i = 0; i < 4; i++)
+
+                foreach (BaseQuadNode<TCoordinate, TItem> node in ChildrenInternal)
                 {
-                    if (_subNodes[i] != null)
+                    if (node != null)
                     {
-                        Int32 sqd = _subNodes[i].Depth;
+                        Int32 sqd = node.Depth;
+
                         if (sqd > maxSubDepth)
                         {
                             maxSubDepth = sqd;
@@ -297,52 +201,40 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             }
         }
 
-        public Int32 Count
+        // [codekaizen] this isn't used in JTS.
+        //public Int32 NodeCount
+        //{
+        //    get
+        //    {
+        //        Int32 subSize = 0;
+
+        //        for (Int32 i = 0; i < 4; i++)
+        //        {
+        //            if (ItemsInternal[i] != null)
+        //            {
+        //                subSize += _subNodes[i].Count;
+        //            }
+        //        }
+
+        //        return subSize + 1;
+        //    }
+        //}
+
+        protected override void CreateSubNodes()
         {
-            get
-            {
-                Int32 subSize = 0;
-                
-                for (Int32 i = 0; i < 4; i++)
-                {
-                    if (_subNodes[i] != null)
-                    {
-                        subSize += _subNodes[i].Count;
-                    }
-                }
-
-                return subSize + _items.Count;
-            }
-        }
-
-        public Int32 NodeCount
-        {
-            get
-            {
-                Int32 subSize = 0;
-
-                for (Int32 i = 0; i < 4; i++)
-                {
-                    if (_subNodes[i] != null)
-                    {
-                        subSize += _subNodes[i].Count;
-                    }
-                }
-
-                return subSize + 1;
-            }
+            ChildrenInternal.AddRange(new ISpatialIndexNode<IExtents<TCoordinate>, TItem>[4]);
         }
 
         #region IEnumerable<TItem> Members
 
         public IEnumerator<TItem> GetEnumerator()
         {
-            foreach (TItem item in _items)
+            foreach (TItem item in ItemsInternal)
             {
                 yield return item;
             }
 
-            foreach (Node<TCoordinate, TItem> node in _subNodes)
+            foreach (Node<TCoordinate, TItem> node in ChildrenInternal)
             {
                 foreach (TItem item in node)
                 {
@@ -353,30 +245,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 
         #endregion
 
-        protected abstract Boolean IsSearchMatch(IExtents<TCoordinate> query);
-
-        protected List<TItem> ItemsInternal
-        {
-            get { return _items; }
-        }
-
-        protected Node<TCoordinate, TItem>[] SubNodes
-        {
-            get { return _subNodes; }
-        }
-
-        private IEnumerable<TItem> visitItems(IExtents<TCoordinate> query, Predicate<TItem> predicate)
-        {
-            // would be nice to filter items based on search envelope, 
-            // but can't until they contain an envelope
-            foreach (TItem item in _items)
-            {
-                if(predicate(item))
-                {
-                    yield return item;
-                }
-            }
-        }
+        //protected ICoordinateFactory<TCoordinate> CoordinateFactory
+        //{
+        //    get { return _coordFactory; }
+        //}
 
         #region IEnumerable Members
 

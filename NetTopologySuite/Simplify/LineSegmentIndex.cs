@@ -14,8 +14,8 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
     {
-        private readonly Quadtree<TCoordinate, LineSegment<TCoordinate>> _index 
-            = new Quadtree<TCoordinate, LineSegment<TCoordinate>>();
+        private readonly Quadtree<TCoordinate, TaggedLineSegment<TCoordinate>> _index
+            = new Quadtree<TCoordinate, TaggedLineSegment<TCoordinate>>();
 
         public void Add(TaggedLineString<TCoordinate> line)
         {
@@ -25,27 +25,29 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             }
         }
 
-        public void Add(LineSegment<TCoordinate> seg)
+        public void Add(TaggedLineSegment<TCoordinate> seg)
         {
-            _index.Insert(new Extents<TCoordinate>(seg.P0, seg.P1), seg);
+            _index.Insert(new Extents<TCoordinate>(seg.LineSegment.P0, seg.LineSegment.P1), seg);
         }
 
-        public void Remove(LineSegment<TCoordinate> seg)
+        public void Remove(TaggedLineSegment<TCoordinate> seg)
         {
-            _index.Remove(new Extents<TCoordinate>(seg.P0, seg.P1), seg);
+            _index.Remove(new Extents<TCoordinate>(seg.LineSegment.P0, seg.LineSegment.P1), seg);
         }
 
-        public IEnumerable<LineSegment<TCoordinate>> Query(LineSegment<TCoordinate> querySeg)
+        public IEnumerable<TaggedLineSegment<TCoordinate>> Query(TaggedLineSegment<TCoordinate> querySeg)
         {
-            Extents<TCoordinate> env = new Extents<TCoordinate>(querySeg.P0, querySeg.P1);
+            Extents<TCoordinate> extents = new Extents<TCoordinate>(querySeg.LineSegment.P0, querySeg.LineSegment.P1);
 
-            Predicate<LineSegment<TCoordinate>> predicate =
-                delegate(LineSegment<TCoordinate> seg)
+            Predicate<TaggedLineSegment<TCoordinate>> predicate =
+                delegate(TaggedLineSegment<TCoordinate> seg)
                 {
-                    return Extents<TCoordinate>.Intersects(seg.P0, seg.P1, querySeg.P0, querySeg.P1);
+                    return Extents<TCoordinate>.Intersects(
+                        seg.LineSegment.P0, seg.LineSegment.P1, 
+                        querySeg.LineSegment.P0, querySeg.LineSegment.P1);
                 };
 
-            return _index.Query(env, predicate);
+            return _index.Query(extents, predicate);
         }
     }
 

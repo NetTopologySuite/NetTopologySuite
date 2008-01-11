@@ -269,7 +269,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         private void addPolygonRing(ILineString<TCoordinate> ring, Locations cwLeft, Locations cwRight)
         {
-            IList<TCoordinate> coord = ring.Coordinates.WithoutRepeatedPoints();
+            ICoordinateSequence<TCoordinate> coord = ring.Coordinates.WithoutRepeatedPoints();
 
             if (coord.Count < 4)
             {
@@ -289,7 +289,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             Edge<TCoordinate> e = new Edge<TCoordinate>(coord, new Label(_argIndex, Locations.Boundary, left, right));
 
-            if (_lineEdgeMap.Contains(ring))
+            if (_lineEdgeMap.ContainsKey(ring))
             {
                 _lineEdgeMap.Remove(ring);
             }
@@ -316,7 +316,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         private void addLineString(ILineString<TCoordinate> line)
         {
-            IList<TCoordinate> coord = line.Coordinates.WithoutRepeatedPoints();
+            ICoordinateSequence<TCoordinate> coord = line.Coordinates.WithoutRepeatedPoints();
 
             if (coord.Count < 2)
             {
@@ -329,7 +329,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             // line edges do not have locations for their left and right sides
             Edge<TCoordinate> e = new Edge<TCoordinate>(coord, new Label(_argIndex, Locations.Interior));
 
-            if (_lineEdgeMap.Contains(line))
+            if (_lineEdgeMap.ContainsKey(line))
             {
                 _lineEdgeMap.Remove(line);
             }

@@ -99,10 +99,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                     return false;
                 }
 
-                if (!CoordinateHelper.IsEmpty(lastNode) && !lastNode.Equals(startNode))
+                if (!Coordinates<TCoordinate>.IsEmpty(lastNode) && !lastNode.Equals(startNode))
                 {
                     // start new connected sequence
-                    prevSubgraphNodes.AddAll(currNodes);
+                    prevSubgraphNodes.AddRange(currNodes);
                     currNodes.Clear();
                 }
 
@@ -148,7 +148,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// <param name="geometry"></param>
         public void Add(IGeometry<TCoordinate> geometry)
         {
-            geometry.Apply(new GeometryComponentFilterImpl<TCoordinate>(this));
+            geometry.Apply(new GeometryComponentFilterImpl(this));
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 
             _isRun = true;
 
-            IList sequences = findSequences();
+            IEnumerable<IEnumerable<DirectedEdge<TCoordinate>>> sequences = findSequences();
 
             if (sequences == null)
             {
@@ -244,7 +244,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                           "Result is not lineal");
         }
 
-        private IEnumerable findSequences()
+        private IEnumerable<IEnumerable<DirectedEdge<TCoordinate>>> findSequences()
         {
             ConnectedSubgraphFinder<TCoordinate> csFinder = new ConnectedSubgraphFinder<TCoordinate>(_graph);
             IEnumerable<Subgraph<TCoordinate>> subgraphs = csFinder.FindConnectedSubgraphs();
@@ -253,12 +253,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             {
                 if (hasSequence(subgraph))
                 {
-                    IEnumerable<DirectedEdge<TCoordinate>> seq = findSequence(subgraph);
+                    yield return findSequence(subgraph);
                 }
                 else
                 {
                     // if any subgraph cannot be sequenced, abort
-                    return null;
+                    yield break;
                 }
             }
         }

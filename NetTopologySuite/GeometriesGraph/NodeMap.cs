@@ -89,7 +89,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                     continue;
                 }
 
-                if (node.Label.Value[geomIndex] == Locations.Boundary)
+                if (node.Label.Value[geomIndex].On == Locations.Boundary)
                 {
                     yield return node;
                 }

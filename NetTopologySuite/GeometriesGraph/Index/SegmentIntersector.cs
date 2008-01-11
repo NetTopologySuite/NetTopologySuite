@@ -21,12 +21,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
          * These variables keep track of what types of intersections were
          * found during ALL edges that have been intersected.
          */
-        private Boolean hasIntersection = false;
-        private Boolean hasProper = false;
-        private Boolean hasProperInterior = false;
+        private Boolean _hasIntersection = false;
+        private Boolean _hasProper = false;
+        private Boolean _hasProperInterior = false;
 
         // the proper intersection point found
-        private TCoordinate properIntersectionPoint;
+        private TCoordinate _properIntersectionPoint;
 
         private readonly LineIntersector<TCoordinate> _lineIntersector;
         private readonly Boolean _includeProper;
@@ -36,10 +36,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <summary>
         /// Testing only.
         /// </summary>
-        public Int32 numTests = 0;
+        private Int32 _numTests = 0;
 
+        private IEnumerable<Node<TCoordinate>> _boundaryNodes0;
         private IEnumerable<Node<TCoordinate>> _boundaryNodes1;
-        private IEnumerable<Node<TCoordinate>> _boundaryNodes2;
 
         public SegmentIntersector(LineIntersector<TCoordinate> li, Boolean includeProper, Boolean recordIsolated)
         {
@@ -50,8 +50,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 
         public void SetBoundaryNodes(IEnumerable<Node<TCoordinate>> boundaryNodes0, IEnumerable<Node<TCoordinate>> boundaryNodes1)
         {
-            _boundaryNodes1 = boundaryNodes0;
-            _boundaryNodes2 = boundaryNodes1;
+            _boundaryNodes0 = boundaryNodes0;
+            _boundaryNodes1 = boundaryNodes1;
         }
 
         /// <returns> 
@@ -60,12 +60,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// </returns>
         public TCoordinate ProperIntersectionPoint
         {
-            get { return properIntersectionPoint; }
+            get { return _properIntersectionPoint; }
         }
 
         public Boolean HasIntersection
         {
-            get { return hasIntersection; }
+            get { return _hasIntersection; }
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// </remarks>
         public Boolean HasProperIntersection
         {
-            get { return hasProper; }
+            get { return _hasProper; }
         }
 
         /// <summary> 
@@ -89,7 +89,73 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         public Boolean HasProperInteriorIntersection
         {
-            get { return hasProperInterior; }
+            get { return _hasProperInterior; }
+        }
+
+        /// <summary> 
+        /// This method is called by clients of the EdgeIntersector class to test for and add
+        /// intersections for two segments of the edges being intersected.
+        /// Note that clients (such as MonotoneChainEdges) may choose not to intersect
+        /// certain pairs of segments for efficiency reasons.
+        /// </summary>
+        public void AddIntersections(Edge<TCoordinate> e0, Int32 segIndex0, Edge<TCoordinate> e1, Int32 segIndex1)
+        {
+            // if (e0 == e1 && segIndex0 == segIndex1) 
+            if (ReferenceEquals(e0, e1) && segIndex0 == segIndex1)
+            {
+                return;
+                // Diego Guidi says: Avoid overload equality, 
+                // i use references equality, otherwise TOPOLOGY ERROR!
+            }
+
+            _numTests++;
+            Pair<TCoordinate> edge0Coordinates = Slice.GetPairAt(e0.Coordinates, segIndex0).Value;
+            Pair<TCoordinate> edge1Coordinates = Slice.GetPairAt(e1.Coordinates, segIndex1).Value;
+
+            Intersection<TCoordinate> intersection = _lineIntersector.ComputeIntersection(
+                edge0Coordinates.First, edge0Coordinates.Second,
+                edge1Coordinates.First, edge1Coordinates.Second);
+
+            /*
+             *  Always record any non-proper intersections.
+             *  If includeProper is true, record any proper intersections as well.
+             */
+            if (intersection.HasIntersection)
+            {
+                if (_recordIsolated)
+                {
+                    e0.Isolated = false;
+                    e1.Isolated = false;
+                }
+
+                _intersectionCount++;
+
+                // if the segments are adjacent they have at least one trivial intersection,
+                // the shared endpoint.  Don't bother adding it if it is the
+                // only intersection.
+                if (!isTrivialIntersection(intersection, e0, segIndex0, e1, segIndex1))
+                {
+                    _hasIntersection = true;
+
+                    if (_includeProper || !intersection.IsProper)
+                    {
+                        e0.AddIntersections(intersection, segIndex0, 0);
+                        e1.AddIntersections(intersection, segIndex1, 1);
+                    }
+
+                    if (intersection.IsProper)
+                    {
+                        _properIntersectionPoint = (TCoordinate)intersection.GetIntersectionPoint(0).Clone();
+                        
+                        _hasProper = true;
+
+                        if (!isBoundaryPoint(intersection, _boundaryNodes0, _boundaryNodes1))
+                        {
+                            _hasProperInterior = true;
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -98,11 +164,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// Note that closed edges require a special check for the point shared by the beginning
         /// and end segments.
         /// </summary>
-        private Boolean IsTrivialIntersection(Edge<TCoordinate> e0, Int32 segIndex0, Edge<TCoordinate> e1, Int32 segIndex1)
+        private static Boolean isTrivialIntersection(Intersection<TCoordinate> intersection, Edge<TCoordinate> e0, Int32 segIndex0, Edge<TCoordinate> e1, Int32 segIndex1)
         {
             if (ReferenceEquals(e0, e1))
             {
-                if (_lineIntersector.IntersectionType == LineIntersectionType.Intersects)
+                if (intersection.IntersectionType == LineIntersectionType.Intersects)
                 {
                     if (IsAdjacentSegments(segIndex0, segIndex1))
                     {
@@ -123,82 +189,19 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             return false;
         }
 
-        /// <summary> 
-        /// This method is called by clients of the EdgeIntersector class to test for and add
-        /// intersections for two segments of the edges being intersected.
-        /// Note that clients (such as MonotoneChainEdges) may choose not to intersect
-        /// certain pairs of segments for efficiency reasons.
-        /// </summary>
-        public void AddIntersections(Edge<TCoordinate> e0, Int32 segIndex0, Edge<TCoordinate> e1, Int32 segIndex1)
-        {
-            // if (e0 == e1 && segIndex0 == segIndex1) 
-            if (ReferenceEquals(e0, e1) && segIndex0 == segIndex1)
-            {
-                return;
-                // Diego Guidi says: Avoid overload equality, 
-                // i use references equality, otherwise TOPOLOGY ERROR!
-            }
-
-            numTests++;
-            Pair<TCoordinate> edge0Coordinates = Slice.GetPairAt(e0.Coordinates, segIndex0);
-            Pair<TCoordinate> edge1Coordinates = Slice.GetPairAt(e1.Coordinates, segIndex1);
-
-            _lineIntersector.ComputeIntersection(
-                edge0Coordinates.First, edge0Coordinates.Second,
-                edge1Coordinates.First, edge1Coordinates.Second);
-
-            /*
-             *  Always record any non-proper intersections.
-             *  If includeProper is true, record any proper intersections as well.
-             */
-            if (_lineIntersector.HasIntersection)
-            {
-                if (_recordIsolated)
-                {
-                    e0.Isolated = false;
-                    e1.Isolated = false;
-                }
-
-                _intersectionCount++;
-                // if the segments are adjacent they have at least one trivial intersection,
-                // the shared endpoint.  Don't bother adding it if it is the
-                // only intersection.
-                if (!IsTrivialIntersection(e0, segIndex0, e1, segIndex1))
-                {
-                    hasIntersection = true;
-                    if (_includeProper || !_lineIntersector.IsProper)
-                    {
-                        e0.AddIntersections(_lineIntersector, segIndex0, 0);
-                        e1.AddIntersections(_lineIntersector, segIndex1, 1);
-                    }
-                    if (_lineIntersector.IsProper)
-                    {
-                        properIntersectionPoint = (TCoordinate)_lineIntersector.GetIntersection(0).Clone();
-                        
-                        hasProper = true;
-                        
-                        if (!isBoundaryPoint(_lineIntersector, _boundaryNodes1, _boundaryNodes2))
-                        {
-                            hasProperInterior = true;
-                        }
-                    }
-                }
-            }
-        }
-
-        private static Boolean isBoundaryPoint(LineIntersector<TCoordinate> li, params IEnumerable<Node<TCoordinate>>[] boundaryNodes)
+        private static Boolean isBoundaryPoint(Intersection<TCoordinate> Intersection, params IEnumerable<Node<TCoordinate>>[] boundaryNodes)
         {
             if (boundaryNodes == null || boundaryNodes.Length < 2)
             {
                 return false;
             }
 
-            if (isBoundaryPoint(li, boundaryNodes[0]))
+            if (isBoundaryPoint(Intersection, boundaryNodes[0]))
             {
                 return true;
             }
 
-            if (isBoundaryPoint(li, boundaryNodes[1]))
+            if (isBoundaryPoint(Intersection, boundaryNodes[1]))
             {
                 return true;
             }
@@ -206,13 +209,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             return false;
         }
 
-        private static Boolean isBoundaryPoint(LineIntersector<TCoordinate> li, IEnumerable<Node<TCoordinate>> bdyNodes)
+        private static Boolean isBoundaryPoint(Intersection<TCoordinate> intersection, IEnumerable<Node<TCoordinate>> bdyNodes)
         {
             foreach (Node<TCoordinate> node in bdyNodes)
             {
                 TCoordinate pt = node.Coordinate;
 
-                if (li.IsIntersection(pt))
+                if (intersection.IsIntersection(pt))
                 {
                     return true;
                 }

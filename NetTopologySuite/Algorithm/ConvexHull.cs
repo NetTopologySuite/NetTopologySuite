@@ -31,7 +31,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         //}
 
         private readonly IGeometryFactory<TCoordinate> _geomFactory = null;
-        private readonly IEnumerable<TCoordinate> _inputPts = null;
+        private readonly ICoordinateSequence<TCoordinate> _inputPts = null;
 
         /// <summary> 
         /// Create a new convex hull construction for the input <see cref="Geometry{TCoordinate}"/>.
@@ -43,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Create a new convex hull construction for the input 
         /// <typeparamref name="TCoordinate"/> set.
         /// </summary>
-        public ConvexHull(IEnumerable<TCoordinate> points, IGeometryFactory<TCoordinate> geomFactory)
+        public ConvexHull(ICoordinateSequence<TCoordinate> points, IGeometryFactory<TCoordinate> geomFactory)
         {
             _inputPts = points;
             _geomFactory = geomFactory;
@@ -63,25 +63,25 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </returns>
         public IGeometry<TCoordinate> GetConvexHull()
         {
-            if (_inputPts.Length == 0)
+            if (_inputPts.Count == 0)
             {
                 return _geomFactory.CreateGeometryCollection(null);
             }
 
-            if (_inputPts.Length == 1)
+            if (_inputPts.Count == 1)
             {
                 return _geomFactory.CreatePoint(_inputPts[0]);
             }
 
-            if (_inputPts.Length == 2)
+            if (_inputPts.Count == 2)
             {
                 return _geomFactory.CreateLineString(_inputPts);
             }
 
-            IEnumerable<TCoordinate> reducedPts = _inputPts;
+            ICoordinateSequence<TCoordinate> reducedPts = _inputPts;
 
             // use heuristic to reduce points, if large
-            if (_inputPts.Length > 50)
+            if (_inputPts.Count > 50)
             {
                 reducedPts = reduce(_inputPts);
             }
@@ -107,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Note that even if the method used to determine the polygon vertices
         /// is not 100% robust, this does not affect the robustness of the convex hull.
         /// </summary>
-        private IEnumerable<TCoordinate> reduce(IEnumerable<TCoordinate> pts)
+        private ICoordinateSequence<TCoordinate> reduce(ICoordinateSequence<TCoordinate> pts)
         {
             IEnumerable<TCoordinate> polyPts = computeOctRing(pts);
 
@@ -139,30 +139,32 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 }
             }
 
-            return reducedSet;
+            return _geomFactory.CoordinateSequenceFactory.Create(reducedSet);
         }
 
-        private static IEnumerable<TCoordinate> preSort(IEnumerable<TCoordinate> pts)
+        private static ICoordinateSequence<TCoordinate> preSort(ICoordinateSequence<TCoordinate> pts)
         {
             TCoordinate first = Slice.GetFirst(pts);
 
             // find the lowest point in the set. If two or more points have
-            // the same minimum y coordinate choose the one with the minimu x.
+            // the same minimum y coordinate choose the one with the minimum x.
             // This focal point is put in array location first.
-            foreach (TCoordinate coordinate in Slice.StartAt(1, pts))
+            for (int i = 1; i < pts.Count; i++)
             {
+                TCoordinate coordinate = pts[i];
+
                 if ((coordinate[Ordinates.Y] < first[Ordinates.Y]) ||
                     ((coordinate[Ordinates.Y] == first[Ordinates.Y]) && (coordinate[Ordinates.X] < first[Ordinates.X])))
                 {
                     TCoordinate t;
                     t = first;
                     first = coordinate;
-                    coordinate = t;
+                    pts[i] = t;
                 }
             }
 
             // sort the points radially around the focal point.
-            Array.Sort(pts, 1, pts.Length - 1, new RadialComparator(first));
+            pts.Sort(1, pts.Count - 1, new RadialComparator(first));
             return pts;
         }
 
@@ -170,13 +172,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             TCoordinate p;
             Stack<TCoordinate> ps = new Stack<TCoordinate>();
-            Triple<TCoordinate> triple = Slice.GetTriple(c);
+            Triple<TCoordinate> triple = Slice.GetTriple(c).Value;
 
             ps.Push(triple.First);
             ps.Push(triple.Second);
             ps.Push(triple.Third);
 
-            foreach (TCoordinate coordinate in Slice.StartAt(3, c))
+            foreach (TCoordinate coordinate in Slice.StartAt(c, 3))
             {
                 p = ps.Pop();
 
@@ -257,7 +259,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private IEnumerable<TCoordinate> computeOctRing(IEnumerable<TCoordinate> inputPts)
         {
             IEnumerable<TCoordinate> octPts = computeOctPts(inputPts);
-            ICoordinateSequence<TCoordinate> coords = CoordinateSequences.Create(octPts, false);
+            ICoordinateSequence<TCoordinate> coords 
+                = _geomFactory.CoordinateSequenceFactory.Create(octPts, false);
 
             // points must all lie in a line
             if (coords.Count < 3)
@@ -338,9 +341,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             coordinates = cleanRing(coordinates);
 
-            if (!Slice.CountGreaterThan(3, coordinates))
+            if (!Slice.CountGreaterThan(coordinates, 3))
             {
-                Pair<TCoordinate> points = Slice.GetPair(coordinates);
+                Pair<TCoordinate> points = Slice.GetPair(coordinates).Value;
                 return _geomFactory.CreateLineString(points.First, points.Second);
             }
 
@@ -367,7 +370,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                     continue;
                 }
 
-                if (!CoordinateHelper.IsEmpty(previousDistinctCoordinate) &&
+                if (!Coordinates<TCoordinate>.IsEmpty(previousDistinctCoordinate) &&
                     isBetween(previousDistinctCoordinate, currentCoordinate, nextCoordinate))
                 {
                     continue;

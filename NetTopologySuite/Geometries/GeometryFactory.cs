@@ -23,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
-        /// <c> == </c> <see cref="PrecisionModels.Floating" />.
+        /// <c> == </c> <see cref="PrecisionModelType.Floating" />.
         /// </summary>
         public static readonly IGeometryFactory<TCoordinate> Default = new GeometryFactory<TCoordinate>();
 
@@ -164,7 +164,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             // Determine the type of the result from the first Geometry in the list
             // this should always return a point, since otherwise an empty collection would have already been returned
             IGeometry<TCoordinate> geom0 = Slice.GetFirst(geometries);
-            Boolean isCollection = Slice.CountGreaterThan(1, geometries);
+            Boolean isCollection = Slice.CountGreaterThan(geometries, 1);
 
             if (isCollection)
             {
@@ -236,18 +236,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             Double yMin = envelope.GetMin(Ordinates.Y);
             Double yMax = envelope.GetMax(Ordinates.Y);
 
+            ICoordinateFactory<TCoordinate> factory = CoordinateFactory;
+
             if (xMin == xMax && yMin == yMax)
             {
-                return CreatePoint(new TCoordinate(xMin, yMin));
+                return CreatePoint(factory.Create(xMin, yMin));
             }
 
             return CreatePolygon(
                 CreateLinearRing(new TCoordinate[]
                                      {
-                                         new TCoordinate(xMin, yMin),
-                                         new TCoordinate(xMax, yMin),
-                                         new TCoordinate(xMax, yMax),
-                                         new TCoordinate(xMin, yMin),
+                                         factory.Create(xMin, yMin),
+                                         factory.Create(xMax, yMin),
+                                         factory.Create(xMax, yMax),
+                                         factory.Create(xMin, yMin),
                                      }),
                 null);
         }
@@ -503,7 +505,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                 IComputable<TCoordinate>, IConvertible
         {
-            return CoordinateArraySequenceFactory<TCoordinate>.Instance;
+            return Coordinates<TCoordinate>.DefaultCoordinateSequenceFactory;
         }
 
         private class NoOpCoordinateOperation : GeometryEditor<TCoordinate>.CoordinateOperation
@@ -677,6 +679,26 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         IGeometry IGeometryFactory.ToGeometry(IExtents envelopeInternal)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IExtents CreateExtents()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IExtents CreateExtents(IExtents first, IExtents second)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IExtents CreateExtents(IExtents first, IExtents second, IExtents third)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IExtents CreateExtents(params IExtents[] extents)
         {
             throw new NotImplementedException();
         }

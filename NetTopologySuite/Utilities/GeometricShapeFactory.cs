@@ -115,31 +115,31 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
             {
                 Double x = extents.Min[Ordinates.X] + i * xSegLen;
                 Double y = extents.Min[Ordinates.Y];
-                pts[ipt++] = new TCoordinate(x, y);
+                pts[ipt++] = _geometryFactory.CoordinateFactory.Create(x, y);
             }
 
             for (i = 0; i < nSide; i++)
             {
                 Double x = extents.Max[Ordinates.X];
                 Double y = extents.Min[Ordinates.Y] + i * ySegLen;
-                pts[ipt++] = new TCoordinate(x, y);
+                pts[ipt++] = _geometryFactory.CoordinateFactory.Create(x, y);
             }
 
             for (i = 0; i < nSide; i++)
             {
                 Double x = extents.Max[Ordinates.X] - i * xSegLen;
                 Double y = extents.Max[Ordinates.Y];
-                pts[ipt++] = new TCoordinate(x, y);
+                pts[ipt++] = _geometryFactory.CoordinateFactory.Create(x, y);
             }
 
             for (i = 0; i < nSide; i++)
             {
                 Double x = extents.Min[Ordinates.X];
                 Double y = extents.Max[Ordinates.Y] - i * ySegLen;
-                pts[ipt++] = new TCoordinate(x, y);
+                pts[ipt++] = _geometryFactory.CoordinateFactory.Create(x, y);
             }
 
-            pts[ipt++] = new TCoordinate(pts[0]);
+            pts[ipt++] = _geometryFactory.CoordinateFactory.Create(pts[0]);
 
             ILinearRing<TCoordinate> ring = _geometryFactory.CreateLinearRing(pts);
             IPolygon<TCoordinate> poly = _geometryFactory.CreatePolygon(ring, null);
@@ -167,7 +167,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
                 Double ang = i * (2 * Math.PI / _pointCount);
                 Double x = xRadius * Math.Cos(ang) + centerX;
                 Double y = yRadius * Math.Sin(ang) + centerY;
-                TCoordinate pt = new TCoordinate(x, y);
+                TCoordinate pt = _geometryFactory.CoordinateFactory.Create(x, y);
                 pts[iPt++] = pt;
             }
 
@@ -208,7 +208,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
                 Double ang = startAng + i * angInc;
                 Double x = xRadius * Math.Cos(ang) + centerX;
                 Double y = yRadius * Math.Sin(ang) + centerY;
-                TCoordinate pt = new TCoordinate(x, y);
+                TCoordinate pt = _geometryFactory.CoordinateFactory.Create(x, y);
                 pt = _geometryFactory.PrecisionModel.MakePrecise(pt);
                 pts[iPt++] = pt;
             }
@@ -262,13 +262,13 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
             {
                 get
                 {
-                    if (!CoordinateHelper.IsEmpty(Base))
+                    if (!Coordinates<TCoordinate>.IsEmpty(Base))
                     {
                         Double x = Base[Ordinates.X], y = Base[Ordinates.Y];
                         return new Extents<TCoordinate>(x, x + Width, y, y + Height);
                     }
 
-                    if (!CoordinateHelper.IsEmpty(Center))
+                    if (!Coordinates<TCoordinate>.IsEmpty(Center))
                     {
                         Double x = Center[Ordinates.X], y = Center[Ordinates.Y];
                         return new Extents<TCoordinate>(x - Width / 2, x + Width / 2,

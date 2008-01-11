@@ -144,9 +144,9 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             return _geometryFactory.BuildGeometry(_lines);
         }
 
-        private IEnumerable<TCoordinate> validCoordinateSequence(IEnumerable<TCoordinate> pts)
+        private static IEnumerable<TCoordinate> validCoordinateSequence(IEnumerable<TCoordinate> pts)
         {
-            if (Slice.CountGreaterThan(1, pts))
+            if (Slice.CountGreaterThan(pts, 1))
             {
                 return pts;
             }

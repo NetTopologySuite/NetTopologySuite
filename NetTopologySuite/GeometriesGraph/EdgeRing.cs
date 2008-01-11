@@ -249,7 +249,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
 
             // if there is no current RHS value, set it
-            if (_label[geomIndex] == Locations.None)
+            if (_label[geomIndex].On == Locations.None)
             {
                 _label = new Label(_label, geomIndex, loc);
                 return;
@@ -269,7 +269,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                     startIndex = 0;
                 }
 
-                foreach (TCoordinate coordinate in Slice.StartAt(startIndex, edgePts))
+                foreach (TCoordinate coordinate in Slice.StartAt(edgePts, startIndex))
                 {
                     _coordinates.Add(coordinate);
                 }
@@ -284,7 +284,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                     startIndex = 0;
                 }
 
-                _coordinates.AddRange(Slice.ReverseStartAt(startIndex, edgePts));
+                _coordinates.AddRange(Slice.ReverseStartAt(edgePts, startIndex));
             }
         }
 

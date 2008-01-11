@@ -10,22 +10,22 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
     /// <summary>
-    /// Validates that a collection of <see cref="SegmentString{TCoordinate}" />s is correctly noded.
+    /// Validates that a collection of <see cref="NodedSegmentString{TCoordinate}" />s is correctly noded.
     /// Throws an appropriate exception if an noding error is found.
     /// </summary>
     public class NodingValidator<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
     {
-        private readonly LineIntersector<TCoordinate> _li = new RobustLineIntersector<TCoordinate>();
-        private readonly List<SegmentString<TCoordinate>> _segStrings = new List<SegmentString<TCoordinate>>();
+        private readonly LineIntersector<TCoordinate> _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
+        private readonly List<NodedSegmentString<TCoordinate>> _segStrings = new List<NodedSegmentString<TCoordinate>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NodingValidator{TCoordinate}"/> 
         /// class.
         /// </summary>
         /// <param name="segStrings">The seg strings.</param>
-        public NodingValidator(IEnumerable<SegmentString<TCoordinate>> segStrings)
+        public NodingValidator(IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
         {
             _segStrings.AddRange(segStrings);
         }
@@ -42,13 +42,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>   
         private void checkCollapses()
         {
-            foreach (SegmentString<TCoordinate> ss in _segStrings)
+            foreach (NodedSegmentString<TCoordinate> ss in _segStrings)
             {
                 checkCollapses(ss);
             }
         }
 
-        private static void checkCollapses(SegmentString<TCoordinate> ss)
+        private static void checkCollapses(NodedSegmentString<TCoordinate> ss)
         {
             IEnumerable<TCoordinate> pts = ss.Coordinates;
 
@@ -71,16 +71,16 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         private void checkInteriorIntersections()
         {
-            foreach (SegmentString<TCoordinate> ss0 in _segStrings)
+            foreach (NodedSegmentString<TCoordinate> ss0 in _segStrings)
             {
-                foreach (SegmentString<TCoordinate> ss1 in _segStrings)
+                foreach (NodedSegmentString<TCoordinate> ss1 in _segStrings)
                 {
                     checkInteriorIntersections(ss0, ss1);
                 }
             }
         }
 
-        private void checkInteriorIntersections(SegmentString<TCoordinate> ss0, SegmentString<TCoordinate> ss1)
+        private void checkInteriorIntersections(NodedSegmentString<TCoordinate> ss0, NodedSegmentString<TCoordinate> ss1)
         {
             IEnumerable<TCoordinate> pts0 = ss0.Coordinates;
             IEnumerable<TCoordinate> pts1 = ss1.Coordinates;
@@ -94,18 +94,19 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             }
         }
 
-        private void checkInteriorIntersections(SegmentString<TCoordinate> e0, TCoordinate p00, TCoordinate p01, SegmentString<TCoordinate> e1, TCoordinate p10, TCoordinate p11)
+        private void checkInteriorIntersections(NodedSegmentString<TCoordinate> e0, TCoordinate p00, TCoordinate p01, NodedSegmentString<TCoordinate> e1, TCoordinate p10, TCoordinate p11)
         {
             if (e0 == e1 && p00.Equals(p10) && p01.Equals(p11))
             {
                 return;
             }
 
-            _li.ComputeIntersection(p00, p01, p10, p11);
+            Intersection<TCoordinate> intersection = _li.ComputeIntersection(p00, p01, p10, p11);
 
-            if (_li.HasIntersection)
+            if (intersection.HasIntersection)
             {
-                if (_li.IsProper || hasInteriorIntersection(_li, p00, p01) || hasInteriorIntersection(_li, p10, p11))
+                if (intersection.IsProper || hasInteriorIntersection(intersection, p00, p01) 
+                    || hasInteriorIntersection(intersection, p10, p11))
                 {
                     throw new TopologyException("Found non-noded intersection at " 
                         + p00 + "-" + p01 + " and " + p10 + "-" + p11);
@@ -114,11 +115,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         }
 
         /// <returns><see langword="true"/> if there is an intersection point which is not an endpoint of the segment p0-p1.</returns>
-        private static Boolean hasInteriorIntersection(LineIntersector<TCoordinate> li, TCoordinate p0, TCoordinate p1)
+        private static Boolean hasInteriorIntersection(Intersection<TCoordinate> intersection, TCoordinate p0, TCoordinate p1)
         {
-            for (Int32 i = 0; i < (Int32)li.IntersectionType; i++)
+            for (Int32 i = 0; i < (Int32)intersection.IntersectionType; i++)
             {
-                TCoordinate intPt = li.GetIntersection(i);
+                TCoordinate intPt = intersection.GetIntersectionPoint(i);
 
                 if (!(intPt.Equals(p0) || intPt.Equals(p1)))
                 {
@@ -135,7 +136,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         private void checkEndPtVertexIntersections()
         {
-            foreach (SegmentString<TCoordinate> ss in _segStrings)
+            foreach (NodedSegmentString<TCoordinate> ss in _segStrings)
             {
                 IEnumerable<TCoordinate> pts = ss.Coordinates;
                 checkEndPtVertexIntersections(Slice.GetFirst(pts), _segStrings);
@@ -143,15 +144,15 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             }
         }
 
-        private static void checkEndPtVertexIntersections(ICoordinate testPt, IEnumerable<SegmentString<TCoordinate>> segStrings)
+        private static void checkEndPtVertexIntersections(ICoordinate testPt, IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
         {
-            foreach (SegmentString<TCoordinate> ss in segStrings)
+            foreach (NodedSegmentString<TCoordinate> ss in segStrings)
             {
                 IEnumerable<TCoordinate> pts = ss.Coordinates;
 
                 Int32 pointIndex = 0;
 
-                foreach (TCoordinate coordinate in Slice.StartAt(1, pts))
+                foreach (TCoordinate coordinate in Slice.StartAt(pts, 1))
                 {
                     if (coordinate.Equals(testPt))
                     {

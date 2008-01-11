@@ -106,7 +106,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
             }
 
             GeometryGraph<TCoordinate> graph = new GeometryGraph<TCoordinate>(0, geom);
-            LineIntersector<TCoordinate> li = new RobustLineIntersector<TCoordinate>();
+            LineIntersector<TCoordinate> li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
             SegmentIntersector<TCoordinate> si = graph.ComputeSelfNodes(li, true);
             
             // if no self-intersection, must be simple

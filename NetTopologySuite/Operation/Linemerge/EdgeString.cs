@@ -55,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                 Int32 reverseDirectedEdges = 0;
 
                 ICoordinateSequence<TCoordinate> coordinateList =
-                    CoordinateSequences.CreateEmpty<TCoordinate>();
+                    _factory.CoordinateSequenceFactory.Create();
 
                 foreach (LineMergeDirectedEdge<TCoordinate> directedEdge in _directedEdges)
                 {

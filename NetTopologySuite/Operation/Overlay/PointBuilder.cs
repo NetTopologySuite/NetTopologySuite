@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
@@ -19,14 +18,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     {
         private readonly OverlayOp<TCoordinate> _op;
         private readonly IGeometryFactory<TCoordinate> _geometryFactory;
-        private PointLocator<TCoordinate> _ptLocator;
+        //private PointLocator<TCoordinate> _ptLocator;
 
-        public PointBuilder(OverlayOp<TCoordinate> op, IGeometryFactory<TCoordinate> geometryFactory,
-                            PointLocator<TCoordinate> ptLocator)
+        // [codekaizen 2008-01-06] parameter 'ptLocator' isn't used in JTS source PointBuilder.java rev. 1.16
+        public PointBuilder(OverlayOp<TCoordinate> op, IGeometryFactory<TCoordinate> geometryFactory)
         {
             _op = op;
             _geometryFactory = geometryFactory;
-            _ptLocator = ptLocator;
+            //_ptLocator = ptLocator;
         }
 
         /// <returns>
@@ -35,7 +34,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         public IEnumerable<IPoint<TCoordinate>> Build(SpatialFunctions opCode)
         {
             IEnumerable<Node<TCoordinate>> nodeList = collectNodes(opCode);
-            IList resultPointList = SimplifyPoints(nodeList);
+            IEnumerable<IPoint<TCoordinate>> resultPointList = simplifyPoints(nodeList);
             return resultPointList;
         }
 
@@ -66,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         /// <param name="resultNodeList"></param>
         /// <returns></returns>
-        private IEnumerable<IPoint<TCoordinate>> SimplifyPoints(IEnumerable<Node<TCoordinate>> resultNodeList)
+        private IEnumerable<IPoint<TCoordinate>> simplifyPoints(IEnumerable<Node<TCoordinate>> resultNodeList)
         {
             foreach (Node<TCoordinate> node in resultNodeList)
             {

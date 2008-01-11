@@ -10,20 +10,20 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
     /// The action for the internal iterator for performing
     /// envelope select queries on a MonotoneChain.
     /// </summary>
-    public class MonotoneChainSelectAction<TCoordinate>
+    public sealed class MonotoneChainSelectAction<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
     {
-        private Extents<TCoordinate> _searchExtents1 = new Extents<TCoordinate>();
+        private readonly Extents<TCoordinate> _searchExtents1 = new Extents<TCoordinate>();
         private LineSegment<TCoordinate> _selectedSegment = new LineSegment<TCoordinate>();
-
+        
         /// <summary> 
         /// This function can be overridden if the original chain is needed.
         /// </summary>
         public virtual void Select(MonotoneChain<TCoordinate> mc, Int32 start)
         {
-            mc.GetLineSegment(start, ref _selectedSegment);
-            Select(SelectedSegment);
+            _selectedSegment = mc.GetLineSegment(start);
+            Select(_selectedSegment);
         }
 
         /// <summary>

@@ -26,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         public override void ComputeIntersectionMatrix(IntersectionMatrix im)
         {
             Debug.Assert(Label != null);
-            im.SetAtLeastIfValid(Label.Value[0], Label.Value[1], Dimensions.Point);
+            im.SetAtLeastIfValid(Label.Value[0].On, Label.Value[1].On, Dimensions.Point);
         }
 
         /// <summary>

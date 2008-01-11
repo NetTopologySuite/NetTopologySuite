@@ -49,15 +49,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         private Int32 findChainEnd(IEnumerable<TCoordinate> points, Int32 start)
         {
             // determine quadrant for chain
-            Pair<TCoordinate> startPair = Slice.GetPairAt(points, start);
-            Int32 chainQuad = QuadrantOp<TCoordinate>.Quadrant(startPair.First, startPair.Second);
+            Pair<TCoordinate> startPair = Slice.GetPairAt(points, start).Value;
+            Quadrants chainQuad = QuadrantOp<TCoordinate>.Quadrant(startPair.First, startPair.Second);
             Int32 last = start + 1;
 
             while (last < _pointCount)
             {
                 // compute quadrant for next possible segment in chain
-                Pair<TCoordinate> endPair = Slice.GetPairAt(points, last - 1);
-                Int32 quad = QuadrantOp<TCoordinate>.Quadrant(endPair.First, endPair.Second);
+                Pair<TCoordinate> endPair = Slice.GetPairAt(points, last - 1).Value;
+                Quadrants quad = QuadrantOp<TCoordinate>.Quadrant(endPair.First, endPair.Second);
 
                 if (quad != chainQuad)
                 {

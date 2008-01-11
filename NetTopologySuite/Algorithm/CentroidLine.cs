@@ -5,7 +5,6 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.Utilities;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -20,8 +19,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
          where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                              IComputable<TCoordinate>, IConvertible
     {
-        private TCoordinate _centSum = new TCoordinate();
+        private readonly ICoordinateFactory<TCoordinate> _factory;
+        private TCoordinate _centSum;
         private Double totalLength = 0.0;
+
+        public CentroidLine(ICoordinateFactory<TCoordinate> factory)
+        {
+            _factory = factory;
+        }
 
         /// <summary> 
         /// Adds the linestring(s) defined by a Geometry to the centroid total.
@@ -54,7 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             {
                 Double x = _centSum[Ordinates.X] / totalLength;
                 Double y = _centSum[Ordinates.Y] / totalLength;
-                return new TCoordinate(x, y);
+                return _factory.Create(x, y);
             }
         }
 
@@ -82,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 y += segmentLen * midy;
             }
 
-            _centSum = new TCoordinate(x, y);
+            _centSum = _factory.Create(x, y);
         }
     }
 }

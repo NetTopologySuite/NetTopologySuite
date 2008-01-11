@@ -92,10 +92,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             OffsetCurveSetBuilder<TCoordinate> curveSetBuilder
                 = new OffsetCurveSetBuilder<TCoordinate>(g, distance, curveBuilder);
 
-            IEnumerable<SegmentString<TCoordinate>> bufferSegStrList = curveSetBuilder.GetCurves();
+            IEnumerable<NodedSegmentString<TCoordinate>> bufferSegStrList = curveSetBuilder.GetCurves();
 
             // short-circuit test
-            if (!Slice.CountGreaterThan(0, bufferSegStrList))
+            if (!Slice.CountGreaterThan(bufferSegStrList, 0))
             {
                 IGeometry<TCoordinate> emptyGeom = _geometryFactory.CreateGeometryCollection();
                 return emptyGeom;
@@ -124,7 +124,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             }
 
             // otherwise use a fast (but non-robust) noder
-            LineIntersector<TCoordinate> li = new RobustLineIntersector<TCoordinate>();
+            LineIntersector<TCoordinate> li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
             li.PrecisionModel = precisionModel;
             MonotoneChainIndexNoder<TCoordinate> noder 
                 = new MonotoneChainIndexNoder<TCoordinate>(new IntersectionAdder<TCoordinate>(li));
@@ -177,15 +177,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             }
         }
 
-        private void computeNodedEdges(IEnumerable<SegmentString<TCoordinate>> bufferSegStrList, IPrecisionModel<TCoordinate> precisionModel)
+        private void computeNodedEdges(IEnumerable<NodedSegmentString<TCoordinate>> bufferSegStrList, IPrecisionModel<TCoordinate> precisionModel)
         {
             INoder<TCoordinate> noder = getNoder(precisionModel);
-            noder.ComputeNodes(bufferSegStrList);
-            IEnumerable<SegmentString<TCoordinate>> nodedSegStrings = noder.GetNodedSubstrings();
+            IEnumerable<NodedSegmentString<TCoordinate>> nodedSegStrings = noder.Node(bufferSegStrList);
 
-            foreach (SegmentString<TCoordinate> segStr in nodedSegStrings)
+            foreach (NodedSegmentString<TCoordinate> segStr in nodedSegStrings)
             {
-                Label oldLabel = (Label)segStr.Data;
+                Label oldLabel = (Label)segStr.Context;
                 Edge<TCoordinate> edge = new Edge<TCoordinate>(segStr.Coordinates, oldLabel);
                 InsertEdge(edge);
             }

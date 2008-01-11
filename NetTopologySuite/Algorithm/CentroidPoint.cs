@@ -17,8 +17,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
          where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                              IComputable<TCoordinate>, IConvertible
     {
+        private readonly ICoordinateFactory<TCoordinate> _factory;
         private Int32 _pointCount = 0;
-        private TCoordinate _centSum = new TCoordinate();
+        private TCoordinate _centSum;
+
+        public CentroidPoint(ICoordinateFactory<TCoordinate> factory)
+        {
+            _factory = factory;
+            _centSum = _factory.Create();
+        }
 
         /// <summary> 
         /// Adds the point(s) defined by a Geometry to the centroid total.
@@ -51,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         public void Add(TCoordinate point)
         {
             _pointCount += 1;
-            _centSum = new TCoordinate(_centSum[Ordinates.X] + point[Ordinates.X],
+            _centSum = _factory.Create(_centSum[Ordinates.X] + point[Ordinates.X],
                                         _centSum[Ordinates.Y] + point[Ordinates.Y]);
         }
 
@@ -59,10 +66,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             get
             {
-                TCoordinate cent = new TCoordinate();
                 Double x = _centSum[Ordinates.X] / _pointCount;
                 Double y = _centSum[Ordinates.Y] / _pointCount;
-                return cent;
+                return _factory.Create(x, y);
             }
         }
     }

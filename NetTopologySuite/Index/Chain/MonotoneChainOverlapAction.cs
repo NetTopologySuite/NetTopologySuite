@@ -40,12 +40,16 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <summary>
         /// This function can be overridden if the original chains are needed.
         /// </summary>
-        /// <param name="start1">The index of the start of the overlapping segment from mc1.</param>
-        /// <param name="start2">The index of the start of the overlapping segment from mc2.</param>
+        /// <param name="start1">
+        /// The index of the start of the overlapping segment from mc1.
+        /// </param>
+        /// <param name="start2">
+        /// The index of the start of the overlapping segment from mc2.
+        /// </param>
         public virtual void Overlap(MonotoneChain<TCoordinate> mc1, Int32 start1, MonotoneChain<TCoordinate> mc2, Int32 start2)
         {
-            mc1.GetLineSegment(start1, ref _overlapSeg1);
-            mc2.GetLineSegment(start2, ref _overlapSeg2);
+            _overlapSeg1 = mc1.GetLineSegment(start1);
+            _overlapSeg2 = mc2.GetLineSegment(start2);
             Overlap(_overlapSeg1, _overlapSeg2);
         }
 

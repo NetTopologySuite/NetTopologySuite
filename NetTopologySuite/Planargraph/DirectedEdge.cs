@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Coordinates;
 using GisSharpBlog.NetTopologySuite.Algorithm;
+using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
@@ -41,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         private readonly TCoordinate _p0, _p1;
         private DirectedEdge<TCoordinate> _sym = null; // optional
         private readonly Boolean _edgeDirection;
-        private readonly Int32 _quadrant;
+        private readonly Quadrants _quadrant;
         private readonly Double _angle;
 
         /// <summary>
@@ -84,7 +85,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Returns 0, 1, 2, or 3, indicating the quadrant in which this DirectedEdge's
         /// orientation lies.
         /// </summary>
-        public Int32 Quadrant
+        public Quadrants Quadrant
         {
             get { return _quadrant; }
         }

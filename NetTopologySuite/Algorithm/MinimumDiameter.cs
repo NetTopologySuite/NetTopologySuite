@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
@@ -31,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private readonly IGeometry<TCoordinate> _inputGeom;
         private readonly Boolean _isConvex;
 
-        private LineSegment<TCoordinate> _minBaseSeg = new LineSegment<TCoordinate>();
+        private LineSegment<TCoordinate>? _minBaseSeg;
         private TCoordinate _minWidthPt = default(TCoordinate);
         private Int32 _minPtIndex;
         private Double _minWidth = 0.0;
@@ -92,7 +93,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             get
             {
                 computeMinimumDiameter();
-                return _inputGeom.Factory.CreateLineString(_minBaseSeg.P0, _minBaseSeg.P1);
+                Debug.Assert(_minBaseSeg.HasValue);
+                LineSegment<TCoordinate> seg = _minBaseSeg.Value;
+                return _inputGeom.Factory.CreateLineString(seg.P0, seg.P1);
             }
         }
 
@@ -107,12 +110,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 computeMinimumDiameter();
 
                 // return empty linearRing if no minimum width calculated
-                if (CoordinateHelper.IsEmpty(_minWidthPt))
+                if (Coordinates<TCoordinate>.IsEmpty(_minWidthPt))
                 {
                     return _inputGeom.Factory.CreateLineString();
                 }
 
-                TCoordinate basePt = _minBaseSeg.Project(_minWidthPt);
+                TCoordinate basePt = _minBaseSeg.Value.Project(_minWidthPt);
                 return _inputGeom.Factory.CreateLineString(basePt, _minWidthPt);
             }
         }
@@ -120,7 +123,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private void computeMinimumDiameter()
         {
             // check if computation is cached
-            if (_minWidthPt != null)
+            if (Coordinates<TCoordinate>.IsEmpty(_minWidthPt))
             {
                 return;
             }
@@ -152,26 +155,25 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
 
             // special cases for lines or points or degenerate rings
-            if (!Slice.CountGreaterThan(0, pts))
+            if (!Slice.CountGreaterThan(pts, 0))
             {
                 _minWidth = 0.0;
                 _minWidthPt = default(TCoordinate);
                 _minBaseSeg = null;
             }
-            else if (!Slice.CountGreaterThan(1, pts))
+            else if (!Slice.CountGreaterThan(pts, 1))
             {
                 _minWidth = 0.0;
                 TCoordinate point = Slice.GetFirst(pts);
                 _minWidthPt = point;
-                _minBaseSeg.P0 = point;
-                _minBaseSeg.P1 = point;
+                _minBaseSeg = new LineSegment<TCoordinate>(point, point);
             }
-            else if (!Slice.CountGreaterThan(3, pts))
+            else if (!Slice.CountGreaterThan(pts, 3))
             {
                 _minWidth = 0.0;
-                Pair<TCoordinate> pair = Slice.GetPair(pts);
-                _minWidthPt = _minBaseSeg.P0 = pair.First;
-                _minBaseSeg.P1 = pair.Second;
+                Pair<TCoordinate> pair = Slice.GetPair(pts).Value;
+                _minWidthPt = pair.First;
+                _minBaseSeg = new LineSegment<TCoordinate>(pair);
             }
             else
             {
@@ -195,8 +197,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             // compute the max distance for all segments in the ring, and pick the minimum
             foreach (Pair<TCoordinate> pair in Slice.GetOverlappingPairs(pts))
             {
-                seg.P0 = pair.First;
-                seg.P1 = pair.Second;
+                seg = new LineSegment<TCoordinate>(pair);
                 currMaxIndex = findMaxPerpendicularDistance(pts, seg, currMaxIndex, count);
             }
         }

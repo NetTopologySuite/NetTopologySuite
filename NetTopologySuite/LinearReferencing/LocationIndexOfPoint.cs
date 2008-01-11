@@ -95,19 +95,20 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             Int32 minSegmentIndex = 0;
             Double minFrac = -1.0;
 
-            LineSegment<TCoordinate> seg = new LineSegment<TCoordinate>();
+            LineSegment<TCoordinate> seg;
 
             foreach (LinearIterator<TCoordinate>.LinearElement element in new LinearIterator<TCoordinate>(_linearGeom))
             {
                 if (!element.IsEndOfLine)
                 {
-                    seg.P0 = element.SegmentStart;
-                    seg.P1 = element.SegmentEnd;
+                    seg = new LineSegment<TCoordinate>(element.SegmentStart, element.SegmentEnd);
+
                     Double segDistance = seg.Distance(inputPt);
                     Double segFrac = segmentFraction(seg, inputPt);
 
                     Int32 candidateComponentIndex = element.ComponentIndex;
                     Int32 candidateSegmentIndex = element.VertexIndex;
+
                     if (segDistance < minDistance)
                     {
                         // ensure after minLocation, if any                        

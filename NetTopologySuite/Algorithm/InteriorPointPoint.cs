@@ -19,11 +19,18 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private readonly TCoordinate _centroid;
         private Double _minDistance = Double.MaxValue;
         private TCoordinate _interiorPoint = default(TCoordinate);
+        private readonly ICoordinateFactory<TCoordinate> _factory;
 
         public InteriorPointPoint(IGeometry<TCoordinate> g)
         {
+            _factory = g.Factory.CoordinateFactory;
             _centroid = g.Centroid.Coordinate;
-            Add(g);
+            add(g);
+        }
+
+        public TCoordinate InteriorPoint
+        {
+            get { return _interiorPoint; }
         }
 
         /// <summary> 
@@ -31,12 +38,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// point. If a Geometry is not of dimension 0 it is not tested.
         /// </summary>
         /// <param name="geom">The point to add.</param>
-        private void Add(IGeometry<TCoordinate> geom)
+        private void add(IGeometry<TCoordinate> geom)
         {
             if (geom is IPoint<TCoordinate>)
             {
                 IPoint<TCoordinate> point = geom as IPoint<TCoordinate>;
-                Add(point.Coordinate);
+                add(point.Coordinate);
             }
             else if (geom is IGeometryCollection<TCoordinate>)
             {
@@ -44,25 +51,20 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
                 foreach (IGeometry<TCoordinate> geometry in gc)
                 {
-                    Add(geometry);
+                    add(geometry);
                 }
             }
         }
 
-        private void Add(ICoordinate point)
+        private void add(TCoordinate point)
         {
             Double dist = point.Distance(_centroid);
 
             if (dist < _minDistance)
             {
-                _interiorPoint = new TCoordinate(point);
+                _interiorPoint = _factory.Create(point);
                 _minDistance = dist;
             }
-        }
-
-        public TCoordinate InteriorPoint
-        {
-            get { return _interiorPoint; }
         }
     }
 }

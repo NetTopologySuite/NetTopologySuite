@@ -32,8 +32,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             }
 
             IEnumerable<TCoordinate> coordinates = lineString.Coordinates.WithoutRepeatedPoints();
-            Pair<TCoordinate> startPair = Slice.GetPair(coordinates);
-            Pair<TCoordinate> endPair = Slice.GetLastPair(coordinates);
+            Pair<TCoordinate> startPair = Slice.GetPair(coordinates).Value;
+            Pair<TCoordinate> endPair = Slice.GetLastPair(coordinates).Value;
 
             Node<TCoordinate> startNode = getNode(startPair.First);
             Node<TCoordinate> endNode = getNode(endPair.Second);

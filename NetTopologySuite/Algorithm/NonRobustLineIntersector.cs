@@ -1,5 +1,6 @@
 using System;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -26,7 +27,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return (a < 0 && b < 0) || (a > 0 && b > 0);
         }
 
-        public override void ComputeIntersection(TCoordinate p, TCoordinate p1, TCoordinate p2)
+        protected NonRobustLineIntersector(ICoordinateFactory<TCoordinate> factory)
+            : base(factory) { }
+
+        public override Intersection<TCoordinate> ComputeIntersection(TCoordinate p, Pair<TCoordinate> line)
         {
             Double a1;
             Double b1;
@@ -40,7 +44,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             *  'Sign' values
             */
 
-            IsProper = false;
+            Boolean isProper;
+
+            TCoordinate p1 = line.First;
+            TCoordinate p2 = line.Second;
 
             /*
             *  Compute a1, b1, c1, where line joining points 1 and 2
@@ -58,31 +65,29 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             // if r != 0 the point does not lie on the line
             if (r != 0)
             {
-                IntersectionType = LineIntersectionType.DoesNotIntersect;
-                return;
+                return new Intersection<TCoordinate>(new Pair<TCoordinate>(p, p), line);
             }
 
             // Point lies on line - check to see whether it lies in line segment.
 
-            Double dist = RParameter(p1, p2, p);
+            Double dist = rParameter(line, p);
 
             if (dist < 0.0 || dist > 1.0)
             {
-                IntersectionType = LineIntersectionType.DoesNotIntersect;
-                return;
+                return new Intersection<TCoordinate>(new Pair<TCoordinate>(p, p), line);
             }
 
-            IsProper = true;
+            isProper = true;
 
             if (p.Equals(p1) || p.Equals(p2))
             {
-                IsProper = false;
+                isProper = false;
             }
 
-            IntersectionType = LineIntersectionType.Intersects;
+            return new Intersection<TCoordinate>(p, new Pair<TCoordinate>(p, p), line, false, false, isProper);
         }
 
-        public override LineIntersectionType ComputeIntersect(TCoordinate p1, TCoordinate p2, TCoordinate p3, TCoordinate p4)
+        protected override Intersection<TCoordinate> ComputeIntersectInternal(Pair<TCoordinate> line0, Pair<TCoordinate> line1)
         {
             Double a1;
             Double b1;
@@ -103,7 +108,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             *  'Sign' values
             */
 
-            IsProper = false;
+            Boolean isProper;
+
+            TCoordinate p1 = line0.First;
+            TCoordinate p2 = line0.Second;
+
+            TCoordinate p3 = line1.First;
+            TCoordinate p4 = line1.Second;
 
             /*
             *  Compute a1, b1, c1, where line joining points 1 and 2
@@ -125,7 +136,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             */
             if (r3 != 0 && r4 != 0 && IsSameSignAndNonZero(r3, r4))
             {
-                return LineIntersectionType.DoesNotIntersect;
+                return new Intersection<TCoordinate>(line0, line1);
             }
 
             /*
@@ -148,7 +159,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             */
             if (r1 != 0 && r2 != 0 && IsSameSignAndNonZero(r1, r2))
             {
-                return LineIntersectionType.DoesNotIntersect;
+                return new Intersection<TCoordinate>(line0, line1);
             }
 
             /*
@@ -158,33 +169,41 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             if (denom == 0)
             {
-                return ComputeCollinearIntersection(p1, p2, p3, p4);
+                return computeCollinearIntersection(line0, line1);
             }
 
             Double x = (b1 * c2 - b2 * c1) / denom;
             Double y = (a2 * c1 - a1 * c2) / denom;
-            PointA = new TCoordinate(x, y);
+
+            TCoordinate intersection = CoordinateFactory.Create(x, y);
 
             // check if this is a proper intersection BEFORE truncating values,
             // to avoid spurious equality comparisons with endpoints
-            IsProper = true;
+            isProper = true;
 
-            if (PointA.Equals(p1) || PointA.Equals(p2) || PointA.Equals(p3) || PointA.Equals(p4))
+            if (intersection.Equals(p1) || intersection.Equals(p2) 
+                || intersection.Equals(p3) || intersection.Equals(p4))
             {
-                IsProper = false;
+                isProper = false;
             }
 
             // truncate computed point to precision grid            
             if (PrecisionModel != null)
             {
-                PrecisionModel.MakePrecise(PointA);
+                PrecisionModel.MakePrecise(intersection);
             }
 
-            return LineIntersectionType.Intersects;
+            return new Intersection<TCoordinate>(intersection, line0, line1, false, false, isProper);
         }
 
-        private LineIntersectionType ComputeCollinearIntersection(TCoordinate p1, TCoordinate p2, TCoordinate p3, TCoordinate p4)
+        private static Intersection<TCoordinate> computeCollinearIntersection(Pair<TCoordinate> line0, Pair<TCoordinate> line1)
         {
+            TCoordinate p1 = line0.First;
+            TCoordinate p2 = line0.Second;
+
+            TCoordinate p3 = line1.First;
+            TCoordinate p4 = line1.Second;
+
             Double r1;
             Double r2;
             Double r3;
@@ -198,8 +217,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             r1 = 0;
             r2 = 1;
-            r3 = RParameter(p1, p2, p3);
-            r4 = RParameter(p1, p2, p4);
+            r3 = rParameter(line0, p3);
+            r4 = rParameter(line0, p4);
 
             // make sure p3-p4 is in same direction as p1-p2
             if (r3 < r4)
@@ -220,38 +239,39 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             // check for no intersection
             if (t3 > r2 || t4 < r1)
             {
-                return LineIntersectionType.DoesNotIntersect;
+                return new Intersection<TCoordinate>(line0, line1);
             }
+
+            TCoordinate intersection0, intersection1;
 
             // check for single point intersection
             if (q4.Equals(p1))
             {
-                PointA = p1;
-                return LineIntersectionType.Intersects;
+                return new Intersection<TCoordinate>(p1, line0, line1, false, false, false);
             }
 
             if (q3.Equals(p2))
             {
-                PointA = p2;
-                return LineIntersectionType.Intersects;
+                return new Intersection<TCoordinate>(p2, line0, line1, false, false, false);
             }
 
             // intersection MUST be a segment - compute endpoints
-            PointA = p1;
+            intersection0 = p1;
 
             if (t3 > r1)
             {
-                PointA = q3;
+                intersection0 = q3;
             }
 
-            PointB = p2;
+            intersection1 = p2;
 
             if (t4 < r2)
             {
-                PointB = q4;
+                intersection1 = q4;
             }
 
-            return LineIntersectionType.Collinear;
+            return new Intersection<TCoordinate>(intersection0, intersection1,
+                                                 line0, line1, false, false, false);
         }
 
         /// <summary> 
@@ -260,8 +280,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// of the line from p1 to p2.
         /// This is equal to the 'distance' of p along p1-p2.
         /// </summary>
-        private Double RParameter(TCoordinate p1, TCoordinate p2, TCoordinate p)
+        private static Double rParameter(Pair<TCoordinate> line, TCoordinate p)
         {
+            TCoordinate p1 = line.First;
+            TCoordinate p2 = line.Second;
+
             // compute maximum delta, for numerical stability
             // also handle case of p1-p2 being vertical or horizontal
             Double r;

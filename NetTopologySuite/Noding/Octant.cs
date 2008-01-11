@@ -1,5 +1,7 @@
 using System;
 using GeoAPI.Coordinates;
+using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
@@ -101,6 +103,16 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                     }
                 }
             }
+        }
+        
+        /// <summary>
+        /// Returns the octant of a directed line segment from p0 to p1.
+        /// </summary>
+        public static Octants GetOctant<TCoordinate>(LineSegment<TCoordinate> segment)
+            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                IComputable<TCoordinate>, IConvertible
+        {
+            return GetOctant(segment.P0, segment.P1);
         }
 
         /// <summary>

@@ -26,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
          where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                              IComputable<TCoordinate>, IConvertible
     {
-        private readonly LineIntersector<TCoordinate> _li = new RobustLineIntersector<TCoordinate>();
+        private readonly LineIntersector<TCoordinate> _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
         private readonly PointLocator<TCoordinate> _ptLocator = new PointLocator<TCoordinate>();
         // the arg(s) of the operation
         private readonly GeometryGraph<TCoordinate> _g0;
@@ -49,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             // if the Geometries don't overlap there is nothing to do
             if (!_g0.Geometry.Extents.Intersects(_g1.Geometry.Extents))
             {
-                computeDisjointIM(im);
+                computeDisjointIntersectionMatrix(im);
                 return im;
             }
 
@@ -280,7 +280,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// If the Geometries are disjoint, we need to enter their dimension and
         /// boundary dimension in the Ext rows in the IM
         /// </summary>
-        private void computeDisjointIM(IntersectionMatrix im)
+        private void computeDisjointIntersectionMatrix(IntersectionMatrix im)
         {
             IGeometry ga = _g0.Geometry;
 
@@ -360,11 +360,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                 // Possibly should use ptInArea locator instead?  We probably know here
                 // that the edge does not touch the bdy of the target Geometry
                 Locations loc = _ptLocator.Locate(e.Coordinate, target);
-                e.Label.SetAllLocations(targetIndex, loc);
+                e.Label = Label.SetAllLocations(e.Label.Value, targetIndex, loc);
             }
             else
             {
-                e.Label.SetAllLocations(targetIndex, Locations.Exterior);
+                e.Label = Label.SetAllLocations(e.Label.Value, targetIndex, Locations.Exterior);
             }
         }
 
@@ -408,7 +408,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         {
             GeometryGraph<TCoordinate> graph = getGraph(targetIndex);
             Locations loc = _ptLocator.Locate(n.Coordinate, graph.Geometry);
-            n.Label.SetAllLocations(targetIndex, loc);
+            n.Label = Label.SetAllLocations(n.Label.Value, targetIndex, loc);
         }
 
         private GeometryGraph<TCoordinate> getGraph(int argIndex)

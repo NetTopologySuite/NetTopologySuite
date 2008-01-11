@@ -43,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             eiList.AddEndpoints();
 
             IEnumerator<EdgeIntersection<TCoordinate>> it = eiList.GetEnumerator();
-            EdgeIntersection<TCoordinate> eiCurr = null;
+            EdgeIntersection<TCoordinate>? eiCurr = null;
 
             // no intersections, so there is nothing to do
             if (! it.MoveNext())
@@ -51,11 +51,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                 yield break;
             }
 
-            EdgeIntersection<TCoordinate> eiNext = it.Current;
+            EdgeIntersection<TCoordinate>? eiNext = it.Current;
 
             do
             {
-                EdgeIntersection<TCoordinate> eiPrev = eiCurr;
+                EdgeIntersection<TCoordinate>? eiPrev = eiCurr;
                 eiCurr = eiNext;
                 eiNext = null;
 
@@ -66,12 +66,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 
                 if (eiCurr != null)
                 {
-                    foreach (EdgeEnd<TCoordinate> edgeEnd in CreateEdgeEndForPrev(edge, eiCurr, eiPrev))
+                    foreach (EdgeEnd<TCoordinate> edgeEnd in CreateEdgeEndForPrev(edge, eiCurr.Value, eiPrev))
                     {
                         yield return edgeEnd;
                     }
 
-                    foreach (EdgeEnd<TCoordinate> edgeEnd in CreateEdgeEndForNext(edge, eiCurr, eiNext))
+                    foreach (EdgeEnd<TCoordinate> edgeEnd in CreateEdgeEndForNext(edge, eiCurr.Value, eiNext))
                     {
                         yield return edgeEnd;
                     }
@@ -90,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// </remarks>
         public IEnumerable<EdgeEnd<TCoordinate>> CreateEdgeEndForPrev(
             Edge<TCoordinate> edge, EdgeIntersection<TCoordinate> eiCurr, 
-            EdgeIntersection<TCoordinate> eiPrev)
+            EdgeIntersection<TCoordinate>? eiPrev)
         {
             Int32 iPrev = eiCurr.SegmentIndex;
 
@@ -108,9 +108,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             TCoordinate pPrev = edge.Coordinates[iPrev];
 
             // if prev intersection is past the previous vertex, use it instead
-            if (eiPrev != null && eiPrev.SegmentIndex >= iPrev)
+            if (eiPrev != null && eiPrev.Value.SegmentIndex >= iPrev)
             {
-                pPrev = eiPrev.Coordinate;
+                pPrev = eiPrev.Value.Coordinate;
             }
 
             Debug.Assert(edge.Label.HasValue);
@@ -138,7 +138,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// </remarks>
         public IEnumerable<EdgeEnd<TCoordinate>> CreateEdgeEndForNext(
             Edge<TCoordinate> edge, EdgeIntersection<TCoordinate> eiCurr, 
-            EdgeIntersection<TCoordinate> eiNext)
+            EdgeIntersection<TCoordinate>? eiNext)
         {
             Int32 iNext = eiCurr.SegmentIndex + 1;
 
@@ -151,9 +151,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             TCoordinate pNext = edge.Coordinates[iNext];
 
             // if the next intersection is in the same segment as the current, use it as the endpoint
-            if (eiNext != null && eiNext.SegmentIndex == eiCurr.SegmentIndex)
+            if (eiNext != null && eiNext.Value.SegmentIndex == eiCurr.SegmentIndex)
             {
-                pNext = eiNext.Coordinate;
+                pNext = eiNext.Value.Coordinate;
             }
 
             Debug.Assert(edge.Label.HasValue);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Simplify
@@ -18,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     {
         // NOTE: modified for "safe" assembly in Sql 2005
         // Added readonly!
-        private static readonly LineIntersector<TCoordinate> _li = new RobustLineIntersector<TCoordinate>();
+        private static readonly LineIntersector<TCoordinate> _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
 
         private readonly LineSegmentIndex<TCoordinate> _inputIndex = new LineSegmentIndex<TCoordinate>();
         private readonly LineSegmentIndex<TCoordinate> _outputIndex = new LineSegmentIndex<TCoordinate>();
@@ -53,7 +54,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
 
             if ((i + 1) == j)
             {
-                LineSegment<TCoordinate> newSeg = _line.Segments[i];
+                TaggedLineSegment<TCoordinate> newSeg = _line.Segments[i];
                 _line.AddToResult(newSeg);
                 // leave this segment in the input index, for efficiency
                 return;
@@ -76,9 +77,9 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             }
 
             // test if flattened section would cause intersection
-            LineSegment<TCoordinate> candidateSeg = new LineSegment<TCoordinate>();
-            candidateSeg.P0 = _linePts[i];
-            candidateSeg.P1 = _linePts[j];
+            LineSegment<TCoordinate> candidateSeg = new LineSegment<TCoordinate>(
+                _linePts[i], _linePts[j]);
+
             sectionIndex[0] = i;
             sectionIndex[1] = j;
 
@@ -89,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
 
             if (isValidToFlatten)
             {
-                LineSegment<TCoordinate> newSeg = flatten(i, j);
+                TaggedLineSegment<TCoordinate> newSeg = flatten(i, j);
                 _line.AddToResult(newSeg);
                 return;
             }
@@ -100,9 +101,8 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
 
         private static Int32 findFurthestPoint(IList<TCoordinate> pts, Int32 i, Int32 j, Double[] maxDistance)
         {
-            LineSegment<TCoordinate> seg = new LineSegment<TCoordinate>();
-            seg.P0 = pts[i];
-            seg.P1 = pts[j];
+            LineSegment<TCoordinate> seg = new LineSegment<TCoordinate>(pts[i], pts[j]);
+
             Double maxDist = -1.0;
             Int32 maxIndex = i;
 
@@ -177,7 +177,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         {
             IEnumerable<LineSegment<TCoordinate>> querySegs = _inputIndex.Query(candidateSeg);
 
-            foreach (TaggedLineSegment<TCoordinate> querySeg in querySegs)
+            foreach (LineSegment<TCoordinate> querySeg in querySegs)
             {
                 if (hasInteriorIntersection(querySeg, candidateSeg))
                 {

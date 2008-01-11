@@ -6,7 +6,8 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
     /// <summary>
-    /// Implements a robust method of comparing the relative position of two points along the same segment.
+    /// Implements a robust method of comparing the relative position of two points 
+    /// along the same segment.
     /// The coordinates are assumed to lie "near" the segment.
     /// This means that this algorithm will only return correct results
     /// if the input coordinates have the same precision and correspond to rounded values
@@ -39,21 +40,21 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             switch (octant)
             {
                 case Octants.Zero:
-                    return CompareValue(xSign, ySign);
+                    return compareValue(xSign, ySign);
                 case Octants.One:
-                    return CompareValue(ySign, xSign);
+                    return compareValue(ySign, xSign);
                 case Octants.Two:
-                    return CompareValue(ySign, -xSign);
+                    return compareValue(ySign, -xSign);
                 case Octants.Three:
-                    return CompareValue(-xSign, ySign);
+                    return compareValue(-xSign, ySign);
                 case Octants.Four:
-                    return CompareValue(-xSign, -ySign);
+                    return compareValue(-xSign, -ySign);
                 case Octants.Five:
-                    return CompareValue(-ySign, -xSign);
+                    return compareValue(-ySign, -xSign);
                 case Octants.Six:
-                    return CompareValue(-ySign, xSign);
+                    return compareValue(-ySign, xSign);
                 case Octants.Seven:
-                    return CompareValue(xSign, -ySign);
+                    return compareValue(xSign, -ySign);
             }
 
             Assert.ShouldNeverReachHere("invalid octant value: " + octant);
@@ -75,24 +76,28 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             return 0;
         }
 
-        private static Int32 CompareValue(Int32 compareSign0, Int32 compareSign1)
+        private static Int32 compareValue(Int32 compareSign0, Int32 compareSign1)
         {
             if (compareSign0 < 0)
             {
                 return -1;
             }
+
             if (compareSign0 > 0)
             {
                 return 1;
             }
+
             if (compareSign1 < 0)
             {
                 return -1;
             }
+
             if (compareSign1 > 0)
             {
                 return 1;
             }
+
             return 0;
         }
     }

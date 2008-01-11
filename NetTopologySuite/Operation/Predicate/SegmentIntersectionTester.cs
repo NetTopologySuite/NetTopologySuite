@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
             IComputable<TCoordinate>, IConvertible
     {
         // for purposes of intersection testing, don't need to set precision model
-        private readonly LineIntersector<TCoordinate> _li = new RobustLineIntersector<TCoordinate>();
+        private readonly LineIntersector<TCoordinate> _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
 
         private Boolean _hasIntersection = false;
         //private TCoordinate pt00;
@@ -61,9 +61,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
                     pt10 = pair1.First;
                     pt11 = pair1.Second;
 
-                    _li.ComputeIntersection(pt00, pt01, pt10, pt11);
+                    Intersection<TCoordinate> intersection = _li.ComputeIntersection(pt00, pt01, pt10, pt11);
 
-                    if (_li.HasIntersection)
+                    if (intersection.HasIntersection)
                     {
                         _hasIntersection = true;
                         break;

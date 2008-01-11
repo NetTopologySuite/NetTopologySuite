@@ -7,32 +7,61 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 {
     /// <summary>
     /// Represents an intersection point between two 
-    /// <see cref="SegmentString{TCoordinate}" />s.
+    /// <see cref="NodedSegmentString{TCoordinate}" />s.
     /// </summary>
-    public class SegmentNode<TCoordinate> : IComparable<SegmentNode<TCoordinate>>
+    public struct SegmentNode<TCoordinate> : IEquatable<SegmentNode<TCoordinate>>, IComparable<SegmentNode<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
     {
         private readonly TCoordinate _coordinate; // the point of intersection
         
         // the index of the containing line segment in the parent edge
-        public readonly Int32 SegmentIndex = 0; 
+        private readonly Int32 _segmentIndex; 
 
-        private readonly SegmentString<TCoordinate> _segString = null;
-        private readonly Octants _segmentOctant = Octants.Null;
-        private readonly Boolean _isInterior = false;
+        //private readonly SegmentString<TCoordinate> _segString;
+        private readonly Octants _segmentOctant;
+        private readonly Boolean _isInterior;
 
         /// <summary>
         /// Initializes a new instance of the 
         /// <see cref="SegmentNode{TCoordinate}"/> class.
         /// </summary>
-        public SegmentNode(SegmentString<TCoordinate> segString, TCoordinate coord, Int32 segmentIndex, Octants segmentOctant)
+        public SegmentNode(NodedSegmentString<TCoordinate> segString, TCoordinate coord, Int32 segmentIndex, Octants segmentOctant)
         {
-            _segString = segString;
-            _coordinate = new TCoordinate(coord);
-            SegmentIndex = segmentIndex;
+            //_segString = segString;
+            _coordinate = coord;
+            _segmentIndex = segmentIndex;
             _segmentOctant = segmentOctant;
-            _isInterior = !coord.Equals(segString.GetCoordinate(segmentIndex));
+            _isInterior = !coord.Equals(segString[segmentIndex]);
+        }
+
+        public override string ToString()
+        {
+            return String.Format("{0} seg # = {1}", _coordinate, SegmentIndex);
+        }
+
+        public override Boolean Equals(Object obj)
+        {
+            if (ReferenceEquals(obj, null) || !(obj is SegmentNode<TCoordinate>))
+            {
+                return false;
+            }
+
+            return Equals((SegmentNode<TCoordinate>) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return _coordinate.GetHashCode() ^
+                   _isInterior.GetHashCode() ^
+                   _segmentIndex.GetHashCode() ^
+                   _segmentOctant.GetHashCode();
+
+        }
+
+        public Int32 SegmentIndex
+        {
+            get { return _segmentIndex; }
         }
 
         public TCoordinate Coordinate
@@ -51,12 +80,26 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             {
                 return true;
             }
+
             if (SegmentIndex == maxSegmentIndex)
             {
                 return true;
             }
+
             return false;
         }
+
+        #region IEquatable<SegmentNode<TCoordinate>> Members
+
+        public Boolean Equals(SegmentNode<TCoordinate> other)
+        {
+            return other._coordinate.Equals(_coordinate) &&
+                   other._isInterior == _isInterior &&
+                   other._segmentIndex == _segmentIndex &&
+                   other._segmentOctant == _segmentOctant;
+        }
+
+        #endregion
 
         /// <returns>
         /// -1 this SegmentNode is located before the argument location, or
@@ -65,11 +108,6 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </returns>
         public Int32 CompareTo(SegmentNode<TCoordinate> other)
         {
-            if (other == null)
-            {
-                throw new ArgumentNullException("other");
-            }
-
             if (SegmentIndex < other.SegmentIndex)
             {
                 return -1;

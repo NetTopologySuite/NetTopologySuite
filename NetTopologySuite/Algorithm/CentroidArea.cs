@@ -25,10 +25,16 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
          where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                              IComputable<TCoordinate>, IConvertible
     {
+        private readonly ICoordinateFactory<TCoordinate> _factory;
         private TCoordinate _basePoint = default(TCoordinate); // the point all triangles are based at
-        private TCoordinate _triangleCent3 = new TCoordinate(); // temporary variable to hold centroid of triangle
+        private TCoordinate _triangleCent3 = default(TCoordinate); // temporary variable to hold centroid of triangle
         private Double _areasum2 = 0; // Partial area sum
-        private TCoordinate _cg3 = new TCoordinate(); // partial centroid sum
+        private TCoordinate _cg3 = default(TCoordinate); // partial centroid sum
+
+        public CentroidArea(ICoordinateFactory<TCoordinate> factory)
+        {
+            _factory = factory;
+        }
 
         /// <summary> 
         /// Adds the area defined by a Geometry to the centroid total.
@@ -72,13 +78,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             {
                 Double x = _cg3[Ordinates.X] / 3 / _areasum2;
                 Double y = _cg3[Ordinates.Y] / 3 / _areasum2;
-                return new TCoordinate(x, y);
+                return _factory.Create(x, y);
             }
         }
 
         private void setBasePoint(TCoordinate basePoint)
         {
-            if (CoordinateHelper.IsEmpty(_basePoint))
+            if (Coordinates<TCoordinate>.IsEmpty(_basePoint))
             {
                 _basePoint = basePoint;
             }
@@ -133,7 +139,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             Double y = _cg3[Ordinates.Y];
             x += sign * area2 * _triangleCent3[Ordinates.X];
             y += sign * area2 * _triangleCent3[Ordinates.Y];
-            _cg3 = new TCoordinate(x, y);
+            _cg3 = _factory.Create(x, y);
             _areasum2 += sign * area2;
         }
 
@@ -141,11 +147,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Returns three times the centroid of the triangle p1-p2-p3.
         /// The factor of 3 is left in to permit division to be avoided until later.
         /// </summary>
-        private static void centroid3(TCoordinate p1, TCoordinate p2, TCoordinate p3, ref TCoordinate c)
+        private void centroid3(TCoordinate p1, TCoordinate p2, TCoordinate p3, ref TCoordinate c)
         {
             Double x = p1[Ordinates.X] + p2[Ordinates.X] + p3[Ordinates.X];
             Double y = p1[Ordinates.Y] + p2[Ordinates.Y] + p3[Ordinates.Y];
-            c = new TCoordinate(x, y);
+            c = _factory.Create(x, y);
             return;
         }
 

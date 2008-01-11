@@ -12,6 +12,7 @@ using GisSharpBlog.NetTopologySuite.Operation.Overlay;
 using GisSharpBlog.NetTopologySuite.Operation.Predicate;
 using GisSharpBlog.NetTopologySuite.Operation.Relate;
 using GisSharpBlog.NetTopologySuite.Operation.Valid;
+using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
 using GeoAPI.CoordinateSystems;
 
@@ -101,17 +102,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         //    }
         //}
 
-        //private static readonly Type[] SortedClasses = new Type[]
-        //    {
-        //        typeof (Point),
-        //        typeof (MultiPoint),
-        //        typeof (LineString),
-        //        typeof (LinearRing),
-        //        typeof (MultiLineString),
-        //        typeof (Polygon),
-        //        typeof (MultiPolygon),
-        //        typeof (GeometryCollection),
-        //    };
+        private static readonly Type[] SortedClasses = new Type[]
+            {
+                typeof (Point<TCoordinate>),
+                typeof (MultiPoint<TCoordinate>),
+                typeof (LineString<TCoordinate>),
+                typeof (LinearRing<TCoordinate>),
+                typeof (MultiLineString<TCoordinate>),
+                typeof (Polygon<TCoordinate>),
+                typeof (MultiPolygon<TCoordinate>),
+                typeof (GeometryCollection<TCoordinate>),
+            };
 
         private IGeometryFactory<TCoordinate> _factory = null;
         private Object _userData = null;
@@ -531,19 +532,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return exemplar.Factory.CreatePoint(coord);
         }
 
-        //private Int32 getClassSortIndex()
-        //{
-        //    for (Int32 i = 0; i < SortedClasses.Length; i++)
-        //    {
-        //        if (GetType().Equals(SortedClasses[i]))
-        //        {
-        //            return i;
-        //        }
-        //    }
+        private Int32 getClassSortIndex()
+        {
+            for (Int32 i = 0; i < SortedClasses.Length; i++)
+            {
+                if (GetType().Equals(SortedClasses[i]))
+                {
+                    return i;
+                }
+            }
 
-        //    Assert.ShouldNeverReachHere("Class not supported: " + GetType().FullName);
-        //    return -1;
-        //}
+            Assert.ShouldNeverReachHere("Class not supported: " + GetType().FullName);
+            return -1;
+        }
 
         // ============= BEGIN ADDED BY MPAUL42: monoGIS team
 
@@ -631,7 +632,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region IEquatable<IGeometry<TCoordinate>> Members
 
-        public bool Equals(IGeometry<TCoordinate> g)
+        public Boolean Equals(IGeometry<TCoordinate> g)
         {
             if (ReferenceEquals(g, null))
             {
@@ -731,19 +732,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
                 if (dim == Dimensions.Point)
                 {
-                    CentroidPoint<TCoordinate> cent = new CentroidPoint<TCoordinate>();
+                    CentroidPoint<TCoordinate> cent = new CentroidPoint<TCoordinate>(Factory.CoordinateFactory);
                     cent.Add(this);
                     centPt = cent.Centroid;
                 }
                 else if (dim == Dimensions.Curve)
                 {
-                    CentroidLine<TCoordinate> cent = new CentroidLine<TCoordinate>();
+                    CentroidLine<TCoordinate> cent = new CentroidLine<TCoordinate>(Factory.CoordinateFactory);
                     cent.Add(this);
                     centPt = cent.Centroid;
                 }
                 else
                 {
-                    CentroidArea<TCoordinate> cent = new CentroidArea<TCoordinate>();
+                    CentroidArea<TCoordinate> cent = new CentroidArea<TCoordinate>(Factory.CoordinateFactory);
                     cent.Add(this);
                     centPt = cent.Centroid;
                 }
@@ -1289,7 +1290,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Relate(g).IsTouches(Dimension, g.Dimension);
         }
 
-        public bool Touches(IGeometry<TCoordinate> g, Tolerance tolerance)
+        public Boolean Touches(IGeometry<TCoordinate> g, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
@@ -1317,7 +1318,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Relate(g).IsContains();
         }
 
-        public bool Contains(IGeometry<TCoordinate> g, Tolerance tolerance)
+        public Boolean Contains(IGeometry<TCoordinate> g, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
@@ -1330,16 +1331,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns><see langword="true"/> if this <see cref="Geometry{TCoordinate}"/> is within <c>other</c>.</returns>
         public Boolean Within(IGeometry<TCoordinate> g)
         {
-            if (g is ISpatialRelation<TCoordinate>)
+            if (g == null)
             {
-                ISpatialRelation<TCoordinate> other = g as ISpatialRelation<TCoordinate>;
-                return other.Contains(this);
+                throw new ArgumentNullException("g");
             }
 
-            return false;
+            return g.Contains(this);
         }
 
-        public bool Within(IGeometry<TCoordinate> g, Tolerance tolerance)
+        public Boolean Within(IGeometry<TCoordinate> g, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
@@ -1361,7 +1361,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Relate(g).IsDisjoint();
         }
 
-        public bool Disjoint(IGeometry<TCoordinate> g, Tolerance tolerance)
+        public Boolean Disjoint(IGeometry<TCoordinate> g, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
@@ -1390,7 +1390,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Relate(g).IsCrosses(Dimension, g.Dimension);
         }
 
-        public bool Crosses(IGeometry<TCoordinate> g, Tolerance tolerance)
+        public Boolean Crosses(IGeometry<TCoordinate> g, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
@@ -1418,7 +1418,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Relate(g).IsOverlaps(Dimension, g.Dimension);
         }
 
-        public bool Overlaps(IGeometry<TCoordinate> g, Tolerance tolerance)
+        public Boolean Overlaps(IGeometry<TCoordinate> g, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
@@ -1450,7 +1450,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Relate(g).IsIntersects();
         }
 
-        public bool Intersects(IGeometry<TCoordinate> g, Tolerance tolerance)
+        public Boolean Intersects(IGeometry<TCoordinate> g, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
@@ -1474,17 +1474,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return DistanceOp<TCoordinate>.IsWithinDistance(this, geom, distance);
         }
 
-        public bool IsWithinDistance(IGeometry<TCoordinate> g, Double distance, Tolerance tolerance)
+        public Boolean IsWithinDistance(IGeometry<TCoordinate> g, Double distance, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsCoveredBy(IGeometry<TCoordinate> g)
+        public Boolean IsCoveredBy(IGeometry<TCoordinate> g)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsCoveredBy(IGeometry<TCoordinate> g, Tolerance tolerance)
+        public Boolean IsCoveredBy(IGeometry<TCoordinate> g, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
@@ -1537,17 +1537,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Relate(other).IsCovers();
         }
 
-        public bool Covers(IGeometry<TCoordinate> other, Tolerance tolerance)
+        public Boolean Covers(IGeometry<TCoordinate> other, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
 
-        public bool Relate(IGeometry<TCoordinate> other, IntersectionMatrix intersectionPattern)
+        public Boolean Relate(IGeometry<TCoordinate> other, IntersectionMatrix intersectionPattern)
         {
             throw new NotImplementedException();
         }
 
-        public bool Relate(IGeometry<TCoordinate> other, IntersectionMatrix intersectionPattern, Tolerance tolerance)
+        public Boolean Relate(IGeometry<TCoordinate> other, IntersectionMatrix intersectionPattern, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
@@ -1607,6 +1607,209 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             CheckNotGeometryCollection(other);
 
             return RelateOp<TCoordinate>.Relate(this, other);
+        }
+
+        #endregion
+
+        #region IGeometry Members
+
+
+        ICoordinateSystem IGeometry.SpatialReference
+        {
+            get { return SpatialReference; }
+        }
+
+        #endregion
+
+        #region ISpatialOperator Members
+
+        IGeometry ISpatialOperator.Boundary
+        {
+            get { return Boundary; }
+        }
+
+        public Double Distance(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        IGeometry ISpatialOperator.Buffer(Double distance)
+        {
+            return Buffer(distance);
+        }
+
+        IGeometry ISpatialOperator.Buffer(Double distance, Int32 quadrantSegments)
+        {
+            return Buffer(distance, quadrantSegments);
+        }
+
+        IGeometry ISpatialOperator.Buffer(Double distance, BufferStyle endCapStyle)
+        {
+            return Buffer(distance, endCapStyle);
+        }
+
+        IGeometry ISpatialOperator.Buffer(Double distance, Int32 quadrantSegments, BufferStyle endCapStyle)
+        {
+            return Buffer(distance, quadrantSegments, endCapStyle);
+        }
+
+        public IGeometry Intersection(IGeometry other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IGeometry Union(IGeometry other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IGeometry Difference(IGeometry other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IGeometry SymmetricDifference(IGeometry other)
+        {
+            throw new NotImplementedException();
+        }
+
+        IGeometry ISpatialOperator.ConvexHull()
+        {
+            return ConvexHull();
+        }
+
+        #endregion
+
+        #region ISpatialRelation Members
+
+        Boolean ISpatialRelation.Equals(IGeometry g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.Touches(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.Touches(IGeometry g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.Contains(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.Contains(IGeometry g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.Within(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.Within(IGeometry g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.Disjoint(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.Disjoint(IGeometry g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.Crosses(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.Crosses(IGeometry g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.Overlaps(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.Overlaps(IGeometry g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.Intersects(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.Intersects(IGeometry g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.IsWithinDistance(IGeometry g, Double distance)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.IsWithinDistance(IGeometry g, Double distance, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.IsCoveredBy(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.IsCoveredBy(IGeometry g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.Covers(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.Covers(IGeometry g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.Relate(IGeometry g, IntersectionMatrix intersectionPattern)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.Relate(IGeometry g, IntersectionMatrix intersectionPattern, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.Relate(IGeometry g, String intersectionPattern)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean ISpatialRelation.Relate(IGeometry g, String intersectionPattern, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        IntersectionMatrix ISpatialRelation.Relate(IGeometry g)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

@@ -1,4 +1,5 @@
 using System;
+using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 {

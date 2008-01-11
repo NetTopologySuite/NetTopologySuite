@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
@@ -15,66 +16,73 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
     {
-        public override void ComputeIntersection(TCoordinate p, TCoordinate p1, TCoordinate p2)
+        public RobustLineIntersector(ICoordinateFactory<TCoordinate> factory)
+            :base(factory) { }
+
+        public override Intersection<TCoordinate> ComputeIntersection(TCoordinate p, Pair<TCoordinate> line)
         {
-            IsProper = false;
+            TCoordinate p1 = line.First;
+            TCoordinate p2 = line.Second;
 
             // do between check first, since it is faster than the orientation test
             if (Extents<TCoordinate>.Intersects(p1, p2, p))
             {
+                Boolean isProper;
+
                 if ((CGAlgorithms<TCoordinate>.OrientationIndex(p1, p2, p) == 0) &&
                     (CGAlgorithms<TCoordinate>.OrientationIndex(p2, p1, p) == 0))
                 {
-                    IsProper = true;
+                    isProper = true;
 
                     if (p.Equals(p1) || p.Equals(p2))
                     {
-                        IsProper = false;
+                        isProper = false;
                     }
 
-                    IntersectionType = LineIntersectionType.Intersects;
-                    return;
+                    return new Intersection<TCoordinate>(p, new Pair<TCoordinate>(p, p), line, false, false, isProper);
                 }
             }
 
-            IntersectionType = LineIntersectionType.DoesNotIntersect;
+            return new Intersection<TCoordinate>(new Pair<TCoordinate>(p, p), line);
         }
 
-        public override LineIntersectionType ComputeIntersect(TCoordinate p1, TCoordinate p2, TCoordinate q1, TCoordinate q2)
+        protected override Intersection<TCoordinate> ComputeIntersectInternal(Pair<TCoordinate> line0, Pair<TCoordinate> line1)
         {
-            IsProper = false;
+            Boolean isProper;
 
-            // first try a fast test to see if the envelopes of the lines intersect
-            if (!Extents<TCoordinate>.Intersects(p1, p2, q1, q2))
+            // first try a fast test to see if the envelopes of the lines don't intersect
+            if (!Extents<TCoordinate>.Intersects(line0.First, line0.Second, line1.First, line1.Second))
             {
-                return LineIntersectionType.DoesNotIntersect;
+                return new Intersection<TCoordinate>(line0, line1);
             }
 
             // for each endpoint, compute which side of the other segment it lies
             // if both endpoints lie on the same side of the other segment,
             // the segments do not intersect
-            Int32 Pq1 = CGAlgorithms<TCoordinate>.OrientationIndex(p1, p2, q1);
-            Int32 Pq2 = CGAlgorithms<TCoordinate>.OrientationIndex(p1, p2, q2);
+            Int32 pq1 = CGAlgorithms<TCoordinate>.OrientationIndex(line0.First, line0.Second, line1.First);
+            Int32 pq2 = CGAlgorithms<TCoordinate>.OrientationIndex(line0.First, line0.Second, line1.Second);
 
-            if ((Pq1 > 0 && Pq2 > 0) || (Pq1 < 0 && Pq2 < 0))
+            if ((pq1 > 0 && pq2 > 0) || (pq1 < 0 && pq2 < 0))
             {
-                return LineIntersectionType.DoesNotIntersect;
+                return new Intersection<TCoordinate>(line0, line1);
             }
 
-            Int32 Qp1 = CGAlgorithms<TCoordinate>.OrientationIndex(q1, q2, p1);
-            Int32 Qp2 = CGAlgorithms<TCoordinate>.OrientationIndex(q1, q2, p2);
+            Int32 qp1 = CGAlgorithms<TCoordinate>.OrientationIndex(line1.First, line1.Second, line0.First);
+            Int32 qp2 = CGAlgorithms<TCoordinate>.OrientationIndex(line1.First, line1.Second, line0.Second);
 
-            if ((Qp1 > 0 && Qp2 > 0) || (Qp1 < 0 && Qp2 < 0))
+            if ((qp1 > 0 && qp2 > 0) || (qp1 < 0 && qp2 < 0))
             {
-                return LineIntersectionType.DoesNotIntersect;
+                return new Intersection<TCoordinate>(line0, line1);
             }
 
-            Boolean collinear = (Pq1 == 0 && Pq2 == 0 && Qp1 == 0 && Qp2 == 0);
+            Boolean collinear = (pq1 == 0 && pq2 == 0 && qp1 == 0 && qp2 == 0);
 
             if (collinear)
             {
-                return computeCollinearIntersection(p1, p2, q1, q2);
+                return computeCollinearIntersection(line0, line1);
             }
+
+            TCoordinate intersection = default(TCoordinate);
 
             /*
             *  Check if the intersection is an endpoint. If it is, copy the endpoint as
@@ -84,37 +92,37 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             *  the other line, since at this point we know that the inputLines must
             *  intersect.
             */
-            if (Pq1 == 0 || Pq2 == 0 || Qp1 == 0 || Qp2 == 0)
+            if (pq1 == 0 || pq2 == 0 || qp1 == 0 || qp2 == 0)
             {
-                IsProper = false;
+                isProper = false;
 
-                if (Pq1 == 0)
+                if (pq1 == 0)
                 {
-                    PointA = new TCoordinate(q1);
+                    intersection = CoordinateFactory.Create(line1.First);
                 }
 
-                if (Pq2 == 0)
+                if (pq2 == 0)
                 {
-                    PointA = new TCoordinate(q2);
+                    intersection = CoordinateFactory.Create(line1.Second);
                 }
 
-                if (Qp1 == 0)
+                if (qp1 == 0)
                 {
-                    PointA = new TCoordinate(p1);
+                    intersection = CoordinateFactory.Create(line0.First);
                 }
 
-                if (Qp2 == 0)
+                if (qp2 == 0)
                 {
-                    PointA = new TCoordinate(p2);
+                    intersection = CoordinateFactory.Create(line0.Second);
                 }
             }
             else
             {
-                IsProper = true;
-                PointA = Intersection(p1, p2, q1, q2);
+                isProper = true;
+                intersection = computeIntersection(line0, line1);
             }
 
-            return LineIntersectionType.Intersects;
+            return new Intersection<TCoordinate>(intersection, line0, line1, false, false, isProper);
         }
 
         /// <summary> 
@@ -125,27 +133,28 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// removing common significant digits from the calculation to
         /// maintain more bits of precision.
         /// </summary>
-        private TCoordinate Intersection(TCoordinate p1, TCoordinate p2, TCoordinate q1, TCoordinate q2)
+        private TCoordinate computeIntersection(Pair<TCoordinate> line0, Pair<TCoordinate> line1)
         {
-            TCoordinate n1 = new TCoordinate(p1);
-            TCoordinate n2 = new TCoordinate(p2);
-            TCoordinate n3 = new TCoordinate(q1);
-            TCoordinate n4 = new TCoordinate(q2);
+            TCoordinate n1 = CoordinateFactory.Create(line0.First);
+            TCoordinate n2 = CoordinateFactory.Create(line0.Second);
+            TCoordinate n3 = CoordinateFactory.Create(line1.First);
+            TCoordinate n4 = CoordinateFactory.Create(line1.Second);
+
             TCoordinate normPt;
             normalizeToExtentCenter(ref n1, ref n2, ref n3, ref n4, out normPt);
 
-            TCoordinate intersection = new TCoordinate();
+            TCoordinate intersection = CoordinateFactory.Create();
 
             try
             {
-                intersection = HCoordinate.Intersection(n1, n2, n3, n4);
+                intersection = safeHCoordinateIntersection(n1, n2, n3, n4);
             }
             catch (NotRepresentableException)
             {
                 Assert.ShouldNeverReachHere("Coordinate for intersection is not calculable");
             }
 
-            intersection = new TCoordinate(
+            intersection = CoordinateFactory.Create(
                 intersection[Ordinates.X] + normPt[Ordinates.X],
                 intersection[Ordinates.Y] + normPt[Ordinates.Y]);
 
@@ -157,7 +166,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
              * LINESTRING (1889281.8148903656 1997547.0560044837, 2259977.3672235999 483675.17050843034)
              * Int32 point = (2097408.2633752143,1144595.8008114607)
              */
-            if (!isInSegmentEnvelopes(intersection))
+            if (!isInSegmentEnvelopes(intersection, line0, line1))
             {
                 Trace.WriteLine("Intersection outside segment envelopes: " + intersection);
             }
@@ -188,6 +197,47 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return intersection;
         }
 
+        
+        // Computes a segment intersection using homogeneous coordinates.
+        // Round-off error can cause the raw computation to fail, 
+        // (usually due to the segments being approximately parallel).
+        // If this happens, a reasonable approximation is computed instead.
+        private TCoordinate safeHCoordinateIntersection(TCoordinate p1, TCoordinate p2, TCoordinate q1, TCoordinate q2)
+        {
+            TCoordinate intersectionPoint = default(TCoordinate);
+
+            try
+            {
+                TCoordinate hP1 = CoordinateFactory.Homogenize(p1);
+                TCoordinate hP2 = CoordinateFactory.Homogenize(p2);
+                TCoordinate hQ1 = CoordinateFactory.Homogenize(q1);
+                TCoordinate hQ2 = CoordinateFactory.Homogenize(q2);
+
+                intersectionPoint = intersectHomogeneous(hP1, hP2, hQ1, hQ2);
+            }
+            catch (NotRepresentableException e)
+            {
+                // compute an approximate result
+                intersectionPoint = CentralEndpointIntersector<TCoordinate>.GetIntersection(p1, p2, q1, q2);
+            }
+
+            return intersectionPoint;
+        }
+
+        private static TCoordinate intersectHomogeneous(TCoordinate hP1, TCoordinate hP2, TCoordinate hQ1, TCoordinate hQ2)
+        {
+            // create lines
+            //xP = hP1.y * hP2.w - hP2.y * hP1.w;
+            //yP = hP2.x * hP1.w - hP1.x * hP2.w;
+            //wP = hP1.x * hP2.y - hP2.x * hP1.y;
+            
+            //xQ = hQ1.y * hQ2.w - hQ2.y * hQ1.w;
+            //yQ = hQ2.x * hQ1.w - hQ1.x * hQ2.w;
+            //wQ = hQ1.x * hQ2.y - hQ2.x * hQ1.y;
+
+            // intersect lines
+        }
+
         //private void NormalizeToMinimum(ref TCoordinate n1, ref TCoordinate n2, ref TCoordinate n3, ref TCoordinate n4,
         //                                out TCoordinate normPt)
         //{
@@ -209,64 +259,87 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         //    n4 = new Coordinate(n4X, n4Y);
         //}
 
-        private LineIntersectionType computeCollinearIntersection(TCoordinate p1, TCoordinate p2, TCoordinate q1, TCoordinate q2)
+        private static Intersection<TCoordinate> computeCollinearIntersection(Pair<TCoordinate> line0, Pair<TCoordinate> line1)
         {
-            Boolean p1q1p2 = Extents<TCoordinate>.Intersects(p1, p2, q1);
-            Boolean p1q2p2 = Extents<TCoordinate>.Intersects(p1, p2, q2);
-            Boolean q1p1q2 = Extents<TCoordinate>.Intersects(q1, q2, p1);
-            Boolean q1p2q2 = Extents<TCoordinate>.Intersects(q1, q2, p2);
+            Boolean p1_q1_p2 = Extents<TCoordinate>.Intersects(line0.First, line0.Second, line1.First);
+            Boolean p1_q2_p2 = Extents<TCoordinate>.Intersects(line0.First, line0.Second, line1.Second);
+            Boolean q1_p1_q2 = Extents<TCoordinate>.Intersects(line1.First, line1.Second, line0.First);
+            Boolean q1_p2_q2 = Extents<TCoordinate>.Intersects(line1.First, line1.Second, line0.Second);
 
-            if (p1q1p2 && p1q2p2)
+            // colinear, where line0 contains line1
+            if (p1_q1_p2 && p1_q2_p2)
             {
-                PointA = q1;
-                PointB = q2;
-                return LineIntersectionType.Collinear;
+                return new Intersection<TCoordinate>(
+                    line1.First, line1.Second, line0, line1, false, false, false);
             }
 
-            if (q1p1q2 && q1p2q2)
+            // colinear, where line1 contains line0
+            if (q1_p1_q2 && q1_p2_q2)
             {
-                PointA = p1;
-                PointB = p2;
-                return LineIntersectionType.Collinear;
+                return new Intersection<TCoordinate>(
+                    line0.First, line0.Second, line0, line1, false, false, false);
             }
 
-            if (p1q1p2 && q1p1q2)
+            // line0 contains first point of line1 and line1 contains first point of line0
+            if (p1_q1_p2 && q1_p1_q2)
             {
-                PointA = q1;
-                PointB = p1;
-                return q1.Equals(p1) && !p1q2p2 && !q1p2q2
-                           ? LineIntersectionType.Intersects
-                           : LineIntersectionType.Collinear;
+                if (line1.First.Equals(line0.First) && !p1_q2_p2 && !q1_p2_q2)
+	            {
+	                return new Intersection<TCoordinate>(
+                        line0.First, line0, line1, false, false, false);
+	            }
+                else
+                {
+	                return new Intersection<TCoordinate>(
+                        line0.First, line1.First, line0, line1, false, false, false);
+                }
             }
 
-            if (p1q1p2 && q1p2q2)
+            // line0 contains first point of line1 and line1 contains second point of line0
+            if (p1_q1_p2 && q1_p2_q2)
             {
-                PointA = q1;
-                PointB = p2;
-                return q1.Equals(p2) && !p1q2p2 && !q1p1q2
-                           ? LineIntersectionType.Intersects
-                           : LineIntersectionType.Collinear;
+                if (line1.First.Equals(line0.Second) && !p1_q2_p2 && !q1_p1_q2)
+                {
+                    return new Intersection<TCoordinate>(
+                        line0.Second, line0, line1, false, false, false);
+                }
+                else
+                {
+                    return new Intersection<TCoordinate>(
+                        line0.Second, line1.First, line0, line1, false, false, false);
+                }
             }
 
-            if (p1q2p2 && q1p1q2)
+            // line0 contains second point of line1 and line1 contains first point of line0
+            if (p1_q2_p2 && q1_p1_q2)
             {
-                PointA = q2;
-                PointB = p1;
-                return q2.Equals(p1) && !p1q1p2 && !q1p2q2
-                           ? LineIntersectionType.Intersects
-                           : LineIntersectionType.Collinear;
+                if (line1.Second.Equals(line0.First) && !p1_q1_p2 && !q1_p2_q2)
+                {
+                    return new Intersection<TCoordinate>(
+                        line0.First, line0, line1, false, false, false);
+                }
+                else
+                {
+                    return new Intersection<TCoordinate>(
+                        line0.First, line1.Second, line0, line1, false, false, false);
+                }
             }
 
-            if (p1q2p2 && q1p2q2)
+            if (p1_q2_p2 && q1_p2_q2)
             {
-                PointA = q2;
-                PointB = p2;
-                return q2.Equals(p2) && !p1q1p2 && !q1p1q2
-                           ? LineIntersectionType.Intersects
-                           : LineIntersectionType.Collinear;
+                if (line1.Second.Equals(line0.Second) && !p1_q1_p2 && !q1_p1_q2)
+                {
+                    return new Intersection<TCoordinate>(
+                        line0.Second, line0, line1, false, false, false);
+                }
+                else
+                {
+                    return new Intersection<TCoordinate>(
+                        line0.Second, line1.Second, line0, line1, false, false, false);
+                }
             }
 
-            return LineIntersectionType.DoesNotIntersect;
+            return new Intersection<TCoordinate>();
         }
 
         /// <summary>
@@ -294,7 +367,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             Double intMidX = (intMinX + intMaxX) / 2.0;
             Double intMidY = (intMinY + intMaxY) / 2.0;
-            normPt = new TCoordinate(intMidX, intMidY);
+            normPt = CoordinateFactory.Create(intMidX, intMidY);
 
             Double n00X = intMidX - n00[Ordinates.X];
             Double n00Y = intMidY - n00[Ordinates.Y];
@@ -305,10 +378,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             Double n11X = intMidX - n10[Ordinates.X];
             Double n11Y = intMidY - n10[Ordinates.Y];
 
-            n00 = new TCoordinate(n00X, n00Y);
-            n01 = new TCoordinate(n01X, n01Y);
-            n10 = new TCoordinate(n10X, n10Y);
-            n11 = new TCoordinate(n11X, n11Y);
+            n00 = CoordinateFactory.Create(n00X, n00Y);
+            n01 = CoordinateFactory.Create(n01X, n01Y);
+            n10 = CoordinateFactory.Create(n10X, n10Y);
+            n11 = CoordinateFactory.Create(n11X, n11Y);
         }
 
         /// <summary> 
@@ -321,12 +394,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Since this test is for debugging purposes only, no attempt is
         /// made to optimize the envelope test.
         /// </remarks>
-        private Boolean isInSegmentEnvelopes(TCoordinate coordinate)
+        private static Boolean isInSegmentEnvelopes(TCoordinate coordinate, Pair<TCoordinate> line0, Pair<TCoordinate> line1)
         {
-            TCoordinate[] line1 = GetLineForIndex(0);
-            TCoordinate[] line2 = GetLineForIndex(1);
-            IExtents<TCoordinate> env0 = new Extents<TCoordinate>(line1[0], line1[1]);
-            IExtents<TCoordinate> env1 = new Extents<TCoordinate>(line2[0], line2[1]);
+            IExtents<TCoordinate> env0 = new Extents<TCoordinate>(line0.First, line0.Second);
+            IExtents<TCoordinate> env1 = new Extents<TCoordinate>(line1.First, line1.Second);
             return env0.Contains(coordinate) && env1.Contains(coordinate);
         }
 

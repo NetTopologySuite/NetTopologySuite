@@ -7,7 +7,7 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
     /// <summary>
-    /// Dissolves a noded collection of <see cref="SegmentString{TCoordinate}" />s to produce
+    /// Dissolves a noded collection of <see cref="NodedSegmentString{TCoordinate}" />s to produce
     /// a set of merged linework with unique segments.
     /// </summary>
     /// <remarks>
@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         public interface ISegmentStringMerger
         {
             /// <summary>
-            /// Updates the context data of a <see cref="SegmentString{TCoordinate}" />
+            /// Updates the context data of a <see cref="NodedSegmentString{TCoordinate}" />
             /// when an identical (up to orientation) one is found during dissolving.
             /// </summary>
             /// <param name="mergeTarget">The segment string to update.</param>
@@ -37,13 +37,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             /// <see langword="true"/> if the strings are in the same direction,
             /// <c>false</c> if they are opposite.
             /// </param>
-            void Merge(SegmentString<TCoordinate> mergeTarget, SegmentString<TCoordinate> ssToMerge, Boolean isSameOrientation);
+            void Merge(NodedSegmentString<TCoordinate> mergeTarget, NodedSegmentString<TCoordinate> ssToMerge, Boolean isSameOrientation);
         }
 
         private readonly ISegmentStringMerger _merger;
 
-        private readonly SortedDictionary<OrientedCoordinateArray<TCoordinate>, SegmentString<TCoordinate>> _ocaMap =
-            new SortedDictionary<OrientedCoordinateArray<TCoordinate>, SegmentString<TCoordinate>>();
+        private readonly SortedDictionary<ICoordinateSequence<TCoordinate>, NodedSegmentString<TCoordinate>> _orientedCoordinateMap =
+            new SortedDictionary<ICoordinateSequence<TCoordinate>, NodedSegmentString<TCoordinate>>();
 
         /// <summary>
         /// Creates a dissolver with a user-defined merge strategy.
@@ -60,53 +60,54 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             : this(null) {}
 
         /// <summary>
-        /// Dissolve all <see cref="SegmentString{TCoordinate}" />s 
+        /// Dissolve all <see cref="NodedSegmentString{TCoordinate}" />s 
         /// in the input set.
         /// </summary>
-        public void Dissolve(IEnumerable<SegmentString<TCoordinate>> segStrings)
+        public void Dissolve(IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
         {
-            foreach (SegmentString<TCoordinate> segmentString in segStrings)
+            foreach (NodedSegmentString<TCoordinate> segmentString in segStrings)
             {
                 Dissolve(segmentString);
             }
         }
 
         /// <summary>
-        /// Dissolve the given <see cref="SegmentString{TCoordinate}" />.
+        /// Dissolve the given <see cref="NodedSegmentString{TCoordinate}" />.
         /// </summary>
         /// <param name="segString"></param>
-        public void Dissolve(SegmentString<TCoordinate> segString)
+        public void Dissolve(NodedSegmentString<TCoordinate> segString)
         {
-            OrientedCoordinateArray<TCoordinate> oca = new OrientedCoordinateArray<TCoordinate>(segString.Coordinates);
+            ICoordinateSequence<TCoordinate> orientedSequence = segString.Coordinates;
+            //OrientedCoordinateArray<TCoordinate> oca = new OrientedCoordinateArray<TCoordinate>(segString.Coordinates);
 
-            SegmentString<TCoordinate> existing;
-            _ocaMap.TryGetValue(oca, out existing);
+            NodedSegmentString<TCoordinate> existing;
+            _orientedCoordinateMap.TryGetValue(orientedSequence, out existing);
 
             if (existing == null)
             {
-                add(oca, segString);
+                add(orientedSequence, segString);
             }
             else
             {
                 if (_merger != null)
                 {
-                    Boolean isSameOrientation = CoordinateArrays.Equals(existing.Coordinates, segString.Coordinates);
+                    Boolean isSameOrientation = existing.Coordinates.Equals(segString.Coordinates);
                     _merger.Merge(existing, segString, isSameOrientation);
                 }
             }
         }
 
         /// <summary>
-        /// Gets the collection of dissolved (i.e. unique) <see cref="SegmentString{TCoordinate}" />s
+        /// Gets the collection of dissolved (i.e. unique) <see cref="NodedSegmentString{TCoordinate}" />s
         /// </summary>
-        public IEnumerable<SegmentString<TCoordinate>> Dissolved
+        public IEnumerable<NodedSegmentString<TCoordinate>> Dissolved
         {
-            get { return _ocaMap.Values; }
+            get { return _orientedCoordinateMap.Values; }
         }
 
-        private void add(OrientedCoordinateArray<TCoordinate> oca, SegmentString<TCoordinate> segString)
+        private void add(ICoordinateSequence<TCoordinate> oca, NodedSegmentString<TCoordinate> segString)
         {
-            _ocaMap.Add(oca, segString);
+            _orientedCoordinateMap.Add(oca, segString);
         }
     }
 }

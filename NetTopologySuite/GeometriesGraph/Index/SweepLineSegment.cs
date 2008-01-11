@@ -26,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         {
             get
             {
-                Pair<TCoordinate> pair = Slice.GetPairAt(_pts, _ptIndex);
+                Pair<TCoordinate> pair = Slice.GetPairAt(_pts, _ptIndex).Value;
                 Double x1 = pair.First[Ordinates.X];
                 Double x2 = pair.Second[Ordinates.X];
                 return x1 < x2 ? x1 : x2;
@@ -37,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         {
             get
             {
-                Pair<TCoordinate> pair = Slice.GetPairAt(_pts, _ptIndex);
+                Pair<TCoordinate> pair = Slice.GetPairAt(_pts, _ptIndex).Value;
                 Double x1 = pair.First[Ordinates.X];
                 Double x2 = pair.Second[Ordinates.X];
                 return x1 > x2 ? x1 : x2;

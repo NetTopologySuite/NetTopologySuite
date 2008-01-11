@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                             IComputable<TCoordinate>, IConvertible
     {
         private readonly IEnumerable<BufferSubgraph<TCoordinate>> _subgraphs;
-        private readonly LineSegment<TCoordinate> _segment = new LineSegment<TCoordinate>();
+        private LineSegment<TCoordinate> _segment = new LineSegment<TCoordinate>();
 
         public SubgraphDepthLocater(IEnumerable<BufferSubgraph<TCoordinate>> subgraphs)
         {
@@ -108,13 +108,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             foreach (Pair<TCoordinate> pair in Slice.GetOverlappingPairs(coordinates))
             {
-                _segment.P0 = pair.First;
-                _segment.P1 = pair.Second;
+                _segment = new LineSegment<TCoordinate>(pair.First, pair.Second);
 
                 // ensure segment always points upwards
                 if (_segment.P0[Ordinates.Y] > _segment.P1[Ordinates.Y])
-                {
-                    _segment.Reverse();
+                { 
+                    _segment = _segment.Reversed;
                 }
 
                 // skip segment if it is left of the stabbing line

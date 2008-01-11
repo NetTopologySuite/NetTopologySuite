@@ -5,6 +5,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
@@ -37,9 +38,54 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
     /// </para>
     /// </remarks>
     public class Quadtree<TCoordinate, TItem> : ISpatialIndex<IExtents<TCoordinate>, TItem>, IEnumerable<TItem>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, IComputable<TCoordinate>,
-            IConvertible
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<Double, TCoordinate>, IConvertible
     {
+        struct QuadTreeEntry : IBoundable<IExtents<TCoordinate>>
+        {
+            private readonly TItem _item;
+            private readonly IExtents<TCoordinate> _bounds;
+
+            public QuadTreeEntry(TItem item, IExtents<TCoordinate> bounds)
+            {
+                if (bounds == null)
+                {
+                    throw new ArgumentNullException("bounds");
+                }
+
+                _item = item;
+                _bounds = bounds;
+            }
+
+            public TItem Item
+            {
+                get { return _item; }
+            }
+
+            #region IBoundable<IExtents<TCoordinate>> Members
+
+            public IExtents<TCoordinate> Bounds
+            {
+                get { return _bounds; }
+            }
+
+            public Boolean Intersects(IExtents<TCoordinate> bounds)
+            {
+                return _bounds.Intersects(bounds);
+            }
+
+            #endregion
+        }
+
+        public static Int32 ComputeQuadLevel(IExtents<TCoordinate> extents)
+        {
+            Double dx = extents.GetSize(Ordinates.X);
+            Double dy = extents.GetSize(Ordinates.Y);
+            Double dMax = dx > dy ? dx : dy;
+            Int32 level = DoubleBits.GetExponent(dMax) + 1;
+            return level;
+        }
+
         /// <summary>
         /// Ensure that the extents for the inserted item is non-zero.
         /// Use <paramref name="minExtent"/> to pad the envelope, if necessary.
@@ -77,7 +123,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             return new Extents<TCoordinate>(minx, maxx, miny, maxy);
         }
 
-        private readonly Root<TCoordinate, TItem> _root = new Root<TCoordinate, TItem>();
+        private readonly Root<TCoordinate, QuadTreeEntry> _root = new Root<TCoordinate, QuadTreeEntry>();
 
         /// <summary>
         /// minExtent is the minimum envelope extent of all items
@@ -87,7 +133,43 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// a zero extent in both directions.  This value may be non-optimal, but
         /// only one feature will be inserted with this value.
         /// </summary>
-        private Double minExtent = 1.0;
+        private Double _minExtent = 1.0;
+
+        private Boolean _isDisposed = false;
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            if (_isDisposed)
+            {
+                return;
+            }
+
+            Dispose(true);
+            GC.SuppressFinalize(this);
+            _isDisposed = true;
+        }
+
+        #endregion
+
+        public Boolean IsDiposed
+        {
+            get { return _isDisposed; }
+        }
+
+        protected virtual void Dispose(Boolean disposing)
+        {
+            if (_isDisposed)
+            {
+                return;
+            }
+        }
+
+        public IExtents<TCoordinate> Bounds
+        {
+            get { return _root.Bounds; }
+        }
 
         /// <summary> 
         /// Returns the number of levels in the tree.
@@ -109,15 +191,15 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             get
             {
                 Debug.Assert(_root != null);
-                return _root.Count;
+                return _root.TotalItems;
             }
         }
 
         public void Insert(IExtents<TCoordinate> itemExtents, TItem item)
         {
             collectStats(itemExtents);
-            IExtents<TCoordinate> insertExtents = EnsureExtent(itemExtents, minExtent);
-            _root.Insert(insertExtents, item);
+            IExtents<TCoordinate> insertExtents = EnsureExtent(itemExtents, _minExtent);
+            _root.Insert(new QuadTreeEntry(item, itemExtents));
         }
 
         /// <summary> 
@@ -128,8 +210,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <returns><see langword="true"/> if the item was found.</returns>
         public Boolean Remove(IExtents<TCoordinate> itemExtents, TItem item)
         {
-            IExtents<TCoordinate> posEnv = EnsureExtent(itemExtents, minExtent);
-            return _root.Remove(posEnv, item);
+            IExtents<TCoordinate> posEnv = EnsureExtent(itemExtents, _minExtent);
+            return _root.Remove(posEnv, new QuadTreeEntry(item, posEnv));
         }
 
         public IEnumerable<TItem> Query(IExtents<TCoordinate> query)
@@ -138,23 +220,35 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             * the items that are matched are the items in quads which
             * overlap the search envelope
             */
-            return _root.Query(query);
+            foreach (QuadTreeEntry entry in _root.Query(query))
+            {
+                yield return entry.Item;
+            }
         }
 
-        public IEnumerable<TItem> Query(IExtents<TCoordinate> query, Predicate<TItem> visitor)
+        public IEnumerable<TItem> Query(IExtents<TCoordinate> query, Predicate<TItem> filter)
         {
             /*
             * the items that are matched are the items in quads which
             * overlap the search envelope
             */
-            return _root.Query(query, visitor);
+            foreach (QuadTreeEntry entry in _root.Query(query))
+            {
+                if (filter(entry.Item))
+                {
+                    yield return entry.Item;
+                }
+            }
         }
 
         #region IEnumerable<TItem> Members
 
         public IEnumerator<TItem> GetEnumerator()
         {
-            return _root.GetEnumerator();
+            foreach (QuadTreeEntry entry in _root)
+            {
+                yield return entry.Item;
+            }
         }
 
         #endregion
@@ -163,16 +257,16 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         {
             Double delX = itemExtents.GetSize(Ordinates.X);
 
-            if (delX < minExtent && delX > 0.0)
+            if (delX < _minExtent && delX > 0.0)
             {
-                minExtent = delX;
+                _minExtent = delX;
             }
 
             Double delY = itemExtents.GetSize(Ordinates.Y);
 
-            if (delY < minExtent && delY > 0.0)
+            if (delY < _minExtent && delY > 0.0)
             {
-                minExtent = delY;
+                _minExtent = delY;
             }
         }
 

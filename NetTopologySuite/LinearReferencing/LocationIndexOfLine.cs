@@ -22,7 +22,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<TCoordinate>, IConvertible
     {
-        public static Pair<LinearLocation<TCoordinate>> IndicesOf(IGeometry<TCoordinate> linearGeom, IGeometry<TCoordinate> subLine)
+        public static Pair<LinearLocation<TCoordinate>> IndicesOf(IGeometry<TCoordinate> linearGeom,
+                                                                  IGeometry<TCoordinate> subLine)
         {
             /*
              * MD - this algorithm has been extracted into a class
@@ -30,7 +31,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
              * and also to use the internal vertex information to unambiguously locate the subline.
              */
             LocationIndexOfLine<TCoordinate> locater = new LocationIndexOfLine<TCoordinate>(linearGeom);
-            return locater.IndicesOf(subLine);
+            return locater.IndexesOf(subLine);
         }
 
         private readonly IGeometry<TCoordinate> _linearGeom;
@@ -46,12 +47,12 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
                 throw new ArgumentNullException("linearGeom");
             }
 
-            if(linearGeom.IsEmpty)
+            if (linearGeom.IsEmpty)
             {
                 throw new ArgumentException("Parameter is an empty geometry.", "linearGeom");
             }
 
-            if(!(linearGeom is ILineString || linearGeom is IMultiLineString))
+            if (!(linearGeom is ILineString || linearGeom is IMultiLineString))
             {
                 throw new ArgumentException("Parameter must be an instance of ILineString or IMultiLineString");
             }
@@ -59,7 +60,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             _linearGeom = linearGeom;
         }
 
-        public virtual Pair<LinearLocation<TCoordinate>> IndicesOf(IGeometry<TCoordinate> subLine)
+        public virtual Pair<LinearLocation<TCoordinate>> IndexesOf(IGeometry<TCoordinate> subLine)
         {
             ILineString<TCoordinate> startLine = getStartLine(subLine);
             TCoordinate startPt = Slice.GetFirst(startLine.Coordinates);
@@ -67,15 +68,22 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             ILineString<TCoordinate> lastLine = getEndLine(subLine);
             TCoordinate endPt = Slice.GetLast(lastLine.Coordinates);
 
-            LocationIndexOfPoint locPt = new LocationIndexOfPoint(_linearGeom);
-            LinearLocation<TCoordinate>[] subLineLoc = new LinearLocation<TCoordinate>[2];
-            subLineLoc[0] = locPt.IndexOf(startPt);
+            LocationIndexOfPoint<TCoordinate> locPt = new LocationIndexOfPoint<TCoordinate>(_linearGeom);
+            LinearLocation<TCoordinate> subLineLoc0, subLineLoc1;
+
+            subLineLoc0 = locPt.IndexOf(startPt);
 
             // check for case where subline is zero length
-            if (subLine.Length == 0)
-                 subLineLoc[1] = (LinearLocation) subLineLoc[0].Clone();            
-            else subLineLoc[1] = locPt.IndexOfAfter(endPt, subLineLoc[0]);
-            return subLineLoc;
+            if (LinearHelper.GetLength(subLine) == 0)
+            {
+                subLineLoc1 = subLineLoc0;
+            }
+            else
+            {
+                subLineLoc1 = locPt.IndexOfAfter(endPt, subLineLoc0);
+            }
+
+            return new Pair<LinearLocation<TCoordinate>>(subLineLoc0, subLineLoc1);
         }
 
         private static ILineString<TCoordinate> getStartLine(IGeometry<TCoordinate> lineOrMultiLine)

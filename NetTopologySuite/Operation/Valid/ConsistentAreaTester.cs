@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using GeoAPI.Coordinates;
+using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
@@ -12,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 {
     /// <summary> 
     /// Checks that a {GeometryGraph} representing an area
-    /// (a <see cref="Polygon{TCoordinate}" /> or <c>MultiPolygon</c> )
+    /// (am <see cref="IPolygon{TCoordinate}" /> or <see cref="IMultiPolygon{TCoordinate}"/> )
     /// is consistent with the SFS semantics for area geometries.
     /// Checks include:
     /// Testing for rings which self-intersect (both properly and at nodes).
@@ -23,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
     {
-        private readonly LineIntersector<TCoordinate> _li = new RobustLineIntersector<TCoordinate>();
+        private readonly LineIntersector<TCoordinate> _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
         private readonly GeometryGraph<TCoordinate> _geomGraph;
         private readonly RelateNodeGraph<TCoordinate> _nodeGraph = new RelateNodeGraph<TCoordinate>();
 

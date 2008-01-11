@@ -129,9 +129,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             return _factory.CoordinateSequenceFactory.Create(coords);
         }
 
-        protected virtual IEnumerable<TCoordinate> TransformCoordinates(IEnumerable<TCoordinate> coords, IGeometry<TCoordinate> parent)
+        protected virtual ICoordinateSequence<TCoordinate> TransformCoordinates(ICoordinateSequence<TCoordinate> coords, IGeometry<TCoordinate> parent)
         {
-            return Copy(coords);
+            return coords.CoordinateSequenceFactory.Create(coords);
         }
 
         protected virtual IGeometry<TCoordinate> TransformPoint(IPoint<TCoordinate> point, IGeometry<TCoordinate> parent)

@@ -129,6 +129,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         }
 
         private readonly IGeometry<TCoordinate> _argGeom;
+        private readonly ICoordinateFactory<TCoordinate> _coordFactory;
         private Double _distance;
         private Int32 _quadrantSegments = OffsetCurveBuilder<TCoordinate>.DefaultQuadrantSegments;
         private BufferStyle _endCapStyle = BufferStyle.CapRound;
@@ -143,7 +144,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="g">The point to buffer.</param>
         public BufferOp(IGeometry<TCoordinate> g)
         {
+            if (g == null)
+            {
+                throw new ArgumentNullException("g");
+            }
+
             _argGeom = g;
+            _coordFactory = g.Coordinates.CoordinateFactory;
         }
 
         /// <summary> 
@@ -218,7 +225,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private void bufferFixedPrecision(IPrecisionModel<TCoordinate> fixedPM)
         {
             INoder<TCoordinate> noder = new ScaledNoder<TCoordinate>(
-                new MonotoneChainIndexSnapRounder<TCoordinate>(
+                new MonotoneChainIndexSnapRounder<TCoordinate>(_coordFactory, 
                     new PrecisionModel<TCoordinate>(1.0)), fixedPM.Scale);
 
             BufferBuilder<TCoordinate> bufBuilder = new BufferBuilder<TCoordinate>();

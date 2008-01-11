@@ -73,7 +73,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             }
 
             TCoordinate innerRingPt = IsValidOp<TCoordinate>.FindPointNotNode(innerRingCoordinates, searchRing, _graph);
-            Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
+            Assert.IsTrue(!Equals(innerRingPt, default(TCoordinate)), 
+                "Unable to find a ring point not a node of the search ring");
             Boolean isInside = CGAlgorithms<TCoordinate>.IsPointInRing(innerRingPt, searchRingCoordinates);
 
             if (isInside)

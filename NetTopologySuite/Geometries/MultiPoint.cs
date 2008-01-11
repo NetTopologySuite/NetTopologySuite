@@ -42,9 +42,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Constructs a <c>MultiPoint</c>.
         /// </summary>
         /// <param name="points">
-        /// The <c>Point</c>s for this <c>MultiPoint</c>
-        /// , or <see langword="null" /> or an empty array to create the empty point.
-        /// Elements may be empty <c>Point</c>s, but not <see langword="null" />s.
+        /// The <see cref="Point{TCoordinate}"/>s for this <see cref="MultiPoint{TCoordinate}"/>, 
+        /// or <see langword="null" /> or an empty array to create the empty point.
+        /// Elements may be empty <see cref="Point{TCoordinate}"/>s, but not <see langword="null" />s.
         /// </param>
         /// <remarks>
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
@@ -52,6 +52,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </remarks>
         public MultiPoint(IEnumerable<IPoint<TCoordinate>> points) 
             : this(points, DefaultFactory) {}
+
+        public MultiPoint(IEnumerable<TCoordinate> points)
+            : this(DefaultFactory.CreateMultiPoint(points), DefaultFactory) { }
 
         public override Dimensions Dimension
         {

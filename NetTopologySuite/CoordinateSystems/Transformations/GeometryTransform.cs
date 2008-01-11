@@ -152,12 +152,15 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
         {
             List<TCoordinate> pointList = new List<TCoordinate>(points.Count);
 
-            foreach (IPoint<TCoordinate> p in points)
+            IEnumerable<IPoint<TCoordinate>> pointsEnum = points;
+
+            foreach (IPoint<TCoordinate> p in pointsEnum)
             {
                 pointList.Add(p.Coordinate);
             }
 
-            return new MultiPoint<TCoordinate>(transform.Transform(pointList));
+            IEnumerable<TCoordinate> coordinates = transform.Transform(pointList);
+            return new MultiPoint<TCoordinate>(coordinates); 
         }
 
         /// <summary>
@@ -167,7 +170,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
         {
             List<ILineString<TCoordinate>> strings = new List<ILineString<TCoordinate>>(lines.Count);
 
-            foreach (ILineString<TCoordinate> ls in lines)
+            foreach (ILineString<TCoordinate> ls in (IEnumerable<ILineString<TCoordinate>>)lines)
             {
                 strings.Add(TransformLineString(ls, transform));
             }

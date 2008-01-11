@@ -8,35 +8,34 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Represents a planar triangle, and provides methods for calculating various
     /// properties of triangles.
     /// </summary>
-    public class Triangle<TCoordinate>
+    public struct Triangle<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
     {
-        private TCoordinate p0, p1, p2;
+        private readonly TCoordinate _p0;
+        private readonly TCoordinate _p1;
+        private readonly TCoordinate _p2;
+
+        public Triangle(TCoordinate p0, TCoordinate p1, TCoordinate p2)
+        {
+            _p0 = p0;
+            _p1 = p1;
+            _p2 = p2;
+        }
 
         public TCoordinate P0
         {
-            get { return p0; }
-            set { p0 = value; }
+            get { return _p0; }
         }
 
         public TCoordinate P1
         {
-            get { return p1; }
-            set { p1 = value; }
+            get { return _p1; }
         }
 
         public TCoordinate P2
         {
-            get { return p2; }
-            set { p2 = value; }
-        }
-
-        public Triangle(TCoordinate p0, TCoordinate p1, TCoordinate p2)
-        {
-            this.p0 = p0;
-            this.p1 = p1;
-            this.p2 = p2;
+            get { return _p2; }
         }
 
         /// <summary>
@@ -58,9 +57,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 Double len2 = P0.Distance(P1);
                 Double circum = len0 + len1 + len2;
 
-                Double inCenterX = (len0 * P0[Ordinates.X] + len1 * P1[Ordinates.X] + len2 * P2[Ordinates.X]) / circum;
-                Double inCenterY = (len0 * P0[Ordinates.Y] + len1 * P1[Ordinates.Y] + len2 * P2[Ordinates.Y]) / circum;
-                return new TCoordinate(inCenterX, inCenterY);
+                Double inCenterX = (len0 * P0[Ordinates.X] + 
+                                    len1 * P1[Ordinates.X] + 
+                                    len2 * P2[Ordinates.X]) / circum;
+
+                Double inCenterY = (len0 * P0[Ordinates.Y] + 
+                                    len1 * P1[Ordinates.Y] + 
+                                    len2 * P2[Ordinates.Y]) / circum;
+
+                return Coordinates<TCoordinate>.DefaultCoordinateFactory.Create(
+                    inCenterX, inCenterY);
             }
         }
     }

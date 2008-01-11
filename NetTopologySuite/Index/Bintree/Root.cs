@@ -9,7 +9,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
     /// The root node of a single <see cref="BinTree{TItem}"/>.
     /// It is centered at the origin, and does not have a defined extent.
     /// </summary>
-    public class Root<TItem> : NodeBase<TItem>
+    public class Root<TItem> : BaseBinNode<TItem>
     {
         // the singleton root node is centered at the origin.
         private static readonly Double Origin = 0.0;
@@ -29,7 +29,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
                 return;
             }
 
-            
             // If the subnode doesn't exist or this item is not contained in it,
             // have to expand the tree upward to contain the item.
             if (!subNode.Interval.Contains(itemInterval))
@@ -38,7 +37,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
                 SetSubNode(index, largerNode);
             }
 
-            
             // At this point we have a subnode which exists and must contain
             // contains the extents for the item.  Insert the item into the tree.
             subNode = GetSubNode(index);
@@ -68,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             * the smallest existing node containing the query
             */
             Boolean isZeroArea = IntervalSize.IsZeroWidth(itemInterval.Min, itemInterval.Max);
-            NodeBase<TItem> node;
+            BaseBinNode<TItem> node;
 
             if (isZeroArea)
             {

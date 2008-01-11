@@ -71,7 +71,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get
             {
                 // TODO: cache this to improve performance?
-                ICoordinateSequence<TCoordinate> sequence = CoordinateSequences.CreateEmpty<TCoordinate>();
+                ICoordinateSequence<TCoordinate> sequence 
+                    = Factory.CoordinateSequenceFactory.Create();
 
                 foreach (IGeometry<TCoordinate> geometry in this)
                 {
@@ -315,10 +316,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         protected internal override Int32 CompareToSameClass(IGeometry<TCoordinate> other)
         {
             throw new NotImplementedException();
-            //ArrayList theseElements = new ArrayList(geometries);
             //IGeometryCollection<TCoordinate> collection = other as IGeometryCollection<TCoordinate>;
-            //ArrayList otherElements = new ArrayList(collection._geometries);
-            //return Compare(theseElements, otherElements);
+            //return Compare(this, collection);
         }
 
         /// <summary>

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace GisSharpBlog.NetTopologySuite.Utilities
@@ -8,13 +9,11 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
     /// </summary>
     public class CollectionUtil
     {
-        public delegate T FunctionDelegate<T>(T obj);
-
         /// <summary>
-        /// Executes a function on each item in a <see cref="ICollection" />
-        /// and returns the results in a new <see cref="IList" />.
+        /// Executes a function on each item in a <see cref="ICollection{T}" />
+        /// and returns the results in a new <see cref="IList{T}" />.
         /// </summary>
-        public static IEnumerable<TItem> Transform<TItem>(IEnumerable<TItem> items, FunctionDelegate<TItem> func)
+        public static IEnumerable<TItem> Transform<TItem>(IEnumerable<TItem> items, Func<TItem, TItem> func)
         {
             foreach (TItem item in items)
             {
@@ -23,10 +22,10 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Executes a function on each item in a <see cref="ICollection" /> 
+        /// Executes a function on each item in a <see cref="ICollection{T}" /> 
         /// but does not accumulate the result.
         /// </summary>
-        public static void Apply<TItem>(IEnumerable<TItem> items, FunctionDelegate<TItem> func)
+        public static void Apply<TItem>(IEnumerable<TItem> items, Func<TItem, TItem> func)
         {
             foreach (TItem item in items)
             {
@@ -35,11 +34,11 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Executes a function on each item in a <see cref="ICollection" />
+        /// Executes a function on each item in a <see cref="ICollection{T}" />
         /// and collects all the entries for which the result
         /// of the function is equal to <see langword="true"/>.
         /// </summary>
-        public static IEnumerable<TItem> Select<TItem>(IEnumerable<TItem> items, FunctionDelegate<TItem> func)
+        public static IEnumerable<TItem> Select<TItem>(IEnumerable<TItem> items, Func<TItem, TItem> func)
         {
             foreach (TItem item in items)
             {

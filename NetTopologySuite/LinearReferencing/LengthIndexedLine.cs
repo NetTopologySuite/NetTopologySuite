@@ -55,12 +55,9 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// If the <paramref name="endIndex" /> lies before the <paramref name="startIndex" />,
         /// the computed geometry is reversed.
         /// </summary>
-        /// <param name="startIndex"></param>
-        /// <param name="endIndex"></param>
-        /// <returns></returns>
-        public IGeometry ExtractLine(Double startIndex, Double endIndex)
+        public IGeometry<TCoordinate> ExtractLine(Double startIndex, Double endIndex)
         {
-            LocationIndexedLine lil = new LocationIndexedLine(_linearGeom);
+            //LocationIndexedLine<TCoordinate> lil = new LocationIndexedLine<TCoordinate>(_linearGeom);
             LinearLocation<TCoordinate> startLoc = locationOf(startIndex);
             LinearLocation<TCoordinate> endLoc = locationOf(endIndex);
             return ExtractLineByLocation<TCoordinate>.Extract(_linearGeom, startLoc, endLoc);
@@ -154,7 +151,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// </summary>
         public Double EndIndex
         {
-            get { return _linearGeom.Length; }
+            get { return LinearHelper.GetLength(_linearGeom); }
         }
 
         /// <summary>

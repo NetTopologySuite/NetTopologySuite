@@ -9,23 +9,26 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
     /// <summary>
-    /// Nodes a set of <see cref="SegmentString{TCoordinate}" />s completely.
-    /// The set of <see cref="SegmentString{TCoordinate}" />s is fully noded;
+    /// Nodes a set of <see cref="NodedSegmentString{TCoordinate}" />s completely.
+    /// The set of <see cref="NodedSegmentString{TCoordinate}" />s is fully noded;
     /// i.e. noding is repeated until no further intersections are detected.
+    /// </summary>
+    /// <remarks>
     /// <para>
-    /// Iterated noding using a <see cref="PrecisionModels.Floating" /> precision model is not guaranteed to converge,
-    /// due to roundoff error. This problem is detected and an exception is thrown.
+    /// Iterated noding using a <see cref="PrecisionModelType.Floating" /> precision model 
+    /// is not guaranteed to converge, due to roundoff error. This problem is detected 
+    /// and an exception is thrown.
     /// Clients can choose to rerun the noding using a lower precision model.
     /// </para>
-    /// </summary>
+    /// </remarks>
     public class IteratedNoder<TCoordinate> : INoder<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<TCoordinate>, IConvertible
     {
-        public const Int32 DefaultMaxIterations = 5;
+        public static readonly Int32 DefaultMaxIterations = 5;
 
         private readonly LineIntersector<TCoordinate> _li = null;
-        private IEnumerable<SegmentString<TCoordinate>> _nodedSegStrings = null;
+        //private IEnumerable<SegmentString<TCoordinate>> _nodedSegStrings = null;
         private Int32 _maxIter = DefaultMaxIterations;
 
         /// <summary>
@@ -33,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         public IteratedNoder(IPrecisionModel<TCoordinate> pm)
         {
-            _li = new RobustLineIntersector<TCoordinate>();
+            _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
             _li.PrecisionModel = pm;
         }
 
@@ -49,31 +52,26 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// Returns a set of fully noded <see cref="SegmentString{TCoordinate}" />s.
-        /// The <see cref="SegmentString{TCoordinate}" />s have the same context as their parent.
-        /// </summary>
-        public IEnumerable<SegmentString<TCoordinate>> GetNodedSubstrings()
-        {
-            return _nodedSegStrings;
-        }
-
-        /// <summary>
-        /// Fully nodes a list of <see cref="SegmentString{TCoordinate}" />s, i.e. peforms noding iteratively
-        /// until no intersections are found between segments.
+        /// Fully nodes a set of <see cref="NodedSegmentString{TCoordinate}" />s, 
+        /// i.e. peforms noding iteratively until no intersections are found between 
+        /// segments.
         /// Maintains labeling of edges correctly through the noding.
+        /// The <see cref="NodedSegmentString{TCoordinate}" />s have the same context as their parent.
         /// </summary>
-        /// <param name="segStrings">A collection of SegmentStrings to be noded.</param>
+        /// <param name="segStrings">
+        /// An enumeration of <see cref="NodedSegmentString{TCoordinate}"/>s to be noded.
+        /// </param>
         /// <exception cref="TopologyException">If the iterated noding fails to converge.</exception>
-        public void ComputeNodes(IEnumerable<SegmentString<TCoordinate>> segStrings)
+        public IEnumerable<NodedSegmentString<TCoordinate>> Node(IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
         {
-            _nodedSegStrings = segStrings;
+            //_nodedSegStrings = segStrings;
             Int32 nodingIterationCount = 0;
             Int32 lastNodesCreated = -1;
 
             do
             {
                 Int32 numInteriorIntersections;
-                node(_nodedSegStrings, out numInteriorIntersections);
+                segStrings = node(segStrings, out numInteriorIntersections);
                 nodingIterationCount++;
                 Int32 nodesCreated = numInteriorIntersections;
 
@@ -91,19 +89,21 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
                 lastNodesCreated = nodesCreated;
             } while (lastNodesCreated > 0);
+
+            return segStrings;
         }
 
         /// <summary>
         /// Node the input segment strings once
         /// and create the split edges between the nodes.
         /// </summary>
-        private void node(IEnumerable<SegmentString<TCoordinate>> segStrings, out Int32 numInteriorIntersections)
+        private IEnumerable<NodedSegmentString<TCoordinate>> node(IEnumerable<NodedSegmentString<TCoordinate>> segStrings, out Int32 interiorIntersectionsCount)
         {
             IntersectionAdder<TCoordinate> si = new IntersectionAdder<TCoordinate>(_li);
             MonotoneChainIndexNoder<TCoordinate> noder = new MonotoneChainIndexNoder<TCoordinate>(si);
-            noder.ComputeNodes(segStrings);
-            _nodedSegStrings = noder.GetNodedSubstrings();
-            numInteriorIntersections = si.InteriorIntersectionCount;
+            IEnumerable<NodedSegmentString<TCoordinate>> nodedSegments = noder.Node(segStrings);
+            interiorIntersectionsCount = si.InteriorIntersectionCount;
+            return nodedSegments;
         }
     }
 }

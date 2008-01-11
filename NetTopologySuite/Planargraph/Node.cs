@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures.Collections.Generic;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
@@ -114,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public override Boolean IsRemoved
         {
-            get { return CoordinateHelper.IsEmpty(_coordinate); }
+            get { return Coordinates<TCoordinate>.IsEmpty(_coordinate); }
         }
 
         public override string ToString()

@@ -5,7 +5,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
@@ -148,7 +148,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 // only check vertices which are the start or end point of a non-horizontal segment
                 // <FIX> MD 19 Sep 03 - NO!  we can test all vertices, since the rightmost 
                 //                    - must have a non-horiz segment adjacent to it
-                if (CoordinateHelper.IsEmpty(_minCoord) || coordinate[Ordinates.X] > _minCoord[Ordinates.X])
+                if (Coordinates<TCoordinate>.IsEmpty(_minCoord) 
+                    || coordinate[Ordinates.X] > _minCoord[Ordinates.X])
                 {
                     _minDe = de;
                     _minIndex = i;
@@ -183,15 +184,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             Edge<TCoordinate> e = de.Edge;
             IEnumerable<TCoordinate> coordinates = e.Coordinates;
 
-            Pair<TCoordinate> pair = Slice.GetPairAt(coordinates, i);
+            Pair<TCoordinate>? pair = Slice.GetPairAt(coordinates, i);
 
             if (pair == null)
             {
                 return Positions.Parallel;
             }
 
-            Double y1 = pair.First[Ordinates.Y];
-            Double y2 = pair.Second[Ordinates.Y];
+            Double y1 = pair.Value.First[Ordinates.Y];
+            Double y2 = pair.Value.Second[Ordinates.Y];
 
             if (y1 == y2)
             {

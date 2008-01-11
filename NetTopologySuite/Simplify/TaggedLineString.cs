@@ -4,7 +4,6 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.Utilities;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Simplify
@@ -15,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     {
         private readonly ILineString<TCoordinate> _parentLine;
         private readonly List<TaggedLineSegment<TCoordinate>> _segs = new List<TaggedLineSegment<TCoordinate>>();
-        private readonly List<LineSegment<TCoordinate>> _resultSegs = new List<LineSegment<TCoordinate>>();
+        private readonly List<TaggedLineSegment<TCoordinate>> _resultSegs = new List<TaggedLineSegment<TCoordinate>>();
         private readonly Int32 _minimumSize;
 
         public TaggedLineString(ILineString<TCoordinate> parentLine) : this(parentLine, 2) {}
@@ -72,7 +71,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             get { return _segs.AsReadOnly(); }
         }
 
-        public void AddToResult(LineSegment<TCoordinate> seg)
+        public void AddToResult(TaggedLineSegment<TCoordinate> seg)
         {
             _resultSegs.Add(seg);
         }
@@ -87,19 +86,19 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             return _parentLine.Factory.CreateLinearRing(ResultCoordinates);
         }
 
-        private static IEnumerable<TCoordinate> extractCoordinates(IEnumerable<LineSegment<TCoordinate>> segs)
+        private static IEnumerable<TCoordinate> extractCoordinates(IEnumerable<TaggedLineSegment<TCoordinate>> segs)
         {
-            LineSegment<TCoordinate> lastSegment = null;
+            TaggedLineSegment<TCoordinate> lastSegment = null;
 
-            foreach (LineSegment<TCoordinate> segment in segs)
+            foreach (TaggedLineSegment<TCoordinate> segment in segs)
             {
-                yield return segment.P0;
+                yield return segment.LineSegment.P0;
                 lastSegment = segment;
             }
 
             if (lastSegment != null)
             {
-                yield return lastSegment.P1;
+                yield return lastSegment.LineSegment.P1;
             }
         }
     }

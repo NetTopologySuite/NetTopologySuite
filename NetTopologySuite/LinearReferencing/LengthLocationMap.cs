@@ -66,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
             if (length < 0.0)
             {
-                Double lineLen = _linearGeom.Length;
+                Double lineLen = LinearHelper.GetLength(_linearGeom);
                 forwardLength = lineLen + length;
             }
 

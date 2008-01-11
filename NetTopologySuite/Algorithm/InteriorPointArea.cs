@@ -3,7 +3,6 @@ using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -87,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             Double width = widestIntersection.Extents.GetSize(Ordinates.X, Ordinates.Y);
 
-            if (CoordinateHelper.IsEmpty(_interiorPoint) || width > _maxWidth)
+            if (Coordinates<TCoordinate>.IsEmpty(_interiorPoint) || width > _maxWidth)
             {
                 _interiorPoint = Center(widestIntersection.Extents);
                 _maxWidth = width;
@@ -101,7 +100,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns> The center of the extents.</returns>
         public TCoordinate Center(IExtents<TCoordinate> envelope)
         {
-            return new TCoordinate(Avg(envelope.GetMin(Ordinates.X), envelope.GetMax(Ordinates.X)),
+            return _factory.CoordinateFactory.Create(
+                Avg(envelope.GetMin(Ordinates.X), envelope.GetMax(Ordinates.X)),
                 Avg(envelope.GetMin(Ordinates.Y), envelope.GetMax(Ordinates.Y)));
         }
 
@@ -125,8 +125,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             // Assert: for areas, minx <> maxx
             Double avgY = Avg(extents.GetMin(Ordinates.Y), extents.GetMax(Ordinates.Y));
-            return _factory.CreateLineString(new TCoordinate(extents.GetMin(Ordinates.X), avgY), 
-                new TCoordinate(extents.GetMax(Ordinates.X), avgY));
+            return _factory.CreateLineString(
+                _factory.CoordinateFactory.Create(extents.GetMin(Ordinates.X), avgY),
+                _factory.CoordinateFactory.Create(extents.GetMax(Ordinates.X), avgY));
         }
 
         private static IGeometry<TCoordinate> widestGeometry(IGeometryCollection<TCoordinate> gc)

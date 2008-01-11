@@ -4,7 +4,7 @@ using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Utilities;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -23,16 +23,18 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<TCoordinate>, IConvertible
     {
+        private readonly ICoordinateFactory<TCoordinate> _factory;
         private readonly TCoordinate _centroid = default(TCoordinate);
         private Double minDistance = Double.MaxValue;
         private TCoordinate _interiorPoint = default(TCoordinate);
 
         public InteriorPointLine(IGeometry<TCoordinate> g)
         {
+            _factory = g.Factory.CoordinateFactory;
             _centroid = g.Centroid.Coordinate;
             AddInterior(g);
 
-            if (CoordinateHelper.IsEmpty(_interiorPoint))
+            if (Coordinates<TCoordinate>.IsEmpty(_interiorPoint))
             {
                 AddEndpoints(g);
             }
@@ -70,7 +72,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             foreach (TCoordinate point in points)
             {
-                Add(point);
+                add(point);
             }
         }
 
@@ -99,17 +101,17 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
         private void AddEndpoints(IEnumerable<TCoordinate> points)
         {
-            Add(Slice.GetFirst(points));
-            Add(Slice.GetLast(points));
+            add(Slice.GetFirst(points));
+            add(Slice.GetLast(points));
         }
 
-        private void Add(ICoordinate point)
+        private void add(TCoordinate point)
         {
             Double dist = point.Distance(_centroid);
 
             if (dist < minDistance)
             {
-                _interiorPoint = new TCoordinate(point);
+                _interiorPoint = _factory.Create(point);
                 minDistance = dist;
             }
         }

@@ -93,8 +93,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             Debug.Assert(deLast != null);
 
-            Int32 quad0 = de0.Quadrant;
-            Int32 quad1 = deLast.Quadrant;
+            Quadrants quad0 = de0.Quadrant;
+            Quadrants quad1 = deLast.Quadrant;
 
             if (QuadrantOp<TCoordinate>.IsNorthern(quad0) && QuadrantOp<TCoordinate>.IsNorthern(quad1))
             {
@@ -107,11 +107,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             else
             {
                 // edges are in different hemispheres - make sure we return one that is non-horizontal                        
-                if (de0.Dy != 0)
+                if (de0.Direction[Ordinates.Y] != 0)
                 {
                     return de0;
                 }
-                else if (deLast.Dy != 0)
+                else if (deLast.Direction[Ordinates.Y] != 0)
                 {
                     return deLast;
                 }
@@ -180,8 +180,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 Debug.Assert(de != null);
                 Debug.Assert(de.Label.HasValue);
                 Label label = de.Label.Value;
-                label.SetAllLocationsIfNull(0, nodeLabel[0]);
-                label.SetAllLocationsIfNull(1, nodeLabel[1]);
+                label = Label.SetAllLocationsIfNull(label, 0, nodeLabel[0].On);
+                label = Label.SetAllLocationsIfNull(label, 1, nodeLabel[1].On);
+                de.Label = label;
             }
         }
 

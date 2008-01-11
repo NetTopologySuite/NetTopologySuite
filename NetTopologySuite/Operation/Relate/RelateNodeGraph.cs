@@ -69,7 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             foreach (Edge<TCoordinate> e in geomGraph.Edges)
             {
                 Debug.Assert(e.Label.HasValue);
-                Locations eLoc = e.Label.Value[argIndex];
+                Locations eLoc = e.Label.Value[argIndex].On;
 
                 foreach (EdgeIntersection<TCoordinate> ei in e.EdgeIntersectionList)
                 {
@@ -103,7 +103,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             foreach (Node<TCoordinate> node in geomGraph.Nodes)
             {   
                 Node<TCoordinate> newNode = _nodes.AddNode(node.Coordinate);
-                newNode.SetLabel(argIndex, node.Label.Value[argIndex]);
+                newNode.SetLabel(argIndex, node.Label.Value[argIndex].On);
             }
         }
 

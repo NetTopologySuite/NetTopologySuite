@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
@@ -247,7 +247,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                 return;
             }
 
-            LineIntersector<TCoordinate> li = new RobustLineIntersector<TCoordinate>();
+            LineIntersector<TCoordinate> li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
             graph.ComputeSelfNodes(li, true);
             checkNoSelfIntersectingRings(graph);
         }
@@ -434,14 +434,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
         private void checkClosedRings(IPolygon<TCoordinate> poly)
         {
-            checkClosedRing(poly.Shell);
+            checkClosedRing(poly.ExteriorRing);
 
             if (_validErr != null)
             {
                 return;
             }
 
-            foreach (ILinearRing<TCoordinate> hole in poly.Holes)
+            foreach (ILinearRing<TCoordinate> hole in poly.InteriorRings)
             {
                 checkClosedRing(hole);
 
@@ -452,7 +452,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             }
         }
 
-        private void checkClosedRing(ILinearRing<TCoordinate> ring)
+        private void checkClosedRing(ICurve<TCoordinate> ring)
         {
             if (!ring.IsClosed)
             {
@@ -549,13 +549,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <param name="graph">A GeometryGraph incorporating the polygon.</param>
         private void CheckHolesInShell(IPolygon<TCoordinate> p, GeometryGraph<TCoordinate> graph)
         {
-            ILinearRing<TCoordinate> shell = p.Shell;
+            ILinearRing<TCoordinate> shell = p.ExteriorRing as ILinearRing<TCoordinate>;
 
             IPointInRing<TCoordinate> pir = new MCPointInRing<TCoordinate>(shell);
             
             for (Int32 i = 0; i < p.InteriorRingsCount; i++)
             {
-                ILinearRing<TCoordinate> hole = p.Holes[i];
+                ILinearRing<TCoordinate> hole = p.InteriorRings[i] as ILinearRing<TCoordinate>;
+                Debug.Assert(hole != null);
                 TCoordinate holePt = FindPointNotNode(hole.Coordinates, shell, graph);
 
                 /*
@@ -592,7 +593,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         {
             QuadtreeNestedRingTester<TCoordinate> nestedTester = new QuadtreeNestedRingTester<TCoordinate>(graph);
 
-            foreach (ILinearRing<TCoordinate> innerHole in p.Holes)
+            foreach (ILinearRing<TCoordinate> innerHole in p.InteriorRings)
             {
                 nestedTester.Add(innerHole);
             }
@@ -619,7 +620,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         {
             foreach (IPolygon<TCoordinate> p in mp)
             {
-                ILinearRing<TCoordinate> shell = p.Shell;
+                ILinearRing<TCoordinate> shell = p.ExteriorRing as ILinearRing<TCoordinate>;
 
                 foreach (IPolygon<TCoordinate> p2 in mp)
                 {
@@ -651,13 +652,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             IEnumerable<TCoordinate> shellPts = shell.Coordinates;
 
             // test if shell is inside polygon shell
-            ILinearRing<TCoordinate> polyShell = p.Shell;
+            ILinearRing<TCoordinate> polyShell = p.ExteriorRing as ILinearRing<TCoordinate>;
+            Debug.Assert(polyShell != null);
             IEnumerable<TCoordinate> polyPts = polyShell.Coordinates;
             
             TCoordinate shellPt = FindPointNotNode(shellPts, polyShell, graph);
 
             // if no point could be found, we can assume that the shell is outside the polygon
-            if (CoordinateHelper.IsEmpty(shellPt))
+            if (Coordinates<TCoordinate>.IsEmpty(shellPt))
             {
                 return;
             }
@@ -686,10 +688,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
             for (Int32 i = 0; i < p.InteriorRingsCount; i++)
             {
-                ILinearRing<TCoordinate> hole = p.Holes[i];
+                ILinearRing<TCoordinate> hole = p.InteriorRings[i] as ILinearRing<TCoordinate>;
                 badNestedPt = checkShellInsideHole(shell, hole, graph);
 
-                if (CoordinateHelper.IsEmpty(badNestedPt))
+                if (Coordinates<TCoordinate>.IsEmpty(badNestedPt))
                 {
                     return;
                 }
@@ -715,7 +717,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             TCoordinate shellPt = FindPointNotNode(shellPts, hole, graph);
 
             // if point is on shell but not hole, check that the shell is inside the hole
-            if (!CoordinateHelper.IsEmpty(shellPt))
+            if (!Coordinates<TCoordinate>.IsEmpty(shellPt))
             {
                 Boolean insideHole = CGAlgorithms<TCoordinate>.IsPointInRing(shellPt, holePts);
 
@@ -728,7 +730,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             TCoordinate holePt = FindPointNotNode(holePts, shell, graph);
 
             // if point is on hole but not shell, check that the hole is outside the shell
-            if (!CoordinateHelper.IsEmpty(holePt))
+            if (!Coordinates<TCoordinate>.IsEmpty(holePt))
             {
                 Boolean insideShell = CGAlgorithms<TCoordinate>.IsPointInRing(holePt, shellPts);
 
@@ -748,7 +750,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         {
             ConnectedInteriorTester<TCoordinate> cit = new ConnectedInteriorTester<TCoordinate>(graph);
 
-            if (!cit.IsInteriorsConnected())
+            if (!cit.AreInteriorsConnected)
             {
                 _validErr = new TopologyValidationError(TopologyValidationErrors.DisconnectedInteriors,
                                                        cit.Coordinate);

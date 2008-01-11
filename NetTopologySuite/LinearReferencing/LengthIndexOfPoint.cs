@@ -108,8 +108,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             {
                 if (!element.IsEndOfLine)
                 {
-                    seg.P0 = element.SegmentStart;
-                    seg.P1 = element.SegmentEnd;
+                    seg = new LineSegment<TCoordinate>(element.SegmentStart, element.SegmentEnd);
 
                     Double segDistance = seg.Distance(inputPt);
                     Double segMeasureToPt = segmentNearestMeasure(seg, inputPt, segmentStartMeasure);

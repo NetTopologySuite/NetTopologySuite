@@ -47,11 +47,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         private readonly TCoordinate _corner3;
 
         private Extents<TCoordinate> _safeExtents;
+        private readonly ICoordinateFactory<TCoordinate> _factory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HotPixel{TCoordinate}"/> class.
         /// </summary>
-        public HotPixel(TCoordinate pt, Double scaleFactor, LineIntersector<TCoordinate> li)
+        public HotPixel(TCoordinate pt, Double scaleFactor, 
+            LineIntersector<TCoordinate> li, ICoordinateFactory<TCoordinate> factory)
         {
             _originalPt = pt;
             _pt = pt;
@@ -60,10 +62,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             _minx = _miny = _maxx = _maxy = 0;
             _corner0 = _corner1 = _corner2 = _corner3 = default(TCoordinate);
             _safeExtents = null;
+            _factory = factory;
 
             if (scaleFactor != 1.0)
             {
-                _pt = new TCoordinate(scale(pt[Ordinates.X]), scale(pt[Ordinates.Y]));
+                _pt = _factory.Create(scale(pt[Ordinates.X]), scale(pt[Ordinates.Y]));
                 //_p0Scaled = new TCoordinate();
                 //_p1Scaled = new TCoordinate();
             }
@@ -74,10 +77,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             _miny = pt[Ordinates.Y] - tolerance;
             _maxy = pt[Ordinates.Y] + tolerance;
 
-            _corner0 = new TCoordinate(_maxx, _maxy);
-            _corner1 = new TCoordinate(_minx, _maxy);
-            _corner2 = new TCoordinate(_minx, _miny);
-            _corner3 = new TCoordinate(_maxx, _miny);
+            _corner0 = _factory.Create(_maxx, _maxy);
+            _corner1 = _factory.Create(_minx, _maxy);
+            _corner2 = _factory.Create(_minx, _miny);
+            _corner3 = _factory.Create(_maxx, _miny);
         }
 
         public TCoordinate Coordinate
@@ -94,12 +97,18 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             if (_safeExtents == null)
             {
                 Double safeTolerance = 0.75 / _scaleFactor;
+
                 _safeExtents = new Extents<TCoordinate>(
                     _originalPt[Ordinates.X] - safeTolerance, _originalPt[Ordinates.X] + safeTolerance,
                     _originalPt[Ordinates.Y] - safeTolerance, _originalPt[Ordinates.Y] + safeTolerance);
             }
 
             return _safeExtents;
+        }
+
+        public Boolean Intersects(LineSegment<TCoordinate> segment)
+        {
+            return Intersects(segment.P0, segment.P1);
         }
 
         public Boolean Intersects(TCoordinate p0, TCoordinate p1)
@@ -141,7 +150,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
 
         private TCoordinate copyScaled(TCoordinate p)
         {
-            return new TCoordinate(scale(p[Ordinates.X]), scale(p[Ordinates.Y]));
+            return _factory.Create(scale(p[Ordinates.X]), scale(p[Ordinates.Y]));
         }
 
         // Tests whether the segment p0-p1 intersects the hot pixel tolerance square.
@@ -159,40 +168,42 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             Boolean intersectsLeft = false;
             Boolean intersectsBottom = false;
 
-            _li.ComputeIntersection(p0, p1, _corner0, _corner1);
+            Intersection<TCoordinate> intersection;
 
-            if (_li.IsProper)
+            intersection = _li.ComputeIntersection(p0, p1, _corner0, _corner1);
+
+            if (intersection.IsProper)
             {
                 return true;
             }
 
-            _li.ComputeIntersection(p0, p1, _corner1, _corner2);
+            intersection = _li.ComputeIntersection(p0, p1, _corner1, _corner2);
 
-            if (_li.IsProper)
+            if (intersection.IsProper)
             {
                 return true;
             }
 
-            if (_li.HasIntersection)
+            if (intersection.HasIntersection)
             {
                 intersectsLeft = true;
             }
 
-            _li.ComputeIntersection(p0, p1, _corner2, _corner3);
+            intersection = _li.ComputeIntersection(p0, p1, _corner2, _corner3);
 
-            if (_li.IsProper)
+            if (intersection.IsProper)
             {
                 return true;
             }
 
-            if (_li.HasIntersection)
+            if (intersection.HasIntersection)
             {
                 intersectsBottom = true;
             }
 
-            _li.ComputeIntersection(p0, p1, _corner3, _corner0);
+            intersection = _li.ComputeIntersection(p0, p1, _corner3, _corner0);
 
-            if (_li.IsProper)
+            if (intersection.IsProper)
             {
                 return true;
             }
@@ -222,30 +233,32 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         // This routine is provided for testing purposes only.
         private Boolean intersectsPixelClosure(TCoordinate p0, TCoordinate p1)
         {
-            _li.ComputeIntersection(p0, p1, _corner0, _corner1);
-            
-            if (_li.HasIntersection)
+            Intersection<TCoordinate> intersection;
+
+            intersection = _li.ComputeIntersection(p0, p1, _corner0, _corner1);
+
+            if (intersection.HasIntersection)
             {
                 return true;
             }
 
-            _li.ComputeIntersection(p0, p1, _corner1, _corner2);
+            intersection = _li.ComputeIntersection(p0, p1, _corner1, _corner2);
 
-            if (_li.HasIntersection)
+            if (intersection.HasIntersection)
             {
                 return true;
             }
 
-            _li.ComputeIntersection(p0, p1, _corner2, _corner3);
+            intersection = _li.ComputeIntersection(p0, p1, _corner2, _corner3);
 
-            if (_li.HasIntersection)
+            if (intersection.HasIntersection)
             {
                 return true;
             }
 
-            _li.ComputeIntersection(p0, p1, _corner3, _corner0);
+            intersection = _li.ComputeIntersection(p0, p1, _corner3, _corner0);
 
-            if (_li.HasIntersection)
+            if (intersection.HasIntersection)
             {
                 return true;
             }

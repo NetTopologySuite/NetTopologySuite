@@ -65,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
             Double x = (p1[Ordinates.X] - p0[Ordinates.X]) * fraction + p0[Ordinates.X];
             Double y = (p1[Ordinates.Y] - p0[Ordinates.Y]) * fraction + p0[Ordinates.Y];
-            return new TCoordinate(x, y);
+            return Coordinates<TCoordinate>.DefaultCoordinateFactory.Create(x, y);
         }
 
         private readonly Int32 _componentIndex;
@@ -200,7 +200,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <returns>The length of the segment.</returns>
         public Double GetSegmentLength(IGeometry<TCoordinate> linearGeom)
         {
-            ILineString<TCoordinate> lineComp = getLine(linearGeom, _componentIndex);
+            ILineString<TCoordinate> lineComp = LinearHelper.GetLine(linearGeom, _componentIndex);
 
             // ensure segment index is valid
             Int32 segIndex = _segmentIndex;
@@ -224,8 +224,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="linear">The linear geometry to create a location for.</param>
         private static LinearLocation<TCoordinate> setToEnd(IGeometry<TCoordinate> linear)
         {
-            Int32 componentIndex = getLineCount(linear) - 1;
-            ILineString<TCoordinate> line = getLine(linear, componentIndex);
+            Int32 componentIndex = LinearHelper.GetLineCount(linear) - 1;
+            ILineString<TCoordinate> line = LinearHelper.GetLine(linear, componentIndex);
 
             Int32 segmentIndex = line.PointCount - 1;
             Double segmentFraction = 1.0;
@@ -275,7 +275,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <returns>The <typeparamref name="TCoordinate"/> at the location.</returns>
         public TCoordinate GetCoordinate(IGeometry<TCoordinate> linearGeom)
         {
-            ILineString<TCoordinate> lineComp = getLine(linearGeom, _componentIndex);
+            ILineString<TCoordinate> lineComp = LinearHelper.GetLine(linearGeom, _componentIndex);
             TCoordinate p0 = lineComp.Coordinates[_segmentIndex];
             
             if (_segmentIndex >= lineComp.PointCount - 1)
@@ -296,14 +296,14 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <returns><see langword="true"/> if this location is valid.</returns>
         public Boolean IsValid(IGeometry<TCoordinate> linearGeom)
         {
-            Int32 lineCount = getLineCount(linearGeom);
+            Int32 lineCount = LinearHelper.GetLineCount(linearGeom);
 
             if (_componentIndex < 0 || _componentIndex >= lineCount)
             {
                 return false;
             }
 
-            ILineString<TCoordinate> lineComp = getLine(linearGeom, _componentIndex);
+            ILineString<TCoordinate> lineComp = LinearHelper.GetLine(linearGeom, _componentIndex);
 
             if (_segmentIndex < 0 || _segmentIndex > lineComp.PointCount)
             {
@@ -423,34 +423,6 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
             // same location
             return 0;
-        }
-
-        private static ILineString<TCoordinate> getLine(IGeometry<TCoordinate> linearGeometry, Int32 lineIndex)
-        {
-            ILineString<TCoordinate> line = linearGeometry as ILineString<TCoordinate>;
-
-            if (line == null)
-            {
-                IMultiLineString<TCoordinate> multiLine = linearGeometry as IMultiLineString<TCoordinate>;
-                Debug.Assert(multiLine != null);
-                line = multiLine[lineIndex];
-            }
-
-            Debug.Assert(line != null);
-            return line;
-        }
-
-        private static Int32 getLineCount(IGeometry<TCoordinate> linear)
-        {
-            if (linear is IMultiLineString)
-            {
-                IMultiLineString multiLine = linear as IMultiLineString;
-                return multiLine.Count;
-            }
-            else
-            {
-                return 1;
-            }
         }
     }
 }

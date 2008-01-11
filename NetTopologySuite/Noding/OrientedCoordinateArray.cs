@@ -6,8 +6,10 @@ using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
+    // TODO: make this a coordinate sequence filter?
+
     /// <summary>
-    ///  Allows comparing <typeparamref name="TCoordinate"/> arrays in an orientation-independent way.
+    /// Allows comparing <typeparamref name="TCoordinate"/> arrays in an orientation-independent way.
     /// </summary>
     public class OrientedCoordinateArray<TCoordinate> : IComparable<OrientedCoordinateArray<TCoordinate>>, IEquatable<OrientedCoordinateArray<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
@@ -50,7 +52,22 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             return compareOriented(_coordinates, _orientation, other._coordinates, other._orientation);
         }
 
-        private static Int32 compareOriented(IEnumerable<TCoordinate> pts1, Boolean orientation1, 
+
+        #region IEquatable<OrientedCoordinateArray<TCoordinate>> Members
+
+        public bool Equals(OrientedCoordinateArray<TCoordinate> other)
+        {
+            if(ReferenceEquals(other, null))
+            {
+                return false;
+            }
+
+            return CompareTo(other) == 0;
+        }
+
+        #endregion
+
+        private static Int32 compareOriented(IEnumerable<TCoordinate> pts1, Boolean orientation1,
             IEnumerable<TCoordinate> pts2, Boolean orientation2)
         {
             pts1 = orientation1 ? pts1 : Slice.Reverse(pts1);
@@ -87,20 +104,6 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
             return 0;
         }
-
-        #region IEquatable<OrientedCoordinateArray<TCoordinate>> Members
-
-        public bool Equals(OrientedCoordinateArray<TCoordinate> other)
-        {
-            if(ReferenceEquals(other, null))
-            {
-                return false;
-            }
-
-            return CompareTo(other) == 0;
-        }
-
-        #endregion
 
         /// <summary>
         /// Computes the canonical orientation for a coordinate array.

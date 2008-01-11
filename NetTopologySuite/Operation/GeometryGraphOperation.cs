@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
     {
-        private LineIntersector<TCoordinate> _lineIntersector = new RobustLineIntersector<TCoordinate>();
+        private LineIntersector<TCoordinate> _lineIntersector = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
         private IPrecisionModel<TCoordinate> _resultPrecisionModel;
         private readonly GeometryGraph<TCoordinate> _arg1;
         private readonly GeometryGraph<TCoordinate> _arg2;

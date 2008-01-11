@@ -199,9 +199,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                             loc = GetLocation(geometryIndex, p, geom);
                         }
 
-                        label.SetAllLocationsIfNull(geometryIndex, loc);
+                        label = Label.SetAllLocationsIfNull(label, geometryIndex, loc);
                     }
                 }
+
+                e.Label = label;
             }
         }
 

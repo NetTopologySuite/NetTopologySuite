@@ -80,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             if (geom is ILineString<TCoordinate>)
             {
-                updateLocationInfo(Locate(p, geom as ILineString<TCoordinate>));
+                updateLocationInfo(locate(p, geom as ILineString<TCoordinate>));
             }
             else if (geom is IPolygon<TCoordinate>)
             {

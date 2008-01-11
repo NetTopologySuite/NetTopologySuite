@@ -7,7 +7,6 @@ using GeoAPI.Operations.Buffer;
 using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
@@ -47,28 +46,36 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         */
         private Double _maxCurveSegmentError = 0.0;
 
-        // TODO: assign the coordinates somehow
-        private List<TCoordinate> _coordinates = new List<TCoordinate>();
+        private readonly ICoordinateFactory<TCoordinate> _coordinateFactory;
+        private readonly ICoordinateSequenceFactory<TCoordinate> _sequenceFactory;
+        private readonly List<TCoordinate> _coordinates = new List<TCoordinate>();
         private Double _distance = 0.0;
         private readonly IPrecisionModel<TCoordinate> _precisionModel;
         private BufferStyle _endCapStyle = BufferStyle.CapRound;
         private TCoordinate _s0, _s1, _s2;
-        private readonly LineSegment<TCoordinate> _seg0 = new LineSegment<TCoordinate>();
-        private readonly LineSegment<TCoordinate> _seg1 = new LineSegment<TCoordinate>();
-        private readonly LineSegment<TCoordinate> _offset0 = new LineSegment<TCoordinate>();
-        private readonly LineSegment<TCoordinate> _offset1 = new LineSegment<TCoordinate>();
+        private LineSegment<TCoordinate> _seg0 = new LineSegment<TCoordinate>();
+        private LineSegment<TCoordinate> _seg1 = new LineSegment<TCoordinate>();
+        private LineSegment<TCoordinate> _offset0 = new LineSegment<TCoordinate>();
+        private LineSegment<TCoordinate> _offset1 = new LineSegment<TCoordinate>();
         private Positions _side = 0;
 
         public OffsetCurveBuilder(IPrecisionModel<TCoordinate> precisionModel)
             : this(precisionModel, DefaultQuadrantSegments) { }
 
         public OffsetCurveBuilder(IPrecisionModel<TCoordinate> precisionModel, Int32 quadrantSegments)
+            : this(precisionModel, quadrantSegments, Coordinates<TCoordinate>.DefaultCoordinateSequenceFactory)
+        { }
+
+        public OffsetCurveBuilder(IPrecisionModel<TCoordinate> precisionModel, 
+            Int32 quadrantSegments, ICoordinateSequenceFactory<TCoordinate> sequenceFactory)
         {
+            _coordinateFactory = sequenceFactory.CoordinateFactory;
+            _sequenceFactory = sequenceFactory;
             _precisionModel = precisionModel;
 
             // compute intersections in full precision, to provide accuracy
             // the points are rounded as they are inserted into the curve line
-            _li = new RobustLineIntersector<TCoordinate>();
+            _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
 
             Int32 limitedQuadSegs = quadrantSegments < 1 ? 1 : quadrantSegments;
             _filletAngleQuantum = Math.PI / 2.0 / limitedQuadSegs;
@@ -86,7 +93,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// fail for closed lines, but will generate superfluous line caps).
         /// </summary>
         /// <returns> A set of coordinate sets.</returns>
-        public IEnumerable<IEnumerable<TCoordinate>> GetLineCurve(IEnumerable<TCoordinate> inputPts, Double distance)
+        public IEnumerable<ICoordinateSequence<TCoordinate>> GetLineCurve(IEnumerable<TCoordinate> inputPts, Double distance)
         {
             // a zero or negative width buffer of a line/point is empty
             if (distance <= 0.0)
@@ -96,7 +103,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             init(distance);
 
-            if (!Slice.CountGreaterThan(1, inputPts))
+            if (!Slice.CountGreaterThan(inputPts, 1))
             {
                 TCoordinate start = Slice.GetFirst(inputPts);
 
@@ -118,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 computeLineBufferCurve(inputPts);
             }
 
-            yield return coordinatesAsRing();
+            yield return _sequenceFactory.Create(_coordinates);
         }
 
         /// <summary>
@@ -126,13 +133,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// as well as rings.
         /// </summary>
         /// <returns>A set of coordinate sets.</returns>
-        public IEnumerable<IEnumerable<TCoordinate>> GetRingCurve(IEnumerable<TCoordinate> inputPts, Positions side, Double distance)
+        public IEnumerable<ICoordinateSequence<TCoordinate>> GetRingCurve(IEnumerable<TCoordinate> inputPts, Positions side, Double distance)
         {
             init(distance);
 
-            if (Slice.CountGreaterThan(1, inputPts))
+            if (Slice.CountGreaterThan(inputPts, 1))
             {
-                foreach (IEnumerable<TCoordinate> coordinates in GetLineCurve(inputPts, distance))
+                foreach (ICoordinateSequence<TCoordinate> coordinates in GetLineCurve(inputPts, distance))
                 {
                     yield return coordinates;
                 }
@@ -142,13 +149,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 // optimize creating ring for for zero distance
                 if (distance == 0.0)
                 {
-                    yield return inputPts;
+                    yield return _sequenceFactory.Create(inputPts);
                 }
                 else
                 {
                     computeRingBufferCurve(inputPts, side);
 
-                    yield return coordinatesAsRing();
+                    yield return _sequenceFactory.Create(coordinatesAsRing());
                 }
             }
         }
@@ -177,7 +184,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             TCoordinate last = default(TCoordinate);
 
-            foreach (TCoordinate coordinate in Slice.StartAt(1, _coordinates))
+            foreach (TCoordinate coordinate in Slice.StartAt(_coordinates, 1))
             {
                 last = coordinate;
                 yield return coordinate;
@@ -191,19 +198,19 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
         private void computeLineBufferCurve(IEnumerable<TCoordinate> inputPts)
         {
-            Pair<TCoordinate> initPoints = Slice.GetPair(inputPts);
+            Pair<TCoordinate> initPoints = Slice.GetPair(inputPts).Value;
 
             // compute points for left side of line
             initSideSegments(initPoints.First, initPoints.Second, Positions.Left);
 
-            foreach (TCoordinate point in Slice.StartAt(2, inputPts))
+            foreach (TCoordinate point in Slice.StartAt(inputPts, 2))
             {
                 addNextSegment(point, true);
             }
 
             addLastSegment();
 
-            Pair<TCoordinate> lastPoints = Slice.GetLastPair(inputPts);
+            Pair<TCoordinate> lastPoints = Slice.GetLastPair(inputPts).Value;
 
             // add line cap for end of line
             addLineEndCap(lastPoints.First, lastPoints.Second);
@@ -211,7 +218,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             // compute points for right side of line
             initSideSegments(lastPoints.Second, lastPoints.First, Positions.Left);
 
-            foreach (TCoordinate point in Slice.ReverseStartAt(2, inputPts))
+            foreach (TCoordinate point in Slice.ReverseStartAt(inputPts, 2))
             {
                 addNextSegment(point, true);
             }
@@ -226,13 +233,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private void computeRingBufferCurve(IEnumerable<TCoordinate> inputPts, Positions side)
         {
             TCoordinate start = Slice.GetFirst(inputPts);
-            TCoordinate nextToLast = Slice.GetLastPair(inputPts).First;
+            TCoordinate nextToLast = Slice.GetLastPair(inputPts).Value.First;
 
             initSideSegments(nextToLast, start, side);
 
             Int32 pointIndex = 0;
 
-            foreach (TCoordinate coordinate in Slice.StartAt(1, inputPts))
+            foreach (TCoordinate coordinate in Slice.StartAt(inputPts, 1))
             {
                 addNextSegment(coordinate, pointIndex == 0);
                 pointIndex++;
@@ -253,7 +260,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 lastPt = Slice.GetLast(_coordinates);
             }
 
-            if (!CoordinateHelper.IsEmpty(lastPt) && bufPt.Equals(lastPt))
+            if (!Coordinates<TCoordinate>.IsEmpty(lastPt) && bufPt.Equals(lastPt))
             {
                 return;
             }
@@ -263,7 +270,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
         private void closePoints()
         {
-            if (!Slice.CountGreaterThan(1, _coordinates))
+            if (!Slice.CountGreaterThan(_coordinates, 1))
             {
                 return;
             }
@@ -292,8 +299,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             _s1 = s1;
             _s2 = s2;
             _side = side;
-            _seg1.SetCoordinates(s1, s2);
-            computeOffsetSegment(_seg1, side, _distance, _offset1);
+            _seg1 = new LineSegment<TCoordinate>(s1, s2);
+            _offset1 = computeOffsetSegment(_seg1, side, _distance);
         }
 
         private void addNextSegment(TCoordinate p, Boolean addStartPoint)
@@ -302,10 +309,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             _s0 = _s1;
             _s1 = _s2;
             _s2 = p;
-            _seg0.SetCoordinates(_s0, _s1);
-            computeOffsetSegment(_seg0, _side, _distance, _offset0);
-            _seg1.SetCoordinates(_s1, _s2);
-            computeOffsetSegment(_seg1, _side, _distance, _offset1);
+
+            _seg0 = new LineSegment<TCoordinate>(_s0, _s1);
+            _offset0 = computeOffsetSegment(_seg0, _side, _distance);
+
+            _seg1 = new LineSegment<TCoordinate>(_s1, _s2);
+            _offset1 = computeOffsetSegment(_seg1, _side, _distance);
 
             // do nothing if points are equal
             if (_s1.Equals(_s2))
@@ -321,8 +330,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             if (orientation == 0) // lines are collinear
             {
-                _li.ComputeIntersection(_s0, _s1, _s1, _s2);
-                LineIntersectionType intersectionType = _li.IntersectionType;
+                Intersection<TCoordinate> intersection = _li.ComputeIntersection(_s0, _s1, _s1, _s2);
+                LineIntersectionType intersectionType = intersection.IntersectionType;
 
                 /*
                 * if numInt is < 2, the lines are parallel and in the same direction.
@@ -348,6 +357,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 {
                     addCoordinate(_offset0.P1);
                 }
+
                 addFillet(_s1, _offset0.P1, _offset1.P0, orientation, _distance);
                 addCoordinate(_offset1.P0);
             }
@@ -356,10 +366,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 /*
                  * add intersection point of offset segments (if any)
                  */
-                _li.ComputeIntersection(_offset0.P0, _offset0.P1, _offset1.P0, _offset1.P1);
-                if (_li.HasIntersection)
+                Intersection<TCoordinate> intersection = _li.ComputeIntersection(_offset0.P0, _offset0.P1, _offset1.P0, _offset1.P1);
+
+                if (intersection.HasIntersection)
                 {
-                    addCoordinate(_li.GetIntersection(0));
+                    addCoordinate(intersection.GetIntersectionPoint(0));
                 }
                 else
                 {
@@ -408,20 +419,23 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="seg">The segment to offset.</param>
         /// <param name="side">The side of the segment the offset lies on.</param>
         /// <param name="distance">The offset distance.</param>
-        /// <param name="offset">The points computed for the offset segment.</param>
-        private void computeOffsetSegment(LineSegment<TCoordinate> seg, Positions side, Double distance, LineSegment<TCoordinate> offset)
+        /// <returns>The points computed for the offset segment.</returns>
+        private LineSegment<TCoordinate> computeOffsetSegment(LineSegment<TCoordinate> seg, Positions side, Double distance)
         {
             Int32 sideSign = side == Positions.Left ? 1 : -1;
             Double dx = seg.P1[Ordinates.X] - seg.P0[Ordinates.X];
             Double dy = seg.P1[Ordinates.Y] - seg.P0[Ordinates.Y];
             Double len = Math.Sqrt(dx * dx + dy * dy);
 
-            // u is the vector that is the length of the offset, in the direction of the segment
+            // u is the vector that is the length of the offset, 
+            // in the direction of the segment
             Double ux = sideSign * distance * dx / len;
             Double uy = sideSign * distance * dy / len;
 
-            offset.P0 = new TCoordinate(seg.P0[Ordinates.X] - uy, seg.P0[Ordinates.Y] + ux);
-            offset.P1 = new TCoordinate(seg.P1[Ordinates.X] - uy, seg.P1[Ordinates.Y] + ux);
+            TCoordinate p0 = _coordinateFactory.Create(seg.P0[Ordinates.X] - uy, seg.P0[Ordinates.Y] + ux);
+            TCoordinate p1 = _coordinateFactory.Create(seg.P1[Ordinates.X] - uy, seg.P1[Ordinates.Y] + ux);
+
+            return new LineSegment<TCoordinate>(p0, p1);
         }
 
         /// <summary>
@@ -431,10 +445,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         {
             LineSegment<TCoordinate> seg = new LineSegment<TCoordinate>(p0, p1);
 
-            LineSegment<TCoordinate> offsetL = new LineSegment<TCoordinate>();
-            computeOffsetSegment(seg, Positions.Left, _distance, offsetL);
-            LineSegment<TCoordinate> offsetR = new LineSegment<TCoordinate>();
-            computeOffsetSegment(seg, Positions.Right, _distance, offsetR);
+            LineSegment<TCoordinate> offsetL = 
+                computeOffsetSegment(seg, Positions.Left, _distance);
+
+            LineSegment<TCoordinate> offsetR = 
+                computeOffsetSegment(seg, Positions.Right, _distance);
 
             Double dx = p1[Ordinates.X] - p0[Ordinates.X];
             Double dy = p1[Ordinates.Y] - p0[Ordinates.Y];
@@ -460,10 +475,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                     Double sideOffsetX = Math.Abs(_distance) * Math.Cos(angle);
                     Double sideOffsetY = Math.Abs(_distance) * Math.Sin(angle);
 
-                    TCoordinate squareCapLOffset = new TCoordinate(
+                    TCoordinate squareCapLOffset = _coordinateFactory.Create(
                         offsetL.P1[Ordinates.X] + sideOffsetX,
                         offsetL.P1[Ordinates.Y] + sideOffsetY);
-                    TCoordinate squareCapROffset = new TCoordinate(
+
+                    TCoordinate squareCapROffset = _coordinateFactory.Create(
                         offsetR.P1[Ordinates.X] + sideOffsetX,
                         offsetR.P1[Ordinates.Y] + sideOffsetY);
 
@@ -541,7 +557,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 Double angle = startAngle + directionFactor * currAngle;
                 x = x + distance * Math.Cos(angle);
                 y = y + distance * Math.Sin(angle);
-                addCoordinate(new TCoordinate(x, y));
+                addCoordinate(_coordinateFactory.Create(x, y));
                 currAngle += currAngleIncrement;
             }
         }
@@ -552,7 +568,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private void addCircle(TCoordinate p, Double distance)
         {
             // add start point
-            TCoordinate pt = new TCoordinate(p[Ordinates.X] + distance, p[Ordinates.Y]);
+            TCoordinate pt = _coordinateFactory.Create(p[Ordinates.X] + distance, p[Ordinates.Y]);
             addCoordinate(pt);
             addFillet(p, 0.0, 2.0 * Math.PI, Orientation.Clockwise, distance);
         }
@@ -566,13 +582,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             Double y = p[Ordinates.Y];
 
             // add four corners of square
-            addCoordinate(new TCoordinate(x + distance, y + distance));
-            addCoordinate(new TCoordinate(x + distance, y - distance));
-            addCoordinate(new TCoordinate(x - distance, y - distance));
-            addCoordinate(new TCoordinate(x - distance, y + distance));
+            addCoordinate(_coordinateFactory.Create(x + distance, y + distance));
+            addCoordinate(_coordinateFactory.Create(x + distance, y - distance));
+            addCoordinate(_coordinateFactory.Create(x - distance, y - distance));
+            addCoordinate(_coordinateFactory.Create(x - distance, y + distance));
 
             // add end point
-            addCoordinate(new TCoordinate(x + distance, y + distance));
+            addCoordinate(_coordinateFactory.Create(x + distance, y + distance));
         }
     }
 }

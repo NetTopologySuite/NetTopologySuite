@@ -1,16 +1,14 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace GisSharpBlog.NetTopologySuite.Utilities
 {
-	internal class ReverseOrder :IComparer
+    internal class ReverseOrder<TItem> : IComparer<TItem>
 	{
-		public ReverseOrder() { }
-
-		public Int32 Compare(object x, object y)
+		public Int32 Compare(TItem x, TItem y)
 		{
 			// flips result
-			return Comparer.Default.Compare(x, y) * -1;
+			return Comparer<TItem>.Default.Compare(x, y) * -1;
 		}
 
 	}

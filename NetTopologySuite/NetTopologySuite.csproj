@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithm\CentralEndpointIntersector.cs" />
     <Compile Include="Algorithm\CentroidArea.cs" />
     <Compile Include="Algorithm\CentroidLine.cs" />
     <Compile Include="Algorithm\CentroidPoint.cs" />
@@ -63,12 +64,15 @@
     <Compile Include="Algorithm\InteriorPointArea.cs" />
     <Compile Include="Algorithm\InteriorPointLine.cs" />
     <Compile Include="Algorithm\InteriorPointPoint.cs" />
+    <Compile Include="Algorithm\Intersection.cs" />
+    <Compile Include="Algorithm\LineIntersectionType.cs" />
     <Compile Include="Algorithm\LineIntersector.cs" />
     <Compile Include="Algorithm\MCPointInRing.cs" />
     <Compile Include="Algorithm\MinimumDiameter.cs" />
     <Compile Include="Algorithm\NonRobustLineIntersector.cs" />
     <Compile Include="Algorithm\NotRepresentableException.cs" />
     <Compile Include="Algorithm\IPointInRing.cs" />
+    <Compile Include="Algorithm\Orientation.cs" />
     <Compile Include="Algorithm\PointLocator.cs" />
     <Compile Include="Algorithm\RobustDeterminant.cs" />
     <Compile Include="Algorithm\RobustLineIntersector.cs" />
@@ -80,7 +84,7 @@
     </Compile>
     <Compile Include="GeometriesGraph\Index\SimpleMonotoneChainSweepLineIntersector.cs" />
     <Compile Include="GeometriesGraph\Positions.cs" />
-    <Compile Include="Geometries\CoordinateSequences.cs" />
+    <Compile Include="GeometriesGraph\Quadrants.cs" />
     <Compile Include="Geometries\Extents.cs" />
     <Compile Include="Geometries\Geometry.cs" />
     <Compile Include="Geometries\GeometryCollection.cs" />
@@ -97,7 +101,7 @@
     <Compile Include="Geometries\PrecisionModel.cs" />
     <Compile Include="Geometries\TopologyException.cs" />
     <Compile Include="Geometries\Triangle.cs" />
-    <Compile Include="Geometries\Utilities\CoordinateHelper.cs" />
+    <Compile Include="Geometries\Coordinates.cs" />
     <Compile Include="Geometries\Utilities\GeometryEditor.cs" />
     <Compile Include="Geometries\Utilities\GeometryFilter.cs" />
     <Compile Include="Geometries\Utilities\GeometryTransformer.cs" />
@@ -133,38 +137,35 @@
     <Compile Include="GeometriesGraph\QuadrantOp.cs" />
     <Compile Include="GeometriesGraph\TopologyLocation.cs" />
     <Compile Include="Index\Bintree\Bintree.cs" />
-    <Compile Include="Index\Bintree\Key.cs" />
+    <Compile Include="Index\Bintree\BinTreeKey.cs" />
     <Compile Include="Index\Bintree\Node.cs" />
-    <Compile Include="Index\Bintree\NodeBase.cs" />
+    <Compile Include="Index\Bintree\BaseBinNode.cs" />
     <Compile Include="Index\Bintree\Root.cs" />
     <Compile Include="Index\Chain\MonotoneChain.cs" />
     <Compile Include="Index\Chain\MonotoneChainBuilder.cs" />
-    <Compile Include="Index\Chain\MonotoneChainOverlapAction.cs" />
-    <Compile Include="Index\Chain\MonotoneChainSelectAction.cs" />
-    <Compile Include="Index\Quadtree\DoubleBits.cs" />
+    <Compile Include="Index\Quadtree\QuadTreeNodeKey.cs" />
+    <Compile Include="Index\Sweepline\ISweepLineOverlapAction.cs" />
+    <Compile Include="Utilities\DoubleBits.cs" />
     <Compile Include="Index\Quadtree\IntervalSize.cs" />
-    <Compile Include="Index\Quadtree\Key.cs" />
+    <Compile Include="Index\AbstractNodeKey.cs" />
     <Compile Include="Index\Quadtree\Node.cs" />
-    <Compile Include="Index\Quadtree\NodeBase.cs" />
+    <Compile Include="Index\Quadtree\BaseQuadNode.cs" />
     <Compile Include="Index\Quadtree\Quadtree.cs" />
     <Compile Include="Index\Quadtree\Root.cs" />
-    <Compile Include="Index\Strtree\AbstractNode.cs" />
+    <Compile Include="Index\AbstractNode.cs" />
     <Compile Include="Index\Strtree\AbstractSTRtree.cs" />
-    <Compile Include="Index\Strtree\IBoundable.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Index\Strtree\ItemBoundable.cs" />
     <Compile Include="Index\Strtree\SIRtree.cs" />
     <Compile Include="Index\Strtree\STRtree.cs" />
     <Compile Include="Index\Sweepline\SweepLineEvent.cs" />
     <Compile Include="Index\Sweepline\SweepLineIndex.cs" />
     <Compile Include="Index\Sweepline\SweepLineInterval.cs" />
-    <Compile Include="Index\Sweepline\ISweepLineOverlapAction.cs" />
     <Compile Include="LinearReferencing\ExtractLineByLocation.cs" />
     <Compile Include="LinearReferencing\LengthIndexedLine.cs" />
     <Compile Include="LinearReferencing\LengthIndexOfPoint.cs" />
     <Compile Include="LinearReferencing\LengthLocationMap.cs" />
     <Compile Include="LinearReferencing\LinearGeometryBuilder.cs" />
+    <Compile Include="LinearReferencing\LinearHelper.cs" />
     <Compile Include="LinearReferencing\LinearIterator.cs" />
     <Compile Include="LinearReferencing\LinearLocation.cs" />
     <Compile Include="LinearReferencing\LocationIndexedLine.cs" />
@@ -178,7 +179,6 @@
     <Compile Include="Noding\MonotoneChainIndexNoder.cs" />
     <Compile Include="Noding\NodingValidator.cs" />
     <Compile Include="Noding\Octant.cs" />
-    <Compile Include="Noding\OrientedCoordinateArray.cs" />
     <Compile Include="Noding\ScaledNoder.cs" />
     <Compile Include="Noding\SegmentNode.cs" />
     <Compile Include="Noding\SegmentNodeList.cs" />
@@ -253,12 +253,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Simplify\DouglasPeuckerLineSimplifier.cs" />
     <Compile Include="Simplify\DouglasPeuckerSimplifier.cs" />
-    <Compile Include="Simplify\LineSegmentIndex.cs" />
-    <Compile Include="Simplify\TaggedLineSegment.cs" />
-    <Compile Include="Simplify\TaggedLinesSimplifier.cs" />
-    <Compile Include="Simplify\TaggedLineString.cs" />
-    <Compile Include="Simplify\TaggedLineStringSimplifier.cs" />
-    <Compile Include="Simplify\TopologyPreservingSimplifier.cs" />
     <Compile Include="Utilities\Assert.cs" />
     <Compile Include="Utilities\AssertionFailedException.cs" />
     <Compile Include="Utilities\BitConverter.cs" />

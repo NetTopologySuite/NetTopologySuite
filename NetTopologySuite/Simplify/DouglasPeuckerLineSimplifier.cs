@@ -15,17 +15,17 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<TCoordinate>, IConvertible
     {
-        public static IEnumerable<TCoordinate> Simplify(IEnumerable<TCoordinate> coordinates, Double distanceTolerance)
+        public static ICoordinateSequence<TCoordinate> Simplify(ICoordinateSequence<TCoordinate> coordinates, Double distanceTolerance)
         {
             DouglasPeuckerLineSimplifier<TCoordinate> simp = new DouglasPeuckerLineSimplifier<TCoordinate>(coordinates);
             simp.DistanceTolerance = distanceTolerance;
-            return simp.Simplify();
+            return coordinates.CoordinateSequenceFactory.Create(simp.Simplify());
         }
 
         private readonly ICoordinateSequence<TCoordinate> _coordinates;
         private Double _distanceTolerance;
         private Int32 _outputCoordinateCount;
-        private readonly LineSegment<TCoordinate> _segment = new LineSegment<TCoordinate>();
+        private LineSegment<TCoordinate> _segment = new LineSegment<TCoordinate>();
         private readonly List<BitVector32> _useCoordinate = new List<BitVector32>();
 
         public DouglasPeuckerLineSimplifier(ICoordinateSequence<TCoordinate> coordinates)
@@ -63,8 +63,8 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
                 return;
             }
 
-            _segment.P0 = _coordinates[i];
-            _segment.P1 = _coordinates[j];
+            _segment = new LineSegment<TCoordinate>(_coordinates[i], _coordinates[j]);
+
             Double maxDistance = -1.0;
             Int32 maxIndex = i;
 
@@ -95,12 +95,15 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
 
         private void setUseCoordinate(Int32 coordinateIndex, Boolean use)
         {
-            _useCoordinate[coordinateIndex / 32][coordinateIndex % 32] = use;
+            Int32 index = coordinateIndex >> 5; // divide by 32
+            BitVector32 bits = _useCoordinate[index];
+            bits[coordinateIndex % 32] = use;
+            _useCoordinate[index] = bits;
         }
 
         private Boolean getUseCoordinate(Int32 coordinateIndex)
         {
-            return _useCoordinate[coordinateIndex / 32][coordinateIndex % 32];
+            return _useCoordinate[coordinateIndex >> 5][coordinateIndex % 32];
         }
     }
 }

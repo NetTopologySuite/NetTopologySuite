@@ -363,16 +363,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return;
             }
 
-            ICoordinate[] uniqueCoordinates = new ICoordinate[ring.Coordinates.Count - 1];
-            Array.Copy(ring.Coordinates, 0, uniqueCoordinates, 0, uniqueCoordinates.Length);
-            ICoordinate minCoordinate = CoordinateArrays.MinCoordinate(ring.Coordinates);
-            CoordinateArrays.Scroll(uniqueCoordinates, minCoordinate);
-            Array.Copy(uniqueCoordinates, 0, ring.Coordinates, 0, uniqueCoordinates.Length);
-            ring.Coordinates[uniqueCoordinates.Length] = uniqueCoordinates[0];
+            TCoordinate minCoordinate = ring.Coordinates.Minimum();
+            ring.Coordinates.Scroll(minCoordinate);
 
             if (CGAlgorithms<TCoordinate>.IsCCW(ring.Coordinates) == clockwise)
             {
-                CoordinateArrays.Reverse(ring.Coordinates);
+                ring.Coordinates.Reverse();
             }
         }
 

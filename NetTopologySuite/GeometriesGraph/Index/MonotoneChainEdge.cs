@@ -105,7 +105,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 
         private void getXOrdinateAtIndex(Int32 chainIndex, out Double x1, out Double x2)
         {
-            Pair<TCoordinate> pair = Slice.GetPairAt(_coordinates, _startIndex[chainIndex]);
+            Pair<TCoordinate> pair = Slice.GetPairAt(_coordinates, _startIndex[chainIndex]).Value;
             x1 = pair.First[Ordinates.X];
             x2 = pair.Second[Ordinates.X];
         }

@@ -53,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                return CoordinateSequences.Create(Coordinate);
+                return Factory.CoordinateSequenceFactory.Create(Coordinate);
             }
         }
 
@@ -64,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public override Boolean IsEmpty
         {
-            get { return CoordinateHelper.IsEmpty(Coordinate); }
+            get { return Coordinates<TCoordinate>.IsEmpty(Coordinate); }
         }
 
         public override Boolean IsSimple
@@ -91,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                if (CoordinateHelper.IsEmpty(Coordinate))
+                if (Coordinates<TCoordinate>.IsEmpty(Coordinate))
                 {
                     throw new InvalidOperationException("X called on empty Point");
                 }
@@ -104,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                if (CoordinateHelper.IsEmpty(Coordinate))
+                if (Coordinates<TCoordinate>.IsEmpty(Coordinate))
                 {
                     throw new InvalidOperationException("Y called on empty Point");
                 }
@@ -212,7 +212,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> set to </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public Point(Double x, Double y, Double z) :
-            this(new TCoordinate(x, y, z), DefaultFactory) { }
+            this(DefaultFactory.CoordinateFactory.Create3D(x, y, z), DefaultFactory) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Point{TCoordinate}"/> class.
@@ -224,7 +224,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> set to </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public Point(Double x, Double y)
-            : this(new TCoordinate(x, y), DefaultFactory) { }
+            : this(DefaultFactory.CoordinateFactory.Create(x, y), DefaultFactory) { }
 
         //public Double Z
         //{
@@ -254,7 +254,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                if (CoordinateHelper.IsEmpty(Coordinate))
+                if (Coordinates<TCoordinate>.IsEmpty(Coordinate))
                 {
                     throw new InvalidOperationException("Point is empty.");
                 }

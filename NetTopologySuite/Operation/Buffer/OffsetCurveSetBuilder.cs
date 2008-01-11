@@ -26,8 +26,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private readonly Double _distance;
         private readonly OffsetCurveBuilder<TCoordinate> _curveBuilder;
 
-        private readonly List<SegmentString<TCoordinate>> _curveList
-            = new List<SegmentString<TCoordinate>>();
+        private readonly List<NodedSegmentString<TCoordinate>> _curveList
+            = new List<NodedSegmentString<TCoordinate>>();
 
         public OffsetCurveSetBuilder(IGeometry<TCoordinate> inputGeom, Double distance, OffsetCurveBuilder<TCoordinate> curveBuilder)
         {
@@ -42,25 +42,25 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// its left and right location.
         /// </summary>
         /// <returns>
-        /// A set of <see cref="SegmentString{TCoordinate}"/>s 
+        /// A set of <see cref="NodedSegmentString{TCoordinate}"/>s 
         /// representing the raw buffer curves.
         /// </returns>
-        public IEnumerable<SegmentString<TCoordinate>> GetCurves()
+        public IEnumerable<NodedSegmentString<TCoordinate>> GetCurves()
         {
             add(_inputGeometry);
             return _curveList;
         }
 
-        private void addCurves(IEnumerable<IEnumerable<TCoordinate>> lineList, Locations leftLoc, Locations rightLoc)
+        private void addCurves(IEnumerable<ICoordinateSequence<TCoordinate>> lineList, Locations leftLoc, Locations rightLoc)
         {
-            foreach (IEnumerable<TCoordinate> line in lineList)
+            foreach (ICoordinateSequence<TCoordinate> line in lineList)
             {
                 addCurve(line, leftLoc, rightLoc);
             }
         }
 
         /// <summary>
-        /// Creates a <see cref="SegmentString{TCoordinate}"/> for a coordinate list
+        /// Creates a <see cref="NodedSegmentString{TCoordinate}"/> for a coordinate list
         /// which is a raw offset curve, and adds it to the list of buffer curves.
         /// </summary>
         /// <remarks>
@@ -70,10 +70,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// Left: Locations.Exterior.
         /// Right: Locations.Interior.
         /// </remarks>
-        private void addCurve(IEnumerable<TCoordinate> coord, Locations leftLoc, Locations rightLoc)
+        private void addCurve(ICoordinateSequence<TCoordinate> coord, Locations leftLoc, Locations rightLoc)
         {
             // don't add null curves!
-            if (!Slice.CountGreaterThan(2, coord))
+            if (!Slice.CountGreaterThan(coord, 2))
             {
                 return;
             }
@@ -81,7 +81,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             // add the edge for a coordinate list which is a raw offset curve
             TopologyLocation location = new TopologyLocation(Locations.Boundary, leftLoc, rightLoc);
             Label label = new Label(location, TopologyLocation.None);
-            SegmentString<TCoordinate> e = new SegmentString<TCoordinate>(coord, label);
+            NodedSegmentString<TCoordinate> e = new NodedSegmentString<TCoordinate>(coord, label);
             _curveList.Add(e);
         }
 
@@ -146,7 +146,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             }
 
             IEnumerable<TCoordinate> coord = p.Coordinates;
-            IEnumerable<IEnumerable<TCoordinate>> lineList = _curveBuilder.GetLineCurve(coord, _distance);
+            IEnumerable<ICoordinateSequence<TCoordinate>> lineList = _curveBuilder.GetLineCurve(coord, _distance);
             addCurves(lineList, Locations.Exterior, Locations.Interior);
         }
 
@@ -157,8 +157,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 return;
             }
 
-            IEnumerable<TCoordinate> coord = CoordinateHelper.RemoveRepeatedPoints(line.Coordinates);
-            IEnumerable<IEnumerable<TCoordinate>> lineList = _curveBuilder.GetLineCurve(coord, _distance);
+            IEnumerable<TCoordinate> coord = line.Coordinates.WithoutRepeatedPoints();
+            IEnumerable<ICoordinateSequence<TCoordinate>> lineList = _curveBuilder.GetLineCurve(coord, _distance);
             addCurves(lineList, Locations.Exterior, Locations.Interior);
         }
 
@@ -174,7 +174,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             ILinearRing<TCoordinate> shell = p.ExteriorRing as ILinearRing<TCoordinate>;
             Debug.Assert(shell != null);
-            IEnumerable<TCoordinate> shellCoord = CoordinateHelper.RemoveRepeatedPoints(shell.Coordinates);
+            IEnumerable<TCoordinate> shellCoord = shell.Coordinates.WithoutRepeatedPoints();
 
             // optimization - don't bother computing buffer
             // if the polygon would be completely eroded
@@ -186,10 +186,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             addPolygonRing(shellCoord, offsetDistance, offsetSide,
                            Locations.Exterior, Locations.Interior);
 
-            for (Int32 i = 0; i < p.InteriorRingsCount; i++)
+            foreach (ILinearRing<TCoordinate> hole in p.InteriorRings)
             {
-                ILinearRing hole = (ILinearRing)p.InteriorRings[i];
-                IEnumerable<TCoordinate> holeCoord = CoordinateArrays.RemoveRepeatedPoints(hole.Coordinates);
+                IEnumerable<TCoordinate> holeCoord = hole.Coordinates.WithoutRepeatedPoints();
 
                 // optimization - don't bother computing buffer for this hole
                 // if the hole would be completely covered
@@ -231,7 +230,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 side = Position.Opposite(side);
             }
 
-            IEnumerable<IEnumerable<TCoordinate>> lineList = _curveBuilder.GetRingCurve(coord, side, offsetDistance);
+            IEnumerable<ICoordinateSequence<TCoordinate>> lineList 
+                = _curveBuilder.GetRingCurve(coord, side, offsetDistance);
+
             addCurves(lineList, leftLoc, rightLoc);
         }
 
@@ -290,7 +291,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// </summary>
         private static Boolean isTriangleErodedCompletely(IEnumerable<TCoordinate> triangleCoord, Double bufferDistance)
         {
-            Triple<TCoordinate> points = Slice.GetTriple(triangleCoord);
+            Triple<TCoordinate> points = Slice.GetTriple(triangleCoord).Value;
             Triangle<TCoordinate> tri = new Triangle<TCoordinate>(points.First, points.Second, points.Third);
             TCoordinate inCenter = tri.InCenter;
             Double distToCentre = CGAlgorithms<TCoordinate>.DistancePointLine(inCenter, tri.P0, tri.P1);

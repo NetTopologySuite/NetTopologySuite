@@ -1,17 +1,21 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.DataStructures;
+using GeoAPI.Indexing;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 {
     /// <summary> 
     /// The base class for nodes in a <see cref="BinTree{TItem}"/>.
     /// </summary>
-    public abstract class NodeBase<TItem>
+    public abstract class BaseBinNode<TItem> : AbstractNode<Interval, TItem>
+        where TItem : IBoundable<Interval>
     {
         /// <summary> 
         /// Returns the index of the subnode that wholely contains the given interval.
         /// If none does, returns -1.
+        /// Subnodes are numbered as follows:
+        ///     0 | 1
         /// </summary>
         public static Int32 GetSubNodeIndex(Interval interval, Double center)
         {
@@ -30,23 +34,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             return subnodeIndex;
         }
 
-        private readonly List<TItem> _items = new List<TItem>();
-
-        // Subnodes are numbered as follows:
-        // 0 | 1        
-        // .
         private Node<TItem> _subNode1;
         private Node<TItem> _subNode2;
-
-        public IEnumerable<TItem> Items
-        {
-            get { return _items; }
-        }
-
-        public void Add(TItem item)
-        {
-            _items.Add(item);
-        }
 
         //public IList AddAllItemsFromOverlapping(Interval interval, IList resultItems)
         //{
@@ -72,32 +61,32 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         //    return _items;
         //}
 
-        public IEnumerable<TItem> Query(Interval interval)
-        {
-            if (IsSearchMatch(interval))
-            {
-                foreach (TItem item in _items)
-                {
-                    yield return item;
-                }
-            }
+        //public IEnumerable<TItem> Query(Interval interval)
+        //{
+        //    if (IsSearchMatch(interval))
+        //    {
+        //        foreach (TItem item in _items)
+        //        {
+        //            yield return item;
+        //        }
+        //    }
 
-            if (_subNode1 != null)
-            {
-                foreach (TItem item in _subNode1.Query(interval))
-                {
-                    yield return item;
-                }
-            }
+        //    if (_subNode1 != null)
+        //    {
+        //        foreach (TItem item in _subNode1.Query(interval))
+        //        {
+        //            yield return item;
+        //        }
+        //    }
 
-            if (_subNode2 != null)
-            {
-                foreach (TItem item in _subNode2.Query(interval))
-                {
-                    yield return item;
-                }
-            }
-        }
+        //    if (_subNode2 != null)
+        //    {
+        //        foreach (TItem item in _subNode2.Query(interval))
+        //        {
+        //            yield return item;
+        //        }
+        //    }
+        //}
 
         public Int32 Depth
         {
@@ -125,25 +114,25 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             }
         }
 
-        public Int32 Count
-        {
-            get
-            {
-                Int32 subSize = 0;
+        //public Int32 Count
+        //{
+        //    get
+        //    {
+        //        Int32 subSize = 0;
 
-                if (_subNode1 != null)
-                {
-                    subSize += _subNode1.Count;
-                }
+        //        if (_subNode1 != null)
+        //        {
+        //            subSize += _subNode1.Count;
+        //        }
 
-                if (_subNode2 != null)
-                {
-                    subSize += _subNode2.Count;
-                }
+        //        if (_subNode2 != null)
+        //        {
+        //            subSize += _subNode2.Count;
+        //        }
 
-                return subSize + _items.Count;
-            }
-        }
+        //        return subSize + ItemsInternal.Count;
+        //    }
+        //}
 
         public Int32 NodeCount
         {
@@ -164,8 +153,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
                 return subCount + 1;
             }
         }
-
-        protected abstract Boolean IsSearchMatch(Interval interval);
 
         protected Node<TItem> SubNode1
         {

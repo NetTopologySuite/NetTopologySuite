@@ -105,7 +105,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// The points are presented in the same order as the input Geometries.
         /// </summary>
         /// <returns>A pair of <c>Coordinate</c>s of the closest points.</returns>
-        public Pair<TCoordinate> ClosestPoints()
+        public Pair<TCoordinate>? ClosestPoints()
         {
             computeMinDistance();
 
@@ -126,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// A <see cref="Pair{TItem}"/> of <see cref="GeometryLocation{TCoordinate}"/>s 
         /// for the closest points.
         /// </returns>
-        public Pair<GeometryLocation<TCoordinate>> ClosestLocations()
+        public Pair<GeometryLocation<TCoordinate>>? ClosestLocations()
         {
             computeMinDistance();
 
@@ -195,7 +195,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
             GeometryLocation<TCoordinate>? locPtPoly1;
 
             // test if either point is wholely inside the other
-            if (Slice.CountGreaterThan(0, polys1))
+            if (Slice.CountGreaterThan(polys1, 0))
             {
                 IEnumerable<GeometryLocation<TCoordinate>> insideLocs0 
                     = ConnectedElementLocationFilter<TCoordinate>.GetLocations(_g0);
@@ -210,7 +210,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
                 }
             }
 
-            if (Slice.CountGreaterThan(0, polys0))
+            if (Slice.CountGreaterThan(polys0, 0))
             {
                 IEnumerable<GeometryLocation<TCoordinate>> insideLocs1 
                     = ConnectedElementLocationFilter<TCoordinate>.GetLocations(_g1);
@@ -418,7 +418,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
                         _minDistance = dist;
                         LineSegment<TCoordinate> seg0 = new LineSegment<TCoordinate>(pair0);
                         LineSegment<TCoordinate> seg1 = new LineSegment<TCoordinate>(pair1);
-                        Pair<TCoordinate> closestPt = Slice.GetPair(seg0.ClosestPoints(seg1));
+                        Pair<TCoordinate> closestPt = Slice.GetPair(seg0.ClosestPoints(seg1)).Value;
                         locGeom0 = new GeometryLocation<TCoordinate>(line0, i, closestPt.First);
                         locGeom1 = new GeometryLocation<TCoordinate>(line1, j, closestPt.Second);
                     }

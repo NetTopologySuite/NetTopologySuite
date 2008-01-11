@@ -221,7 +221,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             foreach (Edge<TCoordinate> edge in _edgeList)
             {
-                Pair<TCoordinate> coordinates = Slice.GetPair(edge.Coordinates);
+                Pair<TCoordinate> coordinates = Slice.GetPair(edge.Coordinates).Value;
 
                 if (p0.Equals(coordinates.First) && p1.Equals(coordinates.Second))
                 {
@@ -241,14 +241,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             foreach (Edge<TCoordinate> edge in _edgeList)
             {
-                Pair<TCoordinate> firstPair = Slice.GetPair(edge.Coordinates);
+                Pair<TCoordinate> firstPair = Slice.GetPair(edge.Coordinates).Value;
 
                 if (matchInSameDirection(p0, p1, firstPair.First, firstPair.Second))
                 {
                     return edge;
                 }
 
-                Pair<TCoordinate> secondPair = Slice.GetPair(edge.CoordinatesReversed);
+                Pair<TCoordinate> secondPair = Slice.GetPair(edge.CoordinatesReversed).Value;
 
                 if (matchInSameDirection(p0, p1, secondPair.First, secondPair.Second))
                 {
