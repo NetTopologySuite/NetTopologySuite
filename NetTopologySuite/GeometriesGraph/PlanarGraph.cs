@@ -29,7 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </remarks>
     public class PlanarGraph<TCoordinate>
          where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                             IComputable<TCoordinate>, IConvertible
+                             IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary> 
         /// For nodes in the Collection, link the DirectedEdges at the node that are in the result.

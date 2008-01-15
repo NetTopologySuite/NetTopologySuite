@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// </summary>
     public class EdgeSetNoder<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly LineIntersector<TCoordinate> _li = null;
         private readonly List<Edge<TCoordinate>> _inputEdges = new List<Edge<TCoordinate>>();

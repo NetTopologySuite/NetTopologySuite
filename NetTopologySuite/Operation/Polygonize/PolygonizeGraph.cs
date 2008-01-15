@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
     /// </summary>
     public class PolygonizeGraph<TCoordinate> : PlanarGraph<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Deletes all edges at a node.

@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// </summary>
     public class RelateNodeGraph<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly NodeMap<TCoordinate> _nodes 
             = new NodeMap<TCoordinate>(new RelateNodeFactory<TCoordinate>());

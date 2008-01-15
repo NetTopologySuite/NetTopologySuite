@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// <typeparam name="TCoordinate">The coordinate type to use.</typeparam>
     public class NonRobustLineIntersector<TCoordinate> : LineIntersector<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <returns> 
         /// <see langword="true"/> if both numbers are positive or if both numbers are negative, 

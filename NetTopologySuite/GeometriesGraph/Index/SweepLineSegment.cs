@@ -9,7 +9,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 {
     public class SweepLineSegment<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly Edge<TCoordinate> _edge;
         private readonly IEnumerable<TCoordinate> _pts;

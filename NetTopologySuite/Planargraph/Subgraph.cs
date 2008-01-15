@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// </summary>
     public class Subgraph<TCoordinate> : PlanarGraph<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly PlanarGraph<TCoordinate> _parentGraph;
         //private readonly ISet<Edge<TCoordinate>> _edges = new HashedSet<Edge<TCoordinate>>();

@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
     /// </summary>
     public abstract class ShortCircuitedGeometryVisitor<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private Boolean _isDone = false;
 

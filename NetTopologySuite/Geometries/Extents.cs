@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     [Serializable]
     public class Extents<TCoordinate> : IExtents<TCoordinate>
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<TCoordinate>, IConvertible
+                IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly ICoordinateFactory<TCoordinate> _factory;
         private TCoordinate _min;

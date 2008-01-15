@@ -1,5 +1,6 @@
 using System;
 using GeoAPI.DataStructures;
+using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Bintree
@@ -7,17 +8,18 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
     /// <summary>
     /// A node of a <see cref="BinTree{TCoordinates}"/>.
     /// </summary>
-    public class Node<TItem> : BaseBinNode<TItem>
+    public class Node<TBoundable> : BaseBinNode<TBoundable>
+        where TBoundable : IBoundable<Interval>
     {
-        public static Node<TItem> CreateNode(Interval itemInterval)
+        public static Node<TBoundable> CreateNode(Interval itemInterval)
         {
             BinTreeKey key = new BinTreeKey(itemInterval);
 
-            Node<TItem> node = new Node<TItem>(key.Interval, key.Level);
+            Node<TBoundable> node = new Node<TBoundable>(key.Bounds, key.Level);
             return node;
         }
 
-        public static Node<TItem> CreateExpanded(Node<TItem> node, Interval addInterval)
+        public static Node<TBoundable> CreateExpanded(Node<TBoundable> node, Interval addInterval)
         {
             Interval expanded = new Interval(addInterval);
 
@@ -26,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
                 expanded.ExpandToInclude(node._interval);
             }
 
-            Node<TItem> largerNode = CreateNode(expanded);
+            Node<TBoundable> largerNode = CreateNode(expanded);
 
             if (node != null)
             {
@@ -41,6 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         private readonly Int32 _level;
 
         public Node(Interval interval, Int32 level)
+            : base(interval, level)
         {
             _interval = interval;
             _level = level;
@@ -62,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// Creates the node if
         /// it does not already exist.
         /// </summary>
-        public Node<TItem> GetNode(Interval searchInterval)
+        public Node<TBoundable> GetNode(Interval searchInterval)
         {
             Int32 subnodeIndex = GetSubNodeIndex(searchInterval, _center);
 
@@ -70,7 +73,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             if (subnodeIndex != -1)
             {
                 // create the node if it does not exist
-                Node<TItem> node = GetSubNode(subnodeIndex);
+                Node<TBoundable> node = GetSubNode(subnodeIndex);
 
                 // recursively search the found/created node
                 return node.GetNode(searchInterval);
@@ -85,9 +88,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// Returns the smallest existing
         /// node containing the envelope.
         /// </summary>
-        public BaseBinNode<TItem> Find(Interval searchInterval)
+        public BaseBinNode<TBoundable> Find(Interval searchInterval)
         {
-            Node<TItem> subNode = GetSubNode(searchInterval, _center);
+            Node<TBoundable> subNode = GetSubNode(searchInterval, _center);
 
             if (subNode != null)
             {
@@ -99,7 +102,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             return this;
         }
 
-        public void Insert(Node<TItem> node)
+        public void Insert(Node<TBoundable> node)
         {
             Assert.IsTrue(_interval.Contains(node.Interval));
             Int32 subnodeIndex = GetSubNodeIndex(node.Interval, _center);
@@ -112,10 +115,20 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             {
                 // the node is not a direct child, so make a new child node to contain it
                 // and recursively insert the node
-                Node<TItem> childNode = CreateSubNode(subnodeIndex);
+                Node<TBoundable> childNode = CreateSubNode(subnodeIndex);
                 childNode.Insert(node);
                 SetSubNode(subnodeIndex, childNode);
             }
+        }
+
+        public override bool Intersects(Interval bounds)
+        {
+            return Bounds.Intersects(bounds);
+        }
+
+        protected override Interval ComputeBounds()
+        {
+            throw new NotImplementedException();
         }
     }
 }

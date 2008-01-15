@@ -6,7 +6,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 {
     public class MonotoneChain<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly MonotoneChainEdge<TCoordinate> _monotoneChainEdge;
         private readonly Int32 _chainIndex;

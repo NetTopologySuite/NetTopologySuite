@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     public static class QuadrantOp<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary> 
         /// Returns the quadrant of a directed line segment (specified as x and y

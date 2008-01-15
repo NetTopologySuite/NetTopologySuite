@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public class NodedSegmentString<TCoordinate> : IList<LineSegment<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         public static IEnumerable<NodedSegmentString<TCoordinate>> GetNodedSubstrings(IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
         {

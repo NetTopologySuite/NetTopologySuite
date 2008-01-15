@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     [Serializable]
     public class MultiPoint<TCoordinate> : GeometryCollection<TCoordinate>, IMultiPoint<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Represents an empty <c>MultiPoint</c>.

@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </remarks>
     public struct EdgeIntersection<TCoordinate> : IComparable<EdgeIntersection<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly TCoordinate _coordinate;
         private readonly Double _distance;

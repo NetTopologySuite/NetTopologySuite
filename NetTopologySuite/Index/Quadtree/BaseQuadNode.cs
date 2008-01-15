@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
     /// </summary>
     public abstract class BaseQuadNode<TCoordinate, TItem> : AbstractNode<IExtents<TCoordinate>, TItem>, IEnumerable<TItem>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IDivisible<Double, TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IDivisible<Double, TCoordinate>, IConvertible
         where TItem : IBoundable<IExtents<TCoordinate>>
     {
         /// <summary> 

@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     public abstract class EdgeEndStar<TCoordinate> : IEnumerable<EdgeEnd<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         // A map which maintains the edges in sorted order around the node.
         private readonly SortedList<EdgeEnd<TCoordinate>, EdgeEnd<TCoordinate>> _edgeMap

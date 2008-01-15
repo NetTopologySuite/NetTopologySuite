@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class SimplePointInRing<TCoordinate> : IPointInRing<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IEnumerable<TCoordinate> _ring;
 

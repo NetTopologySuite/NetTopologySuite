@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
     /// </summary>
     public class PolygonizeEdge<TCoordinate> : Edge<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly ILineString<TCoordinate> _line;
 

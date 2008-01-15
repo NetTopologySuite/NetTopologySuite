@@ -23,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </remarks>
     public class SegmentStringDissolver<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         public interface ISegmentStringMerger
         {

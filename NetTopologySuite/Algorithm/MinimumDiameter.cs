@@ -27,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </remarks>
     public class MinimumDiameter<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IGeometry<TCoordinate> _inputGeom;
         private readonly Boolean _isConvex;

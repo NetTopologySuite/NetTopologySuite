@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     [Serializable]
     public struct LineSegment<TCoordinate> : IEquatable<LineSegment<TCoordinate>>, IComparable<LineSegment<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly TCoordinate _p0, _p1;
 

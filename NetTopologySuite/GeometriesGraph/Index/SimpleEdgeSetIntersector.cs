@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// </summary>
     public class SimpleEdgeSetIntersector<TCoordinate> : EdgeSetIntersector<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         public override void ComputeIntersections(IEnumerable<Edge<TCoordinate>> edges, SegmentIntersector<TCoordinate> si, Boolean testAllSegments)
         {

@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class ConvexHull<TCoordinate>
          where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                             IComputable<TCoordinate>, IConvertible
+                             IComputable<Double, TCoordinate>, IConvertible
     {
         //private static IEnumerable<TCoordinate> extractCoordinates(IGeometry<TCoordinate> geom)
         //{
@@ -37,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Create a new convex hull construction for the input <see cref="Geometry{TCoordinate}"/>.
         /// </summary>
         public ConvexHull(IGeometry<TCoordinate> geometry)
-            : this(extractCoordinates(geometry), geometry.Factory) { }
+            : this(geometry.Coordinates.WithoutDuplicatePoints(), geometry.Factory) { }
 
         /// <summary>
         /// Create a new convex hull construction for the input 

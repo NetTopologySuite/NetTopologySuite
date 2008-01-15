@@ -9,7 +9,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     public class Node<TCoordinate> : GraphComponent<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         // Only valid if this node is precise.
         private readonly TCoordinate _coord;

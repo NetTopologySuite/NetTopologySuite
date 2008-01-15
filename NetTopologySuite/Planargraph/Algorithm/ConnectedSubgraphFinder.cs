@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
     /// </summary>
     public class ConnectedSubgraphFinder<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly PlanarGraph<TCoordinate> _graph;
 

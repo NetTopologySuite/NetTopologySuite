@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// </remarks>
     public class EdgeEndBundleStar<TCoordinate> : EdgeEndStar<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Insert a EdgeEnd in order in the list.

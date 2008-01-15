@@ -30,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
     /// </remarks>
     public class SimpleSnapRounder<TCoordinate> : INoder<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Adds a new node (equal to the snap pt) to the segment

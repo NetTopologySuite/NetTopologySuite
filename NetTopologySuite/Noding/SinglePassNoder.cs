@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public abstract class SinglePassNoder<TCoordinate> : INoder<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly ISegmentIntersector<TCoordinate> _segInt = null;
 

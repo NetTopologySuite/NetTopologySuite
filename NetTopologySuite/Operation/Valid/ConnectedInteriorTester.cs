@@ -25,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// </summary>
     public class ConnectedInteriorTester<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         public static TCoordinate FindDifferentPoint(IEnumerable<TCoordinate> coord, TCoordinate pt)
         {

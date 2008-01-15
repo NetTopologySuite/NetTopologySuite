@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// </summary>
     public class PolygonBuilder<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IGeometryFactory<TCoordinate> _geometryFactory;
         private readonly List<EdgeRing<TCoordinate>> _shellList = new List<EdgeRing<TCoordinate>>();

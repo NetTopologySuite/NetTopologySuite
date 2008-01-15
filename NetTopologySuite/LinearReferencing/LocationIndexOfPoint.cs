@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     /// </summary>
     public class LocationIndexOfPoint<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         public static LinearLocation<TCoordinate> IndexOf(IGeometry<TCoordinate> linearGeom, TCoordinate inputPt)
         {

@@ -53,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     [Serializable]
     public class PrecisionModel<TCoordinate> : IPrecisionModel<TCoordinate>, IEquatable<PrecisionModel<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private const Int32 FloatingPrecisionDigits = 16;
         private const Int32 FloatingSinglePrecisionDigits = 6;

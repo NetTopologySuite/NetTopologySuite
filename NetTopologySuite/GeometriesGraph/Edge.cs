@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     public class Edge<TCoordinate> : GraphComponent<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary> 
         /// Updates an <see cref="IntersectionMatrix"/> from the label for an edge.

@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// </summary>
     public class IsValidOp<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Checks whether a coordinate is valid for processing.

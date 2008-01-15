@@ -52,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     /// </remarks>
     public class LineSequencer<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Tests whether a <see cref="Geometry{TCoordinate}" /> is sequenced correctly.
@@ -145,45 +145,69 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// Any dimension of <see cref="Geometry{TCoordinate}" /> may be added; 
         /// the constituent linework will be extracted.
         /// </summary>
-        /// <param name="geometry"></param>
         public void Add(IGeometry<TCoordinate> geometry)
         {
-            geometry.Apply(new GeometryComponentFilterImpl(this));
-        }
-
-        /// <summary>
-        /// A private implementation for <see cref="IGeometryComponentFilter{TCoordinate}" />
-        /// </summary>
-        internal class GeometryComponentFilterImpl : IGeometryComponentFilter<TCoordinate>
-        {
-            private readonly LineSequencer<TCoordinate> _sequencer = null;
-
-            /// <summary>
-            /// Initializes a new instance of the 
-            /// <see cref="GeometryComponentFilterImpl"/> class.
-            /// </summary>
-            /// <param name="sequencer">The sequencer.</param>
-            internal GeometryComponentFilterImpl(LineSequencer<TCoordinate> sequencer)
+            if (geometry == null)
             {
-                _sequencer = sequencer;
+                throw new ArgumentNullException("geometry");
             }
 
-            /// <summary>
-            /// Performs an operation with or on <paramref name="component" />
-            /// </summary>
-            /// <param name="component">
-            /// A <see cref="Geometry{TCoordinate}" /> to which the filter is applied.
-            /// </param>
-            public void Filter(IGeometry<TCoordinate> component)
+            if (geometry is IHasGeometryComponents<TCoordinate>)
             {
-                if (component is ILineString<TCoordinate>)
+                IHasGeometryComponents<TCoordinate> container
+                    = geometry as IHasGeometryComponents<TCoordinate>;
+
+                foreach (ILineString<TCoordinate> s in container.Components)
                 {
-                    _sequencer.AddLine(component as ILineString<TCoordinate>);
+                    if (s != null)
+                    {
+                        addLine(s);
+                    }
                 }
             }
+            else if (geometry is ILineString<TCoordinate>)
+            {
+                addLine(geometry as ILineString<TCoordinate>);
+            }
         }
+        
+        /*
+         * [codekaizen 2008-01-14]  removed during translation of visitor patterns
+         *                          to enumeration / query patterns.
+         */
+        ///// <summary>
+        ///// A private implementation for <see cref="IGeometryComponentFilter{TCoordinate}" />
+        ///// </summary>
+        //internal class GeometryComponentFilterImpl : IGeometryComponentFilter<TCoordinate>
+        //{
+        //    private readonly LineSequencer<TCoordinate> _sequencer = null;
 
-        internal void AddLine(ILineString<TCoordinate> lineString)
+        //    /// <summary>
+        //    /// Initializes a new instance of the 
+        //    /// <see cref="GeometryComponentFilterImpl"/> class.
+        //    /// </summary>
+        //    /// <param name="sequencer">The sequencer.</param>
+        //    internal GeometryComponentFilterImpl(LineSequencer<TCoordinate> sequencer)
+        //    {
+        //        _sequencer = sequencer;
+        //    }
+
+        //    /// <summary>
+        //    /// Performs an operation with or on <paramref name="component" />
+        //    /// </summary>
+        //    /// <param name="component">
+        //    /// A <see cref="Geometry{TCoordinate}" /> to which the filter is applied.
+        //    /// </param>
+        //    public void Filter(IGeometry<TCoordinate> component)
+        //    {
+        //        if (component is ILineString<TCoordinate>)
+        //        {
+        //            _sequencer.AddLine(component as ILineString<TCoordinate>);
+        //        }
+        //    }
+        //}
+
+        private void addLine(ILineString<TCoordinate> lineString)
         {
             if (factory == null)
             {

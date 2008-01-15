@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public static class CGAlgorithms<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         public static RobustLineIntersector<TCoordinate> CreateRobustLineIntersector()
         {

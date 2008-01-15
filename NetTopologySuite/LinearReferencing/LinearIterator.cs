@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     /// </summary>
     public class LinearIterator<TCoordinate> : IEnumerable<LinearIterator<TCoordinate>.LinearElement>
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<TCoordinate>, IConvertible
+                IComputable<Double, TCoordinate>, IConvertible
     {
 
         #region LinearElement

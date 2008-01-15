@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     [Serializable]
     public class Point<TCoordinate> : Geometry<TCoordinate>, IPoint<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private static readonly TCoordinate emptyCoordinate = default(TCoordinate);
 
@@ -31,7 +31,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coordinate">The coordinate used for create this <see cref="Point{TCoordinate}" />.</param>
         /// <remarks>
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
+        /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public Point(TCoordinate coordinate) :
             this(coordinate, GeometryFactory<TCoordinate>.Default) { }
@@ -128,16 +128,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return Factory.CreateGeometryCollection(null); }
         }
 
-        protected override Extents<TCoordinate> ComputeExtentsInternal()
-        {
-            if (IsEmpty)
-            {
-                return new Extents<TCoordinate>();
-            }
-
-            return new Extents<TCoordinate>(Coordinate, Coordinate);
-        }
-
         public override Boolean Equals(IGeometry<TCoordinate> other, Tolerance tolerance)
         {
             if (!IsEquivalentClass(other))
@@ -175,10 +165,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         //    filter.Filter(this);
         //}
 
-        public override void Apply(IGeometryComponentFilter<TCoordinate> filter)
-        {
-            filter.Filter(this);
-        }
+        //public override void Apply(IGeometryComponentFilter<TCoordinate> filter)
+        //{
+        //    filter.Filter(this);
+        //}
 
         public override IGeometry<TCoordinate> Clone()
         {
@@ -186,6 +176,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         public override void Normalize() { }
+
+        protected override Extents<TCoordinate> ComputeExtentsInternal()
+        {
+            if (IsEmpty)
+            {
+                return new Extents<TCoordinate>();
+            }
+
+            return new Extents<TCoordinate>(Coordinate, Coordinate);
+        }
 
         protected internal override Int32 CompareToSameClass(IGeometry<TCoordinate> other)
         {

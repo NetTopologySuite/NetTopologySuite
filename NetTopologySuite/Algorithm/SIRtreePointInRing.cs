@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class SirTreePointInRing<TCoordinate> : IPointInRing<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly ILinearRing<TCoordinate> _ring;
         private readonly SirTree<LineSegment<TCoordinate>> _sirTree

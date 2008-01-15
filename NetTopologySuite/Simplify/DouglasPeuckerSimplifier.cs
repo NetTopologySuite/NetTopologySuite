@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// </summary>
     public class DouglasPeuckerSimplifier<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         public static IGeometry<TCoordinate> Simplify(IGeometry<TCoordinate> geom, Double distanceTolerance)
         {

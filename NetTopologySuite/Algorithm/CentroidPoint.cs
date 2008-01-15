@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </remarks>
     public class CentroidPoint<TCoordinate>
          where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                             IComputable<TCoordinate>, IConvertible
+                             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly ICoordinateFactory<TCoordinate> _factory;
         private Int32 _pointCount = 0;

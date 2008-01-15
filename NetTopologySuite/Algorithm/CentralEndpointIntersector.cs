@@ -25,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </remarks>
     public class CentralEndpointIntersector<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         public static TCoordinate GetIntersection(TCoordinate p00, TCoordinate p01,
                 TCoordinate p10, TCoordinate p11)

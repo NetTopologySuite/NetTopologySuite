@@ -9,7 +9,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 {
     public class MonotoneChainIndexer<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         //public static Int32[] ToIntArray(IList list)
         //{

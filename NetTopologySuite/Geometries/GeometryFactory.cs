@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     [Serializable]
     public class GeometryFactory<TCoordinate> : IGeometryFactory<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         #region Static precision models
 
@@ -503,7 +503,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         private static ICoordinateSequenceFactory<TCoordinate> getDefaultCoordinateSequenceFactory<TCoordinate>()
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<TCoordinate>, IConvertible
+                IComputable<Double, TCoordinate>, IConvertible
         {
             return Coordinates<TCoordinate>.DefaultCoordinateSequenceFactory;
         }

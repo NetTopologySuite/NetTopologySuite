@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
     /// </summary>
     public class GeometryTransform<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         //private static IPoint<TCoordinate> ToNTS(Double x, Double y)
         //{

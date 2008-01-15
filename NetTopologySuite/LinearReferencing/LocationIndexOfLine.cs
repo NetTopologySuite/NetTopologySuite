@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     /// </summary>
     public class LocationIndexOfLine<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         public static Pair<LinearLocation<TCoordinate>> IndicesOf(IGeometry<TCoordinate> linearGeom,
                                                                   IGeometry<TCoordinate> subLine)

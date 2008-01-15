@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     /// </summary>
     public class LineMergeEdge<TCoordinate> : Edge<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly ILineString<TCoordinate> _line;
 

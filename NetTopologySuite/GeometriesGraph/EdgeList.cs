@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     public class EdgeList<TCoordinate> : IList<Edge<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly List<Edge<TCoordinate>> _edges = new List<Edge<TCoordinate>>();
 

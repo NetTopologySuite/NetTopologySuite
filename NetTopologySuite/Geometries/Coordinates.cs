@@ -8,7 +8,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     public static class Coordinates<TCoordinate>
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                                IComputable<TCoordinate>, IConvertible
+                                IComputable<Double, TCoordinate>, IConvertible
     {
         private static Object _defaultCoordinateFactory;
         private static Object _defaultCoordinateSequenceFactory;

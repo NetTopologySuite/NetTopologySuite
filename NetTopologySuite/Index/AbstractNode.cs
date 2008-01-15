@@ -57,6 +57,14 @@ namespace GisSharpBlog.NetTopologySuite.Index
             }
         }
 
+        public Int32 TotalNodes
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         protected abstract Boolean IsSearchMatch(TBounds query);
 
         #region ISpatialIndexNode<TBounds> Members

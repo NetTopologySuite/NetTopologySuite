@@ -49,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
     /// </remarks>
     public class MonotoneChain<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly ICoordinateSequence<TCoordinate> _coordinates;
         private readonly Int32 _start;

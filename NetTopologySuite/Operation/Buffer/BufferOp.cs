@@ -32,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// </summary>
     public class BufferOp<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         // NOTE: modified for "safe" assembly in Sql 2005
         // Const added!

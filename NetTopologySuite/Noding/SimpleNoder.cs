@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public class SimpleNoder<TCoordinate> : SinglePassNoder<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleNoder{TCoordinate}"/> class.

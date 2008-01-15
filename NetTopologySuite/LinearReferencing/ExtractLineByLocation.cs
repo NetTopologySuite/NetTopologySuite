@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     /// </summary>
     public class ExtractLineByLocation<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Computes the subline of a <see cref="ILineString{TCoordinate}" /> between

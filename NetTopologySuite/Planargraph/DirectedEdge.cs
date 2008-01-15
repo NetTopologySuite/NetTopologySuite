@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// </remarks>
     public class DirectedEdge<TCoordinate> : GraphComponent<TCoordinate>, IComparable<DirectedEdge<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Returns a set containing the parent <see cref="Edge"/> 

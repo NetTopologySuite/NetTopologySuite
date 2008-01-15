@@ -10,7 +10,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </summary>
     public struct Triangle<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly TCoordinate _p0;
         private readonly TCoordinate _p1;

@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     [Serializable]
     public class MultiPolygon<TCoordinate> : GeometryCollection<TCoordinate>, IMultiPolygon<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                    IComputable<TCoordinate>, IConvertible
+                    IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Represents an empty <c>MultiPolygon</c>.

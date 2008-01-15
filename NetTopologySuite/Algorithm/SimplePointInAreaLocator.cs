@@ -25,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         public static Locations Locate<TCoordinate>(TCoordinate p, IGeometry<TCoordinate> geom)
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<TCoordinate>, IConvertible
+                IComputable<Double, TCoordinate>, IConvertible
         {
             if (geom.IsEmpty)
             {
@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
         private static Boolean ContainsPoint<TCoordinate>(TCoordinate p, IGeometry<TCoordinate> geom)
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<TCoordinate>, IConvertible
+                IComputable<Double, TCoordinate>, IConvertible
         {
             if (geom is IPolygon<TCoordinate>)
             {
@@ -77,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
         public static Boolean ContainsPointInPolygon<TCoordinate>(TCoordinate p, IPolygon<TCoordinate> poly)
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<TCoordinate>, IConvertible
+                IComputable<Double, TCoordinate>, IConvertible
         {
             if (poly.IsEmpty)
             {

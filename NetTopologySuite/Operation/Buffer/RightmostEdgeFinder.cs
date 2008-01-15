@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// </summary>
     public class RightmostEdgeFinder<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private Int32 _minIndex = -1;
         private TCoordinate _minCoord = default(TCoordinate);

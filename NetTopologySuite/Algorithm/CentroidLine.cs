@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class CentroidLine<TCoordinate>
          where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                             IComputable<TCoordinate>, IConvertible
+                             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly ICoordinateFactory<TCoordinate> _factory;
         private TCoordinate _centSum;

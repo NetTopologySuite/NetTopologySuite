@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     /// </summary>
     public class LengthLocationMap<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Computes the <see cref="LinearLocation{TCoordinate}" /> for a

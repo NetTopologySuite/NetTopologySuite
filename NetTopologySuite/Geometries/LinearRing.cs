@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     [Serializable]
     public class LinearRing<TCoordinate> : LineString<TCoordinate>, ILinearRing<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Constructs a <see cref="LinearRing{TCoordinate}" /> with the given points.

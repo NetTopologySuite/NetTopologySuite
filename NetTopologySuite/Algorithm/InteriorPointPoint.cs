@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </remarks>
     public class InteriorPointPoint<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly TCoordinate _centroid;
         private Double _minDistance = Double.MaxValue;

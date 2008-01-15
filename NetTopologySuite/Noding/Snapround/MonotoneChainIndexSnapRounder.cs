@@ -31,7 +31,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
     /// </remarks>
     public class MonotoneChainIndexSnapRounder<TCoordinate> : INoder<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly ICoordinateFactory<TCoordinate> _coordFactory;
         private readonly LineIntersector<TCoordinate> _li = null;

@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// </remarks>
     public class Edge<TCoordinate> : GraphComponent<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         // The two DirectedEdges associated with this Edge.
         private DirectedEdge<TCoordinate> _directedEdge1;

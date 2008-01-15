@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// </summary>
     public class SweeplineNestedRingTester<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly GeometryGraph<TCoordinate> _graph; // used to find non-node vertices
         private readonly List<ILinearRing<TCoordinate>> _rings

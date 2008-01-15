@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// </remarks>
     public abstract class PlanarGraph<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly List<Edge<TCoordinate>> _edges = new List<Edge<TCoordinate>>();
         private readonly List<DirectedEdge<TCoordinate>> _dirEdges = new List<DirectedEdge<TCoordinate>>();

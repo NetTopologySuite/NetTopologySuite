@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     public class DirectedEdgeStar<TCoordinate> : EdgeEndStar<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private const Int32 ScanningForIncoming = 1;
         private const Int32 LinkingToOutgoing = 2;

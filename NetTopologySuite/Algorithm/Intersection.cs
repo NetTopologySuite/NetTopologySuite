@@ -10,7 +10,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     public struct Intersection<TCoordinate> : IEnumerable<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly LineIntersectionType _result;
         private readonly TCoordinate _intersectP0;

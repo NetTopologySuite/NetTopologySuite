@@ -28,26 +28,30 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     /// </remarks>
     public class LineMerger<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
-        // DESIGN_NODE: make into delegate
-        private class AnonymousGeometryComponentFilterImpl : IGeometryComponentFilter<TCoordinate>
-        {
-            private readonly LineMerger<TCoordinate> _container = null;
+        /*
+         * [codekaizen 2008-01-14]  removed during translation of visitor patterns
+         *                          to enumeration / query patterns.
+         */
 
-            public AnonymousGeometryComponentFilterImpl(LineMerger<TCoordinate> container)
-            {
-                _container = container;
-            }
+        //private class AnonymousGeometryComponentFilterImpl : IGeometryComponentFilter<TCoordinate>
+        //{
+        //    private readonly LineMerger<TCoordinate> _container = null;
 
-            public void Filter(IGeometry<TCoordinate> component)
-            {
-                if (component is ILineString<TCoordinate>)
-                {
-                    _container.add((ILineString<TCoordinate>)component);
-                }
-            }
-        }
+        //    public AnonymousGeometryComponentFilterImpl(LineMerger<TCoordinate> container)
+        //    {
+        //        _container = container;
+        //    }
+
+        //    public void Filter(IGeometry<TCoordinate> component)
+        //    {
+        //        if (component is ILineString<TCoordinate>)
+        //        {
+        //            _container.add((ILineString<TCoordinate>)component);
+        //        }
+        //    }
+        //}
 
         private readonly LineMergeGraph<TCoordinate> _graph = new LineMergeGraph<TCoordinate>();
         private List<ILineString<TCoordinate>> mergedLineStrings = new List<ILineString<TCoordinate>>();
@@ -61,7 +65,28 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// </summary>
         public void Add(IGeometry<TCoordinate> geometry)
         {
-            geometry.Apply(new AnonymousGeometryComponentFilterImpl(this));
+            if (geometry == null)
+            {
+                throw new ArgumentNullException("geometry");
+            }
+
+            if (geometry is IHasGeometryComponents<TCoordinate>)
+            {
+                IHasGeometryComponents<TCoordinate> container
+                    = geometry as IHasGeometryComponents<TCoordinate>;
+
+                foreach (ILineString<TCoordinate> s in container.Components)
+                {
+                    if (s != null)
+                    {
+                        addLine(s);
+                    }
+                }
+            }
+            else if (geometry is ILineString<TCoordinate>)
+            {
+                addLine(geometry as ILineString<TCoordinate>);
+            }
         }
 
         /// <summary>
@@ -89,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             }
         }
 
-        private void add(ILineString<TCoordinate> lineString)
+        private void addLine(ILineString<TCoordinate> lineString)
         {
             if (_factory == null)
             {

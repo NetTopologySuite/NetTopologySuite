@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </remarks>
     public class InteriorPointArea<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private static Double Avg(Double a, Double b)
         {

@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// </remarks>
     public class Node<TCoordinate> : GraphComponent<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Returns all Edges that connect the two nodes (which are assumed to be different).

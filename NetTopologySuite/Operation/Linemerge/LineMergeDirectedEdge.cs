@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     /// </summary>
     public class LineMergeDirectedEdge<TCoordinate> : DirectedEdge<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Constructs a LineMergeDirectedEdge connecting the <c>from</c> node to the <c>to</c> node.

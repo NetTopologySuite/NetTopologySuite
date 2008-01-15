@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// </summary>
     public class SubgraphDepthLocater<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IEnumerable<BufferSubgraph<TCoordinate>> _subgraphs;
         private LineSegment<TCoordinate> _segment = new LineSegment<TCoordinate>();

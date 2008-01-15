@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     /// </summary>
     public class EdgeString<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IGeometryFactory<TCoordinate> _factory;
         private readonly List<LineMergeDirectedEdge<TCoordinate>> _directedEdges 

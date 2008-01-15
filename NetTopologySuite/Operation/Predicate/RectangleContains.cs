@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
     /// </summary>
     public class RectangleContains<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         public static Boolean Contains(IPolygon<TCoordinate> rectangle, IGeometry<TCoordinate> b)
         {

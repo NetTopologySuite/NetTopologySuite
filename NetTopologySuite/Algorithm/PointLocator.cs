@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class PointLocator<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         // true if the point lies in or on any Geometry element
         private Boolean _isIn; 

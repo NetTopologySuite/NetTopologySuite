@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class MCPointInRing<TCoordinate> : IPointInRing<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         //private class MCSelector : MonotoneChainSelectAction<TCoordinate>
         //{

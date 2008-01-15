@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
     /// </remarks>
     public struct HotPixel<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly LineIntersector<TCoordinate> _li;
 

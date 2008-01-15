@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     public class EdgeIntersectionList<TCoordinate> : IEnumerable<EdgeIntersection<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         // a list of EdgeIntersections      
         private readonly SortedDictionary<EdgeIntersection<TCoordinate>, EdgeIntersection<TCoordinate>> _nodeMap 

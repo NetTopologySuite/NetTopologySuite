@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     [Serializable]
     public class LineString<TCoordinate> : Geometry<TCoordinate>, ILineString<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Represents an empty <c>LineString</c>.
@@ -277,10 +277,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         //    filter.Filter(this);
         //}
 
-        public override void Apply(IGeometryComponentFilter<TCoordinate> filter)
-        {
-            filter.Filter(this);
-        }
+        //public override void Apply(IGeometryComponentFilter<TCoordinate> filter)
+        //{
+        //    filter.Filter(this);
+        //}
 
         public override IGeometry<TCoordinate> Clone()
         {

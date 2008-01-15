@@ -30,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// </remarks>
     public abstract class GraphComponent<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         #region Static
 

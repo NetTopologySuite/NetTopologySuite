@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
     /// </remarks>
     public class IsSimpleOp<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private struct EndpointInfo
         {

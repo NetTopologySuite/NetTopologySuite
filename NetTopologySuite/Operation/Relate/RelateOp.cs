@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// </summary>
     public class RelateOp<TCoordinate> : GeometryGraphOperation<TCoordinate>
          where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
-                             IComputable<TCoordinate>, IConvertible
+                             IComputable<Double, TCoordinate>, IConvertible
     {
         public static IntersectionMatrix Relate(IGeometry<TCoordinate> a, IGeometry<TCoordinate> b)
         {

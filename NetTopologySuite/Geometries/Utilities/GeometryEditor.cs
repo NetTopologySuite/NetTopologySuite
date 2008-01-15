@@ -37,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
     /// </summary>    
     public class GeometryEditor<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary> 
         /// The factory used to create the modified Geometry.

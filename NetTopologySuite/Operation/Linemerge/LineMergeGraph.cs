@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     /// </summary>
     public class LineMergeGraph<TCoordinate> : PlanarGraph<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Adds an Edge, DirectedEdges, and Nodes for the given LineString representation

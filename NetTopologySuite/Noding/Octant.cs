@@ -110,7 +110,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         public static Octants GetOctant<TCoordinate>(LineSegment<TCoordinate> segment)
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<TCoordinate>, IConvertible
+                IComputable<Double, TCoordinate>, IConvertible
         {
             return GetOctant(segment.P0, segment.P1);
         }

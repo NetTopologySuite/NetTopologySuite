@@ -1,5 +1,6 @@
 using System;
 using GeoAPI.DataStructures;
+using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Index.Quadtree;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
@@ -9,38 +10,45 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
     /// The root node of a single <see cref="BinTree{TItem}"/>.
     /// It is centered at the origin, and does not have a defined extent.
     /// </summary>
-    public class Root<TItem> : BaseBinNode<TItem>
+    public class Root<TBoundable> : BaseBinNode<TBoundable>
+        where TBoundable : IBoundable<Interval>
     {
         // the singleton root node is centered at the origin.
         private static readonly Double Origin = 0.0;
 
+        public Root() : base(Interval.Infinite, -1)
+        {
+            
+        }
+
         /// <summary> 
         /// Insert an item into the tree this is the root of.
         /// </summary>
-        public void Insert(Interval itemInterval, TItem item)
+        public void Insert(TBoundable item)
         {
-            Int32 index = GetSubNodeIndex(itemInterval, Origin);
-            Node<TItem> subNode = GetSubNode(itemInterval, Origin);
+            Interval bounds = item.Bounds;
+            Int32 index = GetSubNodeIndex(bounds, Origin);
+            Node<TBoundable> subNode = GetSubNode(bounds, Origin);
 
             // if index is -1, itemInterval must contain the origin.
             if (subNode == null)
             {
-                Add(item);
+                AddItem(item);
                 return;
             }
 
             // If the subnode doesn't exist or this item is not contained in it,
             // have to expand the tree upward to contain the item.
-            if (!subNode.Interval.Contains(itemInterval))
+            if (!subNode.Interval.Contains(bounds))
             {
-                Node<TItem> largerNode = Node<TItem>.CreateExpanded(subNode, itemInterval);
+                Node<TBoundable> largerNode = Node<TBoundable>.CreateExpanded(subNode, bounds);
                 SetSubNode(index, largerNode);
             }
 
             // At this point we have a subnode which exists and must contain
             // contains the extents for the item.  Insert the item into the tree.
             subNode = GetSubNode(index);
-            insertContained(subNode, itemInterval, item);
+            insertContained(subNode, bounds, item);
         }
 
         /// <summary>
@@ -56,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// the given Node.  Lower levels of the tree will be created
         /// if necessary to hold the item.
         /// </summary>
-        private static void insertContained(Node<TItem> tree, Interval itemInterval, TItem item)
+        private static void insertContained(Node<TBoundable> tree, Interval itemInterval, TBoundable item)
         {
             Assert.IsTrue(tree.Interval.Contains(itemInterval));
             
@@ -66,7 +74,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             * the smallest existing node containing the query
             */
             Boolean isZeroArea = IntervalSize.IsZeroWidth(itemInterval.Min, itemInterval.Max);
-            BaseBinNode<TItem> node;
+            BaseBinNode<TBoundable> node;
 
             if (isZeroArea)
             {
@@ -77,7 +85,17 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
                 node = tree.GetNode(itemInterval);
             }
 
-            node.Add(item);
+            node.AddItem(item);
+        }
+
+        public override bool Intersects(Interval bounds)
+        {
+            return true;
+        }
+
+        protected override Interval ComputeBounds()
+        {
+            return Interval.Infinite;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     public class NodeMap<TCoordinate> : IEnumerable<Node<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly SortedList<TCoordinate, Node<TCoordinate>> _nodeMap 
             = new SortedList<TCoordinate, Node<TCoordinate>>();

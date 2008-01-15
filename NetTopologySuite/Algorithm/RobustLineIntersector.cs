@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class RobustLineIntersector<TCoordinate> : LineIntersector<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         public RobustLineIntersector(ICoordinateFactory<TCoordinate> factory)
             :base(factory) { }

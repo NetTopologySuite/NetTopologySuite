@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// </summary>
     public class BufferSubgraph<TCoordinate> : IComparable<BufferSubgraph<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly RightmostEdgeFinder<TCoordinate> _finder = new RightmostEdgeFinder<TCoordinate>();
         private readonly List<DirectedEdge<TCoordinate>> _dirEdgeList = new List<DirectedEdge<TCoordinate>>();

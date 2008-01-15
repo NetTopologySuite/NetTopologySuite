@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
     /// </remarks>
     public struct GeometryLocation<TCoordinate> : IEquatable<GeometryLocation<TCoordinate>>, IComparable<GeometryLocation<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IGeometry<TCoordinate> _component;
         private readonly Int32? _segIndex;

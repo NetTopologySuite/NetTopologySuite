@@ -29,7 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// </summary>
     public class OverlayOp<TCoordinate> : GeometryGraphOperation<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         public static IGeometry<TCoordinate> Overlay(IGeometry<TCoordinate> geom0, IGeometry<TCoordinate> geom1, SpatialFunctions opCode)
         {

@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </remarks>
     public abstract class LineIntersector<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary> 
         /// Computes the "edge distance" of an intersection point p along a segment.

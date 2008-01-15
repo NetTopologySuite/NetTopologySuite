@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
     /// </summary>
     public class GeometricShapeFactory<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly GeometryFactory<TCoordinate> _geometryFactory;
         private readonly Dimensions _dim = new Dimensions();

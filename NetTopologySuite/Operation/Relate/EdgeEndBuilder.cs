@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// </remarks>
     public class EdgeEndBuilder<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         public IEnumerable<EdgeEnd<TCoordinate>> ComputeEdgeEnds(IEnumerable<Edge<TCoordinate>> edges)
         {

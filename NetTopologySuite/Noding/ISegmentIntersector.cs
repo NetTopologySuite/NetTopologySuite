@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public interface ISegmentIntersector<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// This method is called by clients

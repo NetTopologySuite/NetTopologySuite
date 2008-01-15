@@ -26,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// </remarks>
     public class SimpleMonotoneChaingSweepLineIntersector<TCoordinate> : EdgeSetIntersector<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly List<SweepLineEvent> _events = new List<SweepLineEvent>();
 

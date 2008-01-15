@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// </summary>
     public class LineBuilder<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly OverlayOp<TCoordinate> _op;
         private readonly IGeometryFactory<TCoordinate> _geometryFactory;

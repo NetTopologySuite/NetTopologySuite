@@ -23,9 +23,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// OpenGIS Simple Features Specification for SQL </see>.     
     /// </remarks>
     [Serializable]
-    public class Polygon<TCoordinate> : Geometry<TCoordinate>, IPolygon<TCoordinate>
+    public class Polygon<TCoordinate> : Geometry<TCoordinate>, IPolygon<TCoordinate>, IHasGeometryComponents<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Represents an empty <see cref="Polygon{TCoordinate}"/>.
@@ -94,9 +94,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 shell = Factory.CreateLinearRing(null);
             }
 
-            if (shell.IsEmpty && HasNonEmptyElements(holes))
+            if (shell.IsEmpty && GeometryCollection<TCoordinate>.HasNonEmptyElements(holes))
             {
-                throw new ArgumentException("shell is empty but holes are not");
+                throw new ArgumentException("Shell is empty but holes are not.");
             }
 
             _shell = shell;
@@ -299,16 +299,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         //    filter.Filter(this);
         //}
 
-        public override void Apply(IGeometryComponentFilter<TCoordinate> filter)
-        {
-            filter.Filter(this);
-            _shell.Apply(filter);
+        //public void Apply(IGeometryComponentFilter<TCoordinate> filter)
+        //{
+        //    filter.Filter(this);
+        //    _shell.Apply(filter);
 
-            foreach (ILineString<TCoordinate> lineString in _holes)
-            {
-                lineString.Apply(filter);
-            }
-        }
+        //    foreach (ILineString<TCoordinate> lineString in _holes)
+        //    {
+        //        lineString.Apply(filter);
+        //    }
+        //}
 
         public override IGeometry<TCoordinate> Clone()
         {
@@ -497,5 +497,21 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #endregion
 
+        #region IHasGeometryComponents<TCoordinate> Members
+
+        public IEnumerable<IGeometry<TCoordinate>> Components
+        {
+            get
+            {
+                yield return _shell;
+
+                foreach (ILineString<TCoordinate> hole in _holes)
+                {
+                    yield return hole;
+                }
+            }
+        }
+
+        #endregion
     }
 }

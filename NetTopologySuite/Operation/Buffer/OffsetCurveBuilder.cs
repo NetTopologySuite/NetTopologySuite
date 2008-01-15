@@ -23,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// </summary>
     public class OffsetCurveBuilder<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// The default number of facets into which to divide a fillet of 90 degrees.

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using GeoAPI.DataStructures;
 using GeoAPI.Indexing;
 
@@ -36,6 +35,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 
         private Node<TItem> _subNode1;
         private Node<TItem> _subNode2;
+
+        public BaseBinNode(Interval bounds, Int32 level) : base(bounds, level)
+        {
+            
+        }
 
         //public IList AddAllItemsFromOverlapping(Interval interval, IList resultItems)
         //{
@@ -175,19 +179,19 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             switch (index)
             {
                 case 0:
-                    min = _interval.Min;
-                    max = _center;
+                    min = Bounds.Min;
+                    max = Bounds.Center;
                     break;
                 case 1:
-                    min = _center;
-                    max = _interval.Max;
+                    min = Bounds.Center;
+                    max = Bounds.Max;
                     break;
                 default:
                     break;
             }
 
             Interval subInt = new Interval(min, max);
-            Node<TItem> node = new Node<TItem>(subInt, _level - 1);
+            Node<TItem> node = new Node<TItem>(subInt, Level - 1);
             return node;
         }
 

@@ -10,7 +10,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 {
     public class SegmentIntersector<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         public static Boolean IsAdjacentSegments(Int32 i1, Int32 i2)
         {

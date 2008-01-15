@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Utilities;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack;
 using NPack.Interfaces;
@@ -11,33 +11,37 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
     /// <summary>
-    /// Wraps a <see cref="INoder{TCoordinate}" /> and transforms its input into the integer domain.
+    /// Wraps a <see cref="INoder{TCoordinate}" /> and transforms its input into 
+    /// the integer domain.
     /// This is intended for use with Snap-Rounding noders,
     /// which typically are only intended to work in the integer domain.
     /// Offsets can be provided to increase the number of digits of available precision.
     /// </summary>
     public class ScaledNoder<TCoordinate> : INoder<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly INoder<TCoordinate> _noder = null;
-        private readonly Double _scaleFactor = 0;
-        private readonly Double _offsetX = 0;
-        private readonly Double _offsetY = 0;
-        private readonly IAffineTransformMatrix<DoubleComponent> _transform;
-        private readonly IAffineTransformMatrix<DoubleComponent> _inverse;
+        //private readonly Double _scaleFactor = 0;
+        //private readonly Double _offsetX = 0;
+        //private readonly Double _offsetY = 0;
+        private readonly AffineTransformMatrix<TCoordinate> _transform;
+        private readonly AffineTransformMatrix<TCoordinate> _inverse;
         private readonly Boolean _isScaled = false;
+        private readonly ICoordinateSequenceFactory<TCoordinate> _sequenceFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScaledNoder{TCoordinate}"/> class.
         /// </summary>
-        public ScaledNoder(INoder<TCoordinate> noder, Double scaleFactor)
-            : this(noder, scaleFactor, 0, 0) {}
+        public ScaledNoder(INoder<TCoordinate> noder, Double scaleFactor, ICoordinateSequenceFactory<TCoordinate> factory)
+            : this(noder, scaleFactor, 0, 0, factory) {}
 
-        public ScaledNoder(INoder<TCoordinate> noder, Double scaleFactor, Double offsetX, Double offsetY)
+        public ScaledNoder(INoder<TCoordinate> noder, Double scaleFactor, Double offsetX, Double offsetY, 
+            ICoordinateSequenceFactory<TCoordinate> factory)
         {
             _noder = noder;
-            ICoordinateFactory<TCoordinate> coordinateFactory = null;
+            _sequenceFactory = factory;
+            ICoordinateFactory<TCoordinate> coordinateFactory = factory.CoordinateFactory;
             Debug.Assert(coordinateFactory != null);
             TCoordinate scaleVector = coordinateFactory.Create(scaleFactor, scaleFactor);
             TCoordinate offsetVector = coordinateFactory.Create(offsetX, offsetY);
@@ -46,12 +50,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             _inverse = _transform.Inverse;
 
             // no need to scale if input precision is already integral
-            _isScaled = ! IsIntegerPrecision;
+            _isScaled = !IsIntegerPrecision;
         }
 
         public Boolean IsIntegerPrecision
         {
-            get { return _scaleFactor == 1.0; }
+            get { return _transform[0, 0].Equals(1.0); }
         }
 
         public IEnumerable<NodedSegmentString<TCoordinate>> Node(IEnumerable<NodedSegmentString<TCoordinate>> inputSegStrings)
@@ -84,16 +88,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
         private ICoordinateSequence<TCoordinate> scale(ICoordinateSequence<TCoordinate> pts)
         {
-            // TODO: figure out how to get rid of boxing...
-            IEnumerable<IVector<DoubleComponent>> vectors =
-                Enumerable.Upcast<IVector<DoubleComponent>, TCoordinate>(pts);
+            IEnumerable<TCoordinate> transformed = _transform.TransformVectors(pts);
 
-            IEnumerable<IVector<DoubleComponent>> transformed = _transform.TransformVectors(vectors);
-
-            foreach (IVector<DoubleComponent> vector in transformed)
-            {
-                yield return Math.Round(new TCoordinate(vector));
-            }
+            return _sequenceFactory.Create(Math.Round, transformed);
         }
 
         private static IEnumerable<NodedSegmentString<TCoordinate>> rescale(IEnumerable<NodedSegmentString<TCoordinate>> segStrings)

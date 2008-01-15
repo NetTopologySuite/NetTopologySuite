@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// </remarks>
     public class BufferBuilder<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private Int32 _quadrantSegments = OffsetCurveBuilder<TCoordinate>.DefaultQuadrantSegments;
         private BufferStyle _endCapStyle = BufferStyle.CapRound;

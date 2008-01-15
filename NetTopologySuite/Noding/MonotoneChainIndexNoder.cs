@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public class MonotoneChainIndexNoder<TCoordinate> : SinglePassNoder<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly List<MonotoneChain<TCoordinate>> _monoChains = new List<MonotoneChain<TCoordinate>>();
         private readonly StrTree<TCoordinate, MonotoneChain<TCoordinate>> _index

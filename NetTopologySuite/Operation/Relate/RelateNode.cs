@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// </summary>
     public class RelateNode<TCoordinate> : Node<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         public RelateNode(TCoordinate coord, EdgeEndStar<TCoordinate> edges) :
             base(coord, edges) {}

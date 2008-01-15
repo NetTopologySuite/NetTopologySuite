@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
     /// </summary>
     public class EdgeRing<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         // cache the following data for efficiency
         private ILinearRing<TCoordinate> _ring = null;

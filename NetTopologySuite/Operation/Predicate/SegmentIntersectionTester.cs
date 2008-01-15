@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
     /// </summary>
     public class SegmentIntersectionTester<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         // for purposes of intersection testing, don't need to set precision model
         private readonly LineIntersector<TCoordinate> _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();

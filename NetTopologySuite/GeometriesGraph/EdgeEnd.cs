@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </remarks>
     public class EdgeEnd<TCoordinate> : IComparable<EdgeEnd<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private Edge<TCoordinate> _edge = null;
         private Label? _label;

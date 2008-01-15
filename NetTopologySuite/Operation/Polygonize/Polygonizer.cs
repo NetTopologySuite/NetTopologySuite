@@ -12,46 +12,62 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
     /// represents the edges of a planar graph.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// Any dimension of Geometry is handled - the constituent linework is extracted
     /// to form the edges.
+    /// </para>
+    /// <para>
     /// The edges must be correctly noded; that is, they must only meet
     /// at their endpoints.  The Polygonizer will still run on incorrectly noded input
     /// but will not form polygons from incorrected noded edges.
+    /// </para>
     /// The Polygonizer reports the follow kinds of errors:
-    /// Dangles - edges which have one or both ends which are not incident on another edge endpoint
-    /// Cut Edges - edges which are connected at both ends but which do not form part of polygon
-    /// Invalid Ring Lines - edges which form rings which are invalid
-    /// (e.g. the component lines contain a self-intersection).
+    /// <list type="table">
+    /// <item>
+    /// <term>Dangles</term>
+    /// <description>Edges which have one or both ends which are not incident on another edge endpoint.</description>
+    /// </item>
+    /// <item>
+    /// <term>Cut Edges</term>
+    /// <description>Edges which are connected at both ends but which do not form part of polygon.</description>
+    /// </item>
+    /// <item>
+    /// <term>Invalid Ring Lines</term>
+    /// <description>Edges which form rings which are invalid (e.g. the component lines contain a self-intersection).</description>
+    /// </item>
+    /// </list>
     /// </remarks>
     public class Polygonizer<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        /// <summary>
-        /// Add every linear element in a point into the polygonizer graph.
-        /// </summary>
-        private class LineStringAdder : IGeometryComponentFilter<TCoordinate>
-        {
-            private readonly Polygonizer<TCoordinate> _container = null;
+        /*
+         * [codekaizen 2008-01-14]  removed during translation of visitor patterns
+         *                          to enumeration / query patterns.
+         */
 
-            public LineStringAdder(Polygonizer<TCoordinate> container)
-            {
-                _container = container;
-            }
+        ///// <summary>
+        ///// Add every linear element in a point into the polygonizer graph.
+        ///// </summary>
+        //private class LineStringAdder : IGeometryComponentFilter<TCoordinate>
+        //{
+        //    private readonly Polygonizer<TCoordinate> _container = null;
 
-            public void Filter(IGeometry<TCoordinate> g)
-            {
-                if (g is ILineString<TCoordinate>)
-                {
-                    _container.Add((ILineString<TCoordinate>)g);
-                }
-            }
-        }
+        //    public LineStringAdder(Polygonizer<TCoordinate> container)
+        //    {
+        //        _container = container;
+        //    }
 
-        /// <summary>
-        /// Default factory.
-        /// </summary>
-        private readonly LineStringAdder _lineStringAdder = null;
+        //    public void Filter(IGeometry<TCoordinate> g)
+        //    {
+        //        if (g is ILineString<TCoordinate>)
+        //        {
+        //            _container.Add((ILineString<TCoordinate>)g);
+        //        }
+        //    }
+        //}
+
+        //private readonly LineStringAdder _lineStringAdder = null;
 
         private PolygonizeGraph<TCoordinate> _graph;
 
@@ -67,14 +83,18 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         private readonly List<EdgeRing<TCoordinate>> _shellList = new List<EdgeRing<TCoordinate>>();
         private readonly List<IPolygon<TCoordinate>> _polyList = new List<IPolygon<TCoordinate>>();
 
-        /// <summary>
-        /// Create a polygonizer with the same {GeometryFactory}
-        /// as the input <see cref="Geometry{TCoordinate}"/>s.
-        /// </summary>
-        public Polygonizer()
-        {
-            _lineStringAdder = new LineStringAdder(this);
-        }
+        /*
+         * [codekaizen 2008-01-14]  removed during translation of visitor patterns
+         *                          to enumeration / query patterns.
+         */
+        ///// <summary>
+        ///// Create a polygonizer with the same {GeometryFactory}
+        ///// as the input <see cref="Geometry{TCoordinate}"/>s.
+        ///// </summary>
+        //public Polygonizer()
+        //{
+        //    _lineStringAdder = new LineStringAdder(this);
+        //}
 
         /// <summary>
         /// Add a collection of geometries to be polygonized.
@@ -97,17 +117,40 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Any dimension of Geometry may be added;
         /// the constituent linework will be extracted and used
         /// </summary>
-        /// <param name="g">A <see cref="Geometry{TCoordinate}"/> with linework to be polygonized.</param>
+        /// <param name="g">
+        /// A <see cref="Geometry{TCoordinate}"/> with linework to be polygonized.
+        /// </param>
         public void Add(IGeometry<TCoordinate> g)
         {
-            g.Apply(_lineStringAdder);
+            if (g == null)
+            {
+                throw new ArgumentNullException("g");
+            }
+
+            if (g is IHasGeometryComponents<TCoordinate>)
+            {
+                IHasGeometryComponents<TCoordinate> container 
+                    = g as IHasGeometryComponents<TCoordinate>;
+
+                foreach (ILineString<TCoordinate> s in container.Components)
+                {
+                    if (s != null)
+                    {
+                        addLine(s);
+                    }
+                }
+            }
+            else if (g is ILineString<TCoordinate>)
+            {
+                addLine(g as ILineString<TCoordinate>);
+            }
         }
 
         /// <summary>
         /// Add a linestring to the graph of polygon edges.
         /// </summary>
         /// <param name="line">The <c>LineString</c> to add.</param>
-        private void Add(ILineString<TCoordinate> line)
+        private void addLine(ILineString<TCoordinate> line)
         {
             // create a new graph using the factory from the input Geometry
             if (_graph == null)

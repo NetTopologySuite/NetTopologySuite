@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// </summary>
     public class DirectedEdgeStar<TCoordinate> : IEnumerable<DirectedEdge<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// The underlying list of outgoing DirectedEdges.

@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public struct SegmentNode<TCoordinate> : IEquatable<SegmentNode<TCoordinate>>, IComparable<SegmentNode<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly TCoordinate _coordinate; // the point of intersection
         

@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// </summary>
     public class RelateNodeFactory<TCoordinate> : NodeFactory<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         public override Node<TCoordinate> CreateNode(TCoordinate coord)
         {

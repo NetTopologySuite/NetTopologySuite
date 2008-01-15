@@ -10,7 +10,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     public class DirectedEdge<TCoordinate> : EdgeEnd<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Computes the factor for the change in depth when moving from one location to another.

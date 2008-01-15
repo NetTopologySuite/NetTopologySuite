@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
     /// </summary>
     public class Root<TCoordinate, TItem> : BaseQuadNode<TCoordinate, TItem>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IDivisible<Double, TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IDivisible<Double, TCoordinate>, IConvertible
         where TItem : IBoundable<IExtents<TCoordinate>>
     {
         // the singleton root quad is centred at the origin.

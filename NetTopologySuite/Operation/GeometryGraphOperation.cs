@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
     /// </summary>
     public class GeometryGraphOperation<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private LineIntersector<TCoordinate> _lineIntersector = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
         private IPrecisionModel<TCoordinate> _resultPrecisionModel;

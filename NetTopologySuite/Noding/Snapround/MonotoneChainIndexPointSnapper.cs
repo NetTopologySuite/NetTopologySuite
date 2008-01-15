@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
     /// </summary>
     public class MonotoneChaintIndexPointSnapper<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         // [codekaizen] This doesn't appear to be used at all...
         // Public in java code... temporary modified for "safe assembly" in Sql2005

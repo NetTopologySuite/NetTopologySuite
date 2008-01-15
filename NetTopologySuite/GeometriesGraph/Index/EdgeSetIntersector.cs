@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// </summary>
     public abstract class EdgeSetIntersector<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Computes all self-intersections between edges in a set of edges,

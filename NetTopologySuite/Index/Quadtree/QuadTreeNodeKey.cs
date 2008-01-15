@@ -7,7 +7,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 {
     public class QuadTreeNodeKey<TCoordinate> : AbstractNodeKey<IExtents<TCoordinate>, TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
-            IComputable<TCoordinate>, IDivisible<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IDivisible<Double, TCoordinate>, IConvertible
     {
         public QuadTreeNodeKey(IExtents<TCoordinate> bounds) 
             : base(bounds) { }

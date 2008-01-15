@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     /// </remarks>
     public struct LinearLocation<TCoordinate> : IEquatable<LinearLocation<TCoordinate>>, IComparable<LinearLocation<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Gets a location which refers to the end of a linear <see cref="Geometry{TCoordinate}" />.

@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public class IntersectionFinderAdder<TCoordinate> : ISegmentIntersector<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly LineIntersector<TCoordinate> _li = null;
         private readonly List<TCoordinate> _interiorIntersections = new List<TCoordinate>();

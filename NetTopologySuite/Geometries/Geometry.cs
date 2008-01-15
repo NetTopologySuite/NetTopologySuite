@@ -91,9 +91,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     [Serializable]
     public abstract class Geometry<TCoordinate> : IGeometry<TCoordinate>
          where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
-                             IComputable<TCoordinate>, IConvertible
+                             IComputable<Double, TCoordinate>, IConvertible
     {
-        // DESIGN_NOTE: To event delegate
+        /*
+         * [codekaizen 2008-01-14] removed when replaced visitor patterns with
+         *                         enumeration / query patterns
+         */
         //private class GeometryChangedFilter : IGeometryComponentFilter<TCoordinate>
         //{
         //    public void Filter(IGeometry<TCoordinate> geom)
@@ -102,16 +105,28 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         //    }
         //}
 
-        private static readonly Type[] SortedClasses = new Type[]
+        // ============= BEGIN ADDED BY MPAUL42: monoGIS team
+
+        /// <summary>
+        /// A predefined <see cref="GeometryFactory{TCoordinate}" /> 
+        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModelType.Fixed" />.
+        /// </summary>
+        /// <seealso cref="GeometryFactory{TCoordinate}.Default" />
+        /// <seealso cref="GeometryFactory{TCoordinate}.Fixed"/>
+        public static readonly IGeometryFactory<TCoordinate> DefaultFactory = GeometryFactory<TCoordinate>.Default;
+
+        // ============= END ADDED BY MPAUL42: monoGIS team
+
+        private static readonly RuntimeTypeHandle[] _sortedClasses = new RuntimeTypeHandle[]
             {
-                typeof (Point<TCoordinate>),
-                typeof (MultiPoint<TCoordinate>),
-                typeof (LineString<TCoordinate>),
-                typeof (LinearRing<TCoordinate>),
-                typeof (MultiLineString<TCoordinate>),
-                typeof (Polygon<TCoordinate>),
-                typeof (MultiPolygon<TCoordinate>),
-                typeof (GeometryCollection<TCoordinate>),
+                typeof (IPoint<TCoordinate>).TypeHandle,
+                typeof (IMultiPoint<TCoordinate>).TypeHandle,
+                typeof (ILineString<TCoordinate>).TypeHandle,
+                typeof (ILinearRing<TCoordinate>).TypeHandle,
+                typeof (IMultiLineString<TCoordinate>).TypeHandle,
+                typeof (IPolygon<TCoordinate>).TypeHandle,
+                typeof (IMultiPolygon<TCoordinate>).TypeHandle,
+                typeof (IGeometryCollection<TCoordinate>).TypeHandle,
             };
 
         private IGeometryFactory<TCoordinate> _factory = null;
@@ -257,25 +272,29 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        /// Notifies this Geometry that its Coordinates have been changed by an external
-        /// party (using a CoordinateFilter, for example). The Geometry will flush
-        /// and/or update any information it has cached (such as its Envelope).
-        /// </summary>
-        public void GeometryChanged()
-        {
-            Apply(new GeometryChangedFilter());
-        }
+        /*
+         * [codekaizen 2008-01-14]  replaced the following external notification methods
+         *                          with an event on ICoordinateSequence.
+         */
+        ///// <summary>
+        ///// Notifies this Geometry that its Coordinates have been changed by an external
+        ///// party (using a CoordinateFilter, for example). The Geometry will flush
+        ///// and/or update any information it has cached (such as its Envelope).
+        ///// </summary>
+        //public void GeometryChanged()
+        //{
+        //    Apply(new GeometryChangedFilter());
+        //}
 
-        /// <summary> 
-        /// Notifies this Geometry that its Coordinates have been changed by an external
-        /// party. When GeometryChanged is called, this method will be called for
-        /// this Geometry and its component Geometries.
-        /// </summary>
-        public void GeometryChangedAction()
-        {
-            ExtentsInternal = null;
-        }
+        ///// <summary> 
+        ///// Notifies this Geometry that its Coordinates have been changed by an external
+        ///// party. When GeometryChanged is called, this method will be called for
+        ///// this Geometry and its component Geometries.
+        ///// </summary>
+        //public void GeometryChangedAction()
+        //{
+        //    ExtentsInternal = null;
+        //}
 
         /// <summary>
         /// Returns <see langword="true"/> if this geometry is covered by the specified geometry.
@@ -295,42 +314,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <see langword="true"/> if this <see cref="Geometry{TCoordinate}"/> 
         /// is covered by <paramref name="other" />.
         /// </returns>
-        /// <seealso cref="IGeometry{TCoordinate}.Within" />
-        /// <seealso cref="IGeometry{TCoordinate}.Covers" />
+        /// <seealso cref="ISpatialRelation{TCoordinate}.Within(IGeometry{TCoordinate})" />
+        /// <seealso cref="ISpatialRelation{TCoordinate}.Covers(IGeometry{TCoordinate})" />
         public Boolean CoveredBy(IGeometry<TCoordinate> other)
         {
             return other.Covers(this);
-        }
-
-        private static Boolean compareGeometryCollections(IGeometry<TCoordinate> obj1, IGeometry<TCoordinate> obj2)
-        {
-            IGeometryCollection coll1 = obj1 as IGeometryCollection;
-            IGeometryCollection coll2 = obj2 as IGeometryCollection;
-
-            if (coll1 == null || coll2 == null)
-            {
-                return false;
-            }
-
-            // Short-circuit test
-            if (coll1.Count != coll2.Count)
-            {
-                return false;
-            }
-
-            // Deep test
-            for (Int32 i = 0; i < coll1.Count; i++)
-            {
-                IGeometry geom1 = coll1[i];
-                IGeometry geom2 = coll2[i];
-
-                if (!geom1.Equals(geom2))
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
 
         public static Boolean operator ==(Geometry<TCoordinate> left, IGeometry<TCoordinate> right)
@@ -366,6 +354,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             return GeometryToWkb.Write(this);
         }
+
+        /*
+         * [codekaizen 2008-01-14]  Removed this method due to the removal of 
+         *                          IO implementation. Use specific external IO 
+         *                          libraries to encode geometry instances.
+         */ 
 
         ///// <summary>
         ///// Returns the feature representation as GML 2.1.1 XML document.
@@ -453,7 +447,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Returns whether this <see cref="Geometry{TCoordinate}"/> is greater than, equal to,
         /// or less than another <see cref="IGeometry{TCoordinate}"/> having the same class.
         /// </summary>
-        /// <param name="other">A <see cref="Geometry{TCoordinate}"/> having the same class as this <see cref="Geometry{TCoordinate}"/>.</param>
+        /// <param name="other">
+        /// A <see cref="Geometry{TCoordinate}"/> having the same class as this 
+        /// <see cref="Geometry{TCoordinate}"/>.
+        /// </param>
         /// <returns>
         /// A positive number, 0, or a negative number, depending on whether
         /// this object is greater than, equal to, or less than <c>o</c>, as
@@ -512,70 +509,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             return tolerance.Equal(0, a.Distance(b));
         }
-
-        /// <summary>
-        /// Returns <see langword="true"/> if <c>g</c>'s class is <see cref="GeometryCollection{TCoordinate}" />. 
-        /// (its subclasses do not trigger an exception).
-        /// </summary>
-        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> to check.</param>
-        /// <exception cref="ArgumentException">
-        /// If <c>g</c> is a <see cref="GeometryCollection{TCoordinate}" />, but not one of its subclasses.
-        /// </exception>        
-        private static Boolean isGeometryCollection(IGeometry g)
-        {
-            return g is IGeometryCollection;
-        }
-
-        private static IPoint<TCoordinate> createPointFromInternalCoord(TCoordinate coord, IGeometry<TCoordinate> exemplar)
-        {
-            exemplar.PrecisionModel.MakePrecise(coord);
-            return exemplar.Factory.CreatePoint(coord);
-        }
-
-        private Int32 getClassSortIndex()
-        {
-            for (Int32 i = 0; i < SortedClasses.Length; i++)
-            {
-                if (GetType().Equals(SortedClasses[i]))
-                {
-                    return i;
-                }
-            }
-
-            Assert.ShouldNeverReachHere("Class not supported: " + GetType().FullName);
-            return -1;
-        }
-
-        // ============= BEGIN ADDED BY MPAUL42: monoGIS team
-
-        /// <summary>
-        /// A predefined <see cref="GeometryFactory{TCoordinate}" /> 
-        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Fixed" />.
-        /// </summary>
-        /// <seealso cref="GeometryFactory{TCoordinate}.Default" />
-        /// <seealso cref="GeometryFactory{TCoordinate}.Fixed"/>
-        public static readonly IGeometryFactory<TCoordinate> DefaultFactory = GeometryFactory<TCoordinate>.Default;
-
-        // ============= END ADDED BY MPAUL42: monoGIS team
         
-
         #region IComparable<IGeometry<TCoordinate>> Members
         /// <summary>
-        /// Returns whether this <see cref="Geometry{TCoordinate}"/> is greater than, equal to,
-        /// or less than another <see cref="Geometry{TCoordinate}"/>. 
-        /// If their classes are different, they are compared using the following
-        /// ordering:
-        ///     Point (lowest),
-        ///     MultiPoint,
-        ///     LineString,
-        ///     LinearRing,
-        ///     MultiLineString,
-        ///     Polygon,
-        ///     MultiPolygon,
-        ///     GeometryCollection (highest).
-        /// If the two <see cref="Geometry{TCoordinate}"/>s have the same class, their first
-        /// elements are compared. If those are the same, the second elements are
-        /// compared, etc.
+        /// Returns whether this <see cref="Geometry{TCoordinate}"/> is greater than, 
+        /// equal to, or less than another <see cref="Geometry{TCoordinate}"/>. 
         /// </summary>
         /// <param name="other">
         /// A <see cref="Geometry{TCoordinate}"/> with which to 
@@ -583,28 +521,99 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </param>
         /// <returns>
         /// A positive number, 0, or a negative number, depending on whether
-        /// this object is greater than, equal to, or less than <c>o</c>, as
-        /// defined in "Normal Form For Geometry" in the NTS Technical
+        /// this object is greater than, equal to, or less than <paramref name="other"/>, 
+        /// as defined in "Normal Form For Geometry" in the NTS Technical
         /// Specifications.
         /// </returns>
+        /// <remarks>
+        /// If their classes are different, they are compared using the following
+        /// ordering:
+        ///     <see cref="Point{TCoordinate}"/> (lowest),
+        ///     <see cref="MultiPoint{TCoordinate}"/>,
+        ///     <see cref="MultiPoint{TCoordinate}"/>,
+        ///     <see cref="LinearRing{TCoordinate}"/>,
+        ///     <see cref="MultiLineString{TCoordinate}"/>,
+        ///     <see cref="Polygon{TCoordinate}"/>,
+        ///     <see cref="MultiPolygon{TCoordinate}"/>,
+        ///     <see cref="GeometryCollection{TCoordinate}"/> (highest).
+        /// If the two <see cref="Geometry{TCoordinate}"/>s have the same class, their first
+        /// elements are compared. If those are the same, the second elements are
+        /// compared, etc.
+        /// </remarks>
         public Int32 CompareTo(Object other)
         {
             IGeometry g = other as IGeometry;
             return CompareTo(g);
         }
 
+        /// <summary>
+        /// Returns whether this <see cref="Geometry{TCoordinate}"/> is greater than, 
+        /// equal to, or less than another <see cref="Geometry{TCoordinate}"/>. 
+        /// </summary>
+        /// <param name="other">
+        /// A <see cref="Geometry{TCoordinate}"/> with which to 
+        /// compare this <see cref="Geometry{TCoordinate}"/>.
+        /// </param>
+        /// <returns>
+        /// A positive number, 0, or a negative number, depending on whether
+        /// this object is greater than, equal to, or less than <paramref name="other"/>, 
+        /// as defined in "Normal Form For Geometry" in the NTS Technical
+        /// Specifications.
+        /// </returns>
+        /// <remarks>
+        /// If their classes are different, they are compared using the following
+        /// ordering:
+        ///     <see cref="Point{TCoordinate}"/> (lowest),
+        ///     <see cref="MultiPoint{TCoordinate}"/>,
+        ///     <see cref="MultiPoint{TCoordinate}"/>,
+        ///     <see cref="LinearRing{TCoordinate}"/>,
+        ///     <see cref="MultiLineString{TCoordinate}"/>,
+        ///     <see cref="Polygon{TCoordinate}"/>,
+        ///     <see cref="MultiPolygon{TCoordinate}"/>,
+        ///     <see cref="GeometryCollection{TCoordinate}"/> (highest).
+        /// If the two <see cref="Geometry{TCoordinate}"/>s have the same class, their first
+        /// elements are compared. If those are the same, the second elements are
+        /// compared, etc.
+        /// </remarks>
         public Int32 CompareTo(IGeometry other)
         {
             IGeometry<TCoordinate> g = other as IGeometry<TCoordinate>;
             return CompareTo(g);
         }
 
+        /// <summary>
+        /// Returns whether this <see cref="Geometry{TCoordinate}"/> is greater than, 
+        /// equal to, or less than another <see cref="Geometry{TCoordinate}"/>. 
+        /// </summary>
+        /// <param name="other">
+        /// A <see cref="Geometry{TCoordinate}"/> with which to 
+        /// compare this <see cref="Geometry{TCoordinate}"/>.
+        /// </param>
+        /// <returns>
+        /// A positive number, 0, or a negative number, depending on whether
+        /// this object is greater than, equal to, or less than <paramref name="other"/>, 
+        /// as defined in "Normal Form For Geometry" in the NTS Technical
+        /// Specifications.
+        /// </returns>
+        /// <remarks>
+        /// If their classes are different, they are compared using the following
+        /// ordering:
+        ///     <see cref="Point{TCoordinate}"/> (lowest),
+        ///     <see cref="MultiPoint{TCoordinate}"/>,
+        ///     <see cref="MultiPoint{TCoordinate}"/>,
+        ///     <see cref="LinearRing{TCoordinate}"/>,
+        ///     <see cref="MultiLineString{TCoordinate}"/>,
+        ///     <see cref="Polygon{TCoordinate}"/>,
+        ///     <see cref="MultiPolygon{TCoordinate}"/>,
+        ///     <see cref="GeometryCollection{TCoordinate}"/> (highest).
+        /// If the two <see cref="Geometry{TCoordinate}"/>s have the same class, their first
+        /// elements are compared. If those are the same, the second elements are
+        /// compared, etc.
+        /// </remarks>
         public Int32 CompareTo(IGeometry<TCoordinate> other)
         {
-            Geometry<TCoordinate> g = other as Geometry<TCoordinate>;
-
-            Int32 classSortIndex = getClassSortIndex();
-            Int32 otherClassSortIndex = g.getClassSortIndex();
+            Int32 classSortIndex = getClassSortIndex(this);
+            Int32 otherClassSortIndex = getClassSortIndex(other);
 
             if (classSortIndex != otherClassSortIndex)
             {
@@ -626,8 +635,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return 1;
             }
 
-            return CompareToSameClass(g);
+            return CompareToSameClass(other);
         }
+
         #endregion
 
         #region IEquatable<IGeometry<TCoordinate>> Members
@@ -678,39 +688,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         #endregion
 
         #region IGeometry<TCoordinate> Members
-
-        ///// <summary>
-        ///// Performs an operation with or on this <see cref="Geometry{TCoordinate}"/>'s
-        ///// coordinates. If you are using this method to modify the point, be sure
-        ///// to call GeometryChanged() afterwards. Note that you cannot use this
-        ///// method to
-        ///// modify this Geometry if its underlying CoordinateSequence's Get method
-        ///// returns a copy of the Coordinate, rather than the actual Coordinate stored
-        ///// (if it even stores Coordinates at all).
-        ///// </summary>
-        ///// <param name="filter">The filter to apply to this <see cref="Geometry{TCoordinate}"/>'s coordinates</param>
-        //public abstract void Apply(ICoordinateFilter<TCoordinate> filter);
-
-        ///// <summary>
-        ///// Performs an operation with or on this <see cref="Geometry{TCoordinate}"/> and its
-        ///// subelement <see cref="Geometry{TCoordinate}"/>s (if any).
-        ///// Only GeometryCollections and subclasses
-        ///// have subelement Geometry's.
-        ///// </summary>
-        ///// <param name="filter">
-        ///// The filter to apply to this <see cref="Geometry{TCoordinate}"/> (and
-        ///// its children, if it is a <see cref="GeometryCollection{TCoordinate}" />).
-        ///// </param>
-        //public abstract void Apply(IGeometryFilter<TCoordinate> filter);
-
-        /// <summary>
-        /// Performs an operation with or on this Geometry and its
-        /// component Geometry's. Only GeometryCollections and
-        /// Polygons have component Geometry's; for Polygons they are the LinearRings
-        /// of the shell and holes.
-        /// </summary>
-        /// <param name="filter">The filter to apply to this <see cref="Geometry{TCoordinate}"/>.</param>
-        public abstract void Apply(IGeometryComponentFilter<TCoordinate> filter);
 
         /// <summary> 
         /// Computes the centroid of this <see cref="Geometry{TCoordinate}"/>.
@@ -901,7 +878,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             // TODO: this could be redone to relate the IGeometry 
             // instance to this instance, using ICoordinate
-            return Equals(g as IGeometry<TCoordinate>);
+            return Equals(convertIGeometry(g));
         }
 
         IExtents IGeometry.Extents
@@ -1518,7 +1495,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <see langword="true"/> if this <see cref="Geometry{TCoordinate}"/> 
         /// covers <paramref name="other" />.
         /// </returns>
-        /// <seealso cref="IGeometry{TCoordinate}.Contains" />
+        /// <seealso cref="IGeometry{TCoordinate}.Contains(IGeometry{TCoordinate})" />
+        /// <seealso cref="IGeometry{TCoordinate}.Contains(IGeometry{TCoordinate}, Tolerance)" />
+        /// <seealso cref="IGeometry{TCoordinate}.Covers(IGeometry{TCoordinate}, Tolerance)" />
         /// <seealso cref="Geometry{TCoordinate}.CoveredBy" />
         public Boolean Covers(IGeometry<TCoordinate> other)
         {
@@ -1549,7 +1528,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Boolean Relate(IGeometry<TCoordinate> other, IntersectionMatrix intersectionPattern, Tolerance tolerance)
         {
-            throw new NotImplementedException();
+            return Relate(other).Equals(intersectionPattern);
         }
 
         /// <summary>  
@@ -1628,9 +1607,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return Boundary; }
         }
 
-        public Double Distance(IGeometry g)
+        Double ISpatialOperator.Distance(IGeometry other)
         {
-            throw new NotImplementedException();
+            return Distance(convertIGeometry(other));
         }
 
         IGeometry ISpatialOperator.Buffer(Double distance)
@@ -1653,24 +1632,24 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Buffer(distance, quadrantSegments, endCapStyle);
         }
 
-        public IGeometry Intersection(IGeometry other)
+        IGeometry ISpatialOperator.Intersection(IGeometry other)
         {
-            throw new NotImplementedException();
+            return Intersection(convertIGeometry(other));
         }
 
-        public IGeometry Union(IGeometry other)
+        IGeometry ISpatialOperator.Union(IGeometry other)
         {
-            throw new NotImplementedException();
+            return Union(convertIGeometry(other));
         }
 
-        public IGeometry Difference(IGeometry other)
+        IGeometry ISpatialOperator.Difference(IGeometry other)
         {
-            throw new NotImplementedException();
+            return Difference(convertIGeometry(other));
         }
 
-        public IGeometry SymmetricDifference(IGeometry other)
+        IGeometry ISpatialOperator.SymmetricDifference(IGeometry other)
         {
-            throw new NotImplementedException();
+            return SymmetricDifference(convertIGeometry(other));
         }
 
         IGeometry ISpatialOperator.ConvexHull()
@@ -1682,136 +1661,255 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region ISpatialRelation Members
 
-        Boolean ISpatialRelation.Equals(IGeometry g, Tolerance tolerance)
+        Boolean ISpatialRelation.Equals(IGeometry other, Tolerance tolerance)
         {
-            throw new NotImplementedException();
+            return Equals(convertIGeometry(other), tolerance);
         }
 
-        Boolean ISpatialRelation.Touches(IGeometry g)
+        Boolean ISpatialRelation.Touches(IGeometry other)
         {
-            throw new NotImplementedException();
+            return Touches(convertIGeometry(other));
         }
 
-        Boolean ISpatialRelation.Touches(IGeometry g, Tolerance tolerance)
+        Boolean ISpatialRelation.Touches(IGeometry other, Tolerance tolerance)
         {
-            throw new NotImplementedException();
+            return Touches(convertIGeometry(other), tolerance);
         }
 
-        Boolean ISpatialRelation.Contains(IGeometry g)
+        Boolean ISpatialRelation.Contains(IGeometry other)
         {
-            throw new NotImplementedException();
+            return Contains(convertIGeometry(other));
         }
 
-        Boolean ISpatialRelation.Contains(IGeometry g, Tolerance tolerance)
+        Boolean ISpatialRelation.Contains(IGeometry other, Tolerance tolerance)
         {
-            throw new NotImplementedException();
+            return Contains(convertIGeometry(other), tolerance);
         }
 
-        Boolean ISpatialRelation.Within(IGeometry g)
+        Boolean ISpatialRelation.Within(IGeometry other)
         {
-            throw new NotImplementedException();
+            return Within(convertIGeometry(other));
         }
 
-        Boolean ISpatialRelation.Within(IGeometry g, Tolerance tolerance)
+        Boolean ISpatialRelation.Within(IGeometry other, Tolerance tolerance)
         {
-            throw new NotImplementedException();
+            return Within(convertIGeometry(other), tolerance);
         }
 
-        Boolean ISpatialRelation.Disjoint(IGeometry g)
+        Boolean ISpatialRelation.Disjoint(IGeometry other)
         {
-            throw new NotImplementedException();
+            return Disjoint(convertIGeometry(other));
         }
 
-        Boolean ISpatialRelation.Disjoint(IGeometry g, Tolerance tolerance)
+        Boolean ISpatialRelation.Disjoint(IGeometry other, Tolerance tolerance)
         {
-            throw new NotImplementedException();
+            return Disjoint(convertIGeometry(other), tolerance);
         }
 
-        Boolean ISpatialRelation.Crosses(IGeometry g)
+        Boolean ISpatialRelation.Crosses(IGeometry other)
         {
-            throw new NotImplementedException();
+            return Crosses(convertIGeometry(other));
         }
 
-        Boolean ISpatialRelation.Crosses(IGeometry g, Tolerance tolerance)
+        Boolean ISpatialRelation.Crosses(IGeometry other, Tolerance tolerance)
         {
-            throw new NotImplementedException();
+            return Crosses(convertIGeometry(other), tolerance);
         }
 
-        Boolean ISpatialRelation.Overlaps(IGeometry g)
+        Boolean ISpatialRelation.Overlaps(IGeometry other)
         {
-            throw new NotImplementedException();
+            return Overlaps(convertIGeometry(other));
         }
 
-        Boolean ISpatialRelation.Overlaps(IGeometry g, Tolerance tolerance)
+        Boolean ISpatialRelation.Overlaps(IGeometry other, Tolerance tolerance)
         {
-            throw new NotImplementedException();
+            return Overlaps(convertIGeometry(other), tolerance);
         }
 
-        Boolean ISpatialRelation.Intersects(IGeometry g)
+        Boolean ISpatialRelation.Intersects(IGeometry other)
         {
-            throw new NotImplementedException();
+            return Intersects(convertIGeometry(other));
         }
 
-        Boolean ISpatialRelation.Intersects(IGeometry g, Tolerance tolerance)
+        Boolean ISpatialRelation.Intersects(IGeometry other, Tolerance tolerance)
         {
-            throw new NotImplementedException();
+            return Intersects(convertIGeometry(other), tolerance);
         }
 
-        Boolean ISpatialRelation.IsWithinDistance(IGeometry g, Double distance)
+        Boolean ISpatialRelation.IsWithinDistance(IGeometry other, Double distance)
         {
-            throw new NotImplementedException();
+            return IsWithinDistance(convertIGeometry(other), distance);
         }
 
-        Boolean ISpatialRelation.IsWithinDistance(IGeometry g, Double distance, Tolerance tolerance)
+        Boolean ISpatialRelation.IsWithinDistance(IGeometry other, Double distance, Tolerance tolerance)
         {
-            throw new NotImplementedException();
+            return IsWithinDistance(convertIGeometry(other), distance, tolerance);
         }
 
-        Boolean ISpatialRelation.IsCoveredBy(IGeometry g)
+        Boolean ISpatialRelation.IsCoveredBy(IGeometry other)
         {
-            throw new NotImplementedException();
+            return IsCoveredBy(convertIGeometry(other));
         }
 
-        Boolean ISpatialRelation.IsCoveredBy(IGeometry g, Tolerance tolerance)
+        Boolean ISpatialRelation.IsCoveredBy(IGeometry other, Tolerance tolerance)
         {
-            throw new NotImplementedException();
+            return IsCoveredBy(convertIGeometry(other), tolerance);
         }
 
-        Boolean ISpatialRelation.Covers(IGeometry g)
+        Boolean ISpatialRelation.Covers(IGeometry other)
         {
-            throw new NotImplementedException();
+            return Covers(convertIGeometry(other));
         }
 
-        Boolean ISpatialRelation.Covers(IGeometry g, Tolerance tolerance)
+        Boolean ISpatialRelation.Covers(IGeometry other, Tolerance tolerance)
         {
-            throw new NotImplementedException();
+            return Covers(convertIGeometry(other), tolerance);
         }
 
-        Boolean ISpatialRelation.Relate(IGeometry g, IntersectionMatrix intersectionPattern)
+        Boolean ISpatialRelation.Relate(IGeometry other, IntersectionMatrix intersectionPattern)
         {
-            throw new NotImplementedException();
+            return Relate(convertIGeometry(other), intersectionPattern);
         }
 
-        Boolean ISpatialRelation.Relate(IGeometry g, IntersectionMatrix intersectionPattern, Tolerance tolerance)
+        Boolean ISpatialRelation.Relate(IGeometry other, IntersectionMatrix intersectionPattern, Tolerance tolerance)
         {
-            throw new NotImplementedException();
+            return Relate(convertIGeometry(other), intersectionPattern, tolerance);
         }
 
-        Boolean ISpatialRelation.Relate(IGeometry g, String intersectionPattern)
+        Boolean ISpatialRelation.Relate(IGeometry other, String intersectionPattern)
         {
-            throw new NotImplementedException();
+            return Relate(convertIGeometry(other), intersectionPattern);
         }
 
-        Boolean ISpatialRelation.Relate(IGeometry g, String intersectionPattern, Tolerance tolerance)
+        Boolean ISpatialRelation.Relate(IGeometry other, String intersectionPattern, Tolerance tolerance)
         {
-            throw new NotImplementedException();
+            return Relate(convertIGeometry(other), intersectionPattern, tolerance);
         }
 
-        IntersectionMatrix ISpatialRelation.Relate(IGeometry g)
+        IntersectionMatrix ISpatialRelation.Relate(IGeometry other)
         {
-            throw new NotImplementedException();
+            return Relate(convertIGeometry(other));
         }
 
         #endregion
+
+        private static IGeometry<TCoordinate> convertIGeometry(IGeometry other)
+        {
+            if (!(other is IGeometry<TCoordinate>))
+            {
+                throw new ArgumentException(
+                    "Parameter must be an IGeometry<TCoordinate> instance.",
+                    "other");
+            }
+
+            return other as IGeometry<TCoordinate>;
+        }
+
+        /// <summary>
+        /// Returns <see langword="true"/> if <c>g</c>'s class is <see cref="GeometryCollection{TCoordinate}" />. 
+        /// (its subclasses do not trigger an exception).
+        /// </summary>
+        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> to check.</param>
+        /// <exception cref="ArgumentException">
+        /// If <c>g</c> is a <see cref="GeometryCollection{TCoordinate}" />, but not one of its subclasses.
+        /// </exception>        
+        private static Boolean isGeometryCollection(IGeometry g)
+        {
+            return g is IGeometryCollection;
+        }
+
+        private static IPoint<TCoordinate> createPointFromInternalCoord(TCoordinate coord, IGeometry<TCoordinate> exemplar)
+        {
+            exemplar.PrecisionModel.MakePrecise(coord);
+            return exemplar.Factory.CreatePoint(coord);
+        }
+
+        private static Int32 getClassSortIndex(IGeometry<TCoordinate> geometry)
+        {
+            for (Int32 i = 0; i < _sortedClasses.Length; i++)
+            {
+                Type interfaceType = Type.GetTypeFromHandle(_sortedClasses[i]);
+
+                if (interfaceType.IsInstanceOfType(geometry))
+                {
+                    return i;
+                }
+            }
+
+            Assert.ShouldNeverReachHere("Geometry type not supported: " + geometry.GetType());
+            return -1;
+        }
+
+        private static Boolean compareGeometryCollections(IGeometry<TCoordinate> obj1, IGeometry<TCoordinate> obj2)
+        {
+            IGeometryCollection coll1 = obj1 as IGeometryCollection;
+            IGeometryCollection coll2 = obj2 as IGeometryCollection;
+
+            if (coll1 == null || coll2 == null)
+            {
+                return false;
+            }
+
+            // Short-circuit test
+            if (coll1.Count != coll2.Count)
+            {
+                return false;
+            }
+
+            // Deep test
+            for (Int32 i = 0; i < coll1.Count; i++)
+            {
+                IGeometry geom1 = coll1[i];
+                IGeometry geom2 = coll2[i];
+
+                if (!geom1.Equals(geom2))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+
+        /*
+         * [codekaizen 2008-01-14]  replaced the following visitor pattern methods
+         *                          with enumeration / query pattern methods which 
+         *                          accept a Func<T, TResult> method.
+         */
+
+        ///// <summary>
+        ///// Performs an operation with or on this <see cref="Geometry{TCoordinate}"/>'s
+        ///// coordinates. If you are using this method to modify the point, be sure
+        ///// to call GeometryChanged() afterwards. Note that you cannot use this
+        ///// method to
+        ///// modify this Geometry if its underlying CoordinateSequence's Get method
+        ///// returns a copy of the Coordinate, rather than the actual Coordinate stored
+        ///// (if it even stores Coordinates at all).
+        ///// </summary>
+        ///// <param name="filter">The filter to apply to this <see cref="Geometry{TCoordinate}"/>'s coordinates</param>
+        //public abstract void Apply(ICoordinateFilter<TCoordinate> filter);
+
+        ///// <summary>
+        ///// Performs an operation with or on this <see cref="Geometry{TCoordinate}"/> and its
+        ///// subelement <see cref="Geometry{TCoordinate}"/>s (if any).
+        ///// Only GeometryCollections and subclasses
+        ///// have subelement Geometry's.
+        ///// </summary>
+        ///// <param name="filter">
+        ///// The filter to apply to this <see cref="Geometry{TCoordinate}"/> (and
+        ///// its children, if it is a <see cref="GeometryCollection{TCoordinate}" />).
+        ///// </param>
+        //public abstract void Apply(IGeometryFilter<TCoordinate> filter);
+
+        ///// <summary>
+        ///// Performs an operation with or on this Geometry and its
+        ///// component Geometry's. Only GeometryCollections and
+        ///// Polygons have component Geometriess; for Polygons they are the LinearRings
+        ///// of the shell and holes.
+        ///// </summary>
+        ///// <param name="filter">The filter to apply to this <see cref="Geometry{TCoordinate}"/>.</param>
+        //public abstract void Apply(IGeometryComponentFilter<TCoordinate> filter);
+
     }
 }

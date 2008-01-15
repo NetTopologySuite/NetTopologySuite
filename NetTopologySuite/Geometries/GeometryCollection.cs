@@ -12,14 +12,28 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Basic implementation of <see cref="GeometryCollection{TCoordinate}" />.
     /// </summary>
     [Serializable]
-    public class GeometryCollection<TCoordinate> : Geometry<TCoordinate>, IGeometryCollection<TCoordinate>
+    public class GeometryCollection<TCoordinate> : Geometry<TCoordinate>, IGeometryCollection<TCoordinate>, IHasGeometryComponents<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                    IComputable<TCoordinate>, IConvertible
+                    IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Represents an empty <see cref="GeometryCollection{TCoordinate}" />.
         /// </summary>
         public static readonly IGeometryCollection<TCoordinate> Empty = DefaultFactory.CreateGeometryCollection(null);
+
+        public static Boolean HasNonEmptyElements<TGeometry>(IEnumerable<TGeometry> geometries)
+            where TGeometry : IGeometry
+        {
+            foreach (TGeometry geometry in geometries)
+            {
+                if (!geometry.IsEmpty)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Internal representation of this <see cref="GeometryCollection{TCoordinate}" />.        
@@ -38,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </param>
         /// <remarks>
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
+        /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public GeometryCollection(IEnumerable<IGeometry<TCoordinate>> geometries) : this(geometries, DefaultFactory) { }
 
@@ -71,7 +85,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get
             {
                 // TODO: cache this to improve performance?
-                ICoordinateSequence<TCoordinate> sequence 
+                ICoordinateSequence<TCoordinate> sequence
                     = Factory.CoordinateSequenceFactory.Create();
 
                 foreach (IGeometry<TCoordinate> geometry in this)
@@ -269,15 +283,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         //    }
         //}
 
-        public override void Apply(IGeometryComponentFilter<TCoordinate> filter)
-        {
-            filter.Filter(this);
+        //public void Apply(IGeometryComponentFilter<TCoordinate> filter)
+        //{
+        //    filter.Filter(this);
 
-            foreach (IGeometry<TCoordinate> geometry in _geometries)
-            {
-                geometry.Apply(filter);
-            }
-        }
+        //    foreach (IGeometry<TCoordinate> geometry in _geometries)
+        //    {
+        //        geometry.Apply(filter);
+        //    }
+        //}
 
         public override IGeometry<TCoordinate> Clone()
         {
@@ -358,9 +372,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                if(index < 0 || index > _geometries.Count)
+                if (index < 0 || index > _geometries.Count)
                 {
-                    throw new ArgumentOutOfRangeException("index", index, 
+                    throw new ArgumentOutOfRangeException("index", index,
                         "Index must be 0 or greater and less than Count.");
                 }
 
@@ -385,6 +399,24 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get { return _geometries; }
         }
+
+        #region IHasGeometryComponents<TCoordinate> Members
+
+        public IEnumerable<IGeometry<TCoordinate>> Components
+        {
+            get
+            {
+                foreach (IGeometry<TCoordinate> geometry in _geometries)
+                {
+                    foreach (IGeometry<TCoordinate> component in enumerateComponents(geometry))
+                    {
+                        yield return component;
+                    }
+                }
+            }
+        }
+
+        #endregion
 
         #region IList<IGeometry> Members
 
@@ -527,5 +559,31 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         #endregion
+
+
+        private static IEnumerable<IGeometry<TCoordinate>> enumerateComponents(IGeometry<TCoordinate> geometry)
+        {
+            if (geometry is IHasGeometryComponents<TCoordinate>)
+            {
+                IHasGeometryComponents<TCoordinate> container =
+                    geometry as IHasGeometryComponents<TCoordinate>;
+
+                foreach (IGeometry<TCoordinate> component in container.Components)
+                {
+                    // avoid a recursion call (and another object on the heap), if possible
+                    if (component is IHasGeometryComponents<TCoordinate>)
+                    {
+                        foreach (IGeometry<TCoordinate> childComponent in enumerateComponents(geometry))
+                        {
+                            yield return childComponent;
+                        }
+                    }
+                    else
+                    {
+                        yield return component;
+                    }
+                }
+            }
+        }
     }
 }

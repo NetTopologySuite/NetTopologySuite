@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public interface INoder<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Computes the noding for a collection of <see cref="NodedSegmentString{TCoordinate}" />s.

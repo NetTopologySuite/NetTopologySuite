@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
 
         public static IEnumerable<MonotoneChain<TCoordinate>> GetChains<TCoordinate>(ICoordinateSequence<TCoordinate> coordinates)
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<TCoordinate>, IConvertible
+                IComputable<Double, TCoordinate>, IConvertible
         {
             return GetChains(coordinates, null);
         }
@@ -39,7 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// </summary>
         public static IEnumerable<MonotoneChain<TCoordinate>> GetChains<TCoordinate>(ICoordinateSequence<TCoordinate> coordinates, Object context)
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<TCoordinate>, IConvertible
+                IComputable<Double, TCoordinate>, IConvertible
         {
             IEnumerable<Int32> startIndicies = GetChainStartIndices(coordinates);
 
@@ -70,7 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// </summary>
         public static IEnumerable<Int32> GetChainStartIndices<TCoordinate>(ICoordinateSequence<TCoordinate> coordinates)
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<TCoordinate>, IConvertible
+                IComputable<Double, TCoordinate>, IConvertible
         {
             // find the startpoint (and endpoints) of all monotone chains in this edge
             Int32 start = 0;
@@ -88,7 +88,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         // Returns the index of the last point in the monotone chain starting at 'start'.
         private static Int32 findChainEnd<TCoordinate>(IEnumerable<TCoordinate> coordinates, Int32 start)
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<TCoordinate>, IConvertible
+                IComputable<Double, TCoordinate>, IConvertible
         {
             // determine quadrant for chain
             Pair<TCoordinate> startPair = Slice.GetPair(coordinates).Value;

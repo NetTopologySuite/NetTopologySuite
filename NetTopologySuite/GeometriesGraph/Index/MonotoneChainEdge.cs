@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// </remarks>
     public class MonotoneChainEdge<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly Edge<TCoordinate> _edge;
         private readonly List<TCoordinate> _coordinates = new List<TCoordinate>();

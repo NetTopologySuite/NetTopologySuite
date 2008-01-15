@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
     /// </summary>    
     public class GeometryTransformer<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /*
         * Possible extensions:

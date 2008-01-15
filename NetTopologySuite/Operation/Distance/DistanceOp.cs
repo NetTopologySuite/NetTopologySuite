@@ -27,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
     /// </remarks>
     public class DistanceOp<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Compute the distance between the closest points of two geometries.
@@ -194,7 +194,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
             GeometryLocation<TCoordinate>? locPtPoly0;
             GeometryLocation<TCoordinate>? locPtPoly1;
 
-            // test if either point is wholely inside the other
+            // test if either point is wholly inside the other
             if (Slice.CountGreaterThan(polys1, 0))
             {
                 IEnumerable<GeometryLocation<TCoordinate>> insideLocs0 
