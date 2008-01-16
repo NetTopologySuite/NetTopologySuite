@@ -23,23 +23,26 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// unit of spatial reasoning in NTS.
     /// </summary>
     /// <remarks>
-    /// <c>Clone</c> returns a deep copy of the object.
+    /// <see cref="Clone"/> returns a deep copy of the object.
     /// <para>
     /// Binary Predicates: 
     /// Because it is not clear at this time what semantics for spatial
     /// analysis methods involving <see cref="GeometryCollection{TCoordinate}" />s would be useful,
     /// <see cref="GeometryCollection{TCoordinate}" />s are not supported as arguments to binary
-    /// predicates (other than <c>ConvexHull</c>) or the <c>Relate</c> method.
+    /// predicates (other than <see cref="ConvexHull"/>) or the 
+    /// <see cref="Relate(IGeometry{TCoordinate})"/> family of methods.
     /// </para>
     /// <para>
     /// Set-Theoretic Methods: 
     /// The spatial analysis methods will
     /// return the most specific class possible to represent the result. If the
-    /// result is homogeneous, a <c>Point</c>, <c>LineString</c>, or
-    /// <see cref="Polygon{TCoordinate}" /> will be returned if the result contains a single
-    /// element; otherwise, a <c>MultiPoint</c>, <c>MultiLineString</c>,
-    /// or <c>MultiPolygon</c> will be returned. If the result is
-    /// heterogeneous a <see cref="GeometryCollection{TCoordinate}" /> will be returned.
+    /// result is homogeneous, a <see cref="Point{TCoordinate}"/>, 
+    /// <see cref="LineString{TCoordinate}"/>, or <see cref="Polygon{TCoordinate}" /> will be 
+    /// returned if the result contains a single
+    /// element; otherwise, a <see cref="MultiPoint{TCoordinate}"/>, 
+    /// <see cref="MultiLineString{TCoordinate}"/>, or <see cref="MultiPolygon{TCoordinate}"/> 
+    /// will be returned. If the result is heterogeneous a 
+    /// <see cref="GeometryCollection{TCoordinate}" /> will be returned.
     /// </para>
     /// <para>
     /// Representation of Computed Geometries:  
@@ -54,9 +57,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// form is a <see cref="Geometry{TCoordinate}"/> which is simple and noded:
     /// Simple means that the Geometry returned will be simple according to
     /// the NTS definition of <c>IsSimple</c>.
-    /// Noded applies only to overlays involving <c>LineString</c>s. It
-    /// means that all intersection points on <c>LineString</c>s will be
-    /// present as endpoints of <c>LineString</c>s in the result.
+    /// Noded applies only to overlays involving <see cref="LineString{TCoordinate}"/>s. It
+    /// means that all intersection points on <see cref="LineString{TCoordinate}"/>s will be
+    /// present as endpoints of <see cref="LineString{TCoordinate}"/>s in the result.
     /// This definition implies that non-simple geometries which are arguments to
     /// spatial analysis methods must be subjected to a line-dissolve process to
     /// ensure that the results are simple.
@@ -78,14 +81,35 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// situations where a computed element has a lower dimension than it would in
     /// the exact result. 
     /// When NTS detects topology collapses during the computation of spatial
-    /// analysis methods, it will throw an exception. If possible the exception will
-    /// report the location of the collapse. 
+    /// analysis methods, it will throw a <see cref="TopologyException"/>. 
+    /// If possible the exception will report the location of the collapse. 
     /// </para>
     /// <para>
-    /// <see cref="object.Equals(object)" /> and <see cref="object.GetHashCode" /> 
-    /// are not overridden, so that when two topologically equal Geometries are added 
-    /// to Collections and Dictionaries, they remain distinct. 
-    /// This behavior is desired in many cases.
+    /// NOTE: <see cref="Object.Equals(object)" /> and <see cref="Object.GetHashCode" /> 
+    /// are overridden, so that when two topologically equal Geometries are added 
+    /// to collections and hash table implementations, they will collide. 
+    /// This behavior is <strong>not</strong> desired in many cases, and is
+    /// the opposite of JTS and previous versions of NTS. To get the desired behavior, 
+    /// use <see cref="GeometryReferenceEqualityComparer{TCoordinate}.Default"/> as 
+    /// the key equality comparer. The reasoning for this change is twofold. First, 
+    /// <see cref="ISpatialRelation{TCoordinate}"/> includes 
+    /// <see cref="IEquatable{IGeometry}"/> to derive the Equals method. 
+    /// The sematics for this interface imply that the type-specific equality is
+    /// value-based, since if it was reference equality, the interface would not 
+    /// be implemented. Given the semantics of spatial relations, where two 
+    /// <see cref="IGeometry"/> are equal if their coordinate-by-coordinate values are equal,
+    /// implementing this interface makes sense. Second, this version of NTS is moving
+    /// geometry objects toward immutability. This will allow greater ability to do
+    /// distributed spatial processing and use functional-programming constructs as NTS evolves.
+    /// If a geometry instance is immutable, value-type equality is more meaningful and more 
+    /// desired. The use of collections and hash table implementations which rely on reference
+    /// equality become more of an implementation detail which can be effectively hidden
+    /// in instances where it is needed by a 
+    /// <see cref="GeometryReferenceEqualityComparer{TCoordinate}"/>. 
+    /// </para>
+    /// <para>
+    /// DEVELOPER NOTE: should we implement a ReferenceGeometryCollection and ReferenceGeometryDictionary
+    /// to alleviate the increase burden on NTS users?
     /// </para>
     /// </remarks>
     [Serializable]
@@ -247,31 +271,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return InteriorPoint; }
         }
 
-        /// <summary> 
-        /// Returns the minimum and maximum x and y values in this <see cref="Geometry{TCoordinate}"/>
-        /// , or a null <see cref="Extents{TCoordinate}"/> if this <see cref="Geometry{TCoordinate}"/> is empty.
-        /// </summary>
-        /// <returns>    
-        /// This <see cref="Geometry{TCoordinate}"/>s bounding box; if the <see cref="Geometry{TCoordinate}"/>
-        /// is empty, <c>Envelope.IsNull</c> will return <see langword="true"/>.
-        /// </returns>
-        protected Extents<TCoordinate> ExtentsInternal
-        {
-            get
-            {
-                if (_extents == null)
-                {
-                    _extents = ComputeExtentsInternal();
-                }
-
-                return _extents;
-            }
-            set
-            {
-                _extents = value;
-            }
-        }
-
         /*
          * [codekaizen 2008-01-14]  replaced the following external notification methods
          *                          with an event on ICoordinateSequence.
@@ -392,73 +391,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             return Equals(other, Tolerance.Zero);
         }
-
-        /// <summary>
-        /// Returns whether the two <see cref="Geometry{TCoordinate}"/>s are equal, from the point
-        /// of view of the <c>EqualsExact</c> method. Called by <c>EqualsExact</c>
-        /// . In general, two <see cref="Geometry{TCoordinate}"/> classes are considered to be
-        /// "equivalent" only if they are the same class. An exception is <c>LineString</c>
-        /// , which is considered to be equivalent to its subclasses.
-        /// </summary>
-        /// <param name="other">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/> for equality.</param>
-        /// <returns>
-        /// <see langword="true"/> if the classes of the two <see cref="Geometry{TCoordinate}"/>
-        /// s are considered to be equal by the <c>equalsExact</c> method.
-        /// </returns>
-        protected Boolean IsEquivalentClass(IGeometry other)
-        {
-            return GetType().FullName == other.GetType().FullName;
-        }
-
-        /// <summary>
-        /// Throws an exception if <c>g</c>'s class is <see cref="GeometryCollection{TCoordinate}" />. 
-        /// (its subclasses do not trigger an exception).
-        /// </summary>
-        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> to check.</param>
-        /// <exception cref="ArgumentException">
-        /// if <c>g</c> is a <see cref="GeometryCollection{TCoordinate}" />, but not one of its subclasses.
-        /// </exception>
-        protected static void CheckNotGeometryCollection(IGeometry g)
-        {
-            if (isGeometryCollection(g))
-            {
-                throw new ArgumentException("This method does not support GeometryCollection arguments");
-            }
-        }
-
-        /// <summary>
-        /// Returns the minimum and maximum x and y values in this 
-        /// <see cref="Geometry{TCoordinate}"/>, or a null <see cref="Extents{TCoordinate}"/> 
-        /// if this <see cref="Geometry{TCoordinate}"/> is empty.
-        /// </summary>
-        /// <remarks>
-        /// Unlike <see cref="Extents"/>, this method calculates the <see cref="Extents{TCoordinate}"/>
-        /// each time it is called; <see cref="Extents"/> caches the result
-        /// of this method.        
-        /// </remarks>
-        /// <returns>
-        /// This <see cref="Geometry{TCoordinate}"/>s bounding box; 
-        /// if the <see cref="Geometry{TCoordinate}"/>
-        /// is empty, <see cref="Extents{TCoordinate}.IsEmpty"/> will return <see langword="true"/>.
-        /// </returns>
-        protected abstract Extents<TCoordinate> ComputeExtentsInternal();
-
-        /// <summary>
-        /// Returns whether this <see cref="Geometry{TCoordinate}"/> is greater than, equal to,
-        /// or less than another <see cref="IGeometry{TCoordinate}"/> having the same class.
-        /// </summary>
-        /// <param name="other">
-        /// A <see cref="Geometry{TCoordinate}"/> having the same class as this 
-        /// <see cref="Geometry{TCoordinate}"/>.
-        /// </param>
-        /// <returns>
-        /// A positive number, 0, or a negative number, depending on whether
-        /// this object is greater than, equal to, or less than <c>o</c>, as
-        /// defined in "Normal Form For Geometry" in the NTS Technical
-        /// Specifications.
-        /// </returns>
-        protected internal abstract Int32 CompareToSameClass(IGeometry<TCoordinate> other);
-
         ///// <summary>
         ///// Returns the first non-zero result of <c>CompareTo</c> encountered as
         ///// the two <c>Collection</c>s are iterated over. If, by the time one of
@@ -499,16 +431,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         //    return 0;
         //}
-
-        protected static Boolean Equal(TCoordinate a, TCoordinate b, Tolerance tolerance)
-        {
-            if (tolerance == Tolerance.Zero)
-            {
-                return a.Equals(b);
-            }
-
-            return tolerance.Equal(0, a.Distance(b));
-        }
         
         #region IComparable<IGeometry<TCoordinate>> Members
         /// <summary>
@@ -766,7 +688,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public IExtents<TCoordinate> Extents
         {
-            get { return _extents; }
+            get
+            {
+                return ExtentsInternal;
+            }
         }
 
         /// <summary> 
@@ -1792,6 +1717,108 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         #endregion
+
+        protected static Boolean Equal(TCoordinate a, TCoordinate b, Tolerance tolerance)
+        {
+            if (tolerance == Tolerance.Zero)
+            {
+                return a.Equals(b);
+            }
+
+            return tolerance.Equal(0, a.Distance(b));
+        }
+
+        /// <summary> 
+        /// Returns the minimum and maximum x and y values in this <see cref="Geometry{TCoordinate}"/>
+        /// , or a null <see cref="Extents{TCoordinate}"/> if this <see cref="Geometry{TCoordinate}"/> is empty.
+        /// </summary>
+        /// <returns>    
+        /// This <see cref="Geometry{TCoordinate}"/>s bounding box; if the <see cref="Geometry{TCoordinate}"/>
+        /// is empty, <c>Envelope.IsNull</c> will return <see langword="true"/>.
+        /// </returns>
+        protected Extents<TCoordinate> ExtentsInternal
+        {
+            get
+            {
+                if (_extents == null)
+                {
+                    _extents = ComputeExtentsInternal();
+                }
+
+                return _extents;
+            }
+            set
+            {
+                _extents = value;
+            }
+        }
+
+        /// <summary>
+        /// Returns whether the two <see cref="Geometry{TCoordinate}"/>s are equal, from the point
+        /// of view of the <c>EqualsExact</c> method. Called by <c>EqualsExact</c>
+        /// . In general, two <see cref="Geometry{TCoordinate}"/> classes are considered to be
+        /// "equivalent" only if they are the same class. An exception is <c>LineString</c>
+        /// , which is considered to be equivalent to its subclasses.
+        /// </summary>
+        /// <param name="other">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/> for equality.</param>
+        /// <returns>
+        /// <see langword="true"/> if the classes of the two <see cref="Geometry{TCoordinate}"/>
+        /// s are considered to be equal by the <c>equalsExact</c> method.
+        /// </returns>
+        protected Boolean IsEquivalentClass(IGeometry other)
+        {
+            return GetType().FullName == other.GetType().FullName;
+        }
+
+        /// <summary>
+        /// Throws an exception if <c>g</c>'s class is <see cref="GeometryCollection{TCoordinate}" />. 
+        /// (its subclasses do not trigger an exception).
+        /// </summary>
+        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> to check.</param>
+        /// <exception cref="ArgumentException">
+        /// if <c>g</c> is a <see cref="GeometryCollection{TCoordinate}" />, but not one of its subclasses.
+        /// </exception>
+        protected static void CheckNotGeometryCollection(IGeometry g)
+        {
+            if (isGeometryCollection(g))
+            {
+                throw new ArgumentException("This method does not support GeometryCollection arguments");
+            }
+        }
+
+        /// <summary>
+        /// Returns the minimum and maximum x and y values in this 
+        /// <see cref="Geometry{TCoordinate}"/>, or a null <see cref="Extents{TCoordinate}"/> 
+        /// if this <see cref="Geometry{TCoordinate}"/> is empty.
+        /// </summary>
+        /// <remarks>
+        /// Unlike <see cref="Extents"/> or <see cref="ExtentsInternal"/>, this method 
+        /// calculates the <see cref="Extents{TCoordinate}"/>
+        /// each time it is called; <see cref="Extents"/> caches the result
+        /// of this method.        
+        /// </remarks>
+        /// <returns>
+        /// This <see cref="Geometry{TCoordinate}"/>s bounding box; 
+        /// if the <see cref="Geometry{TCoordinate}"/>
+        /// is empty, <see cref="Extents{TCoordinate}.IsEmpty"/> will return <see langword="true"/>.
+        /// </returns>
+        protected abstract Extents<TCoordinate> ComputeExtentsInternal();
+
+        /// <summary>
+        /// Returns whether this <see cref="Geometry{TCoordinate}"/> is greater than, equal to,
+        /// or less than another <see cref="IGeometry{TCoordinate}"/> having the same class.
+        /// </summary>
+        /// <param name="other">
+        /// A <see cref="Geometry{TCoordinate}"/> having the same class as this 
+        /// <see cref="Geometry{TCoordinate}"/>.
+        /// </param>
+        /// <returns>
+        /// A positive number, 0, or a negative number, depending on whether
+        /// this object is greater than, equal to, or less than <c>o</c>, as
+        /// defined in "Normal Form For Geometry" in the NTS Technical
+        /// Specifications.
+        /// </returns>
+        protected internal abstract Int32 CompareToSameClass(IGeometry<TCoordinate> other);
 
         private static IGeometry<TCoordinate> convertIGeometry(IGeometry other)
         {

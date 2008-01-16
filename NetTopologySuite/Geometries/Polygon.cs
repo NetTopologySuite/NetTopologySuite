@@ -23,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// OpenGIS Simple Features Specification for SQL </see>.     
     /// </remarks>
     [Serializable]
-    public class Polygon<TCoordinate> : Geometry<TCoordinate>, IPolygon<TCoordinate>, IHasGeometryComponents<TCoordinate>
+    public class Polygon<TCoordinate> : MultiCoordinateGeometry<TCoordinate>, IPolygon<TCoordinate>, IHasGeometryComponents<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// The interior boundaries, if any.
         /// </summary>
-        private readonly List<ILineString<TCoordinate>> _holes = new List<ILineString<TCoordinate>>();
+        private readonly List<ILineString<TCoordinate>> _holes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Polygon{TCoordinate}"/> class.
@@ -54,8 +54,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// point is to be created.
         /// </param>
         /// <param name="holes">
-        /// The inner boundaries of the new <see cref="Polygon{TCoordinate}" />
-        /// , or <see langword="null" /> or empty 
+        /// The inner boundaries of the new <see cref="Polygon{TCoordinate}" />, 
+        /// or <see langword="null" /> or empty 
         /// <see cref="LinearRing{TCoordinate}" />s if the empty
         /// point is to be created.
         /// </param>
@@ -66,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public Polygon(ILinearRing<TCoordinate> shell, IEnumerable<ILineString<TCoordinate>> holes)
-            : this(shell, holes, DefaultFactory) {}
+            : this(shell, holes, DefaultFactory) { }
 
         /// <summary>
         /// Constructs a <see cref="Polygon{TCoordinate}" /> 
@@ -94,38 +94,62 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 shell = Factory.CreateLinearRing(null);
             }
 
-            if (shell.IsEmpty && GeometryCollection<TCoordinate>.HasNonEmptyElements(holes))
+            Boolean hasNonEmptyHoles = GeometryCollection<TCoordinate>.HasNonEmptyElements(holes);
+
+            if (shell.IsEmpty && hasNonEmptyHoles)
             {
                 throw new ArgumentException("Shell is empty but holes are not.");
             }
 
             _shell = shell;
-            _holes.AddRange(holes);
+
+            if (hasNonEmptyHoles)
+            {
+                _holes = new List<ILineString<TCoordinate>>();
+                _holes.AddRange(holes);
+            }
         }
+
+        /* BEGIN ADDED BY MPAUL42: monoGIS team */
+
+        /// <summary>
+        /// Constructs a <see cref="Polygon{TCoordinate}" /> with the given exterior boundary.
+        /// </summary>
+        /// <param name="shell">
+        /// The outer boundary of the new <see cref="Polygon{TCoordinate}" />,
+        /// or <see langword="null" /> or an empty <see cref="LinearRing{TCoordinate}" /> if the empty
+        /// polygon is to be created.
+        /// </param>
+        public Polygon(ILinearRing<TCoordinate> shell, IGeometryFactory<TCoordinate> factory)
+            : this(shell, null, factory) { }
+
+        /// <summary>
+        /// Constructs a <see cref="Polygon{TCoordinate}" /> with the given exterior boundary.
+        /// </summary>
+        /// <param name="shell">
+        /// The outer boundary of the new <see cref="Polygon{TCoordinate}" />,
+        /// or <see langword="null" /> or an empty <see cref="LinearRing{TCoordinate}" /> if the empty
+        /// polygon is to be created.
+        /// </param>
+        public Polygon(ILinearRing<TCoordinate> shell) : this(shell, null, DefaultFactory) { }
+
+        /* END ADDED BY MPAUL42: monoGIS team */
 
         public override ICoordinateSequence<TCoordinate> Coordinates
         {
             get
             {
-                //if (IsEmpty)
-                //{
-                //    yield break;
-                //}
+                if (CoordinatesInternal == null)
+                {
+                    CoordinatesInternal = _shell.Coordinates;
 
-                //foreach (TCoordinate coordinate in _shell.Coordinates)
-                //{
-                //    yield return coordinate;
-                //}
+                    foreach (ILineString<TCoordinate> hole in _holes)
+                    {
+                        CoordinatesInternal.AddSequence(hole.Coordinates);
+                    }
+                }
 
-                //foreach (ILinearRing<TCoordinate> ring in _holes)
-                //{
-                //    foreach (TCoordinate coordinate in ring.Coordinates)
-                //    {
-                //        yield return coordinate;
-                //    }
-                //}
-
-                return null;
+                return CoordinatesInternal;
             }
         }
 
@@ -233,7 +257,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     return Factory.CreateGeometryCollection(null);
                 }
 
-                if(InteriorRingsCount == 0)
+                if (InteriorRingsCount == 0)
                 {
                     return _shell.Clone();
                 }
@@ -314,12 +338,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             ILinearRing<TCoordinate> shell = _shell.Clone() as ILinearRing<TCoordinate>;
 
-            return Factory.CreatePolygon(shell, cloneLines(_holes));
+            IEnumerable<ILinearRing<TCoordinate>> holes
+                = Enumerable.Downcast<ILinearRing<TCoordinate>, ILineString<TCoordinate>>(_holes);
+
+            return Factory.CreatePolygon(shell, holes);
         }
 
         public override IGeometry<TCoordinate> ConvexHull()
         {
-            return (ExteriorRing as ISpatialOperator<TCoordinate>).ConvexHull();
+            return ExteriorRing.ConvexHull();
         }
 
         public override void Normalize()
@@ -345,30 +372,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         protected internal override Int32 CompareToSameClass(IGeometry<TCoordinate> other)
         {
-            Debug.Assert(other is IPolygon<TCoordinate>);
             IPolygon<TCoordinate> otherPolygon = other as IPolygon<TCoordinate>;
+            Debug.Assert(otherPolygon != null);
             ILineString<TCoordinate> otherShell = otherPolygon.ExteriorRing;
-            return _shell.CompareToSameClass(otherShell);
-        }
 
-        private static IEnumerable<ILinearRing<TCoordinate>> cloneLines(List<ILineString<TCoordinate>> _holes)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void normalize(ILinearRing<TCoordinate> ring, Boolean clockwise)
-        {
-            if (ring.IsEmpty)
+            if (_shell is LinearRing<TCoordinate>)
             {
-                return;
+                return (_shell as LinearRing<TCoordinate>).CompareToSameClass(otherShell);
             }
-
-            TCoordinate minCoordinate = ring.Coordinates.Minimum();
-            ring.Coordinates.Scroll(minCoordinate);
-
-            if (CGAlgorithms<TCoordinate>.IsCCW(ring.Coordinates) == clockwise)
+            else
             {
-                ring.Coordinates.Reverse();
+                throw new NotSupportedException(
+                    "The polygon exterior boundary is an ILinearRing type " +
+                    "other than LinearRing<TCoordinate>, and comparison is " +
+                    "not currently supported.");
             }
         }
 
@@ -439,26 +456,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
-        /// <summary>
-        /// Constructs a <see cref="Polygon{TCoordinate}" /> with the given exterior boundary.
-        /// </summary>
-        /// <param name="shell">
-        /// The outer boundary of the new <see cref="Polygon{TCoordinate}" />,
-        /// or <see langword="null" /> or an empty <see cref="LinearRing{TCoordinate}" /> if the empty
-        /// polygon is to be created.
-        /// </param>
-        public Polygon(ILinearRing<TCoordinate> shell, IGeometryFactory<TCoordinate> factory) 
-            : this(shell, null, factory) { }
-
-        /// <summary>
-        /// Constructs a <see cref="Polygon{TCoordinate}" /> with the given exterior boundary.
-        /// </summary>
-        /// <param name="shell">
-        /// The outer boundary of the new <see cref="Polygon{TCoordinate}" />,
-        /// or <see langword="null" /> or an empty <see cref="LinearRing{TCoordinate}" /> if the empty
-        /// polygon is to be created.
-        /// </param>
-        public Polygon(ILinearRing<TCoordinate> shell) : this(shell, null, DefaultFactory) { }
+        // [codekaizen 2008-01-14]  temporarily commented out in order to investigate
+        //                          usage of these properties. Are they redundant? 
+        //                          Could they be conditionally compiled?
 
         //public ILinearRing<TCoordinate> Shell
         //{
@@ -513,5 +513,26 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         #endregion
+
+        protected override void OnCoordinatesChanged()
+        {
+            CoordinatesInternal = null;
+        }
+
+        private static void normalize(ILinearRing<TCoordinate> ring, Boolean clockwise)
+        {
+            if (ring.IsEmpty)
+            {
+                return;
+            }
+
+            TCoordinate minCoordinate = ring.Coordinates.Minimum();
+            ring.Coordinates.Scroll(minCoordinate);
+
+            if (CGAlgorithms<TCoordinate>.IsCCW(ring.Coordinates) == clockwise)
+            {
+                ring.Coordinates.Reverse();
+            }
+        }
     }
 }

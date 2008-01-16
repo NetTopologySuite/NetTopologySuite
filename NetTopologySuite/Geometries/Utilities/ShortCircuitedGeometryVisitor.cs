@@ -9,6 +9,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
     /// A visitor to Geometry elements which can
     /// be short-circuited by a given condition.
     /// </summary>
+    [Obsolete("The visitor pattern will be replaced by an enumeration / query pattern.")]
     public abstract class ShortCircuitedGeometryVisitor<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible

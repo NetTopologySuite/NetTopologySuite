@@ -139,13 +139,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
                 _minDistanceLocation1.Value);
         }
 
-        private void updateMinDistance(Double dist)
-        {
-            if (dist < _minDistance)
-            {
-                _minDistance = dist;
-            }
-        }
+        // [codekaizen 2008-01-14] Not used in JTS 
+        // /JTS/src/com/vividsolutions/jts/operation/distance/DistanceOp.java:1.17
+
+        //private void updateMinDistance(Double dist)
+        //{
+        //    if (dist < _minDistance)
+        //    {
+        //        _minDistance = dist;
+        //    }
+        //}
 
         private void updateMinDistance(GeometryLocation<TCoordinate>? locGeom0, GeometryLocation<TCoordinate>? locGeom1, Boolean flip)
         {
@@ -197,8 +200,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
             // test if either point is wholly inside the other
             if (Slice.CountGreaterThan(polys1, 0))
             {
-                IEnumerable<GeometryLocation<TCoordinate>> insideLocs0 
-                    = ConnectedElementLocationFilter<TCoordinate>.GetLocations(_g0);
+                IEnumerable<GeometryLocation<TCoordinate>> insideLocs0
+                    = getLocations(_g0);
                 
                 locPtPoly0 = computeInside(insideLocs0, polys1, out locPtPoly1);
 
@@ -213,16 +216,37 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
             if (Slice.CountGreaterThan(polys0, 0))
             {
                 IEnumerable<GeometryLocation<TCoordinate>> insideLocs1 
-                    = ConnectedElementLocationFilter<TCoordinate>.GetLocations(_g1);
+                    = getLocations(_g1);
 
                 locPtPoly0 = computeInside(insideLocs1, polys0, out locPtPoly1);
                 
                 if (_minDistance <= _terminateDistance)
                 {
-                    // flip locations, since we are testing geom 1 VS geom 0
+                    // flip locations, since we are testing geom 1 to geom 0
                     _minDistanceLocation0 = locPtPoly1;
                     _minDistanceLocation1 = locPtPoly0;
                     return;
+                }
+            }
+        }
+
+        private static IEnumerable<GeometryLocation<TCoordinate>> getLocations(IGeometry<TCoordinate> g)
+        {
+            if (g is IGeometryCollection<TCoordinate>)
+            {
+                foreach (IGeometry<TCoordinate> geometry in (g as IGeometryCollection<TCoordinate>))
+                {
+                    foreach (GeometryLocation<TCoordinate> location in getLocations(geometry))
+                    {
+                        yield return location;
+                    }
+                }
+            }
+            else
+            {
+                if (g is IPoint || g is ILineString || g is IPolygon)
+                {
+                    Slice.GetFirst(g.Coordinates);
                 }
             }
         }

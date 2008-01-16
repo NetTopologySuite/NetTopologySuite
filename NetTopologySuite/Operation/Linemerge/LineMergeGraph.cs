@@ -43,9 +43,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 
             DirectedEdge<TCoordinate> directedEdge1 = new LineMergeDirectedEdge<TCoordinate>(endNode, startNode,
                                                                    endPair.First, false);
-            Edge<TCoordinate> edge = new LineMergeEdge<TCoordinate>(lineString);
-            edge.SetDirectedEdges(directedEdge0, directedEdge1);
-            AddInternal(edge);
+            
+            Edge<TCoordinate> edge = new LineMergeEdge<TCoordinate>(lineString, directedEdge0, directedEdge1);
+            //edge.SetDirectedEdges();
+            Add(edge);
         }
 
         private Node<TCoordinate> getNode(TCoordinate coordinate)

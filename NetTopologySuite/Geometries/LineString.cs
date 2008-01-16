@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Basic implementation of <c>LineString</c>.
     /// </summary>  
     [Serializable]
-    public class LineString<TCoordinate> : Geometry<TCoordinate>, ILineString<TCoordinate>
+    public class LineString<TCoordinate> : MultiCoordinateGeometry<TCoordinate>, ILineString<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
@@ -23,19 +23,23 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public static readonly ILineString Empty = new GeometryFactory<TCoordinate>().CreateLineString();
 
-        // The points of this LineString.
-        private readonly ICoordinateSequence<TCoordinate> _points;
-
+        /// <summary>
+        /// Creates a new <see cref="LineString{TCoordinate}"/> instance from the 
+        /// given <paramref name="points"/>.
+        /// </summary>
         /// <param name="points">
         /// The points of the linestring, or <see langword="null" />
         /// to create the empty point. Consecutive points may not be equal.
+        /// </param>
+        /// <param name="factory">
+        /// The <see cref="IGeometryFactory{TCoordinate}"/> instance used to generate
         /// </param>
         public LineString(ICoordinateSequence<TCoordinate> points, IGeometryFactory<TCoordinate> factory)
             : base(factory)
         {
             if (points == null)
             {
-                points = factory.CoordinateSequenceFactory.Create(4, 2);
+                points = factory.CoordinateSequenceFactory.Create(2);
             }
 
             if (points.Count == 1)
@@ -43,15 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 throw new ArgumentException("point array must contain 0 or >1 elements", "points");
             }
 
-            _points = points;
-        }
-
-        public override ICoordinateSequence<TCoordinate> Coordinates
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            CoordinatesInternal = points;
         }
 
         public override Dimensions Dimension
@@ -74,17 +70,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public override Boolean IsEmpty
         {
-            get { return _points.Count == 0; }
+            get { return CoordinatesInternal.Count == 0; }
         }
 
         public override Int32 PointCount
         {
-            get { return _points.Count; }
+            get { return CoordinatesInternal.Count; }
         }
 
         public IPoint<TCoordinate> GetPoint(Int32 index)
         {
-            return Factory.CreatePoint(_points[index]);
+            return Factory.CreatePoint(CoordinatesInternal[index]);
         }
 
         public IPoint<TCoordinate> StartPoint
@@ -145,7 +141,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The length of the polygon.</returns>
         public override Double Length
         {
-            get { return CGAlgorithms<TCoordinate>.Length(_points); }
+            get { return CGAlgorithms<TCoordinate>.Length(CoordinatesInternal); }
         }
 
         public override Boolean IsSimple
@@ -181,7 +177,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public ILineString<TCoordinate> Reverse()
         {
-            ICoordinateSequence<TCoordinate> seq = _points.Clone() as ICoordinateSequence<TCoordinate>;
+            ICoordinateSequence<TCoordinate> seq = CoordinatesInternal.Clone() as ICoordinateSequence<TCoordinate>;
+            Debug.Assert(seq != null);
             seq.Reverse();
             return Factory.CreateLineString(seq);
         }
@@ -193,7 +190,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns><see langword="true"/> if <c>pt</c> is one of this <c>LineString</c>'s vertices.</returns>
         public Boolean IsCoordinate(TCoordinate pt)
         {
-            foreach (TCoordinate coordinate in _points)
+            foreach (TCoordinate coordinate in CoordinatesInternal)
             {
                 if(coordinate.Equals(pt))
                 {
@@ -202,36 +199,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
 
             return false;
-        }
-
-        protected override Extents<TCoordinate> ComputeExtentsInternal()
-        {
-            if (IsEmpty)
-            {
-                return new Extents<TCoordinate>();
-            }
-
-            // Convert to array, then access array directly, to avoid the function-call overhead
-            // of calling Getter millions of times. ToArray may be inefficient for
-            // non-BasicCoordinateSequence CoordinateSequences. [Jon Aquino]
-            // TCoordinate[] coordinates = _points.ToCoordinateArray();
-
-            ICoordinateSequence<TCoordinate> coordinates = _points;
-
-            Double minx = coordinates[0][Ordinates.X];
-            Double miny = coordinates[0][Ordinates.Y];
-            Double maxx = coordinates[0][Ordinates.X];
-            Double maxy = coordinates[0][Ordinates.Y];
-
-            for (Int32 i = 1; i < coordinates.Count; i++)
-            {
-                minx = minx < coordinates[i][Ordinates.X] ? minx : coordinates[i][Ordinates.X];
-                maxx = maxx > coordinates[i][Ordinates.X] ? maxx : coordinates[i][Ordinates.X];
-                miny = miny < coordinates[i][Ordinates.Y] ? miny : coordinates[i][Ordinates.Y];
-                maxy = maxy > coordinates[i][Ordinates.Y] ? maxy : coordinates[i][Ordinates.Y];
-            }
-
-            return new Extents<TCoordinate>(minx, maxx, miny, maxy);
         }
 
         public override Boolean Equals(IGeometry<TCoordinate> other, Tolerance tolerance)
@@ -253,7 +220,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
             }
 
-            for (Int32 i = 0; i < _points.Count; i++)
+            for (Int32 i = 0; i < CoordinatesInternal.Count; i++)
             {
                 if (!Equal(Coordinates[i], otherLineString.Coordinates[i], tolerance))
                 {
@@ -263,6 +230,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             return true;
         }
+
+        /*
+         * [codekaizen 2008-01-14] removed when replaced visitor patterns with
+         *                         enumeration / query patterns
+         */
 
         //public override void Apply(ICoordinateFilter filter)
         //{
@@ -296,14 +268,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public override void Normalize()
         {
-            for (Int32 i = 0; i < _points.Count / 2; i++)
+            for (Int32 i = 0; i < CoordinatesInternal.Count / 2; i++)
             {
-                Int32 j = _points.Count - 1 - i;
+                Int32 j = CoordinatesInternal.Count - 1 - i;
 
                 // skip equal points on both ends
-                if (!_points[i].Equals(_points[j]))
+                if (!CoordinatesInternal[i].Equals(CoordinatesInternal[j]))
                 {
-                    if (_points[i].CompareTo(_points[j]) > 0)
+                    if (CoordinatesInternal[i].CompareTo(CoordinatesInternal[j]) > 0)
                     {
                         Coordinates.Reverse();
                     }
@@ -311,42 +283,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     return;
                 }
             }
-        }
-
-        protected internal override Int32 CompareToSameClass(IGeometry<TCoordinate> other)
-        {
-            LineString<TCoordinate> line = other as LineString<TCoordinate>;
-
-            Debug.Assert(line != null);
-
-            // MD - optimized implementation
-            Int32 i = 0;
-            Int32 j = 0;
-
-            while (i < _points.Count && j < line._points.Count)
-            {
-                Int32 comparison = _points[i].CompareTo(line._points[j]);
-
-                if (comparison != 0)
-                {
-                    return comparison;
-                }
-
-                i++;
-                j++;
-            }
-
-            if (i < _points.Count)
-            {
-                return 1;
-            }
-
-            if (j < line._points.Count)
-            {
-                return -1;
-            }
-
-            return 0;
         }
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
@@ -364,16 +300,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public TCoordinate this[Int32 index]
         {
-            get { return _points[index]; }
+            get { return CoordinatesInternal[index]; }
             set
             {
-                _points[index] = value;
+                CoordinatesInternal[index] = value;
             }
         }
 
         public Int32 Count
         {
-            get { return _points.Count; }
+            get { return CoordinatesInternal.Count; }
         }
 
         /// <summary>
@@ -384,8 +320,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                TCoordinate startPoint = Slice.GetFirst(_points);
-                TCoordinate endPoint = Slice.GetLast(_points);
+                TCoordinate startPoint = Slice.GetFirst(CoordinatesInternal);
+                TCoordinate endPoint = Slice.GetLast(CoordinatesInternal);
 
                 Double startX = startPoint[Ordinates.X], startY = startPoint[Ordinates.Y];
                 Double endX = endPoint[Ordinates.X], endY = endPoint[Ordinates.Y];
@@ -435,5 +371,81 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         #endregion
+
+        protected override Extents<TCoordinate> ComputeExtentsInternal()
+        {
+            if (IsEmpty)
+            {
+                return new Extents<TCoordinate>();
+            }
+
+            // Convert to array, then access array directly, to avoid the function-call overhead
+            // of calling Getter millions of times. ToArray may be inefficient for
+            // non-BasicCoordinateSequence CoordinateSequences. [Jon Aquino]
+            // TCoordinate[] coordinates = _points.ToCoordinateArray();
+
+            ICoordinateSequence<TCoordinate> coordinates = CoordinatesInternal;
+
+            Double minx = coordinates[0][Ordinates.X];
+            Double miny = coordinates[0][Ordinates.Y];
+            Double maxx = coordinates[0][Ordinates.X];
+            Double maxy = coordinates[0][Ordinates.Y];
+
+            for (Int32 i = 1; i < coordinates.Count; i++)
+            {
+                minx = minx < coordinates[i][Ordinates.X] ? minx : coordinates[i][Ordinates.X];
+                maxx = maxx > coordinates[i][Ordinates.X] ? maxx : coordinates[i][Ordinates.X];
+                miny = miny < coordinates[i][Ordinates.Y] ? miny : coordinates[i][Ordinates.Y];
+                maxy = maxy > coordinates[i][Ordinates.Y] ? maxy : coordinates[i][Ordinates.Y];
+            }
+
+            return new Extents<TCoordinate>(minx, maxx, miny, maxy);
+        }
+
+        protected internal override Int32 CompareToSameClass(IGeometry<TCoordinate> other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+
+            LineString<TCoordinate> line = other as LineString<TCoordinate>;
+
+            if (line == null)
+            {
+                throw new NotSupportedException(
+                    "Comparison to ILineString types other than LineString<TCoordinate> " +
+                    "not currently supported.");
+            }
+
+            // MD - optimized implementation
+            Int32 i = 0;
+            Int32 j = 0;
+
+            while (i < CoordinatesInternal.Count && j < line.CoordinatesInternal.Count)
+            {
+                Int32 comparison = CoordinatesInternal[i].CompareTo(line.CoordinatesInternal[j]);
+
+                if (comparison != 0)
+                {
+                    return comparison;
+                }
+
+                i++;
+                j++;
+            }
+
+            if (i < CoordinatesInternal.Count)
+            {
+                return 1;
+            }
+
+            if (j < line.CoordinatesInternal.Count)
+            {
+                return -1;
+            }
+
+            return 0;
+        }
     }
 }

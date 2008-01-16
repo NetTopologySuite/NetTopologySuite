@@ -51,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             //_dirEdges.Add(e.GetDirectedEdge(0));
             //_dirEdges.Add(e.GetDirectedEdge(1));
 
-            AddInternal(e);
+            Add(e);
 
             NodeMap.Add(e.GetDirectedEdge(0).FromNode);
             NodeMap.Add(e.GetDirectedEdge(1).FromNode);

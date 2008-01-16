@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                             IComputable<Double, TCoordinate>, IConvertible
     {
         public RobustLineIntersector(ICoordinateFactory<TCoordinate> factory)
-            :base(factory) { }
+            : base(factory) { }
 
         public override Intersection<TCoordinate> ComputeIntersection(TCoordinate p, Pair<TCoordinate> line)
         {
@@ -125,6 +125,33 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return new Intersection<TCoordinate>(intersection, line0, line1, false, false, isProper);
         }
 
+        private TCoordinate computeIntersection(Pair<TCoordinate> line0, Pair<TCoordinate> line1)
+        {
+            TCoordinate intersection = computeIntersectionWithNormalization(line0, line1);
+
+            /*  FROM JTS:
+             *
+             * MD - May 4 2005 - This is still a problem.  Here is a failure case:
+             *
+             * LINESTRING (2089426.5233462777 1180182.3877339689, 2085646.6891757075 1195618.7333999649)
+             * LINESTRING (1889281.8148903656 1997547.0560044837, 2259977.3672235999 483675.17050843034)
+             * Int32 point = (2097408.2633752143,1144595.8008114607)
+             * 
+             * MD - Dec 14 2006 - This does not seem to be a failure case any longer
+             */
+            if (!isInSegmentExtents(intersection, line0, line1))
+            {
+                Trace.WriteLine("Intersection outside segment envelopes: " + intersection);
+            }
+
+            if (PrecisionModel != null)
+            {
+                PrecisionModel.MakePrecise(intersection);
+            }
+
+            return intersection;
+        }
+
         /// <summary> 
         /// This method computes the actual value of the intersection point.
         /// To obtain the maximum precision from the intersection calculation,
@@ -133,7 +160,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// removing common significant digits from the calculation to
         /// maintain more bits of precision.
         /// </summary>
-        private TCoordinate computeIntersection(Pair<TCoordinate> line0, Pair<TCoordinate> line1)
+        private TCoordinate computeIntersectionWithNormalization(Pair<TCoordinate> line0, Pair<TCoordinate> line1)
         {
             TCoordinate n1 = CoordinateFactory.Create(line0.First);
             TCoordinate n2 = CoordinateFactory.Create(line0.Second);
@@ -151,53 +178,16 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
             catch (NotRepresentableException)
             {
-                Assert.ShouldNeverReachHere("Coordinate for intersection is not calculable");
+                Assert.ShouldNeverReachHere("Coordinate for intersection is not calculable.");
             }
 
             intersection = CoordinateFactory.Create(
                 intersection[Ordinates.X] + normPt[Ordinates.X],
                 intersection[Ordinates.Y] + normPt[Ordinates.Y]);
 
-            /*
-             *
-             * MD - May 4 2005 - This is still a problem.  Here is a failure case:
-             *
-             * LINESTRING (2089426.5233462777 1180182.3877339689, 2085646.6891757075 1195618.7333999649)
-             * LINESTRING (1889281.8148903656 1997547.0560044837, 2259977.3672235999 483675.17050843034)
-             * Int32 point = (2097408.2633752143,1144595.8008114607)
-             */
-            if (!isInSegmentEnvelopes(intersection, line0, line1))
-            {
-                Trace.WriteLine("Intersection outside segment envelopes: " + intersection);
-            }
-
-            /*
-            // disabled until a better solution is found
-            if(!IsInSegmentEnvelopes(intPt)) 
-            {
-                Trace.WriteLine("first value outside segment envelopes: " + intPt);
-
-                IteratedBisectionIntersector ibi = new IteratedBisectionIntersector(p1, p2, q1, q2);
-                intPt = ibi.Intersection;
-            }
-            if(!IsInSegmentEnvelopes(intPt)) 
-            {
-                Trace.WriteLine("ERROR - outside segment envelopes: " + intPt);
-
-                IteratedBisectionIntersector ibi = new IteratedBisectionIntersector(p1, p2, q1, q2);
-                Coordinate testPt = ibi.Intersection;
-            }
-            */
-
-            if (PrecisionModel != null)
-            {
-                PrecisionModel.MakePrecise(intersection);
-            }
-
             return intersection;
         }
 
-        
         // Computes a segment intersection using homogeneous coordinates.
         // Round-off error can cause the raw computation to fail, 
         // (usually due to the segments being approximately parallel).
@@ -217,6 +207,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
             catch (NotRepresentableException e)
             {
+                Trace.TraceError("[{0}] {1}", e.GetType(), e.Message);
                 // compute an approximate result
                 intersectionPoint = CentralEndpointIntersector<TCoordinate>.GetIntersection(p1, p2, q1, q2);
             }
@@ -230,34 +221,19 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             //xP = hP1.y * hP2.w - hP2.y * hP1.w;
             //yP = hP2.x * hP1.w - hP1.x * hP2.w;
             //wP = hP1.x * hP2.y - hP2.x * hP1.y;
-            
+
             //xQ = hQ1.y * hQ2.w - hQ2.y * hQ1.w;
             //yQ = hQ2.x * hQ1.w - hQ1.x * hQ2.w;
             //wQ = hQ1.x * hQ2.y - hQ2.x * hQ1.y;
 
-            // intersect lines
+            // compute cross-products
+            TCoordinate p = hP1.Multiply(hP2);
+            TCoordinate q = hQ1.Multiply(hQ2);
+
+            // intersect lines in projective space via homogeneous coordinate cross-product
+            TCoordinate intersection = p.Multiply(q);
+            return intersection;
         }
-
-        //private void NormalizeToMinimum(ref TCoordinate n1, ref TCoordinate n2, ref TCoordinate n3, ref TCoordinate n4,
-        //                                out TCoordinate normPt)
-        //{
-        //    Double normX = SmallestInAbsValue(n1[Ordinates.X], n2[Ordinates.X], n3[Ordinates.X], n4[Ordinates.X]);
-        //    Double normY = SmallestInAbsValue(n1[Ordinates.Y], n2[Ordinates.Y], n3[Ordinates.Y], n4[Ordinates.Y]);
-        //    Double n1X = normX - n1[Ordinates.X];
-        //    Double n1Y = normY - n1[Ordinates.Y];
-        //    Double n2X = normX - n2[Ordinates.X];
-        //    Double n2Y = normY - n2[Ordinates.Y];
-        //    Double n3X = normX - n3[Ordinates.X];
-        //    Double n3Y = normY - n3[Ordinates.Y];
-        //    Double n4X = normX - n4[Ordinates.X];
-        //    Double n4Y = normY - n4[Ordinates.Y];
-
-        //    normPt = new Coordinate(normX, normY);
-        //    n1 = new Coordinate(n1X, n1Y);
-        //    n2 = new Coordinate(n2X, n2Y);
-        //    n3 = new Coordinate(n3X, n3Y);
-        //    n4 = new Coordinate(n4X, n4Y);
-        //}
 
         private static Intersection<TCoordinate> computeCollinearIntersection(Pair<TCoordinate> line0, Pair<TCoordinate> line1)
         {
@@ -284,13 +260,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             if (p1_q1_p2 && q1_p1_q2)
             {
                 if (line1.First.Equals(line0.First) && !p1_q2_p2 && !q1_p2_q2)
-	            {
-	                return new Intersection<TCoordinate>(
+                {
+                    return new Intersection<TCoordinate>(
                         line0.First, line0, line1, false, false, false);
-	            }
+                }
                 else
                 {
-	                return new Intersection<TCoordinate>(
+                    return new Intersection<TCoordinate>(
                         line0.First, line1.First, line0, line1, false, false, false);
                 }
             }
@@ -343,11 +319,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        ///  Normalize the supplied coordinates to
+        /// Normalize the supplied coordinates to
         /// so that the midpoint of their intersection envelope
         /// lies at the origin.
         /// </summary>
-        private void normalizeToExtentCenter(ref TCoordinate n00, ref TCoordinate n01, 
+        private void normalizeToExtentCenter(ref TCoordinate n00, ref TCoordinate n01,
             ref TCoordinate n10, ref TCoordinate n11, out TCoordinate normPt)
         {
             Double minX0 = n00[Ordinates.X] < n01[Ordinates.X] ? n00[Ordinates.X] : n01[Ordinates.X];
@@ -394,14 +370,42 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Since this test is for debugging purposes only, no attempt is
         /// made to optimize the envelope test.
         /// </remarks>
-        private static Boolean isInSegmentEnvelopes(TCoordinate coordinate, Pair<TCoordinate> line0, Pair<TCoordinate> line1)
+        private static Boolean isInSegmentExtents(TCoordinate coordinate, Pair<TCoordinate> line0, Pair<TCoordinate> line1)
         {
-            IExtents<TCoordinate> env0 = new Extents<TCoordinate>(line0.First, line0.Second);
-            IExtents<TCoordinate> env1 = new Extents<TCoordinate>(line1.First, line1.Second);
-            return env0.Contains(coordinate) && env1.Contains(coordinate);
+            IExtents<TCoordinate> extent0 = new Extents<TCoordinate>(line0.First, line0.Second);
+            IExtents<TCoordinate> extent1 = new Extents<TCoordinate>(line1.First, line1.Second);
+            return extent0.Contains(coordinate) && extent1.Contains(coordinate);
         }
 
-        //private Double SmallestInAbsValue(Double x1, Double x2, Double x3, Double x4)
+        // [codekaizen 2008-01-15]  Method 'normalizeToMinimum' is not used in JTS
+        //                          /JTS/src/com/vividsolutions/jts/algorithm/RobustLineIntersector.java:1.37
+
+        //private void normalizeToMinimum(ref TCoordinate n1, ref TCoordinate n2, ref TCoordinate n3, ref TCoordinate n4,
+        //                                out TCoordinate normPt)
+        //{
+        //    Double normX = SmallestInAbsValue(n1[Ordinates.X], n2[Ordinates.X], n3[Ordinates.X], n4[Ordinates.X]);
+        //    Double normY = SmallestInAbsValue(n1[Ordinates.Y], n2[Ordinates.Y], n3[Ordinates.Y], n4[Ordinates.Y]);
+        //    Double n1X = normX - n1[Ordinates.X];
+        //    Double n1Y = normY - n1[Ordinates.Y];
+        //    Double n2X = normX - n2[Ordinates.X];
+        //    Double n2Y = normY - n2[Ordinates.Y];
+        //    Double n3X = normX - n3[Ordinates.X];
+        //    Double n3Y = normY - n3[Ordinates.Y];
+        //    Double n4X = normX - n4[Ordinates.X];
+        //    Double n4Y = normY - n4[Ordinates.Y];
+
+        //    normPt = new Coordinate(normX, normY);
+        //    n1 = new Coordinate(n1X, n1Y);
+        //    n2 = new Coordinate(n2X, n2Y);
+        //    n3 = new Coordinate(n3X, n3Y);
+        //    n4 = new Coordinate(n4X, n4Y);
+        //}
+
+        // [codekaizen 2008-01-15]  Method 'smallestInAbsValue' only used in 'normalizeToMinimum', 
+        //                          which is unused in
+        //                          /JTS/src/com/vividsolutions/jts/algorithm/RobustLineIntersector.java:1.37
+
+        //private Double smallestInAbsValue(Double x1, Double x2, Double x3, Double x4)
         //{
         //    Double x = x1;
         //    Double xabs = Math.Abs(x);

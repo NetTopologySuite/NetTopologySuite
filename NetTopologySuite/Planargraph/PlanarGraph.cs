@@ -173,7 +173,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// Assumes that the Edge has already been created with its associated DirectEdges.
         /// Only subclasses can add Edges, to ensure the edges added are of the right class.
         /// </summary>
-        protected void AddInternal(Edge<TCoordinate> edge)
+        protected void Add(Edge<TCoordinate> edge)
         {
             if (_edges.Contains(edge))
             {

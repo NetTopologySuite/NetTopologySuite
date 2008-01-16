@@ -64,17 +64,23 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
 
             ICoordinateSequence<TCoordinate> linePts = line.Coordinates.WithoutRepeatedPoints();
 
+            if (linePts.Count < 2)
+            {
+                return;
+            }
+
             TCoordinate startPt = Slice.GetFirst(linePts);
             TCoordinate endPt = Slice.GetLast(linePts);
 
-            Node<TCoordinate> nStart = GetNode(startPt);
-            Node<TCoordinate> nEnd = GetNode(endPt);
+            Node<TCoordinate> startNode = GetNode(startPt);
+            Node<TCoordinate> endNode = GetNode(endPt);
 
-            DirectedEdge<TCoordinate> de0 = new PolygonizeDirectedEdge<TCoordinate>(nStart, nEnd, linePts[1], true);
-            DirectedEdge<TCoordinate> de1 =
-                new PolygonizeDirectedEdge<TCoordinate>(nEnd, nStart, linePts[linePts.Count - 2], false);
-            Edge<TCoordinate> edge = new PolygonizeEdge<TCoordinate>(line);
-            edge.SetDirectedEdges(de0, de1);
+            DirectedEdge<TCoordinate> de0 
+                = new PolygonizeDirectedEdge<TCoordinate>(startNode, endNode, linePts[1], true);
+            DirectedEdge<TCoordinate> de1 
+                = new PolygonizeDirectedEdge<TCoordinate>(endNode, startNode, linePts[linePts.Count - 2], false);
+            Edge<TCoordinate> edge = new PolygonizeEdge<TCoordinate>(line, de0, de1);
+            //edge.SetDirectedEdges(de0, de1);
             Add(edge);
         }
 

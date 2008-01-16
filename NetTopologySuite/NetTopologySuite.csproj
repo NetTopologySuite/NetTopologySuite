@@ -90,9 +90,11 @@
     <Compile Include="Geometries\GeometryCollection.cs" />
     <Compile Include="Geometries\GeometryCollectionEnumerator.cs" />
     <Compile Include="Geometries\GeometryFactory.cs" />
+    <Compile Include="Geometries\GeometryReferenceEqualityComparer.cs" />
     <Compile Include="Geometries\LinearRing.cs" />
     <Compile Include="Geometries\LineSegment.cs" />
     <Compile Include="Geometries\LineString.cs" />
+    <Compile Include="Geometries\MultiCoordinateGeometry.cs" />
     <Compile Include="Geometries\MultiLineString.cs" />
     <Compile Include="Geometries\MultiPoint.cs" />
     <Compile Include="Geometries\MultiPolygon.cs" />
@@ -105,7 +107,6 @@
     <Compile Include="Geometries\Utilities\GeometryEditor.cs" />
     <Compile Include="Geometries\Utilities\GeometryFilter.cs" />
     <Compile Include="Geometries\Utilities\GeometryTransformer.cs" />
-    <Compile Include="Geometries\Utilities\ShortCircuitedGeometryVisitor.cs" />
     <Compile Include="GeometriesGraph\Depth.cs" />
     <Compile Include="GeometriesGraph\DirectedEdge.cs" />
     <Compile Include="GeometriesGraph\DirectedEdgeStar.cs" />
@@ -136,6 +137,9 @@
     <Compile Include="GeometriesGraph\Position.cs" />
     <Compile Include="GeometriesGraph\QuadrantOp.cs" />
     <Compile Include="GeometriesGraph\TopologyLocation.cs" />
+    <Compile Include="Geometries\Utilities\ShortCircuitedGeometryVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Index\Bintree\Bintree.cs" />
     <Compile Include="Index\Bintree\BinTreeKey.cs" />
     <Compile Include="Index\Bintree\Node.cs" />

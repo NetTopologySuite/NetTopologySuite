@@ -189,11 +189,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         protected internal override Int32 CompareToSameClass(IGeometry<TCoordinate> other)
         {
+            if (other == null)
+            {
+                return 1;
+            }
+
             IPoint<TCoordinate> point = other as IPoint<TCoordinate>;
 
             if (point == null)
             {
-                throw new ArgumentException("Parameter must be of type IPoint<TCoordinate>.");
+                throw new ArgumentException(
+                    "Parameter must be of type IPoint<TCoordinate>.");
             }
 
             return Coordinate.CompareTo(point.Coordinate);

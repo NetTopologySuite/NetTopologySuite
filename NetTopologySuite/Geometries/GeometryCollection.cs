@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Basic implementation of <see cref="GeometryCollection{TCoordinate}" />.
     /// </summary>
     [Serializable]
-    public class GeometryCollection<TCoordinate> : Geometry<TCoordinate>, IGeometryCollection<TCoordinate>, IHasGeometryComponents<TCoordinate>
+    public class GeometryCollection<TCoordinate> : Geometry<TCoordinate>, IGeometryCollection<TCoordinate>, IHasGeometryComponents<TCoordinate>, IComparable<IGeometryCollection<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                     IComputable<Double, TCoordinate>, IConvertible
     {
@@ -265,6 +265,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return true;
         }
 
+        /*
+         * [codekaizen 2008-01-14] removed when replaced visitor patterns with
+         *                         enumeration / query patterns
+         */
+
         //public override void Apply(ICoordinateFilter<TCoordinate> filter)
         //{
         //    foreach (IGeometry<TCoordinate> geometry in _geometries)
@@ -329,9 +334,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         protected internal override Int32 CompareToSameClass(IGeometry<TCoordinate> other)
         {
-            throw new NotImplementedException();
-            //IGeometryCollection<TCoordinate> collection = other as IGeometryCollection<TCoordinate>;
-            //return Compare(this, collection);
+            if (other == null)
+            {
+                return 1;
+            }
+
+            IGeometryCollection<TCoordinate> collection = other as IGeometryCollection<TCoordinate>;
+            return CompareTo(collection);
         }
 
         /// <summary>
@@ -383,21 +392,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             set { throw new NotSupportedException(GetType() + " is immutable."); }
         }
 
-        /* BEGIN ADDED BY MPAUL42: monoGIS team */
-
         /// <summary>
         /// Returns the number of geometries contained by this <see cref="GeometryCollection{TCoordinate}" />.
         /// </summary>
         public Int32 Count
         {
             get { return _geometries.Count; }
-        }
-
-        /* END ADDED BY MPAUL42: monoGIS team */
-
-        protected List<IGeometry<TCoordinate>> GeometriesInternal
-        {
-            get { return _geometries; }
         }
 
         #region IHasGeometryComponents<TCoordinate> Members
@@ -560,6 +560,50 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #endregion
 
+        #region IComparable<IGeometryCollection<TCoordinate>> Members
+
+        public Int32 CompareTo(IGeometryCollection<TCoordinate> other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+
+            IEnumerator<IGeometry<TCoordinate>> i = GetEnumerator();
+            IEnumerator<IGeometry<TCoordinate>> j = other.GetEnumerator();
+
+            Boolean iHasNext = i.MoveNext();
+            Boolean jHasNext = j.MoveNext();
+
+            while (iHasNext && jHasNext)
+            {
+                int comparison = i.Current.CompareTo(j.Current);
+
+                if (comparison != 0)
+                {
+                    return comparison;
+                }
+            }
+
+            if (iHasNext)
+            {
+                return 1;
+            }
+
+            if (jHasNext)
+            {
+                return -1;
+            }
+
+            return 0;
+        }
+
+        #endregion
+
+        protected List<IGeometry<TCoordinate>> GeometriesInternal
+        {
+            get { return _geometries; }
+        }
 
         private static IEnumerable<IGeometry<TCoordinate>> enumerateComponents(IGeometry<TCoordinate> geometry)
         {
