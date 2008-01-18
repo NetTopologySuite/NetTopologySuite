@@ -74,11 +74,6 @@ namespace GisSharpBlog.NetTopologySuite.IO
 
         protected enum CoordinateSystem { XY=1, XYZ=2,  XYM=3, XYZM=4};
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
         protected IGeometry Read(BinaryReader reader)
         {     
             WKBGeometryTypes geometryType = (WKBGeometryTypes) reader.ReadInt32();
