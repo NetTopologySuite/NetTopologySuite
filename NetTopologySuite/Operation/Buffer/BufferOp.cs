@@ -135,9 +135,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private Int32 _quadrantSegments = OffsetCurveBuilder<TCoordinate>.DefaultQuadrantSegments;
         private BufferStyle _endCapStyle = BufferStyle.CapRound;
         private IGeometry<TCoordinate> _resultGeometry = null;
-#if DEBUG
         private TopologyException _saveException; // debugging only
-#endif
 
         /// <summary>
         /// Initializes a buffer computation for the given point.

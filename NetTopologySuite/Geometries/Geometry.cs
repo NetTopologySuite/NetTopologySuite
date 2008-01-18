@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.CoordinateSystems;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownBinary;
 using GeoAPI.IO.WellKnownText;
@@ -14,7 +15,7 @@ using GisSharpBlog.NetTopologySuite.Operation.Relate;
 using GisSharpBlog.NetTopologySuite.Operation.Valid;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
-using GeoAPI.CoordinateSystems;
+using NPack;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -137,7 +138,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <seealso cref="GeometryFactory{TCoordinate}.Default" />
         /// <seealso cref="GeometryFactory{TCoordinate}.Fixed"/>
-        public static readonly IGeometryFactory<TCoordinate> DefaultFactory = GeometryFactory<TCoordinate>.Default;
+        //public static readonly IGeometryFactory<TCoordinate> DefaultFactory = GeometryFactory<TCoordinate>.Default;
 
         // ============= END ADDED BY MPAUL42: monoGIS team
 
@@ -163,6 +164,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Geometry(IGeometryFactory<TCoordinate> factory)
         {
+            if (factory == null)
+            {
+                throw new ArgumentNullException("factory");
+            }
+
             _factory = factory;
             _srid = factory.Srid;
         }
@@ -340,7 +346,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public String ToText()
         {
-            return GeometryToWkt.Write(this);
+            return WktEncoder.ToWkt(this);
         }
 
         /// <summary>
@@ -351,7 +357,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The Well-known Binary representation of this <see cref="Geometry{TCoordinate}"/>.</returns>
         public Byte[] ToBinary()
         {
-            return GeometryToWkb.Write(this);
+            return WkbEncoder.ToWkb(this);
         }
 
         /*
@@ -597,7 +603,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region IVertexStream<TCoordinate,DoubleComponent> Members
 
-        public IEnumerable<TCoordinate> GetVertexes(ITransformMatrix<NPack.DoubleComponent> transform)
+        public IEnumerable<TCoordinate> GetVertexes(ITransformMatrix<DoubleComponent> transform)
         {
             throw new NotImplementedException();
         }
@@ -1803,6 +1809,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// is empty, <see cref="Extents{TCoordinate}.IsEmpty"/> will return <see langword="true"/>.
         /// </returns>
         protected abstract Extents<TCoordinate> ComputeExtentsInternal();
+
+        protected static IGeometryFactory<TCoordinate> ExtractGeometryFactory(IEnumerable<IGeometry<TCoordinate>> geometries)
+        {
+            foreach (IGeometry<TCoordinate> geometry in geometries)
+            {
+                if (geometry != null && geometry.Factory != null)
+                {
+                    return geometry.Factory;
+                }
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Returns whether this <see cref="Geometry{TCoordinate}"/> is greater than, equal to,

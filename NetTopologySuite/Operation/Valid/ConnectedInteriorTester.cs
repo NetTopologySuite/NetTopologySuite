@@ -40,15 +40,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             return default(TCoordinate);
         }
 
-        private GeometryFactory<TCoordinate> _geometryFactory = new GeometryFactory<TCoordinate>();
+        private readonly IGeometryFactory<TCoordinate> _geometryFactory;
         private readonly GeometryGraph<TCoordinate> _geometryGraph;
 
         // save a coordinate for any disconnected interior found
         // the coordinate will be somewhere on the ring surrounding the disconnected interior
         private TCoordinate _disconnectedRingCoord;
 
-        public ConnectedInteriorTester(GeometryGraph<TCoordinate> geometryGraph)
+        public ConnectedInteriorTester(GeometryGraph<TCoordinate> geometryGraph, IGeometryFactory<TCoordinate> geoFactory)
         {
+            _geometryFactory = geoFactory;
             _geometryGraph = geometryGraph;
         }
 

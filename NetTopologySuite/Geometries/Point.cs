@@ -21,20 +21,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Represents an empty <see cref="Point{TCoordinate}"/>.
         /// </summary>
-        public static readonly IPoint<TCoordinate> Empty = new GeometryFactory<TCoordinate>().CreatePoint(emptyCoordinate);
+        //public static readonly IPoint<TCoordinate> Empty = new GeometryFactory<TCoordinate>().CreatePoint(emptyCoordinate);
 
         private readonly TCoordinate _coordinate;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Point{TCoordinate}"/> class.
-        /// </summary>
-        /// <param name="coordinate">The coordinate used for create this <see cref="Point{TCoordinate}" />.</param>
-        /// <remarks>
-        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
-        /// </remarks>
-        public Point(TCoordinate coordinate) :
-            this(coordinate, GeometryFactory<TCoordinate>.Default) { }
+        ///// <summary>
+        ///// Initializes a new instance of the <see cref="Point{TCoordinate}"/> class.
+        ///// </summary>
+        ///// <param name="coordinate">The coordinate used for create this <see cref="Point{TCoordinate}" />.</param>
+        ///// <remarks>
+        ///// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
+        ///// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
+        ///// </remarks>
+        //public Point(TCoordinate coordinate) :
+        //    this(coordinate, GeometryFactory<TCoordinate>.Default) { }
 
         /// <summary>
         /// Constructs a <see cref="Point{TCoordinate}"/> with the given coordinate.
@@ -207,30 +207,30 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Point{TCoordinate}"/> class.
-        /// </summary>
-        /// <param name="x">The x coordinate.</param>
-        /// <param name="y">The y coordinate.</param>
-        /// <param name="z">The z coordinate.</param>
-        /// /// <remarks>
-        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> set to </c> <see cref="PrecisionModelType.Floating"/>.
-        /// </remarks>
-        public Point(Double x, Double y, Double z) :
-            this(DefaultFactory.CoordinateFactory.Create3D(x, y, z), DefaultFactory) { }
+        ///// <summary>
+        ///// Initializes a new instance of the <see cref="Point{TCoordinate}"/> class.
+        ///// </summary>
+        ///// <param name="x">The x coordinate.</param>
+        ///// <param name="y">The y coordinate.</param>
+        ///// <param name="z">The z coordinate.</param>
+        ///// /// <remarks>
+        ///// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
+        ///// with <see cref="IPrecisionModel{TCoordinate}" /> <c> set to </c> <see cref="PrecisionModelType.Floating"/>.
+        ///// </remarks>
+        //public Point(Double x, Double y, Double z) :
+        //    this(DefaultFactory.CoordinateFactory.Create3D(x, y, z), DefaultFactory) { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Point{TCoordinate}"/> class.
-        /// </summary>
-        /// <param name="x">The x coordinate.</param>
-        /// <param name="y">The y coordinate.</param>
-        /// /// <remarks>
-        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> set to </c> <see cref="PrecisionModelType.Floating"/>.
-        /// </remarks>
-        public Point(Double x, Double y)
-            : this(DefaultFactory.CoordinateFactory.Create(x, y), DefaultFactory) { }
+        ///// <summary>
+        ///// Initializes a new instance of the <see cref="Point{TCoordinate}"/> class.
+        ///// </summary>
+        ///// <param name="x">The x coordinate.</param>
+        ///// <param name="y">The y coordinate.</param>
+        ///// /// <remarks>
+        ///// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
+        ///// with <see cref="IPrecisionModel{TCoordinate}" /> <c> set to </c> <see cref="PrecisionModelType.Floating"/>.
+        ///// </remarks>
+        //public Point(Double x, Double y)
+        //    : this(DefaultFactory.CoordinateFactory.Create(x, y), DefaultFactory) { }
 
         //public Double Z
         //{

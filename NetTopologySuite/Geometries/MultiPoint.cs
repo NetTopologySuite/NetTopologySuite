@@ -16,10 +16,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
                             IComputable<Double, TCoordinate>, IConvertible
     {
-        /// <summary>
-        /// Represents an empty <c>MultiPoint</c>.
-        /// </summary>
-        public new static readonly IMultiPoint Empty = new GeometryFactory<TCoordinate>().CreateMultiPoint();
+        ///// <summary>
+        ///// Represents an empty <c>MultiPoint</c>.
+        ///// </summary>
+        //public new static readonly IMultiPoint Empty = new GeometryFactory<TCoordinate>().CreateMultiPoint();
 
         /// <summary>
         /// Constructs an empty <see cref="MultiPoint{TCoordinate}"/>.
@@ -51,10 +51,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public MultiPoint(IEnumerable<IPoint<TCoordinate>> points) 
-            : this(points, DefaultFactory) {}
+            : this(points, ExtractGeometryFactory(Enumerable.Upcast<IGeometry<TCoordinate>, IPoint<TCoordinate>>(points))) {}
 
-        public MultiPoint(IEnumerable<TCoordinate> points)
-            : this(DefaultFactory.CreateMultiPoint(points), DefaultFactory) { }
+        //public MultiPoint(IEnumerable<TCoordinate> points)
+        //    : this(DefaultFactory.CreateMultiPoint(points), DefaultFactory) { }
 
         public override Dimensions Dimension
         {

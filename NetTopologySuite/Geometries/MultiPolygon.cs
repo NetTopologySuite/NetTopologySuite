@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Represents an empty <c>MultiPolygon</c>.
         /// </summary>
-        public new static readonly IMultiPolygon<TCoordinate> Empty = new GeometryFactory<TCoordinate>().CreateMultiPolygon();
+        //public new static readonly IMultiPolygon<TCoordinate> Empty = new GeometryFactory<TCoordinate>().CreateMultiPolygon();
 
         /// <summary>
         /// Constructs a <c>MultiPolygon</c>.
@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
-        public MultiPolygon(params IPolygon<TCoordinate>[] polygons) : this(polygons, DefaultFactory) { }
+        public MultiPolygon(params IPolygon<TCoordinate>[] polygons) : this(polygons, ExtractGeometryFactory(polygons)) { }
 
         /// <summary>
         /// Constructs a <c>MultiPolygon</c>.
@@ -53,7 +53,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
-        public MultiPolygon(IEnumerable<IPolygon<TCoordinate>> polygons) : this(polygons, DefaultFactory) { }
+        public MultiPolygon(IEnumerable<IPolygon<TCoordinate>> polygons) 
+            : this(polygons, ExtractGeometryFactory(Enumerable.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(polygons))) { }
 
         /// <summary>
         /// Constructs a <c>MultiPolygon</c>.

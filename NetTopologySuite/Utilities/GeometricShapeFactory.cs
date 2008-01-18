@@ -16,20 +16,20 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly GeometryFactory<TCoordinate> _geometryFactory;
+        private readonly IGeometryFactory<TCoordinate> _geometryFactory;
         private readonly Dimensions _dim = new Dimensions();
         private Int32 _pointCount = 100;
 
-        /// <summary>
-        /// Create a shape factory which will create shapes using the default GeometryFactory.
-        /// </summary>
-        public GeometricShapeFactory() : this(new GeometryFactory<TCoordinate>()) { }
+        ///// <summary>
+        ///// Create a shape factory which will create shapes using the default GeometryFactory.
+        ///// </summary>
+        //public GeometricShapeFactory() : this(new GeometryFactory<TCoordinate>()) { }
 
         /// <summary>
         /// Create a shape factory which will create shapes using the given GeometryFactory.
         /// </summary>
         /// <param name="geomFact">The factory to use.</param>
-        public GeometricShapeFactory(GeometryFactory<TCoordinate> geomFact)
+        public GeometricShapeFactory(IGeometryFactory<TCoordinate> geomFact)
         {
             _geometryFactory = geomFact;
         }

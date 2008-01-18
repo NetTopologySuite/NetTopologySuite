@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Represents an empty <see cref="GeometryCollection{TCoordinate}" />.
         /// </summary>
-        public static readonly IGeometryCollection<TCoordinate> Empty = DefaultFactory.CreateGeometryCollection(null);
+        //public static readonly IGeometryCollection<TCoordinate> Empty = DefaultFactory.CreateGeometryCollection(null);
 
         public static Boolean HasNonEmptyElements<TGeometry>(IEnumerable<TGeometry> geometries)
             where TGeometry : IGeometry
@@ -40,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         private readonly List<IGeometry<TCoordinate>> _geometries = new List<IGeometry<TCoordinate>>();
 
-        public GeometryCollection() : this(DefaultFactory) { }
+        //public GeometryCollection() : this(DefaultFactory) { }
 
         public GeometryCollection(IGeometryFactory<TCoordinate> factory) : base(factory) { }
 
@@ -54,7 +54,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
-        public GeometryCollection(IEnumerable<IGeometry<TCoordinate>> geometries) : this(geometries, DefaultFactory) { }
+        public GeometryCollection(IEnumerable<IGeometry<TCoordinate>> geometries) : this(geometries, ExtractGeometryFactory(geometries)) { }
 
         /// <param name="geometries">
         /// The <see cref="Geometry{TCoordinate}"/>s for this <see cref="GeometryCollection{TCoordinate}" />,

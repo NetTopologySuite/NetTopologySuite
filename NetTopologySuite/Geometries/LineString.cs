@@ -18,10 +18,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
-        /// <summary>
-        /// Represents an empty <c>LineString</c>.
-        /// </summary>
-        public static readonly ILineString Empty = new GeometryFactory<TCoordinate>().CreateLineString();
+        ///// <summary>
+        ///// Represents an empty <c>LineString</c>.
+        ///// </summary>
+        //public static readonly ILineString Empty = new GeometryFactory<TCoordinate>().CreateLineString();
 
         /// <summary>
         /// Creates a new <see cref="LineString{TCoordinate}"/> instance from the 
@@ -287,16 +287,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LineString{TCoordinate}"/> class.
-        /// </summary>        
-        /// <remarks>
-        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
-        /// </remarks>
-        /// <param name="points">The coordinates used for create this <see cref="LineString{TCoordinate}" />.</param>
-        public LineString(IEnumerable<TCoordinate> points) :
-            this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
+        ///// <summary>
+        ///// Initializes a new instance of the <see cref="LineString{TCoordinate}"/> class.
+        ///// </summary>        
+        ///// <remarks>
+        ///// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
+        ///// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
+        ///// </remarks>
+        ///// <param name="points">The coordinates used for create this <see cref="LineString{TCoordinate}" />.</param>
+        //public LineString(IEnumerable<TCoordinate> points) :
+        //    this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
 
         public TCoordinate this[Int32 index]
         {

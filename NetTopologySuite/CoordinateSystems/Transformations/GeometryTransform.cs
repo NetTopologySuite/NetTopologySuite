@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
     /// <summary>
     /// Helper class for transforming <see cref="Geometry{TCoordinate}" /> objects.
     /// </summary>
-    public class GeometryTransform<TCoordinate>
+    public static class GeometryTransform<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
                             IComputable<Double, TCoordinate>, IConvertible
     {
@@ -89,7 +89,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
             try
             {
                 TCoordinate point = transform.Transform(p.Coordinate);
-                return new Point<TCoordinate>(point);
+                return p.Factory.CreatePoint(point);
             }
             catch
             {
@@ -105,7 +105,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
             try
             {
                 IEnumerable<TCoordinate> coords = extractCoordinates(l, transform);
-                return new LineString<TCoordinate>(coords);
+                return l.Factory.CreateLineString(coords);
             }
             catch
             {
@@ -121,7 +121,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
             try
             {
                 IEnumerable<TCoordinate> coords = extractCoordinates(r, transform);
-                return new LinearRing<TCoordinate>(coords);
+                return r.Factory.CreateLinearRing(coords);
             }
             catch
             {
@@ -160,7 +160,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
             }
 
             IEnumerable<TCoordinate> coordinates = transform.Transform(pointList);
-            return new MultiPoint<TCoordinate>(coordinates); 
+            return points.Factory.CreateMultiPoint(coordinates); 
         }
 
         /// <summary>

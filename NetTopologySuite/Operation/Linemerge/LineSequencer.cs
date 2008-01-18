@@ -117,7 +117,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         private readonly LineMergeGraph<TCoordinate> _graph = new LineMergeGraph<TCoordinate>();
 
         // Initialize with default, in case no lines are input        
-        private IGeometryFactory<TCoordinate> factory = GeometryFactory<TCoordinate>.Default;
+        private IGeometryFactory<TCoordinate> _geoFactory;
 
         private IGeometry<TCoordinate> _sequencedGeometry = null;
 
@@ -209,9 +209,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 
         private void addLine(ILineString<TCoordinate> lineString)
         {
-            if (factory == null)
+            if (_geoFactory == null)
             {
-                factory = lineString.Factory;
+                _geoFactory = lineString.Factory;
             }
 
             _graph.AddEdge(lineString);
@@ -571,10 +571,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 
             if (lines.Count == 0)
             {
-                return factory.CreateMultiLineString();
+                return _geoFactory.CreateMultiLineString();
             }
 
-            return factory.BuildGeometry(lines);
+            return _geoFactory.BuildGeometry(lines);
         }
 
         //private static ILineString<TCoordinate> Reverse(ILineString<TCoordinate> line)

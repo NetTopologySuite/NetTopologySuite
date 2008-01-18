@@ -27,11 +27,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
-        /// <summary>
-        /// Represents an empty <see cref="Polygon{TCoordinate}"/>.
-        /// </summary>
-        public static readonly IPolygon<TCoordinate> Empty =
-            new GeometryFactory<TCoordinate>().CreatePolygon(null, null);
+        ///// <summary>
+        ///// Represents an empty <see cref="Polygon{TCoordinate}"/>.
+        ///// </summary>
+        //public static readonly IPolygon<TCoordinate> Empty =
+        //    new GeometryFactory<TCoordinate>().CreatePolygon(null, null);
 
         /// <summary>
         /// The exterior boundary, or <see langword="null" /> if this <see cref="Polygon{TCoordinate}" />
@@ -66,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public Polygon(ILinearRing<TCoordinate> shell, IEnumerable<ILineString<TCoordinate>> holes)
-            : this(shell, holes, DefaultFactory) { }
+            : this(shell, holes, ExtractGeometryFactory(Enumerable.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(holes))) { }
 
         /// <summary>
         /// Constructs a <see cref="Polygon{TCoordinate}" /> 
@@ -131,7 +131,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// or <see langword="null" /> or an empty <see cref="LinearRing{TCoordinate}" /> if the empty
         /// polygon is to be created.
         /// </param>
-        public Polygon(ILinearRing<TCoordinate> shell) : this(shell, null, DefaultFactory) { }
+        public Polygon(ILinearRing<TCoordinate> shell) : this(shell, null, shell.Factory) { }
 
         /* END ADDED BY MPAUL42: monoGIS team */
 

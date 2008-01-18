@@ -57,16 +57,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LinearRing{TCoordinate}"/> class.
-        /// </summary>
-        /// <param name="points">The points used for create this instance.</param>
-        /// <remarks>
-        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
-        /// </remarks>
-        public LinearRing(IEnumerable<TCoordinate> points) :
-            this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) {}
+        ///// <summary>
+        ///// Initializes a new instance of the <see cref="LinearRing{TCoordinate}"/> class.
+        ///// </summary>
+        ///// <param name="points">The points used for create this instance.</param>
+        ///// <remarks>
+        ///// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
+        ///// with <see cref="IPrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
+        ///// </remarks>
+        //public LinearRing(IEnumerable<TCoordinate> points) :
+        //    this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) {}
 
         /* END ADDED BY MPAUL42: monoGIS team */
 

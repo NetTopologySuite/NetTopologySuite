@@ -1,31 +1,21 @@
 using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class BaseSamples
     {
-        /// <summary>
-        /// 
-        /// </summary>
         private IGeometryFactory factory = null;
 
         protected IGeometryFactory Factory
         {
             get { return factory; }            
         }
-        private WKTReader reader = null;
 
-        protected WKTReader Reader
+        private WktReader reader = null;
+
+        protected WktReader Reader
         {
             get { return reader; }            
         }

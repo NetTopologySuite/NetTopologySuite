@@ -18,10 +18,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     IComputable<Double, TCoordinate>, IConvertible
 
     {
-        /// <summary>
-        /// Represents an empty <see cref="MultiLineString{TCoordinate}"/>.
-        /// </summary>
-        public new static readonly IMultiLineString Empty = new GeometryFactory<TCoordinate>().CreateMultiLineString(null);
+        ///// <summary>
+        ///// Represents an empty <see cref="MultiLineString{TCoordinate}"/>.
+        ///// </summary>
+        //public new static readonly IMultiLineString Empty = new GeometryFactory<TCoordinate>().CreateMultiLineString(null);
 
         /// <summary>
         /// Constructs a <c>MultiLineString</c>.
@@ -49,8 +49,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public MultiLineString(IEnumerable<ILineString<TCoordinate>> lineStrings) 
-            : this(lineStrings, DefaultFactory) { }
+        public MultiLineString(IEnumerable<ILineString<TCoordinate>> lineStrings)
+            : this(lineStrings, ExtractGeometryFactory(Enumerable.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(lineStrings))) { }
 
         public override IGeometry<TCoordinate> Boundary
         {

@@ -125,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         {
             get
             {
-                CheckValid(_parentGeometry);
+                checkValid(_parentGeometry);
                 return _validErr == null;
             }
         }
@@ -134,12 +134,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         {
             get
             {
-                CheckValid(_parentGeometry);
+                checkValid(_parentGeometry);
                 return _validErr;
             }
         }
 
-        private void CheckValid(IGeometry g)
+        private void checkValid(IGeometry g)
         {
             if (_isChecked)
             {
@@ -391,7 +391,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         {
             foreach (IGeometry<TCoordinate> g in gc)
             {
-                CheckValid(g);
+                checkValid(g);
 
                 if (_validErr != null)
                 {
@@ -748,7 +748,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
         private void checkConnectedInteriors(GeometryGraph<TCoordinate> graph)
         {
-            ConnectedInteriorTester<TCoordinate> cit = new ConnectedInteriorTester<TCoordinate>(graph);
+            ConnectedInteriorTester<TCoordinate> cit = new ConnectedInteriorTester<TCoordinate>(graph, _parentGeometry.Factory);
 
             if (!cit.AreInteriorsConnected)
             {

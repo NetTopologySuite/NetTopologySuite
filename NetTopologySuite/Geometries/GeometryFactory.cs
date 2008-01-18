@@ -21,25 +21,30 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     {
         #region Static precision models
 
-        /// <summary>
-        /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
-        /// <c> == </c> <see cref="PrecisionModelType.Floating" />.
-        /// </summary>
-        public static readonly IGeometryFactory<TCoordinate> Default = new GeometryFactory<TCoordinate>();
+        ///// <summary>
+        ///// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
+        ///// <c> == </c> <see cref="PrecisionModelType.Floating" />.
+        ///// </summary>
+        //public static readonly IGeometryFactory<TCoordinate> Default = new GeometryFactory<TCoordinate>();
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModelType.Floating" />.
         /// </summary>
-        /// <remarks>A shortcut for <see cref="GeometryFactory{TCoordinate}.Default" />.</remarks>
-        public static readonly IGeometryFactory<TCoordinate> Floating = Default;
+        public static IGeometryFactory<TCoordinate> CreateFloatingPrecision(ICoordinateSequenceFactory<TCoordinate> coordSequenceFactory)
+        {
+            return new GeometryFactory<TCoordinate>(coordSequenceFactory);
+        }
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModelType.FloatingSingle" />.
         /// </summary>
-        public static readonly IGeometryFactory<TCoordinate> FloatingSingle =
-            new GeometryFactory<TCoordinate>(new PrecisionModel<TCoordinate>(PrecisionModelType.FloatingSingle));
+        public static IGeometryFactory<TCoordinate> CreateFloatingSinglePrecision(ICoordinateSequenceFactory<TCoordinate> coordSequenceFactory)
+        {
+            return new GeometryFactory<TCoordinate>(new PrecisionModel<TCoordinate>(PrecisionModelType.FloatingSingle), null, coordSequenceFactory);
+        }
+            
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
@@ -78,7 +83,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// spatial-reference ID of 0.
         /// </summary>
         public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory)
-            : this(new PrecisionModel<TCoordinate>(), 0, coordinateSequenceFactory) { }
+            : this(new PrecisionModel<TCoordinate>(), null, coordinateSequenceFactory) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
@@ -87,7 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="precisionModel">The PrecisionModel to use.</param>
         public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel)
-            : this(precisionModel, 0, getDefaultCoordinateSequenceFactory<TCoordinate>()) { }
+            : this(precisionModel, null, getDefaultCoordinateSequenceFactory<TCoordinate>()) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
@@ -95,15 +100,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// implementation.
         /// </summary>
         /// <param name="precisionModel">The PrecisionModel to use.</param>
-        /// <param name="SRID">The SRID to use.</param>
-        public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel, Int32 SRID)
-            : this(precisionModel, SRID, getDefaultCoordinateSequenceFactory<TCoordinate>()) { }
+        /// <param name="srid">The SRID to use.</param>
+        public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel, Int32? srid)
+            : this(precisionModel, srid, getDefaultCoordinateSequenceFactory<TCoordinate>()) { }
 
-        /// <summary>
-        /// Constructs a GeometryFactory that generates Geometries having a floating
-        /// PrecisionModel and a spatial-reference ID of 0.
-        /// </summary>
-        public GeometryFactory() : this(new PrecisionModel<TCoordinate>(), 0) { }
+        ///// <summary>
+        ///// Constructs a GeometryFactory that generates Geometries having a floating
+        ///// PrecisionModel and a spatial-reference ID of 0.
+        ///// </summary>
+        //public GeometryFactory() : this(new PrecisionModel<TCoordinate>(), 0) { }
 
         /// <summary>  
         /// Build an appropriate <see cref="Geometry{TCoordinate}"/>, <c>MultiGeometry</c>, or
@@ -266,7 +271,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         private IGeometry<TCoordinate> CreateEmpty()
         {
-            return new GeometryCollection<TCoordinate>();
+            return new GeometryCollection<TCoordinate>(this);
         }
 
         /// <summary>
@@ -276,7 +281,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coordinate"></param>
         public IPoint<TCoordinate> CreatePoint(TCoordinate coordinate)
         {
-            return new Point<TCoordinate>(coordinate);
+            return new Point<TCoordinate>(coordinate, this);
         }
 
         public IPoint<TCoordinate> CreatePoint(IEnumerable<TCoordinate> coordinates)
@@ -292,7 +297,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (coordinates.Count == 0)
             {
-                return Point<TCoordinate>.Empty;
+                return new Point<TCoordinate>(default(TCoordinate), this);
             }
 
             return new Point<TCoordinate>(coordinates[0], this);
