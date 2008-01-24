@@ -71,7 +71,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             * the smallest existing quad containing the query
             */
             bool isZeroX = IntervalSize.IsZeroWidth(itemEnv.MinX, itemEnv.MaxX);
-            bool isZeroY = IntervalSize.IsZeroWidth(itemEnv.MaxY, itemEnv.MaxY);
+            bool isZeroY = IntervalSize.IsZeroWidth(itemEnv.MinY, itemEnv.MaxY);
             NodeBase node;
             if (isZeroX || isZeroY)
                  node = tree.Find(itemEnv);
