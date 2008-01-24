@@ -709,5 +709,65 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         #endregion
+
+        #region IGeometryFactory Members
+
+
+        public IPoint2D CreatePoint2D()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPoint2D CreatePoint2D(double x, double y)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPoint2DM CreatePoint2DM(double x, double y, double m)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPoint3D CreatePoint3D()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPoint3D CreatePoint3D(double x, double y, double z)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPoint3D CreatePoint3D(IPoint2D point2D, double z)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPoint3DM CreatePoint3DM(double x, double y, double z, double m)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IExtents2D CreateExtents2D(double left, double bottom, double right, double top)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IExtents2D CreateExtents2D(GeoAPI.DataStructures.Pair<double> lowerLeft, GeoAPI.DataStructures.Pair<double> upperRight)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IExtents3D CreateExtents3D(double left, double bottom, double front, double right, double top, double back)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IExtents3D CreateExtents3D(GeoAPI.DataStructures.Triple<double> lowerLeft, GeoAPI.DataStructures.Triple<double> upperRight)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

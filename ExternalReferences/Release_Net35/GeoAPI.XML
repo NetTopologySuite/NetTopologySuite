@@ -81,6 +81,13 @@
             <param name="value"><see cref="T:System.UInt32"/> to swap the bytes of.</param>
             <returns>Byte order swapped <see cref="T:System.UInt32"/>.</returns>
         </member>
+        <member name="M:GeoAPI.Utilities.ByteEncoder.swapByteOrder(System.Int64)">
+            <summary>
+            Swaps the byte order of a <see cref="T:System.Int64"/>.
+            </summary>
+            <param name="value"><see cref="T:System.Int64"/> to swap the bytes of.</param>
+            <returns>Byte order swapped <see cref="T:System.Int64"/>.</returns>
+        </member>
         <member name="M:GeoAPI.Utilities.ByteEncoder.swapByteOrder(System.Double)">
             <summary>
             Swaps the byte order of a <see cref="T:System.Double"/> (double precision IEEE 754)
@@ -1478,6 +1485,32 @@
             Gets the count of items in this node and all subnodes.
             </summary>
         </member>
+        <member name="P:GeoAPI.Geometries.IGeometry.Dimension">
+            <summary>
+            The inherent dimension of this geometric object, which must be 
+            less than or equal to the coordinate dimension.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.Geometries.IGeometry.IsEmpty">
+            <summary>
+            Returns <see langword="true"/> if this geometry is the empty geometry.
+            If true, then this geometry represents the empty point set, ∅, for the 
+            coordinate space.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.Geometries.IGeometry.IsSimple">
+            <summary>
+            Returns <see langword="true"/> if the geometry has no anomalous geometric 
+            points, such as self intersection or self tangency. The description of each 
+            instantiable geometric class will include the specific conditions that cause 
+            an instance of that class to be classified as not simple.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.Geometries.IGeometry.SpatialReference">
+            <summary>
+            Gets the spatial reference system associated with the geometry.
+            </summary>
+        </member>
         <member name="T:GeoAPI.CoordinateSystems.IDatum">
             <summary>
             A set of quantities from which other quantities are calculated.
@@ -1531,32 +1564,6 @@
         <member name="F:GeoAPI.IO.WellKnownText.TokenType.Symbol">
             <summary>
             Characters that are not whitespace, numbers, etc...
-            </summary>
-        </member>
-        <member name="P:GeoAPI.Geometries.IGeometry.Dimension">
-            <summary>
-            The inherent dimension of this geometric object, which must be 
-            less than or equal to the coordinate dimension.
-            </summary>
-        </member>
-        <member name="P:GeoAPI.Geometries.IGeometry.IsEmpty">
-            <summary>
-            Returns <see langword="true"/> if this geometry is the empty geometry.
-            If true, then this geometry represents the empty point set, ∅, for the 
-            coordinate space.
-            </summary>
-        </member>
-        <member name="P:GeoAPI.Geometries.IGeometry.IsSimple">
-            <summary>
-            Returns <see langword="true"/> if the geometry has no anomalous geometric 
-            points, such as self intersection or self tangency. The description of each 
-            instantiable geometric class will include the specific conditions that cause 
-            an instance of that class to be classified as not simple.
-            </summary>
-        </member>
-        <member name="P:GeoAPI.Geometries.IGeometry.SpatialReference">
-            <summary>
-            Gets the spatial reference system associated with the geometry.
             </summary>
         </member>
         <member name="P:GeoAPI.Geometries.IGeometry`1.SpatialReference">
@@ -2085,6 +2092,21 @@
             </param>
             <returns></returns>       
         </member>
+        <member name="M:GeoAPI.Coordinates.ICoordinateSequence`1.ExpandEnvelope(GeoAPI.Geometries.IExtents{`0})">
+            <summary>
+            Expands the given Envelope to include the coordinates in the sequence.
+            </summary>
+            <remarks>
+            Allows implementing classes to optimize access to coordinate values.
+            </remarks>
+            <param name="extents">
+            The <see cref="T:GeoAPI.Geometries.IExtents`1"/> instance to expand.
+            </param>
+            <returns>
+            An envelope which minimally encompasses all the coordinates in this 
+            <see cref="T:GeoAPI.Coordinates.ICoordinateSequence`1"/>.
+            </returns>       
+        </member>
         <member name="M:GeoAPI.Coordinates.ICoordinateSequence`1.ToArray">
             <summary>
             Creates an array of all the <typeparamref name="TCoordinate"/>
@@ -2105,21 +2127,6 @@
             <returns>
             An array of <typeparamref name="TCoordinate"/> instances.
             </returns>
-        </member>
-        <member name="M:GeoAPI.Coordinates.ICoordinateSequence`1.ExpandEnvelope(GeoAPI.Geometries.IExtents{`0})">
-            <summary>
-            Expands the given Envelope to include the coordinates in the sequence.
-            </summary>
-            <remarks>
-            Allows implementing classes to optimize access to coordinate values.
-            </remarks>
-            <param name="extents">
-            The <see cref="T:GeoAPI.Geometries.IExtents`1"/> instance to expand.
-            </param>
-            <returns>
-            An envelope which minimally encompasses all the coordinates in this 
-            <see cref="T:GeoAPI.Coordinates.ICoordinateSequence`1"/>.
-            </returns>       
         </member>
         <member name="P:GeoAPI.Coordinates.ICoordinateSequence`1.IncreasingDirection">
             <summary>
@@ -3584,7 +3591,7 @@
             <returns>A &lt;Geometry Tagged Text&gt; String (see the OpenGIS Simple
              Features Specification)</returns>
         </member>
-        <member name="M:GeoAPI.IO.WellKnownText.GeometryToWkt.Write(GeoAPI.Geometries.IGeometry,System.IO.StringWriter)">
+        <member name="M:GeoAPI.IO.WellKnownText.GeometryToWkt.Write(GeoAPI.Geometries.IGeometry,System.IO.TextWriter)">
             <summary>
             Converts a Geometry to its Well-Known Text representation.
             </summary>
@@ -3595,7 +3602,7 @@
             Simple Features Specification).
             </remarks>
         </member>
-        <member name="M:GeoAPI.IO.WellKnownText.GeometryToWkt.appendGeometryTaggedText(GeoAPI.Geometries.IGeometry,System.IO.StringWriter)">
+        <member name="M:GeoAPI.IO.WellKnownText.GeometryToWkt.appendGeometryTaggedText(GeoAPI.Geometries.IGeometry,System.IO.TextWriter)">
             <summary>
             Converts a Geometry to &lt;Geometry Tagged Text &gt; format, then Appends it to the writer.
             </summary>
@@ -3649,7 +3656,7 @@
             <param name="multiPolygon">The MultiPolygon to process</param>
             <param name="writer">The output stream writer to Append to.</param>
         </member>
-        <member name="M:GeoAPI.IO.WellKnownText.GeometryToWkt.appendGeometryCollectionTaggedText(GeoAPI.Geometries.IGeometryCollection,System.IO.StringWriter)">
+        <member name="M:GeoAPI.IO.WellKnownText.GeometryToWkt.appendGeometryCollectionTaggedText(GeoAPI.Geometries.IGeometryCollection,System.IO.TextWriter)">
             <summary>
             Converts a GeometryCollection to &lt;GeometryCollection Tagged
             Text&gt; format, then Appends it to the writer.
@@ -3718,7 +3725,7 @@
             <param name="multiPolygon">The MultiPolygon to process.</param>
             <param name="writer">The output stream to Append to.</param>
         </member>
-        <member name="M:GeoAPI.IO.WellKnownText.GeometryToWkt.appendGeometryCollectionText(GeoAPI.Geometries.IGeometryCollection,System.IO.StringWriter)">
+        <member name="M:GeoAPI.IO.WellKnownText.GeometryToWkt.appendGeometryCollectionText(GeoAPI.Geometries.IGeometryCollection,System.IO.TextWriter)">
             <summary>
             Converts a GeometryCollection to &lt;GeometryCollection Text &gt; format, then Appends it to the writer.
             </summary>
@@ -4585,7 +4592,7 @@
             <summary>
             Creates an <see cref="T:GeoAPI.CoordinateSystems.IEllipsoid"/> from an major radius, and inverse flattening.
             </summary>
-            <seealso cref="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateEllipsoid(System.Double,System.Double,GeoAPI.CoordinateSystems.ILinearUnit,System.String)"/>
+            <seealso cref="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateEllipsoid(GeoAPI.CoordinateSystems.CommonEllipsoids)"/>
             <param name="name">Name of ellipsoid.</param>
             <param name="semiMajorAxis">Semi major-axis.</param>
             <param name="inverseFlattening">Inverse flattening.</param>
@@ -4596,31 +4603,12 @@
             <summary>
             Creates an <see cref="T:GeoAPI.CoordinateSystems.IEllipsoid"/> from an major radius, and inverse flattening.
             </summary>
-            <seealso cref="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateEllipsoid(System.Double,System.Double,GeoAPI.CoordinateSystems.ILinearUnit,System.String)"/>
+            <seealso cref="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateEllipsoid(GeoAPI.CoordinateSystems.CommonEllipsoids)"/>
             <param name="name">Name of ellipsoid.</param>
             <param name="semiMajorAxis">Semi major-axis.</param>
             <param name="inverseFlattening">Inverse flattening.</param>
             <param name="linearUnit">Linear unit.</param>
             <returns>An <see cref="T:GeoAPI.CoordinateSystems.IEllipsoid"/> instance with the given parameters.</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateFromXml(System.String)">
-            <summary>
-            Creates a coordinate system object from an XML String.
-            </summary>
-            <param name="xml">XML representation for the spatial reference.</param>
-            <returns>The resulting spatial reference object.</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateFromWkt(System.String)">
-            <summary>
-            Creates a spatial reference object given its Well-Known Text representation.
-            The output object may be either a 
-            <see cref="T:GeoAPI.CoordinateSystems.IGeographicCoordinateSystem"/> or
-            a <see cref="T:GeoAPI.CoordinateSystems.IProjectedCoordinateSystem"/>.
-            </summary>
-            <param name="wkt">
-            The Well-Known Text representation for the spatial reference.
-            </param>
-            <returns>The resulting spatial reference object.</returns>
         </member>
         <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateGeographicCoordinateSystem(GeoAPI.Geometries.IExtents,GeoAPI.CoordinateSystems.IAngularUnit,GeoAPI.CoordinateSystems.IHorizontalDatum,GeoAPI.CoordinateSystems.IPrimeMeridian,GeoAPI.CoordinateSystems.IAxisInfo,GeoAPI.CoordinateSystems.IAxisInfo,System.String)">
             <summary>
@@ -4836,11 +4824,24 @@
             <param name="datumType">Type of datum.</param>
             <returns>Vertical datum.</returns>	
         </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateWgs84CoordinateSystem">
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateFromXml(System.String)">
             <summary>
-            Creates a geocentric coordinate system based on the WGS84 ellipsoid, 
-            suitable for GPS measurements.
+            Creates a coordinate system object from an XML String.
             </summary>
+            <param name="xml">XML representation for the spatial reference.</param>
+            <returns>The resulting spatial reference object.</returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateFromWkt(System.String)">
+            <summary>
+            Creates a spatial reference object given its Well-Known Text representation.
+            The output object may be either a 
+            <see cref="T:GeoAPI.CoordinateSystems.IGeographicCoordinateSystem"/> or
+            a <see cref="T:GeoAPI.CoordinateSystems.IProjectedCoordinateSystem"/>.
+            </summary>
+            <param name="wkt">
+            The Well-Known Text representation for the spatial reference.
+            </param>
+            <returns>The resulting spatial reference object.</returns>
         </member>
         <member name="T:GeoAPI.CoordinateSystems.DatumType">
             <summary>

@@ -883,6 +883,29 @@
             Gets the multiplicative identity as a Single: 1F.
             </summary>
         </member>
+        <member name="T:NPack.Interfaces.IMultipliable`2">
+            <summary>
+            Every class that defines a * operation 
+            like <c>TProduct operator * (IMultipliable a, TFactor b)</c> should consider
+            implementing this interface.
+            </summary>
+            <typeparam name="TFactor">
+            Type which multiplies the <see cref="T:NPack.Interfaces.IMultipliable`2"/> instance.
+            </typeparam>
+            <typeparam name="TProduct">Result type of the multiplication operation.</typeparam>
+            <remarks>
+            Adapted from an article on lambda-computing.com: 
+            http://www.lambda-computing.com/publications/articles/generics/IArithmetic.cs.
+            </remarks>
+        </member>
+        <member name="M:NPack.Interfaces.IMultipliable`2.Multiply(`0)">
+            <summary>
+            Returns the product of the Object and <paramref name="b"/>.
+            It must not modify the value of the Object.
+            </summary>
+            <param name="b">The factor to multiply by.</param>
+            <returns>The product.</returns>
+        </member>
         <member name="T:NPack.Interfaces.IFactorization`2">
             <summary>
             Provides an interface for a factorization of a matrix.
@@ -983,6 +1006,43 @@
             <param name="row">The index of the row of the element.</param>
             <param name="column">The index of the column of the element.</param>
             <returns>The value of the element at the specified row and column.</returns>
+        </member>
+        <member name="T:NPack.Interfaces.IComputable`2">
+            <summary>
+            Defines a type which has typical numerically computable properties.
+            </summary>
+            <typeparam name="TInput">Input type of argument.</typeparam>
+            <typeparam name="TOutput">Result type of computation.</typeparam>
+        </member>
+        <member name="T:NPack.Interfaces.IDivisible`2">
+            <summary>
+            Every class that defines a / operation 
+            like <c>T operator / (T a, T b)</c> should consider
+            implementing this interface.
+            </summary>
+            <typeparam name="TDivisor">
+            Type which divides the <see cref="T:NPack.Interfaces.IDivisible`2"/> instance.
+            </typeparam>
+            <typeparam name="TQuotient">Result type of the division operation.</typeparam>
+            <remarks>
+            Adapted from an article on lambda-computing.com: 
+            http://www.lambda-computing.com/publications/articles/generics/IArithmetic.cs.
+            </remarks>
+        </member>
+        <member name="M:NPack.Interfaces.IDivisible`2.Divide(`0)">
+            <summary>
+            Returns the quotient of the Object and <paramref name="b"/>.
+            It must not modify the value of the Object.
+            </summary>
+            <param name="b">The second operand.</param>
+            <returns>The quotient.</returns>
+        </member>
+        <member name="M:NPack.Interfaces.IComputable`2.Set(`0)">
+            <summary>
+            Sets the value of the IComputable value.
+            </summary>
+            <param name="value">Value used to set the IComputable.</param>
+            <returns>The value of the IComputable converted from <paramref name="value"/>.</returns>
         </member>
         <member name="M:NPack.Interfaces.IVector`1.Clone">
             <summary>
@@ -1590,7 +1650,7 @@
             </para>
             </remarks>
         </member>
-        <member name="M:NPack.HouseholderReflectionQrDecomposition`2.#ctor(`1,NPack.Interfaces.IMatrixFactory{`0,`1})">
+        <member name="M:NPack.HouseholderReflectionQrDecomposition`2.#ctor(`1,NPack.Interfaces.IMatrixFactory{`1,`0})">
             <summary>
             Construct a QR decomposition.
             </summary>	
@@ -1652,7 +1712,7 @@
             </para>
             </remarks>
         </member>
-        <member name="M:NPack.LUDecomposition`2.#ctor(`1,NPack.Interfaces.IMatrixFactory{`0,`1})">
+        <member name="M:NPack.LUDecomposition`2.#ctor(`1,NPack.Interfaces.IMatrixFactory{`1,`0})">
             <summary>
             Create a new LU decomposition.
             </summary>	
@@ -2274,49 +2334,6 @@
             <exception cref="T:System.ArgumentNullException">
             Thrown if <paramref name="matrix"/> is null.
             </exception>
-        </member>
-        <member name="T:NPack.Interfaces.IComputable`2">
-            <summary>
-            Defines a type which has typical numerically computable properties.
-            </summary>
-            <typeparam name="TInput">Input type of argument.</typeparam>
-            <typeparam name="TOutput">Result type of computation.</typeparam>
-        </member>
-        <member name="T:NPack.Interfaces.IDivisible`2">
-            <summary>
-            Every class that defines a / operation 
-            like <c>T operator / (T a, T b)</c> should consider
-            implementing this interface.
-            </summary>
-            <typeparam name="TDivisor">
-            Type which divides the <see cref="T:NPack.Interfaces.IDivisible`2"/> instance.
-            </typeparam>
-            <typeparam name="TQuotient">Result type of the division operation.</typeparam>
-            <remarks>
-            Adapted from an article on lambda-computing.com: 
-            http://www.lambda-computing.com/publications/articles/generics/IArithmetic.cs.
-            </remarks>
-        </member>
-        <member name="M:NPack.Interfaces.IDivisible`2.Divide(`0)">
-            <summary>
-            Returns the quotient of the Object and <paramref name="b"/>.
-            It must not modify the value of the Object.
-            </summary>
-            <param name="b">The second operand.</param>
-            <returns>The quotient.</returns>
-        </member>
-        <member name="M:NPack.Interfaces.IComputable`2.Abs">
-            <summary>
-            Computes the absolute value of the value.
-            </summary>
-            <returns>The absolute value of the IComputable value.</returns>
-        </member>
-        <member name="M:NPack.Interfaces.IComputable`2.Set(`0)">
-            <summary>
-            Sets the value of the IComputable value.
-            </summary>
-            <param name="value">Value used to set the IComputable.</param>
-            <returns>The value of the IComputable converted from <paramref name="value"/>.</returns>
         </member>
         <member name="T:NPack.AffineMatrix`1">
             <summary>
@@ -3255,7 +3272,7 @@
             <returns>A submatrix with rows given by <paramref name="rowIndexes"/> and columns <paramref name="j0"/> 
             through <paramref name="j1"/>.</returns>
         </member>
-        <member name="M:NPack.Vector`1.Transpose">
+        <member name="M:NPack.Vector`1.NPack#Interfaces#IMatrix{T}#Transpose">
             <summary>
             Returns the transpose of the matrix. Returns a clone for Vector{T}, since vectors are storage agnostic.
             </summary>
@@ -3295,7 +3312,7 @@
             </summary>
             <exception cref="T:System.NotSupportedException">Thrown when accessed.</exception>
         </member>
-        <member name="P:NPack.Vector`1.Format">
+        <member name="P:NPack.Vector`1.NPack#Interfaces#IMatrix{T}#Format">
             <summary>
             Gets the format of the matrix, either row-major or column-major.
             </summary>
@@ -4076,7 +4093,7 @@
             <typeparam name="TVector">The type of vector to store.</typeparam>
             <typeparam name="TComponent">The type of component in the vector.</typeparam>
         </member>
-        <member name="M:NPack.ManagedVectorBuffer`2.#ctor(System.Int32,System.Boolean,NPack.Interfaces.IBufferedVectorFactory{`1})">
+        <member name="M:NPack.ManagedVectorBuffer`2.#ctor(System.Int32,System.Boolean,NPack.Interfaces.IBufferedVectorFactory{`0,`1})">
             <summary>
             Creates a new <see cref="T:NPack.ManagedVectorBuffer`2"/>
             for vectors of size <paramref name="vectorDimension"/>, including space 
@@ -4092,7 +4109,7 @@
             A factory used to create vectors of type <typeparamref name="TVector"/>.
             </param>
         </member>
-        <member name="M:NPack.ManagedVectorBuffer`2.#ctor(System.Int32,System.Boolean,NPack.Interfaces.IBufferedVectorFactory{`1},System.Int32)">
+        <member name="M:NPack.ManagedVectorBuffer`2.#ctor(System.Int32,System.Boolean,NPack.Interfaces.IBufferedVectorFactory{`0,`1},System.Int32)">
             <summary>
             Creates a new <see cref="T:NPack.ManagedVectorBuffer`2"/> with
             initial capacity <paramref name="initialCapacity"/> for vectors of size

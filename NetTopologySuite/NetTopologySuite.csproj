@@ -60,7 +60,6 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
-
   <Choose>
     <When Condition="'$(UseProjectReference)' == 'false'">
       <ItemGroup>

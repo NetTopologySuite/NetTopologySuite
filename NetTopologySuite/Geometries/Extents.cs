@@ -1258,5 +1258,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         #endregion
+
+        #region IExtents Members
+
+        public void TranslateRelative(params double[] vector)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
+using GeoAPI.CoordinateSystems;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
@@ -9,7 +10,7 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>
-    /// Basic implementation of <c>Point</c>.
+    /// Basic implementation of <see cref="IPoint"/>.
     /// </summary>
     [Serializable]
     public class Point<TCoordinate> : Geometry<TCoordinate>, IPoint<TCoordinate>
@@ -280,6 +281,399 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         ICoordinate IPoint.Coordinate
         {
             get { return Coordinate; }
+        }
+
+        #endregion
+
+        #region IPoint Members
+
+
+        public int OrdinateCount
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        #endregion
+
+        #region IGeometry Members
+
+        IPoint IGeometry.Centroid
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        IGeometry IGeometry.Envelope
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        IExtents IGeometry.Extents
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        IGeometryFactory IGeometry.Factory
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        IPrecisionModel IGeometry.PrecisionModel
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        ICoordinateSystem IGeometry.SpatialReference
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        #endregion
+
+        #region ISpatialOperator Members
+
+        public double Distance(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        public new IGeometry Buffer(double distance)
+        {
+            throw new NotImplementedException();
+        }
+
+        IGeometry ISpatialOperator.Buffer(double distance, int quadrantSegments)
+        {
+            throw new NotImplementedException();
+        }
+
+        IGeometry ISpatialOperator.Buffer(double distance, GeoAPI.Operations.Buffer.BufferStyle endCapStyle)
+        {
+            throw new NotImplementedException();
+        }
+
+        IGeometry ISpatialOperator.Buffer(double distance, int quadrantSegments, GeoAPI.Operations.Buffer.BufferStyle endCapStyle)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IGeometry Intersection(IGeometry other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IGeometry Union(IGeometry other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IGeometry Difference(IGeometry other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IGeometry SymmetricDifference(IGeometry other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public new IGeometry ConvexHull()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region ISpatialRelation Members
+
+        public bool Equals(IGeometry g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Touches(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Touches(IGeometry g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Contains(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Contains(IGeometry g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Within(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Within(IGeometry g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Disjoint(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Disjoint(IGeometry g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Crosses(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Crosses(IGeometry g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Overlaps(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Overlaps(IGeometry g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Intersects(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Intersects(IGeometry g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsWithinDistance(IGeometry g, double distance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsWithinDistance(IGeometry g, double distance, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsCoveredBy(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsCoveredBy(IGeometry g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Covers(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Covers(IGeometry g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Relate(IGeometry g, IntersectionMatrix intersectionPattern)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Relate(IGeometry g, IntersectionMatrix intersectionPattern, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Relate(IGeometry g, string intersectionPattern)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Relate(IGeometry g, string intersectionPattern, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IntersectionMatrix Relate(IGeometry g)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region ICloneable Members
+
+        object ICloneable.Clone()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IComputable<double,IPoint> Members
+
+        public IPoint Set(double value)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IComputable<IPoint> Members
+
+        public IPoint Abs()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region INegatable<IPoint> Members
+
+        public IPoint Negative()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region ISubtractable<IPoint> Members
+
+        public IPoint Subtract(IPoint b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IHasZero<IPoint> Members
+
+        public IPoint Zero
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        #endregion
+
+        #region IAddable<IPoint> Members
+
+        public IPoint Add(IPoint b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IDivisible<IPoint> Members
+
+        public IPoint Divide(IPoint b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IHasOne<IPoint> Members
+
+        public IPoint One
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        #endregion
+
+        #region IMultipliable<IPoint> Members
+
+        public IPoint Multiply(IPoint b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IBooleanComparable<IPoint> Members
+
+        public bool GreaterThan(IPoint value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool GreaterThanOrEqualTo(IPoint value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool LessThan(IPoint value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool LessThanOrEqualTo(IPoint value)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IExponential<IPoint> Members
+
+        public IPoint Exp()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPoint Log()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPoint Log(double newBase)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPoint Power(double exponent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPoint Sqrt()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IMultipliable<double,IPoint> Members
+
+        public IPoint Multiply(double b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IDivisible<double,IPoint> Members
+
+        public IPoint Divide(double b)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

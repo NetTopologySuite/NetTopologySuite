@@ -1485,6 +1485,32 @@
             Gets the count of items in this node and all subnodes.
             </summary>
         </member>
+        <member name="P:GeoAPI.Geometries.IGeometry.Dimension">
+            <summary>
+            The inherent dimension of this geometric object, which must be 
+            less than or equal to the coordinate dimension.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.Geometries.IGeometry.IsEmpty">
+            <summary>
+            Returns <see langword="true"/> if this geometry is the empty geometry.
+            If true, then this geometry represents the empty point set, ∅, for the 
+            coordinate space.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.Geometries.IGeometry.IsSimple">
+            <summary>
+            Returns <see langword="true"/> if the geometry has no anomalous geometric 
+            points, such as self intersection or self tangency. The description of each 
+            instantiable geometric class will include the specific conditions that cause 
+            an instance of that class to be classified as not simple.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.Geometries.IGeometry.SpatialReference">
+            <summary>
+            Gets the spatial reference system associated with the geometry.
+            </summary>
+        </member>
         <member name="T:GeoAPI.CoordinateSystems.IDatum">
             <summary>
             A set of quantities from which other quantities are calculated.
@@ -1538,32 +1564,6 @@
         <member name="F:GeoAPI.IO.WellKnownText.TokenType.Symbol">
             <summary>
             Characters that are not whitespace, numbers, etc...
-            </summary>
-        </member>
-        <member name="P:GeoAPI.Geometries.IGeometry.Dimension">
-            <summary>
-            The inherent dimension of this geometric object, which must be 
-            less than or equal to the coordinate dimension.
-            </summary>
-        </member>
-        <member name="P:GeoAPI.Geometries.IGeometry.IsEmpty">
-            <summary>
-            Returns <see langword="true"/> if this geometry is the empty geometry.
-            If true, then this geometry represents the empty point set, ∅, for the 
-            coordinate space.
-            </summary>
-        </member>
-        <member name="P:GeoAPI.Geometries.IGeometry.IsSimple">
-            <summary>
-            Returns <see langword="true"/> if the geometry has no anomalous geometric 
-            points, such as self intersection or self tangency. The description of each 
-            instantiable geometric class will include the specific conditions that cause 
-            an instance of that class to be classified as not simple.
-            </summary>
-        </member>
-        <member name="P:GeoAPI.Geometries.IGeometry.SpatialReference">
-            <summary>
-            Gets the spatial reference system associated with the geometry.
             </summary>
         </member>
         <member name="P:GeoAPI.Geometries.IGeometry`1.SpatialReference">
@@ -2092,6 +2092,21 @@
             </param>
             <returns></returns>       
         </member>
+        <member name="M:GeoAPI.Coordinates.ICoordinateSequence`1.ExpandEnvelope(GeoAPI.Geometries.IExtents{`0})">
+            <summary>
+            Expands the given Envelope to include the coordinates in the sequence.
+            </summary>
+            <remarks>
+            Allows implementing classes to optimize access to coordinate values.
+            </remarks>
+            <param name="extents">
+            The <see cref="T:GeoAPI.Geometries.IExtents`1"/> instance to expand.
+            </param>
+            <returns>
+            An envelope which minimally encompasses all the coordinates in this 
+            <see cref="T:GeoAPI.Coordinates.ICoordinateSequence`1"/>.
+            </returns>       
+        </member>
         <member name="M:GeoAPI.Coordinates.ICoordinateSequence`1.ToArray">
             <summary>
             Creates an array of all the <typeparamref name="TCoordinate"/>
@@ -2112,21 +2127,6 @@
             <returns>
             An array of <typeparamref name="TCoordinate"/> instances.
             </returns>
-        </member>
-        <member name="M:GeoAPI.Coordinates.ICoordinateSequence`1.ExpandEnvelope(GeoAPI.Geometries.IExtents{`0})">
-            <summary>
-            Expands the given Envelope to include the coordinates in the sequence.
-            </summary>
-            <remarks>
-            Allows implementing classes to optimize access to coordinate values.
-            </remarks>
-            <param name="extents">
-            The <see cref="T:GeoAPI.Geometries.IExtents`1"/> instance to expand.
-            </param>
-            <returns>
-            An envelope which minimally encompasses all the coordinates in this 
-            <see cref="T:GeoAPI.Coordinates.ICoordinateSequence`1"/>.
-            </returns>       
         </member>
         <member name="P:GeoAPI.Coordinates.ICoordinateSequence`1.IncreasingDirection">
             <summary>
