@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.CoordinateSystems;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
@@ -31,7 +32,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModelType.Floating" />.
         /// </summary>
-        public static IGeometryFactory<TCoordinate> CreateFloatingPrecision(ICoordinateSequenceFactory<TCoordinate> coordSequenceFactory)
+        public static IGeometryFactory<TCoordinate> CreateFloatingPrecision(
+            ICoordinateSequenceFactory<TCoordinate> coordSequenceFactory)
         {
             return new GeometryFactory<TCoordinate>(coordSequenceFactory);
         }
@@ -40,11 +42,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModelType.FloatingSingle" />.
         /// </summary>
-        public static IGeometryFactory<TCoordinate> CreateFloatingSinglePrecision(ICoordinateSequenceFactory<TCoordinate> coordSequenceFactory)
+        public static IGeometryFactory<TCoordinate> CreateFloatingSinglePrecision(
+            ICoordinateSequenceFactory<TCoordinate> coordSequenceFactory)
         {
-            return new GeometryFactory<TCoordinate>(new PrecisionModel<TCoordinate>(PrecisionModelType.FloatingSingle), null, coordSequenceFactory);
+            return
+                new GeometryFactory<TCoordinate>(new PrecisionModel<TCoordinate>(PrecisionModelType.FloatingSingle),
+                                                 null, coordSequenceFactory);
         }
-            
+
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
@@ -57,7 +62,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         private readonly ICoordinateSequenceFactory<TCoordinate> _coordinateSequenceFactory;
         private readonly IPrecisionModel<TCoordinate> _precisionModel;
-        private readonly Int32? _srid;
+        private Int32? _srid;
+        private ICoordinateSystem<TCoordinate> _spatialReference;
 
         //public static IPoint CreatePointFromInternalCoord(ICoordinate coord, IGeometry exemplar)
         //{
@@ -70,29 +76,22 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.
         /// </summary>    
         public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel, Int32? srid,
-                               ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory)
+                               ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory,
+                               ICoordinateSystem<TCoordinate> spatialReference)
         {
             _precisionModel = precisionModel;
             _coordinateSequenceFactory = coordinateSequenceFactory;
             _srid = srid;
+            _spatialReference = spatialReference;
         }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
-        /// CoordinateSequence implementation, a Double-precision floating PrecisionModel and a
-        /// spatial-reference ID of 0.
-        /// </summary>
-        public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory)
-            : this(new PrecisionModel<TCoordinate>(), null, coordinateSequenceFactory) { }
-
-        /// <summary>
-        /// Constructs a GeometryFactory that generates Geometries having the given
-        /// {PrecisionModel} and the default CoordinateSequence
-        /// implementation.
-        /// </summary>
-        /// <param name="precisionModel">The PrecisionModel to use.</param>
-        public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel)
-            : this(precisionModel, null, getDefaultCoordinateSequenceFactory<TCoordinate>()) { }
+        /// PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.
+        /// </summary>    
+        public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel, Int32? srid,
+                               ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory)
+            : this(precisionModel, srid, coordinateSequenceFactory, null) {}
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
@@ -102,13 +101,63 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="precisionModel">The PrecisionModel to use.</param>
         /// <param name="srid">The SRID to use.</param>
         public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel, Int32? srid)
-            : this(precisionModel, srid, getDefaultCoordinateSequenceFactory<TCoordinate>()) { }
+            : this(precisionModel, srid, getDefaultCoordinateSequenceFactory<TCoordinate>()) {}
 
-        ///// <summary>
-        ///// Constructs a GeometryFactory that generates Geometries having a floating
-        ///// PrecisionModel and a spatial-reference ID of 0.
-        ///// </summary>
-        //public GeometryFactory() : this(new PrecisionModel<TCoordinate>(), 0) { }
+        /// <summary>
+        /// Constructs a GeometryFactory that generates Geometries having the given
+        /// CoordinateSequence implementation, the given 
+        /// <see cref="IPrecisionModel{TCoordinate}"/> and a <see langword="null"/> spatial-reference ID.
+        /// </summary>
+        public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel,
+                               ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory)
+            : this(precisionModel, null, coordinateSequenceFactory) {}
+
+        /// <summary>
+        /// Constructs a GeometryFactory that generates Geometries having the given
+        /// <see cref="IPrecisionModel{TCoordinate}"/> and the default <see cref="ICoordinateSequenceFactory{TCoordinate}"/>
+        /// implementation.
+        /// </summary>
+        /// <param name="precisionModel">The <see cref="IPrecisionModel{TCoordinate}"/> to use.</param>
+        public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel)
+            : this(precisionModel, null, getDefaultCoordinateSequenceFactory<TCoordinate>()) {}
+
+        /// <summary>
+        /// Constructs a GeometryFactory that generates Geometries having the given
+        /// CoordinateSequence implementation, a Double-precision floating 
+        /// <see cref="IPrecisionModel{TCoordinate}"/>, the given spatial-reference ID 
+        /// and the given <see cref="ICoordinateSystem{TCoordinate}"/>.
+        /// </summary>
+        public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory, Int32? srid,
+                               ICoordinateSystem<TCoordinate> spatialReference)
+            : this(new PrecisionModel<TCoordinate>(), srid, coordinateSequenceFactory, spatialReference) {}
+
+        /// <summary>
+        /// Constructs a GeometryFactory that generates Geometries having the given
+        /// CoordinateSequence implementation, a Double-precision floating 
+        /// <see cref="IPrecisionModel{TCoordinate}"/>, and the given spatial-reference ID.
+        /// </summary>
+        public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory, Int32? srid)
+            : this(coordinateSequenceFactory, srid, null) {}
+
+        /// <summary>
+        /// Constructs a GeometryFactory that generates Geometries having the given
+        /// CoordinateSequence implementation, a Double-precision floating 
+        /// <see cref="IPrecisionModel{TCoordinate}"/>, a
+        /// <see langword="null"/> spatial-reference ID and the given 
+        /// <see cref="ICoordinateSystem{TCoordinate}"/>.
+        /// </summary>
+        public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory,
+                               ICoordinateSystem<TCoordinate> spatialReference)
+            : this(coordinateSequenceFactory, null, spatialReference) {}
+
+        /// <summary>
+        /// Constructs a GeometryFactory that generates Geometries having the given
+        /// CoordinateSequence implementation, a Double-precision floating 
+        /// <see cref="IPrecisionModel{TCoordinate}"/>, and a
+        /// <see langword="null"/> spatial-reference ID.
+        /// </summary>
+        public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory)
+            : this(coordinateSequenceFactory, null, null) {}
 
         /// <summary>  
         /// Build an appropriate <see cref="Geometry{TCoordinate}"/>, <c>MultiGeometry</c>, or
@@ -367,9 +416,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public IPolygon<TCoordinate> CreatePolygon(ILinearRing<TCoordinate> shell,
                                                    IEnumerable<ILinearRing<TCoordinate>> holes)
         {
-            return new Polygon<TCoordinate>(shell, 
-                Enumerable.Upcast<ILineString<TCoordinate>, ILinearRing<TCoordinate>>(holes), 
-                this);
+            return new Polygon<TCoordinate>(shell,
+                                            Enumerable.Upcast<ILineString<TCoordinate>, ILinearRing<TCoordinate>>(holes),
+                                            this);
         }
 
         /// <summary> 
@@ -497,13 +546,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public ICoordinateSystem<TCoordinate> SpatialReference
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return _spatialReference; }
+            set { _spatialReference = value; }
         }
 
         public Int32? Srid
         {
             get { return _srid; }
+            set { _srid = value; }
         }
 
         private static ICoordinateSequenceFactory<TCoordinate> getDefaultCoordinateSequenceFactory<TCoordinate>()
@@ -523,6 +573,86 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         #region IGeometryFactory Members
+
+        public IExtents CreateExtents()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IExtents CreateExtents(IExtents first, IExtents second)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IExtents CreateExtents(IExtents first, IExtents second, IExtents third)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IExtents CreateExtents(params IExtents[] extents)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPoint2D CreatePoint2D()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPoint2D CreatePoint2D(Double x, Double y)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPoint2DM CreatePoint2DM(Double x, Double y, Double m)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPoint3D CreatePoint3D()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPoint3D CreatePoint3D(Double x, Double y, Double z)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPoint3D CreatePoint3D(IPoint2D point2D, Double z)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPoint3DM CreatePoint3DM(Double x, Double y, Double z, Double m)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IExtents2D CreateExtents2D(Double left, Double bottom, Double right, Double top)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IExtents2D CreateExtents2D(Pair<Double> lowerLeft, Pair<Double> upperRight)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IExtents3D CreateExtents3D(Double left, Double bottom, Double front, Double right, Double top,
+                                          Double back)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IExtents3D CreateExtents3D(Triple<Double> lowerLeft, Triple<Double> upperRight)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region Explicit IGeometryFactory Members
 
         ICoordinateFactory IGeometryFactory.CoordinateFactory
         {
@@ -688,22 +818,22 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             throw new NotImplementedException();
         }
 
-        public IExtents CreateExtents()
+        #endregion
+
+        #region IGeometryFactory<TCoordinate> Members
+
+
+        IPolygon<TCoordinate> IGeometryFactory<TCoordinate>.CreatePolygon()
         {
             throw new NotImplementedException();
         }
 
-        public IExtents CreateExtents(IExtents first, IExtents second)
+        public IPolygon<TCoordinate> CreatePolygon(ICoordinateSequence<TCoordinate> coordinates)
         {
             throw new NotImplementedException();
         }
 
-        public IExtents CreateExtents(IExtents first, IExtents second, IExtents third)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IExtents CreateExtents(params IExtents[] extents)
+        public IMultiPolygon<TCoordinate> CreateMultiPolygon(ICoordinateSequence<TCoordinate> coordinates)
         {
             throw new NotImplementedException();
         }
@@ -713,57 +843,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         #region IGeometryFactory Members
 
 
-        public IPoint2D CreatePoint2D()
+        public IPolygon CreatePolygon(ICoordinateSequence coordinates)
         {
             throw new NotImplementedException();
         }
 
-        public IPoint2D CreatePoint2D(double x, double y)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IPoint2DM CreatePoint2DM(double x, double y, double m)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IPoint3D CreatePoint3D()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IPoint3D CreatePoint3D(double x, double y, double z)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IPoint3D CreatePoint3D(IPoint2D point2D, double z)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IPoint3DM CreatePoint3DM(double x, double y, double z, double m)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IExtents2D CreateExtents2D(double left, double bottom, double right, double top)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IExtents2D CreateExtents2D(GeoAPI.DataStructures.Pair<double> lowerLeft, GeoAPI.DataStructures.Pair<double> upperRight)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IExtents3D CreateExtents3D(double left, double bottom, double front, double right, double top, double back)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IExtents3D CreateExtents3D(GeoAPI.DataStructures.Triple<double> lowerLeft, GeoAPI.DataStructures.Triple<double> upperRight)
+        public IMultiPolygon CreateMultiPolygon(ICoordinateSequence coordinates)
         {
             throw new NotImplementedException();
         }

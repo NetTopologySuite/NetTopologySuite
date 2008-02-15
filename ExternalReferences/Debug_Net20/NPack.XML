@@ -4126,6 +4126,29 @@
             </param>
             <param name="initialCapacity">The initial capacity for the buffer.</param>
         </member>
+        <member name="M:NPack.ManagedVectorBuffer`2.Add(`1,`1)">
+            <summary>
+            Adds components to the buffer as a vector. Returns the resulting
+            <typeparamref name="TVector"/> instance.
+            </summary>
+            <param name="v0">The first component which make up the vector.</param>
+            <param name="v1">The second component which make up the vector.</param>
+            <returns>
+            The resulting vector after adding the given components.
+            </returns>
+        </member>
+        <member name="M:NPack.ManagedVectorBuffer`2.Add(`1,`1,`1)">
+            <summary>
+            Adds components to the buffer as a vector. Returns the resulting
+            <typeparamref name="TVector"/> instance.
+            </summary>
+            <param name="v0">The first component which make up the vector.</param>
+            <param name="v1">The second component which make up the vector.</param>
+            <param name="v2">The second component which make up the vector.</param>
+            <returns>
+            The resulting vector after adding the given components.
+            </returns>
+        </member>
         <member name="M:NPack.ManagedVectorBuffer`2.Add(`1[])">
             <summary>
             Adds an array of components to the buffer as a vector. Returns the resulting
