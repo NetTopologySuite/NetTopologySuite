@@ -105,7 +105,7 @@ namespace NetTopologySuite.Coordinates
 
         public Boolean IsEmpty
         {
-            get { return _index.HasValue; }
+            get { return _index == null; }
         }
 
         public Double this[Ordinates ordinate]
@@ -572,7 +572,18 @@ namespace NetTopologySuite.Coordinates
 
         Boolean IEquatable<ICoordinate>.Equals(ICoordinate other)
         {
-            throw new NotImplementedException();
+            if (other is BufferedCoordinate2D)
+            {
+                return Equals((BufferedCoordinate2D) other);
+            }
+            
+            if (other == null)
+            {
+                return false;
+            }
+
+            return other[Ordinates.X] == this[Ordinates.X]
+                && other[Ordinates.Y] == this[Ordinates.Y];
         }
 
         #endregion
@@ -1043,6 +1054,15 @@ namespace NetTopologySuite.Coordinates
         ICoordinate IDivisible<Double, ICoordinate>.Divide(Double b)
         {
             throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region ICoordinate Members
+
+        ICoordinate ICoordinate.Divide(Double value)
+        {
+            return Divide(value);
         }
 
         #endregion
