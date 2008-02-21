@@ -3356,6 +3356,24 @@
             <param name="column">The index of the column of the element.</param>
             <returns>The value of the element at the specified row and column.</returns>
         </member>
+        <member name="T:NPack.Interfaces.IVectorBuffer`2">
+            <summary>
+            Defines a vector buffer for storing vector data in a specific format.
+            </summary>
+            <typeparam name="TVector">The type of vector to store.</typeparam>
+            <typeparam name="TComponent">The type of component in the vector.</typeparam>
+            <remarks>
+            <para>
+            A vector buffer allows specific storage of vectors in memory. This is useful
+            since modern hardware treats vector data specially, and a specific storage
+            format can take advantage of these capabilities. For example, SSE and SSE2 instructions
+            are found on almost all of the non-embedded, general-purpose CPUs on the market,
+            and these instructions work best when memory is aligned to 16-byte boundaries. 
+            Using a Structure of Arrays (SoA) data format is also preferable when performing
+            matrix computations.
+            </para>
+            </remarks>
+        </member>
         <member name="T:NPack.SingleComplexComponent">
             <summary>
             A matrix component or matrix element which represents a complex number with a 
@@ -3392,35 +3410,39 @@
             Generates random numbers using the Mersenne Twister algorithm.
             </summary>
         </member>
-        <member name="M:NPack.MersenneTwister.#ctor(System.UInt32)">
+        <member name="M:NPack.MersenneTwister.#ctor(System.Int32)">
             <summary>
-            Creates a new random number generator with a non-zero seed.
+            Creates a new random number generator with a seed.
             </summary>
-            <param name="seed">A non-zero value to use as a seed.</param>
+            <param name="seed">A value to use as a seed.</param>
         </member>
         <member name="M:NPack.MersenneTwister.#ctor">
             <summary>
             Creates a new random number generator with a default seed.
             </summary>
+            <remarks>
+            <c>new <see cref="T:System.Random"/>().<see cref="M:System.Random.Next"/></c> 
+            is used for the seed.
+            </remarks>
         </member>
-        <member name="M:NPack.MersenneTwister.GenerateUInt">
+        <member name="M:NPack.MersenneTwister.#ctor(System.Int32[])">
             <summary>
-            Generates a new random unsigned Int32.
+            Creates a random number generator initialized with the given array.
             </summary>
-            <returns>A random UInt32.</returns>
+            <param name="initKey">The array for initializing keys.</param>
         </member>
-        <member name="M:NPack.MersenneTwister.NextUInt">
+        <member name="M:NPack.MersenneTwister.NextUInt32">
             <summary>
             Returns the next random <see cref="T:System.UInt32"/>.
             </summary>
-            <returns>A random UInt32 value.</returns>
+            <returns>A random <see cref="T:System.UInt32"/> value.</returns>
         </member>
         <member name="M:NPack.MersenneTwister.NextUInt(System.UInt32)">
             <summary>
             Returns the next random <see cref="T:System.UInt32"/> up to <paramref name="maxValue"/>.
             </summary>
             <param name="maxValue">The maximum value of the random number to create.</param>
-            <returns>A random UInt32 value which is at most <paramref name="maxValue"/>.</returns>
+            <returns>A random <see cref="T:System.UInt32"/> value which is at most <paramref name="maxValue"/>.</returns>
         </member>
         <member name="M:NPack.MersenneTwister.NextUInt(System.UInt32,System.UInt32)">
             <summary>
@@ -3429,15 +3451,19 @@
             </summary>
             <param name="minValue">The minimum value of the random number to create.</param>
             <param name="maxValue">The maximum value of the random number to create.</param>
-            <returns>A random UInt32 value which is at least <paramref name="minValue"/> and at 
-            most <paramref name="maxValue"/>.</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException">If <c>minValue &gt;= maxValue</c>.</exception>
+            <returns>
+            A random <see cref="T:System.UInt32"/> value which is at least <paramref name="minValue"/> and at 
+            most <paramref name="maxValue"/>.
+            </returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            If <c><paramref name="minValue"/> &gt;= <paramref name="maxValue"/></c>.
+            </exception>
         </member>
         <member name="M:NPack.MersenneTwister.Next">
             <summary>
             Returns the next random <see cref="T:System.Int32"/>.
             </summary>
-            <returns>A random Int32 value.</returns>
+            <returns>A random <see cref="T:System.Int32"/> value.</returns>
         </member>
         <member name="M:NPack.MersenneTwister.Next(System.Int32)">
             <summary>
@@ -3448,27 +3474,97 @@
         </member>
         <member name="M:NPack.MersenneTwister.Next(System.Int32,System.Int32)">
             <summary>
-            Returns the next random <see cref="T:System.Int32"/> at least <paramref name="minValue"/> 
+            Returns the next random <see cref="T:System.Int32"/> 
+            at least <paramref name="minValue"/> 
             and up to <paramref name="maxValue"/>.
             </summary>
             <param name="minValue">The minimum value of the random number to create.</param>
             <param name="maxValue">The maximum value of the random number to create.</param>
             <returns>A random Int32 value which is at least <paramref name="minValue"/> and at 
             most <paramref name="maxValue"/>.</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException">If <c>minValue &gt;= maxValue</c>.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            If <c><paramref name="minValue"/> &gt;= <paramref name="maxValue"/></c>.
+            </exception>
         </member>
         <member name="M:NPack.MersenneTwister.NextBytes(System.Byte[])">
             <summary>
             Fills a buffer with random bytes.
             </summary>
             <param name="buffer">The buffer to fill.</param>
-            <exception cref="T:System.ArgumentNullException">If <c>buffer == null</c>.</exception>
+            <exception cref="T:System.ArgumentNullException">
+            If <c><paramref name="buffer"/> == <see langword="null"/></c>.
+            </exception>
         </member>
         <member name="M:NPack.MersenneTwister.NextDouble">
             <summary>
             Returns the next random <see cref="T:System.Double"/> value.
             </summary>
             <returns>A random Double floating point value.</returns>
+        </member>
+        <member name="M:NPack.MersenneTwister.NextDouble(System.Boolean)">
+            <summary>
+            Returns a random number greater than or equal to zero, and either strictly
+            less than one, or less than or equal to one, depending on the value of the
+            given boolean parameter.
+            </summary>
+            <param name="includeOne">
+            If <c>true</c>, the random number returned will be 
+            less than or equal to one; otherwise, the random number returned will
+            be strictly less than one.
+            </param>
+            <returns>
+            If <c>includeOne</c> is <c>true</c>, this method returns a
+            single-precision random number greater than or equal to zero, and less
+            than or equal to one. If <c>includeOne</c> is <c>false</c>, this method
+            returns a single-precision random number greater than or equal to zero and
+            strictly less than one.
+            </returns>
+        </member>
+        <member name="M:NPack.MersenneTwister.NextDoublePositive">
+            <summary>
+            Returns a random number greater than 0.0 and less than 1.0.
+            </summary>
+            <returns>A random number greater than 0.0 and less than 1.0.</returns>
+        </member>
+        <member name="M:NPack.MersenneTwister.NextSingle">
+            <summary>
+            Returns a random number between 0.0 and 1.0.
+            </summary>
+            <returns>
+            A single-precision floating point number greater than or equal to 0.0, 
+            and less than 1.0.
+            </returns>
+        </member>
+        <member name="M:NPack.MersenneTwister.NextFloat(System.Boolean)">
+            <summary>
+            Returns a random number greater than or equal to zero, and either strictly
+            less than one, or less than or equal to one, depending on the value of the
+            given boolean parameter.
+            </summary>
+            <param name="includeOne">
+            If <c>true</c>, the random number returned will be 
+            less than or equal to one; otherwise, the random number returned will
+            be strictly less than one.
+            </param>
+            <returns>
+            If <c>includeOne</c> is <c>true</c>, this method returns a
+            single-precision random number greater than or equal to zero, and less
+            than or equal to one. If <c>includeOne</c> is <c>false</c>, this method
+            returns a single-precision random number greater than or equal to zero and
+            strictly less than one.
+            </returns>
+        </member>
+        <member name="M:NPack.MersenneTwister.NextFloatPositive">
+            <summary>
+            Returns a random number greater than 0.0 and less than 1.0.
+            </summary>
+            <returns>A random number greater than 0.0 and less than 1.0.</returns>
+        </member>
+        <member name="M:NPack.MersenneTwister.GenerateUInt32">
+            <summary>
+            Generates a new random <see cref="T:System.UInt32"/>.
+            </summary>
+            <returns>A random <see cref="T:System.UInt32"/>.</returns>
         </member>
         <member name="T:NPack.MatrixFormat">
             <summary>
@@ -4087,11 +4183,23 @@
         </member>
         <member name="T:NPack.ManagedVectorBuffer`2">
             <summary>
-            Implements a vector buffer for storing vector data in a single, contiguous
-            indexed block of memory.
+            Defines a vector buffer for storing vector data in a specific format. The 
+            <see cref="T:NPack.ManagedVectorBuffer`2"/> stores vectors
+            on the managed heap, and is fully verifiable.
             </summary>
             <typeparam name="TVector">The type of vector to store.</typeparam>
             <typeparam name="TComponent">The type of component in the vector.</typeparam>
+            <remarks>
+            <para>
+            A vector buffer allows specific storage of vectors in memory. This is useful
+            since modern hardware treats vector data specially, and a specific storage
+            format can take advantage of these capabilities. For example, SSE and SSE2 instructions
+            are found on almost all of the non-embedded, general-purpose CPUs on the market,
+            and these instructions work best when memory is aligned to 16-byte boundaries. 
+            Using a Structure of Arrays (SoA) data format is also preferable when performing
+            matrix computations.
+            </para>
+            </remarks>
         </member>
         <member name="M:NPack.ManagedVectorBuffer`2.#ctor(System.Int32,System.Boolean,NPack.Interfaces.IBufferedVectorFactory{`0,`1})">
             <summary>
