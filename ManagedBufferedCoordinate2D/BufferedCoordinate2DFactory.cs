@@ -9,8 +9,8 @@ using GeoAPI.DataStructures;
 
 namespace NetTopologySuite.Coordinates
 {
-    public class BufferedCoordinate2DFactory 
-        : ICoordinateFactory<BufferedCoordinate2D>, IVectorBuffer<BufferedCoordinate2D, DoubleComponent>, 
+    public class BufferedCoordinate2DFactory
+        : ICoordinateFactory<BufferedCoordinate2D>, IVectorBuffer<BufferedCoordinate2D, DoubleComponent>,
           IBufferedVectorFactory<BufferedCoordinate2D, DoubleComponent>
     {
         private readonly ManagedVectorBuffer<BufferedCoordinate2D, DoubleComponent> _coordinates;
@@ -171,8 +171,8 @@ namespace NetTopologySuite.Coordinates
 
         public Int32 Add(IVector<DoubleComponent> vector)
         {
-            Double x = (Double) vector[0];
-            Double y = (Double) vector[1];
+            Double x = (Double)vector[0];
+            Double y = (Double)vector[1];
 
             BufferedCoordinate2D v = getVertexInternal(x, y);
 
@@ -181,7 +181,7 @@ namespace NetTopologySuite.Coordinates
 
         public Int32 Add(BufferedCoordinate2D vector)
         {
-            if(isValidVertex(vector))
+            if (isValidVertex(vector))
             {
                 return vector.Index;
             }
@@ -206,7 +206,7 @@ namespace NetTopologySuite.Coordinates
                 throw new ArgumentException("A BufferedCoordinate2D can only have two components.");
             }
 
-            return getVertexInternal((Double) components[0], (Double) components[1]);
+            return getVertexInternal((Double)components[0], (Double)components[1]);
         }
 
         public void Clear()
@@ -315,7 +315,7 @@ namespace NetTopologySuite.Coordinates
             {
                 return (Double)_coordinates[index, 0];
             }
-            else if(ordinate == Ordinates.Y)
+            else if (ordinate == Ordinates.Y)
             {
                 return (Double)_coordinates[index, 1];
             }
@@ -332,7 +332,7 @@ namespace NetTopologySuite.Coordinates
 
         internal BufferedCoordinate2D Add(BufferedCoordinate2D a, BufferedCoordinate2D b)
         {
-            throw new NotImplementedException();
+            return getVertexInternal(a.X + b.X, a.Y + b.Y);
         }
 
         internal BufferedCoordinate2D Divide(BufferedCoordinate2D a, BufferedCoordinate2D b)
@@ -342,7 +342,7 @@ namespace NetTopologySuite.Coordinates
 
         internal BufferedCoordinate2D GetOne()
         {
-            throw new NotImplementedException();
+            return getVertexInternal(1, 1);
         }
 
         internal BufferedCoordinate2D Multiply(BufferedCoordinate2D a, BufferedCoordinate2D b)
@@ -372,7 +372,7 @@ namespace NetTopologySuite.Coordinates
 
         internal BufferedCoordinate2D Divide(BufferedCoordinate2D a, Double b)
         {
-            throw new NotImplementedException();
+            return getVertexInternal(a.X / b, a.Y / b);
         }
 
         #region IEnumerable Members
@@ -418,11 +418,11 @@ namespace NetTopologySuite.Coordinates
 
             Debug.Assert(indexStart <= indexEnd);
 
-            if(indexEnd == indexStart)
+            if (indexEnd == indexStart)
             {
                 index = indexEnd;
 
-                if(index >= _coordinates.Count)
+                if (index >= _coordinates.Count)
                 {
                     return false;
                 }
@@ -448,7 +448,7 @@ namespace NetTopologySuite.Coordinates
 
             if (compareResult < 0)
             {
-                if(midPoint == indexStart)
+                if (midPoint == indexStart)
                 {
                     index = midPoint;
                     return false;
@@ -460,7 +460,7 @@ namespace NetTopologySuite.Coordinates
             }
             else
             {
-                if(compareResult > 0)
+                if (compareResult > 0)
                 {
                     Pair<Int32> newRange = new Pair<Int32>((midPoint + 1 + indexEnd) / 2, indexEnd);
                     return findExisting(coord, newRange, out index);
@@ -489,13 +489,23 @@ namespace NetTopologySuite.Coordinates
                 {
                     return v1.Second.CompareTo(v2.Second);
                 }
-            }   
+            }
         }
 
         private BufferedCoordinate2D addNew(Double x, Double y, Int32 index)
         {
             BufferedCoordinate2D coord = _coordinates.Add(x, y, 1);
             _lexicographicVertexIndex.Insert(index, coord);
+            return coord;
+        }
+
+        private BufferedCoordinate2D import(BufferedCoordinate2D coord)
+        {
+            if (!ReferenceEquals(coord.Factory, this))
+            {
+                return getVertexInternal(coord.X, coord.Y);
+            }
+
             return coord;
         }
     }

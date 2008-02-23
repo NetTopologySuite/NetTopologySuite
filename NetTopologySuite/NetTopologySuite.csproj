@@ -314,22 +314,11 @@
     <Compile Include="Utilities\Global.cs" />
     <Compile Include="Utilities\Radians.cs" />
     <Compile Include="Utilities\ReverseOrder.cs" />
-    <Compile Include="Utilities\RToolsUtil\BufferedTextReader.cs" />
-    <Compile Include="Utilities\RToolsUtil\CharBuffer.cs" />
-    <Compile Include="Utilities\RToolsUtil\Finder.cs" />
-    <Compile Include="Utilities\RToolsUtil\Logger.cs" />
-    <Compile Include="Utilities\RToolsUtil\Opts.cs" />
-    <Compile Include="Utilities\RToolsUtil\ParseUtil.cs" />
-    <Compile Include="Utilities\RToolsUtil\SoftwarePackage.cs" />
-    <Compile Include="Utilities\RToolsUtil\StreamTokenizer.cs" />
-    <Compile Include="Utilities\RToolsUtil\Token.cs" />
-    <Compile Include="Utilities\RToolsUtil\VerbosityLevel.cs" />
     <Compile Include="Utilities\Stopwatch.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="License.txt" />
     <Content Include="ReadMe.txt" />
-    <Content Include="Utilities\RToolsUtil\Rtools.Util.License.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NTS.ndoc" />

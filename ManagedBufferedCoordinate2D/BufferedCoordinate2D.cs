@@ -955,6 +955,11 @@ namespace NetTopologySuite.Coordinates
 
         ICoordinate IAddable<ICoordinate>.Add(ICoordinate b)
         {
+            if (b is BufferedCoordinate2D)
+            {
+                return Add((BufferedCoordinate2D) b);
+            }
+
             throw new NotImplementedException();
         }
 
