@@ -38,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public void Add(Edge<TCoordinate> e)
         {
             _edges.Add(e);
-            _index.Insert(e.Extents, e);
+            _index.Insert(e);
         }
 
         public void AddRange(IEnumerable<Edge<TCoordinate>> edges)

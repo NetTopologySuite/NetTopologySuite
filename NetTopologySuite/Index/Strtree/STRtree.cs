@@ -24,6 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
     /// </remarks>
     public class StrTree<TCoordinate, TItem> : AbstractStrTree<IExtents<TCoordinate>, TItem>, ISpatialIndex<IExtents<TCoordinate>, TItem>
+        where TItem : IBoundable<IExtents<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, IComputable<Double, TCoordinate>,
             IConvertible
     {
@@ -276,10 +277,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return base.CreateParentBoundables(childBoundables, newLevel);
         }
 
-        protected override IBoundable<IExtents<TCoordinate>> CreateItemBoundable(IExtents<TCoordinate> bounds, TItem item)
-        {
-            return new StrItemBoundable(bounds, item);
-        }
+        //protected override IBoundable<IExtents<TCoordinate>> CreateItemBoundable(IExtents<TCoordinate> bounds, TItem item)
+        //{
+        //    return new StrItemBoundable(bounds, item);
+        //}
 
         //protected override Func<IExtents<TCoordinate>, IExtents<TCoordinate>, Boolean> IntersectsOp
         //{

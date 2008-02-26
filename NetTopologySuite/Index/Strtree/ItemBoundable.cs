@@ -4,7 +4,7 @@ using GeoAPI.Indexing;
 namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 {
     /// <summary>
-    /// Boundable wrapper for a non-Boundable spatial object. Used internally by
+    /// Boundable wrapper for a non-boundable object. Used internally by
     /// AbstractStrTree.
     /// </summary>
     public abstract class ItemBoundable<TBounds, TItem> : IBoundable<TBounds>
@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         private readonly TBounds _bounds;
         private readonly TItem _item;
 
-        public ItemBoundable(TBounds bounds, TItem item)
+        protected ItemBoundable(TBounds bounds, TItem item)
         {
             _bounds = bounds;
             _item = item;

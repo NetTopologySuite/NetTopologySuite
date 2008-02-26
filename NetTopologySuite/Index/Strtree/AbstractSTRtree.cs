@@ -24,6 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
     /// </summary>
     public abstract class AbstractStrTree<TBounds, TItem> : ISpatialIndex<TBounds, TItem>
         where TBounds : IContainable<TBounds>, IIntersectable<TBounds>
+        where TItem : IBoundable<TBounds>
     {
         ///// <returns>
         ///// A test for intersection between two bounds, necessary because subclasses
@@ -168,7 +169,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         public void Insert(TBounds bounds, TItem item)
         {
             Assert.IsTrue(!_built, "Cannot insert items into an STR packed R-tree after it has been built.");
-            _children.Add(CreateItemBoundable(bounds, item));
+            _children.Add(item);
         }
 
         /// <remarks>
@@ -237,7 +238,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         //    return a > b ? 1 : a < b ? -1 : 0;
         //}
 
-        protected abstract IBoundable<TBounds> CreateItemBoundable(TBounds bounds, TItem item);
+        //protected abstract IBoundable<TBounds> CreateItemBoundable(TBounds bounds, TItem item);
 
         ///// <returns>
         ///// A test for intersection between two bounds, necessary because subclasses
@@ -504,5 +505,19 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
             return createHigherLevels(parentBoundables, level + 1);
         }
+
+        #region ISpatialIndex<TBounds,TItem> Members
+
+        public void Insert(TItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<TResult> Query<TResult>(TBounds bounds, Func<TItem, TResult> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

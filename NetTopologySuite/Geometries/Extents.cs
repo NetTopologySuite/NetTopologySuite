@@ -1261,7 +1261,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region IExtents Members
 
-        public void TranslateRelative(params double[] vector)
+        public void TranslateRelativeToWidth(params double[] vector)
         {
             throw new NotImplementedException();
         }

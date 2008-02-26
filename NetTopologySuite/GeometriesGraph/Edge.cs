@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GeoAPI.Indexing;
 using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -12,7 +13,7 @@ using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
-    public class Edge<TCoordinate> : GraphComponent<TCoordinate>
+    public class Edge<TCoordinate> : GraphComponent<TCoordinate>, IBoundable<IExtents<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
@@ -406,5 +407,19 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             sb.Append(")  " + Label + " " + _depthDelta);
             return sb.ToString();
         }
+
+        #region IBoundable<IExtents<TCoordinate>> Members
+
+        IExtents<TCoordinate> IBoundable<IExtents<TCoordinate>>.Bounds
+        {
+            get { return Extents; }
+        }
+
+        Boolean IBoundable<IExtents<TCoordinate>>.Intersects(IExtents<TCoordinate> bounds)
+        {
+            return Extents.Intersects(bounds);
+        }
+
+        #endregion
     }
 }

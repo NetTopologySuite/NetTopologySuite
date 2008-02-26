@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
+using GeoAPI.Indexing;
 using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
@@ -47,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
     /// </item>
     /// </list>
     /// </remarks>
-    public class MonotoneChain<TCoordinate>
+    public class MonotoneChain<TCoordinate> : IBoundable<IExtents<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
@@ -280,5 +281,19 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
                 }
             }
         }
+
+        #region IBoundable<IExtents<TCoordinate>> Members
+
+        IExtents<TCoordinate> IBoundable<IExtents<TCoordinate>>.Bounds
+        {
+            get { return Extents; }
+        }
+
+        Boolean IBoundable<IExtents<TCoordinate>>.Intersects(IExtents<TCoordinate> bounds)
+        {
+            return Extents.Intersects(bounds);
+        }
+
+        #endregion
     }
 }

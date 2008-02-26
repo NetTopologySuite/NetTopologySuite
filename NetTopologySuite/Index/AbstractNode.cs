@@ -5,12 +5,12 @@ using GeoAPI.Indexing;
 
 namespace GisSharpBlog.NetTopologySuite.Index
 {
-    public abstract class AbstractNode<TBounds, TBoundable> : ISpatialIndexNode<TBounds, TBoundable>
-        where TBoundable : IBoundable<TBounds>
+    public abstract class AbstractNode<TBounds, TItem> : ISpatialIndexNode<TBounds, TItem>
+        where TItem : IBoundable<TBounds>
     {
-        private List<TBoundable> _items;
-        private List<ISpatialIndexNode<TBounds, TBoundable>> _subNodes;
-        private TBounds _bounds = default(TBounds);
+        private List<TItem> _items;
+        private List<ISpatialIndexNode<TBounds, TItem>> _subNodes;
+        private TBounds _bounds;
         private readonly Int32 _level;
 
         /// <summary> 
@@ -48,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Index
             {
                 Int32 subSize = 0;
 
-                foreach (ISpatialIndexNode<TBounds, TBoundable> node in ChildrenInternal)
+                foreach (ISpatialIndexNode<TBounds, TItem> node in ChildrenInternal)
                 {
                     subSize += node.TotalItems;
                 }
@@ -87,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.Index
             get { return Level == 0; }
         }
 
-        public Boolean Remove(ISpatialIndexNode<TBounds, TBoundable> item)
+        public Boolean Remove(ISpatialIndexNode<TBounds, TItem> item)
         {
             if (IsLeaf)
             {
@@ -95,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.Index
             }
             else
             {
-                foreach (AbstractNode<TBounds, TBoundable> node in _subNodes)
+                foreach (AbstractNode<TBounds, TItem> node in _subNodes)
                 {
                     if (node.Intersects(item.Bounds))
                     {
@@ -110,28 +110,28 @@ namespace GisSharpBlog.NetTopologySuite.Index
             return false;
         }
 
-        public virtual void AddChild(ISpatialIndexNode<TBounds, TBoundable> child)
+        public virtual void AddChild(ISpatialIndexNode<TBounds, TItem> child)
         {
             EnsureSubNodes();
             Debug.Assert(_subNodes != null);
             _subNodes.Add(child);
         }
 
-        public virtual void AddChildren(IEnumerable<ISpatialIndexNode<TBounds, TBoundable>> children)
+        public virtual void AddChildren(IEnumerable<ISpatialIndexNode<TBounds, TItem>> children)
         {
             EnsureSubNodes();
             Debug.Assert(_subNodes != null);
             _subNodes.AddRange(children);
         }
 
-        public virtual void AddItem(TBoundable item)
+        public virtual void AddItem(TItem item)
         {
             EnsureItems();
             Debug.Assert(_items != null);
             _items.Add(item);
         }
 
-        public virtual void AddItems(IEnumerable<TBoundable> items)
+        public virtual void AddItems(IEnumerable<TItem> items)
         {
             EnsureItems();
             Debug.Assert(_items != null);
@@ -148,34 +148,34 @@ namespace GisSharpBlog.NetTopologySuite.Index
             get { return _items == null ? 0 : _items.Count; }
         }
 
-        public virtual IEnumerable<TBoundable> Items
+        public virtual IEnumerable<TItem> Items
         {
             get
             {
-                foreach (TBoundable item in _items)
+                foreach (TItem item in _items)
                 {
                     yield return item;
                 }
             }
         }
 
-        public virtual IEnumerable<ISpatialIndexNode<TBounds, TBoundable>> Children
+        public virtual IEnumerable<ISpatialIndexNode<TBounds, TItem>> Children
         {
             get
             {
-                foreach (ISpatialIndexNode<TBounds, TBoundable> node in _subNodes)
+                foreach (ISpatialIndexNode<TBounds, TItem> node in _subNodes)
                 {
                     yield return node;
                 }
             }
         }
 
-        public virtual Boolean RemoveItem(TBoundable item)
+        public virtual Boolean RemoveItem(TItem item)
         {
             return _items.Remove(item);
         }
 
-        public virtual Boolean RemoveChild(ISpatialIndexNode<TBounds, TBoundable> child)
+        public virtual Boolean RemoveChild(ISpatialIndexNode<TBounds, TItem> child)
         {
             return _subNodes.Remove(child);
         }
@@ -221,14 +221,14 @@ namespace GisSharpBlog.NetTopologySuite.Index
             get { return !(HasChildren || HasItems); }
         }
 
-        public virtual IEnumerable<TBoundable> Query(TBounds query)
+        public virtual IEnumerable<TItem> Query(TBounds query)
         {
             if (!IsSearchMatch(query))
             {
                 yield break;
             }
 
-            foreach (TBoundable item in ItemsInternal)
+            foreach (TItem item in ItemsInternal)
             {
                 if (item.Intersects(query))
                 {
@@ -236,11 +236,11 @@ namespace GisSharpBlog.NetTopologySuite.Index
                 }
             }
 
-            foreach (ISpatialIndexNode<TBounds, TBoundable> node in ChildrenInternal)
+            foreach (ISpatialIndexNode<TBounds, TItem> node in ChildrenInternal)
             {
                 if (node != null)
                 {
-                    foreach (TBoundable item in node.Query(query))
+                    foreach (TItem item in node.Query(query))
                     {
                         yield return item;
                     }
@@ -248,7 +248,7 @@ namespace GisSharpBlog.NetTopologySuite.Index
             }
         }
 
-        public virtual IEnumerable<TBoundable> Query(TBounds query, Predicate<TBoundable> predicate)
+        public virtual IEnumerable<TItem> Query(TBounds query, Predicate<TItem> predicate)
         {
             if (!IsSearchMatch(query))
             {
@@ -257,16 +257,16 @@ namespace GisSharpBlog.NetTopologySuite.Index
 
             // this node may have items as well as subnodes (since items may not
             // be wholely contained in any single subnode
-            foreach (TBoundable item in filterItems(query, predicate))
+            foreach (TItem item in filterItems(query, predicate))
             {
                 yield return item;
             }
 
-            foreach (ISpatialIndexNode<TBounds, TBoundable> node in ChildrenInternal)
+            foreach (ISpatialIndexNode<TBounds, TItem> node in ChildrenInternal)
             {
                 if (node != null)
                 {
-                    foreach (TBoundable item in node.Query(query, predicate))
+                    foreach (TItem item in node.Query(query, predicate))
                     {
                         yield return item;
                     }
@@ -283,12 +283,12 @@ namespace GisSharpBlog.NetTopologySuite.Index
         /// </summary>    
         protected abstract TBounds ComputeBounds();
 
-        protected List<TBoundable> ItemsInternal
+        protected List<TItem> ItemsInternal
         {
             get { return _items; }
         }
 
-        protected List<ISpatialIndexNode<TBounds, TBoundable>> ChildrenInternal
+        protected List<ISpatialIndexNode<TBounds, TItem>> ChildrenInternal
         {
             get { return _subNodes; }
         }
@@ -297,7 +297,7 @@ namespace GisSharpBlog.NetTopologySuite.Index
         {
             if (_items == null)
             {
-                _items = new List<TBoundable>();
+                _items = new List<TItem>();
             }
         }
 
@@ -307,14 +307,14 @@ namespace GisSharpBlog.NetTopologySuite.Index
         {
             if (_subNodes == null)
             {
-                _subNodes = new List<ISpatialIndexNode<TBounds, TBoundable>>();
+                _subNodes = new List<ISpatialIndexNode<TBounds, TItem>>();
                 CreateSubNodes();
             }
         }
 
-        private IEnumerable<TBoundable> filterItems(TBounds query, Predicate<TBoundable> predicate)
+        private IEnumerable<TItem> filterItems(TBounds query, Predicate<TItem> predicate)
         {
-            foreach (TBoundable item in ItemsInternal)
+            foreach (TItem item in ItemsInternal)
             {
                 if (item.Intersects(query) && predicate(item))
                 {
@@ -322,5 +322,15 @@ namespace GisSharpBlog.NetTopologySuite.Index
                 }
             }
         }
+
+        #region ISpatialIndexNode<TBounds,TItem> Members
+
+
+        public IEnumerable<TResult> Query<TResult>(TBounds query, Func<TItem, TResult> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

@@ -38,6 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
     /// </para>
     /// </remarks>
     public class Quadtree<TCoordinate, TItem> : ISpatialIndex<IExtents<TCoordinate>, TItem>, IEnumerable<TItem>
+        where TItem : IBoundable<IExtents<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
@@ -273,6 +274,20 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         #region IEnumerable Members
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region ISpatialIndex<IExtents<TCoordinate>,TItem> Members
+
+        public void Insert(TItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<TResult> Query<TResult>(IExtents<TCoordinate> bounds, Func<TItem, TResult> selector)
         {
             throw new NotImplementedException();
         }

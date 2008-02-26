@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
     /// P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
     /// </remarks>
-    public class SirTree<TItem> : AbstractStrTree<Interval, TItem>
+    public class SirTree<TItem> : AbstractStrTree<Interval, ItemBoundable<Interval, TItem>>
     {
         private class SirTreeItemBoundable : ItemBoundable<Interval, TItem>
         {
@@ -86,7 +86,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         public void Insert(Double x1, Double x2, TItem item)
         {
-            Insert(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)), item);
+            Interval bounds = new Interval(Math.Min(x1, x2), Math.Max(x1, x2));
+            Insert(new SirTreeItemBoundable(bounds, item));
         }
 
         /// <summary>
@@ -104,7 +105,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <param name="x2">Possibly equal to x1.</param>
         public IEnumerable<TItem> Query(Double x1, Double x2)
         {
-            return Query(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)));
+            IEnumerable<ItemBoundable<Interval, TItem>> boundedItems 
+                = Query(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)));
+
+            foreach (ItemBoundable<Interval, TItem> boundable in boundedItems)
+            {
+                yield return boundable.Item;
+            }
         }
 
         //protected override Func<Interval, Interval, Boolean> IntersectsOp
@@ -129,9 +136,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             }
         }
 
-        protected override IBoundable<Interval> CreateItemBoundable(Interval bounds, TItem item)
-        {
-            return new SirTreeItemBoundable(bounds, item);
-        }
+        //protected override IBoundable<Interval> CreateItemBoundable(Interval bounds, ItemBoundable<Interval, TItem> item)
+        //{
+        //    return new SirTreeItemBoundable(bounds, item);
+        //}
     }
 }

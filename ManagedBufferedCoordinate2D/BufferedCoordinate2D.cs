@@ -7,8 +7,8 @@ using NPack.Interfaces;
 namespace NetTopologySuite.Coordinates
 {
     public struct BufferedCoordinate2D : ICoordinate2D,
-        IBufferedVector<BufferedCoordinate2D, DoubleComponent>, IEquatable<BufferedCoordinate2D>, 
-        IComparable<BufferedCoordinate2D>, IComputable<Double, BufferedCoordinate2D>, 
+        IBufferedVector<BufferedCoordinate2D, DoubleComponent>, IEquatable<BufferedCoordinate2D>,
+        IComparable<BufferedCoordinate2D>, IComputable<Double, BufferedCoordinate2D>,
         IConvertible
     {
         private readonly Int32? _index;
@@ -23,6 +23,32 @@ namespace NetTopologySuite.Coordinates
             _factory = factory;
             _index = index;
             _isHomogeneous = isHomogeneous;
+        }
+
+        public override Boolean Equals(Object obj)
+        {
+            if (!(obj is BufferedCoordinate2D))
+            {
+                return false;
+            }
+
+            BufferedCoordinate2D other = (BufferedCoordinate2D)obj;
+
+            return Equals(other);
+        }
+
+        public override string ToString()
+        {
+            return IsEmpty
+                       ? String.Format("[{0}] Empty", GetType())
+                       : String.Format("[{0}] X: {1}; Y: {2}", GetType(), X, Y);
+        }
+
+        public override int GetHashCode()
+        {
+            return _index.GetHashCode() 
+                ^ _isHomogeneous.GetHashCode() 
+                ^ _factory.GetHashCode();
         }
 
         internal BufferedCoordinate2DFactory Factory
@@ -325,7 +351,7 @@ namespace NetTopologySuite.Coordinates
                 }
                 else
                 {
-                    throw new ArgumentOutOfRangeException("index", index, 
+                    throw new ArgumentOutOfRangeException("index", index,
                         "Index must be 0 or 1.");
                 }
             }
@@ -574,9 +600,9 @@ namespace NetTopologySuite.Coordinates
         {
             if (other is BufferedCoordinate2D)
             {
-                return Equals((BufferedCoordinate2D) other);
+                return Equals((BufferedCoordinate2D)other);
             }
-            
+
             if (other == null)
             {
                 return false;
@@ -885,7 +911,7 @@ namespace NetTopologySuite.Coordinates
 
         #region IMultipliable<Double,IVector<DoubleComponent>> Members
 
-        IVector<DoubleComponent> IMultipliable<Double,IVector<DoubleComponent>>.Multiply(Double b)
+        IVector<DoubleComponent> IMultipliable<Double, IVector<DoubleComponent>>.Multiply(Double b)
         {
             throw new NotImplementedException();
         }
@@ -957,7 +983,7 @@ namespace NetTopologySuite.Coordinates
         {
             if (b is BufferedCoordinate2D)
             {
-                return Add((BufferedCoordinate2D) b);
+                return Add((BufferedCoordinate2D)b);
             }
 
             throw new NotImplementedException();

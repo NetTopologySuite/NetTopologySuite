@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.CoordinateSystems;
 using GeoAPI.Geometries;
+using GeoAPI.Indexing;
 using GeoAPI.IO.WellKnownBinary;
 using GeoAPI.IO.WellKnownText;
 using GeoAPI.Operations.Buffer;
@@ -1957,5 +1958,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         ///// <param name="filter">The filter to apply to this <see cref="Geometry{TCoordinate}"/>.</param>
         //public abstract void Apply(IGeometryComponentFilter<TCoordinate> filter);
 
+
+        #region IBoundable<IExtents<TCoordinate>> Members
+
+        IExtents<TCoordinate> IBoundable<IExtents<TCoordinate>>.Bounds
+        {
+            get { return Extents; }
+        }
+
+        public Boolean Intersects(IExtents<TCoordinate> bounds)
+        {
+            return Extents.Intersects(bounds);
+        }
+
+        #endregion
     }
 }
