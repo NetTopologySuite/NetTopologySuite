@@ -315,17 +315,21 @@ namespace NetTopologySuite.Coordinates
             {
                 return (Double)_coordinates[index, 0];
             }
-            else if (ordinate == Ordinates.Y)
+            
+            if (ordinate == Ordinates.Y)
             {
                 return (Double)_coordinates[index, 1];
             }
-            else
+
+            if (ordinate == Ordinates.W)
             {
-                throw new NotSupportedException("Ordinate not supported: " + ordinate);
+                return (Double)_coordinates[index, 2];
             }
+            
+            throw new NotSupportedException("Ordinate not supported: " + ordinate);
         }
 
-        internal ICoordinate GetZero()
+        internal BufferedCoordinate2D GetZero()
         {
             return getVertexInternal(0, 0);
         }
@@ -391,7 +395,7 @@ namespace NetTopologySuite.Coordinates
 
             if (findExisting(x, y, out index))
             {
-                v = _coordinates[index];
+                v = _lexicographicVertexIndex[index];
             }
             else
             {
@@ -420,31 +424,44 @@ namespace NetTopologySuite.Coordinates
 
             if (indexEnd == indexStart)
             {
-                index = indexEnd;
-
-                if (index >= _coordinates.Count)
+                if (indexEnd >= _coordinates.Count)
                 {
+                    index = indexEnd;
                     return false;
                 }
 
-                BufferedCoordinate2D vertex = _coordinates[index];
+                BufferedCoordinate2D vertex = _lexicographicVertexIndex[indexEnd];
 
                 if (vertex.X == x && vertex.Y == y)
                 {
+                    index = indexEnd;
                     return true;
                 }
                 else
                 {
+                    Int32 compare = compareLexicographically(
+                        coord, new Pair<Double>(vertex.X, vertex.Y));
+
+                    if (compare > 0)
+                    {
+                        index = indexEnd + 1;
+                    }
+                    else
+                    {
+                        index = indexEnd;
+                    }
+
                     return false;
                 }
             }
 
             Int32 midPoint = (indexEnd + indexStart) / 2;
 
-            BufferedCoordinate2D midVertex = _coordinates[midPoint];
+            BufferedCoordinate2D midVertex = _lexicographicVertexIndex[midPoint];
 
             Int32 compareResult = compareLexicographically(
-                new Pair<Double>(midVertex.X, midVertex.Y), coord);
+                                            coord, 
+                                            new Pair<Double>(midVertex.X, midVertex.Y));
 
             if (compareResult < 0)
             {
@@ -462,7 +479,7 @@ namespace NetTopologySuite.Coordinates
             {
                 if (compareResult > 0)
                 {
-                    Pair<Int32> newRange = new Pair<Int32>((midPoint + 1 + indexEnd) / 2, indexEnd);
+                    Pair<Int32> newRange = new Pair<Int32>(midPoint + 1, indexEnd);
                     return findExisting(coord, newRange, out index);
                 }
                 else // compareResult == 0

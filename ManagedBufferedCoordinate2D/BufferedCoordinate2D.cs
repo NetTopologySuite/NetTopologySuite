@@ -8,8 +8,7 @@ namespace NetTopologySuite.Coordinates
 {
     public struct BufferedCoordinate2D : ICoordinate2D,
         IBufferedVector<BufferedCoordinate2D, DoubleComponent>, IEquatable<BufferedCoordinate2D>,
-        IComparable<BufferedCoordinate2D>, IComputable<Double, BufferedCoordinate2D>,
-        IConvertible
+        IComparable<BufferedCoordinate2D>, IComputable<Double, BufferedCoordinate2D>
     {
         private readonly Int32? _index;
         private readonly BufferedCoordinate2DFactory _factory;
@@ -27,27 +26,60 @@ namespace NetTopologySuite.Coordinates
 
         public override Boolean Equals(Object obj)
         {
-            if (!(obj is BufferedCoordinate2D))
+            if (obj == null)
+	        {
+	            return false;
+	        }
+
+            if (obj is BufferedCoordinate2D)
             {
-                return false;
+                BufferedCoordinate2D other = (BufferedCoordinate2D)obj;
+
+                return Equals(other);
             }
 
-            BufferedCoordinate2D other = (BufferedCoordinate2D)obj;
+            ICoordinate2D coord2D = obj as ICoordinate2D;
 
-            return Equals(other);
+            if (coord2D != null)
+            {
+                return ((ICoordinate2D) this).Equals(coord2D);
+            }
+
+            ICoordinate coord = obj as ICoordinate;
+
+            if (coord != null)
+            {
+                return ((ICoordinate) this).Equals(coord);
+            }
+
+            IVector<DoubleComponent> vector = obj as IVector<DoubleComponent>;
+
+            if (vector != null)
+            {
+                return ((IVector<DoubleComponent>)this).Equals(coord);
+            }
+
+            IMatrix<DoubleComponent> matrix = obj as IMatrix<DoubleComponent>;
+
+            if (matrix != null)
+            {
+                return ((IMatrix<DoubleComponent>)this).Equals(coord);
+            }
+
+            return false;
         }
 
-        public override string ToString()
+        public override String ToString()
         {
             return IsEmpty
                        ? String.Format("[{0}] Empty", GetType())
                        : String.Format("[{0}] X: {1}; Y: {2}", GetType(), X, Y);
         }
 
-        public override int GetHashCode()
+        public override Int32 GetHashCode()
         {
-            return _index.GetHashCode() 
-                ^ _isHomogeneous.GetHashCode() 
+            return _index.GetHashCode()
+                ^ _isHomogeneous.GetHashCode()
                 ^ _factory.GetHashCode();
         }
 
@@ -80,6 +112,20 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
+        #region IBufferedVector<DoubleComponent> Members
+
+        public IVectorBuffer<BufferedCoordinate2D, DoubleComponent> GetBuffer()
+        {
+            return _factory;
+        }
+
+        public Int32 Index
+        {
+            get { return _index.Value; }
+        }
+
+        #endregion
+
         #region ICoordinate2D Members
 
         public Double X
@@ -95,15 +141,6 @@ namespace NetTopologySuite.Coordinates
         public Double Distance(ICoordinate2D other)
         {
             throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IDivisible<Double, BufferedCoordinate2D> Members
-
-        public BufferedCoordinate2D Divide(Double b)
-        {
-            return _factory.Divide(this, b);
         }
 
         #endregion
@@ -146,16 +183,83 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region IBufferedVector<DoubleComponent> Members
+        #region IEquatable<ICoordinate> Members
 
-        public IVectorBuffer<BufferedCoordinate2D, DoubleComponent> GetBuffer()
+        Boolean IEquatable<ICoordinate>.Equals(ICoordinate other)
         {
-            return _factory;
+            if (other is BufferedCoordinate2D)
+            {
+                return Equals((BufferedCoordinate2D)other);
+            }
+
+            if (other == null)
+            {
+                return false;
+            }
+
+            return other[Ordinates.X] == this[Ordinates.X]
+                && other[Ordinates.Y] == this[Ordinates.Y];
         }
 
-        public Int32 Index
+        #endregion
+
+        #region IComparable<ICoordinate> Members
+
+        Int32 IComparable<ICoordinate>.CompareTo(ICoordinate other)
         {
-            get { return _index.Value; }
+            if (other == null)
+            {
+                return 1;
+            }
+
+            if (other.ComponentCount > ComponentCount)
+            {
+                return -1;
+            }
+
+            Int32 compare = X.CompareTo(other[Ordinates.X]);
+
+            if (compare == 0)
+            {
+                compare = Y.CompareTo(other[Ordinates.Y]);
+            }
+
+            return compare;
+        }
+
+        #endregion
+
+        #region IComparable<ICoordinate2D> Members
+
+        Int32 IComparable<ICoordinate2D>.CompareTo(ICoordinate2D other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+
+            Int32 compare = X.CompareTo(other.X);
+
+            if (compare == 0)
+            {
+                compare = Y.CompareTo(other.Y);
+            }
+
+            return compare;
+        }
+
+        #endregion
+
+        #region IEquatable<ICoordinate2D> Members
+
+        Boolean IEquatable<ICoordinate2D>.Equals(ICoordinate2D other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return other.X == X && other.Y == Y;
         }
 
         #endregion
@@ -173,7 +277,20 @@ namespace NetTopologySuite.Coordinates
 
         public Int32 CompareTo(BufferedCoordinate2D other)
         {
-            throw new NotImplementedException();
+            if (other._index == null)
+            {
+                return 1;
+            }
+
+            if (_index == null)
+            {
+                return -1;
+            }
+
+            // Since the coordinates are stored in lexicograpic order,
+            // the index comparison works to compare coordinates
+            // first by X, then by Y;
+            return _index.Value.CompareTo(other._index.Value);
         }
 
         #endregion
@@ -182,12 +299,12 @@ namespace NetTopologySuite.Coordinates
 
         public BufferedCoordinate2D Abs()
         {
-            throw new NotImplementedException();
+            return _factory.Create(Math.Abs(X), Math.Abs(Y));
         }
 
         public BufferedCoordinate2D Set(Double value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
@@ -196,7 +313,7 @@ namespace NetTopologySuite.Coordinates
 
         public BufferedCoordinate2D Negative()
         {
-            throw new NotImplementedException();
+            return _factory.Create(-X, -Y);
         }
 
         #endregion
@@ -205,7 +322,7 @@ namespace NetTopologySuite.Coordinates
 
         public BufferedCoordinate2D Subtract(BufferedCoordinate2D b)
         {
-            throw new NotImplementedException();
+            return Add(b.Negative());
         }
 
         #endregion
@@ -214,7 +331,7 @@ namespace NetTopologySuite.Coordinates
 
         public BufferedCoordinate2D Zero
         {
-            get { throw new NotImplementedException(); }
+            get { return _factory.GetZero(); }
         }
 
         #endregion
@@ -237,6 +354,15 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
+        #region IDivisible<Double, BufferedCoordinate2D> Members
+
+        public BufferedCoordinate2D Divide(Double b)
+        {
+            return _factory.Divide(this, b);
+        }
+
+        #endregion
+
         #region IHasOne<BufferedCoordinate2D> Members
 
         public BufferedCoordinate2D One
@@ -251,6 +377,15 @@ namespace NetTopologySuite.Coordinates
         public BufferedCoordinate2D Multiply(BufferedCoordinate2D b)
         {
             return _factory.Multiply(this, b);
+        }
+
+        #endregion
+
+        #region IMultipliable<Double,BufferedCoordinate2D> Members
+
+        public BufferedCoordinate2D Multiply(Double b)
+        {
+            return _factory.Create(X * b, Y * b);
         }
 
         #endregion
@@ -308,16 +443,187 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
+        #region IComputable<Double,ICoordinate> Members
+
+        ICoordinate IComputable<Double, ICoordinate>.Set(Double value)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IComputable<ICoordinate> Members
+
+        ICoordinate IComputable<ICoordinate>.Abs()
+        {
+            throw new NotImplementedException();
+        }
+
+        ICoordinate IComputable<ICoordinate>.Set(Double value)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region INegatable<ICoordinate> Members
+
+        ICoordinate INegatable<ICoordinate>.Negative()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region ISubtractable<ICoordinate> Members
+
+        ICoordinate ISubtractable<ICoordinate>.Subtract(ICoordinate b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IHasZero<ICoordinate> Members
+
+        ICoordinate IHasZero<ICoordinate>.Zero
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        #endregion
+
+        #region IAddable<ICoordinate> Members
+
+        ICoordinate IAddable<ICoordinate>.Add(ICoordinate b)
+        {
+            if (b is BufferedCoordinate2D)
+            {
+                return Add((BufferedCoordinate2D)b);
+            }
+
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IDivisible<ICoordinate> Members
+
+        ICoordinate IDivisible<ICoordinate>.Divide(ICoordinate b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IHasOne<ICoordinate> Members
+
+        ICoordinate IHasOne<ICoordinate>.One
+        {
+            get { return One; }
+        }
+
+        #endregion
+
+        #region IMultipliable<ICoordinate> Members
+
+        ICoordinate IMultipliable<ICoordinate>.Multiply(ICoordinate b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IBooleanComparable<ICoordinate> Members
+
+        bool IBooleanComparable<ICoordinate>.GreaterThan(ICoordinate value)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IBooleanComparable<ICoordinate>.GreaterThanOrEqualTo(ICoordinate value)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IBooleanComparable<ICoordinate>.LessThan(ICoordinate value)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IBooleanComparable<ICoordinate>.LessThanOrEqualTo(ICoordinate value)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IExponential<ICoordinate> Members
+
+        ICoordinate IExponential<ICoordinate>.Exp()
+        {
+            throw new NotImplementedException();
+        }
+
+        ICoordinate IExponential<ICoordinate>.Log()
+        {
+            throw new NotImplementedException();
+        }
+
+        ICoordinate IExponential<ICoordinate>.Log(Double newBase)
+        {
+            throw new NotImplementedException();
+        }
+
+        ICoordinate IExponential<ICoordinate>.Power(Double exponent)
+        {
+            throw new NotImplementedException();
+        }
+
+        ICoordinate IExponential<ICoordinate>.Sqrt()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IMultipliable<Double,ICoordinate> Members
+
+        ICoordinate IMultipliable<Double, ICoordinate>.Multiply(Double b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IDivisible<Double,ICoordinate> Members
+
+        ICoordinate IDivisible<Double, ICoordinate>.Divide(Double b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region ICoordinate Members
+
+        ICoordinate ICoordinate.Divide(Double value)
+        {
+            return Divide(value);
+        }
+
+        #endregion
+
         #region IVector<DoubleComponent> Members
 
         IVector<DoubleComponent> IVector<DoubleComponent>.Clone()
         {
-            return this;
+            return _factory.Create(this);
         }
 
-        Int32 IVector<DoubleComponent>.ComponentCount
+        public Int32 ComponentCount
         {
-            get { return 2; }
+            get { return _isHomogeneous ? 2 : 3; }
         }
 
         DoubleComponent[] IVector<DoubleComponent>.Components
@@ -334,26 +640,14 @@ namespace NetTopologySuite.Coordinates
 
         IVector<DoubleComponent> IVector<DoubleComponent>.Negative()
         {
-            return _factory.Create(-X, -Y);
+            return Negative();
         }
 
         DoubleComponent IVector<DoubleComponent>.this[Int32 index]
         {
             get
             {
-                if (index == 0)
-                {
-                    return X;
-                }
-                else if (index == 1)
-                {
-                    return Y;
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException("index", index,
-                        "Index must be 0 or 1.");
-                }
+                return this[(Ordinates)(index == 2 ? 3 : index)];
             }
             set
             {
@@ -367,7 +661,7 @@ namespace NetTopologySuite.Coordinates
 
         IMatrix<DoubleComponent> IMatrix<DoubleComponent>.Clone()
         {
-            return this;
+            return ((IVector<DoubleComponent>)this).Clone();
         }
 
         Int32 IMatrix<DoubleComponent>.ColumnCount
@@ -392,27 +686,27 @@ namespace NetTopologySuite.Coordinates
 
         IMatrix<DoubleComponent> IMatrix<DoubleComponent>.Inverse
         {
-            get { throw new NotImplementedException(); }
+            get { throw new InvalidOperationException("Inverse doesn't exist for this matrix."); }
         }
 
         Boolean IMatrix<DoubleComponent>.IsInvertible
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
 
         Boolean IMatrix<DoubleComponent>.IsSingular
         {
-            get { throw new NotImplementedException(); }
+            get { return true; }
         }
 
         Boolean IMatrix<DoubleComponent>.IsSquare
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
 
         Boolean IMatrix<DoubleComponent>.IsSymmetrical
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
 
         Int32 IMatrix<DoubleComponent>.RowCount
@@ -443,7 +737,7 @@ namespace NetTopologySuite.Coordinates
 
         IMatrix<DoubleComponent> INegatable<IMatrix<DoubleComponent>>.Negative()
         {
-            return _factory.Create(-X, -Y);
+            return Negative();
         }
 
         #endregion
@@ -461,7 +755,7 @@ namespace NetTopologySuite.Coordinates
 
         IMatrix<DoubleComponent> IHasZero<IMatrix<DoubleComponent>>.Zero
         {
-            get { throw new NotImplementedException(); }
+            get { return Zero; }
         }
 
         #endregion
@@ -488,7 +782,7 @@ namespace NetTopologySuite.Coordinates
 
         IMatrix<DoubleComponent> IHasOne<IMatrix<DoubleComponent>>.One
         {
-            get { throw new NotImplementedException(); }
+            get { return One; }
         }
 
         #endregion
@@ -513,10 +807,15 @@ namespace NetTopologySuite.Coordinates
 
         #region IEnumerable<DoubleComponent> Members
 
-        IEnumerator<DoubleComponent> IEnumerable<DoubleComponent>.GetEnumerator()
+        public IEnumerator<DoubleComponent> GetEnumerator()
         {
             yield return X;
             yield return Y;
+
+            if (_isHomogeneous)
+            {
+                yield return this[Ordinates.W];
+            }
         }
 
         #endregion
@@ -525,8 +824,7 @@ namespace NetTopologySuite.Coordinates
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            yield return X;
-            yield return Y;
+            return GetEnumerator();
         }
 
         #endregion
@@ -553,7 +851,7 @@ namespace NetTopologySuite.Coordinates
 
         IVector<DoubleComponent> IHasZero<IVector<DoubleComponent>>.Zero
         {
-            get { throw new NotImplementedException(); }
+            get { return Zero; }
         }
 
         #endregion
@@ -580,7 +878,7 @@ namespace NetTopologySuite.Coordinates
 
         IVector<DoubleComponent> IHasOne<IVector<DoubleComponent>>.One
         {
-            get { throw new NotImplementedException(); }
+            get { return One; }
         }
 
         #endregion
@@ -588,53 +886,6 @@ namespace NetTopologySuite.Coordinates
         #region IMultipliable<IVector<DoubleComponent>> Members
 
         IVector<DoubleComponent> IMultipliable<IVector<DoubleComponent>>.Multiply(IVector<DoubleComponent> b)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IEquatable<ICoordinate> Members
-
-        Boolean IEquatable<ICoordinate>.Equals(ICoordinate other)
-        {
-            if (other is BufferedCoordinate2D)
-            {
-                return Equals((BufferedCoordinate2D)other);
-            }
-
-            if (other == null)
-            {
-                return false;
-            }
-
-            return other[Ordinates.X] == this[Ordinates.X]
-                && other[Ordinates.Y] == this[Ordinates.Y];
-        }
-
-        #endregion
-
-        #region IComparable<ICoordinate> Members
-
-        Int32 IComparable<ICoordinate>.CompareTo(ICoordinate obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IComparable<ICoordinate2D> Members
-
-        Int32 IComparable<ICoordinate2D>.CompareTo(ICoordinate2D other)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IEquatable<ICoordinate2D> Members
-
-        Boolean IEquatable<ICoordinate2D>.Equals(ICoordinate2D other)
         {
             throw new NotImplementedException();
         }
@@ -914,186 +1165,6 @@ namespace NetTopologySuite.Coordinates
         IVector<DoubleComponent> IMultipliable<Double, IVector<DoubleComponent>>.Multiply(Double b)
         {
             throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IMultipliable<Double,BufferedCoordinate2D> Members
-
-        public BufferedCoordinate2D Multiply(Double b)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IComputable<Double,ICoordinate> Members
-
-        ICoordinate IComputable<Double, ICoordinate>.Set(Double value)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IComputable<ICoordinate> Members
-
-        ICoordinate IComputable<ICoordinate>.Abs()
-        {
-            throw new NotImplementedException();
-        }
-
-        ICoordinate IComputable<ICoordinate>.Set(Double value)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region INegatable<ICoordinate> Members
-
-        ICoordinate INegatable<ICoordinate>.Negative()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region ISubtractable<ICoordinate> Members
-
-        ICoordinate ISubtractable<ICoordinate>.Subtract(ICoordinate b)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IHasZero<ICoordinate> Members
-
-        ICoordinate IHasZero<ICoordinate>.Zero
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        #endregion
-
-        #region IAddable<ICoordinate> Members
-
-        ICoordinate IAddable<ICoordinate>.Add(ICoordinate b)
-        {
-            if (b is BufferedCoordinate2D)
-            {
-                return Add((BufferedCoordinate2D)b);
-            }
-
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IDivisible<ICoordinate> Members
-
-        ICoordinate IDivisible<ICoordinate>.Divide(ICoordinate b)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IHasOne<ICoordinate> Members
-
-        ICoordinate IHasOne<ICoordinate>.One
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        #endregion
-
-        #region IMultipliable<ICoordinate> Members
-
-        ICoordinate IMultipliable<ICoordinate>.Multiply(ICoordinate b)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IBooleanComparable<ICoordinate> Members
-
-        bool IBooleanComparable<ICoordinate>.GreaterThan(ICoordinate value)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool IBooleanComparable<ICoordinate>.GreaterThanOrEqualTo(ICoordinate value)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool IBooleanComparable<ICoordinate>.LessThan(ICoordinate value)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool IBooleanComparable<ICoordinate>.LessThanOrEqualTo(ICoordinate value)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IExponential<ICoordinate> Members
-
-        ICoordinate IExponential<ICoordinate>.Exp()
-        {
-            throw new NotImplementedException();
-        }
-
-        ICoordinate IExponential<ICoordinate>.Log()
-        {
-            throw new NotImplementedException();
-        }
-
-        ICoordinate IExponential<ICoordinate>.Log(Double newBase)
-        {
-            throw new NotImplementedException();
-        }
-
-        ICoordinate IExponential<ICoordinate>.Power(Double exponent)
-        {
-            throw new NotImplementedException();
-        }
-
-        ICoordinate IExponential<ICoordinate>.Sqrt()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IMultipliable<Double,ICoordinate> Members
-
-        ICoordinate IMultipliable<Double, ICoordinate>.Multiply(Double b)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IDivisible<Double,ICoordinate> Members
-
-        ICoordinate IDivisible<Double, ICoordinate>.Divide(Double b)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region ICoordinate Members
-
-        ICoordinate ICoordinate.Divide(Double value)
-        {
-            return Divide(value);
         }
 
         #endregion
