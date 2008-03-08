@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
+using GeoAPI.Geometries;
 using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
@@ -26,18 +27,20 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         //    return array;
         //}
 
-        public static IEnumerable<MonotoneChain<TCoordinate>> GetChains<TCoordinate>(ICoordinateSequence<TCoordinate> coordinates)
+        public static IEnumerable<MonotoneChain<TCoordinate>> GetChains<TCoordinate>(
+                IGeometryFactory<TCoordinate> geoFactory, ICoordinateSequence<TCoordinate> coordinates)
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                 IComputable<Double, TCoordinate>, IConvertible
         {
-            return GetChains(coordinates, null);
+            return GetChains(geoFactory, coordinates, null);
         }
 
         /// <summary>
         /// Return a list of the <see cref="MonotoneChain{TCoordinate}"/>s
         /// for the given list of coordinates.
         /// </summary>
-        public static IEnumerable<MonotoneChain<TCoordinate>> GetChains<TCoordinate>(ICoordinateSequence<TCoordinate> coordinates, Object context)
+        public static IEnumerable<MonotoneChain<TCoordinate>> GetChains<TCoordinate>(
+                IGeometryFactory<TCoordinate> geoFactory, ICoordinateSequence<TCoordinate> coordinates, Object context)
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                 IComputable<Double, TCoordinate>, IConvertible
         {
@@ -46,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
             foreach (Pair<Int32> indexPair in Slice.GetOverlappingPairs(startIndicies))
             {
                 MonotoneChain<TCoordinate> mc = new MonotoneChain<TCoordinate>(
-                    coordinates, indexPair.First, indexPair.Second, context);
+                    geoFactory, coordinates, indexPair.First, indexPair.Second, context);
 
                 yield return mc;
             }

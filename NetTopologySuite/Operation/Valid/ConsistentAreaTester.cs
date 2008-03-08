@@ -1,12 +1,10 @@
 using System;
-using System.Collections;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
 using GisSharpBlog.NetTopologySuite.Operation.Relate;
-using NPack;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
@@ -24,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly LineIntersector<TCoordinate> _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
+        private readonly LineIntersector<TCoordinate> _li;
         private readonly GeometryGraph<TCoordinate> _geomGraph;
         private readonly RelateNodeGraph<TCoordinate> _nodeGraph = new RelateNodeGraph<TCoordinate>();
 
@@ -33,7 +31,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
          
         public ConsistentAreaTester(GeometryGraph<TCoordinate> geomGraph)
         {
+            if (geomGraph == null) throw new ArgumentNullException("geomGraph");
             _geomGraph = geomGraph;
+            _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(geomGraph.Geometry.Factory);
         }
 
         /// <summary>

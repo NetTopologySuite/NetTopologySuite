@@ -19,13 +19,18 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
             IComputable<Double, TCoordinate>, IConvertible
     {
         // for purposes of intersection testing, don't need to set precision model
-        private readonly LineIntersector<TCoordinate> _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
+        private readonly LineIntersector<TCoordinate> _li;
 
-        private Boolean _hasIntersection = false;
+        private Boolean _hasIntersection;
         //private TCoordinate pt00;
         //private TCoordinate pt01;
         //private TCoordinate pt10;
         //private TCoordinate pt11;
+
+        public SegmentIntersectionTester(IGeometryFactory<TCoordinate> geoFactory)
+        {
+            _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(geoFactory);
+        }
 
         public Boolean HasIntersectionWithLineStrings(IEnumerable<TCoordinate> seq,
                                                       IEnumerable<ILineString<TCoordinate>> lines)

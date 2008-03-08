@@ -53,7 +53,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             */
             if (node == null || !node.Bounds.Contains(item.Bounds))
             {
-                Node<TCoordinate, TItem> largerNode = Node<TCoordinate, TItem>.CreateExpanded(node, item.Bounds);
+                Node<TCoordinate, TItem> largerNode 
+                    = Node<TCoordinate, TItem>.CreateExpanded(Bounds.Factory, node, item.Bounds);
                 ChildrenInternal[index] = largerNode;
             }
 

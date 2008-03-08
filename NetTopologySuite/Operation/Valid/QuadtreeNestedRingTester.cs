@@ -23,12 +23,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     {
         private readonly GeometryGraph<TCoordinate> _graph; // used to find non-node vertices
         private readonly List<ILinearRing<TCoordinate>> _rings = new List<ILinearRing<TCoordinate>>();
-        private readonly IExtents<TCoordinate> _totalExtents = new Extents<TCoordinate>();
+        private readonly IExtents<TCoordinate> _totalExtents;
         private Quadtree<TCoordinate, ILinearRing<TCoordinate>> _index;
         private TCoordinate _nestedPoint;
+        private IGeometryFactory<TCoordinate> _geoFactory;
 
-        public QuadtreeNestedRingTester(GeometryGraph<TCoordinate> graph)
+        public QuadtreeNestedRingTester(IGeometryFactory<TCoordinate> geoFactory, GeometryGraph<TCoordinate> graph)
         {
+            _geoFactory = geoFactory;
+            _totalExtents = new Extents<TCoordinate>(geoFactory);
             _graph = graph;
         }
 
@@ -88,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
         private void buildQuadtree()
         {
-            _index = new Quadtree<TCoordinate, ILinearRing<TCoordinate>>();
+            _index = new Quadtree<TCoordinate, ILinearRing<TCoordinate>>(_geoFactory);
 
             foreach (ILinearRing<TCoordinate> ring in _rings)
             {

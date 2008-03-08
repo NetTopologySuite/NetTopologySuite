@@ -27,16 +27,26 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     {
         public static readonly Int32 DefaultMaxIterations = 5;
 
-        private readonly LineIntersector<TCoordinate> _li = null;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
+        private readonly LineIntersector<TCoordinate> _li;
         //private IEnumerable<SegmentString<TCoordinate>> _nodedSegStrings = null;
         private Int32 _maxIter = DefaultMaxIterations;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IteratedNoder{TCoordinate}"/> class.
+        /// Initializes a new instance of the 
+        /// <see cref="IteratedNoder{TCoordinate}"/> class.
         /// </summary>
-        public IteratedNoder(IPrecisionModel<TCoordinate> pm)
+        public IteratedNoder(IGeometryFactory<TCoordinate> geoFactory) 
+            : this(geoFactory, geoFactory.PrecisionModel) { }
+
+        /// <summary>
+        /// Initializes a new instance of the 
+        /// <see cref="IteratedNoder{TCoordinate}"/> class.
+        /// </summary>
+        public IteratedNoder(IGeometryFactory<TCoordinate> geoFactory, IPrecisionModel<TCoordinate> pm)
         {
-            _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
+            _geoFactory = geoFactory;
+            _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(geoFactory);
             _li.PrecisionModel = pm;
         }
 
@@ -100,7 +110,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         private IEnumerable<NodedSegmentString<TCoordinate>> node(IEnumerable<NodedSegmentString<TCoordinate>> segStrings, out Int32 interiorIntersectionsCount)
         {
             IntersectionAdder<TCoordinate> si = new IntersectionAdder<TCoordinate>(_li);
-            MonotoneChainIndexNoder<TCoordinate> noder = new MonotoneChainIndexNoder<TCoordinate>(si);
+            MonotoneChainIndexNoder<TCoordinate> noder = new MonotoneChainIndexNoder<TCoordinate>(_geoFactory, si);
             IEnumerable<NodedSegmentString<TCoordinate>> nodedSegments = noder.Node(segStrings);
             interiorIntersectionsCount = si.InteriorIntersectionCount;
             return nodedSegments;

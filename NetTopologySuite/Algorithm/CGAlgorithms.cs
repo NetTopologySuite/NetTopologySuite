@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
+using GeoAPI.Geometries;
 using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
@@ -16,9 +17,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
-        public static RobustLineIntersector<TCoordinate> CreateRobustLineIntersector()
+        public static RobustLineIntersector<TCoordinate> CreateRobustLineIntersector(IGeometryFactory<TCoordinate> geoFactory)
         {
-            return new RobustLineIntersector<TCoordinate>(Coordinates<TCoordinate>.DefaultCoordinateFactory); 
+            return new RobustLineIntersector<TCoordinate>(geoFactory); 
         }
 
         /// <summary> 
@@ -116,9 +117,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// the point is a vertex of the line or lies in the interior of a line
         /// segment in the linestring.
         /// </returns>
-        public static Boolean IsOnLine(TCoordinate p, IEnumerable<TCoordinate> line)
+        public static Boolean IsOnLine(TCoordinate p, IEnumerable<TCoordinate> line, IGeometryFactory<TCoordinate> geoFactory)
         {
-            LineIntersector<TCoordinate> lineIntersector = CreateRobustLineIntersector();
+            LineIntersector<TCoordinate> lineIntersector = CreateRobustLineIntersector(geoFactory);
 
             foreach (Pair<TCoordinate> segment in Slice.GetOverlappingPairs(line))
             {

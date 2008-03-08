@@ -249,16 +249,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
                 return;
             }
 
-            ComputeSegmentIntersection(geom);
+            computeSegmentIntersection(geom);
         }
 
-        private void ComputeSegmentIntersection(IGeometry geom)
+        private void computeSegmentIntersection(IGeometry<TCoordinate> geom)
         {
             // check segment intersection
             // get all lines from geom (e.g. if it's a multi-ring polygon)
             IEnumerable<ILineString<TCoordinate>> lines = GeometryFilter.Filter<ILineString<TCoordinate>>(geom);
 
-            SegmentIntersectionTester<TCoordinate> si = new SegmentIntersectionTester<TCoordinate>();
+            SegmentIntersectionTester<TCoordinate> si = new SegmentIntersectionTester<TCoordinate>(geom.Factory);
             Boolean hasIntersection = si.HasIntersectionWithLineStrings(_rectSeq, lines);
 
             if (hasIntersection)

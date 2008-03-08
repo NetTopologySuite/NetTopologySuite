@@ -27,6 +27,7 @@
     <WarningLevel>4</WarningLevel>
     <RunFxCop>false</RunFxCop>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <DocumentationFile>bin\Debug_Net20\NetTopologySuite.Coordinates.ManagedBufferedCoordinate2D.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release_Net20|AnyCPU' ">
@@ -36,6 +37,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <DocumentationFile>bin\Release_Net20\NetTopologySuite.Coordinates.ManagedBufferedCoordinate2D.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_Net35|AnyCPU' ">
@@ -47,11 +49,13 @@
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <DocumentationFile>bin\Debug_Net35\NetTopologySuite.Coordinates.ManagedBufferedCoordinate2D.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release_Net35|AnyCPU' ">
     <OutputPath>bin\Release_Net35\</OutputPath>
     <DefineConstants>TRACE;DOTNET35</DefineConstants>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <DocumentationFile>bin\Release_Net35\NetTopologySuite.Coordinates.ManagedBufferedCoordinate2D.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -63,7 +67,7 @@
   <Choose>
     <When Condition="'$(UseProjectReference)' == 'false'">
       <ItemGroup>
-        <Reference Include="NPack, Version=0.7.13341.0, Culture=neutral, PublicKeyToken=56f174b1685ddc6a, processorArchitecture=MSIL">
+        <Reference Include="NPack, Version=0.8.15119.0, Culture=neutral, PublicKeyToken=56f174b1685ddc6a, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\ExternalReferences\$(Configuration)\NPack.dll</HintPath>
         </Reference>
@@ -75,7 +79,7 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="NPack, Version=0.7.13341.0, Culture=neutral, PublicKeyToken=56f174b1685ddc6a, processorArchitecture=MSIL">
+        <Reference Include="NPack, Version=0.8.15119.0, Culture=neutral, PublicKeyToken=56f174b1685ddc6a, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\ExternalReferences\$(Configuration)\NPack.dll</HintPath>
         </Reference>

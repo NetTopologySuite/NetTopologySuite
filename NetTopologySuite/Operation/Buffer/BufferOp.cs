@@ -129,6 +129,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         }
 
         private readonly IGeometry<TCoordinate> _argGeom;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private readonly ICoordinateFactory<TCoordinate> _coordFactory;
         private readonly ICoordinateSequenceFactory<TCoordinate> _coordSequenceFactory;
         private Double _distance;
@@ -143,14 +144,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="g">The point to buffer.</param>
         public BufferOp(IGeometry<TCoordinate> g)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException("g");
-            }
+            if (g == null) throw new ArgumentNullException("g");
 
             _argGeom = g;
-            _coordSequenceFactory = g.Factory.CoordinateSequenceFactory;
-            _coordFactory = g.Factory.CoordinateFactory;
+            _geoFactory = g.Factory;
+            _coordSequenceFactory = _geoFactory.CoordinateSequenceFactory;
+            _coordFactory = _geoFactory.CoordinateFactory;
         }
 
         /// <summary> 
@@ -210,7 +209,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         {
             try
             {
-                BufferBuilder<TCoordinate> bufBuilder = new BufferBuilder<TCoordinate>();
+                BufferBuilder<TCoordinate> bufBuilder 
+                    = new BufferBuilder<TCoordinate>(_geoFactory);
                 bufBuilder.QuadrantSegments = _quadrantSegments;
                 bufBuilder.EndCapStyle = _endCapStyle;
                 _resultGeometry = bufBuilder.Buffer(_argGeom, _distance);
@@ -224,11 +224,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
         private void bufferFixedPrecision(IPrecisionModel<TCoordinate> fixedPM)
         {
-            INoder<TCoordinate> noder = new ScaledNoder<TCoordinate>(
-                new MonotoneChainIndexSnapRounder<TCoordinate>(_coordFactory, 
-                    new PrecisionModel<TCoordinate>(1.0)), fixedPM.Scale, _coordSequenceFactory);
+            MonotoneChainIndexSnapRounder<TCoordinate> snapRounder =
+                new MonotoneChainIndexSnapRounder<TCoordinate>(_geoFactory,
+                    new PrecisionModel<TCoordinate>(1.0));
 
-            BufferBuilder<TCoordinate> bufBuilder = new BufferBuilder<TCoordinate>();
+            INoder<TCoordinate> noder = new ScaledNoder<TCoordinate>(
+                snapRounder, fixedPM.Scale, _coordSequenceFactory);
+
+            BufferBuilder<TCoordinate> bufBuilder 
+                = new BufferBuilder<TCoordinate>(_geoFactory);
             bufBuilder.WorkingPrecisionModel = fixedPM;
             bufBuilder.Noder = noder;
             bufBuilder.QuadrantSegments = _quadrantSegments;

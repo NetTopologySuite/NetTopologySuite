@@ -98,8 +98,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
         private class StrNode : AbstractNode<IExtents<TCoordinate>, IBoundable<IExtents<TCoordinate>>>
         {
-            public StrNode(Int32 nodeCapacity) :
-                base(nodeCapacity) { }
+            private IGeometryFactory<TCoordinate> _geoFactory;
+
+            public StrNode(IGeometryFactory<TCoordinate> geoFactory, Int32 nodeCapacity) :
+                base(nodeCapacity)
+            {
+                _geoFactory = geoFactory;
+            }
 
             protected override IExtents<TCoordinate> ComputeBounds()
             {
@@ -109,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
                 {
                     if (bounds == null)
                     {
-                        bounds = new Extents<TCoordinate>(childBoundable.Bounds);
+                        bounds = _geoFactory.CreateExtents(childBoundable.Bounds);
                     }
                     else
                     {
@@ -138,17 +143,22 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
         #endregion
 
+        private IGeometryFactory<TCoordinate> _geoFactory;
+
         /// <summary> 
         /// Constructs an STRtree with the default (10) node capacity.
         /// </summary>
-        public StrTree() : this(10) { }
+        public StrTree(IGeometryFactory<TCoordinate> geoFactory) : this(geoFactory, 10) { }
 
         /// <summary> 
         /// Constructs an STRtree with the given maximum number of child nodes that
         /// a node may have.
         /// </summary>
-        public StrTree(Int32 nodeCapacity) :
-            base(nodeCapacity) { }
+        public StrTree(IGeometryFactory<TCoordinate> geoFactory, Int32 nodeCapacity) :
+            base(nodeCapacity)
+        {
+            _geoFactory = geoFactory;
+        }
 
         /// <summary>
         /// Inserts an item having the given bounds into the tree.
@@ -196,7 +206,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
         protected override AbstractNode<IExtents<TCoordinate>, IBoundable<IExtents<TCoordinate>>> CreateNode(Int32 level)
         {
-            return new StrNode(level);
+            return new StrNode(_geoFactory, level);
         }
 
         /// <summary>

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Noding;
 using NPack.Interfaces;
 
@@ -24,9 +25,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         private readonly NodingValidator<TCoordinate> _nodingValidator;
 
-        public EdgeNodingValidator(IEnumerable<Edge<TCoordinate>> edges)
+        public EdgeNodingValidator(IGeometryFactory<TCoordinate> geoFactory, IEnumerable<Edge<TCoordinate>> edges)
         {
-            _nodingValidator = new NodingValidator<TCoordinate>(toSegmentStrings(edges));
+            _nodingValidator = new NodingValidator<TCoordinate>(geoFactory, toSegmentStrings(edges));
         }
 
         public void CheckValid()

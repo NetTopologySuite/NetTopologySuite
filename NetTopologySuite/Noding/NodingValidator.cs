@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
+using GeoAPI.Geometries;
 using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -17,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly LineIntersector<TCoordinate> _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
+        private readonly LineIntersector<TCoordinate> _li;
         private readonly List<NodedSegmentString<TCoordinate>> _segStrings = new List<NodedSegmentString<TCoordinate>>();
 
         /// <summary>
@@ -25,8 +26,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// class.
         /// </summary>
         /// <param name="segStrings">The seg strings.</param>
-        public NodingValidator(IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
+        public NodingValidator(IGeometryFactory<TCoordinate> geoFactory, IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
         {
+            _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(geoFactory);
             _segStrings.AddRange(segStrings);
         }
 

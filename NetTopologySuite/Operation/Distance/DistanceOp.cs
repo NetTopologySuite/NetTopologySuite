@@ -69,7 +69,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         private GeometryLocation<TCoordinate>? _minDistanceLocation0;
         private GeometryLocation<TCoordinate>? _minDistanceLocation1;
         private Double _minDistance = Double.MaxValue;
-        private readonly Double _terminateDistance = 0.0;
+        private readonly Double _terminateDistance;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
 
         /// <summary>
         /// Constructs a <see cref="DistanceOp{TCoordinate}" />  that computes the distance and closest points between
@@ -85,8 +86,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <param name="terminateDistance">The distance on which to terminate the search.</param>
         public DistanceOp(IGeometry<TCoordinate> g0, IGeometry<TCoordinate> g1, Double terminateDistance)
         {
+            if (g0 == null) throw new ArgumentNullException("g0");
+            if (g1 == null) throw new ArgumentNullException("g1");
+
             _g0 = g0;
             _g1 = g1;
+            _geoFactory = _g0.Factory ?? _g1.Factory;
             _terminateDistance = terminateDistance;
         }
 
@@ -442,7 +447,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
                         _minDistance = dist;
                         LineSegment<TCoordinate> seg0 = new LineSegment<TCoordinate>(pair0);
                         LineSegment<TCoordinate> seg1 = new LineSegment<TCoordinate>(pair1);
-                        Pair<TCoordinate> closestPt = Slice.GetPair(seg0.ClosestPoints(seg1)).Value;
+                        IEnumerable<TCoordinate> points = seg0.ClosestPoints(seg1, _geoFactory);
+                        Pair<TCoordinate> closestPt = Slice.GetPair(points).Value;
                         locGeom0 = new GeometryLocation<TCoordinate>(line0, i, closestPt.First);
                         locGeom1 = new GeometryLocation<TCoordinate>(line1, j, closestPt.Second);
                     }

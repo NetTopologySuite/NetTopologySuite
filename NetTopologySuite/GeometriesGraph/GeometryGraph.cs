@@ -58,13 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         private IEnumerable<Node<TCoordinate>> _boundaryNodes;
         private Boolean _hasTooFewPoints = false;
-        private TCoordinate _invalidPoint = default(TCoordinate);
-
-        private static EdgeSetIntersector<TCoordinate> createEdgeSetIntersector()
-        {
-            // various options for computing intersections, from slowest to fastest                    
-            return new SimpleMonotoneChaingSweepLineIntersector<TCoordinate>();
-        }
+        private TCoordinate _invalidPoint;
 
         public GeometryGraph(Int32 argIndex, IGeometry<TCoordinate> parentGeom)
         {
@@ -287,7 +281,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 right = cwLeft;
             }
 
-            Edge<TCoordinate> e = new Edge<TCoordinate>(coord, new Label(_argIndex, Locations.Boundary, left, right));
+            Label label = new Label(_argIndex, Locations.Boundary, left, right);
+            Edge<TCoordinate> e = new Edge<TCoordinate>(
+                _parentGeometry.Factory, coord, label);
 
             if (_lineEdgeMap.ContainsKey(ring))
             {
@@ -327,7 +323,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             // add the edge for the LineString
             // line edges do not have locations for their left and right sides
-            Edge<TCoordinate> e = new Edge<TCoordinate>(coord, new Label(_argIndex, Locations.Interior));
+            Label label = new Label(_argIndex, Locations.Interior);
+            Edge<TCoordinate> e = new Edge<TCoordinate>(
+                _parentGeometry.Factory, coord, label);
 
             if (_lineEdgeMap.ContainsKey(line))
             {
@@ -432,6 +430,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             {
                 insertPoint(argIndex, coord, loc);
             }
+        }
+
+        private static EdgeSetIntersector<TCoordinate> createEdgeSetIntersector()
+        {
+            // various options for computing intersections, from slowest to fastest                    
+            return new SimpleMonotoneChaingSweepLineIntersector<TCoordinate>();
         }
     }
 }

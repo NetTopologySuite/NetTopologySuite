@@ -49,33 +49,27 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private readonly ICoordinateFactory<TCoordinate> _coordinateFactory;
         private readonly ICoordinateSequenceFactory<TCoordinate> _sequenceFactory;
         private readonly List<TCoordinate> _coordinates = new List<TCoordinate>();
-        private Double _distance = 0.0;
+        private Double _distance;
         private readonly IPrecisionModel<TCoordinate> _precisionModel;
         private BufferStyle _endCapStyle = BufferStyle.CapRound;
         private TCoordinate _s0, _s1, _s2;
-        private LineSegment<TCoordinate> _seg0 = new LineSegment<TCoordinate>();
-        private LineSegment<TCoordinate> _seg1 = new LineSegment<TCoordinate>();
-        private LineSegment<TCoordinate> _offset0 = new LineSegment<TCoordinate>();
-        private LineSegment<TCoordinate> _offset1 = new LineSegment<TCoordinate>();
+        private LineSegment<TCoordinate> _seg0, _seg1;
+        private LineSegment<TCoordinate> _offset0, _offset1;
         private Positions _side = 0;
 
-        public OffsetCurveBuilder(IPrecisionModel<TCoordinate> precisionModel)
-            : this(precisionModel, DefaultQuadrantSegments) { }
+        public OffsetCurveBuilder(IGeometryFactory<TCoordinate> geoFactory, Int32 quadrantSegments)
+            : this(geoFactory, geoFactory.PrecisionModel, quadrantSegments) { }
 
-        public OffsetCurveBuilder(IPrecisionModel<TCoordinate> precisionModel, Int32 quadrantSegments)
-            : this(precisionModel, quadrantSegments, Coordinates<TCoordinate>.DefaultCoordinateSequenceFactory)
-        { }
-
-        public OffsetCurveBuilder(IPrecisionModel<TCoordinate> precisionModel, 
-            Int32 quadrantSegments, ICoordinateSequenceFactory<TCoordinate> sequenceFactory)
+        public OffsetCurveBuilder(IGeometryFactory<TCoordinate> geoFactory, 
+            IPrecisionModel<TCoordinate> precisionModel, Int32 quadrantSegments)
         {
-            _coordinateFactory = sequenceFactory.CoordinateFactory;
-            _sequenceFactory = sequenceFactory;
-            _precisionModel = precisionModel;
+            _coordinateFactory = geoFactory.CoordinateFactory;
+            _sequenceFactory = geoFactory.CoordinateSequenceFactory;
+            _precisionModel = precisionModel ?? geoFactory.PrecisionModel;
 
             // compute intersections in full precision, to provide accuracy
             // the points are rounded as they are inserted into the curve line
-            _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
+            _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(geoFactory);
 
             Int32 limitedQuadSegs = quadrantSegments < 1 ? 1 : quadrantSegments;
             _filletAngleQuantum = Math.PI / 2.0 / limitedQuadSegs;

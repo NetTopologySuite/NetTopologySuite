@@ -15,16 +15,32 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// allow for fast searching of intersections.
     /// </summary>
     /// <remarks>
-    /// They have the following properties:
-    /// the segments within a monotone chain will never intersect each other, and 
+    /// MonotoneChains have the following properties:
+    /// <list type="bullet">
+    /// <item>
+    /// <description>
+    /// the segments within a monotone chain will never intersect each other, and
+    /// </description>
+    /// </item>
+    /// <item>
+    /// <description>
     /// the envelope of any contiguous subset of the segments in a monotone chain
     /// is simply the envelope of the endpoints of the subset.
+    /// </description>
+    /// </item>
+    /// </list>
+    /// <para>
     /// Property 1 means that there is no need to test pairs of segments from within
     /// the same monotone chain for intersection.
-    /// Property 2 allows
-    /// binary search to be used to find the intersection points of two monotone chains.
+    /// </para>
+    /// <para>
+    /// Property 2 allows binary search to be used to find the intersection points 
+    /// of two monotone chains.
+    /// </para>
+    /// <para>
     /// For many types of real-world data, these properties eliminate a large number of
     /// segment comparisons, producing substantial speed gains.
+    /// </para>
     /// </remarks>
     public class MonotoneChainEdge<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
@@ -38,12 +54,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         private readonly IList<Int32> _startIndex;
 
         // these envelopes are created once and reused
-        private readonly IExtents<TCoordinate> _extents1 = new Extents<TCoordinate>();
-        private readonly IExtents<TCoordinate> _extents2 = new Extents<TCoordinate>();
+        private readonly IExtents<TCoordinate> _extents1;
+        private readonly IExtents<TCoordinate> _extents2;
 
-        public MonotoneChainEdge(Edge<TCoordinate> edge)
+        public MonotoneChainEdge(Edge<TCoordinate> edge, IGeometryFactory<TCoordinate> geoFactory)
         {
             _edge = edge;
+            _extents1 = new Extents<TCoordinate>(geoFactory);
+            _extents2 = new Extents<TCoordinate>(geoFactory);
             _coordinates.AddRange(edge.Coordinates);
             MonotoneChainIndexer<TCoordinate> mcb = new MonotoneChainIndexer<TCoordinate>();
             _startIndex = mcb.GetChainStartIndices(_coordinates);

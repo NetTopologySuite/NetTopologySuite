@@ -3208,6 +3208,207 @@
             Gets the multiplicative identity as a Double: 1F.
             </summary>
         </member>
+        <member name="T:NPack.MersenneTwister">
+            <summary>
+            Generates pseudo-random numbers using the Mersenne Twister algorithm.
+            </summary>
+            <remarks>
+            See <a href="http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html">
+            http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html</a> for details
+            on the algorithm.
+            </remarks>
+        </member>
+        <member name="M:NPack.MersenneTwister.#ctor(System.Int32)">
+            <summary>
+            Creates a new pseudo-random number generator with a given seed.
+            </summary>
+            <param name="seed">A value to use as a seed.</param>
+        </member>
+        <member name="M:NPack.MersenneTwister.#ctor">
+            <summary>
+            Creates a new pseudo-random number generator with a default seed.
+            </summary>
+            <remarks>
+            <c>new <see cref="T:System.Random"/>().<see cref="M:System.Random.Next"/></c> 
+            is used for the seed.
+            </remarks>
+        </member>
+        <member name="M:NPack.MersenneTwister.#ctor(System.Int32[])">
+            <summary>
+            Creates a pseudo-random number generator initialized with the given array.
+            </summary>
+            <param name="initKey">The array for initializing keys.</param>
+        </member>
+        <member name="M:NPack.MersenneTwister.NextUInt32">
+            <summary>
+            Returns the next pseudo-random <see cref="T:System.UInt32"/>.
+            </summary>
+            <returns>A pseudo-random <see cref="T:System.UInt32"/> value.</returns>
+        </member>
+        <member name="M:NPack.MersenneTwister.NextUInt32(System.UInt32)">
+            <summary>
+            Returns the next pseudo-random <see cref="T:System.UInt32"/> 
+            up to <paramref name="maxValue"/>.
+            </summary>
+            <param name="maxValue">
+            The maximum value of the pseudo-random number to create.
+            </param>
+            <returns>
+            A pseudo-random <see cref="T:System.UInt32"/> value which is at most <paramref name="maxValue"/>.
+            </returns>
+        </member>
+        <member name="M:NPack.MersenneTwister.NextUInt32(System.UInt32,System.UInt32)">
+            <summary>
+            Returns the next pseudo-random <see cref="T:System.UInt32"/> at least 
+            <paramref name="minValue"/> and up to <paramref name="maxValue"/>.
+            </summary>
+            <param name="minValue">The minimum value of the pseudo-random number to create.</param>
+            <param name="maxValue">The maximum value of the pseudo-random number to create.</param>
+            <returns>
+            A pseudo-random <see cref="T:System.UInt32"/> value which is at least 
+            <paramref name="minValue"/> and at most <paramref name="maxValue"/>.
+            </returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            If <c><paramref name="minValue"/> &gt;= <paramref name="maxValue"/></c>.
+            </exception>
+        </member>
+        <member name="M:NPack.MersenneTwister.Next">
+            <summary>
+            Returns the next pseudo-random <see cref="T:System.Int32"/>.
+            </summary>
+            <returns>A pseudo-random <see cref="T:System.Int32"/> value.</returns>
+        </member>
+        <member name="M:NPack.MersenneTwister.Next(System.Int32)">
+            <summary>
+            Returns the next pseudo-random <see cref="T:System.Int32"/> up to <paramref name="maxValue"/>.
+            </summary>
+            <param name="maxValue">The maximum value of the pseudo-random number to create.</param>
+            <returns>
+            A pseudo-random <see cref="T:System.Int32"/> value which is at most <paramref name="maxValue"/>.
+            </returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            When <paramref name="maxValue"/> &lt; 0.
+            </exception>
+        </member>
+        <member name="M:NPack.MersenneTwister.Next(System.Int32,System.Int32)">
+            <summary>
+            Returns the next pseudo-random <see cref="T:System.Int32"/> 
+            at least <paramref name="minValue"/> 
+            and up to <paramref name="maxValue"/>.
+            </summary>
+            <param name="minValue">The minimum value of the pseudo-random number to create.</param>
+            <param name="maxValue">The maximum value of the pseudo-random number to create.</param>
+            <returns>A pseudo-random Int32 value which is at least <paramref name="minValue"/> and at 
+            most <paramref name="maxValue"/>.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            If <c><paramref name="minValue"/> &gt;= <paramref name="maxValue"/></c>.
+            </exception>
+        </member>
+        <member name="M:NPack.MersenneTwister.NextBytes(System.Byte[])">
+            <summary>
+            Fills a buffer with pseudo-random bytes.
+            </summary>
+            <param name="buffer">The buffer to fill.</param>
+            <exception cref="T:System.ArgumentNullException">
+            If <c><paramref name="buffer"/> == <see langword="null"/></c>.
+            </exception>
+        </member>
+        <member name="M:NPack.MersenneTwister.NextDouble">
+            <summary>
+            Returns the next pseudo-random <see cref="T:System.Double"/> value.
+            </summary>
+            <returns>A pseudo-random double floating point value.</returns>
+            <remarks>
+            <para>
+            There are two common ways to create a double floating point using MT19937: 
+            using <see cref="M:NPack.MersenneTwister.GenerateUInt32"/> and dividing by 0xFFFFFFFF + 1, 
+            or else generating two double words and shifting the first by 26 bits and 
+            adding the second.
+            </para>
+            <para>
+            In a newer measurement of the randomness of MT19937 published in the 
+            journal "Monte Carlo Methods and Applications, Vol. 12, No. 5-6, pp. 385 – 393 (2006)"
+            entitled "A Repetition Test for Pseudo-Random Number Generators",
+            it was found that the 32-bit version of generating a double fails at the 95% 
+            confidence level when measuring for expected repetitions of a particular 
+            number in a sequence of numbers generated by the algorithm.
+            </para>
+            <para>
+            Due to this, the 53-bit method is implemented here and the 32-bit method
+            of generating a double is not. If, for some reason,
+            the 32-bit method is needed, it can be generated by the following:
+            <code>
+            (Double)NextUInt32() / ((UInt64)UInt32.MaxValue + 1);
+            </code>
+            </para>
+            </remarks>
+        </member>
+        <member name="M:NPack.MersenneTwister.NextDouble(System.Boolean)">
+            <summary>
+            Returns a pseudo-random number greater than or equal to zero, and 
+            either strictly less than one, or less than or equal to one, 
+            depending on the value of the given parameter.
+            </summary>
+            <param name="includeOne">
+            If <see langword="true"/>, the pseudo-random number returned will be 
+            less than or equal to one; otherwise, the pseudo-random number returned will
+            be strictly less than one.
+            </param>
+            <returns>
+            If <paramref name="includeOne"/> is <see langword="true"/>, 
+            this method returns a double-precision pseudo-random number greater than 
+            or equal to zero, and less than or equal to one. 
+            If <paramref name="includeOne"/> is <see langword="false"/>, this method
+            returns a double-precision pseudo-random number greater than or equal to zero and
+            strictly less than one.
+            </returns>
+        </member>
+        <member name="M:NPack.MersenneTwister.NextDoublePositive">
+            <summary>
+            Returns a pseudo-random number greater than 0.0 and less than 1.0.
+            </summary>
+            <returns>A pseudo-random number greater than 0.0 and less than 1.0.</returns>
+        </member>
+        <member name="M:NPack.MersenneTwister.NextSingle">
+            <summary>
+            Returns a pseudo-random number between 0.0 and 1.0.
+            </summary>
+            <returns>
+            A single-precision floating point number greater than or equal to 0.0, 
+            and less than 1.0.
+            </returns>
+        </member>
+        <member name="M:NPack.MersenneTwister.NextSingle(System.Boolean)">
+            <summary>
+            Returns a pseudo-random number greater than or equal to zero, and either strictly
+            less than one, or less than or equal to one, depending on the value of the
+            given boolean parameter.
+            </summary>
+            <param name="includeOne">
+            If <see langword="true"/>, the pseudo-random number returned will be 
+            less than or equal to one; otherwise, the pseudo-random number returned will
+            be strictly less than one.
+            </param>
+            <returns>
+            If <paramref name="includeOne"/> is <see langword="true"/>, this method returns a
+            single-precision pseudo-random number greater than or equal to zero, and less
+            than or equal to one. If <paramref name="includeOne"/> is <see langword="false"/>, 
+            this method returns a single-precision pseudo-random number greater than or equal to zero and
+            strictly less than one.
+            </returns>
+        </member>
+        <member name="M:NPack.MersenneTwister.NextSinglePositive">
+            <summary>
+            Returns a pseudo-random number greater than 0.0 and less than 1.0.
+            </summary>
+            <returns>A pseudo-random number greater than 0.0 and less than 1.0.</returns>
+        </member>
+        <member name="M:NPack.MersenneTwister.GenerateUInt32">
+            <summary>
+            Generates a new pseudo-random <see cref="T:System.UInt32"/>.
+            </summary>
+            <returns>A pseudo-random <see cref="T:System.UInt32"/>.</returns>
+        </member>
         <member name="T:NPack.Interfaces.IEigenvalueDecomposition`2">
             <summary>
             An interface for an eigenvalue decomposition of a matrix.
@@ -3404,167 +3605,6 @@
             <summary>
             The transform matrix is after the operation.
             </summary>
-        </member>
-        <member name="T:NPack.MersenneTwister">
-            <summary>
-            Generates random numbers using the Mersenne Twister algorithm.
-            </summary>
-        </member>
-        <member name="M:NPack.MersenneTwister.#ctor(System.Int32)">
-            <summary>
-            Creates a new random number generator with a seed.
-            </summary>
-            <param name="seed">A value to use as a seed.</param>
-        </member>
-        <member name="M:NPack.MersenneTwister.#ctor">
-            <summary>
-            Creates a new random number generator with a default seed.
-            </summary>
-            <remarks>
-            <c>new <see cref="T:System.Random"/>().<see cref="M:System.Random.Next"/></c> 
-            is used for the seed.
-            </remarks>
-        </member>
-        <member name="M:NPack.MersenneTwister.#ctor(System.Int32[])">
-            <summary>
-            Creates a random number generator initialized with the given array.
-            </summary>
-            <param name="initKey">The array for initializing keys.</param>
-        </member>
-        <member name="M:NPack.MersenneTwister.NextUInt32">
-            <summary>
-            Returns the next random <see cref="T:System.UInt32"/>.
-            </summary>
-            <returns>A random <see cref="T:System.UInt32"/> value.</returns>
-        </member>
-        <member name="M:NPack.MersenneTwister.NextUInt(System.UInt32)">
-            <summary>
-            Returns the next random <see cref="T:System.UInt32"/> up to <paramref name="maxValue"/>.
-            </summary>
-            <param name="maxValue">The maximum value of the random number to create.</param>
-            <returns>A random <see cref="T:System.UInt32"/> value which is at most <paramref name="maxValue"/>.</returns>
-        </member>
-        <member name="M:NPack.MersenneTwister.NextUInt(System.UInt32,System.UInt32)">
-            <summary>
-            Returns the next random <see cref="T:System.UInt32"/> at least <paramref name="minValue"/> 
-            and up to <paramref name="maxValue"/>.
-            </summary>
-            <param name="minValue">The minimum value of the random number to create.</param>
-            <param name="maxValue">The maximum value of the random number to create.</param>
-            <returns>
-            A random <see cref="T:System.UInt32"/> value which is at least <paramref name="minValue"/> and at 
-            most <paramref name="maxValue"/>.
-            </returns>
-            <exception cref="T:System.ArgumentOutOfRangeException">
-            If <c><paramref name="minValue"/> &gt;= <paramref name="maxValue"/></c>.
-            </exception>
-        </member>
-        <member name="M:NPack.MersenneTwister.Next">
-            <summary>
-            Returns the next random <see cref="T:System.Int32"/>.
-            </summary>
-            <returns>A random <see cref="T:System.Int32"/> value.</returns>
-        </member>
-        <member name="M:NPack.MersenneTwister.Next(System.Int32)">
-            <summary>
-            Returns the next random <see cref="T:System.Int32"/> up to <paramref name="maxValue"/>.
-            </summary>
-            <param name="maxValue">The maximum value of the random number to create.</param>
-            <returns>A random Int32 value which is at most <paramref name="maxValue"/>.</returns>
-        </member>
-        <member name="M:NPack.MersenneTwister.Next(System.Int32,System.Int32)">
-            <summary>
-            Returns the next random <see cref="T:System.Int32"/> 
-            at least <paramref name="minValue"/> 
-            and up to <paramref name="maxValue"/>.
-            </summary>
-            <param name="minValue">The minimum value of the random number to create.</param>
-            <param name="maxValue">The maximum value of the random number to create.</param>
-            <returns>A random Int32 value which is at least <paramref name="minValue"/> and at 
-            most <paramref name="maxValue"/>.</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException">
-            If <c><paramref name="minValue"/> &gt;= <paramref name="maxValue"/></c>.
-            </exception>
-        </member>
-        <member name="M:NPack.MersenneTwister.NextBytes(System.Byte[])">
-            <summary>
-            Fills a buffer with random bytes.
-            </summary>
-            <param name="buffer">The buffer to fill.</param>
-            <exception cref="T:System.ArgumentNullException">
-            If <c><paramref name="buffer"/> == <see langword="null"/></c>.
-            </exception>
-        </member>
-        <member name="M:NPack.MersenneTwister.NextDouble">
-            <summary>
-            Returns the next random <see cref="T:System.Double"/> value.
-            </summary>
-            <returns>A random Double floating point value.</returns>
-        </member>
-        <member name="M:NPack.MersenneTwister.NextDouble(System.Boolean)">
-            <summary>
-            Returns a random number greater than or equal to zero, and either strictly
-            less than one, or less than or equal to one, depending on the value of the
-            given boolean parameter.
-            </summary>
-            <param name="includeOne">
-            If <c>true</c>, the random number returned will be 
-            less than or equal to one; otherwise, the random number returned will
-            be strictly less than one.
-            </param>
-            <returns>
-            If <c>includeOne</c> is <c>true</c>, this method returns a
-            single-precision random number greater than or equal to zero, and less
-            than or equal to one. If <c>includeOne</c> is <c>false</c>, this method
-            returns a single-precision random number greater than or equal to zero and
-            strictly less than one.
-            </returns>
-        </member>
-        <member name="M:NPack.MersenneTwister.NextDoublePositive">
-            <summary>
-            Returns a random number greater than 0.0 and less than 1.0.
-            </summary>
-            <returns>A random number greater than 0.0 and less than 1.0.</returns>
-        </member>
-        <member name="M:NPack.MersenneTwister.NextSingle">
-            <summary>
-            Returns a random number between 0.0 and 1.0.
-            </summary>
-            <returns>
-            A single-precision floating point number greater than or equal to 0.0, 
-            and less than 1.0.
-            </returns>
-        </member>
-        <member name="M:NPack.MersenneTwister.NextFloat(System.Boolean)">
-            <summary>
-            Returns a random number greater than or equal to zero, and either strictly
-            less than one, or less than or equal to one, depending on the value of the
-            given boolean parameter.
-            </summary>
-            <param name="includeOne">
-            If <c>true</c>, the random number returned will be 
-            less than or equal to one; otherwise, the random number returned will
-            be strictly less than one.
-            </param>
-            <returns>
-            If <c>includeOne</c> is <c>true</c>, this method returns a
-            single-precision random number greater than or equal to zero, and less
-            than or equal to one. If <c>includeOne</c> is <c>false</c>, this method
-            returns a single-precision random number greater than or equal to zero and
-            strictly less than one.
-            </returns>
-        </member>
-        <member name="M:NPack.MersenneTwister.NextFloatPositive">
-            <summary>
-            Returns a random number greater than 0.0 and less than 1.0.
-            </summary>
-            <returns>A random number greater than 0.0 and less than 1.0.</returns>
-        </member>
-        <member name="M:NPack.MersenneTwister.GenerateUInt32">
-            <summary>
-            Generates a new random <see cref="T:System.UInt32"/>.
-            </summary>
-            <returns>A random <see cref="T:System.UInt32"/>.</returns>
         </member>
         <member name="T:NPack.MatrixFormat">
             <summary>

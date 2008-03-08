@@ -14,10 +14,11 @@ namespace NetTopologySuite.Coordinates
           IBufferedVectorFactory<BufferedCoordinate2D, DoubleComponent>
     {
         private readonly ManagedVectorBuffer<BufferedCoordinate2D, DoubleComponent> _coordinates;
-        private readonly IList<BufferedCoordinate2D> _lexicographicVertexIndex = new List<BufferedCoordinate2D>();
+        private readonly IDictionary<Pair<Double>, Int32> _lexicographicVertexIndex;
 
         public BufferedCoordinate2DFactory()
         {
+            _lexicographicVertexIndex = createLexicographicIndex();
             _coordinates = new ManagedVectorBuffer<BufferedCoordinate2D, DoubleComponent>(2, true, this);
         }
 
@@ -78,6 +79,11 @@ namespace NetTopologySuite.Coordinates
             {
                 return getVertexInternal(coordinate.X, coordinate.Y);
             }
+        }
+
+        public BufferedCoordinate2D Create(ICoordinate coordinate)
+        {
+            return Create(coordinate[Ordinates.X], coordinate[Ordinates.Y]);
         }
 
         public AffineTransformMatrix<BufferedCoordinate2D> CreateTransform(BufferedCoordinate2D scaleVector, Double rotation, BufferedCoordinate2D translateVector)
@@ -157,19 +163,29 @@ namespace NetTopologySuite.Coordinates
 
         ICoordinate ICoordinateFactory.Homogenize(ICoordinate coordinate)
         {
-            throw new NotImplementedException();
+            if (coordinate == null)
+            {
+                throw new ArgumentNullException("coordinate");
+            }
+
+            return Homogenize(getVertexInternal(coordinate[Ordinates.X], coordinate[Ordinates.Y]));
         }
 
         ICoordinate ICoordinateFactory.Dehomogenize(ICoordinate coordinate)
         {
-            throw new NotImplementedException();
+            if (coordinate == null)
+            {
+                throw new ArgumentNullException("coordinate");
+            }
+
+            return Dehomogenize(getVertexInternal(coordinate[Ordinates.X], coordinate[Ordinates.Y]));
         }
 
         #endregion
 
         #region IVectorBuffer<BufferedCoordinate2D,DoubleComponent> Members
 
-        public Int32 Add(IVector<DoubleComponent> vector)
+        Int32 IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.Add(IVector<DoubleComponent> vector)
         {
             Double x = (Double)vector[0];
             Double y = (Double)vector[1];
@@ -179,7 +195,7 @@ namespace NetTopologySuite.Coordinates
             return v.Index;
         }
 
-        public Int32 Add(BufferedCoordinate2D vector)
+        Int32 IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.Add(BufferedCoordinate2D vector)
         {
             if (isValidVertex(vector))
             {
@@ -191,15 +207,7 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
-        private Boolean isValidVertex(BufferedCoordinate2D vector)
-        {
-            return ReferenceEquals(vector.Factory, this)
-                   && vector.Index < _coordinates.Count
-                   && vector.X == _coordinates[vector.Index].X
-                   && vector.Y == _coordinates[vector.Index].Y;
-        }
-
-        public BufferedCoordinate2D Add(params DoubleComponent[] components)
+        BufferedCoordinate2D IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.Add(params DoubleComponent[] components)
         {
             if (components.Length != 2)
             {
@@ -209,42 +217,42 @@ namespace NetTopologySuite.Coordinates
             return getVertexInternal((Double)components[0], (Double)components[1]);
         }
 
-        public void Clear()
+        void IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.Clear()
         {
             _coordinates.Clear();
         }
 
-        public Boolean Contains(IVector<DoubleComponent> item)
+        Boolean IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.Contains(IVector<DoubleComponent> item)
         {
             return _coordinates.Contains(item);
         }
 
-        public Boolean Contains(BufferedCoordinate2D item)
+        Boolean IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.Contains(BufferedCoordinate2D item)
         {
             return _coordinates.Contains(item);
         }
 
-        public void CopyTo(BufferedCoordinate2D[] array, Int32 startIndex, Int32 endIndex)
+        void IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.CopyTo(BufferedCoordinate2D[] array, Int32 startIndex, Int32 endIndex)
         {
             _coordinates.CopyTo(array, startIndex, endIndex);
         }
 
-        public Int32 Count
+        Int32 IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.Count
         {
             get { return _coordinates.Count; }
         }
 
-        public IVectorFactory<BufferedCoordinate2D, DoubleComponent> Factory
+        IVectorFactory<BufferedCoordinate2D, DoubleComponent> IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.Factory
         {
             get { return _coordinates.Factory; }
         }
 
-        public Boolean IsReadOnly
+        Boolean IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.IsReadOnly
         {
             get { return _coordinates.IsReadOnly; }
         }
 
-        public Int32 MaximumSize
+        Int32 IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.MaximumSize
         {
             get
             {
@@ -256,23 +264,35 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
-        public void Remove(Int32 index)
+        void IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.Remove(Int32 index)
         {
             _coordinates.Remove(index);
         }
 
-        public event EventHandler SizeIncreased;
+        event EventHandler IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.SizeIncreased
+        {
+            add { _coordinates.SizeIncreased += value; }
+            remove { _coordinates.SizeIncreased -= value; }
+        }
 
-        public event CancelEventHandler SizeIncreasing;
+        event CancelEventHandler IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.SizeIncreasing
+        {
+            add { _coordinates.SizeIncreasing += value; }
+            remove { _coordinates.SizeIncreasing -= value; }
+        }
 
-        public event EventHandler<VectorOperationEventArgs<BufferedCoordinate2D, DoubleComponent>> VectorChanged;
+        event EventHandler<VectorOperationEventArgs<BufferedCoordinate2D, DoubleComponent>> IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.VectorChanged
+        {
+            add { _coordinates.VectorChanged += value; }
+            remove { _coordinates.VectorChanged -= value; }
+        }
 
-        public Int32 VectorLength
+        Int32 IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.VectorLength
         {
             get { return 2; }
         }
 
-        public BufferedCoordinate2D this[Int32 index]
+        BufferedCoordinate2D IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.this[Int32 index]
         {
             get
             {
@@ -290,7 +310,10 @@ namespace NetTopologySuite.Coordinates
 
         public IEnumerator<BufferedCoordinate2D> GetEnumerator()
         {
-            throw new NotImplementedException();
+            foreach (BufferedCoordinate2D coordinate in _coordinates)
+            {
+                yield return coordinate;
+            }
         }
 
         #endregion
@@ -341,7 +364,7 @@ namespace NetTopologySuite.Coordinates
 
         internal BufferedCoordinate2D Divide(BufferedCoordinate2D a, BufferedCoordinate2D b)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         internal BufferedCoordinate2D GetOne()
@@ -351,27 +374,27 @@ namespace NetTopologySuite.Coordinates
 
         internal BufferedCoordinate2D Multiply(BufferedCoordinate2D a, BufferedCoordinate2D b)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("Cross-product not implemented");
         }
 
         internal Boolean GreaterThan(BufferedCoordinate2D a, BufferedCoordinate2D b)
         {
-            throw new NotImplementedException();
+            return a.CompareTo(b) > 0;
         }
 
         internal Boolean GreaterThanOrEqualTo(BufferedCoordinate2D a, BufferedCoordinate2D b)
         {
-            throw new NotImplementedException();
+            return a.CompareTo(b) >= 0;
         }
 
         internal Boolean LessThan(BufferedCoordinate2D a, BufferedCoordinate2D b)
         {
-            throw new NotImplementedException();
+            return a.CompareTo(b) < 0;
         }
 
         internal Boolean LessThanOrEqualTo(BufferedCoordinate2D a, BufferedCoordinate2D b)
         {
-            throw new NotImplementedException();
+            return a.CompareTo(b) <= 0;
         }
 
         internal BufferedCoordinate2D Divide(BufferedCoordinate2D a, Double b)
@@ -388,142 +411,181 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
+        private Boolean isValidVertex(BufferedCoordinate2D vector)
+        {
+            return ReferenceEquals(vector.Factory, this)
+                   && vector.Index < _coordinates.Count
+                   && vector.X == _coordinates[vector.Index].X
+                   && vector.Y == _coordinates[vector.Index].Y;
+        }
+
+        private IDictionary<Pair<Double>, Int32> createLexicographicIndex()
+        {
+            return new SortedDictionary<Pair<Double>, Int32>(
+                new LexicographicComparer());
+        }
+
         private BufferedCoordinate2D getVertexInternal(Double x, Double y)
         {
-            Int32 index;
-            BufferedCoordinate2D v;
+            BufferedCoordinate2D v = findExisting(x, y) ?? addNew(x, y);
 
-            if (findExisting(x, y, out index))
+            return v;
+        }
+
+        private BufferedCoordinate2D? findExisting(Double x, Double y)
+        {
+            BufferedCoordinate2D? v = null;
+            Int32 index;
+
+            if (_lexicographicVertexIndex.TryGetValue(new Pair<Double>(x, y), out index))
             {
-                v = _lexicographicVertexIndex[index];
-            }
-            else
-            {
-                v = addNew(x, y, index);
+                v = new BufferedCoordinate2D(this, index);
             }
 
             return v;
         }
 
-        private Boolean findExisting(Double x, Double y, out Int32 index)
-        {
-            Pair<Double> coord = new Pair<Double>(x, y);
-            Pair<Int32> range = new Pair<Int32>(0, _lexicographicVertexIndex.Count);
-            return findExisting(coord, range, out index);
-        }
+        //private BufferedCoordinate2D? findExisting(Pair<Double> coord, Pair<Int32> range)
+        //{
+        //    Double x = coord.First;
+        //    Double y = coord.Second;
 
-        private Boolean findExisting(Pair<Double> coord, Pair<Int32> range, out Int32 index)
-        {
-            Double x = coord.First;
-            Double y = coord.Second;
+        //    Int32 indexStart = range.First;
+        //    Int32 indexEnd = range.Second;
 
-            Int32 indexStart = range.First;
-            Int32 indexEnd = range.Second;
+        //    Debug.Assert(indexStart <= indexEnd);
 
-            Debug.Assert(indexStart <= indexEnd);
+        //    if (indexEnd == indexStart)
+        //    {
+        //        if (indexEnd >= _coordinates.Count)
+        //        {
+        //            index = indexEnd;
+        //            return false;
+        //        }
 
-            if (indexEnd == indexStart)
-            {
-                if (indexEnd >= _coordinates.Count)
-                {
-                    index = indexEnd;
-                    return false;
-                }
+        //        BufferedCoordinate2D vertex = _lexicographicVertexIndex[indexEnd];
 
-                BufferedCoordinate2D vertex = _lexicographicVertexIndex[indexEnd];
+        //        if (vertex.X == x && vertex.Y == y)
+        //        {
+        //            index = indexEnd;
+        //            return true;
+        //        }
+        //        else
+        //        {
+        //            Int32 compare = compareLexicographically(
+        //                coord, new Pair<Double>(vertex.X, vertex.Y));
 
-                if (vertex.X == x && vertex.Y == y)
-                {
-                    index = indexEnd;
-                    return true;
-                }
-                else
-                {
-                    Int32 compare = compareLexicographically(
-                        coord, new Pair<Double>(vertex.X, vertex.Y));
+        //            if (compare > 0)
+        //            {
+        //                index = indexEnd + 1;
+        //            }
+        //            else
+        //            {
+        //                index = indexEnd;
+        //            }
 
-                    if (compare > 0)
-                    {
-                        index = indexEnd + 1;
-                    }
-                    else
-                    {
-                        index = indexEnd;
-                    }
+        //            return false;
+        //        }
+        //    }
 
-                    return false;
-                }
-            }
+        //    Int32 midPoint = (indexEnd + indexStart) / 2;
 
-            Int32 midPoint = (indexEnd + indexStart) / 2;
+        //    BufferedCoordinate2D midVertex = _lexicographicVertexIndex[midPoint];
 
-            BufferedCoordinate2D midVertex = _lexicographicVertexIndex[midPoint];
+        //    Int32 compareResult = compareLexicographically(
+        //                                    coord, 
+        //                                    new Pair<Double>(midVertex.X, midVertex.Y));
 
-            Int32 compareResult = compareLexicographically(
-                                            coord, 
-                                            new Pair<Double>(midVertex.X, midVertex.Y));
+        //    if (compareResult < 0)
+        //    {
+        //        if (midPoint == indexStart)
+        //        {
+        //            index = midPoint;
+        //            return false;
+        //        }
+        //        else
+        //        {
+        //            return findExisting(coord, new Pair<Int32>(indexStart, midPoint - 1), out index);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (compareResult > 0)
+        //        {
+        //            Pair<Int32> newRange = new Pair<Int32>(midPoint + 1, indexEnd);
+        //            return findExisting(coord, newRange, out index);
+        //        }
+        //        else // compareResult == 0
+        //        {
+        //            index = midVertex.Index;
+        //            return true;
+        //        }
+        //    }
+        //}
 
-            if (compareResult < 0)
-            {
-                if (midPoint == indexStart)
-                {
-                    index = midPoint;
-                    return false;
-                }
-                else
-                {
-                    return findExisting(coord, new Pair<Int32>(indexStart, midPoint - 1), out index);
-                }
-            }
-            else
-            {
-                if (compareResult > 0)
-                {
-                    Pair<Int32> newRange = new Pair<Int32>(midPoint + 1, indexEnd);
-                    return findExisting(coord, newRange, out index);
-                }
-                else // compareResult == 0
-                {
-                    index = midVertex.Index;
-                    return true;
-                }
-            }
-        }
-
-        private static Int32 compareLexicographically(Pair<Double> v1, Pair<Double> v2)
-        {
-            if (v1.First < v2.First)
-            {
-                return -1;
-            }
-            else
-            {
-                if (v1.First > v2.First)
-                {
-                    return 1;
-                }
-                else // v1.First == v2.First
-                {
-                    return v1.Second.CompareTo(v2.Second);
-                }
-            }
-        }
-
-        private BufferedCoordinate2D addNew(Double x, Double y, Int32 index)
+        private BufferedCoordinate2D addNew(Double x, Double y)
         {
             BufferedCoordinate2D coord = _coordinates.Add(x, y, 1);
-            _lexicographicVertexIndex.Insert(index, coord);
+            _lexicographicVertexIndex[new Pair<Double>(coord.X, coord.Y)] = coord.Index;
             return coord;
         }
 
-        private BufferedCoordinate2D import(BufferedCoordinate2D coord)
+        //private BufferedCoordinate2D import(BufferedCoordinate2D coord)
+        //{
+        //    if (!ReferenceEquals(coord.Factory, this))
+        //    {
+        //        return getVertexInternal(coord.X, coord.Y);
+        //    }
+
+        //    return coord;
+        //}
+
+        class LexicographicComparer : IComparer<Pair<Double>>
         {
-            if (!ReferenceEquals(coord.Factory, this))
+            #region IComparer<Pair<Double>> Members
+
+            public Int32 Compare(Pair<Double> v1, Pair<Double> v2)
             {
-                return getVertexInternal(coord.X, coord.Y);
+                Double v1_x = v1.First;
+                Double v2_x = v2.First;
+
+                if (v1_x < v2_x)
+                {
+                    return -1;
+                }
+                else
+                {
+                    if (v1_x > v2_x)
+                    {
+                        return 1;
+                    }
+                    else // v1.First == v2.First
+                    {
+                        return v1.Second.CompareTo(v2.Second);
+                    }
+                }
             }
 
-            return coord;
+            #endregion
         }
+
+        //private static Int32 compareLexicographically(Pair<Double> v1, Pair<Double> v2)
+        //{
+        //    if (v1.First < v2.First)
+        //    {
+        //        return -1;
+        //    }
+        //    else
+        //    {
+        //        if (v1.First > v2.First)
+        //        {
+        //            return 1;
+        //        }
+        //        else // v1.First == v2.First
+        //        {
+        //            return v1.Second.CompareTo(v2.Second);
+        //        }
+        //    }
+        //}
     }
 }

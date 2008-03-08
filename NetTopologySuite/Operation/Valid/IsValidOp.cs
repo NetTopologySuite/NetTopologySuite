@@ -247,7 +247,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                 return;
             }
 
-            LineIntersector<TCoordinate> li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
+            IGeometryFactory<TCoordinate> geoFactory = g.Factory;
+
+            if (geoFactory == null)
+            {
+                throw new InvalidOperationException("ILinearRing's factory is null.");
+            }
+
+            LineIntersector<TCoordinate> li 
+                = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(geoFactory);
             graph.ComputeSelfNodes(li, true);
             checkNoSelfIntersectingRings(graph);
         }
@@ -579,19 +587,21 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             }
         }
 
-        /// <summary>
-        /// Tests that no hole is nested inside another hole.
-        /// This routine assumes that the holes are disjoint.
-        /// To ensure this, holes have previously been tested
-        /// to ensure that:
-        /// They do not partially overlap
-        /// (checked by <c>checkRelateConsistency</c>).
-        /// They are not identical
-        /// (checked by <c>checkRelateConsistency</c>).
-        /// </summary>
+        // Tests that no hole is nested inside another hole.
+        // This routine assumes that the holes are disjoint.
+        // To ensure this, holes have previously been tested
+        // to ensure that:
+        // * They do not partially overlap (checked by <c>checkRelateConsistency</c>).
+        // * They are not identical (checked by <c>checkRelateConsistency</c>).
         private void checkHolesNotNested(IPolygon<TCoordinate> p, GeometryGraph<TCoordinate> graph)
         {
-            QuadtreeNestedRingTester<TCoordinate> nestedTester = new QuadtreeNestedRingTester<TCoordinate>(graph);
+            if (p.Factory == null)
+            {
+                throw new InvalidOperationException("IPolygon has a null IGeometryFactory.");
+            }
+
+            QuadtreeNestedRingTester<TCoordinate> nestedTester 
+                = new QuadtreeNestedRingTester<TCoordinate>(p.Factory, graph);
 
             foreach (ILinearRing<TCoordinate> innerHole in p.InteriorRings)
             {
@@ -607,15 +617,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             }
         }
 
-        /// <summary>
-        /// Tests that no element polygon is wholly in the interior of another element polygon.
-        /// Preconditions:
-        /// Shells do not partially overlap.
-        /// Shells do not touch along an edge.
-        /// No duplicate rings exists.
-        /// This routine relies on the fact that while polygon shells may touch at one or
-        /// more vertices, they cannot touch at ALL vertices.
-        /// </summary>
+        // Tests that no element polygon is wholly in the interior of another element polygon.
+        // Preconditions:
+        // Shells do not partially overlap.
+        // Shells do not touch along an edge.
+        // No duplicate rings exists.
+        // This routine relies on the fact that while polygon shells may touch at one or
+        // more vertices, they cannot touch at ALL vertices.
         private void checkShellsNotNested(IMultiPolygon<TCoordinate> mp, GeometryGraph<TCoordinate> graph)
         {
             foreach (IPolygon<TCoordinate> p in mp)

@@ -322,7 +322,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         protected override Extents<TCoordinate> ComputeExtentsInternal()
         {
-            Extents<TCoordinate> extents = new Extents<TCoordinate>();
+            Extents<TCoordinate> extents = new Extents<TCoordinate>(Factory);
 
             foreach (IGeometry<TCoordinate> geometry in _geometries)
             {

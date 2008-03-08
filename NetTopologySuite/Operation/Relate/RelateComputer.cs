@@ -26,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
          where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                              IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly LineIntersector<TCoordinate> _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
+        private readonly LineIntersector<TCoordinate> _li;
         private readonly PointLocator<TCoordinate> _ptLocator = new PointLocator<TCoordinate>();
         // the arg(s) of the operation
         private readonly GeometryGraph<TCoordinate> _g0;
@@ -36,8 +36,18 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 
         public RelateComputer(GeometryGraph<TCoordinate> graph1, GeometryGraph<TCoordinate> graph2)
         {
+            if (graph1 == null) throw new ArgumentNullException("graph1");
+            if (graph2 == null) throw new ArgumentNullException("graph2");
+
             _g0 = graph1;
             _g1 = graph2;
+
+            /*
+            * Use factory of primary point.
+            * Note that this does NOT handle mixed-precision arguments
+            * where the second arg has greater precision than the first.
+            */
+            _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(_g0.Geometry.Factory);
         }
 
         public IntersectionMatrix ComputeIntersectionMatrix()

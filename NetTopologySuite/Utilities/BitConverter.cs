@@ -1,3 +1,4 @@
+#if NETCF
 using System;
 
 namespace GisSharpBlog.NetTopologySuite.Utilities
@@ -23,3 +24,4 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         }
     }
 }
+#endif

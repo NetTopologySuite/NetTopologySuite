@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                 IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly ICoordinateFactory<TCoordinate> _factory;
+        private readonly IGeometryFactory<TCoordinate> _factory;
         private TCoordinate _min;
         private TCoordinate _max;
 
@@ -97,13 +97,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return true;
         }
 
-        public Extents()
-            : this(Coordinates<TCoordinate>.DefaultCoordinateFactory) { }
+        //internal Extents()
+        //    : this(Coordinates<TCoordinate>.DefaultCoordinateFactory) { }
 
         /// <summary>
         /// Creates a null <see cref="Extents{TCoordinate}"/>.
         /// </summary>
-        public Extents(ICoordinateFactory<TCoordinate> factory)
+        internal Extents(IGeometryFactory<TCoordinate> factory)
         {
             _factory = factory;
             Init();
@@ -116,7 +116,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="x2">The second x-value.</param>
         /// <param name="y1">The first y-value.</param>
         /// <param name="y2">The second y-value.</param>
-        public Extents(Double x1, Double x2, Double y1, Double y2)
+        internal Extents(IGeometryFactory<TCoordinate> factory, Double x1, Double x2, Double y1, Double y2)
+            : this(factory)
         {
             Init(x1, x2, y1, y2);
         }
@@ -126,7 +127,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="p1">The first Coordinate.</param>
         /// <param name="p2">The second Coordinate.</param>
-        public Extents(TCoordinate p1, TCoordinate p2)
+        internal Extents(IGeometryFactory<TCoordinate> factory, TCoordinate p1, TCoordinate p2)
+            : this(factory)
         {
             Init(p1, p2);
         }
@@ -135,7 +137,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Creates an <see cref="Extents{TCoordinate}"/> for a region defined by a single Coordinate.
         /// </summary>
         /// <param name="p">The Coordinate.</param>
-        public Extents(TCoordinate p)
+        internal Extents(IGeometryFactory<TCoordinate> factory, TCoordinate p)
+            : this(factory)
         {
             Init(p);
         }
@@ -143,10 +146,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Create an <see cref="Extents{TCoordinate}"/> from an existing Envelope.
         /// </summary>
-        /// <param name="env">The Envelope to initialize from.</param>
-        public Extents(IExtents<TCoordinate> env)
+        /// <param name="extents">The Envelope to initialize from.</param>
+        internal Extents(IGeometryFactory<TCoordinate> factory, IExtents<TCoordinate> extents)
+            : this(factory)
         {
-            Init(env);
+            Init(extents);
         }
 
         /// <summary>
@@ -190,8 +194,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 maxY = y1;
             }
 
-            _min = _factory.Create(minX, maxX);
-            _max = _factory.Create(minY, maxY);
+            ICoordinateFactory<TCoordinate> coordFactory = _factory.CoordinateFactory;
+            _min = coordFactory.Create(minX, maxX);
+            _max = coordFactory.Create(minY, maxY);
         }
 
         /// <summary>
@@ -383,7 +388,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </param>
         public void ExpandToInclude(Double x, Double y)
         {
-            TCoordinate coordinate = _factory.Create(x, y);
+            TCoordinate coordinate = _factory.CoordinateFactory.Create(x, y);
 
             if (IsEmpty)
             {
@@ -436,6 +441,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
+        /// <summary> 
+        /// Gets the factory which contains the context in which this point was created.
+        /// </summary>
+        /// <returns>The factory for this point.</returns>
+        public IGeometryFactory<TCoordinate> Factory
+        {
+            get { return _factory; }
+        }
+
         /// <summary>
         /// Translates this envelope by given amounts in the X and Y direction.
         /// </summary>
@@ -448,8 +462,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return;
             }
 
-            _min = _factory.Create(_min[Ordinates.X] + transX, _min[Ordinates.Y] + transY);
-            _max = _factory.Create(_max[Ordinates.X] + transX, _max[Ordinates.Y] + transY);
+            ICoordinateFactory<TCoordinate> coordFactory = _factory.CoordinateFactory;
+            _min = coordFactory.Create(_min[Ordinates.X] + transX, _min[Ordinates.Y] + transY);
+            _max = coordFactory.Create(_max[Ordinates.X] + transX, _max[Ordinates.Y] + transY);
         }
 
         /// <summary>
@@ -469,7 +484,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     return default(TCoordinate);
                 }
 
-                return _factory.Create(
+                return _factory.CoordinateFactory.Create(
                     (Min[Ordinates.X] + Max[Ordinates.X]) / 2.0,
                     (Min[Ordinates.Y] + Max[Ordinates.Y]) / 2.0);
             }
@@ -479,7 +494,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (IsEmpty || extents.IsEmpty || !Intersects(extents))
             {
-                return new Extents<TCoordinate>();
+                return new Extents<TCoordinate>(Factory);
             }
 
             Double minX = Min[Ordinates.X];
@@ -488,7 +503,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             Double maxY = Max[Ordinates.Y];
 
 
-            return new Extents<TCoordinate>(Math.Max(minX, extents.Min[Ordinates.X]),
+            return new Extents<TCoordinate>(
+                                Factory,
+                                Math.Max(minX, extents.Min[Ordinates.X]),
                                 Math.Min(maxX, extents.Max[Ordinates.X]),
                                 Math.Max(minY, extents.Min[Ordinates.Y]),
                                 Math.Min(maxY, extents.Max[Ordinates.Y]));
@@ -806,7 +823,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public IExtents<TCoordinate> Clone()
         {
-            return new Extents<TCoordinate>(_min, _max);
+            return new Extents<TCoordinate>(Factory, _min, _max);
         }
 
         ///// <summary>
@@ -1033,7 +1050,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return box;
             }
 
-            return new Extents<TCoordinate>(Math.Min(_min[Ordinates.X], box.Min[Ordinates.X]),
+            return new Extents<TCoordinate>(
+                                Factory,
+                                Math.Min(_min[Ordinates.X], box.Min[Ordinates.X]),
                                 Math.Max(_max[Ordinates.X], box.Max[Ordinates.X]),
                                 Math.Min(_min[Ordinates.Y], box.Min[Ordinates.Y]),
                                 Math.Max(_max[Ordinates.Y], box.Max[Ordinates.Y]));
@@ -1264,6 +1283,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public void TranslateRelativeToWidth(params double[] vector)
         {
             throw new NotImplementedException();
+        }
+
+
+        IGeometryFactory IExtents.Factory
+        {
+            get { throw new NotImplementedException(); }
         }
 
         #endregion

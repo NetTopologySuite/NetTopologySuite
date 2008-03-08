@@ -79,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
         private IEnumerable<NodedSegmentString<TCoordinate>> scale(IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
         {
-            return CollectionUtil.Transform(segStrings, delegate(NodedSegmentString<TCoordinate> segmentString)
+            return Enumerable.Transform(segStrings, delegate(NodedSegmentString<TCoordinate> segmentString)
                                                         {
                                                             return new NodedSegmentString<TCoordinate>(
                                                                 scale(segmentString.Coordinates), segmentString.Context);

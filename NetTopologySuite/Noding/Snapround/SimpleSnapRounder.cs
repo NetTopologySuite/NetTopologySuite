@@ -49,7 +49,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             return false;
         }
 
-        private readonly ICoordinateFactory<TCoordinate> _factory;
+        private readonly ICoordinateFactory<TCoordinate> _coordFactory;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private readonly LineIntersector<TCoordinate> _li = null;
         private readonly Double _scaleFactor;
         //private IEnumerable<SegmentString<TCoordinate>> _nodedSegStrings = null;
@@ -57,13 +58,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleSnapRounder{TCoordinate}"/> class.
         /// </summary>
-        /// <param name="pm">The <see cref="IPrecisionModel{TCoordinate}" /> to use.</param>
-        public SimpleSnapRounder(IPrecisionModel<TCoordinate> pm, ICoordinateFactory<TCoordinate> factory)
+        /// <param name="geoFactory">The <see cref="IGeometryFactory{TCoordinate}" /> to use.</param>
+        public SimpleSnapRounder(IGeometryFactory<TCoordinate> geoFactory)
         {
-            _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
-            _li.PrecisionModel = pm;
-            _scaleFactor = pm.Scale;
-            _factory = factory;
+            _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(geoFactory);
+            _li.PrecisionModel = geoFactory.PrecisionModel;
+            _scaleFactor = geoFactory.PrecisionModel.Scale;
+            _coordFactory = geoFactory.CoordinateFactory;
         }
 
         /// <summary>
@@ -90,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// </summary>
         public IEnumerable<NodedSegmentString<TCoordinate>> Node(IEnumerable<NodedSegmentString<TCoordinate>> inputSegmentStrings)
         {
-            inputSegmentStrings = snapRound(inputSegmentStrings, _li);
+            inputSegmentStrings = snapRound(_geoFactory, inputSegmentStrings, _li);
             return NodedSegmentString<TCoordinate>.GetNodedSubstrings(inputSegmentStrings);
         }
 
@@ -98,7 +99,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         {
             IEnumerable<NodedSegmentString<TCoordinate>> resultSegStrings 
                 = NodedSegmentString<TCoordinate>.GetNodedSubstrings(inputSegmentStrings);
-            NodingValidator<TCoordinate> nv = new NodingValidator<TCoordinate>(resultSegStrings);
+            NodingValidator<TCoordinate> nv 
+                = new NodingValidator<TCoordinate>(_geoFactory, resultSegStrings);
 
             try
             {
@@ -110,9 +112,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             }
         }
 
-        private IEnumerable<NodedSegmentString<TCoordinate>> snapRound(IEnumerable<NodedSegmentString<TCoordinate>> segStrings, LineIntersector<TCoordinate> li)
+        private IEnumerable<NodedSegmentString<TCoordinate>> snapRound(
+            IGeometryFactory<TCoordinate> geoFactory, 
+            IEnumerable<NodedSegmentString<TCoordinate>> segStrings, 
+            LineIntersector<TCoordinate> li)
         {
-            IEnumerable<TCoordinate> intersections = findInteriorIntersections(segStrings, li);
+            IEnumerable<TCoordinate> intersections 
+                = findInteriorIntersections(geoFactory, segStrings, li);
             computeSnaps(segStrings, intersections);
             ComputeVertexSnaps(segStrings);
             return segStrings;
@@ -124,10 +130,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// Does NOT node the segStrings.
         /// </summary>
         /// <returns>A list of <typeparamref name="TCoordinate"/>s for the intersections.</returns>
-        private static IEnumerable<TCoordinate> findInteriorIntersections(IEnumerable<NodedSegmentString<TCoordinate>> segStrings, LineIntersector<TCoordinate> li)
+        private static IEnumerable<TCoordinate> findInteriorIntersections(
+            IGeometryFactory<TCoordinate> geoFactory, 
+            IEnumerable<NodedSegmentString<TCoordinate>> segStrings, 
+            LineIntersector<TCoordinate> li)
         {
             IntersectionFinderAdder<TCoordinate> intFinderAdder = new IntersectionFinderAdder<TCoordinate>(li);
-            SinglePassNoder<TCoordinate> noder = new MonotoneChainIndexNoder<TCoordinate>(intFinderAdder);
+            SinglePassNoder<TCoordinate> noder = new MonotoneChainIndexNoder<TCoordinate>(geoFactory, intFinderAdder);
             noder.Node(segStrings);
             return intFinderAdder.InteriorIntersections;
         }
@@ -147,7 +156,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         {
             foreach (TCoordinate snapPt in snapPts)
             {
-                HotPixel<TCoordinate> hotPixel = new HotPixel<TCoordinate>(snapPt, _scaleFactor, _li, _factory);
+                HotPixel<TCoordinate> hotPixel = new HotPixel<TCoordinate>(snapPt, _scaleFactor, _li, _coordFactory);
                 
                 for (Int32 i = 0; i < ss.Count - 1; i++)
                 {
@@ -169,7 +178,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
 
             foreach (TCoordinate coordinate0 in pts0)
             {
-                HotPixel<TCoordinate> hotPixel = new HotPixel<TCoordinate>(coordinate0, _scaleFactor, _li, _factory);
+                HotPixel<TCoordinate> hotPixel = new HotPixel<TCoordinate>(coordinate0, _scaleFactor, _li, _coordFactory);
 
                 IEnumerator<TCoordinate> pts1Enumerator = pts1.GetEnumerator();
 

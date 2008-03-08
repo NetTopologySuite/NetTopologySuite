@@ -45,9 +45,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public static IGeometryFactory<TCoordinate> CreateFloatingSinglePrecision(
             ICoordinateSequenceFactory<TCoordinate> coordSequenceFactory)
         {
-            return
-                new GeometryFactory<TCoordinate>(new PrecisionModel<TCoordinate>(PrecisionModelType.FloatingSingle),
-                                                 null, coordSequenceFactory);
+            return new GeometryFactory<TCoordinate>(
+                new PrecisionModel<TCoordinate>(PrecisionModelType.FloatingSingle),
+                null, coordSequenceFactory);
         }
 
 
@@ -55,9 +55,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
         /// <c> == </c> <see cref="PrecisionModelType.Fixed" />.
         /// </summary>
-        public static readonly IGeometryFactory<TCoordinate> Fixed =
-            new GeometryFactory<TCoordinate>(new PrecisionModel<TCoordinate>(PrecisionModelType.Fixed));
-
+        public static IGeometryFactory<TCoordinate> CreateFixedPrecision(
+            ICoordinateSequenceFactory<TCoordinate> coordSequenceFactory)
+        {
+            return new GeometryFactory<TCoordinate>(
+                new PrecisionModel<TCoordinate>(PrecisionModelType.Fixed),
+                null, coordSequenceFactory);
+        }
+        
         #endregion
 
         private readonly ICoordinateSequenceFactory<TCoordinate> _coordinateSequenceFactory;
@@ -310,7 +315,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public ICoordinateFactory<TCoordinate> CoordinateFactory
         {
-            get { throw new NotImplementedException(); }
+            get { return _coordinateSequenceFactory.CoordinateFactory; }
         }
 
         public ICoordinateSequenceFactory<TCoordinate> CoordinateSequenceFactory
@@ -685,7 +690,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IExtents IGeometryFactory.CreateExtents(ICoordinate min, ICoordinate max)
         {
-            throw new NotImplementedException();
+            return new Extents<TCoordinate>(this, 
+                CoordinateFactory.Create(min), CoordinateFactory.Create(max));
         }
 
         IGeometry IGeometryFactory.CreateGeometry(IGeometry g)
@@ -851,6 +857,23 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public IMultiPolygon CreateMultiPolygon(ICoordinateSequence coordinates)
         {
             throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IGeometryFactory<TCoordinate> Members
+
+
+        public IExtents<TCoordinate> CreateExtents(IExtents extents)
+        {
+            return new Extents<TCoordinate>(this, 
+                CoordinateFactory.Create(extents.Min), 
+                CoordinateFactory.Create(extents.Max));
+        }
+
+        public IExtents<TCoordinate> CreateExtents(IExtents<TCoordinate> extents)
+        {
+            return new Extents<TCoordinate>(this, extents);
         }
 
         #endregion

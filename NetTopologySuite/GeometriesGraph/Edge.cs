@@ -36,24 +36,26 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private readonly ICoordinateSequence<TCoordinate> _coordinates;
         private readonly EdgeIntersectionList<TCoordinate> _edgeIntersectionList = null;
         private IExtents<TCoordinate> _extents;
-        private string _name;
+        private String _name;
         private MonotoneChainEdge<TCoordinate> _monotoneChainEdge;
         private Boolean _isIsolated = true;
         private readonly Depth _depth = new Depth();
         private Int32 _depthDelta = 0; // the change in area depth from the R to Curve side of this edge
-
-        public Edge(ICoordinateSequence<TCoordinate> coordinates, Label? label)
+        
+        public Edge(IGeometryFactory<TCoordinate> geoFactory, ICoordinateSequence<TCoordinate> coordinates, Label? label)
         {
-            _edgeIntersectionList = new EdgeIntersectionList<TCoordinate>(this);
+            _geoFactory = geoFactory;
+            _edgeIntersectionList = new EdgeIntersectionList<TCoordinate>(geoFactory, this);
             _coordinates = coordinates;
             Label = label;
         }
 
-        public Edge(ICoordinateSequence<TCoordinate> coordinates) 
-            : this(coordinates, null) { }
+        public Edge(IGeometryFactory<TCoordinate> geoFactory, ICoordinateSequence<TCoordinate> coordinates)
+            : this(geoFactory, coordinates, null) { }
 
         //public IList<TCoordinate> Points
         //{
@@ -117,7 +119,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 // compute envelope lazily
                 if (_extents == null)
                 {
-                    _extents = new Extents<TCoordinate>();
+                    _extents = new Extents<TCoordinate>(_geoFactory);
                     _extents.ExpandToInclude(_coordinates);
                 }
 
@@ -157,7 +159,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             {
                 if (_monotoneChainEdge == null)
                 {
-                    _monotoneChainEdge = new MonotoneChainEdge<TCoordinate>(this);
+                    _monotoneChainEdge = new MonotoneChainEdge<TCoordinate>(this, _geoFactory);
                 }
 
                 return _monotoneChainEdge;
@@ -202,7 +204,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             {
                 ICoordinateSequence<TCoordinate> newPts = Coordinates.Slice(0, 1);
                 Label lineLabel = GeometriesGraph.Label.ToLineLabel(Label.Value);
-                Edge<TCoordinate> newEdge = new Edge<TCoordinate>(newPts, lineLabel);
+                Edge<TCoordinate> newEdge = new Edge<TCoordinate>(_geoFactory, newPts, lineLabel);
                 return newEdge;
             }
         }

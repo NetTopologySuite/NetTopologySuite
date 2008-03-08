@@ -36,6 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
             }
 
             IExtents<TCoordinate> result = new Extents<TCoordinate>(
+                box.Factory,
                 transform.Transform(box.Min),
                 transform.Transform(box.Max));
 

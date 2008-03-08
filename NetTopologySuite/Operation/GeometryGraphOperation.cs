@@ -14,13 +14,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
-        private LineIntersector<TCoordinate> _lineIntersector = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
+        private LineIntersector<TCoordinate> _lineIntersector;
         private IPrecisionModel<TCoordinate> _resultPrecisionModel;
         private readonly GeometryGraph<TCoordinate> _arg1;
         private readonly GeometryGraph<TCoordinate> _arg2;
 
         public GeometryGraphOperation(IGeometry<TCoordinate> g0, IGeometry<TCoordinate> g1)
         {
+            if (g0 == null) throw new ArgumentNullException("g0");
+            if (g1 == null) throw new ArgumentNullException("g1");
+
             // use the most precise model for the result
             if (g0.PrecisionModel.CompareTo(g1.PrecisionModel) >= 0)
             {
@@ -31,15 +34,44 @@ namespace GisSharpBlog.NetTopologySuite.Operation
                 ComputationPrecision = g1.PrecisionModel;
             }
 
+            /*
+            * Use factory of primary point.
+            * Note that this does NOT handle mixed-precision arguments
+            * where the second arg has greater precision than the first.
+            */
+            _lineIntersector = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(g0.Factory);
+
             _arg1 = new GeometryGraph<TCoordinate>(0, g0);
             _arg2 = new GeometryGraph<TCoordinate>(1, g1);
         }
 
         public GeometryGraphOperation(IGeometry<TCoordinate> g0)
         {
+            if (g0 == null) throw new ArgumentNullException("g0");
+
             ComputationPrecision = g0.PrecisionModel;
 
             _arg1 = new GeometryGraph<TCoordinate>(0, g0);
+            /*
+            * Use factory of primary point.
+            * Note that this does NOT handle mixed-precision arguments
+            * where the second arg has greater precision than the first.
+            */
+            _lineIntersector = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(g0.Factory);
+        }
+
+        public IGeometry<TCoordinate> GetArgumentGeometry(Int32 i)
+        {
+            if (i == 0)
+            {
+                return _arg1.Geometry;
+            }
+            else if (i == 1)
+            {
+                return _arg2.Geometry;
+            }
+
+            return null;
         }
 
         protected LineIntersector<TCoordinate> LineIntersector
@@ -56,20 +88,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         protected GeometryGraph<TCoordinate> Argument2
         {
             get { return _arg2; }
-        }
-
-        public IGeometry<TCoordinate> GetArgumentGeometry(Int32 i)
-        {
-            if (i == 0)
-            {
-                return _arg1.Geometry;
-            }
-            else if (i == 1)
-            {
-                return _arg2.Geometry;
-            }
-
-            return null;
         }
 
         protected IPrecisionModel<TCoordinate> ComputationPrecision

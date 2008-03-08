@@ -665,7 +665,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             if (clone.ExtentsInternal != null)
             {
-                clone.ExtentsInternal = new Extents<TCoordinate>(clone.ExtentsInternal);
+                clone.ExtentsInternal = new Extents<TCoordinate>(
+                    Factory, clone.ExtentsInternal);
             }
 
             return clone;

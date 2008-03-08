@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
+using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using NPack.Interfaces;
 
@@ -354,10 +355,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>
         /// A pair of Coordinates which are the closest points on the line segments.
         /// </returns>
-        public IEnumerable<TCoordinate> ClosestPoints(LineSegment<TCoordinate> line)
+        public IEnumerable<TCoordinate> ClosestPoints(LineSegment<TCoordinate> line, IGeometryFactory<TCoordinate> geoFactory)
         {
             // test for intersection
-            TCoordinate intersection = Intersection(line);
+            TCoordinate intersection = Intersection(line, geoFactory);
 
             if (Coordinates<TCoordinate>.IsEmpty(intersection))
             {
@@ -430,9 +431,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// An intersection point, or a default 
         /// <typeparamref name="TCoordinate"/> if there is none.
         /// </returns>
-        public TCoordinate Intersection(LineSegment<TCoordinate> line)
+        public TCoordinate Intersection(LineSegment<TCoordinate> line, IGeometryFactory<TCoordinate> geoFactory)
         {
-            LineIntersector<TCoordinate> li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
+            LineIntersector<TCoordinate> li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(geoFactory);
             Intersection<TCoordinate> intersection = li.ComputeIntersection(P0, P1, line.P0, line.P1);
 
             if (intersection.HasIntersection)

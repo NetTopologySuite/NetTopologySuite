@@ -91,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// Ensure that the extents for the inserted item is non-zero.
         /// Use <paramref name="minExtent"/> to pad the envelope, if necessary.
         /// </summary>
-        public static IExtents<TCoordinate> EnsureExtent(IExtents<TCoordinate> itemExtents, Double minExtent)
+        public static IExtents<TCoordinate> EnsureExtent(IGeometryFactory<TCoordinate> geoFactory, IExtents<TCoordinate> itemExtents, Double minExtent)
         {
             // The names "ensureExtent" and "minExtent" are misleading -- sounds like
             // this method ensures that the extents are greater than minExtent.
@@ -121,7 +121,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
                 maxy = miny + minExtent / 2.0;
             }
 
-            return new Extents<TCoordinate>(minx, maxx, miny, maxy);
+            return new Extents<TCoordinate>(geoFactory, minx, maxx, miny, maxy);
         }
 
         private readonly Root<TCoordinate, QuadTreeEntry> _root = new Root<TCoordinate, QuadTreeEntry>();
@@ -135,8 +135,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// only one feature will be inserted with this value.
         /// </summary>
         private Double _minExtent = 1.0;
-
         private Boolean _isDisposed = false;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
+
+        public Quadtree(IGeometryFactory<TCoordinate> geoFactory)
+        {
+            _geoFactory = geoFactory;
+        }
 
         #region IDisposable Members
 
@@ -199,7 +204,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         public void Insert(IExtents<TCoordinate> itemExtents, TItem item)
         {
             collectStats(itemExtents);
-            IExtents<TCoordinate> insertExtents = EnsureExtent(itemExtents, _minExtent);
+            IExtents<TCoordinate> insertExtents = EnsureExtent(_geoFactory, itemExtents, _minExtent);
             _root.Insert(new QuadTreeEntry(item, itemExtents));
         }
 
@@ -211,7 +216,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <returns><see langword="true"/> if the item was found.</returns>
         public Boolean Remove(IExtents<TCoordinate> itemExtents, TItem item)
         {
-            IExtents<TCoordinate> posEnv = EnsureExtent(itemExtents, _minExtent);
+            IExtents<TCoordinate> posEnv = EnsureExtent(_geoFactory, itemExtents, _minExtent);
             return _root.Remove(posEnv, new QuadTreeEntry(item, posEnv));
         }
 

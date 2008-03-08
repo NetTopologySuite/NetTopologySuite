@@ -182,10 +182,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (IsEmpty)
             {
-                return new Extents<TCoordinate>();
+                return new Extents<TCoordinate>(Factory);
             }
 
-            return new Extents<TCoordinate>(Coordinate, Coordinate);
+            return new Extents<TCoordinate>(Factory, Coordinate, Coordinate);
         }
 
         protected internal override Int32 CompareToSameClass(IGeometry<TCoordinate> other)

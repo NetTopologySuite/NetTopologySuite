@@ -106,22 +106,25 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return dist;
         }
 
-        private readonly ICoordinateFactory<TCoordinate> _factory;
-        private IPrecisionModel<TCoordinate> _precisionModel = null;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
+        private readonly ICoordinateFactory<TCoordinate> _coordFactory;
+        private IPrecisionModel<TCoordinate> _precisionModel;
 
         // The indexes of the endpoints of the intersection lines, in order along
         // the corresponding line
         //private Int32[] _inputLine1EndpointIndexes;
         //private Int32[] _inputLine2EndpointIndexes;
 
-        protected LineIntersector(ICoordinateFactory<TCoordinate> factory)
+        protected LineIntersector(IGeometryFactory<TCoordinate> factory)
         {
-            _factory = factory;
+            _geoFactory = factory;
+            _coordFactory = factory.CoordinateFactory;
+            _precisionModel = factory.PrecisionModel;
         }
 
         protected ICoordinateFactory<TCoordinate> CoordinateFactory
         {
-            get { return _factory; }
+            get { return _coordFactory; }
         }
 
         /// <summary> 
@@ -141,6 +144,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             protected get { return _precisionModel; }
             set { _precisionModel = value; }
+        }
+
+        public IGeometryFactory<TCoordinate> GeometryFactory
+        {
+            get { return _geoFactory; }
         }
 
         /// <summary> 

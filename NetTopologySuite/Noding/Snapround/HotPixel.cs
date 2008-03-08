@@ -92,15 +92,18 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// Returns a "safe" envelope that is guaranteed to contain the 
         /// hot pixel.
         /// </summary>
-        public IExtents<TCoordinate> GetSafeExtents()
+        public IExtents<TCoordinate> GetSafeExtents(IGeometryFactory<TCoordinate> geoFactory)
         {
             if (_safeExtents == null)
             {
                 Double safeTolerance = 0.75 / _scaleFactor;
 
                 _safeExtents = new Extents<TCoordinate>(
-                    _originalPt[Ordinates.X] - safeTolerance, _originalPt[Ordinates.X] + safeTolerance,
-                    _originalPt[Ordinates.Y] - safeTolerance, _originalPt[Ordinates.Y] + safeTolerance);
+                    geoFactory,
+                    _originalPt[Ordinates.X] - safeTolerance, 
+                    _originalPt[Ordinates.X] + safeTolerance,
+                    _originalPt[Ordinates.Y] - safeTolerance, 
+                    _originalPt[Ordinates.Y] + safeTolerance);
             }
 
             return _safeExtents;

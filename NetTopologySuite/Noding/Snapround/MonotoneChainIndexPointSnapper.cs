@@ -26,13 +26,19 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         //internal static readonly Int32 numberSnaps = 0;
 
         private readonly List<MonotoneChain<TCoordinate>> _monoChains = new List<MonotoneChain<TCoordinate>>();
-        private readonly ISpatialIndex<IExtents<TCoordinate>, MonotoneChain<TCoordinate>> _index = null;
+        private readonly ISpatialIndex<IExtents<TCoordinate>, MonotoneChain<TCoordinate>> _index;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MonotoneChaintIndexPointSnapper{TCoordinate}"/> class.
         /// </summary>
-        public MonotoneChaintIndexPointSnapper(IEnumerable<MonotoneChain<TCoordinate>> chains, ISpatialIndex<IExtents<TCoordinate>, MonotoneChain<TCoordinate>> index)
+        public MonotoneChaintIndexPointSnapper(
+            IGeometryFactory<TCoordinate> geoFactory,
+            IEnumerable<MonotoneChain<TCoordinate>> chains, 
+            ISpatialIndex<IExtents<TCoordinate>, 
+            MonotoneChain<TCoordinate>> index)
         {
+            _geoFactory = geoFactory;
             _monoChains.AddRange(chains);
             _index = index;
         }
@@ -48,7 +54,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <returns><see langword="true"/> if a node was added for this pixel.</returns>
         public Boolean Snap(HotPixel<TCoordinate> hotPixel, NodedSegmentString<TCoordinate> parentEdge, Int32 vertexIndex)
         {
-            IExtents<TCoordinate> pixelExtents = hotPixel.GetSafeExtents();
+            IExtents<TCoordinate> pixelExtents = hotPixel.GetSafeExtents(_geoFactory);
             //HotPixelSnapAction hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, vertexIndex);
 
             // This used to be in the class HotPixelSnapAction, but was refactored to 

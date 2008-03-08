@@ -26,9 +26,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// An alternative would be to use an ordered set based on the values
         /// of the edge coordinates.
         /// </summary>
-        private readonly ISpatialIndex<IExtents<TCoordinate>, Edge<TCoordinate>> _index 
-            = new Quadtree<TCoordinate, Edge<TCoordinate>>();
+        // TODO: reevaluate whether a dynamic RTree would work better here.
+        private readonly ISpatialIndex<IExtents<TCoordinate>, Edge<TCoordinate>> _index;
 
+        public EdgeList(IGeometryFactory<TCoordinate> geoFactory)
+        { 
+            _index = new Quadtree<TCoordinate, Edge<TCoordinate>>(geoFactory);
+        }
 
         #region IList<Edge<TCoordinate>> Members
 

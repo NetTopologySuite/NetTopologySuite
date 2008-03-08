@@ -72,8 +72,8 @@ namespace NetTopologySuite.Coordinates
         public override String ToString()
         {
             return IsEmpty
-                       ? String.Format("[{0}] Empty", GetType())
-                       : String.Format("[{0}] X: {1}; Y: {2}", GetType(), X, Y);
+                       ? "Empty"
+                       : String.Format("X: {0}; Y: {1}", X, Y);
         }
 
         public override Int32 GetHashCode()
@@ -623,7 +623,7 @@ namespace NetTopologySuite.Coordinates
 
         public Int32 ComponentCount
         {
-            get { return _isHomogeneous ? 2 : 3; }
+            get { return _isHomogeneous ? 3 : 2; }
         }
 
         DoubleComponent[] IVector<DoubleComponent>.Components

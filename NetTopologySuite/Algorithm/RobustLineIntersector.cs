@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
-        public RobustLineIntersector(ICoordinateFactory<TCoordinate> factory)
+        public RobustLineIntersector(IGeometryFactory<TCoordinate> factory)
             : base(factory) { }
 
         public override Intersection<TCoordinate> ComputeIntersection(TCoordinate p, Pair<TCoordinate> line)
@@ -119,13 +119,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             else
             {
                 isProper = true;
-                intersection = computeIntersection(line0, line1);
+                intersection = computeIntersection(GeometryFactory, line0, line1);
             }
 
             return new Intersection<TCoordinate>(intersection, line0, line1, false, false, isProper);
         }
 
-        private TCoordinate computeIntersection(Pair<TCoordinate> line0, Pair<TCoordinate> line1)
+        private TCoordinate computeIntersection(IGeometryFactory<TCoordinate> geoFactory,
+            Pair<TCoordinate> line0, Pair<TCoordinate> line1)
         {
             TCoordinate intersection = computeIntersectionWithNormalization(line0, line1);
 
@@ -139,9 +140,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
              * 
              * MD - Dec 14 2006 - This does not seem to be a failure case any longer
              */
-            if (!isInSegmentExtents(intersection, line0, line1))
+            if (!isInSegmentExtents(geoFactory, intersection, line0, line1))
             {
-                Trace.WriteLine("Intersection outside segment envelopes: " + intersection);
+                Trace.TraceInformation("Intersection outside segment envelopes: " + intersection);
             }
 
             if (PrecisionModel != null)
@@ -370,10 +371,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Since this test is for debugging purposes only, no attempt is
         /// made to optimize the envelope test.
         /// </remarks>
-        private static Boolean isInSegmentExtents(TCoordinate coordinate, Pair<TCoordinate> line0, Pair<TCoordinate> line1)
+        private static Boolean isInSegmentExtents(IGeometryFactory<TCoordinate> geoFactory,
+            TCoordinate coordinate, Pair<TCoordinate> line0, Pair<TCoordinate> line1)
         {
-            IExtents<TCoordinate> extent0 = new Extents<TCoordinate>(line0.First, line0.Second);
-            IExtents<TCoordinate> extent1 = new Extents<TCoordinate>(line1.First, line1.Second);
+            IExtents<TCoordinate> extent0 = new Extents<TCoordinate>(geoFactory, line0.First, line0.Second);
+            IExtents<TCoordinate> extent1 = new Extents<TCoordinate>(geoFactory, line1.First, line1.Second);
             return extent0.Contains(coordinate) && extent1.Contains(coordinate);
         }
 

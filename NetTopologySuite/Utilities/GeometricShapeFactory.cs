@@ -16,8 +16,8 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly IGeometryFactory<TCoordinate> _geometryFactory;
-        private readonly Dimensions _dim = new Dimensions();
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
+        private readonly Dimensions _dim;
         private Int32 _pointCount = 100;
 
         ///// <summary>
@@ -28,10 +28,11 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <summary>
         /// Create a shape factory which will create shapes using the given GeometryFactory.
         /// </summary>
-        /// <param name="geomFact">The factory to use.</param>
-        public GeometricShapeFactory(IGeometryFactory<TCoordinate> geomFact)
+        /// <param name="geoFactory">The factory to use.</param>
+        public GeometricShapeFactory(IGeometryFactory<TCoordinate> geoFactory)
         {
-            _geometryFactory = geomFact;
+            _geoFactory = geoFactory;
+            _dim = new Dimensions(geoFactory);
         }
 
         /// <summary>
@@ -115,34 +116,34 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
             {
                 Double x = extents.Min[Ordinates.X] + i * xSegLen;
                 Double y = extents.Min[Ordinates.Y];
-                pts[ipt++] = _geometryFactory.CoordinateFactory.Create(x, y);
+                pts[ipt++] = _geoFactory.CoordinateFactory.Create(x, y);
             }
 
             for (i = 0; i < nSide; i++)
             {
                 Double x = extents.Max[Ordinates.X];
                 Double y = extents.Min[Ordinates.Y] + i * ySegLen;
-                pts[ipt++] = _geometryFactory.CoordinateFactory.Create(x, y);
+                pts[ipt++] = _geoFactory.CoordinateFactory.Create(x, y);
             }
 
             for (i = 0; i < nSide; i++)
             {
                 Double x = extents.Max[Ordinates.X] - i * xSegLen;
                 Double y = extents.Max[Ordinates.Y];
-                pts[ipt++] = _geometryFactory.CoordinateFactory.Create(x, y);
+                pts[ipt++] = _geoFactory.CoordinateFactory.Create(x, y);
             }
 
             for (i = 0; i < nSide; i++)
             {
                 Double x = extents.Min[Ordinates.X];
                 Double y = extents.Max[Ordinates.Y] - i * ySegLen;
-                pts[ipt++] = _geometryFactory.CoordinateFactory.Create(x, y);
+                pts[ipt++] = _geoFactory.CoordinateFactory.Create(x, y);
             }
 
-            pts[ipt++] = _geometryFactory.CoordinateFactory.Create(pts[0]);
+            pts[ipt++] = _geoFactory.CoordinateFactory.Create(pts[0]);
 
-            ILinearRing<TCoordinate> ring = _geometryFactory.CreateLinearRing(pts);
-            IPolygon<TCoordinate> poly = _geometryFactory.CreatePolygon(ring, null);
+            ILinearRing<TCoordinate> ring = _geoFactory.CreateLinearRing(pts);
+            IPolygon<TCoordinate> poly = _geoFactory.CreatePolygon(ring, null);
             return poly;
         }
 
@@ -167,14 +168,14 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
                 Double ang = i * (2 * Math.PI / _pointCount);
                 Double x = xRadius * Math.Cos(ang) + centerX;
                 Double y = yRadius * Math.Sin(ang) + centerY;
-                TCoordinate pt = _geometryFactory.CoordinateFactory.Create(x, y);
+                TCoordinate pt = _geoFactory.CoordinateFactory.Create(x, y);
                 pts[iPt++] = pt;
             }
 
             pts[iPt] = pts[0];
 
-            ILinearRing<TCoordinate> ring = _geometryFactory.CreateLinearRing(pts);
-            IPolygon<TCoordinate> poly = _geometryFactory.CreatePolygon(ring, null);
+            ILinearRing<TCoordinate> ring = _geoFactory.CreateLinearRing(pts);
+            IPolygon<TCoordinate> poly = _geoFactory.CreatePolygon(ring, null);
             return poly;
         }
 
@@ -208,12 +209,12 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
                 Double ang = startAng + i * angInc;
                 Double x = xRadius * Math.Cos(ang) + centerX;
                 Double y = yRadius * Math.Sin(ang) + centerY;
-                TCoordinate pt = _geometryFactory.CoordinateFactory.Create(x, y);
-                pt = _geometryFactory.PrecisionModel.MakePrecise(pt);
+                TCoordinate pt = _geoFactory.CoordinateFactory.Create(x, y);
+                pt = _geoFactory.PrecisionModel.MakePrecise(pt);
                 pts[iPt++] = pt;
             }
 
-            ILineString<TCoordinate> line = _geometryFactory.CreateLineString(pts);
+            ILineString<TCoordinate> line = _geoFactory.CreateLineString(pts);
             return line;
         }
 
@@ -223,6 +224,12 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
             private TCoordinate _center;
             private Double _width;
             private Double _height;
+            private readonly IGeometryFactory<TCoordinate> _geoFactory;
+
+            public Dimensions(IGeometryFactory<TCoordinate> geoFactory)
+            {
+                _geoFactory = geoFactory;
+            }
 
             public TCoordinate Base
             {
@@ -265,17 +272,20 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
                     if (!Coordinates<TCoordinate>.IsEmpty(Base))
                     {
                         Double x = Base[Ordinates.X], y = Base[Ordinates.Y];
-                        return new Extents<TCoordinate>(x, x + Width, y, y + Height);
+                        return new Extents<TCoordinate>(_geoFactory,
+                            x, x + Width, y, y + Height);
                     }
 
                     if (!Coordinates<TCoordinate>.IsEmpty(Center))
                     {
                         Double x = Center[Ordinates.X], y = Center[Ordinates.Y];
-                        return new Extents<TCoordinate>(x - Width / 2, x + Width / 2,
-                                                        y - Height / 2, y + Height / 2);
+                        return new Extents<TCoordinate>(
+                            _geoFactory,
+                            x - Width / 2, x + Width / 2,
+                            y - Height / 2, y + Height / 2);
                     }
 
-                    return new Extents<TCoordinate>(0, Width, 0, Height);
+                    return new Extents<TCoordinate>(_geoFactory, 0, Width, 0, Height);
                 }
             }
         }

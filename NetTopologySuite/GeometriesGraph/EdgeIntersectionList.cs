@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Coordinates;
+using GeoAPI.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
@@ -16,10 +17,23 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         // a list of EdgeIntersections      
         private readonly SortedDictionary<EdgeIntersection<TCoordinate>, EdgeIntersection<TCoordinate>> _nodeMap 
             = new SortedDictionary<EdgeIntersection<TCoordinate>, EdgeIntersection<TCoordinate>>();
+
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private readonly Edge<TCoordinate> _edge; // the parent edge
 
-        public EdgeIntersectionList(Edge<TCoordinate> edge)
+        public EdgeIntersectionList(IGeometryFactory<TCoordinate> geoFactory, Edge<TCoordinate> edge)
         {
+            if (geoFactory == null)
+            {
+                throw new ArgumentNullException("geoFactory");
+            }
+
+            if (edge == null)
+            {
+                throw new ArgumentNullException("edge");
+            }
+
+            _geoFactory = geoFactory;
             _edge = edge;
         }
 
@@ -107,7 +121,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 pts[ipt] = ei1.Coordinate;
             }
 
-            return new Edge<TCoordinate>(pts, _edge.Label.Value);
+            return new Edge<TCoordinate>(_geoFactory, pts, _edge.Label.Value);
         }
 
         public void Write(StreamWriter outstream)

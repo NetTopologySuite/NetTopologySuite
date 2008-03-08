@@ -151,7 +151,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 }
             }
 
-            if (CGAlgorithms<TCoordinate>.IsOnLine(p, line))
+            if (l.Factory == null)
+            {
+                throw new InvalidOperationException(
+                    "ILineString instance doesn't have a IGeometryFactory");
+            }
+
+            if (CGAlgorithms<TCoordinate>.IsOnLine(p, line, l.Factory))
             {
                 return Locations.Interior;
             }
@@ -161,8 +167,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
         private Locations locateInPolygonRing(TCoordinate p, ILinearRing<TCoordinate> ring)
         {
+            if (ring.Factory == null)
+            {
+                throw new InvalidOperationException(
+                    "ILinearRing instance doesn't have a IGeometryFactory");
+            }
+
             // can this test be folded into IsPointInRing?
-            if (CGAlgorithms<TCoordinate>.IsOnLine(p, ring.Coordinates))
+            if (CGAlgorithms<TCoordinate>.IsOnLine(p, ring.Coordinates, ring.Factory))
             {
                 return Locations.Boundary;
             }

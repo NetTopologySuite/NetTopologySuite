@@ -78,11 +78,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         }
 
         private readonly PointLocator<TCoordinate> _pointtLocator = new PointLocator<TCoordinate>();
-        private readonly IGeometryFactory<TCoordinate> _geometryFactory;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private IGeometry<TCoordinate> _resultGeometry;
 
         private readonly PlanarGraph<TCoordinate> _graph;
-        private readonly EdgeList<TCoordinate> _edgeList = new EdgeList<TCoordinate>();
+        private readonly EdgeList<TCoordinate> _edgeList;
 
         private readonly List<IPolygon<TCoordinate>> _resultPolyList = new List<IPolygon<TCoordinate>>();
         private readonly List<ILineString<TCoordinate>> _resultLineList = new List<ILineString<TCoordinate>>();
@@ -98,7 +98,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             * Note that this does NOT handle mixed-precision arguments
             * where the second arg has greater precision than the first.
             */
-            _geometryFactory = g0.Factory;
+            _geoFactory = g0.Factory;
+            _edgeList = new EdgeList<TCoordinate>(_geoFactory);
         }
 
         public IGeometry<TCoordinate> GetResultGeometry(SpatialFunctions funcCode)
@@ -196,14 +197,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             */
             findResultAreaEdges(opCode);
             cancelDuplicateResultEdges();
-            PolygonBuilder<TCoordinate> polyBuilder = new PolygonBuilder<TCoordinate>(_geometryFactory);
+            PolygonBuilder<TCoordinate> polyBuilder = new PolygonBuilder<TCoordinate>(_geoFactory);
             polyBuilder.Add(_graph);
             _resultPolyList.AddRange(polyBuilder.Polygons);
 
-            LineBuilder<TCoordinate> lineBuilder = new LineBuilder<TCoordinate>(this, _geometryFactory);
+            LineBuilder<TCoordinate> lineBuilder = new LineBuilder<TCoordinate>(this, _geoFactory);
             _resultLineList.AddRange(lineBuilder.Build(opCode));
 
-            PointBuilder<TCoordinate> pointBuilder = new PointBuilder<TCoordinate>(this, _geometryFactory);
+            PointBuilder<TCoordinate> pointBuilder = new PointBuilder<TCoordinate>(this, _geoFactory);
             _resultPointList.AddRange(pointBuilder.Build(opCode));
 
             // gather the results from all calculations into a single Geometry for the result set
@@ -548,7 +549,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             geomList.AddRange(Enumerable.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(polys));
 
             // build the most specific point possible
-            return _geometryFactory.BuildGeometry(geomList);
+            return _geoFactory.BuildGeometry(geomList);
         }
     }
 }

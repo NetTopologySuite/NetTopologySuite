@@ -33,11 +33,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private Int32 _quadrantSegments = OffsetCurveBuilder<TCoordinate>.DefaultQuadrantSegments;
         private BufferStyle _endCapStyle = BufferStyle.CapRound;
 
-        private IPrecisionModel<TCoordinate> _workingPrecisionModel = null;
-        private INoder<TCoordinate> _workingNoder = null;
-        private IGeometryFactory<TCoordinate> _geometryFactory = null;
-        private PlanarGraph<TCoordinate> _graph = null;
-        private readonly EdgeList<TCoordinate> _edgeList = new EdgeList<TCoordinate>();
+        private IPrecisionModel<TCoordinate> _workingPrecisionModel;
+        private INoder<TCoordinate> _workingNoder;
+        private IGeometryFactory<TCoordinate> _geoFactory;
+        private PlanarGraph<TCoordinate> _graph;
+        private readonly EdgeList<TCoordinate> _edgeList;
+
+        public BufferBuilder(IGeometryFactory<TCoordinate> geoFactory)
+        {
+            _edgeList = new EdgeList<TCoordinate>(geoFactory);
+        }
 
         /// <summary>
         /// Gets or sets the number of segments used to approximate a angle fillet.
@@ -82,10 +87,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             }
 
             // factory must be the same as the one used by the input
-            _geometryFactory = g.Factory;
+            _geoFactory = g.Factory;
 
-            OffsetCurveBuilder<TCoordinate> curveBuilder
-                = new OffsetCurveBuilder<TCoordinate>(precisionModel, _quadrantSegments);
+            OffsetCurveBuilder<TCoordinate> curveBuilder = new OffsetCurveBuilder<TCoordinate>(
+                _geoFactory, precisionModel, _quadrantSegments);
 
             curveBuilder.EndCapStyle = _endCapStyle;
 
@@ -97,7 +102,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             // short-circuit test
             if (!Slice.CountGreaterThan(bufferSegStrList, 0))
             {
-                IGeometry<TCoordinate> emptyGeom = _geometryFactory.CreateGeometryCollection();
+                IGeometry<TCoordinate> emptyGeom = _geoFactory.CreateGeometryCollection();
                 return emptyGeom;
             }
 
@@ -106,13 +111,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             _graph.AddEdges(_edgeList);
 
             IEnumerable<BufferSubgraph<TCoordinate>> subgraphs = createSubgraphs(_graph);
-            PolygonBuilder<TCoordinate> polyBuilder = new PolygonBuilder<TCoordinate>(_geometryFactory);
+            PolygonBuilder<TCoordinate> polyBuilder = new PolygonBuilder<TCoordinate>(_geoFactory);
             buildSubgraphs(subgraphs, polyBuilder);
 
-            IEnumerable<IGeometry<TCoordinate>> resultPolyList 
+            IEnumerable<IGeometry<TCoordinate>> resultPolyList
                 = Enumerable.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(polyBuilder.Polygons);
 
-            IGeometry<TCoordinate> resultGeom = _geometryFactory.BuildGeometry(resultPolyList);
+            IGeometry<TCoordinate> resultGeom = _geoFactory.BuildGeometry(resultPolyList);
             return resultGeom;
         }
 
@@ -124,10 +129,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             }
 
             // otherwise use a fast (but non-robust) noder
-            LineIntersector<TCoordinate> li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
+            LineIntersector<TCoordinate> li
+                = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(_geoFactory);
             li.PrecisionModel = precisionModel;
-            MonotoneChainIndexNoder<TCoordinate> noder 
-                = new MonotoneChainIndexNoder<TCoordinate>(new IntersectionAdder<TCoordinate>(li));
+            MonotoneChainIndexNoder<TCoordinate> noder
+                = new MonotoneChainIndexNoder<TCoordinate>(_geoFactory,
+                    new IntersectionAdder<TCoordinate>(li));
             return noder;
         }
 
@@ -185,7 +192,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             foreach (NodedSegmentString<TCoordinate> segStr in nodedSegStrings)
             {
                 Label oldLabel = (Label)segStr.Context;
-                Edge<TCoordinate> edge = new Edge<TCoordinate>(segStr.Coordinates, oldLabel);
+                Edge<TCoordinate> edge = new Edge<TCoordinate>(
+                    _geoFactory, segStr.Coordinates, oldLabel);
                 InsertEdge(edge);
             }
         }

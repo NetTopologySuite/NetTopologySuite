@@ -40,27 +40,26 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private readonly BinTree<MonotoneChain<TCoordinate>> _tree = new BinTree<MonotoneChain<TCoordinate>>();
         private Int32 _crossings = 0; // number of segment/ray crossings
 
-        private Interval _interval = new Interval();
+        private Interval _interval;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
 
         public MCPointInRing(ILinearRing<TCoordinate> ring)
         {
-            _ring = ring;
-            buildIndex();
-        }
-
-        private void buildIndex()
-        {
-            ICoordinateSequence<TCoordinate> coordinates = _ring.Coordinates.WithoutRepeatedPoints();
-            IEnumerable<MonotoneChain<TCoordinate>> chains = MonotoneChainBuilder.GetChains(coordinates);
-
-            foreach (MonotoneChain<TCoordinate> chain in chains)
+            if (ring == null)
             {
-                IExtents<TCoordinate> extents = chain.Extents;
-                Double min = extents.GetMin(Ordinates.Y);
-                Double max = extents.GetMax(Ordinates.Y);
-                _interval = new Interval(min, max);
-                _tree.Insert(_interval, chain);
+                throw new ArgumentNullException("ring");
             }
+
+            if (ring.Factory == null)
+            {
+                throw new ArgumentException(
+                    "Parameter must have a valid IGeometryFactory "+
+                    "instance set for the Factory property.");
+            }
+
+            _ring = ring;
+            _geoFactory = ring.Factory;
+            buildIndex();
         }
 
         public Boolean IsInside(TCoordinate pt)
@@ -71,7 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             // test all segments intersected by ray from pt in positive x direction
             IExtents<TCoordinate> rayExtents = new Extents<TCoordinate>(
-                Double.NegativeInfinity, Double.PositiveInfinity, y, y);
+                _geoFactory, Double.NegativeInfinity, Double.PositiveInfinity, y, y);
 
             _interval = new Interval(y, y);
 
@@ -91,6 +90,23 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
 
             return false;
+        }
+
+        private void buildIndex()
+        {
+            ICoordinateSequence<TCoordinate> coordinates 
+                = _ring.Coordinates.WithoutRepeatedPoints();
+            IEnumerable<MonotoneChain<TCoordinate>> chains 
+                = MonotoneChainBuilder.GetChains(_geoFactory, coordinates);
+
+            foreach (MonotoneChain<TCoordinate> chain in chains)
+            {
+                IExtents<TCoordinate> extents = chain.Extents;
+                Double min = extents.GetMin(Ordinates.Y);
+                Double max = extents.GetMax(Ordinates.Y);
+                _interval = new Interval(min, max);
+                _tree.Insert(_interval, chain);
+            }
         }
 
         private void testMonotoneChain(IExtents<TCoordinate> rayExtents, TCoordinate point, MonotoneChain<TCoordinate> chain)

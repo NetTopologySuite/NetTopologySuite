@@ -3,18 +3,18 @@ using System;
 namespace GisSharpBlog.NetTopologySuite.Utilities
 {
     /// <summary>
-    /// Converts degrees to radians.
+    /// Converts radians to degrees.
     /// </summary>
     public class Degrees
     {
         /// <summary>
-        /// Converts degrees to radians.
+        /// Converts radians to degrees.
         /// </summary>
-        /// <param name="degrees">The angle in degrees.</param>
-        /// <returns>The angle in radians.</returns>
-        public static Double ToRadians(Double degrees)
+        /// <param name="radians">The angle in radians.</param>
+        /// <returns>The angle in degrees.</returns>
+        public static Double ToDegrees(Double radians)
         {
-            return degrees * 0.0174532925199432958;
+            return radians * 57.29577951308232;
         }
     }
 }

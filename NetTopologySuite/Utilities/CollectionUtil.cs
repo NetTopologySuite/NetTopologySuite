@@ -34,7 +34,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Executes a function on each item in a <see cref="ICollection{T}" />
+        /// Executes a function on each item in a <see cref="IEnumerable{T}" />
         /// and collects all the entries for which the result
         /// of the function is equal to <see langword="true"/>.
         /// </summary>

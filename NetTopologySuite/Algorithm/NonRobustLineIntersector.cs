@@ -1,6 +1,7 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
+using GeoAPI.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -27,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return (a < 0 && b < 0) || (a > 0 && b > 0);
         }
 
-        protected NonRobustLineIntersector(ICoordinateFactory<TCoordinate> factory)
+        protected NonRobustLineIntersector(IGeometryFactory<TCoordinate> factory)
             : base(factory) { }
 
         public override Intersection<TCoordinate> ComputeIntersection(TCoordinate p, Pair<TCoordinate> line)

@@ -376,7 +376,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (IsEmpty)
             {
-                return new Extents<TCoordinate>();
+                return new Extents<TCoordinate>(Factory);
             }
 
             // Convert to array, then access array directly, to avoid the function-call overhead
@@ -399,7 +399,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 maxy = maxy > coordinates[i][Ordinates.Y] ? maxy : coordinates[i][Ordinates.Y];
             }
 
-            return new Extents<TCoordinate>(minx, maxx, miny, maxy);
+            return new Extents<TCoordinate>(Factory, minx, maxx, miny, maxy);
         }
 
         protected internal override Int32 CompareToSameClass(IGeometry<TCoordinate> other)

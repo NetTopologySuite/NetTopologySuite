@@ -30,10 +30,12 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             return node;
         }
 
-        public static Node<TCoordinate, TItem> CreateExpanded(Node<TCoordinate, TItem> node, 
+        public static Node<TCoordinate, TItem> CreateExpanded(
+            IGeometryFactory<TCoordinate> geoFactory,
+            Node<TCoordinate, TItem> node, 
             IExtents<TCoordinate> addEnv)
         {
-            IExtents<TCoordinate> expandExtents = new Extents<TCoordinate>(addEnv);
+            IExtents<TCoordinate> expandExtents = new Extents<TCoordinate>(geoFactory, addEnv);
 
             if (node != null)
             {
@@ -52,12 +54,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 
         private readonly TCoordinate _center;
         private readonly Int32 _level;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
 
         public Node(IExtents<TCoordinate> extents, Int32 level)
             : base(extents)
         {
             _level = level;
             _center = Bounds.Center;
+            _geoFactory = extents.Factory;
         }
 
         protected override Boolean IsSearchMatch(IExtents<TCoordinate> query)
@@ -195,7 +199,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
                     break;
             }
 
-            IExtents<TCoordinate> sqEnv = new Extents<TCoordinate>(minx, maxx, miny, maxy);
+            IExtents<TCoordinate> sqEnv = new Extents<TCoordinate>(_geoFactory, minx, maxx, miny, maxy);
             Node<TCoordinate, TItem> node = new Node<TCoordinate, TItem>(sqEnv, _level - 1);
             return node;
         }
