@@ -1,9 +1,5 @@
 using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -77,35 +73,31 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns><c>true</c> if p is inside ring.</returns>
         public static bool IsPointInRing(ICoordinate p, ICoordinate[] ring) 
         {
-            int i;
-            int i1;             // point index; i1 = i-1
-            double xInt;        // x intersection of segment with ray
-            int crossings = 0;  // number of segment/ray crossings
-            double x1;          // translated coordinates
-            double y1;
-            double x2;
-            double y2;
-            int nPts = ring.Length;
+            if (p == null) 
+                throw new ArgumentNullException("p", "coordinate 'p' is null");
+            if (ring == null) 
+                throw new ArgumentNullException("ring", "ring 'ring' is null");
 
+            int crossings = 0;            
             /*
             *  For each segment l = (i-1, i), see if it crosses ray from test point in positive x direction.
             */
-            for (i = 1; i < nPts; i++) 
+            for (int i = 1; i < ring.Length; i++) 
             {
-                i1 = i - 1;
+                int i1 = i - 1;
                 ICoordinate p1 = ring[i];
-                ICoordinate p2 = ring[i1];
-                x1 = p1.X - p.X;
-                y1 = p1.Y - p.Y;
-                x2 = p2.X - p.X;
-                y2 = p2.Y - p.Y;
+                ICoordinate p2 = ring[i1];                
 
-                if (((y1 > 0) && (y2 <= 0)) || ((y2 > 0) && (y1 <= 0))) 
+                if (((p1.Y > p.Y) && (p2.Y <= p.Y)) || ((p2.Y > p.Y) && (p1.Y <= p.Y))) 
                 {
+                    double x1 = p1.X - p.X;
+                    double y1 = p1.Y - p.Y;
+                    double x2 = p2.X - p.X;
+                    double y2 = p2.Y - p.Y;
                     /*
                     *  segment straddles x axis, so compute intersection.
                     */
-                    xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2) / (y2 - y1);
+                    double xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2) / (y2 - y1);
 
                     /*
                     *  crosses ray if strictly positive intersection.

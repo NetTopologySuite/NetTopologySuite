@@ -30,7 +30,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         {
             ILinearRing teString = testEr.Ring;
             IEnvelope testEnv = teString.EnvelopeInternal;
-            ICoordinate testPt = teString.GetCoordinateN(0);
 
             EdgeRing minShell = null;
             IEnvelope minEnv = null;
@@ -45,7 +44,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
                 // the hole envelope cannot equal the shell envelope
                 if (tryEnv.Equals(testEnv)) continue;
 
-                testPt = PointNotInList(teString.Coordinates, tryRing.Coordinates);
+                // ICoordinate testPt = PointNotInList(teString.Coordinates, tryRing.Coordinates);
+                ICoordinate testPt = CoordinateArrays.PointNotInList(teString.Coordinates, tryRing.Coordinates);
                 if (tryEnv.Contains(testEnv) && CGAlgorithms.IsPointInRing(testPt, tryRing.Coordinates))
                     isContained = true;
                 // check if this new containing ring is smaller than the current minimum ring

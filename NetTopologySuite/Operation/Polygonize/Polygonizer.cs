@@ -194,11 +194,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         private void Polygonize()
         {
             // check if already computed
-            if (polyList != null) return;
+            if (polyList != null) 
+                return;
+
             polyList = new ArrayList();
 
             // if no geometries were supplied it's possible graph could be null
-            if (graph == null) return;
+            if (graph == null) 
+                return;
 
             dangles = graph.DeleteDangles();
             cutEdges = graph.DeleteCutEdges();
