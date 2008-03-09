@@ -66,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
                     continue;
                 }
 
-                testPt = PointNotInList(teString.Coordinates, tryRing.Coordinates);
+                testPt = CoordinateArrays.PointNotInList(teString.Coordinates, tryRing.Coordinates);
 
                 if (tryEnv.Contains(testEnv) && CGAlgorithms<TCoordinate>.IsPointInRing(testPt, tryRing.Coordinates))
                 {
