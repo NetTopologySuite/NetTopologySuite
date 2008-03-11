@@ -1,6 +1,9 @@
 using System;
 using System.Diagnostics;
 using GisSharpBlog.NetTopologySuite.Utilities;
+#if NETCF
+using BitConverter = GisSharpBlog.NetTopologySuite.Utilities;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Utilities
 {
@@ -38,15 +41,13 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
             // Move the biased value to the exponent bits of the IEEE double 
             // (bits 52 - 62)
             Int64 bits = expBias << 52;
-            return System.BitConverter.Int64BitsToDouble(bits);
+            return BitConverter.Int64BitsToDouble(bits);
         }
 
         /// <summary>
         /// Computes the exponent of a double floating point 
         /// value.
         /// </summary>
-        /// <param name="d"></param>
-        /// <returns></returns>
         public static Int32 GetExponent(Double d)
         {
             DoubleBits db = new DoubleBits(d);
@@ -92,7 +93,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         public DoubleBits(Double x)
         {
             _x = x;
-            _xBits = System.BitConverter.DoubleToInt64Bits(x);
+            _xBits = BitConverter.DoubleToInt64Bits(x);
         }
 
         private DoubleBits(Double x, Int64 xBits)
@@ -103,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
 
         public Double Double
         {
-            get { return System.BitConverter.Int64BitsToDouble(_xBits); }
+            get { return BitConverter.Int64BitsToDouble(_xBits); }
         }
 
         /// <summary>

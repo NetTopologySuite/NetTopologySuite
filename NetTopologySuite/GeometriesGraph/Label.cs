@@ -281,27 +281,27 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="label">The <see cref="Label"/> to merge with.</param>
         public Label Merge(Label label)
         {
-            TopologyLocation g0 = _g0, g1 = _g1;
+            TopologyLocation l0 = _g0, l1 = _g1;
 
-            if (g0.IsNull && !label._g0.IsNull)
+            if (l0.IsNull && !label._g0.IsNull)
             {
-                g0 = label._g0;
+                l0 = label._g0;
             }
             else
             {
-                g0 = g0.Merge(label._g0);
+                l0 = l0.Merge(label._g0);
             }
 
-            if (g1.IsNull && !label._g1.IsNull)
+            if (l1.IsNull && !label._g1.IsNull)
             {
-                g1 = label._g1;
+                l1 = label._g1;
             }
             else
             {
-                g1 = g1.Merge(label._g1);
+                l1 = l1.Merge(label._g1);
             }
 
-            return new Label(g0, g1);
+            return new Label(l0, l1);
         }
 
         public Int32 GeometryCount

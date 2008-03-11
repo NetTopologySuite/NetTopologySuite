@@ -57,18 +57,53 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             : this(polygons, ExtractGeometryFactory(Enumerable.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(polygons))) { }
 
         /// <summary>
-        /// Constructs a <c>MultiPolygon</c>.
+        /// Constructs a <see cref="MultiPolygon{TCoordinate}"/>.
         /// </summary>
         /// <param name="polygons">
-        /// The <see cref="Polygon{TCoordinate}" />s for this <c>MultiPolygon</c>
-        /// , or <see langword="null" /> or an empty array to create the empty point.
-        /// Elements may be empty <see cref="Polygon{TCoordinate}" />s, but not <see langword="null" />
-        /// s. The polygons must conform to the assertions specified in the 
-        /// <see href="http://www.opengis.org/techno/specs.htm"/> OpenGIS Simple Features
-        /// Specification for SQL.        
+        /// The <see cref="Polygon{TCoordinate}" />s for this 
+        /// <see cref="MultiPolygon{TCoordinate}"/>, or <see langword="null" /> 
+        /// or an empty array to create the empty point.     
         /// </param>
+        /// <remarks>
+        /// Elements may be empty <see cref="Polygon{TCoordinate}" />s, but not 
+        /// <see langword="null" />s. The polygons must conform to the assertions 
+        /// specified in the <see href="http://www.opengis.org/techno/specs.htm">
+        /// OpenGIS Simple Features Specification for SQL</see>.   
+        /// </remarks>
         public MultiPolygon(IEnumerable<IPolygon<TCoordinate>> polygons, IGeometryFactory<TCoordinate> factory)
             : base(Enumerable.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(polygons), factory) { }
+
+        public MultiPolygon(ICoordinateSequence<TCoordinate> sequence, IGeometryFactory<TCoordinate> factory)
+            : base(factory)
+        {
+            IEnumerable<ILinearRing<TCoordinate>> rings 
+                = Coordinates<TCoordinate>.CreateLinearRings(sequence, factory);
+
+            IPolygon<TCoordinate> currentPolygon = null;
+
+            foreach (ILinearRing<TCoordinate> ring in rings)
+            {
+                if (!ring.IsCcw)
+                {
+                    if (currentPolygon != null)
+                    {
+                        Add(currentPolygon);
+                    }
+
+                    currentPolygon = factory.CreatePolygon(ring);
+                }
+                else
+                {
+                    if (currentPolygon == null)
+	                {
+	                    throw new TopologyException(
+                            "The coordinate sequence specifies holes without a shell.");
+	                }
+
+                    currentPolygon.InteriorRings.Add(ring);
+                }
+            }
+        }
 
         public MultiPolygon(IGeometryFactory<TCoordinate> factory)
             : base(factory) { }

@@ -66,6 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         #endregion
 
         private readonly ICoordinateSequenceFactory<TCoordinate> _coordinateSequenceFactory;
+        private readonly ICoordinateFactory<TCoordinate> _coordinateFactory;
         private readonly IPrecisionModel<TCoordinate> _precisionModel;
         private Int32? _srid;
         private ICoordinateSystem<TCoordinate> _spatialReference;
@@ -84,8 +85,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                                ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory,
                                ICoordinateSystem<TCoordinate> spatialReference)
         {
+            if (coordinateSequenceFactory == null) throw new ArgumentNullException("coordinateSequenceFactory");
+
             _precisionModel = precisionModel;
             _coordinateSequenceFactory = coordinateSequenceFactory;
+            _coordinateFactory = coordinateSequenceFactory.CoordinateFactory;
             _srid = srid;
             _spatialReference = spatialReference;
         }
@@ -111,18 +115,22 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
         /// CoordinateSequence implementation, the given 
-        /// <see cref="IPrecisionModel{TCoordinate}"/> and a <see langword="null"/> spatial-reference ID.
+        /// <see cref="IPrecisionModel{TCoordinate}"/> and a <see langword="null"/> 
+        /// spatial-reference ID.
         /// </summary>
         public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel,
                                ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory)
             : this(precisionModel, null, coordinateSequenceFactory) {}
 
         /// <summary>
+        /// 
         /// Constructs a GeometryFactory that generates Geometries having the given
         /// <see cref="IPrecisionModel{TCoordinate}"/> and the default <see cref="ICoordinateSequenceFactory{TCoordinate}"/>
         /// implementation.
         /// </summary>
-        /// <param name="precisionModel">The <see cref="IPrecisionModel{TCoordinate}"/> to use.</param>
+        /// <param name="precisionModel">
+        /// The <see cref="IPrecisionModel{TCoordinate}"/> to use.
+        /// </param>
         public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel)
             : this(precisionModel, null, getDefaultCoordinateSequenceFactory<TCoordinate>()) {}
 
@@ -257,32 +265,57 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region IGeometryFactory<TCoordinate> Members
 
+        public IExtents<TCoordinate> CreateExtents()
+        {
+            return new Extents<TCoordinate>(this);
+        }
+
         public IExtents<TCoordinate> CreateExtents(ICoordinate min, ICoordinate max)
         {
-            throw new NotImplementedException();
+            return CreateExtents(CoordinateFactory.Create(min), CoordinateFactory.Create(max));
         }
 
         public IExtents<TCoordinate> CreateExtents(TCoordinate min, TCoordinate max)
         {
-            throw new NotImplementedException();
+            return new Extents<TCoordinate>(this, min, max);
+        }
+
+        public IExtents<TCoordinate> CreateExtents(IExtents extents)
+        {
+            return new Extents<TCoordinate>(this,
+                CoordinateFactory.Create(extents.Min),
+                CoordinateFactory.Create(extents.Max));
+        }
+
+        public IExtents<TCoordinate> CreateExtents(IExtents<TCoordinate> extents)
+        {
+            return new Extents<TCoordinate>(this, extents);
         }
 
         /// <summary>
-        /// If the <see cref="Extents{TCoordinate}"/> is a null <see cref="Extents{TCoordinate}"/>, returns an
-        /// empty <c>Point</c>. If the <see cref="Extents{TCoordinate}"/> is a point, returns
-        /// a non-empty <c>Point</c>. If the <see cref="Extents{TCoordinate}"/> is a
-        /// rectangle, returns a <see cref="Polygon{TCoordinate}" /> whose points are (minx, miny),
+        /// If the <see cref="Extents{TCoordinate}"/> is a null 
+        /// <see cref="Extents{TCoordinate}"/>, returns an
+        /// empty <c>Point</c>. If the <see cref="Extents{TCoordinate}"/> 
+        /// is a point, returns a non-empty <see cref="Point{TCoordinate}"/>. 
+        /// If the <see cref="Extents{TCoordinate}"/> is a rectangle, returns a 
+        /// <see cref="Polygon{TCoordinate}" /> whose points are (minx, miny),
         /// (maxx, miny), (maxx, maxy), (minx, maxy), (minx, miny).
         /// </summary>
-        /// <param name="envelope">The <see cref="Extents{TCoordinate}"/> to convert to a <see cref="Geometry{TCoordinate}"/>.</param>       
+        /// <param name="envelope">
+        /// The <see cref="Extents{TCoordinate}"/> to convert to a 
+        /// <see cref="Geometry{TCoordinate}"/>.
+        /// </param>       
         /// <returns>
-        /// An empty <c>Point</c> (for null <see cref="Extents{TCoordinate}"/>
-        /// s), a <c>Point</c> (when min x = max x and min y = max y) or a
-        /// <see cref="Polygon{TCoordinate}" /> (in all other cases)
-        /// throws a <c>TopologyException</c> if <c>coordinates</c>
-        /// is not a closed linestring, that is, if the first and last coordinates
-        /// are not equal.
+        /// An empty <see cref="Point{TCoordinate}"/> 
+        /// (for null <see cref="Extents{TCoordinate}"/>s), 
+        /// a <see cref="Point{TCoordinate}"/> 
+        /// (when min x = max x and min y = max y) or a
+        /// <see cref="Polygon{TCoordinate}" /> (in all other cases).
         /// </returns>
+        /// <exception cref="TopologyException">
+        /// If <c>coordinates</c> is not a closed linestring, 
+        /// that is, if the first and last coordinates are not equal.
+        /// </exception>
         public IGeometry<TCoordinate> ToGeometry(IExtents<TCoordinate> envelope)
         {
             if (envelope.IsEmpty)
@@ -315,7 +348,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public ICoordinateFactory<TCoordinate> CoordinateFactory
         {
-            get { return _coordinateSequenceFactory.CoordinateFactory; }
+            get { return _coordinateFactory; }
         }
 
         public ICoordinateSequenceFactory<TCoordinate> CoordinateSequenceFactory
@@ -332,7 +365,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Creates a Point using the given Coordinate; a null Coordinate will create
         /// an empty Geometry.
         /// </summary>
-        /// <param name="coordinate"></param>
         public IPoint<TCoordinate> CreatePoint(TCoordinate coordinate)
         {
             return new Point<TCoordinate>(coordinate, this);
@@ -340,7 +372,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public IPoint<TCoordinate> CreatePoint(IEnumerable<TCoordinate> coordinates)
         {
-            throw new NotImplementedException();
+            Point<TCoordinate> point 
+                = new Point<TCoordinate>(Slice.GetFirst(coordinates), this);
+            return point;
+        }
+
+        public IPoint<TCoordinate> CreatePoint()
+        {
+            return new Point<TCoordinate>(default(TCoordinate), this);
         }
 
         /// <summary>
@@ -359,7 +398,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public ILineString<TCoordinate> CreateLineString(params TCoordinate[] coordinates)
         {
-            throw new NotImplementedException();
+            return CreateLineString(CoordinateSequenceFactory.Create(coordinates));
         }
 
         /// <summary> 
@@ -383,25 +422,58 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Creates a <see cref="LinearRing{TCoordinate}" /> using the given <c>Coordinates</c>; a null or empty array will
-        /// create an empty LinearRing. The points must form a closed and simple
-        /// linestring. Consecutive points must not be equal.
+        /// Creates a <see cref="LinearRing{TCoordinate}" /> using the given 
+        /// <see cref="IEnumerable{TCoordinate}"/>; a <see langword="null"/> 
+        /// or empty array will create an empty <see cref="LinearRing{TCoordinate}"/>. 
+        /// The points must form a closed and simple linestring. 
+        /// Consecutive points must not be equal.
         /// </summary>
-        /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
+        public ILinearRing<TCoordinate> CreateLinearRing()
+        {
+            return CreateLinearRing(null);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="LinearRing{TCoordinate}" /> using the given 
+        /// <see cref="IEnumerable{TCoordinate}"/>; a <see langword="null"/> 
+        /// or empty array will create an empty <see cref="LinearRing{TCoordinate}"/>. 
+        /// The points must form a closed and simple linestring. 
+        /// Consecutive points must not be equal.
+        /// </summary>
+        /// <param name="coordinates">
+        /// An <see cref="IEnumerable{TCoordinate}"/> without null elements, 
+        /// or an empty array, or <see langword="null"/>.
+        /// </param>
         public ILinearRing<TCoordinate> CreateLinearRing(IEnumerable<TCoordinate> coordinates)
         {
             return CreateLinearRing(CoordinateSequenceFactory.Create(coordinates));
         }
 
         /// <summary> 
-        /// Creates a <see cref="LinearRing{TCoordinate}" /> using the given <c>CoordinateSequence</c>; a null or empty CoordinateSequence will
-        /// create an empty LinearRing. The points must form a closed and simple
+        /// Creates a <see cref="LinearRing{TCoordinate}" /> using the given 
+        /// <see cref="ICoordinateSequence{TCoordinate}"/>; a null or empty 
+        /// <see cref="ICoordinateSequence{TCoordinate}"/> will
+        /// create an empty <see cref="LinearRing{TCoordinate}" />. 
+        /// The points must form a closed and simple
         /// linestring. Consecutive points must not be equal.
         /// </summary>
-        /// <param name="coordinates">A CoordinateSequence possibly empty, or null.</param>
+        /// <param name="coordinates">
+        /// An <see cref="ICoordinateSequence{TCoordinate}"/> possibly empty, 
+        /// or <see langword="null"/>.
+        /// </param>
         public ILinearRing<TCoordinate> CreateLinearRing(ICoordinateSequence<TCoordinate> coordinates)
         {
             return new LinearRing<TCoordinate>(coordinates, this);
+        }
+
+        public IPolygon<TCoordinate> CreatePolygon()
+        {
+            return new Polygon<TCoordinate>((ICoordinateSequence<TCoordinate>)null, this);
+        }
+
+        public IPolygon<TCoordinate> CreatePolygon(ILinearRing<TCoordinate> shell)
+        {
+            return new Polygon<TCoordinate>(shell, this);
         }
 
         /// <summary> 
@@ -422,8 +494,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                                                    IEnumerable<ILinearRing<TCoordinate>> holes)
         {
             return new Polygon<TCoordinate>(shell,
-                                            Enumerable.Upcast<ILineString<TCoordinate>, ILinearRing<TCoordinate>>(holes),
+                                            Enumerable.Upcast<ILineString<TCoordinate>, 
+                                            ILinearRing<TCoordinate>>(holes),
                                             this);
+        }
+
+        public IPolygon<TCoordinate> CreatePolygon(ICoordinateSequence<TCoordinate> coordinates)
+        {
+            return new Polygon<TCoordinate>(coordinates, this);
         }
 
         /// <summary> 
@@ -501,7 +579,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Creates a <c>MultiPolygon</c> using the given <c>Polygons</c>; a null or empty array
+        /// Creates a <see cref="MultiPolygon{TCoordinate}"/> using the given 
+        /// <see cref="Polygon{TCoordinate}"/>s; a null or empty array
         /// will create an empty Polygon. The polygons must conform to the
         /// assertions specified in the <see href="http://www.opengis.org/techno/specs.htm"/> 
         /// OpenGIS Simple Features Specification for SQL.
@@ -512,9 +591,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return new MultiPolygon<TCoordinate>(polygons, this);
         }
 
+        public IMultiPolygon<TCoordinate> CreateMultiPolygon(ICoordinateSequence<TCoordinate> coordinates)
+        {
+            return new MultiPolygon<TCoordinate>(coordinates, this);
+        }
+
         public IGeometryCollection<TCoordinate> CreateGeometryCollection()
         {
-            throw new NotImplementedException();
+            return new GeometryCollection<TCoordinate>(this);
         }
 
         #endregion
@@ -577,87 +661,102 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        #region IGeometryFactory Members
-
-        public IExtents CreateExtents()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IExtents CreateExtents(IExtents first, IExtents second)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IExtents CreateExtents(IExtents first, IExtents second, IExtents third)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IExtents CreateExtents(params IExtents[] extents)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IPoint2D CreatePoint2D()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IPoint2D CreatePoint2D(Double x, Double y)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IPoint2DM CreatePoint2DM(Double x, Double y, Double m)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IPoint3D CreatePoint3D()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IPoint3D CreatePoint3D(Double x, Double y, Double z)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IPoint3D CreatePoint3D(IPoint2D point2D, Double z)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IPoint3DM CreatePoint3DM(Double x, Double y, Double z, Double m)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IExtents2D CreateExtents2D(Double left, Double bottom, Double right, Double top)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IExtents2D CreateExtents2D(Pair<Double> lowerLeft, Pair<Double> upperRight)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IExtents3D CreateExtents3D(Double left, Double bottom, Double front, Double right, Double top,
-                                          Double back)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IExtents3D CreateExtents3D(Triple<Double> lowerLeft, Triple<Double> upperRight)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
         #region Explicit IGeometryFactory Members
+
+        IExtents IGeometryFactory.CreateExtents()
+        {
+            return CreateExtents();
+        }
+
+        IExtents IGeometryFactory.CreateExtents(IExtents first, IExtents second)
+        {
+            IExtents extents = CreateExtents(first.Min, first.Max);
+            extents.ExpandToInclude(second);
+            return extents;
+        }
+
+        IExtents IGeometryFactory.CreateExtents(IExtents first, IExtents second, IExtents third)
+        {
+            IExtents extents = (this as IGeometryFactory).CreateExtents(first, second);
+            extents.ExpandToInclude(second);
+            return extents;
+        }
+
+        IExtents IGeometryFactory.CreateExtents(params IExtents[] extents)
+        {
+            IExtents e = (this as IGeometryFactory).CreateExtents();
+
+            foreach (IExtents extent in extents)
+            {
+                e.ExpandToInclude(extent);
+            }
+
+            return e;
+        }
+
+        IPoint2D IGeometryFactory.CreatePoint2D()
+        {
+            return (IPoint2D)CreatePoint();
+        }
+
+        IPoint2D IGeometryFactory.CreatePoint2D(Double x, Double y)
+        {
+            TCoordinate coord = _coordinateFactory.Create(x, y);
+            return (IPoint2D)CreatePoint(coord);
+        }
+
+        IPoint2DM IGeometryFactory.CreatePoint2DM(Double x, Double y, Double m)
+        {
+            TCoordinate coord = _coordinateFactory.Create(x, y, m);
+            return (IPoint2DM)CreatePoint(coord);
+        }
+
+        IPoint3D IGeometryFactory.CreatePoint3D()
+        {
+            throw new NotImplementedException();
+        }
+
+        IPoint3D IGeometryFactory.CreatePoint3D(Double x, Double y, Double z)
+        {
+            throw new NotImplementedException();
+        }
+
+        IPoint3D IGeometryFactory.CreatePoint3D(IPoint2D point2D, Double z)
+        {
+            throw new NotImplementedException();
+        }
+
+        IPoint3DM IGeometryFactory.CreatePoint3DM(Double x, Double y, Double z, Double m)
+        {
+            throw new NotImplementedException();
+        }
+
+        IExtents2D IGeometryFactory.CreateExtents2D(
+            Double left, Double bottom, Double right, Double top)
+        {
+            TCoordinate min = _coordinateFactory.Create(left, bottom);
+            TCoordinate max = _coordinateFactory.Create(right, top);
+            return (IExtents2D)CreateExtents(min, max);
+        }
+
+        IExtents2D IGeometryFactory.CreateExtents2D(
+            Pair<Double> min, Pair<Double> max)
+        {
+            return (this as IGeometryFactory).CreateExtents2D(
+                min.First, min.Second, max.First, max.Second);
+        }
+
+        IExtents3D IGeometryFactory.CreateExtents3D(
+            Double left, Double bottom, Double front, Double right, Double top, Double back)
+        {
+            throw new NotImplementedException();
+        }
+
+        IExtents3D IGeometryFactory.CreateExtents3D(
+            Triple<Double> lowerLeft, Triple<Double> upperRight)
+        {
+            throw new NotImplementedException();
+        }
 
         ICoordinateFactory IGeometryFactory.CoordinateFactory
         {
@@ -706,42 +805,44 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IPoint IGeometryFactory.CreatePoint()
         {
-            throw new NotImplementedException();
+            return CreatePoint();
         }
 
         IPoint IGeometryFactory.CreatePoint(ICoordinate coordinate)
         {
-            throw new NotImplementedException();
+            return CreatePoint(_coordinateFactory.Create(coordinate));
         }
 
         IPoint IGeometryFactory.CreatePoint(ICoordinateSequence coordinates)
         {
-            throw new NotImplementedException();
+            return CreatePoint(convertSequence(coordinates));
         }
 
         ILineString IGeometryFactory.CreateLineString()
         {
-            throw new NotImplementedException();
+            return CreateLineString();
         }
 
         ILineString IGeometryFactory.CreateLineString(IEnumerable<ICoordinate> coordinates)
         {
-            throw new NotImplementedException();
+            return CreateLineString(
+                Enumerable.Downcast<TCoordinate, ICoordinate>(coordinates));
         }
 
         ILineString IGeometryFactory.CreateLineString(ICoordinateSequence coordinates)
         {
-            throw new NotImplementedException();
+            return CreateLineString(convertSequence(coordinates));
         }
 
         ILinearRing IGeometryFactory.CreateLinearRing()
         {
-            throw new NotImplementedException();
+            return CreateLinearRing();
         }
 
         ILinearRing IGeometryFactory.CreateLinearRing(IEnumerable<ICoordinate> coordinates)
         {
-            throw new NotImplementedException();
+            return CreateLinearRing(
+                Enumerable.Downcast<TCoordinate, ICoordinate>(coordinates));
         }
 
         ILinearRing IGeometryFactory.CreateLinearRing(ICoordinateSequence coordinates)
@@ -791,7 +892,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IMultiLineString IGeometryFactory.CreateMultiLineString()
         {
-            throw new NotImplementedException();
+            return new MultiLineString<TCoordinate>(null, this);
         }
 
         IMultiLineString IGeometryFactory.CreateMultiLineString(IEnumerable<ILineString> lineStrings)
@@ -826,26 +927,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #endregion
 
-        #region IGeometryFactory<TCoordinate> Members
-
-
-        IPolygon<TCoordinate> IGeometryFactory<TCoordinate>.CreatePolygon()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IPolygon<TCoordinate> CreatePolygon(ICoordinateSequence<TCoordinate> coordinates)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IMultiPolygon<TCoordinate> CreateMultiPolygon(ICoordinateSequence<TCoordinate> coordinates)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
         #region IGeometryFactory Members
 
 
@@ -861,21 +942,24 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #endregion
 
-        #region IGeometryFactory<TCoordinate> Members
 
-
-        public IExtents<TCoordinate> CreateExtents(IExtents extents)
+        private ICoordinateSequence<TCoordinate> convertSequence(ICoordinateSequence coordinates)
         {
-            return new Extents<TCoordinate>(this, 
-                CoordinateFactory.Create(extents.Min), 
-                CoordinateFactory.Create(extents.Max));
-        }
+            ICoordinateSequence<TCoordinate> converted = coordinates as ICoordinateSequence<TCoordinate>;
 
-        public IExtents<TCoordinate> CreateExtents(IExtents<TCoordinate> extents)
-        {
-            return new Extents<TCoordinate>(this, extents);
-        }
+            if (converted != null)
+            {
+                return converted;
+            }
 
-        #endregion
+            converted = _coordinateSequenceFactory.Create();
+
+            foreach (ICoordinate coordinate in coordinates)
+            {
+                converted.Add(coordinate);
+            }
+
+            return converted;
+        }
     }
 }

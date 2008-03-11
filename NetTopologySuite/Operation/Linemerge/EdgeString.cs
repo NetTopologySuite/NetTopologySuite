@@ -70,7 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 
                     LineMergeEdge<TCoordinate> edge = directedEdge.Edge as LineMergeEdge<TCoordinate>;
                     Debug.Assert(edge != null);
-                    coordinateList.Add(edge.Line.Coordinates, false, directedEdge.EdgeDirection);
+                    coordinateList.AddRange(edge.Line.Coordinates, false, directedEdge.EdgeDirection);
                 }
 
                 if (reverseDirectedEdges > forwardDirectedEdges)

@@ -76,7 +76,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             // since the endpoints are nodes
             SegmentNode<TCoordinate> previousNode = Slice.GetFirst(this);
 
-            foreach (SegmentNode<TCoordinate> node in Slice.StartAt(this, 1))
+            foreach (SegmentNode<TCoordinate> node in Enumerable.Skip(this, 1))
             {
                 yield return createSplitEdge(previousNode, node);
             }
@@ -144,7 +144,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             SegmentNode<TCoordinate> previousEdgeIntersection = Slice.GetFirst(this);
              
             // there should always be at least two entries in the list, since the endpoints are nodes
-            foreach (SegmentNode<TCoordinate> edgeIntersection in Slice.StartAt(this, 1))
+            foreach (SegmentNode<TCoordinate> edgeIntersection in Enumerable.Skip(this, 1))
             {
                 Int32 collapsedVertexIndex;
 

@@ -154,7 +154,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
                 Int32 pointIndex = 0;
 
-                foreach (TCoordinate coordinate in Slice.StartAt(pts, 1))
+                foreach (TCoordinate coordinate in Enumerable.Skip(pts, 1))
                 {
                     if (coordinate.Equals(testPt))
                     {

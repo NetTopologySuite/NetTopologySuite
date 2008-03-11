@@ -269,7 +269,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                     startIndex = 0;
                 }
 
-                foreach (TCoordinate coordinate in Slice.StartAt(edgePts, startIndex))
+                foreach (TCoordinate coordinate in Enumerable.Skip(edgePts, startIndex))
                 {
                     _coordinates.Add(coordinate);
                 }

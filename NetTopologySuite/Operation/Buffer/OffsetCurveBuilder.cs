@@ -178,7 +178,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             TCoordinate last = default(TCoordinate);
 
-            foreach (TCoordinate coordinate in Slice.StartAt(_coordinates, 1))
+            foreach (TCoordinate coordinate in Enumerable.Skip(_coordinates, 1))
             {
                 last = coordinate;
                 yield return coordinate;
@@ -197,7 +197,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             // compute points for left side of line
             initSideSegments(initPoints.First, initPoints.Second, Positions.Left);
 
-            foreach (TCoordinate point in Slice.StartAt(inputPts, 2))
+            foreach (TCoordinate point in Enumerable.Skip(inputPts, 2))
             {
                 addNextSegment(point, true);
             }
@@ -233,7 +233,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             Int32 pointIndex = 0;
 
-            foreach (TCoordinate coordinate in Slice.StartAt(inputPts, 1))
+            foreach (TCoordinate coordinate in Enumerable.Skip(inputPts, 1))
             {
                 addNextSegment(coordinate, pointIndex == 0);
                 pointIndex++;

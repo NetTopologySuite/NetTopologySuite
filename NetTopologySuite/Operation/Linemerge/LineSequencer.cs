@@ -507,7 +507,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 
             if (flipSeq)
             {
-                return Slice.Reverse(seq);
+                return Enumerable.Reverse(seq);
             }
 
             return seq;

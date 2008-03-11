@@ -102,6 +102,8 @@
     <Otherwise>
       <ItemGroup>
         <Reference Include="System" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Xml" />
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -110,6 +112,7 @@
     <Compile Include="BufferedCoordinate2DFactory.cs" />
     <Compile Include="BufferedCoordinate2DSequence.cs" />
     <Compile Include="BufferedCoordinate2DSequenceFactory.cs" />
+    <Compile Include="BufferedCoordinate2DSet.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="nts.snk" />

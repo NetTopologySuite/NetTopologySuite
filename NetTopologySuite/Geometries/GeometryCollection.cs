@@ -70,7 +70,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 geometries = new IGeometry<TCoordinate>[] { };
             }
 
-            _geometries.AddRange(geometries);
+            foreach (IGeometry<TCoordinate> geometry in geometries)
+            {
+                _geometries.Add(geometry);
+            }
         }
 
         /// <summary>

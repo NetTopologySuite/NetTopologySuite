@@ -24,33 +24,45 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         //public new static readonly IMultiLineString Empty = new GeometryFactory<TCoordinate>().CreateMultiLineString(null);
 
         /// <summary>
-        /// Constructs a <c>MultiLineString</c>.
+        /// Constructs a <see cref="MultiLineString{TCoordinate}"/>.
         /// </summary>
         /// <param name="lineStrings">
-        /// The <c>LineString</c>s for this <c>MultiLineString</c>,
+        /// The <see cref="LineString{TCoordinate}"/>s for this 
+        /// <see cref="MultiLineString{TCoordinate}"/>,
         /// or <see langword="null" /> or an empty array to create the empty
-        /// point. Elements may be empty <c>LineString</c>s,
+        /// point. Elements may be empty <see cref="LineString{TCoordinate}"/>s,
         /// but not <see langword="null" />s.
         /// </param>
-        public MultiLineString(IEnumerable<ILineString<TCoordinate>> lineStrings, IGeometryFactory<TCoordinate> factory)
-            : base(Enumerable.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(lineStrings), factory) { }
+        public MultiLineString(IEnumerable<ILineString<TCoordinate>> lineStrings, 
+                               IGeometryFactory<TCoordinate> factory)
+            : base(lineStrings == null 
+                        ? null 
+                        : Enumerable.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(lineStrings), 
+                    factory) { }
 
         /// <summary>
-        /// Constructs a <c>MultiLineString</c>.
+        /// Constructs an empty <see cref="MultiLineString{TCoordinate}"/>.
         /// </summary>
-        /// <param name="lineStrings">
-        /// The <c>LineString</c>s for this <c>MultiLineString</c>,
-        /// or <see langword="null" /> or an empty array to create the empty
-        /// point. Elements may be empty <c>LineString</c>s,
-        /// but not <see langword="null" />s.
-        /// </param>
-        /// <remarks>
-        /// For create this <see cref="Geometry{TCoordinate}"/> 
-        /// is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
-        /// </remarks>
-        public MultiLineString(IEnumerable<ILineString<TCoordinate>> lineStrings)
-            : this(lineStrings, ExtractGeometryFactory(Enumerable.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(lineStrings))) { }
+        public MultiLineString(IGeometryFactory<TCoordinate> factory)
+            : base(factory) { }
+
+        ///// <summary>
+        ///// Constructs a <c>MultiLineString</c>.
+        ///// </summary>
+        ///// <param name="lineStrings">
+        ///// The <c>LineString</c>s for this <c>MultiLineString</c>,
+        ///// or <see langword="null" /> or an empty array to create the empty
+        ///// point. Elements may be empty <c>LineString</c>s,
+        ///// but not <see langword="null" />s.
+        ///// </param>
+        ///// <remarks>
+        ///// For create this <see cref="Geometry{TCoordinate}"/> 
+        ///// is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
+        ///// with <see cref="IPrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
+        ///// </remarks>
+        //public MultiLineString(IEnumerable<ILineString<TCoordinate>> lineStrings)
+        //    : this(lineStrings, 
+        //           ExtractGeometryFactory(Enumerable.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(lineStrings))) { }
 
         public override IGeometry<TCoordinate> Boundary
         {
@@ -138,7 +150,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>a <see cref="MultiLineString{TCoordinate}" /> in the reverse order.</returns>
         public IMultiLineString<TCoordinate> Reverse()
         {
-            IEnumerable<ILineString<TCoordinate>> reversed = Slice.Reverse(this as IEnumerable<ILineString<TCoordinate>>);
+            IEnumerable<ILineString<TCoordinate>> reversed 
+                = Enumerable.Reverse(this as IEnumerable<ILineString<TCoordinate>>);
             return Factory.CreateMultiLineString(reversed);
         }
 

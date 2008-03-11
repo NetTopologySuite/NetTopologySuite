@@ -20,16 +20,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                             IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
-        /// Constructs a <see cref="LinearRing{TCoordinate}" /> with the given points.
+        /// Constructs a <see cref="LinearRing{TCoordinate}" /> with the given coordinates.
         /// </summary>
-        /// <param name="points">
+        /// <param name="coordinates">
         /// Points forming a closed and simple linestring, or
         /// <see langword="null" /> or an empty array to create the empty point.
         /// This array must not contain <see langword="null" /> elements.
         /// </param>
         /// <param name="factory"></param>
-        public LinearRing(ICoordinateSequence<TCoordinate> points, IGeometryFactory<TCoordinate> factory) 
-            : base(points, factory)
+        public LinearRing(ICoordinateSequence<TCoordinate> coordinates, IGeometryFactory<TCoordinate> factory) 
+            : base(coordinates, factory)
         {
             validateConstruction();
         }
@@ -74,12 +74,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (!IsEmpty && !base.IsClosed)
             {
-                throw new ArgumentException("points must form a closed linestring");
+                throw new ArgumentException("Coordinates must form a closed linestring");
             }
 
             if (Coordinates.Count >= 1 && Coordinates.Count <= 3)
             {
-                throw new ArgumentException("Number of points must be 0 or > 3");
+                throw new ArgumentException(
+                    "Number of coordinates must equal 0 or be greater than 3");
             }
         }
     }

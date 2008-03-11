@@ -34,8 +34,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         //    new GeometryFactory<TCoordinate>().CreatePolygon(null, null);
 
         /// <summary>
-        /// The exterior boundary, or <see langword="null" /> if this <see cref="Polygon{TCoordinate}" />
-        /// is the empty point.
+        /// The exterior boundary, or <see langword="null" /> if this 
+        /// <see cref="Polygon{TCoordinate}" /> is the empty point.
         /// </summary>
         private readonly ILinearRing<TCoordinate> _shell;
 
@@ -80,12 +80,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// point is to be created.
         /// </param>
         /// <param name="holes">
-        /// The inner boundaries of the new <see cref="Polygon{TCoordinate}" />
-        /// , or <see langword="null" /> or empty 
+        /// The inner boundaries of the new <see cref="Polygon{TCoordinate}" />,
+        /// or <see langword="null" /> or empty 
         /// <see cref="LinearRing{TCoordinate}" />s if the empty
         /// point is to be created.
         /// </param>
-        public Polygon(ILinearRing<TCoordinate> shell, IEnumerable<ILineString<TCoordinate>> holes,
+        public Polygon(ILinearRing<TCoordinate> shell, 
+                       IEnumerable<ILineString<TCoordinate>> holes,
                        IGeometryFactory<TCoordinate> factory)
             : base(factory)
         {
@@ -107,6 +108,55 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             {
                 _holes = new List<ILineString<TCoordinate>>();
                 _holes.AddRange(holes);
+            }
+        }
+        
+        /// <summary>
+        /// Constructs a <see cref="Polygon{TCoordinate}" /> 
+        /// with the given exterior boundary and
+        /// interior boundaries.
+        /// </summary>       
+        /// <param name="sequence">
+        /// The outer boundary of the new <see cref="Polygon{TCoordinate}" />,
+        /// or <see langword="null" /> or an empty 
+        /// <see cref="LinearRing{TCoordinate}" /> if the empty
+        /// point is to be created.
+        /// </param>
+        /// <param name="factory">
+        /// The inner boundaries of the new <see cref="Polygon{TCoordinate}" />,
+        /// or <see langword="null" /> or empty 
+        /// <see cref="LinearRing{TCoordinate}" />s if the empty
+        /// point is to be created.
+        /// </param>
+        public Polygon(ICoordinateSequence<TCoordinate> sequence,
+                       IGeometryFactory<TCoordinate> factory)
+            : base(factory)
+        {
+            IEnumerable<ILinearRing<TCoordinate>> rings
+                = Coordinates<TCoordinate>.CreateLinearRings(sequence, factory);
+
+            foreach (ILinearRing<TCoordinate> ring in rings)
+            {
+                if (ring.IsCcw)
+                {
+                    if (ExteriorRing == null || ExteriorRing.IsEmpty)
+                    {
+                        throw new TopologyException(
+                            "The coordinate sequence specifies holes without a shell.");
+                    }
+
+                    InteriorRings.Add(ring);
+                }
+                else
+                {
+                    if (_shell != null)
+                    {
+                        throw new TopologyException(
+                            "The coordinate sequence specifies two exterior rings.");
+                    }
+
+                    _shell = ring;
+                }
             }
         }
 

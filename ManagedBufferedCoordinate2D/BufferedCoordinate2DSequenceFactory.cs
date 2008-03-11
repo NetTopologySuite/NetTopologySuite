@@ -93,25 +93,33 @@ namespace NetTopologySuite.Coordinates
 
         ICoordinateSequence ICoordinateSequenceFactory.Create(Int32 dimension)
         {
-            throw new NotImplementedException();
+            return Create(dimension);
         }
 
         ICoordinateSequence ICoordinateSequenceFactory.Create(Int32 size, Int32 dimension)
         {
-            throw new NotImplementedException();
+            return Create(size, dimension);
         }
 
         ICoordinateSequence ICoordinateSequenceFactory.Create(ICoordinateSequence coordSeq)
         {
-            throw new NotImplementedException();
+            return (this as ICoordinateSequenceFactory).Create((IEnumerable<ICoordinate>) coordSeq);
         }
 
         ICoordinateSequence ICoordinateSequenceFactory.Create(IEnumerable<ICoordinate> coordinates)
         {
-            throw new NotImplementedException();
+            return Create(convertCoordinates(coordinates));
         }
 
         #endregion
+
+        private IEnumerable<BufferedCoordinate2D> convertCoordinates(IEnumerable<ICoordinate> coordinates)
+        {
+            foreach (ICoordinate coordinate in coordinates)
+            {
+                yield return CoordinateFactory.Create(coordinate);
+            }
+        }
 
         private static void checkDimension(Int32 dimension)
         {

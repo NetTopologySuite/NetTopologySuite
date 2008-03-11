@@ -16,11 +16,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
     /// </summary>
     public class EdgeRing<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         // cache the following data for efficiency
-        private ILinearRing<TCoordinate> _ring = null;
-        private readonly IGeometryFactory<TCoordinate> _factory = null;
+        private ILinearRing<TCoordinate> _ring;
+        private readonly IGeometryFactory<TCoordinate> _factory;
         private readonly List<DirectedEdge<TCoordinate>> _deList = new List<DirectedEdge<TCoordinate>>();
         private readonly List<TCoordinate> _ringPoints = new List<TCoordinate>();
         private List<ILinearRing<TCoordinate>> _holes;
@@ -66,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
                     continue;
                 }
 
-                testPt = CoordinateArrays.PointNotInList(teString.Coordinates, tryRing.Coordinates);
+                testPt = PointNotInList(teString.Coordinates, tryRing.Coordinates);
 
                 if (tryEnv.Contains(testEnv) && CGAlgorithms<TCoordinate>.IsPointInRing(testPt, tryRing.Coordinates))
                 {

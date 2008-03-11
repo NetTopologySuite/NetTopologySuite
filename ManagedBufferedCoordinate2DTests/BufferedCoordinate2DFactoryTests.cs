@@ -268,7 +268,7 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
             Random random = new MersenneTwister();
 
-            for (int i = 0; i < 100; i++)
+            for (Int32 i = 0; i < 100; i++)
             {
                 switch (random.Next(0, 4))
                 {
@@ -346,6 +346,21 @@ namespace ManagedBufferedCoordinate2DTests
             }
         }
 
+        [Test]
+        public void BitResolutionSnapsCoordinatesToGrid()
+        {
+            BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
+
+            factory.BitResolution = 24;
+
+            factory.Create(10, 10);
+            factory.Create(10.000000003, 10.000000003);
+
+            Assert.AreEqual(1, factory.VectorBuffer.Count);
+        }
+
+        #region Private helper methods
+
         private static IEnumerable<BufferedCoordinate2D> generateInfiniteCoordinates(BufferedCoordinate2DFactory factory, Random rnd)
         {
             // Give thanks for Enumerable.Take()!
@@ -359,5 +374,6 @@ namespace ManagedBufferedCoordinate2DTests
         {
             return factory.Homogenize(generateInfiniteCoordinates(factory, rnd));
         }
+        #endregion
     }
 }

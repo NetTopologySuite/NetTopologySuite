@@ -6,6 +6,9 @@ using GeoAPI.Coordinates;
 using NPack;
 using NPack.Interfaces;
 using GeoAPI.DataStructures;
+#if NETCF
+using BitConverter = GisSharpBlog.NetTopologySuite.Utilities;
+#endif
 
 namespace NetTopologySuite.Coordinates
 {
@@ -13,13 +16,31 @@ namespace NetTopologySuite.Coordinates
         : ICoordinateFactory<BufferedCoordinate2D>, IVectorBuffer<BufferedCoordinate2D, DoubleComponent>,
           IBufferedVectorFactory<BufferedCoordinate2D, DoubleComponent>
     {
+        public static readonly Int32 MaximumBitResolution = 52;
         private readonly ManagedVectorBuffer<BufferedCoordinate2D, DoubleComponent> _coordinates;
         private readonly IDictionary<Pair<Double>, Int32> _lexicographicVertexIndex;
+        private Int32 _bitResolution;
+        private Int64 _mask = unchecked((Int64)0xFFFFFFFFFFFFFFFF);
 
         public BufferedCoordinate2DFactory()
+            : this(MaximumBitResolution) { }
+
+        public BufferedCoordinate2DFactory(Int32 bitResolution)
         {
+            _bitResolution = bitResolution;
             _lexicographicVertexIndex = createLexicographicIndex();
             _coordinates = new ManagedVectorBuffer<BufferedCoordinate2D, DoubleComponent>(2, true, this);
+        }
+
+        public Int32 BitResolution
+        {
+            get { return _bitResolution; }
+            set 
+            {
+                _bitResolution = value;
+                Int32 shift = MaximumBitResolution - _bitResolution;
+                _mask = unchecked((Int64) (0xFFFFFFFFFFFFFFFF << shift));
+            }
         }
 
         public IVectorBuffer<BufferedCoordinate2D, DoubleComponent> VectorBuffer
@@ -427,6 +448,14 @@ namespace NetTopologySuite.Coordinates
 
         private BufferedCoordinate2D getVertexInternal(Double x, Double y)
         {
+            Int64 xBits = BitConverter.DoubleToInt64Bits(x);
+            xBits &= _mask;
+            x = BitConverter.Int64BitsToDouble(xBits);
+
+            Int64 yBits = BitConverter.DoubleToInt64Bits(y);
+            yBits &= _mask;
+            y = BitConverter.Int64BitsToDouble(yBits);
+
             BufferedCoordinate2D v = findExisting(x, y) ?? addNew(x, y);
 
             return v;
@@ -445,100 +474,12 @@ namespace NetTopologySuite.Coordinates
             return v;
         }
 
-        //private BufferedCoordinate2D? findExisting(Pair<Double> coord, Pair<Int32> range)
-        //{
-        //    Double x = coord.First;
-        //    Double y = coord.Second;
-
-        //    Int32 indexStart = range.First;
-        //    Int32 indexEnd = range.Second;
-
-        //    Debug.Assert(indexStart <= indexEnd);
-
-        //    if (indexEnd == indexStart)
-        //    {
-        //        if (indexEnd >= _coordinates.Count)
-        //        {
-        //            index = indexEnd;
-        //            return false;
-        //        }
-
-        //        BufferedCoordinate2D vertex = _lexicographicVertexIndex[indexEnd];
-
-        //        if (vertex.X == x && vertex.Y == y)
-        //        {
-        //            index = indexEnd;
-        //            return true;
-        //        }
-        //        else
-        //        {
-        //            Int32 compare = compareLexicographically(
-        //                coord, new Pair<Double>(vertex.X, vertex.Y));
-
-        //            if (compare > 0)
-        //            {
-        //                index = indexEnd + 1;
-        //            }
-        //            else
-        //            {
-        //                index = indexEnd;
-        //            }
-
-        //            return false;
-        //        }
-        //    }
-
-        //    Int32 midPoint = (indexEnd + indexStart) / 2;
-
-        //    BufferedCoordinate2D midVertex = _lexicographicVertexIndex[midPoint];
-
-        //    Int32 compareResult = compareLexicographically(
-        //                                    coord, 
-        //                                    new Pair<Double>(midVertex.X, midVertex.Y));
-
-        //    if (compareResult < 0)
-        //    {
-        //        if (midPoint == indexStart)
-        //        {
-        //            index = midPoint;
-        //            return false;
-        //        }
-        //        else
-        //        {
-        //            return findExisting(coord, new Pair<Int32>(indexStart, midPoint - 1), out index);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (compareResult > 0)
-        //        {
-        //            Pair<Int32> newRange = new Pair<Int32>(midPoint + 1, indexEnd);
-        //            return findExisting(coord, newRange, out index);
-        //        }
-        //        else // compareResult == 0
-        //        {
-        //            index = midVertex.Index;
-        //            return true;
-        //        }
-        //    }
-        //}
-
         private BufferedCoordinate2D addNew(Double x, Double y)
         {
             BufferedCoordinate2D coord = _coordinates.Add(x, y, 1);
             _lexicographicVertexIndex[new Pair<Double>(coord.X, coord.Y)] = coord.Index;
             return coord;
         }
-
-        //private BufferedCoordinate2D import(BufferedCoordinate2D coord)
-        //{
-        //    if (!ReferenceEquals(coord.Factory, this))
-        //    {
-        //        return getVertexInternal(coord.X, coord.Y);
-        //    }
-
-        //    return coord;
-        //}
 
         class LexicographicComparer : IComparer<Pair<Double>>
         {
@@ -568,24 +509,5 @@ namespace NetTopologySuite.Coordinates
 
             #endregion
         }
-
-        //private static Int32 compareLexicographically(Pair<Double> v1, Pair<Double> v2)
-        //{
-        //    if (v1.First < v2.First)
-        //    {
-        //        return -1;
-        //    }
-        //    else
-        //    {
-        //        if (v1.First > v2.First)
-        //        {
-        //            return 1;
-        //        }
-        //        else // v1.First == v2.First
-        //        {
-        //            return v1.Second.CompareTo(v2.Second);
-        //        }
-        //    }
-        //}
     }
 }

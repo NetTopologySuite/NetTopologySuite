@@ -178,7 +178,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             ps.Push(triple.Second);
             ps.Push(triple.Third);
 
-            foreach (TCoordinate coordinate in Slice.StartAt(c, 3))
+            foreach (TCoordinate coordinate in Enumerable.Skip(c, 3))
             {
                 p = ps.Pop();
 
