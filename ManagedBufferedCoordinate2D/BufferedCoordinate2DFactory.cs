@@ -104,7 +104,9 @@ namespace NetTopologySuite.Coordinates
 
         public BufferedCoordinate2D Create(ICoordinate coordinate)
         {
-            return Create(coordinate[Ordinates.X], coordinate[Ordinates.Y]);
+            return coordinate.IsEmpty 
+                ? new BufferedCoordinate2D() 
+                : Create(coordinate[Ordinates.X], coordinate[Ordinates.Y]);
         }
 
         public AffineTransformMatrix<BufferedCoordinate2D> CreateTransform(BufferedCoordinate2D scaleVector, Double rotation, BufferedCoordinate2D translateVector)

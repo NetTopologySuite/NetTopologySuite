@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.Utilities;
 using NPack;
 using NPack.Interfaces;
 
@@ -48,43 +49,74 @@ namespace NetTopologySuite.Coordinates
         }
 
         public IBufferedCoordSequence Create(Func<Double, Double> componentTransform, 
-            IEnumerable<BufferedCoordinate2D> coordinates, Boolean allowRepeated, Boolean direction)
+                                             IEnumerable<BufferedCoordinate2D> coordinates, 
+                                             Boolean allowRepeated, 
+                                             Boolean direction)
         {
-            throw new NotImplementedException();
+            IBufferedCoordSequence newSequence = Create(2);
+
+            BufferedCoordinate2D lastCoord = new BufferedCoordinate2D();
+
+            if (!direction)
+            {
+                coordinates = Enumerable.Reverse(coordinates);
+            }
+
+            foreach (BufferedCoordinate2D coordinate in coordinates)
+            {
+                BufferedCoordinate2D c = coordinate;
+
+                if (componentTransform != null)
+                {
+                    Double x = componentTransform(coordinate[Ordinates.X]);
+                    Double y = componentTransform(coordinate[Ordinates.Y]);
+                    c = _coordFactory.Create(x, y);
+                }
+                
+                if (!allowRepeated && c.Equals(lastCoord))
+                {
+                    continue;
+                }
+
+                newSequence.Add(c);
+            }
+
+            return newSequence;
         }
 
         public IBufferedCoordSequence Create(IEnumerable<BufferedCoordinate2D> coordinates, 
-            Boolean allowRepeated, Boolean direction)
+                                             Boolean allowRepeated, 
+                                             Boolean direction)
         {
-            throw new NotImplementedException();
+            return Create(null, coordinates, allowRepeated, direction);
         }
 
         public IBufferedCoordSequence Create(Func<Double, Double> componentTransform, 
             IEnumerable<BufferedCoordinate2D> coordinates, Boolean allowRepeated)
         {
-            throw new NotImplementedException();
+            return Create(componentTransform, coordinates, allowRepeated, true);
         }
 
         public IBufferedCoordSequence Create(IEnumerable<BufferedCoordinate2D> coordinates, 
             Boolean allowRepeated)
         {
-            throw new NotImplementedException();
+            return Create(null, coordinates, allowRepeated, true);
         }
 
         public IBufferedCoordSequence Create(Func<Double, Double> componentTransform, 
             IEnumerable<BufferedCoordinate2D> coordinates)
         {
-            throw new NotImplementedException();
+            return Create(componentTransform, coordinates, true, true);
         }
 
         public IBufferedCoordSequence Create(IEnumerable<BufferedCoordinate2D> coordinates)
         {
-            throw new NotImplementedException();
+            return Create(null, coordinates, true, true);
         }
 
         public IBufferedCoordSequence Create(params BufferedCoordinate2D[] coordinates)
         {
-            throw new NotImplementedException();
+            return Create(null, coordinates, true, true);
         }
 
         #endregion
