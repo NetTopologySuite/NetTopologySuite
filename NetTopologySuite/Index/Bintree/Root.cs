@@ -88,7 +88,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             node.AddItem(item);
         }
 
-        public override bool Intersects(Interval bounds)
+        public override Boolean Intersects(Interval bounds)
         {
             return true;
         }

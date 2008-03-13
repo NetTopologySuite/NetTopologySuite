@@ -13,9 +13,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// <summary>
     /// Basic implementation of <see cref="IMultiLineString{TCoordinate}"/>.
     /// </summary>    
-    public class MultiLineString<TCoordinate> : GeometryCollection<TCoordinate>, IMultiLineString<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                    IComputable<Double, TCoordinate>, IConvertible
+    public class MultiLineString<TCoordinate> 
+        : GeometryCollection<TCoordinate>, IMultiLineString<TCoordinate>
+            where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+                                IComputable<Double, TCoordinate>,  
+                                IComparable<TCoordinate>, IConvertible
 
     {
         ///// <summary>
@@ -36,8 +38,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public MultiLineString(IEnumerable<ILineString<TCoordinate>> lineStrings, 
                                IGeometryFactory<TCoordinate> factory)
             : base(lineStrings == null 
-                        ? null 
-                        : Enumerable.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(lineStrings), 
+/* C# syntax ->  */     ? null 
+/* can be clumsy */     : Enumerable.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(lineStrings), 
                     factory) { }
 
         /// <summary>
@@ -195,6 +197,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             set
             {
                 this[index] = value as ILineString<TCoordinate>;
+            }
+        }
+
+        protected override void CheckItemType(IGeometry<TCoordinate> item)
+        {
+            if (!(item is ILineString<TCoordinate>))
+            {
+                throw new InvalidOperationException(String.Format(
+                                                        "Cannot add geometry of type {0} "+
+                                                        "to a MultiLineString",
+                                                        item.GetType()));
             }
         }
     }

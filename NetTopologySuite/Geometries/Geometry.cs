@@ -119,30 +119,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
          where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
                              IComputable<Double, TCoordinate>, IConvertible
     {
-        /*
-         * [codekaizen 2008-01-14] removed when replaced visitor patterns with
-         *                         enumeration / query patterns
-         */
-        //private class GeometryChangedFilter : IGeometryComponentFilter<TCoordinate>
-        //{
-        //    public void Filter(IGeometry<TCoordinate> geom)
-        //    {
-        //        geom.GeometryChangedAction();
-        //    }
-        //}
-
-        // ============= BEGIN ADDED BY MPAUL42: monoGIS team
-
-        /// <summary>
-        /// A predefined <see cref="GeometryFactory{TCoordinate}" /> 
-        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModelType.Fixed" />.
-        /// </summary>
-        /// <seealso cref="GeometryFactory{TCoordinate}.Default" />
-        /// <seealso cref="GeometryFactory{TCoordinate}.Fixed"/>
-        //public static readonly IGeometryFactory<TCoordinate> DefaultFactory = GeometryFactory<TCoordinate>.Default;
-
-        // ============= END ADDED BY MPAUL42: monoGIS team
-
         private static readonly RuntimeTypeHandle[] _sortedClasses = new RuntimeTypeHandle[]
             {
                 typeof (IPoint<TCoordinate>).TypeHandle,
@@ -155,8 +131,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 typeof (IGeometryCollection<TCoordinate>).TypeHandle,
             };
 
-        private IGeometryFactory<TCoordinate> _factory = null;
-        private Object _userData = null;
+        private IGeometryFactory<TCoordinate> _factory;
+        private Object _userData;
         private Extents<TCoordinate> _extents;
         private Int32? _srid;
         private Dimensions _dimension;
@@ -347,7 +323,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public String ToText()
         {
-            return WktEncoder.ToWkt(this);
+            return _factory.WktEncoder.Encode(this);
         }
 
         /// <summary>
@@ -358,25 +334,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The Well-known Binary representation of this <see cref="Geometry{TCoordinate}"/>.</returns>
         public Byte[] ToBinary()
         {
-            return WkbEncoder.ToWkb(this);
+            return _factory.WkbEncoder.Encode(this);
         }
-
-        /*
-         * [codekaizen 2008-01-14]  Removed this method due to the removal of 
-         *                          IO implementation. Use specific external IO 
-         *                          libraries to encode geometry instances.
-         */ 
-
-        ///// <summary>
-        ///// Returns the feature representation as GML 2.1.1 XML document.
-        ///// This XML document is based on <c>Geometry.xsd</c> schema.
-        ///// NO features or XLink are implemented here!
-        ///// </summary>        
-        //public XmlReader ToGMLFeature()
-        //{
-        //    GMLWriter writer = new GMLWriter();
-        //    return writer.Write(this);
-        //}
 
         /// <summary>
         /// Returns true if the two <see cref="Geometry{TCoordinate}"/>s are exactly equal.
@@ -398,46 +357,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             return Equals(other, Tolerance.Zero);
         }
-        ///// <summary>
-        ///// Returns the first non-zero result of <c>CompareTo</c> encountered as
-        ///// the two <c>Collection</c>s are iterated over. If, by the time one of
-        ///// the iterations is complete, no non-zero result has been encountered,
-        ///// returns 0 if the other iteration is also complete. If <c>b</c>
-        ///// completes before <c>a</c>, a positive number is returned; if a
-        ///// before b, a negative number.
-        ///// </summary>
-        ///// <param name="a">A <c>Collection</c> of <c>IComparable</c>s.</param>
-        ///// <param name="b">A <c>Collection</c> of <c>IComparable</c>s.</param>
-        ///// <returns>The first non-zero <c>compareTo</c> result, if any; otherwise, zero.</returns>
-        //protected Int32 Compare(ArrayList a, ArrayList b)
-        //{
-        //    IEnumerator i = a.GetEnumerator();
-        //    IEnumerator j = b.GetEnumerator();
-
-        //    while (i.MoveNext() && j.MoveNext())
-        //    {
-        //        IComparable aElement = (IComparable)i.Current;
-        //        IComparable bElement = (IComparable)j.Current;
-        //        Int32 comparison = aElement.CompareTo(bElement);
-
-        //        if (comparison != 0)
-        //        {
-        //            return comparison;
-        //        }
-        //    }
-
-        //    if (i.MoveNext())
-        //    {
-        //        return 1;
-        //    }
-
-        //    if (j.MoveNext())
-        //    {
-        //        return -1;
-        //    }
-
-        //    return 0;
-        //}
         
         #region IComparable<IGeometry<TCoordinate>> Members
         /// <summary>
@@ -1726,6 +1645,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #endregion
 
+        #region IBoundable<IExtents<TCoordinate>> Members
+
+        IExtents<TCoordinate> IBoundable<IExtents<TCoordinate>>.Bounds
+        {
+            get { return Extents; }
+        }
+
+        public Boolean Intersects(IExtents<TCoordinate> bounds)
+        {
+            return Extents.Intersects(bounds);
+        }
+
+        #endregion
+
         protected static Boolean Equal(TCoordinate a, TCoordinate b, Tolerance tolerance)
         {
             if (tolerance == Tolerance.Zero)
@@ -1775,7 +1708,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         protected Boolean IsEquivalentClass(IGeometry other)
         {
-            return GetType().FullName == other.GetType().FullName;
+            return GetType() == other.GetType();
         }
 
         /// <summary>
@@ -1790,7 +1723,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (isGeometryCollection(g))
             {
-                throw new ArgumentException("This method does not support GeometryCollection arguments");
+                throw new ArgumentException(
+                    "This method does not support GeometryCollection arguments");
             }
         }
 
@@ -1921,6 +1855,23 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
 
         /*
+         * [codekaizen 2008-01-14]  Removed this method due to the removal of 
+         *                          IO implementation. Use specific external IO 
+         *                          libraries to encode geometry instances.
+         */
+
+        ///// <summary>
+        ///// Returns the feature representation as GML 2.1.1 XML document.
+        ///// This XML document is based on <c>Geometry.xsd</c> schema.
+        ///// NO features or XLink are implemented here!
+        ///// </summary>        
+        //public XmlReader ToGMLFeature()
+        //{
+        //    GMLWriter writer = new GMLWriter();
+        //    return writer.Write(this);
+        //}
+
+        /*
          * [codekaizen 2008-01-14]  replaced the following visitor pattern methods
          *                          with enumeration / query pattern methods which 
          *                          accept a Func<T, TResult> method.
@@ -1959,19 +1910,69 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         ///// <param name="filter">The filter to apply to this <see cref="Geometry{TCoordinate}"/>.</param>
         //public abstract void Apply(IGeometryComponentFilter<TCoordinate> filter);
 
+        ///// <summary>
+        ///// Returns the first non-zero result of <c>CompareTo</c> encountered as
+        ///// the two <c>Collection</c>s are iterated over. If, by the time one of
+        ///// the iterations is complete, no non-zero result has been encountered,
+        ///// returns 0 if the other iteration is also complete. If <c>b</c>
+        ///// completes before <c>a</c>, a positive number is returned; if a
+        ///// before b, a negative number.
+        ///// </summary>
+        ///// <param name="a">A <c>Collection</c> of <c>IComparable</c>s.</param>
+        ///// <param name="b">A <c>Collection</c> of <c>IComparable</c>s.</param>
+        ///// <returns>The first non-zero <c>compareTo</c> result, if any; otherwise, zero.</returns>
+        //protected Int32 Compare(ArrayList a, ArrayList b)
+        //{
+        //    IEnumerator i = a.GetEnumerator();
+        //    IEnumerator j = b.GetEnumerator();
 
-        #region IBoundable<IExtents<TCoordinate>> Members
+        //    while (i.MoveNext() && j.MoveNext())
+        //    {
+        //        IComparable aElement = (IComparable)i.Current;
+        //        IComparable bElement = (IComparable)j.Current;
+        //        Int32 comparison = aElement.CompareTo(bElement);
 
-        IExtents<TCoordinate> IBoundable<IExtents<TCoordinate>>.Bounds
-        {
-            get { return Extents; }
-        }
+        //        if (comparison != 0)
+        //        {
+        //            return comparison;
+        //        }
+        //    }
 
-        public Boolean Intersects(IExtents<TCoordinate> bounds)
-        {
-            return Extents.Intersects(bounds);
-        }
+        //    if (i.MoveNext())
+        //    {
+        //        return 1;
+        //    }
 
-        #endregion
+        //    if (j.MoveNext())
+        //    {
+        //        return -1;
+        //    }
+
+        //    return 0;
+        //}
+
+        /*
+         * [codekaizen 2008-01-14] removed when replaced visitor patterns with
+         *                         enumeration / query patterns
+         */
+        //private class GeometryChangedFilter : IGeometryComponentFilter<TCoordinate>
+        //{
+        //    public void Filter(IGeometry<TCoordinate> geom)
+        //    {
+        //        geom.GeometryChangedAction();
+        //    }
+        //}
+
+        // ============= BEGIN ADDED BY MPAUL42: monoGIS team
+
+        ///// <summary>
+        ///// A predefined <see cref="GeometryFactory{TCoordinate}" /> 
+        ///// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModelType.Fixed" />.
+        ///// </summary>
+        ///// <seealso cref="GeometryFactory{TCoordinate}.CreateFixedPrecision"/>
+        //public static readonly IGeometryFactory<TCoordinate> DefaultFactory = GeometryFactory<TCoordinate>.Default;
+
+        // ============= END ADDED BY MPAUL42: monoGIS team
+
     }
 }

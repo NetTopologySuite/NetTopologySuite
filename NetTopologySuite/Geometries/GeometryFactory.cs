@@ -8,6 +8,8 @@ using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
+using GeoAPI.IO.WellKnownBinary;
+using GeoAPI.IO.WellKnownText;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -18,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     [Serializable]
     public class GeometryFactory<TCoordinate> : IGeometryFactory<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         #region Static precision models
 
@@ -65,18 +67,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         
         #endregion
 
+        #region Fields
         private readonly ICoordinateSequenceFactory<TCoordinate> _coordinateSequenceFactory;
         private readonly ICoordinateFactory<TCoordinate> _coordinateFactory;
         private readonly IPrecisionModel<TCoordinate> _precisionModel;
         private Int32? _srid;
         private ICoordinateSystem<TCoordinate> _spatialReference;
+        private IWktGeometryEncoder _wktEncoder;
+        private IWktGeometryDecoder _wktDecoder;
+        private IWkbEncoder _wkbEncoder;
+        private IWkbDecoder _wkbDecoder;
+        #endregion
 
-        //public static IPoint CreatePointFromInternalCoord(ICoordinate coord, IGeometry exemplar)
-        //{
-        //    exemplar.PrecisionModel.MakePrecise(coord);
-        //    return exemplar.Factory.CreatePoint(coord);
-        //}
-
+        #region Constructors
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
         /// PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.
@@ -92,6 +95,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             _coordinateFactory = coordinateSequenceFactory.CoordinateFactory;
             _srid = srid;
             _spatialReference = spatialReference;
+            _wktEncoder = new WktEncoder();
+            _wktDecoder = new WktDecoder(this, null);
+            _wkbEncoder = new WkbEncoder();
+            _wkbDecoder = new WkbDecoder(this);
         }
 
         /// <summary>
@@ -170,7 +177,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <see langword="null"/> spatial-reference ID.
         /// </summary>
         public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory)
-            : this(coordinateSequenceFactory, null, null) {}
+            : this(coordinateSequenceFactory, null, null) { }
+        #endregion
 
         /// <summary>  
         /// Build an appropriate <see cref="Geometry{TCoordinate}"/>, <c>MultiGeometry</c>, or
@@ -272,7 +280,23 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public IExtents<TCoordinate> CreateExtents(ICoordinate min, ICoordinate max)
         {
-            return CreateExtents(CoordinateFactory.Create(min), CoordinateFactory.Create(max));
+            if (min == null || min.IsEmpty)
+            {
+                min = max;
+            }
+
+            if (min == null || min.IsEmpty)
+            {
+                return CreateExtents();
+            }
+
+            if (max == null || max.IsEmpty)
+            {
+                max = min;
+            }
+            
+            return CreateExtents(CoordinateFactory.Create(min), 
+                                 CoordinateFactory.Create(max));
         }
 
         public IExtents<TCoordinate> CreateExtents(TCoordinate min, TCoordinate max)
@@ -328,22 +352,23 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             Double yMin = envelope.GetMin(Ordinates.Y);
             Double yMax = envelope.GetMax(Ordinates.Y);
 
-            ICoordinateFactory<TCoordinate> factory = CoordinateFactory;
+            ICoordinateFactory<TCoordinate> coordFactory = CoordinateFactory;
 
             if (xMin == xMax && yMin == yMax)
             {
-                return CreatePoint(factory.Create(xMin, yMin));
+                return CreatePoint(coordFactory.Create(xMin, yMin));
             }
 
-            return CreatePolygon(
+            ILinearRing<TCoordinate> shell =
                 CreateLinearRing(new TCoordinate[]
                                      {
-                                         factory.Create(xMin, yMin),
-                                         factory.Create(xMax, yMin),
-                                         factory.Create(xMax, yMax),
-                                         factory.Create(xMin, yMin),
-                                     }),
-                null);
+                                         coordFactory.Create(xMin, yMin),
+                                         coordFactory.Create(xMax, yMin),
+                                         coordFactory.Create(xMax, yMax),
+                                         coordFactory.Create(xMin, yMin),
+                                     });
+
+            return CreatePolygon(shell);
         }
 
         public ICoordinateFactory<TCoordinate> CoordinateFactory
@@ -601,8 +626,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return new GeometryCollection<TCoordinate>(this);
         }
 
-        #endregion
-
         /// <summary>
         /// Creates a <see cref="GeometryCollection{TCoordinate}" /> using the given <c>Geometries</c>; a null or empty
         /// array will create an empty GeometryCollection.
@@ -645,12 +668,31 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             set { _srid = value; }
         }
 
-        private static ICoordinateSequenceFactory<TCoordinate> getDefaultCoordinateSequenceFactory<TCoordinate>()
-            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<Double, TCoordinate>, IConvertible
+        public IWktGeometryEncoder WktEncoder
         {
-            return Coordinates<TCoordinate>.DefaultCoordinateSequenceFactory;
+            get { return _wktEncoder; }
+            set { _wktEncoder = value; }
         }
+
+        public IWktGeometryDecoder WktDecoder
+        {
+            get { return _wktDecoder; }
+            set { _wktDecoder = value; }
+        }
+
+        public IWkbEncoder WkbEncoder
+        {
+            get { return _wkbEncoder; }
+            set { _wkbEncoder = value; }
+        }
+
+        public IWkbDecoder WkbDecoder
+        {
+            get { return _wkbDecoder; }
+            set { _wkbDecoder = value; }
+        }
+
+        #endregion
 
         private class NoOpCoordinateOperation : GeometryEditor<TCoordinate>.CoordinateOperation
         {
@@ -925,23 +967,24 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region IGeometryFactory Members
-
-
-        public IPolygon CreatePolygon(ICoordinateSequence coordinates)
+        IPolygon IGeometryFactory.CreatePolygon(ICoordinateSequence coordinates)
         {
             throw new NotImplementedException();
         }
 
-        public IMultiPolygon CreateMultiPolygon(ICoordinateSequence coordinates)
+        IMultiPolygon IGeometryFactory.CreateMultiPolygon(ICoordinateSequence coordinates)
         {
             throw new NotImplementedException();
         }
 
         #endregion
 
+        private static ICoordinateSequenceFactory<TCoordinate> getDefaultCoordinateSequenceFactory<TCoordinate>()
+            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                IComputable<Double, TCoordinate>, IConvertible
+        {
+            return Coordinates<TCoordinate>.DefaultCoordinateSequenceFactory;
+        }
 
         private ICoordinateSequence<TCoordinate> convertSequence(ICoordinateSequence coordinates)
         {
@@ -961,5 +1004,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             return converted;
         }
+
+        //public static IPoint CreatePointFromInternalCoord(ICoordinate coord, IGeometry exemplar)
+        //{
+        //    exemplar.PrecisionModel.MakePrecise(coord);
+        //    return exemplar.Factory.CreatePoint(coord);
+        //}
     }
 }

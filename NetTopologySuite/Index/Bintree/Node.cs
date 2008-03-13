@@ -121,7 +121,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             }
         }
 
-        public override bool Intersects(Interval bounds)
+        public override Boolean Intersects(Interval bounds)
         {
             return Bounds.Intersects(bounds);
         }

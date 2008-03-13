@@ -43,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         {
         }
 
-        public override bool Equals(Object obj)
+        public override Boolean Equals(Object obj)
         {
             if(!(obj is GeometryLocation<TCoordinate>))
             {

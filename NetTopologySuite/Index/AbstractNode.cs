@@ -206,12 +206,12 @@ namespace GisSharpBlog.NetTopologySuite.Index
             }
         }
 
-        public bool HasItems
+        public Boolean HasItems
         {
             get { return _items != null && _items.Count > 0; }
         }
 
-        public bool HasChildren
+        public Boolean HasChildren
         {
             get { return _subNodes != null && _subNodes.Count > 0; }
         }

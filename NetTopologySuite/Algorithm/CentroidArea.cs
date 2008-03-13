@@ -112,7 +112,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             addRing(points, isPositiveArea);
         }
 
-        private void addRing(IEnumerable<TCoordinate> points, bool isPositiveArea)
+        private void addRing(IEnumerable<TCoordinate> points, Boolean isPositiveArea)
         {
             Boolean isPreviousSet = false;
             TCoordinate previousPoint = default(TCoordinate);

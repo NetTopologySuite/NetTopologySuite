@@ -12,9 +12,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Basic implementation of <see cref="GeometryCollection{TCoordinate}" />.
     /// </summary>
     [Serializable]
-    public class GeometryCollection<TCoordinate> : Geometry<TCoordinate>, IGeometryCollection<TCoordinate>, IHasGeometryComponents<TCoordinate>, IComparable<IGeometryCollection<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                    IComputable<Double, TCoordinate>, IConvertible
+    public class GeometryCollection<TCoordinate> 
+        : Geometry<TCoordinate>, IGeometryCollection<TCoordinate>, 
+          IHasGeometryComponents<TCoordinate>, IComparable<IGeometryCollection<TCoordinate>>
+                where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+                                    IComputable<Double, TCoordinate>,
+                                    IComparable<TCoordinate>, IConvertible
     {
         /// <summary>
         /// Represents an empty <see cref="GeometryCollection{TCoordinate}" />.
@@ -40,9 +43,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         private readonly List<IGeometry<TCoordinate>> _geometries = new List<IGeometry<TCoordinate>>();
 
+        private Boolean _isFrozen;
+
         //public GeometryCollection() : this(DefaultFactory) { }
 
-        public GeometryCollection(IGeometryFactory<TCoordinate> factory) : base(factory) { }
+        public GeometryCollection(IGeometryFactory<TCoordinate> factory) 
+            : base(factory) { }
 
         /// <param name="geometries">
         /// The <see cref="Geometry{TCoordinate}"/>s for this <see cref="GeometryCollection{TCoordinate}" />,
@@ -54,7 +60,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
-        public GeometryCollection(IEnumerable<IGeometry<TCoordinate>> geometries) : this(geometries, ExtractGeometryFactory(geometries)) { }
+        public GeometryCollection(IEnumerable<IGeometry<TCoordinate>> geometries) 
+            : this(geometries, ExtractGeometryFactory(geometries)) { }
 
         /// <param name="geometries">
         /// The <see cref="Geometry{TCoordinate}"/>s for this <see cref="GeometryCollection{TCoordinate}" />,
@@ -62,7 +69,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// point. Elements may be empty <see cref="Geometry{TCoordinate}"/>s,
         /// but not <see langword="null" />s.
         /// </param>
-        public GeometryCollection(IEnumerable<IGeometry<TCoordinate>> geometries, IGeometryFactory<TCoordinate> factory)
+        public GeometryCollection(IEnumerable<IGeometry<TCoordinate>> geometries, 
+                                  IGeometryFactory<TCoordinate> factory)
             : base(factory)
         {
             if (geometries == null)
@@ -268,39 +276,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return true;
         }
 
-        /*
-         * [codekaizen 2008-01-14] removed when replaced visitor patterns with
-         *                         enumeration / query patterns
-         */
-
-        //public override void Apply(ICoordinateFilter<TCoordinate> filter)
-        //{
-        //    foreach (IGeometry<TCoordinate> geometry in _geometries)
-        //    {
-        //        geometry.Apply(filter);
-        //    }
-        //}
-
-        //public override void Apply(IGeometryFilter<TCoordinate> filter)
-        //{
-        //    filter.Filter(this);
-
-        //    foreach (IGeometry<TCoordinate> geometry in _geometries)
-        //    {
-        //        geometry.Apply(filter);
-        //    }
-        //}
-
-        //public void Apply(IGeometryComponentFilter<TCoordinate> filter)
-        //{
-        //    filter.Filter(this);
-
-        //    foreach (IGeometry<TCoordinate> geometry in _geometries)
-        //    {
-        //        geometry.Apply(filter);
-        //    }
-        //}
-
         public override IGeometry<TCoordinate> Clone()
         {
             List<IGeometry<TCoordinate>> geometries = new List<IGeometry<TCoordinate>>();
@@ -423,22 +398,82 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region IList<IGeometry> Members
 
-        public Int32 IndexOf(IGeometry item)
+        /// <summary>
+        /// Finds the index of a geometry is in the list.
+        /// </summary>
+        /// <param name="item">
+        /// The <see cref="IGeometry"/> to find the index of.
+        /// </param>
+        /// <returns>
+        /// The index of the geometry if it is in the list,
+        /// <value>-1</value> otherwise.
+        /// </returns>
+        /// <remarks>
+        /// The <paramref name="item"/> is treated as an 
+        /// <see cref="IGeometry{TCoordinate}"/> for purposes of 
+        /// membership testing. If it isn't, this method returns 
+        /// <value>-1</value>.
+        /// </remarks>
+        Int32 IList<IGeometry>.IndexOf(IGeometry item)
         {
-            throw new NotImplementedException();
+            return IndexOf(item as IGeometry<TCoordinate>);
         }
 
-        public void Insert(Int32 index, IGeometry item)
+        void IList<IGeometry>.Insert(Int32 index, IGeometry item)
         {
-            throw new NotImplementedException();
+            Insert(index, item as IGeometry<TCoordinate>);
         }
 
         #region ICollection<IGeometry> Members
 
-        public void Add(IGeometry item)
+        void ICollection<IGeometry>.Add(IGeometry item)
         {
-            throw new NotImplementedException();
+            Add(item as IGeometry<TCoordinate>);
         }
+
+        /// <summary>
+        /// Determines if a geometry is present in the collection.
+        /// </summary>
+        /// <param name="item">
+        /// The <see cref="IGeometry"/> to check.
+        /// </param>
+        /// <returns>
+        /// <see langword="true"/> if the geometry is in the collection,
+        /// <see langword="false"/> otherwise.
+        /// </returns>
+        /// <remarks>
+        /// The <paramref name="item"/> is treated as an 
+        /// <see cref="IGeometry{TCoordinate}"/> for purposes of 
+        /// membership testing. If it isn't, this method returns 
+        /// <see langword="false"/>.
+        /// </remarks>
+        Boolean ICollection<IGeometry>.Contains(IGeometry item)
+        {
+            return Contains(item as IGeometry<TCoordinate>);
+        }
+
+        /// <summary>
+        /// Removes a geometry from the collection if is present in the collection.
+        /// </summary>
+        /// <param name="item">
+        /// The <see cref="IGeometry"/> to remove.
+        /// </param>
+        /// <returns>
+        /// <see langword="true"/> if the geometry was removed from the collection,
+        /// <see langword="false"/> otherwise.
+        /// </returns>
+        /// <remarks>
+        /// The <paramref name="item"/> is treated as an 
+        /// <see cref="IGeometry{TCoordinate}"/> for purposes of 
+        /// membership testing. If it isn't, this method returns 
+        /// <see langword="false"/>.
+        /// </remarks>
+        Boolean ICollection<IGeometry>.Remove(IGeometry item)
+        {
+            return Remove(item as IGeometry<TCoordinate>);
+        }
+
+        #endregion
 
         #region IEnumerable<IGeometry> Members
 
@@ -460,61 +495,65 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return _geometries.IndexOf(item);
         }
 
-        void IList<IGeometry<TCoordinate>>.Insert(Int32 index, IGeometry<TCoordinate> item)
+        public void Insert(Int32 index, IGeometry<TCoordinate> item)
         {
-            throw new NotSupportedException("Collection is read only.");
+            if (item == null) throw new ArgumentNullException("item");
+            CheckFrozen();
+            CheckItemType(item);
+            _geometries.Insert(index, item);
         }
 
-        void IList<IGeometry<TCoordinate>>.RemoveAt(Int32 index)
+        public void RemoveAt(Int32 index)
         {
-            throw new NotSupportedException("Collection is read only.");
+            CheckFrozen();
+            _geometries.RemoveAt(index);
         }
-
-        void IList<IGeometry>.RemoveAt(Int32 index)
-        {
-            throw new NotSupportedException("Collection is read only.");
-        }
-
-        #endregion
 
         #endregion
 
         #region ICollection<IGeometry<TCoordinate>> Members
 
-        void ICollection<IGeometry<TCoordinate>>.Add(IGeometry<TCoordinate> item)
+        public virtual void Add(IGeometry<TCoordinate> item)
         {
-            throw new NotSupportedException("Collection is read only.");
+            if (item == null) throw new ArgumentNullException("item");
+            CheckFrozen();
+            CheckItemType(item);
+            _geometries.Add(item);
         }
 
-        void ICollection<IGeometry<TCoordinate>>.Clear()
+        public void Clear()
         {
-            throw new NotSupportedException("Collection is read only.");
-        }
-
-        void ICollection<IGeometry>.Clear()
-        {
-            throw new NotSupportedException("Collection is read only.");
-        }
-
-        bool ICollection<IGeometry>.Contains(IGeometry item)
-        {
-            return Contains(item as IGeometry<TCoordinate>);
+            CheckFrozen();
+            _geometries.Clear();
         }
 
         void ICollection<IGeometry>.CopyTo(IGeometry[] array, Int32 arrayIndex)
         {
-            // TODO: implement
-            throw new NotImplementedException();
+            if (array == null) throw new ArgumentNullException("array");
+            if (arrayIndex < 0) throw new ArgumentOutOfRangeException("arrayIndex");
+            
+            if (arrayIndex >= array.Length)
+            {
+                throw new ArgumentException("arrayIndex is greater than array length.");
+            }
+
+            if (_geometries.Count > array.Length - arrayIndex)
+            {
+                throw new ArgumentException(
+                    "There is not enough room betwen 'arrayIndex' and the end of 'array'"+
+                    " to contain the items in this collection.");
+            }
+
+            for (Int32 i = 0; i < _geometries.Count; i++)
+            {
+                array[i + arrayIndex] = _geometries[i];
+            }
         }
 
-        bool ICollection<IGeometry>.Remove(IGeometry item)
+        public Boolean Remove(IGeometry<TCoordinate> item)
         {
-            throw new NotSupportedException("Collection is read only.");
-        }
-
-        bool ICollection<IGeometry>.IsReadOnly
-        {
-            get { return true; }
+            CheckFrozen();
+            return _geometries.Remove(item);
         }
 
         #endregion
@@ -524,14 +563,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             _geometries.CopyTo(array, arrayIndex);
         }
 
-        bool ICollection<IGeometry<TCoordinate>>.Remove(IGeometry<TCoordinate> item)
+        public Boolean IsReadOnly
         {
-            throw new NotSupportedException("Collection is read only.");
-        }
-
-        public bool IsReadOnly
-        {
-            get { return true; }
+            get { return _isFrozen; }
         }
 
         IGeometry IList<IGeometry>.this[Int32 index]
@@ -603,6 +637,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #endregion
 
+        protected void CheckFrozen()
+        {
+            if (_isFrozen)
+            {
+                throw new InvalidOperationException("The geometry is read-only");
+            }
+        }
+
+        protected virtual void CheckItemType(IGeometry<TCoordinate> item) { }
+
         protected List<IGeometry<TCoordinate>> GeometriesInternal
         {
             get { return _geometries; }
@@ -632,5 +676,39 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 }
             }
         }
+
+        /*
+         * [codekaizen 2008-01-14] removed when replaced visitor patterns with
+         *                         enumeration / query patterns
+         */
+
+        //public override void Apply(ICoordinateFilter<TCoordinate> filter)
+        //{
+        //    foreach (IGeometry<TCoordinate> geometry in _geometries)
+        //    {
+        //        geometry.Apply(filter);
+        //    }
+        //}
+
+        //public override void Apply(IGeometryFilter<TCoordinate> filter)
+        //{
+        //    filter.Filter(this);
+
+        //    foreach (IGeometry<TCoordinate> geometry in _geometries)
+        //    {
+        //        geometry.Apply(filter);
+        //    }
+        //}
+
+        //public void Apply(IGeometryComponentFilter<TCoordinate> filter)
+        //{
+        //    filter.Filter(this);
+
+        //    foreach (IGeometry<TCoordinate> geometry in _geometries)
+        //    {
+        //        geometry.Apply(filter);
+        //    }
+        //}
+
     }
 }

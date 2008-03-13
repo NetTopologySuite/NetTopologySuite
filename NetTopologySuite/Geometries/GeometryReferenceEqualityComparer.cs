@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region IEqualityComparer<IGeometry<TCoordinate>> Members
 
-        public bool Equals(IGeometry<TCoordinate> x, IGeometry<TCoordinate> y)
+        public Boolean Equals(IGeometry<TCoordinate> x, IGeometry<TCoordinate> y)
         {
             return ReferenceEquals(x, y);
         }

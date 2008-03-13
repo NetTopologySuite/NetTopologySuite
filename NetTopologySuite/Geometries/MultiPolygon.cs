@@ -193,5 +193,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 yield return polygon;
             }
         }
+
+        protected override void CheckItemType(IGeometry<TCoordinate> item)
+        {
+            if (!(item is IPolygon<TCoordinate>))
+            {
+                throw new InvalidOperationException(String.Format(
+                                                        "Cannot add geometry of type {0} " +
+                                                        "to a MultiPolygon",
+                                                        item.GetType()));
+            }
+        }
     }
 }

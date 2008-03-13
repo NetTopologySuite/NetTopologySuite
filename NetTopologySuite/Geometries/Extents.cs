@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
+using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -17,11 +17,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// the supplies extent values are automatically sorted into the correct order.    
     /// </summary>
     [Serializable]
-    public class Extents<TCoordinate> : IExtents<TCoordinate>
-            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<Double, TCoordinate>, IConvertible
+    public class Extents<TCoordinate> : IExtents<TCoordinate>, IExtents2D
+            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+                                IComputable<Double, TCoordinate>,
+                                IComparable<TCoordinate>, IConvertible
     {
-        private readonly IGeometryFactory<TCoordinate> _factory;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private TCoordinate _min;
         private TCoordinate _max;
 
@@ -105,7 +106,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         internal Extents(IGeometryFactory<TCoordinate> factory)
         {
-            _factory = factory;
+            _geoFactory = factory;
             Init();
         }
 
@@ -194,16 +195,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 maxY = y1;
             }
 
-            ICoordinateFactory<TCoordinate> coordFactory = _factory.CoordinateFactory;
+            ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
             _min = coordFactory.Create(minX, maxX);
             _max = coordFactory.Create(minY, maxY);
         }
 
         /// <summary>
-        /// Initialize an <see cref="Extents{TCoordinate}"/> for a region defined by two Coordinates.
+        /// Initialize an <see cref="Extents{TCoordinate}"/> 
+        /// for a region defined by two <typeparamref name="TCoordinate"/>s.
         /// </summary>
-        /// <param name="p1">The first Coordinate.</param>
-        /// <param name="p2">The second Coordinate.</param>
+        /// <param name="p1">The first coordinate.</param>
+        /// <param name="p2">The second coordinate.</param>
         public void Init(TCoordinate p1, TCoordinate p2)
         {
             Init(p1[Ordinates.X], p2[Ordinates.X], p1[Ordinates.Y], p2[Ordinates.Y]);
@@ -215,6 +217,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="p">The Coordinate.</param>
         public void Init(TCoordinate p)
         {
+            if (Coordinates<TCoordinate>.IsEmpty(p))
+            {
+                return;
+            }
+
             Double x = p[Ordinates.X], y = p[Ordinates.Y];
             Init(x, x, y, y);
         }
@@ -269,7 +276,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     return 0;
                 }
 
-                return _max[Ordinates.X] - _min[Ordinates.X];
+                return Math.Abs(_max[Ordinates.X] - _min[Ordinates.X]);
             }
         }
 
@@ -286,45 +293,25 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     return 0;
                 }
 
-                return _max[Ordinates.Y] - _min[Ordinates.Y];
+                return Math.Abs(_max[Ordinates.Y] - _min[Ordinates.Y]);
             }
         }
 
-        ///// <summary>
-        ///// Returns the <see cref="Extents{TCoordinate}"/>s minimum x-value. min x > max x
-        ///// indicates that this is a null <see cref="Extents{TCoordinate}"/>.
-        ///// </summary>
-        ///// <returns>The minimum x-coordinate.</returns>
         //public Double MinX
         //{
         //    get { return _minX; }
         //}
 
-        ///// <summary>
-        ///// Returns the <see cref="Extents{TCoordinate}"/>s maximum x-value. min x > max x
-        ///// indicates that this is a null <see cref="Extents{TCoordinate}"/>.
-        ///// </summary>
-        ///// <returns>The maximum x-coordinate.</returns>
         //public Double MaxX
         //{
         //    get { return _maxX; }
         //}
 
-        ///// <summary>
-        ///// Returns the <see cref="Extents{TCoordinate}"/>s minimum y-value. min y > max y
-        ///// indicates that this is a null <see cref="Extents{TCoordinate}"/>.
-        ///// </summary>
-        ///// <returns>The minimum y-coordinate.</returns>
         //public Double MinY
         //{
         //    get { return _minY; }
         //}
 
-        ///// <summary>
-        ///// Returns the <see cref="Extents{TCoordinate}"/>s maximum y-value. min y > max y
-        ///// indicates that this is a null <see cref="Extents{TCoordinate}"/>.
-        ///// </summary>
-        ///// <returns>The maximum y-coordinate.</returns>
         //public Double MaxY
         //{
         //    get { return _maxY; }
@@ -388,7 +375,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </param>
         public void ExpandToInclude(Double x, Double y)
         {
-            TCoordinate coordinate = _factory.CoordinateFactory.Create(x, y);
+            TCoordinate coordinate = _geoFactory.CoordinateFactory.Create(x, y);
 
             if (IsEmpty)
             {
@@ -447,7 +434,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The factory for this point.</returns>
         public IGeometryFactory<TCoordinate> Factory
         {
-            get { return _factory; }
+            get { return _geoFactory; }
         }
 
         /// <summary>
@@ -462,7 +449,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return;
             }
 
-            ICoordinateFactory<TCoordinate> coordFactory = _factory.CoordinateFactory;
+            ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
             _min = coordFactory.Create(_min[Ordinates.X] + transX, _min[Ordinates.Y] + transY);
             _max = coordFactory.Create(_max[Ordinates.X] + transX, _max[Ordinates.Y] + transY);
         }
@@ -484,7 +471,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     return default(TCoordinate);
                 }
 
-                return _factory.CoordinateFactory.Create(
+                return _geoFactory.CoordinateFactory.Create(
                     (Min[Ordinates.X] + Max[Ordinates.X]) / 2.0,
                     (Min[Ordinates.Y] + Max[Ordinates.Y]) / 2.0);
             }
@@ -494,21 +481,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (IsEmpty || extents.IsEmpty || !Intersects(extents))
             {
-                return new Extents<TCoordinate>(Factory);
+                return _geoFactory.CreateExtents();
             }
 
-            Double minX = Min[Ordinates.X];
-            Double minY = Min[Ordinates.X];
-            Double maxX = Max[Ordinates.X];
-            Double maxY = Max[Ordinates.Y];
-
-
+            // TODO: 3D unsafe
             return new Extents<TCoordinate>(
                                 Factory,
-                                Math.Max(minX, extents.Min[Ordinates.X]),
-                                Math.Min(maxX, extents.Max[Ordinates.X]),
-                                Math.Max(minY, extents.Min[Ordinates.Y]),
-                                Math.Min(maxY, extents.Max[Ordinates.Y]));
+                                Math.Max(Min[Ordinates.X], extents.Min[Ordinates.X]),
+                                Math.Min(Max[Ordinates.X], extents.Max[Ordinates.X]),
+                                Math.Max(Min[Ordinates.Y], extents.Min[Ordinates.Y]),
+                                Math.Min(Max[Ordinates.Y], extents.Max[Ordinates.Y]));
         }
 
         /// <summary> 
@@ -528,6 +510,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
             }
 
+            // TODO: 3D unsafe
             return !(other.Min[Ordinates.X] > _max[Ordinates.X] ||
                 other.Max[Ordinates.X] < _min[Ordinates.X] ||
                 other.Min[Ordinates.Y] > _max[Ordinates.Y] ||
@@ -544,6 +527,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public Boolean Intersects(TCoordinate p)
         {
+            if (IsEmpty || Coordinates<TCoordinate>.IsEmpty(p))
+            {
+                return false;
+            }
+
+            // TODO: 3D unsafe
             return Intersects(p[Ordinates.X], p[Ordinates.Y]);
         }
 
@@ -558,6 +547,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public Boolean Intersects(Double x, Double y)
         {
+            if (IsEmpty || Double.IsNaN(x) || Double.IsNaN(y))
+            {
+                return false;
+            }
+
             return !(x > _max[Ordinates.X] ||
                 x < _min[Ordinates.X] ||
                 y > _max[Ordinates.Y] ||
@@ -637,6 +631,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
             }
 
+            // TODO: 3D unsafe
             return other.Min[Ordinates.X] >= _min[Ordinates.X] &&
                     other.Max[Ordinates.X] <= _max[Ordinates.X] &&
                     other.Min[Ordinates.Y] >= _min[Ordinates.Y] &&
@@ -659,6 +654,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             Double dx = 0.0;
 
+            // TODO: 3D unsafe
             if (_max[Ordinates.X] < extents.Min[Ordinates.X])
             {
                 dx = extents.Min[Ordinates.X] - _max[Ordinates.X];
@@ -712,6 +708,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return other.IsEmpty;
             }
 
+            // TODO: 3D unsafe
             return _max[Ordinates.X] == other.Max[Ordinates.X] &&
                    _max[Ordinates.Y] == other.Max[Ordinates.Y] &&
                    _min[Ordinates.X] == other.Min[Ordinates.X] &&
@@ -758,9 +755,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public override Int32 GetHashCode()
         {
-            Int32 result = 861101;
-            result ^= _min.GetHashCode();
-            result ^= _max.GetHashCode();
+            Int32 result = 861101 ^ _min.GetHashCode() ^ _max.GetHashCode();
             return result;
         }
 
@@ -788,7 +783,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public override string ToString()
         {
-            return "Env[" + _min[Ordinates.X] + " : " + _max[Ordinates.X] +
+            // TODO: 3D unsafe
+            return "Extents [" + _min[Ordinates.X] + " : " + _max[Ordinates.X] +
                 ", " + _min[Ordinates.Y] + " : " + _max[Ordinates.Y] + "]";
         }
 
@@ -810,9 +806,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                Double area = 1;
-                area = area * (_max[Ordinates.X] - _min[Ordinates.X]);
-                area = area * (_max[Ordinates.Y] - _min[Ordinates.Y]);
+                // TODO: 3D unsafe
+                Double area = Math.Abs(_max[Ordinates.X] - _min[Ordinates.X])
+                              * Math.Abs(_max[Ordinates.Y] - _min[Ordinates.Y]);
                 return area;
             }
         }
@@ -824,6 +820,489 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public IExtents<TCoordinate> Clone()
         {
             return new Extents<TCoordinate>(Factory, _min, _max);
+        }
+
+        /* END ADDED BY MPAUL42: monoGIS team */
+
+        #region IExtents<TCoordinate> Members
+
+        public Boolean Borders(TCoordinate coordinate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Boolean Borders(IExtents<TCoordinate> other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Boolean Borders(TCoordinate coordinate, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Boolean Borders(IExtents<TCoordinate> other, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Boolean Contains(TCoordinate coordinate, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Boolean Contains(IExtents<TCoordinate> other, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExpandToInclude(params TCoordinate[] coordinate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExpandToInclude(IEnumerable<TCoordinate> coordinates)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExpandToInclude(IGeometry<TCoordinate> geometry)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Double GetIntersectingArea(IGeometry<TCoordinate> geometry)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IExtents<TCoordinate> Intersection(IGeometry<TCoordinate> geometry)
+        {
+            if (geometry == null || geometry.IsEmpty)
+            {
+                return _geoFactory.CreateExtents();
+            }
+
+            return Intersection(geometry.Extents);
+        }
+
+        public Boolean Intersects(TCoordinate coordinate, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Boolean Intersects(IExtents<TCoordinate> other, Tolerance tolerance)
+        {
+            if (other == null || other.IsEmpty)
+            {
+                return false;
+            }
+            
+            TCoordinate minA = Min;
+            TCoordinate maxA = Max;
+            TCoordinate minB = other.Min;
+            TCoordinate maxB = other.Max;
+
+            return !(minA.GreaterThan(maxB) ||
+                     minB.GreaterThan(maxA) ||
+                     maxA.LessThan(minB) ||
+                     maxB.LessThan(minA));
+        }
+
+        public TCoordinate Max
+        {
+            get { return _geoFactory.CoordinateFactory.Create(_max); }
+        }
+
+        public TCoordinate Min
+        {
+            get { return _geoFactory.CoordinateFactory.Create(_min); }
+        }
+
+        public Boolean Overlaps(TCoordinate coordinate, Tolerance tolerance)
+        {
+            return Intersects(coordinate, tolerance);
+        }
+
+        public Boolean Overlaps(IExtents<TCoordinate> other, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<IExtents<TCoordinate>> Split(TCoordinate coordinate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IGeometry<TCoordinate> ToGeometry()
+        {
+            ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
+            ILinearRing<TCoordinate> shell = _geoFactory.CreateLinearRing(new TCoordinate[]
+                          {
+                              coordFactory.Create(_min),
+                              coordFactory.Create(_min[Ordinates.X], _max[Ordinates.Y]),
+                              coordFactory.Create(_max[Ordinates.X], _max[Ordinates.Y]),
+                              coordFactory.Create(_max[Ordinates.X], _min[Ordinates.Y]),
+                              coordFactory.Create(_min)
+                          });
+            return _geoFactory.CreatePolygon(shell);
+        }
+
+        public Boolean Touches(TCoordinate coordinate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Boolean Touches(IExtents<TCoordinate> other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Boolean Touches(TCoordinate coordinate, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Boolean Touches(IExtents<TCoordinate> other, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Calculates the union of the current box and the given point.
+        /// </summary>
+        public IExtents<TCoordinate> Union(IPoint<TCoordinate> point)
+        {
+            return Union(point.Coordinate);
+        }
+
+        /// <summary>
+        /// Calculates the union of the current box and the given coordinate.
+        /// </summary>
+        public IExtents<TCoordinate> Union(TCoordinate coord)
+        {
+            IExtents<TCoordinate> extents = Clone();
+            extents.ExpandToInclude(coord);
+            return extents;
+        }
+
+        /// <summary>
+        /// Calculates the union of the current box and the given box.
+        /// </summary>
+        public IExtents<TCoordinate> Union(IExtents<TCoordinate> box)
+        {
+            if (box.IsEmpty)
+            {
+                return this;
+            }
+
+            if (IsEmpty)
+            {
+                return box;
+            }
+
+            return new Extents<TCoordinate>(
+                                Factory,
+                                Math.Min(_min[Ordinates.X], box.Min[Ordinates.X]),
+                                Math.Max(_max[Ordinates.X], box.Max[Ordinates.X]),
+                                Math.Min(_min[Ordinates.Y], box.Min[Ordinates.Y]),
+                                Math.Max(_max[Ordinates.Y], box.Max[Ordinates.Y]));
+        }
+
+        public Boolean Within(TCoordinate coordinate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Boolean Within(IExtents<TCoordinate> other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Boolean Within(TCoordinate coordinate, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Boolean Within(IExtents<TCoordinate> other, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IExtents Members
+
+        Boolean IExtents.Borders(IExtents other)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean IExtents.Borders(IExtents other, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        ICoordinate IExtents.Center
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public Boolean Contains(params Double[] coordinate)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean IContainable<IExtents>.Contains(IExtents other)
+        {
+            if (other == null || other.IsEmpty)
+            {
+                return false;
+            }
+
+            return Contains(convert(other));
+        }
+
+        public Boolean Contains(ICoordinate other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Boolean Contains(Tolerance tolerance, params Double[] coordinate)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean IExtents.Contains(IExtents other, Tolerance tolerance)
+        {
+            return Contains(convert(other), tolerance);
+        }
+
+        Boolean IExtents.Contains(ICoordinate other, Tolerance tolerance)
+        {
+            return Contains(_geoFactory.CoordinateFactory.Create(other), tolerance);
+        }
+
+        Double IExtents.Distance(IExtents extents)
+        {
+            return Distance(convert(extents));
+        }
+
+        public void ExpandToInclude(params Double[] coordinate)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IExtents.ExpandToInclude(IExtents other)
+        {
+            ExpandToInclude(convert(other));
+        }
+
+        void IExtents.ExpandToInclude(IGeometry other)
+        {
+            if (other == null || other.IsEmpty)
+            {
+                return;
+            }
+
+            (this as IExtents).ExpandToInclude(other.Extents);
+        }
+
+        IExtents IExtents.Intersection(IExtents extents)
+        {
+            return Intersection(convert(extents));
+        }
+
+        public Boolean Intersects(params Double[] coordinate)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean IIntersectable<IExtents>.Intersects(IExtents other)
+        {
+            return Intersects(convert(other));
+        }
+
+        public Boolean Intersects(Tolerance tolerance, params Double[] coordinate)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean IExtents.Intersects(IExtents other, Tolerance tolerance)
+        {
+            return Intersects(convert(other), tolerance);
+        }
+
+        ICoordinate IExtents.Max
+        {
+            get { return _max; }
+        }
+
+        ICoordinate IExtents.Min
+        {
+            get { return _min; }
+        }
+
+        public Double GetMax(Ordinates ordinate)
+        {
+            return _max[ordinate];
+        }
+
+        public Double GetMin(Ordinates ordinate)
+        {
+            return _min[ordinate];
+        }
+
+        public Double GetSize(Ordinates axis)
+        {
+            return Math.Abs(_max[axis] - _min[axis]);
+        }
+
+        public Double GetSize(Ordinates axis1, Ordinates axis2)
+        {
+            return Math.Abs(_max[axis1] - _min[axis1])
+                   * Math.Abs(_max[axis2] - _min[axis2]);
+        }
+
+        public Double GetSize(Ordinates axis1, Ordinates axis2, Ordinates axis3)
+        {
+            return Math.Abs(_max[axis1] - _min[axis1])
+                   * Math.Abs(_max[axis2] - _min[axis2])
+                   * Math.Abs(_max[axis3] - _min[axis3]);
+        }
+
+        public Double GetSize(params Ordinates[] axes)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Boolean Overlaps(params Double[] coordinate)
+        {
+            return Overlaps(_geoFactory.CoordinateFactory.Create(coordinate));
+        }
+
+        Boolean IExtents.Overlaps(ICoordinate other)
+        {
+            return Overlaps(_geoFactory.CoordinateFactory.Create(other));
+        }
+
+        Boolean IExtents.Overlaps(IExtents other)
+        {
+            return (this as IExtents).Intersects(other);
+        }
+
+        public void Scale(params Double[] vector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Scale(Double factor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Scale(Double factor, Ordinates axis)
+        {
+            throw new NotImplementedException();
+        }
+
+        IGeometry IExtents.ToGeometry()
+        {
+            return ToGeometry();
+        }
+
+        public void Translate(params Double[] vector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Transform(IMatrix<NPack.DoubleComponent> transformMatrix)
+        {
+            throw new NotImplementedException();
+        }
+
+        IExtents IExtents.Union(IPoint point)
+        {
+            return point == null 
+                ? Clone() 
+                : _geoFactory.CreateExtents(this, point.Extents);
+        }
+
+        IExtents IExtents.Union(IExtents box)
+        {
+            return box == null 
+                ? Clone() 
+                : _geoFactory.CreateExtents(this, box);
+        }
+
+        #endregion
+
+        #region IEquatable<IExtents> Members
+
+        public Boolean Equals(IExtents other)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IExtents Members
+
+        public void TranslateRelativeToWidth(params double[] vector)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        IGeometryFactory IExtents.Factory
+        {
+            get { return _geoFactory; }
+        }
+
+        #endregion
+
+        #region IExtents2D Members
+
+        public Double XMin
+        {
+            get { return _min[Ordinates.X]; }
+        }
+
+        public Double XMax
+        {
+            get { return _max[Ordinates.X]; }
+        }
+
+        public Double YMin
+        {
+            get { return _min[Ordinates.Y]; }
+        }
+
+        public Double YMax
+        {
+            get { return _max[Ordinates.Y]; }
+        }
+
+        #endregion
+
+        private IExtents<TCoordinate> convert(IExtents extents)
+        {
+            if (extents == null)
+            {
+                return null;
+            }
+
+            IExtents<TCoordinate> converted = extents as IExtents<TCoordinate>;
+
+            if (converted != null)
+            {
+                return converted;
+            }
+
+            ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
+
+            return _geoFactory.CreateExtents(coordFactory.Create(extents.Min),
+                                             coordFactory.Create(extents.Max));
         }
 
         ///// <summary>
@@ -897,400 +1376,5 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         //    Double h = (Height * perCent / 100);
         //    SetCenter(w, h);
         //}
-
-        /* END ADDED BY MPAUL42: monoGIS team */
-
-        #region IExtents<TCoordinate> Members
-
-        public Boolean Borders(TCoordinate coordinate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Borders(IExtents<TCoordinate> other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Borders(TCoordinate coordinate, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Borders(IExtents<TCoordinate> other, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Contains(TCoordinate coordinate, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Contains(IExtents<TCoordinate> other, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ExpandToInclude(params TCoordinate[] coordinate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ExpandToInclude(IEnumerable<TCoordinate> coordinates)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ExpandToInclude(IGeometry<TCoordinate> geometry)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Double GetIntersectingArea(IGeometry<TCoordinate> geometry)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IExtents<TCoordinate> Intersection(IGeometry<TCoordinate> extents)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Intersects(TCoordinate coordinate, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Intersects(IExtents<TCoordinate> other, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TCoordinate Max
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public TCoordinate Min
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public Boolean Overlaps(TCoordinate coordinate, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Overlaps(IExtents<TCoordinate> other, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<IExtents<TCoordinate>> Split(TCoordinate coordinate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IGeometry<TCoordinate> ToGeometry()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Touches(TCoordinate coordinate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Touches(IExtents<TCoordinate> other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Touches(TCoordinate coordinate, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Touches(IExtents<TCoordinate> other, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Calculates the union of the current box and the given point.
-        /// </summary>
-        public IExtents<TCoordinate> Union(IPoint<TCoordinate> point)
-        {
-            return Union(point.Coordinate);
-        }
-
-        /// <summary>
-        /// Calculates the union of the current box and the given coordinate.
-        /// </summary>
-        public IExtents<TCoordinate> Union(TCoordinate coord)
-        {
-            IExtents<TCoordinate> extents = Clone();
-            extents.ExpandToInclude(coord);
-            return extents;
-        }
-
-        /// <summary>
-        /// Calculates the union of the current box and the given box.
-        /// </summary>
-        public IExtents<TCoordinate> Union(IExtents<TCoordinate> box)
-        {
-            if (box.IsEmpty)
-            {
-                return this;
-            }
-
-            if (IsEmpty)
-            {
-                return box;
-            }
-
-            return new Extents<TCoordinate>(
-                                Factory,
-                                Math.Min(_min[Ordinates.X], box.Min[Ordinates.X]),
-                                Math.Max(_max[Ordinates.X], box.Max[Ordinates.X]),
-                                Math.Min(_min[Ordinates.Y], box.Min[Ordinates.Y]),
-                                Math.Max(_max[Ordinates.Y], box.Max[Ordinates.Y]));
-        }
-
-        public bool Within(TCoordinate coordinate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Within(IExtents<TCoordinate> other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Within(TCoordinate coordinate, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Within(IExtents<TCoordinate> other, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IExtents Members
-
-        public Boolean Borders(IExtents other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Borders(IExtents other, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        ICoordinate IExtents.Center
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public Boolean Contains(params Double[] coordinate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Contains(IExtents other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Contains(ICoordinate other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Contains(Tolerance tolerance, params Double[] coordinate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Contains(IExtents other, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Contains(ICoordinate other, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Double Distance(IExtents extents)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ExpandToInclude(params Double[] coordinate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ExpandToInclude(IExtents other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ExpandToInclude(IGeometry other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IExtents Intersection(IExtents extents)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Intersects(params Double[] coordinate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Intersects(IExtents other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Intersects(Tolerance tolerance, params Double[] coordinate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Intersects(IExtents other, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        ICoordinate IExtents.Max
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        ICoordinate IExtents.Min
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public Double GetMax(Ordinates ordinate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Double GetMin(Ordinates ordinate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Double GetSize(Ordinates axis)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Double GetSize(Ordinates axis1, Ordinates axis2)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Double GetSize(Ordinates axis1, Ordinates axis2, Ordinates axis3)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Double GetSize(params Ordinates[] axes)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Overlaps(params Double[] coordinate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Overlaps(ICoordinate other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Overlaps(IExtents other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Scale(params Double[] vector)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Scale(Double factor)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Scale(Double factor, Ordinates axis)
-        {
-            throw new NotImplementedException();
-        }
-
-        IGeometry IExtents.ToGeometry()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Translate(params Double[] vector)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Transform(IMatrix<NPack.DoubleComponent> transformMatrix)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IExtents Union(IPoint point)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IExtents Union(IExtents box)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IEquatable<IExtents> Members
-
-        public Boolean Equals(IExtents other)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IExtents Members
-
-        public void TranslateRelativeToWidth(params double[] vector)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        IGeometryFactory IExtents.Factory
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        #endregion
     }
 }

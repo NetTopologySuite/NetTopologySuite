@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.CoordinateSystems;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
@@ -15,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     [Serializable]
     public class Point<TCoordinate> : Geometry<TCoordinate>, IPoint<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private static readonly TCoordinate emptyCoordinate = default(TCoordinate);
 
@@ -206,55 +203,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Coordinate.CompareTo(point.Coordinate);
         }
 
-        /* BEGIN ADDED BY MPAUL42: monoGIS team */
-
-        ///// <summary>
-        ///// Initializes a new instance of the <see cref="Point{TCoordinate}"/> class.
-        ///// </summary>
-        ///// <param name="x">The x coordinate.</param>
-        ///// <param name="y">The y coordinate.</param>
-        ///// <param name="z">The z coordinate.</param>
-        ///// /// <remarks>
-        ///// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        ///// with <see cref="IPrecisionModel{TCoordinate}" /> <c> set to </c> <see cref="PrecisionModelType.Floating"/>.
-        ///// </remarks>
-        //public Point(Double x, Double y, Double z) :
-        //    this(DefaultFactory.CoordinateFactory.Create3D(x, y, z), DefaultFactory) { }
-
-        ///// <summary>
-        ///// Initializes a new instance of the <see cref="Point{TCoordinate}"/> class.
-        ///// </summary>
-        ///// <param name="x">The x coordinate.</param>
-        ///// <param name="y">The y coordinate.</param>
-        ///// /// <remarks>
-        ///// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        ///// with <see cref="IPrecisionModel{TCoordinate}" /> <c> set to </c> <see cref="PrecisionModelType.Floating"/>.
-        ///// </remarks>
-        //public Point(Double x, Double y)
-        //    : this(DefaultFactory.CoordinateFactory.Create(x, y), DefaultFactory) { }
-
-        //public Double Z
-        //{
-        //    get
-        //    {
-        //        if (CoordinateHelper.IsEmpty(Coordinate))
-        //        {
-        //            throw new InvalidOperationException("Z called on empty Point");
-        //        }
-
-        //        if (!Coordinate.ContainsOrdinate(Ordinates.Z))
-        //        {
-        //            return 0;
-        //        }
-        //        else
-        //        {
-        //            return Coordinate[Ordinates.Z];
-        //        }
-        //    }
-        //}
-
-        /* END ADDED BY MPAUL42: monoGIS team */
-
         #region IPoint Members
 
         public Double this[Ordinates ordinate]
@@ -385,127 +333,127 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region ISpatialRelation Members
 
-        public bool Equals(IGeometry g, Tolerance tolerance)
+        public Boolean Equals(IGeometry g, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
 
-        public bool Touches(IGeometry g)
+        public Boolean Touches(IGeometry g)
         {
             throw new NotImplementedException();
         }
 
-        public bool Touches(IGeometry g, Tolerance tolerance)
+        public Boolean Touches(IGeometry g, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
 
-        public bool Contains(IGeometry g)
+        public Boolean Contains(IGeometry g)
         {
             throw new NotImplementedException();
         }
 
-        public bool Contains(IGeometry g, Tolerance tolerance)
+        public Boolean Contains(IGeometry g, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
 
-        public bool Within(IGeometry g)
+        public Boolean Within(IGeometry g)
         {
             throw new NotImplementedException();
         }
 
-        public bool Within(IGeometry g, Tolerance tolerance)
+        public Boolean Within(IGeometry g, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
 
-        public bool Disjoint(IGeometry g)
+        public Boolean Disjoint(IGeometry g)
         {
             throw new NotImplementedException();
         }
 
-        public bool Disjoint(IGeometry g, Tolerance tolerance)
+        public Boolean Disjoint(IGeometry g, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
 
-        public bool Crosses(IGeometry g)
+        public Boolean Crosses(IGeometry g)
         {
             throw new NotImplementedException();
         }
 
-        public bool Crosses(IGeometry g, Tolerance tolerance)
+        public Boolean Crosses(IGeometry g, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
 
-        public bool Overlaps(IGeometry g)
+        public Boolean Overlaps(IGeometry g)
         {
             throw new NotImplementedException();
         }
 
-        public bool Overlaps(IGeometry g, Tolerance tolerance)
+        public Boolean Overlaps(IGeometry g, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
 
-        public bool Intersects(IGeometry g)
+        public Boolean Intersects(IGeometry g)
         {
             throw new NotImplementedException();
         }
 
-        public bool Intersects(IGeometry g, Tolerance tolerance)
+        public Boolean Intersects(IGeometry g, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsWithinDistance(IGeometry g, double distance)
+        public Boolean IsWithinDistance(IGeometry g, double distance)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsWithinDistance(IGeometry g, double distance, Tolerance tolerance)
+        public Boolean IsWithinDistance(IGeometry g, double distance, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsCoveredBy(IGeometry g)
+        public Boolean IsCoveredBy(IGeometry g)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsCoveredBy(IGeometry g, Tolerance tolerance)
+        public Boolean IsCoveredBy(IGeometry g, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
 
-        public bool Covers(IGeometry g)
+        public Boolean Covers(IGeometry g)
         {
             throw new NotImplementedException();
         }
 
-        public bool Covers(IGeometry g, Tolerance tolerance)
+        public Boolean Covers(IGeometry g, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
 
-        public bool Relate(IGeometry g, IntersectionMatrix intersectionPattern)
+        public Boolean Relate(IGeometry g, IntersectionMatrix intersectionPattern)
         {
             throw new NotImplementedException();
         }
 
-        public bool Relate(IGeometry g, IntersectionMatrix intersectionPattern, Tolerance tolerance)
+        public Boolean Relate(IGeometry g, IntersectionMatrix intersectionPattern, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
 
-        public bool Relate(IGeometry g, string intersectionPattern)
+        public Boolean Relate(IGeometry g, string intersectionPattern)
         {
             throw new NotImplementedException();
         }
 
-        public bool Relate(IGeometry g, string intersectionPattern, Tolerance tolerance)
+        public Boolean Relate(IGeometry g, string intersectionPattern, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
@@ -566,7 +514,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public IPoint Zero
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                Double[] ordinates = new Double[(Int32)Dimension];
+                return Factory.CreatePoint(Factory.CoordinateFactory.Create(ordinates));
+            }
         }
 
         #endregion
@@ -609,22 +561,22 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region IBooleanComparable<IPoint> Members
 
-        public bool GreaterThan(IPoint value)
+        public Boolean GreaterThan(IPoint value)
         {
             throw new NotImplementedException();
         }
 
-        public bool GreaterThanOrEqualTo(IPoint value)
+        public Boolean GreaterThanOrEqualTo(IPoint value)
         {
             throw new NotImplementedException();
         }
 
-        public bool LessThan(IPoint value)
+        public Boolean LessThan(IPoint value)
         {
             throw new NotImplementedException();
         }
 
-        public bool LessThanOrEqualTo(IPoint value)
+        public Boolean LessThanOrEqualTo(IPoint value)
         {
             throw new NotImplementedException();
         }
@@ -633,49 +585,98 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region IExponential<IPoint> Members
 
-        public IPoint Exp()
+        IPoint IExponential<IPoint>.Exp()
+        {
+            throw new NotSupportedException();
+        }
+
+        IPoint IExponential<IPoint>.Log()
         {
             throw new NotImplementedException();
         }
 
-        public IPoint Log()
+        IPoint IExponential<IPoint>.Log(Double newBase)
         {
             throw new NotImplementedException();
         }
 
-        public IPoint Log(double newBase)
+        IPoint IExponential<IPoint>.Power(Double exponent)
         {
             throw new NotImplementedException();
         }
 
-        public IPoint Power(double exponent)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IPoint Sqrt()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IMultipliable<double,IPoint> Members
-
-        public IPoint Multiply(double b)
+        IPoint IExponential<IPoint>.Sqrt()
         {
             throw new NotImplementedException();
         }
 
         #endregion
 
-        #region IDivisible<double,IPoint> Members
+        #region IMultipliable<Double, IPoint> Members
 
-        public IPoint Divide(double b)
+        public IPoint Multiply(Double b)
         {
             throw new NotImplementedException();
         }
 
         #endregion
+
+        #region IDivisible<Double, IPoint> Members
+
+        public IPoint Divide(Double b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        /* BEGIN ADDED BY MPAUL42: monoGIS team */
+
+        ///// <summary>
+        ///// Initializes a new instance of the <see cref="Point{TCoordinate}"/> class.
+        ///// </summary>
+        ///// <param name="x">The x coordinate.</param>
+        ///// <param name="y">The y coordinate.</param>
+        ///// <param name="z">The z coordinate.</param>
+        ///// /// <remarks>
+        ///// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
+        ///// with <see cref="IPrecisionModel{TCoordinate}" /> <c> set to </c> <see cref="PrecisionModelType.Floating"/>.
+        ///// </remarks>
+        //public Point(Double x, Double y, Double z) :
+        //    this(DefaultFactory.CoordinateFactory.Create3D(x, y, z), DefaultFactory) { }
+
+        ///// <summary>
+        ///// Initializes a new instance of the <see cref="Point{TCoordinate}"/> class.
+        ///// </summary>
+        ///// <param name="x">The x coordinate.</param>
+        ///// <param name="y">The y coordinate.</param>
+        ///// /// <remarks>
+        ///// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
+        ///// with <see cref="IPrecisionModel{TCoordinate}" /> <c> set to </c> <see cref="PrecisionModelType.Floating"/>.
+        ///// </remarks>
+        //public Point(Double x, Double y)
+        //    : this(DefaultFactory.CoordinateFactory.Create(x, y), DefaultFactory) { }
+
+        //public Double Z
+        //{
+        //    get
+        //    {
+        //        if (CoordinateHelper.IsEmpty(Coordinate))
+        //        {
+        //            throw new InvalidOperationException("Z called on empty Point");
+        //        }
+
+        //        if (!Coordinate.ContainsOrdinate(Ordinates.Z))
+        //        {
+        //            return 0;
+        //        }
+        //        else
+        //        {
+        //            return Coordinate[Ordinates.Z];
+        //        }
+        //    }
+        //}
+
+        /* END ADDED BY MPAUL42: monoGIS team */
     }
 }

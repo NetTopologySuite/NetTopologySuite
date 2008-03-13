@@ -142,5 +142,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 yield return point;
             }
         }
+
+        protected override void CheckItemType(IGeometry<TCoordinate> item)
+        {
+            if (!(item is IPoint<TCoordinate>))
+            {
+                throw new InvalidOperationException(String.Format(
+                                                        "Cannot add geometry of type {0} " +
+                                                        "to a MultiPoint",
+                                                        item.GetType()));
+            }
+        }
     }
 }
