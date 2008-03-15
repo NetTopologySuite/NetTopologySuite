@@ -64,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 new PrecisionModel<TCoordinate>(PrecisionModelType.Fixed),
                 null, coordSequenceFactory);
         }
-        
+
         #endregion
 
         #region Fields
@@ -107,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>    
         public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel, Int32? srid,
                                ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory)
-            : this(precisionModel, srid, coordinateSequenceFactory, null) {}
+            : this(precisionModel, srid, coordinateSequenceFactory, null) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
@@ -117,7 +117,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="precisionModel">The PrecisionModel to use.</param>
         /// <param name="srid">The SRID to use.</param>
         public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel, Int32? srid)
-            : this(precisionModel, srid, getDefaultCoordinateSequenceFactory<TCoordinate>()) {}
+            : this(precisionModel, srid, getDefaultCoordinateSequenceFactory<TCoordinate>()) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
@@ -127,7 +127,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel,
                                ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory)
-            : this(precisionModel, null, coordinateSequenceFactory) {}
+            : this(precisionModel, null, coordinateSequenceFactory) { }
 
         /// <summary>
         /// 
@@ -139,7 +139,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// The <see cref="IPrecisionModel{TCoordinate}"/> to use.
         /// </param>
         public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel)
-            : this(precisionModel, null, getDefaultCoordinateSequenceFactory<TCoordinate>()) {}
+            : this(precisionModel, null, getDefaultCoordinateSequenceFactory<TCoordinate>()) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
@@ -149,7 +149,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory, Int32? srid,
                                ICoordinateSystem<TCoordinate> spatialReference)
-            : this(new PrecisionModel<TCoordinate>(), srid, coordinateSequenceFactory, spatialReference) {}
+            : this(new PrecisionModel<TCoordinate>(), srid, coordinateSequenceFactory, spatialReference) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
@@ -157,7 +157,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <see cref="IPrecisionModel{TCoordinate}"/>, and the given spatial-reference ID.
         /// </summary>
         public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory, Int32? srid)
-            : this(coordinateSequenceFactory, srid, null) {}
+            : this(coordinateSequenceFactory, srid, null) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
@@ -168,7 +168,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory,
                                ICoordinateSystem<TCoordinate> spatialReference)
-            : this(coordinateSequenceFactory, null, spatialReference) {}
+            : this(coordinateSequenceFactory, null, spatialReference) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
@@ -294,8 +294,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             {
                 max = min;
             }
-            
-            return CreateExtents(CoordinateFactory.Create(min), 
+
+            return CreateExtents(CoordinateFactory.Create(min),
                                  CoordinateFactory.Create(max));
         }
 
@@ -397,7 +397,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public IPoint<TCoordinate> CreatePoint(IEnumerable<TCoordinate> coordinates)
         {
-            Point<TCoordinate> point 
+            Point<TCoordinate> point
                 = new Point<TCoordinate>(Slice.GetFirst(coordinates), this);
             return point;
         }
@@ -519,7 +519,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                                                    IEnumerable<ILinearRing<TCoordinate>> holes)
         {
             return new Polygon<TCoordinate>(shell,
-                                            Enumerable.Upcast<ILineString<TCoordinate>, 
+                                            Enumerable.Upcast<ILineString<TCoordinate>,
                                             ILinearRing<TCoordinate>>(holes),
                                             this);
         }
@@ -831,7 +831,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IExtents IGeometryFactory.CreateExtents(ICoordinate min, ICoordinate max)
         {
-            return new Extents<TCoordinate>(this, 
+            return new Extents<TCoordinate>(this,
                 CoordinateFactory.Create(min), CoordinateFactory.Create(max));
         }
 
@@ -894,7 +894,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IPolygon IGeometryFactory.CreatePolygon()
         {
-            throw new NotImplementedException();
+            return CreatePolygon();
         }
 
         IPolygon IGeometryFactory.CreatePolygon(IEnumerable<ICoordinate> shell)
@@ -904,17 +904,39 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IPolygon IGeometryFactory.CreatePolygon(ILinearRing shell)
         {
-            throw new NotImplementedException();
+            if (shell == null)
+                return CreatePolygon();
+
+            ILinearRing<TCoordinate> shellTyped = shell as ILinearRing<TCoordinate>;
+            if (shellTyped == null)
+                shellTyped = CreateLinearRing(convertSequence(shell.Coordinates));
+            return CreatePolygon(shellTyped);
         }
 
         IPolygon IGeometryFactory.CreatePolygon(ILinearRing shell, IEnumerable<ILinearRing> holes)
         {
-            throw new NotImplementedException();
+            if (shell == null)
+                return CreatePolygon();
+
+            ILinearRing<TCoordinate> shellTyped = shell as ILinearRing<TCoordinate>;
+            if (shellTyped == null)
+                shellTyped = CreateLinearRing(convertSequence(shell.Coordinates));
+
+            List<ILinearRing<TCoordinate>> holesTyped = new List<ILinearRing<TCoordinate>>();
+            foreach (ILinearRing hole in holes)
+            {
+                ILinearRing<TCoordinate> holeTyped = hole as ILinearRing<TCoordinate>;
+                if (holeTyped == null)
+                    holeTyped = CreateLinearRing(convertSequence(hole.Coordinates));
+                holesTyped.Add(holeTyped);
+            }
+
+            return CreatePolygon(shellTyped, holesTyped);
         }
 
         IMultiPoint IGeometryFactory.CreateMultiPoint()
         {
-            throw new NotImplementedException();
+            return CreateMultiPoint();
         }
 
         IMultiPoint IGeometryFactory.CreateMultiPoint(IEnumerable<ICoordinate> coordinates)
@@ -944,7 +966,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IMultiPolygon IGeometryFactory.CreateMultiPolygon()
         {
-            throw new NotImplementedException();
+            return CreateMultiPolygon();
         }
 
         IMultiPolygon IGeometryFactory.CreateMultiPolygon(IEnumerable<IPolygon> polygons)
@@ -954,7 +976,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IGeometryCollection IGeometryFactory.CreateGeometryCollection()
         {
-            throw new NotImplementedException();
+            return CreateGeometryCollection();
         }
 
         IGeometryCollection IGeometryFactory.CreateGeometryCollection(IEnumerable<IGeometry> geometries)

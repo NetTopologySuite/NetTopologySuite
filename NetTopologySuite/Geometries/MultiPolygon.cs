@@ -79,29 +79,46 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             IEnumerable<ILinearRing<TCoordinate>> rings 
                 = Coordinates<TCoordinate>.CreateLinearRings(sequence, factory);
 
-            IPolygon<TCoordinate> currentPolygon = null;
+            ILinearRing<TCoordinate> shell = null;
+            List<ILinearRing<TCoordinate>> holes = null;
 
             foreach (ILinearRing<TCoordinate> ring in rings)
             {
                 if (!ring.IsCcw)
                 {
-                    if (currentPolygon != null)
-                    {
-                        Add(currentPolygon);
-                    }
-
-                    currentPolygon = factory.CreatePolygon(ring);
+                    addPolygonFromRings(shell, holes, factory);
+                    shell = ring;
+                    holes = null;
                 }
                 else
                 {
-                    if (currentPolygon == null)
-	                {
-	                    throw new TopologyException(
+                    if (shell == null)
+                    {
+                        throw new TopologyException(
                             "The coordinate sequence specifies holes without a shell.");
-	                }
+                    }
 
-                    currentPolygon.InteriorRings.Add(ring);
+                    if (holes == null)
+                    {
+                        holes = new List<ILinearRing<TCoordinate>>();
+                    }
+                    holes.Add(ring);
                 }
+            }
+
+            addPolygonFromRings(shell, holes, factory);
+        }
+
+        private void addPolygonFromRings(ILinearRing<TCoordinate> shell, List<ILinearRing<TCoordinate>> holes, IGeometryFactory<TCoordinate> factory)
+        {
+            if (shell == null) return;
+            if (holes == null)
+            {
+                Add(factory.CreatePolygon(shell));
+            }
+            else
+            {
+                Add(factory.CreatePolygon(shell,holes));
             }
         }
 

@@ -301,12 +301,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             addPolygonRing(p.ExteriorRing, Locations.Exterior, Locations.Interior);
 
-            for (Int32 i = 0; i < p.InteriorRingsCount; i++)
+            foreach (ILinearRing<TCoordinate> interiorRing in p.InteriorRings)
             {
                 // Holes are topologically labeled opposite to the shell, since
                 // the interior of the polygon lies on their opposite side
                 // (on the left, if the hole is oriented CW)
-                addPolygonRing(p.InteriorRings[i], Locations.Interior, Locations.Exterior);
+                addPolygonRing(interiorRing, Locations.Interior, Locations.Exterior);
             }
         }
 

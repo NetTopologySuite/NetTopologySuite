@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// The interior boundaries, if any.
         /// </summary>
-        private readonly List<ILineString<TCoordinate>> _holes;
+        private List<ILineString<TCoordinate>> _holes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Polygon{TCoordinate}"/> class.
@@ -85,7 +85,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <see cref="LinearRing{TCoordinate}" />s if the empty
         /// point is to be created.
         /// </param>
-        public Polygon(ILinearRing<TCoordinate> shell, 
+        public Polygon(ILinearRing<TCoordinate> shell,
                        IEnumerable<ILineString<TCoordinate>> holes,
                        IGeometryFactory<TCoordinate> factory)
             : base(factory)
@@ -95,22 +95,22 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 shell = Factory.CreateLinearRing(null);
             }
 
-            Boolean hasNonEmptyHoles = GeometryCollection<TCoordinate>.HasNonEmptyElements(holes);
+            Boolean hasValidHoles = (holes != null) && GeometryCollection<TCoordinate>.HasNonEmptyElements(holes);
 
-            if (shell.IsEmpty && hasNonEmptyHoles)
+            if (shell.IsEmpty && hasValidHoles)
             {
                 throw new ArgumentException("Shell is empty but holes are not.");
             }
 
             _shell = shell;
 
-            if (hasNonEmptyHoles)
+            if (hasValidHoles)
             {
                 _holes = new List<ILineString<TCoordinate>>();
                 _holes.AddRange(holes);
             }
         }
-        
+
         /// <summary>
         /// Constructs a <see cref="Polygon{TCoordinate}" /> 
         /// with the given exterior boundary and
@@ -145,7 +145,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                             "The coordinate sequence specifies holes without a shell.");
                     }
 
-                    InteriorRings.Add(ring);
+                    if (_holes == null)
+                    {
+                        _holes = new List<ILineString<TCoordinate>>();
+                    }
+                    _holes.Add(ring);
                 }
                 else
                 {
@@ -193,9 +197,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 {
                     CoordinatesInternal = _shell.Coordinates;
 
-                    foreach (ILineString<TCoordinate> hole in _holes)
+                    if (_holes != null)
                     {
-                        CoordinatesInternal.AddSequence(hole.Coordinates);
+                        foreach (ILineString<TCoordinate> hole in _holes)
+                        {
+                            CoordinatesInternal.AddSequence(hole.Coordinates);
+                        }
                     }
                 }
 
@@ -209,11 +216,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             {
                 Int32 count = _shell.PointCount;
 
-                foreach (ILinearRing<TCoordinate> ring in _holes)
+                if (_holes != null)
                 {
-                    count += ring.PointCount;
+                    foreach (ILinearRing<TCoordinate> ring in _holes)
+                    {
+                        count += ring.PointCount;
+                    }
                 }
-
                 return count;
             }
         }
@@ -245,12 +254,24 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Int32 InteriorRingsCount
         {
-            get { return _holes.Count; }
+            get
+            {
+                if (_holes == null)
+                    return 0;
+                return _holes.Count;
+            }
         }
 
-        public IList<ILineString<TCoordinate>> InteriorRings
+        public IEnumerable<ILineString<TCoordinate>> InteriorRings
         {
-            get { return _holes; }
+            get
+            {
+                if (_holes == null)
+                {
+                    _holes = new List<ILineString<TCoordinate>>();
+                }
+                return _holes;
+            }
         }
 
         //public ILineString GetInteriorRingN(Int32 n)
@@ -270,11 +291,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 Double area = 0.0;
                 area += Math.Abs(CGAlgorithms<TCoordinate>.SignedArea(_shell.Coordinates));
 
-                for (Int32 i = 0; i < _holes.Count; i++)
+                if (_holes != null)
                 {
-                    area -= Math.Abs(CGAlgorithms<TCoordinate>.SignedArea(_holes[i].Coordinates));
+                    for (Int32 i = 0; i < _holes.Count; i++)
+                    {
+                        area -= Math.Abs(CGAlgorithms<TCoordinate>.SignedArea(_holes[i].Coordinates));
+                    }
                 }
-
                 return area;
             }
         }
@@ -289,11 +312,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 Double len = 0.0;
                 len += _shell.Length;
 
-                for (Int32 i = 0; i < _holes.Count; i++)
+                if (_holes != null)
                 {
-                    len += _holes[i].Length;
+                    for (Int32 i = 0; i < _holes.Count; i++)
+                    {
+                        len += _holes[i].Length;
+                    }
                 }
-
                 return len;
             }
         }
@@ -342,14 +367,22 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
             }
 
-            if (_holes.Count != otherPolygon.InteriorRings.Count)
+
+            if (InteriorRingsCount != otherPolygon.InteriorRingsCount)
             {
                 return false;
             }
 
-            for (Int32 i = 0; i < _holes.Count; i++)
+            if (InteriorRingsCount == 0 && otherPolygon.InteriorRingsCount == 0)
             {
-                if (!(_holes[i]).Equals(otherPolygon.InteriorRings[i], tolerance))
+                return true;
+            }
+
+            IEnumerator<ILineString<TCoordinate>> otherPolygonHoles = otherPolygon.InteriorRings.GetEnumerator();
+            IEnumerator<ILineString<TCoordinate>> holes = _holes.GetEnumerator();
+            while(otherPolygonHoles.MoveNext() && holes.MoveNext())
+            {
+                if (!holes.Current.Equals(otherPolygonHoles.Current, tolerance))
                 {
                     return false;
                 }
@@ -530,9 +563,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
 
-        IList<ILineString> IPolygon.InteriorRings
+        IEnumerable<ILineString> IPolygon.InteriorRings
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                if (_holes == null)
+                {
+                    yield break;
+                }
+                foreach (ILineString<TCoordinate> ring in _holes)
+                {
+                    yield return ring as ILinearRing;
+                }
+            }
         }
 
         #endregion
@@ -555,9 +598,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             {
                 yield return _shell;
 
-                foreach (ILineString<TCoordinate> hole in _holes)
+                if (_holes != null)
                 {
-                    yield return hole;
+                    foreach (ILineString<TCoordinate> hole in _holes)
+                    {
+                        yield return hole;
+                    }
                 }
             }
         }

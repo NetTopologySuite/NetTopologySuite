@@ -156,7 +156,7 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
             IGeometryFactory<TCoordinate> geoFactory)
         {
             List<ILinearRing<TCoordinate>> rings
-                = new List<ILinearRing<TCoordinate>>(p.InteriorRings.Count);
+                = new List<ILinearRing<TCoordinate>>(p.InteriorRingsCount);
 
             foreach (ILinearRing<TCoordinate> hole in p.InteriorRings)
             {

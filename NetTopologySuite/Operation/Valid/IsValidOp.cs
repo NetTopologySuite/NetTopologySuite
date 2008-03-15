@@ -561,9 +561,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
             IPointInRing<TCoordinate> pir = new MCPointInRing<TCoordinate>(shell);
             
-            for (Int32 i = 0; i < p.InteriorRingsCount; i++)
+            foreach (ILinearRing<TCoordinate> hole in p.InteriorRings)
             {
-                ILinearRing<TCoordinate> hole = p.InteriorRings[i] as ILinearRing<TCoordinate>;
                 Debug.Assert(hole != null);
                 TCoordinate holePt = FindPointNotNode(hole.Coordinates, shell, graph);
 
@@ -694,9 +693,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
              */
             TCoordinate badNestedPt = default(TCoordinate);
 
-            for (Int32 i = 0; i < p.InteriorRingsCount; i++)
+            foreach (ILinearRing<TCoordinate> hole in p.InteriorRings)
             {
-                ILinearRing<TCoordinate> hole = p.InteriorRings[i] as ILinearRing<TCoordinate>;
                 badNestedPt = checkShellInsideHole(shell, hole, graph);
 
                 if (Coordinates<TCoordinate>.IsEmpty(badNestedPt))

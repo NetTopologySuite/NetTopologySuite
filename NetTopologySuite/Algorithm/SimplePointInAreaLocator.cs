@@ -92,10 +92,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
 
             // now test if the point lies in or on the holes
-            for (Int32 i = 0; i < poly.InteriorRingsCount; i++)
+            foreach (ILinearRing<TCoordinate> hole in poly.InteriorRings)
             {
-                ILinearRing<TCoordinate> hole = (ILinearRing<TCoordinate>) poly.InteriorRings[i];
-
                 if (CGAlgorithms<TCoordinate>.IsPointInRing(p, hole.Coordinates))
                 {
                     return false;
