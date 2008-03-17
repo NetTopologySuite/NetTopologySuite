@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GeoAPI.Utilities;
+using NPack;
 using NPack.Interfaces;
 using GeoAPI.DataStructures;
 
@@ -196,8 +198,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
 
             ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
-            _min = coordFactory.Create(minX, maxX);
-            _max = coordFactory.Create(minY, maxY);
+            _min = coordFactory.Create(minX, minY);
+            _max = coordFactory.Create(maxX, maxY);
         }
 
         /// <summary>
@@ -416,15 +418,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
             else
             {
-                if (other.Min.LessThan(_min))
-                {
-                    _min = other.Min;
-                }
+                TCoordinate otherMin = other.Min;
+                TCoordinate otherMax = other.Max;
 
-                if (other.Max.GreaterThan(_max))
-                {
-                    _max = other.Max;
-                }
+                Double xMin = Math.Min(_min[Ordinates.X], otherMin[Ordinates.X]);
+                Double xMax = Math.Max(_max[Ordinates.X], otherMax[Ordinates.X]);
+                Double yMin = Math.Min(_min[Ordinates.Y], otherMin[Ordinates.Y]);
+                Double yMax = Math.Max(_max[Ordinates.Y], otherMax[Ordinates.Y]);
+
+                ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
+                _min = coordFactory.Create(xMin, yMin);
+                _max = coordFactory.Create(xMax, yMax);
             }
         }
 
@@ -819,7 +823,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public IExtents<TCoordinate> Clone()
         {
-            return new Extents<TCoordinate>(Factory, _min, _max);
+            ICoordinateFactory<TCoordinate> coordFactory = Factory.CoordinateFactory;
+            TCoordinate cloneMin = coordFactory.Create(_min);
+            TCoordinate cloneMax = coordFactory.Create(_max);
+            return new Extents<TCoordinate>(Factory, cloneMin, cloneMax);
         }
 
         /* END ADDED BY MPAUL42: monoGIS team */
@@ -863,12 +870,49 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public void ExpandToInclude(IEnumerable<TCoordinate> coordinates)
         {
-            throw new NotImplementedException();
+            // TODO: 3D unsafe
+            Double originalXMin = _min[Ordinates.X];
+            Double originalYMin = _min[Ordinates.Y];
+            Double originalXMax = _max[Ordinates.X];
+            Double originalYMax = _max[Ordinates.Y];
+
+            Double xMin = originalXMin;
+            Double yMin = originalYMin;
+            Double xMax = originalXMax;
+            Double yMax = originalYMax;
+
+            foreach (TCoordinate coordinate in coordinates)
+            {
+                Double x = coordinate[Ordinates.X];
+                Double y = coordinate[Ordinates.Y];
+
+                xMin = Math.Min(x, xMin);
+                xMax = Math.Max(x, xMax);
+                yMin = Math.Min(y, yMin);
+                yMax = Math.Max(y, yMax);
+            }
+
+            ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
+
+            if (xMin < originalXMin || yMin < originalYMin)
+	        {
+                _min = coordFactory.Create(xMin, yMin);
+	        }
+
+            if (xMax > originalXMax || yMax > originalYMax)
+            {
+                _max = coordFactory.Create(xMax, yMax);
+            }
         }
 
         public void ExpandToInclude(IGeometry<TCoordinate> geometry)
         {
-            throw new NotImplementedException();
+            if (geometry == null)
+            {
+                return;
+            }
+
+            ExpandToInclude(geometry.GetVertexes());
         }
 
         public Double GetIntersectingArea(IGeometry<TCoordinate> geometry)

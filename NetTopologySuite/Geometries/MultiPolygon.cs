@@ -102,24 +102,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     {
                         holes = new List<ILinearRing<TCoordinate>>();
                     }
+
                     holes.Add(ring);
                 }
             }
 
             addPolygonFromRings(shell, holes, factory);
-        }
-
-        private void addPolygonFromRings(ILinearRing<TCoordinate> shell, List<ILinearRing<TCoordinate>> holes, IGeometryFactory<TCoordinate> factory)
-        {
-            if (shell == null) return;
-            if (holes == null)
-            {
-                Add(factory.CreatePolygon(shell));
-            }
-            else
-            {
-                Add(factory.CreatePolygon(shell,holes));
-            }
         }
 
         public MultiPolygon(IGeometryFactory<TCoordinate> factory)
@@ -221,5 +209,21 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                                                         item.GetType()));
             }
         }
+
+        #region Private helpers
+
+        private void addPolygonFromRings(ILinearRing<TCoordinate> shell, List<ILinearRing<TCoordinate>> holes, IGeometryFactory<TCoordinate> factory)
+        {
+            if (shell == null) return;
+            if (holes == null)
+            {
+                Add(factory.CreatePolygon(shell));
+            }
+            else
+            {
+                Add(factory.CreatePolygon(shell, holes));
+            }
+        }
+        #endregion
     }
 }

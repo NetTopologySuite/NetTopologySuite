@@ -379,27 +379,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return new Extents<TCoordinate>(Factory);
             }
 
-            // Convert to array, then access array directly, to avoid the function-call overhead
-            // of calling Getter millions of times. ToArray may be inefficient for
-            // non-BasicCoordinateSequence CoordinateSequences. [Jon Aquino]
-            // TCoordinate[] coordinates = _points.ToCoordinateArray();
-
             ICoordinateSequence<TCoordinate> coordinates = CoordinatesInternal;
 
-            Double minx = coordinates[0][Ordinates.X];
-            Double miny = coordinates[0][Ordinates.Y];
-            Double maxx = coordinates[0][Ordinates.X];
-            Double maxy = coordinates[0][Ordinates.Y];
+            Extents<TCoordinate> e = new Extents<TCoordinate>(Factory);
 
-            for (Int32 i = 1; i < coordinates.Count; i++)
-            {
-                minx = minx < coordinates[i][Ordinates.X] ? minx : coordinates[i][Ordinates.X];
-                maxx = maxx > coordinates[i][Ordinates.X] ? maxx : coordinates[i][Ordinates.X];
-                miny = miny < coordinates[i][Ordinates.Y] ? miny : coordinates[i][Ordinates.Y];
-                maxy = maxy > coordinates[i][Ordinates.Y] ? maxy : coordinates[i][Ordinates.Y];
-            }
+            coordinates.ExpandExtents(e);
 
-            return new Extents<TCoordinate>(Factory, minx, maxx, miny, maxy);
+            return e;
         }
 
         protected internal override Int32 CompareToSameClass(IGeometry<TCoordinate> other)

@@ -277,20 +277,22 @@ namespace NetTopologySuite.Coordinates
 
         public Int32 CompareTo(BufferedCoordinate2D other)
         {
+            // Empty coordinates don't compare
             if (other._index == null)
             {
-                return 1;
+                throw new ArgumentException("Cannot compare to the empty coordinate");
             }
 
             if (_index == null)
-            {
-                return -1;
-            }
+	        {
+	            throw new InvalidOperationException(
+                    "This coordinate is empty and cannot be compared");
+	        }
 
             // Since the coordinates are stored in lexicograpic order,
             // the index comparison works to compare coordinates
             // first by X, then by Y;
-            return _index.Value.CompareTo(other._index.Value);
+            return BufferedCoordinate2DFactory.Compare(this, other);
         }
 
         #endregion
@@ -349,7 +351,7 @@ namespace NetTopologySuite.Coordinates
 
         public BufferedCoordinate2D Divide(BufferedCoordinate2D b)
         {
-            return _factory.Divide(this, b);
+            return BufferedCoordinate2DFactory.Divide(this, b);
         }
 
         #endregion
@@ -376,7 +378,7 @@ namespace NetTopologySuite.Coordinates
 
         public BufferedCoordinate2D Multiply(BufferedCoordinate2D b)
         {
-            return _factory.Multiply(this, b);
+            return BufferedCoordinate2DFactory.Multiply(this, b);
         }
 
         #endregion
@@ -394,22 +396,22 @@ namespace NetTopologySuite.Coordinates
 
         public Boolean GreaterThan(BufferedCoordinate2D value)
         {
-            return _factory.GreaterThan(this, value);
+            return BufferedCoordinate2DFactory.GreaterThan(this, value);
         }
 
         public Boolean GreaterThanOrEqualTo(BufferedCoordinate2D value)
         {
-            return _factory.GreaterThanOrEqualTo(this, value);
+            return BufferedCoordinate2DFactory.GreaterThanOrEqualTo(this, value);
         }
 
         public Boolean LessThan(BufferedCoordinate2D value)
         {
-            return _factory.LessThan(this, value);
+            return BufferedCoordinate2DFactory.LessThan(this, value);
         }
 
         public Boolean LessThanOrEqualTo(BufferedCoordinate2D value)
         {
-            return _factory.LessThanOrEqualTo(this, value);
+            return BufferedCoordinate2DFactory.LessThanOrEqualTo(this, value);
         }
 
         #endregion

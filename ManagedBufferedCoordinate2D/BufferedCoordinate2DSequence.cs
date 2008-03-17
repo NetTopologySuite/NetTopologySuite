@@ -16,6 +16,8 @@ namespace NetTopologySuite.Coordinates
         private readonly BufferedCoordinate2DSequenceFactory _factory;
         private readonly List<Int32> _sequence;
         private Boolean _isFrozen;
+        private Int32 _max = -1;
+        private Int32 _min = -1;
 
         internal BufferedCoordinate2DSequence(BufferedCoordinate2DSequenceFactory factory,
                                               IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer)
@@ -53,8 +55,8 @@ namespace NetTopologySuite.Coordinates
         public void Add(BufferedCoordinate2D item)
         {
             checkFrozen();
-
             _sequence.Add(item.Index);
+            onSequenceChanged();
         }
 
         public void AddRange(IEnumerable<BufferedCoordinate2D> coordinates,
@@ -85,6 +87,8 @@ namespace NetTopologySuite.Coordinates
 
                 _sequence.Add(coordinate.Index);
             }
+
+            onSequenceChanged();
         }
 
         public void AddRange(IEnumerable<BufferedCoordinate2D> coordinates)
@@ -95,6 +99,8 @@ namespace NetTopologySuite.Coordinates
             {
                 _sequence.Add(coordinate.Index);
             }
+
+            onSequenceChanged();
         }
 
         public ICoordinateSequence<BufferedCoordinate2D> AddSequence(
@@ -121,6 +127,7 @@ namespace NetTopologySuite.Coordinates
                 _sequence.AddRange(buf2DSeq._sequence);
             }
 
+            onSequenceChanged();
             return this;
         }
 
@@ -132,6 +139,7 @@ namespace NetTopologySuite.Coordinates
         public void Clear()
         {
             _sequence.Clear();
+            onSequenceChanged();
         }
 
         public ICoordinateSequence<BufferedCoordinate2D> Clone()
@@ -156,6 +164,7 @@ namespace NetTopologySuite.Coordinates
             if (_sequence[0] != _sequence[Count - 1])
             {
                 _sequence.Add(_sequence[0]);
+                onSequenceChanged();
             }
         }
 
@@ -345,6 +354,7 @@ namespace NetTopologySuite.Coordinates
         {
             checkFrozen();
             _sequence.Insert(index, item.Index);
+            onSequenceChanged();
         }
 
         public BufferedCoordinate2D this[Int32 index]
@@ -360,6 +370,7 @@ namespace NetTopologySuite.Coordinates
                 checkIndex(index, "index");
 
                 _sequence[index] = _buffer.Add(value);
+                onSequenceChanged();
             }
         }
 
@@ -389,12 +400,32 @@ namespace NetTopologySuite.Coordinates
                 checkOrdinate(ordinate);
 
                 throw new NotImplementedException();
+                //onSequenceChanged();
             }
         }
 
         public BufferedCoordinate2D Maximum()
         {
-            throw new NotImplementedException();
+            if (_max < 0)
+            {
+                Int32 maxIndex = -1;
+                BufferedCoordinate2D maxCoord = new BufferedCoordinate2D();
+
+                for (int i = 0; i < Count; i++)
+                {
+                    BufferedCoordinate2D current = this[i];
+
+                    if (current.GreaterThan(maxCoord))
+                    {
+                        maxIndex = i;
+                        maxCoord = current;
+                    }
+                }
+
+                _max = maxIndex;
+            }
+
+            return this[_max];
         }
 
         public ICoordinateSequence<BufferedCoordinate2D> Merge(
@@ -405,19 +436,41 @@ namespace NetTopologySuite.Coordinates
 
         public BufferedCoordinate2D Minimum()
         {
-            throw new NotImplementedException();
+            if (_min < 0)
+            {
+                Int32 minIndex = -1;
+                BufferedCoordinate2D? minCoord = null;
+
+                for (int i = 0; i < Count; i++)
+                {
+                    BufferedCoordinate2D current = this[i];
+
+                    if (minCoord == null || current.LessThan(minCoord.Value))
+                    {
+                        minIndex = i;
+                        minCoord = current;
+                    }
+                }
+
+                _min = minIndex;
+            }
+
+            return this[_min];
         }
 
         public Boolean Remove(BufferedCoordinate2D item)
         {
             checkFrozen();
-            return _sequence.Remove(item.Index);
+            Boolean result = _sequence.Remove(item.Index);
+            onSequenceChanged();
+            return result;
         }
 
         public void RemoveAt(Int32 index)
         {
             checkFrozen();
             _sequence.RemoveAt(index);
+            onSequenceChanged();
         }
 
         /// <summary>
@@ -434,6 +487,8 @@ namespace NetTopologySuite.Coordinates
             {
                 swap(i, last - i);
             }
+
+            onSequenceChanged();
         }
 
         public ICoordinateSequence<BufferedCoordinate2D> Reversed
@@ -449,11 +504,15 @@ namespace NetTopologySuite.Coordinates
         public void Scroll(BufferedCoordinate2D coordinateToBecomeFirst)
         {
             checkFrozen();
+            onSequenceChanged();
+            throw new NotImplementedException();
         }
 
         public void Scroll(Int32 indexToBecomeFirst)
         {
             checkFrozen();
+            onSequenceChanged();
+            throw new NotImplementedException();
         }
 
         public ICoordinateSequence<BufferedCoordinate2D> Slice(Int32 startIndex, Int32 endIndex)
@@ -494,6 +553,8 @@ namespace NetTopologySuite.Coordinates
             {
                 this[i] = coords[i];
             }
+
+            onSequenceChanged();
         }
 
         public ICoordinateSequence<BufferedCoordinate2D> WithoutDuplicatePoints()
@@ -657,6 +718,19 @@ namespace NetTopologySuite.Coordinates
         Object ICloneable.Clone()
         {
             return Clone();
+        }
+
+        private void onSequenceChanged()
+        {
+            EventHandler e = SequenceChanged;
+
+            if (e != null)
+            {
+                e(this, EventArgs.Empty);
+            }
+
+            _min = -1;
+            _max = -1;
         }
 
         /// <summary>

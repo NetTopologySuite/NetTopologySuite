@@ -17,10 +17,13 @@ namespace NetTopologySuite.Coordinates
           IBufferedVectorFactory<BufferedCoordinate2D, DoubleComponent>
     {
         public static readonly Int32 MaximumBitResolution = 52;
+        private static readonly IComparer<Pair<Double>> _comparer 
+            = new LexicographicComparer();
         private readonly ManagedVectorBuffer<BufferedCoordinate2D, DoubleComponent> _coordinates;
         private readonly IDictionary<Pair<Double>, Int32> _lexicographicVertexIndex;
         private Int32 _bitResolution;
         private Int64 _mask = unchecked((Int64)0xFFFFFFFFFFFFFFFF);
+        private readonly Int32[] _ordinateIndexTable = new Int32[4];
 
         public BufferedCoordinate2DFactory()
             : this(MaximumBitResolution) { }
@@ -30,6 +33,7 @@ namespace NetTopologySuite.Coordinates
             _bitResolution = bitResolution;
             _lexicographicVertexIndex = createLexicographicIndex();
             _coordinates = new ManagedVectorBuffer<BufferedCoordinate2D, DoubleComponent>(2, true, this);
+            initializeOrdinateIndexTable();
         }
 
         public Int32 BitResolution
@@ -104,6 +108,11 @@ namespace NetTopologySuite.Coordinates
 
         public BufferedCoordinate2D Create(ICoordinate coordinate)
         {
+            if (coordinate is BufferedCoordinate2D)
+            {
+                return Create((BufferedCoordinate2D) coordinate);
+            }
+
             return coordinate.IsEmpty 
                 ? new BufferedCoordinate2D() 
                 : Create(coordinate[Ordinates.X], coordinate[Ordinates.Y]);
@@ -224,17 +233,16 @@ namespace NetTopologySuite.Coordinates
             {
                 return vector.Index;
             }
-            else
-            {
-                return getVertexInternal(vector.X, vector.Y).Index;
-            }
+
+            return getVertexInternal(vector.X, vector.Y).Index;
         }
 
         BufferedCoordinate2D IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.Add(params DoubleComponent[] components)
         {
             if (components.Length != 2)
             {
-                throw new ArgumentException("A BufferedCoordinate2D can only have two components.");
+                throw new ArgumentException(
+                    "A BufferedCoordinate2D can only have two components.");
             }
 
             return getVertexInternal((Double)components[0], (Double)components[1]);
@@ -347,7 +355,8 @@ namespace NetTopologySuite.Coordinates
         {
             if (!ReferenceEquals(_coordinates, vectorBuffer) && !ReferenceEquals(this, vectorBuffer))
             {
-                throw new ArgumentException("The buffer must be this BufferedCoordinate2DFactory.");
+                throw new ArgumentException(
+                    "The buffer must be this BufferedCoordinate2DFactory.");
             }
 
             return new BufferedCoordinate2D(this, index);
@@ -357,22 +366,15 @@ namespace NetTopologySuite.Coordinates
 
         internal Double GetOrdinate(Int32 index, Ordinates ordinate)
         {
-            if (ordinate == Ordinates.X)
+            try
             {
-                return (Double)_coordinates[index, 0];
+                Int32 ordinateIndex = _ordinateIndexTable[(Int32) ordinate];
+                return (Double) _coordinates[index, ordinateIndex];
             }
-            
-            if (ordinate == Ordinates.Y)
+            catch(ArgumentOutOfRangeException)
             {
-                return (Double)_coordinates[index, 1];
+                throw new NotSupportedException("Ordinate not supported: " + ordinate);
             }
-
-            if (ordinate == Ordinates.W)
-            {
-                return (Double)_coordinates[index, 2];
-            }
-            
-            throw new NotSupportedException("Ordinate not supported: " + ordinate);
         }
 
         internal BufferedCoordinate2D GetZero()
@@ -385,9 +387,14 @@ namespace NetTopologySuite.Coordinates
             return getVertexInternal(a.X + b.X, a.Y + b.Y);
         }
 
-        internal BufferedCoordinate2D Divide(BufferedCoordinate2D a, BufferedCoordinate2D b)
+        internal static BufferedCoordinate2D Divide(BufferedCoordinate2D a, BufferedCoordinate2D b)
         {
             throw new NotSupportedException();
+        }
+
+        internal BufferedCoordinate2D Divide(BufferedCoordinate2D a, Double b)
+        {
+            return getVertexInternal(a.X / b, a.Y / b);
         }
 
         internal BufferedCoordinate2D GetOne()
@@ -395,34 +402,36 @@ namespace NetTopologySuite.Coordinates
             return getVertexInternal(1, 1);
         }
 
-        internal BufferedCoordinate2D Multiply(BufferedCoordinate2D a, BufferedCoordinate2D b)
+        internal static BufferedCoordinate2D Multiply(BufferedCoordinate2D a, BufferedCoordinate2D b)
         {
             throw new NotImplementedException("Cross-product not implemented");
         }
 
-        internal Boolean GreaterThan(BufferedCoordinate2D a, BufferedCoordinate2D b)
+        internal static Int32 Compare(BufferedCoordinate2D a, BufferedCoordinate2D b)
         {
-            return a.CompareTo(b) > 0;
+            Pair<Double> aValues = new Pair<Double>(a.X, a.Y);
+            Pair<Double> bValues = new Pair<Double>(b.X, b.Y);
+            return _comparer.Compare(aValues, bValues);
         }
 
-        internal Boolean GreaterThanOrEqualTo(BufferedCoordinate2D a, BufferedCoordinate2D b)
+        internal static Boolean GreaterThan(BufferedCoordinate2D a, BufferedCoordinate2D b)
         {
-            return a.CompareTo(b) >= 0;
+            return Compare(a, b) > 0;
         }
 
-        internal Boolean LessThan(BufferedCoordinate2D a, BufferedCoordinate2D b)
+        internal static Boolean GreaterThanOrEqualTo(BufferedCoordinate2D a, BufferedCoordinate2D b)
         {
-            return a.CompareTo(b) < 0;
+            return Compare(a, b) >= 0;
         }
 
-        internal Boolean LessThanOrEqualTo(BufferedCoordinate2D a, BufferedCoordinate2D b)
+        internal static Boolean LessThan(BufferedCoordinate2D a, BufferedCoordinate2D b)
         {
-            return a.CompareTo(b) <= 0;
+            return Compare(a, b) < 0;
         }
 
-        internal BufferedCoordinate2D Divide(BufferedCoordinate2D a, Double b)
+        internal static Boolean LessThanOrEqualTo(BufferedCoordinate2D a, BufferedCoordinate2D b)
         {
-            return getVertexInternal(a.X / b, a.Y / b);
+            return Compare(a, b) <= 0;
         }
 
         #region IEnumerable Members
@@ -442,7 +451,7 @@ namespace NetTopologySuite.Coordinates
                    && vector.Y == _coordinates[vector.Index].Y;
         }
 
-        private IDictionary<Pair<Double>, Int32> createLexicographicIndex()
+        private static IDictionary<Pair<Double>, Int32> createLexicographicIndex()
         {
             return new SortedDictionary<Pair<Double>, Int32>(
                 new LexicographicComparer());
@@ -481,6 +490,14 @@ namespace NetTopologySuite.Coordinates
             BufferedCoordinate2D coord = _coordinates.Add(x, y, 1);
             _lexicographicVertexIndex[new Pair<Double>(coord.X, coord.Y)] = coord.Index;
             return coord;
+        }
+
+        private void initializeOrdinateIndexTable()
+        {
+            _ordinateIndexTable[(Int32)Ordinates.X] = 0;
+            _ordinateIndexTable[(Int32)Ordinates.Y] = 1;
+            _ordinateIndexTable[(Int32)Ordinates.Z] = -1; // flag value to throw exception.
+            _ordinateIndexTable[(Int32)Ordinates.W] = 2;
         }
 
         class LexicographicComparer : IComparer<Pair<Double>>

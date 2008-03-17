@@ -17,8 +17,13 @@ namespace NetTopologySuite.Coordinates
         private readonly IVectorBuffer<BufferedCoordinate2D, DoubleComponent> _buffer;
 
         public BufferedCoordinate2DSequenceFactory()
+            : this(new BufferedCoordinate2DFactory()) { }
+
+        public BufferedCoordinate2DSequenceFactory(BufferedCoordinate2DFactory coordFactory)
         {
-            _coordFactory = new BufferedCoordinate2DFactory();
+            if (coordFactory == null) throw new ArgumentNullException("coordFactory"); 
+            
+            _coordFactory = coordFactory;
             _buffer = _coordFactory.VectorBuffer;
         }
 

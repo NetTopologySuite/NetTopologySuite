@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
@@ -17,6 +18,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public override ICoordinateSequence<TCoordinate> Coordinates
         {
             get { return CoordinatesInternal; }
+        }
+
+        public override IGeometry<TCoordinate> Clone()
+        {
+            MultiCoordinateGeometry<TCoordinate> geom 
+                = Clone() as MultiCoordinateGeometry<TCoordinate>;
+
+            geom._coordinates = _coordinates.Clone();
+
+            return geom;
         }
 
         protected ICoordinateSequence<TCoordinate> CoordinatesInternal

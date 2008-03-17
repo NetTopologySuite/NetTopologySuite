@@ -293,7 +293,7 @@ namespace ManagedBufferedCoordinate2DTests
         }
 
         [Test]
-        public void Creating1MDifferentCoordinatesDoesntKillPerformance()
+        public void Creating1MRandomCoordinatesDoesntKillPerformance()
         {
             BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
             Random random = new MersenneTwister();
@@ -301,22 +301,33 @@ namespace ManagedBufferedCoordinate2DTests
 
             Int32[] times = new Int32[10];
 
+            Double firstAvg = -1;
+            Double secondAvg = -1;
+            Double thirdAvg = -1;
+            Double avg = 0;
+
             for (Int32 i = 0; i < 1000000; i++)
             {
                 timer.Start();
                 factory.Create(random.NextDouble(), random.NextDouble());
                 timer.Stop();
 
-                times[i % 10] = (Int32)timer.ElapsedMilliseconds;
+                times[i % 10] = (Int32)timer.ElapsedTicks;
 
-                if (i >= 10)
-                {
-                    Double avg = Enumerable.Average(times);
-                    Assert.Less(avg, 30.0);
-                }
+                if (i == 9) firstAvg = avg;
+                if (i == 19) secondAvg = avg;
+                if (i == 29) thirdAvg = avg;
+
+                avg = Enumerable.Average(times);
+                Assert.Less(avg, 300000.0); // 30 ms
 
                 timer.Reset();
             }
+
+            Console.WriteLine("First average time to create a coordinate: {0:N4} ms", firstAvg / 10000);
+            Console.WriteLine("Second average time to create a coordinate: {0:N4} ms", secondAvg / 10000);
+            Console.WriteLine("Third average time to create a coordinate: {0:N4} ms", thirdAvg / 10000);
+            Console.WriteLine("Average time to create a coordinate: {0:N4} ms", avg / 10000);
         }
 
         [Test]
@@ -328,22 +339,101 @@ namespace ManagedBufferedCoordinate2DTests
 
             Int32[] times = new Int32[10];
 
+            Double firstAvg = -1;
+            Double secondAvg = -1;
+            Double thirdAvg = -1;
+            Double avg = 0;
+
             for (Int32 i = 0; i < 1000000; i++)
             {
                 timer.Start();
                 factory.Create(random.Next(500, 1000), random.Next(100000, 100500));
                 timer.Stop();
 
-                times[i % 10] = (Int32)timer.ElapsedMilliseconds;
+                times[i % 10] = (Int32)timer.ElapsedTicks;
 
-                if (i >= 10)
-                {
-                    Double avg = Enumerable.Average(times);
-                    Assert.Less(avg, 30.0);
-                }
+                if (i == 9) firstAvg = avg;
+                if (i == 19) secondAvg = avg;
+                if (i == 29) thirdAvg = avg;
+
+                avg = Enumerable.Average(times);
+                Assert.Less(avg, 100000.0); // 10 ms
 
                 timer.Reset();
             }
+
+            Console.WriteLine("First average time to create a coordinate: {0:N4} ms", firstAvg / 10000);
+            Console.WriteLine("Second average time to create a coordinate: {0:N4} ms", secondAvg / 10000);
+            Console.WriteLine("Third average time to create a coordinate: {0:N4} ms", thirdAvg / 10000);
+            Console.WriteLine("Last average time to create a coordinate: {0:N4} ms", avg / 10000);
+        }
+
+        [Test]
+        public void CreatingSequencesWith1MRandomCoordinatesDoesntKillPerformance()
+        {
+            BufferedCoordinate2DFactory coordFactory = new BufferedCoordinate2DFactory();
+            BufferedCoordinate2DSequenceFactory sequenceFactory
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
+
+            Random random = new MersenneTwister();
+
+            List<ICoordinateSequence<BufferedCoordinate2D>> sequences =
+                new List<ICoordinateSequence<BufferedCoordinate2D>>();
+
+            Int32 i = 0;
+
+            // setup sequences
+            for (; i < 10000; i++)
+            {
+                ICoordinateSequence<BufferedCoordinate2D> sequence
+                    = sequenceFactory.Create(250, 2);
+
+                for (Int32 j = 0; j < 250; j++)
+                {
+                    BufferedCoordinate2D coord = coordFactory.Create(
+                        random.Next(420000000, 440000000) / 100.0,
+                        random.Next(3500000, 8000000) / 100.0);
+                    sequence.Add(coord);
+                }
+
+                sequences.Add(sequence);
+            }
+
+            Stopwatch timer = new Stopwatch();
+
+            Int32[] times = new Int32[10];
+
+            Double firstAvg = -1;
+            Double secondAvg = -1;
+            Double thirdAvg = -1;
+            Double avg = 0;
+
+            i = 0;
+
+            foreach (ICoordinateSequence<BufferedCoordinate2D> sequence in sequences)
+            {
+                timer.Start();
+                Assert.IsTrue(sequence.Maximum().GreaterThanOrEqualTo(sequence.Minimum()));
+                timer.Stop();
+
+                times[i % 10] = (Int32)timer.ElapsedTicks;
+
+                if (i == 9) firstAvg = avg;
+                if (i == 19) secondAvg = avg;
+                if (i == 29) thirdAvg = avg;
+
+                avg = Enumerable.Average(times);
+                Assert.Less(avg, 100000.0); // 10 ms
+
+                i++;
+
+                timer.Reset();
+            }
+
+            Console.WriteLine("First average time to compute Minimum and Maximum for a sequence {0:N4} ms", firstAvg / 10000);
+            Console.WriteLine("Second average time to compute Minimum and Maximum for a sequence: {0:N4} ms", secondAvg / 10000);
+            Console.WriteLine("Third average time to compute Minimum and Maximum for a sequence: {0:N4} ms", thirdAvg / 10000);
+            Console.WriteLine("Average time to compute Minimum and Maximum for a sequence: {0:N4} ms", avg / 10000);
         }
 
         [Test]

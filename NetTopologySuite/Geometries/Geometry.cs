@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.CoordinateSystems;
 using GeoAPI.Geometries;
@@ -119,7 +120,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
          where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
                              IComputable<Double, TCoordinate>, IConvertible
     {
-        private static readonly RuntimeTypeHandle[] _sortedClasses = new RuntimeTypeHandle[]
+        private static readonly RuntimeTypeHandle[] _sortedClasses 
+            = new RuntimeTypeHandle[]
             {
                 typeof (IPoint<TCoordinate>).TypeHandle,
                 typeof (IMultiPoint<TCoordinate>).TypeHandle,
@@ -135,9 +137,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         private Object _userData;
         private Extents<TCoordinate> _extents;
         private Int32? _srid;
-        private Dimensions _dimension;
+        //private Dimensions _dimension;
         private IGeometry<TCoordinate> _boundary;
         private Dimensions _boundaryDimension;
+        private ICoordinateSystem<TCoordinate> _spatialReference;
 
         public Geometry(IGeometryFactory<TCoordinate> factory)
         {
@@ -584,8 +587,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             if (clone.ExtentsInternal != null)
             {
-                clone.ExtentsInternal = new Extents<TCoordinate>(
-                    Factory, clone.ExtentsInternal);
+                clone.ExtentsInternal = (Extents<TCoordinate>)ExtentsInternal.Clone();
+            }
+
+            if (clone._boundary != null)
+            {
+                clone._boundary = _boundary.Clone();
+            }
+
+            ICloneable clonableUserData = _userData as ICloneable;
+
+            if (clonableUserData != null)
+            {
+                clone._userData = clonableUserData.Clone();
             }
 
             return clone;
@@ -650,14 +664,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public ICoordinateSystem<TCoordinate> SpatialReference
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get { return _spatialReference; }
+            set { _spatialReference = value; }
         }
 
         #endregion
@@ -710,10 +718,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// The dimension of the class implementing this interface, whether
         /// or not this object is the empty point.
         /// </returns>
-        public virtual Dimensions Dimension
-        {
-            get { return _dimension; }
-        }
+        public abstract Dimensions Dimension { get; }
 
         IGeometry IGeometry.Envelope
         {
