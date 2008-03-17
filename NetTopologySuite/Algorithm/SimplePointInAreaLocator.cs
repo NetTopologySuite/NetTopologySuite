@@ -20,12 +20,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     {
         /// <summary> 
         /// Locate is the main location function.  It handles both single-element
-        /// and multi-element Geometries.  The algorithm for multi-element Geometries
-        /// is more complex, since it has to take into account the boundaryDetermination rule.
+        /// and multi-element <see cref="IGeometry{TCoordinate}"/> instances.
+        /// The algorithm for multi-element geometries is more complex, 
+        /// since it has to take into account the boundary determination rule.
         /// </summary>
         public static Locations Locate<TCoordinate>(TCoordinate p, IGeometry<TCoordinate> geom)
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<Double, TCoordinate>, IConvertible
+                                IComputable<Double, TCoordinate>, IConvertible
         {
             if (geom.IsEmpty)
             {
@@ -40,44 +41,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return Locations.Exterior;
         }
 
-        private static Boolean ContainsPoint<TCoordinate>(TCoordinate p, IGeometry<TCoordinate> geom)
-            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<Double, TCoordinate>, IConvertible
-        {
-            if (geom is IPolygon<TCoordinate>)
-            {
-                return ContainsPointInPolygon(p, (IPolygon<TCoordinate>) geom);
-            }
-            else if (geom is IGeometryCollection<TCoordinate>)
-            {
-                IGeometryCollection<TCoordinate> collection = geom as IGeometryCollection<TCoordinate>;
-                Debug.Assert(collection != null);
-
-                IEnumerator<IGeometry<TCoordinate>> geometryEnumerator
-                    = new GeometryCollectionEnumerator<TCoordinate>(collection);
-
-                while (geometryEnumerator.MoveNext())
-                {
-                    IGeometry<TCoordinate> g2 = geometryEnumerator.Current;
-                    // if(g2 != geom)  
-                    // ---  Diego Guidi say's: Java code tests reference equality: 
-                    //      in C# with operator overloads we tests the object.equals()... more slower!                    
-                    if (!ReferenceEquals(g2, geom))
-                    {
-                        if (ContainsPoint(p, g2))
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-
         public static Boolean ContainsPointInPolygon<TCoordinate>(TCoordinate p, IPolygon<TCoordinate> poly)
             where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<Double, TCoordinate>, IConvertible
+                                IComputable<Double, TCoordinate>, IConvertible
         {
             if (poly.IsEmpty)
             {
@@ -101,6 +67,39 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
 
             return true;
+        }
+
+        public static Boolean ContainsPoint<TCoordinate>(TCoordinate p, IGeometry<TCoordinate> geom)
+            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                                IComputable<Double, TCoordinate>, IConvertible
+        {
+            if (geom is IPolygon<TCoordinate>)
+            {
+                return ContainsPointInPolygon(p, (IPolygon<TCoordinate>) geom);
+            }
+            
+            if (geom is IGeometryCollection<TCoordinate>)
+            {
+                IGeometryCollection<TCoordinate> collection = geom as IGeometryCollection<TCoordinate>;
+                Debug.Assert(collection != null);
+
+                IEnumerator<IGeometry<TCoordinate>> geometryEnumerator
+                    = new GeometryCollectionEnumerator<TCoordinate>(collection);
+
+                while (geometryEnumerator.MoveNext())
+                {
+                    IGeometry<TCoordinate> g2 = geometryEnumerator.Current;
+                    // if(g2 != geom)  
+                    // ---  Diego Guidi says: Java's "!=" operator tests reference equality: 
+                    //      in C# with operator overloads it tests using Object.Equals()... slower!
+                    if (!ReferenceEquals(g2, geom) && ContainsPoint(p, g2))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </summary>
     [Serializable]
     public class Extents<TCoordinate> : IExtents<TCoordinate>, IExtents2D
-            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+            where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
                                 IComputable<Double, TCoordinate>,
                                 IComparable<TCoordinate>, IConvertible
     {
@@ -871,10 +871,25 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public void ExpandToInclude(IEnumerable<TCoordinate> coordinates)
         {
             // TODO: 3D unsafe
-            Double originalXMin = _min[Ordinates.X];
-            Double originalYMin = _min[Ordinates.Y];
-            Double originalXMax = _max[Ordinates.X];
-            Double originalYMax = _max[Ordinates.Y];
+            Double originalXMin;
+            Double originalYMin;
+            Double originalXMax;
+            Double originalYMax;
+
+            if (IsEmpty)
+            {
+                originalXMin = Double.MaxValue;
+                originalYMin = Double.MaxValue;
+                originalXMax = Double.MinValue;
+                originalYMax = Double.MinValue;
+            }
+            else
+            {
+                originalXMin = _min[Ordinates.X];
+                originalYMin = _min[Ordinates.Y];
+                originalXMax = _max[Ordinates.X];
+                originalYMax = _max[Ordinates.Y];
+            }
 
             Double xMin = originalXMin;
             Double yMin = originalYMin;
@@ -895,9 +910,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
 
             if (xMin < originalXMin || yMin < originalYMin)
-	        {
+            {
                 _min = coordFactory.Create(xMin, yMin);
-	        }
+            }
 
             if (xMax > originalXMax || yMax > originalYMax)
             {
@@ -941,7 +956,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             {
                 return false;
             }
-            
+
             TCoordinate minA = Min;
             TCoordinate maxA = Max;
             TCoordinate minB = other.Min;
@@ -1267,15 +1282,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IExtents IExtents.Union(IPoint point)
         {
-            return point == null 
-                ? Clone() 
+            return point == null
+                ? Clone()
                 : _geoFactory.CreateExtents(this, point.Extents);
         }
 
         IExtents IExtents.Union(IExtents box)
         {
-            return box == null 
-                ? Clone() 
+            return box == null
+                ? Clone()
                 : _geoFactory.CreateExtents(this, box);
         }
 

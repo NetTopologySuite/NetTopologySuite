@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
-        private Boolean _isDone = false;
+        private Boolean _isDone;
 
         public void ApplyTo(IGeometry<TCoordinate> geom)
         {
@@ -25,13 +25,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                 return;
             }
 
-            if(geom is IGeometryCollection<TCoordinate>)
-            {
-                IGeometryCollection<TCoordinate> collection = geom as IGeometryCollection<TCoordinate>;
+            IGeometryCollection<TCoordinate> collection = geom as IGeometryCollection<TCoordinate>;
 
-                foreach (IGeometry<TCoordinate> geometry in collection)
+            if (collection != null)
+            {
+                foreach (IGeometry<TCoordinate> component in collection)
                 {
-                    ApplyTo(geometry);
+                    ApplyTo(component);
                 }
             }
             else

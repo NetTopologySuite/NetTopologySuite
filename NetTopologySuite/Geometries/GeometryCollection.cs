@@ -483,7 +483,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public IEnumerator<IGeometry<TCoordinate>> GetEnumerator()
         {
-            return new GeometryCollectionEnumerator<TCoordinate>(this);
+            if (_geometries != null)
+            {
+                foreach (IGeometry<TCoordinate> geometry in _geometries)
+                {
+                    yield return geometry;
+                }
+            }
         }
 
         #endregion
