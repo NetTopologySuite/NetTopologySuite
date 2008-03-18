@@ -146,26 +146,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Equal(otherPoint.Coordinate, Coordinate, tolerance);
         }
 
-        //public override void Apply(ICoordinateFilter<TCoordinate> filter)
-        //{
-        //    if (IsEmpty)
-        //    {
-        //        return;
-        //    }
-
-        //    filter.Filter(Coordinate);
-        //}
-
-        //public override void Apply(IGeometryFilter<TCoordinate> filter)
-        //{
-        //    filter.Filter(this);
-        //}
-
-        //public override void Apply(IGeometryComponentFilter<TCoordinate> filter)
-        //{
-        //    filter.Filter(this);
-        //}
-
         public override IGeometry<TCoordinate> Clone()
         {
             return Factory.CreatePoint(Coordinate);
@@ -230,252 +210,25 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return Coordinate; }
         }
 
-        #endregion
-
-        #region IPoint Members
-
-
-        public int OrdinateCount
+        public Int32 OrdinateCount
         {
             get { throw new NotImplementedException(); }
         }
 
         #endregion
 
-        #region IGeometry Members
+        #region IComputable<Double, IPoint> Members
 
-        IPoint IGeometry.Centroid
-        {
-            get { return Centroid; }
-        }
-
-        IGeometry IGeometry.Envelope
-        {
-            get { return Envelope; }
-        }
-
-        IExtents IGeometry.Extents
-        {
-            get { return Extents; }
-        }
-
-        IGeometryFactory IGeometry.Factory
-        {
-            get { return Factory; }
-        }
-
-        IPrecisionModel IGeometry.PrecisionModel
-        {
-            get { return PrecisionModel; }
-        }
-
-        ICoordinateSystem IGeometry.SpatialReference
-        {
-            get { return SpatialReference; }
-        }
-
-        #endregion
-
-        #region ISpatialOperator Members
-
-        public double Distance(IGeometry g)
-        {
-            throw new NotImplementedException();
-        }
-
-        public new IGeometry Buffer(double distance)
-        {
-            throw new NotImplementedException();
-        }
-
-        IGeometry ISpatialOperator.Buffer(double distance, int quadrantSegments)
-        {
-            throw new NotImplementedException();
-        }
-
-        IGeometry ISpatialOperator.Buffer(double distance, GeoAPI.Operations.Buffer.BufferStyle endCapStyle)
-        {
-            throw new NotImplementedException();
-        }
-
-        IGeometry ISpatialOperator.Buffer(double distance, int quadrantSegments, GeoAPI.Operations.Buffer.BufferStyle endCapStyle)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IGeometry Intersection(IGeometry other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IGeometry Union(IGeometry other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IGeometry Difference(IGeometry other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IGeometry SymmetricDifference(IGeometry other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public new IGeometry ConvexHull()
+        IPoint IComputable<Double, IPoint>.Set(Double value)
         {
             throw new NotImplementedException();
         }
 
         #endregion
 
-        #region ISpatialRelation Members
+        #region IComputable<Double, IPoint> Members
 
-        public Boolean Equals(IGeometry g, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Touches(IGeometry g)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Touches(IGeometry g, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Contains(IGeometry g)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Contains(IGeometry g, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Within(IGeometry g)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Within(IGeometry g, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Disjoint(IGeometry g)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Disjoint(IGeometry g, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Crosses(IGeometry g)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Crosses(IGeometry g, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Overlaps(IGeometry g)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Overlaps(IGeometry g, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Intersects(IGeometry g)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Intersects(IGeometry g, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean IsWithinDistance(IGeometry g, double distance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean IsWithinDistance(IGeometry g, double distance, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean IsCoveredBy(IGeometry g)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean IsCoveredBy(IGeometry g, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Covers(IGeometry g)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Covers(IGeometry g, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Relate(IGeometry g, IntersectionMatrix intersectionPattern)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Relate(IGeometry g, IntersectionMatrix intersectionPattern, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Relate(IGeometry g, string intersectionPattern)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean Relate(IGeometry g, string intersectionPattern, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IntersectionMatrix Relate(IGeometry g)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region ICloneable Members
-
-        object ICloneable.Clone()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IComputable<double,IPoint> Members
-
-        public IPoint Set(double value)
+        IPoint IComputable<IPoint>.Set(Double value)
         {
             throw new NotImplementedException();
         }
@@ -484,7 +237,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region IComputable<IPoint> Members
 
-        public IPoint Abs()
+        IPoint IComputable<IPoint>.Abs()
         {
             throw new NotImplementedException();
         }
@@ -493,7 +246,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region INegatable<IPoint> Members
 
-        public IPoint Negative()
+        IPoint INegatable<IPoint>.Negative()
         {
             throw new NotImplementedException();
         }
@@ -502,7 +255,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region ISubtractable<IPoint> Members
 
-        public IPoint Subtract(IPoint b)
+        IPoint ISubtractable<IPoint>.Subtract(IPoint b)
         {
             throw new NotImplementedException();
         }
@@ -511,7 +264,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region IHasZero<IPoint> Members
 
-        public IPoint Zero
+        IPoint IHasZero<IPoint>.Zero
         {
             get
             {
@@ -524,7 +277,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region IAddable<IPoint> Members
 
-        public IPoint Add(IPoint b)
+        IPoint IAddable<IPoint>.Add(IPoint b)
         {
             throw new NotImplementedException();
         }
@@ -533,7 +286,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region IDivisible<IPoint> Members
 
-        public IPoint Divide(IPoint b)
+        IPoint IDivisible<IPoint>.Divide(IPoint b)
         {
             throw new NotImplementedException();
         }
@@ -542,7 +295,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region IHasOne<IPoint> Members
 
-        public IPoint One
+        IPoint IHasOne<IPoint>.One
         {
             get { throw new NotImplementedException(); }
         }
@@ -551,7 +304,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region IMultipliable<IPoint> Members
 
-        public IPoint Multiply(IPoint b)
+        IPoint IMultipliable<IPoint>.Multiply(IPoint b)
         {
             throw new NotImplementedException();
         }
@@ -560,22 +313,22 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region IBooleanComparable<IPoint> Members
 
-        public Boolean GreaterThan(IPoint value)
+        Boolean IBooleanComparable<IPoint>.GreaterThan(IPoint value)
         {
             throw new NotImplementedException();
         }
 
-        public Boolean GreaterThanOrEqualTo(IPoint value)
+        Boolean IBooleanComparable<IPoint>.GreaterThanOrEqualTo(IPoint value)
         {
             throw new NotImplementedException();
         }
 
-        public Boolean LessThan(IPoint value)
+        Boolean IBooleanComparable<IPoint>.LessThan(IPoint value)
         {
             throw new NotImplementedException();
         }
 
-        public Boolean LessThanOrEqualTo(IPoint value)
+        Boolean IBooleanComparable<IPoint>.LessThanOrEqualTo(IPoint value)
         {
             throw new NotImplementedException();
         }
@@ -591,17 +344,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IPoint IExponential<IPoint>.Log()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         IPoint IExponential<IPoint>.Log(Double newBase)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         IPoint IExponential<IPoint>.Power(Double exponent)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         IPoint IExponential<IPoint>.Sqrt()
@@ -613,21 +366,44 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region IMultipliable<Double, IPoint> Members
 
-        public IPoint Multiply(Double b)
+        IPoint IMultipliable<Double, IPoint>.Multiply(Double b)
         {
-            throw new NotImplementedException();
+            // TODO: need to disambiguate the interface call here...
+            TCoordinate p = ((IMultipliable<Double, TCoordinate>)_coordinate).Multiply(b);
+            return Factory.CreatePoint(p);
         }
 
         #endregion
 
         #region IDivisible<Double, IPoint> Members
 
-        public IPoint Divide(Double b)
+        IPoint IDivisible<Double, IPoint>.Divide(Double b)
         {
             throw new NotImplementedException();
         }
 
         #endregion
+
+        //public override void Apply(ICoordinateFilter<TCoordinate> filter)
+        //{
+        //    if (IsEmpty)
+        //    {
+        //        return;
+        //    }
+
+        //    filter.Filter(Coordinate);
+        //}
+
+        //public override void Apply(IGeometryFilter<TCoordinate> filter)
+        //{
+        //    filter.Filter(this);
+        //}
+
+        //public override void Apply(IGeometryComponentFilter<TCoordinate> filter)
+        //{
+        //    filter.Filter(this);
+        //}
+
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 

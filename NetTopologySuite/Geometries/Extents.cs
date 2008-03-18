@@ -996,6 +996,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public IGeometry<TCoordinate> ToGeometry()
         {
+            if (IsEmpty)
+            {
+                return _geoFactory.CreatePoint();
+            }
+
             ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
             ILinearRing<TCoordinate> shell = _geoFactory.CreateLinearRing(new TCoordinate[]
                           {

@@ -419,7 +419,7 @@ namespace NetTopologySuite.Coordinates
                 {
                     BufferedCoordinate2D current = this[i];
 
-                    if (current.GreaterThan(maxCoord))
+                    if (maxCoord.IsEmpty || current.GreaterThan(maxCoord))
                     {
                         maxIndex = i;
                         maxCoord = current;

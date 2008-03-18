@@ -36,6 +36,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             validateConstruction();
         }
 
+        public override IGeometry<TCoordinate> Clone()
+        {
+            return Factory.CreateLinearRing(Coordinates);
+        }
+
         public override Boolean IsSimple
         {
             get { return true; }

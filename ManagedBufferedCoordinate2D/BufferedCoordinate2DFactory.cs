@@ -38,6 +38,13 @@ namespace NetTopologySuite.Coordinates
             initializeOrdinateIndexTable();
         }
 
+
+        public IVectorBuffer<BufferedCoordinate2D, DoubleComponent> VectorBuffer
+        {
+            get { return _coordinates; }
+        }
+
+        #region IBufferedCoordFactory Members
         public Int32 BitResolution
         {
             get { return _bitResolution; }
@@ -48,13 +55,6 @@ namespace NetTopologySuite.Coordinates
                 _mask = unchecked((Int64) (0xFFFFFFFFFFFFFFFF << shift));
             }
         }
-
-        public IVectorBuffer<BufferedCoordinate2D, DoubleComponent> VectorBuffer
-        {
-            get { return _coordinates; }
-        }
-
-        #region IBufferedCoordFactory Members
 
         public BufferedCoordinate2D Create(Double x, Double y)
         {

@@ -421,6 +421,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             ILinearRing<TCoordinate> shell = _shell.Clone() as ILinearRing<TCoordinate>;
 
+            if (_holes == null)
+            {
+                return Factory.CreatePolygon(shell);
+            }
+
             IEnumerable<ILinearRing<TCoordinate>> holes
                 = Enumerable.Downcast<ILinearRing<TCoordinate>, ILineString<TCoordinate>>(_holes);
 

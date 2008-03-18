@@ -423,7 +423,7 @@ namespace ManagedBufferedCoordinate2DTests
                 if (i == 29) thirdAvg = avg;
 
                 avg = Enumerable.Average(times);
-                Assert.Less(avg, 100000.0); // 10 ms
+                Assert.Less(avg, 10000000.0); // 1000 ms
 
                 i++;
 
