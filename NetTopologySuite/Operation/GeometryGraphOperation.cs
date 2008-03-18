@@ -24,6 +24,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation
             if (g0 == null) throw new ArgumentNullException("g0");
             if (g1 == null) throw new ArgumentNullException("g1");
 
+            _lineIntersector = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(g0.Factory);
+
             // use the most precise model for the result
             if (g0.PrecisionModel.CompareTo(g1.PrecisionModel) >= 0)
             {
@@ -33,13 +35,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation
             {
                 ComputationPrecision = g1.PrecisionModel;
             }
-
-            /*
-            * Use factory of primary point.
-            * Note that this does NOT handle mixed-precision arguments
-            * where the second arg has greater precision than the first.
-            */
-            _lineIntersector = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(g0.Factory);
 
             _arg1 = new GeometryGraph<TCoordinate>(0, g0);
             _arg2 = new GeometryGraph<TCoordinate>(1, g1);

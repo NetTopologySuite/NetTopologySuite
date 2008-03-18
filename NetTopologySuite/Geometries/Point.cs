@@ -10,12 +10,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Basic implementation of <see cref="IPoint"/>.
     /// </summary>
     [Serializable]
-    public class Point<TCoordinate> : Geometry<TCoordinate>, IPoint<TCoordinate>
+    public class Point<TCoordinate> : Geometry<TCoordinate>, IPoint<TCoordinate>, IPoint2D
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
-        private static readonly TCoordinate emptyCoordinate = default(TCoordinate);
-
         /// <summary>
         /// Represents an empty <see cref="Point{TCoordinate}"/>.
         /// </summary>
@@ -221,7 +219,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 else
                 {
                     throw new ArgumentOutOfRangeException("ordinate", ordinate,
-                                                          "Ordinate value doesn't exist in this point");
+                                                          "Ordinate value doesn't "+
+                                                          "exist in this point");
                 }
             }
         }
@@ -247,32 +246,32 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IPoint IGeometry.Centroid
         {
-            get { throw new NotImplementedException(); }
+            get { return Centroid; }
         }
 
         IGeometry IGeometry.Envelope
         {
-            get { throw new NotImplementedException(); }
+            get { return Envelope; }
         }
 
         IExtents IGeometry.Extents
         {
-            get { throw new NotImplementedException(); }
+            get { return Extents; }
         }
 
         IGeometryFactory IGeometry.Factory
         {
-            get { throw new NotImplementedException(); }
+            get { return Factory; }
         }
 
         IPrecisionModel IGeometry.PrecisionModel
         {
-            get { throw new NotImplementedException(); }
+            get { return PrecisionModel; }
         }
 
         ICoordinateSystem IGeometry.SpatialReference
         {
-            get { throw new NotImplementedException(); }
+            get { return SpatialReference; }
         }
 
         #endregion

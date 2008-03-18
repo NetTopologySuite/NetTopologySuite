@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Utilities;
+using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using NPack;
 using NPack.Interfaces;
 using GeoAPI.DataStructures;
@@ -1149,7 +1150,38 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public void ExpandToInclude(params Double[] coordinate)
         {
-            throw new NotImplementedException();
+            if (coordinate == null) throw new ArgumentNullException("coordinate");
+
+            ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
+
+            if (coordinate.Length % 3 == 0)
+            {
+                throw new NotImplementedException();
+            }
+            else if (coordinate.Length % 2 == 0)
+            {
+                for (Int32 i = 0; i < coordinate.Length; i *= 2)
+                {
+                    Double x = coordinate[i];
+                    Double y = coordinate[i + 1];
+                    TCoordinate coord = coordFactory.Create(x, y);
+                    ExpandToInclude(coord);
+                }
+            }
+            else
+            {
+                throw new ArgumentException(
+                    "Invalid number of coordinate components: " + coordinate.Length);
+            }
+        }
+
+        void IExtents.ExpandToInclude(ICoordinateSequence sequence)
+        {
+            ICoordinateSequenceFactory<TCoordinate> coordSeqFac 
+                = _geoFactory.CoordinateSequenceFactory;
+            ICoordinateSequence<TCoordinate> converted 
+                = GenericInterfaceConverter<TCoordinate>.Convert(sequence, coordSeqFac);
+            ExpandToInclude(converted);
         }
 
         void IExtents.ExpandToInclude(IExtents other)

@@ -151,6 +151,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             _factory = factory;
             _srid = factory.Srid;
+            _spatialReference = factory.SpatialReference;
         }
 
         public override Boolean Equals(Object obj)

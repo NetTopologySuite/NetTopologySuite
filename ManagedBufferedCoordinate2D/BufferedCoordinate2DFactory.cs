@@ -12,8 +12,10 @@ using BitConverter = GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Coordinates
 {
+    using IBufferedCoordFactory = ICoordinateFactory<BufferedCoordinate2D>;
+
     public class BufferedCoordinate2DFactory
-        : ICoordinateFactory<BufferedCoordinate2D>, IVectorBuffer<BufferedCoordinate2D, DoubleComponent>,
+        : IBufferedCoordFactory, IVectorBuffer<BufferedCoordinate2D, DoubleComponent>,
           IBufferedVectorFactory<BufferedCoordinate2D, DoubleComponent>
     {
         public static readonly Int32 MaximumBitResolution = 52;
@@ -52,7 +54,7 @@ namespace NetTopologySuite.Coordinates
             get { return _coordinates; }
         }
 
-        #region ICoordinateFactory<BufferedCoordinate2D> Members
+        #region IBufferedCoordFactory Members
 
         public BufferedCoordinate2D Create(Double x, Double y)
         {
@@ -353,7 +355,8 @@ namespace NetTopologySuite.Coordinates
 
         public BufferedCoordinate2D CreateBufferedVector(IVectorBuffer<BufferedCoordinate2D, DoubleComponent> vectorBuffer, Int32 index)
         {
-            if (!ReferenceEquals(_coordinates, vectorBuffer) && !ReferenceEquals(this, vectorBuffer))
+            if (!ReferenceEquals(_coordinates, vectorBuffer) 
+                && !ReferenceEquals(this, vectorBuffer))
             {
                 throw new ArgumentException(
                     "The buffer must be this BufferedCoordinate2DFactory.");

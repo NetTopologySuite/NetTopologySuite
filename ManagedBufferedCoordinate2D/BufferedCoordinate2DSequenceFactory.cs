@@ -119,6 +119,18 @@ namespace NetTopologySuite.Coordinates
             return Create(null, coordinates, true, true);
         }
 
+        public IBufferedCoordSequence Create(ICoordinateSequence coordSeq)
+        {
+            IBufferedCoordSequence converted = Create(coordSeq.Count, coordSeq.Dimension);
+
+            foreach (ICoordinate coordinate in coordSeq)
+            {
+                converted.Add(coordinate);
+            }
+
+            return converted;
+        }
+
         public IBufferedCoordSequence Create(params BufferedCoordinate2D[] coordinates)
         {
             return Create(null, coordinates, true, true);

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Algorithm;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
@@ -16,8 +17,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </remarks>
     [Serializable]
     public class LinearRing<TCoordinate> : LineString<TCoordinate>, ILinearRing<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         /// <summary>
         /// Constructs a <see cref="LinearRing{TCoordinate}" /> with the given coordinates.
@@ -42,6 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public override OgcGeometryType GeometryType
         {
             // NOTE: this was "LinearRing", but this value should suffice
+            // There is no "LinearRing" type in the OGC SF spec
             get { return OgcGeometryType.LineString; }
         }
 
@@ -52,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Boolean IsCcw
         {
-            get { throw new NotImplementedException(); }
+            get { return CGAlgorithms<TCoordinate>.IsCCW(Coordinates); }
         }
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */

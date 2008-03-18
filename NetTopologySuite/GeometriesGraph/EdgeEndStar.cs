@@ -112,7 +112,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public void ComputeLabeling(params GeometryGraph<TCoordinate>[] geom)
         {
-            ComputeLabeling(geom);
+            ComputeLabeling(geom as IEnumerable<GeometryGraph<TCoordinate>>);
         }
 
         public virtual void ComputeLabeling(IEnumerable<GeometryGraph<TCoordinate>> geom)

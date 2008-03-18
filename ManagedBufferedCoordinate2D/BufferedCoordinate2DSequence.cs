@@ -10,7 +10,11 @@ using NPack.Interfaces;
 
 namespace NetTopologySuite.Coordinates
 {
-    public class BufferedCoordinate2DSequence : ICoordinateSequence<BufferedCoordinate2D>
+    using IBufferedCoordFactory = ICoordinateFactory<BufferedCoordinate2D>;
+    using IBufferedCoordSequence = ICoordinateSequence<BufferedCoordinate2D>;
+    using IBufferedCoordSequenceFactory = ICoordinateSequenceFactory<BufferedCoordinate2D>;
+
+    public class BufferedCoordinate2DSequence : IBufferedCoordSequence
     {
         private readonly IVectorBuffer<BufferedCoordinate2D, DoubleComponent> _buffer;
         private readonly BufferedCoordinate2DSequenceFactory _factory;
@@ -31,9 +35,9 @@ namespace NetTopologySuite.Coordinates
             _sequence = new List<Int32>(size);
         }
 
-        #region ICoordinateSequence<BufferedCoordinate2D> Members
+        #region IBufferedCoordSequence Members
 
-        public ICoordinateSequenceFactory<BufferedCoordinate2D> CoordinateSequenceFactory
+        public IBufferedCoordSequenceFactory CoordinateSequenceFactory
         {
             get { return _factory; }
         }
@@ -56,11 +60,12 @@ namespace NetTopologySuite.Coordinates
         {
             checkFrozen();
             _sequence.Add(item.Index);
-            onSequenceChanged();
+            OnSequenceChanged();
         }
 
         public void AddRange(IEnumerable<BufferedCoordinate2D> coordinates,
-            Boolean allowRepeated, Boolean reverse)
+                             Boolean allowRepeated, 
+                             Boolean reverse)
         {
             checkFrozen();
 
@@ -88,7 +93,7 @@ namespace NetTopologySuite.Coordinates
                 _sequence.Add(coordinate.Index);
             }
 
-            onSequenceChanged();
+            OnSequenceChanged();
         }
 
         public void AddRange(IEnumerable<BufferedCoordinate2D> coordinates)
@@ -100,11 +105,10 @@ namespace NetTopologySuite.Coordinates
                 _sequence.Add(coordinate.Index);
             }
 
-            onSequenceChanged();
+            OnSequenceChanged();
         }
 
-        public ICoordinateSequence<BufferedCoordinate2D> AddSequence(
-            ICoordinateSequence<BufferedCoordinate2D> sequence)
+        public IBufferedCoordSequence AddSequence(IBufferedCoordSequence sequence)
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
 
@@ -127,7 +131,7 @@ namespace NetTopologySuite.Coordinates
                 _sequence.AddRange(buf2DSeq._sequence);
             }
 
-            onSequenceChanged();
+            OnSequenceChanged();
             return this;
         }
 
@@ -139,10 +143,10 @@ namespace NetTopologySuite.Coordinates
         public void Clear()
         {
             _sequence.Clear();
-            onSequenceChanged();
+            OnSequenceChanged();
         }
 
-        public ICoordinateSequence<BufferedCoordinate2D> Clone()
+        public IBufferedCoordSequence Clone()
         {
             BufferedCoordinate2DSequence clone
                 = new BufferedCoordinate2DSequence(_factory, _buffer);
@@ -164,7 +168,7 @@ namespace NetTopologySuite.Coordinates
             if (_sequence[0] != _sequence[Count - 1])
             {
                 _sequence.Add(_sequence[0]);
-                onSequenceChanged();
+                OnSequenceChanged();
             }
         }
 
@@ -174,7 +178,7 @@ namespace NetTopologySuite.Coordinates
             return _sequence.Contains(coordIndex);
         }
 
-        public Int32 CompareTo(ICoordinateSequence<BufferedCoordinate2D> other)
+        public Int32 CompareTo(IBufferedCoordSequence other)
         {
             Int32 size1 = Count;
             Int32 size2 = other.Count;
@@ -207,7 +211,7 @@ namespace NetTopologySuite.Coordinates
             return 0;
         }
 
-        public ICoordinateFactory<BufferedCoordinate2D> CoordinateFactory
+        public IBufferedCoordFactory CoordinateFactory
         {
             get { return _factory.CoordinateFactory; }
         }
@@ -232,7 +236,7 @@ namespace NetTopologySuite.Coordinates
             get { return 2; }
         }
 
-        public Boolean Equals(ICoordinateSequence<BufferedCoordinate2D> other)
+        public Boolean Equals(IBufferedCoordSequence other)
         {
             if (ReferenceEquals(other, null))
             {
@@ -354,7 +358,7 @@ namespace NetTopologySuite.Coordinates
         {
             checkFrozen();
             _sequence.Insert(index, item.Index);
-            onSequenceChanged();
+            OnSequenceChanged();
         }
 
         public BufferedCoordinate2D this[Int32 index]
@@ -370,7 +374,7 @@ namespace NetTopologySuite.Coordinates
                 checkIndex(index, "index");
 
                 _sequence[index] = _buffer.Add(value);
-                onSequenceChanged();
+                OnSequenceChanged();
             }
         }
 
@@ -428,8 +432,7 @@ namespace NetTopologySuite.Coordinates
             return this[_max];
         }
 
-        public ICoordinateSequence<BufferedCoordinate2D> Merge(
-            ICoordinateSequence<BufferedCoordinate2D> other)
+        public IBufferedCoordSequence Merge(IBufferedCoordSequence other)
         {
             throw new NotImplementedException();
         }
@@ -462,7 +465,7 @@ namespace NetTopologySuite.Coordinates
         {
             checkFrozen();
             Boolean result = _sequence.Remove(item.Index);
-            onSequenceChanged();
+            OnSequenceChanged();
             return result;
         }
 
@@ -470,7 +473,7 @@ namespace NetTopologySuite.Coordinates
         {
             checkFrozen();
             _sequence.RemoveAt(index);
-            onSequenceChanged();
+            OnSequenceChanged();
         }
 
         /// <summary>
@@ -488,10 +491,10 @@ namespace NetTopologySuite.Coordinates
                 swap(i, last - i);
             }
 
-            onSequenceChanged();
+            OnSequenceChanged();
         }
 
-        public ICoordinateSequence<BufferedCoordinate2D> Reversed
+        public IBufferedCoordSequence Reversed
         {
             get
             {
@@ -504,18 +507,18 @@ namespace NetTopologySuite.Coordinates
         public void Scroll(BufferedCoordinate2D coordinateToBecomeFirst)
         {
             checkFrozen();
-            onSequenceChanged();
+            OnSequenceChanged();
             throw new NotImplementedException();
         }
 
         public void Scroll(Int32 indexToBecomeFirst)
         {
             checkFrozen();
-            onSequenceChanged();
+            OnSequenceChanged();
             throw new NotImplementedException();
         }
 
-        public ICoordinateSequence<BufferedCoordinate2D> Slice(Int32 startIndex, Int32 endIndex)
+        public IBufferedCoordSequence Slice(Int32 startIndex, Int32 endIndex)
         {
             checkIndexes(endIndex, startIndex);
 
@@ -554,10 +557,10 @@ namespace NetTopologySuite.Coordinates
                 this[i] = coords[i];
             }
 
-            onSequenceChanged();
+            OnSequenceChanged();
         }
 
-        public ICoordinateSequence<BufferedCoordinate2D> WithoutDuplicatePoints()
+        public IBufferedCoordSequence WithoutDuplicatePoints()
         {
             Int32[] indexes = _sequence.ToArray();
             Array.Sort(indexes, 0, indexes.Length);
@@ -589,18 +592,20 @@ namespace NetTopologySuite.Coordinates
             return noDupes;
         }
 
-        public ICoordinateSequence<BufferedCoordinate2D> WithoutRepeatedPoints()
+        public IBufferedCoordSequence WithoutRepeatedPoints()
         {
-            throw new NotImplementedException();
+            return _factory.Create(this, false, true);
         }
 
         public event EventHandler SequenceChanged;
 
         #endregion
 
-        IExtents ICoordinateSequence.ExpandExtents(IExtents env)
+        IExtents ICoordinateSequence.ExpandExtents(IExtents extents)
         {
-            throw new NotImplementedException();
+            IExtents expanded = extents;
+            expanded.ExpandToInclude(this);
+            return expanded;
         }
 
         ICoordinateSequence ICoordinateSequence.Merge(ICoordinateSequence other)
@@ -615,7 +620,7 @@ namespace NetTopologySuite.Coordinates
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
 
         ICoordinate ICoordinateSequence.this[Int32 index]
@@ -624,6 +629,8 @@ namespace NetTopologySuite.Coordinates
             set
             {
                 checkFrozen();
+                throw new NotImplementedException();
+                OnSequenceChanged();
             }
         }
 
@@ -633,6 +640,8 @@ namespace NetTopologySuite.Coordinates
             set
             {
                 checkFrozen();
+                throw new NotImplementedException();
+                OnSequenceChanged();
             }
         }
 
@@ -643,7 +652,7 @@ namespace NetTopologySuite.Coordinates
             if (value is BufferedCoordinate2D)
             {
                 BufferedCoordinate2D coord = (BufferedCoordinate2D)value;
-                Add(coord);
+                Add(coord); // OnSequenceChanged() called here
                 return _sequence.Count - 1;
             }
 
@@ -653,6 +662,8 @@ namespace NetTopologySuite.Coordinates
         void IList.Remove(Object value)
         {
             checkFrozen();
+            throw new NotImplementedException();
+            OnSequenceChanged();
         }
 
         Boolean IList.Contains(Object value)
@@ -720,7 +731,7 @@ namespace NetTopologySuite.Coordinates
             return Clone();
         }
 
-        private void onSequenceChanged()
+        protected void OnSequenceChanged()
         {
             EventHandler e = SequenceChanged;
 
@@ -756,7 +767,8 @@ namespace NetTopologySuite.Coordinates
             if (index < 0 || index >= Count)
             {
                 throw new ArgumentOutOfRangeException(parameterName, index,
-                                                      "Index must be between 0 and Count - 1.");
+                                                      "Index must be between 0 and "+
+                                                      "Count - 1.");
             }
         }
 

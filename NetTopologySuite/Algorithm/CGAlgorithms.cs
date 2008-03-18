@@ -166,6 +166,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 	            {
 	                firstIsSet = true;
 	                first = coordinate;
+                    highPoint = first;
 	            }
 
                 previous = current;
