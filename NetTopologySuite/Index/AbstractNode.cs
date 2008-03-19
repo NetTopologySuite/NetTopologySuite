@@ -290,7 +290,15 @@ namespace GisSharpBlog.NetTopologySuite.Index
 
         protected List<ISpatialIndexNode<TBounds, TItem>> ChildrenInternal
         {
-            get { return _subNodes; }
+            get
+            {
+                if (_subNodes == null)
+                {
+                    EnsureSubNodes();
+                }
+                
+                return _subNodes;
+            }
         }
 
         protected void EnsureItems()

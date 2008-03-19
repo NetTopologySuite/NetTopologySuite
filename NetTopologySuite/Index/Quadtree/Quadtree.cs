@@ -124,7 +124,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             return new Extents<TCoordinate>(geoFactory, minx, maxx, miny, maxy);
         }
 
-        private readonly Root<TCoordinate, QuadTreeEntry> _root = new Root<TCoordinate, QuadTreeEntry>();
+        private readonly Root<TCoordinate, QuadTreeEntry> _root;
 
         /// <summary>
         /// minExtent is the minimum envelope extent of all items
@@ -135,12 +135,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// only one feature will be inserted with this value.
         /// </summary>
         private Double _minExtent = 1.0;
-        private Boolean _isDisposed = false;
+        private Boolean _isDisposed;
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
 
         public Quadtree(IGeometryFactory<TCoordinate> geoFactory)
         {
             _geoFactory = geoFactory;
+            _root = new Root<TCoordinate, QuadTreeEntry>(_geoFactory);
         }
 
         #region IDisposable Members
@@ -201,11 +202,12 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             }
         }
 
-        public void Insert(IExtents<TCoordinate> itemExtents, TItem item)
+        public void Insert(TItem item)
         {
+            IExtents<TCoordinate> itemExtents = item.Bounds;
             collectStats(itemExtents);
             IExtents<TCoordinate> insertExtents = EnsureExtent(_geoFactory, itemExtents, _minExtent);
-            _root.Insert(new QuadTreeEntry(item, itemExtents));
+            _root.Insert(new QuadTreeEntry(item, insertExtents));
         }
 
         /// <summary> 
@@ -230,6 +232,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             {
                 yield return entry.Item;
             }
+        }
+
+        public IEnumerable<TResult> Query<TResult>(IExtents<TCoordinate> bounds, Func<TItem, TResult> selector)
+        {
+            throw new NotImplementedException();
         }
 
         public IEnumerable<TItem> Query(IExtents<TCoordinate> query, Predicate<TItem> filter)
@@ -279,20 +286,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         #region IEnumerable Members
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region ISpatialIndex<IExtents<TCoordinate>,TItem> Members
-
-        public void Insert(TItem item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<TResult> Query<TResult>(IExtents<TCoordinate> bounds, Func<TItem, TResult> selector)
         {
             throw new NotImplementedException();
         }

@@ -45,5 +45,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                 }
             }
         }
+
+        public static IGeometry<TCoordinate> Convert(IGeometry other)
+        {
+            if (!(other is IGeometry<TCoordinate>))
+            {
+                throw new ArgumentException(
+                    "Parameter must be an IGeometry<TCoordinate> instance.",
+                    "other");
+            }
+
+            return other as IGeometry<TCoordinate>;
+        }
     }
 }

@@ -9,6 +9,7 @@ using GeoAPI.IO.WellKnownBinary;
 using GeoAPI.IO.WellKnownText;
 using GeoAPI.Operations.Buffer;
 using GisSharpBlog.NetTopologySuite.Algorithm;
+using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using GisSharpBlog.NetTopologySuite.Operation.Buffer;
 using GisSharpBlog.NetTopologySuite.Operation.Distance;
 using GisSharpBlog.NetTopologySuite.Operation.Overlay;
@@ -1783,14 +1784,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         private static IGeometry<TCoordinate> convertIGeometry(IGeometry other)
         {
-            if (!(other is IGeometry<TCoordinate>))
-            {
-                throw new ArgumentException(
-                    "Parameter must be an IGeometry<TCoordinate> instance.",
-                    "other");
-            }
-
-            return other as IGeometry<TCoordinate>;
+            return GenericInterfaceConverter<TCoordinate>.Convert(other);
         }
 
         /// <summary>

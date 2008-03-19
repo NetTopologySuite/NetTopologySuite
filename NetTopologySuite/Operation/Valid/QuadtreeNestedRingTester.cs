@@ -95,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
             foreach (ILinearRing<TCoordinate> ring in _rings)
             {
-                _index.Insert(ring.Extents, ring);
+                _index.Insert(ring);
             }
         }
     }

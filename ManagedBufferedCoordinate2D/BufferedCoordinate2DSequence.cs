@@ -25,14 +25,19 @@ namespace NetTopologySuite.Coordinates
 
         internal BufferedCoordinate2DSequence(BufferedCoordinate2DSequenceFactory factory,
                                               IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer)
-            : this(8, factory, buffer) { }
+            : this(0, factory, buffer) { }
 
         internal BufferedCoordinate2DSequence(Int32 size, BufferedCoordinate2DSequenceFactory factory,
                                               IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer)
         {
             _factory = factory;
             _buffer = buffer;
-            _sequence = new List<Int32>(size);
+            _sequence = new List<Int32>(Math.Max(size, 8));
+
+            for (Int32 i = 0; i < size; i++)
+            {
+                _sequence.Add(-1);
+            }
         }
 
         #region IBufferedCoordSequence Members
@@ -183,8 +188,8 @@ namespace NetTopologySuite.Coordinates
             Int32 size1 = Count;
             Int32 size2 = other.Count;
 
-            Int32 dim1 = Dimension;
-            Int32 dim2 = other.Dimension;
+            Int32 dim1 = (Int32)Dimension;
+            Int32 dim2 = (Int32)other.Dimension;
 
             // lower dimension is less than higher
             if (dim1 < dim2) return -1;
@@ -231,9 +236,9 @@ namespace NetTopologySuite.Coordinates
             get { return _sequence.Count; }
         }
 
-        public Int32 Dimension
+        public CoordinateDimensions Dimension
         {
-            get { return 2; }
+            get { return CoordinateDimensions.Two; }
         }
 
         public Boolean Equals(IBufferedCoordSequence other)
@@ -366,7 +371,11 @@ namespace NetTopologySuite.Coordinates
             get
             {
                 checkIndex(index, "index");
-                return _buffer[_sequence[index]];
+                Int32 bufferIndex = _sequence[index];
+
+                return bufferIndex < 0 
+                    ? new BufferedCoordinate2D() 
+                    : _buffer[bufferIndex];
             }
             set
             {

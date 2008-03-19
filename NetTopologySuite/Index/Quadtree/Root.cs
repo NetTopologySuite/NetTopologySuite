@@ -19,12 +19,15 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         where TItem : IBoundable<IExtents<TCoordinate>>
     {
         // the singleton root quad is centred at the origin.
-        private static readonly TCoordinate _origin 
-            = Coordinates<TCoordinate>.DefaultCoordinateFactory.Create(0.0, 0.0);
+        private readonly TCoordinate _origin;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
 
-        public Root() : base(null)
+        public Root(IGeometryFactory<TCoordinate> geoFactory) 
+            : base(null)
         {
-            
+            // TODO: 3D unsafe
+            _geoFactory = geoFactory;
+            _origin = _geoFactory.CoordinateFactory.Create(0, 0);
         }
 
         /// <summary> 
@@ -54,7 +57,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             if (node == null || !node.Bounds.Contains(item.Bounds))
             {
                 Node<TCoordinate, TItem> largerNode 
-                    = Node<TCoordinate, TItem>.CreateExpanded(Bounds.Factory, node, item.Bounds);
+                    = Node<TCoordinate, TItem>.CreateExpanded(_geoFactory, 
+                                                              node, 
+                                                              item.Bounds);
                 ChildrenInternal[index] = largerNode;
             }
 
@@ -63,7 +68,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             * contains the extents for the item.  Insert the item into the tree 
             * at this subnode.
             */
-            insertContained(ChildrenInternal[index] as Node<TCoordinate, TItem>, item.Bounds, item);
+            Node<TCoordinate, TItem> subQuad = ChildrenInternal[index] as Node<TCoordinate, TItem>;
+            insertContained(subQuad, item.Bounds, item);
         }
 
         public override Boolean Intersects(IExtents<TCoordinate> bounds)
@@ -109,7 +115,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 
         protected override IExtents<TCoordinate> ComputeBounds()
         {
-            throw new NotImplementedException();
+            IExtents<TCoordinate> bounds = _geoFactory.CreateExtents();
+
+            foreach (ISpatialIndexNode<IExtents<TCoordinate>, TItem> node in ChildrenInternal)
+            {
+                bounds.ExpandToInclude(node.Bounds);
+            }
+
+            return bounds;
         }
     }
 }

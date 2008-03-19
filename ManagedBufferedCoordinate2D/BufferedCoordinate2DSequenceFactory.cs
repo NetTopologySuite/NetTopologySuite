@@ -34,13 +34,13 @@ namespace NetTopologySuite.Coordinates
             get { return _coordFactory; }
         }
 
-        public IBufferedCoordSequence Create(Int32 dimension)
+        public IBufferedCoordSequence Create(CoordinateDimensions dimension)
         {
             checkDimension(dimension);
             return new BufferedCoordinate2DSequence(this, _buffer);
         }
 
-        public IBufferedCoordSequence Create(Int32 size, Int32 dimension)
+        public IBufferedCoordSequence Create(Int32 size, CoordinateDimensions dimension)
         {
             checkDimension(dimension);
             return new BufferedCoordinate2DSequence(size, this, _buffer);
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Coordinates
 
         public IBufferedCoordSequence Create(IBufferedCoordSequence coordSeq)
         {
-            IBufferedCoordSequence newSequence = Create(coordSeq.Count, 2);
+            IBufferedCoordSequence newSequence = Create(coordSeq.Count, CoordinateDimensions.Two);
             newSequence.AddSequence(coordSeq);
             return newSequence;
         }
@@ -58,7 +58,7 @@ namespace NetTopologySuite.Coordinates
                                              Boolean allowRepeated, 
                                              Boolean direction)
         {
-            IBufferedCoordSequence newSequence = Create(2);
+            IBufferedCoordSequence newSequence = Create(CoordinateDimensions.Two);
 
             BufferedCoordinate2D lastCoord = new BufferedCoordinate2D();
 
@@ -140,12 +140,12 @@ namespace NetTopologySuite.Coordinates
 
         #region ICoordinateSequenceFactory Members
 
-        ICoordinateSequence ICoordinateSequenceFactory.Create(Int32 dimension)
+        ICoordinateSequence ICoordinateSequenceFactory.Create(CoordinateDimensions dimension)
         {
             return Create(dimension);
         }
 
-        ICoordinateSequence ICoordinateSequenceFactory.Create(Int32 size, Int32 dimension)
+        ICoordinateSequence ICoordinateSequenceFactory.Create(Int32 size, CoordinateDimensions dimension)
         {
             return Create(size, dimension);
         }
@@ -170,12 +170,13 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
-        private static void checkDimension(Int32 dimension)
+        private static void checkDimension(CoordinateDimensions dimension)
         {
-            if (dimension != 2)
+            if (dimension != CoordinateDimensions.Two)
             {
                 throw new ArgumentOutOfRangeException("dimension", dimension,
-                                                      "Dimension can only be 2 for this factory.");
+                                                      "Dimension can only be 2 for "+
+                                                      "this factory.");
             }
         }
 

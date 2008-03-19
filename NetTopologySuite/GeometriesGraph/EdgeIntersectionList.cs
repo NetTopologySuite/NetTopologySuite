@@ -92,33 +92,35 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public Edge<TCoordinate> CreateSplitEdge(EdgeIntersection<TCoordinate> ei0, EdgeIntersection<TCoordinate> ei1)
         {
-            Int32 npts = ei1.SegmentIndex - ei0.SegmentIndex + 2;
+            Int32 pointCount = ei1.SegmentIndex - ei0.SegmentIndex + 2;
             TCoordinate lastSegStartPt = _edge.Coordinates[ei1.SegmentIndex];
 
             // if the last intersection point is not equal to the its segment start pt,
             // add it to the points list as well.
             // (This check is needed because the distance metric is not totally reliable!)
             // The check for point equality is 2D only - Z values are ignored
-            Boolean useIntPt1 = ei1.Distance > 0.0 || ! ei1.Coordinate.Equals(lastSegStartPt);
+            Boolean useIntPt1 = ei1.Distance > 0.0 
+                                || ! ei1.Coordinate.Equals(lastSegStartPt);
 
             if (! useIntPt1)
             {
-                npts--;
+                pointCount--;
             }
             
+            // TODO: 3D unsafe
             ICoordinateSequenceFactory<TCoordinate> factory = _edge.Coordinates.CoordinateSequenceFactory;
-            ICoordinateSequence<TCoordinate> pts = factory.Create(npts);
-            Int32 ipt = 0;
-            pts[ipt++] = factory.CoordinateFactory.Create(ei0.Coordinate);
+            ICoordinateSequence<TCoordinate> pts = factory.Create(pointCount, CoordinateDimensions.Two);
+            Int32 pointIndex = 0;
+            pts[pointIndex++] = factory.CoordinateFactory.Create(ei0.Coordinate);
 
             for (Int32 i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
             {
-                pts[ipt++] = _edge.Coordinates[i];
+                pts[pointIndex++] = _edge.Coordinates[i];
             }
 
             if (useIntPt1)
             {
-                pts[ipt] = ei1.Coordinate;
+                pts[pointIndex] = ei1.Coordinate;
             }
 
             return new Edge<TCoordinate>(_geoFactory, pts, _edge.Label.Value);

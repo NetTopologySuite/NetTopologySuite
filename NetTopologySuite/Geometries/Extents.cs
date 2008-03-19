@@ -824,6 +824,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public IExtents<TCoordinate> Clone()
         {
+            if (IsEmpty)
+            {
+                return new Extents<TCoordinate>(Factory);
+            }
+
             ICoordinateFactory<TCoordinate> coordFactory = Factory.CoordinateFactory;
             TCoordinate cloneMin = coordFactory.Create(_min);
             TCoordinate cloneMax = coordFactory.Create(_max);
@@ -1110,7 +1115,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         ICoordinate IExtents.Center
         {
-            get { throw new NotImplementedException(); }
+            get { return Center; }
         }
 
         public Boolean Contains(params Double[] coordinate)

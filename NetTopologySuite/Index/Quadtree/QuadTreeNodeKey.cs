@@ -6,20 +6,22 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 {
     public class QuadTreeNodeKey<TCoordinate> : AbstractNodeKey<IExtents<TCoordinate>, TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
-            IComputable<Double, TCoordinate>, IDivisible<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible, 
+                            IComputable<Double, TCoordinate>, 
+                            IDivisible<Double, TCoordinate>
     {
         public QuadTreeNodeKey(IExtents<TCoordinate> bounds) 
             : base(bounds) { }
 
         protected override TCoordinate GetBoundsMax()
         {
-            throw new NotImplementedException();
+            return Bounds.Min;
         }
 
         protected override TCoordinate GetBoundsMin()
         {
-            throw new NotImplementedException();
+            return Bounds.Max;
         }
 
         protected override Int32 ComputeLevel(IExtents<TCoordinate> bounds)

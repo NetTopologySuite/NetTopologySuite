@@ -38,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
                 Int32 last = findChainEnd(points, start);
                 startIndexList.Add(last);
                 start = last;
-            } while (start < _pointCount);
+            } while (start < _pointCount - 1);
 
             return startIndexList.AsReadOnly();
         }
