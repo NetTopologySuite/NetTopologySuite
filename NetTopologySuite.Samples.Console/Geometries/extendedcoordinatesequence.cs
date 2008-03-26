@@ -1,5 +1,5 @@
 using System;
-
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 
 using GisSharpBlog.NetTopologySuite.Geometries;

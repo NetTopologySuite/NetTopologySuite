@@ -68,14 +68,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ExternalReferences\$(Configuration)\NPack.dll</HintPath>
     </Reference>
-    <Reference Include="GeoAPI, Version=2.0.0.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ExternalReferences\$(Configuration)\GeoAPI.dll</HintPath>
-    </Reference>
-    <Reference Include="ProjNET, Version=1.0.2794.16965, Culture=neutral, PublicKeyToken=a1f5bdcd9c6f5740, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ExternalReferences\$(Configuration)\ProjNET.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework, Version=2.2.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -84,20 +76,11 @@
   <ItemGroup>
     <Compile Include="Geometries\basicexample.cs" />
     <Compile Include="Geometries\constructionexample.cs" />
-    <Compile Include="Geometries\extendedcoordinate.cs" />
-    <Compile Include="Geometries\extendedcoordinateexample.cs" />
-    <Compile Include="Geometries\extendedcoordinatesequence.cs" />
-    <Compile Include="Geometries\extendedcoordinatesequencefactory.cs" />
     <Compile Include="Geometries\precisionmodelexample.cs" />
     <Compile Include="Geometries\simplemethodsexample.cs" />
     <Compile Include="LinearReferencing\LinearReferencingExample.cs" />
-    <Compile Include="Tests\IO\PostGisTest.cs" />
-    <Compile Include="Tests\IO\ShapeFileReadTest.cs" />
-    <Compile Include="Tests\IO\ShapefileWriteTest.cs" />
     <Compile Include="Tests\Various\BufferTest.cs" />
-    <Compile Include="Tests\Various\CoordinateArraysTest.cs" />
     <Compile Include="Tests\Various\CoversTest.cs" />
-    <Compile Include="Tests\Various\DbfDateTest.cs" />
     <Compile Include="Tests\Various\FormattingTest.cs" />
     <Compile Include="Tests\Various\IntesectIterationTest.cs" />
     <Compile Include="Tests\Various\IsValidTest.cs" />
@@ -108,15 +91,10 @@
     <Compile Include="Tests\Various\RobustLineIntersectorTest.cs" />
     <Compile Include="Tests\Various\OGCTests.cs" />
     <Compile Include="Tests\Various\SRSConversionTest.cs" />
-    <Compile Include="Tests\Various\UnionAggregateTest.cs" />
     <Compile Include="Tests\Various\WKTTest.cs" />
-    <Compile Include="SimpleTests\Attributes\AttributesTest.cs" />
     <Compile Include="Operation\Distance\ClosestPointExample.cs" />
     <Compile Include="Operation\Linemerge\LineMergeExample.cs" />
     <Compile Include="Operation\Poligonize\PolygonizeExample.cs" />
-    <Compile Include="Precision\EnhancedPrecisionOpExample.cs" />
-    <Compile Include="ShapeTests\GMLTesting.cs" />
-    <Compile Include="ShapeTests\ShapeRead.cs" />
     <Compile Include="SimpleTests\BaseSamples.cs" />
     <Compile Include="SimpleTests\Geometries\LineStringSamples.cs" />
     <Compile Include="SimpleTests\Geometries\MultiPointSamples.cs" />
@@ -130,6 +108,18 @@
     <Compile Include="Technique\UnionUsingBuffer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\GeoAPI\src\GeoAPI\GeoAPINoTFS.csproj">
+      <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
+      <Name>GeoAPINoTFS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SharpMap\Proj.Net\ProjNet\ProjNet.csproj">
+      <Project>{E028BDD2-55E1-4E5F-BE31-35FAEC8D6428}</Project>
+      <Name>ProjNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ManagedBufferedCoordinate2D\ManagedBufferedCoordinate2D.csproj">
+      <Project>{8A1C8DC2-9E24-47E9-A51C-AA46E0B0260C}</Project>
+      <Name>ManagedBufferedCoordinate2D</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
       <Name>NetTopologySuite</Name>
@@ -139,6 +129,11 @@
     <Content Include="lib\nunit.framework.dll" />
     <Content Include="Tests\Readme.txt" />
     <Content Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Precision\" />
+    <Folder Include="ShapeTests\" />
+    <Folder Include="SimpleTests\Attributes\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

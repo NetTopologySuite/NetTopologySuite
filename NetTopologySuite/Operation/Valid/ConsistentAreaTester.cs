@@ -75,8 +75,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             {
                 foreach (RelateNode<TCoordinate> node in _nodeGraph.Nodes)
                 {
-
-                    if (!node.Edges.IsAreaLabelsConsistent)
+                    if (!node.Edges.IsAreaLabelsConsistent(_geomGraph.BoundaryNodeRule))
                     {
                         _invalidPoint = (TCoordinate)node.Coordinate.Clone();
                         return false;
@@ -107,7 +106,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                 {
                     foreach (EdgeEndBundle<TCoordinate> eeb in node.Edges)
                     {
-                        if (eeb.EdgeEnds.Count > 1)
+                        if (eeb.EdgeEndsCount > 1)
                         {
                             _invalidPoint = eeb.Edge.Coordinates[0];
                             return true;

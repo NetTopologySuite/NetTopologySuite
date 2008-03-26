@@ -1,12 +1,11 @@
 using System;
-using System.IO;
 using GeoAPI.Coordinates;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     /// <summary> 
-    /// An EdgeIntersection represents a point on an
+    /// An <see cref="EdgeIntersection{TCoordinate}"/> represents a point on an
     /// edge which intersects with another edge.
     /// </summary>
     /// <remarks>
@@ -21,11 +20,45 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </remarks>
     public struct EdgeIntersection<TCoordinate> : IComparable<EdgeIntersection<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly TCoordinate _coordinate;
         private readonly Double _distance;
         private readonly Int32 _segmentIndex;
+
+        /// <summary>
+        /// Creates a new <see cref="EdgeIntersection{TCoordinate}"/>
+        /// described by the given <paramref name="coordinate"/>, 
+        /// <paramref name="segmentIndex"/> of a line segment, and 
+        /// <paramref name="distance"/> along the segment.
+        /// </summary>
+        /// <param name="coordinate">Coordinate of the intersection.</param>
+        /// <param name="segmentIndex">
+        /// Index of the line segment which the edge represents.
+        /// </param>
+        /// <param name="distance">
+        /// Distance along the segment where the intersection is located.
+        /// </param>
+        public EdgeIntersection(TCoordinate coordinate, Int32 segmentIndex, Double distance)
+        {
+            _coordinate = coordinate;
+            _segmentIndex = segmentIndex;
+            _distance = distance;
+        }
+
+        public override String ToString()
+        {
+            return Coordinate + 
+                   " seg # = " + SegmentIndex +
+                   " dist = " + Distance;
+        }
+
+        public override Int32 GetHashCode()
+        {
+            return _coordinate.GetHashCode() ^
+                   _distance.GetHashCode() ^
+                   _segmentIndex.GetHashCode();
+        }
 
         /// <summary>
         /// The point of intersection.
@@ -49,13 +82,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public Double Distance
         {
             get { return _distance; }
-        }
-
-        public EdgeIntersection(TCoordinate coord, Int32 segmentIndex, Double distance)
-        {
-            _coordinate = coord;
-            _segmentIndex = segmentIndex;
-            _distance = distance;
         }
 
         public Int32 CompareTo(EdgeIntersection<TCoordinate> other)
@@ -106,13 +132,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
 
             return false;
-        }
-
-        public void Write(StreamWriter outstream)
-        {
-            outstream.Write(Coordinate);
-            outstream.Write(" seg # = " + SegmentIndex);
-            outstream.WriteLine(" dist = " + Distance);
         }
     }
 }

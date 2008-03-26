@@ -1,8 +1,9 @@
 using System;
-
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 {	
@@ -20,16 +21,25 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 		[STAThread]
 		public static void main(string[] args)
 		{
+		    BufferedCoordinate2DFactory coordFactory = new BufferedCoordinate2DFactory();
 			// create a factory using default values (e.g. floating precision)
-			GeometryFactory fact = new GeometryFactory();
-			
-			IPoint p1 = fact.CreatePoint(new Coordinate(0, 0));
+            IGeometryFactory<BufferedCoordinate2D> fact 
+                = new GeometryFactory<BufferedCoordinate2D>(
+                    new BufferedCoordinate2DSequenceFactory(coordFactory));
+
+            IPoint p1 = fact.CreatePoint(coordFactory.Create(0, 0));
 			Console.WriteLine(p1);
-			
-			IPoint p2 = fact.CreatePoint(new Coordinate(1, 1));
+
+            IPoint p2 = fact.CreatePoint(coordFactory.Create(1, 1));
 			Console.WriteLine(p1);
-			
-			IMultiPoint mpt = fact.CreateMultiPoint(new ICoordinate[]{ new Coordinate(0, 0), new Coordinate(1, 1), });
+
+		    ICoordinate[] coords = new ICoordinate[]
+		                               {
+		                                   coordFactory.Create(0, 0),
+		                                   coordFactory.Create(1, 1),
+		                               };
+
+            IMultiPoint mpt = fact.CreateMultiPoint(coords);
 			Console.WriteLine(mpt);
 		}
 	}

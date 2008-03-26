@@ -20,9 +20,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// segments defined by arrays or lists of <c>Coordinate</c>s.
     /// </summary>    
     [Serializable]
-    public struct LineSegment<TCoordinate> : IEquatable<LineSegment<TCoordinate>>, IComparable<LineSegment<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+    public struct LineSegment<TCoordinate> : IEquatable<LineSegment<TCoordinate>>, 
+                                             IComparable<LineSegment<TCoordinate>>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         private readonly TCoordinate _p0, _p1;
 

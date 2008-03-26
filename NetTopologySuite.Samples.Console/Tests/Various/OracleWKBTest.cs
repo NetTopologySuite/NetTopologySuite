@@ -2,15 +2,13 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-
 using GeoAPI.Geometries;
-
+using GeoAPI.IO.WellKnownBinary;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
-
 using GisSharpBlog.NetTopologySuite.Samples.SimpleTests;
-
+using NetTopologySuite.Coordinates;
 using NUnit.Framework;
+using GeoAPI.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 {
@@ -23,56 +21,61 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         private string blobFile = String.Empty;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:OracleWKBTest"/> class.
-        /// </summary>
-        public OracleWKBTest() : base() { }
-
-        /// <summary>
         /// 
         /// </summary>
         [SetUp]
         public void Init()
         {
-			string blobDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\NetTopologySuite.Samples.Shapefiles\blob\");
-            blobFile = blobDir + @"\blob"; 
+            String relativePath = @"..\..\..\NetTopologySuite.Samples.Shapefiles\blob\";
+            string blobDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath);
+            blobFile = blobDir + @"\blob";
             if (!File.Exists(blobFile))
+            {
                 throw new FileNotFoundException("blob file not found at " + blobDir);
+            }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        [Test]        
+        [Test]
         public void OracleWKBBigIndianReadTest()
         {
             IGeometry result = null;
-            using(Stream stream = new FileStream(blobFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+
+            using (Stream stream = new FileStream(blobFile, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                WKBReader wkbreader = new WKBReader();
+                WkbReader<BufferedCoordinate2D> wkbreader = new WkbReader<BufferedCoordinate2D>(GeoFactory);
                 result = wkbreader.Read(stream);
             }
+
             Debug.WriteLine(result.ToString());
-            Assert.IsNotNull(result);                           
+            Assert.IsNotNull(result);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        [Test] 
+        [Test]
         public void OracleWKBBigIndianWriteTest()
         {
-            ILinearRing shell = Factory.CreateLinearRing(new ICoordinate[] {    new Coordinate(100,100),
-                                                                                new Coordinate(200,100),
-                                                                                new Coordinate(200,200),                
-                                                                                new Coordinate(100,200),
-                                                                                new Coordinate(100,100), });
-            ILinearRing hole = Factory.CreateLinearRing(new ICoordinate[] {     new Coordinate(120,120),
-                                                                                new Coordinate(180,120),
-                                                                                new Coordinate(180,180),                                                                                
-                                                                                new Coordinate(120,180),                                                                
-                                                                                new Coordinate(120,120), });
-            IPolygon polygon = Factory.CreatePolygon(shell, new ILinearRing[] { hole, });                                    
-            WKBWriter writer = new WKBWriter(ByteOrder.BigEndian);
+            ILinearRing<BufferedCoordinate2D> shell = GeoFactory.CreateLinearRing(new BufferedCoordinate2D[]
+                                                             {
+                                                                 CoordFactory.Create(100, 100),
+                                                                 CoordFactory.Create(200, 100),
+                                                                 CoordFactory.Create(200, 200),
+                                                                 CoordFactory.Create(100, 200),
+                                                                 CoordFactory.Create(100, 100),
+                                                             });
+
+            ILinearRing<BufferedCoordinate2D> hole = GeoFactory.CreateLinearRing(new BufferedCoordinate2D[]
+                                                            {
+                                                                CoordFactory.Create(120, 120),
+                                                                CoordFactory.Create(180, 120),
+                                                                CoordFactory.Create(180, 180),
+                                                                CoordFactory.Create(120, 180),
+                                                                CoordFactory.Create(120, 120),
+                                                            });
+
+            IPolygon<BufferedCoordinate2D> polygon = GeoFactory.CreatePolygon(shell, new ILinearRing<BufferedCoordinate2D>[] { hole });
+            WkbWriter<BufferedCoordinate2D> writer = new WkbWriter<BufferedCoordinate2D>(WkbByteOrder.BigEndian);
             byte[] bytes = writer.Write(polygon);
             Assert.IsNotNull(bytes);
             Assert.IsNotEmpty(bytes);

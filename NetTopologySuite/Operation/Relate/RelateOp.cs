@@ -20,17 +20,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             return im;
         }
 
-        private RelateComputer<TCoordinate> relate = null;
+        private readonly RelateComputer<TCoordinate> _relate;
 
         public RelateOp(IGeometry<TCoordinate> g0, IGeometry<TCoordinate> g1)
             : base(g0, g1)
         {
-            relate = new RelateComputer<TCoordinate>(Argument1, Argument2);
+            _relate = new RelateComputer<TCoordinate>(Argument1, Argument2);
         }
 
         public IntersectionMatrix IntersectionMatrix
         {
-            get { return relate.ComputeIntersectionMatrix(); }
+            get { return _relate.ComputeIntersectionMatrix(); }
         }
     }
 }

@@ -1,10 +1,11 @@
 using System;
-
+using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-
+using GeoAPI.IO.WellKnownText;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.Operation.Distance;
+using NetTopologySuite.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Distance
 {
@@ -14,15 +15,15 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Distance
 	/// </summary>	
 	public class ClosestPointExample
 	{		
-		internal static GeometryFactory fact;	
-		internal static WKTReader wktRdr;
+		internal static GeometryFactory<BufferedCoordinate2D> fact;	
+		internal static IWktGeometryReader wktRdr;
 		
         /// <summary>
         /// 
         /// </summary>
         /// <param name="args"></param>
 		[STAThread]
-		public static void main(string[] args)
+		public static void Main(string[] args)
 		{
 			ClosestPointExample example = new ClosestPointExample();
 			example.Run();
@@ -57,16 +58,16 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Distance
 			Console.WriteLine("-------------------------------------");
 			try
 			{
-				IGeometry A = wktRdr.Read(wktA);
-                IGeometry B = wktRdr.Read(wktB);
+                IGeometry<BufferedCoordinate2D> A = wktRdr.Read(wktA) as IGeometry<BufferedCoordinate2D>;
+                IGeometry<BufferedCoordinate2D> B = wktRdr.Read(wktB) as IGeometry<BufferedCoordinate2D>;
 				Console.WriteLine("Geometry A: " + A);
 				Console.WriteLine("Geometry B: " + B);
-				DistanceOp distOp = new DistanceOp(A, B);
+                DistanceOp<BufferedCoordinate2D> distOp = new DistanceOp<BufferedCoordinate2D>(A, B);
 				
 				double distance = distOp.Distance();
 				Console.WriteLine("Distance = " + distance);
 				
-				ICoordinate[] closestPt = distOp.ClosestPoints();
+				Pair<BufferedCoordinate2D>? closestPt = distOp.ClosestPoints();
 				ILineString closestPtLine = fact.CreateLineString(closestPt);
 				Console.WriteLine("Closest points: " + closestPtLine + " (distance = " + closestPtLine.Length + ")");
 			}
@@ -81,8 +82,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Distance
         /// </summary>
 		static ClosestPointExample()
 		{
-			fact = new GeometryFactory();
-			wktRdr = new WKTReader(fact);
+			fact = new GeometryFactory<BufferedCoordinate2D>(
+                new BufferedCoordinate2DSequenceFactory());
+            wktRdr = new WktReader<BufferedCoordinate2D>(fact, null);
 		}
 	}
 }

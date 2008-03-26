@@ -93,6 +93,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BufferedCoordinate2DFactoryTests.cs" />
+    <Compile Include="BufferedCoordinate2DSequenceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

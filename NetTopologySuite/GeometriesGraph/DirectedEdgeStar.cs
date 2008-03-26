@@ -1,30 +1,54 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
+using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Operation.Overlay;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     /// <summary> 
-    /// A DirectedEdgeStar is an ordered list of outgoing DirectedEdges around a node.
+    /// A <see cref="DirectedEdgeStar{TCoordinate}"/> is an ordered list of 
+    /// outgoing <see cref="DirectedEdge{TCoordinate}"/>s around a node.
     /// It supports labeling the edges as well as linking the edges to form both
-    /// MaximalEdgeRings and MinimalEdgeRings.
+    /// <see cref="MaximalEdgeRing{TCoordinate}"/>s and 
+    /// <see cref="MinimalEdgeRing{TCoordinate}"/>s.
     /// </summary>
     public class DirectedEdgeStar<TCoordinate> : EdgeEndStar<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
-        private const Int32 ScanningForIncoming = 1;
-        private const Int32 LinkingToOutgoing = 2;
+        enum DirectedEdgeState
+        {
+            ScanningForIncoming = 1,
+            LinkingToOutgoing = 2
+        }
 
-        private readonly List<DirectedEdge<TCoordinate>> _resultAreaEdgeList = new List<DirectedEdge<TCoordinate>>();
+        private readonly List<DirectedEdge<TCoordinate>> _resultAreaEdgeList 
+            = new List<DirectedEdge<TCoordinate>>();
         private Label _label;
+
+        public override String ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (EdgeEnd<TCoordinate> end in this)
+            {
+                DirectedEdge<TCoordinate> de = end as DirectedEdge<TCoordinate>;
+                Debug.Assert(de != null);
+                sb.Append("out ");
+                sb.AppendLine(de.ToString());
+                sb.Append("in ");
+                sb.AppendLine(de.Sym.ToString());
+            }
+
+            return sb.ToString();
+        }
 
         /// <summary> 
         /// Insert a directed edge in the list.
@@ -190,15 +214,34 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// Traverse the star of DirectedEdges, linking the included edges together.
         /// </summary>
         /// <remarks>
-        /// To link two dirEdges, the next pointer for an incoming dirEdge
+        /// <para>
+        /// To link two directed edges, the next pointer for an incoming directed edge
         /// is set to the next outgoing edge.
+        /// </para>
+        /// <list type="bullet">
+        /// <listheader>
         /// DirEdges are only linked if:
+        /// </listheader>
+        /// <item>
+        /// <description>
         /// they belong to an area (i.e. they have sides)
+        /// </description>
+        /// </item>
+        /// <item>
+        /// <description>
         /// they are marked as being in the result
-        /// Edges are linked in CCW order (the order they are stored).
+        /// </description>
+        /// </item>
+        /// </list>
+        /// <para>
+        /// Edges are linked in CCW order (the order they are stored). 
         /// This means that rings have their face on the Right
-        /// (in other words, the topological location of the face is given by the RHS label of the DirectedEdge).
-        /// PRECONDITION: No pair of dirEdges are both marked as being in the result.
+        /// (in other words, the topological location of the face is given 
+        /// by the RHS label of the DirectedEdge).
+        /// </para>
+        /// <para>
+        /// PRECONDITION: No pair of directed edges are both marked as being in the result.
+        /// </para>
         /// </remarks>
         public void LinkResultDirectedEdges()
         {
@@ -208,7 +251,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             // find first area edge (if any) to start linking at
             DirectedEdge<TCoordinate> firstOut = null;
             DirectedEdge<TCoordinate> incoming = null;
-            Int32 state = ScanningForIncoming;
+            DirectedEdgeState state = DirectedEdgeState.ScanningForIncoming;
 
             // link edges in CCW order
             for (Int32 i = 0; i < resultAreaEdges.Count; i++)
@@ -231,29 +274,29 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
                 switch (state)
                 {
-                    case ScanningForIncoming:
+                    case DirectedEdgeState.ScanningForIncoming:
                         if (!nextIn.IsInResult)
                         {
                             continue;
                         }
                         incoming = nextIn;
-                        state = LinkingToOutgoing;
+                        state = DirectedEdgeState.LinkingToOutgoing;
                         break;
-                    case LinkingToOutgoing:
+                    case DirectedEdgeState.LinkingToOutgoing:
                         if (!nextOut.IsInResult)
                         {
                             continue;
                         }
                         Debug.Assert(incoming != null);
                         incoming.Next = nextOut;
-                        state = ScanningForIncoming;
+                        state = DirectedEdgeState.ScanningForIncoming;
                         break;
                     default:
                         break;
                 }
             }
 
-            if (state == LinkingToOutgoing)
+            if (state == DirectedEdgeState.LinkingToOutgoing)
             {
                 if (firstOut == null)
                 {
@@ -274,7 +317,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             // find first area edge (if any) to start linking at
             DirectedEdge<TCoordinate> firstOut = null;
             DirectedEdge<TCoordinate> incoming = null;
-            Int32 state = ScanningForIncoming;
+            DirectedEdgeState state = DirectedEdgeState.ScanningForIncoming;
 
             // link edges in CW order
             for (Int32 i = resultAreaEdges.Count - 1; i >= 0; i--)
@@ -290,29 +333,29 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
                 switch (state)
                 {
-                    case ScanningForIncoming:
+                    case DirectedEdgeState.ScanningForIncoming:
                         if (nextIn.EdgeRing != er)
                         {
                             continue;
                         }
                         incoming = nextIn;
-                        state = LinkingToOutgoing;
+                        state = DirectedEdgeState.LinkingToOutgoing;
                         break;
-                    case LinkingToOutgoing:
+                    case DirectedEdgeState.LinkingToOutgoing:
                         if (nextOut.EdgeRing != er)
                         {
                             continue;
                         }
                         Debug.Assert(incoming != null);
                         incoming.NextMin = nextOut;
-                        state = ScanningForIncoming;
+                        state = DirectedEdgeState.ScanningForIncoming;
                         break;
                     default:
                         break;
                 }
             }
 
-            if (state == LinkingToOutgoing)
+            if (state == DirectedEdgeState.LinkingToOutgoing)
             {
                 Assert.IsTrue(firstOut != null, "found null for first outgoing dirEdge");
                 Debug.Assert(firstOut != null);
@@ -446,21 +489,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             if (lastDepth != targetLastDepth)
             {
                 throw new TopologyException("depth mismatch at " + de.Coordinate);
-            }
-        }
-
-        public override void Write(StreamWriter outstream)
-        {
-            foreach (EdgeEnd<TCoordinate> end in this)
-            {
-                DirectedEdge<TCoordinate> de = end as DirectedEdge<TCoordinate>;
-                Debug.Assert(de != null);
-                outstream.Write("out ");
-                de.Write(outstream);
-                outstream.WriteLine();
-                outstream.Write("in ");
-                de.Sym.Write(outstream);
-                outstream.WriteLine();
             }
         }
 

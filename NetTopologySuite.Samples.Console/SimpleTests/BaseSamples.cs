@@ -1,21 +1,31 @@
 using System;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GeoAPI.IO.WellKnownText;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
 {
     public class BaseSamples
     {
-        private IGeometryFactory factory = null;
+        private static BufferedCoordinate2DFactory _coordFactory = new BufferedCoordinate2DFactory();
+          
+        protected ICoordinateFactory<BufferedCoordinate2D> CoordFactory
+        {
+            get { return _coordFactory; }
+        }
 
-        protected IGeometryFactory Factory
+        private IGeometryFactory<BufferedCoordinate2D> factory = null;
+
+        protected IGeometryFactory<BufferedCoordinate2D> GeoFactory
         {
             get { return factory; }            
         }
 
-        private WktReader reader = null;
+        private IWktGeometryReader<BufferedCoordinate2D> reader = null;
 
-        protected WktReader Reader
+        protected IWktGeometryReader<BufferedCoordinate2D> Reader
         {
             get { return reader; }            
         }
@@ -23,19 +33,23 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
         /// <summary>
         /// 
         /// </summary>
-        protected BaseSamples() : this(new GeometryFactory(), new WKTReader()) { }
+        protected BaseSamples() 
+            : this(new GeometryFactory<BufferedCoordinate2D>(
+                new BufferedCoordinate2DSequenceFactory(_coordFactory))) { }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="factory"></param>
-        protected BaseSamples(IGeometryFactory factory) : this(factory, new WKTReader(factory)) { }
+        protected BaseSamples(IGeometryFactory<BufferedCoordinate2D> factory)
+            : this(factory, new WktReader<BufferedCoordinate2D>(factory, null)) { }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="factory"></param>
-        protected BaseSamples(IGeometryFactory factory, WKTReader reader)
+        protected BaseSamples(IGeometryFactory<BufferedCoordinate2D> factory,
+                              IWktGeometryReader<BufferedCoordinate2D> reader)
         {
             this.factory = factory;
             this.reader = reader;

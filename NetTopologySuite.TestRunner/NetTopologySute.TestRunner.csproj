@@ -102,10 +102,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ExternalReferences\$(Configuration)\NPack.dll</HintPath>
     </Reference>
-    <Reference Include="GeoAPI, Version=2.0.0.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ExternalReferences\$(Configuration)\GeoAPI.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -146,6 +142,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\GeoAPI\src\GeoAPI\GeoAPINoTFS.csproj">
+      <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
+      <Name>GeoAPINoTFS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ManagedBufferedCoordinate2D\ManagedBufferedCoordinate2D.csproj">
+      <Project>{8A1C8DC2-9E24-47E9-A51C-AA46E0B0260C}</Project>
+      <Name>ManagedBufferedCoordinate2D</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
       <Name>NetTopologySuite</Name>

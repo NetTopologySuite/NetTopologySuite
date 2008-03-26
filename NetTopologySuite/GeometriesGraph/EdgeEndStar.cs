@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Utilities;
@@ -20,18 +18,27 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// around the node for efficient lookup and topology building.
     /// </summary>
     public abstract class EdgeEndStar<TCoordinate> : IEnumerable<EdgeEnd<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         // A map which maintains the edges in sorted order around the node.
         private readonly SortedList<EdgeEnd<TCoordinate>, EdgeEnd<TCoordinate>> _edgeMap
             = new SortedList<EdgeEnd<TCoordinate>, EdgeEnd<TCoordinate>>();
 
         // A list of all outgoing edges in the result, in CCW order.
-        private readonly List<EdgeEnd<TCoordinate>> _edgeList = new List<EdgeEnd<TCoordinate>>();
+        private readonly List<EdgeEnd<TCoordinate>> _edgeList 
+            = new List<EdgeEnd<TCoordinate>>();
 
         // The location of the point for this star in Geometry i Areas.
-        private readonly Locations[] _ptInAreaLocation = new Locations[] { Locations.None, Locations.None };
+        private readonly Locations[] _ptInAreaLocation 
+            = new Locations[] { Locations.None, Locations.None };
+
+        public override String ToString()
+        {
+            return "Edge ends at: " + Coordinate +
+                   "Degree: " + Degree;
+        }
 
         /// <summary> 
         /// Insert a EdgeEnd into this EdgeEndStar.
@@ -89,11 +96,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        public ReadOnlyCollection<EdgeEnd<TCoordinate>> Edges
+        public IEnumerable<EdgeEnd<TCoordinate>> Edges
         {
             get
             {
-                return _edgeList.AsReadOnly();
+                foreach (EdgeEnd<TCoordinate> edgeEnd in _edgeList)
+                {
+                    yield return edgeEnd;
+                }
             }
         }
 
@@ -117,7 +127,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public virtual void ComputeLabeling(IEnumerable<GeometryGraph<TCoordinate>> geom)
         {
-            computeEdgeEndLabels();
+            IBoundaryNodeRule boundaryNodeRule = Slice.GetFirst(geom).BoundaryNodeRule;
+
+            computeEdgeEndLabels(boundaryNodeRule);
 
             // Propagate side labels  around the edges in the star
             // for each parent Geometry        
@@ -207,7 +219,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        public Locations GetLocation(Int32 geometryIndex, TCoordinate p, IEnumerable<GeometryGraph<TCoordinate>> geometries)
+        public Locations GetLocation(Int32 geometryIndex, 
+                                     TCoordinate p, 
+                                     IEnumerable<GeometryGraph<TCoordinate>> geometries)
         {
             // compute location only on demand
             if (_ptInAreaLocation[geometryIndex] == Locations.None)
@@ -219,13 +233,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             return _ptInAreaLocation[geometryIndex];
         }
 
-        public Boolean IsAreaLabelsConsistent
+        public Boolean IsAreaLabelsConsistent(IBoundaryNodeRule boundaryNodeRule)
         {
-            get
-            {
-                computeEdgeEndLabels();
-                return checkAreaLabelsConsistent(0);
-            }
+            computeEdgeEndLabels(boundaryNodeRule);
+            return checkAreaLabelsConsistent(0);
         }
 
         public void PropagateSideLabels(Int32 geomIndex)
@@ -244,7 +255,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
                 Label label = e.Label.Value;
 
-                if (label.IsArea(geomIndex) && label[geomIndex, Positions.Left] != Locations.None)
+                if (label.IsArea(geomIndex) 
+                    && label[geomIndex, Positions.Left] != Locations.None)
                 {
                     startLoc = label[geomIndex, Positions.Left];
                 }
@@ -326,14 +338,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                                 });
         }
 
-        public virtual void Write(StreamWriter outstream)
-        {
-            foreach (EdgeEnd<TCoordinate> edgeEnd in this)
-            {
-                edgeEnd.Write(outstream);
-            }
-        }
-
         protected List<EdgeEnd<TCoordinate>> EdgesInternal
         {
             get
@@ -356,19 +360,20 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        private void computeEdgeEndLabels()
+        private void computeEdgeEndLabels(IBoundaryNodeRule boundaryNodeRule)
         {
             // Compute edge label for each EdgeEnd
             foreach (EdgeEnd<TCoordinate> edgeEnd in this)
             {
-                edgeEnd.ComputeLabel();
+                edgeEnd.ComputeLabel(boundaryNodeRule);
             }
         }
 
         private Boolean checkAreaLabelsConsistent(Int32 geomIndex)
         {
             // Since edges are stored in CCW order around the node,
-            // as we move around the ring we move from the right to the left side of the edge
+            // as we move around the ring we move from the right
+            // to the left side of the edge
             IList<EdgeEnd<TCoordinate>> edges = _edgeList;
 
             // if no edges, trivially consistent

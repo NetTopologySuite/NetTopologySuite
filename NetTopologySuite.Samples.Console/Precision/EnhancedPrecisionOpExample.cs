@@ -1,10 +1,9 @@
 using System;
 
 using GeoAPI.Geometries;
-
+using GeoAPI.IO.WellKnownText;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
-using GisSharpBlog.NetTopologySuite.Precision;
+using NetTopologySuite.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Precision
 {	
@@ -15,7 +14,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Precision
 	{
 		private void  InitBlock()
 		{
-			reader = new WKTReader();
+			reader = new WktReader<BufferedCoordinate2D>(
+                new GeometryFactory<BufferedCoordinate2D>(
+                    new BufferedCoordinate2DSequenceFactory()), null);
 		}
 
 		[STAThread]
@@ -32,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Precision
 			}
 		}
 				
-		private WKTReader reader;
+		private WktReader<BufferedCoordinate2D> reader;
 		
 		public EnhancedPrecisionOpExample()
 		{

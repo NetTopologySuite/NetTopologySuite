@@ -7,8 +7,10 @@ using NPack.Interfaces;
 namespace NetTopologySuite.Coordinates
 {
     public struct BufferedCoordinate2D : ICoordinate2D,
-        IBufferedVector<BufferedCoordinate2D, DoubleComponent>, IEquatable<BufferedCoordinate2D>,
-        IComparable<BufferedCoordinate2D>, IComputable<Double, BufferedCoordinate2D>
+                                         IBufferedVector<BufferedCoordinate2D, DoubleComponent>, 
+                                         IEquatable<BufferedCoordinate2D>,
+                                         IComparable<BufferedCoordinate2D>, 
+                                         IComputable<Double, BufferedCoordinate2D>
     {
         private readonly Int32? _index;
         private readonly BufferedCoordinate2DFactory _factory;
@@ -122,6 +124,14 @@ namespace NetTopologySuite.Coordinates
         public Int32 Index
         {
             get { return _index.Value; }
+        }
+
+        public Boolean ValueEquals(BufferedCoordinate2D other)
+        {
+            return IsEmpty == other.IsEmpty &&
+                   _isHomogeneous == other._isHomogeneous &&
+                   this[Ordinates.X] == other[Ordinates.X] &&
+                   this[Ordinates.Y] == other[Ordinates.Y];
         }
 
         #endregion
@@ -1167,6 +1177,60 @@ namespace NetTopologySuite.Coordinates
         IVector<DoubleComponent> IMultipliable<Double, IVector<DoubleComponent>>.Multiply(Double b)
         {
             throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IAddable<double,BufferedCoordinate2D> Members
+
+        public BufferedCoordinate2D Add(Double b)
+        {
+            return _factory.Add(this, b);
+        }
+
+        #endregion
+
+        #region ISubtractable<double,BufferedCoordinate2D> Members
+
+        public BufferedCoordinate2D Subtract(Double b)
+        {
+            return _factory.Add(this, -b);
+        }
+
+        #endregion
+
+        #region IAddable<double,IVector<DoubleComponent>> Members
+
+        IVector<DoubleComponent> IAddable<Double, IVector<DoubleComponent>>.Add(Double b)
+        {
+            return Add(b);
+        }
+
+        #endregion
+
+        #region ISubtractable<double,IVector<DoubleComponent>> Members
+
+        IVector<DoubleComponent> ISubtractable<Double, IVector<DoubleComponent>>.Subtract(Double b)
+        {
+            return Subtract(b);
+        }
+
+        #endregion
+
+        #region IAddable<double,ICoordinate> Members
+
+        ICoordinate IAddable<Double, ICoordinate>.Add(Double b)
+        {
+            return Add(b);
+        }
+
+        #endregion
+
+        #region ISubtractable<double,ICoordinate> Members
+
+        ICoordinate ISubtractable<Double, ICoordinate>.Subtract(Double b)
+        {
+            return Subtract(b);
         }
 
         #endregion

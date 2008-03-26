@@ -52,13 +52,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        public static TCoordinate Empty
-        {
-            get
-            {
-                return DefaultCoordinateFactory.Create();
-            }
-        }
+        //public static TCoordinate Empty
+        //{
+        //    get
+        //    {
+        //        return DefaultCoordinateFactory.Create();
+        //    }
+        //}
 
         public static Boolean IsEmpty(TCoordinate coordinate)
         {

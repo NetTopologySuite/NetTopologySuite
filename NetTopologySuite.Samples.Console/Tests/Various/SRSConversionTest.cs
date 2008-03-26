@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
+using GeoAPI.Coordinates;
 using GeoAPI.CoordinateSystems;
 using GeoAPI.CoordinateSystems.Transformations;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Coordinates;
 using NUnit.Framework;
-using SharpMap.CoordinateSystems;
-using SharpMap.CoordinateSystems.Transformations;
+using ProjNet.CoordinateSystems;
+using ProjNet.CoordinateSystems.Transformations;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 {
@@ -15,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
     /// 
     /// </summary>
     [TestFixture]
-    public class SRSConversionTest :  SimpleTests.BaseSamples
+    public class SRSConversionTest : SimpleTests.BaseSamples
     {
         /// <summary>
         /// 
@@ -23,26 +25,31 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         [Test]
         public void TestAlbersProjection()
         {
-            CoordinateSystemFactory cFac = new CoordinateSystemFactory();
+            CoordinateSystemFactory<BufferedCoordinate2D> cFac
+                = new CoordinateSystemFactory<BufferedCoordinate2D>(CoordFactory, GeoFactory);
+
             IEllipsoid ellipsoid = cFac.CreateFlattenedSphere(
-                "Clarke 1866", 
-                6378206.4, 
-                294.9786982138982, 
-                LinearUnit.USSurveyFoot);
+                6378206.4,
+                294.9786982138982,
+                LinearUnit.USSurveyFoot,
+                "Clarke 1866");
 
             IHorizontalDatum datum = cFac.CreateHorizontalDatum(
-                "Clarke 1866",
-                DatumType.HD_Geocentric,
-                ellipsoid, 
-                null);
+                DatumType.HorizontalGeocentric,
+                ellipsoid,
+                null,
+                "Clarke 1866");
 
-            IGeographicCoordinateSystem gcs = cFac.CreateGeographicCoordinateSystem(
-                "Clarke 1866", 
-                AngularUnit.Degrees, 
-                datum, 
-                PrimeMeridian.Greenwich, 
-                new AxisInfo("Lon", AxisOrientationEnum.East),
-                new AxisInfo("Lat", AxisOrientationEnum.North));
+            IGeographicCoordinateSystem<BufferedCoordinate2D> gcs
+                = cFac.CreateGeographicCoordinateSystem(
+                    GeoFactory.CreateExtents(CoordFactory.Create(-180, -90), 
+                                             CoordFactory.Create(180, 90)),
+                    AngularUnit.Degrees,
+                    datum,
+                    PrimeMeridian.Greenwich,
+                    new AxisInfo(AxisOrientation.East, "Lon"),
+                    new AxisInfo(AxisOrientation.North, "Lat"),
+                    "Clarke 1866");
 
             List<ProjectionParameter> parameters = new List<ProjectionParameter>(5);
             parameters.Add(new ProjectionParameter("central_meridian", -96));
@@ -53,41 +60,67 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             parameters.Add(new ProjectionParameter("false_northing", 0));
 
             IProjection projection = cFac.CreateProjection(
-                "Albers Conical Equal Area", 
-                "albers", 
-                parameters);
+                "albers",
+                parameters,
+                "Albers Conical Equal Area");
 
-            IProjectedCoordinateSystem coordsys = cFac.CreateProjectedCoordinateSystem(
-                "Albers Conical Equal Area", 
-                gcs, 
-                projection, 
-                LinearUnit.Metre,
-                new AxisInfo("East", AxisOrientationEnum.East),
-                new AxisInfo("North", AxisOrientationEnum.North));
+            IProjectedCoordinateSystem<BufferedCoordinate2D> coordsys
+                = cFac.CreateProjectedCoordinateSystem(
+                    gcs,
+                    projection,
+                    LinearUnit.Meter,
+                    new AxisInfo(AxisOrientation.East, "East"),
+                    new AxisInfo(AxisOrientation.North, "North"),
+                    "Albers Conical Equal Area");
 
-            ICoordinateTransformation trans = new CoordinateTransformationFactory().CreateFromCoordinateSystems(gcs, coordsys);
-            
-            IPoint pGeo = GeometryFactory.Default.CreatePoint(new Coordinate(-75, 35));
-            IPoint pUtm = GeometryTransform.TransformPoint(pGeo, trans.MathTransform);
-            IPoint pGeo2 = GeometryTransform.TransformPoint(pUtm, trans.MathTransform.Inverse());
-            IPoint expected = GeometryFactory.Default.CreatePoint(new Coordinate(1885472.7, 1535925));
+            ICoordinateTransformation<BufferedCoordinate2D> trans
+                = new CoordinateTransformationFactory<BufferedCoordinate2D>(CoordFactory, GeoFactory)
+                    .CreateFromCoordinateSystems(gcs, coordsys);
 
-            Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.05), String.Format("Albers forward transformation outside tolerance, Expected [{0},{1}], got [{2},{3}]", expected.X, expected.Y, pUtm.X, pUtm.Y));
-            Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), String.Format("Albers reverse transformation outside tolerance, Expected [{0},{1}], got [{2},{3}]", pGeo.X, pGeo.Y, pGeo2.X, pGeo2.Y));
+            IPoint<BufferedCoordinate2D> pGeo 
+                = GeoFactory.CreatePoint(CoordFactory.Create(-75, 35));
+
+            IPoint<BufferedCoordinate2D> pUtm 
+                = GeometryTransform<BufferedCoordinate2D>.TransformPoint(pGeo,
+                                                                         trans.MathTransform,
+                                                                         GeoFactory);
+
+            IPoint<BufferedCoordinate2D> pGeo2 
+                = GeometryTransform<BufferedCoordinate2D>.TransformPoint(pUtm, 
+                                                                         trans.MathTransform.Inverse(),
+                                                                         GeoFactory);
+
+            IPoint<BufferedCoordinate2D> expected 
+                = GeoFactory.CreatePoint(CoordFactory.Create(1885472.7, 1535925));
+
+            Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.05),
+                          String.Format("Albers forward transformation outside " +
+                                        "tolerance, Expected [{0},{1}], got [{2},{3}]",
+                                         expected[Ordinates.X], expected[Ordinates.Y],
+                                         pUtm[Ordinates.X], pUtm[Ordinates.Y]));
+
+            Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001),
+                          String.Format("Albers reverse transformation outside "+
+                                        "tolerance, Expected [{0},{1}], got [{2},{3}]",
+                                        pGeo[Ordinates.X], pGeo[Ordinates.Y],
+                                        pGeo2[Ordinates.X], pGeo2[Ordinates.Y]));
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        /// <param name="tolerance"></param>
-        /// <returns></returns>
-        private bool ToleranceLessThan(IPoint p1, IPoint p2, double tolerance)
+        private bool ToleranceLessThan(IPoint<BufferedCoordinate2D> p1,
+                                       IPoint<BufferedCoordinate2D> p2,
+                                       double tolerance)
         {
-            if (!p1.Z.Equals(Double.NaN) && !p2.Z.Equals(Double.NaN))
-                 return Math.Abs(p1.X - p2.X) < tolerance && Math.Abs(p1.Y - p2.Y) < tolerance && Math.Abs(p1.Z - p2.Z) < tolerance;
-            else return Math.Abs(p1.X - p2.X) < tolerance && Math.Abs(p1.Y - p2.Y) < tolerance;
+            if (!Double.IsNaN(p1[Ordinates.Z]) && !Double.IsNaN(p2[Ordinates.Z]))
+            {
+                return Math.Abs(p1[Ordinates.X] - p2[Ordinates.X]) < tolerance &&
+                       Math.Abs(p1[Ordinates.Y] - p2[Ordinates.Y]) < tolerance &&
+                       Math.Abs(p1[Ordinates.Z] - p2[Ordinates.Z]) < tolerance;
+            }
+            else
+            {
+                return Math.Abs(p1[Ordinates.X] - p2[Ordinates.X]) < tolerance &&
+                       Math.Abs(p1[Ordinates.Y] - p2[Ordinates.Y]) < tolerance;
+            }
         }
     }
 }

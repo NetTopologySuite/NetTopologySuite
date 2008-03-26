@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -273,21 +274,24 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             SetDepth(oppositePos, oppositeDepth);
         }
 
-        public override void Write(StreamWriter outstream)
+        public override String ToString()
         {
-            base.Write(outstream);
-            outstream.Write(" " + _depth[(Int32)Positions.Left] + "/" + _depth[(Int32)Positions.Right]);
-            outstream.Write(" (" + DepthDelta + ")");
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(" " + _depth[(Int32)Positions.Left] + "/" + _depth[(Int32)Positions.Right]);
+            sb.Append(" (" + DepthDelta + ")");
 
             if (_isInResult)
             {
-                outstream.Write(" inResult");
+                sb.Append(" inResult");
             }
+
+            return sb.ToString();
         }
 
         public void WriteEdge(StreamWriter outstream)
         {
-            Write(outstream);
+            outstream.Write(ToString());
             outstream.Write(" ");
 
             if (_isForward)

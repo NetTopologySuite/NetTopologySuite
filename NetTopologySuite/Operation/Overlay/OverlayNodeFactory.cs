@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// </summary>
     public class OverlayNodeFactory<TCoordinate> : NodeFactory<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         public override Node<TCoordinate> CreateNode(TCoordinate coord)
         {

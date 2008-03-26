@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Xml;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Coordinates;
 
 namespace Open.Topology.TestRunner
 {
@@ -136,7 +137,7 @@ namespace Open.Topology.TestRunner
                 }
 
                 // Retrieve the precisionName" tag, if any.
-                PrecisionModel pm = null;
+                PrecisionModel<BufferedCoordinate2D> pm = null;
                 XmlNode precision = root["precisionModel"];
                 if (precision != null)
                 {
@@ -160,7 +161,7 @@ namespace Open.Topology.TestRunner
                                     double offsety =
                                         Double.Parse(precisionAttributes["offsety"].InnerText, GetNumberFormatInfo());
 
-                                    pm = new PrecisionModel(scale);
+                                    pm = new PrecisionModel<BufferedCoordinate2D>(scale);
                                 }
                                 catch (Exception ex)
                                 {
@@ -169,7 +170,7 @@ namespace Open.Topology.TestRunner
                             }
                             else
                             {
-                                pm = new PrecisionModel();
+                                pm = new PrecisionModel<BufferedCoordinate2D>();
                             }
                         }
                         else
@@ -182,8 +183,8 @@ namespace Open.Topology.TestRunner
                                     Double.Parse(precisionAttributes["offsetx"].InnerText, GetNumberFormatInfo());
                                 double offsety =
                                     Double.Parse(precisionAttributes["offsety"].InnerText, GetNumberFormatInfo());
- 
-                                pm = new PrecisionModel(scale);
+
+                                pm = new PrecisionModel<BufferedCoordinate2D>(scale);
                             }
                         }
                    }
@@ -191,7 +192,7 @@ namespace Open.Topology.TestRunner
 
                 if (pm == null)
                 {
-                    pm = new PrecisionModel();
+                    pm = new PrecisionModel<BufferedCoordinate2D>();
                 }
                 m_objFactory   = new XmlTestFactory(pm);
                 m_listCurTests = new XmlTestCollection();

@@ -23,22 +23,25 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public static void UpdateIntersectionMatrix(Label label, IntersectionMatrix im)
         {
-            im.SetAtLeastIfValid(label[0, Positions.On], label[1, Positions.On],
+            im.SetAtLeastIfValid(label[0, Positions.On], 
+                                 label[1, Positions.On],
                                  Dimensions.Curve);
 
             if (label.IsArea())
             {
-                im.SetAtLeastIfValid(label[0, Positions.Left], label[1, Positions.Left],
+                im.SetAtLeastIfValid(label[0, Positions.Left], 
+                                     label[1, Positions.Left],
                                      Dimensions.Surface);
 
-                im.SetAtLeastIfValid(label[0, Positions.Right], label[1, Positions.Right],
+                im.SetAtLeastIfValid(label[0, Positions.Right], 
+                                     label[1, Positions.Right],
                                      Dimensions.Surface);
             }
         }
 
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private readonly ICoordinateSequence<TCoordinate> _coordinates;
-        private readonly EdgeIntersectionList<TCoordinate> _edgeIntersectionList = null;
+        private readonly EdgeIntersectionList<TCoordinate> _edgeIntersectionList;
         private IExtents<TCoordinate> _extents;
         private String _name;
         private MonotoneChainEdge<TCoordinate> _monotoneChainEdge;
@@ -80,18 +83,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public ICoordinateSequence<TCoordinate> Coordinates
         {
-            get
-            {
-                return _coordinates;
-            }
+            get { return _coordinates; }
         }
 
         public ICoordinateSequence<TCoordinate> CoordinatesReversed
         {
-            get
-            {
-                return _coordinates.Reversed;
-            }
+            get { return _coordinates.Reversed; }
         }
 
         //public TCoordinate GetCoordinate(Int32 i)

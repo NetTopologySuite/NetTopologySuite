@@ -390,6 +390,11 @@ namespace NetTopologySuite.Coordinates
             return getVertexInternal(a.X + b.X, a.Y + b.Y);
         }
 
+        internal BufferedCoordinate2D Add(BufferedCoordinate2D a, Double b)
+        {
+            return getVertexInternal(a.X + b, a.Y + b);
+        }
+
         internal static BufferedCoordinate2D Divide(BufferedCoordinate2D a, BufferedCoordinate2D b)
         {
             throw new NotSupportedException();

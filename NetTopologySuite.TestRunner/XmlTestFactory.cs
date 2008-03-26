@@ -1,8 +1,10 @@
 using System;
 using System.Globalization;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GeoAPI.IO.WellKnownText;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
+using NetTopologySuite.Coordinates;
 
 namespace Open.Topology.TestRunner
 {
@@ -30,13 +32,15 @@ namespace Open.Topology.TestRunner
             C = 3
         }
 
-        protected GeometryFactory m_objGeometryFactory = null;
-        protected WKTReader m_objReader = null;
+        protected IGeometryFactory m_objGeometryFactory = null;
+        protected IWktGeometryReader m_objReader = null;
 
-        public XmlTestFactory(PrecisionModel pm)
+        public XmlTestFactory(IPrecisionModel<BufferedCoordinate2D> pm)
 		{
-            m_objGeometryFactory = new GeometryFactory(pm);
-            m_objReader = new WKTReader(m_objGeometryFactory);
+            ICoordinateSequenceFactory<BufferedCoordinate2D> seqFactory =
+                new BufferedCoordinate2DSequenceFactory();
+            m_objGeometryFactory = new GeometryFactory<BufferedCoordinate2D>(pm, seqFactory);
+            m_objReader = new WktReader(m_objGeometryFactory, null);
         }
 
         public XmlTest Create(XmlTestInfo testInfo, double tolerance)

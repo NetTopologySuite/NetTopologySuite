@@ -886,7 +886,7 @@
         <member name="T:NPack.Interfaces.IMultipliable`2">
             <summary>
             Every class that defines a * operation 
-            like <c>TProduct operator * (IMultipliable a, TFactor b)</c> should consider
+            like <c>TProduct operator * (IMultipliable`2 a, TFactor b)</c> should consider
             implementing this interface.
             </summary>
             <typeparam name="TFactor">
@@ -917,6 +917,27 @@
             <summary>
             Gets the matrix which was factored (or decomposed).
             </summary>
+        </member>
+        <member name="T:NPack.Interfaces.ISubtractable`2">
+            <summary>
+            Every class that defines a - operation 
+            like <c>TDifference operator - (ISubtractable`2 a, TSubtrahend b)</c> 
+            should consider implementing this interface.
+            </summary>
+            <typeparam name="TSubtrahend">Type which subracts from this type.</typeparam>
+            <typeparam name="TDifference">Type which is the result of subtraction.</typeparam>
+            <remarks>
+            Adapted from an article on lambda-computing.com: 
+            http://www.lambda-computing.com/publications/articles/generics/IArithmetic.cs.
+            </remarks>
+        </member>
+        <member name="M:NPack.Interfaces.ISubtractable`2.Subtract(`0)">
+            <summary>
+            Returns the difference of the Object and <paramref name="b"/>.
+            It must not modify the value of the Object.
+            </summary>
+            <param name="b">The second operand.</param>
+            <returns>The difference.</returns>
         </member>
         <member name="T:NPack.Interfaces.IVector`1">
             <summary>
@@ -1014,10 +1035,31 @@
             <typeparam name="TInput">Input type of argument.</typeparam>
             <typeparam name="TOutput">Result type of computation.</typeparam>
         </member>
+        <member name="T:NPack.Interfaces.IAddable`2">
+            <summary>
+            Every class that defines a + operation 
+            like <c>TSum operator + (IAddable`2 a, TAddend b)</c> should consider
+            implementing this interface.
+            </summary>
+            <typeparam name="TAddend">Type which is can be added to this type.</typeparam>
+            <typeparam name="TSum">Type which the result of the addition.</typeparam>
+            <remarks>
+            Adapted from an article on lambda-computing.com: 
+            http://www.lambda-computing.com/publications/articles/generics/IArithmetic.cs.
+            </remarks>
+        </member>
+        <member name="M:NPack.Interfaces.IAddable`2.Add(`0)">
+            <summary>
+            Returns the sum of the Object and <paramref name="b"/>.
+            It must not modify the value of the Object.
+            </summary>
+            <param name="b">The second operand.</param>
+            <returns>The sum.</returns>
+        </member>
         <member name="T:NPack.Interfaces.IDivisible`2">
             <summary>
             Every class that defines a / operation 
-            like <c>T operator / (T a, T b)</c> should consider
+            like <c>TQuotient operator / (IDivisible`2 a, TDivisor b)</c> should consider
             implementing this interface.
             </summary>
             <typeparam name="TDivisor">
@@ -4274,6 +4316,26 @@
             </param>
             <param name="initialCapacity">The initial capacity for the buffer.</param>
         </member>
+        <member name="M:NPack.ManagedVectorBuffer`2.#ctor(System.Int32,System.Boolean,NPack.Interfaces.IBufferedVectorFactory{`0,`1},System.Int32,System.Int32)">
+            <summary>
+            Creates a new <see cref="T:NPack.ManagedVectorBuffer`2"/> with
+            initial capacity <paramref name="initialCapacity"/> for vectors of size
+            <paramref name="vectorDimension"/>, including space for an extra component
+            if <paramref name="isHomogeneous"/> is <see langword="true"/>. 
+            </summary>
+            <param name="vectorDimension">The size, or number of components, of each vector.</param>
+            <param name="isHomogeneous">
+            <see langword="true"/> if the vector is represented in homogeneous coordinates 
+            (allowing affine transforms through matrix operations).
+            </param>
+            <param name="vectorFactory">
+            A factory used to create vectors of type <typeparamref name="TVector"/>.
+            </param>
+            <param name="initialCapacity">The initial capacity for the buffer.</param>
+            <param name="maximumCapacity">
+            The maximum capacity of the vector buffer.
+            </param>
+        </member>
         <member name="M:NPack.ManagedVectorBuffer`2.Add(`1,`1)">
             <summary>
             Adds components to the buffer as a vector. Returns the resulting
@@ -4350,7 +4412,7 @@
         </member>
         <member name="P:NPack.ManagedVectorBuffer`2.MaximumSize">
             <summary>
-            Gets the maximum size of the buffer, in number of vectors.
+            Gets or sets the maximum size of the buffer, in number of vectors.
             </summary>
         </member>
         <member name="P:NPack.ManagedVectorBuffer`2.Item(System.Int32)">

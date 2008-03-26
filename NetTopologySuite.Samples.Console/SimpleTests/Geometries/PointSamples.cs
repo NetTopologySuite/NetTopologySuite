@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.Text;
 using System.Xml;
-
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GeoAPI.IO.WellKnownBinary;
 using GeoAPI.Operations.Buffer;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.Operation.Buffer;
+using NetTopologySuite.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
 {
@@ -24,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
         /// </summary>
         public PointSamples() : base()
         {            
-            point = Factory.CreatePoint(new Coordinate(100, 100));
+            point = GeoFactory.CreatePoint(CoordFactory.Create(100, 100));
         }
 
         /// <summary>
@@ -32,31 +33,34 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
         /// </summary>
         public override void Start()
         {
-            IPoint pInterior = Factory.CreatePoint(new Coordinate(100, 100));
-            IPoint pExterior = Factory.CreatePoint(new Coordinate(100, 101));
+            IPoint pInterior = GeoFactory.CreatePoint(CoordFactory.Create(100, 100));
+            IPoint pExterior = GeoFactory.CreatePoint(CoordFactory.Create(100, 101));
 
             try
             {
-                Write(point.Area);                
+                //Write(point.Area);                
                 Write(point.Boundary);
                 Write(point.BoundaryDimension);                                
                 Write(point.Centroid);
                 Write(point.Coordinate);
                 Write(point.Coordinates);
-                Write(point.CoordinateSequence);
+                //Write(point.CoordinateSequence);
                 Write(point.Dimension);
                 Write(point.Envelope);
-                Write(point.EnvelopeInternal);
+                Write(point.Extents);
+                //Write(point.EnvelopeInternal);
                 Write(point.Factory);
-                Write(point.InteriorPoint);
+                //Write(point.InteriorPoint);
                 Write(point.IsEmpty);
                 Write(point.IsSimple);
                 Write(point.IsValid);
-                Write(point.Length);
-                Write(point.NumPoints);
+                //Write(point.Length);
+                //Write(point.NumPoints);
                 Write(point.PrecisionModel);                          
-                Write(point.X);
-                Write(point.Y);                               
+                //Write(point.X);
+                //Write(point.Y);
+                Write(point[Ordinates.X]);
+                Write(point[Ordinates.Y]);                         
 
                 Write(point.Contains(pInterior));
                 Write(point.Contains(pExterior));
@@ -76,8 +80,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(point.Disjoint(pExterior));
                 Write(point.Equals(pInterior));
                 Write(point.Equals(pExterior));
-                Write(point.EqualsExact(pInterior));
-                Write(point.EqualsExact(pExterior));
+                //Write(point.EqualsExact(pInterior));
+                //Write(point.EqualsExact(pExterior));
                 Write(point.ConvexHull());
                 Write(point.Intersection(pInterior)); 
                 Write(point.Intersection(pExterior)); 
@@ -106,29 +110,37 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(geom2.AsText());
 
                 byte[] bytes = point.AsBinary();
-                IGeometry test1 = new WKBReader().Read(bytes);
+                IGeometry test1 = new WkbReader<BufferedCoordinate2D>(GeoFactory).Read(bytes);
                 Write(test1.ToString());
                 
-                bytes = Factory.CreatePoint(new Coordinate(Double.MinValue, Double.MinValue)).AsBinary();
-                IGeometry testempty = new WKBReader().Read(bytes);
+                bytes = GeoFactory.CreatePoint(CoordFactory.Create(Double.MinValue, Double.MinValue)).AsBinary();
+                IGeometry testempty = new WkbReader<BufferedCoordinate2D>(GeoFactory).Read(bytes);
                 Write(testempty);
 
-                bytes = new GDBWriter().Write(geom1);
-                test1 = new GDBReader().Read(bytes);
+                //bytes = new GDBWriter().Write(geom1);
+                //test1 = new GDBReader().Read(bytes);
                 Write(test1.ToString());                 
    
                 // Test Empty Geometries
-                Write(Point.Empty);
-                Write(LineString.Empty);
-                Write(Polygon.Empty);
-                Write(MultiPoint.Empty);
-                Write(MultiLineString.Empty);
-                Write(MultiPolygon.Empty);
-                Write(GeometryCollection.Empty);
+                //Write(Point.Empty);
+                //Write(LineString.Empty);
+                //Write(Polygon.Empty);
+                //Write(MultiPoint.Empty);
+                //Write(MultiLineString.Empty);
+                //Write(MultiPolygon.Empty);
+                //Write(GeometryCollection.Empty);
+
+                Write(GeoFactory.CreatePoint());
+                Write(GeoFactory.CreateLineString());
+                Write(GeoFactory.CreatePolygon());
+                Write(GeoFactory.CreateMultiPoint());
+                Write(GeoFactory.CreateMultiLineString());
+                Write(GeoFactory.CreateMultiPolygon());
+                Write(GeoFactory.CreateGeometryCollection());
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }       
     }    

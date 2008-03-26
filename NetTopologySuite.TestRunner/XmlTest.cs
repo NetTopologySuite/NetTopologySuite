@@ -2,13 +2,16 @@ using System;
 using System.Text;
 using System.Diagnostics;
 using System.Globalization;
-
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Coordinates;
 
 namespace Open.Topology.TestRunner
 {
+    using Geometry = Geometry<BufferedCoordinate2D>;
+
     #region Test Event Definitions
 
     public class XmlTestEventArgs : EventArgs
@@ -433,15 +436,16 @@ namespace Open.Topology.TestRunner
         protected virtual bool TestArea()
         {
             double dAreaResult = (double)m_objResult;
+
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
-                double dArea = m_objGeometryA.Area;
+                double dArea = (m_objGeometryA as ISurface).Area;
 
                 return Math.Abs(dArea - dAreaResult) <= m_dTolerance;
             }
             else if (m_objGeometryB != null)
             {
-                double dArea = m_objGeometryB.Area;
+                double dArea = (m_objGeometryB as ISurface).Area;
 
                 return Math.Abs(dArea - dAreaResult) <= m_dTolerance;
             }
@@ -504,13 +508,13 @@ namespace Open.Topology.TestRunner
             int nResult = (int)m_objResult;
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
-                double dArea = m_objGeometryA.Area;
+                double dArea = (m_objGeometryA as ISurface).Area;
 
                 return Math.Abs(dArea - nResult) <= m_dTolerance;
             }
             else if (m_objGeometryB != null)
             {
-                double dArea = m_objGeometryB.Area;
+                double dArea = (m_objGeometryB as ISurface).Area;
 
                 return Math.Abs(dArea - nResult) <= m_dTolerance;
             }
@@ -945,7 +949,7 @@ namespace Open.Topology.TestRunner
 
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
-                Geometry interiorpoint = (Geometry) m_objGeometryA.InteriorPoint;
+                Geometry interiorpoint = (Geometry)(m_objGeometryA as ISurface).PointOnSurface;
                 if (interiorpoint != null)
                 {
                     if (interiorpoint.IsEmpty && geoResult.IsEmpty)
@@ -958,7 +962,7 @@ namespace Open.Topology.TestRunner
             }
             else if (m_objGeometryB != null)
             {
-                Geometry interiorpoint = (Geometry) m_objGeometryB.InteriorPoint;
+                Geometry interiorpoint = (Geometry)(m_objGeometryB as ISurface).PointOnSurface;
                 if (interiorpoint != null)
                 {
                     if (interiorpoint.IsEmpty && geoResult.IsEmpty)
@@ -1163,13 +1167,13 @@ namespace Open.Topology.TestRunner
             double dLengthResult = (double)m_objResult;
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
-                double dLength = m_objGeometryA.Area;
+                double dLength = (m_objGeometryA as ISurface).Area;
 
                 return Math.Abs(dLength - dLengthResult) <= m_dTolerance;
             }
             else if (m_objGeometryB != null)
             {
-                double dLength = m_objGeometryB.Area;
+                double dLength = (m_objGeometryB as ISurface).Area;
 
                 return Math.Abs(dLength - dLengthResult) <= m_dTolerance;
             }
@@ -1182,13 +1186,13 @@ namespace Open.Topology.TestRunner
             int nResult = (int)m_objResult;
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
-                int nPoints = m_objGeometryA.NumPoints;
+                int nPoints = m_objGeometryA.PointCount;
 
                 return Math.Abs(nPoints - nResult) <= (int)m_dTolerance;
             }
             else if (m_objGeometryB != null)
             {
-                int nPoints = m_objGeometryB.NumPoints;
+                int nPoints = m_objGeometryB.PointCount;
 
                 return Math.Abs(nPoints - nResult) <= (int)m_dTolerance;
             }
@@ -1255,13 +1259,13 @@ namespace Open.Topology.TestRunner
             int nResult = (int)m_objResult;
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
-                int nSRID = m_objGeometryA.SRID;
+                int nSRID = m_objGeometryA.Srid.Value;
 
                 return Math.Abs(nSRID - nResult) <= (int)m_dTolerance;
             }
             else if (m_objGeometryB != null)
             {
-                int nSRID = m_objGeometryB.SRID;
+                int nSRID = m_objGeometryB.Srid.Value;
 
                 return Math.Abs(nSRID - nResult) <= (int)m_dTolerance;
             }
@@ -1569,7 +1573,7 @@ namespace Open.Topology.TestRunner
                 aClone.Normalize();
                 bClone.Normalize();
 
-                return aClone.EqualsExact(bClone, m_dTolerance);
+                return aClone.Equals(bClone, new Tolerance(m_dTolerance));
             }
 
             return false;

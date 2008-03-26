@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
@@ -37,6 +38,20 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             _edge = edge;
         }
 
+        public override String ToString()
+        {
+            StringBuilder buffer = new StringBuilder(32);
+
+            buffer.Append("Intersections: ");
+
+            foreach (EdgeIntersection<TCoordinate> intersection in this)
+            {
+                buffer.Append(intersection);
+            }
+
+            return buffer.ToString();
+        }
+
         public Boolean IsIntersection(TCoordinate point)
         {
             foreach (EdgeIntersection<TCoordinate> intersection in this)
@@ -55,9 +70,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public void AddEndpoints()
         {
-            Int32 maxSegIndex = _edge.Coordinates.Count - 1;
-            Add(_edge.Coordinates[0], 0, 0.0);
-            Add(_edge.Coordinates[maxSegIndex], maxSegIndex, 0.0);
+            Add(_edge.Coordinates.First, 0, 0.0);
+            Add(_edge.Coordinates.Last, _edge.Coordinates.LastIndex, 0.0);
         }
 
         /// <summary> 
@@ -124,16 +138,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
 
             return new Edge<TCoordinate>(_geoFactory, pts, _edge.Label.Value);
-        }
-
-        public void Write(StreamWriter outstream)
-        {
-            outstream.WriteLine("Intersections:");
-
-            foreach (EdgeIntersection<TCoordinate> intersection in this)
-            {
-                intersection.Write(outstream);
-            }
         }
 
         /// <summary> 

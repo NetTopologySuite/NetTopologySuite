@@ -12,7 +12,9 @@ namespace GisSharpBlog.NetTopologySuite.Index
     /// </summary>
     public abstract class AbstractNodeKey<TBounds, TLocation>
         where TBounds : IContainable<TBounds>, IIntersectable<TBounds>
-        where TLocation : IAddable<TLocation>, IDivisible<Double, TLocation>
+        where TLocation : IAddable<TLocation>, 
+                          IAddable<Double, TLocation>, 
+                          IDivisible<Double, TLocation>
     {
         // the fields which make up the key
         private TLocation _location;

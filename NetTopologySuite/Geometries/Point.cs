@@ -217,6 +217,24 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #endregion
 
+        #region IAddable<double,IPoint> Members
+
+        IPoint IAddable<Double, IPoint>.Add(Double b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region ISubtractable<double,IPoint> Members
+
+        IPoint ISubtractable<Double, IPoint>.Subtract(Double b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
         #region IComputable<Double, IPoint> Members
 
         IPoint IComputable<Double, IPoint>.Set(Double value)

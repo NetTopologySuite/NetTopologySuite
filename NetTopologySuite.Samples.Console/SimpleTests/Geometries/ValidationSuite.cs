@@ -2,12 +2,10 @@ using System;
 using System.Collections;
 using System.Diagnostics;
 using System.Text;
-
 using GeoAPI.Geometries;
-
+using GeoAPI.IO.WellKnownText;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
-using GisSharpBlog.NetTopologySuite.Precision;
+using NetTopologySuite.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
 {
@@ -16,29 +14,33 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
     /// </summary>
     public class ValidationSuite : BaseSamples
     {
-        private GeometryFactory factory = null;
-        private WKTReader reader = null;                    
-        
         /// <summary>
         /// 
         /// </summary>
-        public ValidationSuite() : base()
-        {                       
-            factory = new GeometryFactory(new PrecisionModel(PrecisionModels.Fixed));                       
-            reader = new WKTReader(factory);
+        public ValidationSuite()
+        {
+            IPrecisionModel<BufferedCoordinate2D> pm
+                = new PrecisionModel<BufferedCoordinate2D>(PrecisionModelType.Fixed);
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
         public override void Start()
         {
-            IGeometry a = reader.Read("POLYGON ((340 320, 340 200, 200 280, 200 80, 340 200, 340 20, 60 20, 60 340, 340 320))");            
+            IGeometry a = Reader.Read("POLYGON ((340 320, 340 200, 200 280, 200 80, " +
+                                      "340 200, 340 20, 60 20, 60 340, " +
+                                      "340 320))");
             bool result = a.IsValid;
-            
-            if(result)
-            	  Console.WriteLine("Error!");
-             else Console.WriteLine("Work completed!");       
+
+            if (result)
+            {
+                Console.WriteLine("Error!");
+            }
+            else
+            {
+                Console.WriteLine("Work completed!");
+            }
         }
     }
 }

@@ -386,7 +386,7 @@ namespace ManagedBufferedCoordinate2DTests
             for (; i < 10000; i++)
             {
                 ICoordinateSequence<BufferedCoordinate2D> sequence
-                    = sequenceFactory.Create(250, 2);
+                    = sequenceFactory.Create(250, CoordinateDimensions.Two);
 
                 for (Int32 j = 0; j < 250; j++)
                 {

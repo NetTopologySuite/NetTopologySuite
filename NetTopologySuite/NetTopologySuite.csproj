@@ -110,6 +110,7 @@
     <Compile Include="Algorithm\CentroidPoint.cs" />
     <Compile Include="Algorithm\CGAlgorithms.cs" />
     <Compile Include="Algorithm\ConvexHull.cs" />
+    <Compile Include="Algorithm\IBoundaryNodeRule.cs" />
     <Compile Include="Algorithm\InteriorPointArea.cs" />
     <Compile Include="Algorithm\InteriorPointLine.cs" />
     <Compile Include="Algorithm\InteriorPointPoint.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="Algorithm\LineIntersector.cs" />
     <Compile Include="Algorithm\MCPointInRing.cs" />
     <Compile Include="Algorithm\MinimumDiameter.cs" />
+    <Compile Include="Algorithm\Mod2BoundaryNodeRule.cs" />
     <Compile Include="Algorithm\NonRobustLineIntersector.cs" />
     <Compile Include="Algorithm\NotRepresentableException.cs" />
     <Compile Include="Algorithm\IPointInRing.cs" />
@@ -134,6 +136,7 @@
     <Compile Include="GeometriesGraph\Index\SimpleMonotoneChainSweepLineIntersector.cs" />
     <Compile Include="GeometriesGraph\Positions.cs" />
     <Compile Include="GeometriesGraph\Quadrants.cs" />
+    <Compile Include="Algorithm\EndPointBoundaryNodeRule.cs" />
     <Compile Include="Geometries\Extents.cs" />
     <Compile Include="Geometries\Geometry.cs" />
     <Compile Include="Geometries\GeometryCollection.cs" />

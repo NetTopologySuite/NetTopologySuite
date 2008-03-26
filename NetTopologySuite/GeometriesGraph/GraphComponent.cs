@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     public abstract class GraphComponent<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private Label? _label;
 

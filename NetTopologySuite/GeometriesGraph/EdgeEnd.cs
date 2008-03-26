@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Text;
 using GeoAPI.Coordinates;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -12,21 +11,25 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// Models the end of an edge incident on a node.
     /// </summary>
     /// <remarks>
-    /// <see cref="EdgeEnd{TCoordinate}"/>s have a direction determined by the direction of the ray 
-    /// from the initial point to the next point.
+    /// <see cref="EdgeEnd{TCoordinate}"/>s have a direction determined by 
+    /// the direction of the ray from the initial point to the next point.
     /// EdgeEnds are <see cref="IComparable{EdgeEnd}"/> under the ordering
     /// "a has a greater angle with the x-axis than b".
     /// This ordering is used to sort EdgeEnds around a node.
     /// </remarks>
     public class EdgeEnd<TCoordinate> : IComparable<EdgeEnd<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
-        private Edge<TCoordinate> _edge = null;
+        private Edge<TCoordinate> _edge;
         private Label? _label;
-        private Node<TCoordinate> _origin; // the node this edge end originates at
-        private TCoordinate _p0, _p1; // points of initial line segment
-        private TCoordinate _direction; // the direction vector for this edge from its starting point
+        // the node this edge end originates at
+        private Node<TCoordinate> _origin;
+        // points of initial line segment
+        private TCoordinate _p0, _p1;
+        // the direction vector for this edge from its starting point
+        private TCoordinate _direction; 
         private Quadrants _quadrant;
 
         protected EdgeEnd(Edge<TCoordinate> edge)
@@ -129,7 +132,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 return 0;
             }
 
-            // if the rays are in different quadrants, determining the ordering is trivial
+            // if the rays are in different quadrants, 
+            // determining the ordering is trivial
             if (_quadrant > e.Quadrant)
             {
                 return 1;
@@ -140,34 +144,36 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 return -1;
             }
 
-            // vectors are in the same quadrant - check relative orientation of direction vectors
+            // vectors are in the same quadrant - check relative orientation 
+            // of direction vectors
+            // 
             // this is > e if it is CCW of e
-            return (Int32)CGAlgorithms<TCoordinate>.ComputeOrientation(
-                e.Coordinate, e.DirectedCoordinate, _p1);
+            return (Int32)CGAlgorithms<TCoordinate>.ComputeOrientation(e.Coordinate, 
+                                                                       e.DirectedCoordinate, 
+                                                                       _p1);
         }
 
         /// <summary>
         /// Subclasses should override this if they are using labels
         /// </summary>
-        public virtual void ComputeLabel() { }
-
-        public virtual void Write(StreamWriter outstream)
-        {
-            Double angle = Math.Atan2(_direction[Ordinates.Y], _direction[Ordinates.X]);
-            string fullname = GetType().FullName;
-            Int32 lastDotPos = fullname.LastIndexOf('.');
-            string name = fullname.Substring(lastDotPos + 1);
-            outstream.Write("  " + name + ": " + _p0 + " - " + _p1 + " " + _quadrant + ":" + angle + "   " + Label);
-        }
+        public virtual void ComputeLabel(IBoundaryNodeRule boundaryNodeRule) { }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(('['));
-            sb.Append(_p0[Ordinates.X]);
-            sb.Append((' '));
-            sb.Append(_p1[Ordinates.Y]);
-            sb.Append((']'));
+            Double angle = Math.Atan2(_direction[Ordinates.Y], _direction[Ordinates.X]);
+
+            sb.Append('[');
+            sb.Append(_p0);
+            sb.Append(" - ");
+            sb.Append(_p1);
+            sb.Append(']');
+            sb.Append(' ');
+            sb.Append(Quadrant);
+            sb.Append(':');
+            sb.Append(angle);
+            sb.Append(' ');
+            sb.Append(Label);
             return sb.ToString();
         }
     }

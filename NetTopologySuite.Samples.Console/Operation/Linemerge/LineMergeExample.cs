@@ -1,11 +1,12 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 using GeoAPI.Geometries;
-
+using GeoAPI.IO.WellKnownText;
+using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.Operation.Linemerge;
+using NetTopologySuite.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
 {
@@ -17,32 +18,33 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
 	{
 		private void InitBlock()
 		{
-			reader = new WKTReader();
+            reader = new WktReader<BufferedCoordinate2D>(
+                GeometryFactory<BufferedCoordinate2D>.CreateFloatingPrecision(
+                    new BufferedCoordinate2DSequenceFactory()), null);
 		}
 
-		virtual internal IList Data
+		virtual internal IEnumerable<IGeometry<BufferedCoordinate2D>> Data
 		{
 			get
 			{
-				IList lines = new ArrayList();
-				lines.Add(Read("LINESTRING (220 160, 240 150, 270 150, 290 170)"));
-				lines.Add(Read("LINESTRING (60 210, 30 190, 30 160)"));
-				lines.Add(Read("LINESTRING (70 430, 100 430, 120 420, 140 400)"));
-				lines.Add(Read("LINESTRING (160 310, 160 280, 160 250, 170 230)"));
-				lines.Add(Read("LINESTRING (170 230, 180 210, 200 180, 220 160)"));
-				lines.Add(Read("LINESTRING (30 160, 40 150, 70 150)"));
-				lines.Add(Read("LINESTRING (160 310, 200 330, 220 340, 240 360)"));
-				lines.Add(Read("LINESTRING (140 400, 150 370, 160 340, 160 310)"));
-				lines.Add(Read("LINESTRING (160 310, 130 300, 100 290, 70 270)"));
-				lines.Add(Read("LINESTRING (240 360, 260 390, 260 410, 250 430)"));
-				lines.Add(Read("LINESTRING (70 150, 100 180, 100 200)"));
-				lines.Add(Read("LINESTRING (70 270, 60 260, 50 240, 50 220, 60 210)"));
-				lines.Add(Read("LINESTRING (100 200, 90 210, 60 210)"));				
-				return lines;
+				yield return Read("LINESTRING (220 160, 240 150, 270 150, 290 170)");
+				yield return Read("LINESTRING (60 210, 30 190, 30 160)");
+				yield return Read("LINESTRING (70 430, 100 430, 120 420, 140 400)");
+				yield return Read("LINESTRING (160 310, 160 280, 160 250, 170 230)");
+				yield return Read("LINESTRING (170 230, 180 210, 200 180, 220 160)");
+				yield return Read("LINESTRING (30 160, 40 150, 70 150)");
+				yield return Read("LINESTRING (160 310, 200 330, 220 340, 240 360)");
+				yield return Read("LINESTRING (140 400, 150 370, 160 340, 160 310)");
+				yield return Read("LINESTRING (160 310, 130 300, 100 290, 70 270)");
+				yield return Read("LINESTRING (240 360, 260 390, 260 410, 250 430)");
+				yield return Read("LINESTRING (70 150, 100 180, 100 200)");
+				yield return Read("LINESTRING (70 270, 60 260, 50 240, 50 220, 60 210)");
+				yield return Read("LINESTRING (100 200, 90 210, 60 210)");
 			}
 			
 		}		
-		private WKTReader reader;
+
+		private IWktGeometryReader reader;
 		
 		public LineMergeExample()
 		{
@@ -50,9 +52,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
 		}
 		
 		[STAThread]
-		public static void main(string[] args)
+		public static void Main(string[] args)
 		{
 			LineMergeExample test = new LineMergeExample();
+
 			try
 			{
 				test.Run();
@@ -65,23 +68,29 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
 		
 		internal virtual void Run()
 		{
-			IList lineStrings = Data;
+			IEnumerable<IGeometry<BufferedCoordinate2D>> lineStrings = Data;
+
+            LineMerger<BufferedCoordinate2D> lineMerger 
+                = new LineMerger<BufferedCoordinate2D>();
 			
-			LineMerger lineMerger = new LineMerger();
-			lineMerger.Add(lineStrings);
-			ICollection mergedLineStrings = lineMerger.MergedLineStrings;
-			
-			Console.WriteLine("Lines formed (" + mergedLineStrings.Count + "):");
+            lineMerger.Add(lineStrings);
+
+            IEnumerable<ILineString<BufferedCoordinate2D>> mergedLineStrings 
+                = lineMerger.MergedLineStrings;
+
+            Console.WriteLine("Lines formed (" + Enumerable.Count(mergedLineStrings) + "):");
+
             foreach (object obj in mergedLineStrings)
 			    Console.WriteLine(obj);
 		}
-		
-		
-		internal virtual IGeometry Read(string lineWKT)
+
+
+        internal virtual IGeometry<BufferedCoordinate2D> Read(string lineWKT)
 		{
 			try
 			{
-				IGeometry geom = reader.Read(lineWKT);				
+                IGeometry<BufferedCoordinate2D> geom 
+                    = reader.Read(lineWKT) as IGeometry<BufferedCoordinate2D>;				
 				return geom;
 			}
 			catch (Exception ex)

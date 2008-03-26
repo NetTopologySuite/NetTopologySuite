@@ -5,7 +5,9 @@ using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 {
-    public struct DoubleBinTreeValue : IAddable<DoubleBinTreeValue>, IDivisible<Double, DoubleBinTreeValue>
+    public struct DoubleBinTreeValue : IAddable<DoubleBinTreeValue>,
+                                       IAddable<Double, DoubleBinTreeValue>, 
+                                       IDivisible<Double, DoubleBinTreeValue>
     {
         private readonly Double _value;
 
@@ -19,6 +21,15 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         public DoubleBinTreeValue Add(DoubleBinTreeValue other)
         {
             return new DoubleBinTreeValue(_value + other._value);
+        }
+
+        #endregion
+
+        #region IAddable<DoubleBinTreeValue> Members
+
+        public DoubleBinTreeValue Add(Double other)
+        {
+            return new DoubleBinTreeValue(_value + other);
         }
 
         #endregion

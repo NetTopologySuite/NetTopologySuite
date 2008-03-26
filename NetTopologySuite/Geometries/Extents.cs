@@ -871,7 +871,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public void ExpandToInclude(params TCoordinate[] coordinate)
         {
-            throw new NotImplementedException();
+            foreach (TCoordinate tCoordinate in coordinate)
+            {
+                ExpandToInclude(tCoordinate);
+            }
         }
 
         public void ExpandToInclude(IEnumerable<TCoordinate> coordinates)

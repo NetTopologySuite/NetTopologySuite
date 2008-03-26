@@ -23,7 +23,20 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         // true if the point lies in or on any Geometry element
         private Boolean _isIn; 
         // the number of sub-elements whose boundaries the point lies in
-        private Int32 _boundaryCount; 
+        private Int32 _boundaryCount;
+        private readonly IBoundaryNodeRule _boundaryRule;
+
+        public PointLocator() : this(new Mod2BoundaryNodeRule()) { }
+
+        public PointLocator(IBoundaryNodeRule boundaryRule)
+        {
+            if (boundaryRule == null)
+            {
+                throw new ArgumentNullException("boundaryRule");
+            }
+
+            _boundaryRule = boundaryRule;
+        }
 
         /// <summary> 
         /// Convenience method to test a point for intersection with a Geometry
@@ -51,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             if (geom is ILineString<TCoordinate>)
             {
-                return Locate(p, geom as ILineString<TCoordinate>);
+                return locate(p, geom as ILineString<TCoordinate>);
             }
             else if (geom is IPolygon<TCoordinate>)
             {
@@ -63,7 +76,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             computeLocation(p, geom);
 
-            if (GeometryGraph<TCoordinate>.IsInBoundary(_boundaryCount))
+            if (_boundaryRule.IsInBoundary(_boundaryCount))
             {
                 return Locations.Boundary;
             }

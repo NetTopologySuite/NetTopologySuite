@@ -75,10 +75,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         private readonly IPrecisionModel<TCoordinate> _precisionModel;
         private Int32? _srid;
         private ICoordinateSystem<TCoordinate> _spatialReference;
-        private IWktGeometryEncoder _wktEncoder;
-        private IWktGeometryDecoder _wktDecoder;
-        private IWkbEncoder _wkbEncoder;
-        private IWkbDecoder _wkbDecoder;
+        private IWktGeometryWriter _wktEncoder;
+        private IWktGeometryReader _wktDecoder;
+        private IWkbWriter _wkbEncoder;
+        private IWkbReader _wkbDecoder;
 
         #endregion
 
@@ -102,10 +102,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             _coordinateFactory = coordinateSequenceFactory.CoordinateFactory;
             _srid = srid;
             _spatialReference = spatialReference;
-            _wktEncoder = new WktEncoder();
-            _wktDecoder = new WktDecoder(this, null);
-            _wkbEncoder = new WkbEncoder();
-            _wkbDecoder = new WkbDecoder(this);
+            _wktEncoder = new WktWriter<TCoordinate>();
+            _wktDecoder = new WktReader<TCoordinate>(this, null);
+            _wkbEncoder = new WkbWriter<TCoordinate>();
+            _wkbDecoder = new WkbReader<TCoordinate>(this);
         }
 
         /// <summary>
@@ -574,7 +574,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public IMultiPoint<TCoordinate> CreateMultiPoint(params IPoint<TCoordinate>[] points)
         {
-            throw new NotImplementedException();
+            return new MultiPoint<TCoordinate>(points, this);
         }
 
         /// <summary> 
@@ -703,25 +703,25 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             set { _srid = value; }
         }
 
-        public IWktGeometryEncoder WktEncoder
+        public IWktGeometryWriter WktEncoder
         {
             get { return _wktEncoder; }
             set { _wktEncoder = value; }
         }
 
-        public IWktGeometryDecoder WktDecoder
+        public IWktGeometryReader WktDecoder
         {
             get { return _wktDecoder; }
             set { _wktDecoder = value; }
         }
 
-        public IWkbEncoder WkbEncoder
+        public IWkbWriter WkbEncoder
         {
             get { return _wkbEncoder; }
             set { _wkbEncoder = value; }
         }
 
-        public IWkbDecoder WkbDecoder
+        public IWkbReader WkbDecoder
         {
             get { return _wkbDecoder; }
             set { _wkbDecoder = value; }

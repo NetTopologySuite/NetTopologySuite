@@ -9,7 +9,6 @@ using NUnit.Framework;
 using GeoAPI.Geometries;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.Samples.SimpleTests;
 
 

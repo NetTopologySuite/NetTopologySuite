@@ -2,13 +2,13 @@ using System;
 using System.Collections;
 using System.Text;
 using System.Xml;
-
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GeoAPI.IO.WellKnownBinary;
 using GeoAPI.Operations.Buffer;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.Operation.Buffer;
+using NetTopologySuite.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
 {
@@ -18,61 +18,76 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
         private ILinearRing shell = null;
         private ILinearRing hole = null;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public PolygonSamples() : base(new GeometryFactory(new PrecisionModel(PrecisionModels.Fixed)))
+        public PolygonSamples()
+            : base(new GeometryFactory<BufferedCoordinate2D>(
+                       new PrecisionModel<BufferedCoordinate2D>(PrecisionModelType.Fixed)))
         {
-            shell = Factory.CreateLinearRing(new ICoordinate[] { new Coordinate(100,100),
-                                                                 new Coordinate(200,100),
-                                                                 new Coordinate(200,200),                
-                                                                 new Coordinate(100,200),
-                                                                 new Coordinate(100,100), });
-            hole = Factory.CreateLinearRing(new ICoordinate[] {  new Coordinate(120,120),
-                                                                 new Coordinate(180,120),
-                                                                 new Coordinate(180,180),                                                                                
-                                                                 new Coordinate(120,180),                                                                
-                                                                 new Coordinate(120,120), });
-            polygon = Factory.CreatePolygon(shell, new ILinearRing[] { hole, });
+            shell = GeoFactory.CreateLinearRing(new ICoordinate[]
+                                                    {
+                                                        CoordFactory.Create(100, 100),
+                                                        CoordFactory.Create(200, 100),
+                                                        CoordFactory.Create(200, 200),
+                                                        CoordFactory.Create(100, 200),
+                                                        CoordFactory.Create(100, 100),
+                                                    });
+            hole = GeoFactory.CreateLinearRing(new ICoordinate[]
+                                                   {
+                                                       CoordFactory.Create(120, 120),
+                                                       CoordFactory.Create(180, 120),
+                                                       CoordFactory.Create(180, 180),
+                                                       CoordFactory.Create(120, 180),
+                                                       CoordFactory.Create(120, 120),
+                                                   });
+            polygon = GeoFactory.CreatePolygon(shell, new ILinearRing[] {hole,});
         }
 
         public override void Start()
         {
-            IPoint interiorPoint = Factory.CreatePoint(new Coordinate(130, 150));
-            IPoint exteriorPoint = Factory.CreatePoint(new Coordinate(650, 1500));
-            ILineString aLine = Factory.CreateLineString(new ICoordinate[] { new Coordinate(23, 32.2), new Coordinate(10, 222) });
-            ILineString anotherLine = Factory.CreateLineString(new ICoordinate[] { new Coordinate(0, 1), new Coordinate(30, 30) });
-            ILineString intersectLine = Factory.CreateLineString(new ICoordinate[] { new Coordinate(0, 1), new Coordinate(300, 300) });            
+            IPoint interiorPoint = GeoFactory.CreatePoint(CoordFactory.Create(130, 150));
+            IPoint exteriorPoint = GeoFactory.CreatePoint(CoordFactory.Create(650, 1500));
+            ILineString aLine =
+                GeoFactory.CreateLineString(new ICoordinate[]
+                                                {CoordFactory.Create(23, 32.2), CoordFactory.Create(10, 222)});
+            ILineString anotherLine =
+                GeoFactory.CreateLineString(new ICoordinate[] {CoordFactory.Create(0, 1), CoordFactory.Create(30, 30)});
+            ILineString intersectLine =
+                GeoFactory.CreateLineString(new ICoordinate[] {CoordFactory.Create(0, 1), CoordFactory.Create(300, 300)});
 
             try
-            {               
+            {
                 Write(polygon.Area);
                 Write(polygon.Boundary);
                 Write(polygon.BoundaryDimension);
                 Write(polygon.Centroid);
-                Write(polygon.Coordinate);
-                Write(polygon.Coordinates.Length);
+                //Write(polygon.Coordinate);
+                Write(polygon.Coordinates.Count);
                 Write(polygon.Dimension);
                 Write(polygon.Envelope);
-                Write(polygon.EnvelopeInternal);
+                Write(polygon.Extents);
+                //Write(polygon.EnvelopeInternal);
                 Write(polygon.ExteriorRing);
-                Write(polygon.InteriorPoint);
-                Write(polygon.InteriorRings.Length);
+                Write(polygon.PointOnSurface);
+                Write(polygon.InteriorRingsCount);
                 Write(polygon.IsEmpty);
                 Write(polygon.IsSimple);
                 Write(polygon.IsValid);
-                Write(polygon.Length);
-                Write(polygon.NumInteriorRings);
-                Write(polygon.NumPoints);                
+                //Write(polygon.Length);
+                //Write(polygon.NumInteriorRings);
+                Write(polygon.PointCount);
                 if (polygon.UserData != null)
+                {
                     Write(polygon.UserData);
-                else Write("UserData null");
-             
+                }
+                else
+                {
+                    Write("UserData null");
+                }
+
                 Write(polygon.Buffer(10));
-                Write(polygon.Buffer(10, BufferStyle.CapButt));                
+                Write(polygon.Buffer(10, BufferStyle.CapButt));
                 Write(polygon.Buffer(10, BufferStyle.CapSquare));
                 Write(polygon.Buffer(10, 20));
-                Write(polygon.Buffer(10, 20, BufferStyle.CapButt));                
+                Write(polygon.Buffer(10, 20, BufferStyle.CapButt));
                 Write(polygon.Buffer(10, 20, BufferStyle.CapSquare));
                 Write(polygon.Contains(interiorPoint));
                 Write(polygon.Contains(exteriorPoint));
@@ -130,33 +145,36 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(polygon.Union(anotherLine));
 
                 string aPoly = "POLYGON ((20 20, 100 20, 100 100, 20 100, 20 20))";
-                string anotherPoly = "POLYGON ((20 20, 100 20, 100 100, 20 100, 20 20), (50 50, 60 50, 60 60, 50 60, 50 50))";                
+                string anotherPoly =
+                    "POLYGON ((20 20, 100 20, 100 100, 20 100, 20 20), (50 50, 60 50, 60 60, 50 60, 50 50))";
                 IGeometry geom1 = Reader.Read(aPoly);
-                Write(geom1.AsText());                                
+                Write(geom1.AsText());
                 IGeometry geom2 = Reader.Read(anotherPoly);
                 Write(geom2.AsText());
 
                 // ExpandToInclude tests
-                Envelope envelope = new Envelope(0, 0, 0, 0);
-                envelope.ExpandToInclude(geom1.EnvelopeInternal);
-                envelope.ExpandToInclude(geom2.EnvelopeInternal);
-                Write(envelope.ToString());
+                IExtents<BufferedCoordinate2D> extents = GeoFactory.CreateExtents(
+                                                                CoordFactory.Create(0, 0), 
+                                                                CoordFactory.Create(0, 0));
+                extents.ExpandToInclude(geom1.Extents);
+                extents.ExpandToInclude(geom2.Extents);
+                Write(extents.ToString());
 
                 // The polygon is not correctly ordered! Calling normalize we fix the problem...
                 polygon.Normalize();
 
                 byte[] bytes = polygon.AsBinary();
-                IGeometry test1 = new WKBReader().Read(bytes);
+                IGeometry test1 = new WkbReader<BufferedCoordinate2D>(GeoFactory).Read(bytes);
                 Write(test1.ToString());
 
-                bytes = new GDBWriter().Write(polygon);
-                test1 = new GDBReader().Read(bytes);
+                //bytes = new GDBWriter().Write(polygon);
+                //test1 = new GDBReader().Read(bytes);
                 Write(test1.ToString());
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-        }        
+        }
     }
 }

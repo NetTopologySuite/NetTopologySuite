@@ -1,9 +1,9 @@
 using System;
 
 using GeoAPI.Geometries;
-
+using GeoAPI.IO.WellKnownText;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
+using NetTopologySuite.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Technique
 {
@@ -24,7 +24,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Technique
 		[STAThread]
 		public static void main(string[] args)
 		{
-			WKTReader rdr = new WKTReader();			
+		    IGeometryFactory<BufferedCoordinate2D> geoFactory 
+                = new GeometryFactory<BufferedCoordinate2D>(
+                    new BufferedCoordinate2DSequenceFactory());
+
+            WktReader<BufferedCoordinate2D> rdr = new WktReader<BufferedCoordinate2D>(geoFactory, null);			
 			IGeometry[] geom = new IGeometry[3];
 			geom[0] = rdr.Read("POLYGON (( 100 180, 100 260, 180 260, 180 180, 100 180 ))");
 			geom[1] = rdr.Read("POLYGON (( 80 140, 80 200, 200 200, 200 140, 80 140 ))");

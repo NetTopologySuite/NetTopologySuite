@@ -269,7 +269,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             {
                 outstream.WriteLine("edge " + edgeCount + ":");
                 edge.Write(outstream);
-                edge.EdgeIntersectionList.Write(outstream);
+                outstream.Write(edge.EdgeIntersectionList.ToString());
                 edgeCount++;
             }
         }

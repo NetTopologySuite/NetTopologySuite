@@ -6,10 +6,9 @@ using System.IO;
 using GeoAPI.Geometries;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
 
 using GisSharpBlog.NetTopologySuite.Samples.SimpleTests;
-
+using NetTopologySuite.Coordinates;
 using NUnit.Framework;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
@@ -29,7 +28,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// <summary>
         /// Initializes a new instance of the <see cref="RobustLineIntersectorTest"/> class.
         /// </summary>
-        public RobustLineIntersectorTest() : base(GeometryFactory.Fixed) { }
+        public RobustLineIntersectorTest() 
+            : base(GeometryFactory<BufferedCoordinate2D>.CreateFixedPrecision(
+                    new BufferedCoordinate2DSequenceFactory())) { }
 
         /// <summary>
         /// 

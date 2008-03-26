@@ -1,8 +1,10 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Geometries;
+using GeoAPI.IO.WellKnownText;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.Operation.Polygonize;
+using NetTopologySuite.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Poligonize
 {
@@ -30,20 +32,26 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Poligonize
 		
 		internal virtual void Run()
 		{
-			WKTReader rdr = new WKTReader();
-			IList lines = new ArrayList();
-			
-			lines.Add(rdr.Read("LINESTRING (0 0 , 10 10)"));            // isolated edge
+		    IGeometryFactory<BufferedCoordinate2D> geoFactory =
+		        new GeometryFactory<BufferedCoordinate2D>(new BufferedCoordinate2DSequenceFactory());
+            WktReader<BufferedCoordinate2D> rdr 
+                = new WktReader<BufferedCoordinate2D>(geoFactory, null);
+		    List<IGeometry<BufferedCoordinate2D>> lines 
+                = new List<IGeometry<BufferedCoordinate2D>>();
+
+            // isolated edge
+			lines.Add(rdr.Read("LINESTRING (0 0 , 10 10)"));            
             lines.Add(rdr.Read("LINESTRING (185 221, 100 100)"));       //dangling edge
             lines.Add(rdr.Read("LINESTRING (185 221, 88 275, 180 316)"));
             lines.Add(rdr.Read("LINESTRING (185 221, 292 281, 180 316)"));
             lines.Add(rdr.Read("LINESTRING (189 98, 83 187, 185 221)"));
             lines.Add(rdr.Read("LINESTRING (189 98, 325 168, 185 221)"));
-			
-			Polygonizer polygonizer = new Polygonizer();
+
+            Polygonizer<BufferedCoordinate2D> polygonizer 
+                = new Polygonizer<BufferedCoordinate2D>();
 			polygonizer.Add(lines);
 			
-			ICollection polys = polygonizer.Polygons;
+			IList<IPolygon<BufferedCoordinate2D>> polys = polygonizer.Polygons;
 			
 			Console.WriteLine("Polygons formed (" + polys.Count + "):");
             foreach(object obj in polys)

@@ -1,21 +1,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 {
     /// <summary>
-    /// A collection of <see cref="EdgeEnd{TCoordinate}"/>s which obey the following invariant:
+    /// A collection of <see cref="EdgeEnd{TCoordinate}"/>s which 
+    /// obey the following invariant:
     /// They originate at the same node and have the same direction.
-    /// Contains all <c>EdgeEnd</c>s which start at the same point and are parallel.
+    /// Contains all <see cref="EdgeEnd{TCoordinate}"/>s which start 
+    /// at the same point and are parallel.
     /// </summary>
-    public class EdgeEndBundle<TCoordinate> : EdgeEnd<TCoordinate>, IEnumerable<EdgeEnd<TCoordinate>>
+    public class EdgeEndBundle<TCoordinate> : EdgeEnd<TCoordinate>, 
+                                              IEnumerable<EdgeEnd<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
@@ -35,9 +37,20 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             }
         }
 
-        public ReadOnlyCollection<EdgeEnd<TCoordinate>> EdgeEnds
+        public Int32 EdgeEndsCount
         {
-            get { return _edgeEnds.AsReadOnly(); }
+            get { return _edgeEnds.Count; }
+        }
+
+        public IEnumerable<EdgeEnd<TCoordinate>> EdgeEnds
+        {
+            get
+            {
+                foreach (EdgeEnd<TCoordinate> end in _edgeEnds)
+                {
+                    yield return end;
+                }
+            }
         }
 
         public void Insert(EdgeEnd<TCoordinate> e)
@@ -53,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// the ON and side labels for each edge. 
         /// These labels must be compatible.
         /// </summary>
-        public override void ComputeLabel()
+        public override void ComputeLabel(IBoundaryNodeRule boundaryNodeRule)
         {
             // create the label.  If any of the edges belong to areas,
             // the label must be an area label
@@ -81,7 +94,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             // compute the On label, and the side labels if present
             for (Int32 i = 0; i < 2; i++)
             {
-                computeLabelOn(i);
+                computeLabelOn(i, boundaryNodeRule);
+
                 if (isArea)
                 {
                     computeLabelSides(i);
@@ -98,14 +112,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             Edge<TCoordinate>.UpdateIntersectionMatrix(Label.Value, im);
         }
 
-        public override void Write(StreamWriter outstream)
+        public override String ToString()
         {
-            outstream.WriteLine("EdgeEndBundle--> Label: " + Label);
-            foreach (EdgeEnd<TCoordinate> edgeEnd in _edgeEnds)
-            {
-                edgeEnd.Write(outstream);
-                outstream.WriteLine();
-            }
+            return "Bundled edge ends: " + _edgeEnds.Count +
+                   base.ToString();
         }
 
         // Compute the overall ON location for the list of EdgeStubs.
@@ -123,7 +133,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         //  if there are an even number >= 2 of Bdy edges, the attribute is Int
         //  if there are any Int edges, the attribute is Int
         //  otherwise, the attribute is Null.
-        private void computeLabelOn(Int32 geomIndex)
+        private void computeLabelOn(Int32 geomIndex, IBoundaryNodeRule boundaryNodeRule)
         {
             // compute the On location value
             Int32 boundaryCount = 0;
@@ -154,7 +164,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 
             if (boundaryCount > 0)
             {
-                loc = GeometryGraph<TCoordinate>.DetermineBoundary(boundaryCount);
+                loc = boundaryNodeRule.IsInBoundary(boundaryCount) 
+                    ? Locations.Boundary 
+                    : Locations.Interior;
             }
 
             Label = new Label(Label.Value, geomIndex, loc);

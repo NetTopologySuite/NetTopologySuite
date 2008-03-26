@@ -18,27 +18,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
-        /// <summary> 
-        /// This method implements the Boundary Determination Rule
-        /// for determining whether
-        /// a component (node or edge) that appears multiple times in elements
-        /// of a MultiGeometry is in the boundary or the interior of the Geometry.
-        /// The SFS uses the "Mod-2 Rule", which this function implements.
-        /// An alternative (and possibly more intuitive) rule would be
-        /// the "At Most One Rule":
-        /// isInBoundary = (componentCount == 1)
-        /// </summary>
-        public static Boolean IsInBoundary(Int32 boundaryCount)
-        {
-            // the "Mod-2 Rule"
-            return boundaryCount % 2 == 1;
-        }
-
-        public static Locations DetermineBoundary(Int32 boundaryCount)
-        {
-            return IsInBoundary(boundaryCount) ? Locations.Boundary : Locations.Interior;
-        }
-
         private readonly IGeometry<TCoordinate> _parentGeometry;
 
         // The lineEdgeMap is a map of the linestring components of the
@@ -51,24 +30,36 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// If this flag is true, the Boundary Determination Rule will used when deciding
         /// whether nodes are in the boundary or not
         /// </summary>
-        private Boolean _useBoundaryDeterminationRule = false;
+        private Boolean _useBoundaryDeterminationRule = true;
 
         // the index of this point as an argument to a spatial function (used for labeling)
         private readonly Int32 _argIndex;
 
+        private readonly IBoundaryNodeRule _boundaryNodeRule;
         private IEnumerable<Node<TCoordinate>> _boundaryNodes;
-        private Boolean _hasTooFewPoints = false;
+        private Boolean _hasTooFewPoints;
         private TCoordinate _invalidPoint;
 
         public GeometryGraph(Int32 argIndex, IGeometry<TCoordinate> parentGeom)
+            : this(argIndex, parentGeom, new Mod2BoundaryNodeRule()) { }
+
+        public GeometryGraph(Int32 argIndex, 
+                             IGeometry<TCoordinate> parentGeom, 
+                             IBoundaryNodeRule boundaryNodeRule)
         {
             _argIndex = argIndex;
             _parentGeometry = parentGeom;
+            _boundaryNodeRule = boundaryNodeRule;
 
             if (parentGeom != null)
             {
                 add(parentGeom);
             }
+        }
+
+        public IBoundaryNodeRule BoundaryNodeRule
+        {
+            get { return _boundaryNodeRule; }
         }
 
         public Boolean HasTooFewPoints
@@ -157,9 +148,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="computeRingSelfNodes">If <c>false</c>, intersection checks are optimized to not test rings for self-intersection.</param>
         /// <returns>The SegmentIntersector used, containing information about the intersections found.</returns>
         public SegmentIntersector<TCoordinate> ComputeSelfNodes(
-            LineIntersector<TCoordinate> li, Boolean computeRingSelfNodes)
+                                                LineIntersector<TCoordinate> li, 
+                                                Boolean computeRingSelfNodes)
         {
-            SegmentIntersector<TCoordinate> si = new SegmentIntersector<TCoordinate>(li, true, false);
+            SegmentIntersector<TCoordinate> si = new SegmentIntersector<TCoordinate>(li, 
+                                                                                     true, 
+                                                                                     false);
             EdgeSetIntersector<TCoordinate> esi = createEdgeSetIntersector();
 
             // optimized test for Polygons and Rings
@@ -180,9 +174,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         }
 
         public SegmentIntersector<TCoordinate> ComputeEdgeIntersections(
-            GeometryGraph<TCoordinate> g, LineIntersector<TCoordinate> li, Boolean includeProper)
+                                                    GeometryGraph<TCoordinate> g, 
+                                                    LineIntersector<TCoordinate> li, 
+                                                    Boolean includeProper)
         {
-            SegmentIntersector<TCoordinate> si = new SegmentIntersector<TCoordinate>(li, includeProper, true);
+            SegmentIntersector<TCoordinate> si = new SegmentIntersector<TCoordinate>(
+                                                        li, includeProper, true);
             si.SetBoundaryNodes(BoundaryNodes, g.BoundaryNodes);
             EdgeSetIntersector<TCoordinate> esi = createEdgeSetIntersector();
             esi.ComputeIntersections(Edges, g.Edges, si);
@@ -282,8 +279,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
 
             Label label = new Label(_argIndex, Locations.Boundary, left, right);
-            Edge<TCoordinate> e = new Edge<TCoordinate>(
-                _parentGeometry.Factory, coord, label);
+            Edge<TCoordinate> e = new Edge<TCoordinate>(_parentGeometry.Factory, 
+                                                        coord, 
+                                                        label);
 
             if (_lineEdgeMap.ContainsKey(ring))
             {
@@ -324,8 +322,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             // add the edge for the LineString
             // line edges do not have locations for their left and right sides
             Label label = new Label(_argIndex, Locations.Interior);
-            Edge<TCoordinate> e = new Edge<TCoordinate>(
-                _parentGeometry.Factory, coord, label);
+            Edge<TCoordinate> e = new Edge<TCoordinate>(_parentGeometry.Factory, 
+                                                        coord, 
+                                                        label);
 
             if (_lineEdgeMap.ContainsKey(line))
             {
@@ -386,8 +385,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 boundaryCount++;
             }
 
-            // determine the boundary status of the point according to the Boundary Determination Rule
-            Locations newLoc = DetermineBoundary(boundaryCount);
+            // determine the boundary status of the point according to the 
+            // Boundary Determination Rule
+            Locations newLoc = _boundaryNodeRule.IsInBoundary(boundaryCount) 
+                                                    ? Locations.Boundary 
+                                                    : Locations.Interior;
 
             n.Label = currentLabel != null 
                 ? new Label(currentLabel.Value, argIndex, newLoc)

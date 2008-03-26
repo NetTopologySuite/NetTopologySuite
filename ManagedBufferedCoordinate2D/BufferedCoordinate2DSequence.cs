@@ -69,7 +69,7 @@ namespace NetTopologySuite.Coordinates
         }
 
         public void AddRange(IEnumerable<BufferedCoordinate2D> coordinates,
-                             Boolean allowRepeated, 
+                             Boolean allowRepeated,
                              Boolean reverse)
         {
             checkFrozen();
@@ -289,14 +289,14 @@ namespace NetTopologySuite.Coordinates
             return expanded;
         }
 
+        public BufferedCoordinate2D First
+        {
+            get { return Count > 0 ? this[0] : new BufferedCoordinate2D(); }
+        }
+
         public void Freeze()
         {
             _isFrozen = true;
-        }
-
-        public Boolean IsFrozen
-        {
-            get { return _isFrozen; }
         }
 
         public IEnumerator<BufferedCoordinate2D> GetEnumerator()
@@ -373,8 +373,8 @@ namespace NetTopologySuite.Coordinates
                 checkIndex(index, "index");
                 Int32 bufferIndex = _sequence[index];
 
-                return bufferIndex < 0 
-                    ? new BufferedCoordinate2D() 
+                return bufferIndex < 0
+                    ? new BufferedCoordinate2D()
                     : _buffer[bufferIndex];
             }
             set
@@ -382,19 +382,11 @@ namespace NetTopologySuite.Coordinates
                 checkFrozen();
                 checkIndex(index, "index");
 
-                _sequence[index] = _buffer.Add(value);
+                // TODO: I can't figure out a test to prove this defect.
+                //_sequence[index] = _buffer.Add(value);
+                _sequence[index] = _factory.CoordinateFactory.Create(value).Index;
                 OnSequenceChanged();
             }
-        }
-
-        public Boolean IsFixedSize
-        {
-            get { return IsFrozen; }
-        }
-
-        public Boolean IsReadOnly
-        {
-            get { return IsFrozen; }
         }
 
         public Double this[Int32 index, Ordinates ordinate]
@@ -415,6 +407,31 @@ namespace NetTopologySuite.Coordinates
                 throw new NotImplementedException();
                 //onSequenceChanged();
             }
+        }
+
+        public Boolean IsFixedSize
+        {
+            get { return IsFrozen; }
+        }
+
+        public Boolean IsFrozen
+        {
+            get { return _isFrozen; }
+        }
+
+        public Boolean IsReadOnly
+        {
+            get { return IsFrozen; }
+        }
+
+        public BufferedCoordinate2D Last
+        {
+            get { return Count > 0 ? this[Count - 1] : new BufferedCoordinate2D(); }
+        }
+
+        public Int32 LastIndex
+        {
+            get { return Count - 1; }
         }
 
         public BufferedCoordinate2D Maximum()
@@ -627,9 +644,14 @@ namespace NetTopologySuite.Coordinates
             throw new NotImplementedException();
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        ICoordinate ICoordinateSequence.First
         {
-            return GetEnumerator();
+            get { return First; }
+        }
+
+        ICoordinate ICoordinateSequence.Last
+        {
+            get { return Last; }
         }
 
         ICoordinate ICoordinateSequence.this[Int32 index]
@@ -641,6 +663,11 @@ namespace NetTopologySuite.Coordinates
                 throw new NotImplementedException();
                 OnSequenceChanged();
             }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         Object IList.this[Int32 index]
@@ -678,11 +705,11 @@ namespace NetTopologySuite.Coordinates
         Boolean IList.Contains(Object value)
         {
             if (!(value is BufferedCoordinate2D))
-	        {
-        		 return false;
-	        }
+            {
+                return false;
+            }
 
-            return Contains((BufferedCoordinate2D) value);
+            return Contains((BufferedCoordinate2D)value);
         }
 
         Int32 IList.IndexOf(Object value)
@@ -692,7 +719,7 @@ namespace NetTopologySuite.Coordinates
                 return -1;
             }
 
-            return IndexOf((BufferedCoordinate2D) value);
+            return IndexOf((BufferedCoordinate2D)value);
         }
 
         void IList.Insert(Int32 index, Object value)
@@ -776,7 +803,7 @@ namespace NetTopologySuite.Coordinates
             if (index < 0 || index >= Count)
             {
                 throw new ArgumentOutOfRangeException(parameterName, index,
-                                                      "Index must be between 0 and "+
+                                                      "Index must be between 0 and " +
                                                       "Count - 1.");
             }
         }

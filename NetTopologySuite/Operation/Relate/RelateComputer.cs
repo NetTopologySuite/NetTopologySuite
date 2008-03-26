@@ -13,6 +13,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 {
     /// <summary>
     /// Computes the topological relationship between two Geometries.
+    /// </summary>
+    /// <remarks>
     /// RelateComputer does not need to build a complete graph structure to compute
     /// the IntersectionMatrix.  The relationship between the geometries can
     /// be computed by simply examining the labeling of edges incident on each node.
@@ -21,18 +23,22 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// In order to correct compute relate on overlapping Polygons, they
     /// would first need to be noded and merged (if not explicitly, at least
     /// implicitly).
-    /// </summary>
+    /// </remarks>
     public class RelateComputer<TCoordinate>
-         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                             IComputable<Double, TCoordinate>, IConvertible
+         where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+                             IComparable<TCoordinate>, IConvertible,
+                             IComputable<Double, TCoordinate>
     {
         private readonly LineIntersector<TCoordinate> _li;
-        private readonly PointLocator<TCoordinate> _ptLocator = new PointLocator<TCoordinate>();
+        private readonly PointLocator<TCoordinate> _ptLocator 
+            = new PointLocator<TCoordinate>();
         // the arg(s) of the operation
         private readonly GeometryGraph<TCoordinate> _g0;
         private readonly GeometryGraph<TCoordinate> _g1;
-        private readonly NodeMap<TCoordinate> _nodes = new NodeMap<TCoordinate>(new RelateNodeFactory<TCoordinate>());
-        private readonly List<Edge<TCoordinate>> _isolatedEdges = new List<Edge<TCoordinate>>();
+        private readonly NodeMap<TCoordinate> _nodes
+            = new NodeMap<TCoordinate>(new RelateNodeFactory<TCoordinate>());
+        private readonly List<Edge<TCoordinate>> _isolatedEdges
+            = new List<Edge<TCoordinate>>();
 
         public RelateComputer(GeometryGraph<TCoordinate> graph1, GeometryGraph<TCoordinate> graph2)
         {
@@ -47,7 +53,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             * Note that this does NOT handle mixed-precision arguments
             * where the second arg has greater precision than the first.
             */
-            _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(_g0.Geometry.Factory);
+            _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(
+                                                _g0.Geometry.Factory);
         }
 
         public IntersectionMatrix ComputeIntersectionMatrix()
@@ -67,7 +74,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             _g1.ComputeSelfNodes(_li, false);
 
             // compute intersections between edges of the two input geometries
-            SegmentIntersector<TCoordinate> intersector = _g0.ComputeEdgeIntersections(_g1, _li, false);
+            SegmentIntersector<TCoordinate> intersector = _g0.ComputeEdgeIntersections(
+                                                                _g1, _li, false);
             computeIntersectionNodes(0);
             computeIntersectionNodes(1);
 
@@ -268,7 +276,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 
                 foreach (EdgeIntersection<TCoordinate> intersection in e.EdgeIntersectionList)
                 {
-                    RelateNode<TCoordinate> n = _nodes.Find(intersection.Coordinate) as RelateNode<TCoordinate>;
+                    RelateNode<TCoordinate> n = _nodes.Find(intersection.Coordinate) 
+                                                    as RelateNode<TCoordinate>;
                     Debug.Assert(n != null);
                     Debug.Assert(n.Label != null);
                     if (n.Label.Value.IsNull(argIndex))

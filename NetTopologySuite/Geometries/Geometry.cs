@@ -308,6 +308,21 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return other.Covers(this);
         }
 
+        public Boolean CoveredBy(IGeometry<TCoordinate> other, Tolerance tolerance)
+        {
+            return other.Covers(this, tolerance);
+        }
+
+        public Boolean CoveredBy(IGeometry other)
+        {
+            return other.Covers(this);
+        }
+
+        public Boolean CoveredBy(IGeometry other, Tolerance tolerance)
+        {
+            return other.Covers(this, tolerance);
+        }
+
         public static Boolean operator ==(Geometry<TCoordinate> left, IGeometry<TCoordinate> right)
         {
             return Equals(left, right);
@@ -328,7 +343,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public String ToText()
         {
-            return _factory.WktEncoder.Encode(this);
+            return _factory.WktEncoder.Write(this);
         }
 
         /// <summary>
@@ -339,7 +354,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The Well-known Binary representation of this <see cref="Geometry{TCoordinate}"/>.</returns>
         public Byte[] ToBinary()
         {
-            return _factory.WkbEncoder.Encode(this);
+            return _factory.WkbEncoder.Write(this);
         }
 
         /// <summary>
@@ -1077,11 +1092,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         #region ISpatialRelation<TCoordinate> Members
 
         /// <summary>
-        /// Returns true if the two <see cref="Geometry{TCoordinate}"/>s are exactly equal,
-        /// up to a specified tolerance.
+        /// Returns true if the two <see cref="Geometry{TCoordinate}"/>s are 
+        /// exactly equal, up to a specified tolerance.
         /// </summary>
-        /// <param name="other">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/></param>
-        /// <param name="tolerance">Distance at or below which two Coordinates will be considered equal.</param>
+        /// <param name="other">
+        /// The <see cref="Geometry{TCoordinate}"/> with which to compare 
+        /// this <see cref="Geometry{TCoordinate}"/>.
+        /// </param>
+        /// <param name="tolerance">
+        /// Distance at or below which two <typeparamref name="TCoordinate"/>s 
+        /// will be considered equal.
+        /// </param>
         /// <returns>
         /// <see langword="true"/> if this and the other <see cref="Geometry{TCoordinate}"/>
         /// are of the same class and have equal internal data.
@@ -1092,16 +1113,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <item><description>they have the same class,</description></item>
         /// <item>
         /// <description>
-        /// they have the same values of Coordinates, within the given tolerance distance, 
-        /// in their internal Coordinate lists, in exactly the same order.
+        /// they have the same values of <typeparamref name="TCoordinate"/>s , 
+        /// within the given tolerance distance, in their internal coordinate lists, 
+        /// in exactly the same order.
         /// </description>
         /// </item>
         /// </list>
         /// </para>
         /// <para>
         /// If this and the other <see cref="Geometry{TCoordinate}"/>s are
-        /// composites and any children are not <see cref="Geometry{TCoordinate}"/>s, returns
-        /// false.
+        /// composites and any children are not <see cref="Geometry{TCoordinate}"/>s, 
+        /// returns false.
         /// </para>
         /// </remarks>
         public abstract Boolean Equals(IGeometry<TCoordinate> other, Tolerance tolerance);
