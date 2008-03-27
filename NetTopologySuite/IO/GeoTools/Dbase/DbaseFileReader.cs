@@ -31,7 +31,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			{
 				_parent = parent;
 				FileStream stream = new FileStream(parent._filename, FileMode.Open, FileAccess.Read, FileShare.Read);
-				_dbfStream = new BinaryReader(stream);
+				_dbfStream = new BinaryReader(stream, System.Text.Encoding.Default);
 				ReadHeader();
 			}            
 
