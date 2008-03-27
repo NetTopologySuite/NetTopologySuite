@@ -103,26 +103,20 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public Edge<TCoordinate> CreateSplitEdge(EdgeIntersection<TCoordinate> ei0, 
                                                  EdgeIntersection<TCoordinate> ei1)
         {
-            //Int32 pointCount = ei1.SegmentIndex - ei0.SegmentIndex + 2;
-            TCoordinate lastSegStartPt = _edge.Coordinates[ei1.SegmentIndex];
-
             // if the last intersection point is not equal to the its segment start pt,
             // add it to the points list as well.
             // (This check is needed because the distance metric is not totally reliable!)
             // The check for point equality is 2D only - Z values are ignored
             // TODO: 3D unsafe
+            TCoordinate lastSegStartPt = _edge.Coordinates[ei1.SegmentIndex];
             Boolean useIntersectionPt1 = ei1.Distance > 0.0 || 
-                                ! ei1.Coordinate.Equals(lastSegStartPt);
-
-            //if (! useIntersectionPt1)
-            //{
-            //    pointCount--;
-            //}
+                                         !ei1.Coordinate.Equals(lastSegStartPt);
             
             ICoordinateSequence<TCoordinate> pts = useIntersectionPt1
-                ? _edge.Coordinates.Splice(new Pair<TCoordinate>(ei0.Coordinate, ei1.Coordinate), 
+                ? _edge.Coordinates.Splice(ei0.Coordinate, 
                                            ei0.SegmentIndex + 1, 
-                                           ei1.SegmentIndex)
+                                           ei1.SegmentIndex,
+                                           ei1.Coordinate)
                 : _edge.Coordinates.Splice(ei0.Coordinate, 
                                            ei0.SegmentIndex + 1, 
                                            ei1.SegmentIndex);

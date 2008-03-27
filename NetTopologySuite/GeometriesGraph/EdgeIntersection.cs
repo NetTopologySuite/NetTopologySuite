@@ -6,7 +6,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     /// <summary> 
     /// An <see cref="EdgeIntersection{TCoordinate}"/> represents a point on an
-    /// edge which intersects with another edge.
+    /// edge which intersects with another edge by using an index into the 
+    /// <see cref="Edge{TCoordinate}.Coordinates"/>
     /// </summary>
     /// <remarks>
     /// <para>
