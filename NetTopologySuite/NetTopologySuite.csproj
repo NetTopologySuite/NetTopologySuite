@@ -115,7 +115,7 @@
     <Compile Include="Algorithm\InteriorPointLine.cs" />
     <Compile Include="Algorithm\InteriorPointPoint.cs" />
     <Compile Include="Algorithm\Intersection.cs" />
-    <Compile Include="Algorithm\LineIntersectionType.cs" />
+    <Compile Include="Algorithm\LineIntersectionDegrees.cs" />
     <Compile Include="Algorithm\LineIntersector.cs" />
     <Compile Include="Algorithm\MCPointInRing.cs" />
     <Compile Include="Algorithm\MinimumDiameter.cs" />
@@ -176,7 +176,6 @@
     <Compile Include="GeometriesGraph\Index\EdgeSetIntersector.cs" />
     <Compile Include="GeometriesGraph\Index\MonotoneChain.cs" />
     <Compile Include="GeometriesGraph\Index\MonotoneChainEdge.cs" />
-    <Compile Include="GeometriesGraph\Index\MonotoneChainIndexer.cs" />
     <Compile Include="GeometriesGraph\Index\SegmentIntersector.cs" />
     <Compile Include="GeometriesGraph\Index\SimpleEdgeSetIntersector.cs" />
     <Compile Include="GeometriesGraph\Index\SimpleSweepLineIntersector.cs" />

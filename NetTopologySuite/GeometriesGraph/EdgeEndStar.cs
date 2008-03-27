@@ -197,7 +197,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
                 for (Int32 geometryIndex = 0; geometryIndex < 2; geometryIndex++)
                 {
-                    if (label.AreAnyNull(geometryIndex))
+                    if (label.AreAnyNone(geometryIndex))
                     {
                         Locations loc;
 
@@ -211,7 +211,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                             loc = GetLocation(geometryIndex, p, geom);
                         }
 
-                        label = Label.SetAllLocationsIfNull(label, geometryIndex, loc);
+                        label = Label.SetAllPositionsIfNone(label, geometryIndex, loc);
                     }
                 }
 

@@ -35,8 +35,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         {
             get
             {
-                EdgeSetIntersector<TCoordinate> esi = new SimpleMonotoneChaingSweepLineIntersector<TCoordinate>();
-                SegmentIntersector<TCoordinate> si = new SegmentIntersector<TCoordinate>(_li, true, false);
+                EdgeSetIntersector<TCoordinate> esi 
+                    = new SimpleMonotoneChaingSweepLineIntersector<TCoordinate>();
+                SegmentIntersector<TCoordinate> si 
+                    = new SegmentIntersector<TCoordinate>(_li, true, false);
+
                 esi.ComputeIntersections(_inputEdges, si, true);
 
                 foreach (Edge<TCoordinate> edge in _inputEdges)

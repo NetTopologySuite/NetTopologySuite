@@ -289,19 +289,19 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             return sb.ToString();
         }
 
-        public void WriteEdge(StreamWriter outstream)
-        {
-            outstream.Write(ToString());
-            outstream.Write(" ");
+        //public void WriteEdge(StreamWriter outstream)
+        //{
+        //    outstream.Write(ToString());
+        //    outstream.Write(" ");
 
-            if (_isForward)
-            {
-                Edge.Write(outstream);
-            }
-            else
-            {
-                Edge.WriteReverse(outstream);
-            }
-        }
+        //    if (_isForward)
+        //    {
+        //        Edge.Write(outstream);
+        //    }
+        //    else
+        //    {
+        //        Edge.WriteReverse(outstream);
+        //    }
+        //}
     }
 }

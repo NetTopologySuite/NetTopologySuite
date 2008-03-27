@@ -20,20 +20,24 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// drastically improves the average-case time.
     /// </para>
     /// <para>
-    /// The use of MonotoneChains as the items in the index
+    /// The use of <see cref="MonotoneChain{TCoordinate}"/>s as the items in the index
     /// seems to offer an improvement in performance over a sweep-line alone.
     /// </para>
     /// </remarks>
-    public class SimpleMonotoneChaingSweepLineIntersector<TCoordinate> : EdgeSetIntersector<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+    public class SimpleMonotoneChaingSweepLineIntersector<TCoordinate> 
+            : EdgeSetIntersector<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         private readonly List<SweepLineEvent> _events = new List<SweepLineEvent>();
 
         // statistics information
         private Int32 _overlapCount;
 
-        public override void ComputeIntersections(IEnumerable<Edge<TCoordinate>> edges, SegmentIntersector<TCoordinate> si, Boolean testAllSegments)
+        public override void ComputeIntersections(IEnumerable<Edge<TCoordinate>> edges, 
+                                                  SegmentIntersector<TCoordinate> si, 
+                                                  Boolean testAllSegments)
         {
             if (testAllSegments)
             {
@@ -47,7 +51,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             computeIntersections(si);
         }
 
-        public override void ComputeIntersections(IEnumerable<Edge<TCoordinate>> edges0, IEnumerable<Edge<TCoordinate>> edges1, SegmentIntersector<TCoordinate> si)
+        public override void ComputeIntersections(IEnumerable<Edge<TCoordinate>> edges0, 
+                                                  IEnumerable<Edge<TCoordinate>> edges1, 
+                                                  SegmentIntersector<TCoordinate> si)
         {
             Add(edges0, edges0);
             Add(edges1, edges1);
@@ -63,7 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             }
         }
 
-        private void Add(IEnumerable<Edge<TCoordinate>> edges, object edgeSet)
+        private void Add(IEnumerable<Edge<TCoordinate>> edges, Object edgeSet)
         {
             foreach (Edge<TCoordinate> edge in edges)
             {
@@ -71,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             }
         }
 
-        private void Add(Edge<TCoordinate> edge, object edgeSet)
+        private void Add(Edge<TCoordinate> edge, Object edgeSet)
         {
             MonotoneChainEdge<TCoordinate> mce = edge.MonotoneChainEdge;
             IList<Int32> startIndex = mce.StartIndexes;
@@ -79,17 +85,16 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             for (Int32 i = 0; i < startIndex.Count - 1; i++)
             {
                 MonotoneChain<TCoordinate> mc = new MonotoneChain<TCoordinate>(mce, i);
-                SweepLineEvent insertEvent = new SweepLineEvent(edgeSet, mce.GetMinX(i), null, mc);
+                SweepLineEvent insertEvent 
+                    = new SweepLineEvent(edgeSet, mce.GetMinX(i), null, mc);
                 _events.Add(insertEvent);
                 _events.Add(new SweepLineEvent(edgeSet, mce.GetMaxX(i), insertEvent, mc));
             }
         }
 
-        /// <summary>
-        /// Because Delete Events have a link to their corresponding Insert event,
-        /// it is possible to compute exactly the range of events which must be
-        /// compared to a given Insert event object.
-        /// </summary>
+        // Because Delete events have a link to their corresponding Insert event,
+        // it is possible to compute exactly the range of events which must be
+        // compared to a given Insert event object.
         private void PrepareEvents()
         {
             _events.Sort();
@@ -122,7 +127,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             }
         }
 
-        private void processOverlaps(Int32 start, Int32 end, SweepLineEvent ev0, SegmentIntersector<TCoordinate> si)
+        private void processOverlaps(Int32 start, Int32 end, SweepLineEvent ev0, 
+                                     SegmentIntersector<TCoordinate> si)
         {
             MonotoneChain<TCoordinate> mc0 = ev0.Object as MonotoneChain<TCoordinate>;
 
@@ -130,7 +136,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 
             /*
             * Since we might need to test for self-intersections,
-            * include current insert event object in list of event objects to test.
+            * include current insert event Object in list of event objects to test.
             * Last index can be skipped, because it must be a Delete event.
             */
             for (Int32 i = start; i < end; i++)

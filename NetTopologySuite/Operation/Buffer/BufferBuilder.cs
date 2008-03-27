@@ -17,6 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// <summary> 
     /// Builds the buffer point for a given input point and precision model.
     /// </summary>
+    /// <typeparam name="TCoordinate">The type of coordinate.</typeparam>
     /// <remarks>
     /// Allows setting the level of approximation for circular arcs,
     /// and the precision model in which to carry out the computation.
@@ -27,11 +28,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// can produce more robust results.    
     /// </remarks>
     public class BufferBuilder<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         private Int32 _quadrantSegments = OffsetCurveBuilder<TCoordinate>.DefaultQuadrantSegments;
-        private BufferStyle _endCapStyle = BufferStyle.CapRound;
+        private BufferStyle _endCapStyle = BufferStyle.Round;
 
         private IPrecisionModel<TCoordinate> _workingPrecisionModel;
         private INoder<TCoordinate> _workingNoder;
@@ -39,6 +41,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private PlanarGraph<TCoordinate> _graph;
         private readonly EdgeList<TCoordinate> _edgeList;
 
+        /// <summary>
+        /// Constructs a new <see cref="BufferBuilder{TCoordinate}"/>
+        /// with the given <paramref name="geoFactory"/>.
+        /// </summary>
+        /// <param name="geoFactory">
+        /// The <see cref="IGeometryFactory{TCoordinate}"/> to use 
+        /// to construct geometries.
+        /// </param>
         public BufferBuilder(IGeometryFactory<TCoordinate> geoFactory)
         {
             _edgeList = new EdgeList<TCoordinate>(geoFactory);
@@ -54,10 +64,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Gets or sets the precision model to use during the curve computation and noding,
-        /// if it is different to the precision model of the Geometry.
-        /// If the precision model is less than the precision of the Geometry precision model,
-        /// the Geometry must have previously been rounded to that precision.
+        /// Gets or sets the precision model to use during the curve 
+        /// computation and noding, if it is different to the precision model 
+        /// of the Geometry.
+        /// If the precision model is less than the precision of the Geometry 
+        /// precision model, the Geometry must have previously been rounded to 
+        /// that precision.
         /// </summary>
         public IPrecisionModel<TCoordinate> WorkingPrecisionModel
         {
@@ -65,18 +77,38 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             set { _workingPrecisionModel = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the style of the buffer's end.
+        /// </summary>
         public BufferStyle EndCapStyle
         {
             get { return _endCapStyle; }
             set { _endCapStyle = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="INoder{TCoordinate}"/>
+        /// used to create nodes for intersections in the buffer graph.
+        /// </summary>
         public INoder<TCoordinate> Noder
         {
             get { return _workingNoder; }
             set { _workingNoder = value; }
         }
 
+        /// <summary>
+        /// Generates a new <see cref="IGeometry{TCoordinate}"/>
+        /// which is the buffer of the given geometry, <paramref name="g"/>.
+        /// </summary>
+        /// <param name="g">The input geometry to compute the buffer for.</param>
+        /// <param name="distance">
+        /// The distance from the input geometry's border at which 
+        /// to construct the new geometry.
+        /// </param>
+        /// <returns>
+        /// A newly constructed geometry whose border is <paramref name="distance"/>
+        /// from the input geometry's border.
+        /// </returns>
         public IGeometry<TCoordinate> Buffer(IGeometry<TCoordinate> g, Double distance)
         {
             IPrecisionModel<TCoordinate> precisionModel = _workingPrecisionModel;
@@ -89,20 +121,24 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             // factory must be the same as the one used by the input
             _geoFactory = g.Factory;
 
-            OffsetCurveBuilder<TCoordinate> curveBuilder = new OffsetCurveBuilder<TCoordinate>(
-                _geoFactory, precisionModel, _quadrantSegments);
+            OffsetCurveBuilder<TCoordinate> curveBuilder 
+                = new OffsetCurveBuilder<TCoordinate>(_geoFactory, 
+                                                      precisionModel, 
+                                                      _quadrantSegments);
 
             curveBuilder.EndCapStyle = _endCapStyle;
 
             OffsetCurveSetBuilder<TCoordinate> curveSetBuilder
                 = new OffsetCurveSetBuilder<TCoordinate>(g, distance, curveBuilder);
 
-            IEnumerable<NodedSegmentString<TCoordinate>> bufferSegStrList = curveSetBuilder.GetCurves();
+            IEnumerable<NodedSegmentString<TCoordinate>> bufferSegStrList 
+                = curveSetBuilder.GetCurves();
 
             // short-circuit test
             if (!Slice.CountGreaterThan(bufferSegStrList, 0))
             {
-                IGeometry<TCoordinate> emptyGeom = _geoFactory.CreateGeometryCollection();
+                IGeometry<TCoordinate> emptyGeom 
+                    = _geoFactory.CreateGeometryCollection();
                 return emptyGeom;
             }
 
@@ -111,7 +147,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             _graph.AddEdges(_edgeList);
 
             IEnumerable<BufferSubgraph<TCoordinate>> subgraphs = createSubgraphs(_graph);
-            PolygonBuilder<TCoordinate> polyBuilder = new PolygonBuilder<TCoordinate>(_geoFactory);
+            PolygonBuilder<TCoordinate> polyBuilder 
+                = new PolygonBuilder<TCoordinate>(_geoFactory);
             buildSubgraphs(subgraphs, polyBuilder);
 
             IEnumerable<IGeometry<TCoordinate>> resultPolyList
@@ -119,23 +156,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             IGeometry<TCoordinate> resultGeom = _geoFactory.BuildGeometry(resultPolyList);
             return resultGeom;
-        }
-
-        private INoder<TCoordinate> getNoder(IPrecisionModel<TCoordinate> precisionModel)
-        {
-            if (_workingNoder != null)
-            {
-                return _workingNoder;
-            }
-
-            // otherwise use a fast (but non-robust) noder
-            LineIntersector<TCoordinate> li
-                = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(_geoFactory);
-            li.PrecisionModel = precisionModel;
-            MonotoneChainIndexNoder<TCoordinate> noder
-                = new MonotoneChainIndexNoder<TCoordinate>(_geoFactory,
-                    new IntersectionAdder<TCoordinate>(li));
-            return noder;
         }
 
         /// <summary>
@@ -184,7 +204,29 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             }
         }
 
-        private void computeNodedEdges(IEnumerable<NodedSegmentString<TCoordinate>> bufferSegStrList, IPrecisionModel<TCoordinate> precisionModel)
+        #region Private helper routines
+        private INoder<TCoordinate> getNoder(IPrecisionModel<TCoordinate> precisionModel)
+        {
+            if (_workingNoder != null)
+            {
+                return _workingNoder;
+            }
+
+            // otherwise use a fast (but non-robust) noder
+            LineIntersector<TCoordinate> li
+                = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(_geoFactory);
+
+            li.PrecisionModel = precisionModel;
+
+            MonotoneChainIndexNoder<TCoordinate> noder
+                = new MonotoneChainIndexNoder<TCoordinate>(_geoFactory,
+                    new IntersectionAdder<TCoordinate>(li));
+
+            return noder;
+        }
+
+        private void computeNodedEdges(IEnumerable<NodedSegmentString<TCoordinate>> bufferSegStrList, 
+                                       IPrecisionModel<TCoordinate> precisionModel)
         {
             INoder<TCoordinate> noder = getNoder(precisionModel);
             IEnumerable<NodedSegmentString<TCoordinate>> nodedSegStrings = noder.Node(bufferSegStrList);
@@ -205,7 +247,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <param name="subgraphList">The subgraphs to build.</param>
         /// <param name="polyBuilder">The PolygonBuilder which will build the final polygons.</param>
-        private static void buildSubgraphs(IEnumerable<BufferSubgraph<TCoordinate>> subgraphList, PolygonBuilder<TCoordinate> polyBuilder)
+        private static void buildSubgraphs(IEnumerable<BufferSubgraph<TCoordinate>> subgraphList, 
+                                           PolygonBuilder<TCoordinate> polyBuilder)
         {
             List<BufferSubgraph<TCoordinate>> processedGraphs = new List<BufferSubgraph<TCoordinate>>();
 
@@ -235,7 +278,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             {
                 return 1;
             }
-            else if (left == Locations.Exterior && right == Locations.Interior)
+            
+            if (left == Locations.Exterior && right == Locations.Interior)
             {
                 return -1;
             }
@@ -245,13 +289,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
         private static IEnumerable<BufferSubgraph<TCoordinate>> createSubgraphs(PlanarGraph<TCoordinate> graph)
         {
-            List<BufferSubgraph<TCoordinate>> subgraphList = new List<BufferSubgraph<TCoordinate>>();
+            List<BufferSubgraph<TCoordinate>> subgraphList 
+                = new List<BufferSubgraph<TCoordinate>>();
 
             foreach (Node<TCoordinate> node in graph.Nodes)
             {
                 if (!node.IsVisited)
                 {
-                    BufferSubgraph<TCoordinate> subgraph = new BufferSubgraph<TCoordinate>();
+                    BufferSubgraph<TCoordinate> subgraph 
+                        = new BufferSubgraph<TCoordinate>();
+
                     subgraph.Create(node);
                     subgraphList.Add(subgraph);
                 }
@@ -267,5 +314,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             subgraphList.Reverse();
             return subgraphList;
         }
+        #endregion
     }
 }

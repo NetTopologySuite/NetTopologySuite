@@ -250,7 +250,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                     else
                     {
                         Debug.Assert(n.Label != null);
-                        if (n.Label.Value.IsNull(argIndex))
+                        if (n.Label.Value.IsNone(argIndex))
                         {
                             n.SetLabel(argIndex, Locations.Interior);
                         }
@@ -280,7 +280,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                                                     as RelateNode<TCoordinate>;
                     Debug.Assert(n != null);
                     Debug.Assert(n.Label != null);
-                    if (n.Label.Value.IsNull(argIndex))
+                    if (n.Label.Value.IsNone(argIndex))
                     {
                         if (eLoc == Locations.Boundary)
                         {
@@ -379,11 +379,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                 // Possibly should use ptInArea locator instead?  We probably know here
                 // that the edge does not touch the bdy of the target Geometry
                 Locations loc = _ptLocator.Locate(e.Coordinate, target);
-                e.Label = Label.SetAllLocations(e.Label.Value, targetIndex, loc);
+                e.Label = Label.SetAllPositions(e.Label.Value, targetIndex, loc);
             }
             else
             {
-                e.Label = Label.SetAllLocations(e.Label.Value, targetIndex, Locations.Exterior);
+                e.Label = Label.SetAllPositions(e.Label.Value, targetIndex, Locations.Exterior);
             }
         }
 
@@ -408,7 +408,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 
                 if (n.IsIsolated)
                 {
-                    if (label.IsNull(0))
+                    if (label.IsNone(0))
                     {
                         labelIsolatedNode(n, 0);
                     }
@@ -427,7 +427,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         {
             GeometryGraph<TCoordinate> graph = getGraph(targetIndex);
             Locations loc = _ptLocator.Locate(n.Coordinate, graph.Geometry);
-            n.Label = Label.SetAllLocations(n.Label.Value, targetIndex, loc);
+            n.Label = Label.SetAllPositions(n.Label.Value, targetIndex, loc);
         }
 
         private GeometryGraph<TCoordinate> getGraph(int argIndex)

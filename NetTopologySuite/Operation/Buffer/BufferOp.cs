@@ -11,28 +11,53 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 {
     /// <summary>
-    /// Computes the buffer of a point, for both positive and negative buffer distances.    
+    /// Computes the buffer of a geometry, for both positive and negative 
+    /// buffer distances.  
+    /// </summary>
+    /// <remarks>  
+    /// <para>
     /// In GIS, the buffer of a point is defined as
     /// the Minkowski sum or difference of the point
     /// with a circle with radius equal to the absolute value of the buffer distance.
+    /// </para>
+    /// <para>
     /// In the CAD/CAM world buffers are known as offset curves.
     /// Since true buffer curves may contain circular arcs,
     /// computed buffer polygons can only be approximations to the true point.
     /// The user can control the accuracy of the curve approximation by specifying
     /// the number of linear segments with which to approximate a curve.
+    /// </para>
+    /// <para>
     /// The end cap endCapStyle of a linear buffer may be specified. The
     /// following end cap styles are supported:
-    /// <para>
-    /// {CAP_ROUND} - the usual round end caps
-    /// {CAP_BUTT} - end caps are truncated flat at the line ends
-    /// {CAP_SQUARE} - end caps are squared off at the buffer distance beyond the line ends
+    /// <list type="table">
+    /// <item>
+    /// <term><see cref="BufferStyle.Round"/></term>
+    /// <description>the usual round end caps</description>
+    /// </item>
+    /// <item>
+    /// <term><see cref="BufferStyle.Butt"/></term>
+    /// <description>
+    /// end caps are truncated flat at the line ends
+    /// </description>
+    /// </item>
+    /// <item>
+    /// <term><see cref="BufferStyle.Square"/></term>
+    /// <description>
+    /// end caps are squared off at the buffer distance beyond the line ends
+    /// </description>
+    /// </item>
+    /// </list>
     /// </para>
-    /// The computation uses an algorithm involving iterated noding and precision reduction
-    /// to provide a high degree of robustness.
-    /// </summary>
+    /// <para>
+    /// The computation uses an algorithm involving iterated noding 
+    /// and precision reduction to provide a high degree of robustness.
+    /// </para>
+    /// </remarks>
     public class BufferOp<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         // NOTE: modified for "safe" assembly in Sql 2005
         // Const added!
@@ -40,23 +65,33 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
         /// <summary>
         /// Compute a reasonable scale factor to limit the precision of
-        /// a given combination of Geometry and buffer distance.
+        /// a given combination of geometry and buffer distance.
         /// The scale factor is based on a heuristic.
         /// </summary>
-        /// <param name="g">The Geometry being buffered.</param>
+        /// <param name="g">
+        /// The <see cref="IGeometry{TCoordinate}"/> being buffered.
+        /// </param>
         /// <param name="distance">The buffer distance.</param>
-        /// <param name="maxPrecisionDigits">The mzx # of digits that should be allowed by
-        /// the precision determined by the computed scale factor.</param>
-        /// <returns>A scale factor that allows a reasonable amount of precision for the buffer computation.</returns>
-        private static Double precisionScaleFactor(IGeometry<TCoordinate> g, Double distance, Int32 maxPrecisionDigits)
+        /// <param name="maxPrecisionDigits">
+        /// The max # of digits that should be allowed by
+        /// the precision determined by the computed scale factor.
+        /// </param>
+        /// <returns>
+        /// A scale factor that allows a reasonable amount of precision 
+        /// for the buffer computation.
+        /// </returns>
+        public static Double PrecisionScaleFactor(IGeometry<TCoordinate> g,
+                                                  Double distance,
+                                                  Int32 maxPrecisionDigits)
         {
             IExtents<TCoordinate> extents = g.Extents;
-            Double envSize = Math.Max(extents.GetSize(Ordinates.Y), extents.GetSize(Ordinates.X));
+            Double envSize = Math.Max(extents.GetSize(Ordinates.Y), 
+                                      extents.GetSize(Ordinates.X));
             Double expandByDistance = distance > 0.0 ? distance : 0.0;
-            Double bufEnvSize = envSize + 2*expandByDistance;
+            Double bufEnvSize = envSize + 2 * expandByDistance;
 
             // the smallest power of 10 greater than the buffer envelope
-            Int32 bufEnvLog10 = (Int32) (Math.Log(bufEnvSize)/Math.Log(10) + 1.0);
+            Int32 bufEnvLog10 = (Int32)(Math.Log(bufEnvSize) / Math.Log(10) + 1.0);
             Int32 minUnitLog10 = bufEnvLog10 - maxPrecisionDigits;
 
             // scale factor is inverse of min Unit size, so flip sign of exponent
@@ -65,12 +100,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Computes the buffer of a point for a given buffer distance.
+        /// Computes the buffer of a geometry for a given buffer distance.
         /// </summary>
         /// <param name="g">The point to buffer.</param>
         /// <param name="distance">The buffer distance.</param>
         /// <returns> The buffer of the input point.</returns>
-        public static IGeometry<TCoordinate> Buffer(IGeometry<TCoordinate> g, Double distance)
+        public static IGeometry<TCoordinate> Buffer(IGeometry<TCoordinate> g, 
+                                                    Double distance)
         {
             BufferOp<TCoordinate> gBuf = new BufferOp<TCoordinate>(g);
             IGeometry<TCoordinate> geomBuf = gBuf.GetResultGeometry(distance);
@@ -85,7 +121,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="distance">The buffer distance.</param>        
         /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
         /// <returns> The buffer of the input point.</returns>
-        public static IGeometry<TCoordinate> Buffer(IGeometry<TCoordinate> g, Double distance, BufferStyle endCapStyle)
+        public static IGeometry<TCoordinate> Buffer(IGeometry<TCoordinate> g, 
+                                                    Double distance, 
+                                                    BufferStyle endCapStyle)
         {
             BufferOp<TCoordinate> gBuf = new BufferOp<TCoordinate>(g);
             gBuf.EndCapStyle = endCapStyle;
@@ -101,7 +139,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="distance">The buffer distance.</param>
         /// <param name="quadrantSegments">The number of segments used to approximate a quarter circle.</param>
         /// <returns>The buffer of the input point.</returns>
-        public static IGeometry<TCoordinate> Buffer(IGeometry<TCoordinate> g, Double distance, Int32 quadrantSegments)
+        public static IGeometry<TCoordinate> Buffer(IGeometry<TCoordinate> g, 
+                                                    Double distance, 
+                                                    Int32 quadrantSegments)
         {
             BufferOp<TCoordinate> bufOp = new BufferOp<TCoordinate>(g);
             bufOp.QuadrantSegments = quadrantSegments;
@@ -118,7 +158,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="quadrantSegments">The number of segments used to approximate a quarter circle.</param>
         /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
         /// <returns>The buffer of the input point.</returns>
-        public static IGeometry<TCoordinate> Buffer(IGeometry<TCoordinate> g, Double distance, Int32 quadrantSegments,
+        public static IGeometry<TCoordinate> Buffer(IGeometry<TCoordinate> g, 
+                                                    Double distance, 
+                                                    Int32 quadrantSegments,
                                                     BufferStyle endCapStyle)
         {
             BufferOp<TCoordinate> bufOp = new BufferOp<TCoordinate>(g);
@@ -134,8 +176,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private readonly ICoordinateSequenceFactory<TCoordinate> _coordSequenceFactory;
         private Double _distance;
         private Int32 _quadrantSegments = OffsetCurveBuilder<TCoordinate>.DefaultQuadrantSegments;
-        private BufferStyle _endCapStyle = BufferStyle.CapRound;
-        private IGeometry<TCoordinate> _resultGeometry = null;
+        private BufferStyle _endCapStyle = BufferStyle.Round;
+        private IGeometry<TCoordinate> _resultGeometry;
         private TopologyException _saveException; // debugging only
 
         /// <summary>
@@ -153,9 +195,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         }
 
         /// <summary> 
-        /// Specifies the end cap endCapStyle of the generated buffer.
-        /// The styles supported are CapRound, CapButt, and CapSquare.
-        /// The default is CapRound.
+        /// Gets or sets the end cap <see cref="BufferStyle"/> of the 
+        /// generated buffer geometry.
         /// </summary>
         public BufferStyle EndCapStyle
         {
@@ -176,7 +217,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             return _resultGeometry;
         }
 
-        public IGeometry<TCoordinate> GetResultGeometry(Double distance, Int32 quadrantSegments)
+        public IGeometry<TCoordinate> GetResultGeometry(Double distance, 
+                                                        Int32 quadrantSegments)
         {
             _distance = distance;
             QuadrantSegments = quadrantSegments;
@@ -209,7 +251,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         {
             try
             {
-                BufferBuilder<TCoordinate> bufBuilder 
+                BufferBuilder<TCoordinate> bufBuilder
                     = new BufferBuilder<TCoordinate>(_geoFactory);
                 bufBuilder.QuadrantSegments = _quadrantSegments;
                 bufBuilder.EndCapStyle = _endCapStyle;
@@ -231,7 +273,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             INoder<TCoordinate> noder = new ScaledNoder<TCoordinate>(
                 snapRounder, fixedPM.Scale, _coordSequenceFactory);
 
-            BufferBuilder<TCoordinate> bufBuilder 
+            BufferBuilder<TCoordinate> bufBuilder
                 = new BufferBuilder<TCoordinate>(_geoFactory);
             bufBuilder.WorkingPrecisionModel = fixedPM;
             bufBuilder.Noder = noder;
@@ -269,10 +311,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
         private void bufferReducedPrecision(Int32 precisionDigits)
         {
-            Double sizeBasedScaleFactor = precisionScaleFactor(_argGeom, _distance, precisionDigits);
+            Double sizeBasedScaleFactor = PrecisionScaleFactor(_argGeom, _distance, precisionDigits);
             // Debug.WriteLine(String.Format("recomputing with precision scale factor = {0}", sizeBasedScaleFactor));
 
-            IPrecisionModel<TCoordinate> fixedPM = new PrecisionModel<TCoordinate>(sizeBasedScaleFactor);
+            IPrecisionModel<TCoordinate> fixedPM 
+                = new PrecisionModel<TCoordinate>(sizeBasedScaleFactor);
             bufferFixedPrecision(fixedPM);
         }
     }

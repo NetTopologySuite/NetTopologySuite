@@ -40,6 +40,15 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
+        internal BufferedCoordinate2DSequence(List<Int32> sequence, 
+                                              BufferedCoordinate2DSequenceFactory factory,
+                                              IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer)
+        {
+            _factory = factory;
+            _buffer = buffer;
+            _sequence = sequence;
+        }
+
         #region IBufferedCoordSequence Members
 
         public IBufferedCoordSequenceFactory CoordinateSequenceFactory
@@ -621,6 +630,46 @@ namespace NetTopologySuite.Coordinates
         public IBufferedCoordSequence WithoutRepeatedPoints()
         {
             return _factory.Create(this, false, true);
+        }
+
+        public ICoordinateSequence<BufferedCoordinate2D> Splice(
+                                        IEnumerable<BufferedCoordinate2D> coordinates, 
+                                        Int32 startIndex, Int32 endIndex)
+        {
+            checkIndexes(endIndex, startIndex);
+            List<BufferedCoordinate2D> coordList = new List<BufferedCoordinate2D>(coordinates);
+            Int32 sliceLength = (endIndex - startIndex) + 1;
+            List<Int32> newSequence = new List<Int32>(coordList.Count + sliceLength);
+
+            foreach (BufferedCoordinate2D coordinate2D in coordList)
+            {
+                newSequence.Add(coordinate2D.Index);
+            }
+
+            for(Int32 i = startIndex; i <= endIndex; i++)
+            {
+                newSequence.Add(_sequence[i]);
+            }
+
+            return new BufferedCoordinate2DSequence(newSequence, _factory, _buffer);
+        }
+
+        public ICoordinateSequence<BufferedCoordinate2D> Splice(
+                                        BufferedCoordinate2D coordinate, 
+                                        Int32 startIndex, Int32 endIndex)
+        {
+            checkIndexes(endIndex, startIndex);
+            Int32 sliceLength = (endIndex - startIndex) + 1;
+            List<Int32> newSequence = new List<Int32>(1 + sliceLength);
+
+            newSequence.Add(coordinate.Index);
+
+            for (Int32 i = startIndex; i <= endIndex; i++)
+            {
+                newSequence.Add(_sequence[i]);
+            }
+
+            return new BufferedCoordinate2DSequence(newSequence, _factory, _buffer);
         }
 
         public event EventHandler SequenceChanged;

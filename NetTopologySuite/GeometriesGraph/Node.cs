@@ -8,8 +8,9 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     public class Node<TCoordinate> : GraphComponent<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         // Only valid if this node is precise.
         private readonly TCoordinate _coord;
@@ -61,11 +62,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// To merge labels for two nodes,
-        /// the merged location for each LabelElement is computed.
-        /// The location for the corresponding node LabelElement is set to the result,
-        /// as long as the location is non-null.
+        /// Merges the given <see cref="Label"/>'s locations to this node's label's
+        /// locations.
         /// </summary>
+        /// <remarks>
+        /// To merge labels for two nodes, the merged location for each 
+        /// <see cref="Label"/> is computed.
+        /// The location for the corresponding node <see cref="Label"/> 
+        /// is set to the result, as long as the location is non-null.
+        /// </remarks>
         public void MergeLabel(Label other)
         {
             for (Int32 i = 0; i < 2; i++)
@@ -122,38 +127,46 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             Label = new Label(Label.Value, geometryIndex, newLoc);
         }
 
-        /// <summary> 
-        /// The location for a given eltIndex for a node will be one
-        /// of { Null, Interior, Boundary }.
+        /// <summary>
+        /// Merges the given <see cref="Label"/> with this 
+        /// <see cref="Node{TCoordinate}"/>'s label, choosing the greatest
+        /// <see cref="Locations"/> value.
+        /// </summary>
+        /// <remarks>
+        /// The location for a given <paramref name="elementIndex"/> for a node 
+        /// will be one of  { <see cref="Locations.None"/>, 
+        /// <see cref="Locations.Interior"/>, <see cref="Locations.Boundary"/> }.
         /// A node may be on both the boundary and the interior of a point;
         /// in this case, the rule is that the node is considered to be in the boundary.
         /// The merged location is the maximum of the two input values.
-        /// </summary>
-        public Locations ComputeMergedLocation(Label label2, Int32 elementIndex)
+        /// </remarks>
+        public Locations ComputeMergedLocation(Label otherLabel, Int32 elementIndex)
         {
-            Locations loc = Label == null ? Locations.None : Label.Value[elementIndex].On;
+            Locations loc = Label == null 
+                                ? Locations.None 
+                                : Label.Value[elementIndex].On;
 
-            if (!label2.IsNull(elementIndex))
+            if (!otherLabel.IsNone(elementIndex))
             {
-                Locations nLoc = label2[elementIndex].On;
+                Locations otherLocationOn = otherLabel[elementIndex, Positions.On];
 
                 if (loc != Locations.Boundary)
                 {
-                    loc = nLoc;
+                    loc = otherLocationOn;
                 }
             }
 
             return loc;
         }
 
-        public void Write(StreamWriter outstream)
-        {
-            outstream.WriteLine("node " + Coordinate + " lbl: " + Label);
-        }
+        //public void Write(StreamWriter outstream)
+        //{
+        //    outstream.WriteLine("node " + Coordinate + " lbl: " + Label);
+        //}
 
         public override String ToString()
         {
-            return Coordinate + " " + _edges;
+            return Coordinate + " " + Label + " " + _edges;
         }
     }
 }

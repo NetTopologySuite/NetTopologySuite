@@ -1,5 +1,6 @@
 using System;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
@@ -58,6 +59,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public static Quadrants Quadrant(TCoordinate coordinate)
         {
             return Quadrant(coordinate[Ordinates.X], coordinate[Ordinates.Y]);
+        }
+        
+        /// <summary> 
+        /// Returns the quadrant of a directed line segment.
+        /// </summary>
+        public static Quadrants Quadrant(Pair<TCoordinate> segment)
+        {
+            return Quadrant(segment.First, segment.Second);
         }
 
         /// <summary> 

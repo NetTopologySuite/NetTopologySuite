@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
@@ -11,30 +12,37 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// <see cref="RelateNode{TCoordinate}"/>.
     /// </summary>
     /// <remarks>
-    /// They are maintained in CCW order (starting with the positive x-axis) around the node
-    /// for efficient lookup and topology building.
+    /// They are maintained in CCW order (starting with the positive x-axis) 
+    /// around the node for efficient lookup and topology building.
     /// </remarks>
     public class EdgeEndBundleStar<TCoordinate> : EdgeEndStar<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         /// <summary>
-        /// Insert a EdgeEnd in order in the list.
-        /// If there is an existing EdgeStubBundle which is parallel, the EdgeEnd is
-        /// added to the bundle.  Otherwise, a new EdgeEndBundle is created
-        /// to contain the EdgeEnd.
+        /// Insert a <see cref="EdgeEnd{TCoordinate}"/> in order in the list.
+        /// If there is an existing <see cref="EdgeEndBundle{TCoordinate}"/> 
+        /// which is parallel, <paramref name="e"/> is added to the bundle.
+        /// Otherwise, a new <see cref="EdgeEndBundle{TCoordinate}"/>
+        /// is created to contain it.
         /// </summary>
+        /// <param name="e">
+        /// The <see cref="EdgeEnd{TCoordinate}"/> to add to the list.
+        /// </param>
         public override void Insert(EdgeEnd<TCoordinate> e)
         {
-            EdgeEndBundle<TCoordinate> eb = EdgeMap[e] as EdgeEndBundle<TCoordinate>;
+            EdgeEnd<TCoordinate> ee;
 
-            if (eb == null)
+            if (EdgeMap.TryGetValue(e, out ee))
             {
-                eb = new EdgeEndBundle<TCoordinate>(e);
-                InsertEdgeEnd(e, eb);
+                ee = new EdgeEndBundle<TCoordinate>(e);
+                InsertEdgeEnd(e, ee);
             }
             else
             {
+                EdgeEndBundle<TCoordinate> eb = ee as EdgeEndBundle<TCoordinate>;
+                Debug.Assert(eb != null);
                 eb.Insert(e);
             }
         }

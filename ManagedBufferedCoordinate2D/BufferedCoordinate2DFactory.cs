@@ -73,12 +73,31 @@ namespace NetTopologySuite.Coordinates
                 throw new ArgumentNullException("coordinates");
             }
 
-            if (coordinates.Length == 2)
+            Int32 length = coordinates.Length;
+
+            if (length == 0)
+            {
+                return new BufferedCoordinate2D();
+            }
+
+            if (length == 2)
             {
                 return Create(coordinates[0], coordinates[1]);
             }
 
-            throw new NotSupportedException("Coordinates with 'M' values currently not supported.");
+            if (length == 1)
+            {
+                throw new ArgumentException("Only one coordinate component was provided; "+
+                                            "at least 2 are needed.");
+            }
+
+            if (length == 3)
+            {
+                throw new NotSupportedException("Coordinates with 'M' values currently "+
+                                                "not supported.");
+            }
+
+            throw new ArgumentException("Too many components.");
         }
 
         public BufferedCoordinate2D Create3D(Double x, Double y, Double z)

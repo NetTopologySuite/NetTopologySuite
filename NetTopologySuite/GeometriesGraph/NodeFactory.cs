@@ -4,9 +4,16 @@ using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
+    /// <summary>
+    /// A factory for producing nodes in a <see cref="GeometryGraph{TCoordinate}"/>.
+    /// </summary>
+    /// <typeparam name="TCoordinate">
+    /// The type of the coordinate in the geometry.
+    /// </typeparam>
     public class NodeFactory<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         /// <summary> 
         /// The basic node constructor does not allow for incident edges.

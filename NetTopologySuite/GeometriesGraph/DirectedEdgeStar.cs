@@ -204,8 +204,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 Debug.Assert(de != null);
                 Debug.Assert(de.Label.HasValue);
                 Label label = de.Label.Value;
-                label = Label.SetAllLocationsIfNull(label, 0, nodeLabel[0].On);
-                label = Label.SetAllLocationsIfNull(label, 1, nodeLabel[1].On);
+                label = Label.SetAllPositionsIfNone(label, 0, nodeLabel[0].On);
+                label = Label.SetAllPositionsIfNone(label, 1, nodeLabel[1].On);
                 de.Label = label;
             }
         }

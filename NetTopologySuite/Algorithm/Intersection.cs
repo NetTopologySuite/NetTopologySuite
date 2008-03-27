@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {
-        private readonly LineIntersectionType _result;
+        private readonly LineIntersectionDegrees _result;
         private readonly TCoordinate _intersectP0;
         private readonly TCoordinate _intersectP1;
         private readonly Pair<TCoordinate> _line0;
@@ -23,29 +23,26 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private readonly Boolean _isProper;
 
         public Intersection(Pair<TCoordinate> line0, Pair<TCoordinate> line1)
-            : this(LineIntersectionType.DoesNotIntersect,
+            : this(LineIntersectionDegrees.DoesNotIntersect,
                    default(TCoordinate), default(TCoordinate), 
-                   line0, line1, false, false, false)
-        { }
+                   line0, line1, false, false, false) { }
 
         public Intersection(TCoordinate intersectionPoint, 
                             Pair<TCoordinate> line0, Pair<TCoordinate> line1, 
                             Boolean flipLine0, Boolean flipLine1, Boolean isProper)
-            : this(LineIntersectionType.Intersects, intersectionPoint, 
+            : this(LineIntersectionDegrees.Intersects, intersectionPoint, 
                    default(TCoordinate), line0, line1, 
-                   flipLine0, flipLine1, isProper)
-        { }
+                   flipLine0, flipLine1, isProper) { }
 
         public Intersection(TCoordinate intersectionPoint0, 
                             TCoordinate intersectionPoint1,
                             Pair<TCoordinate> line0, Pair<TCoordinate> line1, 
                             Boolean flipLine0, Boolean flipLine1, Boolean isProper) 
-            : this(LineIntersectionType.Collinear, 
+            : this(LineIntersectionDegrees.Collinear, 
                    intersectionPoint0, intersectionPoint1,
-                   line0, line1, flipLine0, flipLine1, isProper)
-        { }
+                   line0, line1, flipLine0, flipLine1, isProper) { }
 
-        private Intersection(LineIntersectionType type, 
+        private Intersection(LineIntersectionDegrees type, 
                              TCoordinate intersectionPoint0, 
                              TCoordinate intersectionPoint1,
                              Pair<TCoordinate> line0, Pair<TCoordinate> line1, 
@@ -88,25 +85,30 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return buffer.ToString();
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the input geometries are collinear.
+        /// </summary>
         public Boolean IsCollinear
         {
-            get { return _result == LineIntersectionType.Collinear; }
+            get { return _result == LineIntersectionDegrees.Collinear; }
         }
 
         /// <summary> 
-        /// Tests whether the input geometries intersect.
+        /// Gets a value indicating whether the input geometries intersect.
         /// </summary>
         /// <returns><see langword="true"/> if the input geometries intersect.</returns>
         public Boolean HasIntersection
         {
-            get { return _result != LineIntersectionType.DoesNotIntersect; }
+            get { return _result != LineIntersectionDegrees.DoesNotIntersect; }
         }
 
         /// <summary>
         /// Returns the number of intersection points found. 
-        /// This will be either 0, 1 or 2.
         /// </summary>
-        public LineIntersectionType IntersectionType
+        /// <remarks>
+        /// This will be either 0, 1 or 2.
+        /// </remarks>
+        public LineIntersectionDegrees IntersectionDegree
         {
             get { return _result; }
         }

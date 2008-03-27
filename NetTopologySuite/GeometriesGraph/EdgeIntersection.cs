@@ -19,8 +19,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// The intersection point must be precise.
     /// </remarks>
     public struct EdgeIntersection<TCoordinate> : IComparable<EdgeIntersection<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         private readonly TCoordinate _coordinate;
         private readonly Double _distance;
@@ -39,7 +40,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="distance">
         /// Distance along the segment where the intersection is located.
         /// </param>
-        public EdgeIntersection(TCoordinate coordinate, Int32 segmentIndex, Double distance)
+        public EdgeIntersection(TCoordinate coordinate, Int32 segmentIndex, 
+                                Double distance)
         {
             _coordinate = coordinate;
             _segmentIndex = segmentIndex;
@@ -111,12 +113,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 return -1;
             }
 
-            if (Distance > distance)
-            {
-                return 1;
-            }
-
-            return 0;
+            return Distance > distance ? 1 : 0;
         }
 
         public Boolean IsEndPoint(Int32 maxSegmentIndex)
@@ -126,12 +123,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 return true;
             }
 
-            if (SegmentIndex == maxSegmentIndex)
-            {
-                return true;
-            }
-
-            return false;
+            return SegmentIndex == maxSegmentIndex;
         }
     }
 }

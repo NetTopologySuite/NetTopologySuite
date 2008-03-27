@@ -59,12 +59,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                             return _depth01;
                         case Positions.Right:
                             return _depth02;
-                        case Positions.Parallel:
+                        //case Positions.Parallel:
                         default:
                             return null;
                     }
                 }
-                else if (geometryIndex == 1)
+                
+                if (geometryIndex == 1)
                 {
                     switch (position)
                     {
@@ -74,16 +75,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                             return _depth11;
                         case Positions.Right:
                             return _depth12;
-                        case Positions.Parallel:
+                        //case Positions.Parallel:
                         default:
                             return null;
                     }
                 }
-                else
-                {
-                    throw new ArgumentOutOfRangeException("geometryIndex", geometryIndex,
-                                                          "Geometry index must be 0 or 1.");
-                }
+
+                throw new ArgumentOutOfRangeException("geometryIndex", geometryIndex,
+                                                      "Geometry index must be 0 or 1.");
             }
             set
             {
@@ -206,7 +205,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public Int32? GetDelta(Int32 geometryIndex)
         {
-            return this[geometryIndex, Positions.Right] - this[geometryIndex, Positions.Left];
+            return this[geometryIndex, Positions.Right] 
+                 - this[geometryIndex, Positions.Left];
         }
 
         /// <summary>
@@ -254,8 +254,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public override string ToString()
         {
-            return "A: " + this[0, Positions.Left] + "," + this[0, Positions.Right]
-                   + " B: " + this[1, Positions.Left] + "," + this[1, Positions.Right];
+            return "A: " + this[0, Positions.Left] + "," + this[0, Positions.Right] + 
+                  " B: " + this[1, Positions.Left] + "," + this[1, Positions.Right];
         }
     }
 }

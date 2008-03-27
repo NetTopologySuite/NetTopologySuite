@@ -189,7 +189,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         {
             if (e0 == e1)
             {
-                if (intersection.IntersectionType == LineIntersectionType.Intersects)
+                if (intersection.IntersectionDegree == LineIntersectionDegrees.Intersects)
                 {
                     if (IsAdjacentSegments(segIndex0, segIndex1))
                     {

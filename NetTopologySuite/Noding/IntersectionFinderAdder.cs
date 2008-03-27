@@ -64,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             {
                 if (intersection.IsInteriorIntersection())
                 {
-                    Int32 intersectionCount = (Int32) intersection.IntersectionType;
+                    Int32 intersectionCount = (Int32) intersection.IntersectionDegree;
 
                     for (Int32 intersectionIndex = 0; intersectionIndex < intersectionCount; intersectionIndex++)
                     {

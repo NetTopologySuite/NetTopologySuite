@@ -8,12 +8,14 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 {
     /// <summary>
-    /// A RelateNode is a Node that maintains a list of EdgeStubs
+    /// A <see cref="RelateNode{TCoordinate}"/> is a <see cref="Node{TCoordinate}"/> 
+    /// that maintains an ordered list of <see cref="EdgeEndBundle{TCoordinate}"/>s 
     /// for the edges that are incident on it.
     /// </summary>
     public class RelateNode<TCoordinate> : Node<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         public RelateNode(TCoordinate coord, EdgeEndStar<TCoordinate> edges) :
             base(coord, edges) {}
@@ -26,7 +28,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         public override void ComputeIntersectionMatrix(IntersectionMatrix im)
         {
             Debug.Assert(Label != null);
-            im.SetAtLeastIfValid(Label.Value[0].On, Label.Value[1].On, Dimensions.Point);
+            Label label = Label.Value;
+            im.SetAtLeastIfValid(label[0].On, label[1].On, Dimensions.Point);
         }
 
         /// <summary>

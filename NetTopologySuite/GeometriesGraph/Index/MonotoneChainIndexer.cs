@@ -7,64 +7,74 @@ using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 {
+    /// <summary>
+    /// Partitions a set of coordinates into monotone chains.
+    /// </summary>
+    /// <typeparam name="TCoordinate">The type of coordinate.</typeparam>
     public class MonotoneChainIndexer<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
-        //public static Int32[] ToIntArray(IList list)
-        //{
-        //    Int32[] array = new Int32[list.Count];
-
-        //    for (Int32 i = 0; i < array.Length; i++)
-        //    {
-        //        array[i] = Convert.ToInt32(list[i]);
-        //    }
-
-        //    return array;
-        //}
-
         private Int32 _pointCount;
 
-        public IList<Int32> GetChainStartIndices(IEnumerable<TCoordinate> points)
+        /// <summary>
+        /// Enumerates the given coordinates to compute the starting points of 
+        /// monotone chains within them.
+        /// </summary>
+        /// <param name="points">A set of coordinates to partition.</param>
+        /// <returns>
+        /// An enumeration of the positions within the given coordinates
+        /// where a monotone chain begins.
+        /// </returns>
+        public IEnumerable<Int32> GetChainStartIndices(IEnumerable<TCoordinate> points)
         {
             // find the startpoint (and endpoints) of all monotone chains in this edge
             Int32 start = 0;
-            List<Int32> startIndexList = new List<Int32>();
-            startIndexList.Add(start);
-            _pointCount = Slice.GetLength(points);
 
-            do
+            yield return start;
+
+            IEnumerator<TCoordinate> pointsEnumerator = points.GetEnumerator();
+
+            while (pointsEnumerator.MoveNext())
             {
-                Int32 last = findChainEnd(points, start);
-                startIndexList.Add(last);
+                Int32 last = findChainEnd(pointsEnumerator, start);
+                yield return last;
+                // the next monotone chain starts where the current one ends
                 start = last;
-            } while (start < _pointCount - 1);
-
-            return startIndexList.AsReadOnly();
+            }
         }
 
-        /// <returns> 
-        /// The index of the last point in the monotone chain.
-        /// </returns>
-        private Int32 findChainEnd(IEnumerable<TCoordinate> points, Int32 start)
+        // Returns the index of the last point in the monotone chain.
+        private Int32 findChainEnd(IEnumerator<TCoordinate> points, Int32 start)
         {
-            // determine quadrant for chain
-            Pair<TCoordinate> startPair = Slice.GetPairAt(points, start).Value;
-            Quadrants chainQuad = QuadrantOp<TCoordinate>.Quadrant(startPair.First, startPair.Second);
+            Quadrants chainQuad = Quadrants.None;
             Int32 last = start + 1;
 
-            while (last < _pointCount)
-            {
-                // compute quadrant for next possible segment in chain
-                Pair<TCoordinate> endPair = Slice.GetPairAt(points, last - 1).Value;
-                Quadrants quad = QuadrantOp<TCoordinate>.Quadrant(endPair.First, endPair.Second);
+            TCoordinate p0 = points.Current;
 
-                if (quad != chainQuad)
+            while(points.MoveNext())
+            {
+                TCoordinate p1 = points.Current;
+
+                // determine quadrant for chain on first segment
+                if (chainQuad == Quadrants.None)
                 {
-                    break;
+                    chainQuad = QuadrantOp<TCoordinate>.Quadrant(p0, p1);
+                }
+                else
+                {
+                    Quadrants quad = QuadrantOp<TCoordinate>.Quadrant(p0, p1);
+
+                    if (quad != chainQuad)
+                    {
+                        break;
+                    }
+
+                    last++;
                 }
 
-                last++;
+                p0 = p1;
             }
 
             return last - 1;

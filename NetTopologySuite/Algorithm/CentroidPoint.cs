@@ -14,8 +14,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// Compute the average of all points.
     /// </remarks>
     public class CentroidPoint<TCoordinate>
-         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                             IComputable<Double, TCoordinate>, IConvertible
+         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+                             IComparable<TCoordinate>, IConvertible,
+                             IComputable<Double, TCoordinate>
     {
         private readonly ICoordinateFactory<TCoordinate> _factory;
         private Int32 _pointCount = 0;
@@ -58,17 +59,27 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         public void Add(TCoordinate point)
         {
             _pointCount += 1;
-            _centSum = _factory.Create(_centSum[Ordinates.X] + point[Ordinates.X],
-                                        _centSum[Ordinates.Y] + point[Ordinates.Y]);
+
+            if (_centSum.IsEmpty)
+            {
+                _centSum = point;
+            }
+            else
+            {
+                _centSum = _centSum.Add(point);
+            }
         }
 
         public TCoordinate Centroid
         {
             get
             {
-                Double x = _centSum[Ordinates.X] / _pointCount;
-                Double y = _centSum[Ordinates.Y] / _pointCount;
-                return _factory.Create(x, y);
+                if (_pointCount == 0)
+                {
+                    return _centSum;
+                }
+
+                return ((IComputable<Double, TCoordinate>)_centSum).Divide(_pointCount);
             }
         }
     }

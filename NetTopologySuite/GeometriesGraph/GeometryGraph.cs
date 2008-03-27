@@ -109,7 +109,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             foreach (Edge<TCoordinate> edge in Edges)
             {
-                foreach (Edge<TCoordinate> splitEdge in edge.EdgeIntersectionList.GetSplitEdges())
+                IEnumerable<Edge<TCoordinate>> splitEdges 
+                    = edge.EdgeIntersectionList.GetSplitEdges();
+
+                foreach (Edge<TCoordinate> splitEdge in splitEdges)
                 {
                     yield return splitEdge;
                 }
@@ -180,6 +183,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             SegmentIntersector<TCoordinate> si = new SegmentIntersector<TCoordinate>(
                                                         li, includeProper, true);
+
             si.SetBoundaryNodes(BoundaryNodes, g.BoundaryNodes);
             EdgeSetIntersector<TCoordinate> esi = createEdgeSetIntersector();
             esi.ComputeIntersections(Edges, g.Edges, si);

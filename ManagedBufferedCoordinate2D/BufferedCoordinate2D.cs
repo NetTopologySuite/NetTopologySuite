@@ -619,10 +619,10 @@ namespace NetTopologySuite.Coordinates
 
         #region ICoordinate Members
 
-        ICoordinate ICoordinate.Divide(Double value)
-        {
-            return Divide(value);
-        }
+        //ICoordinate ICoordinate.Divide(Double value)
+        //{
+        //    return Divide(value);
+        //}
 
         #endregion
 

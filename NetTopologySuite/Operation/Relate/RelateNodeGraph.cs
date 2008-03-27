@@ -81,7 +81,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                     {
                         n.SetLabelBoundary(argIndex);
                     }
-                    else if (n.Label.Value.IsNull(argIndex))
+                    else if (n.Label.Value.IsNone(argIndex))
                     {
                         n.SetLabel(argIndex, Locations.Interior);
                     }

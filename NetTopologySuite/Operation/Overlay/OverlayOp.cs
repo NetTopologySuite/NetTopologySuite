@@ -291,7 +291,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 
                     for (Int32 i = 0; i < 2; i++)
                     {
-                        if (!lbl.IsNull(i) && lbl.IsArea() && !depth.IsNull(i))
+                        if (!lbl.IsNone(i) && lbl.IsArea() && !depth.IsNull(i))
                         {
                             /*
                              * if the depths are equal, this edge is the result of
@@ -443,7 +443,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 
                 if (node.IsIsolated)
                 {
-                    if (label.IsNull(0))
+                    if (label.IsNone(0))
                     {
                         labelIncompleteNode(node, 0);
                     }

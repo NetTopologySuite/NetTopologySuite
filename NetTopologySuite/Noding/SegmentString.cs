@@ -146,7 +146,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         public void AddIntersections(Intersection<TCoordinate> intersection, Int32 segmentIndex, Int32 geomIndex)
         {
-            Int32 intersections = (Int32)intersection.IntersectionType;
+            Int32 intersections = (Int32)intersection.IntersectionDegree;
 
             for (Int32 i = 0; i < intersections; i++)
             {

@@ -343,7 +343,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public String ToText()
         {
-            return _factory.WktEncoder.Write(this);
+            return _factory.WktWriter.Write(this);
         }
 
         /// <summary>
@@ -354,7 +354,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The Well-known Binary representation of this <see cref="Geometry{TCoordinate}"/>.</returns>
         public Byte[] ToBinary()
         {
-            return _factory.WkbEncoder.Write(this);
+            return _factory.WkbWriter.Write(this);
         }
 
         /// <summary>

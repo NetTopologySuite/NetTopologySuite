@@ -259,20 +259,20 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             return null;
         }
 
-        public void WriteEdges(StreamWriter outstream)
-        {
-            outstream.WriteLine("Edges:");
+        //public void WriteEdges(StreamWriter outstream)
+        //{
+        //    outstream.WriteLine("Edges:");
 
-            Int32 edgeCount = 0;
+        //    Int32 edgeCount = 0;
 
-            foreach (Edge<TCoordinate> edge in _edgeList)
-            {
-                outstream.WriteLine("edge " + edgeCount + ":");
-                edge.Write(outstream);
-                outstream.Write(edge.EdgeIntersectionList.ToString());
-                edgeCount++;
-            }
-        }
+        //    foreach (Edge<TCoordinate> edge in _edgeList)
+        //    {
+        //        outstream.WriteLine("edge " + edgeCount + ":");
+        //        edge.Write(outstream);
+        //        outstream.Write(edge.EdgeIntersectionList.ToString());
+        //        edgeCount++;
+        //    }
+        //}
 
         protected NodeMap<TCoordinate> NodeMap
         {

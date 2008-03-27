@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
@@ -11,8 +10,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// A map of nodes, indexed by the coordinate of the node.
     /// </summary>
     public class NodeMap<TCoordinate> : IEnumerable<Node<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         private readonly SortedList<TCoordinate, Node<TCoordinate>> _nodeMap 
             = new SortedList<TCoordinate, Node<TCoordinate>>();
@@ -21,6 +21,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public NodeMap(NodeFactory<TCoordinate> nodeFact)
         {
             _nodeFactory = nodeFact;
+        }
+
+        public override String ToString()
+        {
+            return _nodeMap.Count + " Nodes mapped";
         }
 
         /// <summary> 
@@ -39,18 +44,22 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             return node;
         }
 
-        public Node<TCoordinate> AddNode(Node<TCoordinate> n)
+        public Node<TCoordinate> AddNode(Node<TCoordinate> node)
         {
-            Node<TCoordinate> node;
+            if (node == null) throw new ArgumentNullException("node");
 
-            if(!_nodeMap.TryGetValue(n.Coordinate, out node))
+            Node<TCoordinate> mappedNode;
+            TCoordinate coordinate = node.Coordinate;
+
+            if(!_nodeMap.TryGetValue(coordinate, out mappedNode))
             {
-                _nodeMap.Add(n.Coordinate, n);
-                return n;
+                _nodeMap.Add(coordinate, node);
+                return node;
             }
 
-            node.MergeLabel(n);
-            return node;
+            // update
+            mappedNode.MergeLabel(node);
+            return mappedNode;
         }
 
         /// <summary> 
@@ -96,13 +105,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        public void Write(StreamWriter outstream)
-        {
-            foreach (Node<TCoordinate> node in this)
-            {
-                node.Write(outstream);
-            }
-        }
+        //public void Write(StreamWriter outstream)
+        //{
+        //    foreach (Node<TCoordinate> node in this)
+        //    {
+        //        node.Write(outstream);
+        //    }
+        //}
 
         #region IEnumerable Members
 

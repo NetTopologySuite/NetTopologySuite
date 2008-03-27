@@ -51,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private readonly List<TCoordinate> _coordinates = new List<TCoordinate>();
         private Double _distance;
         private readonly IPrecisionModel<TCoordinate> _precisionModel;
-        private BufferStyle _endCapStyle = BufferStyle.CapRound;
+        private BufferStyle _endCapStyle = BufferStyle.Round;
         private TCoordinate _s0, _s1, _s2;
         private LineSegment<TCoordinate> _seg0, _seg1;
         private LineSegment<TCoordinate> _offset0, _offset1;
@@ -103,10 +103,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
                 switch (_endCapStyle)
                 {
-                    case BufferStyle.CapRound:
+                    case BufferStyle.Round:
                         addCircle(start, distance);
                         break;
-                    case BufferStyle.CapSquare:
+                    case BufferStyle.Square:
                         addSquare(start, distance);
                         break;
                     default:
@@ -249,7 +249,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             // don't add duplicate points
             TCoordinate lastPt = default(TCoordinate);
 
-            if (Slice.IsEmpty(_coordinates))
+            if (!Slice.IsEmpty(_coordinates))
             {
                 lastPt = Slice.GetLast(_coordinates);
             }
@@ -325,7 +325,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             if (orientation == 0) // lines are collinear
             {
                 Intersection<TCoordinate> intersection = _li.ComputeIntersection(_s0, _s1, _s1, _s2);
-                LineIntersectionType intersectionType = intersection.IntersectionType;
+                LineIntersectionDegrees intersectionType = intersection.IntersectionDegree;
 
                 /*
                 * if numInt is < 2, the lines are parallel and in the same direction.
@@ -451,20 +451,20 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             switch (_endCapStyle)
             {
-                case BufferStyle.CapRound:
+                case BufferStyle.Round:
                     // add offset seg points with a fillet between them
                     addCoordinate(offsetL.P1);
                     addFillet(p1, angle + Math.PI / 2, angle - Math.PI / 2, Orientation.Clockwise, _distance);
                     addCoordinate(offsetR.P1);
                     break;
 
-                case BufferStyle.CapButt:
+                case BufferStyle.Butt:
                     // only offset segment points are added
                     addCoordinate(offsetL.P1);
                     addCoordinate(offsetR.P1);
                     break;
 
-                case BufferStyle.CapSquare:
+                case BufferStyle.Square:
                     // add a square defined by extensions of the offset segment endpoints
                     Double sideOffsetX = Math.Abs(_distance) * Math.Cos(angle);
                     Double sideOffsetY = Math.Abs(_distance) * Math.Sin(angle);

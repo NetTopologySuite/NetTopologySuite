@@ -75,10 +75,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         private readonly IPrecisionModel<TCoordinate> _precisionModel;
         private Int32? _srid;
         private ICoordinateSystem<TCoordinate> _spatialReference;
-        private IWktGeometryWriter _wktEncoder;
-        private IWktGeometryReader _wktDecoder;
-        private IWkbWriter _wkbEncoder;
-        private IWkbReader _wkbDecoder;
+        private IWktGeometryWriter<TCoordinate> _wktEncoder;
+        private IWktGeometryReader<TCoordinate> _wktDecoder;
+        private IWkbWriter<TCoordinate> _wkbEncoder;
+        private IWkbReader<TCoordinate> _wkbDecoder;
 
         #endregion
 
@@ -703,25 +703,25 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             set { _srid = value; }
         }
 
-        public IWktGeometryWriter WktEncoder
+        public IWktGeometryWriter<TCoordinate> WktWriter
         {
             get { return _wktEncoder; }
             set { _wktEncoder = value; }
         }
 
-        public IWktGeometryReader WktDecoder
+        public IWktGeometryReader<TCoordinate> WktReader
         {
             get { return _wktDecoder; }
             set { _wktDecoder = value; }
         }
 
-        public IWkbWriter WkbEncoder
+        public IWkbWriter<TCoordinate> WkbWriter
         {
             get { return _wkbEncoder; }
             set { _wkbEncoder = value; }
         }
 
-        public IWkbReader WkbDecoder
+        public IWkbReader<TCoordinate> WkbReader
         {
             get { return _wkbDecoder; }
             set { _wkbDecoder = value; }
@@ -1051,6 +1051,46 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         IMultiPolygon IGeometryFactory.CreateMultiPolygon(ICoordinateSequence coordinates)
         {
             throw new NotImplementedException();
+        }
+
+        IWktGeometryWriter IGeometryFactory.WktWriter
+        {
+            get { return WktWriter; }
+            set
+            {
+                 throw new NotSupportedException(
+                     "Use IGeometryFactory<TCoordinate>.WktWriter instead.");
+            }
+        }
+
+        IWktGeometryReader IGeometryFactory.WktReader
+        {
+            get { return WktReader; }
+            set
+            {
+                throw new NotSupportedException(
+                    "Use IGeometryFactory<TCoordinate>.WktReader instead.");
+            }
+        }
+
+        IWkbWriter IGeometryFactory.WkbWriter
+        {
+            get { return WkbWriter; }
+            set
+            {
+                throw new NotSupportedException(
+                    "Use IGeometryFactory<TCoordinate>.WkbWriter instead.");
+            }
+        }
+
+        IWkbReader IGeometryFactory.WkbReader
+        {
+            get { return WkbReader; }
+            set
+            {
+                throw new NotSupportedException(
+                    "Use IGeometryFactory<TCoordinate>.WkbReader instead.");
+            }
         }
 
         #endregion
