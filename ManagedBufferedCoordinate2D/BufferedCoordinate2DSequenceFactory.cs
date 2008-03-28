@@ -84,6 +84,8 @@ namespace NetTopologySuite.Coordinates
                 }
 
                 newSequence.Add(c);
+
+                lastCoord = c;
             }
 
             return newSequence;

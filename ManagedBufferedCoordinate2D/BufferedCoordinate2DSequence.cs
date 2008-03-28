@@ -35,6 +35,9 @@ namespace NetTopologySuite.Coordinates
         internal BufferedCoordinate2DSequence(Int32 size, BufferedCoordinate2DSequenceFactory factory,
                                               IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer)
         {
+            if (size < 0) throw new ArgumentOutOfRangeException("size", size,
+                                                                 "Size should be greater " +
+                                                                 "than 0");
             _factory = factory;
             _buffer = buffer;
             _sequence = new List<Int32>(Math.Max(size, 8));
@@ -87,7 +90,8 @@ namespace NetTopologySuite.Coordinates
         public void Add(BufferedCoordinate2D item)
         {
             checkFrozen();
-            _sequence.Add(item.Index);
+
+            addInternal(item);
             OnSequenceChanged();
         }
 
@@ -118,7 +122,7 @@ namespace NetTopologySuite.Coordinates
                     }
                 }
 
-                _sequence.Add(coordinate.Index);
+                addInternal(coordinate);
             }
 
             OnSequenceChanged();
@@ -130,7 +134,7 @@ namespace NetTopologySuite.Coordinates
 
             foreach (BufferedCoordinate2D coordinate in coordinates)
             {
-                _sequence.Add(coordinate.Index);
+                addInternal(coordinate);
             }
 
             OnSequenceChanged();
@@ -143,20 +147,21 @@ namespace NetTopologySuite.Coordinates
             checkFrozen();
 
             _sequence.Capacity = Math.Max(_sequence.Capacity,
-                sequence.Count - (_sequence.Capacity - Count));
+                                          sequence.Count - (_sequence.Capacity - Count));
 
             BufferedCoordinate2DSequence buf2DSeq = sequence as BufferedCoordinate2DSequence;
 
-            if (sequence == null)
+            // if we share a buffer, we can just import the indexes
+            if (buf2DSeq != null && buf2DSeq._buffer == _buffer)
             {
-                foreach (BufferedCoordinate2D coordinate2D in sequence)
-                {
-                    Add(coordinate2D);
-                }
+                _sequence.AddRange(buf2DSeq._sequence);
             }
             else
             {
-                _sequence.AddRange(buf2DSeq._sequence);
+                foreach (BufferedCoordinate2D coordinate in sequence)
+                {
+                    addInternal(coordinate);
+                }
             }
 
             OnSequenceChanged();
@@ -188,9 +193,11 @@ namespace NetTopologySuite.Coordinates
         {
             checkFrozen();
 
-            if (Count == 0)
+            if (Count < 3)
             {
-                return;
+                throw new InvalidOperationException(
+                    "The coordinate sequence has less than 3 points, "+
+                    "and cannot be a ring.");
             }
 
             if (_sequence[0] != _sequence[Count - 1])
@@ -282,7 +289,8 @@ namespace NetTopologySuite.Coordinates
                 return false;
             }
 
-            BufferedCoordinate2DSequence buf2DSeq = other as BufferedCoordinate2DSequence;
+            BufferedCoordinate2DSequence buf2DSeq 
+                = other as BufferedCoordinate2DSequence;
 
             Int32 count = Count;
 
@@ -311,7 +319,7 @@ namespace NetTopologySuite.Coordinates
         }
 
         public IExtents<BufferedCoordinate2D> ExpandExtents(
-            IExtents<BufferedCoordinate2D> extents)
+                                                 IExtents<BufferedCoordinate2D> extents)
         {
             IExtents<BufferedCoordinate2D> expanded = extents;
             expanded.ExpandToInclude(this);
@@ -669,7 +677,7 @@ namespace NetTopologySuite.Coordinates
                                              Int32 endIndex,
                                              BufferedCoordinate2D endCoordinate)
         {
-            throw  new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IBufferedCoordSequence Splice(BufferedCoordinate2D startCoordinate,
@@ -840,7 +848,7 @@ namespace NetTopologySuite.Coordinates
 
         Object IList.this[Int32 index]
         {
-            get { throw new NotImplementedException(); }
+            get { return this[index]; }
             set
             {
                 checkFrozen();
@@ -1047,6 +1055,16 @@ namespace NetTopologySuite.Coordinates
                     "The number of elements to copy is greater than the " +
                     "remaining space of 'array' when starting at '{0}'.", arrayIndexName));
             }
+        }
+
+        private void addInternal(BufferedCoordinate2D item)
+        {
+            if (!ReferenceEquals(item.Factory, _factory.CoordinateFactory))
+            {
+                item = _factory.CoordinateFactory.Create(item);
+            }
+
+            _sequence.Add(item.Index);
         }
     }
 }

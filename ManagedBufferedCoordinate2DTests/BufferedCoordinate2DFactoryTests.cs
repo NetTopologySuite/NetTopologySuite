@@ -393,7 +393,8 @@ namespace ManagedBufferedCoordinate2DTests
                     BufferedCoordinate2D coord = coordFactory.Create(
                         random.Next(420000000, 440000000) / 100.0,
                         random.Next(3500000, 8000000) / 100.0);
-                    sequence.Add(coord);
+
+                    sequence[j] = coord;
                 }
 
                 sequences.Add(sequence);
