@@ -19,8 +19,11 @@ namespace NetTopologySuite.Coordinates
           IBufferedVectorFactory<BufferedCoordinate2D, DoubleComponent>
     {
         public static readonly Int32 MaximumBitResolution = 52;
-        private static readonly IComparer<Pair<Double>> _comparer 
+        private static readonly IComparer<Pair<Double>> _valueComparer 
             = new LexicographicComparer();
+
+        private static readonly IComparer<BufferedCoordinate2D> _coordComparer
+            = new LexicographicCoordinateComparer((LexicographicComparer)_valueComparer);
         private readonly ManagedVectorBuffer<BufferedCoordinate2D, DoubleComponent> _coordinates;
         private readonly IDictionary<Pair<Double>, Int32> _lexicographicVertexIndex;
         private Int32 _bitResolution;
@@ -38,10 +41,14 @@ namespace NetTopologySuite.Coordinates
             initializeOrdinateIndexTable();
         }
 
-
         public IVectorBuffer<BufferedCoordinate2D, DoubleComponent> VectorBuffer
         {
             get { return _coordinates; }
+        }
+
+        internal IComparer<BufferedCoordinate2D> Comparer
+        {
+            get { return _coordComparer; }
         }
 
         #region IBufferedCoordFactory Members
@@ -438,7 +445,7 @@ namespace NetTopologySuite.Coordinates
         {
             Pair<Double> aValues = new Pair<Double>(a.X, a.Y);
             Pair<Double> bValues = new Pair<Double>(b.X, b.Y);
-            return _comparer.Compare(aValues, bValues);
+            return _valueComparer.Compare(aValues, bValues);
         }
 
         internal static Boolean GreaterThan(BufferedCoordinate2D a, BufferedCoordinate2D b)
@@ -527,7 +534,26 @@ namespace NetTopologySuite.Coordinates
             _ordinateIndexTable[(Int32)Ordinates.W] = 2;
         }
 
-        class LexicographicComparer : IComparer<Pair<Double>>
+        private class LexicographicCoordinateComparer : IComparer<BufferedCoordinate2D>
+        {
+            private LexicographicComparer _valueComparer;
+
+            public LexicographicCoordinateComparer(LexicographicComparer valueComparer)
+            {
+                _valueComparer = valueComparer;
+            }
+
+            #region IComparer<BufferedCoordinate2D> Members
+
+            public Int32 Compare(BufferedCoordinate2D a, BufferedCoordinate2D b)
+            {
+                return _valueComparer.Compare(new Pair<Double>(a.X, a.Y), new Pair<Double>(b.X, b.Y));
+            }
+
+            #endregion
+        }
+
+        private class LexicographicComparer : IComparer<Pair<Double>>
         {
             #region IComparer<Pair<Double>> Members
 

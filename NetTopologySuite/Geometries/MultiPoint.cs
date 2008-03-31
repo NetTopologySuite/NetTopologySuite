@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
@@ -9,12 +10,14 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>  
-    /// Models a collection of <c>Point</c>s.
+    /// Models a collection of <see cref="IPoint{TCoordinate}"/>s.
     /// </summary>
     [Serializable]
-    public class MultiPoint<TCoordinate> : GeometryCollection<TCoordinate>, IMultiPoint<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
-                            IComputable<Double, TCoordinate>, IConvertible
+    public class MultiPoint<TCoordinate> : GeometryCollection<TCoordinate>, 
+                                           IMultiPoint<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible, 
+                            IComputable<Double, TCoordinate>
     {
         ///// <summary>
         ///// Represents an empty <c>MultiPoint</c>.
@@ -28,26 +31,29 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             : base(factory) { }
 
         /// <summary>
-        /// Constructs a <c>MultiPoint</c>.
+        /// Constructs a <see cref="MultiPoint{TCoordinate}"/>.
         /// </summary>
         /// <param name="points">
-        /// The <c>Point</c>s for this <c>MultiPoint</c>
-        /// , or <see langword="null" /> or an empty array to create the empty point.
-        /// Elements may be empty <c>Point</c>s, but not <see langword="null" />s.
+        /// The <c>Point</c>s for this <see cref="MultiPoint{TCoordinate}"/>, 
+        /// or <see langword="null" /> or an empty array to create the empty point.
+        /// Elements may be empty <see cref="Point{TCoordinate}"/>s, but not <see langword="null" />s.
         /// </param>
-        public MultiPoint(IEnumerable<IPoint<TCoordinate>> points, IGeometryFactory<TCoordinate> factory)
+        public MultiPoint(IEnumerable<IPoint<TCoordinate>> points, 
+                          IGeometryFactory<TCoordinate> factory)
             : base(Enumerable.Upcast<IGeometry<TCoordinate>, IPoint<TCoordinate>>(points), factory) { }
 
         /// <summary>
-        /// Constructs a <c>MultiPoint</c>.
+        /// Constructs a <see cref="MultiPoint{TCoordinate}"/>.
         /// </summary>
         /// <param name="points">
         /// The <see cref="Point{TCoordinate}"/>s for this <see cref="MultiPoint{TCoordinate}"/>, 
         /// or <see langword="null" /> or an empty array to create the empty point.
-        /// Elements may be empty <see cref="Point{TCoordinate}"/>s, but not <see langword="null" />s.
+        /// Elements may be empty <see cref="Point{TCoordinate}"/>s, 
+        /// but not <see langword="null" />s.
         /// </param>
         /// <remarks>
-        /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
+        /// For create this <see cref="Geometry{TCoordinate}"/> 
+        /// is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public MultiPoint(IEnumerable<IPoint<TCoordinate>> points) 
@@ -109,7 +115,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public new IEnumerator<IPoint<TCoordinate>> GetEnumerator()
         {
-            foreach (IPoint<TCoordinate> point in this)
+            foreach (IPoint<TCoordinate> point in GeometriesInternal)
             {
                 yield return point;
             }
@@ -137,7 +143,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IEnumerator<IPoint> IEnumerable<IPoint>.GetEnumerator()
         {
-            foreach (IPoint point in this)
+            foreach (IPoint point in GeometriesInternal)
             {
                 yield return point;
             }

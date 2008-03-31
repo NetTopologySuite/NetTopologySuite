@@ -414,7 +414,7 @@ namespace ManagedBufferedCoordinate2DTests
             foreach (ICoordinateSequence<BufferedCoordinate2D> sequence in sequences)
             {
                 timer.Start();
-                Assert.IsTrue(sequence.Maximum().GreaterThanOrEqualTo(sequence.Minimum()));
+                Assert.IsTrue(sequence.Maximum.GreaterThanOrEqualTo(sequence.Minimum));
                 timer.Stop();
 
                 times[i % 10] = (Int32)timer.ElapsedTicks;

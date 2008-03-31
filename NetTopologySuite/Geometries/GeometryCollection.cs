@@ -13,8 +13,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </summary>
     [Serializable]
     public class GeometryCollection<TCoordinate> 
-        : Geometry<TCoordinate>, IGeometryCollection<TCoordinate>, 
-          IHasGeometryComponents<TCoordinate>, IComparable<IGeometryCollection<TCoordinate>>
+        : Geometry<TCoordinate>, 
+          IGeometryCollection<TCoordinate>, 
+          IHasGeometryComponents<TCoordinate>, 
+          IComparable<IGeometryCollection<TCoordinate>>
                 where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
                                     IComputable<Double, TCoordinate>,
                                     IComparable<TCoordinate>, IConvertible

@@ -34,7 +34,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         {
             EdgeEnd<TCoordinate> ee;
 
-            if (EdgeMap.TryGetValue(e, out ee))
+            if (!EdgeMap.TryGetValue(e, out ee))
             {
                 ee = new EdgeEndBundle<TCoordinate>(e);
                 InsertEdgeEnd(e, ee);
@@ -48,10 +48,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         }
 
         /// <summary>
-        /// Update the <see cref="IntersectionMatrix"/> with the contribution for the 
-        /// <see cref="EdgeEnd{TCoordinate}"/>s around the node.
+        /// Update the <see cref="IntersectionMatrix"/> with the 
+        /// contribution for the <see cref="EdgeEnd{TCoordinate}"/>s 
+        /// around the node.
         /// </summary>
-        /// <param name="im"></param>
+        /// <param name="im">
+        /// The <see cref="IntersectionMatrix"/> to update.
+        /// </param>
         public void UpdateIntersectionMatrix(IntersectionMatrix im)
         {
             foreach (EdgeEndBundle<TCoordinate> end in this)

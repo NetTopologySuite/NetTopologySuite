@@ -377,7 +377,7 @@ namespace NetTopologySuite.Coordinates
                     Int32 j = Count - 1 - index;
 
                     // reflecting about midpoint, compare the coordinates
-                    Int32 comp = this[index].CompareTo(this[j]);
+                    Int32 comp = this[j].CompareTo(this[index]);
 
                     if (comp != 0)
                     {
@@ -480,28 +480,31 @@ namespace NetTopologySuite.Coordinates
             get { return Count - 1; }
         }
 
-        public BufferedCoordinate2D Maximum()
+        public BufferedCoordinate2D Maximum
         {
-            if (_max < 0)
+            get
             {
-                Int32 maxIndex = -1;
-                BufferedCoordinate2D maxCoord = new BufferedCoordinate2D();
-
-                for (int i = 0; i < Count; i++)
+                if (_max < 0)
                 {
-                    BufferedCoordinate2D current = this[i];
+                    Int32 maxIndex = -1;
+                    BufferedCoordinate2D maxCoord = new BufferedCoordinate2D();
 
-                    if (maxCoord.IsEmpty || current.GreaterThan(maxCoord))
+                    for (int i = 0; i < Count; i++)
                     {
-                        maxIndex = i;
-                        maxCoord = current;
+                        BufferedCoordinate2D current = this[i];
+
+                        if (maxCoord.IsEmpty || current.GreaterThan(maxCoord))
+                        {
+                            maxIndex = i;
+                            maxCoord = current;
+                        }
                     }
+
+                    _max = maxIndex;
                 }
 
-                _max = maxIndex;
+                return this[_max];
             }
-
-            return this[_max];
         }
 
         public IBufferedCoordSequence Merge(IBufferedCoordSequence other)
@@ -509,28 +512,31 @@ namespace NetTopologySuite.Coordinates
             throw new NotImplementedException();
         }
 
-        public BufferedCoordinate2D Minimum()
+        public BufferedCoordinate2D Minimum
         {
-            if (_min < 0)
+            get 
             {
-                Int32 minIndex = -1;
-                BufferedCoordinate2D? minCoord = null;
-
-                for (int i = 0; i < Count; i++)
+                if (_min < 0)
                 {
-                    BufferedCoordinate2D current = this[i];
+                    Int32 minIndex = -1;
+                    BufferedCoordinate2D? minCoord = null;
 
-                    if (minCoord == null || current.LessThan(minCoord.Value))
+                    for (int i = 0; i < Count; i++)
                     {
-                        minIndex = i;
-                        minCoord = current;
+                        BufferedCoordinate2D current = this[i];
+
+                        if (minCoord == null || current.LessThan(minCoord.Value))
+                        {
+                            minIndex = i;
+                            minCoord = current;
+                        }
                     }
+
+                    _min = minIndex;
                 }
 
-                _min = minIndex;
+                return this[_min];
             }
-
-            return this[_min];
         }
 
         public Boolean Remove(BufferedCoordinate2D item)
@@ -606,6 +612,16 @@ namespace NetTopologySuite.Coordinates
             return new BufferedCoordinate2DSequence(_sequence,
                                                     startIndex, endIndex,
                                                     _factory, _buffer);
+        }
+
+        public void Sort()
+        {
+            Sort(0, LastIndex, _factory.DefaultComparer);
+        }
+
+        public void Sort(Int32 startIndex, Int32 endIndex)
+        {
+            Sort(startIndex, endIndex, _factory.DefaultComparer);
         }
 
         public void Sort(Int32 startIndex, Int32 endIndex, IComparer<BufferedCoordinate2D> comparer)
@@ -956,23 +972,20 @@ namespace NetTopologySuite.Coordinates
             _max = -1;
         }
 
-        /// <summary>
-        /// Swaps two coordinates in a sequence.
-        /// </summary>
-        private void swap(Int32 i, Int32 j)
-        {
-            //checkIndex(i, "i");
-            //checkIndex(j, "j");
+        //private void swap(Int32 i, Int32 j)
+        //{
+        //    //checkIndex(i, "i");
+        //    //checkIndex(j, "j");
 
-            if (i == j)
-            {
-                return;
-            }
+        //    if (i == j)
+        //    {
+        //        return;
+        //    }
 
-            Int32 temp = _sequence[i];
-            _sequence[i] = _sequence[j];
-            _sequence[j] = temp;
-        }
+        //    Int32 temp = _sequence[i];
+        //    _sequence[i] = _sequence[j];
+        //    _sequence[j] = temp;
+        //}
 
         private Int32 checkAndTransformIndex(Int32 index, String parameterName)
         {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Utilities;
@@ -25,6 +25,11 @@ namespace NetTopologySuite.Coordinates
             
             _coordFactory = coordFactory;
             _buffer = _coordFactory.VectorBuffer;
+        }
+
+        public IComparer<BufferedCoordinate2D> DefaultComparer
+        {
+            get { return _coordFactory.Comparer; }
         }
 
         #region ICoordinateSequenceFactory<BufferedCoordinate2D> Members
@@ -176,9 +181,8 @@ namespace NetTopologySuite.Coordinates
         {
             if (dimension != CoordinateDimensions.Two)
             {
-                throw new ArgumentOutOfRangeException("dimension", dimension,
-                                                      "Dimension can only be 2 for "+
-                                                      "this factory.");
+                throw new NotSupportedException("Dimension can only be 2 for "+
+                                                "this factory.");
             }
         }
 
