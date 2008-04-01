@@ -22,7 +22,15 @@ namespace NetTopologySuite.Coordinates
             ICoordinateSequence<BufferedCoordinate2D> withoutDupes =
                 sequence.WithoutDuplicatePoints();
 
-            throw new NotImplementedException();
+            BufferedCoordinate2DSequence nativeSequence 
+                = withoutDupes as BufferedCoordinate2DSequence;
+
+            if (nativeSequence == null)
+            {
+                nativeSequence = factory.Create(withoutDupes) as BufferedCoordinate2DSequence;
+            }
+
+            SetSequenceInternal(nativeSequence);
         }
 
         #region ISet<BufferedCoordinate2D> Members
@@ -47,32 +55,32 @@ namespace NetTopologySuite.Coordinates
             throw new NotImplementedException();
         }
 
-        public bool ContainsAll(IEnumerable<BufferedCoordinate2D> c)
+        public Boolean ContainsAll(IEnumerable<BufferedCoordinate2D> c)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsEmpty
+        public Boolean IsEmpty
         {
             get { throw new NotImplementedException(); }
         }
 
-        public new bool Add(BufferedCoordinate2D o)
+        public new Boolean Add(BufferedCoordinate2D o)
         {
             throw new NotImplementedException();
         }
 
-        public new bool AddRange(IEnumerable<BufferedCoordinate2D> c)
+        public new Boolean AddRange(IEnumerable<BufferedCoordinate2D> c)
         {
             throw new NotImplementedException();
         }
 
-        public bool RemoveAll(IEnumerable<BufferedCoordinate2D> c)
+        public Boolean RemoveAll(IEnumerable<BufferedCoordinate2D> c)
         {
             throw new NotImplementedException();
         }
 
-        public bool RetainAll(IEnumerable<BufferedCoordinate2D> c)
+        public Boolean RetainAll(IEnumerable<BufferedCoordinate2D> c)
         {
             throw new NotImplementedException();
         }
@@ -95,9 +103,18 @@ namespace NetTopologySuite.Coordinates
 
         #region ICloneable Members
 
-        object ICloneable.Clone()
+        Object ICloneable.Clone()
         {
             throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region ISet<BufferedCoordinate2D> Members
+
+        void ISet<BufferedCoordinate2D>.Clear()
+        {
+            Clear();
         }
 
         #endregion

@@ -201,7 +201,7 @@ namespace ManagedBufferedCoordinate2DTests
 
             for (Int32 i = 0; i < 3; i++)
             {
-                Assert.IsTrue(coordsToAdd[i * 2].ValueEquals(seq[3 - i]));
+                Assert.IsTrue(coordsToAdd[i * 2].ValueEquals(seq[2 - i]));
             }
         }
 
@@ -423,13 +423,13 @@ namespace ManagedBufferedCoordinate2DTests
             // This sequence is not a ring
             IBufferedCoordSequence slice2 = seq.Slice(2, 5);
 
-            Assert.AreEqual(4, slice1.Count);
-            Assert.AreNotEqual(slice1.First, slice1.Last);
+            Assert.AreEqual(4, slice2.Count);
+            Assert.AreNotEqual(slice2.First, slice2.Last);
 
-            slice1.CloseRing();
+            slice2.CloseRing();
 
-            Assert.AreEqual(5, slice1.Count);
-            Assert.AreEqual(slice1.First, slice1.Last);
+            Assert.AreEqual(5, slice2.Count);
+            Assert.AreEqual(slice2.First, slice2.Last);
         }
 
         [Test]
