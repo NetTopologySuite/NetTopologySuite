@@ -325,7 +325,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (modelType == PrecisionModels.Fixed) 
   		        // return Math.Round(val * scale) / scale;          // Diego Guidi say's: i use the Java Round algorithm (used in JTS 1.6)
                                                                     // Java Rint method, used in JTS 1.5, was consistend with .NET Round algorithm
-                return Math.Floor(((val * scale) + 0.5d) / scale);
+                return Math.Floor(((val * scale) + 0.5d)) / scale;
             return val;     // modelType == FLOATING - no rounding necessary
         }
 
