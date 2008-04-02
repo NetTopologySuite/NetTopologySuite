@@ -627,7 +627,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return;
             }
 
-            TCoordinate minCoordinate = ring.Coordinates.Minimum();
+            TCoordinate minCoordinate = ring.Coordinates.Minimum;
             ring.Coordinates.Scroll(minCoordinate);
 
             if (CGAlgorithms<TCoordinate>.IsCCW(ring.Coordinates) == clockwise)

@@ -274,7 +274,7 @@ namespace ManagedBufferedCoordinate2DTests
         }
 
         [Test]
-        public void ReturingASetFromAsSetSucceeds()
+        public void ReturningASetFromAsSetSucceeds()
         {
             BufferedCoordinate2DSequenceFactory seqFactory
                 = new BufferedCoordinate2DSequenceFactory();
@@ -685,6 +685,7 @@ namespace ManagedBufferedCoordinate2DTests
         }
 
         [Test]
+        [Ignore("Not Implemented")]
         public void ExpandExtentsSucceeds()
         {
 
@@ -808,27 +809,6 @@ namespace ManagedBufferedCoordinate2DTests
             Assert.AreEqual(-1, seq.IndexOf(coord));
         }
 
-        [Test]
-        public void InsertSucceeds()
-        {
-            BufferedCoordinate2DFactory coordFactory
-                = new BufferedCoordinate2DFactory();
-
-            BufferedCoordinate2DSequenceFactory seqFactory
-                = new BufferedCoordinate2DSequenceFactory(coordFactory);
-
-            IBufferedCoordSequence seq = seqFactory.Create();
-
-            Int32 count = 0;
-
-            foreach (BufferedCoordinate2D coordinate in generateCoords(10, Int32.MaxValue - 2))
-            {
-                Int32 index = count % 2 == 0 ? 0 : count - 1;
-                seq.Insert(index, coordinate);
-                count++;
-                Assert.AreEqual(coordinate, seq[index]);
-            }
-        }
 
         [Test]
         public void IndexerSucceeds()
@@ -839,11 +819,33 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2DSequenceFactory seqFactory
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 2));
+            List<BufferedCoordinate2D> coordList =
+                new List<BufferedCoordinate2D>(generateCoords(10, Int32.MaxValue - 2));
+            IBufferedCoordSequence seq = seqFactory.Create(coordList);
 
             for (int i = 0; i < seq.Count; i++)
             {
-                Assert.AreEqual(seq[i], seq[i]);
+                Assert.IsTrue(coordList[i].ValueEquals(seq[i]));
+            }
+        }
+
+        [Test]
+        public void IndexerOnReversedSucceeds()
+        {
+            BufferedCoordinate2DFactory coordFactory
+                = new BufferedCoordinate2DFactory();
+
+            BufferedCoordinate2DSequenceFactory seqFactory
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
+
+            List<BufferedCoordinate2D> coordList =
+                new List<BufferedCoordinate2D>(generateCoords(10, Int32.MaxValue - 2));
+            IBufferedCoordSequence seq = seqFactory.Create(coordList);
+            seq.Reverse();
+
+            for (int i = 0; i < seq.Count; i++)
+            {
+                Assert.IsTrue(coordList[coordList.Count - i - 1].ValueEquals(seq[i]));
             }
         }
 
@@ -943,6 +945,28 @@ namespace ManagedBufferedCoordinate2DTests
         }
 
         [Test]
+        public void InsertSucceeds()
+        {
+            BufferedCoordinate2DFactory coordFactory
+                = new BufferedCoordinate2DFactory();
+
+            BufferedCoordinate2DSequenceFactory seqFactory
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
+
+            IBufferedCoordSequence seq = seqFactory.Create();
+
+            Int32 count = 0;
+
+            foreach (BufferedCoordinate2D coordinate in generateCoords(10, Int32.MaxValue - 2))
+            {
+                Int32 index = count % 2 == 0 ? 0 : count - 1;
+                seq.Insert(index, coordinate);
+                count++;
+                Assert.AreEqual(coordinate, seq[index]);
+            }
+        }
+
+        [Test]
         public void IsFixedSizeIsCorrect()
         {
             BufferedCoordinate2DFactory coordFactory
@@ -1034,8 +1058,102 @@ namespace ManagedBufferedCoordinate2DTests
             Assert.AreEqual(-1, seq.LastIndex);
         }
 
+
         [Test]
-        public void MaximumIsCorrect()
+        public void MaximumIsCorrectSingleItemSequence()
+        {
+            BufferedCoordinate2DFactory coordFactory
+                = new BufferedCoordinate2DFactory();
+
+            BufferedCoordinate2DSequenceFactory seqFactory
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
+
+            IBufferedCoordSequence seq = seqFactory.Create(CoordinateDimensions.Two);
+
+            seq.Add(coordFactory.Create(0, 0));
+
+            Assert.AreEqual(coordFactory.Create(0, 0), seq.Maximum);
+        }
+
+        [Test]
+        public void MaximumIsCorrectFirstInMultiItemSequence()
+        {
+            BufferedCoordinate2DFactory coordFactory
+                = new BufferedCoordinate2DFactory();
+
+            BufferedCoordinate2DSequenceFactory seqFactory
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
+
+            IBufferedCoordSequence seq = seqFactory.Create(CoordinateDimensions.Two);
+
+            seq.Add(coordFactory.Create(1, 1));
+            seq.Add(coordFactory.Create(0, 0));
+            seq.Add(coordFactory.Create(0, 1));
+
+            Assert.AreEqual(coordFactory.Create(1, 1), seq.Maximum);
+        }
+
+        [Test]
+        public void MaximumIsCorrectLastInMultiItemSequence()
+        {
+            BufferedCoordinate2DFactory coordFactory
+                = new BufferedCoordinate2DFactory();
+
+            BufferedCoordinate2DSequenceFactory seqFactory
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
+
+            IBufferedCoordSequence seq = seqFactory.Create(CoordinateDimensions.Two);
+
+            seq.Add(coordFactory.Create(0, 1));
+            seq.Add(coordFactory.Create(0, 0));
+            seq.Add(coordFactory.Create(1, 1));
+
+            Assert.AreEqual(coordFactory.Create(1, 1), seq.Maximum);
+        }
+
+        [Test]
+        public void MaximumIsCorrectMiddleOfMultiItemSequence()
+        {
+            BufferedCoordinate2DFactory coordFactory
+                = new BufferedCoordinate2DFactory();
+
+            BufferedCoordinate2DSequenceFactory seqFactory
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
+
+            IBufferedCoordSequence seq = seqFactory.Create(CoordinateDimensions.Two);
+
+            seq.Add(coordFactory.Create(0, 1));
+            seq.Add(coordFactory.Create(1, 1));
+            seq.Add(coordFactory.Create(0, 0));
+
+            Assert.AreEqual(coordFactory.Create(1, 1), seq.Maximum);
+        }
+
+        [Test]
+        public void MaximumIsCorrectAfterMaxInSequenceChanges()
+        {
+            BufferedCoordinate2DFactory coordFactory
+                = new BufferedCoordinate2DFactory();
+
+            BufferedCoordinate2DSequenceFactory seqFactory
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
+
+            IBufferedCoordSequence seq = seqFactory.Create(CoordinateDimensions.Two);
+
+            seq.Add(coordFactory.Create(0, 1));
+            seq.Add(coordFactory.Create(1, 1));
+
+            Assert.AreEqual(coordFactory.Create(1, 1), seq.Maximum);
+
+            seq.Add(coordFactory.Create(2, 2));
+            seq.Add(coordFactory.Create(1, 2));
+
+            Assert.AreEqual(coordFactory.Create(2, 2), seq.Maximum);
+        }
+
+
+        [Test]
+        public void MaximumOnEmptySequenceReturnsEmptyCoordinate()
         {
             BufferedCoordinate2DFactory coordFactory
                 = new BufferedCoordinate2DFactory();
@@ -1050,8 +1168,101 @@ namespace ManagedBufferedCoordinate2DTests
             seq.Add(coordFactory.Create(0, 0));
         }
 
+
         [Test]
-        public void MinimumIsCorrect()
+        public void MinimumIsCorrectSingleItemSequence()
+        {
+            BufferedCoordinate2DFactory coordFactory
+                = new BufferedCoordinate2DFactory();
+
+            BufferedCoordinate2DSequenceFactory seqFactory
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
+
+            IBufferedCoordSequence seq = seqFactory.Create(CoordinateDimensions.Two);
+
+            seq.Add(coordFactory.Create(0, 0));
+
+            Assert.AreEqual(coordFactory.Create(0, 0), seq.Minimum);
+        }
+
+        [Test]
+        public void MinimumIsCorrectFirstInMultiItemSequence()
+        {
+            BufferedCoordinate2DFactory coordFactory
+                = new BufferedCoordinate2DFactory();
+
+            BufferedCoordinate2DSequenceFactory seqFactory
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
+
+            IBufferedCoordSequence seq = seqFactory.Create(CoordinateDimensions.Two);
+
+            seq.Add(coordFactory.Create(0, 0));
+            seq.Add(coordFactory.Create(1, 1));
+            seq.Add(coordFactory.Create(0, 1));
+
+            Assert.AreEqual(coordFactory.Create(0, 0), seq.Minimum);
+        }
+
+        [Test]
+        public void MinimumIsCorrectLastInMultiItemSequence()
+        {
+            BufferedCoordinate2DFactory coordFactory
+                = new BufferedCoordinate2DFactory();
+
+            BufferedCoordinate2DSequenceFactory seqFactory
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
+
+            IBufferedCoordSequence seq = seqFactory.Create(CoordinateDimensions.Two);
+
+            seq.Add(coordFactory.Create(0, 1));
+            seq.Add(coordFactory.Create(1, 1));
+            seq.Add(coordFactory.Create(0, 0));
+
+            Assert.AreEqual(coordFactory.Create(0, 0), seq.Minimum);
+        }
+
+        [Test]
+        public void MinimumIsCorrectMiddleOfMultiItemSequence()
+        {
+            BufferedCoordinate2DFactory coordFactory
+                = new BufferedCoordinate2DFactory();
+
+            BufferedCoordinate2DSequenceFactory seqFactory
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
+
+            IBufferedCoordSequence seq = seqFactory.Create(CoordinateDimensions.Two);
+
+            seq.Add(coordFactory.Create(0, 1));
+            seq.Add(coordFactory.Create(0, 0));
+            seq.Add(coordFactory.Create(1, 1));
+
+            Assert.AreEqual(coordFactory.Create(0, 0), seq.Minimum);
+        }
+
+        [Test]
+        public void MinimumIsCorrectAfterMinInSequenceChanges()
+        {
+            BufferedCoordinate2DFactory coordFactory
+                = new BufferedCoordinate2DFactory();
+
+            BufferedCoordinate2DSequenceFactory seqFactory
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
+
+            IBufferedCoordSequence seq = seqFactory.Create(CoordinateDimensions.Two);
+
+            seq.Add(coordFactory.Create(3, 3));
+            seq.Add(coordFactory.Create(1, 1));
+
+            Assert.AreEqual(coordFactory.Create(1, 1), seq.Minimum);
+
+            seq.Add(coordFactory.Create(0, 0));
+            seq.Add(coordFactory.Create(0, 1));
+
+            Assert.AreEqual(coordFactory.Create(0, 0), seq.Minimum);
+        }
+
+        [Test]
+        public void MinimumOnEmptySequenceReturnsEmptyCoordinate()
         {
             BufferedCoordinate2DFactory coordFactory
                 = new BufferedCoordinate2DFactory();
@@ -1151,7 +1362,7 @@ namespace ManagedBufferedCoordinate2DTests
             Int32 count = coordsToTest.Count;
             for (Int32 i = 0; i < count; i++)
             {
-                Assert.IsTrue(coordsToTest[i].ValueEquals(seq[count - 1]));
+                Assert.IsTrue(coordsToTest[i].ValueEquals(seq[count - i - 1]));
             }
         }
 
@@ -1172,7 +1383,7 @@ namespace ManagedBufferedCoordinate2DTests
 
             for (Int32 i = 0; i < count; i++)
             {
-                Assert.IsTrue(seq[i].Equals(reversed[count - 1]));
+                Assert.IsTrue(seq[i].Equals(reversed[count - i - 1]));
             }
         }
 
@@ -1208,7 +1419,7 @@ namespace ManagedBufferedCoordinate2DTests
             IBufferedCoordSequence slice = seq.Slice(0, 0);
             Assert.AreEqual(1, slice.Count);
 
-            List<BufferedCoordinate2D> coordsToTest 
+            List<BufferedCoordinate2D> coordsToTest
                 = new List<BufferedCoordinate2D>(generateCoords(10000, Int32.MaxValue - 1));
 
             seq = seqFactory.Create(coordsToTest);
@@ -1219,7 +1430,7 @@ namespace ManagedBufferedCoordinate2DTests
 
             for (Int32 i = 0; i < slice.Count; i++)
             {
-                Assert.AreEqual(coordsToTest[i + 1000], slice[i]);
+                Assert.IsTrue(coordsToTest[i + 1000].ValueEquals(slice[i]));
             }
         }
 
@@ -1252,8 +1463,8 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2DSequenceFactory seqFactory
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10000, 
-                                                                          Int32.MaxValue - 1, 
+            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10000,
+                                                                          Int32.MaxValue - 1,
                                                                           coordFactory));
 
             seq.Sort();
@@ -1277,8 +1488,8 @@ namespace ManagedBufferedCoordinate2DTests
                                                                           Int32.MaxValue - 1,
                                                                           coordFactory));
 
-            List<BufferedCoordinate2D> coordsToAdd 
-                = new List<BufferedCoordinate2D>(generateCoords(100, 
+            List<BufferedCoordinate2D> coordsToAdd
+                = new List<BufferedCoordinate2D>(generateCoords(100,
                                                  Int32.MaxValue - 1,
                                                  coordFactory));
 
@@ -1420,7 +1631,7 @@ namespace ManagedBufferedCoordinate2DTests
                 {
                     Assert.AreEqual(coordsToAdd[i > 100 ? i - 101 : i], splice[i]);
                 }
-                else 
+                else
                 {
                     Assert.AreEqual(seq[9999], splice[i]);
                 }

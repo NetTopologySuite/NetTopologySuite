@@ -491,7 +491,7 @@ namespace NetTopologySuite.Coordinates
 
             Boolean isSlice = this.isSlice();
 
-            if (isSlice && index > 0 && index < LastIndex)
+            if (isSlice && index > 0 && index <= LastIndex)
             {
                 throw new NotSupportedException(
                     "Inserting into a sliced coordinate sequence not supported. " +
@@ -499,7 +499,12 @@ namespace NetTopologySuite.Coordinates
                     "from this slice in order to insert coordinates at this index.");
             }
 
-            index = checkAndTransformIndex(index, "index");
+            if (index < 0 || index > Count)
+            {
+                throw new ArgumentOutOfRangeException("index", index,
+                                                      "Index must be between 0 and Count.");
+            }
+            index = _reversed ? Count - index : index;
 
             if (isSlice)
             {
@@ -601,6 +606,12 @@ namespace NetTopologySuite.Coordinates
                     Int32 maxIndex = -1;
                     BufferedCoordinate2D maxCoord = new BufferedCoordinate2D();
 
+                    if (Count < 1)
+                    {
+                        return maxCoord;
+                    }
+
+
                     for (int i = 0; i < Count; i++)
                     {
                         BufferedCoordinate2D current = this[i];
@@ -628,6 +639,11 @@ namespace NetTopologySuite.Coordinates
         {
             get
             {
+                if (Count < 1)
+                {
+                    return new BufferedCoordinate2D();
+                }
+
                 if (_min < 0)
                 {
                     Int32 minIndex = -1;
@@ -761,11 +777,20 @@ namespace NetTopologySuite.Coordinates
         public IBufferedCoordSequence Slice(Int32 startIndex, Int32 endIndex)
         {
             checkIndexes(endIndex, startIndex);
-
             Freeze();
 
+            if (!isSlice())
+            {
+                return new BufferedCoordinate2DSequence(_sequence,
+                                                        startIndex, endIndex,
+                                                        _factory, _buffer);
+            }
+            if (_prependedIndexes != null || _appendedIndexes != null || _skipIndexes != null)
+            {
+                throw  new NotImplementedException("Slice of a slice containing prepended, appended, or skipped indices not implemented");
+            }
             return new BufferedCoordinate2DSequence(_sequence,
-                                                    startIndex, endIndex,
+                                                    startIndex + Math.Max(0, _startIndex), endIndex + Math.Max(0, _startIndex),
                                                     _factory, _buffer);
         }
 
@@ -1040,8 +1065,8 @@ namespace NetTopologySuite.Coordinates
         void IList.Insert(Int32 index, Object value)
         {
             if (value == null) throw new ArgumentNullException("value");
-            checkFrozen();
-            index = checkAndTransformIndex(index, "index");
+            //checkFrozen();
+            //index = checkAndTransformIndex(index, "index");
             ICoordinate coord = value as ICoordinate;
 
             if (coord == null)
