@@ -957,7 +957,7 @@ namespace ManagedBufferedCoordinate2DTests
 
             Int32 count = 0;
 
-            foreach (BufferedCoordinate2D coordinate in generateCoords(10, Int32.MaxValue - 2))
+            foreach (BufferedCoordinate2D coordinate in generateCoords(10, Int32.MaxValue - 2, coordFactory))
             {
                 Int32 index = count % 2 == 0 ? 0 : count - 1;
                 seq.Insert(index, coordinate);
