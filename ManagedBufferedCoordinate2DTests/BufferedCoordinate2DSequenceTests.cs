@@ -15,9 +15,39 @@ namespace ManagedBufferedCoordinate2DTests
     [TestFixture]
     public class BufferedCoordinate2DSequenceTests
     {
+        // Tests to write:
+        // Indexer tests
+        //      into prepended list
+        //      into prepended list in reversed sequence
+        //      into main slice with prepended list
+        //      before/after skipped indices
+        //      before/after skipped indices in reversed sequence
+        //      before/after skipped indices with prepended list
+        //      into appended list
+        //      into appended list in reversed sequence
+        //      into appended list with prepended list
+        //      into appended list with skipped indices
+        //      into appended list with skipped indices and prepended list
+        //      into appended/prepended lists on reversed sequence with skipped indices
+        //      IList indexer yields same result as implicit indexer implementation
+        //  Slice creation
+        //      slice of slice (currently part of one of the indexer tests)
+        //      slice of slice with prepended list
+        //          slice into prepended list only
+        //          slice into main slice only
+        //          slice including parts of prepended list and main slice
+        //      slice of slice with appended list
+        //          slice into appended list only
+        //          slice into main slice only
+        //          slice including parts of appended list and main slice
+        //      slice of slice with skipped indices
+        //      slice of slice with prepended, appended and skipped index lists
+        //          slice into prepended list only
+        //          slice into appended list only
+        //          slice into main slice only
+        //          slice including parts of prepended list, appended list and whole main slice
+
         private Random _rnd = new MersenneTwister();
-        private BufferedCoordinate2DFactory _coordFactory
-            = new BufferedCoordinate2DFactory();
 
         [Test]
         public void CreatingCoordinateSequenceSucceeds()
@@ -58,11 +88,14 @@ namespace ManagedBufferedCoordinate2DTests
         [Test]
         public void CreatingCoordinateSequenceWithAnEnumerationOfCoordinatesSucceeds()
         {
+            BufferedCoordinate2DFactory coordFactory
+                = new BufferedCoordinate2DFactory();
+
             BufferedCoordinate2DSequenceFactory factory
-                = new BufferedCoordinate2DSequenceFactory();
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
             IBufferedCoordSequence seq
-                = factory.Create(generateCoords(9999, Int32.MaxValue - 1));
+                = factory.Create(generateCoords(9999, Int32.MaxValue - 1, coordFactory));
 
             Assert.AreEqual(9999, seq.Count);
         }
@@ -70,11 +103,14 @@ namespace ManagedBufferedCoordinate2DTests
         [Test]
         public void CreatingCoordinateSequenceWithoutRepeatedCoordinatesSucceeds()
         {
+            BufferedCoordinate2DFactory coordFactory
+                = new BufferedCoordinate2DFactory();
+
             BufferedCoordinate2DSequenceFactory factory
-                = new BufferedCoordinate2DSequenceFactory();
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
             List<BufferedCoordinate2D> coords
-                = new List<BufferedCoordinate2D>(generateCoords(100, 1));
+                = new List<BufferedCoordinate2D>(generateCoords(100, 1, coordFactory));
 
             Assert.AreEqual(100, coords.Count);
 
@@ -82,7 +118,7 @@ namespace ManagedBufferedCoordinate2DTests
 
             for (Int32 i = 0; i < 100; i++)
             {
-                Assert.IsTrue(seq1[i].ValueEquals(coords[i]));
+                Assert.AreEqual(seq1[i], coords[i]);
             }
 
             Assert.AreEqual(100, seq1.Count);
@@ -96,11 +132,14 @@ namespace ManagedBufferedCoordinate2DTests
         [Test]
         public void CreatingSequenceAsUniqueSucceeds()
         {
+            BufferedCoordinate2DFactory coordFactory
+                = new BufferedCoordinate2DFactory();
+
             BufferedCoordinate2DSequenceFactory factory
-                = new BufferedCoordinate2DSequenceFactory();
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
             List<BufferedCoordinate2D> coords
-                = new List<BufferedCoordinate2D>(generateCoords(1000, 5));
+                = new List<BufferedCoordinate2D>(generateCoords(1000, 5, coordFactory));
 
             IBufferedCoordSequence seq = factory.Create(coords, false);
 
@@ -112,10 +151,13 @@ namespace ManagedBufferedCoordinate2DTests
         [Test]
         public void SequenceToArraySucceeds()
         {
-            BufferedCoordinate2DSequenceFactory factory
-                = new BufferedCoordinate2DSequenceFactory();
+            BufferedCoordinate2DFactory coordFactory
+                = new BufferedCoordinate2DFactory();
 
-            IBufferedCoordSequence seq = factory.Create(generateCoords(1000, 500000));
+            BufferedCoordinate2DSequenceFactory factory
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
+
+            IBufferedCoordSequence seq = factory.Create(generateCoords(1000, 500000, coordFactory));
 
             BufferedCoordinate2D[] coordsArray = seq.ToArray();
 
@@ -123,7 +165,7 @@ namespace ManagedBufferedCoordinate2DTests
 
             for (Int32 i = 0; i < seq.Count; i++)
             {
-                Assert.IsTrue(seq[i].Equals(coordsArray[i]));
+                Assert.AreEqual(seq[i], coordsArray[i]);
             }
         }
 
@@ -158,13 +200,16 @@ namespace ManagedBufferedCoordinate2DTests
         [Test]
         public void AddingARangeOfBufferedCoordinate2DInstancesSucceeds()
         {
+            BufferedCoordinate2DFactory coordFactory
+                = new BufferedCoordinate2DFactory();
+
             BufferedCoordinate2DSequenceFactory factory
-                = new BufferedCoordinate2DSequenceFactory();
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
             IBufferedCoordSequence seq = factory.Create(CoordinateDimensions.Two);
 
             List<BufferedCoordinate2D> coordsToAdd
-                = new List<BufferedCoordinate2D>(generateCoords(1000, 500000));
+                = new List<BufferedCoordinate2D>(generateCoords(1000, 500000, coordFactory));
 
             seq.AddRange(coordsToAdd);
 
@@ -172,7 +217,7 @@ namespace ManagedBufferedCoordinate2DTests
 
             for (Int32 i = 0; i < coordsToAdd.Count; i++)
             {
-                Assert.IsTrue(coordsToAdd[i].ValueEquals(seq[i]));
+                Assert.AreEqual(coordsToAdd[i], seq[i]);
             }
         }
 
@@ -276,11 +321,14 @@ namespace ManagedBufferedCoordinate2DTests
         [Test]
         public void ReturningASetFromAsSetSucceeds()
         {
+            BufferedCoordinate2DFactory coordFactory
+                = new BufferedCoordinate2DFactory();
+
             BufferedCoordinate2DSequenceFactory seqFactory
-                = new BufferedCoordinate2DSequenceFactory();
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
             IBufferedCoordSequence seq
-                = seqFactory.Create(generateCoords(1000, 5000));
+                = seqFactory.Create(generateCoords(1000, 5000, coordFactory));
 
             ISet<BufferedCoordinate2D> set = seq.AsSet();
 
@@ -290,11 +338,14 @@ namespace ManagedBufferedCoordinate2DTests
         [Test]
         public void CloneSucceeds()
         {
-            BufferedCoordinate2DSequenceFactory seqFactory
-                = new BufferedCoordinate2DSequenceFactory();
+            BufferedCoordinate2DFactory coordFactory
+                = new BufferedCoordinate2DFactory();
+
+            BufferedCoordinate2DSequenceFactory factory
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
             IBufferedCoordSequence seq1
-                = seqFactory.Create(generateCoords(1000, 5000));
+                = factory.Create(generateCoords(1000, 5000, coordFactory));
 
             IBufferedCoordSequence seq2 = seq1.Clone();
 
@@ -464,7 +515,7 @@ namespace ManagedBufferedCoordinate2DTests
 
             // these coordinates come from a different buffer
             List<BufferedCoordinate2D> coordsToAdd
-                = new List<BufferedCoordinate2D>(generateCoords(1000, 500000));
+                = new List<BufferedCoordinate2D>(generateCoords(1000, 500000, coordFactory));
 
             IBufferedCoordSequence seq = seqFactory.Create(coordsToAdd);
 
@@ -519,10 +570,13 @@ namespace ManagedBufferedCoordinate2DTests
         [Test]
         public void CopyToArraySucceeds()
         {
-            BufferedCoordinate2DSequenceFactory seqFactory
-                = new BufferedCoordinate2DSequenceFactory();
+            BufferedCoordinate2DFactory coordFactory
+                = new BufferedCoordinate2DFactory();
 
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(1000, 200));
+            BufferedCoordinate2DSequenceFactory seqFactory
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
+
+            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(1000, 200, coordFactory));
 
             BufferedCoordinate2D[] coordArray = new BufferedCoordinate2D[2000];
             seq.CopyTo(coordArray, 0);
@@ -545,10 +599,13 @@ namespace ManagedBufferedCoordinate2DTests
         [Test]
         public void CountIsCorrectOnCreation()
         {
-            BufferedCoordinate2DSequenceFactory seqFactory
-                = new BufferedCoordinate2DSequenceFactory();
+            BufferedCoordinate2DFactory coordFactory
+                = new BufferedCoordinate2DFactory();
 
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(1000, 200));
+            BufferedCoordinate2DSequenceFactory seqFactory
+                = new BufferedCoordinate2DSequenceFactory(coordFactory);
+
+            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(1000, 200, coordFactory));
 
             Assert.AreEqual(1000, seq.Count);
         }
@@ -562,13 +619,13 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2DSequenceFactory seqFactory
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(1000, 100));
+            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(1000, 100, coordFactory));
 
             seq.Add(coordFactory.Create(789, 456));
 
             Assert.AreEqual(1001, seq.Count);
 
-            seq.AddRange(generateCoords(100, 100));
+            seq.AddRange(generateCoords(100, 100, coordFactory));
 
             Assert.AreEqual(1101, seq.Count);
         }
@@ -582,7 +639,7 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2DSequenceFactory seqFactory
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(1000, 100));
+            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(1000, 100, coordFactory));
 
             Boolean didRemove = seq.Remove(coordFactory.Create(-1, -1));
             Assert.IsFalse(didRemove);
@@ -615,7 +672,7 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2DSequenceFactory seqFactory
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(1000, 100));
+            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(1000, 100, coordFactory));
 
             IBufferedCoordSequence slice = seq.Slice(0, 9);
 
@@ -635,21 +692,21 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2DSequenceFactory seqFactory
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(1000, 100));
+            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(1000, 100, coordFactory));
 
             IBufferedCoordSequence splice = seq.Splice(coordFactory.Create(-1, -1), 0, 9);
 
             Assert.AreEqual(11, splice.Count);
 
-            splice = seq.Splice(generateCoords(10, 100), 990, 999);
+            splice = seq.Splice(generateCoords(10, 100, coordFactory), 990, 999);
 
             Assert.AreEqual(20, splice.Count);
 
-            splice = seq.Splice(generateCoords(10, 100), 990, 999, coordFactory.Create(0, 0));
+            splice = seq.Splice(generateCoords(10, 100, coordFactory), 990, 999, coordFactory.Create(0, 0));
 
             Assert.AreEqual(21, splice.Count);
 
-            splice = seq.Splice(generateCoords(10, 100), 990, 999, generateCoords(10, 100));
+            splice = seq.Splice(generateCoords(10, 100, coordFactory), 990, 999, generateCoords(10, 100, coordFactory));
 
             Assert.AreEqual(30, splice.Count);
 
@@ -661,7 +718,7 @@ namespace ManagedBufferedCoordinate2DTests
 
             Assert.AreEqual(21, splice.Count);
 
-            splice = seq.Splice(990, 999, generateCoords(10, 100));
+            splice = seq.Splice(990, 999, generateCoords(10, 100, coordFactory));
 
             Assert.AreEqual(30, splice.Count);
         }
@@ -676,7 +733,7 @@ namespace ManagedBufferedCoordinate2DTests
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
             List<BufferedCoordinate2D> coordsToAdd
-                = new List<BufferedCoordinate2D>(generateCoords(1000, 1000));
+                = new List<BufferedCoordinate2D>(generateCoords(1000, 1000, coordFactory));
 
             IBufferedCoordSequence seq1 = seqFactory.Create(coordsToAdd);
             IBufferedCoordSequence seq2 = seqFactory.Create(coordsToAdd);
@@ -790,7 +847,7 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2DSequenceFactory seqFactory
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 2));
+            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 2, coordFactory));
 
             BufferedCoordinate2D coord;
 
@@ -820,12 +877,12 @@ namespace ManagedBufferedCoordinate2DTests
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
             List<BufferedCoordinate2D> coordList =
-                new List<BufferedCoordinate2D>(generateCoords(10, Int32.MaxValue - 2));
+                new List<BufferedCoordinate2D>(generateCoords(10, Int32.MaxValue - 2, coordFactory));
             IBufferedCoordSequence seq = seqFactory.Create(coordList);
 
             for (int i = 0; i < seq.Count; i++)
             {
-                Assert.IsTrue(coordList[i].ValueEquals(seq[i]));
+                Assert.AreEqual(coordList[i], seq[i]);
             }
         }
 
@@ -839,13 +896,13 @@ namespace ManagedBufferedCoordinate2DTests
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
             List<BufferedCoordinate2D> coordList =
-                new List<BufferedCoordinate2D>(generateCoords(10, Int32.MaxValue - 2));
+                new List<BufferedCoordinate2D>(generateCoords(10, Int32.MaxValue - 2, coordFactory));
             IBufferedCoordSequence seq = seqFactory.Create(coordList);
             seq.Reverse();
 
             for (int i = 0; i < seq.Count; i++)
             {
-                Assert.IsTrue(coordList[coordList.Count - i - 1].ValueEquals(seq[i]));
+                Assert.AreEqual(coordList[coordList.Count - i - 1], seq[i]);
             }
         }
 
@@ -859,7 +916,7 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2DSequenceFactory seqFactory
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 2));
+            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 2, coordFactory));
 
             BufferedCoordinate2D coord = seq[-1];
         }
@@ -874,7 +931,7 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2DSequenceFactory seqFactory
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 2));
+            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 2, coordFactory));
 
             BufferedCoordinate2D coord = seq[seq.Count];
         }
@@ -889,7 +946,7 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2DSequenceFactory seqFactory
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 2));
+            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 2, coordFactory));
 
             BufferedCoordinate2D coord = seq[Int32.MaxValue];
         }
@@ -904,7 +961,7 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2DSequenceFactory seqFactory
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 2));
+            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 2, coordFactory));
 
             IBufferedCoordSequence slice = seq.Slice(5, 9);
 
@@ -975,7 +1032,7 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2DSequenceFactory seqFactory
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 1));
+            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 1, coordFactory));
 
             Assert.IsFalse(seq.IsFixedSize);
 
@@ -1011,7 +1068,7 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2DSequenceFactory seqFactory
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 1));
+            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 1, coordFactory));
 
             Assert.IsFalse(seq.IsFrozen);
 
@@ -1029,7 +1086,7 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2DSequenceFactory seqFactory
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 1));
+            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 1, coordFactory));
 
             Assert.AreEqual(seq[seq.Count - 1], seq.Last);
 
@@ -1048,7 +1105,7 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2DSequenceFactory seqFactory
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 1));
+            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 1, coordFactory));
 
             Assert.AreEqual(seq.Count - 1, seq.LastIndex);
 
@@ -1312,7 +1369,7 @@ namespace ManagedBufferedCoordinate2DTests
             Assert.IsTrue(seq.Remove(coordFactory.Create(0, 0)));
             Assert.AreEqual(0, seq.Count);
 
-            seq.AddRange(generateCoords(10000, Int32.MaxValue - 1));
+            seq.AddRange(generateCoords(10000, Int32.MaxValue - 1, coordFactory));
 
             Int32 count = 10000;
             while (seq.Count > 0)
@@ -1332,7 +1389,7 @@ namespace ManagedBufferedCoordinate2DTests
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
             IBufferedCoordSequence seq = seqFactory.Create();
-            seq.AddRange(generateCoords(10000, Int32.MaxValue - 1));
+            seq.AddRange(generateCoords(10000, Int32.MaxValue - 1, coordFactory));
 
             Int32 count = 10000;
             while (seq.Count > 0)
@@ -1353,7 +1410,7 @@ namespace ManagedBufferedCoordinate2DTests
 
             IBufferedCoordSequence seq = seqFactory.Create();
             List<BufferedCoordinate2D> coordsToTest
-                = new List<BufferedCoordinate2D>(generateCoords(10000, Int32.MaxValue - 1));
+                = new List<BufferedCoordinate2D>(generateCoords(10000, Int32.MaxValue - 1, coordFactory));
             seq.AddRange(coordsToTest);
             seq.Reverse();
 
@@ -1362,7 +1419,7 @@ namespace ManagedBufferedCoordinate2DTests
             Int32 count = coordsToTest.Count;
             for (Int32 i = 0; i < count; i++)
             {
-                Assert.IsTrue(coordsToTest[i].ValueEquals(seq[count - i - 1]));
+                Assert.AreEqual(coordsToTest[i], seq[count - i - 1]);
             }
         }
 
@@ -1375,7 +1432,7 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2DSequenceFactory seqFactory
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10000, Int32.MaxValue - 1));
+            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10000, Int32.MaxValue - 1, coordFactory));
             IBufferedCoordSequence reversed = seq.Reversed;
 
             Assert.AreEqual(seq.Count, reversed.Count);
@@ -1396,7 +1453,7 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2DSequenceFactory seqFactory
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10000, Int32.MaxValue - 1));
+            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10000, Int32.MaxValue - 1, coordFactory));
             BufferedCoordinate2D firstCoord = seq.First;
             BufferedCoordinate2D midCoord = seq[5000];
             seq.Scroll(midCoord);
@@ -1420,7 +1477,7 @@ namespace ManagedBufferedCoordinate2DTests
             Assert.AreEqual(1, slice.Count);
 
             List<BufferedCoordinate2D> coordsToTest
-                = new List<BufferedCoordinate2D>(generateCoords(10000, Int32.MaxValue - 1));
+                = new List<BufferedCoordinate2D>(generateCoords(10000, Int32.MaxValue - 1, coordFactory));
 
             seq = seqFactory.Create(coordsToTest);
 
@@ -1430,7 +1487,7 @@ namespace ManagedBufferedCoordinate2DTests
 
             for (Int32 i = 0; i < slice.Count; i++)
             {
-                Assert.IsTrue(coordsToTest[i + 1000].ValueEquals(slice[i]));
+                Assert.AreEqual(coordsToTest[i + 1000], slice[i]);
             }
         }
 
@@ -1443,7 +1500,7 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2DSequenceFactory seqFactory
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10000, Int32.MaxValue - 1));
+            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10000, Int32.MaxValue - 1, coordFactory));
             Assert.IsFalse(seq.IsFrozen);
             Assert.IsFalse(seq.IsReadOnly);
             Assert.IsFalse(seq.IsFixedSize);
@@ -1719,10 +1776,6 @@ namespace ManagedBufferedCoordinate2DTests
             Assert.AreEqual(y, seq2[10][Ordinates.Y]);
         }
 
-        private IEnumerable<BufferedCoordinate2D> generateCoords(Int32 count, Int32 max)
-        {
-            return generateCoords(count, max, _coordFactory);
-        }
 
         private IEnumerable<BufferedCoordinate2D> generateCoords(Int32 count,
                                                                  Int32 max,
