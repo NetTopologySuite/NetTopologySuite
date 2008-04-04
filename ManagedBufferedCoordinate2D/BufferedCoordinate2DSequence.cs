@@ -447,9 +447,12 @@ namespace NetTopologySuite.Coordinates
             {
                 Int32 lastValue = -1;
 
-                for (int index = 0; index < Count; index++)
+                for (Int32 index = 0; index < Count; index++)
                 {
-                    Int32 currentValue = _sequence[index];
+                    Int32 transformedIndex;
+                    SequenceStorage storage = transformIndex(index, out transformedIndex);
+
+                    Int32 currentValue = getStorageValue(storage, transformedIndex);
 
                     if (lastValue == currentValue)
                     {
@@ -596,23 +599,7 @@ namespace NetTopologySuite.Coordinates
                 SequenceStorage storage = checkAndTransformIndex(index,
                                                                  "index",
                                                                  out index);
-                Int32 bufferIndex = -1;
-
-                switch (storage)
-                {
-                    case SequenceStorage.AppendList:
-                        bufferIndex = _appendedIndexes[index];
-                        break;
-                    case SequenceStorage.MainList:
-                        bufferIndex = _sequence[index];
-                        break;
-                    case SequenceStorage.PrependList:
-                        bufferIndex = _prependedIndexes[index];
-                        break;
-                    default:
-                        Debug.Fail("Should never reach here.");
-                        break;
-                }
+                Int32 bufferIndex = getStorageValue(storage, index);
 
                 return bufferIndex < 0
                     ? new BufferedCoordinate2D()
@@ -625,24 +612,7 @@ namespace NetTopologySuite.Coordinates
                 SequenceStorage storage = checkAndTransformIndex(index,
                                                                  "index",
                                                                  out index);
-                List<Int32> list = null;
-
-                switch (storage)
-                {
-                    case SequenceStorage.AppendList:
-                        list = _appendedIndexes;
-                        break;
-                    case SequenceStorage.MainList:
-                        list = _sequence;
-                        break;
-                    case SequenceStorage.PrependList:
-                        list = _prependedIndexes;
-                        break;
-                    default:
-                        Debug.Fail("Should never reach here.");
-                        break;
-                }
-
+                List<Int32> list = getStorage(storage);
 
                 // TODO: I can't figure out a test to prove the defect in the 
                 // following commented-out line...
@@ -838,17 +808,8 @@ namespace NetTopologySuite.Coordinates
             }
             else
             {
-                switch (storage)
-                {
-                    case SequenceStorage.AppendList:
-                        _appendedIndexes.RemoveAt(index);
-                        break;
-                    case SequenceStorage.PrependList:
-                        _prependedIndexes.RemoveAt(index);
-                        break;
-                    default:
-                        break;
-                }
+                List<Int32> list = getStorage(storage);
+                list.RemoveAt(index);
             }
 
             OnSequenceChanged();
@@ -904,12 +865,19 @@ namespace NetTopologySuite.Coordinates
                                                         startIndex, endIndex,
                                                         _factory, _buffer);
             }
-            if (_prependedIndexes != null || _appendedIndexes != null || _skipIndexes != null)
+
+            if (_prependedIndexes != null ||
+                _appendedIndexes != null || 
+                _skipIndexes != null)
             {
-                throw new NotImplementedException("Slice of a slice containing prepended, appended, or skipped indices not implemented");
+                throw new NotImplementedException(
+                    "Slice of a slice containing prepended, appended, " +
+                    "or skipped indices not implemented");
             }
+
             return new BufferedCoordinate2DSequence(_sequence,
-                                                    startIndex + Math.Max(0, _startIndex), endIndex + Math.Max(0, _startIndex),
+                                                    startIndex + Math.Max(0, _startIndex), 
+                                                    endIndex + Math.Max(0, _startIndex),
                                                     _factory, _buffer);
         }
 
@@ -1729,6 +1697,28 @@ namespace NetTopologySuite.Coordinates
         private Int32 computeSliceEndOnMainSequence()
         {
             return (Int32)Math.Min(_sequence.Count - 1, (UInt32)_endIndex);
+        }
+
+        private List<Int32> getStorage(SequenceStorage storage)
+        {
+            switch (storage)
+            {
+                case SequenceStorage.AppendList:
+                    return _appendedIndexes;
+                case SequenceStorage.MainList:
+                    return _sequence;
+                case SequenceStorage.PrependList:
+                    return _prependedIndexes;
+                default:
+                    Debug.Fail("Should never reach here");
+                    throw new InvalidOperationException("Unknown storage");
+            }
+        }
+
+        private Int32 getStorageValue(SequenceStorage storage, Int32 index)
+        {
+            List<Int32> list = getStorage(storage);
+            return list[index];
         }
     }
 }
