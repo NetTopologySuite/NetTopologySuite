@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures.Collections.Generic;
@@ -17,35 +18,19 @@ namespace ManagedBufferedCoordinate2DTests
     {
         // Tests to write:
         // Indexer tests
-        //      into prepended list
-        //      into prepended list in reversed sequence
-        //      into main slice with prepended list
-        //      before/after skipped indices
-        //      before/after skipped indices in reversed sequence
-        //      before/after skipped indices with prepended list
-        //      into appended list
-        //      into appended list in reversed sequence
-        //      into appended list with prepended list
-        //      into appended list with skipped indices
-        //      into appended list with skipped indices and prepended list
-        //      into appended/prepended lists on reversed sequence with skipped indices
         //      IList indexer yields same result as implicit indexer implementation
+        //      IList indexer setter
         //  Slice creation
-        //      slice of slice (currently part of one of the indexer tests)
-        //      slice of slice with prepended list
+        //      slice of slice/sequence with prepended list
         //          slice into prepended list only
         //          slice into main slice only
-        //          slice including parts of prepended list and main slice
-        //      slice of slice with appended list
+        //      slice of slice/sequence with appended list
         //          slice into appended list only
         //          slice into main slice only
-        //          slice including parts of appended list and main slice
-        //      slice of slice with skipped indices
-        //      slice of slice with prepended, appended and skipped index lists
+        //      slice of slice/sequence with prepended, appended and skipped index lists
         //          slice into prepended list only
         //          slice into appended list only
         //          slice into main slice only
-        //          slice including parts of prepended list, appended list and whole main slice
 
         private Random _rnd = new MersenneTwister();
 
@@ -741,6 +726,192 @@ namespace ManagedBufferedCoordinate2DTests
             Assert.IsTrue(seq1.Equals(seq2));
         }
 
+
+        [Test]
+        public void EnumeratorBasicOperationSucceeds()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 10);
+
+            Assert.AreEqual(generator.MainList.Count, generator.Sequence.Count);
+
+            IEnumerator<BufferedCoordinate2D> enumerator = generator.Sequence.GetEnumerator();
+            foreach (BufferedCoordinate2D coordinate in generator.MainList)
+            {
+                Assert.IsTrue(enumerator.MoveNext());
+                Assert.AreEqual(coordinate, enumerator.Current);
+            }
+            Assert.IsFalse(enumerator.MoveNext());
+        }
+
+        [Test]
+        public void EnumeratorOnReversedSucceeds()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 10);
+
+            generator.Sequence.Reverse();
+
+            IEnumerator<BufferedCoordinate2D> enumerator = generator.Sequence.GetEnumerator();
+
+            for (int i = 0; i < generator.Sequence.Count; i++)
+            {
+                Assert.IsTrue(enumerator.MoveNext());
+                Assert.AreEqual(generator.MainList[generator.MainList.Count - i - 1], enumerator.Current);
+            }
+            Assert.IsFalse(enumerator.MoveNext());
+        }
+
+
+        [Test]
+        public void EnumeratorOnSliceIsCorrect()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 10);
+
+            IBufferedCoordSequence slice = generator.Sequence.Slice(5, 9);
+
+
+            IEnumerator<BufferedCoordinate2D> enumerator = slice.GetEnumerator();
+
+            for (int i = 0; i < 5; i++)
+            {
+                Assert.IsTrue(enumerator.MoveNext());
+                Assert.AreEqual(generator.Sequence[i + 5], enumerator.Current);
+            }
+            Assert.IsFalse(enumerator.MoveNext());
+
+            IBufferedCoordSequence slice2 = slice.Slice(2, 4);
+
+            enumerator = slice.GetEnumerator();
+
+            for (int i = 0; i < 3; i++)
+            {
+                Assert.IsTrue(enumerator.MoveNext());
+                Assert.AreEqual(slice[i + 2], enumerator.Current);
+            }
+            Assert.IsFalse(enumerator.MoveNext());
+        }
+
+        [Test]
+        public void EnumeratorWithPrependedList()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 5, 2, 0);
+
+            IBufferedCoordSequence slice = generator.Sequence.Slice(0, 4);
+
+            slice.Prepend(generator.PrependList);
+
+            Assert.AreEqual(generator.MainList.Count + generator.PrependList.Count, slice.Count);
+
+            IEnumerator<BufferedCoordinate2D> enumerator = slice.GetEnumerator();
+
+            foreach (BufferedCoordinate2D expected in generator.PrependList)
+            {
+                Assert.IsTrue(enumerator.MoveNext());
+                Assert.AreEqual(expected, enumerator.Current);
+            }
+
+            foreach (BufferedCoordinate2D expected in generator.MainList)
+            {
+                Assert.IsTrue(enumerator.MoveNext());
+                Assert.AreEqual(expected, enumerator.Current);
+            }
+
+            Assert.IsFalse(enumerator.MoveNext());
+        }
+
+
+        [Test]
+        public void EnumeratorWithAppendedList()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 5, 0, 2);
+
+            IBufferedCoordSequence slice = generator.Sequence.Slice(0, 4);
+
+            slice.Append(generator.AppendList);
+
+            Assert.AreEqual(generator.MainList.Count + generator.AppendList.Count, slice.Count);
+
+            IEnumerator<BufferedCoordinate2D> enumerator = slice.GetEnumerator();
+
+            foreach (BufferedCoordinate2D expected in generator.MainList)
+            {
+                Assert.IsTrue(enumerator.MoveNext());
+                Assert.AreEqual(expected, enumerator.Current);
+            }
+
+            foreach (BufferedCoordinate2D expected in generator.AppendList)
+            {
+                Assert.IsTrue(enumerator.MoveNext());
+                Assert.AreEqual(expected, enumerator.Current);
+            }
+
+            Assert.IsFalse(enumerator.MoveNext());
+        }
+
+
+        [Test]
+        public void EnumeratorWithSkippedIndexList()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 5);
+
+            IBufferedCoordSequence slice = generator.Sequence.Slice(0, 4);
+
+            slice.Remove(generator.MainList[1]);
+            slice.Remove(generator.MainList[3]);
+
+            Assert.AreEqual(generator.MainList.Count - 2, slice.Count);
+
+            IEnumerator<BufferedCoordinate2D> enumerator = slice.GetEnumerator();
+
+            for (int i = 0; i < generator.MainList.Count; i++)
+            {
+                if (i != 1 && i != 3)
+                {
+                    Assert.IsTrue(enumerator.MoveNext());
+                    Assert.AreEqual(generator.MainList[i], enumerator.Current);
+                }
+            }
+
+            Assert.IsFalse(enumerator.MoveNext());
+        }
+
+        [Test]
+        public void EnumeratorOnReversedSequenceWithPrependedAppendedSkippedIndices()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 5, 2, 2);
+
+            IBufferedCoordSequence slice = generator.Sequence.Slice(0, 4);
+            slice.Remove(generator.MainList[1]);
+            slice.Remove(generator.MainList[3]);
+            slice.Prepend(generator.PrependList);
+            slice.Append(generator.AppendList);
+            slice.Reverse();
+
+            Assert.AreEqual(generator.MainList.Count - 2 + generator.PrependList.Count + generator.AppendList.Count, slice.Count);
+
+            IEnumerator<BufferedCoordinate2D> enumerator = slice.GetEnumerator();
+
+            for (int i = generator.AppendList.Count - 1; i >= 0; i--)
+            {
+                Assert.IsTrue(enumerator.MoveNext());
+                Assert.AreEqual(generator.AppendList[i], enumerator.Current);
+            }
+            for (int i = generator.MainList.Count - 1; i >= 0; i--)
+            {
+                if (i != 1 && i != 3)
+                {
+                    Assert.IsTrue(enumerator.MoveNext());
+                    Assert.AreEqual(generator.MainList[i], enumerator.Current);
+                }
+            }
+            for (int i = generator.PrependList.Count - 1; i >= 0; i--)
+            {
+                Assert.IsTrue(enumerator.MoveNext());
+                Assert.AreEqual(generator.PrependList[i], enumerator.Current);
+            }
+
+            Assert.IsFalse(enumerator.MoveNext());
+        }
+
         [Test]
         [Ignore("Not Implemented")]
         public void ExpandExtentsSucceeds()
@@ -866,43 +1037,48 @@ namespace ManagedBufferedCoordinate2DTests
             Assert.AreEqual(-1, seq.IndexOf(coord));
         }
 
+        [Test]
+        public void IListIndexerYieldsSameResultAsIndexer()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 10);
+
+            Assert.AreEqual(generator.MainList.Count, generator.Sequence.Count);
+
+            for (int i = 0; i < generator.Sequence.Count; i++)
+            {
+                BufferedCoordinate2D implicitResult = generator.Sequence[i];
+                Assert.AreEqual(generator.MainList[i], implicitResult);
+                Object iListResult = (generator.Sequence as IList)[i];
+                Assert.IsInstanceOfType(typeof(BufferedCoordinate2D), iListResult);
+                Assert.AreEqual(implicitResult, (BufferedCoordinate2D)iListResult);
+            }
+        }
 
         [Test]
         public void IndexerSucceeds()
         {
-            BufferedCoordinate2DFactory coordFactory
-                = new BufferedCoordinate2DFactory();
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 10);
 
-            BufferedCoordinate2DSequenceFactory seqFactory
-                = new BufferedCoordinate2DSequenceFactory(coordFactory);
+            Assert.AreEqual(generator.MainList.Count, generator.Sequence.Count);
 
-            List<BufferedCoordinate2D> coordList =
-                new List<BufferedCoordinate2D>(generateCoords(10, Int32.MaxValue - 2, coordFactory));
-            IBufferedCoordSequence seq = seqFactory.Create(coordList);
-
-            for (int i = 0; i < seq.Count; i++)
+            for (int i = 0; i < generator.Sequence.Count; i++)
             {
-                Assert.AreEqual(coordList[i], seq[i]);
+                Assert.AreEqual(generator.MainList[i], generator.Sequence[i]);
             }
         }
 
         [Test]
         public void IndexerOnReversedSucceeds()
         {
-            BufferedCoordinate2DFactory coordFactory
-                = new BufferedCoordinate2DFactory();
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 10);
 
-            BufferedCoordinate2DSequenceFactory seqFactory
-                = new BufferedCoordinate2DSequenceFactory(coordFactory);
+            generator.Sequence.Reverse();
 
-            List<BufferedCoordinate2D> coordList =
-                new List<BufferedCoordinate2D>(generateCoords(10, Int32.MaxValue - 2, coordFactory));
-            IBufferedCoordSequence seq = seqFactory.Create(coordList);
-            seq.Reverse();
+            Assert.AreEqual(generator.MainList.Count, generator.Sequence.Count);
 
-            for (int i = 0; i < seq.Count; i++)
+            for (int i = 0; i < generator.Sequence.Count; i++)
             {
-                Assert.AreEqual(coordList[coordList.Count - i - 1], seq[i]);
+                Assert.AreEqual(generator.MainList[generator.MainList.Count - i - 1], generator.Sequence[i]);
             }
         }
 
@@ -910,64 +1086,40 @@ namespace ManagedBufferedCoordinate2DTests
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void CallingIndexerWithNegativeNumberFails()
         {
-            BufferedCoordinate2DFactory coordFactory
-                = new BufferedCoordinate2DFactory();
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 10);
 
-            BufferedCoordinate2DSequenceFactory seqFactory
-                = new BufferedCoordinate2DSequenceFactory(coordFactory);
-
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 2, coordFactory));
-
-            BufferedCoordinate2D coord = seq[-1];
+            BufferedCoordinate2D coord = generator.Sequence[-1];
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void CallingIndexerWithNumberEqualToCountFails()
         {
-            BufferedCoordinate2DFactory coordFactory
-                = new BufferedCoordinate2DFactory();
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 10);
 
-            BufferedCoordinate2DSequenceFactory seqFactory
-                = new BufferedCoordinate2DSequenceFactory(coordFactory);
-
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 2, coordFactory));
-
-            BufferedCoordinate2D coord = seq[seq.Count];
+            BufferedCoordinate2D coord = generator.Sequence[generator.Sequence.Count];
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void CallingIndexerWithNumberGreaterThanCountFails()
         {
-            BufferedCoordinate2DFactory coordFactory
-                = new BufferedCoordinate2DFactory();
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 10);
 
-            BufferedCoordinate2DSequenceFactory seqFactory
-                = new BufferedCoordinate2DSequenceFactory(coordFactory);
-
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 2, coordFactory));
-
-            BufferedCoordinate2D coord = seq[Int32.MaxValue];
+            BufferedCoordinate2D coord = generator.Sequence[Int32.MaxValue];
         }
 
 
         [Test]
         public void IndexerOnSliceIsCorrect()
         {
-            BufferedCoordinate2DFactory coordFactory
-                = new BufferedCoordinate2DFactory();
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 10);
 
-            BufferedCoordinate2DSequenceFactory seqFactory
-                = new BufferedCoordinate2DSequenceFactory(coordFactory);
-
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10, Int32.MaxValue - 2, coordFactory));
-
-            IBufferedCoordSequence slice = seq.Slice(5, 9);
+            IBufferedCoordSequence slice = generator.Sequence.Slice(5, 9);
 
             for (int i = 0; i < 5; i++)
             {
-                Assert.AreEqual(seq[i + 5], slice[i]);
+                Assert.AreEqual(generator.Sequence[i + 5], slice[i]);
             }
 
             IBufferedCoordSequence slice2 = slice.Slice(2, 4);
@@ -976,6 +1128,85 @@ namespace ManagedBufferedCoordinate2DTests
             {
                 Assert.AreEqual(slice[i + 2], slice2[i]);
             }
+        }
+
+        [Test]
+        public void IndexerWithPrependedList()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 5, 2, 0);
+
+            IBufferedCoordSequence slice = generator.Sequence.Slice(0, 4);
+            slice.Prepend(generator.PrependList);
+
+            Assert.AreEqual(7, slice.Count);
+
+            Assert.AreEqual(generator.PrependList[0], slice[0]);
+            Assert.AreEqual(generator.PrependList[1], slice[1]);
+            Assert.AreEqual(generator.MainList[0], slice[2]);
+            Assert.AreEqual(generator.MainList[1], slice[3]);
+            Assert.AreEqual(generator.MainList[2], slice[4]);
+            Assert.AreEqual(generator.MainList[3], slice[5]);
+            Assert.AreEqual(generator.MainList[4], slice[6]);
+        }
+
+
+        [Test]
+        public void IndexerWithAppendedList()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 5, 0, 2);
+
+            IBufferedCoordSequence slice = generator.Sequence.Slice(0, 4);
+            slice.Append(generator.AppendList);
+
+            Assert.AreEqual(7, slice.Count);
+
+            Assert.AreEqual(generator.MainList[0], slice[0]);
+            Assert.AreEqual(generator.MainList[1], slice[1]);
+            Assert.AreEqual(generator.MainList[2], slice[2]);
+            Assert.AreEqual(generator.MainList[3], slice[3]);
+            Assert.AreEqual(generator.MainList[4], slice[4]);
+            Assert.AreEqual(generator.AppendList[0], slice[5]);
+            Assert.AreEqual(generator.AppendList[1], slice[6]);
+        }
+
+
+        [Test]
+        public void IndexerWithSkippedIndexList()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 5);
+
+            IBufferedCoordSequence slice = generator.Sequence.Slice(0, 4);
+            slice.Remove(generator.MainList[1]);
+            slice.Remove(generator.MainList[3]);
+
+            Assert.AreEqual(3, slice.Count);
+
+            Assert.AreEqual(generator.MainList[0], slice[0]);
+            Assert.AreEqual(generator.MainList[2], slice[1]);
+            Assert.AreEqual(generator.MainList[4], slice[2]);
+        }
+
+        [Test]
+        public void IndexerIntoReversedSequenceWithPrependedAppendedSkippedIndices()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 5, 2, 2);
+
+            IBufferedCoordSequence slice = generator.Sequence.Slice(0, 4);
+            slice.Remove(generator.MainList[1]);
+            slice.Remove(generator.MainList[3]);
+            slice.Prepend(generator.PrependList);
+            slice.Append(generator.AppendList);
+            slice.Reverse();
+
+            Assert.AreEqual(7, slice.Count);
+
+            Assert.AreEqual(generator.AppendList[1], slice[0]);
+            Assert.AreEqual(generator.AppendList[0], slice[1]);
+            Assert.AreEqual(generator.MainList[4], slice[2]);
+            Assert.AreEqual(generator.MainList[2], slice[3]);
+            Assert.AreEqual(generator.MainList[0], slice[4]);
+            Assert.AreEqual(generator.PrependList[1], slice[5]);
+            Assert.AreEqual(generator.PrependList[0], slice[6]);
         }
 
         [Test]
@@ -1463,32 +1694,222 @@ namespace ManagedBufferedCoordinate2DTests
         }
 
         [Test]
+        public void SliceSingleCoordinateSucceeds()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 1, 1);
+            IBufferedCoordSequence slice = generator.Sequence.Slice(0, 0);
+
+            Assert.AreEqual(1, slice.Count);
+            Assert.AreEqual(generator.Sequence[0], slice[0]);
+        }
+
+        [Test]
         public void SliceSucceeds()
         {
-            BufferedCoordinate2DFactory coordFactory
-                = new BufferedCoordinate2DFactory();
-
-            BufferedCoordinate2DSequenceFactory seqFactory
-                = new BufferedCoordinate2DSequenceFactory(coordFactory);
-
-            IBufferedCoordSequence seq = seqFactory.Create();
-            seq.Add(coordFactory.Create(0, 0));
-            IBufferedCoordSequence slice = seq.Slice(0, 0);
-            Assert.AreEqual(1, slice.Count);
-
-            List<BufferedCoordinate2D> coordsToTest
-                = new List<BufferedCoordinate2D>(generateCoords(10000, Int32.MaxValue - 1, coordFactory));
-
-            seq = seqFactory.Create(coordsToTest);
-
-            slice = seq.Slice(1000, 1100);
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 1, 10000);
+            IBufferedCoordSequence slice = generator.Sequence.Slice(1000, 1100);
 
             Assert.AreEqual(101, slice.Count);
 
             for (Int32 i = 0; i < slice.Count; i++)
             {
-                Assert.AreEqual(coordsToTest[i + 1000], slice[i]);
+                Assert.AreEqual(generator.Sequence[i + 1000], slice[i]);
             }
+        }
+
+
+        [Test]
+        public void SliceSequenceWithPrepended()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 5, 2, 0);
+
+            generator.Sequence.Prepend(generator.PrependList);
+
+            Assert.AreEqual(7, generator.Sequence.Count);
+
+            IBufferedCoordSequence slice = generator.Sequence.Slice(1, 5);
+
+            Assert.AreEqual(5, slice.Count);
+
+            Assert.AreEqual(generator.PrependList[1], slice[0]);
+            Assert.AreEqual(generator.MainList[0], slice[1]);
+            Assert.AreEqual(generator.MainList[1], slice[2]);
+            Assert.AreEqual(generator.MainList[2], slice[3]);
+            Assert.AreEqual(generator.MainList[3], slice[4]);
+        }
+
+        [Test]
+        public void SliceSequenceWithAppended()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 5, 0, 2);
+
+            generator.Sequence.Append(generator.AppendList);
+
+            Assert.AreEqual(7, generator.Sequence.Count);
+
+            IBufferedCoordSequence slice = generator.Sequence.Slice(1, 5);
+
+            Assert.AreEqual(5, slice.Count);
+
+            Assert.AreEqual(generator.MainList[1], slice[0]);
+            Assert.AreEqual(generator.MainList[2], slice[1]);
+            Assert.AreEqual(generator.MainList[3], slice[2]);
+            Assert.AreEqual(generator.MainList[4], slice[3]);
+            Assert.AreEqual(generator.AppendList[0], slice[4]);
+        }
+
+        [Test]
+        public void SliceSequenceWithSkippedIndices()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 7);
+
+            generator.Sequence.Remove(generator.MainList[2]);
+            generator.Sequence.Remove(generator.MainList[4]);
+
+            Assert.AreEqual(5, generator.Sequence.Count);
+
+            IBufferedCoordSequence slice = generator.Sequence.Slice(1, 3);
+
+            Assert.AreEqual(3, slice.Count);
+
+            Assert.AreEqual(generator.MainList[1], slice[0]);
+            Assert.AreEqual(generator.MainList[3], slice[1]);
+            Assert.AreEqual(generator.MainList[5], slice[2]);
+        }
+
+        [Test]
+        public void SliceReversedSequenceWithPrependedAppendedSkippedIndices()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 5, 2, 2);
+
+            generator.Sequence.Remove(generator.MainList[1]);
+            generator.Sequence.Remove(generator.MainList[3]);
+            generator.Sequence.Prepend(generator.PrependList);
+            generator.Sequence.Append(generator.AppendList);
+            generator.Sequence.Reverse();
+
+            Assert.AreEqual(7, generator.Sequence.Count);
+
+            IBufferedCoordSequence slice = generator.Sequence.Slice(1, 5);
+
+            Assert.AreEqual(5, slice.Count);
+
+            Assert.AreEqual(generator.AppendList[0], slice[0]);
+            Assert.AreEqual(generator.MainList[4], slice[1]);
+            Assert.AreEqual(generator.MainList[2], slice[2]);
+            Assert.AreEqual(generator.MainList[0], slice[3]);
+            Assert.AreEqual(generator.PrependList[1], slice[4]);
+        }
+
+        [Test]
+        public void SliceSliceWithPrepended()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 5, 2, 0);
+
+            IBufferedCoordSequence slice = generator.Sequence.Slice(0, 4);
+            slice.Prepend(generator.PrependList);
+
+            Assert.AreEqual(7, slice.Count);
+
+            IBufferedCoordSequence slice2 = slice.Slice(1, 5);
+
+            Assert.AreEqual(5, slice2.Count);
+
+            Assert.AreEqual(generator.PrependList[1], slice2[0]);
+            Assert.AreEqual(generator.MainList[0], slice2[1]);
+            Assert.AreEqual(generator.MainList[1], slice2[2]);
+            Assert.AreEqual(generator.MainList[2], slice2[3]);
+            Assert.AreEqual(generator.MainList[3], slice2[4]);
+        }
+
+        [Test]
+        public void SliceSliceWithAppended()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 5, 0, 2);
+
+            IBufferedCoordSequence slice = generator.Sequence.Slice(0, 4);
+            slice.Append(generator.AppendList);
+
+            Assert.AreEqual(7, slice.Count);
+
+            IBufferedCoordSequence slice2 = slice.Slice(1, 5);
+
+            Assert.AreEqual(5, slice2.Count);
+
+            Assert.AreEqual(generator.MainList[1], slice2[0]);
+            Assert.AreEqual(generator.MainList[2], slice2[1]);
+            Assert.AreEqual(generator.MainList[3], slice2[2]);
+            Assert.AreEqual(generator.MainList[4], slice2[3]);
+            Assert.AreEqual(generator.AppendList[0], slice2[4]);
+        }
+
+        [Test]
+        public void SliceSliceWithSkippedIndices()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 7);
+
+            IBufferedCoordSequence slice = generator.Sequence.Slice(0, 6);
+            slice.Remove(generator.MainList[2]);
+            slice.Remove(generator.MainList[4]);
+
+            Assert.AreEqual(5, slice.Count);
+
+            IBufferedCoordSequence slice2 = slice.Slice(1, 3);
+
+            Assert.AreEqual(3, slice2.Count);
+
+            Assert.AreEqual(generator.MainList[1], slice2[0]);
+            Assert.AreEqual(generator.MainList[3], slice2[1]);
+            Assert.AreEqual(generator.MainList[5], slice2[2]);
+        }
+
+        [Test]
+        public void SliceSliceWithPrependedAppendedSkippedIndices()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 5, 2, 2);
+
+            IBufferedCoordSequence slice = generator.Sequence.Slice(0, 4);
+            slice.Remove(generator.MainList[1]);
+            slice.Remove(generator.MainList[3]);
+            slice.Prepend(generator.PrependList);
+            slice.Append(generator.AppendList);
+
+            Assert.AreEqual(7, slice.Count);
+
+            IBufferedCoordSequence slice2 = slice.Slice(1, 5);
+
+            Assert.AreEqual(5, slice2.Count);
+
+            Assert.AreEqual(generator.PrependList[1], slice2[0]);
+            Assert.AreEqual(generator.MainList[0], slice2[1]);
+            Assert.AreEqual(generator.MainList[2], slice2[2]);
+            Assert.AreEqual(generator.MainList[4], slice2[3]);
+            Assert.AreEqual(generator.AppendList[0], slice2[4]);
+        }
+
+        [Test]
+        public void SliceReversedSliceWithPrependedAppendedSkippedIndices()
+        {
+            SequenceGenerator generator = new SequenceGenerator(Int32.MaxValue - 2, 5, 2, 2);
+
+            IBufferedCoordSequence slice = generator.Sequence.Slice(0, 4);
+            slice.Remove(generator.MainList[1]);
+            slice.Remove(generator.MainList[3]);
+            slice.Prepend(generator.PrependList);
+            slice.Append(generator.AppendList);
+            slice.Reverse();
+
+            Assert.AreEqual(7, slice.Count);
+
+            IBufferedCoordSequence slice2 = slice.Slice(1, 5);
+
+            Assert.AreEqual(5, slice2.Count);
+
+            Assert.AreEqual(generator.AppendList[0], slice2[0]);
+            Assert.AreEqual(generator.MainList[4], slice2[1]);
+            Assert.AreEqual(generator.MainList[2], slice2[2]);
+            Assert.AreEqual(generator.MainList[0], slice2[3]);
+            Assert.AreEqual(generator.PrependList[1], slice2[4]);
         }
 
         [Test]

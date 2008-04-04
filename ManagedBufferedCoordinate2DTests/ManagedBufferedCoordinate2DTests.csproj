@@ -95,6 +95,7 @@
     <Compile Include="BufferedCoordinate2DFactoryTests.cs" />
     <Compile Include="BufferedCoordinate2DSequenceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SequenceGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ManagedBufferedCoordinate2D\ManagedBufferedCoordinate2D.csproj">
