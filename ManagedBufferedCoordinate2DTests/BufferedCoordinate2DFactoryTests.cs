@@ -33,6 +33,19 @@ namespace ManagedBufferedCoordinate2DTests
         }
 
         [Test]
+        public void CreateTwoBufferedCoordinate2DSucceeds()
+        {
+            BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
+            BufferedCoordinate2D coord1 = factory.Create(1, 15);
+            BufferedCoordinate2D coord2 = factory.Create(15, 1);
+
+            Assert.AreEqual(1, coord1.X);
+            Assert.AreEqual(15, coord1.Y);
+            Assert.AreEqual(15, coord2.X);
+            Assert.AreEqual(1, coord2.Y);
+        }
+
+        [Test]
         [ExpectedException(typeof(NotSupportedException))]
         public void Create3DCoordinateFails()
         {
@@ -52,6 +65,17 @@ namespace ManagedBufferedCoordinate2DTests
         }
 
         [Test]
+        public void CreateCoordinateCopyOfEmptySucceeds()
+        {
+            BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
+            BufferedCoordinate2D coord = new BufferedCoordinate2D();
+            BufferedCoordinate2D clone = factory.Create(coord);
+
+            Assert.IsTrue(clone.IsEmpty);
+        }
+
+        [Test]
+        [Ignore("Not Implemented")]
         public void CreateAffineTransformSucceeds()
         {
             BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
@@ -61,6 +85,7 @@ namespace ManagedBufferedCoordinate2DTests
         }
 
         [Test]
+        [Ignore("Not Implemented")]
         public void CreateAffineTransformWithAxisOfRotationSucceeds()
         {
             BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
@@ -138,7 +163,7 @@ namespace ManagedBufferedCoordinate2DTests
 
         [Test]
         [Ignore("Need to implement")]
-        public void CoorindateAddToBufferSucceeds()
+        public void CoordinateAddToBufferSucceeds()
         {
             IVector<DoubleComponent> vector;
         }
@@ -158,10 +183,18 @@ namespace ManagedBufferedCoordinate2DTests
         }
 
         [Test]
-        [Ignore("Need to implement")]
         public void ClearBufferSucceeds()
         {
+            BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
+            factory.Create(1, 1);
+            factory.Create(2, 2);
 
+            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = factory;
+
+            Assert.AreEqual(2, buffer.Count);
+
+            buffer.Clear();
+            Assert.AreEqual(0, buffer.Count);
         }
 
         [Test]
@@ -172,10 +205,20 @@ namespace ManagedBufferedCoordinate2DTests
         }
 
         [Test]
-        [Ignore("Need to implement")]
+        [ExpectedException(typeof(NotImplementedException))]
         public void BufferContainsBufferedCoordinate2DSucceeds()
         {
+            BufferedCoordinate2DFactory factory1 = new BufferedCoordinate2DFactory();
+            BufferedCoordinate2DFactory factory2 = new BufferedCoordinate2DFactory();
 
+            factory1.Create(1, 1);
+            BufferedCoordinate2D coord1 = factory1.Create(2, 2);
+            BufferedCoordinate2D coord2 = factory2.Create(2, 2);
+
+            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = factory1;
+
+            Assert.IsTrue(buffer.Contains(coord1));  // Not implemented in NPack
+            Assert.IsFalse(buffer.Contains(coord2));
         }
 
         [Test]
@@ -186,38 +229,77 @@ namespace ManagedBufferedCoordinate2DTests
         }
 
         [Test]
-        [Ignore("Need to implement")]
         public void CountSucceeds()
         {
+            BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
+            factory.Create(1, 1);
+            factory.Create(2, 2);
 
+            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = factory;
+
+            Assert.AreEqual(2, buffer.Count);
         }
 
         [Test]
-        [Ignore("Need to implement")]
+        [ExpectedException(typeof(NotImplementedException))]
         public void FactorySucceeds()
         {
+            BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
 
+            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = factory;
+
+            Assert.IsInstanceOfType(typeof(IVectorFactory<BufferedCoordinate2D, DoubleComponent>), buffer.Factory);
+            // not implemented and possibly going away in NPack
         }
 
         [Test]
-        [Ignore("Need to implement")]
         public void IsReadOnlySucceeds()
         {
+            BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
+            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = factory;
 
+            Assert.IsFalse(buffer.IsReadOnly);
         }
 
         [Test]
-        [Ignore("Need to implement")]
         public void GettingAndSettingMaximumSizeSucceeds()
         {
+            BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
+            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = factory;
 
+            buffer.MaximumSize = Int32.MaxValue - 1000;
+            Assert.AreEqual(Int32.MaxValue - 1000, buffer.MaximumSize);
         }
 
         [Test]
-        [Ignore("Need to implement")]
-        public void RemoveSucceeds()
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void SettingMaximumSizeFailsOnNegativeValue()
         {
+            BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
+            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = factory;
 
+            buffer.MaximumSize = -1;
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void SettingMaximumSizeFailsOnSmallerValueThanCurrentContents()
+        {
+            BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
+            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = factory;
+
+            buffer.MaximumSize = 3;
+        }
+
+        [Test]
+        [ExpectedException(typeof(NotImplementedException))]
+        public void RemoveFails()
+        {
+            BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
+            BufferedCoordinate2D coord = factory.Create(1, 1);
+            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = factory;
+
+            buffer.Remove(coord.Index); // potentially invalidates sequences if allowed
         }
 
         [Test]
@@ -249,17 +331,45 @@ namespace ManagedBufferedCoordinate2DTests
         }
 
         [Test]
-        [Ignore("Need to implement")]
-        public void GettingAndSettingIndexerSucceeds()
+        public void GettingIndexerSucceeds()
         {
+            BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
+            BufferedCoordinate2D coord = factory.Create(1, 1);
+            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = factory;
 
+            Assert.AreEqual(coord, buffer[coord.Index]);
         }
 
         [Test]
-        [Ignore("Need to implement")]
+        [ExpectedException(typeof(NotSupportedException))]
+        public void SettingIndexerFails()
+        {
+            BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
+            BufferedCoordinate2D coord = factory.Create(1, 1);
+            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = factory;
+
+            // coordinate should be immutable except for possible precision snap-to
+            buffer[coord.Index] = factory.Create(2, 2);
+        }
+
+
+        [Test]
         public void EnumeratingVertexesSucceeds()
         {
+            BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
+            List<BufferedCoordinate2D> coordList = new List<BufferedCoordinate2D>(5);
+            coordList.Add(factory.Create(1, 1));
+            coordList.Add(factory.Create(1, 2));
+            coordList.Add(factory.Create(1, 3));
+            coordList.Add(factory.Create(1, 4));
+            coordList.Add(factory.Create(1, 5));
 
+            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = factory;
+
+            foreach(BufferedCoordinate2D coord in buffer)
+            {
+                Assert.IsTrue(coordList.Contains(coord));
+            }
         }
 
         [Test]
@@ -308,8 +418,11 @@ namespace ManagedBufferedCoordinate2DTests
 
             for (Int32 i = 0; i < 1000000; i++)
             {
+                Double x = random.NextDouble();
+                Double y = random.NextDouble();
+
                 timer.Start();
-                factory.Create(random.NextDouble(), random.NextDouble());
+                factory.Create(x, y);
                 timer.Stop();
 
                 times[i % 10] = (Int32)timer.ElapsedTicks;
@@ -346,8 +459,11 @@ namespace ManagedBufferedCoordinate2DTests
 
             for (Int32 i = 0; i < 1000000; i++)
             {
+                Double x = random.Next(500, 1000);
+                Double y = random.Next(100000, 100500);
+
                 timer.Start();
-                factory.Create(random.Next(500, 1000), random.Next(100000, 100500));
+                factory.Create(x, y);
                 timer.Stop();
 
                 times[i % 10] = (Int32)timer.ElapsedTicks;

@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures.Collections.Generic;
+using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Geometries;
 using NetTopologySuite.Coordinates;
 using NPack;
 using NUnit.Framework;
@@ -913,10 +915,22 @@ namespace ManagedBufferedCoordinate2DTests
         }
 
         [Test]
-        [Ignore("Not Implemented")]
         public void ExpandExtentsSucceeds()
         {
+            BufferedCoordinate2DFactory coordinateFactory = new BufferedCoordinate2DFactory();
+            BufferedCoordinate2DSequenceFactory sequenceFactory = new BufferedCoordinate2DSequenceFactory(coordinateFactory);
+            GeometryFactory<BufferedCoordinate2D> geometryFactory = new GeometryFactory<BufferedCoordinate2D>(sequenceFactory);
 
+            IBufferedCoordSequence sequence = sequenceFactory.Create(CoordinateDimensions.Two);
+            sequence.Add(coordinateFactory.Create(1, 15));
+            sequence.Add(coordinateFactory.Create(15, 1));
+
+            IExtents<BufferedCoordinate2D> extents = sequence.ExpandExtents(geometryFactory.CreateExtents());
+
+            Assert.AreEqual(1,extents.Min.X);
+            Assert.AreEqual(1, extents.Min.Y);
+            Assert.AreEqual(15, extents.Max.X);
+            Assert.AreEqual(15, extents.Max.Y);
         }
 
         [Test]

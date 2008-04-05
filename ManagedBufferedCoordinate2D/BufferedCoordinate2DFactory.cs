@@ -43,7 +43,7 @@ namespace NetTopologySuite.Coordinates
 
         public IVectorBuffer<BufferedCoordinate2D, DoubleComponent> VectorBuffer
         {
-            get { return _coordinates; }
+            get { return this; }
         }
 
         internal IComparer<BufferedCoordinate2D> Comparer
@@ -325,7 +325,8 @@ namespace NetTopologySuite.Coordinates
 
         void IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.Remove(Int32 index)
         {
-            _coordinates.Remove(index);
+            throw new NotImplementedException();
+            //_coordinates.Remove(index); - dangerous
         }
 
         event EventHandler IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.SizeIncreased
@@ -359,7 +360,11 @@ namespace NetTopologySuite.Coordinates
             }
             set
             {
-                _coordinates[index] = value;
+                // coordinate normally immutable except during precision snap-to
+                // there are potential use-cases where you would not just set the ordinates
+                // but the potential dangers of using the setter by mistake currently
+                // outweigh a use-case I cannot yet identify
+                throw new NotSupportedException();
             }
         }
 
@@ -369,10 +374,7 @@ namespace NetTopologySuite.Coordinates
 
         public IEnumerator<BufferedCoordinate2D> GetEnumerator()
         {
-            foreach (BufferedCoordinate2D coordinate in _coordinates)
-            {
-                yield return coordinate;
-            }
+            return _coordinates.GetEnumerator();
         }
 
         #endregion
