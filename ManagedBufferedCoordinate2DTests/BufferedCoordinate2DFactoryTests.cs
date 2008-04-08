@@ -7,6 +7,8 @@ using NetTopologySuite.Coordinates;
 using NPack;
 using NPack.Interfaces;
 using NUnit.Framework;
+using Rhino.Mocks;
+
 #if DOTNET35
 using System.Linq;
 #endif
@@ -162,24 +164,93 @@ namespace ManagedBufferedCoordinate2DTests
         }
 
         [Test]
-        [Ignore("Need to implement")]
         public void CoordinateAddToBufferSucceeds()
         {
-            IVector<DoubleComponent> vector;
+            var mocks = new MockRepository();
+            IVector<DoubleComponent> vector = mocks.Stub<IVector<DoubleComponent>>();
+            Expect.Call(vector.ComponentCount).Repeat.Any().Return(2);
+            vector[0] = 5;
+            vector[1] = 6;
+            mocks.ReplayAll();
+
+            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = new BufferedCoordinate2DFactory();
+
+            Int32 index = buffer.Add(vector);
+
+            Assert.AreEqual(5, buffer[index].X);
+            Assert.AreEqual(6, buffer[index].Y);
         }
 
         [Test]
-        [Ignore("Need to implement")]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Coordinate3DAddToBufferFails()
+        {
+            var mocks = new MockRepository();
+            IVector<DoubleComponent> vector = mocks.Stub<IVector<DoubleComponent>>();
+            Expect.Call(vector.ComponentCount).Repeat.Any().Return(3);
+            vector[0] = 5;
+            vector[1] = 6;
+            vector[2] = 7;
+            mocks.ReplayAll();
+
+            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = new BufferedCoordinate2DFactory();
+
+            buffer.Add(vector);
+        }
+
+        [Test]
         public void BufferedCoordinate2DAddToBufferSucceeds()
         {
-            BufferedCoordinate2D vector;
+            BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
+            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = factory;
+            BufferedCoordinate2D vector = factory.Create(5, 5);
+
+            Int32 index = buffer.Add(vector);
+
+            Assert.AreEqual(vector, buffer[index]);
         }
 
         [Test]
-        [Ignore("Need to implement")]
+        public void BufferedCoordinate2DFromOtherFactoryAddToBufferSucceeds()
+        {
+            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = new BufferedCoordinate2DFactory();
+            BufferedCoordinate2DFactory otherFactory = new BufferedCoordinate2DFactory();
+            BufferedCoordinate2D vector = otherFactory.Create(5, 5);
+
+            Int32 index = buffer.Add(vector);
+
+            Assert.AreNotEqual(vector, buffer[index]);
+            Assert.IsTrue(vector.ValueEquals(buffer[index]));
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void BufferedCoordinate2DAddToBufferFailsOnEmpty()
+        {
+            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = new BufferedCoordinate2DFactory();
+            BufferedCoordinate2D emptyVector = new BufferedCoordinate2D();
+
+            buffer.Add(emptyVector);
+        }
+
+        [Test]
         public void DoublesAddToBufferSucceeds()
         {
+            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = new BufferedCoordinate2DFactory();
 
+            BufferedCoordinate2D result = buffer.Add(1, 2);
+
+            Assert.AreEqual(1, result.X);
+            Assert.AreEqual(2, result.Y);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Doubles3DAddToBufferFails()
+        {
+            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = new BufferedCoordinate2DFactory();
+
+            buffer.Add(1, 2, 3);
         }
 
         [Test]
@@ -198,10 +269,24 @@ namespace ManagedBufferedCoordinate2DTests
         }
 
         [Test]
-        [Ignore("Need to implement")]
+        [ExpectedException(typeof(NotImplementedException))]
         public void BufferContainsIVectorSucceeds()
         {
+            var mocks = new MockRepository();
+            IVector<DoubleComponent> vector = mocks.Stub<IVector<DoubleComponent>>();
+            Expect.Call(vector.ComponentCount).Repeat.Any().Return(2);
+            vector[0] = 5;
+            vector[1] = 6;
+            mocks.ReplayAll();
+            
+            BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
+            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = factory;
 
+            Assert.IsFalse(buffer.Contains(vector));
+
+            factory.Create(5, 6);
+
+            Assert.IsTrue(buffer.Contains(vector));
         }
 
         [Test]
@@ -222,10 +307,20 @@ namespace ManagedBufferedCoordinate2DTests
         }
 
         [Test]
-        [Ignore("Need to implement")]
         public void CopyToSucceeds()
         {
+            BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
+            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = factory;
 
+            factory.Create(1, 1);
+            factory.Create(1, 2);
+
+            BufferedCoordinate2D[] result = new BufferedCoordinate2D[2];
+
+            buffer.CopyTo(result, 0, 1);
+
+            Assert.AreEqual(buffer[0], result[0]);
+            Assert.AreEqual(buffer[1], result[1]);
         }
 
         [Test]

@@ -53,6 +53,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ExternalReferences\nunit.framework.dll</HintPath>
     </Reference>
+	<Reference Include="Rhino.Mocks, Version=3.4.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+	  <SpecificVersion>False</SpecificVersion>
+	  <HintPath>..\ExternalReferences\Rhino.Mocks.dll</HintPath>
+	</Reference>
     <Reference Include="NPack, Version=0.8.15119.0, Culture=neutral, PublicKeyToken=56f174b1685ddc6a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ExternalReferences\$(Configuration)\NPack.dll</HintPath>

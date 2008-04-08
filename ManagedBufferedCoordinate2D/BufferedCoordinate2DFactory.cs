@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using NPack;
 using NPack.Interfaces;
-using GeoAPI.DataStructures;
 #if NETCF
 using BitConverter = GisSharpBlog.NetTopologySuite.Utilities;
 #endif
@@ -19,7 +18,7 @@ namespace NetTopologySuite.Coordinates
           IBufferedVectorFactory<BufferedCoordinate2D, DoubleComponent>
     {
         public static readonly Int32 MaximumBitResolution = 52;
-        private static readonly IComparer<Pair<Double>> _valueComparer 
+        private static readonly IComparer<Pair<Double>> _valueComparer
             = new LexicographicComparer();
 
         private static readonly IComparer<BufferedCoordinate2D> _coordComparer
@@ -55,11 +54,11 @@ namespace NetTopologySuite.Coordinates
         public Int32 BitResolution
         {
             get { return _bitResolution; }
-            set 
+            set
             {
                 _bitResolution = value;
                 Int32 shift = MaximumBitResolution - _bitResolution;
-                _mask = unchecked((Int64) (0xFFFFFFFFFFFFFFFF << shift));
+                _mask = unchecked((Int64)(0xFFFFFFFFFFFFFFFF << shift));
             }
         }
 
@@ -94,13 +93,13 @@ namespace NetTopologySuite.Coordinates
 
             if (length == 1)
             {
-                throw new ArgumentException("Only one coordinate component was provided; "+
+                throw new ArgumentException("Only one coordinate component was provided; " +
                                             "at least 2 are needed.");
             }
 
             if (length == 3)
             {
-                throw new NotSupportedException("Coordinates with 'M' values currently "+
+                throw new NotSupportedException("Coordinates with 'M' values currently " +
                                                 "not supported.");
             }
 
@@ -124,25 +123,26 @@ namespace NetTopologySuite.Coordinates
 
         public BufferedCoordinate2D Create(BufferedCoordinate2D coordinate)
         {
+            if (coordinate.IsEmpty)
+            {
+                return new BufferedCoordinate2D();
+            }
             if (ReferenceEquals(coordinate.Factory, this))
             {
                 return coordinate;
             }
-            else
-            {
-                return getVertexInternal(coordinate.X, coordinate.Y);
-            }
+            return getVertexInternal(coordinate.X, coordinate.Y);
         }
 
         public BufferedCoordinate2D Create(ICoordinate coordinate)
         {
             if (coordinate is BufferedCoordinate2D)
             {
-                return Create((BufferedCoordinate2D) coordinate);
+                return Create((BufferedCoordinate2D)coordinate);
             }
 
-            return coordinate.IsEmpty 
-                ? new BufferedCoordinate2D() 
+            return coordinate.IsEmpty
+                ? new BufferedCoordinate2D()
                 : Create(coordinate[Ordinates.X], coordinate[Ordinates.Y]);
         }
 
@@ -247,6 +247,12 @@ namespace NetTopologySuite.Coordinates
 
         Int32 IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.Add(IVector<DoubleComponent> vector)
         {
+            if (vector == null || vector.ComponentCount != 2)
+            {
+                throw new ArgumentException(
+                    "A BufferedCoordinate2D requires exactly two components.");
+            }
+
             Double x = (Double)vector[0];
             Double y = (Double)vector[1];
 
@@ -270,7 +276,7 @@ namespace NetTopologySuite.Coordinates
             if (components.Length != 2)
             {
                 throw new ArgumentException(
-                    "A BufferedCoordinate2D can only have two components.");
+                    "A BufferedCoordinate2D requires exactly two components.");
             }
 
             return getVertexInternal((Double)components[0], (Double)components[1]);
@@ -383,7 +389,7 @@ namespace NetTopologySuite.Coordinates
 
         public BufferedCoordinate2D CreateBufferedVector(IVectorBuffer<BufferedCoordinate2D, DoubleComponent> vectorBuffer, Int32 index)
         {
-            if (!ReferenceEquals(_coordinates, vectorBuffer) 
+            if (!ReferenceEquals(_coordinates, vectorBuffer)
                 && !ReferenceEquals(this, vectorBuffer))
             {
                 throw new ArgumentException(
@@ -399,10 +405,10 @@ namespace NetTopologySuite.Coordinates
         {
             try
             {
-                Int32 ordinateIndex = _ordinateIndexTable[(Int32) ordinate];
-                return (Double) _coordinates[index, ordinateIndex];
+                Int32 ordinateIndex = _ordinateIndexTable[(Int32)ordinate];
+                return (Double)_coordinates[index, ordinateIndex];
             }
-            catch(ArgumentOutOfRangeException)
+            catch (ArgumentOutOfRangeException)
             {
                 throw new NotSupportedException("Ordinate not supported: " + ordinate);
             }

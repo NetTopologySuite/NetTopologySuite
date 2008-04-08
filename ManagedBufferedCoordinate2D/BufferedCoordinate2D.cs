@@ -140,12 +140,22 @@ namespace NetTopologySuite.Coordinates
 
         public Double X
         {
-            get { return _factory.GetOrdinate(_index.Value, Ordinates.X); }
+            get
+            {
+                if (IsEmpty)
+                    throw new InvalidOperationException();
+                return _factory.GetOrdinate(_index.Value, Ordinates.X);
+            }
         }
 
         public Double Y
         {
-            get { return _factory.GetOrdinate(_index.Value, Ordinates.Y); }
+            get
+            {
+                if (IsEmpty)
+                    throw new InvalidOperationException();
+                return _factory.GetOrdinate(_index.Value, Ordinates.Y);
+            }
         }
 
         public Double Distance(ICoordinate2D other)

@@ -402,18 +402,18 @@ namespace NetTopologySuite.Coordinates
             // efficient addition
             if (_prependedIndexes != null)
             {
-                for (Int32 i = _prependedIndexes.Count; i >= 0; i--)
+                for (Int32 i = _prependedIndexes.Count - 1; i >= 0; i--)
                 {
                     yield return _buffer[_prependedIndexes[i]];
                 }
             }
 
-            Int32 start = computeSliceEndOnMainSequence();
+            Int32 start = computeSliceStartOnMainSequence();
             Int32 end = computeSliceEndOnMainSequence();
 
             if (_skipIndexes != null)
             {
-                for (Int32 i = start; i < end; i++)
+                for (Int32 i = start; i <= end; i++)
                 {
                     Int32 index = _sequence[i];
 
@@ -425,7 +425,7 @@ namespace NetTopologySuite.Coordinates
             }
             else
             {
-                for (Int32 i = start; i < end; i++)
+                for (Int32 i = start; i <= end; i++)
                 {
                     Int32 index = _sequence[i];
                     yield return _buffer[index];
@@ -1353,8 +1353,8 @@ namespace NetTopologySuite.Coordinates
             if (index < prependCount)
             {
                 storage = _reversed
-                    ? SequenceStorage.PrependList
-                    : SequenceStorage.AppendList;
+                    ? SequenceStorage.AppendList
+                    : SequenceStorage.PrependList;
                 transformedIndex = index;
             }
             else
@@ -1371,8 +1371,8 @@ namespace NetTopologySuite.Coordinates
                 if (index >= firstAppendIndex)
                 {
                     storage = _reversed
-                        ? SequenceStorage.AppendList
-                        : SequenceStorage.PrependList;
+                        ? SequenceStorage.PrependList
+                        : SequenceStorage.AppendList;
                     transformedIndex = index - firstAppendIndex;
                 }
                 else

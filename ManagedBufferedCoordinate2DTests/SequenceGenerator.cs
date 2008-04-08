@@ -40,6 +40,11 @@ namespace ManagedBufferedCoordinate2DTests
             }
         }
 
+        public BufferedCoordinate2D RandomCoordinate(Int32 max)
+        {
+            return CoordinateFactory.Create(_rnd.Next(1, max + 1), _rnd.Next(1, max + 1));
+        }
+
         private List<BufferedCoordinate2D> generateCoordinates(Int32 count, Int32 max)
         {
             if (count <= 0)
