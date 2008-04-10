@@ -1,5 +1,6 @@
 using System;
 using GeoAPI.DataStructures;
+using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
 

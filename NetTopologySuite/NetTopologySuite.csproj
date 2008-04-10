@@ -201,7 +201,6 @@
     <Compile Include="Index\Chain\MonotoneChainBuilder.cs" />
     <Compile Include="Index\Quadtree\QuadTreeNodeKey.cs" />
     <Compile Include="Index\Sweepline\ISweepLineOverlapAction.cs" />
-    <Compile Include="Utilities\DoubleBits.cs" />
     <Compile Include="Index\Quadtree\IntervalSize.cs" />
     <Compile Include="Index\AbstractNodeKey.cs" />
     <Compile Include="Index\Quadtree\Node.cs" />
@@ -311,10 +310,8 @@
     <Compile Include="Simplify\DouglasPeuckerSimplifier.cs" />
     <Compile Include="Utilities\Assert.cs" />
     <Compile Include="Utilities\AssertionFailedException.cs" />
-    <Compile Include="Utilities\BitConverter.cs" />
     <Compile Include="Utilities\Degrees.cs" />
     <Compile Include="Utilities\GeometricShapeFactory.cs" />
-    <Compile Include="Utilities\HexConverter.cs" />
     <Compile Include="Utilities\Global.cs" />
     <Compile Include="Utilities\Radians.cs" />
     <Compile Include="Utilities\ReverseOrder.cs" />
