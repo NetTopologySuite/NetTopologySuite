@@ -3442,6 +3442,126 @@ namespace ManagedBufferedCoordinate2DTests
         }
 
         [Test]
+        public void RemoveFromComplexSliceSucceeds()
+        {
+            Int32 mainLength = 202;
+            Int32 sliceLength = mainLength - 2;
+            Int32 xpendLength = 50;
+            Int32 segmentBufferLength = 10;
+
+            SequenceGenerator generator = new SequenceGenerator(BigMaxLimit, mainLength, xpendLength, xpendLength);
+            IBufferedCoordSequence slice = generator.Sequence.Slice(1, sliceLength);
+
+            slice.Prepend(generator.PrependList);
+            slice.Append(generator.AppendList);
+
+            Assert.AreEqual(sliceLength + xpendLength + xpendLength, slice.Count);
+            {
+                int i = 0;
+                foreach (BufferedCoordinate2D coord in generator.PrependList)
+                {
+                    Assert.AreEqual(coord, slice[i++]);
+                }
+                for (int j = 1; j <= sliceLength; j++)
+                {
+                    Assert.AreEqual(generator.MainList[j], slice[i++]);
+                }
+                foreach (BufferedCoordinate2D coord in generator.AppendList)
+                {
+                    Assert.AreEqual(coord, slice[i++]);
+                }
+            }
+
+            int removals = 0;
+            for (int i = segmentBufferLength + 1; i < sliceLength - segmentBufferLength + 1; i++)
+            {
+                Assert.IsTrue(slice.Remove(generator.MainList[i]));
+                removals++;
+            }
+            for (int i = segmentBufferLength; i < xpendLength - segmentBufferLength; i++)
+            {
+                Assert.IsTrue(slice.Remove(generator.AppendList[i]));
+                removals++;
+                Assert.IsTrue(slice.Remove(generator.PrependList[i]));
+                removals++;
+            }
+
+            Assert.AreEqual(xpendLength + xpendLength + sliceLength - segmentBufferLength * 6, removals);
+
+            Assert.AreEqual(segmentBufferLength * 6, slice.Count);
+            for (int i = 0; i < segmentBufferLength; i++)
+            {
+                Assert.AreEqual(generator.PrependList[i], slice[i]);
+                Assert.AreEqual(generator.PrependList[i + xpendLength - segmentBufferLength], slice[i + segmentBufferLength]);
+                Assert.AreEqual(generator.MainList[i + 1], slice[i + segmentBufferLength * 2]);
+                Assert.AreEqual(generator.MainList[i + sliceLength - segmentBufferLength + 1], slice[i + segmentBufferLength * 3]);
+                Assert.AreEqual(generator.AppendList[i], slice[i + segmentBufferLength * 4]);
+                Assert.AreEqual(generator.AppendList[i + xpendLength - segmentBufferLength], slice[i + segmentBufferLength * 5]);
+            }
+        }
+
+        [Test]
+        public void RemoveFromComplexReversedSliceSucceeds()
+        {
+            Int32 mainLength = 202;
+            Int32 sliceLength = mainLength - 2;
+            Int32 xpendLength = 50;
+            Int32 segmentBufferLength = 10;
+
+            SequenceGenerator generator = new SequenceGenerator(BigMaxLimit, mainLength, xpendLength, xpendLength);
+            IBufferedCoordSequence slice = generator.Sequence.Slice(1, sliceLength);
+
+            slice.Prepend(generator.PrependList);
+            slice.Append(generator.AppendList);
+            slice.Reverse();
+
+            Assert.AreEqual(sliceLength + xpendLength + xpendLength, slice.Count);
+            {
+                int i = slice.Count - 1;
+                foreach (BufferedCoordinate2D coord in generator.PrependList)
+                {
+                    Assert.AreEqual(coord, slice[i--]);
+                }
+                for (int j = 1; j <= sliceLength; j++)
+                {
+                    Assert.AreEqual(generator.MainList[j], slice[i--]);
+                }
+                foreach (BufferedCoordinate2D coord in generator.AppendList)
+                {
+                    Assert.AreEqual(coord, slice[i--]);
+                }
+            }
+
+            int removals = 0;
+            for (int i = segmentBufferLength + 1; i < sliceLength - segmentBufferLength + 1; i++)
+            {
+                Assert.IsTrue(slice.Remove(generator.MainList[i]));
+                removals++;
+            }
+            for (int i = segmentBufferLength; i < xpendLength - segmentBufferLength; i++)
+            {
+                Assert.IsTrue(slice.Remove(generator.AppendList[i]));
+                removals++;
+                Assert.IsTrue(slice.Remove(generator.PrependList[i]));
+                removals++;
+            }
+
+            Assert.AreEqual(xpendLength + xpendLength + sliceLength - segmentBufferLength * 6, removals);
+
+            Assert.AreEqual(segmentBufferLength * 6, slice.Count);
+            int endIndex = slice.Count - 1;
+            for (int i = 0; i < segmentBufferLength; i++)
+            {
+                Assert.AreEqual(generator.PrependList[i], slice[endIndex - i]);
+                Assert.AreEqual(generator.PrependList[i + xpendLength - segmentBufferLength], slice[endIndex - i - segmentBufferLength]);
+                Assert.AreEqual(generator.MainList[i + 1], slice[endIndex - i - segmentBufferLength * 2]);
+                Assert.AreEqual(generator.MainList[i + sliceLength - segmentBufferLength + 1], slice[endIndex - i - segmentBufferLength * 3]);
+                Assert.AreEqual(generator.AppendList[i], slice[endIndex - i - segmentBufferLength * 4]);
+                Assert.AreEqual(generator.AppendList[i + xpendLength - segmentBufferLength], slice[endIndex - i - segmentBufferLength * 5]);
+            }
+        }
+
+        [Test]
         public void RemoveAtSucceeds()
         {
             BufferedCoordinate2DFactory coordFactory
