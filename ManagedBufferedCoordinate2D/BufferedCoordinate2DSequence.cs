@@ -325,9 +325,15 @@ namespace NetTopologySuite.Coordinates
         {
             get
             {
-                return isSlice()
-                           ? computeSliceCount()
-                           : _sequence.Count;
+                if (isSlice())
+                {
+                    return computeSliceCount();
+                }
+
+                return _sequence.Count +
+                       (_appendedIndexes == null ? 0 : _appendedIndexes.Count) +
+                       (_prependedIndexes == null ? 0 : _prependedIndexes.Count) -
+                       (_skipIndexes == null ? 0 : _skipIndexes.Count);
             }
         }
 
@@ -498,7 +504,7 @@ namespace NetTopologySuite.Coordinates
             List<Int32> firstList;
             SequenceStorage storage;
 
-            if(_reversed)
+            if (_reversed)
             {
                 firstList = _appendedIndexes;
                 storage = SequenceStorage.AppendList;
@@ -509,11 +515,11 @@ namespace NetTopologySuite.Coordinates
                 storage = SequenceStorage.PrependList;
             }
 
-            if(firstList != null)
+            if (firstList != null)
             {
                 index = firstList.IndexOf(coordIndex);
 
-                if(index >= 0)
+                if (index >= 0)
                 {
                     return inverseTransformIndex(index, storage);
                 }
@@ -796,13 +802,7 @@ namespace NetTopologySuite.Coordinates
             checkFrozen();
             SequenceStorage storage = checkAndTransformIndex(index, "index", out index);
 
-            if (isSlice())
-            {
-                skipIndex(index);
-                return this;
-            }
-
-            if (storage == SequenceStorage.MainList)
+            if (isSlice() || storage == SequenceStorage.MainList)
             {
                 skipIndex(index);
             }
@@ -867,7 +867,7 @@ namespace NetTopologySuite.Coordinates
             }
 
             if (_prependedIndexes != null ||
-                _appendedIndexes != null || 
+                _appendedIndexes != null ||
                 _skipIndexes != null)
             {
                 throw new NotImplementedException(
@@ -876,7 +876,7 @@ namespace NetTopologySuite.Coordinates
             }
 
             return new BufferedCoordinate2DSequence(_sequence,
-                                                    startIndex + Math.Max(0, _startIndex), 
+                                                    startIndex + Math.Max(0, _startIndex),
                                                     endIndex + Math.Max(0, _startIndex),
                                                     _factory, _buffer);
         }
@@ -895,6 +895,11 @@ namespace NetTopologySuite.Coordinates
 
         public IBufferedCoordSequence Sort(Int32 startIndex, Int32 endIndex, IComparer<BufferedCoordinate2D> comparer)
         {
+            if (isSlice())
+            {
+                throw new NotSupportedException("Sorting a slice is not supported.");
+            }
+
             checkFrozen();
 
             checkIndexes(endIndex, startIndex);
@@ -904,7 +909,7 @@ namespace NetTopologySuite.Coordinates
                 return this;
             }
 
-            List<BufferedCoordinate2D> coords = new List<BufferedCoordinate2D>(endIndex - startIndex);
+            List<BufferedCoordinate2D> coords = new List<BufferedCoordinate2D>(endIndex - startIndex + 1);
 
             for (Int32 i = startIndex; i <= endIndex; i++)
             {
@@ -1379,12 +1384,33 @@ namespace NetTopologySuite.Coordinates
                 {
                     storage = SequenceStorage.MainList;
                     Int32 mainIndex = index - prependCount + startIndex;
-                    Int32 skips = _skipIndexes == null 
-                                        ? 0 
-                                        : _reversed
-                                              ? _skipIndexes.CountBefore(mainIndex)
-                                              : _skipIndexes.CountAfter(mainIndex);
-                    transformedIndex = mainIndex + skips;
+
+                    if (_skipIndexes != null)
+                    {
+                        Int32 skips = 0;
+                        Int32 lastSkips;
+
+                        if (_reversed)
+                        {
+                            do
+                            {
+                                lastSkips = skips;
+                                skips = _skipIndexes.CountAtAndAfter(mainIndex + skips);
+                            } while (lastSkips != skips);
+                        }
+                        else
+                        {
+                            do
+                            {
+                                lastSkips = skips;
+                                skips = _skipIndexes.CountAtAndBefore(mainIndex + skips);
+                            } while (lastSkips != skips);
+                        }
+
+                        mainIndex += skips;
+                    }
+
+                    transformedIndex = mainIndex;
                 }
             }
 

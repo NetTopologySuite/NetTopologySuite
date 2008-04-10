@@ -694,15 +694,15 @@ namespace ManagedBufferedCoordinate2DTests
 
             splice = seq.Splice(coordFactory.Create(0, 0), 990, 999, coordFactory.Create(0, 0));
 
-            Assert.AreEqual(22, splice.Count);
+            Assert.AreEqual(12, splice.Count);
 
             splice = seq.Splice(990, 999, coordFactory.Create(0, 0));
 
-            Assert.AreEqual(21, splice.Count);
+            Assert.AreEqual(11, splice.Count);
 
             splice = seq.Splice(990, 999, generateCoords(10, 100, coordFactory));
 
-            Assert.AreEqual(30, splice.Count);
+            Assert.AreEqual(20, splice.Count);
         }
 
         [Test]
@@ -3752,7 +3752,9 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2DSequenceFactory seqFactory
                 = new BufferedCoordinate2DSequenceFactory(coordFactory);
 
-            IBufferedCoordSequence seq = seqFactory.Create(generateCoords(10000, BigMaxLimit, coordFactory));
+            IEnumerable<BufferedCoordinate2D> coords 
+                = generateCoords(10000, BigMaxLimit, coordFactory);
+            IBufferedCoordSequence seq = seqFactory.Create(coords);
             Assert.IsFalse(seq.IsFrozen);
             Assert.IsFalse(seq.IsReadOnly);
             Assert.IsFalse(seq.IsFixedSize);
@@ -3780,7 +3782,7 @@ namespace ManagedBufferedCoordinate2DTests
 
             for (Int32 i = 1; i < seq.Count; i++)
             {
-                Assert.GreaterOrEqual(0, seq[i].CompareTo(seq[i - 1]));
+                Assert.GreaterOrEqual(seq[i].CompareTo(seq[i - 1]), 0);
             }
         }
 
