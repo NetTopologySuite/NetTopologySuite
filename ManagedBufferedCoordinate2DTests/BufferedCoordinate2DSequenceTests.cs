@@ -1619,9 +1619,10 @@ namespace ManagedBufferedCoordinate2DTests
 
             Assert.IsFalse(seq.Remove(new BufferedCoordinate2D()));
 
-            seq.Add(coordFactory.Create());
-            Assert.IsTrue(seq.Remove(new BufferedCoordinate2D()));
-            Assert.AreEqual(0, seq.Count);
+            // cannot add empty coordinate to sequence
+            //seq.Add(coordFactory.Create());
+            //Assert.IsTrue(seq.Remove(new BufferedCoordinate2D()));
+            //Assert.AreEqual(0, seq.Count);
 
             seq.Add(coordFactory.Create(0, 0));
             Assert.IsTrue(seq.Remove(coordFactory.Create(0, 0)));

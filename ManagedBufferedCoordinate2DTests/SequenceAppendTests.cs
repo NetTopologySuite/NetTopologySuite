@@ -30,7 +30,7 @@ namespace ManagedBufferedCoordinate2DTests
         public void CoordinateToNewSlice()
         {
             Int32 mainLength = 5;
-            Int32 sliceLength = mainLength - 2;
+            Int32 endIndex = mainLength - 2;
             SequenceGenerator generator = new SequenceGenerator(BigMaxLimit, mainLength);
             IBufferedCoordSequence slice = generator.Sequence.Slice(1, mainLength - 2);
 
@@ -38,8 +38,8 @@ namespace ManagedBufferedCoordinate2DTests
 
             slice.Append(coord);
 
-            Assert.AreEqual(generator.MainList[mainLength - 2], slice[sliceLength - 1]);
-            Assert.AreEqual(coord, slice[sliceLength]);
+            Assert.AreEqual(generator.MainList[mainLength - 2], slice[endIndex - 1]);
+            Assert.AreEqual(coord, slice[endIndex]);
         }
 
         [Test]

@@ -145,6 +145,12 @@ namespace NetTopologySuite.Coordinates
         {
             checkFrozen();
 
+            if (item.IsEmpty)
+            {
+                throw new ArgumentException("Cannot add the empty " +
+                                            "coordinate to a sequence.");
+            }
+
             addInternal(item);
             OnSequenceChanged();
         }
@@ -763,6 +769,12 @@ namespace NetTopologySuite.Coordinates
         public Boolean Remove(BufferedCoordinate2D item)
         {
             checkFrozen();
+
+            if (item.IsEmpty)
+            {
+                return false;
+            }
+
             Boolean result = _sequence.Remove(item.Index);
             OnSequenceChanged();
             return result;
@@ -1461,15 +1473,14 @@ namespace NetTopologySuite.Coordinates
         private void appendCoordIndex(Int32 coordIndex)
         {
             // if we are already appending indexes, put it in the 
-            // appropriate appending list... which means the prepended list 
-            // for reverse sequences
+            // appropriate appending list... 
             if (_reversed && _prependedIndexes != null)
             {
                 _prependedIndexes.Add(coordIndex);
                 return;
             }
 
-            if (_appendedIndexes != null)
+            if (!_reversed && _appendedIndexes != null)
             {
                 _appendedIndexes.Add(coordIndex);
                 return;
@@ -1478,6 +1489,12 @@ namespace NetTopologySuite.Coordinates
             // not a slice, treat the whole sequence
             if (!isSlice())
             {
+                if (_sequence.Count == 0)
+                {
+                    _sequence.Add(coordIndex);
+                    return;
+                }
+
                 if (_reversed)
                 {
                     // if we are appending to a reversed sequence, we
@@ -1540,7 +1557,7 @@ namespace NetTopologySuite.Coordinates
         {
             // if we are already prepending indexes, put it in the 
             // appropriate prepending list...
-            if(_reversed)
+            if (_reversed)
             {
                 if (_appendedIndexes != null)
                 {
@@ -1664,7 +1681,7 @@ namespace NetTopologySuite.Coordinates
         }
 
         private void prependInternal(BufferedCoordinate2DSequence sequence)
-        {   
+        {
             // check to see if the sequences have different buffers, if so, just do a normal prepend
             if (!ReferenceEquals(sequence._buffer, _buffer))
             {
@@ -1800,8 +1817,8 @@ namespace NetTopologySuite.Coordinates
         private Int32 getStorageValue(SequenceStorage storage, Int32 index)
         {
             List<Int32> list = getStorage(storage);
-            return storage == SequenceStorage.PrependList 
-                ? list[list.Count - 1 - index] 
+            return storage == SequenceStorage.PrependList
+                ? list[list.Count - 1 - index]
                 : list[index];
         }
     }

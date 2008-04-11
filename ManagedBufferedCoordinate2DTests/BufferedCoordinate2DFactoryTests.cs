@@ -498,6 +498,7 @@ namespace ManagedBufferedCoordinate2DTests
         }
 
         [Test]
+        [Ignore]
         public void Creating1MRandomCoordinatesDoesntKillPerformance()
         {
             BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
@@ -539,6 +540,7 @@ namespace ManagedBufferedCoordinate2DTests
         }
 
         [Test]
+        [Ignore]
         public void Creating1MRepeatedCoordinatesDoesntKillPerformance()
         {
             BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
@@ -580,6 +582,7 @@ namespace ManagedBufferedCoordinate2DTests
         }
 
         [Test]
+        [Ignore]
         public void CreatingSequencesWith1MRandomCoordinatesDoesntKillPerformance()
         {
             BufferedCoordinate2DFactory coordFactory = new BufferedCoordinate2DFactory();
