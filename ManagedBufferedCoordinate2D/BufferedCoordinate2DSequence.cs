@@ -404,46 +404,14 @@ namespace NetTopologySuite.Coordinates
 
         public IEnumerator<BufferedCoordinate2D> GetEnumerator()
         {
-            // prepended indexes are stored in reverse, to allow more 
-            // efficient addition
-            if (_prependedIndexes != null)
-            {
-                for (Int32 i = _prependedIndexes.Count - 1; i >= 0; i--)
-                {
-                    yield return _buffer[_prependedIndexes[i]];
-                }
-            }
+            Int32 count = Count;
 
-            Int32 start = computeSliceStartOnMainSequence();
-            Int32 end = computeSliceEndOnMainSequence();
-
-            if (_skipIndexes != null)
+            for (Int32 i = 0; i < count; i++)
             {
-                for (Int32 i = start; i <= end; i++)
-                {
-                    Int32 index = _sequence[i];
-
-                    if (!_skipIndexes.Contains(index))
-                    {
-                        yield return _buffer[index];
-                    }
-                }
-            }
-            else
-            {
-                for (Int32 i = start; i <= end; i++)
-                {
-                    Int32 index = _sequence[i];
-                    yield return _buffer[index];
-                }
-            }
-
-            if (_appendedIndexes != null)
-            {
-                foreach (Int32 index in _appendedIndexes)
-                {
-                    yield return _buffer[index];
-                }
+                Int32 index = i;
+                SequenceStorage storage = transformIndex(index, out index);
+                Int32 bufferIndex = getStorageValue(storage, index);
+                yield return _buffer[bufferIndex];
             }
         }
 
@@ -526,7 +494,10 @@ namespace NetTopologySuite.Coordinates
             }
 
             Int32 start = computeSliceStartOnMainSequence();
-            index = _sequence.IndexOf(coordIndex, start, Count);
+            Int32 end = computeSliceEndOnMainSequence();
+            Int32 count = end - start + 1;
+
+            index = _sequence.IndexOf(coordIndex, start, count);
 
             if (index >= 0)
             {
@@ -546,12 +517,14 @@ namespace NetTopologySuite.Coordinates
                 storage = SequenceStorage.AppendList;
             }
 
-            index = lastList.IndexOf(coordIndex);
-
-
-            if (index >= 0)
+            if (lastList != null)
             {
-                return inverseTransformIndex(index, storage);
+                index = lastList.IndexOf(coordIndex);
+
+                if (index >= 0)
+                {
+                    return inverseTransformIndex(index, storage);
+                }
             }
 
             return -1;
@@ -1342,12 +1315,7 @@ namespace NetTopologySuite.Coordinates
             index = _reversed ? (Count - 1) - index : index;
 
             // Get the count of the indexes before the main sequence
-            // If reversed, this means the appended indexes
-            Int32 prependCount = _reversed
-                           ? _appendedIndexes == null
-                                 ? 0
-                                 : _appendedIndexes.Count
-                           : _prependedIndexes == null
+            Int32 prependCount = _prependedIndexes == null
                                  ? 0
                                  : _prependedIndexes.Count;
 
@@ -1357,17 +1325,15 @@ namespace NetTopologySuite.Coordinates
             // index into the prepended storage
             if (index < prependCount)
             {
-                storage = _reversed
-                    ? SequenceStorage.AppendList
-                    : SequenceStorage.PrependList;
+                storage = SequenceStorage.PrependList;
                 transformedIndex = index;
             }
             else
             {
                 Int32 endIndex = computeSliceEndOnMainSequence();
                 Int32 startIndex = computeSliceStartOnMainSequence();
-                Int32 mainSequenceCount = (endIndex - startIndex) + 1 -
-                                          (_skipIndexes == null ? 0 : _skipIndexes.Count);
+                Int32 skipCount = _skipIndexes == null ? 0 : _skipIndexes.Count;
+                Int32 mainSequenceCount = (endIndex - startIndex) + 1 - skipCount;
                 Int32 firstAppendIndex = prependCount + mainSequenceCount;
 
                 // If the index is greater or equal to the sum of both
@@ -1375,9 +1341,7 @@ namespace NetTopologySuite.Coordinates
                 // into the appended list
                 if (index >= firstAppendIndex)
                 {
-                    storage = _reversed
-                        ? SequenceStorage.PrependList
-                        : SequenceStorage.AppendList;
+                    storage = SequenceStorage.AppendList;
                     transformedIndex = index - firstAppendIndex;
                 }
                 else

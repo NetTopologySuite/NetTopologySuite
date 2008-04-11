@@ -752,8 +752,11 @@ namespace ManagedBufferedCoordinate2DTests
             for (int i = 0; i < generator.Sequence.Count; i++)
             {
                 Assert.IsTrue(enumerator.MoveNext());
-                Assert.AreEqual(generator.MainList[generator.MainList.Count - i - 1], enumerator.Current);
+                BufferedCoordinate2D expected 
+                    = generator.MainList[generator.MainList.Count - i - 1];
+                Assert.AreEqual(expected, enumerator.Current);
             }
+
             Assert.IsFalse(enumerator.MoveNext());
         }
 
@@ -764,8 +767,7 @@ namespace ManagedBufferedCoordinate2DTests
             SequenceGenerator generator = new SequenceGenerator(BigMaxLimit, 10);
 
             IBufferedCoordSequence slice = generator.Sequence.Slice(5, 9);
-
-
+                
             IEnumerator<BufferedCoordinate2D> enumerator = slice.GetEnumerator();
 
             for (int i = 0; i < 5; i++)
@@ -773,17 +775,19 @@ namespace ManagedBufferedCoordinate2DTests
                 Assert.IsTrue(enumerator.MoveNext());
                 Assert.AreEqual(generator.Sequence[i + 5], enumerator.Current);
             }
+
             Assert.IsFalse(enumerator.MoveNext());
 
             IBufferedCoordSequence slice2 = slice.Slice(2, 4);
 
-            enumerator = slice.GetEnumerator();
+            enumerator = slice2.GetEnumerator();
 
             for (int i = 0; i < 3; i++)
             {
                 Assert.IsTrue(enumerator.MoveNext());
                 Assert.AreEqual(slice[i + 2], enumerator.Current);
             }
+
             Assert.IsFalse(enumerator.MoveNext());
         }
 
@@ -883,27 +887,36 @@ namespace ManagedBufferedCoordinate2DTests
             slice.Append(generator.AppendList);
             slice.Reverse();
 
-            Assert.AreEqual(generator.MainList.Count - 2 + generator.PrependList.Count + generator.AppendList.Count, slice.Count);
+            Int32 expectedCount = generator.MainList.Count - 2 + 
+                                  generator.PrependList.Count +
+                                  generator.AppendList.Count;
+
+            Assert.AreEqual(expectedCount, slice.Count);
 
             IEnumerator<BufferedCoordinate2D> enumerator = slice.GetEnumerator();
 
             for (int i = generator.AppendList.Count - 1; i >= 0; i--)
             {
                 Assert.IsTrue(enumerator.MoveNext());
-                Assert.AreEqual(generator.AppendList[i], enumerator.Current);
+                BufferedCoordinate2D expectedCoord = generator.AppendList[i];
+                Assert.AreEqual(expectedCoord, enumerator.Current);
             }
+
             for (int i = generator.MainList.Count - 1; i >= 0; i--)
             {
                 if (i != 1 && i != 3)
                 {
                     Assert.IsTrue(enumerator.MoveNext());
-                    Assert.AreEqual(generator.MainList[i], enumerator.Current);
+                    BufferedCoordinate2D expectedCoord = generator.MainList[i];
+                    Assert.AreEqual(expectedCoord, enumerator.Current);
                 }
             }
+
             for (int i = generator.PrependList.Count - 1; i >= 0; i--)
             {
                 Assert.IsTrue(enumerator.MoveNext());
-                Assert.AreEqual(generator.PrependList[i], enumerator.Current);
+                BufferedCoordinate2D expectedCoord = generator.PrependList[i];
+                Assert.AreEqual(expectedCoord, enumerator.Current);
             }
 
             Assert.IsFalse(enumerator.MoveNext());
