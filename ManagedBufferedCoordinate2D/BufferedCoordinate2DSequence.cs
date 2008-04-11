@@ -536,7 +536,7 @@ namespace NetTopologySuite.Coordinates
 
             Boolean isSlice = this.isSlice();
 
-            if (isSlice && index > 0 && index <= LastIndex)
+            if (isSlice && (index > 0 && index <= LastIndex))
             {
                 throw new NotSupportedException(
                     "Inserting into a sliced coordinate sequence not supported. " +
@@ -549,22 +549,20 @@ namespace NetTopologySuite.Coordinates
                 throw new ArgumentOutOfRangeException("index", index,
                                                       "Index must be between 0 and Count.");
             }
-            index = _reversed ? Count - index : index;
 
-            if (isSlice)
+            if (index == 0)
             {
-                if (index == 0)
-                {
-                    Prepend(item);
-                }
-                else
-                {
-                    Append(item);
-                }
+                Prepend(item);
+            }
+            else if (index > LastIndex)
+            {
+                Append(item);
             }
             else
             {
-                _sequence.Insert(index, item.Index);
+                SequenceStorage storage = transformIndex(index, out index);
+                List<Int32> list = getStorage(storage);
+                list.Insert(index, item.Index);
             }
 
             OnSequenceChanged();
@@ -740,9 +738,9 @@ namespace NetTopologySuite.Coordinates
             }
             else
             {
-                foreach (BufferedCoordinate2D coordinate in coordinates)
+                foreach (BufferedCoordinate2D coordinate in Enumerable.Reverse(coordinates))
                 {
-                    Insert(0, coordinate);
+                    Prepend(coordinate);
                 }
             }
 
@@ -1541,23 +1539,33 @@ namespace NetTopologySuite.Coordinates
         private void prependCoordIndex(Int32 coordIndex)
         {
             // if we are already prepending indexes, put it in the 
-            // appropriate prepending list... which means the appended list 
-            // for reverse sequences
-            if (_reversed && _appendedIndexes != null)
+            // appropriate prepending list...
+            if(_reversed)
             {
-                _appendedIndexes.Add(coordIndex);
-                return;
+                if (_appendedIndexes != null)
+                {
+                    _appendedIndexes.Add(coordIndex);
+                    return;
+                }
             }
-
-            if (_prependedIndexes != null)
+            else
             {
-                _prependedIndexes.Add(coordIndex);
-                return;
+                if (_prependedIndexes != null)
+                {
+                    _prependedIndexes.Add(coordIndex);
+                    return;
+                }
             }
 
             // not a slice, treat the whole sequence
             if (!isSlice())
             {
+                if (_sequence.Count == 0)
+                {
+                    _sequence.Add(coordIndex);
+                    return;
+                }
+
                 if (_reversed)
                 {
                     // if we are prepending to a reversed sequence, we
@@ -1580,6 +1588,8 @@ namespace NetTopologySuite.Coordinates
 
                 return;
             }
+
+            // This is a slice, which allows a few different ways to prepend
 
             // project index to slice
             Int32 transformedIndex;
@@ -1654,18 +1664,48 @@ namespace NetTopologySuite.Coordinates
         }
 
         private void prependInternal(BufferedCoordinate2DSequence sequence)
-        {
+        {   
+            // check to see if the sequences have different buffers, if so, just do a normal prepend
             if (!ReferenceEquals(sequence._buffer, _buffer))
             {
                 Prepend((IEnumerable<BufferedCoordinate2D>)sequence);
+                return;
             }
 
+            Int32 prependIndex = sequence.Count - 1;
+
+            // push the start index back if the conditions are right:
+            //  * no prepended indexes
+            //  * _startIndex is greater than 0
+            //  * the index of the prepending coordinate is the same 
+            //    as the underlying sequence
             if (_prependedIndexes == null)
             {
+                for (; prependIndex <= 0; prependIndex--)
+                {
+                    if (_startIndex <= 0 || 
+                        sequence[prependIndex].Index != _sequence[_startIndex - 1])
+                    {
+                        break;
+                    }
+
+                    _startIndex--;
+                }
+
+                // added all coordinates by pushing the _startIndex back
+                if (prependIndex < 0)
+                {
+                    return;
+                }
+
+                // otherwise, we put them into a new list
                 _prependedIndexes = new List<Int32>(Math.Max(4, sequence.Count));
             }
-
-            _prependedIndexes.AddRange(sequence._sequence);
+           
+            for (Int32 i = prependIndex; i >= 0; i--)
+            {
+                _prependedIndexes.Add(sequence[i].Index);
+            }
         }
 
         private BufferedCoordinate2DSequence createSliceInternal(Int32 endIndex, Int32 startIndex)
@@ -1708,7 +1748,9 @@ namespace NetTopologySuite.Coordinates
         private Int32 getStorageValue(SequenceStorage storage, Int32 index)
         {
             List<Int32> list = getStorage(storage);
-            return list[index];
+            return storage == SequenceStorage.PrependList 
+                ? list[list.Count - 1 - index] 
+                : list[index];
         }
     }
 }
