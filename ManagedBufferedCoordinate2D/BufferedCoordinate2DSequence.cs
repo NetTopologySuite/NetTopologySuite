@@ -1672,18 +1672,30 @@ namespace NetTopologySuite.Coordinates
                 return;
             }
 
+            if (_reversed)
+            {
+                prependInternalReverse(sequence);
+            }
+            else
+            {
+                prependInternalForward(sequence);
+            }
+        }
+
+        private void prependInternalForward(BufferedCoordinate2DSequence sequence)
+        {
             Int32 prependIndex = sequence.Count - 1;
 
             // push the start index back if the conditions are right:
             //  * no prepended indexes
             //  * _startIndex is greater than 0
             //  * the index of the prepending coordinate is the same 
-            //    as the underlying sequence
+            //    as the underlying sequence at _startIndex - 1
             if (_prependedIndexes == null)
             {
                 for (; prependIndex <= 0; prependIndex--)
                 {
-                    if (_startIndex <= 0 || 
+                    if (_startIndex <= 0 ||
                         sequence[prependIndex].Index != _sequence[_startIndex - 1])
                     {
                         break;
@@ -1701,10 +1713,50 @@ namespace NetTopologySuite.Coordinates
                 // otherwise, we put them into a new list
                 _prependedIndexes = new List<Int32>(Math.Max(4, sequence.Count));
             }
-           
+
             for (Int32 i = prependIndex; i >= 0; i--)
             {
                 _prependedIndexes.Add(sequence[i].Index);
+            }
+        }
+
+        private void prependInternalReverse(BufferedCoordinate2DSequence sequence)
+        {
+            Int32 prependIndex = sequence.Count - 1;
+
+            // push the end index forward if the conditions are right:
+            //  * no appended indexes
+            //  * _endIndex is less than _sequence.Count - 1
+            //  * the index of the prepending coordinate is the same 
+            //    as the underlying sequence at _endIndex + 1
+            if (_appendedIndexes == null)
+            {
+                for (; prependIndex <= 0; prependIndex--)
+                {
+                    Int32 endIndex = computeSliceEndOnMainSequence();
+
+                    if (endIndex >= _sequence.Count - 1 ||
+                        sequence[prependIndex].Index != _sequence[_endIndex + 1])
+                    {
+                        break;
+                    }
+
+                    _endIndex++;
+                }
+
+                // added all coordinates by pushing the _endIndex forward
+                if (prependIndex < 0)
+                {
+                    return;
+                }
+
+                // otherwise, we put them into a new list
+                _appendedIndexes = new List<Int32>(Math.Max(4, sequence.Count));
+            }
+
+            for (Int32 i = prependIndex; i >= 0; i--)
+            {
+                _appendedIndexes.Add(sequence[i].Index);
             }
         }
 
