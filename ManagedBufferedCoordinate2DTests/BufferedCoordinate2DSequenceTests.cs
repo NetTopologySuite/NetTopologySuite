@@ -22,8 +22,7 @@ namespace ManagedBufferedCoordinate2DTests
         //  Indexer tests
         //      IList indexer yields same result as implicit indexer implementation
         //      IList indexer setter
-        //  AppendPrependVariants
-        //      Good subset of sequences/slices being appended/prepended to with removed coordinates
+        //  AppendPrependVariants - in SequenceAppendTests/SequencePrependTests
         //      Reverse and remove coordinates from complex slices being appended/prepended to sequences/slices
 
         private static readonly Int32 BigMaxLimit = Int32.MaxValue - 2;
@@ -1636,6 +1635,36 @@ namespace ManagedBufferedCoordinate2DTests
             {
                 seq.Remove(seq.Last);
                 Assert.LessOrEqual(0, --count);
+            }
+        }
+
+        [Test]
+        public void RemoveFromSliceLeavesOriginalSequenceUnchanged()
+        {
+            Int32 mainLength = 52;
+            Int32 sliceLength = mainLength - 2;
+
+            SequenceGenerator generator = new SequenceGenerator(BigMaxLimit, mainLength);
+            IBufferedCoordSequence slice = generator.Sequence.Slice(1, sliceLength);
+
+            Assert.IsTrue(slice.Remove(generator.MainList[20]));
+            Assert.IsTrue(slice.Remove(generator.MainList[21]));
+            Assert.IsTrue(slice.Remove(generator.MainList[22]));
+
+            Assert.AreEqual(mainLength, generator.Sequence.Count);
+            Assert.AreEqual(sliceLength - 3, slice.Count);
+
+            for (int i = 0; i < mainLength; i++)
+            {
+                Assert.AreEqual(generator.MainList[i], generator.Sequence[i]);
+            }
+            for (int i = 1; i < 20; i++)
+            {
+                Assert.AreEqual(generator.MainList[i], slice[i - 1]);
+            }
+            for (int i = 23; i <= sliceLength; i++)
+            {
+                Assert.AreEqual(generator.MainList[i], slice[i - 4]);
             }
         }
 

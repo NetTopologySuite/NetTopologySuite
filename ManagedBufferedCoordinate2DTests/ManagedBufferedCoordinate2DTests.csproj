@@ -96,7 +96,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Buffered2DEnumeratorHelper.cs" />
+    <Compile Include="EnumerableIsolater`1.cs" />
     <Compile Include="BufferedCoordinate2DFactoryTests.cs" />
     <Compile Include="SequenceAppendTests.cs" />
     <Compile Include="SequencePrependTests.cs" />
