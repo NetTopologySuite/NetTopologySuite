@@ -8,7 +8,8 @@ namespace ManagedBufferedCoordinate2DTests
 {
     internal class SequenceGenerator
     {
-        private Random _rnd = new MersenneTwister();
+        private readonly Random _rnd = new MersenneTwister();
+        private readonly Int32 _maxRandomLimit;
 
         public BufferedCoordinate2DFactory CoordinateFactory { get; private set; }
         public BufferedCoordinate2DSequenceFactory SequenceFactory { get; private set; }
@@ -28,11 +29,13 @@ namespace ManagedBufferedCoordinate2DTests
             Int32 prependCount,
             Int32 appendCount)
         {
+            _maxRandomLimit = max;
+
             CoordinateFactory = new BufferedCoordinate2DFactory();
             SequenceFactory = new BufferedCoordinate2DSequenceFactory(CoordinateFactory);
-            MainList = generateCoordinates(mainCount, max);
-            PrependList = generateCoordinates(prependCount, max);
-            AppendList = generateCoordinates(appendCount, max);
+            MainList = GenerateCoordinates(mainCount);
+            PrependList = GenerateCoordinates(prependCount);
+            AppendList = GenerateCoordinates(appendCount);
 
             if (MainList != null)
             {
@@ -40,12 +43,22 @@ namespace ManagedBufferedCoordinate2DTests
             }
         }
 
+        public BufferedCoordinate2D RandomCoordinate()
+        {
+            return RandomCoordinate(_maxRandomLimit);
+        }
+
         public BufferedCoordinate2D RandomCoordinate(Int32 max)
         {
             return CoordinateFactory.Create(_rnd.Next(1, max + 1), _rnd.Next(1, max + 1));
         }
 
-        private List<BufferedCoordinate2D> generateCoordinates(Int32 count, Int32 max)
+        public List<BufferedCoordinate2D> GenerateCoordinates(Int32 count)
+        {
+            return GenerateCoordinates(count, _maxRandomLimit);
+        }
+
+        public List<BufferedCoordinate2D> GenerateCoordinates(Int32 count, Int32 max)
         {
             if (count <= 0)
             {
