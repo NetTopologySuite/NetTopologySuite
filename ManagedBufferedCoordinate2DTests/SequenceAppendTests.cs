@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using NetTopologySuite.Coordinates;
 using NUnit.Framework;
@@ -1075,6 +1076,89 @@ namespace ManagedBufferedCoordinate2DTests
             }
 
             Assert.AreEqual(postSliceCoordinate, slice[sliceLength - 3 + 2 + generator.AppendList.Count]);
+        }
+
+        [Test]
+        public void VeryComplexSliceToVeryComplexSlice()
+        {
+            Int32 mainLength = 12;
+            Int32 targetLength = mainLength - 2;
+            Int32 addedLength = 10;
+
+            // get all the coordinates
+            SequenceGenerator generator = new SequenceGenerator(BigMaxLimit, mainLength, 0, addedLength);
+            BufferedCoordinate2D targetPrependedCoordinate = generator.RandomCoordinate();
+            BufferedCoordinate2D targetAppendedCoordinate = generator.RandomCoordinate();
+            BufferedCoordinate2D addedPrependedCoordinate = generator.RandomCoordinate();
+            BufferedCoordinate2D addedAppendedCoordinate = generator.RandomCoordinate();
+
+            // initialize and verify the very complex target slice
+            IBufferedCoordSequence target = generator.Sequence.Slice(1, targetLength);
+            Assert.IsTrue(target.Remove(generator.MainList[5]));
+            Assert.IsTrue(target.Remove(generator.MainList[6]));
+            Assert.IsTrue(target.Remove(generator.MainList[7]));
+            target.Reverse();
+            target.Prepend(targetPrependedCoordinate);
+            target.Append(targetAppendedCoordinate);
+
+            Assert.AreEqual(targetLength - 3 + 1 + 1, target.Count);
+            Assert.AreEqual(targetPrependedCoordinate, target.First);
+            Assert.AreEqual(targetAppendedCoordinate, target.Last);
+            for (int i = 1; i < 5; i++)
+            {
+                Assert.AreEqual(generator.MainList[i], target[target.Count - 1 - i]);
+            }
+            for (int i = 8; i <= targetLength; i++)
+            {
+                Assert.AreEqual(generator.MainList[i], target[target.Count - 1 - i + 3]);
+            }
+            List<BufferedCoordinate2D> originalList = new List<BufferedCoordinate2D>(target);
+
+            // initialize and verify the very complex added slice
+            IBufferedCoordSequence addedSlice
+                = generator.SequenceFactory.Create(generator.AppendList)
+                .Slice(0, addedLength - 1);
+            Assert.IsTrue(addedSlice.Remove(generator.AppendList[4]));
+            Assert.IsTrue(addedSlice.Remove(generator.AppendList[5]));
+            Assert.IsTrue(addedSlice.Remove(generator.AppendList[6]));
+            addedSlice.Reverse();
+            addedSlice.Prepend(addedPrependedCoordinate);
+            addedSlice.Append(addedAppendedCoordinate);
+
+            Assert.AreEqual(addedLength - 3 + 1 + 1, addedSlice.Count);
+            Assert.AreEqual(addedPrependedCoordinate, addedSlice.First);
+            Assert.AreEqual(addedAppendedCoordinate, addedSlice.Last);
+            for (int i = 0; i < 4; i++)
+            {
+                Assert.AreEqual(generator.AppendList[i], addedSlice[addedSlice.Count - 2 - i]);
+            }
+            for (int i = 7; i < addedLength; i++)
+            {
+                Assert.AreEqual(generator.AppendList[i], addedSlice[addedSlice.Count - 2 - i + 3]);
+            }
+            List<BufferedCoordinate2D> addedList = new List<BufferedCoordinate2D>(addedSlice);
+
+            
+            // finally the test
+            target.Append(addedSlice);
+
+
+            // verify
+            Assert.AreEqual(originalList.Count + addedList.Count, target.Count);
+
+            IEnumerator<BufferedCoordinate2D> resultingSequence = target.GetEnumerator();
+            foreach (BufferedCoordinate2D expected in originalList)
+            {
+                Assert.IsTrue(resultingSequence.MoveNext());
+                BufferedCoordinate2D actual = resultingSequence.Current;
+                Assert.AreEqual(expected, actual);
+            }
+            foreach (BufferedCoordinate2D expected in addedSlice)
+            {
+                Assert.IsTrue(resultingSequence.MoveNext());
+                BufferedCoordinate2D actual = resultingSequence.Current;
+                Assert.AreEqual(expected, actual);
+            }
         }
     }
 }

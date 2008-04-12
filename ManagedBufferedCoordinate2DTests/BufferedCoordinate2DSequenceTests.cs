@@ -18,13 +18,6 @@ namespace ManagedBufferedCoordinate2DTests
     [TestFixture]
     public class BufferedCoordinate2DSequenceTests
     {
-        // Tests to write:
-        //  Indexer tests
-        //      IList indexer yields same result as implicit indexer implementation
-        //      IList indexer setter
-        //  AppendPrependVariants - in SequenceAppendTests/SequencePrependTests
-        //      Reverse and remove coordinates from complex slices being appended/prepended to sequences/slices
-
         private static readonly Int32 BigMaxLimit = Int32.MaxValue - 2;
         private readonly Random _rnd = new MersenneTwister();
 
@@ -34,6 +27,8 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2DSequenceFactory factory
                 = new BufferedCoordinate2DSequenceFactory();
             IBufferedCoordSequence seq = factory.Create(CoordinateDimensions.Two);
+
+            Assert.IsNotNull(seq);
         }
 
         [Test]
@@ -1057,6 +1052,15 @@ namespace ManagedBufferedCoordinate2DTests
             seq.Clear();
 
             Assert.AreEqual(-1, seq.IndexOf(coord));
+        }
+
+        [Test]
+        [ExpectedException(typeof(NotImplementedException))]
+        public void IListIndexerSetterFails()
+        {
+            SequenceGenerator generator = new SequenceGenerator(BigMaxLimit, 10);
+            BufferedCoordinate2D value = generator.RandomCoordinate();
+            (generator.Sequence as IList)[2] = value;
         }
 
         [Test]
