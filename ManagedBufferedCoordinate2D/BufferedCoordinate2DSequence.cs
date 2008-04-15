@@ -61,19 +61,39 @@ namespace NetTopologySuite.Coordinates
         internal BufferedCoordinate2DSequence(List<Int32> sequence,
                                               BufferedCoordinate2DSequenceFactory factory,
                                               IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer)
-            : this(sequence, null, null, factory, buffer) { }
+            : this(false, sequence, null, null, null, null, null, factory, buffer) { }
 
-        internal BufferedCoordinate2DSequence(List<Int32> sequence,
+        internal BufferedCoordinate2DSequence(Boolean reverse,
+                                              List<Int32> sequence,
+                                              List<Int32> prepended,
+                                              List<Int32> appended,
+                                              SortedSet<Int32> skips,
                                               Int32? startIndex,
                                               Int32? endIndex,
                                               BufferedCoordinate2DSequenceFactory factory,
                                               IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer)
         {
+            _reversed = reverse;
             _startIndex = startIndex ?? _startIndex;
             _endIndex = endIndex ?? _endIndex;
             _factory = factory;
             _buffer = buffer;
             _sequence = sequence;
+
+            if (prepended != null)
+            {
+                _prependedIndexes = new List<Int32>(prepended);
+            }
+
+            if (appended != null)
+            {
+                _appendedIndexes = new List<Int32>(appended);
+            }
+
+            if (skips != null)
+            {
+                _skipIndexes = new SortedSet<Int32>(skips);
+            }
         }
 
         #region IBufferedCoordSequence Members
@@ -775,8 +795,75 @@ namespace NetTopologySuite.Coordinates
                 return false;
             }
 
-            Boolean result = _sequence.Remove(item.Index);
-            OnSequenceChanged();
+            Boolean result = false;
+            Int32 coordIndex = item.Index;
+
+            if (_reversed)
+            {
+                if (_appendedIndexes != null && _appendedIndexes.Remove(coordIndex))
+                {
+                    result = true;
+                }
+            }
+            else
+            {
+                if (_prependedIndexes != null)
+                {
+                    Int32 lastIndex = _prependedIndexes.LastIndexOf(coordIndex);
+
+                    if (lastIndex > -1)
+                    {
+                        _prependedIndexes.RemoveAt(lastIndex);
+                        result = true;
+                    }
+                }
+            }
+
+            if (isSlice())
+            {
+                Int32 mainIndex;
+                if ((_skipIndexes == null || !_skipIndexes.Contains(coordIndex)) &&
+                    (mainIndex = _sequence.IndexOf(coordIndex)) > -1)
+                {
+                    _skipIndexes = _skipIndexes ?? new SortedSet<Int32>();
+                    _skipIndexes.Add(mainIndex);
+                    result = true;
+                }
+            }
+            else
+            {
+                result = _sequence.Remove(coordIndex);
+            }
+
+            if (!result)
+            {
+                if (_reversed)
+                {
+                    if (_prependedIndexes != null)
+                    {
+                        Int32 lastIndex = _prependedIndexes.LastIndexOf(coordIndex);
+
+                        if (lastIndex > -1)
+                        {
+                            _prependedIndexes.RemoveAt(lastIndex);
+                            result = true;
+                        }
+                    }
+                }
+                else
+                {
+                    if (_appendedIndexes != null && _appendedIndexes.Remove(coordIndex))
+                    {
+                        result = true;
+                    }
+                }
+            }
+
+            if (result)
+            {
+                OnSequenceChanged();
+            }
+
             return result;
         }
 
@@ -842,26 +929,217 @@ namespace NetTopologySuite.Coordinates
             checkIndexes(endIndex, startIndex);
             Freeze();
 
-            if (!isSlice())
+            List<Int32> prepended = null;
+            List<Int32> appended = null;
+
+            Int32 transformedStart, transformedEnd;
+            SequenceStorage startStorage, endStorage;
+
+            startStorage = transformIndex(startIndex, out transformedStart);
+            endStorage = transformIndex(endIndex, out transformedEnd);
+
+            Int32 mainSequenceStart, mainSequenceEnd;
+
+            switch (startStorage)
             {
-                return new BufferedCoordinate2DSequence(_sequence,
-                                                        startIndex, endIndex,
+                case SequenceStorage.PrependList:
+                {
+                    Int32 start = transformedStart;
+                    Int32 end = (endStorage == SequenceStorage.PrependList)
+                                                    ? transformedEnd
+                                                    : 0;
+                    Int32 count = Math.Abs(end - start) + 1;
+                    prepended = new List<Int32>(count);
+
+                    for (Int32 i = start; i <= end; i++)
+                    {
+                        prepended.Add(_prependedIndexes[i]);
+                    }
+
+                    // if the entire slice is contained in the prepended
+                    // coordinates, then just create a new main sequence on it.
+                    if(endStorage == SequenceStorage.PrependList)
+                    {
+                        return new BufferedCoordinate2DSequence(_reversed,
+                                                                prepended,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                0, 
+                                                                count - 1,
+                                                                _factory, 
+                                                                _buffer);
+                    }
+                }
+                    break;
+                case SequenceStorage.AppendList:
+                {
+                    Int32 start = transformedStart;
+                    Int32 end = (startStorage == SequenceStorage.AppendList)
+                                                    ? transformedEnd
+                                                    : _appendedIndexes.Count;
+                    Int32 count = Math.Abs(end - start) + 1;
+                    appended = new List<Int32>(count);
+
+                    for (Int32 i = 0; i < count; i++)
+                    {
+                        appended.Add(_appendedIndexes[i]);
+                    }
+
+                    // if the entire slice is contained in the appended
+                    // coordinates, then just create a new main sequence on it.
+                    if (endStorage == SequenceStorage.AppendList)
+                    {
+                        return new BufferedCoordinate2DSequence(_reversed,
+                                                                appended,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                0,
+                                                                count - 1,
+                                                                _factory,
+                                                                _buffer);
+                    }
+                }
+                    break;
+                default:
+                    break;
+            }
+
+            SortedSet<Int32> sliceSkips = null;
+            Func<Int32> generator = null;
+            Predicate<Int32> condition = null;
+
+            // handle the case slice starts and stops in main
+            if(startStorage == SequenceStorage.MainList && 
+               endStorage == SequenceStorage.MainList)
+            {
+                if (_skipIndexes != null)
+                {
+                    Int32 i = transformedStart;
+                    generator = () => i++;
+                    condition = v => (v <= transformedEnd);
+                    sliceSkips = new SortedSet<Int32>();
+                    sliceSkips.AddRange(Set<Int32>
+                                            .Create(generator, condition)
+                                            .Intersect(_skipIndexes));
+                }
+
+                return new BufferedCoordinate2DSequence(_reversed,
+                                                        _sequence,
+                                                        null,
+                                                        null,
+                                                        sliceSkips, 
+                                                        transformedStart, 
+                                                        transformedEnd,
                                                         _factory, _buffer);
             }
 
-            if (_prependedIndexes != null ||
-                _appendedIndexes != null ||
-                _skipIndexes != null)
+            // handle the 3 cases where the slice intersects the main
+            // sequence: either it does so completely, 
+            // partially including the start, or partially including the end.
+            if (startStorage != SequenceStorage.MainList && 
+                endStorage != SequenceStorage.MainList)
             {
-                throw new NotImplementedException(
-                    "Slice of a slice containing prepended, appended, " +
-                    "or skipped indices not implemented");
+                mainSequenceStart = _startIndex;
+                mainSequenceEnd = _endIndex;
+
+                if (_skipIndexes != null)
+                {
+                    sliceSkips = new SortedSet<Int32>();
+                    sliceSkips.AddRange(_skipIndexes);
+                }
+            }
+            else
+            {
+                if (startStorage == SequenceStorage.MainList)
+                {
+                    if (_reversed)
+                    {
+                        mainSequenceStart = computeSliceStartOnMainSequence();
+                        mainSequenceEnd = transformedStart;
+                    }
+                    else
+                    {
+                        mainSequenceStart = transformedStart;
+                        mainSequenceEnd = computeSliceEndOnMainSequence();
+                    }
+
+                    Int32 i = transformedStart;
+                    generator = () => i++;
+                    condition = v => (v <= _sequence.Count);
+                }
+                else if(endStorage == SequenceStorage.MainList)
+                {
+                    if (_reversed)
+                    {
+                        mainSequenceStart = transformedEnd;
+                        mainSequenceEnd = computeSliceStartOnMainSequence();
+                    }
+                    else
+                    {
+                        mainSequenceStart = computeSliceStartOnMainSequence();
+                        mainSequenceEnd = transformedEnd;
+                    }
+
+                    Int32 i = 0;
+                    generator = () => i++;
+                    condition = v => (v <= transformedEnd);
+                }
+                else
+                {
+                    mainSequenceStart = -1;
+                    mainSequenceEnd = -1;
+                    Debug.Fail("Should never reach here.");
+                }
+
+                if(_skipIndexes != null)
+                {
+                    sliceSkips = new SortedSet<Int32>();
+                    sliceSkips.AddRange(Set<Int32>
+                                            .Create(generator, condition)
+                                            .Intersect(_skipIndexes));
+                }
             }
 
-            return new BufferedCoordinate2DSequence(_sequence,
-                                                    startIndex + Math.Max(0, _startIndex),
-                                                    endIndex + Math.Max(0, _startIndex),
-                                                    _factory, _buffer);
+
+            // The two cases where the slice starts and ends completely 
+            // within the prepended or appended cooridnates are already handled
+            switch (endStorage)
+            {
+                case SequenceStorage.PrependList:
+                {
+                    prepended = new List<Int32>();
+
+                    for (Int32 i = 0; i <= transformedEnd; i++)
+                    {
+                        prepended.Add(_prependedIndexes[i]);
+                    }
+                }
+                    break;
+                case SequenceStorage.AppendList:
+                {
+                    appended = new List<Int32>();
+
+                    for (Int32 i = 0; i <= transformedEnd; i++)
+                    {
+                        appended.Add(_appendedIndexes[i]);
+                    }
+                }
+                    break;
+                default:
+                    break;
+            }
+
+            return new BufferedCoordinate2DSequence(_reversed,
+                                                    _sequence,
+                                                    prepended,
+                                                    appended,
+                                                    sliceSkips,
+                                                    mainSequenceStart, 
+                                                    mainSequenceEnd,
+                                                    _factory, 
+                                                    _buffer);
         }
 
         public IBufferedCoordSequence Sort()
@@ -1321,8 +1599,10 @@ namespace NetTopologySuite.Coordinates
 
         private SequenceStorage transformIndex(Int32 index, out Int32 transformedIndex)
         {
-            // First, project index on reversed sequence, if needed
-            index = _reversed ? (Count - 1) - index : index;
+            // First, project index on reversed sequence, if needed.
+            // Since the index is reversed, we don't need to reverse
+            // the prepend and append lists.
+            Int32 projectedIndex = _reversed ? (Count - 1) - index : index;
 
             // Get the count of the indexes before the main sequence
             Int32 prependCount = _prependedIndexes == null
@@ -1333,10 +1613,10 @@ namespace NetTopologySuite.Coordinates
 
             // If the index is smaller than the prepended count, 
             // index into the prepended storage
-            if (index < prependCount)
+            if (projectedIndex < prependCount)
             {
                 storage = SequenceStorage.PrependList;
-                transformedIndex = index;
+                transformedIndex = prependCount - projectedIndex - 1;
             }
             else
             {
@@ -1349,37 +1629,26 @@ namespace NetTopologySuite.Coordinates
                 // If the index is greater or equal to the sum of both
                 // prepended and main sequence slices, then it must index
                 // into the appended list
-                if (index >= firstAppendIndex)
+                if (projectedIndex >= firstAppendIndex)
                 {
                     storage = SequenceStorage.AppendList;
-                    transformedIndex = index - firstAppendIndex;
+                    transformedIndex = projectedIndex - firstAppendIndex;
                 }
                 else
                 {
                     storage = SequenceStorage.MainList;
-                    Int32 mainIndex = index - prependCount + startIndex;
+                    Int32 mainIndex = projectedIndex - prependCount + startIndex;
 
                     if (_skipIndexes != null)
                     {
                         Int32 skips = 0;
                         Int32 lastSkips;
 
-                        if (_reversed)
+                        do
                         {
-                            do
-                            {
-                                lastSkips = skips;
-                                skips = _skipIndexes.CountAtAndAfter(mainIndex + skips);
-                            } while (lastSkips != skips);
-                        }
-                        else
-                        {
-                            do
-                            {
-                                lastSkips = skips;
-                                skips = _skipIndexes.CountAtAndBefore(mainIndex + skips);
-                            } while (lastSkips != skips);
-                        }
+                            lastSkips = skips;
+                            skips = _skipIndexes.CountAtAndBefore(mainIndex + skips);
+                        } while (lastSkips != skips);
 
                         mainIndex += skips;
                     }
@@ -1460,14 +1729,7 @@ namespace NetTopologySuite.Coordinates
 
             Int32 index = item.Index;
 
-            if (isSlice())
-            {
-                appendCoordIndex(index);
-            }
-            else
-            {
-                _sequence.Add(index);
-            }
+            appendCoordIndex(index);
         }
 
         private void appendCoordIndex(Int32 coordIndex)
@@ -1667,22 +1929,28 @@ namespace NetTopologySuite.Coordinates
 
         private void appendInternal(BufferedCoordinate2DSequence sequence)
         {
+            // check to see if the sequences have different buffers, 
+            // if so, just do a normal range append
             if (!ReferenceEquals(sequence._buffer, _buffer))
             {
                 Append((IEnumerable<BufferedCoordinate2D>)sequence);
+                return;
             }
 
-            if (_appendedIndexes == null)
+            if (_reversed)
             {
-                _appendedIndexes = new List<Int32>(Math.Max(4, sequence.Count));
+                appendInternalReverse(sequence);
             }
-
-            _appendedIndexes.AddRange(sequence._sequence);
+            else
+            {
+                appendInternalForward(sequence);
+            }
         }
 
         private void prependInternal(BufferedCoordinate2DSequence sequence)
         {
-            // check to see if the sequences have different buffers, if so, just do a normal prepend
+            // check to see if the sequences have different buffers, 
+            // if so, just do a normal range prepend
             if (!ReferenceEquals(sequence._buffer, _buffer))
             {
                 Prepend((IEnumerable<BufferedCoordinate2D>)sequence);
@@ -1699,9 +1967,49 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
+        private void appendInternalForward(BufferedCoordinate2DSequence sequence)
+        {
+            Int32 appendCount = sequence.Count;
+            Int32 appendIndex = 0;
+
+            // push the end index forward if the conditions are right:
+            //  * no appended indexes
+            //  * _endIndex is less than _sequence.Count
+            //  * the index of the appending coordinate is the same 
+            //    as the underlying sequence at _endIndex + 1
+            if (_appendedIndexes == null)
+            {
+                for (; appendIndex < appendCount; appendIndex++)
+                {
+                    if (_endIndex >= _sequence.Count - 1 ||
+                        sequence[appendIndex].Index != _sequence[_endIndex + 1])
+                    {
+                        break;
+                    }
+
+                    _endIndex--;
+                }
+
+                // added all coordinates by pushing the _startIndex back
+                if (appendIndex >= appendCount)
+                {
+                    return;
+                }
+
+                // otherwise, we put them into a new list
+                _appendedIndexes = new List<Int32>(Math.Max(4, appendCount - appendIndex));
+            }
+
+            for (Int32 i = appendIndex; i < appendCount; i++)
+            {
+                _appendedIndexes.Add(sequence[i].Index);
+            }
+        }
+
         private void prependInternalForward(BufferedCoordinate2DSequence sequence)
         {
-            Int32 prependIndex = sequence.Count - 1;
+            Int32 prependCount = sequence.Count;
+            Int32 prependIndex = prependCount - 1;
 
             // push the start index back if the conditions are right:
             //  * no prepended indexes
@@ -1728,10 +2036,51 @@ namespace NetTopologySuite.Coordinates
                 }
 
                 // otherwise, we put them into a new list
-                _prependedIndexes = new List<Int32>(Math.Max(4, sequence.Count));
+                _prependedIndexes = new List<Int32>(Math.Max(4, prependIndex));
             }
 
             for (Int32 i = prependIndex; i >= 0; i--)
+            {
+                _prependedIndexes.Add(sequence[i].Index);
+            }
+        }
+
+        private void appendInternalReverse(BufferedCoordinate2DSequence sequence)
+        {
+            Int32 appendCount = sequence.Count;
+            Int32 appendIndex = 0;
+
+            // push the start index forward if the conditions are right:
+            //  * no prepended indexes
+            //  * _startIndex is greater than 0
+            //  * the index of the appending coordinate is the same 
+            //    as the underlying sequence at _startIndex - 1
+            if (_prependedIndexes == null)
+            {
+                for (; appendIndex > appendCount; appendIndex++)
+                {
+                    Int32 startIndex = computeSliceStartOnMainSequence();
+
+                    if (startIndex <= 0 ||
+                        sequence[appendIndex].Index != _sequence[_startIndex - 1])
+                    {
+                        break;
+                    }
+
+                    _startIndex--;
+                }
+
+                // added all coordinates by pushing the _endIndex forward
+                if (appendIndex >= appendCount)
+                {
+                    return;
+                }
+
+                // otherwise, we put them into a new list
+                _prependedIndexes = new List<Int32>(Math.Max(4, appendCount - appendIndex));
+            }
+
+            for (Int32 i = appendIndex; i < appendCount; i++)
             {
                 _prependedIndexes.Add(sequence[i].Index);
             }
@@ -1768,7 +2117,7 @@ namespace NetTopologySuite.Coordinates
                 }
 
                 // otherwise, we put them into a new list
-                _appendedIndexes = new List<Int32>(Math.Max(4, sequence.Count));
+                _appendedIndexes = new List<Int32>(Math.Max(4, prependIndex));
             }
 
             for (Int32 i = prependIndex; i >= 0; i--)
@@ -1783,7 +2132,11 @@ namespace NetTopologySuite.Coordinates
 
             Freeze();
 
-            return new BufferedCoordinate2DSequence(_sequence,
+            return new BufferedCoordinate2DSequence(_reversed,
+                                                    _sequence,
+                                                    _prependedIndexes,
+                                                    _appendedIndexes,
+                                                    _skipIndexes,
                                                     startIndex, endIndex,
                                                     _factory, _buffer);
         }
@@ -1817,9 +2170,7 @@ namespace NetTopologySuite.Coordinates
         private Int32 getStorageValue(SequenceStorage storage, Int32 index)
         {
             List<Int32> list = getStorage(storage);
-            return storage == SequenceStorage.PrependList
-                ? list[list.Count - 1 - index]
-                : list[index];
+            return list[index];
         }
     }
 }

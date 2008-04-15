@@ -259,9 +259,9 @@ namespace ManagedBufferedCoordinate2DTests
             BufferedCoordinate2D appendedCoordinate = generator.RandomCoordinate();
             generator.Sequence.Append(appendedCoordinate);
 
-            IBufferedCoordSequence appendSlice
-                = generator.SequenceFactory.Create(generator.AppendList)
-                  .Slice(0, 2);
+            IBufferedCoordSequence appendSlice = generator.SequenceFactory
+                                                      .Create(generator.AppendList)
+                                                      .Slice(0, 2);
             BufferedCoordinate2D preSliceCoordinate = generator.RandomCoordinate();
             BufferedCoordinate2D postSliceCoordinate = generator.RandomCoordinate();
             appendSlice.Prepend(preSliceCoordinate);
@@ -269,11 +269,27 @@ namespace ManagedBufferedCoordinate2DTests
 
             generator.Sequence.Append(appendSlice);
 
-            Assert.AreEqual(generator.MainList[mainLength - 1], generator.Sequence[mainLength - 1]);
-            Assert.AreEqual(appendedCoordinate, generator.Sequence[mainLength]);
-            Assert.AreEqual(preSliceCoordinate, generator.Sequence[mainLength + 1]);
+            BufferedCoordinate2D expected;
+            BufferedCoordinate2D actual;
 
-            for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            // last coords are the same
+            expected = generator.MainList[mainLength - 1];
+            actual = generator.Sequence[mainLength - 1];
+            Assert.AreEqual(expected, actual);
+
+            // then we appended appendedCoordinate
+            expected = appendedCoordinate;
+            actual = generator.Sequence[mainLength];
+            Assert.AreEqual(expected, actual);
+
+            // then we appended a sequence with a prepended sequence, of which 
+            // this one is first
+            expected = preSliceCoordinate;
+            actual = generator.Sequence[mainLength + 1];
+            Assert.AreEqual(expected, actual);
+
+            //for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            for (Int32 i = 0; i < generator.AppendList.Count; i++)
             {
                 Assert.AreEqual(generator.AppendList[i], generator.Sequence[mainLength + 2 + i]);
             }
@@ -306,7 +322,8 @@ namespace ManagedBufferedCoordinate2DTests
             Assert.AreEqual(appendedCoordinate, slice[sliceLength]);
             Assert.AreEqual(preSliceCoordinate, slice[sliceLength + 1]);
 
-            for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            //for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            for (Int32 i = 0; i < generator.AppendList.Count; i++)
             {
                 Assert.AreEqual(generator.AppendList[i], slice[sliceLength + 2 + i]);
             }
@@ -444,15 +461,27 @@ namespace ManagedBufferedCoordinate2DTests
             Int32 mainLength = 5;
             SequenceGenerator generator = new SequenceGenerator(BigMaxLimit, mainLength, 0, 3);
             generator.Sequence.Reverse();
-            Assert.AreEqual(generator.MainList[0], generator.Sequence[mainLength - 1]);
 
-            EnumerableIsolater<BufferedCoordinate2D> appendList = new EnumerableIsolater<BufferedCoordinate2D>(generator.AppendList);
+            BufferedCoordinate2D expected;
+            BufferedCoordinate2D actual;
+                        
+            expected = generator.MainList[0];
+            actual = generator.Sequence[mainLength - 1];
+            Assert.AreEqual(expected, actual);
+
+            EnumerableIsolater<BufferedCoordinate2D> appendList
+                = new EnumerableIsolater<BufferedCoordinate2D>(generator.AppendList);
             generator.Sequence.Append(appendList);
 
-            Assert.AreEqual(generator.MainList[0], generator.Sequence[mainLength - 1]);
+            expected = generator.MainList[0];
+            actual = generator.Sequence[mainLength - 1];
+            Assert.AreEqual(expected, actual);
+            
             for (Int32 i = 0; i < generator.AppendList.Count; i++)
             {
-                Assert.AreEqual(generator.AppendList[i], generator.Sequence[mainLength + i]);
+                expected = generator.AppendList[i];
+                actual = generator.Sequence[mainLength + i];
+                Assert.AreEqual(expected, actual);
             }
         }
 
@@ -744,7 +773,8 @@ namespace ManagedBufferedCoordinate2DTests
 
             Assert.AreEqual(preSliceCoordinate, generator.Sequence[mainLength + 1]);
 
-            for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            //for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            for (Int32 i = 0; i < generator.AppendList.Count; i++)
             {
                 Assert.AreEqual(generator.AppendList[i], generator.Sequence[mainLength + 2 + i]);
             }
@@ -779,7 +809,8 @@ namespace ManagedBufferedCoordinate2DTests
 
             Assert.AreEqual(preSliceCoordinate, generator.Sequence[mainLength + 1]);
 
-            for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            //for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            for (Int32 i = 0; i < generator.AppendList.Count; i++)
             {
                 Assert.AreEqual(generator.AppendList[i], generator.Sequence[mainLength + 2 + i]);
             }
@@ -821,7 +852,8 @@ namespace ManagedBufferedCoordinate2DTests
 
             Assert.AreEqual(preSliceCoordinate, slice[sliceLength + 1]);
 
-            for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            //for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            for (Int32 i = 0; i < generator.AppendList.Count; i++)
             {
                 Assert.AreEqual(generator.AppendList[i], slice[sliceLength + 2 + i]);
             }
@@ -858,7 +890,8 @@ namespace ManagedBufferedCoordinate2DTests
 
             Assert.AreEqual(preSliceCoordinate, slice[sliceLength + 1]);
 
-            for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            //for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            for (Int32 i = 0; i < generator.AppendList.Count; i++)
             {
                 Assert.AreEqual(generator.AppendList[i], slice[sliceLength + 2 + i]);
             }
@@ -996,7 +1029,8 @@ namespace ManagedBufferedCoordinate2DTests
             Assert.AreEqual(appendedCoordinate, slice[sliceLength - 3]);
             Assert.AreEqual(preSliceCoordinate, slice[sliceLength - 3 + 1]);
 
-            for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            //for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            for (Int32 i = 0; i < generator.AppendList.Count; i++)
             {
                 Assert.AreEqual(generator.AppendList[i], slice[sliceLength - 3 + 2 + i]);
             }
@@ -1070,7 +1104,8 @@ namespace ManagedBufferedCoordinate2DTests
 
             Assert.AreEqual(preSliceCoordinate, slice[sliceLength - 3 + 1]);
 
-            for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            //for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            for (Int32 i = 0; i < generator.AppendList.Count; i++)
             {
                 Assert.AreEqual(generator.AppendList[i], slice[sliceLength - 3 + 2 + i]);
             }

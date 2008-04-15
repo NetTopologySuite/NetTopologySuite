@@ -1102,6 +1102,7 @@ namespace ManagedBufferedCoordinate2DTests
             Assert.AreEqual(prependedCoordinate, slice[0]);
             Assert.AreEqual(generator.MainList[sliceLength], slice[1]);
 
+            // TODO: fix test - generator.PrependList is null
             IBufferedCoordSequence prependSlice
                 = generator.SequenceFactory.Create(generator.PrependList)
                   .Slice(0, 2);
