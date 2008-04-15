@@ -31,9 +31,13 @@ namespace GisSharpBlog.NetTopologySuite.IO
         public override IGeometry Read(BigEndianBinaryReader file, IGeometryFactory geometryFactory)
         {
             int shapeTypeNum = file.ReadInt32();
+
             ShapeGeometryTypes shapeType = (ShapeGeometryTypes) Enum.Parse(typeof(ShapeGeometryTypes), shapeTypeNum.ToString());
-            if ( ! ( shapeType == ShapeGeometryTypes.MultiPoint  || shapeType == ShapeGeometryTypes.MultiPointM ||
-                     shapeType == ShapeGeometryTypes.MultiPointZ || shapeType == ShapeGeometryTypes.MultiPointZM))	
+            if (shapeType == ShapeGeometryTypes.NullShape)
+                return geometryFactory.CreateMultiPoint(new IPoint[] { });
+            
+            if (!(shapeType == ShapeGeometryTypes.MultiPoint  || shapeType == ShapeGeometryTypes.MultiPointM ||
+                  shapeType == ShapeGeometryTypes.MultiPointZ || shapeType == ShapeGeometryTypes.MultiPointZM))	
                 throw new ShapefileException("Attempting to load a non-multipoint as multipoint.");
 
             // Read and for now ignore bounds.

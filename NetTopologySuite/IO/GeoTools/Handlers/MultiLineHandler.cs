@@ -32,6 +32,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		{
 			int shapeTypeNum = file.ReadInt32();
             ShapeGeometryTypes shapeType = (ShapeGeometryTypes)Enum.Parse(typeof(ShapeGeometryTypes), shapeTypeNum.ToString());
+            if (shapeType == ShapeGeometryTypes.NullShape)
+                return geometryFactory.CreateMultiLineString(null);
+            
             if(!(shapeType == ShapeGeometryTypes.LineString  || shapeType == ShapeGeometryTypes.LineStringM ||
                  shapeType == ShapeGeometryTypes.LineStringZ || shapeType == ShapeGeometryTypes.LineStringZM))
 				throw new ShapefileException("Attempting to load a non-arc as arc.");

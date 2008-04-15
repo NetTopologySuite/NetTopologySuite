@@ -32,7 +32,13 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		{
 			int shapeTypeNum = file.ReadInt32();
             ShapeGeometryTypes shapeType = (ShapeGeometryTypes) Enum.Parse(typeof(ShapeGeometryTypes), shapeTypeNum.ToString());
-            if (!( shapeType == ShapeGeometryTypes.Point  || shapeType == ShapeGeometryTypes.PointM ||
+            if (shapeType == ShapeGeometryTypes.NullShape)
+            {
+                ICoordinate emptyCoordinate = null;
+                return geometryFactory.CreatePoint(emptyCoordinate);
+            }
+
+		    if (!( shapeType == ShapeGeometryTypes.Point  || shapeType == ShapeGeometryTypes.PointM ||
                    shapeType == ShapeGeometryTypes.PointZ || shapeType == ShapeGeometryTypes.PointZM))	
 				throw new ShapefileException("Attempting to load a point as point.");
 			double x= file.ReadDouble();
