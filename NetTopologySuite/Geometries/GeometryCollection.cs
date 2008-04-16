@@ -278,6 +278,36 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return true;
         }
 
+        public override Boolean EqualsExact(IGeometry<TCoordinate> g, Tolerance tolerance)
+        {
+            if (g == null) throw new ArgumentNullException("g");
+
+            if (!IsEquivalentClass(g))
+            {
+                return false;
+            }
+
+            GeometryCollection<TCoordinate> otherCollection 
+                = g as GeometryCollection<TCoordinate>;
+
+            Int32 count = Count;
+
+            if (count != otherCollection.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < count; i++)
+            {
+                if (!this[i].EqualsExact(otherCollection[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public override IGeometry<TCoordinate> Clone()
         {
             List<IGeometry<TCoordinate>> geometries = new List<IGeometry<TCoordinate>>();

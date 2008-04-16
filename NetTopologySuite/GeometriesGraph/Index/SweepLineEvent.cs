@@ -10,14 +10,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 
     public class SweepLineEvent : IComparable<SweepLineEvent>
     {
-        private object _edgeSet; // used for red-blue intersection detection
+        private Object _edgeSet; // used for red-blue intersection detection
         private readonly Double _xValue;
         private readonly SweepLineEventType _eventType;
         private readonly SweepLineEvent _insertEvent; // null if this is an Insert event
         private Int32 _deleteEventIndex;
-        private readonly object _obj;
+        private readonly Object _obj;
 
-        public SweepLineEvent(object edgeSet, Double x, SweepLineEvent insertEvent, object obj)
+        public SweepLineEvent(Object edgeSet, Double x, SweepLineEvent insertEvent, Object obj)
         {
             _edgeSet = edgeSet;
             _xValue = x;
@@ -32,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             _obj = obj;
         }
 
-        public object EdgeSet
+        public Object EdgeSet
         {
             get { return _edgeSet; }
             set { _edgeSet = value; }
@@ -59,7 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             set { _deleteEventIndex = value; }
         }
 
-        public object Object
+        public Object Object
         {
             get { return _obj; }
         }

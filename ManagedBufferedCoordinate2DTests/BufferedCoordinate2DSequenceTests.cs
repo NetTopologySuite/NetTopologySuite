@@ -1495,17 +1495,24 @@ namespace ManagedBufferedCoordinate2DTests
         [Test]
         public void MergeSucceeds()
         {
-            BufferedCoordinate2DFactory coordFactory
-                = new BufferedCoordinate2DFactory();
+            SequenceGenerator generator = new SequenceGenerator(100);
 
-            BufferedCoordinate2DSequenceFactory seqFactory
-                = new BufferedCoordinate2DSequenceFactory(coordFactory);
-
-            IBufferedCoordSequence seq1 = seqFactory.Create();
-            IBufferedCoordSequence seq2 = seqFactory.Create();
+            IBufferedCoordSequence seq1 = generator.Sequence;
+            IBufferedCoordSequence seq2 = generator.NewSequence();
 
             IBufferedCoordSequence merged = seq1.Merge(seq2);
-            Assert.Fail("Need to complete");
+
+            Assert.AreEqual(200, merged.Count);
+
+            for (int i = 0; i < seq1.Count; i++)
+            {
+                Assert.AreEqual(seq1[i], merged[i]);
+            }
+
+            for (int i = 0; i < seq1.Count; i++)
+            {
+                Assert.AreEqual(seq2[i], merged[i + 100]);
+            }
         }
 
         [Test]
@@ -2210,9 +2217,10 @@ namespace ManagedBufferedCoordinate2DTests
         [Test]
         public void WithoutRepeatedPointsCorrect()
         {
-            SequenceGenerator generator = new SequenceGenerator(2, 100000);
+            SequenceGenerator generator = new SequenceGenerator();
 
-            IBufferedCoordSequence seq = generator.Sequence;
+            IBufferedCoordSequence seq = generator.NewSequence(
+                generator.GenerateCoordinates(100000, 2), false);
 
             BufferedCoordinate2D last = new BufferedCoordinate2D();
 

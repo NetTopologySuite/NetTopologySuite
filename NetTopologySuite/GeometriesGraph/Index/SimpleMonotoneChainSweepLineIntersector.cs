@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures.Collections.Generic;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
@@ -24,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// seems to offer an improvement in performance over a sweep-line alone.
     /// </para>
     /// </remarks>
-    public class SimpleMonotoneChaingSweepLineIntersector<TCoordinate> 
+    public class SimpleMonotoneChaingSweepLineIntersector<TCoordinate>
             : EdgeSetIntersector<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
                             IComparable<TCoordinate>, IConvertible,
@@ -35,49 +36,49 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         // statistics information
         private Int32 _overlapCount;
 
-        public override void ComputeIntersections(IEnumerable<Edge<TCoordinate>> edges, 
-                                                  SegmentIntersector<TCoordinate> si, 
+        public override void ComputeIntersections(IEnumerable<Edge<TCoordinate>> edges,
+                                                  SegmentIntersector<TCoordinate> si,
                                                   Boolean testAllSegments)
         {
             if (testAllSegments)
             {
-                Add(edges, null);
+                add(edges, null);
             }
             else
             {
-                Add(edges);
+                add(edges);
             }
 
             computeIntersections(si);
         }
 
-        public override void ComputeIntersections(IEnumerable<Edge<TCoordinate>> edges0, 
-                                                  IEnumerable<Edge<TCoordinate>> edges1, 
+        public override void ComputeIntersections(IEnumerable<Edge<TCoordinate>> edges0,
+                                                  IEnumerable<Edge<TCoordinate>> edges1,
                                                   SegmentIntersector<TCoordinate> si)
         {
-            Add(edges0, edges0);
-            Add(edges1, edges1);
+            add(edges0, edges0);
+            add(edges1, edges1);
             computeIntersections(si);
         }
 
-        private void Add(IEnumerable<Edge<TCoordinate>> edges)
+        private void add(IEnumerable<Edge<TCoordinate>> edges)
         {
             foreach (Edge<TCoordinate> edge in edges)
             {
                 // edge is its own group
-                Add(edge, edge);
+                add(edge, edge);
             }
         }
 
-        private void Add(IEnumerable<Edge<TCoordinate>> edges, Object edgeSet)
+        private void add(IEnumerable<Edge<TCoordinate>> edges, Object edgeSet)
         {
             foreach (Edge<TCoordinate> edge in edges)
             {
-                Add(edge, edgeSet);
+                add(edge, edgeSet);
             }
         }
 
-        private void Add(Edge<TCoordinate> edge, Object edgeSet)
+        private void add(Edge<TCoordinate> edge, Object edgeSet)
         {
             MonotoneChainEdge<TCoordinate> mce = edge.MonotoneChainEdge;
             IList<Int32> startIndex = mce.StartIndexes;
@@ -85,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             for (Int32 i = 0; i < startIndex.Count - 1; i++)
             {
                 MonotoneChain<TCoordinate> mc = new MonotoneChain<TCoordinate>(mce, i);
-                SweepLineEvent insertEvent 
+                SweepLineEvent insertEvent
                     = new SweepLineEvent(edgeSet, mce.GetMinX(i), null, mc);
                 _events.Add(insertEvent);
                 _events.Add(new SweepLineEvent(edgeSet, mce.GetMaxX(i), insertEvent, mc));
@@ -95,7 +96,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         // Because Delete events have a link to their corresponding Insert event,
         // it is possible to compute exactly the range of events which must be
         // compared to a given Insert event object.
-        private void PrepareEvents()
+        private void prepareEvents()
         {
             _events.Sort();
 
@@ -113,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         private void computeIntersections(SegmentIntersector<TCoordinate> si)
         {
             _overlapCount = 0;
-            PrepareEvents();
+            prepareEvents();
 
             for (Int32 i = 0; i < _events.Count; i++)
             {
@@ -127,7 +128,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             }
         }
 
-        private void processOverlaps(Int32 start, Int32 end, SweepLineEvent ev0, 
+        private void processOverlaps(Int32 start, Int32 end, SweepLineEvent ev0,
                                      SegmentIntersector<TCoordinate> si)
         {
             MonotoneChain<TCoordinate> mc0 = ev0.Object as MonotoneChain<TCoordinate>;

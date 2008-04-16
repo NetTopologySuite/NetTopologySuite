@@ -49,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
                             IComputable<Double, TCoordinate>
     {
         private readonly Edge<TCoordinate> _edge;
-        private readonly List<TCoordinate> _coordinates = new List<TCoordinate>();
+        private readonly ICoordinateSequence<TCoordinate> _coordinates;
 
         // the lists of start/end indexes of the monotone chains.
         // Includes the end point of the edge as a sentinel
@@ -65,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             _edge = edge;
             _extents1 = geoFactory.CreateExtents();
             _extents2 = geoFactory.CreateExtents();
-            _coordinates.AddRange(edge.Coordinates);
+            _coordinates = edge.Coordinates;
         }
 
         public IEnumerable<TCoordinate> Coordinates
@@ -81,8 +81,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
                 {
                     //MonotoneChainIndexer<TCoordinate> mcBuilder
                     //    = new MonotoneChainIndexer<TCoordinate>();
-                    _startIndexes = Enumerable.ToArray(
-                        MonotoneChainBuilder.GetChainStartIndices(_coordinates));
+                    
+                    IEnumerable<Int32> starts =
+                        MonotoneChainBuilder.GetChainStartIndices(_coordinates);
+                    _startIndexes = Enumerable.ToArray(starts);
                 }
 
                 return _startIndexes;

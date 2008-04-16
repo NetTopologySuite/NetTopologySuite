@@ -237,6 +237,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
                     }
                 }
             }
+
             return false;
         }
 

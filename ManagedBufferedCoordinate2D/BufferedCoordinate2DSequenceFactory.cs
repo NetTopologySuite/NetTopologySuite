@@ -53,7 +53,7 @@ namespace NetTopologySuite.Coordinates
 
         public IBufferedCoordSequence Create(IBufferedCoordSequence coordSeq)
         {
-            IBufferedCoordSequence newSequence = Create(coordSeq.Count, CoordinateDimensions.Two);
+            IBufferedCoordSequence newSequence = Create(0, CoordinateDimensions.Two);
             newSequence.AddSequence(coordSeq);
             return newSequence;
         }

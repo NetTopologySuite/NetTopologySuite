@@ -5,8 +5,6 @@ using GeoAPI.Coordinates;
 using GeoAPI.CoordinateSystems;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
-using GeoAPI.IO.WellKnownBinary;
-using GeoAPI.IO.WellKnownText;
 using GeoAPI.Operations.Buffer;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
@@ -27,13 +25,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// unit of spatial reasoning in NTS.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// <see cref="Clone"/> returns a deep copy of the object.
+    /// </para>
     /// <para>
     /// Binary Predicates: 
     /// Because it is not clear at this time what semantics for spatial
-    /// analysis methods involving <see cref="GeometryCollection{TCoordinate}" />s would be useful,
-    /// <see cref="GeometryCollection{TCoordinate}" />s are not supported as arguments to binary
-    /// predicates (other than <see cref="ConvexHull"/>) or the 
+    /// analysis methods involving <see cref="GeometryCollection{TCoordinate}" />s 
+    /// would be useful, <see cref="GeometryCollection{TCoordinate}" />s are not 
+    /// supported as arguments to binary predicates 
+    /// (other than <see cref="ConvexHull"/>) or the 
     /// <see cref="Relate(IGeometry{TCoordinate})"/> family of methods.
     /// </para>
     /// <para>
@@ -41,10 +42,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// The spatial analysis methods will
     /// return the most specific class possible to represent the result. If the
     /// result is homogeneous, a <see cref="Point{TCoordinate}"/>, 
-    /// <see cref="LineString{TCoordinate}"/>, or <see cref="Polygon{TCoordinate}" /> will be 
-    /// returned if the result contains a single
-    /// element; otherwise, a <see cref="MultiPoint{TCoordinate}"/>, 
-    /// <see cref="MultiLineString{TCoordinate}"/>, or <see cref="MultiPolygon{TCoordinate}"/> 
+    /// <see cref="LineString{TCoordinate}"/>, or <see cref="Polygon{TCoordinate}" /> 
+    /// will be returned if the result contains a single element; 
+    /// otherwise, a <see cref="MultiPoint{TCoordinate}"/>, 
+    /// <see cref="MultiLineString{TCoordinate}"/>, or 
+    /// <see cref="MultiPolygon{TCoordinate}"/> 
     /// will be returned. If the result is heterogeneous a 
     /// <see cref="GeometryCollection{TCoordinate}" /> will be returned.
     /// </para>
@@ -118,8 +120,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </remarks>
     [Serializable]
     public abstract class Geometry<TCoordinate> : IGeometry<TCoordinate>
-         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
-                             IComputable<Double, TCoordinate>, IConvertible
+         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+                             IComparable<TCoordinate>, IConvertible, 
+                             IComputable<Double, TCoordinate>
     {
         private static readonly RuntimeTypeHandle[] _sortedClasses 
             = new RuntimeTypeHandle[]
@@ -162,16 +165,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns the Well-known Text representation of this <see cref="Geometry{TCoordinate}"/>.
-        /// For a definition of the Well-known Text format, see the OpenGIS Simple
-        /// Features Specification.
+        /// Returns the Well-Known Text representation of this 
+        /// <see cref="Geometry{TCoordinate}"/>.
         /// </summary>
+        /// <remarks>
+        /// For a definition of the Well-Known Text format, see the OpenGIS Simple
+        /// Features Specification.
+        /// </remarks>
         /// <returns>
-        /// The Well-known Text representation of this <see cref="Geometry{TCoordinate}"/>.
+        /// The Well-Known Text representation of this 
+        /// <see cref="Geometry{TCoordinate}"/>.
         /// </returns>
         public override String ToString()
         {
-            return ToText();
+            return AsText();
         }
 
         public override Int32 GetHashCode()
@@ -226,7 +233,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// if it possible to calculate such a point exactly. Otherwise,
         /// the point may lie on the boundary of the point.
         /// </summary>
-        /// <returns>A <c>Point</c> which is in the interior of this Geometry.</returns>
+        /// <returns>
+        /// An <see cref="IPoint{TCoordinate}"/> which is in the 
+        /// interior of this Geometry.
+        /// </returns>
         public IPoint<TCoordinate> InteriorPoint
         {
             get
@@ -234,20 +244,29 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 TCoordinate interiorPt;
                 Dimensions dim = Dimension;
 
-                if (dim == Dimensions.Point)
+                switch (dim)
                 {
-                    InteriorPointPoint<TCoordinate> intPt = new InteriorPointPoint<TCoordinate>(this);
-                    interiorPt = intPt.InteriorPoint;
-                }
-                else if (dim == Dimensions.Curve)
-                {
-                    InteriorPointLine<TCoordinate> intPt = new InteriorPointLine<TCoordinate>(this);
-                    interiorPt = intPt.InteriorPoint;
-                }
-                else
-                {
-                    InteriorPointArea<TCoordinate> intPt = new InteriorPointArea<TCoordinate>(this);
-                    interiorPt = intPt.InteriorPoint;
+                    case Dimensions.Point:
+                    {
+                        InteriorPointPoint<TCoordinate> intPt 
+                            = new InteriorPointPoint<TCoordinate>(this);
+                        interiorPt = intPt.InteriorPoint;
+                    }
+                        break;
+                    case Dimensions.Curve:
+                    {
+                        InteriorPointLine<TCoordinate> intPt 
+                            = new InteriorPointLine<TCoordinate>(this);
+                        interiorPt = intPt.InteriorPoint;
+                    }
+                        break;
+                    default:
+                    {
+                        InteriorPointArea<TCoordinate> intPt 
+                            = new InteriorPointArea<TCoordinate>(this);
+                        interiorPt = intPt.InteriorPoint;
+                    }
+                        break;
                 }
 
                 return createPointFromInternalCoord(interiorPt, this);
@@ -257,125 +276,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public IPoint<TCoordinate> PointOnSurface
         {
             get { return InteriorPoint; }
-        }
-
-        /*
-         * [codekaizen 2008-01-14]  replaced the following external notification methods
-         *                          with an event on ICoordinateSequence.
-         */
-        ///// <summary>
-        ///// Notifies this Geometry that its Coordinates have been changed by an external
-        ///// party (using a CoordinateFilter, for example). The Geometry will flush
-        ///// and/or update any information it has cached (such as its Envelope).
-        ///// </summary>
-        //public void GeometryChanged()
-        //{
-        //    Apply(new GeometryChangedFilter());
-        //}
-
-        ///// <summary> 
-        ///// Notifies this Geometry that its Coordinates have been changed by an external
-        ///// party. When GeometryChanged is called, this method will be called for
-        ///// this Geometry and its component Geometries.
-        ///// </summary>
-        //public void GeometryChangedAction()
-        //{
-        //    ExtentsInternal = null;
-        //}
-
-        /// <summary>
-        /// Returns <see langword="true"/> if this geometry is covered by the specified geometry.
-        /// <para>
-        /// The <c>CoveredBy</c> predicate has the following equivalent definitions:
-        ///     - Every point of this geometry is a point of the other geometry.
-        ///     - The DE-9IM Intersection Matrix for the two geometries is <c>T*F**F***</c> or <c>*TF**F***</c> or <c>**FT*F***</c> or <c>**F*TF***</c>.
-        ///     - <c>g.Covers(this)</c> (<c>CoveredBy</c> is the inverse of <c>Covers</c>).
-        /// </para>
-        /// Note the difference between <c>CoveredBy</c> and <c>Within</c>: <c>CoveredBy</c> is a more inclusive relation.
-        /// </summary>
-        /// <param name="other">
-        /// The <see cref="Geometry{TCoordinate}"/> with which to compare 
-        /// this <see cref="Geometry{TCoordinate}"/>.
-        /// </param>
-        /// <returns>
-        /// <see langword="true"/> if this <see cref="Geometry{TCoordinate}"/> 
-        /// is covered by <paramref name="other" />.
-        /// </returns>
-        /// <seealso cref="ISpatialRelation{TCoordinate}.Within(IGeometry{TCoordinate})" />
-        /// <seealso cref="ISpatialRelation{TCoordinate}.Covers(IGeometry{TCoordinate})" />
-        public Boolean CoveredBy(IGeometry<TCoordinate> other)
-        {
-            return other.Covers(this);
-        }
-
-        public Boolean CoveredBy(IGeometry<TCoordinate> other, Tolerance tolerance)
-        {
-            return other.Covers(this, tolerance);
-        }
-
-        public Boolean CoveredBy(IGeometry other)
-        {
-            return other.Covers(this);
-        }
-
-        public Boolean CoveredBy(IGeometry other, Tolerance tolerance)
-        {
-            return other.Covers(this, tolerance);
-        }
-
-        public static Boolean operator ==(Geometry<TCoordinate> left, IGeometry<TCoordinate> right)
-        {
-            return Equals(left, right);
-        }
-
-        public static Boolean operator !=(Geometry<TCoordinate> left, IGeometry<TCoordinate> right)
-        {
-            return !(left == right);
-        }
-
-        /// <summary>
-        /// Returns the Well-known Text representation of this <see cref="Geometry{TCoordinate}"/>.
-        /// For a definition of the Well-known Text format, see the OpenGIS Simple
-        /// Features Specification.
-        /// </summary>
-        /// <returns>
-        /// The Well-known Text representation of this <see cref="Geometry{TCoordinate}"/>.
-        /// </returns>
-        public String ToText()
-        {
-            return _factory.WktWriter.Write(this);
-        }
-
-        /// <summary>
-        /// Returns the Well-known Binary representation of this <see cref="Geometry{TCoordinate}"/>.
-        /// For a definition of the Well-known Binary format, see the OpenGIS Simple
-        /// Features Specification.
-        /// </summary>
-        /// <returns>The Well-known Binary representation of this <see cref="Geometry{TCoordinate}"/>.</returns>
-        public Byte[] ToBinary()
-        {
-            return _factory.WkbWriter.Write(this);
-        }
-
-        /// <summary>
-        /// Returns true if the two <see cref="Geometry{TCoordinate}"/>s are exactly equal.
-        /// Two Geometries are exactly equal iff:
-        /// they have the same class,
-        /// they have the same values of Coordinates in their internal
-        /// Coordinate lists, in exactly the same order.
-        /// If this and the other <see cref="Geometry{TCoordinate}"/>s are
-        /// composites and any children are not <see cref="Geometry{TCoordinate}"/>s, returns
-        /// false.
-        /// This provides a stricter test of equality than <c>equals</c>.
-        /// </summary>
-        /// <param name="other">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/>.</param>
-        /// <returns>
-        /// <see langword="true"/> if this and the other <see cref="Geometry{TCoordinate}"/>
-        /// are of the same class and have equal internal data.
-        /// </returns>
-        public Boolean EqualsExact(IGeometry other)
-        {
-            return Equals(other, Tolerance.Zero);
         }
         
         #region IComparable<IGeometry<TCoordinate>> Members
@@ -517,7 +417,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
             }
 
-            if (IsEmpty && g.IsEmpty)
+            if (IsEmpty && g.IsEmpty || ReferenceEquals(this, g))
             {
                 return true;
             }
@@ -691,12 +591,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Byte[] AsBinary()
         {
-            return ToBinary();
+            return _factory.WkbWriter.Write(this);
         }
 
         public String AsText()
         {
-            return ToText();
+            return _factory.WktWriter.Write(this);
         }
 
         /// <summary> 
@@ -781,6 +681,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get
             {
                 // Polygon overrides to check for actual rectangle
+                if (Dimension == Dimensions.Surface)
+                {
+                    throw new InvalidOperationException(
+                        "This method must be overridden in 2D geometries.");
+                }
+
                 return false;
             }
         }
@@ -1091,75 +997,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region ISpatialRelation<TCoordinate> Members
 
-        /// <summary>
-        /// Returns true if the two <see cref="Geometry{TCoordinate}"/>s are 
-        /// exactly equal, up to a specified tolerance.
-        /// </summary>
-        /// <param name="other">
-        /// The <see cref="Geometry{TCoordinate}"/> with which to compare 
-        /// this <see cref="Geometry{TCoordinate}"/>.
-        /// </param>
-        /// <param name="tolerance">
-        /// Distance at or below which two <typeparamref name="TCoordinate"/>s 
-        /// will be considered equal.
-        /// </param>
-        /// <returns>
-        /// <see langword="true"/> if this and the other <see cref="Geometry{TCoordinate}"/>
-        /// are of the same class and have equal internal data.
-        /// </returns>
-        /// <remarks>
-        /// Two geometries are exactly within a tolerance equal iff:
-        /// <list type="bullet">
-        /// <item><description>they have the same class,</description></item>
-        /// <item>
-        /// <description>
-        /// they have the same values of <typeparamref name="TCoordinate"/>s , 
-        /// within the given tolerance distance, in their internal coordinate lists, 
-        /// in exactly the same order.
-        /// </description>
-        /// </item>
-        /// </list>
-        /// </para>
-        /// <para>
-        /// If this and the other <see cref="Geometry{TCoordinate}"/>s are
-        /// composites and any children are not <see cref="Geometry{TCoordinate}"/>s, 
-        /// returns false.
-        /// </para>
-        /// </remarks>
-        public abstract Boolean Equals(IGeometry<TCoordinate> other, Tolerance tolerance);
-
-        /// <summary>  
-        /// Returns <see langword="true"/> if the DE-9IM intersection matrix for the two
-        /// <see cref="Geometry{TCoordinate}"/>s is FT*******, F**T***** or F***T****.
-        /// </summary>
-        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/>.</param>
-        /// <returns>
-        /// <see langword="true"/> if the two <see cref="Geometry{TCoordinate}"/>s touch;
-        /// Returns false if both <see cref="Geometry{TCoordinate}"/>s are points.
-        /// </returns>
-        public Boolean Touches(IGeometry<TCoordinate> g)
-        {
-            // short-circuit test
-            if (!ExtentsInternal.Intersects(g.Extents))
-            {
-                return false;
-            }
-
-            return Relate(g).IsTouches(Dimension, g.Dimension);
-        }
-
-        public Boolean Touches(IGeometry<TCoordinate> g, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Returns <see langword="true"/> if <c>other.within(this)</c> returns <see langword="true"/>.
-        /// </summary>
-        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/>.</param>
-        /// <returns><see langword="true"/> if this <see cref="Geometry{TCoordinate}"/> contains <c>other</c>.</returns>
         public Boolean Contains(IGeometry<TCoordinate> g)
         {
+            if(g == null) throw new ArgumentNullException("g");
+
             // short-circuit test
             if (!ExtentsInternal.Contains(g.Extents))
             {
@@ -1181,33 +1022,62 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Returns <see langword="true"/> if the DE-9IM intersection matrix for the two
-        /// <see cref="Geometry{TCoordinate}"/>s is T*F**F***.
-        /// </summary>
-        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/>.</param>
-        /// <returns><see langword="true"/> if this <see cref="Geometry{TCoordinate}"/> is within <c>other</c>.</returns>
-        public Boolean Within(IGeometry<TCoordinate> g)
+        public Boolean CoveredBy(IGeometry<TCoordinate> g)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException("g");
-            }
+            if (g == null) throw new ArgumentNullException("g");
 
-            return g.Contains(this);
+            return g.Covers(this);
         }
 
-        public Boolean Within(IGeometry<TCoordinate> g, Tolerance tolerance)
+        public Boolean CoveredBy(IGeometry<TCoordinate> g, Tolerance tolerance)
+        {
+            if (g == null) throw new ArgumentNullException("g");
+
+            return g.Covers(this, tolerance);
+        }
+
+        public Boolean Covers(IGeometry<TCoordinate> g)
+        {
+            if (g == null) throw new ArgumentNullException("g");
+
+            // short-circuit test
+            if (!ExtentsInternal.Contains(g.Extents))
+            {
+                return false;
+            }
+
+            // optimization for rectangle arguments
+            if (IsRectangle)
+            {
+                return ExtentsInternal.Contains(g.Extents);
+            }
+
+            return Relate(g).IsCovers();
+        }
+
+        public Boolean Covers(IGeometry<TCoordinate> g, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>  
-        /// Returns <see langword="true"/> if the DE-9IM intersection matrix for the two
-        /// <see cref="Geometry{TCoordinate}"/>s is FF*FF****.
-        /// </summary>
-        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/>.</param>
-        /// <returns><see langword="true"/> if the two <see cref="Geometry{TCoordinate}"/>s are disjoint.</returns>
+        public Boolean Crosses(IGeometry<TCoordinate> g)
+        {
+            if (g == null) throw new ArgumentNullException("g");
+
+            // short-circuit test
+            if (!ExtentsInternal.Intersects(g.Extents))
+            {
+                return false;
+            }
+
+            return Relate(g).IsCrosses(Dimension, g.Dimension);
+        }
+
+        public Boolean Crosses(IGeometry<TCoordinate> g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
         public Boolean Disjoint(IGeometry<TCoordinate> g)
         {
             // short-circuit test
@@ -1224,68 +1094,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             throw new NotImplementedException();
         }
 
-        /// <summary>  
-        /// Returns <see langword="true"/> if the DE-9IM intersection matrix for the two
-        /// <see cref="Geometry{TCoordinate}"/>s is
-        ///  T*T****** (for a point and a curve, a point and an area or a line
-        /// and an area) 0******** (for two curves).
-        /// </summary>
-        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/>.</param>
-        /// <returns>
-        /// <see langword="true"/> if the two <see cref="Geometry{TCoordinate}"/>s cross.
-        /// For this function to return <see langword="true"/>, the <see cref="Geometry{TCoordinate}"/>
-        /// s must be a point and a curve; a point and a surface; two curves; or a
-        /// curve and a surface.
-        /// </returns>
-        public Boolean Crosses(IGeometry<TCoordinate> g)
-        {
-            // short-circuit test
-            if (!ExtentsInternal.Intersects(g.Extents))
-            {
-                return false;
-            }
+        public abstract Boolean Equals(IGeometry<TCoordinate> g, Tolerance tolerance);
 
-            return Relate(g).IsCrosses(Dimension, g.Dimension);
+        public Boolean EqualsExact(IGeometry<TCoordinate> g)
+        {
+            return EqualsExact(g, Tolerance.Zero);
         }
 
-        public Boolean Crosses(IGeometry<TCoordinate> g, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract Boolean EqualsExact(IGeometry<TCoordinate> g, Tolerance tolerance);
 
-        /// <summary>
-        /// Returns <see langword="true"/> if the DE-9IM intersection matrix for the two
-        /// <see cref="Geometry{TCoordinate}"/>s is
-        ///  T*T***T** (for two points or two surfaces)
-        ///  1*T***T** (for two curves).
-        /// </summary>
-        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/>.</param>
-        /// <returns>
-        /// <see langword="true"/> if the two <see cref="Geometry{TCoordinate}"/>s overlap.
-        /// For this function to return <see langword="true"/>, the <see cref="Geometry{TCoordinate}"/>
-        /// s must be two points, two curves or two surfaces.
-        /// </returns>
-        public Boolean Overlaps(IGeometry<TCoordinate> g)
-        {
-            // short-circuit test
-            if (!ExtentsInternal.Intersects(g.Extents))
-            {
-                return false;
-            }
-
-            return Relate(g).IsOverlaps(Dimension, g.Dimension);
-        }
-
-        public Boolean Overlaps(IGeometry<TCoordinate> g, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>  
-        /// Returns <see langword="true"/> if <c>disjoint</c> returns false.
-        /// </summary>
-        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/>.</param>
-        /// <returns><see langword="true"/> if the two <see cref="Geometry{TCoordinate}"/>s intersect.</returns>
         public Boolean Intersects(IGeometry<TCoordinate> g)
         {
             // short-circuit test
@@ -1313,13 +1130,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             throw new NotImplementedException();
         }
 
-        /// <summary> 
-        /// Tests whether the distance from this <see cref="Geometry{TCoordinate}"/>
-        /// to another is less than or equal to a specified value.
-        /// </summary>
-        /// <param name="geom">the Geometry to check the distance to.</param>
-        /// <param name="distance">the distance value to compare.</param>
-        /// <returns><see langword="true"/> if the geometries are less than <c>distance</c> apart.</returns>
         public Boolean IsWithinDistance(IGeometry<TCoordinate> geom, Double distance)
         {
             Double envDist = ExtentsInternal.Distance(geom.Extents);
@@ -1337,146 +1147,79 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             throw new NotImplementedException();
         }
 
-        public Boolean IsCoveredBy(IGeometry<TCoordinate> g)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Boolean IsCoveredBy(IGeometry<TCoordinate> g, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Returns <see langword="true"/> if this geometry covers the specified geometry.  
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// The <c>Covers</c> predicate has the following equivalent definitions:
-        ///     - Every point of the other geometry is a point of this geometry.
-        ///     - The DE-9IM Intersection Matrix for the two geometries is <c>T*****FF*</c> or <c>*T****FF*</c> or <c>***T**FF*</c> or <c>****T*FF*</c>.
-        ///     - <c>g.CoveredBy(this)</c> (<c>Covers</c> is the inverse of <c>CoveredBy</c>).
-        /// </para>
-        /// Note the difference between <c>Covers</c> and <c>Contains</c>: 
-        /// <c>Covers</c> is a more inclusive relation.
-        /// In particular, unlike <c>Contains</c> it does not distinguish between
-        /// points in the boundary and in the interior of geometries.      
-        /// <para>
-        /// For most situations, <c>Covers</c> should be used 
-        /// in preference to <c>Contains</c>.
-        /// As an added benefit, <c>Covers</c> is more amenable to 
-        /// optimization, and hence should be more highly performing.
-        /// </para>
-        /// </remarks>
-        /// <param name="other">
-        /// The <see cref="Geometry{TCoordinate}"/> with which to compare 
-        /// this <see cref="Geometry{TCoordinate}"/>.
-        /// </param>
-        /// <returns>
-        /// <see langword="true"/> if this <see cref="Geometry{TCoordinate}"/> 
-        /// covers <paramref name="other" />.
-        /// </returns>
-        /// <seealso cref="IGeometry{TCoordinate}.Contains(IGeometry{TCoordinate})" />
-        /// <seealso cref="IGeometry{TCoordinate}.Contains(IGeometry{TCoordinate}, Tolerance)" />
-        /// <seealso cref="IGeometry{TCoordinate}.Covers(IGeometry{TCoordinate}, Tolerance)" />
-        /// <seealso cref="Geometry{TCoordinate}.CoveredBy" />
-        public Boolean Covers(IGeometry<TCoordinate> other)
+        public Boolean Overlaps(IGeometry<TCoordinate> g)
         {
             // short-circuit test
-            if (!ExtentsInternal.Contains(other.Extents))
+            if (!ExtentsInternal.Intersects(g.Extents))
             {
                 return false;
             }
 
-            // optimization for rectangle arguments
-            if (IsRectangle)
-            {
-                return ExtentsInternal.Contains(other.Extents);
-            }
-
-            return Relate(other).IsCovers();
+            return Relate(g).IsOverlaps(Dimension, g.Dimension);
         }
 
-        public Boolean Covers(IGeometry<TCoordinate> other, Tolerance tolerance)
+        public Boolean Overlaps(IGeometry<TCoordinate> g, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
 
-        public Boolean Relate(IGeometry<TCoordinate> other, IntersectionMatrix intersectionPattern)
+        public Boolean Relate(IGeometry<TCoordinate> g, IntersectionMatrix intersectionPattern)
         {
             throw new NotImplementedException();
         }
 
-        public Boolean Relate(IGeometry<TCoordinate> other, IntersectionMatrix intersectionPattern, Tolerance tolerance)
+        public Boolean Relate(IGeometry<TCoordinate> g, IntersectionMatrix intersectionPattern, Tolerance tolerance)
         {
-            return Relate(other).Equals(intersectionPattern);
+            return Relate(g).Equals(intersectionPattern);
         }
 
-        /// <summary>  
-        /// Returns <see langword="true"/> if the elements in the DE-9IM intersection
-        /// matrix for the two <see cref="Geometry{TCoordinate}"/>s match the elements in 
-        /// <paramref name="intersectionPattern"/>.
-        /// </summary>
-        /// <param name="other">
-        /// The <see cref="Geometry{TCoordinate}"/> with which 
-        /// to compare this <see cref="Geometry{TCoordinate}"/>.
-        /// </param>
-        /// <param name="intersectionPattern">
-        /// The pattern against which to check the intersection matrix 
-        /// for the two <see cref="Geometry{TCoordinate}"/>s.
-        /// </param>
-        /// <returns><see langword="true"/> if the DE-9IM intersection matrix 
-        /// for the two <see cref="Geometry{TCoordinate}"/>s match <paramref name="intersectionPattern"/>.
-        /// </returns>
-        /// <remarks>
-        /// The elements in <paramref name="intersectionPattern"/> may be:
-        ///  0
-        ///  1
-        ///  2
-        ///  T ( = 0, 1 or 2)
-        ///  F ( = -1)
-        ///  * ( = -1, 0, 1 or 2)
-        /// For more information on the DE-9IM, see the OpenGIS Simple Features
-        /// Specification.
-        /// </remarks>
-        public Boolean Relate(IGeometry<TCoordinate> other, String intersectionPattern)
+        public Boolean Relate(IGeometry<TCoordinate> g, String intersectionPattern)
         {
-            return Relate(other).Matches(intersectionPattern);
+            return Relate(g).Matches(intersectionPattern);
         }
 
-        public Boolean Relate(IGeometry<TCoordinate> other, String intersectionPattern, Tolerance tolerance)
+        public Boolean Relate(IGeometry<TCoordinate> g, String intersectionPattern, Tolerance tolerance)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Returns the DE-9IM intersection matrix for the two 
-        /// <see cref="Geometry{TCoordinate}"/>s.
-        /// </summary>
-        /// <param name="other">
-        /// The <see cref="Geometry{TCoordinate}"/> with which to 
-        /// compare this <see cref="Geometry{TCoordinate}"/>.
-        /// </param>
-        /// <returns>
-        /// A matrix describing the intersections of the interiors,
-        /// boundaries and exteriors of the two <see cref="Geometry{TCoordinate}"/>s.
-        /// </returns>
-        public IntersectionMatrix Relate(IGeometry<TCoordinate> other)
+        public IntersectionMatrix Relate(IGeometry<TCoordinate> g)
         {
             CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection(other);
+            CheckNotGeometryCollection(g);
 
-            return RelateOp<TCoordinate>.Relate(this, other);
+            return RelateOp<TCoordinate>.Relate(this, g);
         }
 
-        #endregion
-
-        #region IGeometry Members
-
-
-        ICoordinateSystem IGeometry.SpatialReference
+        public Boolean Touches(IGeometry<TCoordinate> g)
         {
-            get { return SpatialReference; }
+            // short-circuit test
+            if (!ExtentsInternal.Intersects(g.Extents))
+            {
+                return false;
+            }
+
+            return Relate(g).IsTouches(Dimension, g.Dimension);
+        }
+
+        public Boolean Touches(IGeometry<TCoordinate> g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Boolean Within(IGeometry<TCoordinate> g)
+        {
+            if (g == null)
+            {
+                throw new ArgumentNullException("g");
+            }
+
+            return g.Contains(this);
+        }
+
+        public Boolean Within(IGeometry<TCoordinate> g, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -1486,11 +1229,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         IGeometry ISpatialOperator.Boundary
         {
             get { return Boundary; }
-        }
-
-        Double ISpatialOperator.Distance(IGeometry other)
-        {
-            return Distance(convertIGeometry(other));
         }
 
         IGeometry ISpatialOperator.Buffer(Double distance)
@@ -1508,29 +1246,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Buffer(distance, endCapStyle);
         }
 
-        IGeometry ISpatialOperator.Buffer(Double distance, Int32 quadrantSegments, BufferStyle endCapStyle)
+        IGeometry ISpatialOperator.Buffer(Double distance, 
+                                          Int32 quadrantSegments, 
+                                          BufferStyle endCapStyle)
         {
             return Buffer(distance, quadrantSegments, endCapStyle);
-        }
-
-        IGeometry ISpatialOperator.Intersection(IGeometry other)
-        {
-            return Intersection(convertIGeometry(other));
-        }
-
-        IGeometry ISpatialOperator.Union(IGeometry other)
-        {
-            return Union(convertIGeometry(other));
-        }
-
-        IGeometry ISpatialOperator.Difference(IGeometry other)
-        {
-            return Difference(convertIGeometry(other));
-        }
-
-        IGeometry ISpatialOperator.SymmetricDifference(IGeometry other)
-        {
-            return SymmetricDifference(convertIGeometry(other));
         }
 
         IGeometry ISpatialOperator.ConvexHull()
@@ -1538,24 +1258,34 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return ConvexHull();
         }
 
+        IGeometry ISpatialOperator.Difference(IGeometry other)
+        {
+            return Difference(convertIGeometry(other));
+        }
+
+        Double ISpatialOperator.Distance(IGeometry other)
+        {
+            return Distance(convertIGeometry(other));
+        }
+
+        IGeometry ISpatialOperator.Intersection(IGeometry other)
+        {
+            return Intersection(convertIGeometry(other));
+        }
+
+        IGeometry ISpatialOperator.SymmetricDifference(IGeometry other)
+        {
+            return SymmetricDifference(convertIGeometry(other));
+        }
+
+        IGeometry ISpatialOperator.Union(IGeometry other)
+        {
+            return Union(convertIGeometry(other));
+        }
+
         #endregion
 
         #region ISpatialRelation Members
-
-        Boolean ISpatialRelation.Equals(IGeometry other, Tolerance tolerance)
-        {
-            return Equals(convertIGeometry(other), tolerance);
-        }
-
-        Boolean ISpatialRelation.Touches(IGeometry other)
-        {
-            return Touches(convertIGeometry(other));
-        }
-
-        Boolean ISpatialRelation.Touches(IGeometry other, Tolerance tolerance)
-        {
-            return Touches(convertIGeometry(other), tolerance);
-        }
 
         Boolean ISpatialRelation.Contains(IGeometry other)
         {
@@ -1567,24 +1297,24 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Contains(convertIGeometry(other), tolerance);
         }
 
-        Boolean ISpatialRelation.Within(IGeometry other)
+        Boolean ISpatialRelation.CoveredBy(IGeometry other)
         {
-            return Within(convertIGeometry(other));
+            return other.Covers(this);
         }
 
-        Boolean ISpatialRelation.Within(IGeometry other, Tolerance tolerance)
+        Boolean ISpatialRelation.CoveredBy(IGeometry other, Tolerance tolerance)
         {
-            return Within(convertIGeometry(other), tolerance);
+            return other.Covers(this, tolerance);
         }
 
-        Boolean ISpatialRelation.Disjoint(IGeometry other)
+        Boolean ISpatialRelation.Covers(IGeometry other)
         {
-            return Disjoint(convertIGeometry(other));
+            return Covers(convertIGeometry(other));
         }
 
-        Boolean ISpatialRelation.Disjoint(IGeometry other, Tolerance tolerance)
+        Boolean ISpatialRelation.Covers(IGeometry other, Tolerance tolerance)
         {
-            return Disjoint(convertIGeometry(other), tolerance);
+            return Covers(convertIGeometry(other), tolerance);
         }
 
         Boolean ISpatialRelation.Crosses(IGeometry other)
@@ -1597,14 +1327,29 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Crosses(convertIGeometry(other), tolerance);
         }
 
-        Boolean ISpatialRelation.Overlaps(IGeometry other)
+        Boolean ISpatialRelation.Disjoint(IGeometry other)
         {
-            return Overlaps(convertIGeometry(other));
+            return Disjoint(convertIGeometry(other));
         }
 
-        Boolean ISpatialRelation.Overlaps(IGeometry other, Tolerance tolerance)
+        Boolean ISpatialRelation.Disjoint(IGeometry other, Tolerance tolerance)
         {
-            return Overlaps(convertIGeometry(other), tolerance);
+            return Disjoint(convertIGeometry(other), tolerance);
+        }
+
+        Boolean ISpatialRelation.Equals(IGeometry other, Tolerance tolerance)
+        {
+            return Equals(convertIGeometry(other), tolerance);
+        }
+
+        Boolean ISpatialRelation.EqualsExact(IGeometry other)
+        {
+            return EqualsExact(convertIGeometry(other));
+        }
+
+        Boolean ISpatialRelation.EqualsExact(IGeometry other, Tolerance tolerance)
+        {
+            return EqualsExact(convertIGeometry(other), tolerance);
         }
 
         Boolean ISpatialRelation.Intersects(IGeometry other)
@@ -1627,24 +1372,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return IsWithinDistance(convertIGeometry(other), distance, tolerance);
         }
 
-        Boolean ISpatialRelation.IsCoveredBy(IGeometry other)
+        Boolean ISpatialRelation.Overlaps(IGeometry other)
         {
-            return IsCoveredBy(convertIGeometry(other));
+            return Overlaps(convertIGeometry(other));
         }
 
-        Boolean ISpatialRelation.IsCoveredBy(IGeometry other, Tolerance tolerance)
+        Boolean ISpatialRelation.Overlaps(IGeometry other, Tolerance tolerance)
         {
-            return IsCoveredBy(convertIGeometry(other), tolerance);
-        }
-
-        Boolean ISpatialRelation.Covers(IGeometry other)
-        {
-            return Covers(convertIGeometry(other));
-        }
-
-        Boolean ISpatialRelation.Covers(IGeometry other, Tolerance tolerance)
-        {
-            return Covers(convertIGeometry(other), tolerance);
+            return Overlaps(convertIGeometry(other), tolerance);
         }
 
         Boolean ISpatialRelation.Relate(IGeometry other, IntersectionMatrix intersectionPattern)
@@ -1672,6 +1407,26 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Relate(convertIGeometry(other));
         }
 
+        Boolean ISpatialRelation.Touches(IGeometry other)
+        {
+            return Touches(convertIGeometry(other));
+        }
+
+        Boolean ISpatialRelation.Touches(IGeometry other, Tolerance tolerance)
+        {
+            return Touches(convertIGeometry(other), tolerance);
+        }
+
+        Boolean ISpatialRelation.Within(IGeometry other)
+        {
+            return Within(convertIGeometry(other));
+        }
+
+        Boolean ISpatialRelation.Within(IGeometry other, Tolerance tolerance)
+        {
+            return Within(convertIGeometry(other), tolerance);
+        }
+
         #endregion
 
         #region IBoundable<IExtents<TCoordinate>> Members
@@ -1688,22 +1443,31 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #endregion
 
+        #region Explicit IGeometry Members
+        ICoordinateSystem IGeometry.SpatialReference
+        {
+            get { return SpatialReference; }
+        }
+
+        #endregion
+
+        #region Protected helper members
         protected static Boolean Equal(TCoordinate a, TCoordinate b, Tolerance tolerance)
         {
-            if (tolerance == Tolerance.Zero)
-            {
-                return a.Equals(b);
-            }
-
-            return tolerance.Equal(0, a.Distance(b));
+            return tolerance == Tolerance.Zero 
+                ? a.Equals(b) 
+                : tolerance.Equal(0, a.Distance(b));
         }
 
         /// <summary> 
-        /// Returns the minimum and maximum x and y values in this <see cref="Geometry{TCoordinate}"/>
-        /// , or a null <see cref="Extents{TCoordinate}"/> if this <see cref="Geometry{TCoordinate}"/> is empty.
+        /// Returns the minimum and maximum x and y values in this 
+        /// <see cref="Geometry{TCoordinate}"/>, or a null 
+        /// <see cref="Extents{TCoordinate}"/> if this 
+        /// <see cref="Geometry{TCoordinate}"/> is empty.
         /// </summary>
         /// <returns>    
-        /// This <see cref="Geometry{TCoordinate}"/>s bounding box; if the <see cref="Geometry{TCoordinate}"/>
+        /// This <see cref="Geometry{TCoordinate}"/>s bounding box; 
+        /// if the <see cref="Geometry{TCoordinate}"/>
         /// is empty, <c>Envelope.IsNull</c> will return <see langword="true"/>.
         /// </returns>
         protected Extents<TCoordinate> ExtentsInternal
@@ -1724,18 +1488,24 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns whether the two <see cref="Geometry{TCoordinate}"/>s are equal, from the point
-        /// of view of the <c>EqualsExact</c> method. Called by <c>EqualsExact</c>
-        /// . In general, two <see cref="Geometry{TCoordinate}"/> classes are considered to be
-        /// "equivalent" only if they are the same class. An exception is <c>LineString</c>
-        /// , which is considered to be equivalent to its subclasses.
+        /// Returns whether the two <see cref="Geometry{TCoordinate}"/>s are equal, 
+        /// from the point of view of the <see cref="EqualsExact"/> method. 
+        /// Called by <c>EqualsExact</c>. In general, two 
+        /// <see cref="Geometry{TCoordinate}"/> classes are considered to be
+        /// "equivalent" only if they are the same class. 
+        /// An exception is <c>LineString</c>, which is considered to be 
+        /// equivalent to its subclasses.
         /// </summary>
-        /// <param name="other">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/> for equality.</param>
+        /// <param name="other">
+        /// The <see cref="Geometry{TCoordinate}"/> with which to compare 
+        /// this <see cref="Geometry{TCoordinate}"/> for equality.
+        /// </param>
         /// <returns>
-        /// <see langword="true"/> if the classes of the two <see cref="Geometry{TCoordinate}"/>
-        /// s are considered to be equal by the <c>equalsExact</c> method.
+        /// <see langword="true"/> if the classes of the two 
+        /// <see cref="Geometry{TCoordinate}"/>s are considered 
+        /// to be equal by the <see cref="EqualsExact"/> method.
         /// </returns>
-        protected Boolean IsEquivalentClass(IGeometry other)
+        protected virtual Boolean IsEquivalentClass(IGeometry other)
         {
             return GetType() == other.GetType();
         }
@@ -1804,6 +1574,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         protected internal abstract Int32 CompareToSameClass(IGeometry<TCoordinate> other);
 
+        #endregion
+
+        #region Private helper members
         private static IGeometry<TCoordinate> convertIGeometry(IGeometry other)
         {
             return GenericInterfaceConverter<TCoordinate>.Convert(other);
@@ -1819,7 +1592,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </exception>        
         private static Boolean isGeometryCollection(IGeometry g)
         {
-            return g is IGeometryCollection;
+            return g is IGeometryCollection &&
+                !(g is IMultiPoint) &&
+                !(g is IMultiCurve) &&
+                !(g is IMultiSurface);
         }
 
         private static IPoint<TCoordinate> createPointFromInternalCoord(TCoordinate coord, IGeometry<TCoordinate> exemplar)
@@ -1875,6 +1651,47 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return true;
         }
 
+        #endregion
+
+        #region Deprecated
+
+        /*
+         * [codekaizen 2008-04-15]  I'm considering these harmful at the moment, given that
+         *                          .Net provides ReferenceEquals.
+         */
+        //public static Boolean operator ==(Geometry<TCoordinate> left, IGeometry<TCoordinate> right)
+        //{
+        //    return Equals(left, right);
+        //}
+
+        //public static Boolean operator !=(Geometry<TCoordinate> left, IGeometry<TCoordinate> right)
+        //{
+        //    return !(left == right);
+        //}
+
+        /*
+         * [codekaizen 2008-01-14]  replaced the following external notification methods
+         *                          with an event on ICoordinateSequence.
+         */
+        ///// <summary>
+        ///// Notifies this Geometry that its Coordinates have been changed by an external
+        ///// party (using a CoordinateFilter, for example). The Geometry will flush
+        ///// and/or update any information it has cached (such as its Envelope).
+        ///// </summary>
+        //public void GeometryChanged()
+        //{
+        //    Apply(new GeometryChangedFilter());
+        //}
+
+        ///// <summary> 
+        ///// Notifies this Geometry that its Coordinates have been changed by an external
+        ///// party. When GeometryChanged is called, this method will be called for
+        ///// this Geometry and its component Geometries.
+        ///// </summary>
+        //public void GeometryChangedAction()
+        //{
+        //    ExtentsInternal = null;
+        //}
 
         /*
          * [codekaizen 2008-01-14]  Removed this method due to the removal of 
@@ -1995,6 +1812,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         //public static readonly IGeometryFactory<TCoordinate> DefaultFactory = GeometryFactory<TCoordinate>.Default;
 
         // ============= END ADDED BY MPAUL42: monoGIS team
-
+        #endregion 
     }
 }

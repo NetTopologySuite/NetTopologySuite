@@ -13,9 +13,20 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// <para>
     /// If the labeled component is an area edge, each side and the edge itself
     /// have a topological location.  These locations are named:
-    ///  On: on the edge
-    ///  Left: left-hand side of the edge
-    ///  Right: right-hand side
+    /// <list type="table">
+    /// <item>
+    /// <term>On</term>
+    /// <description>on the edge</description>
+    /// </item>
+    /// <item>
+    /// <term>Left</term>
+    /// <description>left-hand side of the edge</description>
+    /// </item>
+    /// <item>
+    /// <term>Right</term>
+    /// <description>right-hand side</description>
+    /// </item>
+    /// </list>
     /// </para>
     /// <para>
     /// If the labeled component is a line edge or node, there is a single
@@ -32,13 +43,28 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// <see cref="Positions.On"/>, <see cref="Positions.Left"/> and 
     /// <see cref="Positions.Right"/>, respectively.
     /// </para>
+    /// <para>
+    /// In NTS v2.0, <see cref="TopologyLocation"/> was reconceived 
+    /// as a value type due to the semantics of its use as well as the 
+    /// compactness of its scope. This change alters method signatures
+    /// to allow taking a <see cref="TopologyLocation"/> instance and 
+    /// generating a new one based on method and parameters, since all 
+    /// the internal fields are now read-only. This enforces the value 
+    /// semantics of the type, and helps avoid cases of trying to modify 
+    /// the value in a local scope, and having those changes lost when the 
+    /// scope is exited. The internal representation of TopologyLocation has 
+    /// also been modified to fit all <see cref="Locations"/> attributes 
+    /// into a single <see cref="Int32"/> field, creating a highly 
+    /// compact and lightweight representation, reducing memory pressure 
+    /// and GC burden in complex <see cref="GeometryGraph{TCoordinate}"/>s.
+    /// </para>
     /// </remarks>
     public struct TopologyLocation : IEquatable<TopologyLocation>
     {
         private const Int32 AllLocationsNone =
-            ((SByte)Locations.None) << 16 |
-            ((SByte)Locations.None) << 8 |
-            (SByte)Locations.None;
+            ((Byte)Locations.None) << 16 |
+            ((Byte)Locations.None) << 8 |
+             (Byte)Locations.None;
 
         private const Int32 OnOffset = 16;
         private const Int32 LeftOffset = 8;
@@ -48,7 +74,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         private const UInt32 LeftMask = 0xFFFF00FF;
         private const UInt32 RightMask = 0xFFFFFF00;
 
-        public static readonly TopologyLocation None = new TopologyLocation(AllLocationsNone);
+        private const UInt32 NoneMask = 0xFF7F7F7F;
+
+        public static readonly TopologyLocation None 
+            = new TopologyLocation(AllLocationsNone);
 
         private Int32 _locations;
 
@@ -145,10 +174,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public Boolean IsNone
         {
-            get
-            {
-                return _locations == AllLocationsNone;
-            }
+            get { return _locations == AllLocationsNone; }
         }
 
         /// <summary>
@@ -239,7 +265,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return (Locations)(SByte)(_locations >> OnOffset);
+                return (Locations)(Byte)(_locations >> OnOffset);
             }
         }
 
@@ -252,7 +278,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return (Locations)(SByte)(_locations >> LeftOffset);
+                return (Locations)(Byte)(_locations >> LeftOffset);
             }
         }
 
@@ -265,7 +291,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return (Locations)(SByte)(_locations >> RightOffset);
+                return (Locations)(Byte)(_locations >> RightOffset);
             }
         }
 
@@ -297,13 +323,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </remarks>
         public TopologyLocation Merge(TopologyLocation other)
         {
-            // if the src is an Area location & and the dest is not, 
-            // increase the dest to be an Area
-            Locations on = On == Locations.None ? other.On : On;
-            Locations left = Left == Locations.None ? other.Left : Left;
-            Locations right = Right == Locations.None ? other.Right : Right;
-
-            return new TopologyLocation(on, left, right);
+            unchecked
+            {
+                // Suppress the None bit so it doesn't emerge in the output
+                Int32 merge = (Int32)(NoneMask & (UInt32)_locations | 
+                                      NoneMask & (UInt32)other._locations);
+                // add the Locations.None bit back if it exists in both locations
+                merge |= _locations & other._locations;
+                return new TopologyLocation(merge);
+            }
         }
 
         public override string ToString()
@@ -342,19 +370,21 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             unchecked
             {
+                Byte locValueByte = (Byte) locValue;
+
                 switch (locIndex)
                 {
                     case Positions.On:
                         locations &= (Int32)OnMask;
-                        locations |= ((SByte)locValue) << OnOffset;
+                        locations |= locValueByte << OnOffset;
                         break;
                     case Positions.Left:
                         locations &= (Int32)LeftMask;
-                        locations |= ((SByte)locValue) << LeftOffset;
+                        locations |= locValueByte << LeftOffset;
                         break;
                     case Positions.Right:
                         locations &= (Int32)RightMask;
-                        locations |= ((SByte)locValue) << RightOffset;
+                        locations |= locValueByte << RightOffset;
                         break;
                     //case Positions.Parallel:
                     default:

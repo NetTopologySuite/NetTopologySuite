@@ -1086,7 +1086,7 @@ namespace ManagedBufferedCoordinate2DTests
         {
             Int32 mainLength = 12;
             Int32 sliceLength = mainLength - 2;
-            SequenceGenerator generator = new SequenceGenerator(BigMaxLimit, mainLength);
+            SequenceGenerator generator = new SequenceGenerator(mainLength, 3, 0);
             IBufferedCoordSequence slice = generator.Sequence.Slice(1, sliceLength);
 
             Assert.IsTrue(slice.Remove(generator.MainList[3]));

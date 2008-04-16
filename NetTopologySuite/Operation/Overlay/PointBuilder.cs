@@ -29,10 +29,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         }
 
         /// <returns>
-        /// A list of the Points in the result of the specified overlay operation.
+        /// A list of the <see cref="IPoint{TCoordinate}"/>s in the result 
+        /// of the specified overlay operation.
         /// </returns>
         public IEnumerable<IPoint<TCoordinate>> Build(SpatialFunctions opCode)
         {
+            // in JTS 1.7, there is a function 'extractNonCoveredResultNodes'
+            // which is used instead
             IEnumerable<Node<TCoordinate>> nodeList = collectNodes(opCode);
             IEnumerable<IPoint<TCoordinate>> resultPointList = simplifyPoints(nodeList);
             return resultPointList;
@@ -56,15 +59,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             }
         }
 
-        /// <summary>
-        /// This method simplifies the resultant Geometry by finding and eliminating
-        /// "covered" points.
-        /// A point is covered if it is contained in another element Geometry
-        /// with higher dimension (e.g. a point might be contained in a polygon,
-        /// in which case the point can be eliminated from the resultant).
-        /// </summary>
-        /// <param name="resultNodeList"></param>
-        /// <returns></returns>
+        // This method simplifies the resultant Geometry by finding and eliminating
+        // "covered" points.
+        // A point is covered if it is contained in another element Geometry
+        // with higher dimension (e.g. a point might be contained in a polygon,
+        // in which case the point can be eliminated from the resultant).
         private IEnumerable<IPoint<TCoordinate>> simplifyPoints(IEnumerable<Node<TCoordinate>> resultNodeList)
         {
             foreach (Node<TCoordinate> node in resultNodeList)

@@ -58,10 +58,10 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
-        internal BufferedCoordinate2DSequence(List<Int32> sequence,
-                                              BufferedCoordinate2DSequenceFactory factory,
-                                              IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer)
-            : this(false, sequence, null, null, null, null, null, factory, buffer) { }
+        //internal BufferedCoordinate2DSequence(List<Int32> sequence,
+        //                                      BufferedCoordinate2DSequenceFactory factory,
+        //                                      IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer)
+        //    : this(false, sequence, null, null, null, null, null, factory, buffer) { }
 
         internal BufferedCoordinate2DSequence(Boolean reverse,
                                               List<Int32> sequence,
@@ -295,6 +295,11 @@ namespace NetTopologySuite.Coordinates
 
         public Boolean Contains(BufferedCoordinate2D item)
         {
+            if (!ReferenceEquals(item.Factory, _factory.CoordinateFactory))
+            {
+                return false;
+            }
+
             Int32 coordIndex = item.Index;
             return _sequence.Contains(coordIndex);
         }
@@ -370,6 +375,11 @@ namespace NetTopologySuite.Coordinates
 
         public Boolean Equals(IBufferedCoordSequence other)
         {
+            return Equals(other, Tolerance.Zero);
+        }
+
+        public Boolean Equals(IBufferedCoordSequence other, Tolerance tolerance)
+        {
             if (ReferenceEquals(other, null))
             {
                 return false;
@@ -389,7 +399,12 @@ namespace NetTopologySuite.Coordinates
             {
                 for (Int32 index = 0; index < count; index++)
                 {
-                    if (!this[index].Equals(other[index]))
+                    if (this[index].Equals(other[index]))
+                    {
+                        continue;
+                    }
+
+                    if (!tolerance.Equal(0, this[index].Distance(other[index])))
                     {
                         return false;
                     }
@@ -707,7 +722,8 @@ namespace NetTopologySuite.Coordinates
 
         public IBufferedCoordSequence Merge(IBufferedCoordSequence other)
         {
-            throw new NotImplementedException();
+            IBufferedCoordSequence seq = _factory.Create(this);
+            return seq.Append(other);
         }
 
         public BufferedCoordinate2D Minimum
@@ -912,16 +928,52 @@ namespace NetTopologySuite.Coordinates
 
         public IBufferedCoordSequence Scroll(BufferedCoordinate2D coordinateToBecomeFirst)
         {
-            checkFrozen();
-            OnSequenceChanged();
-            throw new NotImplementedException();
+            Int32 index = IndexOf(coordinateToBecomeFirst);
+
+            if (index < 0)
+            {
+                throw new ArgumentOutOfRangeException("coordinateToBecomeFirst", 
+                                                      coordinateToBecomeFirst,
+                                                      "Coordinate not found.");
+            }
+
+            return Scroll(index);
         }
 
         public IBufferedCoordSequence Scroll(Int32 indexToBecomeFirst)
         {
+            checkIndex(indexToBecomeFirst, "indexToBecomeFirst");
+
+            // TODO: consider using an internal start offset instead of a copy
+            // also, not using the indexer on this sequence would boost performance.
+            // 
+            // This is a rather naive implementation, which should be adequate, as 
+            // this method is used infrequently.
             checkFrozen();
+            Int32 count = Count;
+            List<Int32> scrolled = new List<Int32>(count);
+
+            for (Int32 i = indexToBecomeFirst; i < count; i++)
+            {
+                scrolled.Add(this[i].Index);
+            }
+
+            for (int i = 0; i < indexToBecomeFirst; i++)
+            {
+                scrolled.Add(this[i].Index);
+            }
+
+            _prependedIndexes = null;
+            _appendedIndexes = null;
+            _skipIndexes = null;
+            _startIndex = -1;
+            _endIndex = -1;
+            _reversed = false;
+            _sequence = scrolled;
+
             OnSequenceChanged();
-            throw new NotImplementedException();
+
+            return this;
         }
 
         public IBufferedCoordSequence Slice(Int32 startIndex, Int32 endIndex)
@@ -1309,6 +1361,7 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
+        #region Explicit ICoordinateSequence Members
         IExtents ICoordinateSequence.ExpandExtents(IExtents extents)
         {
             IExtents expanded = extents;
@@ -1347,11 +1400,46 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
+        Boolean ICoordinateSequence.Equals(ICoordinateSequence other, Tolerance tolerance)
+        {
+            throw new NotImplementedException();
+        }
+
+        ICoordinateSequence ICoordinateSequence.Freeze()
+        {
+            return Freeze();
+        }
+
+        ICoordinate ICoordinateSequence.Maximum
+        {
+            get { return Maximum; }
+        }
+
+        ICoordinate ICoordinateSequence.Minimum
+        {
+            get { return Minimum; }
+        }
+
+        ICoordinateSequence ICoordinateSequence.Reverse()
+        {
+            return Reverse();
+        }
+
+        ICoordinateSequence ICoordinateSequence.Reversed
+        {
+            get { return Reversed; }
+        }
+
+        #endregion
+
+        #region Explicit IEnumerable Members
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
+        #endregion
 
+        #region Explicit IList Members
         Object IList.this[Int32 index]
         {
             get { return this[index]; }
@@ -1419,6 +1507,18 @@ namespace NetTopologySuite.Coordinates
             Insert(index, _factory.CoordinateFactory.Create(coord));
         }
 
+        void IList.Clear()
+        {
+            Clear();
+        }
+
+        void IList.RemoveAt(Int32 index)
+        {
+            RemoveAt(index);
+        }
+        #endregion
+
+        #region Explicit ICollection Members
         void ICollection.CopyTo(Array array, Int32 index)
         {
             checkCopyToParameters(array, index, "index");
@@ -1448,9 +1548,9 @@ namespace NetTopologySuite.Coordinates
         {
             return Clone();
         }
+        #endregion
 
-        #region IList<BufferedCoordinate2D> Members
-
+        #region Explicit IList<BufferedCoordinate2D> Members
 
         void IList<BufferedCoordinate2D>.Insert(Int32 index, BufferedCoordinate2D item)
         {
@@ -1464,56 +1564,11 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region ICoordinateSequence Members
-
-        ICoordinateSequence ICoordinateSequence.Freeze()
-        {
-            return Freeze();
-        }
-
-        ICoordinate ICoordinateSequence.Maximum
-        {
-            get { return Maximum; }
-        }
-
-        ICoordinate ICoordinateSequence.Minimum
-        {
-            get { return Minimum; }
-        }
-
-        ICoordinateSequence ICoordinateSequence.Reverse()
-        {
-            return Reverse();
-        }
-
-        ICoordinateSequence ICoordinateSequence.Reversed
-        {
-            get { return Reversed; }
-        }
-
-        #endregion
-
-        #region ICollection<BufferedCoordinate2D> Members
-
+        #region Explicit ICollection<BufferedCoordinate2D> Members
 
         void ICollection<BufferedCoordinate2D>.Clear()
         {
             Clear();
-        }
-
-        #endregion
-
-        #region IList Members
-
-
-        void IList.Clear()
-        {
-            Clear();
-        }
-
-        void IList.RemoveAt(Int32 index)
-        {
-            RemoveAt(index);
         }
 
         #endregion
@@ -1560,6 +1615,7 @@ namespace NetTopologySuite.Coordinates
             _max = sequence._max;
         }
 
+        #region Private helper members
         //private void swap(Int32 i, Int32 j)
         //{
         //    //checkIndex(i, "i");
@@ -2172,5 +2228,6 @@ namespace NetTopologySuite.Coordinates
             List<Int32> list = getStorage(storage);
             return list[index];
         }
+        #endregion
     }
 }

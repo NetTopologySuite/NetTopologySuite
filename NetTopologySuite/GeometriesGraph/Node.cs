@@ -1,12 +1,17 @@
 using System;
 using System.Diagnostics;
-using System.IO;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Algorithm;
+using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
+    /// <summary>
+    /// Represents a node in a <see cref="GeometryGraph{TCoordinate}"/>.
+    /// </summary>
+    /// <typeparam name="TCoordinate">The type of coordinate.</typeparam>
     public class Node<TCoordinate> : GraphComponent<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
@@ -16,6 +21,16 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         private readonly TCoordinate _coord;
         private readonly EdgeEndStar<TCoordinate> _edges;
 
+        /// <summary>
+        /// Creates a new <see cref="Node{TCoordinate}"/> instance at the given
+        /// <typeparamref name="TCoordinate"/> and with an 
+        /// <see cref="EdgeEndStar{TCoordinate}"/> to maintain an ordered list of
+        /// incident edges.
+        /// </summary>
+        /// <param name="coord">The coordinate which the node models.</param>
+        /// <param name="edges">
+        /// An <see cref="EdgeEndStar{TCoordinate}"/> to maintain incident edges.
+        /// </param>
         public Node(TCoordinate coord, EdgeEndStar<TCoordinate> edges)
         {
             _coord = coord;
@@ -28,6 +43,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             get { return _coord; }
         }
 
+        /// <summary>
+        /// An <see cref="EdgeEndStar{TCoordinate}"/> used to keep an ordered
+        /// list of incident edges on the node.
+        /// </summary>
         public EdgeEndStar<TCoordinate> Edges
         {
             get { return _edges; }
@@ -53,6 +72,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             e.Node = this;
         }
 
+        /// <summary>
+        /// Merges the given <see cref="Node{TCoordinate}"/>'s
+        /// <see cref="Node{TCoordinate}.Label"/> to this <see cref="Label"/>.
+        /// </summary>
+        /// <seealso cref="MergeLabel(Label)"/>
         public void MergeLabel(Node<TCoordinate> n)
         {
             if (n.Label != null)
@@ -80,51 +104,52 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
                 if (thisLoc == Locations.None)
                 {
-                    Label = Label == null ? new Label(i, loc) : new Label(Label.Value, i, loc);
+                    Label = Label == null 
+                        ? new Label(i, loc) 
+                        : new Label(Label.Value, i, loc);
                 }
             }
         }
 
+        /// <summary>
+        /// Sets this node's <see cref="Label"/> for the given geometry
+        /// (at <paramref name="geometryIndex"/>) to the given location for the 
+        /// 'On' position.
+        /// </summary>
+        /// <param name="geometryIndex">
+        /// The <see cref="Geometry{TCoordinate}"/> to set the label location of.
+        /// </param>
+        /// <param name="onLocation">
+        /// The <see cref="Locations"/> value to set the 'On' position of the
+        /// given geometry to.
+        /// </param>
         public void SetLabel(Int32 geometryIndex, Locations onLocation)
         {
-            if (Label == null)
-            {
-                Label = new Label(geometryIndex, onLocation);
-            }
-            else
-            {
-                Label = new Label(Label.Value, geometryIndex, onLocation);
-            }
+            Label = Label == null 
+                ? new Label(geometryIndex, onLocation) 
+                : new Label(Label.Value, geometryIndex, onLocation);
         }
 
         /// <summary> 
-        /// Updates the label of a node to BOUNDARY,
-        /// obeying the mod-2 boundaryDetermination rule.
+        /// Updates the label of a node to <see cref="Locations.Boundary"/>,
+        /// obeying the mod-2 boundary determination rule.
         /// </summary>
+        /// <seealso cref="Mod2BoundaryNodeRule"/>
         public void SetLabelBoundary(Int32 geometryIndex)
         {
             Debug.Assert(Label.HasValue);
 
+            Label label = Label.Value;
+
             // determine the current location for the point (if any)
-            Locations loc = Label.Value[geometryIndex].On;
+            Locations loc = label[geometryIndex, Positions.On];
 
-            // flip the loc
-            Locations newLoc;
+            // flip the loc, which implements mod-2 (every other is non-bounary)
+            Locations newLoc = loc == Locations.Boundary
+                                   ? Locations.Interior
+                                   : Locations.Boundary;
 
-            switch (loc)
-            {
-                case Locations.Boundary:
-                    newLoc = Locations.Interior;
-                    break;
-                case Locations.Interior:
-                    newLoc = Locations.Boundary;
-                    break;
-                default:
-                    newLoc = Locations.Boundary;
-                    break;
-            }
-
-            Label = new Label(Label.Value, geometryIndex, newLoc);
+            Label = new Label(label, geometryIndex, newLoc);
         }
 
         /// <summary>
@@ -159,14 +184,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             return loc;
         }
 
-        //public void Write(StreamWriter outstream)
-        //{
-        //    outstream.WriteLine("node " + Coordinate + " lbl: " + Label);
-        //}
-
         public override String ToString()
         {
             return Coordinate + " " + Label + " " + _edges;
         }
+
+        //public void Write(StreamWriter outstream)
+        //{
+        //    outstream.WriteLine("node " + Coordinate + " lbl: " + Label);
+        //}
     }
 }

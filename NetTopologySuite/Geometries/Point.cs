@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.CoordinateSystems;
 using GeoAPI.Geometries;
@@ -10,9 +11,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Basic implementation of <see cref="IPoint"/>.
     /// </summary>
     [Serializable]
-    public class Point<TCoordinate> : Geometry<TCoordinate>, IPoint<TCoordinate>, IPoint2D
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+    public class Point<TCoordinate> : Geometry<TCoordinate>, 
+                                      IPoint<TCoordinate>, 
+                                      IPoint2D
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         /// <summary>
         /// Represents an empty <see cref="Point{TCoordinate}"/>.
@@ -144,6 +148,26 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
 
             return Equal(otherPoint.Coordinate, Coordinate, tolerance);
+        }
+
+        public override Boolean EqualsExact(IGeometry<TCoordinate> g, Tolerance tolerance)
+        {
+            if (g == null) throw new ArgumentNullException("g");
+
+            if (!IsEquivalentClass(g))
+            {
+                return false;
+            }
+
+            if (IsEmpty && g.IsEmpty)
+            {
+                return true;
+            }
+
+            IPoint<TCoordinate> point = g as IPoint<TCoordinate>;
+            Debug.Assert(point != null);
+
+            return tolerance.Equal(0, _coordinate.Distance(point.Coordinate));
         }
 
         public override IGeometry<TCoordinate> Clone()

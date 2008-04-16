@@ -14,9 +14,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Basic implementation of <c>LineString</c>.
     /// </summary>  
     [Serializable]
-    public class LineString<TCoordinate> : MultiCoordinateGeometry<TCoordinate>, ILineString<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+    public class LineString<TCoordinate> : MultiCoordinateGeometry<TCoordinate>, 
+                                           ILineString<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         ///// <summary>
         ///// Represents an empty <c>LineString</c>.
@@ -433,6 +435,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
 
             return 0;
+        }
+
+        protected override Boolean IsEquivalentClass(IGeometry other)
+        {
+            return other is ILineString<TCoordinate>;
         }
     }
 }

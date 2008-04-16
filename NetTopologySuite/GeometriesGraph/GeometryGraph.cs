@@ -12,11 +12,14 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     /// <summary>
-    /// A GeometryGraph is a graph that models a given Geometry.
+    /// A <see cref="GeometryGraph{TCoordinate}"/> is a graph that models a given 
+    /// <see cref="Geometry"/>, where nodes and edges in the graph
+    /// correspond to vertexes and line segments in the geometry.
     /// </summary>
     public class GeometryGraph<TCoordinate> : PlanarGraph<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         private readonly IGeometry<TCoordinate> _parentGeometry;
 
@@ -120,8 +123,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         }
 
         /// <summary> 
-        /// Add an Edge computed externally.  The label on the Edge is assumed
-        /// to be correct.
+        /// Add an <see cref="Edge{TCoordinate}"/> computed externally.  
+        /// The <see cref="Label"/> on the edge is assumed to be correct.
         /// </summary>
         public void AddEdge(Edge<TCoordinate> e)
         {
@@ -135,7 +138,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         /// <summary>
         /// Add a point computed externally.  The point is assumed to be a
-        /// Point Geometry part, which has a location of INTERIOR.
+        /// <see cref="IPoint{TCoordinate}"/> geometry part, 
+        /// which has a location of <see cref="Locations.Interior"/>.
         /// </summary>
         public void AddPoint(TCoordinate pt)
         {
@@ -143,13 +147,21 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// Compute self-nodes, taking advantage of the Geometry type to
-        /// minimize the number of intersection tests.  (E.g. rings are
+        /// Compute self-nodes, taking advantage of the <see cref="OgcGeometryType"/> 
+        /// to minimize the number of intersection tests, if possible (e.g. rings are
         /// not tested for self-intersection, since they are assumed to be valid).
         /// </summary>
-        /// <param name="li">The <c>LineIntersector</c> to use.</param>
-        /// <param name="computeRingSelfNodes">If <c>false</c>, intersection checks are optimized to not test rings for self-intersection.</param>
-        /// <returns>The SegmentIntersector used, containing information about the intersections found.</returns>
+        /// <param name="li">
+        /// The <see cref="LineIntersector{TCoordinate}"/> to use.
+        /// </param>
+        /// <param name="computeRingSelfNodes">
+        /// If <see langword="false"/>, intersection checks are optimized 
+        /// to not test rings for self-intersection.
+        /// </param>
+        /// <returns>
+        /// The <see cref="SegmentIntersector{TCoordinate}"/> used, 
+        /// containing information about the intersections found.
+        /// </returns>
         public SegmentIntersector<TCoordinate> ComputeSelfNodes(
                                                 LineIntersector<TCoordinate> li, 
                                                 Boolean computeRingSelfNodes)
@@ -159,16 +171,19 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                                                                                      false);
             EdgeSetIntersector<TCoordinate> esi = createEdgeSetIntersector();
 
-            // optimized test for Polygons and Rings
+            // optimized test for Polygons and Rings: don't test for self-intersections
+            // since a property of valid rings and polygons is that they don't
+            // self-intersect
             if (!computeRingSelfNodes &&
-                (_parentGeometry is ILinearRing<TCoordinate>
-                    || _parentGeometry is IPolygon<TCoordinate>
-                    || _parentGeometry is IMultiPolygon<TCoordinate>))
+                (_parentGeometry is ILinearRing<TCoordinate> ||
+                 _parentGeometry is IPolygon<TCoordinate> || 
+                 _parentGeometry is IMultiPolygon<TCoordinate>))
             {
                 esi.ComputeIntersections(Edges, si, false);
             }
             else
             {
+                // Lines can self-intersect, so we'll have to test for it
                 esi.ComputeIntersections(Edges, si, true);
             }
 
@@ -181,8 +196,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                                                     LineIntersector<TCoordinate> li, 
                                                     Boolean includeProper)
         {
-            SegmentIntersector<TCoordinate> si = new SegmentIntersector<TCoordinate>(
-                                                        li, includeProper, true);
+            SegmentIntersector<TCoordinate> si 
+                = new SegmentIntersector<TCoordinate>(li, includeProper, true);
 
             si.SetBoundaryNodes(BoundaryNodes, g.BoundaryNodes);
             EdgeSetIntersector<TCoordinate> esi = createEdgeSetIntersector();
@@ -440,7 +455,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         private static EdgeSetIntersector<TCoordinate> createEdgeSetIntersector()
         {
-            // various options for computing intersections, from slowest to fastest                    
+            // [codekaizen 2008-04-16] Just use the 
+            //                         SimpleMonotoneChaingSweepLineIntersector,
+            //                         since it is the fastest, and other are commented
+            //                         out in JTS source...
             return new SimpleMonotoneChaingSweepLineIntersector<TCoordinate>();
         }
     }

@@ -35,8 +35,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// Attributes have a value from the set <c>{Interior, Boundary, Exterior}</c>.  
     /// In a node each element has a single attribute <c>On</c>. For an edge each element 
     /// has a triplet of attributes <c>Left, On, Right</c>.
-    /// It is up to the client code to associate the 0 and 1 <see cref="TopologyLocation"/>s
-    /// with specific geometries.
+    /// It is up to the client code to associate the 0 and 1 
+    /// <see cref="TopologyLocation"/>s with specific geometries.
     /// </para>
     /// </remarks>
     public struct Label
@@ -98,7 +98,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <see cref="Positions.Left"/> and <see cref="Positions.Right"/> 
         /// locations for each respective geometry.
         /// </summary>
-        public Label(Locations onGeometry1, Locations leftGeometry1, Locations rightGeometry1, 
+        public Label(Locations onGeometry1, Locations leftGeometry1, Locations rightGeometry1,
                      Locations onGeometry2, Locations leftGeometry2, Locations rightGeometry2)
         {
             _g0 = new TopologyLocation(onGeometry1, leftGeometry1, rightGeometry1);
@@ -186,7 +186,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             TopologyLocation newLocation = new TopologyLocation(on);
 
-            if(geometryIndex == 0)
+            if (geometryIndex == 0)
             {
                 _g0 = newLocation;
                 _g1 = other._g1;
@@ -223,7 +223,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// The value to set the <see cref="TopologyLocation.Right"/> position of 
         /// <paramref name="geometryIndex"/> to.
         /// </param>
-        public Label(Label other, Int32 geometryIndex, 
+        public Label(Label other, Int32 geometryIndex,
                      Locations on, Locations left, Locations right)
         {
             checkIndex(geometryIndex);
@@ -264,7 +264,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             checkIndex(geometryIndex);
 
-            TopologyLocation newLocation = new TopologyLocation(other[geometryIndex], side, location);
+            TopologyLocation newLocation = new TopologyLocation(other[geometryIndex],
+                                                                side,
+                                                                location);
 
             if (geometryIndex == 0)
             {
@@ -312,7 +314,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             {
                 switch (geometryIndex)
                 {
-                    case 0 :
+                    case 0:
                         return _g0[position];
                     case 1:
                         return _g1[position];
@@ -382,19 +384,18 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// A copy of <paramref name="label"/> with all positions set to 
         /// <paramref name="location"/>.
         /// </returns>
-        public static Label SetAllPositions(Label label, 
-                                            Int32 geometryIndex, 
+        public static Label SetAllPositions(Label label,
+                                            Int32 geometryIndex,
                                             Locations location)
         {
             checkIndex(geometryIndex);
 
-            // Real estate! Er, location, location, location... get it?
-            TopologyLocation newLocation = new TopologyLocation(location, 
-                                                                location, 
-                                                                location);
+            TopologyLocation newLocation = label.IsArea()
+                            ? new TopologyLocation(location, location, location)
+                            : new TopologyLocation(location);
 
-            return geometryIndex == 0 
-                ? new Label(newLocation, label._g1) 
+            return geometryIndex == 0
+                ? new Label(newLocation, label._g1)
                 : new Label(label._g0, newLocation);
         }
 
@@ -418,21 +419,22 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <paramref name="location"/> for the geometry at 
         /// <paramref name="geometryIndex"/>.
         /// </returns>
-        public static Label SetAllPositionsIfNone(Label label, 
-                                                  Int32 geometryIndex, 
+        public static Label SetAllPositionsIfNone(Label label,
+                                                  Int32 geometryIndex,
                                                   Locations location)
         {
             checkIndex(geometryIndex);
 
             TopologyLocation labelLocation = label[geometryIndex];
 
+            // TODO: rewrite using bitwise operators
             TopologyLocation newLocation = new TopologyLocation(
-                labelLocation.On == Locations.None ? location : labelLocation.On, 
-                labelLocation.Left == Locations.None ? location : labelLocation.Left, 
+                labelLocation.On == Locations.None ? location : labelLocation.On,
+                labelLocation.Left == Locations.None ? location : labelLocation.Left,
                 labelLocation.Right == Locations.None ? location : labelLocation.Right);
 
-            return geometryIndex == 0 
-                ? new Label(newLocation, label._g1) 
+            return geometryIndex == 0
+                ? new Label(newLocation, label._g1)
                 : new Label(label._g0, newLocation);
         }
 
@@ -533,7 +535,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             switch (geometryIndex)
             {
-                case 0 :
+                case 0:
                     return _g0.IsNone;
                 case 1:
                     return _g1.IsNone;
@@ -599,7 +601,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             switch (geometryIndex)
             {
-                case 0 :
+                case 0:
                     return _g0.IsArea;
                 case 1:
                     return _g1.IsArea;
@@ -653,7 +655,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </returns>
         public Boolean IsEqualOnSide(Label other, Positions side)
         {
-            return _g0.IsEqualOnSide(other._g0, side) && 
+            return _g0.IsEqualOnSide(other._g0, side) &&
                    _g1.IsEqualOnSide(other._g1, side);
         }
 

@@ -30,9 +30,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         private readonly List<EdgeEnd<TCoordinate>> _edgeList 
             = new List<EdgeEnd<TCoordinate>>();
 
-        // The location of the point for this star in Geometry i Areas.
-        private readonly Locations[] _ptInAreaLocation 
-            = new Locations[] { Locations.None, Locations.None };
+        // The location of the point for this star in Geometry 0's area.
+        private Locations _ptInAreaLocation0;
+
+        // The location of the point for this star in Geometry 1's area.
+        private Locations _ptInAreaLocation1;
 
         public override String ToString()
         {
@@ -70,14 +72,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                if (_edgeList.Count == 0)
-                {
-                    return default(TCoordinate);
-                }
-                else
-                {
-                    return _edgeList[0].Coordinate;
-                }
+                return _edgeList.Count == 0 
+                    ? default(TCoordinate) 
+                    : _edgeList[0].Coordinate;
             }
         }
 
@@ -110,14 +107,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public EdgeEnd<TCoordinate> GetNextCW(EdgeEnd<TCoordinate> ee)
         {
             Int32 i = _edgeList.IndexOf(ee);
-            Int32 iNextCW = i - 1;
+            Int32 nextCWIndex = i - 1;
 
             if (i == 0)
             {
-                iNextCW = _edgeList.Count - 1;
+                nextCWIndex = _edgeList.Count - 1;
             }
 
-            return _edgeList[iNextCW];
+            return _edgeList[nextCWIndex];
         }
 
         public void ComputeLabeling(params GeometryGraph<TCoordinate>[] geom)
@@ -223,14 +220,27 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                                      TCoordinate p, 
                                      IEnumerable<GeometryGraph<TCoordinate>> geometries)
         {
+            Locations location = geometryIndex == 0 
+                ? _ptInAreaLocation0 
+                : _ptInAreaLocation1;
+
             // compute location only on demand
-            if (_ptInAreaLocation[geometryIndex] == Locations.None)
+            if (location == Locations.None)
             {
                 IGeometry<TCoordinate> g = Slice.GetAt(geometries, geometryIndex).Geometry;
-                _ptInAreaLocation[geometryIndex] = SimplePointInAreaLocator.Locate(p, g);
+                location = SimplePointInAreaLocator.Locate(p, g);
+
+                if (geometryIndex == 0)
+                {
+                    _ptInAreaLocation0 = location;
+                }
+                else
+                {
+                    _ptInAreaLocation1 = location;
+                }
             }
 
-            return _ptInAreaLocation[geometryIndex];
+            return location;
         }
 
         public Boolean IsAreaLabelsConsistent(IBoundaryNodeRule boundaryNodeRule)
@@ -360,6 +370,16 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
+        #region IEnumerable Members
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
+
+        #region Private helper members
         private void computeEdgeEndLabels(IBoundaryNodeRule boundaryNodeRule)
         {
             // Compute edge label for each EdgeEnd
@@ -423,14 +443,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             return true;
         }
-
-        #region IEnumerable Members
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
         #endregion
     }
 }

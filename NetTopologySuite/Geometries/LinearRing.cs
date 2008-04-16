@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -16,7 +15,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// A valid ring must not self-intersect.
     /// </remarks>
     [Serializable]
-    public class LinearRing<TCoordinate> : LineString<TCoordinate>, ILinearRing<TCoordinate>
+    public class LinearRing<TCoordinate> : LineString<TCoordinate>, 
+                                           ILinearRing<TCoordinate>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>

@@ -10,6 +10,10 @@ using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
+    /// <summary>
+    /// Represents an edge in a <see cref="GeometryGraph{TCoordinate}"/>.
+    /// </summary>
+    /// <typeparam name="TCoordinate">The type of coordinate.</typeparam>
     public class Edge<TCoordinate> : GraphComponent<TCoordinate>, 
                                      IBoundable<IExtents<TCoordinate>>
         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
@@ -26,28 +30,40 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                                  label[1, Positions.On],
                                  Dimensions.Curve);
 
-            if (label.IsArea())
+            if (!label.IsArea())
             {
-                im.SetAtLeastIfValid(label[0, Positions.Left], 
-                                     label[1, Positions.Left],
-                                     Dimensions.Surface);
-
-                im.SetAtLeastIfValid(label[0, Positions.Right], 
-                                     label[1, Positions.Right],
-                                     Dimensions.Surface);
+                return;
             }
+
+            im.SetAtLeastIfValid(label[0, Positions.Left], 
+                                 label[1, Positions.Left],
+                                 Dimensions.Surface);
+
+            im.SetAtLeastIfValid(label[0, Positions.Right], 
+                                 label[1, Positions.Right],
+                                 Dimensions.Surface);
+        }
+
+        public static Boolean operator ==(Edge<TCoordinate> obj1, Edge<TCoordinate> obj2)
+        {
+            return Equals(obj1, obj2);
+        }
+
+        public static Boolean operator !=(Edge<TCoordinate> obj1, Edge<TCoordinate> obj2)
+        {
+            return !(obj1 == obj2);
         }
 
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private readonly ICoordinateSequence<TCoordinate> _coordinates;
         private readonly EdgeIntersectionList<TCoordinate> _edgeIntersectionList;
         private IExtents<TCoordinate> _extents;
-        //private String _name;
         private MonotoneChainEdge<TCoordinate> _monotoneChainEdge;
         private Boolean _isIsolated = true;
         private readonly Depth _depth = new Depth();
         // the change in area depth from the R to Curve side of this edge
         private Int32 _depthDelta;
+        //private String _name;
 
         public Edge(IGeometryFactory<TCoordinate> geoFactory,
                     ICoordinateSequence<TCoordinate> coordinates)
@@ -64,26 +80,28 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             Label = label;
         }
 
-        //public IList<TCoordinate> Points
-        //{
-        //    get { return _coordinates; }
-        //    set
-        //    {
-        //        _coordinates.Clear();
-        //        _coordinates.AddRange(value);
-        //    }
-        //}
+        public override String ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            //sb.Append("edge " + _name + ": ");
+            sb.Append("edge: ");
+            sb.Append("LINESTRING (");
+
+            for (Int32 i = 0; i < Coordinates.Count; i++)
+            {
+                if (i > 0) sb.Append(",");
+                sb.Append(Coordinates[i][Ordinates.X] + " " +
+                          Coordinates[i][Ordinates.Y]);
+            }
+
+            sb.Append(")  " + Label + " " + _depthDelta);
+            return sb.ToString();
+        }
 
         public Int32 PointCount
         {
             get { return _coordinates.Count; }
         }
-
-        //public string Name
-        //{
-        //    get { return _name; }
-        //    set { _name = value; }
-        //}
 
         public ICoordinateSequence<TCoordinate> Coordinates
         {
@@ -94,11 +112,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get { return _coordinates.Reversed; }
         }
-
-        //public TCoordinate GetCoordinate(Int32 i)
-        //{
-        //    return Points[i];
-        //}
 
         public override TCoordinate Coordinate
         {
@@ -279,6 +292,32 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
+        /// Computes whether the coordinate sequences of the 
+        /// <see cref="Edge{TCoordinate}"/>s are identical.
+        /// </summary>
+        /// <returns> 
+        /// <see langword="true"/> if the coordinate sequences of the 
+        /// <see cref="Edge{TCoordinate}"/>s are identical.
+        /// </returns>
+        public Boolean IsPointwiseEqual(Edge<TCoordinate> e)
+        {
+            if (Coordinates.Count != e.Coordinates.Count)
+            {
+                return false;
+            }
+
+            for (Int32 i = 0; i < Coordinates.Count; i++)
+            {
+                if (!Coordinates[i].Equals(e.Coordinates[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Equals is defined to be:
         /// e1 equals e2
         /// iff
@@ -334,41 +373,40 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             return true;
         }
 
-        public static Boolean operator ==(Edge<TCoordinate> obj1, Edge<TCoordinate> obj2)
+        #region IBoundable<IExtents<TCoordinate>> Members
+
+        IExtents<TCoordinate> IBoundable<IExtents<TCoordinate>>.Bounds
         {
-            return Equals(obj1, obj2);
+            get { return Extents; }
         }
 
-        public static Boolean operator !=(Edge<TCoordinate> obj1, Edge<TCoordinate> obj2)
+        Boolean IBoundable<IExtents<TCoordinate>>.Intersects(IExtents<TCoordinate> bounds)
         {
-            return !(obj1 == obj2);
+            return Extents.Intersects(bounds);
         }
 
-        /// <summary>
-        /// Computes whether the coordinate sequences of the 
-        /// <see cref="Edge{TCoordinate}"/>s are identical.
-        /// </summary>
-        /// <returns> 
-        /// <see langword="true"/> if the coordinate sequences of the 
-        /// <see cref="Edge{TCoordinate}"/>s are identical.
-        /// </returns>
-        public Boolean IsPointwiseEqual(Edge<TCoordinate> e)
-        {
-            if (Coordinates.Count != e.Coordinates.Count)
-            {
-                return false;
-            }
+        #endregion
 
-            for (Int32 i = 0; i < Coordinates.Count; i++)
-            {
-                if (!Coordinates[i].Equals(e.Coordinates[i]))
-                {
-                    return false;
-                }
-            }
+        //public IList<TCoordinate> Points
+        //{
+        //    get { return _coordinates; }
+        //    set
+        //    {
+        //        _coordinates.Clear();
+        //        _coordinates.AddRange(value);
+        //    }
+        //}
 
-            return true;
-        }
+        //public string Name
+        //{
+        //    get { return _name; }
+        //    set { _name = value; }
+        //}
+
+        //public TCoordinate GetCoordinate(Int32 i)
+        //{
+        //    return Points[i];
+        //}
 
         //public void Write(StreamWriter outstream)
         //{
@@ -398,40 +436,5 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         //    outstream.WriteLine(String.Empty);
         //}
-
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            //sb.Append("edge " + _name + ": ");
-            sb.Append("edge: ");
-            sb.Append("LINESTRING (");
-
-            for (Int32 i = 0; i < Coordinates.Count; i++)
-            {
-                if (i > 0)
-                {
-                    sb.Append(",");
-                }
-
-                sb.Append(Coordinates[i][Ordinates.X] + " " + Coordinates[i][Ordinates.Y]);
-            }
-
-            sb.Append(")  " + Label + " " + _depthDelta);
-            return sb.ToString();
-        }
-
-        #region IBoundable<IExtents<TCoordinate>> Members
-
-        IExtents<TCoordinate> IBoundable<IExtents<TCoordinate>>.Bounds
-        {
-            get { return Extents; }
-        }
-
-        Boolean IBoundable<IExtents<TCoordinate>>.Intersects(IExtents<TCoordinate> bounds)
-        {
-            return Extents.Intersects(bounds);
-        }
-
-        #endregion
     }
 }

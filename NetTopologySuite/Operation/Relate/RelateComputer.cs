@@ -74,8 +74,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             _g1.ComputeSelfNodes(_li, false);
 
             // compute intersections between edges of the two input geometries
-            SegmentIntersector<TCoordinate> intersector = _g0.ComputeEdgeIntersections(
-                                                                _g1, _li, false);
+            SegmentIntersector<TCoordinate> intersector 
+                = _g0.ComputeEdgeIntersections(_g1, _li, false);
+
             computeIntersectionNodes(0);
             computeIntersectionNodes(1);
 
@@ -100,8 +101,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 
             // build EdgeEnds for all intersections
             EdgeEndBuilder<TCoordinate> eeBuilder = new EdgeEndBuilder<TCoordinate>();
+
             IEnumerable<EdgeEnd<TCoordinate>> ee0 = eeBuilder.ComputeEdgeEnds(_g0.Edges);
             insertEdgeEnds(ee0);
+
             IEnumerable<EdgeEnd<TCoordinate>> ee1 = eeBuilder.ComputeEdgeEnds(_g1.Edges);
             insertEdgeEnds(ee1);
 

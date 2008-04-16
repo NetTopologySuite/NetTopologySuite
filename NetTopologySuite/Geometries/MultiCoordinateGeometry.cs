@@ -7,13 +7,31 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     public abstract class MultiCoordinateGeometry<TCoordinate> : Geometry<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         private ICoordinateSequence<TCoordinate> _coordinates;
 
         public MultiCoordinateGeometry(IGeometryFactory<TCoordinate> factory)
             : base(factory) { }
+
+        public override Boolean EqualsExact(IGeometry<TCoordinate> g, Tolerance tolerance)
+        {
+            if (g == null) throw new ArgumentNullException("g");
+
+            if (!IsEquivalentClass(g))
+            {
+                return false;
+            }
+
+            MultiCoordinateGeometry<TCoordinate> other = g as MultiCoordinateGeometry<TCoordinate>;
+            Debug.Assert(other != null);
+
+            ICoordinateSequence<TCoordinate> otherCoords = other.CoordinatesInternal;
+
+            return CoordinatesInternal.Equals(otherCoords, tolerance);
+        }
 
         public override ICoordinateSequence<TCoordinate> Coordinates
         {
