@@ -24,14 +24,17 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// cause other methods to fail.
     /// </remarks>
     public class CentralEndpointIntersector<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
-        public static TCoordinate GetIntersection(TCoordinate p00, TCoordinate p01,
-                TCoordinate p10, TCoordinate p11)
+        public static TCoordinate GetIntersection(ICoordinateFactory<TCoordinate> coordinateFactory,
+                                                  TCoordinate p00, TCoordinate p01,
+                                                  TCoordinate p10, TCoordinate p11)
         {
             CentralEndpointIntersector<TCoordinate> intersector
-                = new CentralEndpointIntersector<TCoordinate>(p00, p01, p10, p11);
+                = new CentralEndpointIntersector<TCoordinate>(coordinateFactory, 
+                                                              p00, p01, p10, p11);
             return intersector.GetIntersectionPoint();
         }
 
@@ -39,21 +42,26 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private LineSegment<TCoordinate> _line1;
         private TCoordinate _intPt;
 
-        public CentralEndpointIntersector(TCoordinate p00, TCoordinate p01,
-                TCoordinate p10, TCoordinate p11)
-            : this(new LineSegment<TCoordinate>(p00, p01), new LineSegment<TCoordinate>(p10, p11))
+        public CentralEndpointIntersector(ICoordinateFactory<TCoordinate> coordinateFactory, 
+                                          TCoordinate p00, TCoordinate p01,
+                                          TCoordinate p10, TCoordinate p11)
+            : this(coordinateFactory,
+                   new LineSegment<TCoordinate>(p00, p01), 
+                   new LineSegment<TCoordinate>(p10, p11))
         { }
 
-        public CentralEndpointIntersector(LineSegment<TCoordinate> line0, LineSegment<TCoordinate> line1)
+        public CentralEndpointIntersector(ICoordinateFactory<TCoordinate> coordinateFactory,
+                                          LineSegment<TCoordinate> line0, 
+                                          LineSegment<TCoordinate> line1)
         {
             _line0 = line0;
             _line1 = line1;
-            compute();
+            compute(coordinateFactory);
         }
 
-        private void compute()
+        private void compute(ICoordinateFactory<TCoordinate> coordinateFactory)
         {
-            TCoordinate centroid = average(_line0.P0, _line0.P1, _line1.P0, _line1.P1);
+            TCoordinate centroid = average(coordinateFactory, _line0.P0, _line0.P1, _line1.P0, _line1.P1);
             _intPt = findNearestPoint(centroid, _line0.P0, _line0.P1, _line1.P0, _line1.P1);
         }
 
@@ -62,7 +70,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return _intPt;
         }
 
-        private static TCoordinate average(params TCoordinate[] pts)
+        private static TCoordinate average(ICoordinateFactory<TCoordinate> coordinateFactory,
+                                           params TCoordinate[] pts)
         {
             if (pts.Length == 0)
 	        {
@@ -95,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 avg[componentIndex] /= n;
             }
 
-            return Coordinates<TCoordinate>.DefaultCoordinateFactory.Create(avg);
+            return coordinateFactory.Create(avg);
         }
 
         // Determines a point closest to the given point from a set of points.

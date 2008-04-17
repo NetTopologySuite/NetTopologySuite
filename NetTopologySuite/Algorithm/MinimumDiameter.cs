@@ -100,9 +100,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Gets a <c>LineString</c> which is a minimum diameter.
+        /// Gets a <see cref="ILineString{TCoordinate}"/> which is a minimum diameter.
         /// </summary>
-        /// <returns>A <c>LineString</c> which is a minimum diameter.</returns>
+        /// <returns>
+        /// A <see cref="ILineString{TCoordinate}"/> which is a minimum diameter.
+        /// </returns>
         public ILineString<TCoordinate> Diameter
         {
             get
@@ -115,7 +117,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                     return _inputGeom.Factory.CreateLineString();
                 }
 
-                TCoordinate basePt = _minBaseSeg.Value.Project(_minWidthPt);
+                ICoordinateFactory<TCoordinate> coordinateFactory = _inputGeom.Factory.CoordinateFactory;
+                TCoordinate basePt = _minBaseSeg.Value.Project(_minWidthPt, coordinateFactory);
                 return _inputGeom.Factory.CreateLineString(basePt, _minWidthPt);
             }
         }

@@ -49,7 +49,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             ICoordinateSequenceFactory<TCoordinate> coordSequenceFactory)
         {
             return new GeometryFactory<TCoordinate>(
-                new PrecisionModel<TCoordinate>(PrecisionModelType.FloatingSingle),
+                new PrecisionModel<TCoordinate>(coordSequenceFactory.CoordinateFactory,
+                                                PrecisionModelType.FloatingSingle),
                 null, coordSequenceFactory);
         }
 
@@ -62,7 +63,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             ICoordinateSequenceFactory<TCoordinate> coordSequenceFactory)
         {
             return new GeometryFactory<TCoordinate>(
-                new PrecisionModel<TCoordinate>(PrecisionModelType.Fixed),
+                new PrecisionModel<TCoordinate>(coordSequenceFactory.CoordinateFactory,
+                                                PrecisionModelType.Fixed),
                 null, coordSequenceFactory);
         }
 
@@ -124,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="precisionModel">The PrecisionModel to use.</param>
         /// <param name="srid">The SRID to use.</param>
         public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel, Int32? srid)
-            : this(precisionModel, srid, getDefaultCoordinateSequenceFactory<TCoordinate>()) { }
+            : this(precisionModel, srid, null) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
@@ -137,7 +139,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             : this(precisionModel, null, coordinateSequenceFactory) { }
 
         /// <summary>
-        /// 
         /// Constructs a GeometryFactory that generates Geometries having the given
         /// <see cref="IPrecisionModel{TCoordinate}"/> and the default <see cref="ICoordinateSequenceFactory{TCoordinate}"/>
         /// implementation.
@@ -146,7 +147,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// The <see cref="IPrecisionModel{TCoordinate}"/> to use.
         /// </param>
         public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel)
-            : this(precisionModel, null, getDefaultCoordinateSequenceFactory<TCoordinate>()) { }
+            : this(precisionModel, null, null) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
@@ -154,16 +155,21 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <see cref="IPrecisionModel{TCoordinate}"/>, the given spatial-reference ID 
         /// and the given <see cref="ICoordinateSystem{TCoordinate}"/>.
         /// </summary>
-        public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory, Int32? srid,
+        public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory, 
+                               Int32? srid,
                                ICoordinateSystem<TCoordinate> spatialReference)
-            : this(new PrecisionModel<TCoordinate>(), srid, coordinateSequenceFactory, spatialReference) { }
+            : this(new PrecisionModel<TCoordinate>(coordinateSequenceFactory.CoordinateFactory), 
+                   srid, 
+                   coordinateSequenceFactory, 
+                   spatialReference) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
         /// CoordinateSequence implementation, a Double-precision floating 
         /// <see cref="IPrecisionModel{TCoordinate}"/>, and the given spatial-reference ID.
         /// </summary>
-        public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory, Int32? srid)
+        public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory, 
+                               Int32? srid)
             : this(coordinateSequenceFactory, srid, null) { }
 
         /// <summary>
@@ -1095,12 +1101,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #endregion
 
-        private static ICoordinateSequenceFactory<TCoordinate> getDefaultCoordinateSequenceFactory<TCoordinate>()
-            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<Double, TCoordinate>, IConvertible
-        {
-            return Coordinates<TCoordinate>.DefaultCoordinateSequenceFactory;
-        }
+        //private static ICoordinateSequenceFactory<TCoordinate> getDefaultCoordinateSequenceFactory<TCoordinate>()
+        //    where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        //        IComputable<Double, TCoordinate>, IConvertible
+        //{
+        //    return Coordinates<TCoordinate>.DefaultCoordinateSequenceFactory;
+        //}
 
         private ICoordinateSequence<TCoordinate> convertSequence(ICoordinateSequence coordinates)
         {

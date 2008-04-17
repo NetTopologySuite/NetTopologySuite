@@ -17,9 +17,11 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     /// Various methods are provided to manipulate the location value
     /// and query the geometry it references.
     /// </remarks>
-    public struct LinearLocation<TCoordinate> : IEquatable<LinearLocation<TCoordinate>>, IComparable<LinearLocation<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+    public struct LinearLocation<TCoordinate> : IEquatable<LinearLocation<TCoordinate>>, 
+                                                IComparable<LinearLocation<TCoordinate>>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         /// <summary>
         /// Gets a location which refers to the end of a linear <see cref="Geometry{TCoordinate}" />.
@@ -51,7 +53,10 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="p0">The first point of the line segment.</param>
         /// <param name="p1">The last point of the line segment.</param>
         /// <param name="fraction">The length to the desired point.</param>
-        public static TCoordinate PointAlongSegmentByFraction(TCoordinate p0, TCoordinate p1, Double fraction)
+        public static TCoordinate PointAlongSegmentByFraction(ICoordinateFactory<TCoordinate> coordinateFactory,
+                                                              TCoordinate p0, 
+                                                              TCoordinate p1, 
+                                                              Double fraction)
         {
             if (fraction <= 0.0)
             {
@@ -65,7 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
             Double x = (p1[Ordinates.X] - p0[Ordinates.X]) * fraction + p0[Ordinates.X];
             Double y = (p1[Ordinates.Y] - p0[Ordinates.Y]) * fraction + p0[Ordinates.Y];
-            return Coordinates<TCoordinate>.DefaultCoordinateFactory.Create(x, y);
+            return coordinateFactory.Create(x, y);
         }
 
         private readonly Int32 _componentIndex;
@@ -275,7 +280,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <returns>The <typeparamref name="TCoordinate"/> at the location.</returns>
         public TCoordinate GetCoordinate(IGeometry<TCoordinate> linearGeom)
         {
-            ILineString<TCoordinate> lineComp = LinearHelper.GetLine(linearGeom, _componentIndex);
+            ILineString<TCoordinate> lineComp 
+                = LinearHelper.GetLine(linearGeom, _componentIndex);
             TCoordinate p0 = lineComp.Coordinates[_segmentIndex];
             
             if (_segmentIndex >= lineComp.PointCount - 1)
@@ -285,7 +291,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
             TCoordinate p1 = lineComp.Coordinates[_segmentIndex + 1];
 
-            return PointAlongSegmentByFraction(p0, p1, _segmentFraction);
+            return PointAlongSegmentByFraction(linearGeom.Coordinates.CoordinateFactory, 
+                                               p0, p1, _segmentFraction);
         }
 
         /// <summary>

@@ -268,7 +268,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         {
             MonotoneChainIndexSnapRounder<TCoordinate> snapRounder =
                 new MonotoneChainIndexSnapRounder<TCoordinate>(_geoFactory,
-                    new PrecisionModel<TCoordinate>(1.0));
+                    new PrecisionModel<TCoordinate>(_coordFactory, 1.0));
 
             INoder<TCoordinate> noder = new ScaledNoder<TCoordinate>(
                 snapRounder, fixedPM.Scale, _coordSequenceFactory);
@@ -315,7 +315,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             // Debug.WriteLine(String.Format("recomputing with precision scale factor = {0}", sizeBasedScaleFactor));
 
             IPrecisionModel<TCoordinate> fixedPM 
-                = new PrecisionModel<TCoordinate>(sizeBasedScaleFactor);
+                = new PrecisionModel<TCoordinate>(_coordFactory, sizeBasedScaleFactor);
             bufferFixedPrecision(fixedPM);
         }
     }

@@ -35,10 +35,9 @@ namespace Open.Topology.TestRunner
         protected IGeometryFactory<BufferedCoordinate2D> m_objGeometryFactory = null;
         protected IWktGeometryReader m_objReader = null;
 
-        public XmlTestFactory(IPrecisionModel<BufferedCoordinate2D> pm)
+        public XmlTestFactory(IPrecisionModel<BufferedCoordinate2D> pm, 
+                              ICoordinateSequenceFactory<BufferedCoordinate2D> seqFactory)
 		{
-            ICoordinateSequenceFactory<BufferedCoordinate2D> seqFactory =
-                new BufferedCoordinate2DSequenceFactory();
             m_objGeometryFactory = new GeometryFactory<BufferedCoordinate2D>(pm, seqFactory);
             m_objReader = new WktReader<BufferedCoordinate2D>(m_objGeometryFactory, null);
         }

@@ -9,15 +9,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// properties of triangles.
     /// </summary>
     public struct Triangle<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
+        private readonly ICoordinateFactory<TCoordinate> _coordFactory;
         private readonly TCoordinate _p0;
         private readonly TCoordinate _p1;
         private readonly TCoordinate _p2;
 
-        public Triangle(TCoordinate p0, TCoordinate p1, TCoordinate p2)
+        public Triangle(ICoordinateFactory<TCoordinate> coordFactory, 
+                        TCoordinate p0, TCoordinate p1, TCoordinate p2)
         {
+            _coordFactory = coordFactory;
             _p0 = p0;
             _p1 = p1;
             _p2 = p2;
@@ -65,8 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                                     len1 * P1[Ordinates.Y] + 
                                     len2 * P2[Ordinates.Y]) / circum;
 
-                return Coordinates<TCoordinate>.DefaultCoordinateFactory.Create(
-                    inCenterX, inCenterY);
+                return _coordFactory.Create(inCenterX, inCenterY);
             }
         }
     }

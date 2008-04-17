@@ -495,7 +495,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
                 {
                     _minDistance = dist;
                     LineSegment<TCoordinate> seg = new LineSegment<TCoordinate>(coord0, coord1);
-                    TCoordinate segClosestPoint = seg.ClosestPoint(coord);
+                    TCoordinate segClosestPoint = seg.ClosestPoint(coord, _geoFactory.CoordinateFactory);
                     locGeom0 = new GeometryLocation<TCoordinate>(line, i, segClosestPoint);
                     locGeom1 = new GeometryLocation<TCoordinate>(pt, 0, coord);
                 }

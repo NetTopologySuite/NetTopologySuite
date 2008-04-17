@@ -14,43 +14,43 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         private static Object _defaultCoordinateFactory;
         private static Object _defaultCoordinateSequenceFactory;
 
-        public static ICoordinateFactory<TCoordinate> DefaultCoordinateFactory
-        {
-            get
-            {
-                Object factory = Thread.VolatileRead(ref _defaultCoordinateFactory);
+        //public static ICoordinateFactory<TCoordinate> DefaultCoordinateFactory
+        //{
+        //    get
+        //    {
+        //        Object factory = Thread.VolatileRead(ref _defaultCoordinateFactory);
 
-                if (ReferenceEquals(factory, null))
-                {
-                    throw new InvalidOperationException("Default coordinate factory is not set.");
-                }
+        //        if (ReferenceEquals(factory, null))
+        //        {
+        //            throw new InvalidOperationException("Default coordinate factory is not set.");
+        //        }
 
-                return factory as ICoordinateFactory<TCoordinate>;
-            }
-            set
-            {
-                Thread.VolatileWrite(ref _defaultCoordinateFactory, value);
-            }
-        }
+        //        return factory as ICoordinateFactory<TCoordinate>;
+        //    }
+        //    set
+        //    {
+        //        Thread.VolatileWrite(ref _defaultCoordinateFactory, value);
+        //    }
+        //}
 
-        public static ICoordinateSequenceFactory<TCoordinate> DefaultCoordinateSequenceFactory
-        {
-            get
-            {
-                Object factory = Thread.VolatileRead(ref _defaultCoordinateSequenceFactory);
+        //public static ICoordinateSequenceFactory<TCoordinate> DefaultCoordinateSequenceFactory
+        //{
+        //    get
+        //    {
+        //        Object factory = Thread.VolatileRead(ref _defaultCoordinateSequenceFactory);
 
-                if (ReferenceEquals(factory, null))
-                {
-                    throw new InvalidOperationException("Default coordinate factory is not set.");
-                }
+        //        if (ReferenceEquals(factory, null))
+        //        {
+        //            throw new InvalidOperationException("Default coordinate factory is not set.");
+        //        }
 
-                return factory as ICoordinateSequenceFactory<TCoordinate>;
-            }
-            set
-            {
-                Thread.VolatileWrite(ref _defaultCoordinateSequenceFactory, value);
-            }
-        }
+        //        return factory as ICoordinateSequenceFactory<TCoordinate>;
+        //    }
+        //    set
+        //    {
+        //        Thread.VolatileWrite(ref _defaultCoordinateSequenceFactory, value);
+        //    }
+        //}
 
         //public static TCoordinate Empty
         //{

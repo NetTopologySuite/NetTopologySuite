@@ -257,7 +257,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             // also optimizes erosion test for triangles
             if (count == 4)
             {
-                return isTriangleErodedCompletely(ringCoord, bufferDistance);
+                ICoordinateFactory<TCoordinate> coordinateFactory 
+                    = _inputGeometry.Factory.CoordinateFactory;
+                return isTriangleErodedCompletely(coordinateFactory, 
+                                                  ringCoord, 
+                                                  bufferDistance);
             }
 
             /*
@@ -289,10 +293,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// In this case the triangle buffer curve "inverts" with incorrect topology,
         /// producing an incorrect hole in the buffer.       
         /// </summary>
-        private static Boolean isTriangleErodedCompletely(IEnumerable<TCoordinate> triangleCoord, Double bufferDistance)
+        private static Boolean isTriangleErodedCompletely(ICoordinateFactory<TCoordinate> coordinateFactory,
+                                                          IEnumerable<TCoordinate> triangleCoord, 
+                                                          Double bufferDistance)
         {
             Triple<TCoordinate> points = Slice.GetTriple(triangleCoord).Value;
-            Triangle<TCoordinate> tri = new Triangle<TCoordinate>(points.First, points.Second, points.Third);
+            Triangle<TCoordinate> tri = new Triangle<TCoordinate>(coordinateFactory, 
+                                                                  points.First, 
+                                                                  points.Second, 
+                                                                  points.Third);
             TCoordinate inCenter = tri.InCenter;
             Double distToCentre = CGAlgorithms<TCoordinate>.DistancePointLine(inCenter, tri.P0, tri.P1);
             return distToCentre < Math.Abs(bufferDistance);

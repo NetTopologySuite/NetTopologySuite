@@ -253,19 +253,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// may lie outside the line segment.  If this is the case,
         /// the projection factor will lie outside the range [0.0, 1.0].
         /// </summary>
-        public TCoordinate Project(TCoordinate p)
+        public TCoordinate Project(TCoordinate p, ICoordinateFactory<TCoordinate> coordFactory)
         {
             if (p.Equals(P0) || p.Equals(P1))
             {
-                return Coordinates<TCoordinate>.DefaultCoordinateFactory.Create(p);
+                return coordFactory.Create(p);
             }
 
             Double r = ProjectionFactor(p);
             Double x = P0[Ordinates.X] + r * (P1[Ordinates.X] - P0[Ordinates.X]);
             Double y = P0[Ordinates.Y] + r * (P1[Ordinates.Y] - P0[Ordinates.Y]);
 
-            TCoordinate coord 
-                = Coordinates<TCoordinate>.DefaultCoordinateFactory.Create(x, y);
+            TCoordinate coord = coordFactory.Create(x, y);
             return coord;
         }
 
@@ -279,7 +278,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="seg">The line segment to project.</param>
         /// <returns>The projected line segment, or <see langword="null" /> if there is no overlap.</returns>
-        public LineSegment<TCoordinate>? Project(LineSegment<TCoordinate> seg)
+        public LineSegment<TCoordinate>? Project(LineSegment<TCoordinate> seg, ICoordinateFactory<TCoordinate> coordFactory)
         {
             Double pf0 = ProjectionFactor(seg.P0);
             Double pf1 = ProjectionFactor(seg.P1);
@@ -295,7 +294,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return null;
             }
 
-            TCoordinate newp0 = Project(seg.P0);
+            TCoordinate newp0 = Project(seg.P0, coordFactory);
 
             if (pf0 < 0.0)
             {
@@ -307,7 +306,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 newp0 = P1;
             }
 
-            TCoordinate newp1 = Project(seg.P1);
+            TCoordinate newp1 = Project(seg.P1, coordFactory);
 
             if (pf1 < 0.0)
             {
@@ -329,13 +328,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>
         /// A Coordinate which is the closest point on the line segment to the point p.
         /// </returns>
-        public TCoordinate ClosestPoint(TCoordinate p)
+        public TCoordinate ClosestPoint(TCoordinate p, ICoordinateFactory<TCoordinate> coordFactory)
         {
             Double factor = ProjectionFactor(p);
 
             if (factor > 0 && factor < 1)
             {
-                return Project(p);
+                return Project(p, coordFactory);
             }
 
             Double dist0 = P0.Distance(p);
@@ -379,12 +378,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             TCoordinate closestPoint1;
             TCoordinate closestPoint2;
 
-            TCoordinate close00 = ClosestPoint(line.P0);
+            ICoordinateFactory<TCoordinate> coordinateFactory = geoFactory.CoordinateFactory;
+
+            TCoordinate close00 = ClosestPoint(line.P0, coordinateFactory);
             minDistance = close00.Distance(line.P0);
             closestPoint1 = close00;
             closestPoint2 = line.P0;
 
-            TCoordinate close01 = ClosestPoint(line.P1);
+            TCoordinate close01 = ClosestPoint(line.P1, coordinateFactory);
             dist = close01.Distance(line.P1);
 
             if (dist < minDistance)
@@ -394,7 +395,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 closestPoint2 = line.P1;
             }
 
-            TCoordinate close10 = line.ClosestPoint(P0);
+            TCoordinate close10 = line.ClosestPoint(P0, coordinateFactory);
             dist = close10.Distance(P0);
 
             if (dist < minDistance)
@@ -404,7 +405,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 closestPoint2 = close10;
             }
 
-            TCoordinate close11 = line.ClosestPoint(P1);
+            TCoordinate close11 = line.ClosestPoint(P1, coordinateFactory);
             dist = close11.Distance(P1);
 
             if (dist < minDistance)

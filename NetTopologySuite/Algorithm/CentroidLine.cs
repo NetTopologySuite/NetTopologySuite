@@ -5,6 +5,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.Utilities;
+using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -16,12 +17,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// of all line segments weighted by the segment length.
     /// </summary>
     public class CentroidLine<TCoordinate>
-         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                             IComputable<Double, TCoordinate>, IConvertible
+         where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+                             IComparable<TCoordinate>, IConvertible,
+                             IComputable<Double, TCoordinate>
     {
         private readonly ICoordinateFactory<TCoordinate> _factory;
         private TCoordinate _centSum;
-        private Double totalLength = 0.0;
+        private Double totalLength;
 
         public CentroidLine(ICoordinateFactory<TCoordinate> factory)
         {
@@ -69,8 +71,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="points">A set of <typeparamref name="TCoordinate"/>s.</param>
         public void Add(IEnumerable<TCoordinate> points)
         {
-            Double x = _centSum[Ordinates.X];
-            Double y = _centSum[Ordinates.Y];
+            Double x = 0, y = 0;
+
+            if (!Coordinates<TCoordinate>.IsEmpty(_centSum))
+            {
+                x = _centSum[Ordinates.X];
+                y = _centSum[Ordinates.Y];
+            }
 
             foreach (Pair<TCoordinate> pair in Slice.GetOverlappingPairs(points))
             {
@@ -80,11 +87,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 Double segmentLen = point1.Distance(point2);
                 totalLength += segmentLen;
 
-                Double midx = (point1[Ordinates.X] + point2[Ordinates.X]) / 2;
-                x += segmentLen * midx;
+                Double midX = (point1[Ordinates.X] + point2[Ordinates.X]) / 2;
+                x += segmentLen * midX;
 
-                Double midy = (point1[Ordinates.Y] + point2[Ordinates.Y]) / 2;
-                y += segmentLen * midy;
+                Double midY = (point1[Ordinates.Y] + point2[Ordinates.Y]) / 2;
+                y += segmentLen * midY;
             }
 
             _centSum = _factory.Create(x, y);

@@ -174,8 +174,6 @@ namespace NetTopologySuite.Coordinates
                 case Ordinates.X:
                 case Ordinates.Y:
                     return true;
-                case Ordinates.M:
-                case Ordinates.Z:
                 default:
                     return false;
             }

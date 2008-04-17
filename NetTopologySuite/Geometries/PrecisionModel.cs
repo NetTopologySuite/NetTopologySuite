@@ -1,7 +1,6 @@
 ﻿using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
@@ -14,8 +13,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// <para>
     /// In other words, specifies the grid of allowable
     /// points for all <see cref="Geometry{TCoordinate}"/>s.
-    /// The <see cref="MakePrecise"/> method allows rounding a coordinate to
-    /// a "precise" value; that is, one whose precision is known exactly.
+    /// The <see cref="MakePrecise(TCoordinate)"/> method allows rounding a 
+    /// coordinate to a "precise" value; that is, one whose precision is known exactly.
     /// Coordinates are assumed to be precise in geometries.
     /// That is, the coordinates are assumed to be rounded to the
     /// precision model given for the point.
@@ -51,44 +50,60 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </para>
     /// </remarks>
     [Serializable]
-    public class PrecisionModel<TCoordinate> : IPrecisionModel<TCoordinate>, IEquatable<PrecisionModel<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+    public class PrecisionModel<TCoordinate> : IPrecisionModel<TCoordinate>
+        where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         private const Int32 FloatingPrecisionDigits = 16;
         private const Int32 FloatingSinglePrecisionDigits = 6;
         private const Int32 FixedPrecisionDigits = 1;
 
         /// <summary>  
-        /// The maximum precise value representable in a Double. Since IEE754
-        /// Double-precision numbers allow 53 bits of significand, the value is equal to
+        /// The maximum precise value representable in a Double. Since IEEE-754
+        /// double-precision numbers allow 53 bits of significand, the value is equal to
         /// 2^53 - 1.  This provides <i>almost</i> 16 decimal digits of precision.
         /// </summary>
         public const Double MaximumPreciseValue = 9007199254740992.0;
 
+        //public static Boolean operator ==(PrecisionModel<TCoordinate> left, PrecisionModel<TCoordinate> right)
+        //{
+        //    return Equals(left, right);
+        //}
+
+        //public static Boolean operator !=(PrecisionModel<TCoordinate> left, PrecisionModel<TCoordinate> right)
+        //{
+        //    return !(left == right);
+        //}
+
+        private readonly ICoordinateFactory<TCoordinate> _coordFactory;
         private readonly PrecisionModelType _modelType;
         private readonly Double _scale;
 
         /// <summary> 
         /// Creates a <see cref="PrecisionModel{TCoordinate}"/> with a default precision
-        /// of <see cref="PrecisionModelType.Floating"/>.
+        /// of <see cref="GeoAPI.Geometries.PrecisionModelType.Floating"/>.
         /// </summary>
-        public PrecisionModel()
-        {
-            // default is floating precision
-            _modelType = PrecisionModelType.Floating;
-        }
+        /// <param name="coordinateFactory">
+        /// The coordinate factory to use to creat coordinates.
+        /// </param>
+        public PrecisionModel(ICoordinateFactory<TCoordinate> coordinateFactory)
+            : this(coordinateFactory, GeoAPI.Geometries.PrecisionModelType.Floating) { }
 
         /// <summary>
         /// Creates a <see cref="PrecisionModel{TCoordinate}"/> that specifies
         /// an explicit precision model type.
         /// If the model type is Fixed the scale factor will default to 1.
         /// </summary>
+        /// <param name="coordinateFactory">
+        /// The coordinate factory to use to creat coordinates.
+        /// </param>
         /// <param name="modelType">
         /// The type of the precision model.
         /// </param>
-        public PrecisionModel(PrecisionModelType modelType)
+        public PrecisionModel(ICoordinateFactory<TCoordinate> coordinateFactory, PrecisionModelType modelType)
         {
+            _coordFactory = coordinateFactory;
             _modelType = modelType;
 
             if (modelType == PrecisionModelType.Fixed)
@@ -100,6 +115,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>  
         /// Creates a <see cref="PrecisionModel{TCoordinate}"/> that specifies Fixed precision.
         /// </summary>
+        /// <param name="coordinateFactory">
+        /// The coordinate factory to use to creat coordinates.
+        /// </param>
         /// <param name="scale">
         /// Amount by which to multiply a coordinate after subtracting
         /// the offset, to obtain a precise coordinate.
@@ -108,9 +126,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Fixed-precision coordinates are represented as precise internal coordinates,
         /// which are rounded to the grid defined by the scale factor.
         /// </remarks>
-        public PrecisionModel(Double scale)
+        public PrecisionModel(ICoordinateFactory<TCoordinate> coordinateFactory, 
+                              Double scale)
+            :this(coordinateFactory, PrecisionModelType.Fixed)
         {
-            _modelType = PrecisionModelType.Fixed;
             _scale = Math.Abs(scale);
         }
 
@@ -121,42 +140,28 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="pm">The precision model to copy.</param>
         public PrecisionModel(PrecisionModel<TCoordinate> pm)
         {
+            _coordFactory = pm._coordFactory;
             _modelType = pm._modelType;
             _scale = pm._scale;
         }
 
-        /// <summary> 
-        /// Gets or sets the scale factor which determines the number of 
-        /// decimal places in fixed precision.
-        /// </summary>
-        /// <value>    
-        /// The amount by which to multiply a coordinate after subtracting
-        /// the offset.
-        /// </value>
+        public ICoordinateFactory<TCoordinate> CoordinateFactory
+        {
+            get { return _coordFactory; }
+        }
+
         public Double Scale
         {
             get { return _scale; }
         }
 
-        /// <summary> 
-        /// Gets the type of this <see cref="PrecisionModel{TCoordinate}"/>.
-        /// </summary>
         public PrecisionModelType PrecisionModelType
         {
-            get
-            {
-                return _modelType;
-            }
+            get { return _modelType; }
         }
 
         #region IPrecisionModel Members
 
-        /// <summary> 
-        /// Tests whether the precision model supports floating point.
-        /// </summary>
-        /// <returns>
-        /// <see langword="true"/> if the precision model supports floating point.
-        /// </returns>
         public Boolean IsFloating
         {
             get
@@ -166,48 +171,32 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        public ICoordinate MakePrecise(ICoordinate coord)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary> 
-        /// Rounds a numeric value to the <see cref="PrecisionModel{TCoordinate}"/> 
-        /// grid. Symmetric Arithmetic Rounding is used, to provide
-        /// uniform rounding behavior no matter where the number is
-        /// on the number line.
-        /// </summary>
-        /// <param name="val">
-        /// The value to make precise according to the 
-        /// <see cref="PrecisionModel{TCoordinate}"/>.
-        /// </param>
         public Double MakePrecise(Double val)
         {
-            if (_modelType == PrecisionModelType.FloatingSingle)
+            switch (_modelType)
             {
-                float floatSingleVal = (float)val;
-                return floatSingleVal;
+                case PrecisionModelType.Floating:
+                    return val; // modelType == FLOATING - no rounding necessary
+                case PrecisionModelType.FloatingSingle:
+                    Single floatSingleVal = (Single)val;
+                    return floatSingleVal;
+                case PrecisionModelType.Fixed:
+                    // return Math.Round(val * scale) / scale;         
+                    // [dguidi] I implemented the Java Math.Round algorithm (used since JTS 1.6).
+                    //          Java's Math.Rint method, used previous to JTS 1.6, was 
+                    //          the same as the default .Net Math.Round algorithm -
+                    //          "Banker's Rounding" (ASTM E-29)
+                    // [codekaizen] Investigated using the symmetric rounding mode which is also available via
+                    //              Math.Round(val * _scale, MidpointRounding.AwayFromZero) / scale;
+                    //              however, I can't tell if symmetric would cause any more problems 
+                    //              than asymmetric arithmetic rounding.
+                    return Math.Floor(((val * _scale) + 0.5d)) / _scale;
+                default:
+                    throw new InvalidOperationException(
+                            "Unknown precision model type: " + _modelType);
             }
-
-            if (_modelType == PrecisionModelType.Fixed)
-            {
-                // return Math.Round(val * scale) / scale;         
-                // Diego Guidi say's: i use the Java Round algorithm (used in JTS 1.6)
-                // Java Rint method, used in JTS 1.5, was consistend with .NET Round algorithm
-                return Math.Floor(((val * _scale) + 0.5d)) / _scale;
-            }
-
-            return val; // modelType == FLOATING - no rounding necessary
         }
 
-        /// <summary>
-        /// Returns the maximum number of significant digits provided by this
-        /// precision model.
-        /// Intended for use by routines which need to print out precise values.
-        /// </summary>
-        /// <returns>
-        /// The maximum number of decimal places provided by this precision model.
-        /// </returns>
         public Int32 MaximumSignificantDigits
         {
             get
@@ -221,20 +210,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     case PrecisionModelType.Fixed:
                         return FixedPrecisionDigits + (Int32)Math.Ceiling(Math.Log(Scale) / Math.Log(10));
                     default:
-                        throw new ArgumentOutOfRangeException(_modelType.ToString());
+                        throw new InvalidOperationException(
+                            "Unknown precision model type: " + _modelType);
                 }
             }
         }
         #endregion
 
         #region IPrecisionModel<TCoordinate> Members
-        /// <summary> 
-        /// Rounds a <typeparamref name="TCoordinate"/> to the 
-        /// <see cref="PrecisionModel{TCoordinate}"/> grid.
-        /// </summary>
-        /// <param name="coord">
-        /// The coordinate to make precise according to the precision model.
-        /// </param>
         public TCoordinate MakePrecise(TCoordinate coord)
         {
             // optimization for full precision
@@ -249,73 +232,50 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             // MD says it's OK that we're not makePrecise'ing the z [Jon Aquino]
             // TODO: codekaizen - reevaluate making Z precise for 3D
 
-            return Coordinates<TCoordinate>.DefaultCoordinateFactory.Create(x, y);
+            return _coordFactory.Create(x, y);
         }
         #endregion
 
         public override string ToString()
         {
-            string description = "UNKNOWN";
-
-            if (_modelType == PrecisionModelType.Floating)
+            switch (_modelType)
             {
-                description = "Floating";
+                case PrecisionModelType.Floating:
+                    return "Floating";
+                case PrecisionModelType.FloatingSingle:
+                    return "Floating-Single";
+                case PrecisionModelType.Fixed:
+                    return "Fixed (Scale = " + Scale + ")";
+                default:
+                    return "Unknown";
             }
-            else if (_modelType == PrecisionModelType.FloatingSingle)
-            {
-                description = "Floating-Single";
-            }
-            else if (_modelType == PrecisionModelType.Fixed)
-            {
-                description = "Fixed (Scale=" + Scale + ")";
-            }
-
-            return description;
-        }
-
-        public override Boolean Equals(object other)
-        {
-            return Equals(other as PrecisionModel<TCoordinate>);
         }
 
         public Boolean Equals(IPrecisionModel<TCoordinate> other)
-        {
-            return Equals(other as PrecisionModel<TCoordinate>);
-        }
-
-        public Boolean Equals(PrecisionModel<TCoordinate> other)
         {
             if (other == null)
             {
                 return false;
             }
 
-            return _modelType == other._modelType &&
-                   _scale == other._scale;
+            return _modelType == other.PrecisionModelType &&
+                   _scale == other.Scale;
         }
 
-        public static Boolean operator ==(PrecisionModel<TCoordinate> left, PrecisionModel<TCoordinate> right)
-        {
-            return Equals(left, right);
-        }
-
-        public static Boolean operator !=(PrecisionModel<TCoordinate> left, PrecisionModel<TCoordinate> right)
-        {
-            return !(left == right);
-        }
+        #region IComparable<IPrecisionModel<TCoordinate>> Members
 
         /// <summary> 
         /// Compares this <see cref="PrecisionModel{TCoordinate}"/> object with the 
         /// specified object for order.
         /// </summary>
-        /// <param name="o">
+        /// <param name="other">
         /// The <see cref="PrecisionModel{TCoordinate}"/> with which this 
         /// <see cref="PrecisionModel{TCoordinate}"/> is being compared.
         /// </param>
         /// <remarks>
         /// A <see cref="PrecisionModel{TCoordinate}"/> is greater than another if it 
-        /// provides greater precision. The comparison is based on the value returned by the
-        /// {getMaximumSignificantDigits) method.
+        /// provides greater precision. The comparison is based on the value returned by
+        /// <see cref="MaximumSignificantDigits"/>.
         /// This comparison is not strictly accurate when comparing floating precision models
         /// to fixed models; however, it is correct when both models are either floating or fixed.
         /// </remarks>
@@ -324,28 +284,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <see cref="PrecisionModel{TCoordinate}"/> is less than, equal to, 
         /// or greater than the specified <see cref="PrecisionModel{TCoordinate}"/>.
         /// </returns>
-        public Int32 CompareTo(object o)
-        {
-            return CompareTo(o as IPrecisionModel);
-        }
-
-        public Int32 CompareTo(IPrecisionModel other)
-        {
-            if (other == null)
-            {
-                throw new ArgumentNullException("other");
-            }
-
-            Int32 significantDigits = MaximumSignificantDigits;
-            Int32 otherSignificantDigits = other.MaximumSignificantDigits;
-            return (significantDigits).CompareTo(otherSignificantDigits);
-        }
-
-        #region IComparable<IPrecisionModel<TCoordinate>> Members
-
         public Int32 CompareTo(IPrecisionModel<TCoordinate> other)
         {
-            return CompareTo((IPrecisionModel)other);
+            return (this as IComparable<IPrecisionModel>).CompareTo(other);
         }
 
         #endregion
@@ -357,6 +298,32 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             throw new NotImplementedException();
         }
 
+        #endregion
+
+        #region Explicit IPrecisionModel Members
+        ICoordinateFactory IPrecisionModel.CoordinateFactory
+        {
+            get { return _coordFactory; }
+        }
+
+        ICoordinate IPrecisionModel.MakePrecise(ICoordinate coord)
+        {
+            return MakePrecise(_coordFactory.Create(coord));
+        }
+        #endregion
+
+        #region IComparable<IPrecisionModel> Members
+        Int32 IComparable<IPrecisionModel>.CompareTo(IPrecisionModel other)
+        {
+            if (other == null)
+            {
+                throw new ArgumentNullException("other");
+            }
+
+            Int32 significantDigits = MaximumSignificantDigits;
+            Int32 otherSignificantDigits = other.MaximumSignificantDigits;
+            return (significantDigits).CompareTo(otherSignificantDigits);
+        }
         #endregion
     }
 }

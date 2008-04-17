@@ -210,7 +210,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             {
                 Trace.TraceError("[{0}] {1}", e.GetType(), e.Message);
                 // compute an approximate result
-                intersectionPoint = CentralEndpointIntersector<TCoordinate>.GetIntersection(p1, p2, q1, q2);
+                intersectionPoint = CentralEndpointIntersector<TCoordinate>
+                    .GetIntersection(CoordinateFactory, p1, p2, q1, q2);
             }
 
             return intersectionPoint;
