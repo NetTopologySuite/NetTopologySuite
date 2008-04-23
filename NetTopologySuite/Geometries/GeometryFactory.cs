@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </summary>            
     [Serializable]
     public class GeometryFactory<TCoordinate> : IGeometryFactory<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {
@@ -1102,7 +1102,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         #endregion
 
         //private static ICoordinateSequenceFactory<TCoordinate> getDefaultCoordinateSequenceFactory<TCoordinate>()
-        //    where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        //    where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
         //        IComputable<Double, TCoordinate>, IConvertible
         //{
         //    return Coordinates<TCoordinate>.DefaultCoordinateSequenceFactory;

@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// to represent polygons under the OGC SFS spatial data model.
     /// </summary>
     public class MinimalEdgeRing<TCoordinate> : EdgeRing<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         public MinimalEdgeRing(DirectedEdge<TCoordinate> start, IGeometryFactory<TCoordinate> geometryFactory)

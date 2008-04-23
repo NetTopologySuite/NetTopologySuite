@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// The edges to use are marked as being in the result Area.
     /// </summary>
     public class PolygonBuilder<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IGeometryFactory<TCoordinate> _geometryFactory;

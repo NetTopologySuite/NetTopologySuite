@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     /// logically deleted from the graph.
     /// </summary>
     public class LineMergeGraph<TCoordinate> : PlanarGraph<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>

@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// Uses the Graham Scan algorithm.
     /// </summary>
     public class ConvexHull<TCoordinate>
-         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                              IComputable<Double, TCoordinate>, IConvertible
     {
         //private static IEnumerable<TCoordinate> extractCoordinates(IGeometry<TCoordinate> geom)

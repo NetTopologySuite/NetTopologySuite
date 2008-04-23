@@ -1,7 +1,6 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -14,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// Compute the average of all points.
     /// </remarks>
     public class CentroidPoint<TCoordinate>
-         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                              IComparable<TCoordinate>, IConvertible,
                              IComputable<Double, TCoordinate>
     {
@@ -74,12 +73,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             get
             {
-                if (_pointCount == 0)
-                {
-                    return _centSum;
-                }
-
-                return ((IComputable<Double, TCoordinate>)_centSum).Divide(_pointCount);
+                return _pointCount == 0 
+                    ? _centSum 
+                    : ((IComputable<Double, TCoordinate>)_centSum).Divide(_pointCount);
             }
         }
     }

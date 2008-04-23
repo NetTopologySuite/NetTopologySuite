@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// This class is an example of the Strategy pattern.
     /// </summary>
     public interface ISegmentIntersector<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>

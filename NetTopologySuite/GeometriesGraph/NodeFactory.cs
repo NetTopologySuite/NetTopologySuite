@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// The type of the coordinate in the geometry.
     /// </typeparam>
     public class NodeFactory<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {

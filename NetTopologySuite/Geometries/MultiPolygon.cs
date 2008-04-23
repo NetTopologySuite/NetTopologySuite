@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </summary>
     [Serializable]
     public class MultiPolygon<TCoordinate> : GeometryCollection<TCoordinate>, IMultiPolygon<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                     IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>

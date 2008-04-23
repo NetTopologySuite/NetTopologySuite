@@ -67,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
     /// </list>
     /// </remarks>
     public class MonotoneChain<TCoordinate> : IBoundable<IExtents<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {

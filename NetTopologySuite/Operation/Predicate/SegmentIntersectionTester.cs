@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
     /// Short-circuited to return as soon an intersection is found.
     /// </summary>
     public class SegmentIntersectionTester<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         // for purposes of intersection testing, don't need to set precision model

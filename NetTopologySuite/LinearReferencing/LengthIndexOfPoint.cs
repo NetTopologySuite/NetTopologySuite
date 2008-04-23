@@ -11,7 +11,7 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 {
     public class LengthIndexOfPoint<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         public static Double IndexOf(IGeometry<TCoordinate> linearGeometry, TCoordinate inputPt)

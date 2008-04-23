@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// (However, using D-P is significantly faster).
     /// </summary>
     public class DouglasPeuckerSimplifier<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         public static IGeometry<TCoordinate> Simplify(IGeometry<TCoordinate> geom, Double distanceTolerance)

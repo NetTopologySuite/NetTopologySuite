@@ -26,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
     /// by using Voronoi techniques.
     /// </remarks>
     public class DistanceOp<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>

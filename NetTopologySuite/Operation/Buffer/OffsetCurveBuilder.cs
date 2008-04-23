@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// The points in the raw curve are rounded to the required precision model.
     /// </summary>
     public class OffsetCurveBuilder<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>

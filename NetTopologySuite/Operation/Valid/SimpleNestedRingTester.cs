@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// comparison.
     /// </summary>
     public class SimpleNestedRingTester<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private GeometryGraph<TCoordinate> _graph; // used to find non-node vertices

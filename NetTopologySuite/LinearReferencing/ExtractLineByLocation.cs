@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     /// two <see cref="LinearLocation{TCoordinate}" />s on the line.
     /// </summary>
     public class ExtractLineByLocation<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>

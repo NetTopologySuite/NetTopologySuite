@@ -113,6 +113,7 @@
     <Compile Include="BufferedCoordinate2DSequence.cs" />
     <Compile Include="BufferedCoordinate2DSequenceFactory.cs" />
     <Compile Include="BufferedCoordinate2DSet.cs" />
+    <Compile Include="Matrix3.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="nts.snk" />

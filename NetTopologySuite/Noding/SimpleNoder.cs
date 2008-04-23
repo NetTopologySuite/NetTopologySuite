@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// This has n^2 performance, so is too slow for use on large numbers of segments.
     /// </summary>
     public class SimpleNoder<TCoordinate> : SinglePassNoder<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>

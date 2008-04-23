@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// Find a point which is closest to the centroid of the point.
     /// </remarks>
     public class InteriorPointPoint<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly TCoordinate _centroid;

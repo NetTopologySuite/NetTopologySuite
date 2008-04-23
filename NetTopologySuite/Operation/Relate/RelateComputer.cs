@@ -25,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// implicitly).
     /// </remarks>
     public class RelateComputer<TCoordinate>
-         where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
                              IComparable<TCoordinate>, IConvertible,
                              IComputable<Double, TCoordinate>
     {
@@ -241,7 +241,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                 Debug.Assert(e.Label != null);
                 Locations eLoc = e.Label.Value[argIndex].On;
 
-                foreach (EdgeIntersection<TCoordinate> intersection in e.EdgeIntersectionList)
+                foreach (EdgeIntersection<TCoordinate> intersection in e.EdgeIntersections)
                 {
                     RelateNode<TCoordinate> n = _nodes.AddNode(intersection.Coordinate) as RelateNode<TCoordinate>;
                     Debug.Assert(n != null);
@@ -277,7 +277,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             {
                 Locations eLoc = e.Label.Value[argIndex].On;
 
-                foreach (EdgeIntersection<TCoordinate> intersection in e.EdgeIntersectionList)
+                foreach (EdgeIntersection<TCoordinate> intersection in e.EdgeIntersections)
                 {
                     RelateNode<TCoordinate> n = _nodes.Find(intersection.Coordinate) 
                                                     as RelateNode<TCoordinate>;

@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     /// and <see cref="IMultiLineString{TCoordinate}" />s.
     /// </summary>
     public class LinearIterator<TCoordinate> : IEnumerable<LinearIterator<TCoordinate>.LinearElement>
-            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                 IComputable<Double, TCoordinate>, IConvertible
     {
 

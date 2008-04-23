@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </summary>
     [Serializable]
     public class Extents<TCoordinate> : IExtents<TCoordinate>, IExtents2D
-            where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
                                 IComputable<Double, TCoordinate>,
                                 IComparable<TCoordinate>, IConvertible
     {

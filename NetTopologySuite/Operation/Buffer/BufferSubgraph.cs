@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// one or more connected holes.
     /// </summary>
     public class BufferSubgraph<TCoordinate> : IComparable<BufferSubgraph<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly RightmostEdgeFinder<TCoordinate> _finder = new RightmostEdgeFinder<TCoordinate>();

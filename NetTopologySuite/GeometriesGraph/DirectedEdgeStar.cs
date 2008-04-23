@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// <see cref="MinimalEdgeRing{TCoordinate}"/>s.
     /// </summary>
     public class DirectedEdgeStar<TCoordinate> : EdgeEndStar<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         enum DirectedEdgeState

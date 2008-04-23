@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// and adds them as nodes.
     /// </summary>
     public class IntersectionFinderAdder<TCoordinate> : ISegmentIntersector<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly LineIntersector<TCoordinate> _li = null;

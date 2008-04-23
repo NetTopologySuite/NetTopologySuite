@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     /// Out-of-range values are clamped.
     /// </summary>
     public class LengthLocationMap<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>

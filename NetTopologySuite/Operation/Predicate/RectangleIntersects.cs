@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
     /// rectangle.
     /// </summary>
     public class RectangleIntersects<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>     
@@ -87,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
     }
 
     internal class EnvelopeIntersectsVisitor<TCoordinate> : ShortCircuitedGeometryVisitor<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IExtents<TCoordinate> _rectangleExtents;
@@ -153,7 +153,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
     }
 
     internal class ContainsPointVisitor<TCoordinate> : ShortCircuitedGeometryVisitor<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly ICoordinateSequence<TCoordinate> _rectSeq;
@@ -213,7 +213,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
     }
 
     internal class LineIntersectsVisitor<TCoordinate> : ShortCircuitedGeometryVisitor<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IPolygon<TCoordinate> _rectangle;

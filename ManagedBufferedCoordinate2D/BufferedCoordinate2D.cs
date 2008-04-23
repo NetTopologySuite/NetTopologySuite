@@ -6,7 +6,11 @@ using NPack.Interfaces;
 
 namespace NetTopologySuite.Coordinates
 {
+    using IVector2D = IVector<DoubleComponent, BufferedCoordinate2D>;
+    using IVectorD = IVector<DoubleComponent>;
+
     public struct BufferedCoordinate2D : ICoordinate2D,
+                                         ICoordinate<BufferedCoordinate2D>,
                                          IBufferedVector<BufferedCoordinate2D, DoubleComponent>, 
                                          IEquatable<BufferedCoordinate2D>,
                                          IComparable<BufferedCoordinate2D>, 
@@ -24,6 +28,21 @@ namespace NetTopologySuite.Coordinates
             _factory = factory;
             _index = index;
             _isHomogeneous = isHomogeneous;
+        }
+
+        public BufferedCoordinate2D Clone()
+        {
+            return _factory.Create(this);
+        }
+
+        public Double Dot(BufferedCoordinate2D vector)
+        {
+            return _factory.Dot(this, vector);
+        }
+
+        public BufferedCoordinate2D Cross(BufferedCoordinate2D vector)
+        {
+            return _factory.Cross(this, vector);
         }
 
         public override Boolean Equals(Object obj)
@@ -54,11 +73,11 @@ namespace NetTopologySuite.Coordinates
                 return ((ICoordinate) this).Equals(coord);
             }
 
-            IVector<DoubleComponent> vector = obj as IVector<DoubleComponent>;
+            IVectorD vector = obj as IVectorD;
 
             if (vector != null)
             {
-                return ((IVector<DoubleComponent>)this).Equals(coord);
+                return ((IVectorD)this).Equals(coord);
             }
 
             IMatrix<DoubleComponent> matrix = obj as IMatrix<DoubleComponent>;
@@ -92,26 +111,16 @@ namespace NetTopologySuite.Coordinates
 
         internal static BufferedCoordinate2D Homogenize(BufferedCoordinate2D coordinate)
         {
-            if (!coordinate._index.HasValue)
-            {
-                return coordinate;
-            }
-            else
-            {
-                return new BufferedCoordinate2D(coordinate._factory, coordinate._index.Value, true);
-            }
+            return !coordinate._index.HasValue
+                       ? coordinate
+                       : new BufferedCoordinate2D(coordinate._factory, coordinate._index.Value, true);
         }
 
         internal static BufferedCoordinate2D Dehomogenize(BufferedCoordinate2D coordinate)
         {
-            if (!coordinate._index.HasValue)
-            {
-                return coordinate;
-            }
-            else
-            {
-                return new BufferedCoordinate2D(coordinate._factory, coordinate._index.Value, false);
-            }
+            return !coordinate._index.HasValue
+                       ? coordinate
+                       : new BufferedCoordinate2D(coordinate._factory, coordinate._index.Value, false);
         }
 
         #region IBufferedVector<DoubleComponent> Members
@@ -174,6 +183,8 @@ namespace NetTopologySuite.Coordinates
                 case Ordinates.X:
                 case Ordinates.Y:
                     return true;
+                case Ordinates.W:
+                    return _isHomogeneous;
                 default:
                     return false;
             }
@@ -181,7 +192,7 @@ namespace NetTopologySuite.Coordinates
 
         public Double Distance(ICoordinate other)
         {
-            throw new NotImplementedException();
+            return Distance(_factory.Create(other));
         }
 
         public Boolean IsEmpty
@@ -369,7 +380,8 @@ namespace NetTopologySuite.Coordinates
 
         public BufferedCoordinate2D Divide(BufferedCoordinate2D b)
         {
-            return BufferedCoordinate2DFactory.Divide(this, b);
+            throw new NotSupportedException();
+            //return BufferedCoordinate2DFactory.Divide(this, b);
         }
 
         #endregion
@@ -396,7 +408,7 @@ namespace NetTopologySuite.Coordinates
 
         public BufferedCoordinate2D Multiply(BufferedCoordinate2D b)
         {
-            return BufferedCoordinate2DFactory.Multiply(this, b);
+            return _factory.Cross(this, b);
         }
 
         #endregion
@@ -634,23 +646,18 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region IVector<DoubleComponent> Members
-
-        IVector<DoubleComponent> IVector<DoubleComponent>.Clone()
-        {
-            return _factory.Create(this);
-        }
+        #region IVectorD Members
 
         public Int32 ComponentCount
         {
             get { return _isHomogeneous ? 3 : 2; }
         }
 
-        DoubleComponent[] IVector<DoubleComponent>.Components
+        DoubleComponent[] IVectorD.Components
         {
             get
             {
-                return new DoubleComponent[] { X, Y };
+                return getComponents();
             }
             set
             {
@@ -658,20 +665,20 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
-        IVector<DoubleComponent> IVector<DoubleComponent>.Negative()
+        IVectorD IVectorD.Negative()
         {
             return Negative();
         }
 
-        DoubleComponent IVector<DoubleComponent>.this[Int32 index]
+        DoubleComponent IVectorD.this[Int32 index]
         {
             get
             {
-                return this[(Ordinates)(index == 2 ? 3 : index)];
+                return this[index];
             }
             set
             {
-                throw new NotSupportedException();
+                this[index] = value;
             }
         }
 
@@ -681,7 +688,7 @@ namespace NetTopologySuite.Coordinates
 
         IMatrix<DoubleComponent> IMatrix<DoubleComponent>.Clone()
         {
-            return ((IVector<DoubleComponent>)this).Clone();
+            return ((IVectorD)this).Clone();
         }
 
         Int32 IMatrix<DoubleComponent>.ColumnCount
@@ -849,63 +856,63 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region INegatable<IVector<DoubleComponent>> Members
+        #region INegatable<IVectorD> Members
 
-        IVector<DoubleComponent> INegatable<IVector<DoubleComponent>>.Negative()
+        IVectorD INegatable<IVectorD>.Negative()
         {
             return _factory.Create(-X, -Y);
         }
 
         #endregion
 
-        #region ISubtractable<IVector<DoubleComponent>> Members
+        #region ISubtractable<IVectorD> Members
 
-        IVector<DoubleComponent> ISubtractable<IVector<DoubleComponent>>.Subtract(IVector<DoubleComponent> b)
+        IVectorD ISubtractable<IVectorD>.Subtract(IVectorD b)
         {
             throw new NotImplementedException();
         }
 
         #endregion
 
-        #region IHasZero<IVector<DoubleComponent>> Members
+        #region IHasZero<IVectorD> Members
 
-        IVector<DoubleComponent> IHasZero<IVector<DoubleComponent>>.Zero
+        IVectorD IHasZero<IVectorD>.Zero
         {
             get { return Zero; }
         }
 
         #endregion
 
-        #region IAddable<IVector<DoubleComponent>> Members
+        #region IAddable<IVectorD> Members
 
-        IVector<DoubleComponent> IAddable<IVector<DoubleComponent>>.Add(IVector<DoubleComponent> b)
+        IVectorD IAddable<IVectorD>.Add(IVectorD b)
         {
             throw new NotImplementedException();
         }
 
         #endregion
 
-        #region IDivisible<IVector<DoubleComponent>> Members
+        #region IDivisible<IVectorD> Members
 
-        IVector<DoubleComponent> IDivisible<IVector<DoubleComponent>>.Divide(IVector<DoubleComponent> b)
+        IVectorD IDivisible<IVectorD>.Divide(IVectorD b)
         {
             throw new NotImplementedException();
         }
 
         #endregion
 
-        #region IHasOne<IVector<DoubleComponent>> Members
+        #region IHasOne<IVectorD> Members
 
-        IVector<DoubleComponent> IHasOne<IVector<DoubleComponent>>.One
+        IVectorD IHasOne<IVectorD>.One
         {
             get { return One; }
         }
 
         #endregion
 
-        #region IMultipliable<IVector<DoubleComponent>> Members
+        #region IMultipliable<IVectorD> Members
 
-        IVector<DoubleComponent> IMultipliable<IVector<DoubleComponent>>.Multiply(IVector<DoubleComponent> b)
+        IVectorD IMultipliable<IVectorD>.Multiply(IVectorD b)
         {
             throw new NotImplementedException();
         }
@@ -1077,112 +1084,112 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region IComputable<IVector<DoubleComponent>> Members
+        #region IComputable<IVectorD> Members
 
-        IVector<DoubleComponent> IComputable<IVector<DoubleComponent>>.Abs()
+        IVectorD IComputable<IVectorD>.Abs()
         {
             throw new NotImplementedException();
         }
 
-        IVector<DoubleComponent> IComputable<Double, IVector<DoubleComponent>>.Set(Double value)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IComputable<IVector<DoubleComponent>> Members
-
-        IVector<DoubleComponent> IComputable<IVector<DoubleComponent>>.Set(Double value)
+        IVectorD IComputable<Double, IVectorD>.Set(Double value)
         {
             throw new NotImplementedException();
         }
 
         #endregion
 
-        #region IBooleanComparable<IVector<DoubleComponent>> Members
+        #region IComputable<IVectorD> Members
 
-        Boolean IBooleanComparable<IVector<DoubleComponent>>.GreaterThan(IVector<DoubleComponent> value)
-        {
-            throw new NotImplementedException();
-        }
-
-        Boolean IBooleanComparable<IVector<DoubleComponent>>.GreaterThanOrEqualTo(IVector<DoubleComponent> value)
-        {
-            throw new NotImplementedException();
-        }
-
-        Boolean IBooleanComparable<IVector<DoubleComponent>>.LessThan(IVector<DoubleComponent> value)
-        {
-            throw new NotImplementedException();
-        }
-
-        Boolean IBooleanComparable<IVector<DoubleComponent>>.LessThanOrEqualTo(IVector<DoubleComponent> value)
+        IVectorD IComputable<IVectorD>.Set(Double value)
         {
             throw new NotImplementedException();
         }
 
         #endregion
 
-        #region IExponential<IVector<DoubleComponent>> Members
+        #region IBooleanComparable<IVectorD> Members
 
-        IVector<DoubleComponent> IExponential<IVector<DoubleComponent>>.Exp()
+        Boolean IBooleanComparable<IVectorD>.GreaterThan(IVectorD value)
         {
             throw new NotImplementedException();
         }
 
-        IVector<DoubleComponent> IExponential<IVector<DoubleComponent>>.Log()
+        Boolean IBooleanComparable<IVectorD>.GreaterThanOrEqualTo(IVectorD value)
         {
             throw new NotImplementedException();
         }
 
-        IVector<DoubleComponent> IExponential<IVector<DoubleComponent>>.Log(Double newBase)
+        Boolean IBooleanComparable<IVectorD>.LessThan(IVectorD value)
         {
             throw new NotImplementedException();
         }
 
-        IVector<DoubleComponent> IExponential<IVector<DoubleComponent>>.Power(Double exponent)
-        {
-            throw new NotImplementedException();
-        }
-
-        IVector<DoubleComponent> IExponential<IVector<DoubleComponent>>.Sqrt()
+        Boolean IBooleanComparable<IVectorD>.LessThanOrEqualTo(IVectorD value)
         {
             throw new NotImplementedException();
         }
 
         #endregion
 
-        #region IEquatable<IVector<DoubleComponent>> Members
+        #region IExponential<IVectorD> Members
 
-        Boolean IEquatable<IVector<DoubleComponent>>.Equals(IVector<DoubleComponent> other)
+        IVectorD IExponential<IVectorD>.Exp()
+        {
+            throw new NotImplementedException();
+        }
+
+        IVectorD IExponential<IVectorD>.Log()
+        {
+            throw new NotImplementedException();
+        }
+
+        IVectorD IExponential<IVectorD>.Log(Double newBase)
+        {
+            throw new NotImplementedException();
+        }
+
+        IVectorD IExponential<IVectorD>.Power(Double exponent)
+        {
+            throw new NotImplementedException();
+        }
+
+        IVectorD IExponential<IVectorD>.Sqrt()
         {
             throw new NotImplementedException();
         }
 
         #endregion
 
-        #region IComparable<IVector<DoubleComponent>> Members
+        #region IEquatable<IVectorD> Members
 
-        Int32 IComparable<IVector<DoubleComponent>>.CompareTo(IVector<DoubleComponent> other)
+        Boolean IEquatable<IVectorD>.Equals(IVectorD other)
         {
             throw new NotImplementedException();
         }
 
         #endregion
 
-        #region IDivisible<Double,IVector<DoubleComponent>> Members
+        #region IComparable<IVectorD> Members
 
-        IVector<DoubleComponent> IDivisible<Double, IVector<DoubleComponent>>.Divide(Double b)
+        Int32 IComparable<IVectorD>.CompareTo(IVectorD other)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IDivisible<Double,IVectorD> Members
+
+        IVectorD IDivisible<Double, IVectorD>.Divide(Double b)
         {
             return _factory.Divide(this, b);
         }
 
         #endregion
 
-        #region IMultipliable<Double,IVector<DoubleComponent>> Members
+        #region IMultipliable<Double,IVectorD> Members
 
-        IVector<DoubleComponent> IMultipliable<Double, IVector<DoubleComponent>>.Multiply(Double b)
+        IVectorD IMultipliable<Double, IVectorD>.Multiply(Double b)
         {
             throw new NotImplementedException();
         }
@@ -1207,25 +1214,25 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region IAddable<double,IVector<DoubleComponent>> Members
+        #region IAddable<double,IVectorD> Members
 
-        IVector<DoubleComponent> IAddable<Double, IVector<DoubleComponent>>.Add(Double b)
+        IVectorD IAddable<Double, IVectorD>.Add(Double b)
         {
             return Add(b);
         }
 
         #endregion
 
-        #region ISubtractable<double,IVector<DoubleComponent>> Members
+        #region ISubtractable<double,IVectorD> Members
 
-        IVector<DoubleComponent> ISubtractable<Double, IVector<DoubleComponent>>.Subtract(Double b)
+        IVectorD ISubtractable<Double, IVectorD>.Subtract(Double b)
         {
             return Subtract(b);
         }
 
         #endregion
 
-        #region IAddable<double,ICoordinate> Members
+        #region IAddable<double, ICoordinate> Members
 
         ICoordinate IAddable<Double, ICoordinate>.Add(Double b)
         {
@@ -1234,7 +1241,7 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region ISubtractable<double,ICoordinate> Members
+        #region ISubtractable<Double, ICoordinate> Members
 
         ICoordinate ISubtractable<Double, ICoordinate>.Subtract(Double b)
         {
@@ -1242,5 +1249,254 @@ namespace NetTopologySuite.Coordinates
         }
 
         #endregion
+
+        #region IVector2D Members
+
+        DoubleComponent[] IVector2D.Components
+        {
+            get
+            {
+                return getComponents();
+            }
+            set
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        public DoubleComponent this[Int32 index]
+        {
+            get
+            {
+                return this[(Ordinates)(index == 2 ? 3 : index)];
+            }
+            set
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        #endregion
+
+        #region IComputable<double,IVector2D> Members
+
+        IVector2D IComputable<Double, IVector2D>.Set(Double value)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IComputable<IVector2D> Members
+
+        IVector2D IComputable<IVector2D>.Abs()
+        {
+            throw new NotImplementedException();
+        }
+
+        IVector2D IComputable<IVector2D>.Set(Double value)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region INegatable<IVector2D> Members
+
+        IVector2D INegatable<IVector2D>.Negative()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region ISubtractable<IVector2D> Members
+
+        public IVector2D Subtract(IVector2D b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IHasZero<IVector2D> Members
+
+        IVector2D IHasZero<IVector2D>.Zero
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        #endregion
+
+        #region IAddable<IVector2D> Members
+
+        public IVector2D Add(IVector2D b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IDivisible<IVector2D> Members
+
+        IVector2D IDivisible<IVector2D>.Divide(IVector2D b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IHasOne<IVector2D> Members
+
+        IVector2D IHasOne<IVector2D>.One
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        #endregion
+
+        #region IMultipliable<IVector2D> Members
+
+        IVector2D IMultipliable<IVector2D>.Multiply(IVector2D b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IBooleanComparable<IVector2D> Members
+
+        Boolean IBooleanComparable<IVector2D>.GreaterThan(IVector2D value)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean IBooleanComparable<IVector2D>.GreaterThanOrEqualTo(IVector2D value)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean IBooleanComparable<IVector2D>.LessThan(IVector2D value)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean IBooleanComparable<IVector2D>.LessThanOrEqualTo(IVector2D value)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IExponential<IVector2D> Members
+
+        IVector2D IExponential<IVector2D>.Exp()
+        {
+            throw new NotImplementedException();
+        }
+
+        IVector2D IExponential<IVector2D>.Log()
+        {
+            throw new NotImplementedException();
+        }
+
+        IVector2D IExponential<IVector2D>.Log(Double newBase)
+        {
+            throw new NotImplementedException();
+        }
+
+        IVector2D IExponential<IVector2D>.Power(Double exponent)
+        {
+            throw new NotImplementedException();
+        }
+
+        IVector2D IExponential<IVector2D>.Sqrt()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IAddable<Double, IVector<DoubleComponent, BufferedCoordinate2D>> Members
+
+        IVector2D IAddable<Double, IVector2D>.Add(Double b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region ISubtractable<Double, IVector<DoubleComponent, BufferedCoordinate2D>> Members
+
+        IVector2D ISubtractable<Double, IVector2D>.Subtract(Double b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IMultipliable<Double, IVector<DoubleComponent, BufferedCoordinate2D>> Members
+
+        IVector2D IMultipliable<Double, IVector2D>.Multiply(Double b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IDivisible<Double, IVector<DoubleComponent, BufferedCoordinate2D>> Members
+
+        IVector2D IDivisible<Double, IVector2D>.Divide(double b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IEquatable<IVector2D> Members
+
+        Boolean IEquatable<IVector2D>.Equals(IVector2D other)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IComparable<IVector2D> Members
+
+        Int32 IComparable<IVector2D>.CompareTo(IVector2D other)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IVectorD Members
+
+        IVectorD IVectorD.Clone()
+        {
+            return Clone();
+        }
+
+        #endregion
+
+        #region ICoordinate<BufferedCoordinate2D> Members
+
+        public Double Distance(BufferedCoordinate2D other)
+        {
+            return _factory.Distance(this, other);
+        }
+
+        DoubleComponent ICoordinate<BufferedCoordinate2D>.this[Int32 index]
+        {
+            get { return this[index]; }
+        }
+
+        #endregion
+
+        private DoubleComponent[] getComponents()
+        {
+            return new DoubleComponent[] { X, Y };
+        }
     }
 }

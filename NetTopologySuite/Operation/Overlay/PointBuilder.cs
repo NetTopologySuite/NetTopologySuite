@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// nodes of an overlay graph.
     /// </summary>
     public class PointBuilder<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly OverlayOp<TCoordinate> _op;

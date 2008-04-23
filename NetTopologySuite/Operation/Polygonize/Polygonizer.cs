@@ -38,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
     /// </list>
     /// </remarks>
     public class Polygonizer<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         /*

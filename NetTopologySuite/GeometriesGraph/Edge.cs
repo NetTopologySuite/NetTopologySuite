@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// <typeparam name="TCoordinate">The type of coordinate.</typeparam>
     public class Edge<TCoordinate> : GraphComponent<TCoordinate>, 
                                      IBoundable<IExtents<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {
@@ -44,15 +44,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                                  Dimensions.Surface);
         }
 
-        public static Boolean operator ==(Edge<TCoordinate> obj1, Edge<TCoordinate> obj2)
-        {
-            return Equals(obj1, obj2);
-        }
+        //public static Boolean operator ==(Edge<TCoordinate> obj1, Edge<TCoordinate> obj2)
+        //{
+        //    return Equals(obj1, obj2);
+        //}
 
-        public static Boolean operator !=(Edge<TCoordinate> obj1, Edge<TCoordinate> obj2)
-        {
-            return !(obj1 == obj2);
-        }
+        //public static Boolean operator !=(Edge<TCoordinate> obj1, Edge<TCoordinate> obj2)
+        //{
+        //    return !(obj1 == obj2);
+        //}
 
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private readonly ICoordinateSequence<TCoordinate> _coordinates;
@@ -119,7 +119,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             {
                 if (Coordinates.Count > 0)
                 {
-                    return Coordinates[0];
+                    return Coordinates.First;
                 }
 
                 return default(TCoordinate);
@@ -157,16 +157,27 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             set { _depthDelta = value; }
         }
 
+        /// <summary>
+        /// Gets the index of the last segment's endpoint.
+        /// </summary>
         public Int32 MaximumSegmentIndex
         {
-            get { return _coordinates.Count - 1; }
+            get { return _coordinates.LastIndex; }
         }
 
-        public EdgeIntersectionList<TCoordinate> EdgeIntersectionList
+        /// <summary>
+        /// Gets an <see cref="EdgeIntersectionList{TCoordinate}"/> for 
+        /// the <see cref="Edge{TCoordinate}"/>.
+        /// </summary>
+        public EdgeIntersectionList<TCoordinate> EdgeIntersections
         {
             get { return _edgeIntersectionList; }
         }
 
+        /// <summary>
+        /// Gets a <see cref="MonotoneChainEdge{TCoordinate}"/> from 
+        /// the <see cref="Edge{TCoordinate}"/> instance.
+        /// </summary>
         public MonotoneChainEdge<TCoordinate> MonotoneChainEdge
         {
             get
@@ -181,15 +192,19 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
+        /// <summary>
+        /// Gets <see langword="true"/> if the first coordinate of the edge
+        /// equals the last coordinate.
+        /// </summary>
         public Boolean IsClosed
         {
             get { return Coordinates.First.Equals(Coordinates.Last); }
         }
 
         /// <summary> 
-        /// An <see cref="Edge{TCoordinate}"/> is collapsed if it is an 
-        /// Area edge and it consists of two segments which are equal 
-        /// and opposite (eg a zero-width V).
+        /// An <see cref="Edge{TCoordinate}"/> is collapsed if it is a
+        /// <see cref="Dimensions.Surface"/> edge and it consists of 
+        /// two segments which are equal and opposite (e.g. a zero-width 'V' shape).
         /// </summary>
         public Boolean IsCollapsed
         {
@@ -240,7 +255,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                                      Int32 segmentIndex, 
                                      Int32 geometryIndex)
         {
-            for (Int32 i = 0; i < (Int32)intersection.IntersectionDegree; i++)
+            Int32 count = (Int32) intersection.IntersectionDegree;
+
+            for (Int32 i = 0; i < count; i++)
             {
                 AddIntersection(intersection, segmentIndex, geometryIndex, i);
             }
@@ -264,22 +281,24 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             // normalize the intersection point location
             Int32 nextSegIndex = normalizedSegmentIndex + 1;
 
-            if (nextSegIndex < Coordinates.Count)
+            if (nextSegIndex >= Coordinates.Count)
             {
-                TCoordinate nextPt = Coordinates[nextSegIndex];
-
-                // Normalize segment index if intersectionPoint falls on vertex
-                // The check for point equality is 2D only - Z values are ignored
-                // TODO: 3D unsafe
-                if (intersectionPoint.Equals(nextPt))
-                {
-                    normalizedSegmentIndex = nextSegIndex;
-                    dist = 0.0;
-                }
-
-                // Add the intersection point to edge intersection list.                
-                EdgeIntersectionList.Add(intersectionPoint, normalizedSegmentIndex, dist);
+                return;
             }
+
+            TCoordinate nextPt = Coordinates[nextSegIndex];
+
+            // Normalize segment index if intersectionPoint falls on vertex
+            // The check for point equality is 2D only - Z values are ignored
+            // TODO: 3D unsafe
+            if (intersectionPoint.Equals(nextPt))
+            {
+                normalizedSegmentIndex = nextSegIndex;
+                dist = 0.0;
+            }
+
+            // Add the intersection point to edge intersection list.                
+            EdgeIntersections.Add(intersectionPoint, normalizedSegmentIndex, dist);
         }
 
         /// <summary>

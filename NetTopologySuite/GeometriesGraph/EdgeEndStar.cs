@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// around the node for efficient lookup and topology building.
     /// </summary>
     public abstract class EdgeEndStar<TCoordinate> : IEnumerable<EdgeEnd<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {

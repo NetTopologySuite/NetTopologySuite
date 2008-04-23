@@ -10,7 +10,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// A map of nodes, indexed by the coordinate of the node.
     /// </summary>
     public class NodeMap<TCoordinate> : IEnumerable<Node<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {

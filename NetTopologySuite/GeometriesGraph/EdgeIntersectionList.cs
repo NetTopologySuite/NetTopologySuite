@@ -2,17 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using GeoAPI.Coordinates;
-using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     /// <summary>
-    /// A list of edge intersections along an Edge.
+    /// A list of edge intersections along an <see cref="Edge{TCoordinate}"/>.
     /// </summary>
     public class EdgeIntersectionList<TCoordinate> : IEnumerable<EdgeIntersection<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {
@@ -23,6 +22,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private readonly Edge<TCoordinate> _edge; // the parent edge
 
+        /// <summary>
+        /// Creates a new <see cref="EdgeIntersectionList{TCoordinate}"/>.
+        /// </summary>
+        /// <param name="geoFactory">
+        /// An <see cref="IGeometryFactory{TCoordinate}"/> instance.
+        /// </param>
+        /// <param name="edge">
+        /// The containing <see cref="Edge{TCoordinate}"/>.
+        /// </param>
         public EdgeIntersectionList(IGeometryFactory<TCoordinate> geoFactory, 
                                     Edge<TCoordinate> edge)
         {
@@ -47,8 +55,19 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             return buffer.ToString();
         }
 
+        /// <summary>
+        /// Searches all of the contained <see cref="EdgeIntersection{TCoordinate}"/>
+        /// entries to find if an itersection exists at <paramref name="point"/>.
+        /// </summary>
+        /// <param name="point">The coordinate to search for an intersection at.</param>
+        /// <returns>
+        /// <see langword="true"/> if the <see cref="EdgeIntersectionList{TCoordinate}"/>
+        /// contains an <see cref="EdgeIntersection{TCoordinate}"/> at 
+        /// <paramref name="point"/>.
+        /// </returns>
         public Boolean IsIntersection(TCoordinate point)
         {
+            // TODO: consider a map or tree to speed this up
             foreach (EdgeIntersection<TCoordinate> intersection in this)
             {
                 if (intersection.Coordinate.Equals(point))
@@ -70,8 +89,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         }
 
         /// <summary> 
-        /// Creates and returns new edges for all the edges that the intersections in this
-        /// list split the parent edge into.
+        /// Generates and returns new edges for all the 
+        /// edges that the intersections in this list split the parent edge into.
         /// </summary>
         public IEnumerable<Edge<TCoordinate>> GetSplitEdges()
         {
@@ -148,11 +167,19 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             return eiNew;
         }
 
+        /// <summary>
+        /// Clears the <see cref="EdgeIntersectionList{TCoordinate}"/> of all
+        /// <see cref="EdgeIntersection{TCoordinate}"/>s.
+        /// </summary>
         public void Clear()
         {
             _nodeMap.Clear();
         }
 
+        /// <summary>
+        /// Gets the number of <see cref="EdgeIntersection{TCoordinate}"/>s
+        /// in the list.
+        /// </summary>
         public Int32 Count
         {
             get { return _nodeMap.Count; }

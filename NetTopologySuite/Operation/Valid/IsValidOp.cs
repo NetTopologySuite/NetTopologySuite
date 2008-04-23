@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// See the documentation for the various geometry types for a specification of validity.
     /// </summary>
     public class IsValidOp<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
@@ -64,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             Edge<TCoordinate> searchEdge = graph.FindEdge(searchRing);
             
             // find a point in the testCoords which is not a node of the searchRing
-            EdgeIntersectionList<TCoordinate> eiList = searchEdge.EdgeIntersectionList;
+            EdgeIntersectionList<TCoordinate> eiList = searchEdge.EdgeIntersections;
             
             // TODO: somewhat inefficient - is there a better way? (Use a node map, for instance?)
             foreach (TCoordinate pt in testCoords)
@@ -506,7 +506,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         {
             foreach (Edge<TCoordinate> e in graph.Edges)
             {
-                checkNoSelfIntersectingRing(e.EdgeIntersectionList);
+                checkNoSelfIntersectingRing(e.EdgeIntersections);
 
                 if (_validErr != null)
                 {

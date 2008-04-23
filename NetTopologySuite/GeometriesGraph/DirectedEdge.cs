@@ -10,7 +10,7 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     public class DirectedEdge<TCoordinate> : EdgeEnd<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>

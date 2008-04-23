@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// closest to the centroid.
     /// </remarks>
     public class InteriorPointLine<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly ICoordinateFactory<TCoordinate> _factory;

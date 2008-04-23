@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
     /// To test whether a given Polygon is valid, use <see cref="IGeometry.IsValid"/>)
     /// </remarks>
     public class IsSimpleOp<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private struct EndpointInfo
@@ -141,7 +141,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
             {
                 Int32 maxSegmentIndex = e.MaximumSegmentIndex;
 
-                foreach (EdgeIntersection<TCoordinate> intersection in e.EdgeIntersectionList)
+                foreach (EdgeIntersection<TCoordinate> intersection in e.EdgeIntersections)
                 {
                     if (!intersection.IsEndPoint(maxSegmentIndex))
                     {

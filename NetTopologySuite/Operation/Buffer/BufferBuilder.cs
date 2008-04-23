@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// can produce more robust results.    
     /// </remarks>
     public class BufferBuilder<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {

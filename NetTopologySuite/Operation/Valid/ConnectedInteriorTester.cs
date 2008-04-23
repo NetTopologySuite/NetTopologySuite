@@ -24,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// If a disconnected situation is found the location of the problem is recorded.
     /// </summary>
     public class ConnectedInteriorTester<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         public static TCoordinate FindDifferentPoint(IEnumerable<TCoordinate> coord, TCoordinate pt)

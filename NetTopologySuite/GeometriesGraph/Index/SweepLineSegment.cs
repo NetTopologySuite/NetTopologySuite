@@ -8,7 +8,7 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 {
     public class SweepLineSegment<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly Edge<TCoordinate> _edge;

@@ -9,7 +9,7 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     public struct Intersection<TCoordinate> : IEnumerable<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {

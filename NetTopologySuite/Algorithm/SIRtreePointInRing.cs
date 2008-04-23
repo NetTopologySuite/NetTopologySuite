@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// an <see cref="SirTree{TItem}"/> index to increase performance.
     /// </summary>
     public class SirTreePointInRing<TCoordinate> : IPointInRing<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly ILinearRing<TCoordinate> _ring;

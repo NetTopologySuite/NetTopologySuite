@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
     /// a ring of a polygon.  The ring may be either an outer shell or a hole.
     /// </summary>
     public class EdgeRing<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         // cache the following data for efficiency

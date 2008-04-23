@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
     /// has be logically deleted from the graph.
     /// </summary>
     public class PolygonizeGraph<TCoordinate> : PlanarGraph<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>

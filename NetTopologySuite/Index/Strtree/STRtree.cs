@@ -25,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
     /// </remarks>
     public class StrTree<TCoordinate, TItem> : AbstractStrTree<IExtents<TCoordinate>, TItem>, ISpatialIndex<IExtents<TCoordinate>, TItem>
         where TItem : IBoundable<IExtents<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, IComputable<Double, TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>, IComputable<Double, TCoordinate>,
             IConvertible
     {
         #region Nested types

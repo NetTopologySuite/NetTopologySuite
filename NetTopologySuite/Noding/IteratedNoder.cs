@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </para>
     /// </remarks>
     public class IteratedNoder<TCoordinate> : INoder<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         public static readonly Int32 DefaultMaxIterations = 5;

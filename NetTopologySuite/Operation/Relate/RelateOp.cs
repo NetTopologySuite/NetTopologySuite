@@ -10,7 +10,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// Implements the <c>Relate()</c> operation on <see cref="Geometry{TCoordinate}"/>s.
     /// </summary>
     public class RelateOp<TCoordinate> : GeometryGraphOperation<TCoordinate>
-         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
+         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
                              IComputable<Double, TCoordinate>, IConvertible
     {
         public static IntersectionMatrix Relate(IGeometry<TCoordinate> a, IGeometry<TCoordinate> b)

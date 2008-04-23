@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
@@ -10,13 +11,16 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     /// <summary>
-    /// A EdgeList is a list of Edges.  It supports locating edges
-    /// that are pointwise equals to a target edge.
+    /// An <see cref="EdgeList{TCoordinate}"/> is a list of 
+    /// <see cref="Edge{TCoordinate}"/>s. It supports locating edges 
+    /// that are pointwise equal to a target edge.
     /// </summary>
     public class EdgeList<TCoordinate> : IList<Edge<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private readonly List<Edge<TCoordinate>> _edges = new List<Edge<TCoordinate>>();
 
         /// <summary>
@@ -26,12 +30,60 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// An alternative would be to use an ordered set based on the values
         /// of the edge coordinates.
         /// </summary>
-        // TODO: reevaluate whether a dynamic RTree would work better here.
-        private readonly ISpatialIndex<IExtents<TCoordinate>, Edge<TCoordinate>> _index;
+        private ISpatialIndex<IExtents<TCoordinate>, Edge<TCoordinate>> _index;
 
         public EdgeList(IGeometryFactory<TCoordinate> geoFactory)
-        { 
-            _index = new Quadtree<TCoordinate, Edge<TCoordinate>>(geoFactory);
+        {
+            if (geoFactory == null) throw new ArgumentNullException("geoFactory");
+
+            _geoFactory = geoFactory;
+            initIndex();
+        }
+
+        public override String ToString()
+        {
+            StringBuilder buffer = new StringBuilder();
+            StringWriter writer = new StringWriter(buffer);
+
+            writer.Write("MULTILINESTRING ( ");
+
+            Boolean pastFirstEdge = false;
+
+            foreach (Edge<TCoordinate> e in _edges)
+            {
+                if (pastFirstEdge)
+                {
+                    writer.Write(",");
+                }
+                else
+                {
+                    pastFirstEdge = true;
+                }
+
+                writer.Write("(");
+
+                Boolean pastFirstCoordinate = false;
+
+                foreach (TCoordinate coordinate in e.Coordinates)
+                {
+                    if (pastFirstCoordinate)
+                    {
+                        writer.Write(",");
+                    }
+                    else
+                    {
+                        pastFirstCoordinate = true;
+                    }
+
+                    writer.Write(coordinate);
+                }
+
+                writer.WriteLine(")");
+            }
+
+            writer.Write(")  ");
+
+            return buffer.ToString();
         }
 
         #region IList<Edge<TCoordinate>> Members
@@ -55,12 +107,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             return _edges.IndexOf(item);
         }
 
-        public void Insert(int index, Edge<TCoordinate> item)
+        public void Insert(Int32 index, Edge<TCoordinate> item)
         {
             throw new NotSupportedException();
         }
 
-        public void RemoveAt(int index)
+        public void RemoveAt(Int32 index)
         {
             throw new NotImplementedException();
         }
@@ -75,14 +127,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        // <FIX> fast lookup for edges
+        // <FIX> MD fast lookup for edges
         /// <summary>
         /// If there is an edge equal to e already in the list, return it.
         /// Otherwise return null.
         /// </summary>
         /// <returns>  
-        /// equal edge, if there is one already in the list,
-        /// null otherwise.
+        /// An equal edge, if there is one already in the list,
+        /// <see langword="null"/> otherwise.
         /// </returns>
         public Edge<TCoordinate> FindEqualEdge(Edge<TCoordinate> e)
         {
@@ -120,52 +172,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                                     });
         }
 
-        public void Write(StreamWriter outstream)
-        {
-            outstream.Write("MULTILINESTRING ( ");
-
-            Boolean pastFirstEdge = false;
-
-            foreach (Edge<TCoordinate> e in _edges)
-            {
-                if (pastFirstEdge)
-                {
-                    outstream.Write(",");
-                }
-                else
-                {
-                    pastFirstEdge = true;
-                }
-
-                outstream.Write("(");
-
-                Boolean pastFirstCoordinate = false;
-
-                foreach (TCoordinate coordinate in e.Coordinates)
-                {
-                    if (pastFirstCoordinate)
-                    {
-                        outstream.Write(",");
-                    }
-                    else
-                    {
-                        pastFirstCoordinate = true;
-                    }
-
-                    outstream.Write(coordinate[Ordinates.X] + " " + coordinate[Ordinates.Y]);
-                }
-
-                outstream.WriteLine(")");
-            }
-
-            outstream.Write(")  ");
-        }
-
         #region ICollection<Edge<TCoordinate>> Members
 
         public void Clear()
         {
             _edges.Clear();
+            initIndex();
         }
 
         public Boolean Contains(Edge<TCoordinate> item)
@@ -194,7 +206,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="e">Edge element to remove from list.</param>
         public Boolean Remove(Edge<TCoordinate> e)
         {
-            return _edges.Remove(e);
+            throw new NotSupportedException();
+            //return _index.Remove(e) && 
+            //       _edges.Remove(e);
         }
 
         #endregion
@@ -215,5 +229,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         }
 
         #endregion
+
+        private void initIndex()
+        {
+            // TODO: reevaluate whether a dynamic RTree would work better here.
+            _index = new Quadtree<TCoordinate, Edge<TCoordinate>>(_geoFactory);
+        }
     }
 }

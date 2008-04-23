@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// present along a noded <see cref="NodedSegmentString{TCoordinate}"/>.
     /// </summary>
     public class SegmentNodeList<TCoordinate> : IEnumerable<SegmentNode<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly SortedList<SegmentNode<TCoordinate>, Object> _nodeList
@@ -256,7 +256,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
     /*
     internal class NodeVertexIterator<TCoordinate> : IEnumerator<SegmentNode<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private SegmentNodeList<TCoordinate> _nodeList;

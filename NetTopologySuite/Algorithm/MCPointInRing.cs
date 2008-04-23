@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// index to increase performance.
     /// </summary>
     public class MCPointInRing<TCoordinate> : IPointInRing<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         //private class MCSelector : MonotoneChainSelectAction<TCoordinate>

@@ -24,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </remarks>
     [Serializable]
     public class Polygon<TCoordinate> : MultiCoordinateGeometry<TCoordinate>, IPolygon<TCoordinate>, IHasGeometryComponents<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         ///// <summary>

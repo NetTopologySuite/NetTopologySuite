@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// Computing the intersections between the edges and nodes of two different graphs
     /// </remarks>
     public class PlanarGraph<TCoordinate>
-         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                              IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary> 

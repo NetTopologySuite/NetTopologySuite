@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// index to speed up the comparisons.
     /// </summary>
     public class SweeplineNestedRingTester<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly GeometryGraph<TCoordinate> _graph; // used to find non-node vertices

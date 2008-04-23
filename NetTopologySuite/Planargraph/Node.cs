@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// data and methods.
     /// </remarks>
     public class Node<TCoordinate> : GraphComponent<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>

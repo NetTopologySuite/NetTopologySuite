@@ -5,6 +5,7 @@ using GeoAPI.Operations.Buffer;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Noding;
 using GisSharpBlog.NetTopologySuite.Noding.Snapround;
+using NPack;
 using NPack.Interfaces;
 //using GisSharpBlog.NetTopologySuite.Precision;
 
@@ -55,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// </para>
     /// </remarks>
     public class BufferOp<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {
@@ -239,7 +240,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             if (argPM.PrecisionModelType == PrecisionModelType.Fixed)
             {
-                bufferFixedPrecision(argPM);
+                // TODO: Fix scaled noder.
+                throw new NotImplementedException("Fix scaled noder.");
+                //bufferFixedPrecision(argPM);
             }
             else
             {
@@ -260,18 +263,22 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             catch (TopologyException ex)
             {
                 _saveException = ex;
-                // don't propagate the exception - it will be detected by fact that resultGeometry is null
+                // don't propagate the exception - it will be detected by fact 
+                // that resultGeometry is null
             }
         }
 
-        private void bufferFixedPrecision(IPrecisionModel<TCoordinate> fixedPM)
+        private void bufferFixedPrecision<TMatrix>(IPrecisionModel<TCoordinate> fixedPM)
+            where TMatrix : ITransformMatrix<DoubleComponent, TCoordinate, TMatrix>
         {
             MonotoneChainIndexSnapRounder<TCoordinate> snapRounder =
                 new MonotoneChainIndexSnapRounder<TCoordinate>(_geoFactory,
                     new PrecisionModel<TCoordinate>(_coordFactory, 1.0));
 
-            INoder<TCoordinate> noder = new ScaledNoder<TCoordinate>(
-                snapRounder, fixedPM.Scale, _coordSequenceFactory);
+            INoder<TCoordinate> noder = new ScaledNoder<TCoordinate, TMatrix>(
+                                                                     snapRounder, 
+                                                                     fixedPM.Scale, 
+                                                                     _coordSequenceFactory);
 
             BufferBuilder<TCoordinate> bufBuilder
                 = new BufferBuilder<TCoordinate>(_geoFactory);
@@ -316,7 +323,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             IPrecisionModel<TCoordinate> fixedPM 
                 = new PrecisionModel<TCoordinate>(_coordFactory, sizeBasedScaleFactor);
-            bufferFixedPrecision(fixedPM);
+
+            // TODO: Fix scaled noder.
+            throw new NotImplementedException("Fix scaled noder.");
+            //bufferFixedPrecision(fixedPM);
         }
     }
 }

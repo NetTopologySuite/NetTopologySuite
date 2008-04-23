@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// This ordering is used to sort EdgeEnds around a node.
     /// </remarks>
     public class EdgeEnd<TCoordinate> : IComparable<EdgeEnd<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {

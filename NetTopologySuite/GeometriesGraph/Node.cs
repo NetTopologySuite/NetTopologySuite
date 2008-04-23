@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     /// <typeparam name="TCoordinate">The type of coordinate.</typeparam>
     public class Node<TCoordinate> : GraphComponent<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {

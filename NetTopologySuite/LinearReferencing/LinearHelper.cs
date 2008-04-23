@@ -10,7 +10,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     {
 
         internal static ILineString<TCoordinate> GetLine<TCoordinate>(IGeometry<TCoordinate> linear, Int32 lineIndex)
-            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                 IComputable<Double, TCoordinate>, IConvertible
         {
             ILineString<TCoordinate> line = linear as ILineString<TCoordinate>;
@@ -27,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         }
 
         internal static Int32 GetLineCount<TCoordinate>(IGeometry<TCoordinate> linear)
-            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                 IComputable<Double, TCoordinate>, IConvertible
         {
             if (linear is IMultiLineString)
@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         }
 
         internal static double GetLength<TCoordinate>(IGeometry<TCoordinate> linear)
-            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                 IComputable<Double, TCoordinate>, IConvertible
         {
             if (linear is IMultiLineString)

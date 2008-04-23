@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     /// always computes the nearest point closest to the start of the geometry.
     /// </summary>
     public class LocationIndexOfPoint<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         public static LinearLocation<TCoordinate> IndexOf(IGeometry<TCoordinate> linearGeom, TCoordinate inputPt)

@@ -9,7 +9,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// A map of <see cref="Node{TCoordinate}"/>s, indexed by the coordinate of the node.
     /// </summary>   
     public class NodeMap<TCoordinate> : IDictionary<TCoordinate, Node<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly SortedList<TCoordinate, Node<TCoordinate>> _nodeMap 

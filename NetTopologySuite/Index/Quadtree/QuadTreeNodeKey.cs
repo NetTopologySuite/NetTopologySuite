@@ -8,7 +8,7 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 {
     public class QuadTreeNodeKey<TCoordinate> : AbstractNodeKey<IExtents<TCoordinate>, TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
                             IComparable<TCoordinate>, IConvertible, 
                             IComputable<Double, TCoordinate>
     {

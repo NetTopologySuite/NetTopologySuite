@@ -5,7 +5,7 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 {
     public class MonotoneChain<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {

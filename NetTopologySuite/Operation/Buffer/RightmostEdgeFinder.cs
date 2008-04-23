@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// The DirectedEdge returned is guaranteed to have the R of the world on its RHS.
     /// </summary>
     public class RightmostEdgeFinder<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private Int32 _minIndex = -1;

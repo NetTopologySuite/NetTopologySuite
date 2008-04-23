@@ -10,7 +10,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     /// A <see cref="DirectedEdge{TCoordinate}"/> of a <see cref="LineMergeGraph{TCoordinate}"/>. 
     /// </summary>
     public class LineMergeDirectedEdge<TCoordinate> : DirectedEdge<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>

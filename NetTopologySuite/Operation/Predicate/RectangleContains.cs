@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
     /// this class can be used directly to test many geometries against a single rectangle.
     /// </summary>
     public class RectangleContains<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         public static Boolean Contains(IPolygon<TCoordinate> rectangle, IGeometry<TCoordinate> b)

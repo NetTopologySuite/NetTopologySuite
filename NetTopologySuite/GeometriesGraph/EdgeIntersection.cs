@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// The intersection point must be precise.
     /// </remarks>
     public struct EdgeIntersection<TCoordinate> : IComparable<EdgeIntersection<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {

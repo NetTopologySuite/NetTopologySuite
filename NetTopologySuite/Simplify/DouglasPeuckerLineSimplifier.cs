@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// the standard Douglas-Peucker algorithm.
     /// </summary>
     public class DouglasPeuckerLineSimplifier<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         public static ICoordinateSequence<TCoordinate> Simplify(ICoordinateSequence<TCoordinate> coordinates, Double distanceTolerance)

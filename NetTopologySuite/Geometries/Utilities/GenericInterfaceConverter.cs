@@ -7,7 +7,7 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
     internal static class GenericInterfaceConverter<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {

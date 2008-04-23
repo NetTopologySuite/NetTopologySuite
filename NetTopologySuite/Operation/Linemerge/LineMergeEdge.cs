@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     /// Edge has been logically deleted from the graph.
     /// </summary>
     public class LineMergeEdge<TCoordinate> : Edge<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly ILineString<TCoordinate> _line;

@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// The algorithms supplied in this class are robust for double-precision floating point.
     /// </summary>
     public static class CGAlgorithms<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         public static RobustLineIntersector<TCoordinate> CreateRobustLineIntersector(IGeometryFactory<TCoordinate> geoFactory)

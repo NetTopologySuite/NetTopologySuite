@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
     /// as well as number of line segments used to form them.
     /// </summary>
     public class GeometricShapeFactory<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IGeometryFactory<TCoordinate> _geoFactory;

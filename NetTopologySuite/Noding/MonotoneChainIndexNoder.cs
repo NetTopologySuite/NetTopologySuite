@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// or <see cref="StrTree{TCoordinate, TItem}" />.
     /// </summary>
     public class MonotoneChainIndexNoder<TCoordinate> : SinglePassNoder<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IGeometryFactory<TCoordinate> _geoFactory;

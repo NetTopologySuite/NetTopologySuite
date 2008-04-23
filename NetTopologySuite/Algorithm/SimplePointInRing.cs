@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// a ring, using a linear-time algorithm.
     /// </summary>
     public class SimplePointInRing<TCoordinate> : IPointInRing<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IEnumerable<TCoordinate> _ring;

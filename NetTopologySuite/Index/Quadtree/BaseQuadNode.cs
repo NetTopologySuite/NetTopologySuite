@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
     /// 0 | 1
     /// </summary>
     public abstract class BaseQuadNode<TCoordinate, TItem> : AbstractNode<IExtents<TCoordinate>, TItem>, IEnumerable<TItem>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IDivisible<Double, TCoordinate>, IConvertible
         where TItem : IBoundable<IExtents<TCoordinate>>
     {

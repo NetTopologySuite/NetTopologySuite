@@ -10,7 +10,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// <see cref="NodedSegmentString{TCoordinate}" />s.
     /// </summary>
     public struct SegmentNode<TCoordinate> : IEquatable<SegmentNode<TCoordinate>>, IComparable<SegmentNode<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly TCoordinate _coordinate; // the point of intersection

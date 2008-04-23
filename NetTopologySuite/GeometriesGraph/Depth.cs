@@ -33,113 +33,117 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         private Int32? _depth11;
         private Int32? _depth12;
 
-        [Obsolete("V2.0: Use indexer instead.")]
-        public Int32? GetDepth(Int32 geometryIndex, Positions position)
-        {
-            return this[geometryIndex, position];
-        }
+        //[Obsolete("V2.0: Use indexer instead.")]
+        //public Int32? GetDepth(Int32 geometryIndex, Positions position)
+        //{
+        //    return this[geometryIndex, position];
+        //}
 
-        [Obsolete("V2.0: Use indexer instead.")]
-        public void SetDepth(Int32 geometryIndex, Positions position, Int32? depthValue)
-        {
-            this[geometryIndex, position] = depthValue;
-        }
+        //[Obsolete("V2.0: Use indexer instead.")]
+        //public void SetDepth(Int32 geometryIndex, Positions position, Int32? depthValue)
+        //{
+        //    this[geometryIndex, position] = depthValue;
+        //}
 
+        /// <summary>
+        /// Gets or sets the depth for the given <paramref name="geometryIndex"/>
+        /// at the given <paramref name="position"/>.
+        /// </summary>
+        /// <param name="geometryIndex">The index of the geometry: 0 or 1.</param>
+        /// <param name="position">The position relative to the given geometry.</param>
+        /// <returns>
+        /// The depth stored for the geometry at the position, or <see langword="null"/>
+        /// if none is stored.
+        /// </returns>
         public Int32? this[Int32 geometryIndex, Positions position]
         {
             get
             {
-                if (geometryIndex == 0)
+                switch (geometryIndex)
                 {
-                    switch (position)
-                    {
-                        case Positions.On:
-                            return _depth00;
-                        case Positions.Left:
-                            return _depth01;
-                        case Positions.Right:
-                            return _depth02;
-                        //case Positions.Parallel:
-                        default:
-                            return null;
-                    }
+                    case 0:
+                        switch (position)
+                        {
+                            case Positions.On:
+                                return _depth00;
+                            case Positions.Left:
+                                return _depth01;
+                            case Positions.Right:
+                                return _depth02;
+                                //case Positions.Parallel:
+                            default:
+                                return null;
+                        }
+                    case 1:
+                        switch (position)
+                        {
+                            case Positions.On:
+                                return _depth10;
+                            case Positions.Left:
+                                return _depth11;
+                            case Positions.Right:
+                                return _depth12;
+                            //case Positions.Parallel:
+                            default:
+                                return null;
+                        }
+                    default:
+                        throw new ArgumentOutOfRangeException("geometryIndex", geometryIndex,
+                                                              "Geometry index must be 0 or 1.");
                 }
-                
-                if (geometryIndex == 1)
-                {
-                    switch (position)
-                    {
-                        case Positions.On:
-                            return _depth10;
-                        case Positions.Left:
-                            return _depth11;
-                        case Positions.Right:
-                            return _depth12;
-                        //case Positions.Parallel:
-                        default:
-                            return null;
-                    }
-                }
-
-                throw new ArgumentOutOfRangeException("geometryIndex", geometryIndex,
-                                                      "Geometry index must be 0 or 1.");
             }
             set
             {
-                if (geometryIndex == 0)
+                switch (geometryIndex)
                 {
-                    switch (position)
-                    {
-                        case Positions.On:
-                            _depth00 = value;
-                            break;
-                        case Positions.Left:
-                            _depth01 = value;
-                            break;
-                        case Positions.Right:
-                            _depth02 = value;
-                            break;
-                        case Positions.Parallel:
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                else if (geometryIndex == 1)
-                {
-                    switch (position)
-                    {
-                        case Positions.On:
-                            _depth10 = value;
-                            break;
-                        case Positions.Left:
-                            _depth11 = value;
-                            break;
-                        case Positions.Right:
-                            _depth12 = value;
-                            break;
-                        case Positions.Parallel:
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException("geometryIndex", geometryIndex,
-                                                          "Geometry index must be 0 or 1.");
+                    case 0:
+                        switch (position)
+                        {
+                            case Positions.On:
+                                _depth00 = value;
+                                break;
+                            case Positions.Left:
+                                _depth01 = value;
+                                break;
+                            case Positions.Right:
+                                _depth02 = value;
+                                break;
+                            case Positions.Parallel:
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case 1:
+                        switch (position)
+                        {
+                            case Positions.On:
+                                _depth10 = value;
+                                break;
+                            case Positions.Left:
+                                _depth11 = value;
+                                break;
+                            case Positions.Right:
+                                _depth12 = value;
+                                break;
+                            case Positions.Parallel:
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException("geometryIndex", geometryIndex,
+                                                              "Geometry index must be 0 or 1.");
                 }
             }
         }
 
         public Locations GetLocation(Int32 geometryIndex, Positions position)
         {
-            if (this[geometryIndex, position] <= 0)
-            {
-                return Locations.Exterior;
-            }
-
-            return Locations.Interior;
+            return this[geometryIndex, position] <= 0 
+                                ? Locations.Exterior 
+                                : Locations.Interior;
         }
 
         public void Add(Int32 geometryIndex, Positions position, Locations location)

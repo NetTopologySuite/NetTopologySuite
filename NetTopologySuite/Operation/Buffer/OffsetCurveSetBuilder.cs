@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// Raw curves need to be noded together and polygonized to form the final buffer area.
     /// </summary>
     public class OffsetCurveSetBuilder<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IGeometry<TCoordinate> _inputGeometry;

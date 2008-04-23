@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// (which for instance may simply identify intersections, rather than insert them).
     /// </summary>
     public abstract class SinglePassNoder<TCoordinate> : INoder<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly ISegmentIntersector<TCoordinate> _segInt = null;

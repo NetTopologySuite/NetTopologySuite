@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// needed.
     /// </summary>    
     public class GeometryCollectionEnumerator<TCoordinate> : IEnumerator<IGeometry<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private Boolean _isDisposed = false;

@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     /// using <see cref="LinearLocation{TCoordinate}" />s as the index.
     /// </summary>
     public class LocationIndexedLine<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IGeometry<TCoordinate> _linearGeom = null;

@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     /// <typeparam name="TCoordinate">The type of the coordinate to use.</typeparam>
     public abstract class EdgeRing<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         // The maximum degree of vertexes permitted in this ring

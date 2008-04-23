@@ -35,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
     /// return a point object.
     /// </summary>    
     public class GeometryTransformer<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         /*

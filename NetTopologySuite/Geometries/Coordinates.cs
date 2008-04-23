@@ -8,7 +8,7 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     public static class Coordinates<TCoordinate>
-            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                                 IComputable<Double, TCoordinate>, IConvertible
     {
         private static Object _defaultCoordinateFactory;

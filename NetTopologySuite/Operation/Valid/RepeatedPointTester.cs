@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// NTS spec.
     /// </summary>
     public class RepeatedPointTester<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         // save the repeated coord found (if any)

@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// for further details of the basic approach.
     /// </remarks>
     public class CentroidArea<TCoordinate>
-         where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                              IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly ICoordinateFactory<TCoordinate> _factory;

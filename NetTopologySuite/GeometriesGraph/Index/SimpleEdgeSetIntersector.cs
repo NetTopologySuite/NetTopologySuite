@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// This algorithm is too slow for production use, but is useful for testing purposes.
     /// </summary>
     public class SimpleEdgeSetIntersector<TCoordinate> : EdgeSetIntersector<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         public override void ComputeIntersections(IEnumerable<Edge<TCoordinate>> edges, SegmentIntersector<TCoordinate> si, Boolean testAllSegments)

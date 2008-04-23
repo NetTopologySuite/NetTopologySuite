@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// already calculated for their edges.
     /// </summary>
     public class SubgraphDepthLocater<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IEnumerable<BufferSubgraph<TCoordinate>> _subgraphs;

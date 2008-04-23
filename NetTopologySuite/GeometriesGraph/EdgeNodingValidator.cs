@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// Throws an appropriate exception if an noding error is found.
     /// </summary>
     public class EdgeNodingValidator<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private static IEnumerable<NodedSegmentString<TCoordinate>> toSegmentStrings(IEnumerable<Edge<TCoordinate>> edges)

@@ -51,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </remarks>
     [Serializable]
     public class PrecisionModel<TCoordinate> : IPrecisionModel<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {

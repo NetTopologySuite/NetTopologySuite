@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// which does not lie in the interior.
     /// </remarks>
     public class InteriorPointArea<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private static Double Avg(Double a, Double b)

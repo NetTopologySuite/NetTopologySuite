@@ -9,7 +9,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// properties of triangles.
     /// </summary>
     public struct Triangle<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {

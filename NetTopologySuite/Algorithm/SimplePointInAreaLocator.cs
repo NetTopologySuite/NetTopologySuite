@@ -25,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// since it has to take into account the boundary determination rule.
         /// </summary>
         public static Locations Locate<TCoordinate>(TCoordinate p, IGeometry<TCoordinate> geom)
-            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                                 IComputable<Double, TCoordinate>, IConvertible
         {
             if (geom.IsEmpty)
@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         }
 
         public static Boolean ContainsPointInPolygon<TCoordinate>(TCoordinate p, IPolygon<TCoordinate> poly)
-            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                                 IComputable<Double, TCoordinate>, IConvertible
         {
             if (poly.IsEmpty)
@@ -70,7 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         }
 
         public static Boolean ContainsPoint<TCoordinate>(TCoordinate p, IGeometry<TCoordinate> geom)
-            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                                 IComputable<Double, TCoordinate>, IConvertible
         {
             if (geom is IPolygon<TCoordinate>)

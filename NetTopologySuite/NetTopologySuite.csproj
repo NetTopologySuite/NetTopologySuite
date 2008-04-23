@@ -178,7 +178,6 @@
     <Compile Include="GeometriesGraph\Index\MonotoneChainEdge.cs" />
     <Compile Include="GeometriesGraph\Index\SegmentIntersector.cs" />
     <Compile Include="GeometriesGraph\Index\SimpleEdgeSetIntersector.cs" />
-    <Compile Include="GeometriesGraph\Index\SimpleSweepLineIntersector.cs" />
     <Compile Include="GeometriesGraph\Index\SweepLineEvent.cs" />
     <Compile Include="GeometriesGraph\Index\SweepLineSegment.cs" />
     <Compile Include="GeometriesGraph\Label.cs" />

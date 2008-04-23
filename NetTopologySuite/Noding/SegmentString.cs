@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// All noded substrings are initialized with the same context object.
     /// </summary>
     public class NodedSegmentString<TCoordinate> : IList<LineSegment<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         public static IEnumerable<NodedSegmentString<TCoordinate>> GetNodedSubstrings(IEnumerable<NodedSegmentString<TCoordinate>> segStrings)

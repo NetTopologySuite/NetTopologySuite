@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// Note that instances of this class are not reentrant.
     /// </summary>
     public class PointLocator<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         // true if the point lies in or on any Geometry element
@@ -66,7 +66,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             {
                 return locate(p, geom as ILineString<TCoordinate>);
             }
-            else if (geom is IPolygon<TCoordinate>)
+            
+            if (geom is IPolygon<TCoordinate>)
             {
                 return locate(p, geom as IPolygon<TCoordinate>);
             }
@@ -138,25 +139,25 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
         private void updateLocationInfo(Locations loc)
         {
-            if (loc == Locations.Interior)
+            switch (loc)
             {
-                _isIn = true;
-            }
-
-            if (loc == Locations.Boundary)
-            {
-                _boundaryCount++;
+                case Locations.Boundary:
+                    _boundaryCount++;
+                    break;
+                case Locations.Interior:
+                    _isIn = true;
+                    break;
             }
         }
 
         private Locations locate(TCoordinate p, ILineString<TCoordinate> l)
         {
-            IEnumerable<TCoordinate> line = l.Coordinates;
+            ICoordinateSequence<TCoordinate> line = l.Coordinates;
 
             if (!l.IsClosed)
             {
-                TCoordinate start = Slice.GetFirst(line);
-                TCoordinate end = Slice.GetLast(line);
+                TCoordinate start = line.First;
+                TCoordinate end = line.Last;
 
                 if (p.Equals(start) || p.Equals(end))
                 {
@@ -164,13 +165,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 }
             }
 
-            if (l.Factory == null)
+            IGeometryFactory<TCoordinate> geoFactory = l.Factory;
+
+            if (geoFactory == null)
             {
                 throw new InvalidOperationException(
                     "ILineString instance doesn't have a IGeometryFactory");
             }
 
-            if (CGAlgorithms<TCoordinate>.IsOnLine(p, line, l.Factory))
+            if (CGAlgorithms<TCoordinate>.IsOnLine(p, line, geoFactory))
             {
                 return Locations.Interior;
             }

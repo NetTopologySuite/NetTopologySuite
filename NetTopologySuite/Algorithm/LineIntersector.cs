@@ -9,9 +9,9 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     /// <summary> 
-    /// A LineIntersector is an algorithm that can both test whether
-    /// two line segments intersect and compute the intersection point
-    /// if they do.
+    /// A <see cref="LineIntersector{TCoordinate}"/> is an algorithm that can 
+    /// both test whether two line segments intersect and compute the 
+    /// <see cref="Intersection{TCoordinate}"/> point if they do.
     /// </summary>
     /// <remarks>
     /// The intersection point may be computed in a precise or non-precise manner.
@@ -20,8 +20,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// an integer grid.)
     /// </remarks>
     public abstract class LineIntersector<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         /// <summary> 
         /// Computes the "edge distance" of an intersection point p along a segment.
@@ -54,28 +55,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
             else if (p.Equals(line.Second))
             {
-                if (dx > dy)
-                {
-                    distance = dx;
-                }
-                else
-                {
-                    distance = dy;
-                }
+                distance = dx > dy ? dx : dy;
             }
             else
             {
                 Double pdx = Math.Abs(p[Ordinates.X] - line.First[Ordinates.X]);
                 Double pdy = Math.Abs(p[Ordinates.Y] - line.First[Ordinates.Y]);
 
-                if (dx > dy)
-                {
-                    distance = pdx;
-                }
-                else
-                {
-                    distance = pdy;
-                }
+                distance = dx > dy ? pdx : pdy;
 
                 // HACK: to ensure that non-endpoints always have a non-zero distance
                 if (distance == 0.0 && !p.Equals(line.First))
@@ -84,10 +71,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 }
             }
 
-            Assert.IsTrue(!(distance == 0.0 && !p.Equals(line.First)), "Bad distance calculation");
+            Assert.IsTrue(!(distance == 0.0 && !p.Equals(line.First)), 
+                          "Bad distance calculation");
             return distance;
         }
 
+        /// <summary> 
+        /// Computes the "edge distance" of an intersection point p along a segment.
+        /// </summary>
+        /// <seealso cref="ComputeEdgeDistance(TCoordinate, Pair{TCoordinate})"/>
         public static Double ComputeEdgeDistance(TCoordinate p, LineSegment<TCoordinate> line)
         {
             return ComputeEdgeDistance(p, line.Points);
@@ -97,12 +89,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// This function is non-robust, since it may compute the square of large numbers.
         /// Currently not sure how to improve this.
         /// </summary>
-        public static Double NonRobustComputeEdgeDistance(TCoordinate p, Pair<TCoordinate> line)
+        public static Double NonRobustComputeEdgeDistance(TCoordinate p, 
+                                                          Pair<TCoordinate> line)
         {
             Double dx = p[Ordinates.X] - line.First[Ordinates.X];
             Double dy = p[Ordinates.Y] - line.First[Ordinates.Y];
             Double dist = Math.Sqrt(dx * dx + dy * dy); // dummy value
-            Assert.IsTrue(!(dist == 0.0 && !p.Equals(line.First)), "Invalid distance calculation");
+            Assert.IsTrue(!(dist == 0.0 && !p.Equals(line.First)), 
+                          "Invalid distance calculation");
             return dist;
         }
 
@@ -133,7 +127,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <remarks>
         /// <para>
         /// If the precision model is set, computed intersection coordinates will be made 
-        /// precise using <see cref="IPrecisionModel{TCoordinate}.MakePrecise"/>.
+        /// precise using <see cref="IPrecisionModel{TCoordinate}.MakePrecise(TCoordinate)"/>.
         /// </para>
         /// <para>
         /// No getter is provided, because the precision model is not required to be 
@@ -146,6 +140,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             set { _precisionModel = value; }
         }
 
+        /// <summary>
+        /// Gets the <see cref="IGeometryFactory{TCoordinate}"/> instance.
+        /// </summary>
         public IGeometryFactory<TCoordinate> GeometryFactory
         {
             get { return _geoFactory; }
@@ -153,34 +150,92 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
         /// <summary> 
         /// Compute the intersection of a point p and the line p1-p2.
-        /// This function computes the Boolean value of the hasIntersection test.
+        /// This function computes the boolean value of the "has intersection" test.
         /// The actual value of the intersection (if there is one)
-        /// is equal to the value of <c>p</c>.
+        /// is equal to the value of <paramref name="p"/>.
         /// </summary>
-        public abstract Intersection<TCoordinate> ComputeIntersection(
-            TCoordinate p, Pair<TCoordinate> line);
+        /// <param name="p">
+        /// The coordinate to test for intersection with the given <paramref name="line"/>.
+        /// </param>
+        /// <param name="line">
+        /// The line to test for intersection with.
+        /// </param>
+        /// <returns>
+        /// An <see cref="Intersection{TCoordinate}"/> instance
+        /// describing the relationship of <paramref name="p"/> with 
+        /// <paramref name="line"/>.
+        /// </returns>
+        public abstract Intersection<TCoordinate> ComputeIntersection(TCoordinate p, 
+                                                                      Pair<TCoordinate> line);
 
         /// <summary>
-        /// Computes the intersection of the lines p1-p2 and p3-p4.
-        /// This function computes both the Boolean value of the hasIntersection test
+        /// Computes the intersection of the lines <c>p1-p2</c> and <c>p3-p4</c>.
+        /// This function computes both the boolean value of the "has intersection" test
         /// and the (approximate) value of the intersection point itself (if there is one).
         /// </summary>
-        public Intersection<TCoordinate> ComputeIntersection(TCoordinate p1, TCoordinate p2, TCoordinate p3, TCoordinate p4)
+        /// <param name="p1">The first point of the line segment <c>p1-p2</c>.</param>
+        /// <param name="p2">The second point of the line segment <c>p1-p2</c>.</param>
+        /// <param name="p3">The first point of the line segment <c>p3-p4</c>.</param>
+        /// <param name="p4">The second point of the line segment <c>p3-p4</c>.</param>
+        /// <returns>
+        /// An <see cref="Intersection{TCoordinate}"/> instance
+        /// describing the relationship of the two lines.
+        /// </returns>
+        public Intersection<TCoordinate> ComputeIntersection(TCoordinate p1, 
+                                                             TCoordinate p2, 
+                                                             TCoordinate p3, 
+                                                             TCoordinate p4)
         {
-            return ComputeIntersectInternal(new Pair<TCoordinate>(p1, p2), new Pair<TCoordinate>(p3, p4));
+            return ComputeIntersectInternal(new Pair<TCoordinate>(p1, p2), 
+                                            new Pair<TCoordinate>(p3, p4));
         }
 
-        public Intersection<TCoordinate> ComputeIntersection(Pair<TCoordinate> line0, Pair<TCoordinate> line1)
+        /// <summary>
+        /// Computes the intersection of the line segments with endpoint pairs
+        /// <paramref name="line0"/> and <paramref name="line1"/>.
+        /// This function computes both the boolean value of the "has intersection" test
+        /// and the (approximate) value of the intersection point itself (if there is one).
+        /// </summary>
+        /// <param name="line0">
+        /// The endpoints of the first line segment to test for intersection.
+        /// </param>
+        /// <param name="line1">
+        /// The endpoints of the second line segment to test for intersection.
+        /// </param>
+        /// <returns>
+        /// An <see cref="Intersection{TCoordinate}"/> instance
+        /// describing the relationship of the two line segments.
+        /// </returns>
+        public Intersection<TCoordinate> ComputeIntersection(Pair<TCoordinate> line0, 
+                                                             Pair<TCoordinate> line1)
         {
             return ComputeIntersectInternal(line0, line1);
         }
 
-        public Intersection<TCoordinate> ComputeIntersection(LineSegment<TCoordinate> line0, LineSegment<TCoordinate> line1)
+        /// <summary>
+        /// Computes the intersection of the line segments 
+        /// <paramref name="line0"/> and <paramref name="line1"/>.
+        /// This function computes both the boolean value of the "has intersection" test
+        /// and the (approximate) value of the intersection point itself (if there is one).
+        /// </summary>
+        /// <param name="line0">
+        /// The first line segment to test for intersection.
+        /// </param>
+        /// <param name="line1">
+        /// The second line segment to test for intersection.
+        /// </param>
+        /// <returns>
+        /// An <see cref="Intersection{TCoordinate}"/> instance
+        /// describing the relationship of the two line segments.
+        /// </returns>
+        public Intersection<TCoordinate> ComputeIntersection(LineSegment<TCoordinate> line0, 
+                                                             LineSegment<TCoordinate> line1)
         {
             return ComputeIntersectInternal(line0.Points, line1.Points);
         }
 
-        protected abstract Intersection<TCoordinate> ComputeIntersectInternal(Pair<TCoordinate> line0, Pair<TCoordinate> line1);
+        protected abstract Intersection<TCoordinate> ComputeIntersectInternal(Pair<TCoordinate> line0, 
+                                                                              Pair<TCoordinate> line1);
 
         protected static Pair<Boolean> ComputeIntersectionLineDirections(Intersection<TCoordinate> intersection)
         {
@@ -190,7 +245,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return new Pair<Boolean>(directionLine0, directionLine1);
         }
 
-        protected static Boolean ComputeIntersectionLineDirection(Intersection<TCoordinate> intersection, Int32 segmentIndex)
+        protected static Boolean ComputeIntersectionLineDirection(Intersection<TCoordinate> intersection, 
+                                                                  Int32 segmentIndex)
         {
             //Int32[] indexes = GetIndexesForSegmentIndex(segmentIndex);
 

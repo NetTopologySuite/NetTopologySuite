@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     public class Point<TCoordinate> : Geometry<TCoordinate>, 
                                       IPoint<TCoordinate>, 
                                       IPoint2D
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {

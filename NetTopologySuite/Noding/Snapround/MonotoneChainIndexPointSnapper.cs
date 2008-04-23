@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
     /// <see cref="HotPixel{TCoordinate}" />.
     /// </summary>
     public class MonotoneChaintIndexPointSnapper<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         // [codekaizen] This doesn't appear to be used at all...

@@ -27,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// to represent them.
     /// </summary>
     public class RelateNodeGraph<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly NodeMap<TCoordinate> _nodes 
@@ -71,7 +71,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                 Debug.Assert(e.Label.HasValue);
                 Locations eLoc = e.Label.Value[argIndex].On;
 
-                foreach (EdgeIntersection<TCoordinate> ei in e.EdgeIntersectionList)
+                foreach (EdgeIntersection<TCoordinate> ei in e.EdgeIntersections)
                 {
                     RelateNode<TCoordinate> n = _nodes.AddNode(ei.Coordinate) as RelateNode<TCoordinate>;
 

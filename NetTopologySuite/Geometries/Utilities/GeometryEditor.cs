@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
     /// If validity needs to be enforced, the new Geometry's IsValid should be checked.
     /// </summary>    
     public class GeometryEditor<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary> 

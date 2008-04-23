@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
     /// May be logically deleted from the graph by setting the <c>marked</c> flag.
     /// </summary>
     public class PolygonizeDirectedEdge<TCoordinate> : DirectedEdge<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                     IComputable<Double, TCoordinate>, IConvertible
     {
         private EdgeRing<TCoordinate> _edgeRing = null;

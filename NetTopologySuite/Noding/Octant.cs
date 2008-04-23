@@ -109,7 +109,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// Returns the octant of a directed line segment from p0 to p1.
         /// </summary>
         public static Octants GetOctant<TCoordinate>(LineSegment<TCoordinate> segment)
-            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                 IComputable<Double, TCoordinate>, IConvertible
         {
             return GetOctant(segment.P0, segment.P1);

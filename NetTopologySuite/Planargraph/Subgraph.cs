@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// all associated components must already exist in the parent graph.
     /// </summary>
     public class Subgraph<TCoordinate> : PlanarGraph<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly PlanarGraph<TCoordinate> _parentGraph;

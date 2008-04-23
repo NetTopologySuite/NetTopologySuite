@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// Throws an appropriate exception if an noding error is found.
     /// </summary>
     public class NodingValidator<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly LineIntersector<TCoordinate> _li;

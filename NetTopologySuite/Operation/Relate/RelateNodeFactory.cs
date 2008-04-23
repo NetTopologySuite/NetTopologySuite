@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// <see cref="RelateNode{TCoordinate}"/>s.
     /// </summary>
     public class RelateNodeFactory<TCoordinate> : NodeFactory<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         public override Node<TCoordinate> CreateNode(TCoordinate coord)

@@ -25,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// kinds of intersections were found.
     /// </remarks>
     public abstract class EdgeSetIntersector<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {

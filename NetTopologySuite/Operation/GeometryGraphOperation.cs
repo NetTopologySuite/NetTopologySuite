@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
     /// The base class for operations that require <see cref="GeometryGraph{TCoordinate}"/>s.
     /// </summary>
     public class GeometryGraphOperation<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private LineIntersector<TCoordinate> _lineIntersector;

@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// around the node for efficient lookup and topology building.
     /// </remarks>
     public class EdgeEndBundleStar<TCoordinate> : EdgeEndStar<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {

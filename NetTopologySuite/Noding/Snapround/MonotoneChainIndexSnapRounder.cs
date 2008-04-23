@@ -30,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
     /// </para>
     /// </remarks>
     public class MonotoneChainIndexSnapRounder<TCoordinate> : INoder<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly ICoordinateFactory<TCoordinate> _coordFactory;

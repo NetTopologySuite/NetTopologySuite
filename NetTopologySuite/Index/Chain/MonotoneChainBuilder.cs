@@ -30,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         public static IEnumerable<MonotoneChain<TCoordinate>> GetChains<TCoordinate>(
                                             IGeometryFactory<TCoordinate> geoFactory, 
                                             ICoordinateSequence<TCoordinate> coordinates)
-            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                                 IComparable<TCoordinate>, IConvertible,
                                 IComputable<Double, TCoordinate>
         {
@@ -45,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
                                             IGeometryFactory<TCoordinate> geoFactory, 
                                             ICoordinateSequence<TCoordinate> coordinates, 
                                             Object context)
-            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                                 IComparable<TCoordinate>, IConvertible,
                                 IComputable<Double, TCoordinate>
         {
@@ -82,7 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// </summary>
         public static IEnumerable<Int32> GetChainStartIndices<TCoordinate>(
                                             IEnumerable<TCoordinate> points)
-            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                                 IComparable<TCoordinate>, IConvertible,
                                 IComputable<Double, TCoordinate>
         {
@@ -105,7 +105,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         // Returns the index of the last point in the monotone chain starting at 'start'.
         private static Int32 findChainEnd<TCoordinate>(IEnumerator<TCoordinate> points, 
                                                        Int32 start)
-            where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                                 IComparable<TCoordinate>, IConvertible,
                                 IComputable<Double, TCoordinate>
         {

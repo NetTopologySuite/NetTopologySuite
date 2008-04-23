@@ -27,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     /// </para>
     /// </remarks>
     public class LineMerger<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         /*

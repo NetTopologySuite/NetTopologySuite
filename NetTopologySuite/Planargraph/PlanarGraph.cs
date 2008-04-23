@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// data and graph algorithms.
     /// </remarks>
     public abstract class PlanarGraph<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly List<Edge<TCoordinate>> _edges = new List<Edge<TCoordinate>>();

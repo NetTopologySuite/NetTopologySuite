@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     /// <typeparam name="TCoordinate">The type of coordinate.</typeparam>
     public interface INoder<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {

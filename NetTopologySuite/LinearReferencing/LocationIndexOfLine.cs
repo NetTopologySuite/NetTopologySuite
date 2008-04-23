@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     /// (However, the common case of a ring is always handled correctly).
     /// </summary>
     public class LocationIndexOfLine<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         public static Pair<LinearLocation<TCoordinate>> IndicesOf(IGeometry<TCoordinate> linearGeom,

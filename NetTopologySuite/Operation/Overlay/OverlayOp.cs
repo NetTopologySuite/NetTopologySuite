@@ -28,10 +28,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// The overlay can be used to determine any Boolean combination of the geometries.
     /// </summary>
     public class OverlayOp<TCoordinate> : GeometryGraphOperation<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
-        public static IGeometry<TCoordinate> Overlay(IGeometry<TCoordinate> geom0, IGeometry<TCoordinate> geom1, SpatialFunctions opCode)
+        public static IGeometry<TCoordinate> Overlay(IGeometry<TCoordinate> geom0, 
+                                                     IGeometry<TCoordinate> geom1, 
+                                                     SpatialFunctions opCode)
         {
             OverlayOp<TCoordinate> gov = new OverlayOp<TCoordinate>(geom0, geom1);
             IGeometry<TCoordinate> geomOv = gov.GetResultGeometry(opCode);
@@ -77,16 +80,20 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             }
         }
 
-        private readonly PointLocator<TCoordinate> _pointtLocator = new PointLocator<TCoordinate>();
+        private readonly PointLocator<TCoordinate> _pointtLocator 
+            = new PointLocator<TCoordinate>();
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private IGeometry<TCoordinate> _resultGeometry;
 
         private readonly PlanarGraph<TCoordinate> _graph;
         private readonly EdgeList<TCoordinate> _edgeList;
 
-        private readonly List<IPolygon<TCoordinate>> _resultPolyList = new List<IPolygon<TCoordinate>>();
-        private readonly List<ILineString<TCoordinate>> _resultLineList = new List<ILineString<TCoordinate>>();
-        private readonly List<IPoint<TCoordinate>> _resultPointList = new List<IPoint<TCoordinate>>();
+        private readonly List<IPolygon<TCoordinate>> _resultPolyList 
+            = new List<IPolygon<TCoordinate>>();
+        private readonly List<ILineString<TCoordinate>> _resultLineList 
+            = new List<ILineString<TCoordinate>>();
+        private readonly List<IPoint<TCoordinate>> _resultPointList 
+            = new List<IPoint<TCoordinate>>();
 
         public OverlayOp(IGeometry<TCoordinate> g0, IGeometry<TCoordinate> g1)
             : base(g0, g1)
@@ -114,10 +121,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         }
 
         /// <summary>
-        /// This method is used to decide if a point node should be included in the result or not.
+        /// This method is used to decide if a point node should be 
+        /// included in the result or not.
         /// </summary>
         /// <returns>
-        /// <see langword="true"/> if the coord point is covered by a result Line or Area point.
+        /// <see langword="true"/> if the coord point is covered by a result 
+        /// Line or Area point.
         /// </returns>
         public Boolean IsCoveredByLineOrArea(TCoordinate coord)
         {

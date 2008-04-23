@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
     /// so in this case the segment index will be null.
     /// </remarks>
     public struct GeometryLocation<TCoordinate> : IEquatable<GeometryLocation<TCoordinate>>, IComparable<GeometryLocation<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IGeometry<TCoordinate> _component;

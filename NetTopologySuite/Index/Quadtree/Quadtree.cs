@@ -40,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
     /// </remarks>
     public class Quadtree<TCoordinate, TItem> : ISpatialIndex<IExtents<TCoordinate>, TItem>, IEnumerable<TItem>
         where TItem : IBoundable<IExtents<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         struct QuadTreeEntry : IBoundable<IExtents<TCoordinate>>

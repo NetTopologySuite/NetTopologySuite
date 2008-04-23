@@ -17,27 +17,32 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// which typically are only intended to work in the integer domain.
     /// Offsets can be provided to increase the number of digits of available precision.
     /// </summary>
-    public class ScaledNoder<TCoordinate> : INoder<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+    public class ScaledNoder<TCoordinate, TMatrix> : INoder<TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
+        where TMatrix : ITransformMatrix<DoubleComponent, TCoordinate, TMatrix>
     {
-        private readonly INoder<TCoordinate> _noder = null;
+        private readonly INoder<TCoordinate> _noder;
         //private readonly Double _scaleFactor = 0;
         //private readonly Double _offsetX = 0;
         //private readonly Double _offsetY = 0;
-        private readonly AffineTransformMatrix<TCoordinate> _transform;
-        private readonly AffineTransformMatrix<TCoordinate> _inverse;
-        private readonly Boolean _isScaled = false;
+        private readonly TMatrix _transform;
+        private readonly TMatrix _inverse;
+        private readonly Boolean _isScaled;
         private readonly ICoordinateSequenceFactory<TCoordinate> _sequenceFactory;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScaledNoder{TCoordinate}"/> class.
+        /// Initializes a new instance of the 
+        /// <see cref="ScaledNoder{TCoordinate, TMatrix}"/> class.
         /// </summary>
-        public ScaledNoder(INoder<TCoordinate> noder, Double scaleFactor, ICoordinateSequenceFactory<TCoordinate> factory)
+        public ScaledNoder(INoder<TCoordinate> noder, Double scaleFactor, 
+                           ICoordinateSequenceFactory<TCoordinate> factory)
             : this(noder, scaleFactor, 0, 0, factory) {}
 
-        public ScaledNoder(INoder<TCoordinate> noder, Double scaleFactor, Double offsetX, Double offsetY, 
-            ICoordinateSequenceFactory<TCoordinate> factory)
+        public ScaledNoder(INoder<TCoordinate> noder, Double scaleFactor, 
+                           Double offsetX, Double offsetY, 
+                           ICoordinateSequenceFactory<TCoordinate> factory)
         {
             _noder = noder;
             _sequenceFactory = factory;
@@ -46,7 +51,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             TCoordinate scaleVector = coordinateFactory.Create(scaleFactor, scaleFactor);
             TCoordinate offsetVector = coordinateFactory.Create(offsetX, offsetY);
 
-            _transform = coordinateFactory.CreateTransform(scaleVector, 0, offsetVector);
+            _transform = coordinateFactory.CreateTransform<TMatrix>(scaleVector, 
+                                                                    0, 
+                                                                    offsetVector);
             _inverse = _transform.Inverse;
 
             // no need to scale if input precision is already integral
@@ -58,16 +65,19 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             get { return _transform[0, 0].Equals(1.0); }
         }
 
-        public IEnumerable<NodedSegmentString<TCoordinate>> Node(IEnumerable<NodedSegmentString<TCoordinate>> inputSegStrings)
+        public IEnumerable<NodedSegmentString<TCoordinate>> Node(
+            IEnumerable<NodedSegmentString<TCoordinate>> inputSegStrings)
         {
-            IEnumerable<NodedSegmentString<TCoordinate>> intSegStrings = inputSegStrings;
+            IEnumerable<NodedSegmentString<TCoordinate>> intSegStrings 
+                = inputSegStrings;
 
             if (_isScaled)
             {
                 intSegStrings = scale(inputSegStrings);
             }
 
-            IEnumerable<NodedSegmentString<TCoordinate>> splitSS = _noder.Node(intSegStrings);
+            IEnumerable<NodedSegmentString<TCoordinate>> splitSS 
+                = _noder.Node(intSegStrings);
 
             if (_isScaled)
             {
@@ -77,13 +87,17 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             return splitSS;
         }
 
-        private IEnumerable<NodedSegmentString<TCoordinate>> scale(IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
+        private IEnumerable<NodedSegmentString<TCoordinate>> scale(
+            IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
         {
-            return Enumerable.Transform(segStrings, delegate(NodedSegmentString<TCoordinate> segmentString)
-                                                        {
-                                                            return new NodedSegmentString<TCoordinate>(
-                                                                scale(segmentString.Coordinates), segmentString.Context);
-                                                        });
+            Func<NodedSegmentString<TCoordinate>, NodedSegmentString<TCoordinate>>
+                componentTransform = delegate(NodedSegmentString<TCoordinate> segmentString)
+                                     {
+                                         return new NodedSegmentString<TCoordinate>(
+                                             scale(segmentString.Coordinates), 
+                                             segmentString.Context);
+                                     };
+            return Enumerable.Transform(segStrings, componentTransform);
         }
 
         private ICoordinateSequence<TCoordinate> scale(ICoordinateSequence<TCoordinate> pts)
@@ -93,7 +107,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             return _sequenceFactory.Create(Math.Round, transformed);
         }
 
-        private static IEnumerable<NodedSegmentString<TCoordinate>> rescale(IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
+        private static IEnumerable<NodedSegmentString<TCoordinate>> rescale(
+            IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
         {
             yield break;
 

@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// noding the input edges together.
     /// </summary>
     public class EdgeSetNoder<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly LineIntersector<TCoordinate> _li = null;
@@ -44,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 
                 foreach (Edge<TCoordinate> edge in _inputEdges)
                 {
-                    IEnumerable<Edge<TCoordinate>> splitEdges = edge.EdgeIntersectionList.GetSplitEdges();
+                    IEnumerable<Edge<TCoordinate>> splitEdges = edge.EdgeIntersections.GetSplitEdges();
 
                     foreach (Edge<TCoordinate> splitEdge in splitEdges)
                     {

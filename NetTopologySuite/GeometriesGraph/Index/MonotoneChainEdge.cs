@@ -44,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// </para>
     /// </remarks>
     public class MonotoneChainEdge<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {
@@ -81,7 +81,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
                 {
                     //MonotoneChainIndexer<TCoordinate> mcBuilder
                     //    = new MonotoneChainIndexer<TCoordinate>();
-                    
+
+                    // TODO: evaluate if instatiating list here is better than
+                    // keeping it lazy
                     IEnumerable<Int32> starts =
                         MonotoneChainBuilder.GetChainStartIndices(_coordinates);
                     _startIndexes = Enumerable.ToArray(starts);

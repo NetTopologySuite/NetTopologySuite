@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// drastically improves the average-case time.
     /// </summary>
     public class SimpleSweepLineIntersector<TCoordinate> : EdgeSetIntersector<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly List<SweepLineEvent> _events = new List<SweepLineEvent>();

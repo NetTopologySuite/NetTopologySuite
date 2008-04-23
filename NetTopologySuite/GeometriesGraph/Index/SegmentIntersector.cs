@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// </summary>
     /// <typeparam name="TCoordinate">The coordinate type.</typeparam>
     public class SegmentIntersector<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {
@@ -138,7 +138,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         public void AddIntersections(Edge<TCoordinate> e0, Int32 segIndex0, 
                                      Edge<TCoordinate> e1, Int32 segIndex1)
         {
-            // if (e0 == e1 && segIndex0 == segIndex1) 
             // Need to check if this is the same edge and index, not if the edges
             // are equal, so ReferenceEquals() is used.
             if (ReferenceEquals(e0, e1) && segIndex0 == segIndex1)
@@ -149,59 +148,62 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             _numTests++;
 
             // get segments from edge coordinates
-            Pair<TCoordinate> edge0Segment
-                = Slice.GetPairAt(e0.Coordinates, segIndex0).Value;
-            Pair<TCoordinate> edge1Segment
-                = Slice.GetPairAt(e1.Coordinates, segIndex1).Value;
+            Pair<TCoordinate> edge0Segment = e0.Coordinates.SegmentAt(segIndex0);
+            Pair<TCoordinate> edge1Segment = e1.Coordinates.SegmentAt(segIndex1);
 
             // compute intersection
             Intersection<TCoordinate> intersection
                 = _lineIntersector.ComputeIntersection(edge0Segment, edge1Segment);
 
+            // If there is no intersection, we're done.
+            if (!intersection.HasIntersection)
+            {
+                return;
+            }
+
             /*
              *  Always record any non-proper intersections.
              *  If includeProper is true, record any proper intersections as well.
              */
-            if (intersection.HasIntersection)
+            if (_recordIsolated)
             {
-                if (_recordIsolated)
+                e0.Isolated = false;
+                e1.Isolated = false;
+            }
+
+            _intersectionCount++;
+
+            // if the segments are adjacent they have at least one trivial 
+            // intersection: the shared endpoint.  Don't bother adding it 
+            // if it is the only intersection.
+            if (isTrivialIntersection(intersection, e0, segIndex0, e1, segIndex1))
+            {
+                return;
+            }
+
+            _hasIntersection = true;
+
+            if (_includeProper || !intersection.IsProper)
+            {
+                e0.AddIntersections(intersection, segIndex0, 0);
+                e1.AddIntersections(intersection, segIndex1, 1);
+            }
+
+            if (intersection.IsProper)
+            {
+                //_properIntersectionPoint
+                //    = (TCoordinate)intersection.GetIntersectionPoint(0).Clone();
+
+                // this works fine when TCoordinate is a value type.... but
+                // what if it isn't?
+                // TODO: evaluate a struct constraint on TCoordinate
+                _properIntersectionPoint = intersection.GetIntersectionPoint(0);
+
+                _hasProper = true;
+
+                if (!isBoundaryPoint(intersection, _boundaryNodes0, _boundaryNodes1))
                 {
-                    e0.Isolated = false;
-                    e1.Isolated = false;
-                }
-
-                _intersectionCount++;
-
-                // if the segments are adjacent they have at least one trivial 
-                // intersection, the shared endpoint.  Don't bother adding it 
-                // if it is the only intersection.
-                if (!isTrivialIntersection(intersection, e0, segIndex0, e1, segIndex1))
-                {
-                    _hasIntersection = true;
-
-                    if (_includeProper || !intersection.IsProper)
-                    {
-                        e0.AddIntersections(intersection, segIndex0, 0);
-                        e1.AddIntersections(intersection, segIndex1, 1);
-                    }
-
-                    if (intersection.IsProper)
-                    {
-                        //_properIntersectionPoint
-                        //    = (TCoordinate)intersection.GetIntersectionPoint(0).Clone();
-
-                        // this works fine when TCoordinate is a value type.... but
-                        // what if it isn't?
-                        // TODO: evaluate a struct constraint on TCoordinate
-                        _properIntersectionPoint = intersection.GetIntersectionPoint(0);
-
-                        _hasProper = true;
-
-                        if (!isBoundaryPoint(intersection, _boundaryNodes0, _boundaryNodes1))
-                        {
-                            _hasProperInterior = true;
-                        }
-                    }
+                    _hasProperInterior = true;
                 }
             }
         }

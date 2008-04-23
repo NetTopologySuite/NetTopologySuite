@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// If an inconsistency if found the location of the problem is recorded.
     /// </summary>
     public class ConsistentAreaTester<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly LineIntersector<TCoordinate> _li;

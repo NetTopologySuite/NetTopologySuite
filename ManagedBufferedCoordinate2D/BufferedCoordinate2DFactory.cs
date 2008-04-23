@@ -12,10 +12,13 @@ using BitConverter = GisSharpBlog.NetTopologySuite.Utilities;
 namespace NetTopologySuite.Coordinates
 {
     using IBufferedCoordFactory = ICoordinateFactory<BufferedCoordinate2D>;
+    using IBufferedVectorFactory = IVectorFactory<DoubleComponent, BufferedCoordinate2D>;
+    using GeoAPI.Utilities;
 
     public class BufferedCoordinate2DFactory
         : IBufferedCoordFactory, IVectorBuffer<BufferedCoordinate2D, DoubleComponent>,
-          IBufferedVectorFactory<BufferedCoordinate2D, DoubleComponent>
+          IBufferedVectorFactory<BufferedCoordinate2D, DoubleComponent>,
+          ILinearFactory<DoubleComponent, BufferedCoordinate2D, Matrix3>
     {
         public static readonly Int32 MaximumBitResolution = 52;
         private static readonly IComparer<Pair<Double>> _valueComparer
@@ -25,9 +28,11 @@ namespace NetTopologySuite.Coordinates
             = new LexicographicCoordinateComparer((LexicographicComparer)_valueComparer);
         private readonly ManagedVectorBuffer<BufferedCoordinate2D, DoubleComponent> _coordinates;
         private readonly IDictionary<Pair<Double>, Int32> _lexicographicVertexIndex;
+        private readonly IDictionary<Triple<Double>, Int32> _lexicographicHomogeneousVertexIndex;
         private Int32 _bitResolution;
         private Int64 _mask = unchecked((Int64)0xFFFFFFFFFFFFFFFF);
         private readonly Int32[] _ordinateIndexTable = new Int32[4];
+        private readonly IMatrixOperations<DoubleComponent, BufferedCoordinate2D, Matrix3> _ops;
 
         public BufferedCoordinate2DFactory()
             : this(MaximumBitResolution) { }
@@ -38,6 +43,7 @@ namespace NetTopologySuite.Coordinates
             _lexicographicVertexIndex = createLexicographicIndex();
             _coordinates = new ManagedVectorBuffer<BufferedCoordinate2D, DoubleComponent>(2, true, this);
             initializeOrdinateIndexTable();
+            _ops = new ClrMatrixOperations<DoubleComponent, BufferedCoordinate2D, Matrix3>(this);
         }
 
         public IVectorBuffer<BufferedCoordinate2D, DoubleComponent> VectorBuffer
@@ -48,6 +54,11 @@ namespace NetTopologySuite.Coordinates
         internal IComparer<BufferedCoordinate2D> Comparer
         {
             get { return _coordComparer; }
+        }
+
+        internal IMatrixOperations<DoubleComponent, BufferedCoordinate2D, Matrix3> Ops
+        {
+            get { return _ops; }
         }
 
         #region IBufferedCoordFactory Members
@@ -146,12 +157,19 @@ namespace NetTopologySuite.Coordinates
                 : Create(coordinate[Ordinates.X], coordinate[Ordinates.Y]);
         }
 
-        public AffineTransformMatrix<BufferedCoordinate2D> CreateTransform(BufferedCoordinate2D scaleVector, Double rotation, BufferedCoordinate2D translateVector)
+        public TMatrix CreateTransform<TMatrix>(BufferedCoordinate2D scaleVector,
+                                                Double rotation,
+                                                BufferedCoordinate2D translateVector)
+            where TMatrix : IMatrix<DoubleComponent, TMatrix>
         {
             throw new NotImplementedException();
         }
 
-        public AffineTransformMatrix<BufferedCoordinate2D> CreateTransform(BufferedCoordinate2D scaleVector, BufferedCoordinate2D rotationAxis, Double rotation, BufferedCoordinate2D translateVector)
+        public TMatrix CreateTransform<TMatrix>(BufferedCoordinate2D scaleVector,
+                                                BufferedCoordinate2D rotationAxis,
+                                                Double rotation,
+                                                BufferedCoordinate2D translateVector)
+            where TMatrix : IMatrix<DoubleComponent, TMatrix>
         {
             throw new NotImplementedException();
         }
@@ -307,10 +325,10 @@ namespace NetTopologySuite.Coordinates
             get { return _coordinates.Count; }
         }
 
-        IVectorFactory<BufferedCoordinate2D, DoubleComponent> IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.Factory
-        {
-            get { return _coordinates.Factory; }
-        }
+        //IVectorFactory<BufferedCoordinate2D, DoubleComponent> IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.Factory
+        //{
+        //    get { return _coordinates.Factory; }
+        //}
 
         Boolean IVectorBuffer<BufferedCoordinate2D, DoubleComponent>.IsReadOnly
         {
@@ -401,6 +419,103 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
+        #region IMatrixFactory<DoubleComponent,Matrix3> Members
+
+        public Matrix3 CreateMatrix(MatrixFormat format, Int32 rowCount, Int32 columnCount)
+        {
+            if (format == MatrixFormat.RowMajor)
+            {
+                checkCounts(rowCount, columnCount);
+                return new Matrix3();
+            }
+
+            throw new ArgumentException("Only row-major matrixes are supported");
+        }
+
+        public Matrix3 CreateMatrix(Int32 rowCount, Int32 columnCount, IEnumerable<DoubleComponent> values)
+        {
+            checkCounts(rowCount, columnCount);
+
+            return new Matrix3(Enumerable.ToArray(values));
+        }
+
+        public Matrix3 CreateMatrix(Int32 rowCount, Int32 columnCount)
+        {
+            checkCounts(rowCount, columnCount);
+
+            return new Matrix3();
+        }
+
+        public Matrix3 CreateMatrix(Matrix3 matrix)
+        {
+            return matrix;
+        }
+
+        #endregion
+
+        #region IVectorFactory<DoubleComponent,BufferedCoordinate2D> Members
+
+        BufferedCoordinate2D IBufferedVectorFactory.CreateVector(IEnumerable<DoubleComponent> values)
+        {
+            Pair<DoubleComponent>? pair = Slice.GetPair(values);
+
+            if (pair == null)
+            {
+                throw new ArgumentException("Must have at least two values.");
+            }
+
+            Pair<DoubleComponent> coord = pair.Value;
+
+            return getVertexInternal((Double)coord.First, (Double)coord.Second);
+        }
+
+        BufferedCoordinate2D IBufferedVectorFactory.CreateVector(Int32 componentCount)
+        {
+            throw new NotSupportedException();
+        }
+
+        public BufferedCoordinate2D CreateVector(params Double[] components)
+        {
+            switch (components.Length)
+            {
+                case 2:
+                    return CreateVector(components[0], components[1]);
+                case 3:
+                    return CreateVector(components[0], components[1], components[2]);
+                default:
+                    throw new ArgumentException(
+                        "A BufferedCoordinate2D must have only 2 or 3 components.");
+            }
+        }
+
+        public BufferedCoordinate2D CreateVector(Double a, Double b, Double c)
+        {
+            return getVertexInternal(a, b, c);
+        }
+
+        public BufferedCoordinate2D CreateVector(Double a, Double b)
+        {
+            return getVertexInternal(a, b);
+        }
+
+        public BufferedCoordinate2D CreateVector(params DoubleComponent[] components)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BufferedCoordinate2D CreateVector(DoubleComponent a, DoubleComponent b, DoubleComponent c)
+        {
+            return getVertexInternal(a.ToDouble(null), b.ToDouble(null), c.ToDouble(null));
+        }
+
+        public BufferedCoordinate2D CreateVector(DoubleComponent a, DoubleComponent b)
+        {
+            return getVertexInternal(a.ToDouble(null), b.ToDouble(null));
+        }
+
+
+        #endregion
+
         internal Double GetOrdinate(Int32 index, Ordinates ordinate)
         {
             try
@@ -421,22 +536,30 @@ namespace NetTopologySuite.Coordinates
 
         internal BufferedCoordinate2D Add(BufferedCoordinate2D a, BufferedCoordinate2D b)
         {
-            return getVertexInternal(a.X + b.X, a.Y + b.Y);
+            return _ops.Add(a, b);
+            //return getVertexInternal(a.X + b.X, a.Y + b.Y);
         }
 
         internal BufferedCoordinate2D Add(BufferedCoordinate2D a, Double b)
         {
-            return getVertexInternal(a.X + b, a.Y + b);
+            return _ops.ScalarAdd(a, b);
+            //return getVertexInternal(a.X + b, a.Y + b);
         }
 
-        internal static BufferedCoordinate2D Divide(BufferedCoordinate2D a, BufferedCoordinate2D b)
-        {
-            throw new NotSupportedException();
-        }
+        //internal static BufferedCoordinate2D Divide(BufferedCoordinate2D a, BufferedCoordinate2D b)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         internal BufferedCoordinate2D Divide(BufferedCoordinate2D a, Double b)
         {
-            return getVertexInternal(a.X / b, a.Y / b);
+            return _ops.ScalarMultiply(a, 1 / b);
+        }
+
+        internal Double Distance(BufferedCoordinate2D a, BufferedCoordinate2D b)
+        {
+            // the Euclidian norm over the vector difference
+            return _ops.TwoNorm(_ops.Subtract(a, b));
         }
 
         internal BufferedCoordinate2D GetOne()
@@ -444,9 +567,14 @@ namespace NetTopologySuite.Coordinates
             return getVertexInternal(1, 1);
         }
 
-        internal static BufferedCoordinate2D Multiply(BufferedCoordinate2D a, BufferedCoordinate2D b)
+        internal Double Dot(BufferedCoordinate2D a, BufferedCoordinate2D b)
         {
-            throw new NotImplementedException("Cross-product not implemented");
+            return (Double)_ops.Dot(a, b);
+        }
+
+        internal BufferedCoordinate2D Cross(BufferedCoordinate2D a, BufferedCoordinate2D b)
+        {
+            return _ops.Cross(a, b);
         }
 
         internal static Int32 Compare(BufferedCoordinate2D a, BufferedCoordinate2D b)
@@ -501,6 +629,11 @@ namespace NetTopologySuite.Coordinates
 
         private BufferedCoordinate2D getVertexInternal(Double x, Double y)
         {
+            return getVertexInternal(x, y, 1);
+        }
+
+        private BufferedCoordinate2D getVertexInternal(Double x, Double y, Double w)
+        {
             Int64 xBits = BitConverter.DoubleToInt64Bits(x);
             xBits &= _mask;
             x = BitConverter.Int64BitsToDouble(xBits);
@@ -509,7 +642,20 @@ namespace NetTopologySuite.Coordinates
             yBits &= _mask;
             y = BitConverter.Int64BitsToDouble(yBits);
 
-            BufferedCoordinate2D v = findExisting(x, y) ?? addNew(x, y);
+            BufferedCoordinate2D v;
+
+            if (w != 1.0)
+            {
+                Int64 wBits = BitConverter.DoubleToInt64Bits(w);
+                wBits &= _mask;
+                w = BitConverter.Int64BitsToDouble(wBits);
+
+                v = findExisting(x, y, w) ?? addNew(x, y, w);
+            }
+            else
+            {
+                v = findExisting(x, y) ?? addNew(x, y);
+            }
 
             return v;
         }
@@ -527,10 +673,31 @@ namespace NetTopologySuite.Coordinates
             return v;
         }
 
+        private BufferedCoordinate2D? findExisting(Double x, Double y, Double w)
+        {
+            BufferedCoordinate2D? v = null;
+            Int32 index;
+
+            if (_lexicographicHomogeneousVertexIndex.TryGetValue(new Triple<Double>(x, y, w), out index))
+            {
+                v = new BufferedCoordinate2D(this, index);
+            }
+
+            return v;
+        }
+
         private BufferedCoordinate2D addNew(Double x, Double y)
         {
             BufferedCoordinate2D coord = _coordinates.Add(x, y, 1);
             _lexicographicVertexIndex[new Pair<Double>(coord.X, coord.Y)] = coord.Index;
+            return coord;
+        }
+
+        private BufferedCoordinate2D addNew(Double x, Double y, Double w)
+        {
+            BufferedCoordinate2D coord = _coordinates.Add(x, y, w);
+            Triple<Double> values = new Triple<Double>(coord.X, coord.Y, coord[Ordinates.W]);
+            _lexicographicHomogeneousVertexIndex[values] = coord.Index;
             return coord;
         }
 
@@ -540,6 +707,19 @@ namespace NetTopologySuite.Coordinates
             _ordinateIndexTable[(Int32)Ordinates.Y] = 1;
             _ordinateIndexTable[(Int32)Ordinates.Z] = -1; // flag value to throw exception.
             _ordinateIndexTable[(Int32)Ordinates.W] = 2;
+        }
+
+        private void checkCounts(Int32 rowCount, Int32 columnCount)
+        {
+            if (rowCount != 3)
+            {
+                throw new ArgumentOutOfRangeException("rowCount", rowCount, "Must be 3");
+            }
+
+            if (columnCount != 3)
+            {
+                throw new ArgumentOutOfRangeException("rowCount", rowCount, "Must be 3");
+            }
         }
 
         private class LexicographicCoordinateComparer : IComparer<BufferedCoordinate2D>
@@ -555,13 +735,17 @@ namespace NetTopologySuite.Coordinates
 
             public Int32 Compare(BufferedCoordinate2D a, BufferedCoordinate2D b)
             {
-                return _valueComparer.Compare(new Pair<Double>(a.X, a.Y), new Pair<Double>(b.X, b.Y));
+                return a.ComponentCount == 3
+                    ? _valueComparer.Compare(new Triple<Double>(a.X, a.Y, a[Ordinates.W]),
+                                             new Triple<Double>(b.X, b.Y, b[Ordinates.W]))
+                    :_valueComparer.Compare(new Pair<Double>(a.X, a.Y), 
+                                            new Pair<Double>(b.X, b.Y));
             }
 
             #endregion
         }
 
-        private class LexicographicComparer : IComparer<Pair<Double>>
+        private class LexicographicComparer : IComparer<Pair<Double>>, IComparer<Triple<Double>>
         {
             #region IComparer<Pair<Double>> Members
 
@@ -574,17 +758,31 @@ namespace NetTopologySuite.Coordinates
                 {
                     return -1;
                 }
-                else
+
+                if (v1_x > v2_x)
                 {
-                    if (v1_x > v2_x)
-                    {
-                        return 1;
-                    }
-                    else // v1.First == v2.First
-                    {
-                        return v1.Second.CompareTo(v2.Second);
-                    }
+                    return 1;
                 }
+
+                // v1.First == v2.First
+                return v1.Second.CompareTo(v2.Second);
+            }
+
+            #endregion
+
+            #region IComparer<Triple<double>> Members
+
+            public Int32 Compare(Triple<Double> v1, Triple<Double> v2)
+            {
+                Int32 result = Compare(new Pair<Double>(v1.First, v2.First),
+                                       new Pair<Double>(v1.Second, v2.Second));
+
+                if(result != 0)
+                {
+                    return result;
+                }
+
+                return v1.Third.CompareTo(v2.Third);
             }
 
             #endregion

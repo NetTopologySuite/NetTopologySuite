@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// correspond to vertexes and line segments in the geometry.
     /// </summary>
     public class GeometryGraph<TCoordinate> : PlanarGraph<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {
@@ -113,7 +113,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             foreach (Edge<TCoordinate> edge in Edges)
             {
                 IEnumerable<Edge<TCoordinate>> splitEdges 
-                    = edge.EdgeIntersectionList.GetSplitEdges();
+                    = edge.EdgeIntersections.GetSplitEdges();
 
                 foreach (Edge<TCoordinate> splitEdge in splitEdges)
                 {
@@ -422,7 +422,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 Debug.Assert(edge.Label.HasValue);
                 Locations eLoc = edge.Label.Value[argIndex].On;
 
-                foreach (EdgeIntersection<TCoordinate> intersection in edge.EdgeIntersectionList)
+                foreach (EdgeIntersection<TCoordinate> intersection in edge.EdgeIntersections)
                 {
                     addSelfIntersectionNode(argIndex, intersection.Coordinate, eLoc);
                 }

@@ -24,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// cause other methods to fail.
     /// </remarks>
     public class CentralEndpointIntersector<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {

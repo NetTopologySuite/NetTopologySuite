@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </summary>    
     public class MultiLineString<TCoordinate> 
         : GeometryCollection<TCoordinate>, IMultiLineString<TCoordinate>
-            where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
                                 IComputable<Double, TCoordinate>,  
                                 IComparable<TCoordinate>, IConvertible
 

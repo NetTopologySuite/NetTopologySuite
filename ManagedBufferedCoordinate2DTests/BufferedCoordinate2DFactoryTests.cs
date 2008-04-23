@@ -335,17 +335,17 @@ namespace ManagedBufferedCoordinate2DTests
             Assert.AreEqual(2, buffer.Count);
         }
 
-        [Test]
-        [ExpectedException(typeof(NotImplementedException))]
-        public void FactorySucceeds()
-        {
-            BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
+        //[Test]
+        //[ExpectedException(typeof(NotImplementedException))]
+        //public void FactorySucceeds()
+        //{
+        //    BufferedCoordinate2DFactory factory = new BufferedCoordinate2DFactory();
 
-            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = factory;
+        //    IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer = factory;
 
-            Assert.IsInstanceOfType(typeof(IVectorFactory<BufferedCoordinate2D, DoubleComponent>), buffer.Factory);
-            // not implemented and possibly going away in NPack
-        }
+        //    Assert.IsInstanceOfType(typeof(IVectorFactory<BufferedCoordinate2D, DoubleComponent>), buffer.Factory);
+        //    // not implemented and possibly going away in NPack
+        //}
 
         [Test]
         public void IsReadOnlySucceeds()

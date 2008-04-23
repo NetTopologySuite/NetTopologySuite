@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     /// be output by the line-merging process.
     /// </summary>
     public class EdgeString<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IGeometryFactory<TCoordinate> _factory;

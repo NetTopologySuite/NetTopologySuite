@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     /// </remarks>
     public struct LinearLocation<TCoordinate> : IEquatable<LinearLocation<TCoordinate>>, 
                                                 IComparable<LinearLocation<TCoordinate>>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {

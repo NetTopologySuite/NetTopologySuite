@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// noded <see cref="Edge{TCoordinate}"/>.
     /// </remarks>
     public class EdgeEndBuilder<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
         public IEnumerable<EdgeEnd<TCoordinate>> ComputeEdgeEnds(IEnumerable<Edge<TCoordinate>> edges)
@@ -37,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// </summary>
         public IEnumerable<EdgeEnd<TCoordinate>> ComputeEdgeEnds(Edge<TCoordinate> edge)
         {
-            EdgeIntersectionList<TCoordinate> eiList = edge.EdgeIntersectionList;
+            EdgeIntersectionList<TCoordinate> eiList = edge.EdgeIntersections;
             
             // ensure that the list has entries for the first and last point of the edge
             eiList.AddEndpoints();

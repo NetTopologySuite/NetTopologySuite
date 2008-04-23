@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// of all line segments weighted by the segment length.
     /// </summary>
     public class CentroidLine<TCoordinate>
-         where TCoordinate : ICoordinate, IEquatable<TCoordinate>,
+         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
                              IComparable<TCoordinate>, IConvertible,
                              IComputable<Double, TCoordinate>
     {

@@ -7,7 +7,7 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     public abstract class MultiCoordinateGeometry<TCoordinate> : Geometry<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {

@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
           IGeometryCollection<TCoordinate>, 
           IHasGeometryComponents<TCoordinate>, 
           IComparable<IGeometryCollection<TCoordinate>>
-                where TCoordinate : ICoordinate, IEquatable<TCoordinate>, 
+                where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                                     IComputable<Double, TCoordinate>,
                                     IComparable<TCoordinate>, IConvertible
     {
