@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Text;
+using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.IO
 {
@@ -127,11 +129,11 @@ namespace GisSharpBlog.NetTopologySuite.IO
             if (decimalCount > 0)
                 wholeLength -= (decimalCount + 1);
 
-            string strNum = number.ToString();
-
+            // Force to use point as decimal separator
+            string strNum = Convert.ToString(number, Global.GetNfi());
             int decimalIndex = strNum.IndexOf('.');
             if (decimalIndex < 0)
-                decimalIndex = strNum.Length;
+                 decimalIndex = strNum.Length;
 
             if (decimalIndex > wholeLength)
             {
@@ -146,7 +148,6 @@ namespace GisSharpBlog.NetTopologySuite.IO
                     for (int i = 0; i < decimalCount; ++i)
                         sb.Append('0');
                 }
-
                 outString = sb.ToString();
             }
             else
@@ -161,7 +162,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
                         sb.Append('0');
                 }
                 sb.Append('}');
-                outString = string.Format(sb.ToString(), number);
+                // Force to use point as decimal separator
+                outString = String.Format(Global.GetNfi(), sb.ToString(), number);                
             }
 
             for (int i = 0; i < length - outString.Length; i++)
