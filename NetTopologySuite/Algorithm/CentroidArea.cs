@@ -134,13 +134,21 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             Double sign = (isPositiveArea) ? 1.0 : -1.0;
             centroid3(p0, p1, p2, ref _triangleCent3);
-            Double area2 = Area2(p0, p1, p2);
-            Double x = _cg3[Ordinates.X];
-            Double y = _cg3[Ordinates.Y];
-            x += sign * area2 * _triangleCent3[Ordinates.X];
-            y += sign * area2 * _triangleCent3[Ordinates.Y];
+            Double a2 = area2(p0, p1, p2);
+
+            Double x = 0;
+            Double y = 0;
+
+            if (!Coordinates<TCoordinate>.IsEmpty(_cg3))
+            {
+                x = _cg3[Ordinates.X];
+                y = _cg3[Ordinates.Y];
+            }
+
+            x += sign * a2 * _triangleCent3[Ordinates.X];
+            y += sign * a2 * _triangleCent3[Ordinates.Y];
             _cg3 = _factory.Create(x, y);
-            _areasum2 += sign * area2;
+            _areasum2 += sign * a2;
         }
 
         /// <summary> 
@@ -159,7 +167,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// Returns twice the signed area of the triangle p1-p2-p3,
         /// positive if a,b,c are oriented ccw, and negative if cw.
         /// </summary>
-        private static Double Area2(TCoordinate p1, TCoordinate p2, TCoordinate p3)
+        private static Double area2(TCoordinate p1, TCoordinate p2, TCoordinate p3)
         {
             return (p2[Ordinates.X] - p1[Ordinates.X]) * (p3[Ordinates.Y] - p1[Ordinates.Y])
                 - (p3[Ordinates.X] - p1[Ordinates.X]) * (p2[Ordinates.Y] - p1[Ordinates.Y]);

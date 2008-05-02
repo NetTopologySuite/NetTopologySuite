@@ -42,7 +42,7 @@ namespace NetTopologySuite.Coordinates
 
         public BufferedCoordinate2D Cross(BufferedCoordinate2D vector)
         {
-            return _factory.Cross(this, vector);
+            return _factory.Homogenize(_factory.Cross(this, vector));
         }
 
         public override Boolean Equals(Object obj)
@@ -94,7 +94,7 @@ namespace NetTopologySuite.Coordinates
         {
             return IsEmpty
                        ? "Empty"
-                       : String.Format("X: {0}; Y: {1}", X, Y);
+                       : String.Format("({0}, {1})", X, Y);
         }
 
         public override Int32 GetHashCode()

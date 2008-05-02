@@ -101,7 +101,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                 if (!de.IsVisited && OverlayOp<TCoordinate>.IsResultOfOp(label, opCode) && !e.IsCovered)
                 {
                     yield return e;
-                    de.VisitedEdge = true;
+                    de.IsEdgeVisited = true;
                 }
             }
         }
@@ -147,7 +147,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                 && opCode == SpatialFunctions.Intersection)
             {
                 yield return de.Edge;
-                de.VisitedEdge = true;
+                de.IsEdgeVisited = true;
             }
         }
 

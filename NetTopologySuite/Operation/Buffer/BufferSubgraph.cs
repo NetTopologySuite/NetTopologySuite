@@ -91,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 // <FIX> - handle negative depths
                 if (de.GetDepth(Positions.Right) >= 1 && de.GetDepth(Positions.Left) <= 0 && !de.IsInteriorAreaEdge)
                 {
-                    de.InResult = true;
+                    de.IsInResult = true;
                 }
             }
         }
@@ -172,7 +172,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
         private void clearVisitedEdges()
         {
-            _dirEdgeList.ForEach(delegate(DirectedEdge<TCoordinate> item) { item.Visited = false; });
+            _dirEdgeList.ForEach(delegate(DirectedEdge<TCoordinate> item) { item.IsVisited = false; });
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             Node<TCoordinate> startNode = startEdge.Node;
             nodeQueue.Enqueue(startNode);
             nodesVisited.Add(startNode);
-            startEdge.Visited = true;
+            startEdge.IsVisited = true;
 
             while (nodeQueue.Count != 0)
             {
@@ -247,7 +247,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             // copy depths to sym edges
             foreach (DirectedEdge<TCoordinate> de in edges)
             {
-                de.Visited = true;
+                de.IsVisited = true;
                 copySymDepths(de);
             }
         }

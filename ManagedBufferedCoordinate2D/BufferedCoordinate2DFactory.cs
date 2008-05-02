@@ -41,6 +41,7 @@ namespace NetTopologySuite.Coordinates
         {
             _bitResolution = bitResolution;
             _lexicographicVertexIndex = createLexicographicIndex();
+            _lexicographicHomogeneousVertexIndex = createLexicographicHomogeneousIndex();
             _coordinates = new ManagedVectorBuffer<BufferedCoordinate2D, DoubleComponent>(2, true, this);
             initializeOrdinateIndexTable();
             _ops = new ClrMatrixOperations<DoubleComponent, BufferedCoordinate2D, Matrix3>(this);
@@ -624,6 +625,12 @@ namespace NetTopologySuite.Coordinates
         private static IDictionary<Pair<Double>, Int32> createLexicographicIndex()
         {
             return new SortedDictionary<Pair<Double>, Int32>(
+                new LexicographicComparer());
+        }
+
+        private static IDictionary<Triple<Double>, Int32> createLexicographicHomogeneousIndex()
+        {
+            return new SortedDictionary<Triple<Double>, Int32>(
                 new LexicographicComparer());
         }
 

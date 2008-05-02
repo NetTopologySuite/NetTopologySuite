@@ -193,20 +193,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                if (CoordinatesInternal == null)
-                {
-                    CoordinatesInternal = _shell.Coordinates;
+                // TODO: fix polygon coordinate sequences by using slices for _shell and _holes
+                ICoordinateSequence<TCoordinate> seq =
+                    Factory.CoordinateSequenceFactory.Create(_shell.Coordinates);
 
-                    if (_holes != null)
+                if (_holes != null)
+                {
+                    foreach (ILineString<TCoordinate> hole in _holes)
                     {
-                        foreach (ILineString<TCoordinate> hole in _holes)
-                        {
-                            CoordinatesInternal.AddSequence(hole.Coordinates);
-                        }
+                        seq.AddSequence(hole.Coordinates);
                     }
                 }
 
-                return CoordinatesInternal;
+                return seq;
             }
         }
 
@@ -319,6 +318,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                         len += _holes[i].Length;
                     }
                 }
+
                 return len;
             }
         }
@@ -336,12 +336,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 {
                     return _shell.Clone();
                 }
-                else
-                {
-                    IEnumerable<ILineString<TCoordinate>> lineStrings = Slice.Append(InteriorRings, _shell as ILineString<TCoordinate>);
-                    return Factory.CreateMultiLineString(lineStrings);
-                }
 
+                IEnumerable<ILineString<TCoordinate>> lineStrings = Slice.Append(InteriorRings, _shell);
+                return Factory.CreateMultiLineString(lineStrings);
             }
         }
 
@@ -380,6 +377,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             IEnumerator<ILineString<TCoordinate>> otherPolygonHoles = otherPolygon.InteriorRings.GetEnumerator();
             IEnumerator<ILineString<TCoordinate>> holes = _holes.GetEnumerator();
+            
             while(otherPolygonHoles.MoveNext() && holes.MoveNext())
             {
                 if (!holes.Current.Equals(otherPolygonHoles.Current, tolerance))

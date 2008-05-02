@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures.Collections.Generic;
 using GeoAPI.Geometries;
@@ -95,6 +96,38 @@ namespace NetTopologySuite.Coordinates
             {
                 _skipIndexes = new SortedSet<Int32>(skips);
             }
+        }
+
+        public override string ToString()
+        {
+            StringBuilder buffer = new StringBuilder();
+            
+            if (_reversed)
+            {
+                buffer.Append("Reversed ");
+            }
+
+            if (isSlice())
+            {
+                buffer.AppendFormat("Sliced ([{0} - {1}]", _startIndex, _endIndex);
+
+                if (_prependedIndexes != null)
+                {
+                    buffer.AppendFormat(", {0} Prepended", _prependedIndexes.Count);
+                }
+
+                if (_appendedIndexes != null)
+                {
+                    buffer.AppendFormat(", {0} Appended", _appendedIndexes.Count);
+                }
+
+                buffer.Append(") ");
+            }
+            
+            buffer.Append(IsFrozen ? "Frozen " : String.Empty);
+            buffer.AppendFormat("Points: {0}", Count);
+
+            return buffer.ToString();
         }
 
         #region IBufferedCoordSequence Members

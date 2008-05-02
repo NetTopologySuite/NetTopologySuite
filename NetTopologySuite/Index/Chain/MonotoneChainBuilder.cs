@@ -4,6 +4,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.Utilities;
+using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
@@ -81,7 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// of the point set, for use as a sentinel.
         /// </summary>
         public static IEnumerable<Int32> GetChainStartIndices<TCoordinate>(
-                                            IEnumerable<TCoordinate> points)
+                                            ICoordinateSequence<TCoordinate> points)
             where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                                 IComparable<TCoordinate>, IConvertible,
                                 IComputable<Double, TCoordinate>
@@ -91,11 +92,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
 
             yield return start;
 
-            IEnumerator<TCoordinate> pointsEnumerator = points.GetEnumerator();
+            Int32 last = start;
 
-            while (pointsEnumerator.MoveNext())
+            while (last < points.LastIndex)
             {
-                Int32 last = findChainEnd(pointsEnumerator, start);
+                last = findChainEnd(points, start);
                 yield return last;
                 // the next monotone chain starts where the current one ends
                 start = last;
@@ -103,50 +104,39 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         }
 
         // Returns the index of the last point in the monotone chain starting at 'start'.
-        private static Int32 findChainEnd<TCoordinate>(IEnumerator<TCoordinate> points, 
+        private static Int32 findChainEnd<TCoordinate>(ICoordinateSequence<TCoordinate> points, 
                                                        Int32 start)
             where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                                 IComparable<TCoordinate>, IConvertible,
                                 IComputable<Double, TCoordinate>
         {
-            Quadrants chainQuad = Quadrants.None;
-            Int32 last = start + 1;
+            Int32 lastSegmentStartIndex = points.LastIndex - 1;
 
-            TCoordinate p0 = points.Current;
-
-            while (points.MoveNext())
+            if (start == lastSegmentStartIndex)
             {
-                TCoordinate p1 = points.Current;
-
-  	            // skip any zero-length segments at the start of the sequence
-  	            // (since they cannot be used to establish a quadrant)
-  	            if (p0.Equals(p1))
-                {
-                    last++;
-  		            continue;
-  	            }
-
-                // determine quadrant for chain on first segment
-                if (chainQuad == Quadrants.None)
-                {
-                    chainQuad = QuadrantOp<TCoordinate>.Quadrant(p0, p1);
-                }
-                else
-                {
-                    Quadrants quad = QuadrantOp<TCoordinate>.Quadrant(p0, p1);
-
-                    if (quad != chainQuad)
-                    {
-                        break;
-                    }
-
-                    last++;
-                }
-
-                p0 = p1;
+                return start + 1;
             }
 
-            return last - 1;
+            Pair<TCoordinate> segment = points.SegmentAt(start);
+
+            Quadrants chainQuad = QuadrantOp<TCoordinate>.Quadrant(segment.First, 
+                                                                   segment.Second);
+
+            Quadrants quad = chainQuad;
+
+            //while (++start <= lastSegmentStartIndex && quad == chainQuad)
+            //{
+            //    segment = points.SegmentAt(start);
+            //    quad = QuadrantOp<TCoordinate>.Quadrant(segment.First, segment.Second);
+            //}
+
+            do
+            {
+                segment = points.SegmentAt(++start);
+                quad = QuadrantOp<TCoordinate>.Quadrant(segment.First, segment.Second);
+            } while (quad == chainQuad && start < lastSegmentStartIndex);
+
+            return quad == chainQuad ? start + 1 : start;
         }
     }
 }

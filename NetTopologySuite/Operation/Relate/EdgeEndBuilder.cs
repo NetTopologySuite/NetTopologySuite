@@ -119,7 +119,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 
             // since edgeStub is oriented opposite to its parent edge, 
             // have to flip sides for edge label
-            label.Flip();
+            label = label.Flip();
 
             EdgeEnd<TCoordinate> e = new EdgeEnd<TCoordinate>(
                 edge, eiCurr.Coordinate, pPrev, label);

@@ -186,7 +186,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public override String ToString()
         {
-            return Coordinate + " " + Label + " " + _edges;
+            return Coordinate + "; " + Label + "; " + _edges;
         }
 
         //public void Write(StreamWriter outstream)

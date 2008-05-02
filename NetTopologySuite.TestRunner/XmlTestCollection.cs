@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Specialized;
+using GisSharpBlog.NetTopologySuite;
 
 namespace Open.Topology.TestRunner
 {

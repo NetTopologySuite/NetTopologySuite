@@ -16,8 +16,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// The edges to use are marked as being in the result Area.
     /// </summary>
     public class PolygonBuilder<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         private readonly IGeometryFactory<TCoordinate> _geometryFactory;
         private readonly List<EdgeRing<TCoordinate>> _shellList = new List<EdgeRing<TCoordinate>>();
@@ -46,8 +47,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         {
             PlanarGraph<TCoordinate>.LinkResultDirectedEdges(nodes);
             IEnumerable<MaximalEdgeRing<TCoordinate>> maxEdgeRings = buildMaximalEdgeRings(dirEdges);
+                //= Enumerable.ToArray(buildMaximalEdgeRings(dirEdges));
             List<EdgeRing<TCoordinate>> freeHoleList = new List<EdgeRing<TCoordinate>>();
-            IEnumerable<EdgeRing<TCoordinate>> edgeRings = buildMinimalEdgeRings(maxEdgeRings, _shellList, freeHoleList);
+            IEnumerable<EdgeRing<TCoordinate>> edgeRings = buildMinimalEdgeRings(maxEdgeRings, 
+                                                                                 _shellList, 
+                                                                                 freeHoleList);
+                //= Enumerable.ToArray(buildMinimalEdgeRings(maxEdgeRings, _shellList, freeHoleList));
             sortShellsAndHoles(edgeRings, _shellList, freeHoleList);
             placeFreeHoles(_shellList, freeHoleList);
             //Assert: every hole on freeHoleList has a shell assigned to it

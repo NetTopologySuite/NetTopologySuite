@@ -3,6 +3,7 @@ using System.Globalization;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
+using GisSharpBlog.NetTopologySuite;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NetTopologySuite.Coordinates;
 

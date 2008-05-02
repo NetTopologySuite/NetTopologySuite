@@ -4,6 +4,7 @@ using System.Collections;
 using System.Globalization;
 using System.Xml;
 using GeoAPI.Coordinates;
+using GisSharpBlog.NetTopologySuite;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NetTopologySuite.Coordinates;
 

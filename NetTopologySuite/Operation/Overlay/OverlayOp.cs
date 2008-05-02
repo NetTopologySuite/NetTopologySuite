@@ -424,8 +424,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             {
                 DirectedEdgeStar<TCoordinate> edges = node.Edges as DirectedEdgeStar<TCoordinate>;
                 Debug.Assert(edges != null);
-                Label lbl = edges.Label;
+                Label? lbl = edges.Label;
                 Debug.Assert(node.Label.HasValue);
+                Debug.Assert(lbl.HasValue);
                 node.Label = node.Label.Value.Merge(lbl);
             }
         }
@@ -503,7 +504,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                 if (label.IsArea() && !de.IsInteriorAreaEdge &&
                     IsResultOfOp(label[0, Positions.Right], label[1, Positions.Right], opCode))
                 {
-                    de.InResult = true;
+                    de.IsInResult = true;
                 }
             }
         }
@@ -522,8 +523,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 
                 if (de.IsInResult && sym.IsInResult)
                 {
-                    de.InResult = false;
-                    sym.InResult = false;
+                    de.IsInResult = false;
+                    sym.IsInResult = false;
                 }
             }
         }

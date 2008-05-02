@@ -37,8 +37,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             _edge = edge;
         }
 
-        public EdgeEnd(Edge<TCoordinate> edge, TCoordinate p0, TCoordinate p1) :
-            this(edge, p0, p1, null) { }
+        public EdgeEnd(Edge<TCoordinate> edge, TCoordinate p0, TCoordinate p1) 
+            : this(edge, p0, p1, null) { }
 
         public EdgeEnd(Edge<TCoordinate> edge, TCoordinate p0, TCoordinate p1, Label? label)
             : this(edge)
@@ -162,17 +162,17 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             StringBuilder sb = new StringBuilder();
             Double angle = Math.Atan2(_direction[Ordinates.Y], _direction[Ordinates.X]);
+            Double degrees = Degrees.ToDegrees(angle);
 
             sb.Append('[');
             sb.Append(_p0);
             sb.Append(" - ");
             sb.Append(_p1);
-            sb.Append(']');
-            sb.Append(' ');
+            sb.Append("] ");
             sb.Append(Quadrant);
             sb.Append(':');
-            sb.Append(angle);
-            sb.Append(' ');
+            sb.Append(degrees.ToString("##0.0####"));
+            sb.Append("\xB0 ");
             sb.Append(Label);
             return sb.ToString();
         }

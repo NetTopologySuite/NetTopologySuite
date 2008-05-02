@@ -97,7 +97,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             do
             {
                 Debug.Assert(de != null);
-                de.Visited = true;
+                de.IsVisited = true;
                 de = de.Next;
             } while (de != startDe);
         }
@@ -110,7 +110,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
                 if (de.Label.Value[0, Positions.Right] == Locations.Interior)
                 {
-                    de.InResult = true;
+                    de.IsInResult = true;
                 }
             }
         }

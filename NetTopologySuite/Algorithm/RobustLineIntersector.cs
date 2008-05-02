@@ -153,7 +153,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
              *
              * LINESTRING (2089426.5233462777 1180182.3877339689, 2085646.6891757075 1195618.7333999649)
              * LINESTRING (1889281.8148903656 1997547.0560044837, 2259977.3672235999 483675.17050843034)
-             * Int32 point = (2097408.2633752143,1144595.8008114607)
+             * intersection point = (2097408.2633752143,1144595.8008114607)
              * 
              * MD - Dec 14 2006 - This does not seem to be a failure case any longer
              */
@@ -367,14 +367,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             Double intMidY = (intMinY + intMaxY) / 2.0;
             normPt = CoordinateFactory.Create(intMidX, intMidY);
 
-            Double n00X = intMidX - n00[Ordinates.X];
-            Double n00Y = intMidY - n00[Ordinates.Y];
-            Double n01X = intMidX - n01[Ordinates.X];
-            Double n01Y = intMidY - n01[Ordinates.Y];
-            Double n10X = intMidX - n10[Ordinates.X];
-            Double n10Y = intMidY - n10[Ordinates.Y];
-            Double n11X = intMidX - n10[Ordinates.X];
-            Double n11Y = intMidY - n10[Ordinates.Y];
+            Double n00X = n00[Ordinates.X] - intMidX;
+            Double n00Y = n00[Ordinates.Y] - intMidY;
+            Double n01X = n01[Ordinates.X] - intMidX;
+            Double n01Y = n01[Ordinates.Y] - intMidY;
+            Double n10X = n10[Ordinates.X] - intMidX;
+            Double n10Y = n10[Ordinates.Y] - intMidY;
+            Double n11X = n11[Ordinates.X] - intMidX;
+            Double n11Y = n11[Ordinates.Y] - intMidY;
 
             n00 = CoordinateFactory.Create(n00X, n00Y);
             n01 = CoordinateFactory.Create(n01X, n01Y);

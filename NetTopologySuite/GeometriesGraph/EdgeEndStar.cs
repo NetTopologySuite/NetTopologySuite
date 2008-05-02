@@ -23,47 +23,29 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                             IComputable<Double, TCoordinate>
     {
         // A map which maintains the edges in sorted order around the node.
+        // TODO: could this be a TreeList<T>?
         private readonly SortedList<EdgeEnd<TCoordinate>, EdgeEnd<TCoordinate>> _edgeMap
             = new SortedList<EdgeEnd<TCoordinate>, EdgeEnd<TCoordinate>>();
 
         // A list of all outgoing edges in the result, in CCW order.
-        private readonly List<EdgeEnd<TCoordinate>> _edgeList 
-            = new List<EdgeEnd<TCoordinate>>();
+        private List<EdgeEnd<TCoordinate>> _edgeList;
 
         // The location of the point for this star in Geometry 0's area.
-        private Locations _ptInAreaLocation0;
+        private Locations _ptInAreaLocation0 = Locations.None;
 
         // The location of the point for this star in Geometry 1's area.
-        private Locations _ptInAreaLocation1;
+        private Locations _ptInAreaLocation1 = Locations.None;
 
         public override String ToString()
         {
             return "Edge ends at: " + Coordinate +
-                   "Degree: " + Degree;
+                   " Degree: " + Degree;
         }
 
         /// <summary> 
         /// Insert a EdgeEnd into this EdgeEndStar.
         /// </summary>
         public abstract void Insert(EdgeEnd<TCoordinate> e);
-
-        /// <summary> 
-        /// Insert an EdgeEnd into the map, and clear the <see cref="Edges"/> cache,
-        /// since the list of edges has now changed.
-        /// </summary>
-        protected void InsertEdgeEnd(EdgeEnd<TCoordinate> e, EdgeEnd<TCoordinate> edgeEnd)
-        {
-            // Diego Guidi says: i have inserted this line because if 
-            // i try to add an object already present
-            // in the list, a System.ArgumentException was thrown.
-            if (_edgeMap.ContainsKey(e))
-            {
-                return;
-            }
-
-            _edgeMap.Add(e, edgeEnd);
-            _edgeList.Clear();   // edge list has changed - clear the cache
-        }
 
         /// <returns>
         /// Gets the coordinate for the node this star is based at.
@@ -72,9 +54,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return _edgeList.Count == 0 
-                    ? default(TCoordinate) 
-                    : _edgeList[0].Coordinate;
+                return (EdgesInternal == null || EdgesInternal.Count == 0)
+                    ? default(TCoordinate)
+                    : EdgesInternal[0].Coordinate;
             }
         }
 
@@ -87,7 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             ComputeEdgeList();
 
-            foreach (EdgeEnd<TCoordinate> edge in _edgeList)
+            foreach (EdgeEnd<TCoordinate> edge in EdgesInternal)
             {
                 yield return edge;
             }
@@ -97,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                foreach (EdgeEnd<TCoordinate> edgeEnd in _edgeList)
+                foreach (EdgeEnd<TCoordinate> edgeEnd in EdgesInternal)
                 {
                     yield return edgeEnd;
                 }
@@ -106,15 +88,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public EdgeEnd<TCoordinate> GetNextCW(EdgeEnd<TCoordinate> ee)
         {
-            Int32 i = _edgeList.IndexOf(ee);
+            Int32 i = EdgesInternal.IndexOf(ee);
             Int32 nextCWIndex = i - 1;
 
             if (i == 0)
             {
-                nextCWIndex = _edgeList.Count - 1;
+                nextCWIndex = EdgesInternal.Count - 1;
             }
 
-            return _edgeList[nextCWIndex];
+            return EdgesInternal[nextCWIndex];
         }
 
         public void ComputeLabeling(params GeometryGraph<TCoordinate>[] geom)
@@ -298,7 +280,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 }
 
                 // set side labels (if any)
-                if (label.IsArea(geomIndex))
+                if (label.IsArea())
+                //if (label.IsArea(geomIndex))
                 {
                     Locations left = label[geomIndex, Positions.Left];
                     Locations right = label[geomIndex, Positions.Right];
@@ -340,20 +323,51 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public Int32 FindIndex(EdgeEnd<TCoordinate> search)
         {
-            ComputeEdgeList();
-
-            return _edgeList.FindIndex(delegate(EdgeEnd<TCoordinate> match)
+            return EdgesInternal.FindIndex(delegate(EdgeEnd<TCoordinate> match)
                                 {
                                     return match == search;
                                 });
+        }
+
+        /// <summary> 
+        /// Insert an EdgeEnd into the map, and clear the <see cref="Edges"/> cache,
+        /// since the list of edges has now changed.
+        /// </summary>
+        protected void InsertEdgeEnd(EdgeEnd<TCoordinate> e, EdgeEnd<TCoordinate> edgeEnd)
+        {
+            // [codekaizen 2008-04-30] - I reverted this to behave like the original JTS
+            //                           code, since it's not clear that inserting an edge 
+            //                           end should *not* replace the existing one, 
+            //                           if there is one.
+
+            //// Diego Guidi says: i have inserted this line because if 
+            //// i try to add an object already present
+            //// in the list, a System.ArgumentException was thrown.
+            //if (_edgeMap.ContainsKey(e))
+            //{
+            //    return;
+            //}
+
+            //_edgeMap.Add(e, edgeEnd);
+
+            _edgeMap[e] = edgeEnd;
+            EdgesInternal = null;   // edge list has changed - clear the cache
         }
 
         protected List<EdgeEnd<TCoordinate>> EdgesInternal
         {
             get
             {
-                ComputeEdgeList();
+                if (_edgeList == null)
+                {
+                    _edgeList = ComputeEdgeList();
+                }
+
                 return _edgeList;
+            }
+            set
+            {
+                _edgeList = value;
             }
         }
 
@@ -362,12 +376,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             get { return _edgeMap; }
         }
 
-        protected void ComputeEdgeList()
+        protected List<EdgeEnd<TCoordinate>> ComputeEdgeList()
         {
-            if (_edgeList.Count == 0)
-            {
-                _edgeList.AddRange(_edgeMap.Values);
-            }
+            return new List<EdgeEnd<TCoordinate>>(_edgeMap.Values);
         }
 
         #region IEnumerable Members
@@ -394,7 +405,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             // Since edges are stored in CCW order around the node,
             // as we move around the ring we move from the right
             // to the left side of the edge
-            IList<EdgeEnd<TCoordinate>> edges = _edgeList;
+            IList<EdgeEnd<TCoordinate>> edges = EdgesInternal;
 
             // if no edges, trivially consistent
             if (edges.Count <= 0)

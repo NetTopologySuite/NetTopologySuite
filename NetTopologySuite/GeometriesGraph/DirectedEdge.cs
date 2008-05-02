@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
@@ -10,20 +9,25 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     public class DirectedEdge<TCoordinate> : EdgeEnd<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         /// <summary>
-        /// Computes the factor for the change in depth when moving from one location to another.
-        /// E.g. if crossing from the Interior to the Exterior the depth decreases, so the factor is -1.
+        /// Computes the factor for the change in depth 
+        /// when moving from one location to another.
+        /// E.g. if crossing from the <see cref="Locations.Interior"/> 
+        /// to the <see cref="Locations.Exterior"/>
+        /// the depth decreases, so the factor is -1.
         /// </summary>
-        public static Int32 DepthFactor(Locations currLocation, Locations nextLocation)
+        public static Int32 DepthFactor(Locations from, Locations to)
         {
-            if (currLocation == Locations.Exterior && nextLocation == Locations.Interior)
+            if (from == Locations.Exterior && to == Locations.Interior)
             {
                 return 1;
             }
-            else if (currLocation == Locations.Interior && nextLocation == Locations.Exterior)
+
+            if (from == Locations.Interior && to == Locations.Exterior)
             {
                 return -1;
             }
@@ -31,10 +35,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             return 0;
         }
 
-        protected Boolean _isForward;
-
-        private Boolean _isInResult = false;
-        private Boolean _isVisited = false;
+        private Boolean _isForward;
+        private Boolean _isInResult;
+        private Boolean _isVisited;
 
         private DirectedEdge<TCoordinate> _sym; // the symmetric edge
         private DirectedEdge<TCoordinate> _next; // the next edge in the edge ring for the polygon containing this edge
@@ -46,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// The depth of each side (position) of this edge.
         /// The 0 element of the array is never used.
         /// </summary>
-        private Int32[] _depth = { 0, -999, -999 };
+        private readonly Int32[] _depth = { 0, -999, -999 };
 
         public DirectedEdge(Edge<TCoordinate> edge, Boolean isForward)
             : base(edge)
@@ -66,27 +69,27 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             computeDirectedLabel();
         }
 
-        public Boolean InResult
+        public Boolean IsInResult
         {
             get { return _isInResult; }
             set { _isInResult = value; }
         }
 
-        public Boolean IsInResult
-        {
-            get { return _isInResult; }
-        }
+        //public Boolean IsInResult
+        //{
+        //    get { return _isInResult; }
+        //}
 
-        public Boolean Visited
+        public Boolean IsVisited
         {
             get { return _isVisited; }
             set { _isVisited = value; }
         }
 
-        public Boolean IsVisited
-        {
-            get { return _isVisited; }
-        }
+        //public Boolean IsVisited
+        //{
+        //    get { return _isVisited; }
+        //}
 
         public EdgeRing<TCoordinate> EdgeRing
         {
@@ -111,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             {
                 if (_depth[(Int32)position] != depthVal)
                 {
-                    throw new TopologyException("assigned depths do not match", Coordinate);
+                    throw new TopologyException("Assigned depths do not match", Coordinate);
                 }
             }
 
@@ -134,25 +137,25 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// VisitedEdge get property returns <see langword="true"/> if bot Visited 
-        /// and Sym.Visited are <see langword="true"/>.
-        /// VisitedEdge set property marks both DirectedEdges attached to a given Edge.
-        /// This is used for edges corresponding to lines, which will only
-        /// appear oriented in a single direction in the result.
+        /// Gets or sets whether the entire edge is visited. The edge is visted when 
+        /// both the <see cref="DirectedEdge{TCoordinate}"/> and the corresponding 
+        /// <see cref="DirectedEdge{TCoordinate}.Sym"/> have an <see cref="IsVisited"/>
+        /// property with the value of <see langword="true"/>.
         /// </summary>
-        public Boolean VisitedEdge
+        public Boolean IsEdgeVisited
         {
-            get { return Visited && _sym.Visited; }
+            get { return IsVisited && _sym.IsVisited; }
             set
             {
-                Visited = value;
-                _sym.Visited = value;
+                IsVisited = value;
+                _sym.IsVisited = value;
             }
         }
 
         public Boolean IsForward
         {
             get { return _isForward; }
+            protected set { _isForward = value; }
         }
 
         public DirectedEdge<TCoordinate> Sym
@@ -174,9 +177,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// This edge is a line edge if
-        /// at least one of the labels is a line label
-        /// any labels which are not line labels have all Locations = Exterior.
+        /// Gets <see langword="true"/> if at least one of the edge's labels is a line label
+        /// any labels which are not line labels have all <see cref="Positions"/> 
+        /// equal to <see cref="Locations.Exterior"/>.
         /// </summary>
         public Boolean IsLineEdge
         {
@@ -199,9 +202,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         }
 
         /// <summary> 
-        /// This is an interior Area edge if
-        /// its label is an Area label for both Geometries
-        /// and for each Geometry both sides are in the interior.
+        /// Gets <see langword="true"/> if
+        /// the edge's label is an area label for both geometries
+        /// and for each geometry both sides are in the interior.
         /// </summary>
         /// <returns><see langword="true"/> if this is an interior Area edge.</returns>
         public Boolean IsInteriorAreaEdge
@@ -225,21 +228,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 }
 
                 return isInteriorAreaEdge;
-            }
-        }
-
-        /// <summary>
-        /// Compute the label in the appropriate orientation for this DirEdge.
-        /// </summary>
-        private void computeDirectedLabel()
-        {
-            Debug.Assert(Edge.Label.HasValue);
-
-            Label = Edge.Label.Value;
-
-            if (!_isForward)
-            {
-                Label = Label.Value.Flip();
             }
         }
 
@@ -278,15 +266,32 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.Append(" " + _depth[(Int32)Positions.Left] + "/" + _depth[(Int32)Positions.Right]);
-            sb.Append(" (" + DepthDelta + ")");
-
+            Int32 leftDepth = _depth[(Int32)Positions.Left];
+            Int32 rightDepth = _depth[(Int32)Positions.Right];
+            sb.AppendFormat("{0} {1}/{2} ({3}) ", IsForward ? "Forward" : "Reverse", 
+                                                 leftDepth, rightDepth, DepthDelta);
+            
             if (_isInResult)
             {
-                sb.Append(" inResult");
+                sb.Append(" in result ");
             }
 
+            sb.Append(base.ToString());
+
             return sb.ToString();
+        }
+
+        // Compute the label in the appropriate orientation for this directed edge.
+        private void computeDirectedLabel()
+        {
+            Debug.Assert(Edge.Label.HasValue);
+
+            Label = Edge.Label.Value;
+
+            if (!_isForward)
+            {
+                Label = Label.Value.Flip();
+            }
         }
 
         //public void WriteEdge(StreamWriter outstream)

@@ -20,8 +20,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// <see cref="MinimalEdgeRing{TCoordinate}"/>s.
     /// </summary>
     public class DirectedEdgeStar<TCoordinate> : EdgeEndStar<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         enum DirectedEdgeState
         {
@@ -31,23 +32,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         private readonly List<DirectedEdge<TCoordinate>> _resultAreaEdgeList 
             = new List<DirectedEdge<TCoordinate>>();
-        private Label _label;
+        private Label? _label;
 
         public override String ToString()
         {
-            StringBuilder sb = new StringBuilder();
-
-            foreach (EdgeEnd<TCoordinate> end in this)
-            {
-                DirectedEdge<TCoordinate> de = end as DirectedEdge<TCoordinate>;
-                Debug.Assert(de != null);
-                sb.Append("out ");
-                sb.AppendLine(de.ToString());
-                sb.Append("in ");
-                sb.AppendLine(de.Sym.ToString());
-            }
-
-            return sb.ToString();
+            return base.ToString() + "; " + _label;
         }
 
         /// <summary> 
@@ -59,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             InsertEdgeEnd(de, de);
         }
 
-        public Label Label
+        public Label? Label
         {
             get { return _label; }
         }
@@ -85,7 +74,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             foreach (DirectedEdge<TCoordinate> end in EdgesInternal)
             {
-                if (end.EdgeRing.Equals(er))
+                if (Equals(end.EdgeRing, er))
                 {
                     degree++;
                 }
@@ -169,7 +158,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
                     if (eLoc == Locations.Interior || eLoc == Locations.Boundary)
                     {
-                        _label = new Label(_label, i, Locations.Interior);
+                        _label = _label == null 
+                            ? new Label(i, Locations.Interior) 
+                            : new Label(_label.Value, i, Locations.Interior);
                     }
                 }
             }
@@ -203,9 +194,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 DirectedEdge<TCoordinate> de = end as DirectedEdge<TCoordinate>;
                 Debug.Assert(de != null);
                 Debug.Assert(de.Label.HasValue);
+                Debug.Assert(Label.HasValue);
                 Label label = de.Label.Value;
-                label = Label.SetAllPositionsIfNone(label, 0, nodeLabel[0].On);
-                label = Label.SetAllPositionsIfNone(label, 1, nodeLabel[1].On);
+                label = GeometriesGraph.Label.SetAllPositionsIfNone(label, 0, nodeLabel[0].On);
+                label = GeometriesGraph.Label.SetAllPositionsIfNone(label, 1, nodeLabel[1].On);
                 de.Label = label;
             }
         }
@@ -429,6 +421,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                         startLoc = Locations.Interior;
                         break;
                     }
+
                     if (nextIn.IsInResult)
                     {
                         startLoc = Locations.Exterior;
@@ -494,7 +487,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         private List<DirectedEdge<TCoordinate>> getResultAreaEdges()
         {
-            if (_resultAreaEdgeList.Count == 0)
+            if (_resultAreaEdgeList.Count > 0)
             {
                 return _resultAreaEdgeList;
             }

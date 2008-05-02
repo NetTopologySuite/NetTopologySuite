@@ -918,38 +918,12 @@
             Gets the matrix which was factored (or decomposed).
             </summary>
         </member>
-        <member name="T:NPack.Interfaces.ISubtractable`2">
+        <member name="T:NPack.Interfaces.IVector`2">
             <summary>
-            Every class that defines a - operation 
-            like <c>TDifference operator - (ISubtractable`2 a, TSubtrahend b)</c> 
-            should consider implementing this interface.
+            A vector.
             </summary>
-            <typeparam name="TSubtrahend">Type which subracts from this type.</typeparam>
-            <typeparam name="TDifference">Type which is the result of subtraction.</typeparam>
-            <remarks>
-            Adapted from an article on lambda-computing.com: 
-            http://www.lambda-computing.com/publications/articles/generics/IArithmetic.cs.
-            </remarks>
-        </member>
-        <member name="M:NPack.Interfaces.ISubtractable`2.Subtract(`0)">
-            <summary>
-            Returns the difference of the Object and <paramref name="b"/>.
-            It must not modify the value of the Object.
-            </summary>
-            <param name="b">The second operand.</param>
-            <returns>The difference.</returns>
-        </member>
-        <member name="T:NPack.Interfaces.IAffineTransformMatrix`1">
-            <summary>
-            An interface to an affine transformation matrix.
-            </summary>
-            <typeparam name="T">Type of element in the matrix.</typeparam>
-        </member>
-        <member name="T:NPack.Interfaces.ITransformMatrix`1">
-            <summary>
-            Provides the interface for linearly transforming a matrix.
-            </summary>
-            <typeparam name="T">Type of component in the matrix.</typeparam>
+            <typeparam name="TComponent">Type of components in the vector.</typeparam>
+            <typeparam name="TVector">Type of vector.</typeparam>
         </member>
         <member name="T:NPack.Interfaces.IMatrix`1">
             <summary>
@@ -1033,6 +1007,126 @@
             <param name="row">The index of the row of the element.</param>
             <param name="column">The index of the column of the element.</param>
             <returns>The value of the element at the specified row and column.</returns>
+        </member>
+        <member name="T:NPack.Interfaces.IComputable`2">
+            <summary>
+            Defines a type which has typical numerically computable properties.
+            </summary>
+            <typeparam name="TInput">Input type of argument.</typeparam>
+            <typeparam name="TOutput">Result type of computation.</typeparam>
+        </member>
+        <member name="T:NPack.Interfaces.IAddable`2">
+            <summary>
+            Every class that defines a + operation 
+            like <c>TSum operator + (IAddable`2 a, TAddend b)</c> should consider
+            implementing this interface.
+            </summary>
+            <typeparam name="TAddend">Type which is can be added to this type.</typeparam>
+            <typeparam name="TSum">Type which the result of the addition.</typeparam>
+            <remarks>
+            Adapted from an article on lambda-computing.com: 
+            http://www.lambda-computing.com/publications/articles/generics/IArithmetic.cs.
+            </remarks>
+        </member>
+        <member name="M:NPack.Interfaces.IAddable`2.Add(`0)">
+            <summary>
+            Returns the sum of the Object and <paramref name="b"/>.
+            It must not modify the value of the Object.
+            </summary>
+            <param name="b">The second operand.</param>
+            <returns>The sum.</returns>
+        </member>
+        <member name="T:NPack.Interfaces.ISubtractable`2">
+            <summary>
+            Every class that defines a - operation 
+            like <c>TDifference operator - (ISubtractable`2 a, TSubtrahend b)</c> 
+            should consider implementing this interface.
+            </summary>
+            <typeparam name="TSubtrahend">Type which subracts from this type.</typeparam>
+            <typeparam name="TDifference">Type which is the result of subtraction.</typeparam>
+            <remarks>
+            Adapted from an article on lambda-computing.com: 
+            http://www.lambda-computing.com/publications/articles/generics/IArithmetic.cs.
+            </remarks>
+        </member>
+        <member name="M:NPack.Interfaces.ISubtractable`2.Subtract(`0)">
+            <summary>
+            Returns the difference of the Object and <paramref name="b"/>.
+            It must not modify the value of the Object.
+            </summary>
+            <param name="b">The second operand.</param>
+            <returns>The difference.</returns>
+        </member>
+        <member name="T:NPack.Interfaces.IDivisible`2">
+            <summary>
+            Every class that defines a / operation 
+            like <c>TQuotient operator / (IDivisible`2 a, TDivisor b)</c> should consider
+            implementing this interface.
+            </summary>
+            <typeparam name="TDivisor">
+            Type which divides the <see cref="T:NPack.Interfaces.IDivisible`2"/> instance.
+            </typeparam>
+            <typeparam name="TQuotient">Result type of the division operation.</typeparam>
+            <remarks>
+            Adapted from an article on lambda-computing.com: 
+            http://www.lambda-computing.com/publications/articles/generics/IArithmetic.cs.
+            </remarks>
+        </member>
+        <member name="M:NPack.Interfaces.IDivisible`2.Divide(`0)">
+            <summary>
+            Returns the quotient of the Object and <paramref name="b"/>.
+            It must not modify the value of the Object.
+            </summary>
+            <param name="b">The second operand.</param>
+            <returns>The quotient.</returns>
+        </member>
+        <member name="M:NPack.Interfaces.IComputable`2.Set(`0)">
+            <summary>
+            Sets the value of the IComputable value.
+            </summary>
+            <param name="value">Value used to set the IComputable.</param>
+            <returns>The value of the IComputable converted from <paramref name="value"/>.</returns>
+        </member>
+        <member name="M:NPack.Interfaces.IVector`2.Clone">
+            <summary>
+            Creates a component-by-component copy of the vector.
+            </summary>
+            <returns>A copy of the vector.</returns>
+        </member>
+        <member name="M:NPack.Interfaces.IVector`2.Negative">
+            <summary>
+            Returns the vector multiplied by -1.
+            </summary>
+            <returns>The vector when multiplied by -1.</returns>
+        </member>
+        <member name="P:NPack.Interfaces.IVector`2.ComponentCount">
+            <summary>
+            Gets the number of components in the vector.
+            </summary>
+        </member>
+        <member name="P:NPack.Interfaces.IVector`2.Components">
+            <summary>
+            Gets or sets the vector component array.
+            </summary>
+        </member>
+        <member name="P:NPack.Interfaces.IVector`2.Item(System.Int32)">
+            <summary>
+            Gets or sets a component in the vector.
+            </summary>
+            <param name="index">The index of the component.</param>
+            <returns>The value of the component at the given <paramref name="index"/>.</returns>
+        </member>
+        <member name="T:NPack.Interfaces.IAffineTransformMatrix`1">
+            <summary>
+            An interface to an affine transformation matrix.
+            </summary>
+            <typeparam name="T">Type of element in the matrix.</typeparam>
+        </member>
+        <member name="T:NPack.Interfaces.ITransformMatrix`1">
+            <summary>
+            Provides the interface for linearly transforming a matrix.
+            </summary>
+            <typeparam name="T">Type of component in the matrix.</typeparam>
         </member>
         <member name="M:NPack.Interfaces.ITransformMatrix`1.Scale(`0)">
             <summary>
@@ -2045,64 +2139,6 @@
             Thrown if <paramref name="matrix"/> is null.
             </exception>
         </member>
-        <member name="T:NPack.Interfaces.IComputable`2">
-            <summary>
-            Defines a type which has typical numerically computable properties.
-            </summary>
-            <typeparam name="TInput">Input type of argument.</typeparam>
-            <typeparam name="TOutput">Result type of computation.</typeparam>
-        </member>
-        <member name="T:NPack.Interfaces.IAddable`2">
-            <summary>
-            Every class that defines a + operation 
-            like <c>TSum operator + (IAddable`2 a, TAddend b)</c> should consider
-            implementing this interface.
-            </summary>
-            <typeparam name="TAddend">Type which is can be added to this type.</typeparam>
-            <typeparam name="TSum">Type which the result of the addition.</typeparam>
-            <remarks>
-            Adapted from an article on lambda-computing.com: 
-            http://www.lambda-computing.com/publications/articles/generics/IArithmetic.cs.
-            </remarks>
-        </member>
-        <member name="M:NPack.Interfaces.IAddable`2.Add(`0)">
-            <summary>
-            Returns the sum of the Object and <paramref name="b"/>.
-            It must not modify the value of the Object.
-            </summary>
-            <param name="b">The second operand.</param>
-            <returns>The sum.</returns>
-        </member>
-        <member name="T:NPack.Interfaces.IDivisible`2">
-            <summary>
-            Every class that defines a / operation 
-            like <c>TQuotient operator / (IDivisible`2 a, TDivisor b)</c> should consider
-            implementing this interface.
-            </summary>
-            <typeparam name="TDivisor">
-            Type which divides the <see cref="T:NPack.Interfaces.IDivisible`2"/> instance.
-            </typeparam>
-            <typeparam name="TQuotient">Result type of the division operation.</typeparam>
-            <remarks>
-            Adapted from an article on lambda-computing.com: 
-            http://www.lambda-computing.com/publications/articles/generics/IArithmetic.cs.
-            </remarks>
-        </member>
-        <member name="M:NPack.Interfaces.IDivisible`2.Divide(`0)">
-            <summary>
-            Returns the quotient of the Object and <paramref name="b"/>.
-            It must not modify the value of the Object.
-            </summary>
-            <param name="b">The second operand.</param>
-            <returns>The quotient.</returns>
-        </member>
-        <member name="M:NPack.Interfaces.IComputable`2.Set(`0)">
-            <summary>
-            Sets the value of the IComputable value.
-            </summary>
-            <param name="value">Value used to set the IComputable.</param>
-            <returns>The value of the IComputable converted from <paramref name="value"/>.</returns>
-        </member>
         <member name="T:NPack.Interfaces.IInvertible`1">
             <summary>
             Every class that defines an unary inverse operation such that
@@ -3081,6 +3117,207 @@
             Sum of the diagonal elements.
             </returns>
         </member>
+        <member name="T:NPack.Interfaces.IMatrix`2">
+            <summary>
+            An interface to a generic matrix.
+            </summary>
+            <typeparam name="TComponent">Type of element in the matrix.</typeparam>
+            <typeparam name="TMatrix">Type of matrix.</typeparam>
+        </member>
+        <member name="M:NPack.Interfaces.IMatrix`2.Clone">
+            <summary>
+            Makes an element-by-element copy of the matrix.
+            </summary>
+            <returns>An exact copy of the matrix.</returns>
+        </member>
+        <member name="M:NPack.Interfaces.IMatrix`2.GetMatrix(System.Int32[],System.Int32,System.Int32)">
+            <summary>
+            Gets a submatrix.
+            </summary>
+            <param name="rowIndexes">The indexes of the rows to include.</param>
+            <param name="startColumn">The starting column to include.</param>
+            <param name="endColumn">The ending column to include.</param>
+            <returns>
+            A submatrix with rows given by <paramref name="rowIndexes"/> and columns 
+            <paramref name="startColumn"/> through <paramref name="endColumn"/>.
+            </returns>
+        </member>
+        <member name="M:NPack.Interfaces.IMatrix`2.GetMatrix(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Gets a submatrix.
+            </summary>
+            <param name="i0">Initial row index.</param>
+            <param name="i1">Final row index.</param>
+            <param name="j0">Initial column index.</param>
+            <param name="j1">Final column index.</param>
+            <returns>
+            A submatrix with rows given by the rows <paramref name="i0" />
+            through <paramref name="i1"/>
+            and columns <paramref name="j0"/> through <paramref name="j1"/>.
+            </returns>
+        </member>
+        <member name="M:NPack.Interfaces.IMatrix`2.Transpose">
+            <summary>
+            Returns the transpose of the matrix.
+            </summary>
+            <returns>The matrix with the rows as columns and columns as rows.</returns>
+        </member>
+        <member name="P:NPack.Interfaces.IMatrix`2.Determinant">
+            <summary>
+            Gets the determinant for the matrix, if it exists.
+            </summary>
+        </member>
+        <member name="P:NPack.Interfaces.IMatrix`2.ColumnCount">
+            <summary>
+            Gets the number of columns in the matrix.
+            </summary>
+        </member>
+        <member name="P:NPack.Interfaces.IMatrix`2.Format">
+            <summary>
+            Gets the format of the matrix, either row-major or column-major.
+            </summary>
+        </member>
+        <member name="P:NPack.Interfaces.IMatrix`2.IsSingular">
+            <summary>
+            Gets true if the matrix is singular (non-invertible).
+            </summary>
+        </member>
+        <member name="P:NPack.Interfaces.IMatrix`2.IsInvertible">
+            <summary>
+            Gets true if the matrix is invertible (non-singular).
+            </summary>
+        </member>
+        <member name="P:NPack.Interfaces.IMatrix`2.Inverse">
+            <summary>
+            Gets the inverse of the matrix, if one exists.
+            </summary>
+        </member>
+        <member name="P:NPack.Interfaces.IMatrix`2.IsSquare">
+            <summary>
+            Gets true if the matrix is square (<c>RowCount == ColumnCount != 0</c>).
+            </summary>
+        </member>
+        <member name="P:NPack.Interfaces.IMatrix`2.IsSymmetrical">
+            <summary>
+            Gets true if the matrix is symmetrical.
+            </summary>
+        </member>
+        <member name="P:NPack.Interfaces.IMatrix`2.RowCount">
+            <summary>
+            Gets the number of rows in the matrix.
+            </summary>
+        </member>
+        <member name="P:NPack.Interfaces.IMatrix`2.Item(System.Int32,System.Int32)">
+            <summary>
+            Gets or sets an element in the matrix.
+            </summary>
+            <param name="row">The index of the row of the element.</param>
+            <param name="column">The index of the column of the element.</param>
+            <returns>The value of the element at the specified row and column.</returns>
+        </member>
+        <member name="M:NPack.Interfaces.ITransformMatrix`3.Scale(`0)">
+            <summary>
+            Scales the matrix by the given <paramref name="amount"/> in all orthoganal columns.
+            </summary>
+            <param name="amount">Amount to scale by.</param>
+        </member>
+        <member name="M:NPack.Interfaces.ITransformMatrix`3.Scale(`0,NPack.MatrixOperationOrder)">
+            <summary>
+            Scales the matrix by the given <paramref name="amount"/> in all orthoganal columns.
+            </summary>
+            <param name="amount">Amount to scale by.</param>
+            <param name="order">Order in which to apply the operation.</param>
+        </member>
+        <member name="M:NPack.Interfaces.ITransformMatrix`3.Scale(`1)">
+            <summary>
+            Scales the matrix by the given vector <paramref name="scaleVector"/>.
+            </summary>
+            <param name="scaleVector">
+            A vector with scaling components which 
+            correspond to the affine transform dimensions.
+            </param>
+        </member>
+        <member name="M:NPack.Interfaces.ITransformMatrix`3.Scale(`1,NPack.MatrixOperationOrder)">
+            <summary>
+            Scales the matrix by the given vector <paramref name="scaleVector"/>.
+            </summary>
+            <param name="scaleVector">
+            A vector with scaling components which 
+            correspond to the affine transform dimensions.
+            </param>
+            <param name="order">Order in which to apply the operation.</param>
+        </member>
+        <member name="M:NPack.Interfaces.ITransformMatrix`3.Shear(`1)">
+            <summary>
+            Applies a shear to the transform.
+            </summary>
+            <param name="shearVector">The vector used to compute the shear.</param>
+        </member>
+        <member name="M:NPack.Interfaces.ITransformMatrix`3.Shear(`1,NPack.MatrixOperationOrder)">
+            <summary>
+            Applies a shear to the transform.
+            </summary>
+            <param name="shearVector">The vector used to compute the shear.</param>
+            <param name="order">Order in which to apply the operation.</param>
+        </member>
+        <member name="M:NPack.Interfaces.ITransformMatrix`3.RotateAlong(`1,System.Double)">
+            <summary>
+            Rotates the affine transform around the given <paramref name="axis"/>.
+            </summary>
+            <param name="axis">
+            The axis to rotate around. May be an addition of the basis vectors.
+            </param>
+            <param name="radians">Angle to rotate through.</param>
+        </member>
+        <member name="M:NPack.Interfaces.ITransformMatrix`3.RotateAlong(`1,System.Double,NPack.MatrixOperationOrder)">
+            <summary>
+            Rotates the affine transform around the given <paramref name="axis"/>.
+            </summary>
+            <param name="axis">
+            The axis to rotate around. May be an addition of the basis vectors.
+            </param>
+            <param name="radians">Angle to rotate through.</param>
+            <param name="order">Order in which to apply the operation.</param>
+        </member>
+        <member name="M:NPack.Interfaces.ITransformMatrix`3.TransformMatrix(`2)">
+            <summary>
+            Applies this transform to the given <paramref name="input"/> matrix.
+            </summary>
+            <param name="input">Matrix to transform.</param>
+            <returns>
+            The multiplication of this transform matrix with the input matrix.
+            </returns>
+        </member>
+        <member name="M:NPack.Interfaces.ITransformMatrix`3.TransformVector(`2)">
+            <summary>
+            Applies this transform to the given <paramref name="input"/> vector.
+            </summary>
+            <param name="input">Vector to transform.</param>
+            <returns>
+            The multiplication of this transform matrix with the input vector.
+            </returns>
+        </member>
+        <member name="M:NPack.Interfaces.ITransformMatrix`3.TransformVector(`0[])">
+            <summary>
+            Applies this transform to the given <paramref name="input"/> vector in place.
+            </summary>
+            <param name="input">Vector to transform.</param>
+        </member>
+        <member name="M:NPack.Interfaces.ITransformMatrix`3.TransformVectors(System.Collections.Generic.IEnumerable{`1})">
+            <summary>
+            Applies this transform to the given <paramref name="input"/> vectors.
+            </summary>
+            <param name="input">Set of vectors to transform.</param>
+            <returns>
+            The multiplication of this transform matrix with each of the input vectors.
+            </returns>
+        </member>
+        <member name="M:NPack.Interfaces.ITransformMatrix`3.TransformVectors(System.Collections.Generic.IEnumerable{`0[]})">
+            <summary>
+            Applies this transform to the given <paramref name="input"/> vectors in place.
+            </summary>
+            <param name="input">Set of vectors to transform.</param>
+        </member>
         <member name="T:NPack.MatrixFormat">
             <summary>
             Specifies whether the matrix is a row-major or column-major matrix.
@@ -3901,207 +4138,6 @@
             in the buffer.
             </summary>
         </member>
-        <member name="T:NPack.Interfaces.IMatrix`2">
-            <summary>
-            An interface to a generic matrix.
-            </summary>
-            <typeparam name="TComponent">Type of element in the matrix.</typeparam>
-            <typeparam name="TMatrix">Type of matrix.</typeparam>
-        </member>
-        <member name="M:NPack.Interfaces.IMatrix`2.Clone">
-            <summary>
-            Makes an element-by-element copy of the matrix.
-            </summary>
-            <returns>An exact copy of the matrix.</returns>
-        </member>
-        <member name="M:NPack.Interfaces.IMatrix`2.GetMatrix(System.Int32[],System.Int32,System.Int32)">
-            <summary>
-            Gets a submatrix.
-            </summary>
-            <param name="rowIndexes">The indexes of the rows to include.</param>
-            <param name="startColumn">The starting column to include.</param>
-            <param name="endColumn">The ending column to include.</param>
-            <returns>
-            A submatrix with rows given by <paramref name="rowIndexes"/> and columns 
-            <paramref name="startColumn"/> through <paramref name="endColumn"/>.
-            </returns>
-        </member>
-        <member name="M:NPack.Interfaces.IMatrix`2.GetMatrix(System.Int32,System.Int32,System.Int32,System.Int32)">
-            <summary>
-            Gets a submatrix.
-            </summary>
-            <param name="i0">Initial row index.</param>
-            <param name="i1">Final row index.</param>
-            <param name="j0">Initial column index.</param>
-            <param name="j1">Final column index.</param>
-            <returns>
-            A submatrix with rows given by the rows <paramref name="i0" />
-            through <paramref name="i1"/>
-            and columns <paramref name="j0"/> through <paramref name="j1"/>.
-            </returns>
-        </member>
-        <member name="M:NPack.Interfaces.IMatrix`2.Transpose">
-            <summary>
-            Returns the transpose of the matrix.
-            </summary>
-            <returns>The matrix with the rows as columns and columns as rows.</returns>
-        </member>
-        <member name="P:NPack.Interfaces.IMatrix`2.Determinant">
-            <summary>
-            Gets the determinant for the matrix, if it exists.
-            </summary>
-        </member>
-        <member name="P:NPack.Interfaces.IMatrix`2.ColumnCount">
-            <summary>
-            Gets the number of columns in the matrix.
-            </summary>
-        </member>
-        <member name="P:NPack.Interfaces.IMatrix`2.Format">
-            <summary>
-            Gets the format of the matrix, either row-major or column-major.
-            </summary>
-        </member>
-        <member name="P:NPack.Interfaces.IMatrix`2.IsSingular">
-            <summary>
-            Gets true if the matrix is singular (non-invertible).
-            </summary>
-        </member>
-        <member name="P:NPack.Interfaces.IMatrix`2.IsInvertible">
-            <summary>
-            Gets true if the matrix is invertible (non-singular).
-            </summary>
-        </member>
-        <member name="P:NPack.Interfaces.IMatrix`2.Inverse">
-            <summary>
-            Gets the inverse of the matrix, if one exists.
-            </summary>
-        </member>
-        <member name="P:NPack.Interfaces.IMatrix`2.IsSquare">
-            <summary>
-            Gets true if the matrix is square (<c>RowCount == ColumnCount != 0</c>).
-            </summary>
-        </member>
-        <member name="P:NPack.Interfaces.IMatrix`2.IsSymmetrical">
-            <summary>
-            Gets true if the matrix is symmetrical.
-            </summary>
-        </member>
-        <member name="P:NPack.Interfaces.IMatrix`2.RowCount">
-            <summary>
-            Gets the number of rows in the matrix.
-            </summary>
-        </member>
-        <member name="P:NPack.Interfaces.IMatrix`2.Item(System.Int32,System.Int32)">
-            <summary>
-            Gets or sets an element in the matrix.
-            </summary>
-            <param name="row">The index of the row of the element.</param>
-            <param name="column">The index of the column of the element.</param>
-            <returns>The value of the element at the specified row and column.</returns>
-        </member>
-        <member name="M:NPack.Interfaces.ITransformMatrix`3.Scale(`0)">
-            <summary>
-            Scales the matrix by the given <paramref name="amount"/> in all orthoganal columns.
-            </summary>
-            <param name="amount">Amount to scale by.</param>
-        </member>
-        <member name="M:NPack.Interfaces.ITransformMatrix`3.Scale(`0,NPack.MatrixOperationOrder)">
-            <summary>
-            Scales the matrix by the given <paramref name="amount"/> in all orthoganal columns.
-            </summary>
-            <param name="amount">Amount to scale by.</param>
-            <param name="order">Order in which to apply the operation.</param>
-        </member>
-        <member name="M:NPack.Interfaces.ITransformMatrix`3.Scale(`1)">
-            <summary>
-            Scales the matrix by the given vector <paramref name="scaleVector"/>.
-            </summary>
-            <param name="scaleVector">
-            A vector with scaling components which 
-            correspond to the affine transform dimensions.
-            </param>
-        </member>
-        <member name="M:NPack.Interfaces.ITransformMatrix`3.Scale(`1,NPack.MatrixOperationOrder)">
-            <summary>
-            Scales the matrix by the given vector <paramref name="scaleVector"/>.
-            </summary>
-            <param name="scaleVector">
-            A vector with scaling components which 
-            correspond to the affine transform dimensions.
-            </param>
-            <param name="order">Order in which to apply the operation.</param>
-        </member>
-        <member name="M:NPack.Interfaces.ITransformMatrix`3.Shear(`1)">
-            <summary>
-            Applies a shear to the transform.
-            </summary>
-            <param name="shearVector">The vector used to compute the shear.</param>
-        </member>
-        <member name="M:NPack.Interfaces.ITransformMatrix`3.Shear(`1,NPack.MatrixOperationOrder)">
-            <summary>
-            Applies a shear to the transform.
-            </summary>
-            <param name="shearVector">The vector used to compute the shear.</param>
-            <param name="order">Order in which to apply the operation.</param>
-        </member>
-        <member name="M:NPack.Interfaces.ITransformMatrix`3.RotateAlong(`1,System.Double)">
-            <summary>
-            Rotates the affine transform around the given <paramref name="axis"/>.
-            </summary>
-            <param name="axis">
-            The axis to rotate around. May be an addition of the basis vectors.
-            </param>
-            <param name="radians">Angle to rotate through.</param>
-        </member>
-        <member name="M:NPack.Interfaces.ITransformMatrix`3.RotateAlong(`1,System.Double,NPack.MatrixOperationOrder)">
-            <summary>
-            Rotates the affine transform around the given <paramref name="axis"/>.
-            </summary>
-            <param name="axis">
-            The axis to rotate around. May be an addition of the basis vectors.
-            </param>
-            <param name="radians">Angle to rotate through.</param>
-            <param name="order">Order in which to apply the operation.</param>
-        </member>
-        <member name="M:NPack.Interfaces.ITransformMatrix`3.TransformMatrix(`2)">
-            <summary>
-            Applies this transform to the given <paramref name="input"/> matrix.
-            </summary>
-            <param name="input">Matrix to transform.</param>
-            <returns>
-            The multiplication of this transform matrix with the input matrix.
-            </returns>
-        </member>
-        <member name="M:NPack.Interfaces.ITransformMatrix`3.TransformVector(`2)">
-            <summary>
-            Applies this transform to the given <paramref name="input"/> vector.
-            </summary>
-            <param name="input">Vector to transform.</param>
-            <returns>
-            The multiplication of this transform matrix with the input vector.
-            </returns>
-        </member>
-        <member name="M:NPack.Interfaces.ITransformMatrix`3.TransformVector(`0[])">
-            <summary>
-            Applies this transform to the given <paramref name="input"/> vector in place.
-            </summary>
-            <param name="input">Vector to transform.</param>
-        </member>
-        <member name="M:NPack.Interfaces.ITransformMatrix`3.TransformVectors(System.Collections.Generic.IEnumerable{`1})">
-            <summary>
-            Applies this transform to the given <paramref name="input"/> vectors.
-            </summary>
-            <param name="input">Set of vectors to transform.</param>
-            <returns>
-            The multiplication of this transform matrix with each of the input vectors.
-            </returns>
-        </member>
-        <member name="M:NPack.Interfaces.ITransformMatrix`3.TransformVectors(System.Collections.Generic.IEnumerable{`0[]})">
-            <summary>
-            Applies this transform to the given <paramref name="input"/> vectors in place.
-            </summary>
-            <param name="input">Set of vectors to transform.</param>
-        </member>
         <member name="T:NPack.Interfaces.IAffineTransformMatrix`3">
             <summary>
             An interface to an affine transformation matrix.
@@ -4170,42 +4206,6 @@
             <summary>
             Gets the inverse of the affine transform.
             </summary>
-        </member>
-        <member name="T:NPack.Interfaces.IVector`2">
-            <summary>
-            A vector.
-            </summary>
-            <typeparam name="TComponent">Type of components in the vector.</typeparam>
-            <typeparam name="TVector">Type of vector.</typeparam>
-        </member>
-        <member name="M:NPack.Interfaces.IVector`2.Clone">
-            <summary>
-            Creates a component-by-component copy of the vector.
-            </summary>
-            <returns>A copy of the vector.</returns>
-        </member>
-        <member name="M:NPack.Interfaces.IVector`2.Negative">
-            <summary>
-            Returns the vector multiplied by -1.
-            </summary>
-            <returns>The vector when multiplied by -1.</returns>
-        </member>
-        <member name="P:NPack.Interfaces.IVector`2.ComponentCount">
-            <summary>
-            Gets the number of components in the vector.
-            </summary>
-        </member>
-        <member name="P:NPack.Interfaces.IVector`2.Components">
-            <summary>
-            Gets or sets the vector component array.
-            </summary>
-        </member>
-        <member name="P:NPack.Interfaces.IVector`2.Item(System.Int32)">
-            <summary>
-            Gets or sets a component in the vector.
-            </summary>
-            <param name="index">The index of the component.</param>
-            <returns>The value of the component at the given <paramref name="index"/>.</returns>
         </member>
     </members>
 </doc>
