@@ -13,14 +13,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// A robust version of <see cref="LineIntersector{TCoordinate}"/>.
     /// </summary>
     public class RobustLineIntersector<TCoordinate> : LineIntersector<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {
         public RobustLineIntersector(IGeometryFactory<TCoordinate> factory)
             : base(factory) { }
 
-        public override Intersection<TCoordinate> ComputeIntersection(TCoordinate p, 
+        public override Intersection<TCoordinate> ComputeIntersection(TCoordinate p,
                                                                       Pair<TCoordinate> line)
         {
             TCoordinate p1 = line.First;
@@ -41,11 +41,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                         isProper = false;
                     }
 
-                    return new Intersection<TCoordinate>(p, 
-                                                         new Pair<TCoordinate>(p, p), 
-                                                         line, 
-                                                         false, 
-                                                         false, 
+                    return new Intersection<TCoordinate>(p,
+                                                         new Pair<TCoordinate>(p, p),
+                                                         line,
+                                                         false,
+                                                         false,
                                                          isProper);
                 }
             }
@@ -53,13 +53,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return new Intersection<TCoordinate>(new Pair<TCoordinate>(p, p), line);
         }
 
-        protected override Intersection<TCoordinate> ComputeIntersectInternal(Pair<TCoordinate> line0, 
+        protected override Intersection<TCoordinate> ComputeIntersectInternal(Pair<TCoordinate> line0,
                                                                               Pair<TCoordinate> line1)
         {
             Boolean isProper;
 
             // first try a fast test to see if the envelopes of the lines don't intersect
-            if (!Extents<TCoordinate>.Intersects(line0.First, line0.Second, 
+            if (!Extents<TCoordinate>.Intersects(line0.First, line0.Second,
                                                  line1.First, line1.Second))
             {
                 return new Intersection<TCoordinate>(line0, line1);
@@ -68,11 +68,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             // for each endpoint, compute which side of the other segment it lies
             // if both endpoints lie on the same side of the other segment,
             // the segments do not intersect
-            Int32 pq1 = CGAlgorithms<TCoordinate>.OrientationIndex(line0.First, 
-                                                                   line0.Second, 
+            Int32 pq1 = CGAlgorithms<TCoordinate>.OrientationIndex(line0.First,
+                                                                   line0.Second,
                                                                    line1.First);
-            Int32 pq2 = CGAlgorithms<TCoordinate>.OrientationIndex(line0.First, 
-                                                                   line0.Second, 
+            Int32 pq2 = CGAlgorithms<TCoordinate>.OrientationIndex(line0.First,
+                                                                   line0.Second,
                                                                    line1.Second);
 
             if ((pq1 > 0 && pq2 > 0) || (pq1 < 0 && pq2 < 0))
@@ -80,11 +80,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 return new Intersection<TCoordinate>(line0, line1);
             }
 
-            Int32 qp1 = CGAlgorithms<TCoordinate>.OrientationIndex(line1.First, 
-                                                                   line1.Second, 
+            Int32 qp1 = CGAlgorithms<TCoordinate>.OrientationIndex(line1.First,
+                                                                   line1.Second,
                                                                    line0.First);
-            Int32 qp2 = CGAlgorithms<TCoordinate>.OrientationIndex(line1.First, 
-                                                                   line1.Second, 
+            Int32 qp2 = CGAlgorithms<TCoordinate>.OrientationIndex(line1.First,
+                                                                   line1.Second,
                                                                    line0.Second);
 
             if ((qp1 > 0 && qp2 > 0) || (qp1 < 0 && qp2 < 0))
@@ -222,6 +222,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 TCoordinate hQ2 = CoordinateFactory.Homogenize(q2);
 
                 intersectionPoint = intersectHomogeneous(hP1, hP2, hQ1, hQ2);
+                Double x = (Double)intersectionPoint[0];
+                Double y = (Double)intersectionPoint[1];
+                Double w = (Double)intersectionPoint[2];
+                return CoordinateFactory.Create(x / w, y / w);
             }
             catch (NotRepresentableException e)
             {
@@ -235,9 +239,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return intersectionPoint;
         }
 
-        private static TCoordinate intersectHomogeneous(TCoordinate hP1, 
-                                                        TCoordinate hP2, 
-                                                        TCoordinate hQ1, 
+        private static TCoordinate intersectHomogeneous(TCoordinate hP1,
+                                                        TCoordinate hP2,
+                                                        TCoordinate hQ1,
                                                         TCoordinate hQ2)
         {
             // create lines
@@ -260,44 +264,44 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
         private static Intersection<TCoordinate> computeCollinearIntersection(Pair<TCoordinate> line0, Pair<TCoordinate> line1)
         {
-            Boolean p1_q1_p2 = Extents<TCoordinate>.Intersects(line0.First, 
-                                                               line0.Second, 
+            Boolean p1_q1_p2 = Extents<TCoordinate>.Intersects(line0.First,
+                                                               line0.Second,
                                                                line1.First);
-            Boolean p1_q2_p2 = Extents<TCoordinate>.Intersects(line0.First, 
-                                                               line0.Second, 
+            Boolean p1_q2_p2 = Extents<TCoordinate>.Intersects(line0.First,
+                                                               line0.Second,
                                                                line1.Second);
-            Boolean q1_p1_q2 = Extents<TCoordinate>.Intersects(line1.First, 
-                                                               line1.Second, 
+            Boolean q1_p1_q2 = Extents<TCoordinate>.Intersects(line1.First,
+                                                               line1.Second,
                                                                line0.First);
-            Boolean q1_p2_q2 = Extents<TCoordinate>.Intersects(line1.First, 
-                                                               line1.Second, 
+            Boolean q1_p2_q2 = Extents<TCoordinate>.Intersects(line1.First,
+                                                               line1.Second,
                                                                line0.Second);
 
             // colinear, where line0 contains line1
             if (p1_q1_p2 && p1_q2_p2)
             {
-                return new Intersection<TCoordinate>(line1.First, line1.Second, 
-                                                     line0, line1, 
+                return new Intersection<TCoordinate>(line1.First, line1.Second,
+                                                     line0, line1,
                                                      false, false, false);
             }
 
             // colinear, where line1 contains line0
             if (q1_p1_q2 && q1_p2_q2)
             {
-                return new Intersection<TCoordinate>(line0.First, line0.Second, 
-                                                     line0, line1, 
+                return new Intersection<TCoordinate>(line0.First, line0.Second,
+                                                     line0, line1,
                                                      false, false, false);
             }
 
             // line0 contains first point of line1 and line1 contains first point of line0
             if (p1_q1_p2 && q1_p1_q2)
             {
-                return line1.First.Equals(line0.First) 
-                           ? new Intersection<TCoordinate>(line0.First, 
-                                                           line0, line1, 
-                                                           false, false, false) 
-                           : new Intersection<TCoordinate>(line0.First, line1.First, 
-                                                           line0, line1, 
+                return line1.First.Equals(line0.First)
+                           ? new Intersection<TCoordinate>(line0.First,
+                                                           line0, line1,
+                                                           false, false, false)
+                           : new Intersection<TCoordinate>(line0.First, line1.First,
+                                                           line0, line1,
                                                            false, false, false);
             }
 
@@ -345,7 +349,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// lies at the origin.
         /// </summary>
         private void normalizeToExtentCenter(ref TCoordinate n00, ref TCoordinate n01,
-                                             ref TCoordinate n10, ref TCoordinate n11, 
+                                             ref TCoordinate n10, ref TCoordinate n11,
                                              out TCoordinate normPt)
         {
             Double minX0 = n00[Ordinates.X] < n01[Ordinates.X] ? n00[Ordinates.X] : n01[Ordinates.X];
@@ -395,15 +399,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// made to optimize the envelope test.
         /// </remarks>
         private static Boolean isInSegmentExtents(IGeometryFactory<TCoordinate> geoFactory,
-                                                  TCoordinate coordinate, 
-                                                  Pair<TCoordinate> line0, 
+                                                  TCoordinate coordinate,
+                                                  Pair<TCoordinate> line0,
                                                   Pair<TCoordinate> line1)
         {
-            IExtents<TCoordinate> extent0 = new Extents<TCoordinate>(geoFactory, 
-                                                                     line0.First, 
+            IExtents<TCoordinate> extent0 = new Extents<TCoordinate>(geoFactory,
+                                                                     line0.First,
                                                                      line0.Second);
-            IExtents<TCoordinate> extent1 = new Extents<TCoordinate>(geoFactory, 
-                                                                     line1.First, 
+            IExtents<TCoordinate> extent1 = new Extents<TCoordinate>(geoFactory,
+                                                                     line1.First,
                                                                      line1.Second);
             return extent0.Contains(coordinate) && extent1.Contains(coordinate);
         }
