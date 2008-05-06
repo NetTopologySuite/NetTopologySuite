@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -166,7 +167,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             }
         }
 
-        private void visitInteriorRing(ILineString<TCoordinate> ring, PlanarGraph<TCoordinate> graph)
+        private static void visitInteriorRing(ILineString<TCoordinate> ring, PlanarGraph<TCoordinate> graph)
         {
             IEnumerable<TCoordinate> pts = ring.Coordinates;
             TCoordinate pt0 = Slice.GetFirst(pts);
@@ -178,7 +179,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             TCoordinate pt1 = FindDifferentPoint(pts, pt0);
 
             Edge<TCoordinate> e = graph.FindEdgeInSameDirection(pt0, pt1);
-            DirectedEdge<TCoordinate> de = (DirectedEdge<TCoordinate>)graph.FindEdgeEnd(e);
+            Pair<EdgeEnd<TCoordinate>>? ends = graph.FindEdgeEnd(e);
+            Debug.Assert(ends != null);
+            DirectedEdge<TCoordinate> de = (DirectedEdge<TCoordinate>) ends.Value.First;
             DirectedEdge<TCoordinate> intDe = null;
 
             if (de.Label.Value[0, Positions.Right] == Locations.Interior)

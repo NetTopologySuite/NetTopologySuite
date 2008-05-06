@@ -88,7 +88,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// form them into MaximalEdgeRings.
         /// </summary>
         private IEnumerable<MaximalEdgeRing<TCoordinate>> buildMaximalEdgeRings(
-            IEnumerable<EdgeEnd<TCoordinate>> dirEdges)
+                                                            IEnumerable<EdgeEnd<TCoordinate>> dirEdges)
         {
             foreach (DirectedEdge<TCoordinate> edge in dirEdges)
             {
@@ -97,7 +97,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                     // if this edge has not yet been processed
                     if (edge.EdgeRing == null)
                     {
-                        MaximalEdgeRing<TCoordinate> er = new MaximalEdgeRing<TCoordinate>(edge, _geometryFactory);
+                        MaximalEdgeRing<TCoordinate> er = new MaximalEdgeRing<TCoordinate>(edge, 
+                                                                                           _geometryFactory);
                         yield return er;
                         er.SetInResult();
                     }
@@ -106,8 +107,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         }
 
         private static IEnumerable<EdgeRing<TCoordinate>> buildMinimalEdgeRings(
-            IEnumerable<MaximalEdgeRing<TCoordinate>> maxEdgeRings,
-            ICollection<EdgeRing<TCoordinate>> shellList, ICollection<EdgeRing<TCoordinate>> freeHoleList)
+                                            IEnumerable<MaximalEdgeRing<TCoordinate>> maxEdgeRings,
+                                            ICollection<EdgeRing<TCoordinate>> shellList, 
+                                            ICollection<EdgeRing<TCoordinate>> freeHoleList)
         {
             foreach (MaximalEdgeRing<TCoordinate> er in maxEdgeRings)
             {
@@ -178,7 +180,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// chosen might lie on the shell, which might return an incorrect result from the
         /// PIP test.
         /// </summary>
-        private static void placePolygonHoles(EdgeRing<TCoordinate> shell, IEnumerable<MinimalEdgeRing<TCoordinate>> minEdgeRings)
+        private static void placePolygonHoles(EdgeRing<TCoordinate> shell, 
+                                              IEnumerable<MinimalEdgeRing<TCoordinate>> minEdgeRings)
         {
             foreach (MinimalEdgeRing<TCoordinate> ring in minEdgeRings)
             {
@@ -197,7 +200,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// a ring is a shell if it is oriented CW, a hole otherwise.
         /// </summary>
         private static void sortShellsAndHoles(IEnumerable<EdgeRing<TCoordinate>> edgeRings,
-            ICollection<EdgeRing<TCoordinate>> shellList, ICollection<EdgeRing<TCoordinate>> freeHoleList)
+                                               ICollection<EdgeRing<TCoordinate>> shellList, 
+                                               ICollection<EdgeRing<TCoordinate>> freeHoleList)
         {
             foreach (EdgeRing<TCoordinate> edgeRing in edgeRings)
             {
@@ -225,7 +229,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// parent shell) would have formed part of a MaximalEdgeRing
         /// and been handled in a previous step).
         /// </summary>
-        private static void placeFreeHoles(IEnumerable<EdgeRing<TCoordinate>> shellList, IEnumerable<EdgeRing<TCoordinate>> freeHoleList)
+        private static void placeFreeHoles(IEnumerable<EdgeRing<TCoordinate>> shellList, 
+                                           IEnumerable<EdgeRing<TCoordinate>> freeHoleList)
         {
             foreach (EdgeRing<TCoordinate> hole in freeHoleList)
             {
@@ -239,18 +244,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             }
         }
 
-        /// <summary> 
-        /// Find the innermost enclosing shell EdgeRing containing the argument EdgeRing, if any.
-        /// The innermost enclosing ring is the <i>smallest</i> enclosing ring.
-        /// The algorithm used depends on the fact that:
-        /// ring A contains ring B iff envelope(ring A) contains envelope(ring B).
-        /// This routine is only safe to use if the chosen point of the hole
-        /// is known to be properly contained in a shell
-        /// (which is guaranteed to be the case if the hole does not touch its shell).
-        /// </summary>
-        /// <returns>Containing EdgeRing, if there is one, OR
-        /// null if no containing EdgeRing is found.</returns>
-        private static EdgeRing<TCoordinate> findEdgeRingContaining(EdgeRing<TCoordinate> testEdgeRing, IEnumerable<EdgeRing<TCoordinate>> shellList)
+        // Find the innermost enclosing shell EdgeRing containing the argument 
+        // EdgeRing, if any.
+        // The innermost enclosing ring is the <i>smallest</i> enclosing ring.
+        // The algorithm used depends on the fact that:
+        // ring A contains ring B iff envelope(ring A) contains envelope(ring B).
+        // This routine is only safe to use if the chosen point of the hole
+        // is known to be properly contained in a shell
+        // (which is guaranteed to be the case if the hole does not touch its shell).
+        // Returns containing EdgeRing, if there is one, OR null if no containing EdgeRing is found.
+        private static EdgeRing<TCoordinate> findEdgeRingContaining(EdgeRing<TCoordinate> testEdgeRing, 
+                                                                    IEnumerable<EdgeRing<TCoordinate>> shellList)
         {
             ILinearRing<TCoordinate> teString = testEdgeRing.LinearRing;
             IExtents<TCoordinate> testEnv = teString.Extents;
@@ -271,18 +275,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 
                 Boolean isContained = false;
 
-                if (tryEnv.Contains(testEnv) && CGAlgorithms<TCoordinate>.IsPointInRing(testPt, tryRing.Coordinates))
+                if (tryEnv.Contains(testEnv) && 
+                    CGAlgorithms<TCoordinate>.IsPointInRing(testPt, tryRing.Coordinates))
                 {
                     isContained = true;
                 }
 
                 // check if this new containing ring is smaller than the current minimum ring
-                if (isContained)
+                if (isContained && 
+                    (minShell == null || minEnv.Contains(tryEnv)))
                 {
-                    if (minShell == null || minEnv.Contains(tryEnv))
-                    {
-                        minShell = tryShell;
-                    }
+                    minShell = tryShell;
                 }
             }
 

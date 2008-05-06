@@ -1434,7 +1434,16 @@ namespace NetTopologySuite.Coordinates
 
         ICoordinate[] ICoordinateSequence.ToArray()
         {
-            throw new NotImplementedException();
+            ICoordinate[] array = new ICoordinate[Count];
+
+            for (Int32 i = 0; i < Count; i++)
+            {
+                Int32 coordIndex = _sequence[i];
+                ICoordinate coord = _buffer[coordIndex];
+                array[i] = coord;
+            }
+
+            return array;
         }
 
         ICoordinate ICoordinateSequence.First

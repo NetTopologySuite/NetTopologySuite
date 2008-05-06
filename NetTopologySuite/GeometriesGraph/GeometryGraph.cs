@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
 using GisSharpBlog.NetTopologySuite.Utilities;
@@ -60,6 +59,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
+        public override string ToString()
+        {
+            return base.ToString() + String.Format(" Parent Geometry: Index {0}; {1}", _argIndex, 
+                                                                                       _parentGeometry);
+        }
+
         public IBoundaryNodeRule BoundaryNodeRule
         {
             get { return _boundaryNodeRule; }
@@ -99,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             foreach (Node<TCoordinate> node in nodes)
             {
-                yield return (TCoordinate)node.Coordinate.Clone();
+                yield return node.Coordinate.Clone();
             }
         }
 
@@ -129,11 +134,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public void AddEdge(Edge<TCoordinate> e)
         {
             InsertEdge(e);
-            IEnumerable<TCoordinate> coordinates = e.Coordinates;
+            ICoordinateSequence<TCoordinate> coordinates = e.Coordinates;
 
             // insert the endpoint as a node, to mark that it is on the boundary
-            insertPoint(_argIndex, Slice.GetFirst(coordinates), Locations.Boundary);
-            insertPoint(_argIndex, Slice.GetLast(coordinates), Locations.Boundary);
+            insertPoint(_argIndex, coordinates.First, Locations.Boundary);
+            insertPoint(_argIndex, coordinates.Last, Locations.Boundary);
         }
 
         /// <summary>
@@ -302,12 +307,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                                                         coord, 
                                                         label);
 
-            if (_lineEdgeMap.ContainsKey(ring))
-            {
-                _lineEdgeMap.Remove(ring);
-            }
-
-            _lineEdgeMap.Add(ring, e);
+            _lineEdgeMap[ring] = e;
             InsertEdge(e);
 
             // insert the endpoint as a node, to mark that it is on the boundary

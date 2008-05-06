@@ -1,6 +1,6 @@
 using System;
 using System.Diagnostics;
-using System.IO;
+using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
@@ -15,24 +15,40 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// <summary> 
     /// The computation of the <see cref="IntersectionMatrix"/> relies on the use of a structure
     /// called a "topology graph". The topology graph contains nodes and edges
-    /// corresponding to the nodes and line segments of a <see cref="Geometry{TCoordinate}"/>. Each
-    /// node and edge in the graph is labeled with its topological location relative to
+    /// corresponding to the vertexes and line segments of a <see cref="Geometry{TCoordinate}"/>. 
+    /// Each node and edge in the graph is labeled with its topological location relative to
     /// the source point.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// Note that there is no requirement that points of self-intersection be a vertex.
-    /// Thus to obtain a correct topology graph, <see cref="Geometry{TCoordinate}"/>s must be
-    /// self-noded before constructing their graphs.
+    /// Thus to obtain a correct topology graph, <see cref="Geometry{TCoordinate}"/> instances 
+    /// must be self-noded before constructing their graphs.
+    /// </para>
+    /// <para>
     /// Two fundamental operations are supported by topology graphs:
-    /// Computing the intersections between all the edges and nodes of a single graph
-    /// Computing the intersections between the edges and nodes of two different graphs
+    /// <list type="bullet">
+    /// <item>
+    /// <description>
+    /// Computing the intersections between all the edges and nodes of a single graph.
+    /// </description>
+    /// </item>
+    /// <item>
+    /// <description>
+    /// Computing the intersections between the edges and nodes of two different graphs.
+    /// </description>
+    /// </item>
+    /// </list>
+    /// </para>
     /// </remarks>
     public class PlanarGraph<TCoordinate>
-         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                             IComputable<Double, TCoordinate>, IConvertible
+         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
+                             IComparable<TCoordinate>, IConvertible,
+                             IComputable<Double, TCoordinate>
     {
         /// <summary> 
-        /// For nodes in the Collection, link the DirectedEdges at the node that are in the result.
+        /// For nodes in the enumeration, link the <see cref="DirectedEdge{TCoordinate}"/>s 
+        /// at the node that are in the result.
         /// This allows clients to link only a subset of nodes in the graph, for
         /// efficiency (because they know that only a subset is of interest).
         /// </summary>
@@ -44,99 +60,41 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        private readonly List<Edge<TCoordinate>> _edgeList = new List<Edge<TCoordinate>>();
-        private readonly NodeMap<TCoordinate> _nodes = null;
-        private readonly List<EdgeEnd<TCoordinate>> _edgeEndList = new List<EdgeEnd<TCoordinate>>();
+        private readonly IList<Edge<TCoordinate>> _edgeList;
+        private readonly NodeMap<TCoordinate> _nodes;
+        private readonly IList<EdgeEnd<TCoordinate>> _edgeEndList;
 
         public PlanarGraph(NodeFactory<TCoordinate> nodeFactory)
         {
             _nodes = new NodeMap<TCoordinate>(nodeFactory);
+            _edgeList = CreateEdgeList();
+            _edgeEndList = CreateEdgeEndList();
         }
 
         public PlanarGraph()
+            : this(new NodeFactory<TCoordinate>()) { }
+
+        protected virtual IList<Edge<TCoordinate>> CreateEdgeList()
         {
-            _nodes = new NodeMap<TCoordinate>(new NodeFactory<TCoordinate>());
+            return new List<Edge<TCoordinate>>();
         }
 
-        public IEnumerable<Edge<TCoordinate>> Edges
+        protected virtual IList<EdgeEnd<TCoordinate>> CreateEdgeEndList()
         {
-            get
-            {
-                foreach (Edge<TCoordinate> edge in _edgeList)
-                {
-                    yield return edge;
-                }
-            }
+            return new List<EdgeEnd<TCoordinate>>();
         }
 
-        public IEnumerable<EdgeEnd<TCoordinate>> EdgeEnds
+        public override String ToString()
         {
-            get
-            {
-                foreach (EdgeEnd<TCoordinate> edgeEnd in _edgeEndList)
-                {
-                    yield return edgeEnd;
-                }
-            }
-        }
-
-        public Boolean IsBoundaryNode(Int32 geomIndex, TCoordinate coord)
-        {
-            Node<TCoordinate> node = _nodes.Find(coord);
-
-            if (node == null)
-            {
-                return false;
-            }
-
-            Label? label = node.Label;
-
-            if (label != null && label.Value[geomIndex][Positions.On] == Locations.Boundary)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        protected void InsertEdge(Edge<TCoordinate> e)
-        {
-            _edgeList.Add(e);
+            return String.Format("{0}; Edges: {1}; Edge Ends {2};", NodeMap, 
+                                                                    _edgeList.Count, 
+                                                                    _edgeEndList.Count);
         }
 
         public void Add(EdgeEnd<TCoordinate> e)
         {
             _nodes.Add(e);
             _edgeEndList.Add(e);
-        }
-
-        public IEnumerable<Node<TCoordinate>> Nodes
-        {
-            get
-            {
-                foreach (Node<TCoordinate> node in _nodes)
-                {
-                    yield return node;
-                }
-            }
-        }
-
-        public Node<TCoordinate> AddNode(Node<TCoordinate> node)
-        {
-            return _nodes.AddNode(node);
-        }
-
-        public Node<TCoordinate> AddNode(TCoordinate coord)
-        {
-            return _nodes.AddNode(coord);
-        }
-
-        /// <returns> 
-        /// The node if found; null otherwise
-        /// </returns>
-        public Node<TCoordinate> Find(TCoordinate coord)
-        {
-            return _nodes.Find(coord);
         }
 
         /// <summary> 
@@ -160,57 +118,33 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        /// <summary> 
-        /// Link the DirectedEdges at the nodes of the graph.
-        /// This allows clients to link only a subset of nodes in the graph, for
-        /// efficiency (because they know that only a subset is of interest).
+        /// <summary>
+        /// Adds the given <see cref="Node{TCoordinate}"/> to the node map.
         /// </summary>
-        public void LinkResultDirectedEdges()
+        /// <param name="node">The <see cref="Node{TCoordinate}"/> to add.</param>
+        /// <returns>The added node.</returns>
+        public Node<TCoordinate> AddNode(Node<TCoordinate> node)
         {
-            foreach (Node<TCoordinate> node in _nodes)
-            {
-                if (node.Edges is DirectedEdgeStar<TCoordinate>)
-                {
-                    DirectedEdgeStar<TCoordinate> directedEdgeStar 
-                        = node.Edges as DirectedEdgeStar<TCoordinate>;
-                    Debug.Assert(directedEdgeStar != null);
-                    directedEdgeStar.LinkResultDirectedEdges();
-                }
-            }
+            return _nodes.AddNode(node);
         }
 
-        /// <summary> 
-        /// Link the DirectedEdges at the nodes of the graph.
-        /// This allows clients to link only a subset of nodes in the graph, for
-        /// efficiency (because they know that only a subset is of interest).
+        /// <summary>
+        /// Adds the given <typeparamref name="TCoordinate"/> as a <see cref="Node{TCoordinate}"/> 
+        /// to the node map.
         /// </summary>
-        public void LinkAllDirectedEdges()
+        /// <param name="coord">The <typeparamref name="TCoordinate"/> to add.</param>
+        /// <returns>The added node.</returns>
+        public Node<TCoordinate> AddNode(TCoordinate coord)
         {
-            foreach (Node<TCoordinate> node in _nodes)
-            {
-                DirectedEdgeStar<TCoordinate> directedEdgeStar
-                    = node.Edges as DirectedEdgeStar<TCoordinate>;
-                Debug.Assert(directedEdgeStar != null);
-                directedEdgeStar.LinkAllDirectedEdges();
-            }
+            return _nodes.AddNode(coord);
         }
 
-        /// <summary> 
-        /// Returns the EdgeEnd which has edge e as its base edge.
-        /// </summary>
-        /// <returns> The edge, if found; <see langword="null" /> if the edge was not found.</returns>
-        // TODO: MD 18 Feb 2002 - this should return a pair of edges.
-        public EdgeEnd<TCoordinate> FindEdgeEnd(Edge<TCoordinate> e)
+        /// <returns> 
+        /// The node if found; null otherwise
+        /// </returns>
+        public Node<TCoordinate> Find(TCoordinate coord)
         {
-            foreach (EdgeEnd<TCoordinate> edgeEnd in _edgeEndList)
-            {
-                if (edgeEnd.Edge == e)
-                {
-                    return edgeEnd;
-                }
-            }
-
-            return null;
+            return _nodes.Find(coord);
         }
 
         /// <summary>
@@ -232,11 +166,48 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             return null;
         }
 
-        /// <summary>
-        /// Returns the edge which starts at p0 and whose first segment is
-        /// parallel to p1.
+        /// <summary> 
+        /// Returns the <see cref="EdgeEnd{TCoordinate}"/> which has edge e as its base edge.
         /// </summary>
-        /// <returns> The edge, if found <see langword="null" /> if the edge was not found.</returns>
+        /// <param name="e">
+        /// The <see cref="Edge{TCoordinate}"/> to lookup the <see cref="EdgeEnd{TCoordinate}"/>s
+        /// for.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Pair{TItem}"/> of <see cref="EdgeEnd{TCoordinate}"/>, 
+        /// if found; <see langword="null" /> if the edge was not found.
+        /// </returns>
+        // [2008-05-05 codekaizen] Changed return type to Pair to represent both edge ends connected
+        //                         by the given edge 'e'.
+        public Pair<EdgeEnd<TCoordinate>>? FindEdgeEnd(Edge<TCoordinate> e)
+        {
+            EdgeEnd<TCoordinate> first = null;
+
+            foreach (EdgeEnd<TCoordinate> edgeEnd in _edgeEndList)
+            {
+                if (edgeEnd.Edge == e)
+                {
+                    if (first == null)
+                    {
+                        first = edgeEnd;
+                    }
+                    else
+                    {
+                        return new Pair<EdgeEnd<TCoordinate>>(first, edgeEnd);
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Returns the edge which starts at <paramref name="p0"/> and whose first segment is
+        /// parallel to <paramref name="p1"/>.
+        /// </summary>
+        /// <param name="p0">The coordinate where the sought edge starts.</param>
+        /// <param name="p1">The direction of the edge to find.</param>
+        /// <returns>The edge, if found; <see langword="null" /> if the edge was not found.</returns>
         public Edge<TCoordinate> FindEdgeInSameDirection(TCoordinate p0, TCoordinate p1)
         {
             foreach (Edge<TCoordinate> edge in _edgeList)
@@ -259,21 +230,116 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             return null;
         }
 
-        //public void WriteEdges(StreamWriter outstream)
-        //{
-        //    outstream.WriteLine("Edges:");
+        /// <summary>
+        /// Returns true if the node at <paramref name="coord"/> is on the boundary
+        /// of the geometry.
+        /// </summary>
+        /// <param name="geomIndex">The index of the geometry to check.</param>
+        /// <param name="coord">The coordinate of the node.</param>
+        /// <returns><see langword="true"/> if the node at <paramref name="coord"/> is on the boundary,
+        /// <see langword="false"/> otherwise.</returns>
+        public Boolean IsBoundaryNode(Int32 geomIndex, TCoordinate coord)
+        {
+            Node<TCoordinate> node = _nodes.Find(coord);
 
-        //    Int32 edgeCount = 0;
+            if (node == null)
+            {
+                return false;
+            }
 
-        //    foreach (Edge<TCoordinate> edge in _edgeList)
-        //    {
-        //        outstream.WriteLine("edge " + edgeCount + ":");
-        //        edge.Write(outstream);
-        //        outstream.Write(edge.EdgeIntersectionList.ToString());
-        //        edgeCount++;
-        //    }
-        //}
+            Label? label = node.Label;
 
+            return label != null && label.Value[geomIndex, Positions.On] == Locations.Boundary;
+        }
+
+        /// <summary> 
+        /// Link the DirectedEdges at the nodes of the graph.
+        /// This allows clients to link only a subset of nodes in the graph, for
+        /// efficiency (because they know that only a subset is of interest).
+        /// </summary>
+        public void LinkAllDirectedEdges()
+        {
+            foreach (Node<TCoordinate> node in _nodes)
+            {
+                DirectedEdgeStar<TCoordinate> directedEdgeStar
+                    = node.Edges as DirectedEdgeStar<TCoordinate>;
+                Debug.Assert(directedEdgeStar != null);
+                directedEdgeStar.LinkAllDirectedEdges();
+            }
+        }
+
+        /// <summary> 
+        /// Link the DirectedEdges at the nodes of the graph.
+        /// This allows clients to link only a subset of nodes in the graph, for
+        /// efficiency (because they know that only a subset is of interest).
+        /// </summary>
+        public void LinkResultDirectedEdges()
+        {
+            foreach (Node<TCoordinate> node in _nodes)
+            {
+                DirectedEdgeStar<TCoordinate> directedEdgeStar
+                    = node.Edges as DirectedEdgeStar<TCoordinate>;
+                Debug.Assert(directedEdgeStar != null);
+                directedEdgeStar.LinkResultDirectedEdges();
+            }
+        }
+
+        #region Public Properties
+        /// <summary>
+        /// Gets the set of <see cref="Edge{TCoordinate}"/>s in this graph.
+        /// </summary>
+        public IEnumerable<Edge<TCoordinate>> Edges
+        {
+            get
+            {
+                foreach (Edge<TCoordinate> edge in _edgeList)
+                {
+                    yield return edge;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the set of <see cref="EdgeEnd{TCoordinate}"/>s in this graph.
+        /// </summary>
+        public IEnumerable<EdgeEnd<TCoordinate>> EdgeEnds
+        {
+            get
+            {
+                foreach (EdgeEnd<TCoordinate> edgeEnd in _edgeEndList)
+                {
+                    yield return edgeEnd;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the set of <see cref="Node{TCoordinate}"/>s in this graph.
+        /// </summary>
+        public IEnumerable<Node<TCoordinate>> Nodes
+        {
+            get
+            {
+                foreach (Node<TCoordinate> node in _nodes)
+                {
+                    yield return node;
+                }
+            }
+        }
+        #endregion
+
+        /// <summary>
+        /// Adds an <see cref="Edge{TCoordinate}"/> to the graph.
+        /// </summary>
+        /// <param name="e">The <see cref="Edge{TCoordinate}"/> to add.</param>
+        protected void InsertEdge(Edge<TCoordinate> e)
+        {
+            _edgeList.Add(e);
+        }
+
+        /// <summary>
+        /// Gets the internal <see cref="GeometriesGraph.NodeMap{TCoordinate}"/>.
+        /// </summary>
         protected NodeMap<TCoordinate> NodeMap
         {
             get { return _nodes; }
@@ -284,20 +350,16 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// E.g. the segments are parallel and in the same quadrant
         /// (as opposed to parallel and opposite!).
         /// </summary>
-        private static Boolean matchInSameDirection(TCoordinate p0, TCoordinate p1, TCoordinate ep0, TCoordinate ep1)
+        private static Boolean matchInSameDirection(TCoordinate p0, TCoordinate p1, 
+                                                    TCoordinate ep0, TCoordinate ep1)
         {
             if (!p0.Equals(ep0))
             {
                 return false;
             }
 
-            if (CGAlgorithms<TCoordinate>.ComputeOrientation(p0, p1, ep1) == Orientation.Collinear &&
-                QuadrantOp<TCoordinate>.Quadrant(p0, p1) == QuadrantOp<TCoordinate>.Quadrant(ep0, ep1))
-            {
-                return true;
-            }
-
-            return false;
+            return CGAlgorithms<TCoordinate>.ComputeOrientation(p0, p1, ep1) == Orientation.Collinear &&
+                   QuadrantOp<TCoordinate>.Quadrant(p0, p1) == QuadrantOp<TCoordinate>.Quadrant(ep0, ep1);
         }
     }
 }

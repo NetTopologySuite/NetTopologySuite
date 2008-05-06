@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         private SweepLineEvent _insertEvent; // null if this is an Insert event
         private Int32 _deleteEventIndex;
         private readonly Object _obj;
-        private SweepLineEvent _next;
+        //private SweepLineEvent _next;
 
         public SweepLineEvent(Object edgeSet, Double x, SweepLineEvent insertEvent, Object obj)
         {
@@ -32,6 +32,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 
             _obj = obj;
             _deleteEventIndex = 0;
+        }
+
+        public override string ToString()
+        {
+            return String.Format("{0} event at {1}", 
+                                 _eventType == SweepLineEventType.Insert ? "Insert" : "Delete",
+                                 _xValue);
         }
 
         public Object EdgeSet
@@ -86,17 +93,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
                 return 1;
             }
 
-            if (_eventType < other._eventType)
-            {
-                return -1;
-            }
-
-            if (_eventType > other._eventType)
-            {
-                return 1;
-            }
-
-            return 0;
+            return _eventType.CompareTo(other._eventType);
         }
     }
 }

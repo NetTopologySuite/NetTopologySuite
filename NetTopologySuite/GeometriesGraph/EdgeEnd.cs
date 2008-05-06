@@ -17,7 +17,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// "a has a greater angle with the x-axis than b".
     /// This ordering is used to sort EdgeEnds around a node.
     /// </remarks>
-    public class EdgeEnd<TCoordinate> : IComparable<EdgeEnd<TCoordinate>>
+    public class EdgeEnd<TCoordinate> : IComparable<EdgeEnd<TCoordinate>>,
+                                        IEquatable<EdgeEnd<TCoordinate>>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
@@ -26,9 +27,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         private Label? _label;
         // the node this edge end originates at
         private Node<TCoordinate> _origin;
-        // points of initial line segment
+        // points of line segment directed to this edge end
         private TCoordinate _p0, _p1;
-        // the direction vector for this edge from its starting point
+        // the direction vector for this edge end from its incident
+        // segment start point
         private TCoordinate _direction; 
         private Quadrants _quadrant;
 
@@ -88,16 +90,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             get { return _quadrant; }
         }
 
-        //public Double Dx
-        //{
-        //    get { return dx; }
-        //}
-
-        //public Double Dy
-        //{
-        //    get { return dy; }
-        //}
-
         public TCoordinate Direction
         {
             get { return _direction; }
@@ -107,6 +99,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get { return _origin; }
             set { _origin = value; }
+        }
+
+        public Boolean Equals(EdgeEnd<TCoordinate> other)
+        {
+            // referential equality should suffice due to the constrained
+            // operations in which edge ends are generated: an edge
+            // should only ever have two edge ends created.
+            return ReferenceEquals(this, other);
         }
 
         public Int32 CompareTo(EdgeEnd<TCoordinate> other)
@@ -176,5 +176,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             sb.Append(Label);
             return sb.ToString();
         }
+
+        //public Double Dx
+        //{
+        //    get { return dx; }
+        //}
+
+        //public Double Dy
+        //{
+        //    get { return dy; }
+        //}
     }
 }

@@ -96,14 +96,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         public Double GetMinX(Int32 chainIndex)
         {
             Double x1, x2;
-            getXOrdinateAtIndex(chainIndex, out x1, out x2);
+            getXOrdinatesOfChainEnds(chainIndex, out x1, out x2);
             return Math.Min(x1, x2);
         }
 
         public Double GetMaxX(Int32 chainIndex)
         {
             Double x1, x2;
-            getXOrdinateAtIndex(chainIndex, out x1, out x2);
+            getXOrdinatesOfChainEnds(chainIndex, out x1, out x2);
             return Math.Max(x1, x2);
         }
 
@@ -138,14 +138,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
                                       si);
         }
 
-        private void getXOrdinateAtIndex(Int32 chainIndex, out Double x1, out Double x2)
+        private void getXOrdinatesOfChainEnds(Int32 chainIndex, out Double x1, out Double x2)
         {
-            Pair<TCoordinate>? segment = Slice.GetPairAt(_coordinates, 
-                                                         _startIndexes[chainIndex]);
-            Debug.Assert(segment != null);
-            Pair<TCoordinate> segmentValue = segment.Value;
-            x1 = segmentValue.First[Ordinates.X];
-            x2 = segmentValue.Second[Ordinates.X];
+            Pair<Int32>? chainEnds = Slice.GetPairAt(_startIndexes, chainIndex);
+            Debug.Assert(chainEnds != null);
+            Pair<Int32> chainEndsValue = chainEnds.Value;
+            x1 = _coordinates[chainEndsValue.First, Ordinates.X];
+            x2 = _coordinates[chainEndsValue.Second, Ordinates.X];
         }
 
         private void computeIntersectsForChain(Int32 start0, Int32 end0,

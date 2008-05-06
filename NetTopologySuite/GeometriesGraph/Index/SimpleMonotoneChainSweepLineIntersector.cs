@@ -162,7 +162,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         // compared to a given Insert event object.
         private void prepareEvents()
         {
-            // [codekaizen 2008-04-22] using a BST instead of a linear list
+            // [codekaizen 2008-04-22] consider using a BST instead of a linear list
             //                         to improve sort performance.
             _events.Sort();
 

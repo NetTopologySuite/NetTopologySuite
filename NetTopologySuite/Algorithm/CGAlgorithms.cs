@@ -67,7 +67,6 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             // from test point in positive x direction.
             foreach (Pair<TCoordinate> pair in Slice.GetOverlappingPairs(ring))
             {
-                Int32 i1;   // point index; i1 = i-1
                 Double x1;  // translated coordinates
                 Double y1;
                 Double x2;
@@ -98,14 +97,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
 
             // p is inside if number of crossings is odd.
-            if ((crossings % 2) == 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return (crossings % 2) == 1;
         }
 
         /// <summary> 
@@ -139,16 +131,22 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// is oriented counter-clockwise.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// The list of points is assumed to have the first and last points equal.
-        /// This will handle coordinate lists which contain repeated points.
+        /// This will handle coordinates which contain repeated points.
         /// This algorithm is only guaranteed to work with valid rings.
         /// If the ring is invalid (e.g. self-crosses or touches),
         /// the computed result may not be correct.
+        /// </para>
+        /// <para>
+        /// In NTS v2.0, this method was modified to handle enumerations of coordinates
+        /// which allows clients to send it results of coordinate queries.
+        /// </para>
         /// </remarks>
         public static Boolean IsCCW(IEnumerable<TCoordinate> ring)
         {
             TCoordinate first = default(TCoordinate);
-            TCoordinate previous = default(TCoordinate);
+            TCoordinate last = default(TCoordinate);
             TCoordinate current = default(TCoordinate);
             //TCoordinate next = default(TCoordinate);
 
@@ -162,21 +160,22 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             // find highest point and the points to either side
             foreach (TCoordinate coordinate in ring)
             {
+                TCoordinate previous = current;
+                current = coordinate;
+
+                if (needToSetNextPoint && !current.Equals(highPoint))
+                {
+                    needToSetNextPoint = false;
+                    afterHighPoint = current;
+                }
+
                 if (!firstIsSet)
 	            {
 	                firstIsSet = true;
 	                first = coordinate;
                     highPoint = first;
+	                needToSetNextPoint = true;
 	            }
-
-                previous = current;
-                current = coordinate;
-
-                if (needToSetNextPoint)
-                {
-                    needToSetNextPoint = false;
-                    afterHighPoint = current;
-                }
 
                 if (current[Ordinates.Y] > highPoint[Ordinates.Y])
                 {
@@ -184,13 +183,52 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                     highPoint = current;
                     needToSetNextPoint = true;
                 }
+
+                last = coordinate;
             }
 
             // The high point was the last point, so wrap the next point
-            // in the ring around to the first point
+            // in the ring around to the first point and search for the next
+            // unique point
             if (needToSetNextPoint)
             {
-                afterHighPoint = first;
+                if (first.Equals(highPoint))
+                {
+                    foreach (TCoordinate coordinate in Enumerable.Skip(ring, 1))
+                    {
+                        if (!coordinate.Equals(highPoint))
+                        {
+                            afterHighPoint = coordinate;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    afterHighPoint = first;
+                }
+            }
+
+            // The high point was the first point, so wrap the previous
+            // point in the ring around to the last point and search for the next
+            // unique point
+            if (Coordinates<TCoordinate>.IsEmpty(beforeHighPoint))
+            {
+                if (last.Equals(highPoint))
+                {
+                    foreach (TCoordinate coordinate in Enumerable.Skip(Enumerable.Reverse(ring), 1))
+                    {
+                        if (!coordinate.Equals(highPoint))
+                        {
+                            beforeHighPoint = coordinate;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    beforeHighPoint = last;
+                }
             }
 
             /*
@@ -199,35 +237,28 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
              * (including the case where the input array has fewer than 4 elements),
              * or it contains coincident line segments.
              */
-            if (beforeHighPoint.Equals(highPoint) || afterHighPoint.Equals(highPoint) 
-                || beforeHighPoint.Equals(afterHighPoint))
+            if (beforeHighPoint.Equals(highPoint) || 
+                afterHighPoint.Equals(highPoint) || 
+                beforeHighPoint.Equals(afterHighPoint))
             {
                 return false;
             }
 
-            Int32 disc = (Int32)ComputeOrientation(beforeHighPoint, highPoint, afterHighPoint);
+            Int32 discriminant = OrientationIndex(beforeHighPoint, highPoint, afterHighPoint);
 
             /*
              *  If disc is exactly 0, lines are collinear.  There are two possible cases:
              *  (1) the lines lie along the x axis in opposite directions
              *  (2) the lines lie on top of one another
              *
-             *  (1) is handled by checking if next is left of prev ==> CCW
-             *  (2) will never happen if the ring is valid, so don't check for it
+             *  #1 is handled by checking if next is left of prev ==> CCW
+             *  #2 will never happen if the ring is valid, so don't check for it
              *  (Might want to assert this)
              */
-            Boolean isCCW;
 
-            if (disc == 0)
-            {
-                // poly is CCW if prev x is right of next x
-                isCCW = (beforeHighPoint[Ordinates.X] > afterHighPoint[Ordinates.X]);
-            }
-            else
-            {
-                // if area is positive, points are ordered CCW
-                isCCW = (disc > 0);
-            }
+            Boolean isCCW = discriminant == 0
+                             ? beforeHighPoint[Ordinates.X] > afterHighPoint[Ordinates.X]
+                             : discriminant > 0;
 
             return isCCW;
         }

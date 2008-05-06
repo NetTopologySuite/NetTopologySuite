@@ -14,8 +14,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </para>
     /// </summary>
     public static class QuadrantOp<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         /// <summary> 
         /// Returns the quadrant of a directed line segment (specified as x and y
@@ -30,25 +31,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             if (dx >= 0)
             {
-                if (dy >= 0)
-                {
-                    return Quadrants.I;
-                }
-                else
-                {
-                    return Quadrants.IV;
-                }
+                return dy >= 0
+                           ? Quadrants.I
+                           : Quadrants.IV;
             }
             else
             {
-                if (dy >= 0)
-                {
-                    return Quadrants.II;
-                }
-                else
-                {
-                    return Quadrants.III;
-                }
+                return dy >= 0
+                           ? Quadrants.II
+                           : Quadrants.III;
             }
         }
 
