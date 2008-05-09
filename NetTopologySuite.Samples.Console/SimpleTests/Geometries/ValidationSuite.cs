@@ -1,31 +1,21 @@
 using System;
-using System.Collections;
-using System.Diagnostics;
-using System.Text;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GeoAPI.IO.WellKnownText;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NetTopologySuite.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class ValidationSuite : BaseSamples
     {
-        /// <summary>
-        /// 
-        /// </summary>
         public ValidationSuite()
         {
-            IPrecisionModel<BufferedCoordinate2D> pm
-                = new PrecisionModel<BufferedCoordinate2D>(PrecisionModelType.Fixed);
+            //ICoordinateFactory<BufferedCoordinate2D> coordinateFactory =
+            //    new BufferedCoordinate2DFactory();
+            //IPrecisionModel<BufferedCoordinate2D> pm
+            //    = new PrecisionModel<BufferedCoordinate2D>(coordinateFactory, PrecisionModelType.Fixed);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public override void Start()
         {
             IGeometry a = Reader.Read("POLYGON ((340 320, 340 200, 200 280, 200 80, " +

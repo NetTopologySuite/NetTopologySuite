@@ -1264,20 +1264,32 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Double GetSize(Ordinates axis1, Ordinates axis2)
         {
-            return Math.Abs(_max[axis1] - _min[axis1])
-                   * Math.Abs(_max[axis2] - _min[axis2]);
+            return Math.Abs(_max[axis1] - _min[axis1]) * 
+                   Math.Abs(_max[axis2] - _min[axis2]);
         }
 
         public Double GetSize(Ordinates axis1, Ordinates axis2, Ordinates axis3)
         {
-            return Math.Abs(_max[axis1] - _min[axis1])
-                   * Math.Abs(_max[axis2] - _min[axis2])
-                   * Math.Abs(_max[axis3] - _min[axis3]);
+            return Math.Abs(_max[axis1] - _min[axis1]) * 
+                   Math.Abs(_max[axis2] - _min[axis2]) * 
+                   Math.Abs(_max[axis3] - _min[axis3]);
         }
 
         public Double GetSize(params Ordinates[] axes)
         {
-            throw new NotImplementedException();
+            if (axes.Length == 0)
+            {
+                throw new ArgumentException("No dimension specified.");
+            }
+
+            Double size = GetSize(axes[0]);
+
+            for (Int32 i = 0; i < axes.Length; i++)
+            {
+                size *= GetSize(axes[i]);
+            }
+
+            return size;
         }
 
         public Boolean Overlaps(params Double[] coordinate)
@@ -1302,7 +1314,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public void Scale(Double factor)
         {
-            throw new NotImplementedException();
+            _min = _min.Multiply(factor);
         }
 
         public void Scale(Double factor, Ordinates axis)
@@ -1320,9 +1332,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             throw new NotImplementedException();
         }
 
-        public void Transform(IMatrix<NPack.DoubleComponent> transformMatrix)
+        public void Transform(ITransformMatrix<DoubleComponent> transformMatrix)
         {
-            throw new NotImplementedException();
+            _min = (TCoordinate)transformMatrix.TransformVector(_min);
+            _max = (TCoordinate)transformMatrix.TransformVector(_max);
         }
 
         IExtents IExtents.Union(IPoint point)
@@ -1339,20 +1352,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 : _geoFactory.CreateExtents(this, box);
         }
 
-        #endregion
-
-        #region IEquatable<IExtents> Members
-
-        public Boolean Equals(IExtents other)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IExtents Members
-
-        public void TranslateRelativeToWidth(params double[] vector)
+        public void TranslateRelativeToWidth(params Double[] vector)
         {
             throw new NotImplementedException();
         }
@@ -1361,6 +1361,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         IGeometryFactory IExtents.Factory
         {
             get { return _geoFactory; }
+        }
+
+        #endregion
+
+        #region IEquatable<IExtents> Members
+
+        public Boolean Equals(IExtents other)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

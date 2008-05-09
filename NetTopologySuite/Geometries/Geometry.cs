@@ -1511,7 +1511,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Throws an exception if <c>g</c>'s class is <see cref="GeometryCollection{TCoordinate}" />. 
+        /// Throws an exception if <paramref name="g"/> 's type is <see cref="IGeometryCollection{TCoordinate}" />. 
         /// (its subclasses do not trigger an exception).
         /// </summary>
         /// <param name="g">The <see cref="Geometry{TCoordinate}"/> to check.</param>

@@ -1,5 +1,5 @@
 using System;
-
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -30,7 +30,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 			{
                 Console.WriteLine(ex.StackTrace);
 			}
-		}
+        }
+
+        ICoordinateFactory<BufferedCoordinate2D> _coordinateFactory =
+            new BufferedCoordinate2DFactory();
 		
 		public PrecisionModelExample() { }
 		
@@ -38,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 		{
 			Example1();
 			Example2();
-		}
+        }
 		
 		public virtual void  Example1()
 		{
@@ -49,9 +52,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 			Console.WriteLine("A = " + wktA);
 			Console.WriteLine("B = " + wktB);
 
-            Intersection(wktA, wktB, new PrecisionModel<BufferedCoordinate2D>());
-            Intersection(wktA, wktB, new PrecisionModel<BufferedCoordinate2D>(PrecisionModelType.FloatingSingle));
-            Intersection(wktA, wktB, new PrecisionModel<BufferedCoordinate2D>(1));
+            Intersection(wktA, wktB, new PrecisionModel<BufferedCoordinate2D>(_coordinateFactory));
+            Intersection(wktA, wktB, new PrecisionModel<BufferedCoordinate2D>(_coordinateFactory, PrecisionModelType.FloatingSingle));
+            Intersection(wktA, wktB, new PrecisionModel<BufferedCoordinate2D>(_coordinateFactory, 1));
 		}
 		
 		public virtual void  Example2()
@@ -63,8 +66,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 			Console.WriteLine("A = " + wktA);
 			Console.WriteLine("B = " + wktB);
 
-            Difference(wktA, wktB, new PrecisionModel<BufferedCoordinate2D>());
-            Difference(wktA, wktB, new PrecisionModel<BufferedCoordinate2D>(1));
+            Difference(wktA, wktB, new PrecisionModel<BufferedCoordinate2D>(_coordinateFactory));
+            Difference(wktA, wktB, new PrecisionModel<BufferedCoordinate2D>(_coordinateFactory, 1));
 		}
 
 

@@ -13,15 +13,9 @@ using ProjNet.CoordinateSystems.Transformations;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 {
-    /// <summary>
-    /// 
-    /// </summary>
     [TestFixture]
     public class SRSConversionTest : SimpleTests.BaseSamples
     {
-        /// <summary>
-        /// 
-        /// </summary>
         [Test]
         public void TestAlbersProjection()
         {
@@ -73,37 +67,39 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                     new AxisInfo(AxisOrientation.North, "North"),
                     "Albers Conical Equal Area");
 
-            ICoordinateTransformation<BufferedCoordinate2D> trans
-                = new CoordinateTransformationFactory<BufferedCoordinate2D>(CoordFactory, GeoFactory)
-                    .CreateFromCoordinateSystems(gcs, coordsys);
+            throw new NotImplementedException("Find a way to inject a matrix factory here...");
+            
+            //ICoordinateTransformation<BufferedCoordinate2D> trans
+            //    = new CoordinateTransformationFactory<BufferedCoordinate2D>(CoordFactory, GeoFactory)
+            //        .CreateFromCoordinateSystems(gcs, coordsys);
 
-            IPoint<BufferedCoordinate2D> pGeo 
-                = GeoFactory.CreatePoint(CoordFactory.Create(-75, 35));
+            //IPoint<BufferedCoordinate2D> pGeo 
+            //    = GeoFactory.CreatePoint(CoordFactory.Create(-75, 35));
 
-            IPoint<BufferedCoordinate2D> pUtm 
-                = GeometryTransform<BufferedCoordinate2D>.TransformPoint(pGeo,
-                                                                         trans.MathTransform,
-                                                                         GeoFactory);
+            //IPoint<BufferedCoordinate2D> pUtm 
+            //    = GeometryTransform<BufferedCoordinate2D>.TransformPoint(pGeo,
+            //                                                             trans.MathTransform,
+            //                                                             GeoFactory);
 
-            IPoint<BufferedCoordinate2D> pGeo2 
-                = GeometryTransform<BufferedCoordinate2D>.TransformPoint(pUtm, 
-                                                                         trans.MathTransform.Inverse(),
-                                                                         GeoFactory);
+            //IPoint<BufferedCoordinate2D> pGeo2 
+            //    = GeometryTransform<BufferedCoordinate2D>.TransformPoint(pUtm, 
+            //                                                             trans.MathTransform.Inverse(),
+            //                                                             GeoFactory);
 
-            IPoint<BufferedCoordinate2D> expected 
-                = GeoFactory.CreatePoint(CoordFactory.Create(1885472.7, 1535925));
+            //IPoint<BufferedCoordinate2D> expected 
+            //    = GeoFactory.CreatePoint(CoordFactory.Create(1885472.7, 1535925));
 
-            Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.05),
-                          String.Format("Albers forward transformation outside " +
-                                        "tolerance, Expected [{0},{1}], got [{2},{3}]",
-                                         expected[Ordinates.X], expected[Ordinates.Y],
-                                         pUtm[Ordinates.X], pUtm[Ordinates.Y]));
+            //Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.05),
+            //              String.Format("Albers forward transformation outside " +
+            //                            "tolerance, Expected [{0},{1}], got [{2},{3}]",
+            //                             expected[Ordinates.X], expected[Ordinates.Y],
+            //                             pUtm[Ordinates.X], pUtm[Ordinates.Y]));
 
-            Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001),
-                          String.Format("Albers reverse transformation outside "+
-                                        "tolerance, Expected [{0},{1}], got [{2},{3}]",
-                                        pGeo[Ordinates.X], pGeo[Ordinates.Y],
-                                        pGeo2[Ordinates.X], pGeo2[Ordinates.Y]));
+            //Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001),
+            //              String.Format("Albers reverse transformation outside "+
+            //                            "tolerance, Expected [{0},{1}], got [{2},{3}]",
+            //                            pGeo[Ordinates.X], pGeo[Ordinates.Y],
+            //                            pGeo2[Ordinates.X], pGeo2[Ordinates.Y]));
         }
 
         private bool ToleranceLessThan(IPoint<BufferedCoordinate2D> p1,

@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
 
         public PolygonSamples()
             : base(new GeometryFactory<BufferedCoordinate2D>(
-                       new PrecisionModel<BufferedCoordinate2D>(PrecisionModelType.Fixed)))
+                       new PrecisionModel<BufferedCoordinate2D>(CoordFactory, PrecisionModelType.Fixed)))
         {
             shell = GeoFactory.CreateLinearRing(new ICoordinate[]
                                                     {

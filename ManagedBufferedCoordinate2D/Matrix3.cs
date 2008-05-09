@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using NPack;
 using NPack.Interfaces;
 
@@ -135,6 +134,11 @@ namespace NetTopologySuite.Coordinates
         }
 
         public Matrix3 TransformMatrix(Matrix3 input)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BufferedCoordinate2D TransformVector(BufferedCoordinate2D input)
         {
             throw new NotImplementedException();
         }

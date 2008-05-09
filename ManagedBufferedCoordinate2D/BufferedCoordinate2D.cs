@@ -11,9 +11,9 @@ namespace NetTopologySuite.Coordinates
 
     public struct BufferedCoordinate2D : ICoordinate2D,
                                          ICoordinate<BufferedCoordinate2D>,
-                                         IBufferedVector<BufferedCoordinate2D, DoubleComponent>, 
+                                         IBufferedVector<BufferedCoordinate2D, DoubleComponent>,
                                          IEquatable<BufferedCoordinate2D>,
-                                         IComparable<BufferedCoordinate2D>, 
+                                         IComparable<BufferedCoordinate2D>,
                                          IComputable<Double, BufferedCoordinate2D>
     {
         private readonly Int32? _index;
@@ -48,9 +48,9 @@ namespace NetTopologySuite.Coordinates
         public override Boolean Equals(Object obj)
         {
             if (obj == null)
-	        {
-	            return false;
-	        }
+            {
+                return false;
+            }
 
             if (obj is BufferedCoordinate2D)
             {
@@ -63,14 +63,14 @@ namespace NetTopologySuite.Coordinates
 
             if (coord2D != null)
             {
-                return ((ICoordinate2D) this).Equals(coord2D);
+                return ((ICoordinate2D)this).Equals(coord2D);
             }
 
             ICoordinate coord = obj as ICoordinate;
 
             if (coord != null)
             {
-                return ((ICoordinate) this).Equals(coord);
+                return ((ICoordinate)this).Equals(coord);
             }
 
             IVectorD vector = obj as IVectorD;
@@ -151,9 +151,9 @@ namespace NetTopologySuite.Coordinates
         {
             get
             {
-                if (IsEmpty)
-                    throw new InvalidOperationException();
-                return _factory.GetOrdinate(_index.Value, Ordinates.X);
+                return _index == null 
+                    ? Double.NaN 
+                    : _factory.GetOrdinate(_index.Value, Ordinates.X);
             }
         }
 
@@ -161,9 +161,9 @@ namespace NetTopologySuite.Coordinates
         {
             get
             {
-                if (IsEmpty)
-                    throw new InvalidOperationException();
-                return _factory.GetOrdinate(_index.Value, Ordinates.Y);
+                return _index == null
+                    ? Double.NaN
+                    : _factory.GetOrdinate(_index.Value, Ordinates.Y);
             }
         }
 
@@ -202,7 +202,12 @@ namespace NetTopologySuite.Coordinates
 
         public Double this[Ordinates ordinate]
         {
-            get { return _factory.GetOrdinate(_index.Value, ordinate); }
+            get
+            {
+                return _index == null
+                    ? Double.NaN
+                    : _factory.GetOrdinate(_index.Value, ordinate);
+            }
         }
 
         ICoordinate ICoordinate.Zero
@@ -313,10 +318,10 @@ namespace NetTopologySuite.Coordinates
             }
 
             if (_index == null)
-	        {
-	            throw new InvalidOperationException(
+            {
+                throw new InvalidOperationException(
                     "This coordinate is empty and cannot be compared");
-	        }
+            }
 
             // Since the coordinates are stored in lexicograpic order,
             // the index comparison works to compare coordinates

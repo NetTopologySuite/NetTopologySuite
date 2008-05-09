@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
     {
         private static BufferedCoordinate2DFactory _coordFactory = new BufferedCoordinate2DFactory();
           
-        protected ICoordinateFactory<BufferedCoordinate2D> CoordFactory
+        protected static ICoordinateFactory<BufferedCoordinate2D> CoordFactory
         {
             get { return _coordFactory; }
         }

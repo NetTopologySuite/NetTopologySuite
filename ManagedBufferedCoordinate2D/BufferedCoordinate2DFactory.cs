@@ -158,23 +158,6 @@ namespace NetTopologySuite.Coordinates
                 : Create(coordinate[Ordinates.X], coordinate[Ordinates.Y]);
         }
 
-        public TMatrix CreateTransform<TMatrix>(BufferedCoordinate2D scaleVector,
-                                                Double rotation,
-                                                BufferedCoordinate2D translateVector)
-            where TMatrix : IMatrix<DoubleComponent, TMatrix>
-        {
-            throw new NotImplementedException();
-        }
-
-        public TMatrix CreateTransform<TMatrix>(BufferedCoordinate2D scaleVector,
-                                                BufferedCoordinate2D rotationAxis,
-                                                Double rotation,
-                                                BufferedCoordinate2D translateVector)
-            where TMatrix : IMatrix<DoubleComponent, TMatrix>
-        {
-            throw new NotImplementedException();
-        }
-
         public BufferedCoordinate2D Homogenize(BufferedCoordinate2D coordinate)
         {
             return BufferedCoordinate2D.Homogenize(coordinate);
@@ -519,15 +502,8 @@ namespace NetTopologySuite.Coordinates
 
         internal Double GetOrdinate(Int32 index, Ordinates ordinate)
         {
-            try
-            {
-                Int32 ordinateIndex = _ordinateIndexTable[(Int32)ordinate];
-                return (Double)_coordinates[index, ordinateIndex];
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                throw new NotSupportedException("Ordinate not supported: " + ordinate);
-            }
+            Int32 ordinateIndex = _ordinateIndexTable[(Int32)ordinate];
+            return (Double)_coordinates[index, ordinateIndex];
         }
 
         internal BufferedCoordinate2D GetZero()
@@ -777,7 +753,7 @@ namespace NetTopologySuite.Coordinates
 
             #endregion
 
-            #region IComparer<Triple<double>> Members
+            #region IComparer<Triple<Double>> Members
 
             public Int32 Compare(Triple<Double> v1, Triple<Double> v2)
             {

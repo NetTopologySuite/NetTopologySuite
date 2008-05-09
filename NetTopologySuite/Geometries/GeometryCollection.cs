@@ -186,6 +186,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return OgcGeometryType.GeometryCollection; }
         }
 
+        public override Boolean IsRectangle
+        {
+            get
+            {
+                return Count == 1
+                           ? this[0].IsRectangle
+                           : false;
+            }
+        }
+
         public override Boolean IsSimple
         {
             get
