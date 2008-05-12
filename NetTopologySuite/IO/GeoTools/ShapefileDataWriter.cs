@@ -149,11 +149,13 @@ namespace GisSharpBlog.NetTopologySuite.IO
             // Test if the Header is initialized
             if (Header == null)
                 throw new ApplicationException("Header must be set first!");
-
+            
+#if DEBUG
             // Test if all elements of the collections are features
             foreach (object obj in featureCollection)
                 if (obj.GetType() != typeof(Feature))
                     throw new ArgumentException("All the elements in the given collection must be " + typeof(Feature).Name);
+#endif
 
             try
             {

@@ -1,9 +1,4 @@
-using System;
-using System.Data;
-using System.Data.OleDb;
 using System.Globalization;
-using System.IO;
-using System.Reflection;
 
 namespace GisSharpBlog.NetTopologySuite.Utilities
 {
@@ -17,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
          *        i try to use readonly members and singleton implementations...
          */
 
-        private NumberFormatInfo nfi = null;            
+        private readonly NumberFormatInfo nfi = null;            
 
         /// <summary>
         /// 

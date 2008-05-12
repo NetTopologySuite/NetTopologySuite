@@ -222,7 +222,7 @@
     <Compile Include="IO\PostGisGeometryType.cs" />
     <Compile Include="IO\PostGisReader.cs" />
     <Compile Include="IO\PostGisWriter.cs" />
-    <Compile Include="IO\ShapeGeometryTypes.cs" />
+    <Compile Include="IO\ShapeGeometryType.cs" />
     <Compile Include="IO\GDBReader.cs" />
     <Compile Include="IO\GDBWriter.cs" />
     <Compile Include="IO\ParseException.cs" />

@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <summary>
 		/// Initializes a new instance of the ShapefileException class.
 		/// </summary>
-		public ShapefileException() : base() { }
+		public ShapefileException() { }
 
 		/// <summary>
 		/// Initializes a new instance of the ShapefileException class with a specified error message.

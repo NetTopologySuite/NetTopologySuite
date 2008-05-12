@@ -9,6 +9,7 @@ using System.Text;
 using GeoAPI.Geometries;
 
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.IO.Handlers;
 
 namespace GisSharpBlog.NetTopologySuite.IO
 {
@@ -25,21 +26,21 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// </summary>
 		/// <param name="geom">A Geometry object.</param>
 		/// <returns>The equilivent for the geometry object.</returns>
-        public static ShapeGeometryTypes GetShapeType(IGeometry geom) 
+        public static ShapeGeometryType GetShapeType(IGeometry geom) 
 		{
 			if (geom is IPoint) 
-                return ShapeGeometryTypes.Point;
+                return ShapeGeometryType.Point;
 			if (geom is IPolygon) 
-                return ShapeGeometryTypes.Polygon;
+                return ShapeGeometryType.Polygon;
 			if (geom is IMultiPolygon) 			
-                return ShapeGeometryTypes.Polygon;
+                return ShapeGeometryType.Polygon;
 			if (geom is ILineString) 
-                return ShapeGeometryTypes.LineString;
+                return ShapeGeometryType.LineString;
 			if (geom is IMultiLineString) 			
-                return ShapeGeometryTypes.LineString;
+                return ShapeGeometryType.LineString;
             if (geom is IMultiPoint)
-                return ShapeGeometryTypes.MultiPoint;
-            return ShapeGeometryTypes.NullShape;
+                return ShapeGeometryType.MultiPoint;
+            return ShapeGeometryType.NullShape;
 		}
 
 		/// <summary>
@@ -47,32 +48,32 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// </summary>
 		/// <param name="type">The shapefile type.</param>
 		/// <returns>An instance of the appropriate handler to convert the shape record to a Geometry object.</returns>
-        public static ShapeHandler GetShapeHandler(ShapeGeometryTypes type) 
+        public static ShapeHandler GetShapeHandler(ShapeGeometryType type) 
 		{
 			switch (type) 
 			{
-				case ShapeGeometryTypes.Point:
-                case ShapeGeometryTypes.PointM:
-                case ShapeGeometryTypes.PointZ:
-                case ShapeGeometryTypes.PointZM:
+				case ShapeGeometryType.Point:
+                case ShapeGeometryType.PointM:
+                case ShapeGeometryType.PointZ:
+                case ShapeGeometryType.PointZM:
 					return new PointHandler();
 
-                case ShapeGeometryTypes.Polygon:
-                case ShapeGeometryTypes.PolygonM:
-                case ShapeGeometryTypes.PolygonZ:
-                case ShapeGeometryTypes.PolygonZM:
+                case ShapeGeometryType.Polygon:
+                case ShapeGeometryType.PolygonM:
+                case ShapeGeometryType.PolygonZ:
+                case ShapeGeometryType.PolygonZM:
 					return new PolygonHandler();
 
-                case ShapeGeometryTypes.LineString:
-                case ShapeGeometryTypes.LineStringM:
-                case ShapeGeometryTypes.LineStringZ:
-                case ShapeGeometryTypes.LineStringZM:
+                case ShapeGeometryType.LineString:
+                case ShapeGeometryType.LineStringM:
+                case ShapeGeometryType.LineStringZ:
+                case ShapeGeometryType.LineStringZM:
 					return new MultiLineHandler();
 
-                case ShapeGeometryTypes.MultiPoint:
-                case ShapeGeometryTypes.MultiPointM:
-                case ShapeGeometryTypes.MultiPointZ:
-                case ShapeGeometryTypes.MultiPointZM:
+                case ShapeGeometryType.MultiPoint:
+                case ShapeGeometryType.MultiPointM:
+                case ShapeGeometryType.MultiPointZ:
+                case ShapeGeometryType.MultiPointZM:
                     return new MultiPointHandler();
 
                 default:

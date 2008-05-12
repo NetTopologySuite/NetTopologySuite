@@ -1,8 +1,5 @@
 using System;
 using System.Collections;
-using System.Data;
-using System.Diagnostics;
-using System.Text;
 
 namespace GisSharpBlog.NetTopologySuite.Features
 {
@@ -32,10 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.Features
         /// </summary>
         public int Count
         {
-            get
-            {
-                return attributes.Count;
-            }
+            get { return attributes.Count; }
         }
 
         /// <summary>
@@ -144,14 +138,8 @@ namespace GisSharpBlog.NetTopologySuite.Features
         /// <returns></returns>
         public object this[string attributeName]
         {
-            get
-            {
-                return GetValue(attributeName);
-            }
-            set
-            {
-                SetValue(attributeName, value);
-            }
+            get { return GetValue(attributeName); }
+            set { SetValue(attributeName, value); }
         }
     }
 }

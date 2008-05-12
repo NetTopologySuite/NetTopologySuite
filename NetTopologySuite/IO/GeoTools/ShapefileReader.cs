@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.IO.Handlers;
 
 namespace GisSharpBlog.NetTopologySuite.IO
 {
@@ -38,7 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 
                 // skip header - since parent has already read this.
                 _shpBinaryReader.ReadBytes(100);
-                ShapeGeometryTypes type = _parent._mainHeader.ShapeType;
+                ShapeGeometryType type = _parent._mainHeader.ShapeType;
                 _handler = Shapefile.GetShapeHandler(type);
                 if (_handler == null) 
                     throw new NotSupportedException("Unsuported shape type:" + type);
@@ -170,7 +171,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		public IGeometryCollection ReadAll()
 		{
 			ArrayList list = new ArrayList();
-            ShapeGeometryTypes type = _mainHeader.ShapeType;
+            ShapeGeometryType type = _mainHeader.ShapeType;
 			ShapeHandler handler = Shapefile.GetShapeHandler(type);
 			if (handler == null) 
 				throw new NotSupportedException("Unsupported shape type:" + type);

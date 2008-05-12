@@ -87,37 +87,37 @@ namespace GisSharpBlog.NetTopologySuite.IO
                     // ShapeTypes
                     int shapeType = leReader.ReadInt32();         
 
-                    switch ((ShapeGeometryTypes) shapeType)
+                    switch ((ShapeGeometryType) shapeType)
                     {
-                        case ShapeGeometryTypes.Point:
-                        case ShapeGeometryTypes.PointZ:
-                        case ShapeGeometryTypes.PointM:
-                        case ShapeGeometryTypes.PointZM:
+                        case ShapeGeometryType.Point:
+                        case ShapeGeometryType.PointZ:
+                        case ShapeGeometryType.PointM:
+                        case ShapeGeometryType.PointZM:
                             list = new ArrayList(ReadPointData(stream));
                             break;
 
-                        case ShapeGeometryTypes.LineString:
-                        case ShapeGeometryTypes.LineStringZ:
-                        case ShapeGeometryTypes.LineStringM:
-                        case ShapeGeometryTypes.LineStringZM:
+                        case ShapeGeometryType.LineString:
+                        case ShapeGeometryType.LineStringZ:
+                        case ShapeGeometryType.LineStringM:
+                        case ShapeGeometryType.LineStringZM:
                             list = new ArrayList(ReadLineStringData(stream));
                             break;
 
-                        case ShapeGeometryTypes.Polygon:
-                        case ShapeGeometryTypes.PolygonZ:
-                        case ShapeGeometryTypes.PolygonM:
-                        case ShapeGeometryTypes.PolygonZM:
+                        case ShapeGeometryType.Polygon:
+                        case ShapeGeometryType.PolygonZ:
+                        case ShapeGeometryType.PolygonM:
+                        case ShapeGeometryType.PolygonZM:
                             list = new ArrayList(ReadPolygonData(stream));
                             break;
 
-                        case ShapeGeometryTypes.MultiPoint:
-                        case ShapeGeometryTypes.MultiPointZ:
-                        case ShapeGeometryTypes.MultiPointM:
-                        case ShapeGeometryTypes.MultiPointZM:
+                        case ShapeGeometryType.MultiPoint:
+                        case ShapeGeometryType.MultiPointZ:
+                        case ShapeGeometryType.MultiPointM:
+                        case ShapeGeometryType.MultiPointZM:
                             list = new ArrayList(ReadMultiPointData(stream));
                             break;
 
-                        case ShapeGeometryTypes.MultiPatch:
+                        case ShapeGeometryType.MultiPatch:
                             throw new NotImplementedException("FeatureType " + shapeType + " not supported.");
 
                         default:

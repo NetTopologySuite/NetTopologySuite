@@ -102,22 +102,22 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected ShapeGeometryTypes GetShapeType(Geometry geometry)
+        protected ShapeGeometryType GetShapeType(Geometry geometry)
         {
             if (geometry is Point)
-                return ShapeGeometryTypes.Point;
+                return ShapeGeometryType.Point;
             else if (geometry is LinearRing)
-                return ShapeGeometryTypes.LineString;
+                return ShapeGeometryType.LineString;
             else if (geometry is LineString)
-                return ShapeGeometryTypes.LineString;
+                return ShapeGeometryType.LineString;
             else if (geometry is Polygon)
-                return ShapeGeometryTypes.Polygon;
+                return ShapeGeometryType.Polygon;
             else if (geometry is MultiPoint)
-                return ShapeGeometryTypes.MultiPoint;
+                return ShapeGeometryType.MultiPoint;
             else if (geometry is MultiLineString)
-                return ShapeGeometryTypes.LineString;
+                return ShapeGeometryType.LineString;
             else if (geometry is MultiPolygon)
-                return ShapeGeometryTypes.Polygon;
+                return ShapeGeometryType.Polygon;
             else throw new NotSupportedException("Unsupported Geometry implementation:" + geometry.GetType());            
         }
 

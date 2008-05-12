@@ -45,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         public void Write(IPoint point, BinaryWriter writer)
         {
-            writer.Write((int) ShapeGeometryTypes.Point);
+            writer.Write((int) ShapeGeometryType.Point);
             writer.Write((double) point.X);
             writer.Write((double) point.Y);
         }
@@ -57,7 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         public void Write(ILineString lineString, BinaryWriter writer)
         {
-            writer.Write((int) ShapeGeometryTypes.LineString);
+            writer.Write((int) ShapeGeometryType.LineString);
 
             // Write BoundingBox            
             WriteBoundingBox(lineString, writer);
@@ -81,7 +81,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         public void Write(IPolygon polygon, BinaryWriter writer)
         {
-            writer.Write((int) ShapeGeometryTypes.Polygon);
+            writer.Write((int) ShapeGeometryType.Polygon);
 
             // Write BoundingBox            
             WriteBoundingBox(polygon, writer);
@@ -118,7 +118,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         public void Write(IMultiPoint multiPoint, BinaryWriter writer)
         {
-            writer.Write((int) ShapeGeometryTypes.MultiPoint);
+            writer.Write((int) ShapeGeometryType.MultiPoint);
 
             // Write BoundingBox            
             WriteBoundingBox(multiPoint, writer);
@@ -138,7 +138,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         public void Write(IMultiLineString multiLineString, BinaryWriter writer)
         {
-            writer.Write((int) ShapeGeometryTypes.LineString);
+            writer.Write((int) ShapeGeometryType.LineString);
 
             // Write BoundingBox            
             WriteBoundingBox(multiLineString, writer);
@@ -173,7 +173,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         public void Write(IMultiPolygon multiPolygon, BinaryWriter writer)
         {
-            writer.Write((int) ShapeGeometryTypes.Polygon);
+            writer.Write((int) ShapeGeometryType.Polygon);
 
             // Write BoundingBox            
             WriteBoundingBox(multiPolygon, writer);

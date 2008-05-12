@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		private int _fileCode = Shapefile.ShapefileId;
 		private int _fileLength = -1;
 		private int _version = 1000;
-        private ShapeGeometryTypes _shapeType = ShapeGeometryTypes.NullShape;
+        private ShapeGeometryType _shapeType = ShapeGeometryType.NullShape;
 		private IEnvelope _bounds;
 	
 		/// <summary>
@@ -44,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			_version = shpBinaryReader.ReadInt32();
 			Debug.Assert(_version == 1000, "Shapefile version", String.Format("Expecting only one version (1000), but got {0}",_version));
 			int shapeType = shpBinaryReader.ReadInt32();
-            _shapeType = (ShapeGeometryTypes) Enum.Parse(typeof(ShapeGeometryTypes), shapeType.ToString());
+            _shapeType = (ShapeGeometryType) Enum.Parse(typeof(ShapeGeometryType), shapeType.ToString());
 
 			//read in and store the bounding box
 			double[] coords = new double[4];
@@ -80,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <summary>
 		/// Gets and sets the shape file type i.e. polygon, point etc...
 		/// </summary>
-        public ShapeGeometryTypes ShapeType
+        public ShapeGeometryType ShapeType
 		{
 			get
 			{
@@ -145,7 +145,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			file.Write(_version);
 			pos += 4;
 
-            file.Write(int.Parse(Enum.Format(typeof(ShapeGeometryTypes), _shapeType, "d")));
+            file.Write(int.Parse(Enum.Format(typeof(ShapeGeometryType), _shapeType, "d")));
 			
             pos += 4;
 			// Write the bounding box

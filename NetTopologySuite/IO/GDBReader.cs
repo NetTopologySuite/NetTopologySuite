@@ -48,35 +48,35 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns></returns>
         public IGeometry Read(BinaryReader reader)
         {
-            ShapeGeometryTypes shapeType = (ShapeGeometryTypes)reader.ReadInt32();
+            ShapeGeometryType shapeType = (ShapeGeometryType)reader.ReadInt32();
 
             switch (shapeType)
             {
-                case ShapeGeometryTypes.Point:
-                case ShapeGeometryTypes.PointM:
-                case ShapeGeometryTypes.PointZ:
-                case ShapeGeometryTypes.PointZM:
+                case ShapeGeometryType.Point:
+                case ShapeGeometryType.PointM:
+                case ShapeGeometryType.PointZ:
+                case ShapeGeometryType.PointZM:
                     return ReadPoint(reader);
 
-                case ShapeGeometryTypes.LineString:
-                case ShapeGeometryTypes.LineStringM:
-                case ShapeGeometryTypes.LineStringZ:
-                case ShapeGeometryTypes.LineStringZM:
+                case ShapeGeometryType.LineString:
+                case ShapeGeometryType.LineStringM:
+                case ShapeGeometryType.LineStringZ:
+                case ShapeGeometryType.LineStringZM:
                     return ReadLineString(reader);
 
-                case ShapeGeometryTypes.Polygon:
-                case ShapeGeometryTypes.PolygonM:
-                case ShapeGeometryTypes.PolygonZ:
-                case ShapeGeometryTypes.PolygonZM:
+                case ShapeGeometryType.Polygon:
+                case ShapeGeometryType.PolygonM:
+                case ShapeGeometryType.PolygonZ:
+                case ShapeGeometryType.PolygonZM:
                     return ReadPolygon(reader);
 
-                case ShapeGeometryTypes.MultiPoint:
-                case ShapeGeometryTypes.MultiPointM:
-                case ShapeGeometryTypes.MultiPointZ:
-                case ShapeGeometryTypes.MultiPointZM:
+                case ShapeGeometryType.MultiPoint:
+                case ShapeGeometryType.MultiPointM:
+                case ShapeGeometryType.MultiPointZ:
+                case ShapeGeometryType.MultiPointZM:
                     return ReadMultiPoint(reader);
 
-                case ShapeGeometryTypes.MultiPatch:
+                case ShapeGeometryType.MultiPatch:
                     throw new NotImplementedException("FeatureType " + shapeType + " not supported.");
 
                 default:
