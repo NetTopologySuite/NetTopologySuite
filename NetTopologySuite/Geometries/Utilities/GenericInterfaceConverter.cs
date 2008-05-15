@@ -48,14 +48,29 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 
         public static IGeometry<TCoordinate> Convert(IGeometry other)
         {
-            if (!(other is IGeometry<TCoordinate>))
+            if (other == null)
             {
-                throw new ArgumentException(
-                    "Parameter must be an IGeometry<TCoordinate> instance.",
-                    "other");
+                return null;
             }
 
-            return other as IGeometry<TCoordinate>;
+            IGeometry<TCoordinate> geometry = other as IGeometry<TCoordinate>;
+
+            if (geometry == null)
+            {
+                throw new ArgumentException("Parameter must be an IGeometry<TCoordinate> instance.",
+                                            "other");
+            }
+
+            return geometry;
+        }
+
+        public static IEnumerable<IGeometry<TCoordinate>> Convert(IEnumerable<IGeometry> geometries, 
+                                                                  IGeometryFactory<TCoordinate> geoFactory)
+        {
+            foreach (IGeometry geometry in geometries)
+            {
+                yield return Convert(geometry);
+            }
         }
     }
 }

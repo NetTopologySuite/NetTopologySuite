@@ -676,6 +676,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return gc;
         }
 
+        public IGeometryCollection<TCoordinate> CreateGeometryCollection(IGeometry<TCoordinate> a,
+                                                                         IGeometry<TCoordinate> b)
+        {
+            return new GeometryCollection<TCoordinate>(new IGeometry<TCoordinate>[] { a, b }, this);
+        }
+
         /// <returns>
         /// A clone of g based on a CoordinateSequence created by this
         /// GeometryFactory's CoordinateSequenceFactory.
@@ -1037,6 +1043,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         IGeometryCollection IGeometryFactory.CreateGeometryCollection()
         {
             return CreateGeometryCollection();
+        }
+
+        IGeometryCollection IGeometryFactory.CreateGeometryCollection(IGeometry a, IGeometry b)
+        {
+            IEnumerable<IGeometry<TCoordinate>> geometries =
+                GenericInterfaceConverter<TCoordinate>.Convert(new IGeometry[] {a, b}, this);
+            return new GeometryCollection<TCoordinate>(geometries, this);
         }
 
         IGeometryCollection IGeometryFactory.CreateGeometryCollection(IEnumerable<IGeometry> geometries)
