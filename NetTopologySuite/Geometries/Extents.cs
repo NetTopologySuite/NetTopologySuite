@@ -1309,16 +1309,31 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public void Scale(params Double[] vector)
         {
+            if (IsEmpty)
+            {
+                return;
+            }
+
             throw new NotImplementedException();
         }
 
         public void Scale(Double factor)
         {
+            if (IsEmpty)
+            {
+                return;
+            }
+
             _min = _min.Multiply(factor);
         }
 
         public void Scale(Double factor, Ordinates axis)
         {
+            if (IsEmpty)
+            {
+                return;
+            }
+
             throw new NotImplementedException();
         }
 
@@ -1329,6 +1344,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public void Translate(params Double[] vector)
         {
+            if (IsEmpty)
+            {
+                return;
+            }
+
             throw new NotImplementedException();
         }
 
