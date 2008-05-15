@@ -209,6 +209,24 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
+        public override Boolean EqualsExact(IGeometry<TCoordinate> g, Tolerance tolerance)
+        {
+            // TODO: drop this when the get_Coordinates TODO is fixed
+            if (g == null) throw new ArgumentNullException("g");
+
+            if (!IsEquivalentClass(g))
+            {
+                return false;
+            }
+
+            Polygon<TCoordinate> other = g as Polygon<TCoordinate>;
+            Debug.Assert(other != null);
+
+            ICoordinateSequence<TCoordinate> otherCoords = other.Coordinates;
+
+            return Coordinates.Equals(otherCoords, tolerance);
+        }
+
         public override Int32 PointCount
         {
             get
