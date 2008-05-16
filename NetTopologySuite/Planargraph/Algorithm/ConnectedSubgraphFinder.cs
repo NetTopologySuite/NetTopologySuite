@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
-using GeoAPI.Utilities;
+using GeoAPI.DataStructures;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
@@ -11,8 +11,9 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
     /// <see cref="PlanarGraph{TCoordinate}" />.
     /// </summary>
     public class ConnectedSubgraphFinder<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible, 
+                            IComputable<Double, TCoordinate>
     {
         private readonly PlanarGraph<TCoordinate> _graph;
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.DataStructures;
 using GeoAPI.Indexing;
-using GeoAPI.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 {

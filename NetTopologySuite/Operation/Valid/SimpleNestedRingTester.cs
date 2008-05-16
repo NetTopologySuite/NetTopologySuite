@@ -8,6 +8,7 @@ using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
+using GeoAPI.Diagnostics;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 {

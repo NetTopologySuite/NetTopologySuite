@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
-using GeoAPI.Utilities;
 using NPack;
 using NPack.Interfaces;
 
@@ -10,6 +9,7 @@ namespace NetTopologySuite.Coordinates
     using IBufferedCoordFactory = ICoordinateFactory<BufferedCoordinate2D>;
     using IBufferedCoordSequence = ICoordinateSequence<BufferedCoordinate2D>;
     using IBufferedCoordSequenceFactory = ICoordinateSequenceFactory<BufferedCoordinate2D>;
+    using GeoAPI.DataStructures;
 
     public class BufferedCoordinate2DSequenceFactory : IBufferedCoordSequenceFactory
     {

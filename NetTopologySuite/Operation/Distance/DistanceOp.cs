@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;

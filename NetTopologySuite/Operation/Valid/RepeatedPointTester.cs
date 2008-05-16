@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GeoAPI.Utilities;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
@@ -36,27 +35,29 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             {
                 return false;
             }
-            else if (g is IMultiPoint<TCoordinate>)
+            
+            if (g is IMultiPoint<TCoordinate>)
             {
                 return false;
             }
-            else if (g is ILineString<TCoordinate>)
+            
+            if (g is ILineString<TCoordinate>)
             {
                 // LineString also handles LinearRings
                 return HasRepeatedPoint(g.Coordinates);
             }
-            else if (g is IPolygon<TCoordinate>)
+            
+            if (g is IPolygon<TCoordinate>)
             {
                 return HasRepeatedPoint(g as IPolygon<TCoordinate>);
             }
-            else if (g is IGeometryCollection<TCoordinate>)
+            
+            if (g is IGeometryCollection<TCoordinate>)
             {
                 return HasRepeatedPoint(g as IGeometryCollection<TCoordinate>);
             }
-            else
-            {
-                throw new NotSupportedException(g.GetType().FullName);
-            }
+
+            throw new NotSupportedException(g.GetType().FullName);
         }
 
         public Boolean HasRepeatedPoint(IEnumerable<TCoordinate> coord)

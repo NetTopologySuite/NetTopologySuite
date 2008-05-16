@@ -1,9 +1,11 @@
 using System;
 using System.Text;
 using GeoAPI.Coordinates;
+using GeoAPI.Units;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
+using GeoAPI.Diagnostics;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -60,7 +62,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             _quadrant = QuadrantOp<TCoordinate>.Quadrant(_direction);
 
             Assert.IsTrue(!_direction.Equals(((ICoordinate)_direction).Zero), 
-                "EdgeEnd with identical endpoints found.");
+                          "EdgeEnd with identical endpoints found.");
         }
 
         public Edge<TCoordinate> Edge
@@ -161,8 +163,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            Double angle = Math.Atan2(_direction[Ordinates.Y], _direction[Ordinates.X]);
-            Double degrees = Degrees.ToDegrees(angle);
+            Radians angle = (Radians)Math.Atan2(_direction[Ordinates.Y], _direction[Ordinates.X]);
+            Degrees degrees = (Degrees)angle;
 
             sb.Append('[');
             sb.Append(_p0);
@@ -172,7 +174,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             sb.Append(Quadrant);
             sb.Append(':');
             sb.Append(degrees.ToString("##0.0####"));
-            sb.Append("\xB0 ");
+            sb.Append(" ");
             sb.Append(Label);
             return sb.ToString();
         }

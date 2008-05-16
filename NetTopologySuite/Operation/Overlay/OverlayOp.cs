@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
+using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 {

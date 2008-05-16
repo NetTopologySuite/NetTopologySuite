@@ -4,13 +4,13 @@ using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
-using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Noding;
 using GisSharpBlog.NetTopologySuite.Operation.Overlay;
 using NPack.Interfaces;
+using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 {

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
+using GeoAPI.Diagnostics;
+using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 {
@@ -138,8 +139,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 
             // sanity check for labeling of result edgerings
             Assert.IsTrue(!(de.IsInResult || de.Sym.IsInResult) || !de.Edge.IsInResult);
+            Assert.IsTrue(de.Label.HasValue);
 
-            Debug.Assert(de.Label.HasValue);
             Label label = de.Label.Value;
 
             // include the linework if it's in the result of the operation

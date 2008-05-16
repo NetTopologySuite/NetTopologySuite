@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
-using GeoAPI.Utilities;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding

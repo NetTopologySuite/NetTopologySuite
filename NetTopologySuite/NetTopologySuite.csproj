@@ -307,14 +307,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Simplify\DouglasPeuckerLineSimplifier.cs" />
     <Compile Include="Simplify\DouglasPeuckerSimplifier.cs" />
-    <Compile Include="Utilities\Assert.cs" />
-    <Compile Include="Utilities\AssertionFailedException.cs" />
-    <Compile Include="Utilities\Degrees.cs" />
-    <Compile Include="Utilities\GeometricShapeFactory.cs" />
-    <Compile Include="Utilities\Global.cs" />
-    <Compile Include="Utilities\Radians.cs" />
-    <Compile Include="Utilities\ReverseOrder.cs" />
-    <Compile Include="Utilities\Stopwatch.cs" />
+    <Compile Include="Geometries\Utilities\GeometricShapeFactory.cs" />
+    <Compile Include="Global.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="License.txt" />

@@ -5,7 +5,6 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.DataStructures.Collections.Generic;
 using GeoAPI.Geometries;
-using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using NPack;

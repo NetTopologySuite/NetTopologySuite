@@ -6,7 +6,8 @@ using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
-using GeoAPI.Utilities;
+using GeoAPI.Diagnostics;
+using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 {

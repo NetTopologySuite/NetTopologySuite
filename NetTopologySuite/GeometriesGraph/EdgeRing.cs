@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
+using GeoAPI.Diagnostics;
+using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {

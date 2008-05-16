@@ -1,7 +1,6 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
-using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Index.Chain;

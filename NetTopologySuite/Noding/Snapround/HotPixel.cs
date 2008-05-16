@@ -1,5 +1,6 @@
 using System;
 using GeoAPI.Coordinates;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;

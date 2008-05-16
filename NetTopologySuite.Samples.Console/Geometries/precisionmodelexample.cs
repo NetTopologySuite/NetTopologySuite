@@ -53,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 			Console.WriteLine("B = " + wktB);
 
             Intersection(wktA, wktB, new PrecisionModel<BufferedCoordinate2D>(_coordinateFactory));
-            Intersection(wktA, wktB, new PrecisionModel<BufferedCoordinate2D>(_coordinateFactory, PrecisionModelType.FloatingSingle));
+            Intersection(wktA, wktB, new PrecisionModel<BufferedCoordinate2D>(_coordinateFactory, PrecisionModelType.SingleFloating));
             Intersection(wktA, wktB, new PrecisionModel<BufferedCoordinate2D>(_coordinateFactory, 1));
 		}
 		

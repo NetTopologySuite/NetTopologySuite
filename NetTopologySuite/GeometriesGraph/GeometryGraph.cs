@@ -7,6 +7,7 @@ using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
+using GeoAPI.Diagnostics;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {

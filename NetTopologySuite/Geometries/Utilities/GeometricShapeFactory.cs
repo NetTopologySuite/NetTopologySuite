@@ -2,10 +2,9 @@ using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Utilities
+namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
     /// Computes various kinds of common geometric shapes.

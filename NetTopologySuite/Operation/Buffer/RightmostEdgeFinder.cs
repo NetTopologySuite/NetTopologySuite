@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
-using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
+using GeoAPI.Diagnostics;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 {
@@ -57,7 +57,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
              * If the rightmost point is a node, we need to identify which of
              * the incident edges is rightmost.
              */
-            Assert.IsTrue(_minIndex != 0 || _minCoord.Equals(_minDe.Coordinate), "inconsistency in rightmost processing");
+            Assert.IsTrue(_minIndex != 0 || _minCoord.Equals(_minDe.Coordinate), 
+                          "inconsistency in rightmost processing");
            
             if (_minIndex == 0)
             {

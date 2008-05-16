@@ -13,7 +13,6 @@ namespace NetTopologySuite.Coordinates
 {
     using IBufferedCoordFactory = ICoordinateFactory<BufferedCoordinate2D>;
     using IBufferedVectorFactory = IVectorFactory<DoubleComponent, BufferedCoordinate2D>;
-    using GeoAPI.Utilities;
 
     public class BufferedCoordinate2DFactory
         : IBufferedCoordFactory, IVectorBuffer<BufferedCoordinate2D, DoubleComponent>,

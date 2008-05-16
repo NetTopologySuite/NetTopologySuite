@@ -1,8 +1,8 @@
 using System;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph

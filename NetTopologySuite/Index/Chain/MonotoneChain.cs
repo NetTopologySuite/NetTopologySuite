@@ -4,7 +4,6 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
-using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 

@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
+using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {

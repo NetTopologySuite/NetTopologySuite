@@ -88,7 +88,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// The coordinate factory to use to creat coordinates.
         /// </param>
         public PrecisionModel(ICoordinateFactory<TCoordinate> coordinateFactory)
-            : this(coordinateFactory, GeoAPI.Geometries.PrecisionModelType.Floating) { }
+            : this(coordinateFactory, GeoAPI.Geometries.PrecisionModelType.DoubleFloating) { }
 
         /// <summary>
         /// Creates a <see cref="PrecisionModel{TCoordinate}"/> that specifies
@@ -166,8 +166,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                return _modelType == PrecisionModelType.Floating
-                    || _modelType == PrecisionModelType.FloatingSingle;
+                return _modelType == PrecisionModelType.DoubleFloating
+                    || _modelType == PrecisionModelType.SingleFloating;
             }
         }
 
@@ -175,9 +175,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             switch (_modelType)
             {
-                case PrecisionModelType.Floating:
+                case PrecisionModelType.DoubleFloating:
                     return val; // modelType == FLOATING - no rounding necessary
-                case PrecisionModelType.FloatingSingle:
+                case PrecisionModelType.SingleFloating:
                     Single floatSingleVal = (Single)val;
                     return floatSingleVal;
                 case PrecisionModelType.Fixed:
@@ -203,9 +203,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             {
                 switch (_modelType)
                 {
-                    case PrecisionModelType.Floating:
+                    case PrecisionModelType.DoubleFloating:
                         return FloatingPrecisionDigits;
-                    case PrecisionModelType.FloatingSingle:
+                    case PrecisionModelType.SingleFloating:
                         return FloatingSinglePrecisionDigits;
                     case PrecisionModelType.Fixed:
                         return FixedPrecisionDigits + (Int32)Math.Ceiling(Math.Log(Scale) / Math.Log(10));
@@ -221,7 +221,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public TCoordinate MakePrecise(TCoordinate coord)
         {
             // optimization for full precision
-            if (_modelType == PrecisionModelType.Floating)
+            if (_modelType == PrecisionModelType.DoubleFloating)
             {
                 return coord;
             }
@@ -240,9 +240,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             switch (_modelType)
             {
-                case PrecisionModelType.Floating:
+                case PrecisionModelType.DoubleFloating:
                     return "Floating";
-                case PrecisionModelType.FloatingSingle:
+                case PrecisionModelType.SingleFloating:
                     return "Floating-Single";
                 case PrecisionModelType.Fixed:
                     return "Fixed (Scale = " + Scale + ")";

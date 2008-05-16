@@ -4,7 +4,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
-using GeoAPI.Utilities;
+using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 {

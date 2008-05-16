@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.CoordinateSystems;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
 using GeoAPI.Operations.Buffer;
@@ -14,7 +14,6 @@ using GisSharpBlog.NetTopologySuite.Operation.Overlay;
 using GisSharpBlog.NetTopologySuite.Operation.Predicate;
 using GisSharpBlog.NetTopologySuite.Operation.Relate;
 using GisSharpBlog.NetTopologySuite.Operation.Valid;
-using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
 using NPack;
 

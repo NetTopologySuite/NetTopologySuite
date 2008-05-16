@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
-using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack;
 using NPack.Interfaces;
+using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using GisSharpBlog.NetTopologySuite.Utilities;

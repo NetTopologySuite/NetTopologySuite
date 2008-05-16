@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GeoAPI.Utilities;
 using NPack.Interfaces;
+using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {

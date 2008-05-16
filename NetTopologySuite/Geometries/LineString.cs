@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GeoAPI.Utilities;
+using GeoAPI.Units;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Operation;
 using NPack.Interfaces;
+using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -14,9 +15,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Basic implementation of <c>LineString</c>.
     /// </summary>  
     [Serializable]
-    public class LineString<TCoordinate> : MultiCoordinateGeometry<TCoordinate>, 
+    public class LineString<TCoordinate> : MultiCoordinateGeometry<TCoordinate>,
                                            ILineString<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {
@@ -195,7 +196,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             foreach (TCoordinate coordinate in CoordinatesInternal)
             {
-                if(coordinate.Equals(pt))
+                if (coordinate.Equals(pt))
                 {
                     return true;
                 }
@@ -319,12 +320,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Returns the value of the angle between the <see cref="StartPoint" />
         /// and the <see cref="EndPoint" />.
         /// </summary>
-        public Double Angle
+        public Degrees Angle
         {
             get
             {
-                TCoordinate startPoint = Slice.GetFirst(CoordinatesInternal);
-                TCoordinate endPoint = Slice.GetLast(CoordinatesInternal);
+                TCoordinate startPoint = CoordinatesInternal.First;
+                TCoordinate endPoint = CoordinatesInternal.Last;
 
                 Double startX = startPoint[Ordinates.X], startY = startPoint[Ordinates.Y];
                 Double endX = endPoint[Ordinates.X], endY = endPoint[Ordinates.Y];
@@ -332,13 +333,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 Double deltaX = endPoint[Ordinates.X] - startPoint[Ordinates.X];
                 Double deltaY = endPoint[Ordinates.Y] - startPoint[Ordinates.Y];
                 Double length = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
-                Double angleRadians = Math.Asin(Math.Abs(endY - startY) / length);
-                Double angle = (angleRadians * 180) / Math.PI;
+                Radians radians = (Radians)Math.Asin(Math.Abs(endY - startY) / length);
+                Degrees angle = (Degrees)radians;
 
                 if (((startX < endX) && (startY > endY)) ||
                     ((startX > endX) && (startY < endY)))
                 {
-                    angle = 360 - angle;
+                    angle = (Degrees)360 - angle;
                 }
 
                 return angle;

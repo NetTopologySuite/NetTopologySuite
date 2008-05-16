@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
-using GeoAPI.Utilities;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index

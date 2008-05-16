@@ -9,7 +9,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </summary>
     public class TopologyException : NtsException
     {
-        private readonly ICoordinate _coordinate = null;
+        private readonly ICoordinate _coordinate;
 
         public TopologyException(string msg) : base(msg) {}
 
@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (pt != null && !pt.IsEmpty)
             {
-                return String.Format("{0} [{1}]", msg, pt);
+                return String.Format("{0} @ {1}", msg, pt);
             }
 
             return msg;

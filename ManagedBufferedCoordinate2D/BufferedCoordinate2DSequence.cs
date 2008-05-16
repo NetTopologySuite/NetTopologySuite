@@ -6,7 +6,6 @@ using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures.Collections.Generic;
 using GeoAPI.Geometries;
-using GeoAPI.Utilities;
 using NPack;
 using NPack.Interfaces;
 

@@ -1,5 +1,5 @@
 using System;
-using GeoAPI.Utilities;
+using GeoAPI.DataStructures;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GeoAPI.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {

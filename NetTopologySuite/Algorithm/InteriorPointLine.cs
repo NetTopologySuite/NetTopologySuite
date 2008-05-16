@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
+using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
@@ -86,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             if (geom is ILineString<TCoordinate>)
             {
-                AddEndpoints(geom.Coordinates);
+                addEndpoints(geom.Coordinates);
             }
             else if (geom is IGeometryCollection<TCoordinate>)
             {
@@ -99,10 +99,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
         }
 
-        private void AddEndpoints(IEnumerable<TCoordinate> points)
+        private void addEndpoints(ICoordinateSequence<TCoordinate> points)
         {
-            add(Slice.GetFirst(points));
-            add(Slice.GetLast(points));
+            add(points.First);
+            add(points.Last);
         }
 
         private void add(TCoordinate point)

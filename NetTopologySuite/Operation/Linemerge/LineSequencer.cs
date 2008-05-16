@@ -5,13 +5,14 @@ using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures.Collections.Generic;
 using GeoAPI.Geometries;
-using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using GisSharpBlog.NetTopologySuite.Planargraph.Algorithm;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
+using GeoAPI.Diagnostics;
+using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 {

@@ -4,12 +4,12 @@ using GeoAPI.Coordinates;
 using GeoAPI.CoordinateSystems;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
 using GeoAPI.IO.WellKnownBinary;
 using GeoAPI.IO.WellKnownText;
+using GeoAPI.Diagnostics;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -50,7 +50,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             return new GeometryFactory<TCoordinate>(
                 new PrecisionModel<TCoordinate>(coordSequenceFactory.CoordinateFactory,
-                                                PrecisionModelType.FloatingSingle),
+                                                PrecisionModelType.SingleFloating),
                 null, coordSequenceFactory);
         }
 

@@ -4,11 +4,12 @@ using System.Diagnostics;
 using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Operation.Overlay;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
+using GeoAPI.Diagnostics;
+using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -296,7 +297,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 }
 
                 Assert.IsTrue(firstOut.IsInResult, "unable to link last incoming dirEdge");
-                Debug.Assert(incoming != null);
+                Assert.IsTrue(incoming != null);
                 incoming.Next = firstOut;
             }
         }

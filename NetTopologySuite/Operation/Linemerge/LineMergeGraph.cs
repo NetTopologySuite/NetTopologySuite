@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GeoAPI.Utilities;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using NPack.Interfaces;
 
