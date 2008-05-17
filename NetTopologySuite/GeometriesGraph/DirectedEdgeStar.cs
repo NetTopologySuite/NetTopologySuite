@@ -6,7 +6,6 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Operation.Overlay;
-using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
 using GeoAPI.Diagnostics;
 using GeoAPI.DataStructures;

@@ -6,7 +6,6 @@ using GeoAPI.DataStructures.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
-using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
 using GeoAPI.Diagnostics;
 using GeoAPI.DataStructures;

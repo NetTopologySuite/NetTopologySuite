@@ -3,7 +3,6 @@ using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.Units;
 using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
 using GeoAPI.Diagnostics;
 

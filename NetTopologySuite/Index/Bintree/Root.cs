@@ -3,7 +3,6 @@ using GeoAPI.DataStructures;
 using GeoAPI.Diagnostics;
 using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Index.Quadtree;
-using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 {

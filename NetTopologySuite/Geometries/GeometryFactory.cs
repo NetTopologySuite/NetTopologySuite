@@ -5,7 +5,6 @@ using GeoAPI.CoordinateSystems;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
-using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
 using GeoAPI.IO.WellKnownBinary;
 using GeoAPI.IO.WellKnownText;

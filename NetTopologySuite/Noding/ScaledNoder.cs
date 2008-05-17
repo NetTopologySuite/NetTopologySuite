@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack;
 using NPack.Interfaces;
 using GeoAPI.DataStructures;
@@ -103,7 +102,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                                              scale(segmentString.Coordinates), 
                                              segmentString.Context);
                                      };
-            return Enumerable.Transform(segStrings, componentTransform);
+            return Enumerable.Transform<NodedSegmentString<TCoordinate>>(segStrings, componentTransform);
         }
 
         private ICoordinateSequence<TCoordinate> scale(ICoordinateSequence<TCoordinate> pts)

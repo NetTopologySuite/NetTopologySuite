@@ -1,7 +1,6 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Diagnostics;
-using GisSharpBlog.NetTopologySuite.Utilities;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using NPack.Interfaces;
 

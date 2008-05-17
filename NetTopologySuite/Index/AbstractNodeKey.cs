@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.DataStructures;
-using GisSharpBlog.NetTopologySuite.Utilities;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Index
