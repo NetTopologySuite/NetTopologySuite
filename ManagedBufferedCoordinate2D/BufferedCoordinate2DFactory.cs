@@ -616,6 +616,11 @@ namespace NetTopologySuite.Coordinates
 
         private BufferedCoordinate2D getVertexInternal(Double x, Double y, Double w)
         {
+            if (Double.IsNaN(x) || Double.IsNaN(y) || Double.IsNaN(w))
+            {
+                throw new InvalidOperationException("Vertex components can't be NaN.");
+            }
+
             Int64 xBits = BitConverter.DoubleToInt64Bits(x);
             xBits &= _mask;
             x = BitConverter.Int64BitsToDouble(xBits);
