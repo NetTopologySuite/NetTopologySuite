@@ -1457,7 +1457,7 @@ namespace NetTopologySuite.Coordinates
 
         ICoordinate ICoordinateSequence.this[Int32 index]
         {
-            get { throw new NotImplementedException(); }
+            get { return this[index]; }
             set
             {
                 checkFrozen();

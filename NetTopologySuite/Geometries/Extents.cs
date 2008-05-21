@@ -1189,9 +1189,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         void IExtents.ExpandToInclude(ICoordinateSequence sequence)
         {
-            ICoordinateSequenceFactory<TCoordinate> coordSeqFac 
+            ICoordinateSequenceFactory<TCoordinate> coordSeqFac
                 = _geoFactory.CoordinateSequenceFactory;
-            ICoordinateSequence<TCoordinate> converted 
+            ICoordinateSequence<TCoordinate> converted
                 = GenericInterfaceConverter<TCoordinate>.Convert(sequence, coordSeqFac);
             ExpandToInclude(converted);
         }
@@ -1263,14 +1263,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Double GetSize(Ordinates axis1, Ordinates axis2)
         {
-            return Math.Abs(_max[axis1] - _min[axis1]) * 
+            return Math.Abs(_max[axis1] - _min[axis1]) *
                    Math.Abs(_max[axis2] - _min[axis2]);
         }
 
         public Double GetSize(Ordinates axis1, Ordinates axis2, Ordinates axis3)
         {
-            return Math.Abs(_max[axis1] - _min[axis1]) * 
-                   Math.Abs(_max[axis2] - _min[axis2]) * 
+            return Math.Abs(_max[axis1] - _min[axis1]) *
+                   Math.Abs(_max[axis2] - _min[axis2]) *
                    Math.Abs(_max[axis3] - _min[axis3]);
         }
 
@@ -1373,7 +1373,23 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public void TranslateRelativeToWidth(params Double[] vector)
         {
-            throw new NotImplementedException();
+            Double xShift;
+            Double yShift;
+
+            switch (vector.Length)
+            {
+                case 0:
+                    return;
+                case 1:
+                    xShift = yShift = vector[0] * Width;
+                    break;
+                default:
+                    xShift = vector[0] * Width;
+                    yShift = vector[1] * Width;
+                    break;
+            }
+
+            Translate(xShift, yShift);
         }
 
 
