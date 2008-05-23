@@ -222,13 +222,15 @@
     <Compile Include="IO\PostGisGeometryType.cs" />
     <Compile Include="IO\PostGisReader.cs" />
     <Compile Include="IO\PostGisWriter.cs" />
-    <Compile Include="IO\ShapeGeometryType.cs" />
     <Compile Include="IO\GDBReader.cs" />
     <Compile Include="IO\GDBWriter.cs" />
     <Compile Include="IO\ParseException.cs" />
     <Compile Include="IO\MyShapeFileReader.cs" />
     <Compile Include="IO\MyShapeFileWriter.cs" />
     <Compile Include="IO\GeoTools\Handlers\ShapeHandler.cs" />
+    <Compile Include="IO\ShapeGeometryType.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IO\ShapeReader.cs" />
     <Compile Include="IO\ShapeWriter.cs" />
     <Compile Include="IO\GeoTools\TokenType.cs" />
