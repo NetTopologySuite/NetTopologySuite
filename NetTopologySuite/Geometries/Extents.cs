@@ -10,14 +10,17 @@ using GeoAPI.DataStructures;
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>
-    /// Defines a rectangular region of the 2D coordinate plane.
-    /// It is often used to represent the bounding box of a <see cref="Geometry{TCoordinate}"/>,
-    /// e.g. the minimum and maximum x and y values of the Coordinates.
-    /// Note that Extents support infinite or half-infinite regions, by using the values of
+    /// Defines a rectangular, orthogonal region of the 2D coordinate plane.
+    /// </summary>
+    /// <remarks>
+    /// An <see cref="Extents{TCoordinate}"/> is often used to represent the 
+    /// bounding box of a <see cref="Geometry{TCoordinate}"/>,
+    /// e.g. the minimum and maximum x and y values of all the coordinates.
+    /// Extents support infinite or half-infinite regions, by using the values of
     /// <see cref="Double.PositiveInfinity"/> and <see cref="Double.NegativeInfinity"/>.
     /// When Extents objects are created or initialized,
-    /// the supplies extent values are automatically sorted into the correct order.    
-    /// </summary>
+    /// the supplies extent values are automatically sorted into the correct order. 
+    /// </remarks>
     [Serializable]
     public class Extents<TCoordinate> : IExtents<TCoordinate>, IExtents2D
             where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
@@ -99,9 +102,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             return true;
         }
-
-        //internal Extents()
-        //    : this(Coordinates<TCoordinate>.DefaultCoordinateFactory) { }
 
         /// <summary>
         /// Creates a null <see cref="Extents{TCoordinate}"/>.
@@ -299,61 +299,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        //public Double MinX
-        //{
-        //    get { return _minX; }
-        //}
-
-        //public Double MaxX
-        //{
-        //    get { return _maxX; }
-        //}
-
-        //public Double MinY
-        //{
-        //    get { return _minY; }
-        //}
-
-        //public Double MaxY
-        //{
-        //    get { return _maxY; }
-        //}
-
-        ///// <summary>
-        ///// Expands this envelope by a given distance in all directions.
-        ///// Both positive and negative distances are supported.
-        ///// </summary>
-        ///// <param name="distance">The distance to expand the envelope.</param>
-        //public void ExpandBy(Double distance)
-        //{
-        //    ExpandBy(distance, distance);
-        //}
-
-        ///// <summary>
-        ///// Expands this envelope by a given distance in all directions.
-        ///// Both positive and negative distances are supported.
-        ///// </summary>
-        ///// <param name="deltaX">The distance to expand the envelope along the the X axis.</param>
-        ///// <param name="deltaY">The distance to expand the envelope along the the Y axis.</param>
-        //public void ExpandBy(Double deltaX, Double deltaY)
-        //{
-        //    if (IsEmpty)
-        //    {
-        //        return;
-        //    }
-
-        //    _minX -= deltaX;
-        //    _maxX += deltaX;
-        //    _minY -= deltaY;
-        //    _maxY += deltaY;
-
-        //    // check for envelope disappearing
-        //    if (_minX > _maxX || _minY > _maxY)
-        //    {
-        //        SetToEmpty();
-        //    }
-        //}
-
         /// <summary>
         /// Enlarges the boundary of the <see cref="Extents{TCoordinate}"/> so that it contains (p).
         /// Does nothing if (p) is already on or within the boundaries.
@@ -470,14 +415,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                if (IsEmpty)
-                {
-                    return default(TCoordinate);
-                }
-
-                return _geoFactory.CoordinateFactory.Create(
-                    (Min[Ordinates.X] + Max[Ordinates.X]) / 2.0,
-                    (Min[Ordinates.Y] + Max[Ordinates.Y]) / 2.0);
+                return IsEmpty
+                           ? default(TCoordinate)
+                           : _geoFactory.CoordinateFactory.Create(
+                                 (Min[Ordinates.X] + Max[Ordinates.X]) / 2.0,
+                                 (Min[Ordinates.Y] + Max[Ordinates.Y]) / 2.0);
             }
         }
 
@@ -489,12 +431,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
 
             // TODO: 3D unsafe
-            return new Extents<TCoordinate>(
-                                Factory,
-                                Math.Max(Min[Ordinates.X], extents.Min[Ordinates.X]),
-                                Math.Min(Max[Ordinates.X], extents.Max[Ordinates.X]),
-                                Math.Max(Min[Ordinates.Y], extents.Min[Ordinates.Y]),
-                                Math.Min(Max[Ordinates.Y], extents.Max[Ordinates.Y]));
+            return new Extents<TCoordinate>(Factory,
+                                            Math.Max(Min[Ordinates.X], extents.Min[Ordinates.X]),
+                                            Math.Min(Max[Ordinates.X], extents.Max[Ordinates.X]),
+                                            Math.Max(Min[Ordinates.Y], extents.Min[Ordinates.Y]),
+                                            Math.Min(Max[Ordinates.Y], extents.Max[Ordinates.Y]));
         }
 
         /// <summary> 
@@ -516,9 +457,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             // TODO: 3D unsafe
             return !(other.Min[Ordinates.X] > _max[Ordinates.X] ||
-                other.Max[Ordinates.X] < _min[Ordinates.X] ||
-                other.Min[Ordinates.Y] > _max[Ordinates.Y] ||
-                other.Max[Ordinates.Y] < _min[Ordinates.Y]);
+                     other.Max[Ordinates.X] < _min[Ordinates.X] ||
+                     other.Min[Ordinates.Y] > _max[Ordinates.Y] ||
+                     other.Max[Ordinates.Y] < _min[Ordinates.Y]);
         }
 
         /// <summary>  
@@ -557,9 +498,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
 
             return !(x > _max[Ordinates.X] ||
-                x < _min[Ordinates.X] ||
-                y > _max[Ordinates.Y] ||
-                y < _min[Ordinates.Y]);
+                     x < _min[Ordinates.X] ||
+                     y > _max[Ordinates.Y] ||
+                     y < _min[Ordinates.Y]);
         }
 
         /// <summary>
@@ -617,9 +558,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public Boolean Contains(Double x, Double y)
         {
             return x >= _min[Ordinates.X] &&
-                x <= _max[Ordinates.X] &&
-                y >= _min[Ordinates.Y] &&
-                y <= _max[Ordinates.Y];
+                   x <= _max[Ordinates.X] &&
+                   y >= _min[Ordinates.Y] &&
+                   y <= _max[Ordinates.Y];
         }
 
         /// <summary>  
@@ -637,9 +578,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             // TODO: 3D unsafe
             return other.Min[Ordinates.X] >= _min[Ordinates.X] &&
-                    other.Max[Ordinates.X] <= _max[Ordinates.X] &&
-                    other.Min[Ordinates.Y] >= _min[Ordinates.Y] &&
-                    other.Max[Ordinates.Y] <= _max[Ordinates.Y];
+                   other.Max[Ordinates.X] <= _max[Ordinates.X] &&
+                   other.Min[Ordinates.Y] >= _min[Ordinates.Y] &&
+                   other.Max[Ordinates.Y] <= _max[Ordinates.Y];
         }
 
         /// <summary> 
@@ -712,11 +653,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return other.IsEmpty;
             }
 
-            // TODO: 3D unsafe
-            return _max[Ordinates.X] == other.Max[Ordinates.X] &&
-                   _max[Ordinates.Y] == other.Max[Ordinates.Y] &&
-                   _min[Ordinates.X] == other.Min[Ordinates.X] &&
-                   _min[Ordinates.Y] == other.Min[Ordinates.Y];
+            return _max.Equals(other.Max) &&
+                   _min.Equals(other.Min);
         }
 
         public Int32 CompareTo(object other)
@@ -737,7 +675,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             {
                 return 0;
             }
-            else if (isEmpty || otherEmpty)
+            
+            if (isEmpty || otherEmpty)
             {
                 return isEmpty ? -1 : 1;
             }
@@ -763,6 +702,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return result;
         }
 
+        /// <summary>
+        /// Compares two <see cref="Extents{TCoordinate}"/> instances for value equality.
+        /// </summary>
+        /// <param name="left">The left <see cref="Extents{TCoordinate}"/> instance.</param>
+        /// <param name="right">The right <see cref="Extents{TCoordinate}"/> instance.</param>
+        /// <returns>
+        /// <see langword="true"/> if the <typeparamref name="TCoordinate"/> values of the 
+        /// <see cref="Extents{TCoordinate}"/> are equal.
+        /// </returns>
         public static Boolean operator ==(Extents<TCoordinate> left, Extents<TCoordinate> right)
         {
             if (ReferenceEquals(left, right))
@@ -770,16 +718,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return true;
             }
 
-            if (!ReferenceEquals(left, null))
-            {
-                return left.Equals(right);
-            }
-            else
-            {
-                return right.Equals(left);
-            }
+            return !ReferenceEquals(left, null)
+                       ? left.Equals(right)
+                       : right.Equals(left);
         }
 
+        /// <summary>
+        /// Compares two <see cref="Extents{TCoordinate}"/> instances for value inequality.
+        /// </summary>
+        /// <param name="left">The left <see cref="Extents{TCoordinate}"/> instance.</param>
+        /// <param name="right">The right <see cref="Extents{TCoordinate}"/> instance.</param>
+        /// <returns>
+        /// <see langword="true"/> if the <typeparamref name="TCoordinate"/> values of the 
+        /// <see cref="Extents{TCoordinate}"/> are not equal.
+        /// </returns>
         public static Boolean operator !=(Extents<TCoordinate> left, Extents<TCoordinate> right)
         {
             return !(left == right);
@@ -788,8 +740,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public override string ToString()
         {
             // TODO: 3D unsafe
-            return "Extents [" + _min[Ordinates.X] + " : " + _max[Ordinates.X] +
-                ", " + _min[Ordinates.Y] + " : " + _max[Ordinates.Y] + "]";
+            return "Extents [" + _min[Ordinates.X] + " - " + _max[Ordinates.X] +
+                   ", " + _min[Ordinates.Y] + " - " + _max[Ordinates.Y] + "]";
         }
 
         /// <summary>
@@ -811,8 +763,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get
             {
                 // TODO: 3D unsafe
-                Double area = Math.Abs(_max[Ordinates.X] - _min[Ordinates.X])
-                              * Math.Abs(_max[Ordinates.Y] - _min[Ordinates.Y]);
+                Double area = Math.Abs(_max[Ordinates.X] - _min[Ordinates.X]) * 
+                              Math.Abs(_max[Ordinates.Y] - _min[Ordinates.Y]);
                 return area;
             }
         }
@@ -1433,6 +1385,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #endregion
 
+        #region Private helper members
         private IExtents<TCoordinate> convert(IExtents extents)
         {
             if (extents == null)
@@ -1452,6 +1405,64 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return _geoFactory.CreateExtents(coordFactory.Create(extents.Min),
                                              coordFactory.Create(extents.Max));
         }
+        #endregion
+
+        #region Obsolete commented out code
+
+        //public Double MinX
+        //{
+        //    get { return _minX; }
+        //}
+
+        //public Double MaxX
+        //{
+        //    get { return _maxX; }
+        //}
+
+        //public Double MinY
+        //{
+        //    get { return _minY; }
+        //}
+
+        //public Double MaxY
+        //{
+        //    get { return _maxY; }
+        //}
+
+        ///// <summary>
+        ///// Expands this envelope by a given distance in all directions.
+        ///// Both positive and negative distances are supported.
+        ///// </summary>
+        ///// <param name="distance">The distance to expand the envelope.</param>
+        //public void ExpandBy(Double distance)
+        //{
+        //    ExpandBy(distance, distance);
+        //}
+
+        ///// <summary>
+        ///// Expands this envelope by a given distance in all directions.
+        ///// Both positive and negative distances are supported.
+        ///// </summary>
+        ///// <param name="deltaX">The distance to expand the envelope along the the X axis.</param>
+        ///// <param name="deltaY">The distance to expand the envelope along the the Y axis.</param>
+        //public void ExpandBy(Double deltaX, Double deltaY)
+        //{
+        //    if (IsEmpty)
+        //    {
+        //        return;
+        //    }
+
+        //    _minX -= deltaX;
+        //    _maxX += deltaX;
+        //    _minY -= deltaY;
+        //    _maxY += deltaY;
+
+        //    // check for envelope disappearing
+        //    if (_minX > _maxX || _minY > _maxY)
+        //    {
+        //        SetToEmpty();
+        //    }
+        //}
 
         ///// <summary>
         ///// Moves the envelope to the indicated coordinate.
@@ -1524,5 +1535,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         //    Double h = (Height * perCent / 100);
         //    SetCenter(w, h);
         //}
+        #endregion
     }
 }
