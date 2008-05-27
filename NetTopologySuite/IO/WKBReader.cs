@@ -1,10 +1,6 @@
 using System;
-using System.Collections;
 using System.IO;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.IO
@@ -27,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <summary>
         /// Initialize reader with a standard <c>GeometryFactory</c>. 
         /// </summary>
-        public WKBReader() : this(new GeometryFactory()) { }
+        public WKBReader() : this(GeometryFactory.Default) { }
 
         /// <summary>
         /// Initialize reader with the given <c>GeometryFactory</c>.
@@ -167,6 +163,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// 
         /// </summary>
         /// <param name="reader"></param>
+        /// <param name="cs"></param>
         /// <returns></returns>
         protected ICoordinate ReadCoordinate(BinaryReader reader, CoordinateSystem cs)
         {
@@ -197,6 +194,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// 
         /// </summary>
         /// <param name="reader"></param>
+        /// <param name="cs"></param>
         /// <returns></returns>
         protected ILinearRing ReadRing(BinaryReader reader, CoordinateSystem cs)
         {
@@ -211,6 +209,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// 
         /// </summary>
         /// <param name="reader"></param>
+        /// <param name="cs"></param>
         /// <returns></returns>
         protected IGeometry ReadPoint(BinaryReader reader, CoordinateSystem cs)
         {
@@ -221,6 +220,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// 
         /// </summary>
         /// <param name="reader"></param>
+        /// <param name="cs"></param>
         /// <returns></returns>
         protected IGeometry ReadLineString(BinaryReader reader, CoordinateSystem cs)
         {
@@ -235,6 +235,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// 
         /// </summary>
         /// <param name="reader"></param>
+        /// <param name="cs"></param>
         /// <returns></returns>
         protected IGeometry ReadPolygon(BinaryReader reader, CoordinateSystem cs)
         {
@@ -250,6 +251,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// 
         /// </summary>
         /// <param name="reader"></param>
+        /// <param name="cs"></param>
         /// <returns></returns>
         protected IGeometry ReadMultiPoint(BinaryReader reader, CoordinateSystem cs)
         {
@@ -270,6 +272,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// 
         /// </summary>
         /// <param name="reader"></param>
+        /// <param name="cs"></param>
         /// <returns></returns>
         protected IGeometry ReadMultiLineString(BinaryReader reader, CoordinateSystem cs)
         {
@@ -290,6 +293,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// 
         /// </summary>
         /// <param name="reader"></param>
+        /// <param name="cs"></param>
         /// <returns></returns>
         protected IGeometry ReadMultiPolygon(BinaryReader reader, CoordinateSystem cs)
         {
@@ -310,6 +314,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// 
         /// </summary>
         /// <param name="reader"></param>
+        /// <param name="cs"></param>
         /// <returns></returns>
         protected IGeometry ReadGeometryCollection(BinaryReader reader, CoordinateSystem cs)
         {
