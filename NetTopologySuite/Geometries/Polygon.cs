@@ -23,9 +23,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// OpenGIS Simple Features Specification for SQL </see>.     
     /// </remarks>
     [Serializable]
-    public class Polygon<TCoordinate> : MultiCoordinateGeometry<TCoordinate>, IPolygon<TCoordinate>, IHasGeometryComponents<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+    public class Polygon<TCoordinate> : MultiCoordinateGeometry<TCoordinate>, 
+                                        IPolygon<TCoordinate>, 
+                                        IHasGeometryComponents<TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         ///// <summary>
         ///// Represents an empty <see cref="Polygon{TCoordinate}"/>.
@@ -355,7 +358,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     return _shell.Clone();
                 }
 
-                IEnumerable<ILineString<TCoordinate>> lineStrings = Slice.Append(InteriorRings, _shell);
+                // Leave the explicit type parameter on Slice.Append,
+                // since compiling with ToolsVersion=2.0 fails otherwise.
+                IEnumerable<ILineString<TCoordinate>> lineStrings 
+                    = Slice.Append<ILineString<TCoordinate>>(InteriorRings, _shell);
                 return Factory.CreateMultiLineString(lineStrings);
             }
         }
@@ -395,8 +401,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             IEnumerator<ILineString<TCoordinate>> otherPolygonHoles = otherPolygon.InteriorRings.GetEnumerator();
             IEnumerator<ILineString<TCoordinate>> holes = _holes.GetEnumerator();
-            
-            while(otherPolygonHoles.MoveNext() && holes.MoveNext())
+
+            while (otherPolygonHoles.MoveNext() && holes.MoveNext())
             {
                 if (!holes.Current.Equals(otherPolygonHoles.Current, tolerance))
                 {

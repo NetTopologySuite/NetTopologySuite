@@ -9,40 +9,117 @@ using GeoAPI.DataStructures;
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
     /// <summary> 
-    /// Supports creating a new <see cref="Geometry{TCoordinate}"/> which is a modification of an existing one.
-    /// Geometry objects are intended to be treated as immutable.
-    /// This class allows you to "modify" a Geometry
-    /// by traversing it and creating a new Geometry with the same overall structure but
-    /// possibly modified components.
-    /// The following kinds of modifications can be made:
+    /// Supports creating a new <see cref="Geometry{TCoordinate}"/> 
+    /// which is a modification of an existing one.
+    /// </summary>
+    /// <remarks>
     /// <para>
+    /// <see cref="Geometry{TCoordinate}"/> objects are intended to be treated as immutable.
+    /// This class allows you to "modify" a <see cref="Geometry{TCoordinate}"/>
+    /// by traversing it and creating a new <see cref="Geometry{TCoordinate}"/> 
+    /// with the same overall structure but possibly modified components.
+    /// </para>
+    /// The following kinds of modifications can be made:
+    /// <list type="bullet">
+    /// <item>
+    /// <description>
     /// The values of the coordinates may be changed.
-    /// Changing coordinate values may make the result Geometry invalid;
-    /// this is not checked by the GeometryEditor.
-    /// </para>
-    /// <para>The coordinate lists may be changed
-    /// (e.g. by adding or deleting coordinates).
+    /// Changing coordinate values may make the resultant <see cref="Geometry{TCoordinate}"/> 
+    /// invalid; this is not checked by the <see cref="GeometryEditor{TCoordinate}"/>.
+    /// </description>
+    /// </item>
+    /// <item>
+    /// <description>
+    /// The coordinate lists may be changed (e.g. by adding or removing coordinates).
     /// The modifed coordinate lists must be consistent with their original parent component
-    /// (e.g. a LinearRing must always have at least 4 coordinates, and the first and last
-    /// coordinate must be equal).
-    /// </para>
-    /// <para>Components of the original point may be deleted
-    /// (e.g. holes may be removed from a Polygon, or LineStrings removed from a MultiLineString).
+    /// (e.g. a <see cref="LinearRing{TCoordinate}"/> must always have at least 4 
+    /// coordinates, and the first and last coordinate must be equal).
+    /// </description>
+    /// </item>
+    /// <item>
+    /// <description>
+    /// Components of the original point may be deleted
+    /// (e.g. holes may be removed from a <see cref="Polygon{TCoordinate}"/>, 
+    /// or <see cref="LineString{TCoordinate}"/>s removed from a 
+    /// <see cref="MultiLineString{TCoordinate}"/>).
     /// Deletions will be propagated up the component tree appropriately.
-    /// </para>
+    /// </description>
+    /// </item>
+    /// </list>
+    /// <para>
     /// Note that all changes must be consistent with the original Geometry's structure
-    /// (e.g. a Polygon cannot be collapsed into a LineString).
-    /// The resulting Geometry is not checked for validity.
-    /// If validity needs to be enforced, the new Geometry's IsValid should be checked.
-    /// </summary>    
+    /// (e.g. a <see cref="Polygon{TCoordinate}"/> cannot be collapsed into a 
+    /// <see cref="LineString{TCoordinate}"/>).
+    /// The resulting <see cref="Geometry{TCoordinate}"/> is not checked for validity.
+    /// If validity needs to be enforced, the new Geometry's 
+    /// <see cref="Geometry{TCoordinate}.IsValid"/> should be checked.
+    /// </para>
+    /// </remarks>
     public class GeometryEditor<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
+        #region Nested Types
+        /// <summary> 
+        /// A interface which specifies an edit operation for Geometries.
+        /// </summary>
+        public interface IGeometryEditorOperation
+        {
+            /// <summary>
+            /// Edits a Geometry by returning a new Geometry with a modification.
+            /// The returned Geometry might be the same as the Geometry passed in.
+            /// </summary>
+            /// <param name="geometry">The Geometry to modify.</param>
+            /// <param name="factory">
+            /// The factory with which to construct the modified Geometry
+            /// (may be different to the factory of the input point).
+            /// </param>
+            /// <returns>A new Geometry which is a modification of the input Geometry.</returns>
+            IGeometry<TCoordinate> Edit(IGeometry<TCoordinate> geometry, IGeometryFactory<TCoordinate> factory);
+        }
+
+        /// <summary>
+        /// A GeometryEditorOperation which modifies the coordinate list of a <see cref="Geometry{TCoordinate}"/>.
+        /// Operates on Geometry subclasses which contains a single coordinate list.
+        /// </summary>      
+        public abstract class CoordinateOperation : IGeometryEditorOperation
+        {
+            public IGeometry<TCoordinate> Edit(IGeometry<TCoordinate> geometry, IGeometryFactory<TCoordinate> factory)
+            {
+                if (geometry is ILinearRing)
+                {
+                    return factory.CreateLinearRing(Edit(geometry.Coordinates, geometry));
+                }
+
+                if (geometry is ILineString)
+                {
+                    return factory.CreateLineString(Edit(geometry.Coordinates, geometry));
+                }
+
+                if (geometry is IPoint)
+                {
+                    IEnumerable<TCoordinate> newCoordinates = Edit(geometry.Coordinates, geometry);
+                    return factory.CreatePoint(newCoordinates);
+                }
+
+                return geometry;
+            }
+
+            /// <summary> 
+            /// Edits the array of <c>Coordinate</c>s from a <see cref="Geometry{TCoordinate}"/>.
+            /// </summary>
+            /// <param name="coordinates">The coordinate array to operate on.</param>
+            /// <param name="geometry">The point containing the coordinate list.</param>
+            /// <returns>An edited coordinate array (which may be the same as the input).</returns>
+            public abstract IEnumerable<TCoordinate> Edit(IEnumerable<TCoordinate> coordinates, IGeometry<TCoordinate> geometry);
+        }
+        #endregion
+
         /// <summary> 
         /// The factory used to create the modified Geometry.
         /// </summary>
-        private IGeometryFactory<TCoordinate> _factory = null;
+        private IGeometryFactory<TCoordinate> _factory;
 
         /// <summary> 
         /// Creates a new GeometryEditor object which will create
@@ -70,7 +147,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <returns>
         /// A new <see cref="Geometry{TCoordinate}"/> which is the result of the editing.
         /// </returns>
-        public IGeometry<TCoordinate> Edit(IGeometry<TCoordinate> geometry, IGeometryEditorOperation operation)
+        public IGeometry<TCoordinate> Edit(IGeometry<TCoordinate> geometry,
+                                           IGeometryEditorOperation operation)
         {
             // if client did not supply a GeometryFactory, use the one from the input Geometry
             if (_factory == null)
@@ -98,7 +176,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                 return operation.Edit(geometry, _factory);
             }
 
-            Assert.ShouldNeverReachHere("Unsupported Geometry classes should be caught in the GeometryEditorOperation.");
+            Assert.ShouldNeverReachHere("Unsupported Geometry classes should be " +
+                                        "caught in the GeometryEditorOperation.");
             return null;
         }
 
@@ -121,7 +200,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                 return _factory.CreatePolygon(null, null);
             }
 
-            List<ILinearRing<TCoordinate>> holes 
+            List<ILinearRing<TCoordinate>> holes
                 = new List<ILinearRing<TCoordinate>>(newPolygon.InteriorRingsCount);
 
             foreach (ILineString<TCoordinate> ring in newPolygon.InteriorRings)
@@ -184,59 +263,5 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             return _factory.CreateGeometryCollection(editedGeometries);
         }
         #endregion
-
-        /// <summary> 
-        /// A interface which specifies an edit operation for Geometries.
-        /// </summary>
-        public interface IGeometryEditorOperation
-        {
-            /// <summary>
-            /// Edits a Geometry by returning a new Geometry with a modification.
-            /// The returned Geometry might be the same as the Geometry passed in.
-            /// </summary>
-            /// <param name="geometry">The Geometry to modify.</param>
-            /// <param name="factory">
-            /// The factory with which to construct the modified Geometry
-            /// (may be different to the factory of the input point).
-            /// </param>
-            /// <returns>A new Geometry which is a modification of the input Geometry.</returns>
-            IGeometry<TCoordinate> Edit(IGeometry<TCoordinate> geometry, IGeometryFactory<TCoordinate> factory);
-        }
-
-        /// <summary>
-        /// A GeometryEditorOperation which modifies the coordinate list of a <see cref="Geometry{TCoordinate}"/>.
-        /// Operates on Geometry subclasses which contains a single coordinate list.
-        /// </summary>      
-        public abstract class CoordinateOperation : IGeometryEditorOperation
-        {
-            public IGeometry<TCoordinate> Edit(IGeometry<TCoordinate> geometry, IGeometryFactory<TCoordinate> factory)
-            {
-                if (geometry is ILinearRing)
-                {
-                    return factory.CreateLinearRing(Edit(geometry.Coordinates, geometry));
-                }
-
-                if (geometry is ILineString)
-                {
-                    return factory.CreateLineString(Edit(geometry.Coordinates, geometry));
-                }
-
-                if (geometry is IPoint)
-                {
-                    IEnumerable<TCoordinate> newCoordinates = Edit(geometry.Coordinates, geometry);
-                    return factory.CreatePoint(newCoordinates);
-                }
-
-                return geometry;
-            }
-
-            /// <summary> 
-            /// Edits the array of <c>Coordinate</c>s from a <see cref="Geometry{TCoordinate}"/>.
-            /// </summary>
-            /// <param name="coordinates">The coordinate array to operate on.</param>
-            /// <param name="geometry">The point containing the coordinate list.</param>
-            /// <returns>An edited coordinate array (which may be the same as the input).</returns>
-            public abstract IEnumerable<TCoordinate> Edit(IEnumerable<TCoordinate> coordinates, IGeometry<TCoordinate> geometry);
-        }
     }
 }

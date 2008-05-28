@@ -17,8 +17,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// having its contained points public).
     /// This supports a common pattern of reusing a single LineSegment
     /// object as a way of computing segment properties on the
-    /// segments defined by arrays or lists of <c>Coordinate</c>s.
-    /// </summary>    
+    /// segments defined by arrays or lists of <typeparamref name="TCoordinate"/>s.
+    /// </summary>
+    /// <typeparam name="TCoordinate">The coordinate type to use.</typeparam>
     [Serializable]
     public struct LineSegment<TCoordinate> : IEquatable<LineSegment<TCoordinate>>, 
                                              IComparable<LineSegment<TCoordinate>>

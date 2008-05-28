@@ -16,12 +16,14 @@ namespace NetTopologySuite.Coordinates
     using IBufferedCoordSequenceFactory = ICoordinateSequenceFactory<BufferedCoordinate2D>;
     using GeoAPI.DataStructures;
 
+    /// <summary>
+    /// An <see cref="ICoordinateSequence{BufferedCoordinate2D}"/>.
+    /// </summary>
     public class BufferedCoordinate2DSequence : IBufferedCoordSequence
     {
         private enum SequenceStorage
         {
-            Unknown = 0,
-            PrependList,
+            PrependList = 1,
             MainList,
             AppendList
         }
@@ -1110,13 +1112,13 @@ namespace NetTopologySuite.Coordinates
 
             // handle the case slice starts and stops in main
             if (startStorage == SequenceStorage.MainList &&
-               endStorage == SequenceStorage.MainList)
+                endStorage == SequenceStorage.MainList)
             {
                 if (_skipIndexes != null)
                 {
                     Int32 i = transformedStart;
-                    generator = () => i++;
-                    condition = v => (v <= transformedEnd);
+                    generator = delegate() { return i++; };
+                    condition = delegate(Int32 v) { return v <= transformedEnd; };
                     sliceSkips = new SortedSet<Int32>();
                     sliceSkips.AddRange(Set<Int32>
                                             .Create(generator, condition)
@@ -1164,8 +1166,8 @@ namespace NetTopologySuite.Coordinates
                     }
 
                     Int32 i = transformedStart;
-                    generator = () => i++;
-                    condition = v => (v <= _sequence.Count);
+                    generator = delegate() { return i++; };
+                    condition = delegate(Int32 v) { return v <= _sequence.Count; };
                 }
                 else if (endStorage == SequenceStorage.MainList)
                 {
@@ -1181,8 +1183,8 @@ namespace NetTopologySuite.Coordinates
                     }
 
                     Int32 i = 0;
-                    generator = () => i++;
-                    condition = v => (v <= transformedEnd);
+                    generator = delegate() { return i++; };
+                    condition = delegate(Int32 v) { return v <= transformedEnd; };
                 }
                 else
                 {

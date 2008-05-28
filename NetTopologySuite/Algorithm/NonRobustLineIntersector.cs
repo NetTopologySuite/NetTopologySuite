@@ -11,21 +11,23 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>   
     /// <typeparam name="TCoordinate">The coordinate type to use.</typeparam>
     public class NonRobustLineIntersector<TCoordinate> : LineIntersector<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
+        /// <summary>
+        /// Checks two numbers to determine if they have the same sign and are non-zero.
+        /// </summary>
+        /// <param name="a">First number.</param>
+        /// <param name="b">Second number.</param>
         /// <returns> 
         /// <see langword="true"/> if both numbers are positive or if both numbers are negative, 
-        /// <c>false</c> if both numbers are zero.
+        /// <see langword="false" /> if both numbers are zero.
         /// </returns>
         public static Boolean IsSameSignAndNonZero(Double a, Double b)
         {
-            if (a == 0 || b == 0)
-            {
-                return false;
-            }
-
-            return (a < 0 && b < 0) || (a > 0 && b > 0);
+            return a != 0 && b != 0 &&
+                   ((a < 0 && b < 0) || (a > 0 && b > 0));
         }
 
         protected NonRobustLineIntersector(IGeometryFactory<TCoordinate> factory)
