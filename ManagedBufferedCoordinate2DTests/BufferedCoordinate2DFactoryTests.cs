@@ -166,7 +166,7 @@ namespace ManagedBufferedCoordinate2DTests
         [Test]
         public void CoordinateAddToBufferSucceeds()
         {
-            var mocks = new MockRepository();
+            MockRepository mocks = new MockRepository();
             IVector<DoubleComponent> vector = mocks.Stub<IVector<DoubleComponent>>();
             Expect.Call(vector.ComponentCount).Repeat.Any().Return(2);
             vector[0] = 5;
@@ -185,7 +185,7 @@ namespace ManagedBufferedCoordinate2DTests
         [ExpectedException(typeof(ArgumentException))]
         public void Coordinate3DAddToBufferFails()
         {
-            var mocks = new MockRepository();
+            MockRepository mocks = new MockRepository();
             IVector<DoubleComponent> vector = mocks.Stub<IVector<DoubleComponent>>();
             Expect.Call(vector.ComponentCount).Repeat.Any().Return(3);
             vector[0] = 5;
@@ -272,7 +272,7 @@ namespace ManagedBufferedCoordinate2DTests
         [ExpectedException(typeof(NotImplementedException))]
         public void BufferContainsIVectorSucceeds()
         {
-            var mocks = new MockRepository();
+            MockRepository mocks = new MockRepository();
             IVector<DoubleComponent> vector = mocks.Stub<IVector<DoubleComponent>>();
             Expect.Call(vector.ComponentCount).Repeat.Any().Return(2);
             vector[0] = 5;
