@@ -14,7 +14,7 @@
     </AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
     <OutputType>Exe</OutputType>
-    <RootNamespace>GisSharpBlog.NetTopologySuite</RootNamespace>
+    <RootNamespace>GisSharpBlog.NetTopologySuite.Console</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
     </StartupObject>
@@ -159,9 +159,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetTopologySuite.TestRunner\NetTopologySute.TestRunner.csproj">
+    <ProjectReference Include="..\NetTopologySuite.TestRunner\NetTopologySuite.TestRunner.csproj">
       <Project>{13669184-2446-404F-8894-5E20B6C3FCC6}</Project>
-      <Name>NetTopologySute.TestRunner</Name>
+      <Name>NetTopologySuite.TestRunner</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -1,116 +1,77 @@
 using System;
+using GisSharpBlog.NetTopologySuite;
 
-using Open.Topology.TestRunner;
-
-namespace ConsoleTestRunner
+namespace GisSharpBlog.NetTopologySuite.Console
 {
-	/// <summary>
-	/// Summary description for TestInfo.
-	/// </summary>
+    /// <summary>
+    /// Summary description for TestInfo.
+    /// </summary>
     public class TestInfo
     {
         #region Private Members
-        
-        private string m_strFileName     = null;
-        private string m_strDirectory    = null;
-        private XmlTestType m_enumFilter = XmlTestType.None;
-        private bool m_bVerbose          = true;
-        private bool m_bException        = true;
-        private bool m_bInteractive      = false;
+
+        private String _strFileName;
+        private String _strDirectory;
+        private XmlTestType _enumFilter = XmlTestType.None;
+        private Boolean _bVerbose = true;
+        private Boolean _bException = true;
+        private Boolean _bInteractive;
 
         #endregion
 
         #region Constructors and Destructor
-        
+
         public TestInfo(XmlTestType filter)
         {
-            m_enumFilter = filter;
+            _enumFilter = filter;
         }
 
         #endregion
 
         #region Public Properties
 
-        public string FileName
+        public String FileName
         {
-            get
-            {
-                return m_strFileName;
-            }
+            get { return _strFileName; }
 
-            set
-            {
-                m_strFileName = value;
-            }
+            set { _strFileName = value; }
         }
 
-        public string Directory 
+        public String Directory
         {
-            get
-            {
-                return m_strDirectory;
-            }
+            get { return _strDirectory; }
 
-            set
-            {
-                m_strDirectory = value;
-            }
+            set { _strDirectory = value; }
         }
 
         public XmlTestType Filter
         {
-            get
-            {
-                return m_enumFilter;
-            }
+            get { return _enumFilter; }
 
-            set
-            {
-                m_enumFilter = value;
-            }
+            set { _enumFilter = value; }
         }
 
-        public bool Verbose
+        public Boolean Verbose
         {
-            get
-            {
-                return m_bVerbose;
-            }
+            get { return _bVerbose; }
 
-            set
-            {
-                m_bVerbose = value;
-            }
+            set { _bVerbose = value; }
         }
 
-        public bool Exception
+        public Boolean Exception
         {
-            get
-            {
-                return m_bException;
-            }
+            get { return _bException; }
 
-            set
-            {
-                m_bException = value;
-            }
+            set { _bException = value; }
         }
 
-        public bool Interactive
+        public Boolean Interactive
         {
-            get
-            {
-                return m_bInteractive;
-            }
+            get { return _bInteractive; }
 
-            set
-            {
-                m_bInteractive = value;
-            }
+            set { _bInteractive = value; }
         }
 
         #endregion
-
     }
-
 }

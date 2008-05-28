@@ -90,7 +90,6 @@
     <Compile Include="Tests\Various\ReverseTest.cs" />
     <Compile Include="Tests\Various\RobustLineIntersectorTest.cs" />
     <Compile Include="Tests\Various\OGCTests.cs" />
-    <Compile Include="Tests\Various\SRSConversionTest.cs" />
     <Compile Include="Tests\Various\WKTTest.cs" />
     <Compile Include="Operation\Distance\ClosestPointExample.cs" />
     <Compile Include="Operation\Linemerge\LineMergeExample.cs" />
@@ -108,13 +107,9 @@
     <Compile Include="Technique\UnionUsingBuffer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\GeoAPI\src\GeoAPI\GeoAPINoTFS.csproj">
+    <ProjectReference Include="..\..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj">
       <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
-      <Name>GeoAPINoTFS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\SharpMap\Proj.Net\ProjNet\ProjNet.csproj">
-      <Project>{E028BDD2-55E1-4E5F-BE31-35FAEC8D6428}</Project>
-      <Name>ProjNet</Name>
+      <Name>GeoAPI.Net</Name>
     </ProjectReference>
     <ProjectReference Include="..\ManagedBufferedCoordinate2D\ManagedBufferedCoordinate2D.csproj">
       <Project>{8A1C8DC2-9E24-47E9-A51C-AA46E0B0260C}</Project>

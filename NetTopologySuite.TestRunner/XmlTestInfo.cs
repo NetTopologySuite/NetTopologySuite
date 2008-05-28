@@ -1,30 +1,28 @@
 using System;
-using System.Collections;
 using System.Collections.Specialized;
 
-namespace Open.Topology.TestRunner
+namespace GisSharpBlog.NetTopologySuite
 {
-	/// <summary>
-	/// Summary description for XmlTestInfo.
-	/// </summary>
-	public struct XmlTestInfo
-	{
-        private StringDictionary m_listParameters;
+    /// <summary>
+    /// Summary description for XmlTestInfo.
+    /// </summary>
+    public struct XmlTestInfo
+    {
+        private readonly StringDictionary m_listParameters;
 
-		public XmlTestInfo(bool bReset)
-		{
+        public XmlTestInfo(bool bReset)
+        {
             m_listParameters = new StringDictionary();
 
             if (bReset)
+            {
                 Reset();
-		}
+            }
+        }
 
         public StringDictionary Parameters
         {
-            get
-            {
-                return m_listParameters;
-            }
+            get { return m_listParameters; }
         }
 
         public void Reset()
@@ -33,14 +31,14 @@ namespace Open.Topology.TestRunner
             {
                 m_listParameters.Clear();
 
-                m_listParameters.Add("desc",   System.String.Empty);
-                m_listParameters.Add("a",      System.String.Empty);
-                m_listParameters.Add("b",      System.String.Empty);
-                m_listParameters.Add("name",   System.String.Empty);
-                m_listParameters.Add("result", System.String.Empty);
-                m_listParameters.Add("arg1",   System.String.Empty);
-                m_listParameters.Add("arg2",   System.String.Empty);
-                m_listParameters.Add("arg3",   System.String.Empty);
+                m_listParameters.Add("desc", String.Empty);
+                m_listParameters.Add("a", String.Empty);
+                m_listParameters.Add("b", String.Empty);
+                m_listParameters.Add("name", String.Empty);
+                m_listParameters.Add("result", String.Empty);
+                m_listParameters.Add("arg1", String.Empty);
+                m_listParameters.Add("arg2", String.Empty);
+                m_listParameters.Add("arg3", String.Empty);
             }
         }
 
@@ -81,5 +79,5 @@ namespace Open.Topology.TestRunner
 
             return true;
         }
-	}
+    }
 }

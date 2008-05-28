@@ -1,21 +1,21 @@
 using System;
-using System.IO;
 using System.Collections;
 using System.Globalization;
+using System.IO;
 using System.Xml;
 using GeoAPI.Coordinates;
 using GisSharpBlog.NetTopologySuite;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NetTopologySuite.Coordinates;
 
-namespace Open.Topology.TestRunner
+namespace GisSharpBlog.NetTopologySuite
 {
     /// <summary>
     /// Summary description for XmlTestDocument.
     /// </summary>
     public class XmlTestDocument
     {
-        private static NumberFormatInfo nfi = null;
+        private static NumberFormatInfo nfi;
 
         protected static IFormatProvider GetNumberFormatInfo()
         {
@@ -30,13 +30,13 @@ namespace Open.Topology.TestRunner
 
         #region Private Members
 
-        private ArrayList m_listarrTests = null;
+        private readonly ArrayList m_listarrTests;
 
-        private XmlTestCollection m_listCurTests = null;
+        private XmlTestCollection m_listCurTests;
 
-        private XmlTestFactory m_objFactory = null;
+        private XmlTestFactory m_objFactory;
 
-        private string m_strTestWorkspace = null;
+        private string m_strTestWorkspace;
 
         #endregion
 
@@ -68,18 +68,12 @@ namespace Open.Topology.TestRunner
 
         public XmlTestCollection CurrentTests
         {
-            get
-            {
-                return m_listCurTests;
-            }
+            get { return m_listCurTests; }
         }
 
         public ArrayList Tests
         {
-            get
-            {
-                return m_listarrTests;
-            }
+            get { return m_listarrTests; }
         }
 
         public bool LoadFile(string fileName)
@@ -87,7 +81,7 @@ namespace Open.Topology.TestRunner
             if (!File.Exists(fileName))
             {
                 throw new ArgumentException(fileName,
-                    "The file does not exits or the 'fileName' is not valid.");
+                                            "The file does not exits or the 'fileName' is not valid.");
             }
 
             try
@@ -154,9 +148,8 @@ namespace Open.Topology.TestRunner
 
                     if (precisionAttributes != null && precisionAttributes.Count > 0)
                     {
-
                         XmlAttribute attribute = precisionAttributes["type"];
-                        
+
                         if (attribute != null)
                         {
                             string strPrecision = attribute.InnerText;
@@ -165,18 +158,18 @@ namespace Open.Topology.TestRunner
                             {
                                 try
                                 {
-                                    double scale 
-                                        = Double.Parse(precisionAttributes["scale"].InnerText, 
+                                    double scale
+                                        = Double.Parse(precisionAttributes["scale"].InnerText,
                                                        GetNumberFormatInfo());
-                                    double offsetx 
-                                        = Double.Parse(precisionAttributes["offsetx"].InnerText, 
+                                    double offsetx
+                                        = Double.Parse(precisionAttributes["offsetx"].InnerText,
                                                        GetNumberFormatInfo());
-                                    double offsety 
-                                        = Double.Parse(precisionAttributes["offsety"].InnerText, 
+                                    double offsety
+                                        = Double.Parse(precisionAttributes["offsety"].InnerText,
                                                        GetNumberFormatInfo());
 
                                     pm = new PrecisionModel<BufferedCoordinate2D>(
-                                            seqFactory.CoordinateFactory, scale);
+                                        seqFactory.CoordinateFactory, scale);
                                 }
                                 catch (Exception ex)
                                 {
@@ -186,7 +179,7 @@ namespace Open.Topology.TestRunner
                             else
                             {
                                 pm = new PrecisionModel<BufferedCoordinate2D>(
-                                        seqFactory.CoordinateFactory);
+                                    seqFactory.CoordinateFactory);
                             }
                         }
                         else
@@ -194,14 +187,17 @@ namespace Open.Topology.TestRunner
                             if (precisionAttributes.Count == 3)
                             {
                                 double scale =
-                                    Double.Parse(precisionAttributes["scale"].InnerText, GetNumberFormatInfo());
+                                    Double.Parse(precisionAttributes["scale"].InnerText,
+                                                 GetNumberFormatInfo());
                                 double offsetx =
-                                    Double.Parse(precisionAttributes["offsetx"].InnerText, GetNumberFormatInfo());
+                                    Double.Parse(precisionAttributes["offsetx"].InnerText,
+                                                 GetNumberFormatInfo());
                                 double offsety =
-                                    Double.Parse(precisionAttributes["offsety"].InnerText, GetNumberFormatInfo());
+                                    Double.Parse(precisionAttributes["offsety"].InnerText,
+                                                 GetNumberFormatInfo());
 
                                 pm = new PrecisionModel<BufferedCoordinate2D>(
-                                        seqFactory.CoordinateFactory, scale);
+                                    seqFactory.CoordinateFactory, scale);
                             }
                         }
                     }
@@ -248,24 +244,20 @@ namespace Open.Topology.TestRunner
                     testInfo.SetValue("desc", desc.InnerText);
                 }
 
-                XmlElement a = (XmlElement)caseNode["a"];
+                XmlElement a = caseNode["a"];
                 if (a != null)
                 {
-                    if (a.HasAttribute("file"))
-                    {
-                    }
+                    if (a.HasAttribute("file")) {}
                     else
                     {
                         testInfo.SetValue("a", a.InnerText);
                     }
                 }
 
-                XmlElement b = (XmlElement)caseNode["b"];
+                XmlElement b = caseNode["b"];
                 if (b != null)
                 {
-                    if (b.HasAttribute("file"))
-                    {
-                    }
+                    if (b.HasAttribute("file")) {}
                     else
                     {
                         testInfo.SetValue("b", b.InnerText);
@@ -275,14 +267,16 @@ namespace Open.Topology.TestRunner
                 // Now, handle the "test" nodes
                 XmlNodeList elemList = caseNode.SelectNodes("test");
                 if (elemList == null)
+                {
                     return;
+                }
                 if (elemList.Count <= 0)
                 {
                     return;
                 }
                 else if (elemList.Count == 1)
                 {
-                    XmlElement testElement = ((XmlElement)elemList[0])["op"];
+                    XmlElement testElement = (elemList[0])["op"];
                     testInfo.SetValue("result", testElement.InnerText);
 
                     if (testElement.HasAttribute("name"))
@@ -317,11 +311,11 @@ namespace Open.Topology.TestRunner
 
                     for (int i = 0; i < elemList.Count; i++)
                     {
-                        string strDescNew = baseDesc + " - " + (i + 1).ToString();
+                        string strDescNew = baseDesc + " - " + (i + 1);
 
                         testInfo.SetValue("desc", strDescNew);
 
-                        XmlElement testElement = ((XmlElement)elemList[i])["op"];
+                        XmlElement testElement = (elemList[i])["op"];
                         testInfo.SetValue("result", testElement.InnerText);
 
                         if (testElement.HasAttribute("name"))
@@ -355,6 +349,5 @@ namespace Open.Topology.TestRunner
                 testInfo.Clear();
             }
         }
-
     }
 }

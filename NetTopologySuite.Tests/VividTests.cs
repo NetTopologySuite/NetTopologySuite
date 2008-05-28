@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using GisSharpBlog.NetTopologySuite;
 using NUnit.Framework;
-using Open.Topology.TestRunner;
 
-namespace GisSharpBlog.NetTopologySuite.Tests
+namespace NetTopologySuite.Tests
 {
     [TestFixture]
     public class TestRunnerTests
     {
         private String _testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\vivid";
 
-        void handleTestEvent(Object sender, XmlTestEventArgs args)
+        private static void handleTestEvent(Object sender, XmlTestEventArgs args)
         {
             if (!args.Success)
             {
@@ -24,7 +22,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestBoundary()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestBoundary.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestBoundary.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -34,7 +33,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestCentroid()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestCentroid.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestCentroid.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -44,7 +44,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestConvexHull_Big()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestConvexHull-big.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestConvexHull-big.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -54,7 +55,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestConvexHull()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestConvexHull.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestConvexHull.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -64,7 +66,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestFunctionAA()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestFunctionAA.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestFunctionAA.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -74,7 +77,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestFunctionAAPrec()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestFunctionAAPrec.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestFunctionAAPrec.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -84,7 +88,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestFunctionLA()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestFunctionLA.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestFunctionLA.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -94,7 +99,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestFunctionLAPrec()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestFunctionLAPrec.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestFunctionLAPrec.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -104,7 +110,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestFunctionLL()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestFunctionLL.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestFunctionLL.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -114,7 +121,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestFunctionLLPrec()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestFunctionLLPrec.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestFunctionLLPrec.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -124,7 +132,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestFunctionPA()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestFunctionPA.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestFunctionPA.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -134,7 +143,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestFunctionPL()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestFunctionPL.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestFunctionPL.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -144,7 +154,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestFunctionPLPrec()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestFunctionPLPrec.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestFunctionPLPrec.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -154,7 +165,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestFunctionPP()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestFunctionPP.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestFunctionPP.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -164,7 +176,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestInteriorPoint()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestInteriorPoint.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestInteriorPoint.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -174,7 +187,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestRectanglePredicate()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestRectanglePredicate.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestRectanglePredicate.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -184,7 +198,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestRelateAA()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestRelateAA.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestRelateAA.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -194,7 +209,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestRelateAC()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestRelateAC.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestRelateAC.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -204,7 +220,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestRelateLA()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestRelateLA.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestRelateLA.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -214,7 +231,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestRelateLC()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestRelateLC.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestRelateLC.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -224,7 +242,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestRelateLL()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestRelateLL.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestRelateLL.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -234,7 +253,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestRelatePA()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestRelatePA.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestRelatePA.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -244,7 +264,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestRelatePL()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestRelatePL.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestRelatePL.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -254,7 +275,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestRelatePP()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestRelatePP.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestRelatePP.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -284,7 +306,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestValid2_Big()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestValid2-big.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestValid2-big.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -304,7 +327,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests
         public void TestWithinDistance()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestWithinDistance.xml"));
+            XmlTestCollection tests =
+                controller.Load(Path.Combine(_testLocation, "TestWithinDistance.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;

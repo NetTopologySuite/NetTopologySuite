@@ -8,8 +8,8 @@
     <ProjectGuid>{595A5015-A2FC-41C9-8ED4-FE1B72C235B6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ClassLibrary1</RootNamespace>
-    <AssemblyName>ClassLibrary1</AssemblyName>
+    <RootNamespace>NetTopologySuite.Tests</RootNamespace>
+    <AssemblyName>NetTopologySuite.Tests</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

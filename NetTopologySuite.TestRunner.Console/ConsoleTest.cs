@@ -1,35 +1,29 @@
 using System;
+using SysConsole = System.Console;
 
-using Open.Topology.TestRunner;
-
-namespace ConsoleTestRunner
+namespace GisSharpBlog.NetTopologySuite.Console
 {
-	/// <summary>
-	/// Summary description for ConsoleTest.
-	/// </summary>
-    class ConsoleTest
-    {        
-        static void PrintMenu()
+    internal class ConsoleTest
+    {
+        private static void PrintMenu()
         {
-            Console.WriteLine("** Interactive Test Instructions **");
-            Console.WriteLine("a. Enter the name of the test script file to run.");
-            Console.WriteLine("b. Or enter 'exit' (without the quote) to end the test.");
-            Console.WriteLine("c. Or enter 'default' (without the quote) to run the default tests.");
-            Console.WriteLine();
-            Console.Write("Test Runner>>");
+            SysConsole.WriteLine("** Interactive Test Instructions **");
+            SysConsole.WriteLine("a. Enter the name of the test script file to run.");
+            SysConsole.WriteLine("b. Or enter 'exit' (without the quote) to end the test.");
+            SysConsole.WriteLine("c. Or enter 'default' (without the quote) to run the default tests.");
+            SysConsole.WriteLine();
+            SysConsole.Write("Test Runner>>");
         }
 
-        static void RunInteractive(XmlTestType filter, bool verbose)
+        private static void RunInteractive(XmlTestType filter, Boolean verbose)
         {
-            string fileName = String.Empty;
-
             XmlTestController controller = new XmlTestController();
 
             TestRunner runner = new TestRunner(filter, verbose);
 
             PrintMenu();
 
-            fileName = Console.ReadLine().Trim();
+            String fileName = (SysConsole.ReadLine() ?? String.Empty).Trim();
 
             while (fileName != "exit")
             {
@@ -48,15 +42,15 @@ namespace ConsoleTestRunner
                 catch (Exception ex)
                 {
                     XmlTestExceptionManager.Publish(ex);
-                } 
+                }
 
                 if (listTests != null && listTests.Count > 0)
                 {
-                    listTests.TestEvent += new XmlTextEventHandler(runner.OnSimpleTest);
+                    listTests.TestEvent += runner.OnSimpleTest;
 
                     try
                     {
-                        Console.WriteLine("Running...{0}", listTests.Name);
+                        SysConsole.WriteLine("Running...{0}", listTests.Name);
 
                         listTests.RunTests();
 
@@ -72,47 +66,47 @@ namespace ConsoleTestRunner
 
                 PrintMenu();
 
-                fileName = Console.ReadLine().Trim();
+                fileName = (SysConsole.ReadLine() ?? String.Empty).Trim();
             }
         }
 
-        static void OnErrorEvent(object sender, XmlTestErrorEventArgs args)
+        private static void OnErrorEvent(Object sender, XmlTestErrorEventArgs args)
         {
             Exception ex = args.Thrown;
 
             if (ex != null)
             {
-                System.Console.WriteLine(ex.Message);
-                System.Console.WriteLine();
-                System.Console.WriteLine(ex.Source);
-                System.Console.WriteLine();
-                System.Console.WriteLine(ex.StackTrace);
+                SysConsole.WriteLine(ex.Message);
+                SysConsole.WriteLine();
+                SysConsole.WriteLine(ex.Source);
+                SysConsole.WriteLine();
+                SysConsole.WriteLine(ex.StackTrace);
             }
         }
 
-        static void RunDefault()
+        private static void RunDefault()
         {
             TestOptionsParser parserOptions = new TestOptionsParser();
             TestInfoCollection listTests =
                 parserOptions.ParseProject(@"..\..\..\NetTopologySuite.TestRunner.Tests\Default.xml");
-            
+
             if (listTests != null && listTests.Count > 0)
             {
                 TestRunner runner = new TestRunner(listTests);
                 runner.Run();
                 runner.PrintResult();
-            }   
+            }
         }
 
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(String[] args)
         {
             if (args == null || args.Length == 0)
             {
-                XmlTestExceptionManager.ErrorEvent += new XmlTestErrorEventHandler(OnErrorEvent);
+                XmlTestExceptionManager.ErrorEvent += OnErrorEvent;
                 RunInteractive(XmlTestType.None, true);
             }
             else
@@ -132,10 +126,14 @@ namespace ConsoleTestRunner
                         {
                             // see if it is the interactive type
                             TestInfo info = collection[0];
+
                             if (info.Interactive)
                             {
                                 if (info.Exception)
-                                    XmlTestExceptionManager.ErrorEvent += new XmlTestErrorEventHandler(OnErrorEvent);
+                                {
+                                    XmlTestExceptionManager.ErrorEvent += OnErrorEvent;
+                                }
+                                
                                 RunInteractive(info.Filter, info.Verbose);
                             }
                         }
@@ -147,13 +145,11 @@ namespace ConsoleTestRunner
                     }
                     else
                     {
-                        XmlTestExceptionManager.ErrorEvent += new XmlTestErrorEventHandler(OnErrorEvent);
+                        XmlTestExceptionManager.ErrorEvent += OnErrorEvent;
                         RunInteractive(XmlTestType.None, true);
                     }
                 }
             }
-
         }
     }
-
 }

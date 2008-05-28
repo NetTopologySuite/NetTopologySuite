@@ -3,11 +3,10 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using GeoAPI.Coordinates;
-using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GeoAPI.Geometries;
 using NetTopologySuite.Coordinates;
-using Open.Topology.TestRunner;
+using GeoAPI.Coordinates;
 
 #endregion
 
@@ -372,7 +371,7 @@ namespace GisSharpBlog.NetTopologySuite
 
                 return Math.Abs(dArea - dAreaResult) <= m_dTolerance;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 Double dArea = (m_objGeometryB as ISurface).Area;
@@ -391,8 +390,9 @@ namespace GisSharpBlog.NetTopologySuite
 
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
-                Geometry<BufferedCoordinate2D> boundary = (Geometry<BufferedCoordinate2D>) m_objGeometryA.Boundary;
-                
+                Geometry<BufferedCoordinate2D> boundary =
+                    (Geometry<BufferedCoordinate2D>) m_objGeometryA.Boundary;
+
                 if (boundary != null)
                 {
                     return boundary.IsEmpty && geoResult.IsEmpty ||
@@ -403,8 +403,9 @@ namespace GisSharpBlog.NetTopologySuite
             }
             else if (m_objGeometryB != null)
             {
-                Geometry<BufferedCoordinate2D> boundary = (Geometry<BufferedCoordinate2D>) m_objGeometryB.Boundary;
-           
+                Geometry<BufferedCoordinate2D> boundary =
+                    (Geometry<BufferedCoordinate2D>) m_objGeometryB.Boundary;
+
                 if (boundary != null)
                 {
                     return boundary.IsEmpty && geoResult.IsEmpty ||
@@ -420,14 +421,14 @@ namespace GisSharpBlog.NetTopologySuite
         protected virtual Boolean TestBoundaryDimension()
         {
             Int32 nResult = (Int32) m_objResult;
-           
+
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
                 Double dArea = (m_objGeometryA as ISurface).Area;
 
                 return Math.Abs(dArea - nResult) <= m_dTolerance;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 Double dArea = (m_objGeometryB as ISurface).Area;
@@ -445,8 +446,9 @@ namespace GisSharpBlog.NetTopologySuite
 
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
-                Geometry<BufferedCoordinate2D> buffer = (Geometry<BufferedCoordinate2D>) m_objGeometryA.Buffer(dArg);
-                
+                Geometry<BufferedCoordinate2D> buffer =
+                    (Geometry<BufferedCoordinate2D>) m_objGeometryA.Buffer(dArg);
+
                 if (buffer != null)
                 {
                     return buffer.IsEmpty && geoResult.IsEmpty ||
@@ -457,8 +459,9 @@ namespace GisSharpBlog.NetTopologySuite
             }
             else if (m_objGeometryB != null)
             {
-                Geometry<BufferedCoordinate2D> buffer = (Geometry<BufferedCoordinate2D>) m_objGeometryB.Buffer(dArg);
-            
+                Geometry<BufferedCoordinate2D> buffer =
+                    (Geometry<BufferedCoordinate2D>) m_objGeometryB.Buffer(dArg);
+
                 if (buffer != null)
                 {
                     return buffer.IsEmpty && geoResult.IsEmpty ||
@@ -479,8 +482,9 @@ namespace GisSharpBlog.NetTopologySuite
 
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
-                Geometry<BufferedCoordinate2D> centroid = (Geometry<BufferedCoordinate2D>) m_objGeometryA.Centroid;
-            
+                Geometry<BufferedCoordinate2D> centroid =
+                    (Geometry<BufferedCoordinate2D>) m_objGeometryA.Centroid;
+
                 if (centroid != null)
                 {
                     if (centroid.IsEmpty && geoResult.IsEmpty)
@@ -495,7 +499,8 @@ namespace GisSharpBlog.NetTopologySuite
             }
             else if (m_objGeometryB != null)
             {
-                Geometry<BufferedCoordinate2D> centroid = (Geometry<BufferedCoordinate2D>) m_objGeometryB.Centroid;
+                Geometry<BufferedCoordinate2D> centroid =
+                    (Geometry<BufferedCoordinate2D>) m_objGeometryB.Centroid;
                 if (centroid != null)
                 {
                     if (centroid.IsEmpty && geoResult.IsEmpty)
@@ -515,19 +520,21 @@ namespace GisSharpBlog.NetTopologySuite
         protected virtual Boolean TestContains()
         {
             Boolean bResult = (Boolean) m_objResult;
-          
+
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
                 return m_objArgument1 == null
                            ? m_objGeometryA.Contains(m_objGeometryB) == bResult
-                           : m_objGeometryA.Contains((Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
+                           : m_objGeometryA.Contains((Geometry<BufferedCoordinate2D>) m_objArgument1) ==
+                             bResult;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 return m_objArgument1 == null
                            ? m_objGeometryB.Contains(m_objGeometryA) == bResult
-                           : m_objGeometryB.Contains((Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
+                           : m_objGeometryB.Contains((Geometry<BufferedCoordinate2D>) m_objArgument1) ==
+                             bResult;
             }
 
             return false;
@@ -541,8 +548,9 @@ namespace GisSharpBlog.NetTopologySuite
 
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
-                Geometry<BufferedCoordinate2D> convexhall = (Geometry<BufferedCoordinate2D>) m_objGeometryA.ConvexHull();
-               
+                Geometry<BufferedCoordinate2D> convexhall =
+                    (Geometry<BufferedCoordinate2D>) m_objGeometryA.ConvexHull();
+
                 if (convexhall != null)
                 {
                     if (convexhall.IsEmpty && geoResult.IsEmpty)
@@ -551,7 +559,7 @@ namespace GisSharpBlog.NetTopologySuite
                     }
 
                     Boolean bResult = CompareGeometries(geoResult, convexhall);
-                   
+
                     if (!bResult)
                     {
                         Console.WriteLine(m_objGeometryA.ToString());
@@ -565,8 +573,9 @@ namespace GisSharpBlog.NetTopologySuite
             }
             else if (m_objGeometryB != null)
             {
-                Geometry<BufferedCoordinate2D> convexhall = (Geometry<BufferedCoordinate2D>) m_objGeometryB.ConvexHull();
-               
+                Geometry<BufferedCoordinate2D> convexhall =
+                    (Geometry<BufferedCoordinate2D>) m_objGeometryB.ConvexHull();
+
                 if (convexhall != null)
                 {
                     if (convexhall.IsEmpty && geoResult.IsEmpty)
@@ -584,19 +593,21 @@ namespace GisSharpBlog.NetTopologySuite
         protected virtual Boolean TestCrosses()
         {
             Boolean bResult = (Boolean) m_objResult;
-        
+
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
                 return m_objArgument1 == null
                            ? m_objGeometryA.Crosses(m_objGeometryB) == bResult
-                           : m_objGeometryA.Crosses((Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
+                           : m_objGeometryA.Crosses((Geometry<BufferedCoordinate2D>) m_objArgument1) ==
+                             bResult;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 return m_objArgument1 == null
                            ? m_objGeometryB.Crosses(m_objGeometryA) == bResult
-                           : m_objGeometryB.Crosses((Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
+                           : m_objGeometryB.Crosses((Geometry<BufferedCoordinate2D>) m_objArgument1) ==
+                             bResult;
             }
 
             return false;
@@ -607,13 +618,14 @@ namespace GisSharpBlog.NetTopologySuite
             Trace.Assert(m_objResult != null, "The result object cannot be null");
 
             Geometry<BufferedCoordinate2D> geoResult = (Geometry<BufferedCoordinate2D>) m_objResult;
-           
+
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
                 if (m_objArgument1 == null)
                 {
-                    Geometry<BufferedCoordinate2D> difference = (Geometry<BufferedCoordinate2D>) m_objGeometryA.Difference(m_objGeometryB);
-                 
+                    Geometry<BufferedCoordinate2D> difference =
+                        (Geometry<BufferedCoordinate2D>) m_objGeometryA.Difference(m_objGeometryB);
+
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -629,8 +641,9 @@ namespace GisSharpBlog.NetTopologySuite
                 else
                 {
                     Geometry<BufferedCoordinate2D> difference =
-                        (Geometry<BufferedCoordinate2D>) m_objGeometryA.Difference((Geometry<BufferedCoordinate2D>) m_objArgument1);
-                    
+                        (Geometry<BufferedCoordinate2D>)
+                        m_objGeometryA.Difference((Geometry<BufferedCoordinate2D>) m_objArgument1);
+
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -648,8 +661,9 @@ namespace GisSharpBlog.NetTopologySuite
             {
                 if (m_objArgument1 == null)
                 {
-                    Geometry<BufferedCoordinate2D> difference = (Geometry<BufferedCoordinate2D>) m_objGeometryB.Difference(m_objGeometryA);
-                  
+                    Geometry<BufferedCoordinate2D> difference =
+                        (Geometry<BufferedCoordinate2D>) m_objGeometryB.Difference(m_objGeometryA);
+
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -665,8 +679,9 @@ namespace GisSharpBlog.NetTopologySuite
                 else
                 {
                     Geometry<BufferedCoordinate2D> difference =
-                        (Geometry<BufferedCoordinate2D>) m_objGeometryB.Difference((Geometry<BufferedCoordinate2D>) m_objArgument1);
-                    
+                        (Geometry<BufferedCoordinate2D>)
+                        m_objGeometryB.Difference((Geometry<BufferedCoordinate2D>) m_objArgument1);
+
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -687,14 +702,14 @@ namespace GisSharpBlog.NetTopologySuite
         protected virtual Boolean TestDimension()
         {
             Int32 nResult = (Int32) m_objResult;
-            
+
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
                 Int32 nDim = (Int32) m_objGeometryA.Dimension;
 
                 return Math.Abs(nDim - nResult) <= (Int32) m_dTolerance;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 Int32 nDim = (Int32) m_objGeometryB.Dimension;
@@ -708,19 +723,21 @@ namespace GisSharpBlog.NetTopologySuite
         protected virtual Boolean TestDisjoint()
         {
             Boolean bResult = (Boolean) m_objResult;
-           
+
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
                 return m_objArgument1 == null
                            ? m_objGeometryA.Disjoint(m_objGeometryB) == bResult
-                           : m_objGeometryA.Disjoint((Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
+                           : m_objGeometryA.Disjoint((Geometry<BufferedCoordinate2D>) m_objArgument1) ==
+                             bResult;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 return m_objArgument1 == null
                            ? m_objGeometryB.Disjoint(m_objGeometryA) == bResult
-                           : m_objGeometryB.Disjoint((Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
+                           : m_objGeometryB.Disjoint((Geometry<BufferedCoordinate2D>) m_objArgument1) ==
+                             bResult;
             }
 
             return false;
@@ -729,25 +746,27 @@ namespace GisSharpBlog.NetTopologySuite
         protected virtual Boolean TestDistance()
         {
             Double dResult = (Double) m_objResult;
-            
+
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
                 Double dDistance = 0;
 
                 dDistance = m_objArgument1 == null
                                 ? m_objGeometryA.Distance(m_objGeometryB)
-                                : m_objGeometryA.Distance((Geometry<BufferedCoordinate2D>) m_objArgument1);
+                                : m_objGeometryA.Distance(
+                                      (Geometry<BufferedCoordinate2D>) m_objArgument1);
 
                 return Math.Abs(dDistance - dResult) <= m_dTolerance;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 Double dDistance = 0;
-               
+
                 dDistance = m_objArgument1 == null
                                 ? m_objGeometryB.Distance(m_objGeometryA)
-                                : m_objGeometryB.Distance((Geometry<BufferedCoordinate2D>) m_objArgument1);
+                                : m_objGeometryB.Distance(
+                                      (Geometry<BufferedCoordinate2D>) m_objArgument1);
 
                 return Math.Abs(dDistance - dResult) <= m_dTolerance;
             }
@@ -763,8 +782,9 @@ namespace GisSharpBlog.NetTopologySuite
 
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
-                Geometry<BufferedCoordinate2D> envelope = (Geometry<BufferedCoordinate2D>) m_objGeometryA.Envelope;
-                
+                Geometry<BufferedCoordinate2D> envelope =
+                    (Geometry<BufferedCoordinate2D>) m_objGeometryA.Envelope;
+
                 if (envelope != null)
                 {
                     return envelope.Equals(geoResult);
@@ -772,8 +792,9 @@ namespace GisSharpBlog.NetTopologySuite
             }
             else if (m_objGeometryB != null)
             {
-                Geometry<BufferedCoordinate2D> envelope = (Geometry<BufferedCoordinate2D>) m_objGeometryB.Envelope;
-              
+                Geometry<BufferedCoordinate2D> envelope =
+                    (Geometry<BufferedCoordinate2D>) m_objGeometryB.Envelope;
+
                 if (envelope != null)
                 {
                     return envelope.Equals(geoResult);
@@ -791,14 +812,16 @@ namespace GisSharpBlog.NetTopologySuite
             {
                 return m_objArgument1 == null
                            ? m_objGeometryA.Equals(m_objGeometryB) == bResult
-                           : m_objGeometryA.Equals((Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
+                           : m_objGeometryA.Equals((Geometry<BufferedCoordinate2D>) m_objArgument1) ==
+                             bResult;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 return m_objArgument1 == null
                            ? m_objGeometryB.Equals(m_objGeometryA) == bResult
-                           : m_objGeometryB.Equals((Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
+                           : m_objGeometryB.Equals((Geometry<BufferedCoordinate2D>) m_objArgument1) ==
+                             bResult;
             }
 
             return false;
@@ -812,8 +835,9 @@ namespace GisSharpBlog.NetTopologySuite
 
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
-                Geometry<BufferedCoordinate2D> interiorpoint = (Geometry<BufferedCoordinate2D>) (m_objGeometryA as ISurface).PointOnSurface;
-                
+                Geometry<BufferedCoordinate2D> interiorpoint =
+                    (Geometry<BufferedCoordinate2D>) (m_objGeometryA as ISurface).PointOnSurface;
+
                 if (interiorpoint != null)
                 {
                     if (interiorpoint.IsEmpty && geoResult.IsEmpty)
@@ -826,8 +850,9 @@ namespace GisSharpBlog.NetTopologySuite
             }
             else if (m_objGeometryB != null)
             {
-                Geometry<BufferedCoordinate2D> interiorpoint = (Geometry<BufferedCoordinate2D>) (m_objGeometryB as ISurface).PointOnSurface;
-               
+                Geometry<BufferedCoordinate2D> interiorpoint =
+                    (Geometry<BufferedCoordinate2D>) (m_objGeometryB as ISurface).PointOnSurface;
+
                 if (interiorpoint != null)
                 {
                     if (interiorpoint.IsEmpty && geoResult.IsEmpty)
@@ -852,8 +877,9 @@ namespace GisSharpBlog.NetTopologySuite
             {
                 if (m_objArgument1 == null)
                 {
-                    Geometry<BufferedCoordinate2D> intersection = (Geometry<BufferedCoordinate2D>) m_objGeometryA.Intersection(m_objGeometryB);
-                   
+                    Geometry<BufferedCoordinate2D> intersection =
+                        (Geometry<BufferedCoordinate2D>) m_objGeometryA.Intersection(m_objGeometryB);
+
                     if (intersection != null)
                     {
                         if (intersection.IsEmpty && geoResult.IsEmpty)
@@ -870,8 +896,9 @@ namespace GisSharpBlog.NetTopologySuite
                 else
                 {
                     Geometry<BufferedCoordinate2D> intersection =
-                        (Geometry<BufferedCoordinate2D>) m_objGeometryA.Intersection((Geometry<BufferedCoordinate2D>) m_objArgument1);
-                    
+                        (Geometry<BufferedCoordinate2D>)
+                        m_objGeometryA.Intersection((Geometry<BufferedCoordinate2D>) m_objArgument1);
+
                     if (intersection != null)
                     {
                         if (intersection.IsEmpty && geoResult.IsEmpty)
@@ -890,8 +917,9 @@ namespace GisSharpBlog.NetTopologySuite
             {
                 if (m_objArgument1 == null)
                 {
-                    Geometry<BufferedCoordinate2D> intersection = (Geometry<BufferedCoordinate2D>) m_objGeometryB.Intersection(m_objGeometryA);
-                  
+                    Geometry<BufferedCoordinate2D> intersection =
+                        (Geometry<BufferedCoordinate2D>) m_objGeometryB.Intersection(m_objGeometryA);
+
                     if (intersection != null)
                     {
                         if (intersection.IsEmpty && geoResult.IsEmpty)
@@ -908,8 +936,9 @@ namespace GisSharpBlog.NetTopologySuite
                 else
                 {
                     Geometry<BufferedCoordinate2D> intersection =
-                        (Geometry<BufferedCoordinate2D>) m_objGeometryB.Intersection((Geometry<BufferedCoordinate2D>) m_objArgument1);
-                   
+                        (Geometry<BufferedCoordinate2D>)
+                        m_objGeometryB.Intersection((Geometry<BufferedCoordinate2D>) m_objArgument1);
+
                     if (intersection != null)
                     {
                         if (intersection.IsEmpty && geoResult.IsEmpty)
@@ -931,19 +960,21 @@ namespace GisSharpBlog.NetTopologySuite
         protected virtual Boolean TestIntersects()
         {
             Boolean bResult = (Boolean) m_objResult;
-            
+
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
                 return m_objArgument1 == null
                            ? m_objGeometryA.Intersects(m_objGeometryB) == bResult
-                           : m_objGeometryA.Intersects((Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
+                           : m_objGeometryA.Intersects(
+                                 (Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 return m_objArgument1 == null
                            ? m_objGeometryB.Intersects(m_objGeometryA) == bResult
-                           : m_objGeometryB.Intersects((Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
+                           : m_objGeometryB.Intersects(
+                                 (Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
             }
 
             return false;
@@ -952,14 +983,14 @@ namespace GisSharpBlog.NetTopologySuite
         protected virtual Boolean TestIsEmpty()
         {
             Boolean bResult = (Boolean) m_objResult;
-           
+
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
                 Boolean bState = m_objGeometryA.IsEmpty;
 
                 return bState == bResult;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 Boolean bState = m_objGeometryB.IsEmpty;
@@ -973,14 +1004,14 @@ namespace GisSharpBlog.NetTopologySuite
         protected virtual Boolean TestIsSimple()
         {
             Boolean bResult = (Boolean) m_objResult;
-           
+
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
                 Boolean bState = m_objGeometryA.IsSimple;
 
                 return bState == bResult;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 Boolean bState = m_objGeometryB.IsSimple;
@@ -994,13 +1025,13 @@ namespace GisSharpBlog.NetTopologySuite
         protected virtual Boolean TestIsValid()
         {
             Boolean bResult = (Boolean) m_objResult;
-            
+
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
                 Boolean bState = m_objGeometryA.IsValid;
                 return bState == bResult;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 Boolean bState = m_objGeometryB.IsValid;
@@ -1020,16 +1051,18 @@ namespace GisSharpBlog.NetTopologySuite
             {
                 return m_objArgument1 == null
                            ? m_objGeometryA.IsWithinDistance(m_objGeometryB, dArg) == bResult
-                           : m_objGeometryA.IsWithinDistance((Geometry<BufferedCoordinate2D>) m_objArgument1,
-                                                             dArg) == bResult;
+                           : m_objGeometryA.IsWithinDistance(
+                                 (Geometry<BufferedCoordinate2D>) m_objArgument1,
+                                 dArg) == bResult;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 return m_objArgument1 == null
                            ? m_objGeometryB.IsWithinDistance(m_objGeometryA, dArg) == bResult
-                           : m_objGeometryB.IsWithinDistance((Geometry<BufferedCoordinate2D>) m_objArgument1,
-                                                             dArg) == bResult;
+                           : m_objGeometryB.IsWithinDistance(
+                                 (Geometry<BufferedCoordinate2D>) m_objArgument1,
+                                 dArg) == bResult;
             }
 
             return false;
@@ -1038,14 +1071,14 @@ namespace GisSharpBlog.NetTopologySuite
         protected virtual Boolean TestLength()
         {
             Double dLengthResult = (Double) m_objResult;
-            
+
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
                 Double dLength = (m_objGeometryA as ISurface).Area;
 
                 return Math.Abs(dLength - dLengthResult) <= m_dTolerance;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 Double dLength = (m_objGeometryB as ISurface).Area;
@@ -1059,14 +1092,14 @@ namespace GisSharpBlog.NetTopologySuite
         protected virtual Boolean TestNumPoints()
         {
             Int32 nResult = (Int32) m_objResult;
-            
+
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
                 Int32 nPoints = m_objGeometryA.PointCount;
 
                 return Math.Abs(nPoints - nResult) <= (Int32) m_dTolerance;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 Int32 nPoints = m_objGeometryB.PointCount;
@@ -1080,19 +1113,21 @@ namespace GisSharpBlog.NetTopologySuite
         protected virtual Boolean TestOverlaps()
         {
             Boolean bResult = (Boolean) m_objResult;
-          
+
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
                 return m_objArgument1 == null
                            ? m_objGeometryA.Overlaps(m_objGeometryB) == bResult
-                           : m_objGeometryA.Overlaps((Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
+                           : m_objGeometryA.Overlaps((Geometry<BufferedCoordinate2D>) m_objArgument1) ==
+                             bResult;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 return m_objArgument1 == null
                            ? m_objGeometryB.Overlaps(m_objGeometryA) == bResult
-                           : m_objGeometryB.Overlaps((Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
+                           : m_objGeometryB.Overlaps((Geometry<BufferedCoordinate2D>) m_objArgument1) ==
+                             bResult;
             }
 
             return false;
@@ -1111,7 +1146,7 @@ namespace GisSharpBlog.NetTopologySuite
 
                 return (strMatrix == arg) == bResult;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 IntersectionMatrix matrix = m_objGeometryB.Relate(m_objGeometryA);
@@ -1134,7 +1169,7 @@ namespace GisSharpBlog.NetTopologySuite
 
                 return Math.Abs(nSRID - nResult) <= (Int32) m_dTolerance;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 Int32 nSRID = m_objGeometryB.Srid.Value;
@@ -1150,14 +1185,15 @@ namespace GisSharpBlog.NetTopologySuite
             Trace.Assert(m_objResult != null, "The result object cannot be null");
 
             Geometry<BufferedCoordinate2D> geoResult = (Geometry<BufferedCoordinate2D>) m_objResult;
-         
+
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
                 if (m_objArgument1 == null)
                 {
                     Geometry<BufferedCoordinate2D> difference =
-                        (Geometry<BufferedCoordinate2D>) m_objGeometryA.SymmetricDifference(m_objGeometryB);
-                  
+                        (Geometry<BufferedCoordinate2D>)
+                        m_objGeometryA.SymmetricDifference(m_objGeometryB);
+
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -1173,8 +1209,10 @@ namespace GisSharpBlog.NetTopologySuite
                 else
                 {
                     Geometry<BufferedCoordinate2D> difference =
-                        (Geometry<BufferedCoordinate2D>) m_objGeometryA.SymmetricDifference((Geometry<BufferedCoordinate2D>) m_objArgument1);
-                   
+                        (Geometry<BufferedCoordinate2D>)
+                        m_objGeometryA.SymmetricDifference(
+                            (Geometry<BufferedCoordinate2D>) m_objArgument1);
+
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -1193,8 +1231,9 @@ namespace GisSharpBlog.NetTopologySuite
                 if (m_objArgument1 == null)
                 {
                     Geometry<BufferedCoordinate2D> difference =
-                        (Geometry<BufferedCoordinate2D>) m_objGeometryB.SymmetricDifference(m_objGeometryA);
-                    
+                        (Geometry<BufferedCoordinate2D>)
+                        m_objGeometryB.SymmetricDifference(m_objGeometryA);
+
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -1210,8 +1249,10 @@ namespace GisSharpBlog.NetTopologySuite
                 else
                 {
                     Geometry<BufferedCoordinate2D> difference =
-                        (Geometry<BufferedCoordinate2D>) m_objGeometryB.SymmetricDifference((Geometry<BufferedCoordinate2D>) m_objArgument1);
-                    
+                        (Geometry<BufferedCoordinate2D>)
+                        m_objGeometryB.SymmetricDifference(
+                            (Geometry<BufferedCoordinate2D>) m_objArgument1);
+
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -1237,14 +1278,16 @@ namespace GisSharpBlog.NetTopologySuite
             {
                 return m_objArgument1 == null
                            ? m_objGeometryA.Touches(m_objGeometryB) == bResult
-                           : m_objGeometryA.Touches((Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
+                           : m_objGeometryA.Touches((Geometry<BufferedCoordinate2D>) m_objArgument1) ==
+                             bResult;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 return m_objArgument1 == null
                            ? m_objGeometryB.Touches(m_objGeometryA) == bResult
-                           : m_objGeometryB.Touches((Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
+                           : m_objGeometryB.Touches((Geometry<BufferedCoordinate2D>) m_objArgument1) ==
+                             bResult;
             }
 
             return false;
@@ -1255,13 +1298,14 @@ namespace GisSharpBlog.NetTopologySuite
             Trace.Assert(m_objResult != null, "The result object cannot be null");
 
             Geometry<BufferedCoordinate2D> geoResult = (Geometry<BufferedCoordinate2D>) m_objResult;
-           
+
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
                 if (m_objArgument1 == null)
                 {
-                    Geometry<BufferedCoordinate2D> union = (Geometry<BufferedCoordinate2D>) m_objGeometryA.Union(m_objGeometryB);
-                   
+                    Geometry<BufferedCoordinate2D> union =
+                        (Geometry<BufferedCoordinate2D>) m_objGeometryA.Union(m_objGeometryB);
+
                     if (union != null)
                     {
                         if (union.IsEmpty && geoResult.IsEmpty)
@@ -1276,8 +1320,10 @@ namespace GisSharpBlog.NetTopologySuite
                 }
                 else
                 {
-                    Geometry<BufferedCoordinate2D> union = (Geometry<BufferedCoordinate2D>) m_objGeometryA.Union((Geometry<BufferedCoordinate2D>) m_objArgument1);
-                   
+                    Geometry<BufferedCoordinate2D> union =
+                        (Geometry<BufferedCoordinate2D>)
+                        m_objGeometryA.Union((Geometry<BufferedCoordinate2D>) m_objArgument1);
+
                     if (union != null)
                     {
                         if (union.IsEmpty && geoResult.IsEmpty)
@@ -1295,8 +1341,9 @@ namespace GisSharpBlog.NetTopologySuite
             {
                 if (m_objArgument1 == null)
                 {
-                    Geometry<BufferedCoordinate2D> union = (Geometry<BufferedCoordinate2D>) m_objGeometryB.Union(m_objGeometryA);
-                    
+                    Geometry<BufferedCoordinate2D> union =
+                        (Geometry<BufferedCoordinate2D>) m_objGeometryB.Union(m_objGeometryA);
+
                     if (union != null)
                     {
                         if (union.IsEmpty && geoResult.IsEmpty)
@@ -1311,8 +1358,10 @@ namespace GisSharpBlog.NetTopologySuite
                 }
                 else
                 {
-                    Geometry<BufferedCoordinate2D> union = (Geometry<BufferedCoordinate2D>) m_objGeometryB.Union((Geometry<BufferedCoordinate2D>) m_objArgument1);
-                    
+                    Geometry<BufferedCoordinate2D> union =
+                        (Geometry<BufferedCoordinate2D>)
+                        m_objGeometryB.Union((Geometry<BufferedCoordinate2D>) m_objArgument1);
+
                     if (union != null)
                     {
                         if (union.IsEmpty && geoResult.IsEmpty)
@@ -1333,19 +1382,21 @@ namespace GisSharpBlog.NetTopologySuite
         protected virtual Boolean TestWithin()
         {
             Boolean bResult = (Boolean) m_objResult;
-           
+
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
                 return m_objArgument1 == null
                            ? m_objGeometryA.Within(m_objGeometryB) == bResult
-                           : m_objGeometryA.Within((Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
+                           : m_objGeometryA.Within((Geometry<BufferedCoordinate2D>) m_objArgument1) ==
+                             bResult;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 return m_objArgument1 == null
                            ? m_objGeometryB.Within(m_objGeometryA) == bResult
-                           : m_objGeometryB.Within((Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
+                           : m_objGeometryB.Within((Geometry<BufferedCoordinate2D>) m_objArgument1) ==
+                             bResult;
             }
 
             return false;
@@ -1359,14 +1410,16 @@ namespace GisSharpBlog.NetTopologySuite
             {
                 return m_objArgument1 == null
                            ? m_objGeometryA.Covers(m_objGeometryB) == bResult
-                           : m_objGeometryA.Covers((Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
+                           : m_objGeometryA.Covers((Geometry<BufferedCoordinate2D>) m_objArgument1) ==
+                             bResult;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 return m_objArgument1 == null
                            ? m_objGeometryB.Covers(m_objGeometryA) == bResult
-                           : m_objGeometryB.Covers((Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
+                           : m_objGeometryB.Covers((Geometry<BufferedCoordinate2D>) m_objArgument1) ==
+                             bResult;
             }
 
             return false;
@@ -1380,14 +1433,16 @@ namespace GisSharpBlog.NetTopologySuite
             {
                 return m_objArgument1 == null
                            ? m_objGeometryA.CoveredBy(m_objGeometryB) == bResult
-                           : m_objGeometryA.CoveredBy((Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
+                           : m_objGeometryA.CoveredBy(
+                                 (Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
             }
-            
+
             if (m_objGeometryB != null)
             {
                 return m_objArgument1 == null
                            ? m_objGeometryB.CoveredBy(m_objGeometryA) == bResult
-                           : m_objGeometryB.CoveredBy((Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
+                           : m_objGeometryB.CoveredBy(
+                                 (Geometry<BufferedCoordinate2D>) m_objArgument1) == bResult;
             }
 
             return false;
@@ -1397,7 +1452,8 @@ namespace GisSharpBlog.NetTopologySuite
 
         #region Private Members
 
-        private Boolean CompareGeometries(Geometry<BufferedCoordinate2D> a, Geometry<BufferedCoordinate2D> b)
+        private Boolean CompareGeometries(Geometry<BufferedCoordinate2D> a,
+                                          Geometry<BufferedCoordinate2D> b)
         {
             if (a != null && b != null && a.GetType().Name == b.GetType().Name)
             {
