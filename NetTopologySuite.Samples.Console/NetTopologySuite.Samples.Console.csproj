@@ -9,20 +9,8 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GisSharpBlog.NetTopologySuite</RootNamespace>
     <AssemblyName>NetTopologySuite.Samples.Console</AssemblyName>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
     <StartupObject>GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Program</StartupObject>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_Net20|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

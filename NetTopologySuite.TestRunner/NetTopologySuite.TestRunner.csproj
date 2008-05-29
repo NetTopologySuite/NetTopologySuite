@@ -4,9 +4,7 @@
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{13669184-2446-404F-8894-5E20B6C3FCC6}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">
-      Debug_Net20
-    </Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug_Net20</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ApplicationIcon>
     </ApplicationIcon>
@@ -19,20 +17,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>GisSharpBlog.NetTopologySuite</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>
-    </StartupObject>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
     <OldToolsVersion>2.0</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_Net20|AnyCPU' ">
@@ -98,7 +82,7 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NPack, Version=0.7.13341.0, Culture=neutral, PublicKeyToken=56f174b1685ddc6a, processorArchitecture=MSIL">
+    <Reference Include="NPack, Version=0.8.15119.0, Culture=neutral, PublicKeyToken=56f174b1685ddc6a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ExternalReferences\$(Configuration)\NPack.dll</HintPath>
     </Reference>
