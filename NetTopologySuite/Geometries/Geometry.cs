@@ -1,23 +1,18 @@
 using System;
 using System.Collections;
-using System.Diagnostics;
-using System.IO;
-using System.Runtime.InteropServices;
 using System.Xml;
-
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
-
-using GisSharpBlog.NetTopologySuite.Operation;
-using GisSharpBlog.NetTopologySuite.Operation.Overlay;
-using GisSharpBlog.NetTopologySuite.Operation.Relate;
-using GisSharpBlog.NetTopologySuite.Operation.Distance;
-using GisSharpBlog.NetTopologySuite.Operation.Buffer;
-using GisSharpBlog.NetTopologySuite.Operation.Valid;
-using GisSharpBlog.NetTopologySuite.Operation.Predicate;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.IO.GML2;
+using GisSharpBlog.NetTopologySuite.Operation.Buffer;
+using GisSharpBlog.NetTopologySuite.Operation.Distance;
+using GisSharpBlog.NetTopologySuite.Operation.Overlay;
+using GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap;
+using GisSharpBlog.NetTopologySuite.Operation.Predicate;
+using GisSharpBlog.NetTopologySuite.Operation.Relate;
+using GisSharpBlog.NetTopologySuite.Operation.Valid;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
@@ -84,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </para>
     /// </summary>
     /// <remarks>
-    /// <see cref="Object.Equals(Object)" /> and <see cref="Object.GetHashCode" /> are not overridden, so that when two
+    /// <see cref="object.Equals(object)" /> and <see cref="object.GetHashCode" /> are not overridden, so that when two
     /// topologically equal Geometries are added to Collections and Dictionaries, they
     /// remain distinct. This behaviour is desired in many cases.
     /// </remarks>
@@ -185,7 +180,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public Geometry(IGeometryFactory factory)
         {
             this.factory = factory;
-            this.srid = factory.SRID;
+            srid = factory.SRID;
         }
 
         /// <summary>  
@@ -521,7 +516,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                return Factory.ToGeometry((Envelope) EnvelopeInternal);
+                return Factory.ToGeometry(EnvelopeInternal);
             }
         }
 
@@ -773,7 +768,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public IntersectionMatrix Relate(IGeometry g) 
         {
             CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection((IGeometry) g);
+            CheckNotGeometryCollection(g);
 
             return RelateOp.Relate(this, g);
         }                    
@@ -1044,10 +1039,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The points common to the two <c>Geometry</c>s.</returns>
         public IGeometry Intersection(IGeometry other) 
         {
+            // Special case: if one input is empty ==> empty
+            if (IsEmpty) 
+                return Factory.CreateGeometryCollection(null);
+            if (other.IsEmpty) 
+                return Factory.CreateGeometryCollection(null);
+
+
             CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection(other);
-        
-            return OverlayOp.Overlay(this, other, SpatialFunctions.Intersection);
+            CheckNotGeometryCollection(other);        
+            return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.Intersection);
         }
 
         /// <summary>
@@ -1058,10 +1059,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>A set combining the points of this <c>Geometry</c> and the points of <c>other</c>.</returns>
         public IGeometry Union(IGeometry other) 
         {
+            // Special case: if either input is empty ==> other input
+            if (IsEmpty) 
+                return (IGeometry) other.Clone();
+            if (other.IsEmpty) 
+                return (IGeometry) Clone();
+
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
-
-            return OverlayOp.Overlay(this, other, SpatialFunctions.Union);
+            return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.Union);
         }
 
         /// <summary>
@@ -1073,10 +1079,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The point set difference of this <c>Geometry</c> with <c>other</c>.</returns>
         public IGeometry Difference(IGeometry other)
         {
+            // Special case: if A.isEmpty ==> empty; if B.isEmpty ==> A
+            if (IsEmpty) 
+                return Factory.CreateGeometryCollection(null);
+            if (other.IsEmpty) 
+                return (IGeometry) Clone();
+
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
-
-            return OverlayOp.Overlay(this, other, SpatialFunctions.Difference);
+            return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.Difference);
          }
 
         /// <summary>
@@ -1089,10 +1100,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The point set symmetric difference of this <c>Geometry</c> with <c>other</c>.</returns>
         public IGeometry SymmetricDifference(IGeometry other) 
         {
+            // Special case: if either input is empty ==> other input
+            if (IsEmpty) 
+                return (IGeometry) other.Clone();
+            if (other.IsEmpty) 
+                return (IGeometry) Clone();
+
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
-
-            return OverlayOp.Overlay(this, other, SpatialFunctions.SymDifference);
+            return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.SymDifference);
         }
 
         /// <summary>
@@ -1175,7 +1191,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public virtual object Clone() 
         {            
-            Geometry clone = (Geometry) base.MemberwiseClone();
+            Geometry clone = (Geometry) MemberwiseClone();
             if (clone.envelope != null) 
                 clone.envelope = new Envelope(clone.envelope);                 
             return clone;         
@@ -1256,7 +1272,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         protected bool IsEquivalentClass(IGeometry other) 
         {
-            return this.GetType().FullName == other.GetType().FullName;
+            return GetType().FullName == other.GetType().FullName;
         }
 
         /// <summary>
@@ -1369,9 +1385,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get
             {
                 for (int i = 0; i < SortedClasses.Length; i++)                
-                    if (this.GetType().Equals(SortedClasses[i]))                                        
+                    if (GetType().Equals(SortedClasses[i]))                                        
                         return i;                                    
-                Assert.ShouldNeverReachHere("Class not supported: " + this.GetType().FullName);
+                Assert.ShouldNeverReachHere(String.Format("Class not supported: {0}", GetType().FullName));
                 return -1;
             }
         }

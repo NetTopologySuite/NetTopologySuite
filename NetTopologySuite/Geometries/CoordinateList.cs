@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-
 using GeoAPI.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
@@ -120,15 +118,44 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             // don't add duplicate coordinates
             if (!allowRepeated)
             {
-                if (this.Count >= 1)
+                if (Count >= 1)
                 {
-                    ICoordinate last = this[this.Count - 1];
+                    ICoordinate last = this[Count - 1];
                     if (last.Equals2D(coord)) 
                         return false;
                 }
             }
-            this.Add(coord);
+            Add(coord);
             return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="i"></param>
+        /// <param name="coord"></param>
+        /// <param name="allowRepeated"></param>
+        public void Add(int i, ICoordinate coord, bool allowRepeated)
+        {
+            // don't add duplicate coordinates
+            if (!allowRepeated)
+            {
+                int size = Count;
+                if (size > 0)
+                {
+                    if (i > 0)
+                    {
+                        ICoordinate prev = this[i - 1];
+                        if (prev.Equals2D(coord)) return;
+                    }
+                    if (i < size)
+                    {
+                        ICoordinate next = this[i];
+                        if (next.Equals2D(coord)) return;
+                    }
+                }
+            }
+            Insert(i, coord);
         }
 
         /// <summary>
@@ -153,7 +180,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public void CloseRing()
         {
-            if (this.Count > 0)
+            if (Count > 0)
                 Add(this[0], false);
         }
 
@@ -163,7 +190,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>Coordinater as <c>Coordinate[]</c> array.</returns>
         public ICoordinate[] ToCoordinateArray()
         {
-            return this.ToArray();
+            return ToArray();
         }
 
         /// <summary>

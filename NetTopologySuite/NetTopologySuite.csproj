@@ -298,6 +298,10 @@
     <Compile Include="Operation\Overlay\OverlayOp.cs" />
     <Compile Include="Operation\Overlay\PointBuilder.cs" />
     <Compile Include="Operation\Overlay\PolygonBuilder.cs" />
+    <Compile Include="Operation\Overlay\Snap\GeometrySnapper.cs" />
+    <Compile Include="Operation\Overlay\Snap\LineStringSnapper.cs" />
+    <Compile Include="Operation\Overlay\Snap\SnapIfNeededOverlayOp.cs" />
+    <Compile Include="Operation\Overlay\Snap\SnapOverlayOp.cs" />
     <Compile Include="Operation\Polygonize\EdgeRing.cs" />
     <Compile Include="Operation\Polygonize\PolygonizeDirectedEdge.cs" />
     <Compile Include="Operation\Polygonize\PolygonizeEdge.cs" />

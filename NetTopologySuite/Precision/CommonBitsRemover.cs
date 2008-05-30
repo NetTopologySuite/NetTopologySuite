@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Precision
@@ -39,10 +34,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// </summary>
         public ICoordinate CommonCoordinate
         {
-            get
-            {
-                return commonCoord; 
-            }
+            get { return commonCoord; }
         }
 
         /// <summary>

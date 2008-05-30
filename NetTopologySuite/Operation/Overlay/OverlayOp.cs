@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// The spatial functions supported by this class.
     /// These operations implement various bool combinations of the resultants of the overlay.
     /// </summary>
-    public enum SpatialFunctions
+    public enum SpatialFunction
     {
         /// <summary>
         /// 
@@ -53,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <param name="geom1"></param>
         /// <param name="opCode"></param>
         /// <returns></returns>
-        public static IGeometry Overlay(IGeometry geom0, IGeometry geom1, SpatialFunctions opCode)
+        public static IGeometry Overlay(IGeometry geom0, IGeometry geom1, SpatialFunction opCode)
         {
             OverlayOp gov = new OverlayOp(geom0, geom1);
             IGeometry geomOv = gov.GetResultGeometry(opCode);
@@ -66,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <param name="label"></param>
         /// <param name="opCode"></param>
         /// <returns></returns>
-        public static bool IsResultOfOp(Label label, SpatialFunctions opCode)
+        public static bool IsResultOfOp(Label label, SpatialFunction opCode)
         {
             Locations loc0 = label.GetLocation(0);
             Locations loc1 = label.GetLocation(1);
@@ -77,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// This method will handle arguments of Location.NULL correctly.
         /// </summary>
         /// <returns><c>true</c> if the locations correspond to the opCode.</returns>
-        public static bool IsResultOfOp(Locations loc0, Locations loc1, SpatialFunctions opCode)
+        public static bool IsResultOfOp(Locations loc0, Locations loc1, SpatialFunction opCode)
         {
             if (loc0 == Locations.Boundary) 
                 loc0 = Locations.Interior;
@@ -86,13 +86,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             
             switch (opCode) 
             {
-                case SpatialFunctions.Intersection:
+                case SpatialFunction.Intersection:
                     return loc0 == Locations.Interior && loc1 == Locations.Interior;
-                case SpatialFunctions.Union:
+                case SpatialFunction.Union:
                     return loc0 == Locations.Interior || loc1 == Locations.Interior;
-                case SpatialFunctions.Difference:
+                case SpatialFunction.Difference:
                     return loc0 == Locations.Interior && loc1 != Locations.Interior;
-                case SpatialFunctions.SymDifference:
+                case SpatialFunction.SymDifference:
                     return   (loc0 == Locations.Interior &&  loc1 != Locations.Interior)
                           || (loc0 != Locations.Interior &&  loc1 == Locations.Interior);
 	            default:
@@ -133,7 +133,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         /// <param name="funcCode"></param>
         /// <returns></returns>
-        public IGeometry GetResultGeometry(SpatialFunctions funcCode)
+        public IGeometry GetResultGeometry(SpatialFunction funcCode)
         {
             ComputeOverlay(funcCode);
             return resultGeom;
@@ -154,7 +154,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// 
         /// </summary>
         /// <param name="opCode"></param>
-        private void ComputeOverlay(SpatialFunctions opCode)
+        private void ComputeOverlay(SpatialFunction opCode)
         {
             // copy points from input Geometries.
             // This ensures that any Point geometries
@@ -464,7 +464,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// Interior Area edges are the result of dimensional collapses.
         /// They do not form part of the result area boundary.
         /// </summary>
-        private void FindResultAreaEdges(SpatialFunctions opCode)
+        private void FindResultAreaEdges(SpatialFunction opCode)
         {
             IEnumerator it = graph.EdgeEnds.GetEnumerator();
             while (it.MoveNext()) 

@@ -44,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <returns>
         /// A list of the LineStrings in the result of the specified overlay operation.
         /// </returns>
-        public IList Build(SpatialFunctions opCode)
+        public IList Build(SpatialFunction opCode)
         {
             FindCoveredLineEdges();
             CollectLines(opCode);
@@ -90,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// 
         /// </summary>
         /// <param name="opCode"></param>
-        private void CollectLines(SpatialFunctions opCode)
+        private void CollectLines(SpatialFunction opCode)
         {
             IEnumerator it = op.Graph.EdgeEnds.GetEnumerator();
             while (it.MoveNext()) 
@@ -107,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <param name="de"></param>
         /// <param name="opCode"></param>
         /// <param name="edges"></param>
-        public void CollectLineEdge(DirectedEdge de, SpatialFunctions opCode, IList edges)
+        public void CollectLineEdge(DirectedEdge de, SpatialFunction opCode, IList edges)
         {
             Label label = de.Label;
             Edge e = de.Edge;
@@ -133,7 +133,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <param name="de"></param>
         /// <param name="opCode"></param>
         /// <param name="edges"></param>
-        public void CollectBoundaryTouchEdge(DirectedEdge de, SpatialFunctions opCode, IList edges)
+        public void CollectBoundaryTouchEdge(DirectedEdge de, SpatialFunction opCode, IList edges)
         {            
             Label label = de.Label;            
             if (de.IsLineEdge)  
@@ -148,7 +148,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             // sanity check for labelling of result edgerings
             Assert.IsTrue(!(de.IsInResult || de.Sym.IsInResult) || !de.Edge.IsInResult);            
             // include the linework if it's in the result of the operation
-            if (OverlayOp.IsResultOfOp(label, opCode) && opCode == SpatialFunctions.Intersection)
+            if (OverlayOp.IsResultOfOp(label, opCode) && opCode == SpatialFunction.Intersection)
             {
                 edges.Add(de.Edge);
                 de.VisitedEdge = true;
@@ -159,7 +159,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// 
         /// </summary>
         /// <param name="opCode"></param>
-        private void BuildLines(SpatialFunctions opCode)
+        private void BuildLines(SpatialFunction opCode)
         {            
             for (IEnumerator it = lineEdgesList.GetEnumerator(); it.MoveNext(); )
             {

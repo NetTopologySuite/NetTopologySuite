@@ -39,7 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <returns>
         /// A list of the Points in the result of the specified overlay operation.
         /// </returns>
-        public IList Build(SpatialFunctions opCode)
+        public IList Build(SpatialFunction opCode)
         {
             IList nodeList = CollectNodes(opCode);
             IList resultPointList = SimplifyPoints(nodeList);
@@ -51,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         /// <param name="opCode"></param>
         /// <returns></returns>
-        private IList CollectNodes(SpatialFunctions opCode)
+        private IList CollectNodes(SpatialFunction opCode)
         {
             IList resultNodeList = new ArrayList();
             // add nodes from edge intersections which have not already been included in the result
