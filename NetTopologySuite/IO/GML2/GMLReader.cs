@@ -1,11 +1,8 @@
 using System;
 using System.Collections;
 using System.IO;
-using System.Text;
 using System.Xml;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.IO.GML2
@@ -16,12 +13,12 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
     /// </summary>
     public class GMLReader
     {
-        private GeometryFactory factory = null;
+        private IGeometryFactory factory = null;
 
         /// <summary>
         /// <c>Geometry</c> builder.
         /// </summary>
-        protected GeometryFactory Factory
+        protected IGeometryFactory Factory
         {
             get { return factory; }
         }
@@ -29,13 +26,13 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// <summary>
         /// Initialize reader with a standard <c>GeometryFactory</c>. 
         /// </summary>
-        public GMLReader() : this(new GeometryFactory()) { }
+        public GMLReader() : this(GeometryFactory.Default) { }
 
         /// <summary>
         /// Initialize reader with the given <c>GeometryFactory</c>.
         /// </summary>
         /// <param name="factory"></param>
-        public GMLReader(GeometryFactory factory)
+        public GMLReader(IGeometryFactory factory)
         {
             this.factory = factory;
         }
