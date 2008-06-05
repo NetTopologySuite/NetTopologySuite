@@ -123,6 +123,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         private NumberFormatInfo formatter;
         private string format;
         private bool isFormatted = false;
+        private bool useMaxPrecision = false;
 
         /// <summary>
         /// 
@@ -201,18 +202,27 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// Converts a <c>Geometry</c> to its Well-known Text representation.
         /// </summary>
         /// <param name="geometry">A <c>Geometry</c> to process</param>
-        /// <param name="isFormatted"></param>
+        /// <param name="formatted"></param>
         /// <param name="writer"></param>
         /// <returns>
         /// A "Geometry Tagged Text" string (see the OpenGIS Simple
         /// Features Specification).
         /// </returns>
-        private void WriteFormatted(IGeometry geometry, bool isFormatted, TextWriter writer)
+        private void WriteFormatted(IGeometry geometry, bool formatted, TextWriter writer)
         {
-            this.isFormatted = isFormatted;
+            if (geometry == null)
+                throw new ArgumentNullException("geometry");
+
+            // Enable maxPrecision (via {0:R} formatter) in WriteNumber method
+            useMaxPrecision = geometry.Factory.PrecisionModel.PrecisionModelType == PrecisionModels.Floating;
+
+            isFormatted = formatted;
             formatter = CreateFormatter(geometry.PrecisionModel);           
             format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);
             AppendGeometryTaggedText(geometry, 0, writer);
+
+            // Disable maxPrecision as default setting
+            useMaxPrecision = false;
         }
 
         /// <summary>
@@ -409,10 +419,15 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </returns>
         private string WriteNumber(double d)
         {            
-            string standardprecision = d.ToString(format, formatter);
-            // TODO: ISSUE 21
-            string maxprecise = String.Format(CultureInfo.InvariantCulture, MaxPrecisionFormat, d);            
-            return standardprecision;            
+            string standard = d.ToString(format, formatter);
+            if (!useMaxPrecision)
+                return standard;
+
+            // Check if some precision is lost during text conversion: if so, use {0:R} formatter 
+            double converted = Convert.ToDouble(standard, formatter);            
+            if (converted != d)
+                return String.Format(formatter, MaxPrecisionFormat, d);
+            return standard;
         }
 
         /// <summary>
