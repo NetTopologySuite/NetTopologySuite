@@ -566,7 +566,7 @@ namespace RTools_NTS.Util
 		{
 			try
 			{
-				obj = (double)f;
+				obj = (double) f;
 			}
             catch (Exception) { obj = null; }
 		}
@@ -577,7 +577,7 @@ namespace RTools_NTS.Util
 		public override string ToDebugString() 
 		{ 
 			if (obj != null)
-				 return(String.Format("FloatToken: {0}", (Double)obj)); 
+				 return(String.Format("FloatToken: {0:R}", (Double) obj)); 
 			else return(String.Format("FloatToken: null")); 
 		}
 
@@ -587,7 +587,7 @@ namespace RTools_NTS.Util
 		public override string ToString() 
 		{ 
 			if (obj != null)
-				 return(String.Format("{0}", (Double)obj)); 
+				 return(String.Format("{0:R}", (Double) obj)); 
 			else return(String.Format("null")); 
 		}
 
@@ -608,7 +608,7 @@ namespace RTools_NTS.Util
 			{
 				if (obj != null)
 					 // return(String.Format("{0:f9}", (Double)obj)); 
-                     return (String.Format("{0}", (Double)obj)); 
+                     return (String.Format("{0:R}", (Double) obj)); 
 				else return(String.Format("null")); 
 			}
 		}
@@ -619,14 +619,14 @@ namespace RTools_NTS.Util
 		public override bool Equals(object other)
 		{
 			if ((object)other == null) 
-                return(false);
+                return false;
 			if (!GetType().Equals(other.GetType())) 
-                return(false);
+                return false;
 			if ((obj == null) || (((FloatToken)other).obj == null)) 
-                return(false);
-			if (((Double)obj).Equals((Double)((FloatToken)other).Object)) 
-                return(true);
-			else return(false);
+                return false ;
+			if (((Double) obj).Equals((Double) ((FloatToken) other).Object)) 
+                return true;
+			else return false;
 		}
 	}
 
