@@ -43,18 +43,27 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         }
 
         private void TestFormatting(ICoordinate c)
-        {
+        {            
             IGeometry point = GeometryFactory.Floating.CreatePoint(c);
             String result = writer.Write(point);
             Debug.WriteLine(result);
+            IGeometry geom = new WKTReader(GeometryFactory.Floating).Read(result);
+            string tos = geom.ToString();
+            Assert.IsTrue(String.Equals(tos, result));
 
             point = GeometryFactory.FloatingSingle.CreatePoint(c);
             result = writer.Write(point);
             Debug.WriteLine(result);
+            geom = new WKTReader(GeometryFactory.Floating).Read(result);
+            tos = geom.ToString();
+            Assert.IsTrue(String.Equals(tos, result));
 
             point = GeometryFactory.Fixed.CreatePoint(c);
             result = writer.Write(point);
             Debug.WriteLine(result);
+            geom = new WKTReader(GeometryFactory.Floating).Read(result);
+            tos = geom.ToString();
+            Assert.IsTrue(String.Equals(tos, result));
         }
 
 		/// <summary>
@@ -98,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             Assert.IsNotNull(wkt1);
             Assert.IsTrue(wkt1.IsValid);
 
-            IGeometry wkt2 = reader.Read(tos1);
+            IGeometry wkt2 = reader.Read(tos2);
             Assert.IsNotNull(wkt2);
             Assert.IsTrue(wkt2.IsValid);
 

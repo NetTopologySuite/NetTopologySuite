@@ -1,12 +1,8 @@
 using System;
-using System.Diagnostics;
-using System.IO;
-using System.Collections;
 using System.Globalization;
+using System.IO;
 using System.Text;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
@@ -123,6 +119,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
             return buf.ToString();
         }
 
+        private readonly string MaxPrecisionFormat = "{0:R}";
         private NumberFormatInfo formatter;
         private string format;
         private bool isFormatted = false;
@@ -213,12 +210,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
         private void WriteFormatted(IGeometry geometry, bool isFormatted, TextWriter writer)
         {
             this.isFormatted = isFormatted;
-            formatter = CreateFormatter(geometry.PrecisionModel);
-            /*if (geometry.PrecisionModel.PrecisionModelType != PrecisionModels.Fixed)
-                 format = "{0:R}";
-            else*/ 
-                format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);
-
+            formatter = CreateFormatter(geometry.PrecisionModel);           
+            format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);
             AppendGeometryTaggedText(geometry, 0, writer);
         }
 
@@ -415,11 +408,11 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// not in scientific notation.
         /// </returns>
         private string WriteNumber(double d)
-        {
-            // return Convert.ToString(d, formatter) not generate decimals well formatted!
-            string maxprecise = String.Format(formatter, "{0:R}", d);
-            string stdval = d.ToString(format, formatter);
-            return stdval;
+        {            
+            string standardprecision = d.ToString(format, formatter);
+            // TODO: ISSUE 21
+            string maxprecise = String.Format(CultureInfo.InvariantCulture, MaxPrecisionFormat, d);            
+            return standardprecision;            
         }
 
         /// <summary>
