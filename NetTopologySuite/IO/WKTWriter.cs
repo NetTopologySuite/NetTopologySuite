@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Collections;
 using System.Globalization;
@@ -213,7 +214,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
         {
             this.isFormatted = isFormatted;
             formatter = CreateFormatter(geometry.PrecisionModel);
-            format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);
+            /*if (geometry.PrecisionModel.PrecisionModelType != PrecisionModels.Fixed)
+                 format = "{0:R}";
+            else*/ 
+                format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);
 
             AppendGeometryTaggedText(geometry, 0, writer);
         }
@@ -410,10 +414,12 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// The <see cref="double" /> as a <see cref="string" />, 
         /// not in scientific notation.
         /// </returns>
-        private string WriteNumber(double d) 
-        {           
+        private string WriteNumber(double d)
+        {
             // return Convert.ToString(d, formatter) not generate decimals well formatted!
-		    return d.ToString(format, formatter);
+            string maxprecise = String.Format(formatter, "{0:R}", d);
+            string stdval = d.ToString(format, formatter);
+            return stdval;
         }
 
         /// <summary>
