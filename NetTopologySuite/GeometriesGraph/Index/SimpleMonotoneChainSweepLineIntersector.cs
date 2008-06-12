@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
-using GeoAPI.DataStructures.Collections.Generic;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 {
     /// <summary> 
-    /// A SimpleMCSweepLineIntersector creates monotone chains from the edges
+    /// A <see cref="SimpleMonotoneChainSweepLineIntersector{TCoordinate}"/> 
+    /// creates monotone chains from the edges
     /// and compares them using a simple sweep-line along the x-axis.
     /// </summary>
     /// <remarks>
@@ -25,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// seems to offer an improvement in performance over a sweep-line alone.
     /// </para>
     /// </remarks>
-    public class SimpleMonotoneChaingSweepLineIntersector<TCoordinate>
+    public class SimpleMonotoneChainSweepLineIntersector<TCoordinate>
             : EdgeSetIntersector<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
                             IComparable<TCoordinate>, IConvertible,

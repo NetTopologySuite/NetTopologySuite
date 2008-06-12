@@ -342,16 +342,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 }
             }
         }
-
-        /// <summary>
-        /// Enlarges the boundary of the <see cref="Extents{TCoordinate}"/> so that it contains
-        /// <c>other</c>. Does nothing if <c>other</c> is wholly on or
-        /// within the boundaries.
-        /// </summary>
-        /// <param name="other">the <see cref="Extents{TCoordinate}"/> to merge with.</param>        
+    
         public void ExpandToInclude(IExtents<TCoordinate> other)
         {
-            if (other.IsEmpty)
+            if (other == null || other.IsEmpty)
             {
                 return;
             }
@@ -377,10 +371,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        /// <summary> 
-        /// Gets the factory which contains the context in which this point was created.
-        /// </summary>
-        /// <returns>The factory for this point.</returns>
         public IGeometryFactory<TCoordinate> Factory
         {
             get { return _geoFactory; }
@@ -403,14 +393,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             _max = coordFactory.Create(_max[Ordinates.X] + transX, _max[Ordinates.Y] + transY);
         }
 
-        /// <summary>
-        /// Computes the coordinate of the center of this envelope 
-        /// (as long as it is non-null).
-        /// </summary>
-        /// <returns>
-        /// The center coordinate of this envelope, 
-        /// or <see langword="null" /> if the envelope is null.
-        /// </returns>.
         public TCoordinate Center
         {
             get
@@ -421,7 +403,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                                  (Min[Ordinates.X] + Max[Ordinates.X]) / 2.0,
                                  (Min[Ordinates.Y] + Max[Ordinates.Y]) / 2.0);
             }
-        }
+        } 
 
         public IExtents<TCoordinate> Intersection(IExtents<TCoordinate> extents)
         {
@@ -438,16 +420,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                                             Math.Min(Max[Ordinates.Y], extents.Max[Ordinates.Y]));
         }
 
-        /// <summary> 
-        /// Check if the region defined by <c>other</c>
-        /// overlaps (intersects) the region of this <see cref="Extents{TCoordinate}"/>.
-        /// </summary>
-        /// <param name="other"> the <see cref="Extents{TCoordinate}"/> which this <see cref="Extents{TCoordinate}"/> is
-        /// being checked for overlapping.
-        /// </param>
-        /// <returns>        
-        /// <see langword="true"/> if the <see cref="Extents{TCoordinate}"/>s overlap.
-        /// </returns>
         public Boolean Intersects(IExtents<TCoordinate> other)
         {
             if (IsEmpty || other.IsEmpty)
@@ -462,23 +434,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                      other.Max[Ordinates.Y] < _min[Ordinates.Y]);
         }
 
-        /// <summary>  
-        /// Check if the point <paramref name="p"/> overlaps (lies inside) 
-        /// the region of this <see cref="Extents{TCoordinate}"/>.
-        /// </summary>
-        /// <param name="p">The <typeparamref name="TCoordinate"/> to be tested.</param>
-        /// <returns>
-        /// <see langword="true"/> if the point overlaps this <see cref="Extents{TCoordinate}"/>.
-        /// </returns>
-        public Boolean Intersects(TCoordinate p)
+        public Boolean Intersects(TCoordinate coordinate)
         {
-            if (IsEmpty || Coordinates<TCoordinate>.IsEmpty(p))
+            if (IsEmpty || Coordinates<TCoordinate>.IsEmpty(coordinate))
             {
                 return false;
             }
 
             // TODO: 3D unsafe
-            return Intersects(p[Ordinates.X], p[Ordinates.Y]);
+            return Intersects(coordinate[Ordinates.X], coordinate[Ordinates.Y]);
         }
 
         /// <summary>  
@@ -531,16 +495,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             return Intersects(x, y);
         }
-
-        /// <summary>  
-        /// Returns <see langword="true"/> if the given point lies in or on the envelope.
-        /// </summary>
-        /// <param name="p"> the point which this <see cref="Extents{TCoordinate}"/> is
-        /// being checked for containing.</param>
-        /// <returns>    
-        /// <see langword="true"/> if the point lies in the interior or
-        /// on the boundary of this <see cref="Extents{TCoordinate}"/>.
-        /// </returns>                
+                
         public Boolean Contains(TCoordinate p)
         {
             return Contains(p[Ordinates.X], p[Ordinates.Y]);
@@ -1059,12 +1014,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         Boolean IExtents.Borders(IExtents other)
         {
-            throw new NotImplementedException();
+            return Borders(convert(other));
         }
 
         Boolean IExtents.Borders(IExtents other, Tolerance tolerance)
         {
-            throw new NotImplementedException();
+            return Borders(convert(other), tolerance);
         }
 
         ICoordinate IExtents.Center
@@ -1321,6 +1276,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return box == null
                 ? Clone()
                 : _geoFactory.CreateExtents(this, box);
+        }
+
+        public Boolean Touches(IExtents a) 
+        {
+            throw new NotImplementedException();
+        }
+
+        public Boolean Within(IExtents a) 
+        {
+            throw new NotImplementedException();
         }
 
         public void TranslateRelativeToWidth(params Double[] vector)

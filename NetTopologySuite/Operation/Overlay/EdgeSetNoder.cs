@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             get
             {
                 EdgeSetIntersector<TCoordinate> esi 
-                    = new SimpleMonotoneChaingSweepLineIntersector<TCoordinate>();
+                    = new SimpleMonotoneChainSweepLineIntersector<TCoordinate>();
                 SegmentIntersector<TCoordinate> si 
                     = new SegmentIntersector<TCoordinate>(_li, true, false);
 

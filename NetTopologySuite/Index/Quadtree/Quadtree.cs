@@ -198,7 +198,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             get
             {
                 Debug.Assert(_root != null);
-                return _root.TotalItems;
+                return _root.TotalItemCount;
             }
         }
 

@@ -61,7 +61,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// <see cref="Geometry{TCoordinate}"/>s returned from spatial analysis methods. The canonical
     /// form is a <see cref="Geometry{TCoordinate}"/> which is simple and noded:
     /// Simple means that the Geometry returned will be simple according to
-    /// the NTS definition of <c>IsSimple</c>.
+    /// the NTS definition of <see cref="IsSimple"/>.
     /// Noded applies only to overlays involving <see cref="LineString{TCoordinate}"/>s. It
     /// means that all intersection points on <see cref="LineString{TCoordinate}"/>s will be
     /// present as endpoints of <see cref="LineString{TCoordinate}"/>s in the result.
@@ -119,11 +119,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </remarks>
     [Serializable]
     public abstract class Geometry<TCoordinate> : IGeometry<TCoordinate>
-         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                             IComparable<TCoordinate>, IConvertible, 
+         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                             IComparable<TCoordinate>, IConvertible,
                              IComputable<Double, TCoordinate>
     {
-        private static readonly RuntimeTypeHandle[] _sortedClasses 
+        private static readonly RuntimeTypeHandle[] _sortedClasses
             = new RuntimeTypeHandle[]
             {
                 typeof (IPoint<TCoordinate>).TypeHandle,
@@ -145,7 +145,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         private Dimensions _boundaryDimension;
         private ICoordinateSystem<TCoordinate> _spatialReference;
 
-        public Geometry(IGeometryFactory<TCoordinate> factory)
+        protected Geometry(IGeometryFactory<TCoordinate> factory)
         {
             if (factory == null)
             {
@@ -191,7 +191,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             return result;
         }
-        
+
         /// <summary>
         /// Returns the number of Geometries in a GeometryCollection,
         /// or 1, if the geometry is not a collection.
@@ -246,25 +246,25 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 switch (dim)
                 {
                     case Dimensions.Point:
-                    {
-                        InteriorPointPoint<TCoordinate> intPt 
-                            = new InteriorPointPoint<TCoordinate>(this);
-                        interiorPt = intPt.InteriorPoint;
-                    }
+                        {
+                            InteriorPointPoint<TCoordinate> intPt
+                                = new InteriorPointPoint<TCoordinate>(this);
+                            interiorPt = intPt.InteriorPoint;
+                        }
                         break;
                     case Dimensions.Curve:
-                    {
-                        InteriorPointLine<TCoordinate> intPt 
-                            = new InteriorPointLine<TCoordinate>(this);
-                        interiorPt = intPt.InteriorPoint;
-                    }
+                        {
+                            InteriorPointLine<TCoordinate> intPt
+                                = new InteriorPointLine<TCoordinate>(this);
+                            interiorPt = intPt.InteriorPoint;
+                        }
                         break;
                     default:
-                    {
-                        InteriorPointArea<TCoordinate> intPt 
-                            = new InteriorPointArea<TCoordinate>(this);
-                        interiorPt = intPt.InteriorPoint;
-                    }
+                        {
+                            InteriorPointArea<TCoordinate> intPt
+                                = new InteriorPointArea<TCoordinate>(this);
+                            interiorPt = intPt.InteriorPoint;
+                        }
                         break;
                 }
 
@@ -276,7 +276,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get { return InteriorPoint; }
         }
-        
+
         #region IComparable<IGeometry<TCoordinate>> Members
         /// <summary>
         /// Returns whether this <see cref="Geometry{TCoordinate}"/> is greater than, 
@@ -309,6 +309,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </remarks>
         public Int32 CompareTo(Object other)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             IGeometry g = other as IGeometry;
             return CompareTo(g);
         }
@@ -344,6 +346,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </remarks>
         public Int32 CompareTo(IGeometry other)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             IGeometry<TCoordinate> g = other as IGeometry<TCoordinate>;
             return CompareTo(g);
         }
@@ -379,6 +383,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </remarks>
         public Int32 CompareTo(IGeometry<TCoordinate> other)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             Int32 classSortIndex = getClassSortIndex(this);
             Int32 otherClassSortIndex = getClassSortIndex(other);
 
@@ -474,23 +480,32 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 TCoordinate centPt;
                 Dimensions dim = Dimension;
 
-                if (dim == Dimensions.Point)
+                switch (dim)
                 {
-                    CentroidPoint<TCoordinate> cent = new CentroidPoint<TCoordinate>(Factory.CoordinateFactory);
-                    cent.Add(this);
-                    centPt = cent.Centroid;
-                }
-                else if (dim == Dimensions.Curve)
-                {
-                    CentroidLine<TCoordinate> cent = new CentroidLine<TCoordinate>(Factory.CoordinateFactory);
-                    cent.Add(this);
-                    centPt = cent.Centroid;
-                }
-                else
-                {
-                    CentroidArea<TCoordinate> cent = new CentroidArea<TCoordinate>(Factory.CoordinateFactory);
-                    cent.Add(this);
-                    centPt = cent.Centroid;
+                    case Dimensions.Point:
+                        {
+                            CentroidPoint<TCoordinate> cent
+                                = new CentroidPoint<TCoordinate>(Factory.CoordinateFactory);
+                            cent.Add(this);
+                            centPt = cent.Centroid;
+                        }
+                        break;
+                    case Dimensions.Curve:
+                        {
+                            CentroidLine<TCoordinate> cent
+                                = new CentroidLine<TCoordinate>(Factory.CoordinateFactory);
+                            cent.Add(this);
+                            centPt = cent.Centroid;
+                        }
+                        break;
+                    default:
+                        {
+                            CentroidArea<TCoordinate> cent
+                                = new CentroidArea<TCoordinate>(Factory.CoordinateFactory);
+                            cent.Add(this);
+                            centPt = cent.Centroid;
+                        }
+                        break;
                 }
 
                 return createPointFromInternalCoord(centPt, this);
@@ -545,10 +560,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public IExtents<TCoordinate> Extents
         {
-            get
-            {
-                return ExtentsInternal;
-            }
+            get { return ExtentsInternal; }
         }
 
         /// <summary> 
@@ -575,6 +587,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public IGeometry<TCoordinate> Project(ICoordinateSystem<TCoordinate> toCoordinateSystem)
         {
+            if (toCoordinateSystem == null) throw new ArgumentNullException("toCoordinateSystem");
             throw new NotImplementedException();
         }
 
@@ -645,10 +658,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Returns <see langword="true"/> if the DE-9IM intersection matrix for the two
         /// <see cref="Geometry{TCoordinate}"/>s is T*F**FFF*.
         /// </summary>
-        /// <param name="g">The <see cref="Geometry{TCoordinate}"/> with which to compare this <see cref="Geometry{TCoordinate}"/>.</param>
-        /// <returns><see langword="true"/> if the two <see cref="Geometry{TCoordinate}"/>s are equal.</returns>
+        /// <param name="g">
+        /// The <see cref="Geometry{TCoordinate}"/> with which to compare this 
+        /// <see cref="Geometry{TCoordinate}"/>.
+        /// </param>
+        /// <returns>
+        /// <see langword="true"/> if the two <see cref="Geometry{TCoordinate}"/>s are equal.
+        /// </returns>
         public Boolean Equals(IGeometry g)
         {
+            if (g == null) throw new ArgumentNullException("g");
+
             // TODO: this could be redone to relate the IGeometry 
             // instance to this instance, using ICoordinate
             return Equals(convertIGeometry(g));
@@ -682,8 +702,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 // Polygon overrides to check for actual rectangle
                 if (Dimension == Dimensions.Surface)
                 {
-                    throw new InvalidOperationException(
-                        "This method must be overridden in 2D geometries.");
+                    throw new InvalidOperationException("This method must be " +
+                                                        "overridden in 2D geometries.");
                 }
 
                 return false;
@@ -777,7 +797,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return _srid; }
             set
             {
+                if (_srid == value)
+                {
+                    return;
+                }
+
                 _srid = value;
+                _factory = new GeometryFactory<TCoordinate>(_factory.PrecisionModel, 
+                                                            value,
+                                                            _factory.CoordinateSequenceFactory);
 
                 IGeometryCollection collection = this as IGeometryCollection;
 
@@ -786,10 +814,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     foreach (Geometry<TCoordinate> geometry in collection)
                     {
                         geometry._srid = value;
+                        geometry._factory = _factory;
                     }
                 }
 
-                _factory = new GeometryFactory<TCoordinate>(_factory.PrecisionModel, value, _factory.CoordinateSequenceFactory);
             }
         }
 
@@ -839,7 +867,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="g">The <see cref="Geometry{TCoordinate}"/> from which to compute the distance.</param>
         public Double Distance(IGeometry<TCoordinate> g)
         {
-            return DistanceOp<TCoordinate>.Distance(this, g);
+            if (g == null) throw new ArgumentNullException("g");
+
+            return DistanceOp<TCoordinate>.FindDistance(this, g);
         }
 
         /// <summary>
@@ -911,13 +941,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// The width of the buffer, interpreted according to the
         /// <see cref="PrecisionModel{TCoordinate}"/> of the <see cref="Geometry{TCoordinate}"/>.
         /// </param>
-        /// <param name="quadrantSegments">The number of segments to use to approximate a quadrant of a circle.</param>
+        /// <param name="quadrantSegments">
+        /// The number of segments to use to approximate a quadrant of a circle.
+        /// </param>
         /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
         /// <returns>
         /// All points whose distance from this <see cref="Geometry{TCoordinate}"/>
         /// are less than or equal to <c>distance</c>.
         /// </returns>
-        public IGeometry<TCoordinate> Buffer(Double distance, Int32 quadrantSegments, BufferStyle endCapStyle)
+        public IGeometry<TCoordinate> Buffer(Double distance, 
+                                             Int32 quadrantSegments, 
+                                             BufferStyle endCapStyle)
         {
             return BufferOp<TCoordinate>.Buffer(this, distance, quadrantSegments, endCapStyle);
         }
@@ -944,6 +978,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>A set combining the points of this <see cref="Geometry{TCoordinate}"/> and the points of <c>other</c>.</returns>
         public IGeometry<TCoordinate> Union(IGeometry<TCoordinate> other)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
 
@@ -959,6 +995,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The point set difference of this <see cref="Geometry{TCoordinate}"/> with <c>other</c>.</returns>
         public IGeometry<TCoordinate> Difference(IGeometry<TCoordinate> other)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
 
@@ -975,6 +1013,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The point set symmetric difference of this <see cref="Geometry{TCoordinate}"/> with <c>other</c>.</returns>
         public IGeometry<TCoordinate> SymmetricDifference(IGeometry<TCoordinate> other)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
 
@@ -998,7 +1038,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Boolean Contains(IGeometry<TCoordinate> g)
         {
-            if(g == null) throw new ArgumentNullException("g");
+            if (g == null) throw new ArgumentNullException("g");
 
             // short-circuit test
             if (!ExtentsInternal.Contains(g.Extents))
@@ -1018,6 +1058,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Boolean Contains(IGeometry<TCoordinate> g, Tolerance tolerance)
         {
+            if (g == null) throw new ArgumentNullException("g");
+
             throw new NotImplementedException();
         }
 
@@ -1056,6 +1098,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Boolean Covers(IGeometry<TCoordinate> g, Tolerance tolerance)
         {
+            if (g == null) throw new ArgumentNullException("g");
+
             throw new NotImplementedException();
         }
 
@@ -1064,21 +1108,21 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (g == null) throw new ArgumentNullException("g");
 
             // short-circuit test
-            if (!ExtentsInternal.Intersects(g.Extents))
-            {
-                return false;
-            }
-
-            return Relate(g).IsCrosses(Dimension, g.Dimension);
+            return ExtentsInternal.Intersects(g.Extents) && 
+                   Relate(g).IsCrosses(Dimension, g.Dimension);
         }
 
         public Boolean Crosses(IGeometry<TCoordinate> g, Tolerance tolerance)
         {
+            if (g == null) throw new ArgumentNullException("g");
+
             throw new NotImplementedException();
         }
 
         public Boolean Disjoint(IGeometry<TCoordinate> g)
         {
+            if (g == null) throw new ArgumentNullException("g");
+
             // short-circuit test
             if (!ExtentsInternal.Intersects(g.Extents))
             {
@@ -1090,6 +1134,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Boolean Disjoint(IGeometry<TCoordinate> g, Tolerance tolerance)
         {
+            if (g == null) throw new ArgumentNullException("g");
             throw new NotImplementedException();
         }
 
@@ -1097,6 +1142,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Boolean EqualsExact(IGeometry<TCoordinate> g)
         {
+            if (g == null) throw new ArgumentNullException("g");
             return EqualsExact(g, Tolerance.Zero);
         }
 
@@ -1104,6 +1150,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Boolean Intersects(IGeometry<TCoordinate> g)
         {
+            if (g == null) throw new ArgumentNullException("g");
+
             // short-circuit test
             if (!ExtentsInternal.Intersects(g.Extents))
             {
@@ -1126,64 +1174,82 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Boolean Intersects(IGeometry<TCoordinate> g, Tolerance tolerance)
         {
+            if (g == null) throw new ArgumentNullException("g");
             throw new NotImplementedException();
         }
 
-        public Boolean IsWithinDistance(IGeometry<TCoordinate> geom, Double distance)
+        public Boolean IsWithinDistance(IGeometry<TCoordinate> g, Double distance)
         {
-            Double envDist = ExtentsInternal.Distance(geom.Extents);
+            if (g == null) throw new ArgumentNullException("g");
+            return IsWithinDistance(g, distance, Tolerance.Global);
+        }
+
+        public Boolean IsWithinDistance(IGeometry<TCoordinate> g, Double distance, Tolerance tolerance)
+        {
+            if (g == null) throw new ArgumentNullException("g");
+
+            Double envDist = ExtentsInternal.Distance(g.Extents);
 
             if (envDist > distance)
             {
                 return false;
             }
 
-            return DistanceOp<TCoordinate>.IsWithinDistance(this, geom, distance);
-        }
-
-        public Boolean IsWithinDistance(IGeometry<TCoordinate> g, Double distance, Tolerance tolerance)
-        {
-            throw new NotImplementedException();
+            return DistanceOp<TCoordinate>.IsWithinDistance(this, g, distance, tolerance);
         }
 
         public Boolean Overlaps(IGeometry<TCoordinate> g)
         {
-            // short-circuit test
-            if (!ExtentsInternal.Intersects(g.Extents))
-            {
-                return false;
-            }
+            if (g == null) throw new ArgumentNullException("g");
 
-            return Relate(g).IsOverlaps(Dimension, g.Dimension);
+            // short-circuit test
+            return ExtentsInternal.Intersects(g.Extents) &&
+                   Relate(g).IsOverlaps(Dimension, g.Dimension);
         }
 
         public Boolean Overlaps(IGeometry<TCoordinate> g, Tolerance tolerance)
         {
+            if (g == null) throw new ArgumentNullException("g");
+
             throw new NotImplementedException();
         }
 
         public Boolean Relate(IGeometry<TCoordinate> g, IntersectionMatrix intersectionPattern)
         {
+            if (g == null) throw new ArgumentNullException("g");
+
             throw new NotImplementedException();
         }
 
-        public Boolean Relate(IGeometry<TCoordinate> g, IntersectionMatrix intersectionPattern, Tolerance tolerance)
+        public Boolean Relate(IGeometry<TCoordinate> g,
+                              IntersectionMatrix intersectionPattern,
+                              Tolerance tolerance)
         {
+            if (g == null) throw new ArgumentNullException("g");
+
             return Relate(g).Equals(intersectionPattern);
         }
 
         public Boolean Relate(IGeometry<TCoordinate> g, String intersectionPattern)
         {
+            if (g == null) throw new ArgumentNullException("g");
+
             return Relate(g).Matches(intersectionPattern);
         }
 
-        public Boolean Relate(IGeometry<TCoordinate> g, String intersectionPattern, Tolerance tolerance)
+        public Boolean Relate(IGeometry<TCoordinate> g,
+                              String intersectionPattern,
+                              Tolerance tolerance)
         {
+            if (g == null) throw new ArgumentNullException("g");
+
             throw new NotImplementedException();
         }
 
         public IntersectionMatrix Relate(IGeometry<TCoordinate> g)
         {
+            if (g == null) throw new ArgumentNullException("g");
+
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(g);
 
@@ -1192,32 +1258,31 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Boolean Touches(IGeometry<TCoordinate> g)
         {
-            // short-circuit test
-            if (!ExtentsInternal.Intersects(g.Extents))
-            {
-                return false;
-            }
+            if (g == null) throw new ArgumentNullException("g");
 
-            return Relate(g).IsTouches(Dimension, g.Dimension);
+            // short-circuit test
+            return ExtentsInternal.Intersects(g.Extents) &&
+                   Relate(g).IsTouches(Dimension, g.Dimension);
         }
 
         public Boolean Touches(IGeometry<TCoordinate> g, Tolerance tolerance)
         {
+            if (g == null) throw new ArgumentNullException("g");
+
             throw new NotImplementedException();
         }
 
         public Boolean Within(IGeometry<TCoordinate> g)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException("g");
-            }
+            if (g == null) throw new ArgumentNullException("g");
 
             return g.Contains(this);
         }
 
         public Boolean Within(IGeometry<TCoordinate> g, Tolerance tolerance)
         {
+            if (g == null) throw new ArgumentNullException("g");
+
             throw new NotImplementedException();
         }
 
@@ -1245,8 +1310,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Buffer(distance, endCapStyle);
         }
 
-        IGeometry ISpatialOperator.Buffer(Double distance, 
-                                          Int32 quadrantSegments, 
+        IGeometry ISpatialOperator.Buffer(Double distance,
+                                          Int32 quadrantSegments,
                                           BufferStyle endCapStyle)
         {
             return Buffer(distance, quadrantSegments, endCapStyle);
@@ -1288,136 +1353,194 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         Boolean ISpatialRelation.Contains(IGeometry other)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return Contains(convertIGeometry(other));
         }
 
         Boolean ISpatialRelation.Contains(IGeometry other, Tolerance tolerance)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return Contains(convertIGeometry(other), tolerance);
         }
 
         Boolean ISpatialRelation.CoveredBy(IGeometry other)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return other.Covers(this);
         }
 
         Boolean ISpatialRelation.CoveredBy(IGeometry other, Tolerance tolerance)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return other.Covers(this, tolerance);
         }
 
         Boolean ISpatialRelation.Covers(IGeometry other)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return Covers(convertIGeometry(other));
         }
 
         Boolean ISpatialRelation.Covers(IGeometry other, Tolerance tolerance)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return Covers(convertIGeometry(other), tolerance);
         }
 
         Boolean ISpatialRelation.Crosses(IGeometry other)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return Crosses(convertIGeometry(other));
         }
 
         Boolean ISpatialRelation.Crosses(IGeometry other, Tolerance tolerance)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return Crosses(convertIGeometry(other), tolerance);
         }
 
         Boolean ISpatialRelation.Disjoint(IGeometry other)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return Disjoint(convertIGeometry(other));
         }
 
         Boolean ISpatialRelation.Disjoint(IGeometry other, Tolerance tolerance)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return Disjoint(convertIGeometry(other), tolerance);
         }
 
         Boolean ISpatialRelation.Equals(IGeometry other, Tolerance tolerance)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return Equals(convertIGeometry(other), tolerance);
         }
 
         Boolean ISpatialRelation.EqualsExact(IGeometry other)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return EqualsExact(convertIGeometry(other));
         }
 
         Boolean ISpatialRelation.EqualsExact(IGeometry other, Tolerance tolerance)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return EqualsExact(convertIGeometry(other), tolerance);
         }
 
         Boolean ISpatialRelation.Intersects(IGeometry other)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return Intersects(convertIGeometry(other));
         }
 
         Boolean ISpatialRelation.Intersects(IGeometry other, Tolerance tolerance)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return Intersects(convertIGeometry(other), tolerance);
         }
 
         Boolean ISpatialRelation.IsWithinDistance(IGeometry other, Double distance)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return IsWithinDistance(convertIGeometry(other), distance);
         }
 
         Boolean ISpatialRelation.IsWithinDistance(IGeometry other, Double distance, Tolerance tolerance)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return IsWithinDistance(convertIGeometry(other), distance, tolerance);
         }
 
         Boolean ISpatialRelation.Overlaps(IGeometry other)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return Overlaps(convertIGeometry(other));
         }
 
         Boolean ISpatialRelation.Overlaps(IGeometry other, Tolerance tolerance)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return Overlaps(convertIGeometry(other), tolerance);
         }
 
         Boolean ISpatialRelation.Relate(IGeometry other, IntersectionMatrix intersectionPattern)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return Relate(convertIGeometry(other), intersectionPattern);
         }
 
-        Boolean ISpatialRelation.Relate(IGeometry other, IntersectionMatrix intersectionPattern, Tolerance tolerance)
+        Boolean ISpatialRelation.Relate(IGeometry other,
+                                        IntersectionMatrix intersectionPattern,
+                                        Tolerance tolerance)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return Relate(convertIGeometry(other), intersectionPattern, tolerance);
         }
 
         Boolean ISpatialRelation.Relate(IGeometry other, String intersectionPattern)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return Relate(convertIGeometry(other), intersectionPattern);
         }
 
-        Boolean ISpatialRelation.Relate(IGeometry other, String intersectionPattern, Tolerance tolerance)
+        Boolean ISpatialRelation.Relate(IGeometry other,
+                                        String intersectionPattern,
+                                        Tolerance tolerance)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return Relate(convertIGeometry(other), intersectionPattern, tolerance);
         }
 
         IntersectionMatrix ISpatialRelation.Relate(IGeometry other)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return Relate(convertIGeometry(other));
         }
 
         Boolean ISpatialRelation.Touches(IGeometry other)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return Touches(convertIGeometry(other));
         }
 
         Boolean ISpatialRelation.Touches(IGeometry other, Tolerance tolerance)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return Touches(convertIGeometry(other), tolerance);
         }
 
         Boolean ISpatialRelation.Within(IGeometry other)
         {
+            if (other == null) throw new ArgumentNullException("other");
+
             return Within(convertIGeometry(other));
         }
 
@@ -1453,9 +1576,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         #region Protected helper members
         protected static Boolean Equal(TCoordinate a, TCoordinate b, Tolerance tolerance)
         {
-            return tolerance == Tolerance.Zero 
-                ? a.Equals(b) 
-                : tolerance.Equal(0, a.Distance(b));
+            return tolerance == Tolerance.Zero
+                        ? a.Equals(b)
+                        : tolerance.Equal(0, a.Distance(b));
         }
 
         /// <summary> 
@@ -1510,19 +1633,21 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Throws an exception if <paramref name="g"/> 's type is <see cref="IGeometryCollection{TCoordinate}" />. 
+        /// Throws an exception if <paramref name="g"/> 's type is 
+        /// <see cref="IGeometryCollection{TCoordinate}" /> 
         /// (its subclasses do not trigger an exception).
         /// </summary>
         /// <param name="g">The <see cref="Geometry{TCoordinate}"/> to check.</param>
         /// <exception cref="ArgumentException">
-        /// if <c>g</c> is a <see cref="GeometryCollection{TCoordinate}" />, but not one of its subclasses.
+        /// if <paramref name="g"/> is a <see cref="GeometryCollection{TCoordinate}" />, 
+        /// but not one of its subclasses.
         /// </exception>
         protected static void CheckNotGeometryCollection(IGeometry g)
         {
             if (isGeometryCollection(g))
             {
-                throw new ArgumentException(
-                    "This method does not support GeometryCollection arguments");
+                throw new ArgumentException("This method does not support " +
+                                            "GeometryCollection arguments");
             }
         }
 
@@ -1811,6 +1936,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         //public static readonly IGeometryFactory<TCoordinate> DefaultFactory = GeometryFactory<TCoordinate>.Default;
 
         // ============= END ADDED BY MPAUL42: monoGIS team
-        #endregion 
+        #endregion
     }
 }

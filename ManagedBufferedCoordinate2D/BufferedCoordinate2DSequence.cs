@@ -1462,9 +1462,9 @@ namespace NetTopologySuite.Coordinates
             get { return this[index]; }
             set
             {
-                checkFrozen();
-                throw new NotImplementedException();
-                OnSequenceChanged();
+                if(value == null) throw new ArgumentNullException("value");
+                BufferedCoordinate2D coord = _factory.CoordinateFactory.Create(value);
+                this[index] = coord;
             }
         }
 

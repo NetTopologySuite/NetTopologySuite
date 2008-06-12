@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -399,7 +400,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             get { return Extents; }
         }
 
-        Boolean IBoundable<IExtents<TCoordinate>>.Intersects(IExtents<TCoordinate> bounds)
+        Boolean IIntersectable<IExtents<TCoordinate>>.Intersects(IExtents<TCoordinate> bounds)
         {
             return Extents.Intersects(bounds);
         }

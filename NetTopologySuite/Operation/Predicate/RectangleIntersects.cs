@@ -10,14 +10,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
 {
     /// <summary>
     /// Optimized implementation of spatial predicate "intersects"
-    /// for cases where the first {@link Geometry} is a rectangle.    
-    /// As a further optimization,
-    /// this class can be used directly to test many geometries against a single
-    /// rectangle.
+    /// for cases where the first <see cref="IGeometry{TCoordinate}"/> is a rectangle.    
+    /// As a further optimization, this class can be used directly 
+    /// to test many geometries against a single rectangle.
     /// </summary>
     public class RectangleIntersects<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         /// <summary>     
         /// Crossover size at which brute-force intersection scanning
@@ -87,11 +87,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
     }
 
     internal class EnvelopeIntersectsVisitor<TCoordinate> : ShortCircuitedGeometryVisitor<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible, 
+                            IComputable<Double, TCoordinate>
     {
         private readonly IExtents<TCoordinate> _rectangleExtents;
-        private Boolean _intersects = false;
+        private Boolean _intersects;
 
         public EnvelopeIntersectsVisitor(IExtents<TCoordinate> rectEnv)
         {
@@ -100,10 +101,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
 
         public Boolean Intersects
         {
-            get
-            {
-                return _intersects;
-            }
+            get { return _intersects; }
         }
 
         protected override void Visit(IGeometry<TCoordinate> element)
@@ -131,15 +129,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
             * if the test envelope is "on a corner" of the rectangle
             * envelope)
             */
-            if (elementExtents.GetMin(Ordinates.X) >= _rectangleExtents.GetMin(Ordinates.X)
-                && elementExtents.GetMax(Ordinates.X) <= _rectangleExtents.GetMax(Ordinates.X))
+
+            if (elementExtents.GetMin(Ordinates.X) >= _rectangleExtents.GetMin(Ordinates.X) && 
+                elementExtents.GetMax(Ordinates.X) <= _rectangleExtents.GetMax(Ordinates.X))
             {
                 _intersects = true;
                 return;
             }
 
-            if (elementExtents.GetMin(Ordinates.Y) >= _rectangleExtents.GetMin(Ordinates.Y)
-                && elementExtents.GetMax(Ordinates.Y) <= _rectangleExtents.GetMax(Ordinates.Y))
+            if (elementExtents.GetMin(Ordinates.Y) >= _rectangleExtents.GetMin(Ordinates.Y) && 
+                elementExtents.GetMax(Ordinates.Y) <= _rectangleExtents.GetMax(Ordinates.Y))
             {
                 _intersects = true;
                 return;
@@ -153,12 +152,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
     }
 
     internal class ContainsPointVisitor<TCoordinate> : ShortCircuitedGeometryVisitor<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         private readonly ICoordinateSequence<TCoordinate> _rectSeq;
         private readonly IExtents<TCoordinate> _rectangleExtents;
-        private Boolean _containsPoint = false;
+        private Boolean _containsPoint;
 
         public ContainsPointVisitor(IPolygon<TCoordinate> rectangle)
         {
@@ -213,8 +213,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
     }
 
     internal class LineIntersectsVisitor<TCoordinate> : ShortCircuitedGeometryVisitor<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         private readonly IPolygon<TCoordinate> _rectangle;
         private readonly ICoordinateSequence<TCoordinate> _rectSeq;

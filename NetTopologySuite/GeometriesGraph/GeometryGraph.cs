@@ -459,7 +459,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             //                         SimpleMonotoneChaingSweepLineIntersector,
             //                         since it is the fastest, and other are commented
             //                         out in JTS source...
-            return new SimpleMonotoneChaingSweepLineIntersector<TCoordinate>();
+            return new SimpleMonotoneChainSweepLineIntersector<TCoordinate>();
         }
     }
 }

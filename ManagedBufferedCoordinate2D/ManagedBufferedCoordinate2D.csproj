@@ -12,7 +12,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NetTopologySuite.Coordinates.ManagedBufferedCoordinate2D</RootNamespace>
-    <AssemblyName>NetTopologySuite.Coordinates.ManagedBufferedCoordinate2D</AssemblyName>
+    <AssemblyName>ManagedBufferedCoordinate2D</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>nts.snk</AssemblyOriginatorKeyFile>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -28,7 +28,7 @@
     <RunFxCop>false</RunFxCop>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <DocumentationFile>bin\Debug_Net20\NetTopologySuite.Coordinates.ManagedBufferedCoordinate2D.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug_Net20\ManagedBufferedCoordinate2D.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release_Net20|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -38,7 +38,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <DocumentationFile>bin\Release_Net20\NetTopologySuite.Coordinates.ManagedBufferedCoordinate2D.xml</DocumentationFile>
+    <DocumentationFile>bin\Release_Net20\ManagedBufferedCoordinate2D.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_Net35|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,13 +50,13 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <DocumentationFile>bin\Debug_Net35\NetTopologySuite.Coordinates.ManagedBufferedCoordinate2D.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug_Net35\ManagedBufferedCoordinate2D.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release_Net35|AnyCPU' ">
     <OutputPath>bin\Release_Net35\</OutputPath>
     <DefineConstants>TRACE;DOTNET35</DefineConstants>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <DocumentationFile>bin\Release_Net35\NetTopologySuite.Coordinates.ManagedBufferedCoordinate2D.xml</DocumentationFile>
+    <DocumentationFile>bin\Release_Net35\ManagedBufferedCoordinate2D.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>

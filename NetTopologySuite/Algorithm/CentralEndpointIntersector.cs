@@ -89,17 +89,17 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             Double[] avg = new Double[componentCount];
 
-            int n = pts.Length;
+            Int32 n = pts.Length;
 
-            for (int i = 0; i < pts.Length; i++)
+            for (Int32 i = 0; i < pts.Length; i++)
             {
-                for (int componentIndex = 0; componentIndex < componentCount; componentIndex++)
+                for (Int32 componentIndex = 0; componentIndex < componentCount; componentIndex++)
                 {
                     avg[componentIndex] += (Double)pts[i][componentIndex];
                 }
             }
 
-            for (int componentIndex = 0; componentIndex < componentCount; componentIndex++)
+            for (Int32 componentIndex = 0; componentIndex < componentCount; componentIndex++)
             {
                 avg[componentIndex] /= n;
             }
@@ -114,9 +114,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             TCoordinate result = default(TCoordinate);
 
-            for (int i = 0; i < pts.Length; i++)
+            for (Int32 i = 0; i < pts.Length; i++)
             {
-                double dist = p.Distance(pts[i]);
+                Double dist = p.Distance(pts[i]);
 
                 if (dist < minDist)
                 {

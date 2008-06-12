@@ -32,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
-        /// <c> == </c> <see cref="PrecisionModelType.Floating" />.
+        /// <c> == </c> <see cref="PrecisionModelType.DoubleFloating" />.
         /// </summary>
         public static IGeometryFactory<TCoordinate> CreateFloatingPrecision(
             ICoordinateSequenceFactory<TCoordinate> coordSequenceFactory)
@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
-        /// <c> == </c> <see cref="PrecisionModelType.FloatingSingle" />.
+        /// <c> == </c> <see cref="PrecisionModelType.SingleFloating" />.
         /// </summary>
         public static IGeometryFactory<TCoordinate> CreateFloatingSinglePrecision(
             ICoordinateSequenceFactory<TCoordinate> coordSequenceFactory)
@@ -139,8 +139,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
-        /// <see cref="IPrecisionModel{TCoordinate}"/> and the default <see cref="ICoordinateSequenceFactory{TCoordinate}"/>
-        /// implementation.
+        /// <see cref="IPrecisionModel{TCoordinate}"/> and the default 
+        /// <see cref="ICoordinateSequenceFactory{TCoordinate}"/> implementation.
         /// </summary>
         /// <param name="precisionModel">
         /// The <see cref="IPrecisionModel{TCoordinate}"/> to use.
@@ -154,12 +154,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <see cref="IPrecisionModel{TCoordinate}"/>, the given spatial-reference ID 
         /// and the given <see cref="ICoordinateSystem{TCoordinate}"/>.
         /// </summary>
-        public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory, 
+        public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory,
                                Int32? srid,
                                ICoordinateSystem<TCoordinate> spatialReference)
-            : this(new PrecisionModel<TCoordinate>(coordinateSequenceFactory.CoordinateFactory), 
-                   srid, 
-                   coordinateSequenceFactory, 
+            : this(new PrecisionModel<TCoordinate>(coordinateSequenceFactory.CoordinateFactory),
+                   srid,
+                   coordinateSequenceFactory,
                    spatialReference) { }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// CoordinateSequence implementation, a Double-precision floating 
         /// <see cref="IPrecisionModel{TCoordinate}"/>, and the given spatial-reference ID.
         /// </summary>
-        public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory, 
+        public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory,
                                Int32? srid)
             : this(coordinateSequenceFactory, srid, null) { }
 
@@ -250,7 +250,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             // at this point we know the collection is hetereogenous.
             // Determine the type of the result from the first Geometry in the list
-            // this should always return a point, since otherwise an empty collection would have already been returned
+            // this should always return a point, since otherwise an empty collection 
+            // would have already been returned
             IGeometry<TCoordinate> geom0 = Slice.GetFirst(geometries);
             Boolean isCollection = Slice.CountGreaterThan(geometries, 1);
 
@@ -312,25 +313,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                                  CoordinateFactory.Create(max));
         }
 
-        //private int extentsCount = 0;
         public IExtents<TCoordinate> CreateExtents(TCoordinate min, TCoordinate max)
         {
-            //if (++extentsCount % 5 == 0)
-            //{
-            //    Debug.Print("Creating new extents # {0}", extentsCount);
-            //    StackTrace trace = new StackTrace();
-            //    StringBuilder buffer = new StringBuilder();
-            //    for (Int32 i = 0; i < 6; i++)
-            //    {
-            //        String methods = trace.GetFrame(i).ToString();
-            //        buffer.Append(methods);
-            //        buffer.Length -= 6;
-            //        buffer.AppendLine();
-            //    }
-
-            //    Debug.Print(buffer.ToString());
-            //}
-
             return new Extents<TCoordinate>(this, min, max);
         }
 
@@ -428,7 +412,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public IPoint<TCoordinate> CreatePoint(IEnumerable<TCoordinate> coordinates)
         {
             Point<TCoordinate> point
-                = new Point<TCoordinate>(Slice.GetFirst(coordinates), this);
+                = new Point<TCoordinate>(Enumerable.First(coordinates), this);
             return point;
         }
 
@@ -784,39 +768,37 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IPoint2D IGeometryFactory.CreatePoint2D()
         {
-            return (IPoint2D)CreatePoint();
+            return createPointInternal(Double.NaN, Double.NaN, Double.NaN);
         }
 
         IPoint2D IGeometryFactory.CreatePoint2D(Double x, Double y)
         {
-            TCoordinate coord = _coordinateFactory.Create(x, y);
-            return (IPoint2D)CreatePoint(coord);
+            return createPointInternal(x, y, Double.NaN);
         }
 
         IPoint2DM IGeometryFactory.CreatePoint2DM(Double x, Double y, Double m)
         {
-            TCoordinate coord = _coordinateFactory.Create(x, y, m);
-            return (IPoint2DM)CreatePoint(coord);
+            return createPointMInternal(x, y, Double.NaN, m);
         }
 
         IPoint3D IGeometryFactory.CreatePoint3D()
         {
-            throw new NotImplementedException();
+            return createPointInternal(Double.NaN, Double.NaN, Double.NaN);
         }
 
         IPoint3D IGeometryFactory.CreatePoint3D(Double x, Double y, Double z)
         {
-            throw new NotImplementedException();
+            return createPointInternal(x, y, z);
         }
 
         IPoint3D IGeometryFactory.CreatePoint3D(IPoint2D point2D, Double z)
         {
-            throw new NotImplementedException();
+            return createPointInternal(point2D.X, point2D.Y, z);
         }
 
         IPoint3DM IGeometryFactory.CreatePoint3DM(Double x, Double y, Double z, Double m)
         {
-            throw new NotImplementedException();
+            return createPointMInternal(x, y, z, m);
         }
 
         IExtents2D IGeometryFactory.CreateExtents2D(Double left, Double bottom,
@@ -827,23 +809,30 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return (IExtents2D)CreateExtents(min, max);
         }
 
-        IExtents2D IGeometryFactory.CreateExtents2D(
-            Pair<Double> min, Pair<Double> max)
+        IExtents2D IGeometryFactory.CreateExtents2D(Pair<Double> min, Pair<Double> max)
         {
-            return (this as IGeometryFactory).CreateExtents2D(
-                min.First, min.Second, max.First, max.Second);
+            return (this as IGeometryFactory).CreateExtents2D(min.First, 
+                                                              min.Second, 
+                                                              max.First, 
+                                                              max.Second);
         }
 
-        IExtents3D IGeometryFactory.CreateExtents3D(
-            Double left, Double bottom, Double front, Double right, Double top, Double back)
+        IExtents3D IGeometryFactory.CreateExtents3D(Double left, Double bottom, 
+                                                    Double front, Double right, 
+                                                    Double top, Double back)
         {
-            throw new NotImplementedException();
+            return (IExtents3D)CreateExtents(_coordinateFactory.Create3D(left, bottom, front),
+                                             _coordinateFactory.Create3D(right, top, back));
         }
 
-        IExtents3D IGeometryFactory.CreateExtents3D(
-            Triple<Double> lowerLeft, Triple<Double> upperRight)
+        IExtents3D IGeometryFactory.CreateExtents3D(Triple<Double> lowerLeft, Triple<Double> upperRight)
         {
-            throw new NotImplementedException();
+            return (IExtents3D)CreateExtents(_coordinateFactory.Create3D(lowerLeft.First, 
+                                                                         lowerLeft.Second, 
+                                                                         lowerLeft.Third),
+                                             _coordinateFactory.Create3D(upperRight.First, 
+                                                                         upperRight.Second, 
+                                                                         upperRight.Third));
         }
 
         ICoordinateFactory IGeometryFactory.CoordinateFactory
@@ -872,7 +861,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IGeometry IGeometryFactory.BuildGeometry(IEnumerable<IGeometry> geometryList)
         {
-            throw new NotImplementedException();
+            return BuildGeometry(Enumerable.Downcast<IGeometry<TCoordinate>, IGeometry>(geometryList));
         }
 
         IExtents IGeometryFactory.CreateExtents(ICoordinate min, ICoordinate max)
@@ -884,12 +873,24 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IGeometry IGeometryFactory.CreateGeometry(IGeometry g)
         {
-            throw new NotImplementedException();
+            return CreateGeometry((IGeometry<TCoordinate>)g);
         }
 
         IGeometry IGeometryFactory.CreateGeometry(ICoordinateSequence coordinates, OgcGeometryType type)
         {
-            throw new NotImplementedException();
+            IGeometryFactory f = this;
+            switch (type)
+            {
+                case OgcGeometryType.Point:
+                    return f.CreatePoint(coordinates);
+                case OgcGeometryType.LineString:
+                    return f.CreateLineString(coordinates);
+                case OgcGeometryType.Polygon:
+                    return f.CreatePolygon(coordinates);
+                case OgcGeometryType.MultiPoint:
+                    return f.CreateMultiPoint(coordinates);
+                default: throw new NotImplementedException();
+            }
         }
 
         IPoint IGeometryFactory.CreatePoint()
@@ -938,7 +939,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         ILinearRing IGeometryFactory.CreateLinearRing(ICoordinateSequence coordinates)
         {
-            throw new NotImplementedException();
+            return CreateLinearRing((ICoordinateSequence<TCoordinate>)coordinates);
         }
 
         IPolygon IGeometryFactory.CreatePolygon()
@@ -948,7 +949,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IPolygon IGeometryFactory.CreatePolygon(IEnumerable<ICoordinate> shell)
         {
-            throw new NotImplementedException();
+            return CreatePolygon(CreateLinearRing(Enumerable.Downcast<TCoordinate, ICoordinate>(shell)));
         }
 
         IPolygon IGeometryFactory.CreatePolygon(ILinearRing shell)
@@ -1006,17 +1007,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IMultiPoint IGeometryFactory.CreateMultiPoint(IEnumerable<ICoordinate> coordinates)
         {
-            throw new NotImplementedException();
+            return CreateMultiPoint(Enumerable.Downcast<TCoordinate, ICoordinate>(coordinates));
         }
 
         IMultiPoint IGeometryFactory.CreateMultiPoint(IEnumerable<IPoint> point)
         {
-            throw new NotImplementedException();
+            return CreateMultiPoint(Enumerable.Downcast<IPoint<TCoordinate>, IPoint>(point));
         }
 
         IMultiPoint IGeometryFactory.CreateMultiPoint(ICoordinateSequence coordinates)
         {
-            throw new NotImplementedException();
+            return CreateMultiPoint((ICoordinateSequence<TCoordinate>)coordinates);
         }
 
         IMultiLineString IGeometryFactory.CreateMultiLineString()
@@ -1036,7 +1037,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IMultiPolygon IGeometryFactory.CreateMultiPolygon(IEnumerable<IPolygon> polygons)
         {
-            throw new NotImplementedException();
+            return CreateMultiPolygon(Enumerable.Downcast<IPolygon<TCoordinate>, IPolygon>(polygons));
         }
 
         IGeometryCollection IGeometryFactory.CreateGeometryCollection()
@@ -1047,28 +1048,28 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         IGeometryCollection IGeometryFactory.CreateGeometryCollection(IGeometry a, IGeometry b)
         {
             IEnumerable<IGeometry<TCoordinate>> geometries =
-                GenericInterfaceConverter<TCoordinate>.Convert(new IGeometry[] {a, b}, this);
+                GenericInterfaceConverter<TCoordinate>.Convert(new IGeometry[] { a, b }, this);
             return new GeometryCollection<TCoordinate>(geometries, this);
         }
 
         IGeometryCollection IGeometryFactory.CreateGeometryCollection(IEnumerable<IGeometry> geometries)
         {
-            throw new NotImplementedException();
+            return CreateGeometryCollection(Enumerable.Downcast<IGeometry<TCoordinate>, IGeometry>(geometries));
         }
 
         IGeometry IGeometryFactory.ToGeometry(IExtents envelopeInternal)
         {
-            throw new NotImplementedException();
+            return ToGeometry((IExtents<TCoordinate>)envelopeInternal);
         }
 
         IPolygon IGeometryFactory.CreatePolygon(ICoordinateSequence coordinates)
         {
-            throw new NotImplementedException();
+            return CreatePolygon((ICoordinateSequence<TCoordinate>)coordinates);
         }
 
         IMultiPolygon IGeometryFactory.CreateMultiPolygon(ICoordinateSequence coordinates)
         {
-            throw new NotImplementedException();
+            return CreateMultiPolygon((ICoordinateSequence<TCoordinate>)coordinates);
         }
 
         IWktGeometryWriter IGeometryFactory.WktWriter
@@ -1076,8 +1077,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return WktWriter; }
             set
             {
-                 throw new NotSupportedException(
-                     "Use IGeometryFactory<TCoordinate>.WktWriter instead.");
+                throw new NotSupportedException(
+                    "Use IGeometryFactory<TCoordinate>.WktWriter instead.");
             }
         }
 
@@ -1113,12 +1114,33 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #endregion
 
-        //private static ICoordinateSequenceFactory<TCoordinate> getDefaultCoordinateSequenceFactory<TCoordinate>()
-        //    where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-        //        IComputable<Double, TCoordinate>, IConvertible
-        //{
-        //    return Coordinates<TCoordinate>.DefaultCoordinateSequenceFactory;
-        //}
+        private Point<TCoordinate> createPointInternal(Double x, Double y, Double z)
+        {
+            if (Double.IsNaN(z))
+            {
+                TCoordinate coord = _coordinateFactory.Create(x, y);
+                return new Point<TCoordinate>(coord, this);
+            }
+            else
+            {
+                TCoordinate coord = _coordinateFactory.Create3D(x, y, z);
+                return new Point<TCoordinate>(coord, this);
+            }
+        }
+
+        private PointM<TCoordinate> createPointMInternal(Double x, Double y, Double z, Double m)
+        {
+            if (Double.IsNaN(z))
+            {
+                TCoordinate coord = _coordinateFactory.Create(x, y);
+                return new PointM<TCoordinate>(coord, m, this);
+            }
+            else
+            {
+                TCoordinate coord = _coordinateFactory.Create3D(x, y, z);
+                return new PointM<TCoordinate>(coord, m, this);
+            }
+        }
 
         private ICoordinateSequence<TCoordinate> convertSequence(ICoordinateSequence coordinates)
         {
@@ -1129,6 +1151,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             return GenericInterfaceConverter<TCoordinate>.Convert(lineStrings, this);
         }
+
+        //private static ICoordinateSequenceFactory<TCoordinate> getDefaultCoordinateSequenceFactory<TCoordinate>()
+        //    where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        //        IComputable<Double, TCoordinate>, IConvertible
+        //{
+        //    return Coordinates<TCoordinate>.DefaultCoordinateSequenceFactory;
+        //}
 
         //public static IPoint CreatePointFromInternalCoord(ICoordinate coord, IGeometry exemplar)
         //{

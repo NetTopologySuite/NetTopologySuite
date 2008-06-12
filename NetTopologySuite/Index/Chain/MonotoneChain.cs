@@ -175,7 +175,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
             get { return Extents; }
         }
 
-        Boolean IBoundable<IExtents<TCoordinate>>.Intersects(IExtents<TCoordinate> bounds)
+        Boolean IIntersectable<IExtents<TCoordinate>>.Intersects(IExtents<TCoordinate> bounds)
         {
             return Extents.Intersects(bounds);
         }

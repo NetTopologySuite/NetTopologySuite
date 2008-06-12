@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Index
             get { return _level; }
         }
 
-        public Int32 TotalItems
+        public Int32 TotalItemCount
         {
             get
             {
@@ -50,14 +50,14 @@ namespace GisSharpBlog.NetTopologySuite.Index
 
                 foreach (ISpatialIndexNode<TBounds, TItem> node in ChildrenInternal)
                 {
-                    subSize += node.TotalItems;
+                    subSize += node.TotalItemCount;
                 }
 
                 return subSize + ItemCount;
             }
         }
 
-        public Int32 TotalNodes
+        public Int32 TotalNodeCount
         {
             get
             {

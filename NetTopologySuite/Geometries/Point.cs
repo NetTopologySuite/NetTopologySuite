@@ -1,26 +1,27 @@
 using System;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
-using GeoAPI.CoordinateSystems;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>
-    /// Basic implementation of <see cref="IPoint"/>.
+    /// Basic implementation of <see cref="IPoint{TCoordinate}"/>,
+    /// <see cref="IPoint2D"/> and <see cref="IPoint3D"/>.
     /// </summary>
+    /// <typeparam name="TCoordinate">Type of coordinate to use.</typeparam>
     [Serializable]
     public class Point<TCoordinate> : Geometry<TCoordinate>, 
-                                      IPoint<TCoordinate>, 
-                                      IPoint2D
+                                      IPoint<TCoordinate>,
+                                      IPoint3D
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {
-        /// <summary>
-        /// Represents an empty <see cref="Point{TCoordinate}"/>.
-        /// </summary>
+        ///// <summary>
+        ///// Represents an empty <see cref="Point{TCoordinate}"/>.
+        ///// </summary>
         //public static readonly IPoint<TCoordinate> Empty = new GeometryFactory<TCoordinate>().CreatePoint(emptyCoordinate);
 
         private readonly TCoordinate _coordinate;
@@ -110,6 +111,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 }
 
                 return Coordinate[Ordinates.Y];
+            }
+        }
+
+        public Double Z
+        {
+            get
+            {
+                if (Coordinates<TCoordinate>.IsEmpty(Coordinate))
+                {
+                    throw new InvalidOperationException("Z called on empty Point");
+                }
+
+                return Coordinate[Ordinates.Z];
             }
         }
 

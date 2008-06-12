@@ -1,20 +1,20 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
 {
     /// <summary>
     /// Optimized implementation of spatial predicate "contains"
-    /// for cases where the first <see cref="Geometry{TCoordinate}"/> is a rectangle.    
-    /// As a further optimization,
-    /// this class can be used directly to test many geometries against a single rectangle.
+    /// for cases where the first <see cref="IGeometry{TCoordinate}"/> is a rectangle.    
+    /// As a further optimization, this class can be used directly to test 
+    /// many geometries against a single rectangle.
     /// </summary>
     public class RectangleContains<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         public static Boolean Contains(IPolygon<TCoordinate> rectangle, IGeometry<TCoordinate> b)
         {
@@ -53,22 +53,31 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
 
         private Boolean isContainedInBoundary(IGeometry<TCoordinate> geom)
         {
-            // polygons can never be wholely contained in the boundary
+            // polygons can never be wholly contained in the boundary
             if (geom is IPolygon<TCoordinate>)
             {
                 return false;
             }
-            if (geom is IPoint<TCoordinate>)
+
+            IPoint<TCoordinate> point = geom as IPoint<TCoordinate>;
+
+            if (point != null)
             {
-                return isPointContainedInBoundary(geom as IPoint<TCoordinate>);
+                return isPointContainedInBoundary(point);
             }
-            if (geom is ILineString<TCoordinate>)
+
+            ILineString<TCoordinate> line = geom as ILineString<TCoordinate>;
+
+            if (line != null)
             {
-                return isLineStringContainedInBoundary(geom as ILineString<TCoordinate>);
+                return isLineStringContainedInBoundary(line);
             }
-            if(geom is IGeometryCollection<TCoordinate>)
+
+            IGeometryCollection<TCoordinate> collection = geom as IGeometryCollection<TCoordinate>;
+
+            if(collection != null)
             {
-                foreach (IGeometry<TCoordinate> geometry in (geom as IGeometryCollection<TCoordinate>))
+                foreach (IGeometry<TCoordinate> geometry in collection)
                 {
                     if (!isContainedInBoundary(geometry))
                     {
@@ -88,19 +97,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         private Boolean isPointContainedInBoundary(TCoordinate pt)
         {
             // we already know that the point is contained in the rectangle envelope
-            if (!(pt[Ordinates.X] == _rectExtents.GetMin(Ordinates.X) 
-                || pt[Ordinates.X] == _rectExtents.GetMax(Ordinates.X)))
-            {
-                return false;
-            }
-            
-            if (!(pt[Ordinates.Y] == _rectExtents.GetMin(Ordinates.Y)
-                || pt[Ordinates.Y] == _rectExtents.GetMax(Ordinates.Y)))
-            {
-                return false;
-            }
 
-            return true;
+            return pt.Equals(_rectExtents.Min) || pt.Equals(_rectExtents.Max);
         }
 
         private Boolean isLineStringContainedInBoundary(ILineString<TCoordinate> line)

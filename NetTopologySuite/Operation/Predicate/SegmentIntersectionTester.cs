@@ -9,13 +9,15 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
 {
     /// <summary>
-    /// Tests if any line segments in two sets of CoordinateSequences intersect.
+    /// Tests if any line segments in two sets of 
+    /// <see cref="ICoordinateSequence{TCoordinate}"/> intersect.
     /// Optimized for small geometry size.
     /// Short-circuited to return as soon an intersection is found.
     /// </summary>
     public class SegmentIntersectionTester<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         // for purposes of intersection testing, don't need to set precision model
         private readonly LineIntersector<TCoordinate> _li;
@@ -49,23 +51,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
 
         public Boolean HasIntersection(IEnumerable<TCoordinate> seq0, IEnumerable<TCoordinate> seq1)
         {
-            foreach (Pair<TCoordinate> pair0 in Slice.GetOverlappingPairs(seq0))
+            foreach (Pair<TCoordinate> lineSeg0 in Slice.GetOverlappingPairs(seq0))
             {
-                TCoordinate pt00;
-                TCoordinate pt01;
-
-                pt00 = pair0.First;
-                pt01 = pair0.Second;
-
-                foreach (Pair<TCoordinate> pair1 in Slice.GetOverlappingPairs(seq1))
+                foreach (Pair<TCoordinate> lineSeg1 in Slice.GetOverlappingPairs(seq1))
                 {
-                    TCoordinate pt10;
-                    TCoordinate pt11;
-
-                    pt10 = pair1.First;
-                    pt11 = pair1.Second;
-
-                    Intersection<TCoordinate> intersection = _li.ComputeIntersection(pt00, pt01, pt10, pt11);
+                    Intersection<TCoordinate> intersection = _li.ComputeIntersection(lineSeg0, lineSeg1);
 
                     if (intersection.HasIntersection)
                     {
