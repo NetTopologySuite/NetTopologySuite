@@ -64,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Distance
 				Console.WriteLine("Geometry B: " + B);
                 DistanceOp<BufferedCoordinate2D> distOp = new DistanceOp<BufferedCoordinate2D>(A, B);
 				
-				double distance = distOp.Distance();
+				double distance = distOp.Distance;
 				Console.WriteLine("Distance = " + distance);
 				
 				Pair<BufferedCoordinate2D>? closestPt = distOp.ClosestPoints();
