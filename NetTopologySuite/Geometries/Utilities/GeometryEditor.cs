@@ -224,7 +224,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             IGeometryCollection<TCoordinate> newCollection = (IGeometryCollection<TCoordinate>)operation.Edit(collection, _factory);
             List<IGeometry<TCoordinate>> editedGeometries = new List<IGeometry<TCoordinate>>();
 
-            foreach (IGeometry<TCoordinate> geometry in editedGeometries)
+			foreach (IGeometry<TCoordinate> geometry in newCollection)
             {
                 IGeometry<TCoordinate> newGeometry = Edit(geometry, operation);
 
