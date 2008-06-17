@@ -1,11 +1,11 @@
 using System;
-using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 using GeoAPI.Diagnostics;
+using Trace = GeoAPI.Diagnostics.Trace;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
@@ -159,7 +159,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
              */
             if (!isInSegmentExtents(geoFactory, intersection, line0, line1))
             {
-                Trace.TraceInformation("Intersection outside segment envelopes: " + intersection);
+                Trace.Info("NTS", "Intersection outside segment envelopes: " + intersection);
             }
 
             if (PrecisionModel != null)
@@ -229,7 +229,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
             catch (NotRepresentableException e)
             {
-                Trace.TraceError("[{0}] {1}", e.GetType(), e.Message);
+                Trace.Error("NTS", String.Format("[{0}] {1}", e.GetType(), e.Message));
 
                 // compute an approximate result
                 intersectionPoint = CentralEndpointIntersector<TCoordinate>

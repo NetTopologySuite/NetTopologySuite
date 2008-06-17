@@ -94,6 +94,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
+        public override IGeometry<TCoordinate> Clone()
+        {
+            List<ILineString<TCoordinate>> lineStrings = new List<ILineString<TCoordinate>>();
+
+            foreach (ILineString<TCoordinate> lineString in this)
+            {
+                lineStrings.Add(lineString.Clone() as ILineString<TCoordinate>);
+            }
+
+            return Factory.CreateMultiLineString(lineStrings);
+        }
+
         public override Dimensions Dimension
         {
             get { return Dimensions.Curve; }

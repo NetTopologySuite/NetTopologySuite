@@ -146,6 +146,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return Dimensions.Curve; }
         }
 
+        public override IGeometry<TCoordinate> Clone()
+        {
+            List<IPolygon<TCoordinate>> polygons = new List<IPolygon<TCoordinate>>();
+
+            foreach (IPolygon<TCoordinate> polygon in this)
+            {
+                polygons.Add(polygon.Clone() as IPolygon<TCoordinate>);
+            }
+
+            return Factory.CreateMultiPolygon(polygons);
+        }
+
         public override Dimensions Dimension
         {
             get { return Dimensions.Surface; }

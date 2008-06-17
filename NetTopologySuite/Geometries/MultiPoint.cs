@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
@@ -34,9 +33,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Constructs a <see cref="MultiPoint{TCoordinate}"/>.
         /// </summary>
         /// <param name="points">
-        /// The <c>Point</c>s for this <see cref="MultiPoint{TCoordinate}"/>, 
+        /// The <see cref="IPoint{TCoordinate}"/>s for this <see cref="MultiPoint{TCoordinate}"/>, 
         /// or <see langword="null" /> or an empty array to create the empty point.
-        /// Elements may be empty <see cref="Point{TCoordinate}"/>s, but not <see langword="null" />s.
+        /// Elements may be empty <see cref="IPoint{TCoordinate}"/>s, 
+        /// but not <see langword="null" />s.
+        /// </param>
+        /// <param name="factory">
+        /// The <see cref="IGeometryFactory{TCoordinate}"/> used to create the 
+        /// <see cref="IPoint{TCoordinate}"/>.
         /// </param>
         public MultiPoint(IEnumerable<IPoint<TCoordinate>> points, 
                           IGeometryFactory<TCoordinate> factory)
@@ -54,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <remarks>
         /// For create this <see cref="Geometry{TCoordinate}"/> 
         /// is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
+        /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.DoubleFloating"/>.
         /// </remarks>
         public MultiPoint(IEnumerable<IPoint<TCoordinate>> points) 
             : this(points, ExtractGeometryFactory(Enumerable.Upcast<IGeometry<TCoordinate>, IPoint<TCoordinate>>(points))) {}
@@ -70,6 +74,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public override Dimensions BoundaryDimension
         {
             get { return Dimensions.False; }
+        }
+
+        public override IGeometry<TCoordinate> Clone()
+        {
+            List<IPoint<TCoordinate>> points = new List<IPoint<TCoordinate>>();
+
+            foreach (IPoint<TCoordinate> point in this)
+            {
+                points.Add(point.Clone() as IPoint<TCoordinate>);
+            }
+
+            return Factory.CreateMultiPoint(points);
         }
 
         public override OgcGeometryType GeometryType
@@ -94,23 +110,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public override Boolean Equals(IGeometry<TCoordinate> other, Tolerance tolerance)
         {
-            if (!IsEquivalentClass(other))
-            {
-                return false;
-            }
-
-            return base.Equals(other, tolerance);
+            return IsEquivalentClass(other) && base.Equals(other, tolerance);
         }
 
         /// <summary>
-        /// Returns the <c>Coordinate</c> at the given position.
+        /// Returns the <typeparamref name="TCoordinate"/> at the given <paramref name="index"/>.
         /// </summary>
-        /// <param name="n">The index of the <c>Coordinate</c> to retrieve, beginning at 0.
+        /// <param name="index">
+        /// The index of the <typeparamref name="TCoordinate"/> 
+        /// to retrieve, beginning at 0.
         /// </param>
-        /// <returns>The <c>n</c>th <c>Coordinate</c>.</returns>
-        protected TCoordinate GetCoordinate(Int32 n)
+        /// <returns>The <typeparamref name="TCoordinate"/> at <paramref name="index"/>.</returns>
+        protected TCoordinate GetCoordinate(Int32 index)
         {
-            return this[n].Coordinate;
+            return this[index].Coordinate;
         }
 
         public new IEnumerator<IPoint<TCoordinate>> GetEnumerator()
