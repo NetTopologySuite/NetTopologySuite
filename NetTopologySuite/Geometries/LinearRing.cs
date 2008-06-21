@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// A valid ring must not self-intersect.
     /// </remarks>
     [Serializable]
-    public class LinearRing<TCoordinate> : LineString<TCoordinate>, 
+    public class LinearRing<TCoordinate> : LineString<TCoordinate>,
                                            ILinearRing<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
                             IComparable<TCoordinate>, IConvertible,
@@ -30,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// This array must not contain <see langword="null" /> elements.
         /// </param>
         /// <param name="factory"></param>
-        public LinearRing(ICoordinateSequence<TCoordinate> coordinates, IGeometryFactory<TCoordinate> factory) 
+        public LinearRing(ICoordinateSequence<TCoordinate> coordinates, IGeometryFactory<TCoordinate> factory)
             : base(coordinates, factory)
         {
             validateConstruction();
@@ -87,8 +87,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             if (Coordinates.Count >= 1 && Coordinates.Count <= 3)
             {
-                throw new ArgumentException(
-                    "Number of coordinates must equal 0 or be greater than 3");
+                throw new ArgumentException("Number of coordinates must equal 0 " +
+                                            "or be greater than 3");
             }
         }
     }
