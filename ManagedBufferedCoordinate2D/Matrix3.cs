@@ -59,12 +59,12 @@ namespace NetTopologySuite.Coordinates
             throw new NotImplementedException();
         }
 
-        public void RotateAt(BufferedCoordinate2D point, BufferedCoordinate2D axis, double radians, MatrixOperationOrder order)
+        public void RotateAt(BufferedCoordinate2D point, BufferedCoordinate2D axis, Double radians, MatrixOperationOrder order)
         {
             throw new NotImplementedException();
         }
 
-        public void RotateAt(BufferedCoordinate2D point, BufferedCoordinate2D axis, double radians)
+        public void RotateAt(BufferedCoordinate2D point, BufferedCoordinate2D axis, Double radians)
         {
             throw new NotImplementedException();
         }
@@ -93,12 +93,12 @@ namespace NetTopologySuite.Coordinates
 
         #region ITransformMatrix<DoubleComponent,BufferedCoordinate2D,Matrix3> Members
 
-        public void RotateAlong(BufferedCoordinate2D axis, double radians, MatrixOperationOrder order)
+        public void RotateAlong(BufferedCoordinate2D axis, Double radians, MatrixOperationOrder order)
         {
             throw new NotImplementedException();
         }
 
-        public void RotateAlong(BufferedCoordinate2D axis, double radians)
+        public void RotateAlong(BufferedCoordinate2D axis, Double radians)
         {
             throw new NotImplementedException();
         }
@@ -177,7 +177,7 @@ namespace NetTopologySuite.Coordinates
             get { throw new NotImplementedException(); }
         }
 
-        public double Determinant
+        public Double Determinant
         {
             get { throw new NotImplementedException(); }
         }
@@ -266,7 +266,7 @@ namespace NetTopologySuite.Coordinates
             throw new NotImplementedException();
         }
 
-        public Matrix3 Set(double value)
+        public Matrix3 Set(Double value)
         {
             throw new NotImplementedException();
         }
@@ -372,12 +372,12 @@ namespace NetTopologySuite.Coordinates
             throw new NotImplementedException();
         }
 
-        public Matrix3 Log(double newBase)
+        public Matrix3 Log(Double newBase)
         {
             throw new NotImplementedException();
         }
 
-        public Matrix3 Power(double exponent)
+        public Matrix3 Power(Double exponent)
         {
             throw new NotImplementedException();
         }

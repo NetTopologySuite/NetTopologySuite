@@ -1,24 +1,18 @@
 using System;
-using System.Collections;
-using System.Text;
-using System.Xml;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownBinary;
 using GeoAPI.Operations.Buffer;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation.Buffer;
 using NetTopologySuite.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
 {
     public class PointSamples : BaseSamples
     {
-        private IPoint point = null;        
+        private readonly IPoint point;
 
-        public PointSamples() : base()
-        {            
+        public PointSamples()
+        {
             point = GeoFactory.CreatePoint(CoordFactory.Create(100, 100));
         }
 
@@ -91,18 +85,20 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
             Write(point.Within(pInterior));
             Write(point.Within(pExterior));
 
-            string pointstring = "POINT (100.22 100.33)";
-            string anotherpointstring = "POINT (12345 3654321)";
+            String pointstring = "POINT (100.22 100.33)";
+            String anotherpointstring = "POINT (12345 3654321)";
             IGeometry geom1 = Reader.Read(pointstring);
             Write(geom1.AsText());
             IGeometry geom2 = Reader.Read(anotherpointstring);
             Write(geom2.AsText());
 
-            byte[] bytes = point.AsBinary();
+            Byte[] bytes = point.AsBinary();
             IGeometry test1 = new WkbReader<BufferedCoordinate2D>(GeoFactory).Read(bytes);
             Write(test1.ToString());
 
-            bytes = GeoFactory.CreatePoint(CoordFactory.Create(Double.MinValue, Double.MinValue)).AsBinary();
+            bytes =
+                GeoFactory.CreatePoint(CoordFactory.Create(Double.MinValue, Double.MinValue)).
+                    AsBinary();
             IGeometry testempty = new WkbReader<BufferedCoordinate2D>(GeoFactory).Read(bytes);
             Write(testempty);
 
@@ -127,6 +123,6 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
             Write(GeoFactory.CreateMultiLineString());
             Write(GeoFactory.CreateMultiPolygon());
             Write(GeoFactory.CreateGeometryCollection());
-        }       
-    }    
+        }
+    }
 }

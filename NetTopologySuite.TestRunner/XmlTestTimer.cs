@@ -1,9 +1,11 @@
+using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace GisSharpBlog.NetTopologySuite
 {
+    [Obsolete("Use System.Diagnostics.Stopwatch")]
     public class XmlTestTimer
     {
         [DllImport("Kernel32.dll")]
@@ -46,9 +48,9 @@ namespace GisSharpBlog.NetTopologySuite
         }
 
         // Returns the duration of the timer (in seconds)
-        public double Duration
+        public Double Duration
         {
-            get { return (stopTime - startTime)/(double) freq; }
+            get { return (stopTime - startTime)/(Double) freq; }
         }
     }
 }

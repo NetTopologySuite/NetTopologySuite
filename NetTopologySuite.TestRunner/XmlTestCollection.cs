@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite
     {
         #region Private Members
 
-        private string m_strCollectionName;
+        private String m_strCollectionName;
 
         #endregion
 
@@ -32,14 +32,14 @@ namespace GisSharpBlog.NetTopologySuite
 
         #region Public Properties
 
-        public XmlTest this[int index]
+        public XmlTest this[Int32 index]
         {
             get { return (XmlTest) List[index]; }
 
             set { List[index] = value; }
         }
 
-        public string Name
+        public String Name
         {
             get { return m_strCollectionName; }
 
@@ -50,17 +50,17 @@ namespace GisSharpBlog.NetTopologySuite
 
         #region Public Methods
 
-        public int Add(XmlTest value)
+        public Int32 Add(XmlTest value)
         {
             return List.Add(value);
         }
 
-        public int IndexOf(XmlTest value)
+        public Int32 IndexOf(XmlTest value)
         {
             return List.IndexOf(value);
         }
 
-        public void Insert(int index, XmlTest value)
+        public void Insert(Int32 index, XmlTest value)
         {
             List.Insert(index, value);
         }
@@ -70,11 +70,11 @@ namespace GisSharpBlog.NetTopologySuite
             List.Remove(value);
         }
 
-        public bool RunTests()
+        public Boolean RunTests()
         {
             if (List.Count > 0)
             {
-                for (int i = 0; i < List.Count; i++)
+                for (Int32 i = 0; i < List.Count; i++)
                 {
                     XmlTest testItem = (XmlTest) List[i];
 

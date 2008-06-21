@@ -8,10 +8,11 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 {
     internal static class LinearHelper
     {
-
-        internal static ILineString<TCoordinate> GetLine<TCoordinate>(IGeometry<TCoordinate> linear, Int32 lineIndex)
-            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<Double, TCoordinate>, IConvertible
+        internal static ILineString<TCoordinate> GetLine<TCoordinate>(IGeometry<TCoordinate> linear, 
+                                                                      Int32 lineIndex)
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                                IComparable<TCoordinate>, IConvertible,
+                                IComputable<Double, TCoordinate>
         {
             ILineString<TCoordinate> line = linear as ILineString<TCoordinate>;
 
@@ -27,34 +28,44 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         }
 
         internal static Int32 GetLineCount<TCoordinate>(IGeometry<TCoordinate> linear)
-            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<Double, TCoordinate>, IConvertible
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                                IComparable<TCoordinate>, IConvertible,
+                                IComputable<Double, TCoordinate>
         {
-            if (linear is IMultiLineString)
-            {
-                IMultiLineString multiLine = linear as IMultiLineString;
-                return multiLine.Count;
-            }
-            else
-            {
-                return 1;
-            }
+            IMultiLineString multiLine = linear as IMultiLineString;
+
+            return multiLine != null
+                       ? multiLine.Count
+                       : 1;
         }
 
-        internal static double GetLength<TCoordinate>(IGeometry<TCoordinate> linear)
-            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<Double, TCoordinate>, IConvertible
+        internal static Double GetLength<TCoordinate>(IGeometry<TCoordinate> linear)
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                                IComparable<TCoordinate>, IConvertible,
+                                IComputable<Double, TCoordinate>
         {
-            if (linear is IMultiLineString)
+            Double length = Double.NaN;
+
+            IMultiLineString multiLine = linear as IMultiLineString;
+
+            if (multiLine != null)
             {
-                IMultiLineString multiLine = linear as IMultiLineString;
-                return multiLine.Length;
+                length = multiLine.Length;
             }
-            else
+
+            ILineString line = linear as ILineString;
+
+            if (line != null)
             {
-                ILineString line = linear as ILineString;
-                return line.Length;
+                length = line.Length;   
             }
+
+            if (Double.IsNaN(length))
+            {
+                throw new ArgumentException("Parameter is not a linear geometry.");
+            }
+
+            return length;
         }
     }
 }

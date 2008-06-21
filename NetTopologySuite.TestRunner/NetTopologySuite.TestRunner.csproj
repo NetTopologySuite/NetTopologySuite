@@ -121,9 +121,6 @@
     <Compile Include="XmlTestInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="XmlTestTimer.cs">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj">

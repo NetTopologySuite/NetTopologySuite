@@ -427,34 +427,23 @@ namespace NetTopologySuite.Coordinates
                 return false;
             }
 
-            BufferedCoordinate2DSequence buf2DSeq
-                = other as BufferedCoordinate2DSequence;
+            //BufferedCoordinate2DSequence buf2DSeq
+            //    = other as BufferedCoordinate2DSequence;
 
             Int32 count = Count;
 
-            if (ReferenceEquals(buf2DSeq, null))
+            // [codekaizen] Removed BufferedCoordinate2DSequence optimized comparison due to incorrect
+            //              results and complexity of correcting
+            for (Int32 index = 0; index < count; index++)
             {
-                for (Int32 index = 0; index < count; index++)
+                if (this[index].Equals(other[index]))
                 {
-                    if (this[index].Equals(other[index]))
-                    {
-                        continue;
-                    }
-
-                    if (!tolerance.Equal(0, this[index].Distance(other[index])))
-                    {
-                        return false;
-                    }
+                    continue;
                 }
-            }
-            else
-            {
-                for (Int32 index = 0; index < count; index++)
+
+                if (!tolerance.Equal(0, this[index].Distance(other[index])))
                 {
-                    if (_sequence[index] != buf2DSeq._sequence[index])
-                    {
-                        return false;
-                    }
+                    return false;
                 }
             }
 

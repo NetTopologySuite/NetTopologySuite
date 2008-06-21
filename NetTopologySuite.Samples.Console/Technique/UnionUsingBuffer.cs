@@ -1,5 +1,4 @@
 using System;
-
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -7,45 +6,41 @@ using NetTopologySuite.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Technique
 {
-	/// <summary> 
+    /// <summary> 
     /// Shows a technique for using a zero-width buffer to compute
-	/// unions of geometrys.
-	/// The advantages of this technique are:	
-	/// Can avoid robustness issues.
-	/// Faster for large numbers of input geometries.
-	/// Handles GeometryCollections as input.
-	/// 
-	/// Disadvantages are:	
-	/// May not preserve input coordinate precision in some cases.	
-	/// </summary>
-	public class UnionUsingBuffer
-	{
-		
-		[STAThread]
-		public static void main(string[] args)
-		{
-		    IGeometryFactory<BufferedCoordinate2D> geoFactory 
+    /// unions of geometrys.
+    /// The advantages of this technique are:	
+    /// Can avoid robustness issues.
+    /// Faster for large numbers of input geometries.
+    /// Handles GeometryCollections as input.
+    /// 
+    /// Disadvantages are:	
+    /// May not preserve input coordinate precision in some cases.	
+    /// </summary>
+    public class UnionUsingBuffer
+    {
+        [STAThread]
+        public static void Main(String[] args)
+        {
+            IGeometryFactory<BufferedCoordinate2D> geoFactory
                 = new GeometryFactory<BufferedCoordinate2D>(
                     new BufferedCoordinate2DSequenceFactory());
 
-            WktReader<BufferedCoordinate2D> rdr = new WktReader<BufferedCoordinate2D>(geoFactory, null);			
-			IGeometry[] geom = new IGeometry[3];
-			geom[0] = rdr.Read("POLYGON (( 100 180, 100 260, 180 260, 180 180, 100 180 ))");
-			geom[1] = rdr.Read("POLYGON (( 80 140, 80 200, 200 200, 200 140, 80 140 ))");
-			geom[2] = rdr.Read("POLYGON (( 160 160, 160 240, 240 240, 240 160, 160 160 ))");
+            WktReader<BufferedCoordinate2D> rdr = new WktReader<BufferedCoordinate2D>(geoFactory,
+                                                                                      null);
+            IGeometry[] geom = new IGeometry[3];
+            geom[0] = rdr.Read("POLYGON (( 100 180, 100 260, 180 260, 180 180, 100 180 ))");
+            geom[1] = rdr.Read("POLYGON (( 80 140, 80 200, 200 200, 200 140, 80 140 ))");
+            geom[2] = rdr.Read("POLYGON (( 160 160, 160 240, 240 240, 240 160, 160 160 ))");
             UnionUsingBufferOp(geom);
-		}
-		
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geom"></param>
-		public static void UnionUsingBufferOp(IGeometry[] geom)
-		{
-			IGeometryFactory fact = geom[0].Factory;
-			IGeometry geomColl = fact.CreateGeometryCollection(geom);
-			IGeometry union = geomColl.Buffer(0.0);
-			Console.WriteLine(union);
-		}
-	}
+        }
+
+        public static void UnionUsingBufferOp(IGeometry[] geom)
+        {
+            IGeometryFactory fact = geom[0].Factory;
+            IGeometry geomColl = fact.CreateGeometryCollection(geom);
+            IGeometry union = geomColl.Buffer(0.0);
+            Console.WriteLine(union);
+        }
+    }
 }

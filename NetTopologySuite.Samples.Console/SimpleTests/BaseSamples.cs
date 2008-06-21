@@ -9,73 +9,52 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
 {
     public class BaseSamples
     {
-        private static BufferedCoordinate2DFactory _coordFactory = new BufferedCoordinate2DFactory();
-          
+        private static readonly BufferedCoordinate2DFactory _coordFactory =
+            new BufferedCoordinate2DFactory();
+
         protected static ICoordinateFactory<BufferedCoordinate2D> CoordFactory
         {
             get { return _coordFactory; }
         }
 
-        private IGeometryFactory<BufferedCoordinate2D> factory = null;
+        private readonly IGeometryFactory<BufferedCoordinate2D> _factory;
 
         protected IGeometryFactory<BufferedCoordinate2D> GeoFactory
         {
-            get { return factory; }            
+            get { return _factory; }
         }
 
-        private IWktGeometryReader<BufferedCoordinate2D> reader = null;
+        private readonly IWktGeometryReader<BufferedCoordinate2D> _reader;
 
         protected IWktGeometryReader<BufferedCoordinate2D> Reader
         {
-            get { return reader; }            
+            get { return _reader; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        protected BaseSamples() 
+        protected BaseSamples()
             : this(new GeometryFactory<BufferedCoordinate2D>(
-                new BufferedCoordinate2DSequenceFactory(_coordFactory))) { }
+                       new BufferedCoordinate2DSequenceFactory(_coordFactory))) {}
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="factory"></param>
         protected BaseSamples(IGeometryFactory<BufferedCoordinate2D> factory)
-            : this(factory, new WktReader<BufferedCoordinate2D>(factory, null)) { }
+            : this(factory, new WktReader<BufferedCoordinate2D>(factory, null)) {}
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="factory"></param>
         protected BaseSamples(IGeometryFactory<BufferedCoordinate2D> factory,
                               IWktGeometryReader<BufferedCoordinate2D> reader)
         {
-            this.factory = factory;
-            this.reader = reader;
+            this._factory = factory;
+            this._reader = reader;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="o"></param>
         protected void Write(object o)
         {
             Console.WriteLine(o.ToString());
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="s"></param>
-        protected void Write(string s)
+        protected void Write(String s)
         {
             Console.WriteLine(s);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public virtual void Start() { }
+        public virtual void Start() {}
     }
 }

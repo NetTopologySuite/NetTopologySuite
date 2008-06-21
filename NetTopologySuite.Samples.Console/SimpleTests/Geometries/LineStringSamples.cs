@@ -7,33 +7,24 @@ using NetTopologySuite.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class LineStringSamples : BaseSamples
     {
-        private ILineString line = null;
+        private readonly ILineString line;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public LineStringSamples() : base()
+        public LineStringSamples()
         {
             BufferedCoordinate2DFactory coordFactory = new BufferedCoordinate2DFactory();
 
             ICoordinate[] coordinates = new ICoordinate[]
-                                            {
-                                                coordFactory.Create(10, 10),
-                                                coordFactory.Create(20, 20),
-                                                coordFactory.Create(20, 10),
-                                            };
+                                        {
+                                            coordFactory.Create(10, 10),
+                                            coordFactory.Create(20, 20),
+                                            coordFactory.Create(20, 10),
+                                        };
 
             line = GeoFactory.CreateLineString(coordinates);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public override void Start()
         {
             BufferedCoordinate2DFactory coordFactory = new BufferedCoordinate2DFactory();
@@ -41,17 +32,17 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
             IPoint pointInLine = GeoFactory.CreatePoint(coordFactory.Create(20, 10));
             IPoint pointOutLine = GeoFactory.CreatePoint(coordFactory.Create(20, 31));
             ICoordinate[] coords = new ICoordinate[]
-                                       {
-                                           coordFactory.Create(23, 32.2), 
-                                           coordFactory.Create(922, 11)
-                                        };
+                                   {
+                                       coordFactory.Create(23, 32.2),
+                                       coordFactory.Create(922, 11)
+                                   };
             ILineString aLine = GeoFactory.CreateLineString(coords);
 
             coords = new ICoordinate[]
-                         {
-                             coordFactory.Create(0, 1), 
-                             coordFactory.Create(30, 30)
-                         };
+                     {
+                         coordFactory.Create(0, 1),
+                         coordFactory.Create(30, 30)
+                     };
             ILineString anotherLine = GeoFactory.CreateLineString(coords);
 
             try
@@ -141,14 +132,14 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(line.Within(aLine));
                 Write(line.Within(anotherLine));
 
-                string linestring = "LINESTRING (1.2 3.4, 5.6 7.8, 9.1 10.12)";
-                string anotherlinestringg = "LINESTRING (12345 3654321, 685 7777.945677, 782 111.1)";
+                String linestring = "LINESTRING (1.2 3.4, 5.6 7.8, 9.1 10.12)";
+                String anotherlinestringg = "LINESTRING (12345 3654321, 685 7777.945677, 782 111.1)";
                 IGeometry geom1 = Reader.Read(linestring);
                 Write(geom1.AsText());
                 IGeometry geom2 = Reader.Read(anotherlinestringg);
                 Write(geom2.AsText());
 
-                byte[] bytes = line.AsBinary();
+                Byte[] bytes = line.AsBinary();
                 IGeometry test1 = new WkbReader<BufferedCoordinate2D>(GeoFactory).Read(bytes);
                 Write(test1.ToString());
 

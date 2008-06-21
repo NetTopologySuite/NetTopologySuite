@@ -61,7 +61,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /// <summary>  
         /// The maximum precise value representable in a Double. Since IEEE-754
-        /// double-precision numbers allow 53 bits of significand, the value is equal to
+        /// Double-precision numbers allow 53 bits of significand, the value is equal to
         /// 2^53 - 1.  This provides <i>almost</i> 16 decimal digits of precision.
         /// </summary>
         public const Double MaximumPreciseValue = 9007199254740992.0;
@@ -82,7 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /// <summary> 
         /// Creates a <see cref="PrecisionModel{TCoordinate}"/> with a default precision
-        /// of <see cref="GeoAPI.Geometries.PrecisionModelType.Floating"/>.
+        /// of <see cref="GeoAPI.Geometries.PrecisionModelType.DoubleFloating"/>.
         /// </summary>
         /// <param name="coordinateFactory">
         /// The coordinate factory to use to creat coordinates.

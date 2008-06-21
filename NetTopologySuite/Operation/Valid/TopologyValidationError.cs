@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 
@@ -16,6 +18,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// </summary>
         Unknown = 0,
 
+        /// <summary>
+        /// Indicates a generic topology validation error which doesn't 
+        /// fit into any of the other <see cref="TopologyValidationErrors"/> values.
+        /// </summary>
         GenericTopologyValidationError = 1,
 
         /// <summary>
@@ -70,7 +76,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// Indicates that the <see cref="Ordinates.X">X</see>
         /// or <see cref="Ordinates.Y">Y</see> ordinate of
         /// an <see cref="ICoordinate" /> is not a valid 
-        /// numeric value (e.g. <see cref="double.NaN" />).
+        /// numeric value (e.g. <see cref="Double.NaN" />).
         /// </summary>
         InvalidCoordinate = 10,
 
@@ -82,33 +88,37 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     }
 
     /// <summary>
-    /// Contains information about the nature and location of a <see cref="Geometry{TCoordinate}"/>
+    /// Contains information about the nature and location of an <see cref="IGeometry{TCoordinate}"/>
     /// validation error.
     /// </summary>
     public class TopologyValidationError
     {
-        // NOTE: modified for "safe" assembly in Sql 2005
-        // Added readonly!
-
-        // TODO: localize these strings
+        // NOTE: modified for "safe" assembly in Sql 2005:  Added readonly
         /// <summary>
-        /// These messages must synch up with the indexes above
+        /// These messages must match one-to-one up with the indexes above
         /// </summary>
-        private static readonly String[] _errMsg =
-            {
-                "Unknown error",
-                "Topology validation error",
-                "Hole lies outside shell",
-                "Holes are nested",
-                "Interior is disconnected",
-                "Self-intersection",
-                "Ring self-intersection",
-                "Nested shells",
-                "Duplicate Rings",
-                "Too few points in geometry component",
-                "Invalid Coordinate",
-                "Ring not closed: first and last points are different"
-            };
+        private static readonly IDictionary<TopologyValidationErrors, String> _errMsg;
+
+        static TopologyValidationError()
+        {
+            // TODO: I18N unsafe
+            Dictionary<TopologyValidationErrors, String> errors
+                = new Dictionary<TopologyValidationErrors, String>();
+            errors[TopologyValidationErrors.Unknown] = "Unknown error";
+            errors[TopologyValidationErrors.GenericTopologyValidationError] = "Topology validation error";
+            errors[TopologyValidationErrors.HoleOutsideShell] = "Hole lies outside shell";
+            errors[TopologyValidationErrors.NestedHoles] = "Holes are nested";
+            errors[TopologyValidationErrors.DisconnectedInteriors] = "Interior is disconnected";
+            errors[TopologyValidationErrors.SelfIntersection] = "Self-intersection";
+            errors[TopologyValidationErrors.RingSelfIntersection] = "Ring self-intersection";
+            errors[TopologyValidationErrors.NestedShells] = "Nested shells";
+            errors[TopologyValidationErrors.DuplicateRings] = "Duplicate Rings";
+            errors[TopologyValidationErrors.TooFewPoints] = "Too few points in geometry component";
+            errors[TopologyValidationErrors.InvalidCoordinate] = "Invalid Coordinate";
+            errors[TopologyValidationErrors.RingNotClosed] = "Ring not closed: first and last points are different";
+
+            _errMsg = new ReadOnlyDictionary<TopologyValidationErrors, String>(errors);
+        }
 
         private readonly TopologyValidationErrors _errorType;
         private readonly ICoordinate _coordinate;
@@ -119,11 +129,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
             if (coordinate != null)
             {
-                _coordinate = (ICoordinate) coordinate.Clone();
+                _coordinate = (ICoordinate)coordinate.Clone();
             }
         }
 
-        public TopologyValidationError(TopologyValidationErrors errorType) : this(errorType, null) {}
+        public TopologyValidationError(TopologyValidationErrors errorType)
+            : this(errorType, null) { }
 
         public ICoordinate Coordinate
         {
@@ -137,7 +148,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
         public String Message
         {
-            get { return _errMsg[(Int32) _errorType]; }
+            get { return _errMsg[_errorType]; }
         }
 
         public override String ToString()

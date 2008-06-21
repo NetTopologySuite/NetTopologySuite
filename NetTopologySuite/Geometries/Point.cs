@@ -255,7 +255,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #endregion
 
-        #region IAddable<double,IPoint> Members
+        #region IAddable<Double,IPoint> Members
 
         IPoint IAddable<Double, IPoint>.Add(Double b)
         {
@@ -264,7 +264,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #endregion
 
-        #region ISubtractable<double,IPoint> Members
+        #region ISubtractable<Double,IPoint> Members
 
         IPoint ISubtractable<Double, IPoint>.Subtract(Double b)
         {

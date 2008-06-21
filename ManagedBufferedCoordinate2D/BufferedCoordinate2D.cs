@@ -1201,7 +1201,7 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region IAddable<double,BufferedCoordinate2D> Members
+        #region IAddable<Double,BufferedCoordinate2D> Members
 
         public BufferedCoordinate2D Add(Double b)
         {
@@ -1210,7 +1210,7 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region ISubtractable<double,BufferedCoordinate2D> Members
+        #region ISubtractable<Double,BufferedCoordinate2D> Members
 
         public BufferedCoordinate2D Subtract(Double b)
         {
@@ -1219,7 +1219,7 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region IAddable<double,IVectorD> Members
+        #region IAddable<Double,IVectorD> Members
 
         IVectorD IAddable<Double, IVectorD>.Add(Double b)
         {
@@ -1228,7 +1228,7 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region ISubtractable<double,IVectorD> Members
+        #region ISubtractable<Double,IVectorD> Members
 
         IVectorD ISubtractable<Double, IVectorD>.Subtract(Double b)
         {
@@ -1237,7 +1237,7 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region IAddable<double, ICoordinate> Members
+        #region IAddable<Double, ICoordinate> Members
 
         ICoordinate IAddable<Double, ICoordinate>.Add(Double b)
         {
@@ -1283,7 +1283,7 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region IComputable<double,IVector2D> Members
+        #region IComputable<Double,IVector2D> Members
 
         IVector2D IComputable<Double, IVector2D>.Set(Double value)
         {
@@ -1451,7 +1451,7 @@ namespace NetTopologySuite.Coordinates
 
         #region IDivisible<Double, IVector<DoubleComponent, BufferedCoordinate2D>> Members
 
-        IVector2D IDivisible<Double, IVector2D>.Divide(double b)
+        IVector2D IDivisible<Double, IVector2D>.Divide(Double b)
         {
             throw new NotImplementedException();
         }

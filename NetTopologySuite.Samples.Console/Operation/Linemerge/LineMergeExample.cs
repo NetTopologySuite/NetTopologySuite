@@ -10,8 +10,8 @@ using NetTopologySuite.Coordinates;
 namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
 {
     /// <summary> 
-    /// Example of using the LineMerger class to sew together a set of fully noded 
-    /// linestrings.
+    /// Example of using the <see cref="LineMerger{TCoordinate}"/> class to 
+    /// sew together a set of fully noded linestrings.
     /// </summary>	
     public class LineMergeExample
     {
@@ -51,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
         }
 
         [STAThread]
-        public static void Main(string[] args)
+        public static void Main(String[] args)
         {
             LineMergeExample test = new LineMergeExample();
 
@@ -59,7 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
             {
                 test.Run();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.StackTrace);
             }
@@ -86,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
         }
 
 
-        internal virtual IGeometry<BufferedCoordinate2D> Read(string lineWKT)
+        internal virtual IGeometry<BufferedCoordinate2D> Read(String lineWKT)
         {
             try
             {
@@ -98,6 +98,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
             {
                 Console.WriteLine(ex.StackTrace);
             }
+
             return null;
         }
     }

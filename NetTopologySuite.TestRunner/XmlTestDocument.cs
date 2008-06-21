@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Xml;
@@ -10,33 +11,28 @@ using NetTopologySuite.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite
 {
-    /// <summary>
-    /// Summary description for XmlTestDocument.
-    /// </summary>
     public class XmlTestDocument
     {
-        private static NumberFormatInfo nfi;
+        private static NumberFormatInfo _numberFormatInfo;
 
         protected static IFormatProvider GetNumberFormatInfo()
         {
-            if (nfi == null)
+            if (_numberFormatInfo == null)
             {
-                nfi = new NumberFormatInfo();
-                nfi.NumberDecimalSeparator = ".";
+                _numberFormatInfo = new NumberFormatInfo();
+                _numberFormatInfo.NumberDecimalSeparator = ".";
             }
 
-            return nfi;
+            return _numberFormatInfo;
         }
 
         #region Private Members
 
-        private readonly ArrayList m_listarrTests;
+        private readonly ArrayList _listarrTests;
 
-        private XmlTestCollection m_listCurTests;
+        private XmlTestCollection _listCurTests;
 
-        private XmlTestFactory m_objFactory;
-
-        private string m_strTestWorkspace;
+        private XmlTestFactory _xmlTestFactory;
 
         #endregion
 
@@ -44,44 +40,44 @@ namespace GisSharpBlog.NetTopologySuite
 
         public XmlTestDocument()
         {
-            m_listarrTests = new ArrayList();
+            _listarrTests = new ArrayList();
         }
 
         #endregion
 
         public void ResetTests()
         {
-            if (m_listarrTests != null)
+            if (_listarrTests != null)
             {
-                m_listarrTests.Clear();
+                _listarrTests.Clear();
             }
 
-            if (m_listCurTests != null)
+            if (_listCurTests != null)
             {
-                m_listCurTests.Clear();
-                m_listCurTests = null;
+                _listCurTests.Clear();
+                _listCurTests = null;
             }
 
-            m_strTestWorkspace = null;
-            m_objFactory = null;
+            _xmlTestFactory = null;
         }
 
         public XmlTestCollection CurrentTests
         {
-            get { return m_listCurTests; }
+            get { return _listCurTests; }
         }
 
         public ArrayList Tests
         {
-            get { return m_listarrTests; }
+            get { return _listarrTests; }
         }
 
-        public bool LoadFile(string fileName)
+        public Boolean LoadFile(String fileName)
         {
             if (!File.Exists(fileName))
             {
-                throw new ArgumentException(fileName,
-                                            "The file does not exits or the 'fileName' is not valid.");
+                String message = String.Format("The file does not exits or is not valid: {0}.",
+                                               fileName);
+                throw new ArgumentException(message, "fileName");
             }
 
             try
@@ -94,41 +90,42 @@ namespace GisSharpBlog.NetTopologySuite
 
                 // Retrieve the "desc" tag, if any.
                 XmlNode desc = root["desc"];
-                string strTestDescription = String.Empty;
+                String testDescription;
 
                 if (desc != null && desc.InnerText.Length > 0)
                 {
-                    strTestDescription = desc.InnerText;
+                    testDescription = desc.InnerText;
                 }
                 else
                 {
-                    strTestDescription = Path.GetFileNameWithoutExtension(fileName);
+                    testDescription = Path.GetFileNameWithoutExtension(fileName);
                 }
 
                 // Retrieve the "workspace", if any.
-                XmlNode workspace = root["workspace"];
+                //XmlNode workspace = root["workspace"];
 
-                if (workspace != null)
-                {
-                    XmlAttributeCollection workspaceAttributes = workspace.Attributes;
-                    if (workspaceAttributes != null && workspaceAttributes.Count > 0)
-                    {
-                        m_strTestWorkspace = workspaceAttributes["dir"].InnerText;
-                    }
-                }
+                //if (workspace != null)
+                //{
+                //    XmlAttributeCollection workspaceAttributes = workspace.Attributes;
+
+                //    if (workspaceAttributes != null && workspaceAttributes.Count > 0)
+                //    {
+                //        m_strTestWorkspace = workspaceAttributes["dir"].InnerText;
+                //    }
+                //}
 
                 // Retrieve the "tolerance" attribute, if any.
-                XmlNode tolerance = root["tolerance"];
+                XmlNode toleranceNode = root["tolerance"];
 
-                double dTolerance = 0.0;
+                Double tolerance = 0.0;
 
-                if (tolerance != null)
+                if (toleranceNode != null)
                 {
-                    string strTolerance = tolerance.InnerText;
+                    String toleranceText = toleranceNode.InnerText;
 
                     try
                     {
-                        dTolerance = Double.Parse(strTolerance, GetNumberFormatInfo());
+                        tolerance = Double.Parse(toleranceText, GetNumberFormatInfo());
                     }
                     catch (Exception ex)
                     {
@@ -152,19 +149,19 @@ namespace GisSharpBlog.NetTopologySuite
 
                         if (attribute != null)
                         {
-                            string strPrecision = attribute.InnerText;
+                            String strPrecision = attribute.InnerText;
 
                             if (strPrecision == "FIXED" && precisionAttributes.Count == 4)
                             {
                                 try
                                 {
-                                    double scale
+                                    Double scale
                                         = Double.Parse(precisionAttributes["scale"].InnerText,
                                                        GetNumberFormatInfo());
-                                    double offsetx
+                                    Double offsetx
                                         = Double.Parse(precisionAttributes["offsetx"].InnerText,
                                                        GetNumberFormatInfo());
-                                    double offsety
+                                    Double offsety
                                         = Double.Parse(precisionAttributes["offsety"].InnerText,
                                                        GetNumberFormatInfo());
 
@@ -186,13 +183,13 @@ namespace GisSharpBlog.NetTopologySuite
                         {
                             if (precisionAttributes.Count == 3)
                             {
-                                double scale =
+                                Double scale =
                                     Double.Parse(precisionAttributes["scale"].InnerText,
                                                  GetNumberFormatInfo());
-                                double offsetx =
+                                Double offsetx =
                                     Double.Parse(precisionAttributes["offsetx"].InnerText,
                                                  GetNumberFormatInfo());
-                                double offsety =
+                                Double offsety =
                                     Double.Parse(precisionAttributes["offsety"].InnerText,
                                                  GetNumberFormatInfo());
 
@@ -208,19 +205,20 @@ namespace GisSharpBlog.NetTopologySuite
                     pm = new PrecisionModel<BufferedCoordinate2D>(seqFactory.CoordinateFactory);
                 }
 
-                m_objFactory = new XmlTestFactory(pm, seqFactory);
-                m_listCurTests = new XmlTestCollection();
+                _xmlTestFactory = new XmlTestFactory(pm, seqFactory);
+                _listCurTests = new XmlTestCollection();
 
-                m_listCurTests.Name = strTestDescription;
+                _listCurTests.Name = testDescription;
 
                 // Now, handle the "case" nodes
                 XmlNodeList elemList = xmldoc.GetElementsByTagName("case");
-                for (int i = 0; i < elemList.Count; i++)
+
+                for (Int32 i = 0; i < elemList.Count; i++)
                 {
-                    ParseCaseNode(elemList[i], dTolerance);
+                    ParseCaseNode(elemList[i], tolerance);
                 }
 
-                m_listarrTests.Add(m_listCurTests);
+                _listarrTests.Add(_listCurTests);
 
                 return true;
             }
@@ -232,33 +230,34 @@ namespace GisSharpBlog.NetTopologySuite
             }
         }
 
-        private void ParseCaseNode(XmlNode caseNode, double tolerance)
+        private void ParseCaseNode(XmlNode caseNode, Double tolerance)
         {
-            if (caseNode != null && m_objFactory != null)
+            if (caseNode != null && _xmlTestFactory != null)
             {
                 XmlTestInfo testInfo = new XmlTestInfo(true);
 
                 XmlNode desc = caseNode["desc"];
+
                 if (desc != null)
                 {
                     testInfo.SetValue("desc", desc.InnerText);
                 }
 
                 XmlElement a = caseNode["a"];
+
                 if (a != null)
                 {
-                    if (a.HasAttribute("file")) {}
-                    else
+                    if (!a.HasAttribute("file"))
                     {
                         testInfo.SetValue("a", a.InnerText);
                     }
                 }
 
                 XmlElement b = caseNode["b"];
+
                 if (b != null)
                 {
-                    if (b.HasAttribute("file")) {}
-                    else
+                    if (!b.HasAttribute("file"))
                     {
                         testInfo.SetValue("b", b.InnerText);
                     }
@@ -266,17 +265,21 @@ namespace GisSharpBlog.NetTopologySuite
 
                 // Now, handle the "test" nodes
                 XmlNodeList elemList = caseNode.SelectNodes("test");
+
                 if (elemList == null)
                 {
                     return;
                 }
+
                 if (elemList.Count <= 0)
                 {
                     return;
                 }
-                else if (elemList.Count == 1)
+                
+                if (elemList.Count == 1)
                 {
                     XmlElement testElement = (elemList[0])["op"];
+                    Debug.Assert(testElement != null);
                     testInfo.SetValue("result", testElement.InnerText);
 
                     if (testElement.HasAttribute("name"))
@@ -299,23 +302,25 @@ namespace GisSharpBlog.NetTopologySuite
                         testInfo.SetValue("arg3", testElement.GetAttribute("arg3"));
                     }
 
-                    XmlTest xmlTest = m_objFactory.Create(testInfo, tolerance);
-                    if (xmlTest != null && m_listCurTests != null)
+                    XmlTest xmlTest = _xmlTestFactory.Create(testInfo, tolerance);
+
+                    if (xmlTest != null && _listCurTests != null)
                     {
-                        m_listCurTests.Add(xmlTest);
+                        _listCurTests.Add(xmlTest);
                     }
                 }
                 else
                 {
-                    string baseDesc = testInfo.GetValue("desc");
+                    String baseDesc = testInfo.GetValue("desc");
 
-                    for (int i = 0; i < elemList.Count; i++)
+                    for (Int32 i = 0; i < elemList.Count; i++)
                     {
-                        string strDescNew = baseDesc + " - " + (i + 1);
+                        String strDescNew = baseDesc + " - " + (i + 1);
 
                         testInfo.SetValue("desc", strDescNew);
 
                         XmlElement testElement = (elemList[i])["op"];
+                        Debug.Assert(testElement != null);
                         testInfo.SetValue("result", testElement.InnerText);
 
                         if (testElement.HasAttribute("name"))
@@ -338,10 +343,11 @@ namespace GisSharpBlog.NetTopologySuite
                             testInfo.SetValue("arg3", testElement.GetAttribute("arg3"));
                         }
 
-                        XmlTest xmlTest = m_objFactory.Create(testInfo, tolerance);
-                        if (xmlTest != null && m_listCurTests != null)
+                        XmlTest xmlTest = _xmlTestFactory.Create(testInfo, tolerance);
+
+                        if (xmlTest != null && _listCurTests != null)
                         {
-                            m_listCurTests.Add(xmlTest);
+                            _listCurTests.Add(xmlTest);
                         }
                     }
                 }

@@ -19,6 +19,16 @@ namespace ManagedBufferedCoordinate2DTests
     public class BufferedCoordinate2DSequenceTests
     {
         [Test]
+        public void ReversingCoordinateSequenceDoesntEqual()
+        {
+            SequenceGenerator generator = new SequenceGenerator(10, 10, 10);
+            IBufferedCoordSequence seq1 = generator.NewSequence(true);
+            IBufferedCoordSequence reversed = seq1.Reversed;
+
+            Assert.IsFalse(seq1.Equals(reversed));
+        }
+
+        [Test]
         public void CreatingCoordinateSequenceSucceeds()
         {
             BufferedCoordinate2DSequenceFactory factory

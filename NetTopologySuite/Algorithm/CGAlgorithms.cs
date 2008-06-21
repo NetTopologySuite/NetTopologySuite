@@ -10,7 +10,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     /// <summary>
     /// Specifies and implements various fundamental computational geometric algorithms.
-    /// The algorithms supplied in this class are robust for double-precision floating point.
+    /// The algorithms supplied in this class are robust for Double-precision floating point.
     /// </summary>
     public static class CGAlgorithms<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,

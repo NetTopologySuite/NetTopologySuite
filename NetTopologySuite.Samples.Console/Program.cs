@@ -1,7 +1,7 @@
 using System;
-using NUnit.Framework;
 using GisSharpBlog.NetTopologySuite.Samples.LinearReferencing;
 using GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries;
+using NUnit.Framework;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
 {
@@ -9,12 +9,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
     public class Program
     {
         [STAThread]
-        public static void Main(string[] args)
+        public static void Main(String[] args)
         {
             new Program().Start();
         }
 
-        private static BaseSamples sample = null;
+        private static BaseSamples sample;
 
         public void Start()
         {

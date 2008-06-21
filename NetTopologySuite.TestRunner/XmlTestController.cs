@@ -4,54 +4,53 @@ using System.IO;
 
 namespace GisSharpBlog.NetTopologySuite
 {
-    /// <summary>
-    /// Summary description for XmlTestController.
-    /// </summary>
     public class XmlTestController
     {
-        private StringCollection m_listFileNames;
+        private StringCollection _fileNames;
 
-        private readonly XmlTestDocument m_objCurrentDoc;
+        private readonly XmlTestDocument _currentDoc;
 
         public XmlTestController()
         {
-            m_listFileNames = new StringCollection();
-            m_objCurrentDoc = new XmlTestDocument();
+            _fileNames = new StringCollection();
+            _currentDoc = new XmlTestDocument();
         }
 
         public StringCollection FileNames
         {
-            get { return m_listFileNames; }
+            get { return _fileNames; }
         }
 
         public void ResetFiles()
         {
-            if (m_listFileNames != null)
+            if (_fileNames != null)
             {
-                m_listFileNames.Clear();
+                _fileNames.Clear();
             }
         }
 
         public void Reset()
         {
-            if (m_objCurrentDoc != null)
+            if (_currentDoc != null)
             {
-                m_objCurrentDoc.ResetTests();
+                _currentDoc.ResetTests();
             }
 
             ResetFiles();
         }
 
-        public bool RunFile(int index)
+        public Boolean RunFile(Int32 index)
         {
-            if (m_listFileNames != null && m_listFileNames.Count > 0)
+            if (_fileNames != null && _fileNames.Count > 0)
             {
-                if (index >= 0 && index < m_listFileNames.Count)
+                if (index >= 0 && index < _fileNames.Count)
                 {
-                    string fileName = m_listFileNames[index];
-                    if (m_objCurrentDoc != null && m_objCurrentDoc.LoadFile(fileName))
+                    String fileName = _fileNames[index];
+
+                    if (_currentDoc != null && _currentDoc.LoadFile(fileName))
                     {
-                        XmlTestCollection listTests = m_objCurrentDoc.CurrentTests;
+                        XmlTestCollection listTests = _currentDoc.CurrentTests;
+
                         if (listTests != null && listTests.Count > 0)
                         {
                             return listTests.RunTests();
@@ -59,23 +58,26 @@ namespace GisSharpBlog.NetTopologySuite
                     }
                 }
             }
+
             return false;
         }
 
-        public bool GetFiles(string directory)
+        public Boolean GetFiles(String directory)
         {
-            if (m_listFileNames == null)
+            if (_fileNames == null)
             {
-                m_listFileNames = new StringCollection();
+                _fileNames = new StringCollection();
             }
 
             try
             {
-                string[] dirs = Directory.GetFiles(directory, "*.xml");
-                foreach (string dir in dirs)
+                String[] dirs = Directory.GetFiles(directory, "*.xml");
+
+                foreach (String dir in dirs)
                 {
-                    m_listFileNames.Add(dir);
+                    _fileNames.Add(dir);
                 }
+
                 return true;
             }
             catch (Exception ex)
@@ -86,15 +88,16 @@ namespace GisSharpBlog.NetTopologySuite
             return false;
         }
 
-        public XmlTestCollection Load(string filePath)
+        public XmlTestCollection Load(String filePath)
         {
-            if (m_objCurrentDoc != null)
+            if (_currentDoc != null)
             {
-                if (m_objCurrentDoc.LoadFile(filePath))
+                if (_currentDoc.LoadFile(filePath))
                 {
-                    return m_objCurrentDoc.CurrentTests;
+                    return _currentDoc.CurrentTests;
                 }
             }
+
             return null;
         }
     }

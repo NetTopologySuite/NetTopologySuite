@@ -33,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 
         #endregion
 
-        #region IDivisible<double,DoubleBinTreeValue> Members
+        #region IDivisible<Double,DoubleBinTreeValue> Members
 
         public DoubleBinTreeValue Divide(Double other)
         {
@@ -65,9 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         }
 
         public BinTreeKey(Interval interval)
-            : base(interval)
-        {
-        }
+            : base(interval) { }
 
         //private void computeInterval(Int32 level, Interval itemInterval)
         //{
