@@ -1,0 +1,122 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug_Net20</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{39E8A390-5304-4447-99E2-3810941824AD}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GisSharpBlog.NetTopologySuite</RootNamespace>
+    <AssemblyName>NetTopologySuite.Samples.Console</AssemblyName>
+    <StartupObject>GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Program</StartupObject>
+    <OldToolsVersion>2.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_Net20|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug_Net20\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release_Net20|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release_Net20\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_Net35|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug_Net35\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;DOTNET35</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release_Net35|AnyCPU' ">
+    <OutputPath>bin\Release_Net35\</OutputPath>
+    <DefineConstants>TRACE;DOTNET35</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NPack, Version=0.7.13341.0, Culture=neutral, PublicKeyToken=56f174b1685ddc6a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ExternalReferences\$(Configuration)\NPack.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.2.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Geometries\basicexample.cs" />
+    <Compile Include="Geometries\constructionexample.cs" />
+    <Compile Include="Geometries\precisionmodelexample.cs" />
+    <Compile Include="Geometries\simplemethodsexample.cs" />
+    <Compile Include="LinearReferencing\LinearReferencingExample.cs" />
+    <Compile Include="Tests\Various\BufferTest.cs" />
+    <Compile Include="Tests\Various\CoversTest.cs" />
+    <Compile Include="Tests\Various\FormattingTest.cs" />
+    <Compile Include="Tests\Various\IntesectIterationTest.cs" />
+    <Compile Include="Tests\Various\IsValidTest.cs" />
+    <Compile Include="Tests\Operation\Linemerge\LineSequencerTest.cs" />
+    <Compile Include="Tests\Various\NormalizeTest.cs" />
+    <Compile Include="Tests\Various\OracleWKBTest.cs" />
+    <Compile Include="Tests\Various\ReverseTest.cs" />
+    <Compile Include="Tests\Various\RobustLineIntersectorTest.cs" />
+    <Compile Include="Tests\Various\OGCTests.cs" />
+    <Compile Include="Tests\Various\WKTTest.cs" />
+    <Compile Include="Operation\Distance\ClosestPointExample.cs" />
+    <Compile Include="Operation\Linemerge\LineMergeExample.cs" />
+    <Compile Include="Operation\Poligonize\PolygonizeExample.cs" />
+    <Compile Include="SimpleTests\BaseSamples.cs" />
+    <Compile Include="SimpleTests\Geometries\LineStringSamples.cs" />
+    <Compile Include="SimpleTests\Geometries\MultiPointSamples.cs" />
+    <Compile Include="SimpleTests\Geometries\PointSamples.cs" />
+    <Compile Include="SimpleTests\Geometries\PolygonSamples.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleTests\Geometries\SerializationSamples.cs" />
+    <Compile Include="SimpleTests\Geometries\ValidationSuite.cs" />
+    <Compile Include="Technique\LineStringSelfIntersections.cs" />
+    <Compile Include="Technique\UnionUsingBuffer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj">
+      <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
+      <Name>GeoAPI.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ManagedBufferedCoordinate2D\ManagedBufferedCoordinate2D.csproj">
+      <Project>{8A1C8DC2-9E24-47E9-A51C-AA46E0B0260C}</Project>
+      <Name>ManagedBufferedCoordinate2D</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
+      <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
+      <Name>NetTopologySuite</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="lib\nunit.framework.dll" />
+    <Content Include="Tests\Readme.txt" />
+    <Content Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Precision\" />
+    <Folder Include="ShapeTests\" />
+    <Folder Include="SimpleTests\Attributes\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

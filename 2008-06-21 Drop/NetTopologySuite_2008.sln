@@ -1,0 +1,155 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A11130E8-4942-432A-97B7-ADEEFB34A977}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5AF10590-5E1C-4052-83C6-95C94B747195}"
+	ProjectSection(SolutionItems) = preProject
+		NetTopologySuite.TestRunner.Tests\Default.xml = NetTopologySuite.TestRunner.Tests\Default.xml
+		NetTopologySuite.TestRunner.Tests\Other.xml = NetTopologySuite.TestRunner.Tests\Other.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Robust", "Robust", "{71AF5313-7B61-47C0-B7A1-FBEAEB035011}"
+	ProjectSection(SolutionItems) = preProject
+		NetTopologySuite.TestRunner.Tests\robust\TestRobustOverlayFixed.xml = NetTopologySuite.TestRunner.Tests\robust\TestRobustOverlayFixed.xml
+		NetTopologySuite.TestRunner.Tests\robust\TestRobustOverlayFloat.xml = NetTopologySuite.TestRunner.Tests\robust\TestRobustOverlayFloat.xml
+		NetTopologySuite.TestRunner.Tests\robust\TestRobustRelate.xml = NetTopologySuite.TestRunner.Tests\robust\TestRobustRelate.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vivid", "Vivid", "{4692ED72-2D05-4DDC-8411-748A9BE61958}"
+	ProjectSection(SolutionItems) = preProject
+		NetTopologySuite.TestRunner.Tests\vivid\TestBoundary.xml = NetTopologySuite.TestRunner.Tests\vivid\TestBoundary.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestCentroid.xml = NetTopologySuite.TestRunner.Tests\vivid\TestCentroid.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestConvexHull-big.xml = NetTopologySuite.TestRunner.Tests\vivid\TestConvexHull-big.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestConvexHull.xml = NetTopologySuite.TestRunner.Tests\vivid\TestConvexHull.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestFunctionAA.xml = NetTopologySuite.TestRunner.Tests\vivid\TestFunctionAA.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestFunctionAAPrec.xml = NetTopologySuite.TestRunner.Tests\vivid\TestFunctionAAPrec.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestFunctionLA.xml = NetTopologySuite.TestRunner.Tests\vivid\TestFunctionLA.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestFunctionLAPrec.xml = NetTopologySuite.TestRunner.Tests\vivid\TestFunctionLAPrec.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestFunctionLL.xml = NetTopologySuite.TestRunner.Tests\vivid\TestFunctionLL.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestFunctionLLPrec.xml = NetTopologySuite.TestRunner.Tests\vivid\TestFunctionLLPrec.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestFunctionPA.xml = NetTopologySuite.TestRunner.Tests\vivid\TestFunctionPA.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestFunctionPL.xml = NetTopologySuite.TestRunner.Tests\vivid\TestFunctionPL.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestFunctionPLPrec.xml = NetTopologySuite.TestRunner.Tests\vivid\TestFunctionPLPrec.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestFunctionPP.xml = NetTopologySuite.TestRunner.Tests\vivid\TestFunctionPP.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestInteriorPoint.xml = NetTopologySuite.TestRunner.Tests\vivid\TestInteriorPoint.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestRectanglePredicate.xml = NetTopologySuite.TestRunner.Tests\vivid\TestRectanglePredicate.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestRelateAA.xml = NetTopologySuite.TestRunner.Tests\vivid\TestRelateAA.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestRelateAC.xml = NetTopologySuite.TestRunner.Tests\vivid\TestRelateAC.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestRelateLA.xml = NetTopologySuite.TestRunner.Tests\vivid\TestRelateLA.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestRelateLC.xml = NetTopologySuite.TestRunner.Tests\vivid\TestRelateLC.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestRelateLL.xml = NetTopologySuite.TestRunner.Tests\vivid\TestRelateLL.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestRelatePA.xml = NetTopologySuite.TestRunner.Tests\vivid\TestRelatePA.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestRelatePL.xml = NetTopologySuite.TestRunner.Tests\vivid\TestRelatePL.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestRelatePP.xml = NetTopologySuite.TestRunner.Tests\vivid\TestRelatePP.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestSimple.xml = NetTopologySuite.TestRunner.Tests\vivid\TestSimple.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestValid.xml = NetTopologySuite.TestRunner.Tests\vivid\TestValid.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestValid2-big.xml = NetTopologySuite.TestRunner.Tests\vivid\TestValid2-big.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestValid2.xml = NetTopologySuite.TestRunner.Tests\vivid\TestValid2.xml
+		NetTopologySuite.TestRunner.Tests\vivid\TestWithinDistance.xml = NetTopologySuite.TestRunner.Tests\vivid\TestWithinDistance.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Validate", "Validate", "{20350EA5-0BB8-4233-9C11-90E9A8D3C254}"
+	ProjectSection(SolutionItems) = preProject
+		NetTopologySuite.TestRunner.Tests\validate\TestRelateAA-big.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelateAA-big.xml
+		NetTopologySuite.TestRunner.Tests\validate\TestRelateAA.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelateAA.xml
+		NetTopologySuite.TestRunner.Tests\validate\TestRelateAC.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelateAC.xml
+		NetTopologySuite.TestRunner.Tests\validate\TestRelateLA.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelateLA.xml
+		NetTopologySuite.TestRunner.Tests\validate\TestRelateLC.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelateLC.xml
+		NetTopologySuite.TestRunner.Tests\validate\TestRelateLL.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelateLL.xml
+		NetTopologySuite.TestRunner.Tests\validate\TestRelatePA.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelatePA.xml
+		NetTopologySuite.TestRunner.Tests\validate\TestRelatePL.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelatePL.xml
+		NetTopologySuite.TestRunner.Tests\validate\TestRelatePP.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelatePP.xml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite", "NetTopologySuite\NetTopologySuite.csproj", "{5770DAA9-84E5-4770-AF43-F6B815894368}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Samples.Console", "NetTopologySuite.Samples.Console\NetTopologySuite.Samples.Console.csproj", "{39E8A390-5304-4447-99E2-3810941824AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.TestRunner", "NetTopologySuite.TestRunner\NetTopologySuite.TestRunner.csproj", "{13669184-2446-404F-8894-5E20B6C3FCC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.TestRunner.Console", "NetTopologySuite.TestRunner.Console\NetTopologySuite.TestRunner.Console.csproj", "{85945EF0-2BD4-42C1-A934-C3485FCE9021}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoAPI.Net", "..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj", "{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagedBufferedCoordinate2D", "ManagedBufferedCoordinate2D\ManagedBufferedCoordinate2D.csproj", "{8A1C8DC2-9E24-47E9-A51C-AA46E0B0260C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Bug|Any CPU = Bug|Any CPU
+		Debug_Net20|Any CPU = Debug_Net20|Any CPU
+		Debug_Net35|Any CPU = Debug_Net35|Any CPU
+		Release_Net20|Any CPU = Release_Net20|Any CPU
+		Release_Net35|Any CPU = Release_Net35|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5770DAA9-84E5-4770-AF43-F6B815894368}.Bug|Any CPU.ActiveCfg = Release_Net35|Any CPU
+		{5770DAA9-84E5-4770-AF43-F6B815894368}.Debug_Net20|Any CPU.ActiveCfg = Debug_Net20|Any CPU
+		{5770DAA9-84E5-4770-AF43-F6B815894368}.Debug_Net20|Any CPU.Build.0 = Debug_Net20|Any CPU
+		{5770DAA9-84E5-4770-AF43-F6B815894368}.Debug_Net35|Any CPU.ActiveCfg = Debug_Net35|Any CPU
+		{5770DAA9-84E5-4770-AF43-F6B815894368}.Debug_Net35|Any CPU.Build.0 = Debug_Net35|Any CPU
+		{5770DAA9-84E5-4770-AF43-F6B815894368}.Release_Net20|Any CPU.ActiveCfg = Release_Net20|Any CPU
+		{5770DAA9-84E5-4770-AF43-F6B815894368}.Release_Net20|Any CPU.Build.0 = Release_Net20|Any CPU
+		{5770DAA9-84E5-4770-AF43-F6B815894368}.Release_Net35|Any CPU.ActiveCfg = Release_Net35|Any CPU
+		{5770DAA9-84E5-4770-AF43-F6B815894368}.Release_Net35|Any CPU.Build.0 = Release_Net35|Any CPU
+		{39E8A390-5304-4447-99E2-3810941824AD}.Bug|Any CPU.ActiveCfg = Release_Net20|Any CPU
+		{39E8A390-5304-4447-99E2-3810941824AD}.Bug|Any CPU.Build.0 = Release_Net20|Any CPU
+		{39E8A390-5304-4447-99E2-3810941824AD}.Debug_Net20|Any CPU.ActiveCfg = Debug_Net20|Any CPU
+		{39E8A390-5304-4447-99E2-3810941824AD}.Debug_Net20|Any CPU.Build.0 = Debug_Net20|Any CPU
+		{39E8A390-5304-4447-99E2-3810941824AD}.Debug_Net35|Any CPU.ActiveCfg = Debug_Net35|Any CPU
+		{39E8A390-5304-4447-99E2-3810941824AD}.Debug_Net35|Any CPU.Build.0 = Debug_Net35|Any CPU
+		{39E8A390-5304-4447-99E2-3810941824AD}.Release_Net20|Any CPU.ActiveCfg = Release_Net20|Any CPU
+		{39E8A390-5304-4447-99E2-3810941824AD}.Release_Net20|Any CPU.Build.0 = Release_Net20|Any CPU
+		{39E8A390-5304-4447-99E2-3810941824AD}.Release_Net35|Any CPU.ActiveCfg = Release_Net35|Any CPU
+		{39E8A390-5304-4447-99E2-3810941824AD}.Release_Net35|Any CPU.Build.0 = Release_Net35|Any CPU
+		{13669184-2446-404F-8894-5E20B6C3FCC6}.Bug|Any CPU.ActiveCfg = Release_Net20|Any CPU
+		{13669184-2446-404F-8894-5E20B6C3FCC6}.Bug|Any CPU.Build.0 = Release_Net20|Any CPU
+		{13669184-2446-404F-8894-5E20B6C3FCC6}.Debug_Net20|Any CPU.ActiveCfg = Debug_Net20|Any CPU
+		{13669184-2446-404F-8894-5E20B6C3FCC6}.Debug_Net20|Any CPU.Build.0 = Debug_Net20|Any CPU
+		{13669184-2446-404F-8894-5E20B6C3FCC6}.Debug_Net35|Any CPU.ActiveCfg = Debug_Net35|Any CPU
+		{13669184-2446-404F-8894-5E20B6C3FCC6}.Debug_Net35|Any CPU.Build.0 = Debug_Net35|Any CPU
+		{13669184-2446-404F-8894-5E20B6C3FCC6}.Release_Net20|Any CPU.ActiveCfg = Release_Net20|Any CPU
+		{13669184-2446-404F-8894-5E20B6C3FCC6}.Release_Net20|Any CPU.Build.0 = Release_Net20|Any CPU
+		{13669184-2446-404F-8894-5E20B6C3FCC6}.Release_Net35|Any CPU.ActiveCfg = Release_Net35|Any CPU
+		{13669184-2446-404F-8894-5E20B6C3FCC6}.Release_Net35|Any CPU.Build.0 = Release_Net35|Any CPU
+		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Bug|Any CPU.ActiveCfg = Bug|Any CPU
+		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Bug|Any CPU.Build.0 = Bug|Any CPU
+		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Debug_Net20|Any CPU.ActiveCfg = Debug_Net20|Any CPU
+		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Debug_Net20|Any CPU.Build.0 = Debug_Net20|Any CPU
+		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Debug_Net35|Any CPU.ActiveCfg = Debug_Net35|Any CPU
+		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Debug_Net35|Any CPU.Build.0 = Debug_Net35|Any CPU
+		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Release_Net20|Any CPU.ActiveCfg = Release_Net20|Any CPU
+		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Release_Net20|Any CPU.Build.0 = Release_Net20|Any CPU
+		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Release_Net35|Any CPU.ActiveCfg = Release_Net35|Any CPU
+		{85945EF0-2BD4-42C1-A934-C3485FCE9021}.Release_Net35|Any CPU.Build.0 = Release_Net35|Any CPU
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Bug|Any CPU.ActiveCfg = Release_Net35|Any CPU
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Bug|Any CPU.Build.0 = Release_Net35|Any CPU
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Debug_Net20|Any CPU.ActiveCfg = Debug_Net20|Any CPU
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Debug_Net20|Any CPU.Build.0 = Debug_Net20|Any CPU
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Debug_Net35|Any CPU.ActiveCfg = Debug_Net35|Any CPU
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Debug_Net35|Any CPU.Build.0 = Debug_Net35|Any CPU
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Release_Net20|Any CPU.ActiveCfg = Release_Net20|Any CPU
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Release_Net20|Any CPU.Build.0 = Release_Net20|Any CPU
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Release_Net35|Any CPU.ActiveCfg = Release_Net35|Any CPU
+		{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}.Release_Net35|Any CPU.Build.0 = Release_Net35|Any CPU
+		{8A1C8DC2-9E24-47E9-A51C-AA46E0B0260C}.Bug|Any CPU.ActiveCfg = Release_Net35|Any CPU
+		{8A1C8DC2-9E24-47E9-A51C-AA46E0B0260C}.Bug|Any CPU.Build.0 = Release_Net35|Any CPU
+		{8A1C8DC2-9E24-47E9-A51C-AA46E0B0260C}.Debug_Net20|Any CPU.ActiveCfg = Debug_Net20|Any CPU
+		{8A1C8DC2-9E24-47E9-A51C-AA46E0B0260C}.Debug_Net20|Any CPU.Build.0 = Debug_Net20|Any CPU
+		{8A1C8DC2-9E24-47E9-A51C-AA46E0B0260C}.Debug_Net35|Any CPU.ActiveCfg = Debug_Net35|Any CPU
+		{8A1C8DC2-9E24-47E9-A51C-AA46E0B0260C}.Debug_Net35|Any CPU.Build.0 = Debug_Net35|Any CPU
+		{8A1C8DC2-9E24-47E9-A51C-AA46E0B0260C}.Release_Net20|Any CPU.ActiveCfg = Release_Net20|Any CPU
+		{8A1C8DC2-9E24-47E9-A51C-AA46E0B0260C}.Release_Net20|Any CPU.Build.0 = Release_Net20|Any CPU
+		{8A1C8DC2-9E24-47E9-A51C-AA46E0B0260C}.Release_Net35|Any CPU.ActiveCfg = Release_Net35|Any CPU
+		{8A1C8DC2-9E24-47E9-A51C-AA46E0B0260C}.Release_Net35|Any CPU.Build.0 = Release_Net35|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5AF10590-5E1C-4052-83C6-95C94B747195} = {A11130E8-4942-432A-97B7-ADEEFB34A977}
+		{71AF5313-7B61-47C0-B7A1-FBEAEB035011} = {5AF10590-5E1C-4052-83C6-95C94B747195}
+		{4692ED72-2D05-4DDC-8411-748A9BE61958} = {5AF10590-5E1C-4052-83C6-95C94B747195}
+		{20350EA5-0BB8-4233-9C11-90E9A8D3C254} = {5AF10590-5E1C-4052-83C6-95C94B747195}
+	EndGlobalSection
+EndGlobal
