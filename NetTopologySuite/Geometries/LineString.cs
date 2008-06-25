@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (points == null)
             {
-                // TODO: 3D unsafe
+                // 3D_UNSAFE
                 points = factory.CoordinateSequenceFactory.Create(CoordinateDimensions.Two);
             }
 

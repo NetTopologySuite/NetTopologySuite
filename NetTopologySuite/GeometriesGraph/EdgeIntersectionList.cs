@@ -137,7 +137,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 // add it to the points list as well.
                 // (This check is needed because the distance metric is not totally reliable!)
                 // The check for point equality is 2D only - Z values are ignored
-                // TODO: 3D unsafe
+                // 3D_UNSAFE
                 TCoordinate lastSegStartPt = _edge.Coordinates[ei1.SegmentIndex];
                 Boolean useIntersectionPt1 = ei1.Distance > 0.0 || 
                                              !ei1.Coordinate.Equals(lastSegStartPt);

@@ -101,7 +101,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
         static TopologyValidationError()
         {
-            // TODO: I18N unsafe
+            // I18N_UNSAFE
             Dictionary<TopologyValidationErrors, String> errors
                 = new Dictionary<TopologyValidationErrors, String>();
             errors[TopologyValidationErrors.Unknown] = "Unknown error";

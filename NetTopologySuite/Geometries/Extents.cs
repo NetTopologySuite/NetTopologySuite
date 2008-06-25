@@ -412,7 +412,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return _geoFactory.CreateExtents();
             }
 
-            // TODO: 3D unsafe
+            // 3D_UNSAFE
             return new Extents<TCoordinate>(Factory,
                                             Math.Max(Min[Ordinates.X], extents.Min[Ordinates.X]),
                                             Math.Min(Max[Ordinates.X], extents.Max[Ordinates.X]),
@@ -427,7 +427,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
             }
 
-            // TODO: 3D unsafe
+            // 3D_UNSAFE
             return !(other.Min[Ordinates.X] > _max[Ordinates.X] ||
                      other.Max[Ordinates.X] < _min[Ordinates.X] ||
                      other.Min[Ordinates.Y] > _max[Ordinates.Y] ||
@@ -441,7 +441,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
             }
 
-            // TODO: 3D unsafe
+            // 3D_UNSAFE
             return Intersects(coordinate[Ordinates.X], coordinate[Ordinates.Y]);
         }
 
@@ -531,7 +531,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
             }
 
-            // TODO: 3D unsafe
+            // 3D_UNSAFE
             return other.Min[Ordinates.X] >= _min[Ordinates.X] &&
                    other.Max[Ordinates.X] <= _max[Ordinates.X] &&
                    other.Min[Ordinates.Y] >= _min[Ordinates.Y] &&
@@ -554,7 +554,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             Double dx = 0.0;
 
-            // TODO: 3D unsafe
+            // 3D_UNSAFE
             if (_max[Ordinates.X] < extents.Min[Ordinates.X])
             {
                 dx = extents.Min[Ordinates.X] - _max[Ordinates.X];
@@ -694,7 +694,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public override string ToString()
         {
-            // TODO: 3D unsafe
+            // 3D_UNSAFE
             return "Extents [" + _min[Ordinates.X] + " - " + _max[Ordinates.X] +
                    ", " + _min[Ordinates.Y] + " - " + _max[Ordinates.Y] + "]";
         }
@@ -717,7 +717,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                // TODO: 3D unsafe
+                // 3D_UNSAFE
                 Double area = Math.Abs(_max[Ordinates.X] - _min[Ordinates.X]) * 
                               Math.Abs(_max[Ordinates.Y] - _min[Ordinates.Y]);
                 return area;
@@ -785,7 +785,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public void ExpandToInclude(IEnumerable<TCoordinate> coordinates)
         {
-            // TODO: 3D unsafe
+            // 3D_UNSAFE
             Double originalXMin;
             Double originalYMin;
             Double originalXMax;

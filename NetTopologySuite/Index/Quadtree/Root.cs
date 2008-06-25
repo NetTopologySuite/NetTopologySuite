@@ -2,7 +2,6 @@ using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 using GeoAPI.Diagnostics;
 
@@ -25,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         public Root(IGeometryFactory<TCoordinate> geoFactory) 
             : base(null)
         {
-            // TODO: 3D unsafe
+            // 3D_UNSAFE
             _geoFactory = geoFactory;
             _origin = _geoFactory.CoordinateFactory.Create(0, 0);
         }

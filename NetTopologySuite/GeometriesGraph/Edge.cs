@@ -291,7 +291,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             // Normalize segment index if intersectionPoint falls on vertex
             // The check for point equality is 2D only - Z values are ignored
-            // TODO: 3D unsafe
+            // 3D_UNSAFE
             if (intersectionPoint.Equals(nextPt))
             {
                 normalizedSegmentIndex = nextSegIndex;
