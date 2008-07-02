@@ -84,7 +84,12 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
         /// <param name="geometryFactory">The geometry factory to use.</param>
         public override void Write(IGeometry geometry, System.IO.BinaryWriter file, IGeometryFactory geometryFactory)
         {
-            IMultiLineString multi = (IMultiLineString) geometry;
+            // Force to use a MultiGeometry
+            IMultiLineString multi;
+            if (geometry is IGeometryCollection)
+                 multi = (IMultiLineString) geometry;
+            else multi = geometryFactory.CreateMultiLineString(new ILineString[] { (ILineString) geometry });
+
             file.Write(int.Parse(Enum.Format(typeof(ShapeGeometryType), ShapeType, "d")));
         
             IEnvelope box = multi.EnvelopeInternal;

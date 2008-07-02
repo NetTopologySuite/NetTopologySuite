@@ -25,35 +25,32 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests
         /// </summary>
         public override void Start()
         {
-            TestBugMultipolygonHShuntao();
-
-            /*
-            TestBugCimino();
+            //TestBugMultipolygonHShuntao();
+            //TestBugCimino();
             
-            // Bug with a.shp and b.shp and intersection
-            IGeometryCollection aColl = ReadShape("a.shp");
-            IGeometryCollection bColl = ReadShape("b.shp");
-            IGeometry result = aColl.Intersection(bColl);
+            //// Bug with a.shp and b.shp and intersection
+            //IGeometryCollection aColl = ReadShape("a.shp");
+            //IGeometryCollection bColl = ReadShape("b.shp");
+            //IGeometry result = aColl.Intersection(bColl);
             
-            // Point shapefile            
-            TestShapeReadWrite("tnp_pts.shp", "Test_tnp_pts.shp");
+            //// Point shapefile            
+            //TestShapeReadWrite("tnp_pts.shp", "Test_tnp_pts.shp");
 
-            // Arc shapefile
+            //// Arc shapefile
             TestShapeReadWrite("tnp_arc.shp", "arc.shp");
             TestShapeReadWrite("Stato_Fatto.shp", "Test_Stato_Fatto.shp");
             TestShapeReadWrite("Stato_Progetto.shp", "Test_Stato_Progetto.shp");
             TestShapeReadWrite("Zone_ISTAT.shp", "Test_Zone_ISTAT.shp");
             TestShapeReadWrite("Strade.shp", "Test_Strade.shp");
 
-            // Polygon shapefile
-            TestShapeReadWrite("tnp_pol.shp", "Test_tnp_pol.shp");
+            //// Polygon shapefile
+            //TestShapeReadWrite("tnp_pol.shp", "Test_tnp_pol.shp");
 
-            // MultiPoint shapefile
-            TestShapeReadWrite("tnp_multipoint.shp", "Test_tnp_multipoint.shp");
+            //// MultiPoint shapefile
+            //TestShapeReadWrite("tnp_multipoint.shp", "Test_tnp_multipoint.shp");
 
-            TestShapeReadWrite("a.shp", "Test_a.shp");
-            TestShapeReadWrite("b.shp", "Test_b.shp");
-            */
+            // TestShapeReadWrite("a.shp", "Test_a.shp");
+            // TestShapeReadWrite("b.shp", "Test_b.shp");            
         }
 
         private void TestBugMultipolygonHShuntao()
