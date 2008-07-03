@@ -83,7 +83,7 @@
       <ItemGroup>
         <ProjectReference Include="..\..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj">
           <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
-          <Name>GeoAPINoTFS</Name>
+          <Name>GeoAPI.Net</Name>
         </ProjectReference>
       </ItemGroup>
     </Otherwise>
