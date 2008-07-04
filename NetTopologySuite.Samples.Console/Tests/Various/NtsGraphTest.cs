@@ -133,29 +133,14 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         [Test]
         public void BuildGraphAndSearchShortestPathUsingGeometryGraph()
         {
-            OverlayOp op = new OverlayOp(a, b);
-            op.GetResultGeometry(SpatialFunction.Union);
-            Assert.IsNotNull(op.Graph);
-            StringBuilder sb = new StringBuilder("--- Nodes ---").Append(Environment.NewLine);
-            TextWriter stream = new StringWriter(sb);
-            foreach (Node node in op.Graph.Nodes)
-            {
-                Assert.IsNotNull(node);
-                node.Write(stream);
-            }
-            Debug.WriteLine(sb.ToString());
-
-            sb = new StringBuilder("--- Edges ---").Append(Environment.NewLine);
-            stream = new StringWriter(sb);
-            IEnumerator edgesenum = op.Graph.GetEdgeEnumerator();
-            while (edgesenum.MoveNext())
-            {
-                Edge edge = (Edge)edgesenum.Current;
-                Assert.IsNotNull(edge);
-                edge.Write(stream);
-                stream.Write(Environment.NewLine);
-            }
-            Debug.WriteLine(sb.ToString());           
+            LineSequencer sequencer = new LineSequencer();
+            sequencer.Add(new ILineString[] { a, b, c, });
+            Assert.IsTrue(sequencer.IsSequenceable()); // Generate graph
+            Assert.IsNotNull(sequencer.Graph);
+            
+            IGeometry sequence = sequencer.GetSequencedLineStrings();
+            Assert.IsNotNull(sequence);
+            
         }
     }
 }

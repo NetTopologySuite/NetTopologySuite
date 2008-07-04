@@ -115,6 +115,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         public LineSequencer() { }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public PlanarGraph Graph
+        {
+            get { return graph; }
+        }
+
+        /// <summary>
         /// Adds a <see cref="IEnumerable" /> of <see cref="Geometry" />s to be sequenced.
         /// May be called multiple times.
         /// Any dimension of Geometry may be added; the constituent linework will be extracted.
@@ -146,7 +154,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             private LineSequencer sequencer = null;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="T:GeometryComponentFilterImpl"/> class.
+            /// Initializes a new instance of the <see cref="GeometryComponentFilterImpl"/> class.
             /// </summary>
             /// <param name="sequencer">The sequencer.</param>
             internal GeometryComponentFilterImpl(LineSequencer sequencer)
@@ -174,7 +182,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         internal void AddLine(ILineString lineString)
         {
             if (factory == null)
-                this.factory = lineString.Factory;
+                factory = lineString.Factory;
             
             graph.AddEdge(lineString);
             lineCount++;
