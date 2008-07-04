@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Text;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using GisSharpBlog.NetTopologySuite.Operation.Overlay;
 using NUnit.Framework;
 using QuickGraph;
 using QuickGraph.Algorithms.Observers;
@@ -12,32 +17,39 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 {
     [TestFixture]
     public class NtsGraphTest
-    {        
-        [Test]
-        public void BuildGraphAndSearchShortestPath()
+    {
+        private ILineString a, b, c;
+        private IGeometryFactory factory;
+
+        [TestFixtureSetUp]
+        public void FixtureSetup()
         {
-            // Define geometries
-            IGeometry a = GeometryFactory.Default.CreateLineString(new ICoordinate[]
+            factory = GeometryFactory.Default;
+            a = factory.CreateLineString(new ICoordinate[]
             {
                 new Coordinate(0, 0),
                 new Coordinate(0, 100),
                 new Coordinate(200, 100),
                 new Coordinate(200, 200),
             });
-            IGeometry b = GeometryFactory.Default.CreateLineString(new ICoordinate[]
+            b = factory.CreateLineString(new ICoordinate[]
             {
                 new Coordinate(0, 0),
                 new Coordinate(100, 100),
                 new Coordinate(200, 200),
             });
-            IGeometry c = GeometryFactory.Default.CreateLineString(new ICoordinate[]
+            c = factory.CreateLineString(new ICoordinate[]
             {
                 new Coordinate(0, 0),
                 new Coordinate(100, 0),
                 new Coordinate(100, 200),
                 new Coordinate(200, 200),
             });
+        }
 
+        [Test]
+        public void BuildGraphAndSearchShortestPathUsingGeometryUnion()
+        {            
             // Build segments
             IGeometry segments = a.Union(b).Union(c);
             Assert.IsNotNull(segments);            
@@ -115,6 +127,34 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             // Detach the observers
             distObserver.Detach(dijkstra);
             predecessorObserver.Detach(dijkstra);
+        }
+
+        [Test]
+        public void BuildGraphAndSearchShortestPathUsingGeometryGraph()
+        {
+            OverlayOp op = new OverlayOp(a, b);
+            op.GetResultGeometry(SpatialFunction.Union);
+            Assert.IsNotNull(op.Graph);
+            StringBuilder sb = new StringBuilder("--- Nodes ---").Append(Environment.NewLine);
+            TextWriter stream = new StringWriter(sb);
+            foreach (Node node in op.Graph.Nodes)
+            {
+                Assert.IsNotNull(node);
+                node.Write(stream);                
+            }
+            Debug.WriteLine(sb.ToString());
+
+            sb = new StringBuilder("--- Edges ---").Append(Environment.NewLine);
+            stream = new StringWriter(sb);
+            IEnumerator edgesenum = op.Graph.GetEdgeEnumerator();
+            while (edgesenum.MoveNext())
+            {
+                Edge edge = (Edge) edgesenum.Current;
+                Assert.IsNotNull(edge);
+                edge.Write(stream);
+                stream.Write(Environment.NewLine);
+            }
+            Debug.WriteLine(sb.ToString());           
         }
     }
 }

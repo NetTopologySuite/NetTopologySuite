@@ -173,7 +173,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="outstream"></param>
-        public void Write(StreamWriter outstream)
+        public void Write(TextWriter outstream)
         {
             outstream.WriteLine("node " + coord + " lbl: " + label);
         }

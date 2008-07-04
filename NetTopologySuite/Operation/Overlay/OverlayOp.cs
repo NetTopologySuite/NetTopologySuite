@@ -98,7 +98,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         private IGeometry resultGeom;
 
         private PlanarGraph graph;
-        private EdgeList edgeList     = new EdgeList();
+        private EdgeList edgeList      = new EdgeList();
 
         private IList resultPolyList   = new ArrayList();
         private IList resultLineList   = new ArrayList();

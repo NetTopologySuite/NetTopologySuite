@@ -432,7 +432,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="outstream"></param>
-        public void Write(StreamWriter outstream)
+        public void Write(TextWriter outstream)
         {
             outstream.Write("edge " + name + ": ");
             outstream.Write("LINESTRING (");
@@ -448,7 +448,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="outstream"></param>
-        public void WriteReverse(StreamWriter outstream)
+        public void WriteReverse(TextWriter outstream)
         {
             outstream.Write("edge " + name + ": ");
             for (int i = Points.Length - 1; i >= 0; i--) 
