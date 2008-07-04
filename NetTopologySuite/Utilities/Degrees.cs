@@ -1,5 +1,3 @@
-using System;
-
 namespace GisSharpBlog.NetTopologySuite.Utilities
 {
 	/// <summary>

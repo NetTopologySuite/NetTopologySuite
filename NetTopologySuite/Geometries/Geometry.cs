@@ -847,7 +847,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public static bool operator ==(Geometry obj1, IGeometry obj2)
         {            
-            return Object.Equals(obj1, obj2); 
+            return Equals(obj1, obj2); 
         }
 
         /// <summary>

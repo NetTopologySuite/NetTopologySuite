@@ -1,9 +1,6 @@
-using System;
 using System.Collections;
-using System.Diagnostics;
-
+using System.IO;
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO.Handlers;
 
@@ -46,8 +43,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		/// <param name="geometryCollection">The GeometryCollection to write.</param>		
 		public void Write(string filename, IGeometryCollection geometryCollection)
 		{
-			System.IO.FileStream shpStream = new System.IO.FileStream(filename + ".shp", System.IO.FileMode.Create);
-			System.IO.FileStream shxStream = new System.IO.FileStream(filename + ".shx", System.IO.FileMode.Create);
+			FileStream shpStream = new FileStream(filename + ".shp", FileMode.Create);
+			FileStream shxStream = new FileStream(filename + ".shx", FileMode.Create);
 			BigEndianBinaryWriter shpBinaryWriter = new BigEndianBinaryWriter(shpStream);
 			BigEndianBinaryWriter shxBinaryWriter = new BigEndianBinaryWriter(shxStream);
 			

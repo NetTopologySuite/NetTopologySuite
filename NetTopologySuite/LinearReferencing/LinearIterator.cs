@@ -1,10 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
@@ -318,7 +314,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"></see> that can be used 
         /// to iterate through the collection.
         /// </returns>
-        public IEnumerator<LinearIterator.LinearElement> GetEnumerator()
+        public IEnumerator<LinearElement> GetEnumerator()
         {
             return this;
         }

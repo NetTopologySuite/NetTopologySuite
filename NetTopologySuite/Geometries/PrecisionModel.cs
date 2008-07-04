@@ -405,7 +405,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public static bool operator ==(PrecisionModel obj1, PrecisionModel obj2)
         {
-            return Object.Equals(obj1, obj2);
+            return Equals(obj1, obj2);
         }
 
         /// <summary>

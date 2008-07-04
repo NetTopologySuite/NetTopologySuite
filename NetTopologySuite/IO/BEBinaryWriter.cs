@@ -13,8 +13,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
     /// While <see cref="BigEndianBinaryWriter" /> extends <see cref="BinaryWriter" /> 
     /// adding methods for writing integer values (<see cref="BigEndianBinaryWriter.WriteIntBE" />)
     /// and double values (<see cref="BigEndianBinaryWriter.WriteDoubleBE" />) in the BigEndian format,
-    /// this implementation overrides methods, such <see cref="BinaryWriter.Write(Int32)" /> 
-    /// and <see cref="BinaryWriter.Write(Double)" /> and more, 
+    /// this implementation overrides methods, such <see cref="BinaryWriter.Write(int)" /> 
+    /// and <see cref="BinaryWriter.Write(double)" /> and more, 
     /// for writing <see cref="T:ByteOrder.BigEndian" /> values in the BigEndian format.
     /// </remarks>
     public class BEBinaryWriter : BinaryWriter

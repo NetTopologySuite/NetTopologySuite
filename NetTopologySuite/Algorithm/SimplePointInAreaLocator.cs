@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -55,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 {
                     IGeometry g2 = (IGeometry) geomi.Current;
                     // if(g2 != geom)  --- Diego Guidi say's: Java code tests reference equality: in C# with operator overloads we tests the object.equals()... more slower!                    
-                    if (!Object.ReferenceEquals(g2, geom)) 
+                    if (!ReferenceEquals(g2, geom)) 
                         if (ContainsPoint(p, g2))
                             return true;
                 }

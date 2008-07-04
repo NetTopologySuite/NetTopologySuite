@@ -108,7 +108,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public static bool operator ==(CoordinateStruct obj1, CoordinateStruct obj2)
         {
-            return Object.Equals(obj1, obj2);
+            return Equals(obj1, obj2);
         }
 
         public static bool operator !=(CoordinateStruct obj1, CoordinateStruct obj2)

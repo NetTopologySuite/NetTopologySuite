@@ -1,8 +1,4 @@
-using System;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {

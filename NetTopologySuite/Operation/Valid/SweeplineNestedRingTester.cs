@@ -1,12 +1,8 @@
-using System;
 using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
+using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Index.Sweepline;
 using GisSharpBlog.NetTopologySuite.Utilities;
 

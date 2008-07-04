@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 
@@ -82,7 +83,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
         /// <param name="geometry">The geometry object to write.</param>
         /// <param name="file">The stream to write to.</param>
         /// <param name="geometryFactory">The geometry factory to use.</param>
-        public override void Write(IGeometry geometry, System.IO.BinaryWriter file, IGeometryFactory geometryFactory)
+        public override void Write(IGeometry geometry, BinaryWriter file, IGeometryFactory geometryFactory)
         {
             // Force to use a MultiGeometry
             IMultiLineString multi;

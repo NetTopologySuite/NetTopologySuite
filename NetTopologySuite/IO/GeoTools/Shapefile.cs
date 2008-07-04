@@ -5,9 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Text;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO.Handlers;
 
@@ -168,7 +166,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 PrecisionModel pm = new PrecisionModel();
                 GeometryFactory geometryFactory = new GeometryFactory(pm, -1);
 
-                DataTable shpDataTable = GisSharpBlog.NetTopologySuite.IO.Shapefile.CreateDataTable(filename, tableName, geometryFactory);
+                DataTable shpDataTable = CreateDataTable(filename, tableName, geometryFactory);
                 string createTableSql = CreateDbTable(shpDataTable, true);
 
                 SqlCommand createTableCommand = new SqlCommand(createTableSql, connection);

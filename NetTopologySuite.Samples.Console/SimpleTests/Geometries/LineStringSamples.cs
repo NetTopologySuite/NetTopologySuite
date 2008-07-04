@@ -1,14 +1,8 @@
 using System;
-using System.Collections;
-using System.Text;
-using System.Xml;
-
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
-using GisSharpBlog.NetTopologySuite.Operation.Buffer;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
 {

@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Text;
-
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 {
     /// <summary>

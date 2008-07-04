@@ -1,14 +1,10 @@
 using System;
-using System.Collections;
-using System.Text;
 using System.IO;
-using System.Diagnostics;
-
+using System.Text;
 using GeoAPI.Geometries;
-
+using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
-using GisSharpBlog.NetTopologySuite.Algorithm;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -395,7 +391,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public static bool operator ==(Edge obj1, Edge obj2)
         {
-            return Object.Equals(obj1, obj2);
+            return Equals(obj1, obj2);
         }
 
         /// <summary>

@@ -31,7 +31,6 @@
 
 using System;
 using System.Collections;
-using System.Globalization;
 using System.IO;
 using System.Text;
 
@@ -44,7 +43,7 @@ namespace RTools_NTS.Util
 	/// <summary>
 	/// Exception class for unterminated tokens.
 	/// </summary>
-	public class StreamTokenizerUntermException : System.Exception
+	public class StreamTokenizerUntermException : Exception
 	{
 		/// <summary>
 		/// Construct with a particular message.

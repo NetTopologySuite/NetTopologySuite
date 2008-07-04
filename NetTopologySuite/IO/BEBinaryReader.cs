@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// Initializes a new instance of the <see cref="T:BEBinaryReader"/> class.
         /// </summary>
         /// <param name="stream">The stream.</param>
-		public BEBinaryReader(System.IO.Stream stream)  : base(stream) { }
+		public BEBinaryReader(Stream stream)  : base(stream) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:BEBinaryReader"/> class.
@@ -31,7 +31,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="encoding">The character encoding.</param>
         /// <exception cref="T:System.ArgumentNullException">encoding is null. </exception>
         /// <exception cref="T:System.ArgumentException">The stream does not support reading, the stream is null, or the stream is already closed. </exception>
-        public BEBinaryReader(System.IO.Stream input, Encoding encoding) : base(input, encoding) { }
+        public BEBinaryReader(Stream input, Encoding encoding) : base(input, encoding) { }
 
         /// <summary>
         /// Reads a 2-byte signed integer from the current stream using big endian encoding

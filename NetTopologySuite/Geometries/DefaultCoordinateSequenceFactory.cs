@@ -1,5 +1,4 @@
 using System;
-
 using GeoAPI.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
@@ -25,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         // see http://www.javaworld.com/javaworld/javatips/jw-javatip122.html
         private object ReadResolve()
         {
-            return DefaultCoordinateSequenceFactory.Instance;
+            return Instance;
         }
 
         /// <summary>

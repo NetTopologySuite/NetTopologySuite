@@ -1,10 +1,8 @@
 using System;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.LinearReferencing;
 using GisSharpBlog.NetTopologySuite.IO;
+using GisSharpBlog.NetTopologySuite.LinearReferencing;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.LinearReferencing
 {
@@ -17,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.LinearReferencing
         private static WKTReader rdr = new WKTReader(fact);
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:LinearReferencingExample"/> class.
+        /// Initializes a new instance of the <see cref="LinearReferencingExample"/> class.
         /// </summary>
         public LinearReferencingExample() { }
 

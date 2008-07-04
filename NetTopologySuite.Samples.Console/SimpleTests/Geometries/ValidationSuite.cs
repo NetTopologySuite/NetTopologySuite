@@ -1,13 +1,7 @@
 using System;
-using System.Collections;
-using System.Diagnostics;
-using System.Text;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
-using GisSharpBlog.NetTopologySuite.Precision;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
 {

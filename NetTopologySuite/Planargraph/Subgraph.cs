@@ -1,9 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-
-using Iesi_NTS.Collections;
 using Iesi_NTS.Collections.Generic;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph

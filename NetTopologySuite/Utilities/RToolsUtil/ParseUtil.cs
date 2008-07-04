@@ -303,7 +303,7 @@ namespace RTools_NTS.Util
 			foreach(Token t in tokens) log.Debug("Token = {0}", t);
 
 			i = 0;
-			Int16[] shorts = (short[])ParseUtil.BuildArray(tokens, ref i, typeof(Int16), null,
+			Int16[] shorts = (short[])BuildArray(tokens, ref i, typeof(Int16), null,
 				-1, log);
 		
 			if (shorts == null) 
@@ -327,7 +327,7 @@ namespace RTools_NTS.Util
 			foreach(Token t in tokens) log.Debug("Token = {0}", t);
 
 			i = 0;
-			Single[] floats = (float[])ParseUtil.BuildArray(tokens, ref i, typeof(Single), 
+			Single[] floats = (float[])BuildArray(tokens, ref i, typeof(Single), 
 				new CharToken(';'), -1, log);
 		
 			if (floats == null) 
@@ -359,7 +359,7 @@ namespace RTools_NTS.Util
 			foreach(Token t in tokens) log.Debug("Token = {0}", t);
 
 			i = 0;
-			floats = (float[])ParseUtil.BuildArray(tokens, ref i, typeof(Single), 
+			floats = (float[])BuildArray(tokens, ref i, typeof(Single), 
 				null, -1, log);
 		
 			if (floats == null) 
@@ -391,7 +391,7 @@ namespace RTools_NTS.Util
 			foreach(Token t in tokens) log.Debug("Token = {0}", t);
 
 			i = 0;
-			char[] chars = (char[])ParseUtil.BuildArray(tokens, ref i, typeof(Char), 
+			char[] chars = (char[])BuildArray(tokens, ref i, typeof(Char), 
 				null, 3, log);
 		
 			if (chars == null) 
@@ -423,7 +423,7 @@ namespace RTools_NTS.Util
 			foreach(Token t in tokens) log.Debug("Token = {0}", t);
 
 			i = 0;
-			ushort[] ushorts = (ushort[])ParseUtil.BuildArray(tokens, ref i, typeof(ushort), 
+			ushort[] ushorts = (ushort[])BuildArray(tokens, ref i, typeof(ushort), 
 				null, 3, log);
 		
 			if (ushorts == null) 

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO.Handlers;
 
 namespace GisSharpBlog.NetTopologySuite.IO.Handlers
 {
@@ -62,7 +62,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
         /// <param name="geometry">The geometry object to write.</param>
         /// <param name="file">The stream to write to.</param>
         /// <param name="geometryFactory">The geometry factory to use.</param>
-        public override void Write(IGeometry geometry, System.IO.BinaryWriter file, IGeometryFactory geometryFactory)
+        public override void Write(IGeometry geometry, BinaryWriter file, IGeometryFactory geometryFactory)
         {
             file.Write(int.Parse(Enum.Format(typeof(ShapeGeometryType), this.ShapeType, "d")));
             ICoordinate external = geometry.Coordinates[0];

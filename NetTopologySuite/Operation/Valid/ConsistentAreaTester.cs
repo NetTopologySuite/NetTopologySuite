@@ -1,14 +1,8 @@
-using System;
 using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
-using GisSharpBlog.NetTopologySuite.Operation;
-using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Operation.Relate;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid

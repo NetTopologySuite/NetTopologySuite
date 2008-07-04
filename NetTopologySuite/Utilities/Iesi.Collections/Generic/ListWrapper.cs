@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Collections;
-using System.Text;
+using System.Collections.Generic;
 
 namespace Iesi_NTS.Collections.Generic
 {

@@ -1,8 +1,8 @@
 using System;
-using NUnit.Framework;
-using GisSharpBlog.NetTopologySuite.IO;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.IO;
+using NUnit.Framework;
 
 namespace GisSharpBlog.NetTopologySuite.Tests.IO
 {

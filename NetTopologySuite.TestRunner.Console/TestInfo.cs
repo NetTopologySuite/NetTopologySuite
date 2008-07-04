@@ -1,5 +1,3 @@
-using System;
-
 using Open.Topology.TestRunner;
 
 namespace ConsoleTestRunner

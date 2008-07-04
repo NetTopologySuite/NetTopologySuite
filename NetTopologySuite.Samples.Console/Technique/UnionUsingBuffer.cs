@@ -1,8 +1,5 @@
 using System;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Technique

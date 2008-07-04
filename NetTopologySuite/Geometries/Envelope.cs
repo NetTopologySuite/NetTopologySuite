@@ -1,6 +1,4 @@
 using System;
-using System.Runtime.InteropServices;
-
 using GeoAPI.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
@@ -687,7 +685,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public static bool operator ==(Envelope obj1, Envelope obj2)
         {
-            return Object.Equals(obj1, obj2);
+            return Equals(obj1, obj2);
         }
 
         /// <summary>

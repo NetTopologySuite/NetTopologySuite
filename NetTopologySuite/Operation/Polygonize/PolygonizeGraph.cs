@@ -1,14 +1,9 @@
-using System;
 using System.Collections;
-using System.Text;
-
-using Iesi_NTS.Collections;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
+using Iesi_NTS.Collections;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
 {

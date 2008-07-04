@@ -1,13 +1,8 @@
 using System;
 using System.Collections;
-using System.Diagnostics;
 using System.IO;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
-
 using GisSharpBlog.NetTopologySuite.Samples.SimpleTests;
-
 using NUnit.Framework;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various

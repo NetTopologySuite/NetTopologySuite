@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.Operation.Linemerge;
 
@@ -57,7 +54,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
 			{
 				test.Run();
 			}
-			catch (System.Exception ex)
+			catch (Exception ex)
 			{
 				Console.WriteLine(ex.StackTrace);
 			}

@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing

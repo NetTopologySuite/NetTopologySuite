@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-
 using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.IO

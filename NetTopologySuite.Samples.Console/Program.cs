@@ -1,18 +1,6 @@
 using System;
-using System.Collections;
-using System.IO;
-using System.Text;
-
-using NUnit.Framework;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.IO;
-using GisSharpBlog.NetTopologySuite.Samples.LinearReferencing;
-
-using GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries;
-using GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Attributes;
 using GisSharpBlog.NetTopologySuite.Samples.SimpleTests.ShapeTests;
-using GisSharpBlog.NetTopologySuite.Samples.Tests;
+using NUnit.Framework;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
 {

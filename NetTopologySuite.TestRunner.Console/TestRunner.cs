@@ -1,8 +1,5 @@
 using System;
 using System.IO;
-using System.Collections;
-using System.Collections.Specialized;
-
 using Open.Topology.TestRunner;
 
 namespace ConsoleTestRunner
@@ -54,7 +51,7 @@ namespace ConsoleTestRunner
             {
                 if (m_bVerbose)
                 {
-                    System.Console.WriteLine("Test {0}, {1} ({2} : {3})", 
+                    Console.WriteLine("Test {0}, {1} ({2} : {3})", 
                         args.Index, args.Success, args.Test.TestType.ToString(),
                         args.Test.Description);
                 }
@@ -78,23 +75,23 @@ namespace ConsoleTestRunner
                       
         public void PrintSimpleTestResult(int totalTest)
         {
-            System.Console.WriteLine("Test Cases : {0}, Test Run: {1}, Failures: {2}, Test Exceptions: {3}",
+            Console.WriteLine("Test Cases : {0}, Test Run: {1}, Failures: {2}, Test Exceptions: {3}",
                 totalTest, m_nSimpleTestCount, m_nSimpleTestFailures, m_nSimpleTestExceptions);
             
-            System.Console.WriteLine();
+            Console.WriteLine();
         }
 
         public void PrintResult()
         {
-            System.Console.WriteLine();
+            Console.WriteLine();
 
-            System.Console.WriteLine("   ************************ Final Results ********************   ");
-            System.Console.WriteLine("Total Test Cases : {0}, Test Run: {1}, Failures: {2}, Test Exceptions: {3}",
+            Console.WriteLine("   ************************ Final Results ********************   ");
+            Console.WriteLine("Total Test Cases : {0}, Test Run: {1}, Failures: {2}, Test Exceptions: {3}",
                 m_nTotalCount, m_nTestCount, m_nFailures, m_nExceptions);
-            System.Console.WriteLine("Total elapsed time in milliseconds: " + elapsedTime);
+            Console.WriteLine("Total elapsed time in milliseconds: " + elapsedTime);
             elapsedTime = 0;
             
-            System.Console.WriteLine();
+            Console.WriteLine();
         }
 
         public bool Run()
@@ -133,11 +130,11 @@ namespace ConsoleTestRunner
             Exception ex = args.Thrown;
             if (ex != null)
             {
-                System.Console.WriteLine(ex.Message);
-                System.Console.WriteLine();
-                System.Console.WriteLine(ex.Source);
-                System.Console.WriteLine();
-                System.Console.WriteLine(ex.StackTrace);
+                Console.WriteLine(ex.Message);
+                Console.WriteLine();
+                Console.WriteLine(ex.Source);
+                Console.WriteLine();
+                Console.WriteLine(ex.StackTrace);
             }
         }
 

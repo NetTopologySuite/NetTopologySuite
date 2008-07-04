@@ -1,14 +1,9 @@
 using System;
 using System.Collections;
-using System.Diagnostics;
-using System.Text;
 using System.IO;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Algorithm;
+using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
 {

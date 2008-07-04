@@ -1,6 +1,5 @@
-using System;
-using System.Runtime.InteropServices;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace Open.Topology.TestRunner

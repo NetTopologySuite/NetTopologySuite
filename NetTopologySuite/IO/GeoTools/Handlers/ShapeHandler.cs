@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 
@@ -33,7 +34,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
         /// <param name="geometry">The geometry object to write.</param>
         /// <param name="file">The stream to write to.</param>
         /// <param name="geometryFactory">The geometry factory to use.</param>
-        public abstract void Write(IGeometry geometry, System.IO.BinaryWriter file,  IGeometryFactory geometryFactory);
+        public abstract void Write(IGeometry geometry, BinaryWriter file,  IGeometryFactory geometryFactory);
 
         /// <summary>
         /// Gets the length in bytes the Geometry will need when written as a shape file record.

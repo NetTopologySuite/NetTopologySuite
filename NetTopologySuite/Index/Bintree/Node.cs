@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Text;
-
 using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Bintree

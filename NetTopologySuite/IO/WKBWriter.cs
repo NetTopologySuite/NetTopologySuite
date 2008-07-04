@@ -8,7 +8,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
     /// Writes a Well-Known Binary byte data representation of a <c>Geometry</c>.
     /// </summary>
     /// <remarks>
-    /// WKBWriter stores <see cref="ICoordinate" /> X,Y,Z values if <see cref="ICoordinate.Z" /> is not <see cref="Double.NaN"/>, 
+    /// WKBWriter stores <see cref="ICoordinate" /> X,Y,Z values if <see cref="ICoordinate.Z" /> is not <see cref="double.NaN"/>, 
     /// otherwise <see cref="ICoordinate.Z" /> value is discarded and only X,Y are stored.
     /// </remarks>
     // Thanks to Roberto Acioli for ICoordinate.Z patch

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 
 namespace GisSharpBlog.NetTopologySuite.Utilities

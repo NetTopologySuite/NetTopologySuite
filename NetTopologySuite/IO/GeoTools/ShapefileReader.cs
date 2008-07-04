@@ -34,7 +34,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 // create a file stream for each enumerator that is given out. This allows the same file
                 // to have one or more enumerator. If we used the parents stream - than only one IEnumerator 
                 // could be given out.
-                FileStream stream = new FileStream(_parent._filename, System.IO.FileMode.Open, FileAccess.Read, FileShare.Read);
+                FileStream stream = new FileStream(_parent._filename, FileMode.Open, FileAccess.Read, FileShare.Read);
                 _shpBinaryReader = new BigEndianBinaryReader(stream);
 
                 // skip header - since parent has already read this.
@@ -142,7 +142,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			// read header information. note, we open the file, read the header information and then
 			// close the file. This means the file is not opened again until GetEnumerator() is requested.
 			// For each call to GetEnumerator() a new BinaryReader is created.
-			FileStream stream = new FileStream(filename, System.IO.FileMode.Open, FileAccess.Read, FileShare.Read);
+			FileStream stream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read);
 			BigEndianBinaryReader shpBinaryReader = new BigEndianBinaryReader(stream);
 			_mainHeader = new ShapefileHeader(shpBinaryReader);
 			shpBinaryReader.Close();

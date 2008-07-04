@@ -1,11 +1,6 @@
 using System;
 using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
@@ -135,7 +130,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <param name="segIndex1"></param>
         private bool IsTrivialIntersection(Edge e0, int segIndex0, Edge e1, int segIndex1)
         {
-            if (Object.ReferenceEquals(e0, e1))
+            if (ReferenceEquals(e0, e1))
             {
                 if (li.IntersectionNum == 1)
                 {
@@ -166,7 +161,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         public void AddIntersections(Edge e0, int segIndex0, Edge e1, int segIndex1)
         {            
             // if (e0 == e1 && segIndex0 == segIndex1) 
-            if (Object.ReferenceEquals(e0, e1) && segIndex0 == segIndex1)
+            if (ReferenceEquals(e0, e1) && segIndex0 == segIndex1)
                 return;             // Diego Guidi say's: Avoid overload equality, i use references equality, otherwise TOPOLOGY ERROR!
                             
             numTests++;

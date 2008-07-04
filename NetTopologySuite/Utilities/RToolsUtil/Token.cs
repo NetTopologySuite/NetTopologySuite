@@ -21,8 +21,6 @@
 using System;
 using System.Globalization;
 
-using GisSharpBlog.NetTopologySuite.Utilities;
-
 namespace RTools_NTS.Util
 {
 	/// <summary>

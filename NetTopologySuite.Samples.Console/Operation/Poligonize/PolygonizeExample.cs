@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.Operation.Polygonize;
 

@@ -20,9 +20,8 @@
 //
 
 using System;
-using System.IO;
-using System.Reflection;
 using System.Collections;
+using System.IO;
 
 namespace RTools_NTS.Util
 {

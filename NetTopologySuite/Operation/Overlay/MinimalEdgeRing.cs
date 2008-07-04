@@ -1,12 +1,5 @@
-using System;
-using System.Collections;
-using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.Algorithm;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 {

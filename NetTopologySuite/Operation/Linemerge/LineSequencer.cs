@@ -1,16 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-
 using GeoAPI.Geometries;
-
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using GisSharpBlog.NetTopologySuite.Planargraph.Algorithm;
 using GisSharpBlog.NetTopologySuite.Utilities;
-
 using Iesi_NTS.Collections.Generic;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge

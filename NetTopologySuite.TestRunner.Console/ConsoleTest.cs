@@ -1,5 +1,4 @@
 using System;
-
 using Open.Topology.TestRunner;
 
 namespace ConsoleTestRunner
@@ -82,11 +81,11 @@ namespace ConsoleTestRunner
 
             if (ex != null)
             {
-                System.Console.WriteLine(ex.Message);
-                System.Console.WriteLine();
-                System.Console.WriteLine(ex.Source);
-                System.Console.WriteLine();
-                System.Console.WriteLine(ex.StackTrace);
+                Console.WriteLine(ex.Message);
+                Console.WriteLine();
+                Console.WriteLine(ex.Source);
+                Console.WriteLine();
+                Console.WriteLine(ex.StackTrace);
             }
         }
 

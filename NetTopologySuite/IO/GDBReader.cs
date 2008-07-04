@@ -1,13 +1,6 @@
 using System;
-using System.Collections;
-using System.Data.SqlTypes;
-using System.Globalization;
 using System.IO;
-using System.Text;
-
 using GeoAPI.Geometries;
-
-using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.IO
