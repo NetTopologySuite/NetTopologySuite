@@ -110,7 +110,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         private bool isSequenceable = false;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:LineSequencer"/> class.
+        /// Initializes a new instance of the <see cref="LineSequencer"/> class.
         /// </summary>
         public LineSequencer() { }
 

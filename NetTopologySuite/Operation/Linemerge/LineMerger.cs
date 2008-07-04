@@ -195,13 +195,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// <summary>
         /// Returns the LineStrings built by the merging process.
         /// </summary>
-        public IList MergedLineStrings 
+        /// <returns></returns>
+        public IList GetMergedLineStrings() 
         {
-            get
-            {
-                Merge();
-                return mergedLineStrings;
-            }
+            Merge();
+            return mergedLineStrings;
         }
     }
 }

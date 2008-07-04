@@ -7,6 +7,7 @@ using System.Text;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using GisSharpBlog.NetTopologySuite.Operation.Linemerge;
 using GisSharpBlog.NetTopologySuite.Operation.Overlay;
 using NUnit.Framework;
 using QuickGraph;
@@ -140,7 +141,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             foreach (Node node in op.Graph.Nodes)
             {
                 Assert.IsNotNull(node);
-                node.Write(stream);                
+                node.Write(stream);
             }
             Debug.WriteLine(sb.ToString());
 
@@ -149,7 +150,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             IEnumerator edgesenum = op.Graph.GetEdgeEnumerator();
             while (edgesenum.MoveNext())
             {
-                Edge edge = (Edge) edgesenum.Current;
+                Edge edge = (Edge)edgesenum.Current;
                 Assert.IsNotNull(edge);
                 edge.Write(stream);
                 stream.Write(Environment.NewLine);

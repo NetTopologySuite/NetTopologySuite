@@ -66,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
 			
 			LineMerger lineMerger = new LineMerger();
 			lineMerger.Add(lineStrings);
-			ICollection mergedLineStrings = lineMerger.MergedLineStrings;
+		    ICollection mergedLineStrings = lineMerger.GetMergedLineStrings();
 			
 			Console.WriteLine("Lines formed (" + mergedLineStrings.Count + "):");
             foreach (object obj in mergedLineStrings)
