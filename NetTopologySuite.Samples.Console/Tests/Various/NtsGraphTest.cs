@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Text;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Operation.Linemerge;
-using GisSharpBlog.NetTopologySuite.Operation.Overlay;
 using NUnit.Framework;
 using QuickGraph;
 using QuickGraph.Algorithms.Observers;
