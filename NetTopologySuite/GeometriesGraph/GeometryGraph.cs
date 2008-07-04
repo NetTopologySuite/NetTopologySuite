@@ -160,7 +160,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <param name="edgelist"></param>
-        public  void ComputeSplitEdges(IList edgelist)
+        public void ComputeSplitEdges(IList edgelist)
         {
             for (IEnumerator i = edges.GetEnumerator(); i.MoveNext(); ) 
             {                
