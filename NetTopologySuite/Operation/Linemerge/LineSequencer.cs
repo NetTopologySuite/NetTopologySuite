@@ -113,15 +113,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// Initializes a new instance of the <see cref="LineSequencer"/> class.
         /// </summary>
         public LineSequencer() { }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public PlanarGraph Graph
-        {
-            get { return graph; }
-        }
-
+       
         /// <summary>
         /// Adds a <see cref="IEnumerable" /> of <see cref="Geometry" />s to be sequenced.
         /// May be called multiple times.

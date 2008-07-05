@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation.Linemerge;
 using NUnit.Framework;
 using QuickGraph;
 using QuickGraph.Algorithms.Observers;
@@ -123,19 +122,6 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             // Detach the observers
             distObserver.Detach(dijkstra);
             predecessorObserver.Detach(dijkstra);
-        }
-
-        [Test]
-        public void BuildGraphAndSearchShortestPathUsingGeometryGraph()
-        {
-            LineSequencer sequencer = new LineSequencer();
-            sequencer.Add(new ILineString[] { a, b, c, });
-            Assert.IsTrue(sequencer.IsSequenceable()); // Generate graph
-            Assert.IsNotNull(sequencer.Graph);
-            
-            IGeometry sequence = sequencer.GetSequencedLineStrings();
-            Assert.IsNotNull(sequence);
-            
-        }
+        }        
     }
 }

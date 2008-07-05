@@ -78,9 +78,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         
         /// <summary>
         /// 
-        /// </summary>
-        
+        /// </summary>        
         protected IList shellList = null;
+
         /// <summary>
         /// 
         /// </summary>
