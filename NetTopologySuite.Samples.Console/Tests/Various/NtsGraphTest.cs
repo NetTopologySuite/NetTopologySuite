@@ -12,55 +12,65 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 {
     [TestFixture]
     public class NtsGraphTest
-    {
-        private ILineString a, b, c;
+    {        
         private IGeometryFactory factory;
 
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            factory = GeometryFactory.Default;
-            a = factory.CreateLineString(new ICoordinate[]
+            factory = GeometryFactory.Fixed;            
+        }
+
+        [Test]
+        public void BuildGraphAndSearchShortestPathUsingGeometryUnion()
+        {
+            // Build sample geometries
+            ILineString a = factory.CreateLineString(new ICoordinate[]
             {
                 new Coordinate(0, 0),
-                new Coordinate(0, 100),
+                new Coordinate(100, 0),
                 new Coordinate(200, 100),
                 new Coordinate(200, 200),
             });
-            b = factory.CreateLineString(new ICoordinate[]
+            ILineString b = factory.CreateLineString(new ICoordinate[]
             {
                 new Coordinate(0, 0),
                 new Coordinate(100, 100),
                 new Coordinate(200, 200),
             });
-            c = factory.CreateLineString(new ICoordinate[]
+            ILineString c = factory.CreateLineString(new ICoordinate[]
             {
                 new Coordinate(0, 0),
-                new Coordinate(100, 0),
+                new Coordinate(0, 100),
                 new Coordinate(100, 200),
                 new Coordinate(200, 200),
             });
-        }
-
-        [Test]
-        public void BuildGraphAndSearchShortestPathUsingGeometryUnion()
-        {            
-            // Build segments
-            IGeometry segments = a.Union(b).Union(c);
-            Assert.IsNotNull(segments);            
-            Assert.IsTrue(segments.GetType() == typeof(MultiLineString));
-            Assert.Greater(segments.NumGeometries, 0);
-            foreach (IGeometry segment in ((GeometryCollection) segments).Geometries)
+            ILineString d = factory.CreateLineString(new ICoordinate[]
             {
-                Assert.IsNotNull(segment);
-                Assert.IsTrue(segment.GetType() == typeof(LineString));
-                Debug.WriteLine(segment);
+                new Coordinate(0, 0),
+                new Coordinate(300, 0),
+                new Coordinate(300, 200),
+                new Coordinate(150, 200),
+                new Coordinate(150, 300),
+            });
+            IGeometry start = a.StartPoint;
+
+            // Build edges
+            IGeometry edges = a.Union(b).Union(c).Union(d);
+            Assert.IsNotNull(edges);            
+            Assert.IsTrue(edges.GetType() == typeof(MultiLineString));
+            Assert.Greater(edges.NumGeometries, 0);
+            foreach (IGeometry edge in ((GeometryCollection) edges).Geometries)
+            {
+                Assert.IsNotNull(edge);
+                Assert.IsTrue(edge.GetType() == typeof(LineString));
+                Debug.WriteLine(edge);
             }
 
             // Build graph
-            Dictionary<Edge<IGeometry>, double> edgeCost = new Dictionary<Edge<IGeometry>, double>(segments.NumGeometries);
+            Dictionary<Edge<IGeometry>, double> consts = new Dictionary<Edge<IGeometry>, double>(edges.NumGeometries);
             AdjacencyGraph<IGeometry, Edge<IGeometry>> graph = new AdjacencyGraph<IGeometry, Edge<IGeometry>>(true);
-            foreach (ILineString str in ((GeometryCollection) segments).Geometries)
+            foreach (ILineString str in ((GeometryCollection) edges).Geometries)
             {               
                 // Add vertex 1
                 IGeometry vertex1 = str.StartPoint;
@@ -70,6 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                     Debug.WriteLine(String.Format("Adding vertex {0} to the list", vertex1));
                     graph.AddVertex(vertex1);
                 }
+                else Debug.WriteLine(String.Format("Vertex {0} already present", vertex1));
 
                 // Add vertex 2
                 IGeometry vertex2 = str.EndPoint;
@@ -79,6 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                     Debug.WriteLine(String.Format("Adding vertex {0} to the list", vertex2));
                     graph.AddVertex(vertex2);
                 }
+                else Debug.WriteLine(String.Format("Vertex {0} already present", vertex2));
 
                 // Compute weight
                 double weight = str.Length;
@@ -90,12 +102,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 Debug.WriteLine(String.Format("Adding edge for vertices {0} and {1} using weight {2}", 
                     vertex1, vertex2, weight));
                 graph.AddEdge(edge);
-                edgeCost.Add(edge, weight);
+                consts.Add(edge, weight);
             }
 
             // Perform DijkstraShortestPathAlgorithm
             DijkstraShortestPathAlgorithm<IGeometry, Edge<IGeometry>> dijkstra =
-                new DijkstraShortestPathAlgorithm<IGeometry, Edge<IGeometry>>(graph, edgeCost);
+                new DijkstraShortestPathAlgorithm<IGeometry, Edge<IGeometry>>(graph, consts);
 
             // attach a distance observer to give us the shortest path distances
             VertexDistanceRecorderObserver<IGeometry, Edge<IGeometry>> distObserver =
@@ -107,8 +119,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 new VertexPredecessorRecorderObserver<IGeometry, Edge<IGeometry>>();
             predecessorObserver.Attach(dijkstra);
 
-            // Run the algorithm with a's start point set to be the source
-            IGeometry start = ((LineString) a).StartPoint;
+            // Run the algorithm             
             Debug.WriteLine(String.Format("Starting algorithm from root vertex {0}", start));
             dijkstra.Compute(start);
 
