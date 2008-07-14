@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap;
 using NUnit.Framework;
 using QuickGraph;
 using QuickGraph.Algorithms.Observers;
@@ -14,38 +15,36 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
     public class NtsGraphTest
     {        
         private IGeometryFactory factory;
+        private ILineString a, b, c, d;
+        private IGeometry start;
 
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            factory = GeometryFactory.Fixed;            
-        }
+            factory = GeometryFactory.Fixed;
 
-        [Test]
-        public void BuildGraphAndSearchShortestPathUsingGeometryUnion()
-        {
             // Build sample geometries
-            ILineString a = factory.CreateLineString(new ICoordinate[]
+            a = factory.CreateLineString(new ICoordinate[]
             {
                 new Coordinate(0, 0),
                 new Coordinate(100, 0),
                 new Coordinate(200, 100),
                 new Coordinate(200, 200),
             });
-            ILineString b = factory.CreateLineString(new ICoordinate[]
+            b = factory.CreateLineString(new ICoordinate[]
             {
                 new Coordinate(0, 0),
                 new Coordinate(100, 100),
                 new Coordinate(200, 200),
             });
-            ILineString c = factory.CreateLineString(new ICoordinate[]
+            c = factory.CreateLineString(new ICoordinate[]
             {
                 new Coordinate(0, 0),
                 new Coordinate(0, 100),
                 new Coordinate(100, 200),
                 new Coordinate(200, 200),
             });
-            ILineString d = factory.CreateLineString(new ICoordinate[]
+            d = factory.CreateLineString(new ICoordinate[]
             {
                 new Coordinate(0, 0),
                 new Coordinate(300, 0),
@@ -53,9 +52,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 new Coordinate(150, 200),
                 new Coordinate(150, 300),
             });
-            IGeometry start = a.StartPoint;
+            start = a.StartPoint;
+        }
 
-            // Build edges
+        [Test]
+        public void BuildGraphAndSearchShortestPathUsingGeometryUnion()
+        {            
             IGeometry edges = a.Union(b).Union(c).Union(d);
             Assert.IsNotNull(edges);            
             Assert.IsTrue(edges.GetType() == typeof(MultiLineString));
@@ -120,8 +122,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             predecessorObserver.Attach(dijkstra);
 
             // Run the algorithm             
-            Debug.WriteLine(String.Format("Starting algorithm from root vertex {0}", start));
-            dijkstra.Compute(start);
+            Debug.WriteLine(String.Format("Starting algorithm from root vertex {0}", this.start));
+            dijkstra.Compute(this.start);
 
             foreach (KeyValuePair<IGeometry, int> kvp in distObserver.Distances)
                 Debug.WriteLine(String.Format("Distance from root to node {0} is {1}", 

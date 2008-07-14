@@ -67,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap
         /// <param name="g0"></param>
         /// <param name="g1"></param>
         /// <returns></returns>
-        public static IGeometry symDifference(IGeometry g0, IGeometry g1)
+        public static IGeometry SymDifference(IGeometry g0, IGeometry g1)
         {
             return Overlay(g0, g1, SpatialFunction.SymDifference);
         }
