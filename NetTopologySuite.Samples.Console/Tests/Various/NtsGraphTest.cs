@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap;
 using NUnit.Framework;
 using QuickGraph;
 using QuickGraph.Algorithms.Observers;
@@ -13,10 +12,18 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 {
     [TestFixture]
     public class NtsGraphTest
-    {        
+    {                
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
+        public static double ComputeWeight(ILineString line) { return line.Length; }
+
         private IGeometryFactory factory;
         private ILineString a, b, c, d;
-        private IGeometry start;
+        private IPoint start, end;
+        private readonly GraphBuilder.ComputeWeightDelegate weightComputer = ComputeWeight;
 
         [TestFixtureSetUp]
         public void FixtureSetup()
@@ -53,6 +60,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 new Coordinate(150, 300),
             });
             start = a.StartPoint;
+            end   = d.EndPoint;
         }
 
         [Test]
@@ -95,7 +103,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 else Debug.WriteLine(String.Format("Vertex {0} already present", vertex2));
 
                 // Compute weight
-                double weight = str.Length;
+                double weight = weightComputer(str);
                 Assert.Greater(weight, 0.0);
                 Edge<IGeometry> edge = new Edge<IGeometry>(vertex1, vertex2);
                 Assert.IsNotNull(edge);
@@ -122,8 +130,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             predecessorObserver.Attach(dijkstra);
 
             // Run the algorithm             
-            Debug.WriteLine(String.Format("Starting algorithm from root vertex {0}", this.start));
-            dijkstra.Compute(this.start);
+            Debug.WriteLine(String.Format("Starting algorithm from root vertex {0}", start));
+            dijkstra.Compute(start);
 
             foreach (KeyValuePair<IGeometry, int> kvp in distObserver.Distances)
                 Debug.WriteLine(String.Format("Distance from root to node {0} is {1}", 
@@ -135,6 +143,96 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             // Detach the observers
             distObserver.Detach(dijkstra);
             predecessorObserver.Detach(dijkstra);
-        }        
+        }
+
+        [Test]
+        [ExpectedException(typeof(TopologyException))]
+        public void CheckGraphBuilderExceptionUsingNoGeometries()
+        {
+            GraphBuilder builder = new GraphBuilder();
+            builder.PrepareAlgorithm();
+        }
+
+        [Test]
+        [ExpectedException(typeof(TopologyException))]
+        public void CheckGraphBuilderExceptionUsingOneGeometry()
+        {
+            GraphBuilder builder = new GraphBuilder();
+            Assert.IsTrue(builder.Add(a));
+            builder.PrepareAlgorithm();
+        }
+
+        [Test]
+        [ExpectedException(typeof(TopologyException))]
+        public void CheckGraphBuilderExceptionUsingARepeatedGeometry()
+        {
+            GraphBuilder builder = new GraphBuilder();
+            Assert.IsTrue(builder.Add(a));
+            Assert.IsFalse(builder.Add(a));
+            builder.PrepareAlgorithm();
+        }
+
+        [Test]
+        [ExpectedException(typeof(TopologyException))]
+        public void CheckGraphBuilderExceptionUsingDifferentFactories()
+        {
+            GraphBuilder builder = new GraphBuilder();
+            Assert.IsTrue(builder.Add(a));
+            Assert.IsTrue(builder.Add(b, c));
+            Assert.IsTrue(builder.Add(d));
+            builder.Add(GeometryFactory.Default.CreateLineString(new ICoordinate[]
+            {
+                new Coordinate(0 ,0),
+                new Coordinate(50 , 50),
+            }));
+        }
+
+        [Test]
+        public void BuildGraphAndSearchShortestPathUsingGraphBuilder()
+        {
+            // Build algorithm
+            GraphBuilder builder = new GraphBuilder();
+            builder.Add(a);
+            builder.Add(b, c);
+            builder.Add(d);
+            DijkstraShortestPathAlgorithm<IPoint, IEdge<IPoint>> algorithm = builder.PrepareAlgorithm();
+
+            // Attach a distance observer to give us the shortest path distances
+            VertexDistanceRecorderObserver<IPoint, IEdge<IPoint>> distObserver =
+                new VertexDistanceRecorderObserver<IPoint, IEdge<IPoint>>();
+            distObserver.Attach(algorithm);
+
+            // Attach a Vertex Predecessor Recorder Observer to give us the paths
+            VertexPredecessorRecorderObserver<IPoint, IEdge<IPoint>> predecessorObserver =
+                new VertexPredecessorRecorderObserver<IPoint, IEdge<IPoint>>();
+            predecessorObserver.Attach(algorithm);
+
+            // Run algorithm
+            algorithm.Compute(start);
+
+            // Check results
+            int distance = distObserver.Distances[end];
+            Assert.AreEqual(2, distance);
+            IDictionary<IPoint, IEdge<IPoint>> predecessors = predecessorObserver.VertexPredecessors;
+            for (int i = 0; i < distance; i++)
+            {
+                IEdge<IPoint> edge = predecessors[end];
+                if (i == 0)
+                {
+                    Assert.AreEqual(d.GetPointN(d.NumPoints - 2), edge.Source);
+                    Assert.AreEqual(d.EndPoint, edge.Target);
+                }
+                else if (i == 1)
+                {
+                    Assert.AreEqual(a.StartPoint, edge.Source);
+                    Assert.AreEqual(d.GetPointN(d.NumPoints - 2), edge.Target);
+                }
+                end = edge.Source;
+            }
+
+            // Detach the observers
+            distObserver.Detach(algorithm);
+            predecessorObserver.Detach(algorithm);
+        }
     }
 }

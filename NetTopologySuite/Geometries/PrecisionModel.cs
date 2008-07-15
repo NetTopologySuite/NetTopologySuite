@@ -383,7 +383,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public bool Equals(IPrecisionModel otherPrecisionModel)
         {
-            return modelType == otherPrecisionModel.PrecisionModelType &&
+            return  modelType == otherPrecisionModel.PrecisionModelType &&
                     scale == otherPrecisionModel.Scale;
         }        
         
