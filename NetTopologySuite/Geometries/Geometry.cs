@@ -605,7 +605,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public bool Intersects(IGeometry g) 
         {
             // short-circuit test
-            if (! EnvelopeInternal.Intersects(g.EnvelopeInternal))
+            if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
                 return false;
             // optimizations for rectangle arguments
             if (IsRectangle)
