@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.IO
     public class ShapeFileDataReaderTest : BaseSamples    
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ShapeFileReadTest"/> class.
+        /// Initializes a new instance of the <see cref="ShapeFileDataReaderTest"/> class.
         /// </summary>
         public ShapeFileDataReaderTest() : base() 
         {

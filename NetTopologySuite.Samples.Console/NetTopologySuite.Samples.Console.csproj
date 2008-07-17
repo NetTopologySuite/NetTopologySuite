@@ -81,7 +81,7 @@
     <Compile Include="Tests\Various\NormalizeTest.cs" />
     <Compile Include="Tests\Various\NtsGraphTest.cs" />
     <Compile Include="Tests\Various\OracleWKBTest.cs" />
-    <Compile Include="Tests\Various\Precision.cs" />
+    <Compile Include="Tests\Various\PrecisionTest.cs" />
     <Compile Include="Tests\Various\ReverseTest.cs" />
     <Compile Include="Tests\Various\RobustLineIntersectorTest.cs" />
     <Compile Include="Tests\Various\OGCTests.cs" />
