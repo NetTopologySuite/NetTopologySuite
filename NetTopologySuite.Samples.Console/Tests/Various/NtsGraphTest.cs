@@ -29,7 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         private const string dbf = ".dbf";
 
         private IGeometryFactory factory;
-        private ILineString a, b, c, d;
+        private ILineString a, b, c, d, e;
         private IPoint start, end;
         private readonly GraphBuilder.ComputeWeightDelegate weightComputer = ComputeWeight;
 
@@ -48,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 new Coordinate(0, 0),
                 new Coordinate(100, 0),
                 new Coordinate(200, 100),
-                new Coordinate(200, 200),
+                new Coordinate(200, 200), 
             });
             b = factory.CreateLineString(new ICoordinate[]
             {
@@ -71,6 +71,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 new Coordinate(150, 200),
                 new Coordinate(150, 300),
             });
+            e = factory.CreateLineString(new ICoordinate[]
+            {
+                new Coordinate(100, 300),
+                new Coordinate(150, 300),
+                new Coordinate(200, 300),
+            });
             start = a.StartPoint;
             end   = d.EndPoint;
         }
@@ -78,7 +84,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         [Test]
         public void BuildGraphAndSearchShortestPathUsingGeometryUnion()
         {            
-            IGeometry edges = a.Union(b).Union(c).Union(d);
+            IGeometry edges = a.Union(b).Union(c).Union(d).Union(e);
             Assert.IsNotNull(edges);            
             Assert.IsTrue(edges.GetType() == typeof(MultiLineString));
             Assert.Greater(edges.NumGeometries, 0);
@@ -117,14 +123,18 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 // Compute weight
                 double weight = weightComputer(str);
                 Assert.Greater(weight, 0.0);
-                Edge<IGeometry> edge = new Edge<IGeometry>(vertex1, vertex2);
-                Assert.IsNotNull(edge);
 
-                // Add edge
-                Debug.WriteLine(String.Format("Adding edge for vertices {0} and {1} using weight {2}", 
-                    vertex1, vertex2, weight));
-                graph.AddEdge(edge);
-                consts.Add(edge, weight);
+                // Add edge for 1 => 2
+                IEdge<IGeometry> edge1 = new Edge<IGeometry>(vertex1, vertex2);
+                Assert.IsNotNull(edge1);
+                graph.AddEdge(edge1);
+                consts.Add(edge1, weight);
+
+                // Add edge for 2 => 1
+                IEdge<IGeometry> edge2 = new Edge<IGeometry>(vertex2, vertex1);
+                Assert.IsNotNull(edge2);
+                graph.AddEdge(edge2);
+                consts.Add(edge2, weight);
             }
 
             // Perform DijkstraShortestPathAlgorithm
@@ -412,13 +422,18 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 // Compute weight
                 double weight = weightComputer(str);
                 Assert.Greater(weight, 0.0);
-                IEdge<IGeometry> edge = new Edge<IGeometry>(vertex1, vertex2);
-                Assert.IsNotNull(edge);
 
-                // Add edge
-                Debug.WriteLine(String.Format("Adding edge for vertices {0} and {1} using weight {2}", vertex1, vertex2, weight));
-                graph.AddEdge(edge);
-                consts.Add(edge, weight);
+                // Add edge 1 => 2
+                IEdge<IGeometry> edge1 = new Edge<IGeometry>(vertex1, vertex2);
+                Assert.IsNotNull(edge1);                
+                graph.AddEdge(edge1);
+                consts.Add(edge1, weight);
+
+                // Add edge 2 => 1
+                IEdge<IGeometry> edge2 = new Edge<IGeometry>(vertex2, vertex1);
+                Assert.IsNotNull(edge2);
+                graph.AddEdge(edge2);
+                consts.Add(edge2, weight);
             }
 
             // Perform DijkstraShortestPathAlgorithm
