@@ -298,8 +298,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             Assert.IsInstanceOfType(typeof(MultiLineString), edges);
             Assert.AreEqual(1179, edges.NumGeometries);
 
-            string field1 = "objectid";
-            string field2 = "desc";
+            string field1 = "OBJECTID";
+            string field2 = "DESCRIPTION";
             IList features = new List<Feature>(edges.NumGeometries);            
             for (int i = 0; i < edges.NumGeometries; i++)
             {
@@ -316,7 +316,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             header.NumRecords = edges.NumGeometries;            
             header.NumFields = 1;
             header.AddColumn(field1, 'N', 5, 0);
-            header.AddColumn(field1, 'C', 254, 0);
+            header.AddColumn(field2, 'C', 254, 0);
 
             string path = "graph";
             if (File.Exists(path + shp))
