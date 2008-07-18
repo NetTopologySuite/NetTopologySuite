@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Features;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 using NUnit.Framework;
@@ -272,11 +274,68 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 
             path = "graph";
             if (File.Exists(path))
-                File.Delete(path + shp);
+                File.Delete(path);
             Assert.IsFalse(File.Exists(path));
             using (FileStream stream = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.None))
                 stream.Write(rawdata, 0, rawdata.Length);
             Assert.IsTrue(File.Exists(path));
+        }
+
+        [Ignore]
+        [Test]
+        public void BuildShapefileFromGraphBinary()
+        {
+            int index = 0;
+            IGeometry edges;
+            WKBReader reader = new WKBReader(factory);
+            using (FileStream stream = new FileStream("graph", FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                edges = reader.Read(stream);
+                index++;
+            }
+            Assert.AreEqual(1, index);
+            Assert.IsNotNull(edges);
+            Assert.IsInstanceOfType(typeof(MultiLineString), edges);
+            Assert.AreEqual(1179, edges.NumGeometries);
+
+            string field1 = "objectid";
+            string field2 = "desc";
+            IList features = new List<Feature>(edges.NumGeometries);            
+            for (int i = 0; i < edges.NumGeometries; i++)
+            {
+                IGeometry ls = edges.GetGeometryN(i);
+                Assert.IsInstanceOfType(typeof(LineString), ls);
+
+                Feature f = new Feature(ls, new AttributesTable());
+                f.Attributes.AddAttribute(field1, i);
+                f.Attributes.AddAttribute(field2, String.Format("length: {0}", Convert.ToInt64(ls.Length)));
+                features.Add(f);
+            }
+
+            DbaseFileHeader header = new DbaseFileHeader();
+            header.NumRecords = edges.NumGeometries;            
+            header.NumFields = 1;
+            header.AddColumn(field1, 'N', 5, 0);
+            header.AddColumn(field1, 'C', 254, 0);
+
+            string path = "graph";
+            if (File.Exists(path + shp))
+                File.Delete(path + shp);
+            Assert.IsFalse(File.Exists(path + shp));
+            if (File.Exists(path + shx))
+                File.Delete(path + shx);
+            Assert.IsFalse(File.Exists(path + shx));
+            if (File.Exists(path + dbf))
+                File.Delete(path + dbf);
+            Assert.IsFalse(File.Exists(path + dbf));
+
+            ShapefileDataWriter writer = new ShapefileDataWriter(path, factory);
+            writer.Header = header;
+            writer.Write(features);
+
+            Assert.IsTrue(File.Exists(path + shp));
+            Assert.IsTrue(File.Exists(path + shx));
+            Assert.IsTrue(File.Exists(path + dbf));
         }
 
         [Test]
