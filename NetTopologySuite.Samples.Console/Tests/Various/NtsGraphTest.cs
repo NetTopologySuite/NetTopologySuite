@@ -90,8 +90,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             }
 
             // Build graph
-            Dictionary<Edge<IGeometry>, double> consts = new Dictionary<Edge<IGeometry>, double>(edges.NumGeometries);
-            AdjacencyGraph<IGeometry, Edge<IGeometry>> graph = new AdjacencyGraph<IGeometry, Edge<IGeometry>>(true);
+            IDictionary<IEdge<IGeometry>, double> consts = new Dictionary<IEdge<IGeometry>, double>(edges.NumGeometries);
+            AdjacencyGraph<IGeometry, IEdge<IGeometry>> graph = new AdjacencyGraph<IGeometry, IEdge<IGeometry>>(true);
             foreach (ILineString str in ((GeometryCollection) edges).Geometries)
             {               
                 // Add vertex 1
@@ -128,17 +128,17 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             }
 
             // Perform DijkstraShortestPathAlgorithm
-            DijkstraShortestPathAlgorithm<IGeometry, Edge<IGeometry>> dijkstra =
-                new DijkstraShortestPathAlgorithm<IGeometry, Edge<IGeometry>>(graph, consts);
+            DijkstraShortestPathAlgorithm<IGeometry, IEdge<IGeometry>> dijkstra =
+                new DijkstraShortestPathAlgorithm<IGeometry, IEdge<IGeometry>>(graph, consts);
 
             // attach a distance observer to give us the shortest path distances
-            VertexDistanceRecorderObserver<IGeometry, Edge<IGeometry>> distObserver =
-                new VertexDistanceRecorderObserver<IGeometry, Edge<IGeometry>>();
+            VertexDistanceRecorderObserver<IGeometry, IEdge<IGeometry>> distObserver =
+                new VertexDistanceRecorderObserver<IGeometry, IEdge<IGeometry>>();
             distObserver.Attach(dijkstra);
 
             // Attach a Vertex Predecessor Recorder Observer to give us the paths
-            VertexPredecessorRecorderObserver<IGeometry, Edge<IGeometry>> predecessorObserver =
-                new VertexPredecessorRecorderObserver<IGeometry, Edge<IGeometry>>();
+            VertexPredecessorRecorderObserver<IGeometry, IEdge<IGeometry>> predecessorObserver =
+                new VertexPredecessorRecorderObserver<IGeometry, IEdge<IGeometry>>();
             predecessorObserver.Attach(dijkstra);
 
             // Run the algorithm             
@@ -148,10 +148,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             foreach (KeyValuePair<IGeometry, int> kvp in distObserver.Distances)
                 Debug.WriteLine(String.Format("Distance from root to node {0} is {1}", 
                     kvp.Key, kvp.Value));
-            foreach (KeyValuePair<IGeometry, Edge<IGeometry>> kvp in predecessorObserver.VertexPredecessors)
+            foreach (KeyValuePair<IGeometry, IEdge<IGeometry>> kvp in predecessorObserver.VertexPredecessors)
                 Debug.WriteLine(String.Format(
                     "If you want to get to {0} you have to enter through the IN edge {1}", kvp.Key, kvp.Value));
-            
+            Check(graph, consts, predecessorObserver);
+
             // Detach the observers
             distObserver.Detach(dijkstra);
             predecessorObserver.Detach(dijkstra);
@@ -283,7 +284,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 
         [Ignore]
         [Test]
-        public void BuildShapefileFromGraphBinary()
+        public void BuildShapefilesFromGraphBinary()
         {
             int index = 0;
             IGeometry edges;
@@ -311,6 +312,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 f.Attributes.AddAttribute(field2, String.Format("length: {0}", Convert.ToInt64(ls.Length)));
                 features.Add(f);
             }
+            Assert.IsNotEmpty(features);
+            Assert.AreEqual(edges.NumGeometries, features.Count);
 
             DbaseFileHeader header = new DbaseFileHeader();
             header.NumRecords = edges.NumGeometries;            
@@ -336,30 +339,56 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             Assert.IsTrue(File.Exists(path + shp));
             Assert.IsTrue(File.Exists(path + shx));
             Assert.IsTrue(File.Exists(path + dbf));
+
+            IList subset = new List<Feature>(15);
+            for (int i = 0; i < 15; i++)
+                subset.Add(features[i]);
+            Assert.IsNotEmpty(subset);
+            Assert.AreEqual(15, subset.Count);
+
+            path = "minimalgraph";
+            if (File.Exists(path + shp))
+                File.Delete(path + shp);
+            Assert.IsFalse(File.Exists(path + shp));
+            if (File.Exists(path + shx))
+                File.Delete(path + shx);
+            Assert.IsFalse(File.Exists(path + shx));
+            if (File.Exists(path + dbf))
+                File.Delete(path + dbf);
+            Assert.IsFalse(File.Exists(path + dbf));
+
+            writer = new ShapefileDataWriter(path, factory);
+            writer.Header = header;
+            writer.Write(subset);
+
+            Assert.IsTrue(File.Exists(path + shp));
+            Assert.IsTrue(File.Exists(path + shx));
+            Assert.IsTrue(File.Exists(path + dbf));
         }
 
         [Test]
-        public void BuildGraphFromWKB()
+        public void BuildGraphFromMinimalGraphShapefile()
         {
-            int index = 0;
-            IGeometry edges;
-            WKBReader reader = new WKBReader(factory);
-            using (FileStream stream = new FileStream("graph", FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                edges = reader.Read(stream);
-                index++;
-            }
-            Assert.AreEqual(1, index);
+            string path = "minimalgraph.shp";
+            int count = 15;
+            Assert.IsTrue(File.Exists(path));
+            ShapefileReader reader = new ShapefileReader(path);
+            IGeometryCollection edges = reader.ReadAll();
             Assert.IsNotNull(edges);
-            Assert.IsInstanceOfType(typeof(MultiLineString), edges);
-            Assert.AreEqual(1179, edges.NumGeometries);
+            Assert.IsInstanceOfType(typeof(GeometryCollection), edges);
+            Assert.AreEqual(count, edges.NumGeometries);
 
+            ILineString startls = null;
             // Build graph
-            GeometryCollection coll = (GeometryCollection) edges;
             Dictionary<IEdge<IGeometry>, double> consts = new Dictionary<IEdge<IGeometry>, double>(edges.NumGeometries);
-            AdjacencyGraph<IGeometry, IEdge<IGeometry>> graph = new AdjacencyGraph<IGeometry, IEdge<IGeometry>>(true);            
-            foreach (ILineString str in coll.Geometries)
+            AdjacencyGraph<IGeometry, IEdge<IGeometry>> graph = new AdjacencyGraph<IGeometry, IEdge<IGeometry>>(true);
+            foreach (IMultiLineString mlstr in edges.Geometries)
             {
+                Assert.AreEqual(1, mlstr.NumGeometries);
+                ILineString str = (ILineString) mlstr.GetGeometryN(0);
+                if (startls == null)
+                    startls = str;
+
                 // Add vertex 1
                 IGeometry vertex1 = str.StartPoint;
                 Assert.IsNotNull(vertex1);
@@ -407,7 +436,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             predecessorObserver.Attach(dijkstra);
 
             // Run the algorithm   
-            IGeometry startPoint = ((ILineString) coll.Geometries[0]).StartPoint;
+            Assert.IsNotNull(startls);
+            IGeometry startPoint = startls.StartPoint;
             Debug.WriteLine(String.Format("Starting algorithm from root vertex {0}", startPoint));
             dijkstra.Compute(startPoint);
 
@@ -417,10 +447,28 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             foreach (KeyValuePair<IGeometry, IEdge<IGeometry>> kvp in predecessorObserver.VertexPredecessors)
                 Debug.WriteLine(String.Format(
                     "If you want to get to {0} you have to enter through the IN edge {1}", kvp.Key, kvp.Value));
+            Check(graph, consts, predecessorObserver);
 
             // Detach the observers
             distObserver.Detach(dijkstra);
             predecessorObserver.Detach(dijkstra);
+        }
+
+        private void Check(IVertexSet<IGeometry> graph, IDictionary<IEdge<IGeometry>, double> consts, 
+            VertexPredecessorRecorderObserver<IGeometry, IEdge<IGeometry>> predecessorObserver)
+        {
+            foreach (IGeometry v in graph.Vertices)
+            {
+                double distance = 0;
+                IGeometry vertex = v;
+                IEdge<IGeometry> predecessor;
+                while (predecessorObserver.VertexPredecessors.TryGetValue(vertex, out predecessor))
+                {
+                    distance += consts[predecessor];
+                    vertex = predecessor.Source;
+                }
+                Console.WriteLine("A -> {0}: {1}", v, distance);
+            }
         }
     }
 }
