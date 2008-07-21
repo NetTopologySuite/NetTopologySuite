@@ -485,5 +485,67 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 Console.WriteLine("A -> {0}: {1}", v, distance);
             }
         }
+
+        [Test]
+        public void TestGraphBuilder2WithSampleGeometries()
+        {
+            GraphBuilder2 builder = new GraphBuilder2();
+            builder.Add(a);
+            builder.Add(b, c);
+            builder.Add(d);
+            builder.PrepareAlgorithm();
+            
+            int src = builder.EdgeAtLocation(start);
+            Assert.Greater(src, -1);
+            int dst = builder.EdgeAtLocation(end);
+            Assert.Greater(dst, -1);
+
+            ILineString path = builder.perform(src, dst);
+            Assert.IsNotNull(path);
+            Debug.WriteLine(path);
+        }
+
+        [Test]
+        [ExpectedException(typeof(TopologyException))]
+        public void CheckGraphBuilder2ExceptionUsingNoGeometries()
+        {
+            GraphBuilder2 builder = new GraphBuilder2();
+            builder.PrepareAlgorithm();
+        }
+
+        [Test]
+        [ExpectedException(typeof(TopologyException))]
+        public void CheckGraphBuilder2ExceptionUsingOneGeometry()
+        {
+            GraphBuilder2 builder = new GraphBuilder2();
+            Assert.IsTrue(builder.Add(a));
+            builder.PrepareAlgorithm();
+        }
+
+        [Ignore("this behaviour is not correct!")]
+        [Test]
+        [ExpectedException(typeof(TopologyException))]
+        public void CheckGraphBuilder2ExceptionUsingARepeatedGeometry()
+        {
+            GraphBuilder2 builder = new GraphBuilder2();
+            Assert.IsTrue(builder.Add(a));
+            Assert.IsFalse(builder.Add(a));
+            builder.PrepareAlgorithm();
+        }
+
+        [Test]
+        [ExpectedException(typeof(TopologyException))]
+        public void CheckGraphBuilder2ExceptionUsingDifferentFactories()
+        {
+            GraphBuilder2 builder = new GraphBuilder2();
+            Assert.IsTrue(builder.Add(a));
+            Assert.IsTrue(builder.Add(b, c));
+            Assert.IsTrue(builder.Add(d));
+            builder.Add(GeometryFactory.Default.CreateLineString(new ICoordinate[]
+            {
+                new Coordinate(0 ,0),
+                new Coordinate(50 , 50),
+            }));
+        }
     }
 }

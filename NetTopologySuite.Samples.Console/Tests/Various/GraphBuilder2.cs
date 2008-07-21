@@ -1,9 +1,8 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using Iesi_NTS.Collections.Generic;
 using QuickGraph;
 using QuickGraph.Algorithms.Observers;
 using QuickGraph.Algorithms.ShortestPath;
@@ -26,11 +25,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             delegate(ILineString line) { return line.Length; };
 
         private IGeometryFactory factory;
-        private readonly ISet<ILineString> stringsSet;
-        private readonly IList pointsList;
+        private readonly IList<ILineString> strings;
+        private readonly IList<ICoordinate> coords;
 
         private AdjacencyGraph<int, IEdge<int>> graph;
         private IDictionary<IEdge<int>, double> consts;
+        private VertexPredecessorRecorderObserver<int, IEdge<int>> observer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GraphBuilder2"/> class.
@@ -38,8 +38,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         public GraphBuilder2()
         {
             factory = null;
-            stringsSet = new ListSet<ILineString>(); 
-            pointsList = new ArrayList();
+            strings = new List<ILineString>();
+            coords  = new List<ICoordinate>();
+            observer = new VertexPredecessorRecorderObserver<int, IEdge<int>>();
         }
 
         /// <summary>
@@ -57,61 +58,56 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 else if (!newfactory.PrecisionModel.Equals(factory.PrecisionModel))
                     throw new TopologyException("all geometries must have the same precision model");
 
-                addPointsToList(line);
-                stringsSet.Add(line);                
+                foreach (ICoordinate coord in line.Coordinates)
+                {
+                    if (!coords.Contains(coord))
+                    {
+                        coords.Add(coord);
+                        Debug.Write(String.Format("coord {0} added", coord));
+                    }
+                }
+
+                if (!strings.Contains(line))
+                {
+                    strings.Add(line);
+                    Debug.Write(String.Format("string {0} added", line));
+                }
             }
             return true;
-        }
+        }        
 
         /// <summary>
-        /// 
+        /// Initialize the algorithm using the default 
+        /// <see cref="ComputeWeightDelegate">weight computer</see>,
+        /// that uses <see cref="IGeometry.Length">string length</see>
+        /// as weight value.
         /// </summary>
-        /// <param name="line"></param>
-        private void addPointsToList(ILineString line)
+        public void PrepareAlgorithm()
         {
-            foreach (ICoordinate point in line.Coordinates)
-            {
-                Debug.Write(point); 
-                // if the point is not already on the list then
-                // we need to add the point.
-                if (!pointsList.Contains(point))
-                {
-                    pointsList.Add(point);
-                    Debug.Write(" ...Added"); 
-                }
-                Debug.WriteLine("");
-            }
-            Debug.WriteLine(" ");
+            BuildEdges(DefaultComputer);
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public bool PrepareAlgorithm()
-        {
-            return BuildEdges(DefaultComputer);
-        }
-
-        /// <summary>
-        /// 
+        /// Initialize the algorithm using the specified 
+        /// <paramref name="computer">weight computer</paramref>
         /// </summary>
         /// <param name="computer">
         /// A function that computes the weight 
         /// of any <see cref="ILineString">edge</see> of the graph.
         /// </param>
-        /// <returns></returns>
-        public bool PrepareAlgorithm(ComputeWeightDelegate computer)
+        public void PrepareAlgorithm(ComputeWeightDelegate computer)
         {
-            return BuildEdges(computer);
+            BuildEdges(computer);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <returns></returns>
-        private bool BuildEdges(ComputeWeightDelegate computer)
+        private void BuildEdges(ComputeWeightDelegate computer)
         {
+            if (strings.Count < 2)
+                throw new TopologyException("you must specify two or more geometries to build a graph");
+
             graph = new AdjacencyGraph<int, IEdge<int>>(true);
 
             // If we get here then we now we have a copy of the point location
@@ -119,40 +115,49 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             // Graph. But before that we add each vertex To The Graph
 
             int locationInList = 0;
-            foreach (ICoordinate point in pointsList)
+            foreach (ICoordinate coord in coords)
             {
-                Debug.WriteLine(point + " added to graph at location:" + locationInList);
+                Debug.WriteLine(String.Format("{0} added to graph at location: {1}", coord, locationInList));
                 graph.AddVertex(locationInList);
                 locationInList++;
             }
 
-            Debug.WriteLine(" ");
-            Debug.WriteLine("Added " + locationInList + " nodes to the graph");
-            Debug.WriteLine(" ");
+            Debug.WriteLine(String.Empty);
+            Debug.WriteLine(String.Format("Added {0} nodes to the graph", locationInList));
+            Debug.WriteLine(String.Empty);
 
             // Getting here means we have the vertex added to the graph. 
             // What we now need to do is to add the edges to the graph.
 
-            int NumberOfEdgesInLines = CountNumberOfEdges(stringsSet);
-            consts = new Dictionary<IEdge<int>, double>(NumberOfEdgesInLines);
+            // Counts the number of edges in the set we pass to this method.             
+            int numberOfEdgesInLines = 0;
+            foreach (ILineString str in strings)
+            {
+                int edges = str.Coordinates.GetUpperBound(0);
+                numberOfEdgesInLines += edges;
+            }
+
+            consts = new Dictionary<IEdge<int>, double>(numberOfEdgesInLines);
 
             int temp = 1;
-            foreach (ILineString line in stringsSet)
+            foreach (ILineString line in strings)
             {
-                Debug.WriteLine("Line: " + temp + " of " + stringsSet.Count);
+                Debug.WriteLine(String.Format("line: {0} of {1}", temp, strings.Count));
                 // A line has to have at least two dimensions
-                if (line.Coordinates.GetUpperBound(0) > 1)
+                int bound = line.Coordinates.GetUpperBound(0);
+                if (bound > 1)
                 {
-                    for (int counter = 0; counter < (line.Coordinates.GetUpperBound(0)); counter++)
+                    for (int counter = 0; counter < bound; counter++)
                     {
-                        Debug.Write("EDGE: " + line.Coordinates[counter] + " + " + line.Coordinates[counter + 1]);
+                        Debug.Write(String.Format("edge: {0} + {1}", 
+                            line.Coordinates[counter], line.Coordinates[counter + 1]));
                         
                         int src = EdgeAtLocation(line.Coordinates[counter]);
                         int dst = EdgeAtLocation(line.Coordinates[counter + 1]);
-                        Debug.WriteLine("EQVILIANT EDGE: " + src + " to " + dst);
+                        Debug.WriteLine(String.Format("eqviliant edge: {0} to {1}", src, dst));
                         ICoordinate[] localLine = new ICoordinate[2];
                         localLine[0] = line.Coordinates[counter];
-                        localLine[1] = line.Coordinates[counter+1];
+                        localLine[1] = line.Coordinates[counter + 1];
 
                         // Add the edge                        
                         IEdge<int> localEdge = new Edge<int>(src, dst);
@@ -163,11 +168,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                         double weight = computer(lineString);
                         consts.Add(localEdge, weight);  
                     }
-                    Debug.WriteLine("");
+                    Debug.WriteLine(String.Empty);
                 }
                 temp++;
-            }
-            return true;
+            }            
         }
 
         /// <summary>
@@ -178,13 +182,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         public int EdgeAtLocation(ICoordinate coordinate)
         {
             int index = 0;
-            foreach (ICoordinate location in pointsList)
+            foreach (ICoordinate coord in coords)
             {
-                if ((location.X == coordinate.X) && (location.Y == coordinate.Y))
+                if (coordinate.Equals(coord))
                     return index;
                 index++;
             }
-           
             return -1;
         }
 
@@ -197,45 +200,29 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         {
             return EdgeAtLocation(point.Coordinate);
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pString"></param>
-        /// <returns></returns>
-        private int CountNumberOfEdges(ISet<ILineString> pString)
-        {
-            // Counts the number of edges in the set we pass to this method. 
-            int edgesCount = 0;
-            foreach (ILineString localString in pString)
-            {
-                int edges = localString.Coordinates.GetUpperBound(0);
-                edgesCount = edgesCount + edges;
-            }
-            return edgesCount;
-        }
-
+        
         /// <summary>
         /// 
         /// </summary>
         /// <param name="source"></param>
         /// <param name="destination"></param>
         /// <returns></returns>
-        public ILineString perform(int source,int destination)
+        public ILineString perform(int source, int destination)
         {
-            DijkstraShortestPathAlgorithm<int, IEdge<int>> dijkstra = new DijkstraShortestPathAlgorithm<int, IEdge<int>>(graph, consts);
-            VertexDistanceRecorderObserver<int, IEdge<int>> distObserver = new VertexDistanceRecorderObserver<int, IEdge<int>>();
+            DijkstraShortestPathAlgorithm<int, IEdge<int>> dijkstra = 
+                new DijkstraShortestPathAlgorithm<int, IEdge<int>>(graph, consts);
+            VertexDistanceRecorderObserver<int, IEdge<int>> distObserver = 
+                new VertexDistanceRecorderObserver<int, IEdge<int>>();
             distObserver.Attach(dijkstra);
 
             // Attach a Vertex Predecessor Recorder Observer to give us the paths
-            VertexPredecessorRecorderObserver<int, IEdge<int>> predecessorObserver = new VertexPredecessorRecorderObserver<int, IEdge<int>>();
-            predecessorObserver.Attach(dijkstra);
+            observer.Attach(dijkstra);
 
             // Run the algorithm with A set to be the source
             dijkstra.Compute(source);
 
             // Get the path computed to the destination.
-            List<IEdge<int>> path = predecessorObserver.Path(destination);
+            List<IEdge<int>> path = observer.Path(destination);
            
             // Then we need to turn that into a geomery.
             if (path.Count > 1)
@@ -251,18 +238,17 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         private ILineString buildString(IList<IEdge<int>> path)
         {
             ICoordinate[] links = new ICoordinate[path.Count + 1];
-            int iCount = path.Count;
             int i;
             int node;
 
-            for (i = 0; i < iCount; i++)
+            for (i = 0; i < path.Count; i++)
             {
                 node = path[i].Source;
-                links[i] = (ICoordinate) pointsList[node];
+                links[i] = coords[node];
             }
 
-            node = path[i-1].Target;
-            links[i] = (ICoordinate) pointsList[node];
+            node = path[i - 1].Target;
+            links[i] = coords[node];
 
             ILineString thePath = factory.CreateLineString(links);
             return thePath;
