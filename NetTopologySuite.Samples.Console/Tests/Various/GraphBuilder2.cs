@@ -191,6 +191,16 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        public int EdgeAtLocation(IGeometry point)
+        {
+            return EdgeAtLocation(point.Coordinate);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="pString"></param>
         /// <returns></returns>
         private int CountNumberOfEdges(ISet<ILineString> pString)

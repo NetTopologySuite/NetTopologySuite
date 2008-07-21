@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NUnit.Framework;
@@ -9,7 +10,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
     {
         private IGeometryFactory factory;
         private ILineString a, b, c, d;
-        
+        private IPoint start, end;
+
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
@@ -41,7 +43,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 new Coordinate(300, 200),
                 new Coordinate(150, 200),
                 new Coordinate(150, 300),
-            });            
+            });
+            start = a.StartPoint;
+            end = d.EndPoint;
         }       
         
         [Test]
@@ -55,13 +59,14 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             bool algorithm = builder.PrepareAlgorithm();
             Assert.IsTrue(algorithm);
 
-            int src = builder.EdgeAtLocation(new Coordinate(0, 0));
+            int src = builder.EdgeAtLocation(start);
             Assert.Greater(src, -1);
-            int dst = builder.EdgeAtLocation(new Coordinate(150, 300));            
+            int dst = builder.EdgeAtLocation(end);
             Assert.Greater(dst, -1);
 
             ILineString path = builder.perform(src, dst); 
             Assert.IsNotNull(path);
+            Debug.WriteLine(path);
         }
     }
 }
