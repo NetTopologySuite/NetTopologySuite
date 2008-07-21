@@ -24,6 +24,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         private static readonly ComputeWeightDelegate DefaultComputer =
             delegate(ILineString line) { return line.Length; };
 
+        private readonly bool bidirectional;
+
         private IGeometryFactory factory;
         private readonly IList<ILineString> strings;
         private readonly IList<ICoordinate> coords;
@@ -35,13 +37,24 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// <summary>
         /// Initializes a new instance of the <see cref="GraphBuilder2"/> class.
         /// </summary>
-        public GraphBuilder2()
+        /// <param name="bidirectional">
+        /// Specify if the graph must be build using both edges directions.
+        /// </param>
+        public GraphBuilder2(bool bidirectional)
         {
+            this.bidirectional = bidirectional;
+
             factory = null;
             strings = new List<ILineString>();
             coords  = new List<ICoordinate>();
             observer = new VertexPredecessorRecorderObserver<int, IEdge<int>>();
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GraphBuilder2"/> class,
+        /// using a directed graph.
+        /// </summary>
+        public GraphBuilder2() : this (false) { } // TODO: maybe the default value must be true...
 
         /// <summary>
         /// Adds each line to the graph strucutre.
@@ -137,6 +150,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 numberOfEdgesInLines += edges;
             }
 
+            // Double values because we use also reversed edges...
+            if (bidirectional)
+                numberOfEdgesInLines *= 2;
             consts = new Dictionary<IEdge<int>, double>(numberOfEdgesInLines);
 
             int temp = 1;
@@ -159,14 +175,22 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                         localLine[0] = line.Coordinates[counter];
                         localLine[1] = line.Coordinates[counter + 1];
 
-                        // Add the edge                        
-                        IEdge<int> localEdge = new Edge<int>(src, dst);
-                        graph.AddEdge(localEdge);
-
                         // Here we calculate the weight of the edge
                         ILineString lineString = factory.CreateLineString(localLine);
                         double weight = computer(lineString);
-                        consts.Add(localEdge, weight);  
+
+                        // Add the edge
+                        IEdge<int> localEdge = new Edge<int>(src, dst);
+                        graph.AddEdge(localEdge);
+                        consts.Add(localEdge, weight);
+
+                        if (bidirectional)
+                        {
+                            // Add the reversed edge
+                            IEdge<int> localEdgeRev = new Edge<int>(dst, src);
+                            graph.AddEdge(localEdgeRev);
+                            consts.Add(localEdgeRev, weight);
+                        }
                     }
                     Debug.WriteLine(String.Empty);
                 }

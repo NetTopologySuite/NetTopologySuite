@@ -506,6 +506,25 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         }
 
         [Test]
+        public void TestBidirectionalGraphBuilder2WithSampleGeometries()
+        {
+            GraphBuilder2 builder = new GraphBuilder2(true);
+            builder.Add(a);
+            builder.Add(b, c);
+            builder.Add(d);
+            builder.PrepareAlgorithm();
+
+            int src = builder.EdgeAtLocation(start);
+            Assert.Greater(src, -1);
+            int dst = builder.EdgeAtLocation(end);
+            Assert.Greater(dst, -1);
+
+            ILineString path = builder.perform(dst, src);
+            Assert.IsNotNull(path);
+            Debug.WriteLine(path);
+        }
+
+        [Test]
         [ExpectedException(typeof(TopologyException))]
         public void CheckGraphBuilder2ExceptionUsingNoGeometries()
         {
