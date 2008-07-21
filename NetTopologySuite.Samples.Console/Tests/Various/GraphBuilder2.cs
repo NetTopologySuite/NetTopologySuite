@@ -248,7 +248,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        private ILineString buildString(List<IEdge<int>> path)
+        private ILineString buildString(IList<IEdge<int>> path)
         {
             ICoordinate[] links = new ICoordinate[path.Count + 1];
             int iCount = path.Count;
