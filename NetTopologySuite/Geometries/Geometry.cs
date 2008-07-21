@@ -781,6 +781,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns><c>true</c> if the two <c>Geometry</c>s are equal.</returns>
         public bool Equals(IGeometry g)
         {
+            // NOTE: Not in JTS!!!
 			if (IsEmpty && g.IsEmpty)
 				return true;
 
@@ -788,6 +789,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
                 return false;
 
+            // NOTE: Not in JTS!!!
             // We use an alternative method for compare GeometryCollections (but not subclasses!), 
             if (isGeometryCollection(this) || isGeometryCollection(g))
                 return CompareGeometryCollections(this, g);
