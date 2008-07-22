@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -8,6 +9,7 @@ using QuickGraph.Algorithms.ShortestPath;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 {
+    [Obsolete("use GraphBuilder2", false)]
     public class GraphBuilder
     {
         /// <summary>

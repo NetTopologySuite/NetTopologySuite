@@ -10,15 +10,16 @@ using QuickGraph.Algorithms.ShortestPath;
 namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 {
     /// <summary>
-    /// 
+    /// A class that manages shortest path computation.
     /// </summary>
     public class GraphBuilder2
     {
         /// <summary>
-        /// 
+        /// A delegate that defines how to calculate the weight 
+        /// of a <see cref="ILineString">line</see>.
         /// </summary>
-        /// <param name="line"></param>
-        /// <returns></returns>
+        /// <param name="line">A <see cref="ILineString">line</see>.</param>
+        /// <returns>The weight of the line.</returns>
         public delegate double ComputeWeightDelegate(ILineString line);
 
         private static readonly ComputeWeightDelegate DefaultComputer =
@@ -32,8 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 
         private AdjacencyGraph<int, IEdge<int>> graph;
         private IDictionary<IEdge<int>, double> consts;
-        private VertexPredecessorRecorderObserver<int, IEdge<int>> observer;
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="GraphBuilder2"/> class.
         /// </summary>
@@ -47,7 +47,6 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             factory = null;
             strings = new List<ILineString>();
             coords  = new List<ICoordinate>();
-            observer = new VertexPredecessorRecorderObserver<int, IEdge<int>>();
         }
 
         /// <summary>
@@ -57,12 +56,19 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         public GraphBuilder2() : this (false) { } // TODO: maybe the default value must be true...
 
         /// <summary>
-        /// Adds each line to the graph strucutre.
+        /// Adds each line to the graph structure.
         /// </summary>
         /// <param name="lines"></param>
-        /// <returns></returns>
+        /// <returns>
+        /// <c>true</c> if all <paramref name="lines">lines</paramref> 
+        /// are added, <c>false</c> otherwise.
+        /// </returns>
+        /// <exception cref="TopologyException">
+        /// If geometries don't have the same <see cref="IGeometryFactory">factory</see>.
+        /// </exception>
         public bool Add(params ILineString[] lines)
         {
+            bool result = true;
             foreach (ILineString line in lines)
             {
                 IGeometryFactory newfactory = line.Factory;
@@ -71,6 +77,15 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 else if (!newfactory.PrecisionModel.Equals(factory.PrecisionModel))
                     throw new TopologyException("all geometries must have the same precision model");
 
+                bool lineFound = strings.Contains(line);
+                result &= !lineFound;
+                if (!lineFound)
+                {
+                    strings.Add(line);
+                    Debug.Write(String.Format("string {0} added", line));
+                }
+                else continue; // Skip vertex check because line is already present
+
                 foreach (ICoordinate coord in line.Coordinates)
                 {
                     if (!coords.Contains(coord))
@@ -78,15 +93,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                         coords.Add(coord);
                         Debug.Write(String.Format("coord {0} added", coord));
                     }
-                }
-
-                if (!strings.Contains(line))
-                {
-                    strings.Add(line);
-                    Debug.Write(String.Format("string {0} added", line));
-                }
+                }                
             }
-            return true;
+            return result;
         }        
 
         /// <summary>
@@ -95,7 +104,13 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// that uses <see cref="IGeometry.Length">string length</see>
         /// as weight value.
         /// </summary>
-        public void PrepareAlgorithm()
+        /// <exception cref="TopologyException">
+        /// If you've don't added two or more geometries to the builder.
+        /// </exception>
+        /// <exception cref="ApplicationException">
+        /// If builder is already initialized.
+        /// </exception>
+        public void Initialize()
         {
             BuildEdges(DefaultComputer);
         }
@@ -108,18 +123,24 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// A function that computes the weight 
         /// of any <see cref="ILineString">edge</see> of the graph.
         /// </param>
-        public void PrepareAlgorithm(ComputeWeightDelegate computer)
+        /// <exception cref="TopologyException">
+        /// If you've don't added two or more geometries to the builder.
+        /// </exception>
+        /// <exception cref="ApplicationException">
+        /// If builder is already initialized.
+        /// </exception>
+        public void Initialize(ComputeWeightDelegate computer)
         {
             BuildEdges(computer);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         private void BuildEdges(ComputeWeightDelegate computer)
         {
             if (strings.Count < 2)
                 throw new TopologyException("you must specify two or more geometries to build a graph");
+
+            if (graph != null)
+                throw new ApplicationException("builder already initialized");
 
             graph = new AdjacencyGraph<int, IEdge<int>>(true);
 
@@ -199,12 +220,13 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         }
 
         /// <summary>
-        /// 
+        /// Find the edge index at the <paramref name="coordinate">specified</paramref> location.
         /// </summary>
         /// <param name="coordinate"></param>
-        /// <returns></returns>
+        /// <returns>The edge index, or <c>-1</c> if not found</returns>
         public int EdgeAtLocation(ICoordinate coordinate)
         {
+            // TODO: use NTS to find the point of the graph that is closest to the specified location...
             int index = 0;
             foreach (ICoordinate coord in coords)
             {
@@ -216,37 +238,46 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         }
 
         /// <summary>
-        /// 
+        /// Find the edge index at the <paramref name="geom">geometry</paramref>'s start point.
         /// </summary>
-        /// <param name="point"></param>
-        /// <returns></returns>
-        public int EdgeAtLocation(IGeometry point)
+        /// <param name="geom"></param>
+        /// <returns>The edge index, or <c>-1</c> if not found</returns>
+        public int EdgeAtLocation(IGeometry geom)
         {
-            return EdgeAtLocation(point.Coordinate);
+            return EdgeAtLocation(geom.Coordinate);
         }
         
         /// <summary>
-        /// 
+        /// Compute the shortest path between the specified <paramref name="source">start point</paramref>
+        /// and the specified <paramref name="destination">end point</paramref>.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="destination"></param>
-        /// <returns></returns>
+        /// <param name="source">The start point of the path.</param>
+        /// <param name="destination">The end point of the path.</param>
+        /// <returns>
+        /// The <see cref="ILineString">shortest path</see> if exists, 
+        /// c>null</c> otherwise.
+        /// </returns>
         public ILineString perform(int source, int destination)
         {
+            // Build algorithm
             DijkstraShortestPathAlgorithm<int, IEdge<int>> dijkstra = 
                 new DijkstraShortestPathAlgorithm<int, IEdge<int>>(graph, consts);
-            VertexDistanceRecorderObserver<int, IEdge<int>> distObserver = 
+
+            // Attach a Distance observer to give us the distances between edges
+            VertexDistanceRecorderObserver<int, IEdge<int>> distanceObserver = 
                 new VertexDistanceRecorderObserver<int, IEdge<int>>();
-            distObserver.Attach(dijkstra);
+            distanceObserver.Attach(dijkstra);
 
             // Attach a Vertex Predecessor Recorder Observer to give us the paths
-            observer.Attach(dijkstra);
+            VertexPredecessorRecorderObserver<int, IEdge<int>> predecessorObserver =
+                new VertexPredecessorRecorderObserver<int, IEdge<int>>();
+            predecessorObserver.Attach(dijkstra);
 
             // Run the algorithm with A set to be the source
             dijkstra.Compute(source);
 
             // Get the path computed to the destination.
-            List<IEdge<int>> path = observer.Path(destination);
+            List<IEdge<int>> path = predecessorObserver.Path(destination);
            
             // Then we need to turn that into a geomery.
             if (path.Count > 1)
@@ -254,11 +285,6 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             return null;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
         private ILineString buildString(IList<IEdge<int>> path)
         {
             ICoordinate[] links = new ICoordinate[path.Count + 1];
