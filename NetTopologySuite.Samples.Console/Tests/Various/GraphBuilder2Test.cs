@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.Samples.Tests.Various;
 using NUnit.Framework;
-using QuickGraph;
 
 namespace GisSharpBlog.NetTopologySuite.Tests.Various
 {
@@ -210,7 +208,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             builder.Initialize();
 
             int src = builder.EdgeAtLocation(startls.StartPoint);
-            int dst   = builder.EdgeAtLocation(endls.EndPoint);
+            int dst = builder.EdgeAtLocation(endls.EndPoint);
             ILineString path = builder.perform(src, dst);
             Assert.IsNotNull(path);
         }
