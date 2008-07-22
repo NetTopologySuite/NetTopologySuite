@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.Samples.Tests.Various;
 using NUnit.Framework;
+using QuickGraph;
 
 namespace GisSharpBlog.NetTopologySuite.Tests.Various
 {
@@ -76,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             start = a.StartPoint;
             end = d.EndPoint;
         }
-        
+
         [Test]
         public void TestGraphBuilder2WithSampleGeometries()
         {
@@ -95,7 +98,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             ILineString path = builder.perform(src, dst);
             Assert.IsNotNull(path);
             Assert.AreEqual(result, path);
-        }
+        }        
 
         [Test]
         public void TestBidirectionalGraphBuilder2WithSampleGeometries()
@@ -112,9 +115,14 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             int dst = builder.EdgeAtLocation(end);
             Assert.Greater(dst, -1);
 
-            ILineString path = builder.perform(dst, src);
+
+            ILineString path = builder.perform(src, dst);
             Assert.IsNotNull(path);
-            Assert.AreEqual(revresult, path);
+            Assert.AreEqual(result, path);
+
+            ILineString revpath = builder.perform(dst, src);
+            Assert.IsNotNull(revpath);
+            Assert.AreEqual(revresult, revpath);
         }
 
         [Test]
@@ -158,6 +166,53 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
                 new Coordinate(0 ,0),
                 new Coordinate(50 , 50),
             }));
+        }
+
+        [Test]
+        [ExpectedException(typeof(ApplicationException))]
+        public void CheckGraphBuilder2ExceptionUsingDoubleInitialization()
+        {
+            GraphBuilder2 builder = new GraphBuilder2();
+            builder.Add(a);
+            builder.Add(b, c);
+            builder.Add(d);
+            builder.Add(e);
+            builder.Initialize();
+            builder.Initialize();
+        }
+
+        [Test]
+        public void BuildGraphFromMinimalGraphShapefile()
+        {
+            string shapepath = "minimalgraph.shp";
+            int count = 15;
+
+            Assert.IsTrue(File.Exists(shapepath));
+            ShapefileReader reader = new ShapefileReader(shapepath);
+            IGeometryCollection edges = reader.ReadAll();
+            Assert.IsNotNull(edges);
+            Assert.IsInstanceOfType(typeof(GeometryCollection), edges);
+            Assert.AreEqual(count, edges.NumGeometries);
+
+            ILineString startls = edges.GetGeometryN(0).GetGeometryN(0) as ILineString;
+            Assert.IsNotNull(startls);
+            ILineString endls = edges.GetGeometryN(5).GetGeometryN(0) as ILineString; ;
+            Assert.IsNotNull(endls);
+
+            GraphBuilder2 builder = new GraphBuilder2(true);
+            foreach (IMultiLineString mlstr in edges.Geometries)
+            {
+                Assert.AreEqual(1, mlstr.NumGeometries);
+                ILineString str = mlstr.GetGeometryN(0) as ILineString;
+                Assert.IsNotNull(str);
+                Assert.IsTrue(builder.Add(str));
+            }
+            builder.Initialize();
+
+            int src = builder.EdgeAtLocation(startls.StartPoint);
+            int dst   = builder.EdgeAtLocation(endls.EndPoint);
+            ILineString path = builder.perform(src, dst);
+            Assert.IsNotNull(path);
         }
     }
 }
