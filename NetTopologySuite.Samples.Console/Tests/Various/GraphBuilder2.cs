@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using QuickGraph;
@@ -80,19 +79,13 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 bool lineFound = strings.Contains(line);
                 result &= !lineFound;
                 if (!lineFound)
-                {
                     strings.Add(line);
-                    Debug.Write(String.Format("string {0} added", line));
-                }
                 else continue; // Skip vertex check because line is already present
 
                 foreach (ICoordinate coord in line.Coordinates)
                 {
                     if (!coords.Contains(coord))
-                    {
                         coords.Add(coord);
-                        Debug.Write(String.Format("coord {0} added", coord));
-                    }
                 }                
             }
             return result;
@@ -134,6 +127,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             BuildEdges(computer);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="computer"></param>
         private void BuildEdges(ComputeWeightDelegate computer)
         {
             if (strings.Count < 2)
@@ -151,14 +148,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             int locationInList = 0;
             foreach (ICoordinate coord in coords)
             {
-                Debug.WriteLine(String.Format("{0} added to graph at location: {1}", coord, locationInList));
                 graph.AddVertex(locationInList);
                 locationInList++;
             }
-
-            Debug.WriteLine(String.Empty);
-            Debug.WriteLine(String.Format("Added {0} nodes to the graph", locationInList));
-            Debug.WriteLine(String.Empty);
 
             // Getting here means we have the vertex added to the graph. 
             // What we now need to do is to add the edges to the graph.
@@ -176,22 +168,17 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 numberOfEdgesInLines *= 2;
             consts = new Dictionary<IEdge<int>, double>(numberOfEdgesInLines);
 
-            int temp = 1;
             foreach (ILineString line in strings)
             {
-                Debug.WriteLine(String.Format("line: {0} of {1}", temp, strings.Count));
                 // A line has to have at least two dimensions
                 int bound = line.Coordinates.GetUpperBound(0);
-                if (bound > 1)
+                if (bound > 0)
                 {
                     for (int counter = 0; counter < bound; counter++)
                     {
-                        Debug.Write(String.Format("edge: {0} + {1}", 
-                            line.Coordinates[counter], line.Coordinates[counter + 1]));
-                        
-                        int src = EdgeAtLocation(line.Coordinates[counter]);
-                        int dst = EdgeAtLocation(line.Coordinates[counter + 1]);
-                        Debug.WriteLine(String.Format("eqviliant edge: {0} to {1}", src, dst));
+                        int src = VertexAtLocation(line.Coordinates[counter]);
+                        int dst = VertexAtLocation(line.Coordinates[counter + 1]);
+
                         ICoordinate[] localLine = new ICoordinate[2];
                         localLine[0] = line.Coordinates[counter];
                         localLine[1] = line.Coordinates[counter + 1];
@@ -213,9 +200,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                             consts.Add(localEdgeRev, weight);
                         }
                     }
-                    Debug.WriteLine(String.Empty);
-                }
-                temp++;
+                 }
             }            
         }
 
@@ -224,9 +209,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// </summary>
         /// <param name="coordinate"></param>
         /// <returns>The edge index, or <c>-1</c> if not found</returns>
-        public int EdgeAtLocation(ICoordinate coordinate)
+        public int VertexAtLocation(ICoordinate coordinate)
         {
-            // TODO: use NTS to find the point of the graph that is closest to the specified location...
             int index = 0;
             foreach (ICoordinate coord in coords)
             {
@@ -242,21 +226,19 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// </summary>
         /// <param name="geom"></param>
         /// <returns>The edge index, or <c>-1</c> if not found</returns>
-        public int EdgeAtLocation(IGeometry geom)
+        public int VertexAtLocation(IGeometry geom)
         {
-            return EdgeAtLocation(geom.Coordinate);
+            return VertexAtLocation(geom.Coordinate);
         }
-        
+
         /// <summary>
-        /// Compute the shortest path between the specified <paramref name="source">start point</paramref>
-        /// and the specified <paramref name="destination">end point</paramref>.
+        /// Carries out the shortest path anlayis between the two nodes
+        /// ids passed as variables and returns a ILineString giveing the
+        /// shortest path.
         /// </summary>
-        /// <param name="source">The start point of the path.</param>
-        /// <param name="destination">The end point of the path.</param>
-        /// <returns>
-        /// The <see cref="ILineString">shortest path</see> if exists, 
-        /// c>null</c> otherwise.
-        /// </returns>
+        /// <param name="source">The source node (index of)</param>
+        /// <param name="destination">The desitnation node (index of)</param>
+        /// <returns>A line string geometric shape of the path</returns>
         public ILineString perform(int source, int destination)
         {
             // Build algorithm
@@ -278,30 +260,78 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 
             // Get the path computed to the destination.
             List<IEdge<int>> path = predecessorObserver.Path(destination);
-           
+
             // Then we need to turn that into a geomery.
             if (path.Count > 1)
                 return buildString(path);
+
+            // if the count is greater than one then a 
+            // path could not be found, so we return null 
             return null;
         }
 
+        /// <summary>
+        /// Takes the path returned from QuickGraph library and uses the 
+        /// list of coordinates to reconstruct the path into a geometric 
+        /// "shape"
+        /// </summary>
+        /// <param name="path">Shortest path from the QucikGraph Library</param>
+        /// <returns></returns>
         private ILineString buildString(IList<IEdge<int>> path)
         {
+            // if the path has no links then return a null reference
+            if (path.Count < 1)
+                return null;
+
+            // if we get here then we now that there is at least one
+            // edge in the path.
             ICoordinate[] links = new ICoordinate[path.Count + 1];
             int i;
             int node;
 
+            // Add each node to the list of coordinates in to the 
+            // array.
             for (i = 0; i < path.Count; i++)
             {
                 node = path[i].Source;
                 links[i] = coords[node];
             }
 
+            // Add the target node to the last loction in the list 
             node = path[i - 1].Target;
             links[i] = coords[node];
 
+            // Turn the list of coordinates into a geometry.
             ILineString thePath = factory.CreateLineString(links);
             return thePath;
+        }
+
+        /// <summary>
+        /// Outputs the graph as a DIMACS Graph
+        /// </summary>
+        /// <param name="fileName">The name of the output graph</param>
+        /// <returns>Indicates if the method was worked.</returns>
+        public bool WriteAsDIMACS(string fileName)
+        {
+            // The DIMACS format is a reasonabley standard method
+            // of preparing graphs for analys in SP algortihm.
+            // This method *could* be used to prepare the graph beforehand
+            // so the turning from a GIS layer into a graph is not so 
+            // intensive.
+            //
+            // NOTE: Follows the 9th DIMACS format: http://www.dis.uniroma1.it/~challenge9/format.shtml
+            return false;
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public bool ReadFromDIMACS(string fileName)
+        {
+            return false;
         }
     }
 }

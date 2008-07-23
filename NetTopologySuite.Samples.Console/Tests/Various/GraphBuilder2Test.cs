@@ -16,6 +16,36 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         private ILineString result, revresult;
         private IPoint start, end;
 
+        /// <summary>
+        /// Loads the shapefile as a graph allowing SP analysis to be carried out
+        /// </summary>
+        /// <param name="fileName">The name of the shape file we want to load</param>
+        /// <param name="src"></param>
+        /// <param name="dst"></param>
+        public ILineString TestGraphBuilder2WithSampleGeometries(string fileName, int src, int dst)
+        {
+            ShapefileReader reader = new ShapefileReader(fileName);
+            IGeometryCollection edges = reader.ReadAll();
+            return TestGraphBuilder2WithSampleGeometries(edges, src, dst);
+        }
+
+        /// <summary>
+        /// Uses the passed geometry collection to generate a QuickGraph.
+        /// </summary>
+        /// <param name="edges"></param>
+        /// <param name="src"></param>
+        /// <param name="dst"></param>
+        public ILineString TestGraphBuilder2WithSampleGeometries(IGeometryCollection edges, int src, int dst)
+        {
+            GraphBuilder2 builder = new GraphBuilder2(true);            
+            foreach (IMultiLineString edge in edges.Geometries)
+                foreach (ILineString line in edge.Geometries)                                
+                    builder.Add(line);            
+            builder.Initialize();
+
+            return builder.perform(src, dst);
+        }
+
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
@@ -88,9 +118,9 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             builder.Add(e);
             builder.Initialize();
 
-            int src = builder.EdgeAtLocation(start);
+            int src = builder.VertexAtLocation(start);
             Assert.Greater(src, -1);
-            int dst = builder.EdgeAtLocation(end);
+            int dst = builder.VertexAtLocation(end);
             Assert.Greater(dst, -1);
 
             ILineString path = builder.perform(src, dst);
@@ -108,9 +138,9 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             builder.Add(e);
             builder.Initialize();
 
-            int src = builder.EdgeAtLocation(start);
+            int src = builder.VertexAtLocation(start);
             Assert.Greater(src, -1);
-            int dst = builder.EdgeAtLocation(end);
+            int dst = builder.VertexAtLocation(end);
             Assert.Greater(dst, -1);
 
 
@@ -207,8 +237,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             }
             builder.Initialize();
 
-            int src = builder.EdgeAtLocation(startls.StartPoint);
-            int dst = builder.EdgeAtLocation(endls.EndPoint);
+            int src = builder.VertexAtLocation(startls.StartPoint);
+            int dst = builder.VertexAtLocation(endls.EndPoint);
             ILineString path = builder.perform(src, dst);
             Assert.IsNotNull(path);
         }
