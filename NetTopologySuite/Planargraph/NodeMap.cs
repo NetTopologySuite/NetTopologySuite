@@ -1,14 +1,15 @@
 using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
 {
     /// <summary>
-    /// A map of <c>Node</c>s, indexed by the coordinate of the node.
+    /// A map of <see cref="Node">nodes</see>, indexed by the coordinate of the node.
     /// </summary>   
     public class NodeMap
     {
-        private IDictionary nodeMap = new SortedList();
+        private readonly IDictionary nodeMap = new Dictionary<ICoordinate, Node>();
 
         /// <summary>
         /// Constructs a NodeMap without any Nodes.
@@ -23,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         public Node Add(Node n)
         {
             ICoordinate key = n.Coordinate;
-            bool contains = nodeMap.Contains(key);            
+            bool contains = nodeMap.Contains(key);
             if (!contains) 
                 nodeMap.Add(key, n);            
             return n;
@@ -35,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <param name="pt"></param>
         /// <returns></returns>
         public Node Remove(ICoordinate pt)
-        {
+        {            
             Node node = (Node) nodeMap[pt];
             nodeMap.Remove(pt);
             return node;
@@ -66,10 +67,15 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public ICollection Values
         {
-            get
-            {
-                return nodeMap.Values;
-            }
+            get { return nodeMap.Values; }
+        }
+
+        /// <summary>
+        /// Returns the number of Nodes in this NodeMap.
+        /// </summary>
+        public int Count
+        {
+            get { return nodeMap.Count; }
         }
     }
 }

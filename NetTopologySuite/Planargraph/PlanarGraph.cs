@@ -43,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <returns></returns>
         public Node FindNode(ICoordinate pt)
         {
-            return (Node) nodeMap.Find(pt);
+            return nodeMap.Find(pt);
         }
 
         /// <summary>
@@ -94,10 +94,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public ICollection Nodes
         {
-            get
-            {
-                return nodeMap.Values;
-            }
+            get { return nodeMap.Values; }
         }
 
         /// <summary> 
@@ -125,10 +122,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public IList Edges
         {
-            get
-            {
-                return edges;
-            }
+            get { return edges; }
         }
 
         /// <summary>

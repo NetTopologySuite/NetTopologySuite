@@ -61,7 +61,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <summary>
         /// 
         /// </summary>
-        public  int Depth
+        public int Depth
         {
             get
             {
@@ -74,7 +74,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <summary>
         /// 
         /// </summary>
-        public  int Count
+        public int Count
         {
             get
             {
@@ -88,7 +88,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// Compute the total number of nodes in the tree.
         /// </summary>
         /// <returns>The number of nodes in the tree.</returns>
-        public  int NodeSize
+        public int NodeSize
         {
             get
             {
@@ -103,7 +103,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// </summary>
         /// <param name="itemInterval"></param>
         /// <param name="item"></param>
-        public  void Insert(Interval itemInterval, object item)
+        public void Insert(Interval itemInterval, object item)
         {
             CollectStats(itemInterval);
             Interval insertInterval = EnsureExtent(itemInterval, minExtent);            
@@ -114,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// 
         /// </summary>
         /// <returns></returns>
-        public  IEnumerator GetEnumerator()
+        public IEnumerator GetEnumerator()
         {
             IList foundItems = new ArrayList();
             root.AddAllItems(foundItems);
@@ -126,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// </summary>
         /// <param name="x"></param>
         /// <returns></returns>
-        public  IList Query(double x)
+        public IList Query(double x)
         {
             return Query(new Interval(x, x));
         }
@@ -135,7 +135,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// min and max may be the same value.
         /// </summary>
         /// <param name="interval"></param>
-        public  IList Query(Interval interval)
+        public IList Query(Interval interval)
         {
             /*
              * the items that are matched are all items in intervals
@@ -151,7 +151,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// </summary>
         /// <param name="interval"></param>
         /// <param name="foundItems"></param>
-        public  void Query(Interval interval, IList foundItems)
+        public void Query(Interval interval, IList foundItems)
         {
             root.AddAllItemsFromOverlapping(interval, foundItems);
         }

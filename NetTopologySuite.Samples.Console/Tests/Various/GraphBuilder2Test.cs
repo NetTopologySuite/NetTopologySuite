@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         /// <param name="fileName">The name of the shape file we want to load</param>
         /// <param name="src"></param>
         /// <param name="dst"></param>
-        public ILineString TestGraphBuilder2WithSampleGeometries(string fileName, int src, int dst)
+        public ILineString TestGraphBuilder2WithSampleGeometries(string fileName, ICoordinate src, ICoordinate dst)
         {
             ShapefileReader reader = new ShapefileReader(fileName);
             IGeometryCollection edges = reader.ReadAll();
@@ -35,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         /// <param name="edges"></param>
         /// <param name="src"></param>
         /// <param name="dst"></param>
-        public ILineString TestGraphBuilder2WithSampleGeometries(IGeometryCollection edges, int src, int dst)
+        public ILineString TestGraphBuilder2WithSampleGeometries(IGeometryCollection edges, ICoordinate src, ICoordinate dst)
         {
             GraphBuilder2 builder = new GraphBuilder2(true);            
             foreach (IMultiLineString edge in edges.Geometries)
@@ -43,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
                     builder.Add(line);            
             builder.Initialize();
 
-            return builder.perform(src, dst);
+            return builder.Perform(src, dst);
         }
 
         [TestFixtureSetUp]
@@ -118,12 +118,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             builder.Add(e);
             builder.Initialize();
 
-            int src = builder.VertexAtLocation(start);
-            Assert.Greater(src, -1);
-            int dst = builder.VertexAtLocation(end);
-            Assert.Greater(dst, -1);
-
-            ILineString path = builder.perform(src, dst);
+            ILineString path = builder.Perform(start, end);
             Assert.IsNotNull(path);
             Assert.AreEqual(result, path);
         }        
@@ -138,17 +133,11 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             builder.Add(e);
             builder.Initialize();
 
-            int src = builder.VertexAtLocation(start);
-            Assert.Greater(src, -1);
-            int dst = builder.VertexAtLocation(end);
-            Assert.Greater(dst, -1);
-
-
-            ILineString path = builder.perform(src, dst);
+            ILineString path = builder.Perform(start.Coordinate, end.Coordinate);
             Assert.IsNotNull(path);
             Assert.AreEqual(result, path);
 
-            ILineString revpath = builder.perform(dst, src);
+            ILineString revpath = builder.Perform(end, start);
             Assert.IsNotNull(revpath);
             Assert.AreEqual(revresult, revpath);
         }
@@ -236,11 +225,9 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
                 Assert.IsTrue(builder.Add(str));
             }
             builder.Initialize();
-
-            int src = builder.VertexAtLocation(startls.StartPoint);
-            int dst = builder.VertexAtLocation(endls.EndPoint);
-            ILineString path = builder.perform(src, dst);
+            
+            ILineString path = builder.Perform(startls.StartPoint, endls.EndPoint);
             Assert.IsNotNull(path);
-        }
+        }        
     }
 }
