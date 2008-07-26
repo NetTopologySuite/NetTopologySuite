@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Planargraph;
 using QuickGraph;
 using QuickGraph.Algorithms.Observers;
 using QuickGraph.Algorithms.ShortestPath;
@@ -29,11 +28,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 
         private IGeometryFactory factory;
         private readonly IList<ILineString> strings;
-        private readonly NodeMap coords;
-
-        private AdjacencyGraph<ICoordinate, IEdge<ICoordinate>> graph;
-        private IDictionary<IEdge<ICoordinate>, double> consts;
         
+        private readonly AdjacencyGraph<ICoordinate, IEdge<ICoordinate>> graph;
+        private IDictionary<IEdge<ICoordinate>, double> consts;
+       
         /// <summary>
         /// Initializes a new instance of the <see cref="GraphBuilder2"/> class.
         /// </summary>
@@ -46,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 
             factory = null;
             strings = new List<ILineString>();
-            coords  = new NodeMap();
+            graph   = new AdjacencyGraph<ICoordinate, IEdge<ICoordinate>>(true);
         }
 
         /// <summary>
@@ -85,8 +83,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 
                 foreach (ICoordinate coord in line.Coordinates)
                 {
-                    Node node = new Node(coord);
-                    coords.Add(node);
+                    if (!graph.ContainsVertex(coord))
+                         graph.AddVertex(coord);
+                    
                 }
             }
             return result;
@@ -137,20 +136,6 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             if (strings.Count < 2)
                 throw new TopologyException("you must specify two or more geometries to build a graph");
 
-            if (graph != null)
-                throw new ApplicationException("builder already initialized");
-
-            graph = new AdjacencyGraph<ICoordinate, IEdge<ICoordinate>>(true);
-
-            // If we get here then we now we have a copy of the point location
-            // on the pointList object. We now need to reconstrcut the edge
-            // Graph. But before that we add each vertex to the graph
-            foreach (Node node in coords)
-                graph.AddVertex(node.Coordinate);
-            
-            // Getting here means we have the vertex added to the graph. 
-            // What we now need to do is to add the edges to the graph.
-
             // Counts the number of edges in the set we pass to this method.             
             int numberOfEdgesInLines = 0;
             foreach (ILineString str in strings)
@@ -162,6 +147,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             // Double values because we use also reversed edges...
             if (bidirectional)
                 numberOfEdgesInLines *= 2;
+
             consts = new Dictionary<IEdge<ICoordinate>, double>(numberOfEdgesInLines);
 
             foreach (ILineString line in strings)
@@ -276,13 +262,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             // array.
             for (i = 0; i < path.Count; i++)
             {
-                node = path[i].Source;
-                links[i] = coords.Find(node).Coordinate;
+                links[i] = path[i].Source;
             }
 
             // Add the target node to the last loction in the list 
-            node = path[i - 1].Target;
-            links[i] = coords.Find(node).Coordinate;
+            links[i] = path[i - 1].Target;
 
             // Turn the list of coordinates into a geometry.
             ILineString thePath = factory.CreateLineString(links);
