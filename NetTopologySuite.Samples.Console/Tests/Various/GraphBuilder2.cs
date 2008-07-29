@@ -158,15 +158,13 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 {
                     for (int counter = 0; counter < bound; counter++)
                     {
+                        // Prepare a segment
                         ICoordinate src = line.Coordinates[counter];
                         ICoordinate dst = line.Coordinates[counter + 1];
 
-                        ICoordinate[] localLine = new ICoordinate[2];
-                        localLine[0] = line.Coordinates[counter];
-                        localLine[1] = line.Coordinates[counter + 1];
-
                         // Here we calculate the weight of the edge
-                        ILineString lineString = factory.CreateLineString(localLine);
+                        ILineString lineString = factory.CreateLineString(
+                            new ICoordinate[] { src, dst, });
                         double weight = computer(lineString);
 
                         // Add the edge
@@ -201,7 +199,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         }
 
         /// <summary>
-        /// Carries out the shortest path anlayis between the two nodes
+        /// Carries out the shortest path between the two nodes
         /// ids passed as variables and returns an <see cref="ILineString" /> 
         /// giveing the shortest path.
         /// </summary>
@@ -255,16 +253,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             // if we get here then we now that there is at least one
             // edge in the path.
             ICoordinate[] links = new ICoordinate[path.Count + 1];
+
+            // Add each node to the list of coordinates in to the array.
             int i;
-            ICoordinate node;
-
-            // Add each node to the list of coordinates in to the 
-            // array.
             for (i = 0; i < path.Count; i++)
-            {
                 links[i] = path[i].Source;
-            }
-
+            
             // Add the target node to the last loction in the list 
             links[i] = path[i - 1].Target;
 

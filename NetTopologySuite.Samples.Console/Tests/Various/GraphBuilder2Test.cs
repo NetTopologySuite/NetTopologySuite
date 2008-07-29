@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Features;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.Samples.Tests.Various;
@@ -11,6 +13,10 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
     [TestFixture]
     public class GraphBuilder2Test
     {
+        private const string shp = ".shp";
+        private const string shx = ".shx";
+        private const string dbf = ".dbf";
+
         private IGeometryFactory factory;
         private ILineString a, b, c, d, e;
         private ILineString result, revresult;
@@ -228,6 +234,81 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             
             ILineString path = builder.Perform(startls.StartPoint, endls.EndPoint);
             Assert.IsNotNull(path);
-        }        
+        }
+
+        [Test]
+        public void BuildGraphFromCompleteGraphShapefile()
+        {
+            string shapepath = "graph.shp";
+            int count = 1179;
+
+            Assert.IsTrue(File.Exists(shapepath));
+            ShapefileReader reader = new ShapefileReader(shapepath);
+            IGeometryCollection edges = reader.ReadAll();
+            Assert.IsNotNull(edges);
+            Assert.IsInstanceOfType(typeof(GeometryCollection), edges);
+            Assert.AreEqual(count, edges.NumGeometries);
+
+            ILineString startls = edges.GetGeometryN(515).GetGeometryN(0) as ILineString;
+            Assert.IsNotNull(startls);
+            IPoint startPoint = startls.EndPoint;
+            Assert.AreEqual(2317300d, startPoint.X);
+            Assert.AreEqual(4843961d, startPoint.Y);
+
+            ILineString endls = edges.GetGeometryN(141).GetGeometryN(0) as ILineString; ;
+            Assert.IsNotNull(endls);
+            IPoint endPoint = endls.StartPoint;
+            Assert.AreEqual(2322739d, endPoint.X);
+            Assert.AreEqual(4844539d, endPoint.Y);
+
+            GraphBuilder2 builder = new GraphBuilder2(true);
+            foreach (IMultiLineString mlstr in edges.Geometries)
+            {
+                Assert.AreEqual(1, mlstr.NumGeometries);
+                ILineString str = mlstr.GetGeometryN(0) as ILineString;
+                Assert.IsNotNull(str);
+                Assert.IsTrue(builder.Add(str));
+            }
+            builder.Initialize();
+
+            ILineString path = builder.Perform(startPoint, endPoint);
+            Assert.IsNotNull(path);
+            Console.WriteLine(path);
+            SaveGraphResult(path);
+        }
+
+        private void SaveGraphResult(IGeometry path)
+        {
+            if (path == null) 
+                throw new ArgumentNullException("path");
+
+            string shapepath = "graphresult";
+            if (File.Exists(shapepath + shp))
+                File.Delete(shapepath + shp);
+            Assert.IsFalse(File.Exists(shapepath + shp));
+            if (File.Exists(shapepath + shx))
+                File.Delete(shapepath + shx);
+            Assert.IsFalse(File.Exists(shapepath + shx));
+            if (File.Exists(shapepath + dbf))
+                File.Delete(shapepath + dbf);
+            Assert.IsFalse(File.Exists(shapepath + dbf));
+
+            string field1 = "OBJECTID";            
+            Feature feature = new Feature(path, new AttributesTable());
+            feature.Attributes.AddAttribute(field1, 0);                        
+
+            DbaseFileHeader header = new DbaseFileHeader();
+            header.NumRecords = 1;            
+            header.NumFields = 1;
+            header.AddColumn(field1, 'N', 5, 0);
+            
+            ShapefileDataWriter writer = new ShapefileDataWriter(shapepath, factory);
+            writer.Header = header;
+            writer.Write(new List<Feature>(new Feature[] { feature, }));
+
+            Assert.IsTrue(File.Exists(shapepath + shp));
+            Assert.IsTrue(File.Exists(shapepath + shx));
+            Assert.IsTrue(File.Exists(shapepath + dbf));
+        }
     }
 }
