@@ -255,7 +255,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             // Detach the observers
             distObserver.Detach(algorithm);
             predecessorObserver.Detach(algorithm);
-        }
+        }        
         
         [Ignore]
         [Test]

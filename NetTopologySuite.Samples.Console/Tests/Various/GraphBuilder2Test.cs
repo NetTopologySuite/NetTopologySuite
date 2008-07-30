@@ -273,8 +273,11 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
 
             ILineString path = builder.Perform(startPoint, endPoint);
             Assert.IsNotNull(path);
-            Console.WriteLine(path);
             SaveGraphResult(path);
+
+            ILineString reverse = builder.Perform(endPoint, startPoint);
+            Assert.IsNotNull(reverse);
+            Assert.AreEqual(path, reverse.Reverse());
         }
 
         private void SaveGraphResult(IGeometry path)
@@ -309,6 +312,105 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             Assert.IsTrue(File.Exists(shapepath + shp));
             Assert.IsTrue(File.Exists(shapepath + shx));
             Assert.IsTrue(File.Exists(shapepath + dbf));
+        }
+
+        [Ignore]
+        [Test]
+        public void BuildStradeFixed()
+        {
+            string path = "strade" + shp;
+            Assert.IsTrue(File.Exists(path));
+            
+            ShapefileDataReader reader = new ShapefileDataReader(path, factory);
+            List<Feature> features = new List<Feature>(reader.RecordCount);
+            while (reader.Read())
+            {
+                Feature feature = new Feature(reader.Geometry, new AttributesTable());
+                object[] values = new object[reader.FieldCount - 1];
+                reader.GetValues(values);
+                for (int i = 0; i < values.Length; i++)
+                {
+                    string name = reader.GetName(i + 1);
+                    object value = values[i];
+                    feature.Attributes.AddAttribute(name, value);
+                }
+                features.Add(feature);
+            }
+            Assert.AreEqual(703, features.Count);
+
+            string shapepath = "strade_fixed";
+            if (File.Exists(shapepath + shp))
+                File.Delete(shapepath + shp);
+            Assert.IsFalse(File.Exists(shapepath + shp));
+            if (File.Exists(shapepath + shx))
+                File.Delete(shapepath + shx);
+            Assert.IsFalse(File.Exists(shapepath + shx));
+            if (File.Exists(shapepath + dbf))
+                File.Delete(shapepath + dbf);
+            Assert.IsFalse(File.Exists(shapepath + dbf));
+
+            DbaseFileHeader header = reader.DbaseHeader;
+            
+            ShapefileDataWriter writer = new ShapefileDataWriter(shapepath, factory);
+            writer.Header = header;
+            writer.Write(features);
+
+            Assert.IsTrue(File.Exists(shapepath + shp));
+            Assert.IsTrue(File.Exists(shapepath + shx));
+            Assert.IsTrue(File.Exists(shapepath + dbf));
+        }
+
+        [Test]
+        public void BuildGraphFromStradeShapefile()
+        {
+            string shapepath = "strade_fixed.shp";
+            int count = 703;
+
+            Assert.IsTrue(File.Exists(shapepath));
+            ShapefileReader reader = new ShapefileReader(shapepath);
+            IGeometryCollection edges = reader.ReadAll();
+            Assert.IsNotNull(edges);
+            Assert.IsInstanceOfType(typeof(GeometryCollection), edges);
+            Assert.AreEqual(count, edges.NumGeometries);
+
+            ICoordinate startCoord = new Coordinate(2317300d, 4843961d);
+            ICoordinate endCoord = new Coordinate(2322739d, 4844539d);
+
+            bool startFound = false;
+            bool endFound = false;            
+            GraphBuilder2 builder = new GraphBuilder2(true);
+            foreach (IMultiLineString mlstr in edges.Geometries)
+            {
+                Assert.AreEqual(1, mlstr.NumGeometries);
+                ILineString str = mlstr.GetGeometryN(0) as ILineString;
+                Assert.IsNotNull(str);
+                Assert.IsTrue(builder.Add(str));
+
+                if (!startFound)
+                {
+                    List<ICoordinate> coords = new List<ICoordinate>(str.Coordinates);
+                    if (coords.Contains(startCoord))
+                        startFound = true;
+                }
+
+                if (!endFound)
+                {
+                    List<ICoordinate> coords = new List<ICoordinate>(str.Coordinates);
+                    if (coords.Contains(endCoord))
+                        endFound = true;
+                }
+            }
+            builder.Initialize();
+            Assert.IsTrue(startFound);
+            Assert.IsTrue(endFound);
+
+            ILineString path = builder.Perform(startCoord, endCoord);
+            Assert.IsNotNull(path);
+            SaveGraphResult(path);
+
+            ILineString reverse = builder.Perform(startCoord, endCoord);
+            Assert.IsNotNull(reverse);
+            Assert.AreEqual(path, reverse.Reverse());
         }
     }
 }

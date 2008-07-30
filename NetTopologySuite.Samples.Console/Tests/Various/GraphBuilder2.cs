@@ -208,6 +208,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// <returns>A line string geometric shape of the path</returns>
         public ILineString Perform(ICoordinate source, ICoordinate destination)
         {
+            if (!graph.ContainsVertex(source))
+                throw new ArgumentException("key not found in the graph", "source");
+            if (!graph.ContainsVertex(destination))
+                throw new ArgumentException("key not found in the graph", "destination");
+
             // Build algorithm
             DijkstraShortestPathAlgorithm<ICoordinate, IEdge<ICoordinate>> dijkstra =
                 new DijkstraShortestPathAlgorithm<ICoordinate, IEdge<ICoordinate>>(graph, consts);
