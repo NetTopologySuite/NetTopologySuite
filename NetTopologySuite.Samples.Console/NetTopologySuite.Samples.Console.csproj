@@ -79,6 +79,7 @@
     <Compile Include="Tests\Various\GraphBuilder2Test.cs" />
     <Compile Include="Tests\Various\GraphBuilderTest.cs" />
     <Compile Include="Tests\Various\IntesectIterationTest.cs" />
+    <Compile Include="Tests\Various\Issue26Tests.cs" />
     <Compile Include="Tests\Various\IsValidTest.cs" />
     <Compile Include="Tests\Operation\Linemerge\LineSequencerTest.cs" />
     <Compile Include="Tests\Various\NormalizeTest.cs" />
