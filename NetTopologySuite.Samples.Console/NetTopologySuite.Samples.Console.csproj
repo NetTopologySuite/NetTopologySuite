@@ -84,6 +84,8 @@
     <Compile Include="Tests\Operation\Linemerge\LineSequencerTest.cs" />
     <Compile Include="Tests\Various\NormalizeTest.cs" />
     <Compile Include="Tests\Various\OracleWKBTest.cs" />
+    <Compile Include="Tests\Various\PathFinder.cs" />
+    <Compile Include="Tests\Various\PathFinderTest.cs" />
     <Compile Include="Tests\Various\PrecisionTest.cs" />
     <Compile Include="Tests\Various\ReverseTest.cs" />
     <Compile Include="Tests\Various\RobustLineIntersectorTest.cs" />
