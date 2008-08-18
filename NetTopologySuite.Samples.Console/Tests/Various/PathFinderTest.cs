@@ -138,6 +138,19 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             Assert.IsInstanceOfType(typeof(GeometryCollection), edges);
             Assert.AreEqual(count, edges.NumGeometries);
 
+            // Insert arbitrary userdata
+            for (int i = 0; i < count; i++)
+            {
+                IMultiLineString g = edges.GetGeometryN(i) as IMultiLineString;
+                Assert.IsNotNull(g);
+                ILineString ls = g.GetGeometryN(0) as ILineString;
+                Assert.IsNotNull(ls);
+
+                Assert.IsNull(ls.UserData);
+                ls.UserData = i;
+                Assert.IsNotNull(ls.UserData);
+            }
+
             ILineString startls = edges.GetGeometryN(515).GetGeometryN(0) as ILineString;
             Assert.IsNotNull(startls);
             IPoint startPoint = startls.EndPoint;
@@ -156,6 +169,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
                 Assert.AreEqual(1, mlstr.NumGeometries);
                 ILineString str = mlstr.GetGeometryN(0) as ILineString;
                 Assert.IsNotNull(str);
+                Assert.IsNotNull(str.UserData);
                 Assert.IsTrue(finder.Add(str));
             }
             finder.Initialize();
@@ -166,9 +180,15 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             
             IMultiLineString strings = (IMultiLineString) path;
             Assert.AreEqual(8, strings.NumGeometries);
+            foreach (IGeometry g in strings.Geometries)
+            {
+                Assert.IsNotNull(g.UserData);
+                Console.WriteLine("{0} : {1}", g.UserData, g);
+            }
 
             IGeometry reverse = finder.Find(endPoint, startPoint);
-            Assert.IsNotNull(reverse);            
+            Assert.IsNotNull(reverse);
+            Assert.IsInstanceOfType(typeof(IMultiLineString), reverse);
         }
     }
 }

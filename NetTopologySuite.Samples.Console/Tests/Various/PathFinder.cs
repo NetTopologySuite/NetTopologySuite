@@ -254,7 +254,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// </returns>
         private IGeometry BuildString(ICollection<IEdge<ICoordinate>> paths)
         {
-            // if the path has no links then return a null reference (NOTE: or an empry geometry?)
+            // if the path has no links then return a null reference
             if (paths.Count < 1)
                 return null;
 

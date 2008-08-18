@@ -221,7 +221,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             int finalLineCount = sequencedGeometry.NumGeometries;
             Assert.IsTrue(lineCount == finalLineCount, "Lines were missing from result");
             Assert.IsTrue(sequencedGeometry is ILineString || sequencedGeometry is IMultiLineString,
-                            "Result is not lineal");
+                "Result is not lineal");
         }
 
         /// <summary>
@@ -469,7 +469,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// in sequential order.
         /// </param>
         /// <returns>The reversed sequence.</returns>
-        private IList Reverse(IList seq)
+        private IList Reverse(IEnumerable seq)
         {
             LinkedList<DirectedEdge> newSeq = new LinkedList<DirectedEdge>();
             IEnumerator i = seq.GetEnumerator();
@@ -492,7 +492,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// <returns>
         /// The sequenced geometry, or <c>null</c> if no sequence exists.
         /// </returns>
-        private IGeometry BuildSequencedGeometry(IList sequences)
+        private IGeometry BuildSequencedGeometry(IEnumerable sequences)
         {
             IList lines = new ArrayList();
 
@@ -529,7 +529,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         {
             ICoordinate[] pts = line.Coordinates;                     
             Array.Reverse(pts);
-            return line.Factory.CreateLineString(pts);
+            ILineString rev = line.Factory.CreateLineString(pts);
+            rev.UserData = line.UserData; // Maintain UserData in reverse process
+            return rev;
         }
     }    
 }
