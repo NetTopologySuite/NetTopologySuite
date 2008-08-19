@@ -174,21 +174,37 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             }
             finder.Initialize();
 
+            int expectedResultCount = 8;
             IGeometry path = finder.Find(startPoint, endPoint);
             Assert.IsNotNull(path);
             Assert.IsInstanceOfType(typeof (IMultiLineString), path);
-            
-            IMultiLineString strings = (IMultiLineString) path;
-            Assert.AreEqual(8, strings.NumGeometries);
+            IMultiLineString strings = (IMultiLineString) path;            
+            Assert.AreEqual(expectedResultCount, strings.NumGeometries);
             foreach (IGeometry g in strings.Geometries)
             {
                 Assert.IsNotNull(g.UserData);
                 Console.WriteLine("{0} : {1}", g.UserData, g);
             }
 
-            IGeometry reverse = finder.Find(endPoint, startPoint);
-            Assert.IsNotNull(reverse);
-            Assert.IsInstanceOfType(typeof(IMultiLineString), reverse);
+            IGeometry reversedPath = finder.Find(endPoint, startPoint);
+            Assert.IsNotNull(reversedPath);
+            Assert.IsInstanceOfType(typeof(IMultiLineString), reversedPath);
+
+            IMultiLineString reversedStrings = (IMultiLineString) reversedPath;
+            Assert.AreEqual(expectedResultCount, reversedStrings.NumGeometries);
+            foreach (IGeometry g in reversedStrings.Geometries)
+            {
+                Assert.IsNotNull(g.UserData);
+                Console.WriteLine("{0} : {1}", g.UserData, g);
+            }
+
+            for (int i = 0; i < expectedResultCount; i++)
+            {
+                IGeometry item = strings.GetGeometryN(i);
+                IGeometry itemReversed = strings.GetGeometryN(expectedResultCount - 1 - i);
+                Assert.AreNotEqual(item.UserData, itemReversed.UserData);
+                Assert.AreNotEqual(item, itemReversed);
+            }
         }
     }
 }
