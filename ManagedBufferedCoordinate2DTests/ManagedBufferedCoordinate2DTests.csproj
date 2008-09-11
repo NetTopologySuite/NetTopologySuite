@@ -1,9 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="Exists('$(ProjectDir)..\..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj')">
+    <GeoAPIProjectReference>true</GeoAPIProjectReference>
+  </PropertyGroup>
+  <PropertyGroup Condition="!Exists('$(ProjectDir)..\..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj')">
+    <GeoAPIProjectReference>false</GeoAPIProjectReference>
+  </PropertyGroup>
+  <PropertyGroup Condition="Exists('$(ProjectDir)..\..\NPack\NPack\NPack.csproj')">
+    <NPackProjectReference>true</NPackProjectReference>
+  </PropertyGroup>
+  <PropertyGroup Condition="!Exists('$(ProjectDir)..\..\NPack\NPack\NPack.csproj')">
+    <NPackProjectReference>false</NPackProjectReference>
+  </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug_Net20</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{66EF7231-2966-4FCA-8113-D1B2686447FF}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -12,7 +24,7 @@
     <AssemblyName>ManagedBufferedCoordinate2DTests</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-	<OldToolsVersion>2.0</OldToolsVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_Net20|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,14 +61,46 @@
     <ErrorReport>prompt</ErrorReport>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
+  <Choose>
+    <When Condition="'$(GeoAPIProjectReference)' == 'false'">
+      <ItemGroup>
+        <Reference Include="GeoAPI, Version=2.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\ExternalReferences\$(Configuration)\GeoAPI.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <ProjectReference Include="..\..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj">
+          <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
+          <Name>GeoAPI.Net Project</Name>
+        </ProjectReference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <Choose>
+    <When Condition="'$(NPackProjectReference)' == 'false'">
+      <ItemGroup>
+        <Reference Include="NPack, Version=0.8.15119.0, Culture=neutral, PublicKeyToken=56f174b1685ddc6a, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\ExternalReferences\$(Configuration)\NPack.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <ProjectReference Include="..\..\NPack\NPack\NPack.csproj">
+          <Project>{B139E1D5-091B-40D2-B7A2-7D7D82E13019}</Project>
+          <Name>NPack Project</Name>
+        </ProjectReference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=2.4.0.2, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ExternalReferences\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="NPack, Version=0.8.15119.0, Culture=neutral, PublicKeyToken=56f174b1685ddc6a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ExternalReferences\$(Configuration)\NPack.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Mocks, Version=3.4.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -75,24 +119,6 @@
     <Otherwise>
       <ItemGroup>
         <Reference Include="System" />
-      </ItemGroup>
-    </Otherwise>
-  </Choose>
-  <Choose>
-    <When Condition="'$(UseProjectReference)' == 'false'">
-      <ItemGroup>
-        <Reference Include="GeoAPI, Version=2.0.0.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
-          <SpecificVersion>False</SpecificVersion>
-          <HintPath>..\ExternalReferences\$(Configuration)\GeoAPI.dll</HintPath>
-        </Reference>
-      </ItemGroup>
-    </When>
-    <Otherwise>
-      <ItemGroup>
-        <ProjectReference Include="..\..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj">
-          <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
-          <Name>GeoAPINoTFS</Name>
-        </ProjectReference>
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -116,11 +142,4 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
