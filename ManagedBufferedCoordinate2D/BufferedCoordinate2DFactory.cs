@@ -32,6 +32,7 @@ namespace NetTopologySuite.Coordinates
         private Int64 _mask = unchecked((Int64)0xFFFFFFFFFFFFFFFF);
         private readonly Int32[] _ordinateIndexTable = new Int32[4];
         private readonly IMatrixOperations<DoubleComponent, BufferedCoordinate2D, Matrix3> _ops;
+        private readonly YieldingSpinLock _spinLock = new YieldingSpinLock();
 
         public BufferedCoordinate2DFactory()
             : this(MaximumBitResolution) { }
@@ -631,6 +632,8 @@ namespace NetTopologySuite.Coordinates
 
             BufferedCoordinate2D v;
 
+            _spinLock.Enter();
+
             if (w != 1.0)
             {
                 Int64 wBits = BitConverter.DoubleToInt64Bits(w);
@@ -643,6 +646,8 @@ namespace NetTopologySuite.Coordinates
             {
                 v = findExisting(x, y) ?? addNew(x, y);
             }
+
+            _spinLock.Exit();
 
             return v;
         }
@@ -696,7 +701,7 @@ namespace NetTopologySuite.Coordinates
             _ordinateIndexTable[(Int32)Ordinates.W] = 2;
         }
 
-        private void checkCounts(Int32 rowCount, Int32 columnCount)
+        private static void checkCounts(Int32 rowCount, Int32 columnCount)
         {
             if (rowCount != 3)
             {
@@ -705,13 +710,13 @@ namespace NetTopologySuite.Coordinates
 
             if (columnCount != 3)
             {
-                throw new ArgumentOutOfRangeException("rowCount", rowCount, "Must be 3");
+                throw new ArgumentOutOfRangeException("columnCount", columnCount, "Must be 3");
             }
         }
 
         private class LexicographicCoordinateComparer : IComparer<BufferedCoordinate2D>
         {
-            private LexicographicComparer _valueComparer;
+            private readonly LexicographicComparer _valueComparer;
 
             public LexicographicCoordinateComparer(LexicographicComparer valueComparer)
             {
