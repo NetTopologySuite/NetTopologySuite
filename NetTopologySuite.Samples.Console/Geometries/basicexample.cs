@@ -15,15 +15,15 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
         [STAThread]
         public static void Main(String[] args)
         {
-            BufferedCoordinate2DFactory coordFactory = new BufferedCoordinate2DFactory();
+            BufferedCoordinateFactory coordFactory = new BufferedCoordinateFactory();
 
             // use the default factory, which gives full Double-precision
-            IGeometryFactory<BufferedCoordinate2D> geoFactory
-                = new GeometryFactory<BufferedCoordinate2D>(
-                    new BufferedCoordinate2DSequenceFactory(coordFactory));
+            IGeometryFactory<BufferedCoordinate> geoFactory
+                = new GeometryFactory<BufferedCoordinate>(
+                    new BufferedCoordinateSequenceFactory(coordFactory));
 
             // read a point from a WKT String (using the default point factory)
-            WktReader<BufferedCoordinate2D> reader = new WktReader<BufferedCoordinate2D>(geoFactory, 
+            WktReader<BufferedCoordinate> reader = new WktReader<BufferedCoordinate>(geoFactory, 
                                                                                          null);
             IGeometry g1 = reader.Read("LINESTRING (0 0, 10 10, 20 20)");
 

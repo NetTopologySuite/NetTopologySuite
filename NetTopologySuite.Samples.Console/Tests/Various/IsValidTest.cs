@@ -14,8 +14,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// Initializes a new instance of the <see cref="IsValidTest"/> class.
         /// </summary>
         public IsValidTest()
-            : base(GeometryFactory<BufferedCoordinate2D>.CreateFixedPrecision(
-                       new BufferedCoordinate2DSequenceFactory())) {}
+            : base(GeometryFactory<BufferedCoordinate>.CreateFixedPrecision(
+                       new BufferedCoordinateSequenceFactory())) {}
 
         [Test]
         public void IsCCWBugTest()

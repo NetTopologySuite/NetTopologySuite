@@ -25,8 +25,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
 
             serializer = new BinaryFormatter();
 
-            ICoordinateFactory<BufferedCoordinate2D> coordFactory
-                = new BufferedCoordinate2DFactory();
+            ICoordinateFactory<BufferedCoordinate> coordFactory
+                = new BufferedCoordinateFactory();
 
             point = GeoFactory.CreatePoint(coordFactory.Create(100, 100));
 

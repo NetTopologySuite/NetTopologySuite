@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         [TestFixtureSetUp]
         public void MyClassInitialize()
         {
-            WktReader<BufferedCoordinate2D> reader = new WktReader<BufferedCoordinate2D>(
+            WktReader<BufferedCoordinate> reader = new WktReader<BufferedCoordinate>(
                 GeoFactory, null);
             geom1 =
                 reader.Read(

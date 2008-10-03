@@ -13,13 +13,13 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
     [TestFixture]
     public class LineSequencerTest : BaseSamples
     {
-        //private static IWktGeometryReader rdr = new WktReader<BufferedCoordinate2D>(
-        //    GeometryFactory<BufferedCoordinate2D>.CreateFixedPrecision(
-        //        new BufferedCoordinate2DSequenceFactory()), null);
+        //private static IWktGeometryReader rdr = new WktReader<BufferedCoordinate>(
+        //    GeometryFactory<BufferedCoordinate>.CreateFixedPrecision(
+        //        new BufferedCoordinateSequenceFactory()), null);
 
         public LineSequencerTest() :
-            base(GeometryFactory<BufferedCoordinate2D>.CreateFixedPrecision(
-                     new BufferedCoordinate2DSequenceFactory()),
+            base(GeometryFactory<BufferedCoordinate>.CreateFixedPrecision(
+                     new BufferedCoordinateSequenceFactory()),
                  null) {}
 
         [Test]
@@ -217,8 +217,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
             try
             {
                 IList<IGeometry> inputGeoms = fromWkt(inputWkt);
-                LineSequencer<BufferedCoordinate2D> sequencer
-                    = new LineSequencer<BufferedCoordinate2D>();
+                LineSequencer<BufferedCoordinate> sequencer
+                    = new LineSequencer<BufferedCoordinate>();
                 sequencer.Add(inputGeoms);
 
                 if (!sequencer.IsSequenceable())
@@ -227,14 +227,14 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
                 }
                 else
                 {
-                    IGeometry<BufferedCoordinate2D> expected
+                    IGeometry<BufferedCoordinate> expected
                         = Reader.Read(expectedWkt);
-                    IGeometry<BufferedCoordinate2D> result = sequencer.GetSequencedLineStrings();
+                    IGeometry<BufferedCoordinate> result = sequencer.GetSequencedLineStrings();
                     //Boolean isTrue = expected.EqualsExact(result);
                     Boolean isTrue = expected.Equals(result);
                     Assert.IsTrue(isTrue);
 
-                    Boolean isSequenced = LineSequencer<BufferedCoordinate2D>.IsSequenced(result);
+                    Boolean isSequenced = LineSequencer<BufferedCoordinate>.IsSequenced(result);
                     Assert.IsTrue(isSequenced);
                 }
             }
@@ -249,9 +249,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
         {
             try
             {
-                IGeometry<BufferedCoordinate2D> g
+                IGeometry<BufferedCoordinate> g
                     = Reader.Read(inputWkt);
-                Boolean isSequenced = LineSequencer<BufferedCoordinate2D>.IsSequenced(g);
+                Boolean isSequenced = LineSequencer<BufferedCoordinate>.IsSequenced(g);
                 Assert.IsTrue(isSequenced == expected);
             }
             catch (Exception ex)

@@ -43,12 +43,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         {
             ICoordinate coordinate = CoordFactory.Create(0.00000000000000000001,
                                                          0.00000000000000000001);
-            IGeometryFactory<BufferedCoordinate2D> floatingFactory =
-                GeometryFactory<BufferedCoordinate2D>.CreateFloatingPrecision(
-                    new BufferedCoordinate2DSequenceFactory(
-                        (BufferedCoordinate2DFactory) CoordFactory));
+            IGeometryFactory<BufferedCoordinate> floatingFactory =
+                GeometryFactory<BufferedCoordinate>.CreateFloatingPrecision(
+                    new BufferedCoordinateSequenceFactory(
+                        (BufferedCoordinateFactory) CoordFactory));
             IPoint2D point = (IPoint2D) floatingFactory.CreatePoint(coordinate);
-            IWktGeometryReader wktReader = new WktReader<BufferedCoordinate2D>(floatingFactory, null);
+            IWktGeometryReader wktReader = new WktReader<BufferedCoordinate>(floatingFactory, null);
             IPoint2D test = (IPoint2D) wktReader.Read(point.ToString());
 
             // If i modify PrecisionModel.MaximumSignificantDigits from 16 to (as example) 20, all the digits are printed... 
@@ -63,12 +63,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         public void FloatFormatting9MoreDigitsTest1()
         {
             ICoordinate coordinate = CoordFactory.Create(0.0000000000001, 0.0000000000002);
-            IGeometryFactory<BufferedCoordinate2D> floatingFactory =
-                GeometryFactory<BufferedCoordinate2D>.CreateFloatingPrecision(
-                    new BufferedCoordinate2DSequenceFactory(
-                        (BufferedCoordinate2DFactory) CoordFactory));
+            IGeometryFactory<BufferedCoordinate> floatingFactory =
+                GeometryFactory<BufferedCoordinate>.CreateFloatingPrecision(
+                    new BufferedCoordinateSequenceFactory(
+                        (BufferedCoordinateFactory) CoordFactory));
             IPoint2D point = (IPoint2D) floatingFactory.CreatePoint(coordinate);
-            IWktGeometryReader wktReader = new WktReader<BufferedCoordinate2D>(floatingFactory, null);
+            IWktGeometryReader wktReader = new WktReader<BufferedCoordinate>(floatingFactory, null);
             IPoint2D test = (IPoint2D) wktReader.Read(point.ToString());
 
             Debug.WriteLine(point.ToString());
@@ -84,12 +84,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         public void FloatFormatting9MoreDigitsTest2()
         {
             ICoordinate coordinate = CoordFactory.Create(0.0000000000001, 0.0000000000002);
-            IGeometryFactory<BufferedCoordinate2D> floatingFactory =
-                GeometryFactory<BufferedCoordinate2D>.CreateFloatingSinglePrecision(
-                    new BufferedCoordinate2DSequenceFactory(
-                        (BufferedCoordinate2DFactory) CoordFactory));
+            IGeometryFactory<BufferedCoordinate> floatingFactory =
+                GeometryFactory<BufferedCoordinate>.CreateFloatingSinglePrecision(
+                    new BufferedCoordinateSequenceFactory(
+                        (BufferedCoordinateFactory) CoordFactory));
             IPoint2D point = (IPoint2D) floatingFactory.CreatePoint(coordinate);
-            IWktGeometryReader wktReader = new WktReader<BufferedCoordinate2D>(floatingFactory, null);
+            IWktGeometryReader wktReader = new WktReader<BufferedCoordinate>(floatingFactory, null);
             IPoint2D test = (IPoint2D) wktReader.Read(point.ToString());
 
             Debug.WriteLine(point.ToString());
@@ -105,12 +105,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         public void FloatFormatting9MoreDigitsTest3()
         {
             ICoordinate coordinate = CoordFactory.Create(0.0000000000001, 0.0000000000002);
-            IGeometryFactory<BufferedCoordinate2D> fixedFactory =
-                GeometryFactory<BufferedCoordinate2D>.CreateFloatingSinglePrecision(
-                    new BufferedCoordinate2DSequenceFactory(
-                        (BufferedCoordinate2DFactory) CoordFactory));
+            IGeometryFactory<BufferedCoordinate> fixedFactory =
+                GeometryFactory<BufferedCoordinate>.CreateFloatingSinglePrecision(
+                    new BufferedCoordinateSequenceFactory(
+                        (BufferedCoordinateFactory) CoordFactory));
             IPoint2D point = (IPoint2D) fixedFactory.CreatePoint(coordinate);
-            IWktGeometryReader wktReader = new WktReader<BufferedCoordinate2D>(fixedFactory, null);
+            IWktGeometryReader wktReader = new WktReader<BufferedCoordinate>(fixedFactory, null);
             IPoint2D test = (IPoint2D) wktReader.Read(point.ToString());
 
             Debug.WriteLine(point.ToString());

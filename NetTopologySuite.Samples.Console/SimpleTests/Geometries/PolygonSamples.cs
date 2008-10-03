@@ -15,8 +15,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
         private readonly ILinearRing hole;
 
         public PolygonSamples()
-            : base(new GeometryFactory<BufferedCoordinate2D>(
-                       new PrecisionModel<BufferedCoordinate2D>(CoordFactory,
+            : base(new GeometryFactory<BufferedCoordinate>(
+                       new PrecisionModel<BufferedCoordinate>(CoordFactory,
                                                                 PrecisionModelType.Fixed)))
         {
             shell = GeoFactory.CreateLinearRing(new ICoordinate[]
@@ -158,7 +158,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(geom2.AsText());
 
                 // ExpandToInclude tests
-                IExtents<BufferedCoordinate2D> extents = GeoFactory.CreateExtents(
+                IExtents<BufferedCoordinate> extents = GeoFactory.CreateExtents(
                     CoordFactory.Create(0, 0),
                     CoordFactory.Create(0, 0));
                 extents.ExpandToInclude(geom1.Extents);
@@ -169,7 +169,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 polygon.Normalize();
 
                 Byte[] bytes = polygon.AsBinary();
-                IGeometry test1 = new WkbReader<BufferedCoordinate2D>(GeoFactory).Read(bytes);
+                IGeometry test1 = new WkbReader<BufferedCoordinate>(GeoFactory).Read(bytes);
                 Write(test1.ToString());
 
                 //bytes = new GDBWriter().Write(polygon);

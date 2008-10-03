@@ -58,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                 Write(_multiPoint.ConvexHull());
 
                 Byte[] bytes = _multiPoint.AsBinary();
-                IGeometry test1 = new WkbReader<BufferedCoordinate2D>(GeoFactory).Read(bytes);
+                IGeometry test1 = new WkbReader<BufferedCoordinate>(GeoFactory).Read(bytes);
                 Write(test1.ToString());
 
                 //bytes = new GDBWriter().Write(multiPoint);

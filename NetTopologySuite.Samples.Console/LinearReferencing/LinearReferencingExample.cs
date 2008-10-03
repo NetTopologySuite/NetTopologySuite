@@ -12,12 +12,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.LinearReferencing
     /// </summary>
     public class LinearReferencingExample
     {
-        private static readonly IGeometryFactory<BufferedCoordinate2D> _factory
-            = GeometryFactory<BufferedCoordinate2D>.CreateFixedPrecision(
-                new BufferedCoordinate2DSequenceFactory());
+        private static readonly IGeometryFactory<BufferedCoordinate> _factory
+            = GeometryFactory<BufferedCoordinate>.CreateFixedPrecision(
+                new BufferedCoordinateSequenceFactory());
 
-        private static readonly WktReader<BufferedCoordinate2D> _reader
-            = new WktReader<BufferedCoordinate2D>(_factory, null);
+        private static readonly WktReader<BufferedCoordinate> _reader
+            = new WktReader<BufferedCoordinate>(_factory, null);
 
         public void Run()
         {
@@ -28,20 +28,20 @@ namespace GisSharpBlog.NetTopologySuite.Samples.LinearReferencing
         public void RunExtractedLine(String wkt, Double start, Double end)
         {
             Console.WriteLine("=========================");
-            IGeometry<BufferedCoordinate2D> g1 = _reader.Read(wkt);
+            IGeometry<BufferedCoordinate> g1 = _reader.Read(wkt);
             Console.WriteLine("Input Geometry: " + g1);
             Console.WriteLine("Indices to extract: " + start + " " + end);
 
-            LengthIndexedLine<BufferedCoordinate2D> indexedLine
-                = new LengthIndexedLine<BufferedCoordinate2D>(g1);
+            LengthIndexedLine<BufferedCoordinate> indexedLine
+                = new LengthIndexedLine<BufferedCoordinate>(g1);
 
-            IGeometry<BufferedCoordinate2D> subLine = indexedLine.ExtractLine(start, end);
+            IGeometry<BufferedCoordinate> subLine = indexedLine.ExtractLine(start, end);
             Console.WriteLine("Extracted Line: " + subLine);
 
             Double[] index = indexedLine.IndicesOf(subLine);
             Console.WriteLine("Indices of extracted line: " + index[0] + " " + index[1]);
 
-            BufferedCoordinate2D midpt = indexedLine.ExtractPoint((index[0] + index[1])/2);
+            BufferedCoordinate midpt = indexedLine.ExtractPoint((index[0] + index[1])/2);
             Console.WriteLine("Midpoint of extracted line: " + midpt);
         }
     }

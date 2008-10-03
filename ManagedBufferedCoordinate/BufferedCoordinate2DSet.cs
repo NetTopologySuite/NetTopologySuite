@@ -7,55 +7,55 @@ using NPack.Interfaces;
 
 namespace NetTopologySuite.Coordinates
 {
-    public class BufferedCoordinate2DSet : BufferedCoordinate2DSequence, ISet<BufferedCoordinate2D>
+    public class BufferedCoordinateSet : BufferedCoordinateSequence, ISet<BufferedCoordinate>
     {
-        public BufferedCoordinate2DSet(BufferedCoordinate2DSequenceFactory factory,
-            IVectorBuffer<DoubleComponent, BufferedCoordinate2D> buffer)
+        public BufferedCoordinateSet(BufferedCoordinateSequenceFactory factory, 
+            IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer)
             : base(factory, buffer) { }
 
-        internal BufferedCoordinate2DSet(
-            ICoordinateSequence<BufferedCoordinate2D> sequence,
-            BufferedCoordinate2DSequenceFactory factory,
-            IVectorBuffer<DoubleComponent, BufferedCoordinate2D> buffer)
+        internal BufferedCoordinateSet(
+            ICoordinateSequence<BufferedCoordinate> sequence,
+            BufferedCoordinateSequenceFactory factory,
+            IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer)
             : base(factory, buffer)
         {
-            ICoordinateSequence<BufferedCoordinate2D> withoutDupes =
+            ICoordinateSequence<BufferedCoordinate> withoutDupes =
                 sequence.WithoutDuplicatePoints();
 
-            BufferedCoordinate2DSequence nativeSequence 
-                = withoutDupes as BufferedCoordinate2DSequence;
+            BufferedCoordinateSequence nativeSequence 
+                = withoutDupes as BufferedCoordinateSequence;
 
             if (nativeSequence == null)
             {
-                nativeSequence = factory.Create(withoutDupes) as BufferedCoordinate2DSequence;
+                nativeSequence = factory.Create(withoutDupes) as BufferedCoordinateSequence;
             }
 
             SetSequenceInternal(nativeSequence);
         }
 
-        #region ISet<BufferedCoordinate2D> Members
+        #region ISet<BufferedCoordinate> Members
 
-        public ISet<BufferedCoordinate2D> Union(ISet<BufferedCoordinate2D> a)
+        public ISet<BufferedCoordinate> Union(ISet<BufferedCoordinate> a)
         {
             throw new NotImplementedException();
         }
 
-        public ISet<BufferedCoordinate2D> Intersect(ISet<BufferedCoordinate2D> a)
+        public ISet<BufferedCoordinate> Intersect(ISet<BufferedCoordinate> a)
         {
             throw new NotImplementedException();
         }
 
-        public ISet<BufferedCoordinate2D> Minus(ISet<BufferedCoordinate2D> a)
+        public ISet<BufferedCoordinate> Minus(ISet<BufferedCoordinate> a)
         {
             throw new NotImplementedException();
         }
 
-        public ISet<BufferedCoordinate2D> ExclusiveOr(ISet<BufferedCoordinate2D> a)
+        public ISet<BufferedCoordinate> ExclusiveOr(ISet<BufferedCoordinate> a)
         {
             throw new NotImplementedException();
         }
 
-        public Boolean ContainsAll(IEnumerable<BufferedCoordinate2D> c)
+        public Boolean ContainsAll(IEnumerable<BufferedCoordinate> c)
         {
             throw new NotImplementedException();
         }
@@ -65,27 +65,27 @@ namespace NetTopologySuite.Coordinates
             get { throw new NotImplementedException(); }
         }
 
-        public new Boolean Add(BufferedCoordinate2D o)
+        public new Boolean Add(BufferedCoordinate o)
         {
             throw new NotImplementedException();
         }
 
-        public new Boolean AddRange(IEnumerable<BufferedCoordinate2D> c)
+        public new Boolean AddRange(IEnumerable<BufferedCoordinate> c)
         {
             throw new NotImplementedException();
         }
 
-        public Boolean RemoveAll(IEnumerable<BufferedCoordinate2D> c)
+        public Boolean RemoveAll(IEnumerable<BufferedCoordinate> c)
         {
             throw new NotImplementedException();
         }
 
-        public Boolean RetainAll(IEnumerable<BufferedCoordinate2D> c)
+        public Boolean RetainAll(IEnumerable<BufferedCoordinate> c)
         {
             throw new NotImplementedException();
         }
 
-        public new ISet<BufferedCoordinate2D> Clone()
+        public new ISet<BufferedCoordinate> Clone()
         {
             throw new NotImplementedException();
         }
@@ -110,9 +110,9 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region ISet<BufferedCoordinate2D> Members
+        #region ISet<BufferedCoordinate> Members
 
-        void ISet<BufferedCoordinate2D>.Clear()
+        void ISet<BufferedCoordinate>.Clear()
         {
             Clear();
         }

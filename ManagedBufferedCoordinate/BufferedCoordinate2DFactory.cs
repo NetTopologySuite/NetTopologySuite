@@ -11,53 +11,53 @@ using BitConverter = GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Coordinates
 {
-    using IBufferedCoordFactory = ICoordinateFactory<BufferedCoordinate2D>;
-    using IBufferedVectorFactory = IVectorFactory<DoubleComponent, BufferedCoordinate2D>;
+    using IBufferedCoordFactory = ICoordinateFactory<BufferedCoordinate>;
+    using IBufferedVectorFactory = IVectorFactory<DoubleComponent, BufferedCoordinate>;
 
-    public class BufferedCoordinate2DFactory
-        : IBufferedCoordFactory, IVectorBuffer<DoubleComponent, BufferedCoordinate2D>,
-          IBufferedVectorFactory<DoubleComponent, BufferedCoordinate2D>,
-          ILinearFactory<DoubleComponent, BufferedCoordinate2D, Matrix3>
+    public class BufferedCoordinateFactory
+        : IBufferedCoordFactory, IVectorBuffer<DoubleComponent, BufferedCoordinate>,
+          IBufferedVectorFactory<DoubleComponent, BufferedCoordinate>,
+          ILinearFactory<DoubleComponent, BufferedCoordinate, Matrix3>
     {
         public static readonly Int32 MaximumBitResolution = 52;
         private static readonly IComparer<Pair<Double>> _valueComparer
             = new LexicographicComparer();
 
-        private static readonly IComparer<BufferedCoordinate2D> _coordComparer
+        private static readonly IComparer<BufferedCoordinate> _coordComparer
             = new LexicographicCoordinateComparer((LexicographicComparer)_valueComparer);
-        private readonly ManagedVectorBuffer<DoubleComponent, BufferedCoordinate2D> _coordinates;
+        private readonly ManagedVectorBuffer<DoubleComponent, BufferedCoordinate> _coordinates;
         private readonly IDictionary<Pair<Double>, Int32> _lexicographicVertexIndex;
         private readonly IDictionary<Triple<Double>, Int32> _lexicographicHomogeneousVertexIndex;
         private Int32 _bitResolution;
         private Int64 _mask = unchecked((Int64)0xFFFFFFFFFFFFFFFF);
         private readonly Int32[] _ordinateIndexTable = new Int32[4];
-        private readonly IMatrixOperations<DoubleComponent, BufferedCoordinate2D, Matrix3> _ops;
+        private readonly IMatrixOperations<DoubleComponent, BufferedCoordinate, Matrix3> _ops;
         private readonly YieldingSpinLock _spinLock = new YieldingSpinLock();
 
-        public BufferedCoordinate2DFactory()
+        public BufferedCoordinateFactory()
             : this(MaximumBitResolution) { }
 
-        public BufferedCoordinate2DFactory(Int32 bitResolution)
+        public BufferedCoordinateFactory(Int32 bitResolution)
         {
             _bitResolution = bitResolution;
             _lexicographicVertexIndex = createLexicographicIndex();
             _lexicographicHomogeneousVertexIndex = createLexicographicHomogeneousIndex();
-            _coordinates = new ManagedVectorBuffer<DoubleComponent, BufferedCoordinate2D>(this);
+            _coordinates = new ManagedVectorBuffer<DoubleComponent, BufferedCoordinate>(this);
             initializeOrdinateIndexTable();
-            _ops = new ClrMatrixOperations<DoubleComponent, BufferedCoordinate2D, Matrix3>(this);
+            _ops = new ClrMatrixOperations<DoubleComponent, BufferedCoordinate, Matrix3>(this);
         }
 
-        public IVectorBuffer<DoubleComponent, BufferedCoordinate2D> VectorBuffer
+        public IVectorBuffer<DoubleComponent, BufferedCoordinate> VectorBuffer
         {
             get { return this; }
         }
 
-        internal IComparer<BufferedCoordinate2D> Comparer
+        internal IComparer<BufferedCoordinate> Comparer
         {
             get { return _coordComparer; }
         }
 
-        internal IMatrixOperations<DoubleComponent, BufferedCoordinate2D, Matrix3> Ops
+        internal IMatrixOperations<DoubleComponent, BufferedCoordinate, Matrix3> Ops
         {
             get { return _ops; }
         }
@@ -74,17 +74,17 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
-        public BufferedCoordinate2D Create(Double x, Double y)
+        public BufferedCoordinate Create(Double x, Double y)
         {
             return getVertexInternal(x, y);
         }
 
-        public BufferedCoordinate2D Create(Double x, Double y, Double m)
+        public BufferedCoordinate Create(Double x, Double y, Double m)
         {
             throw new NotSupportedException("Coordinates with 'M' values currently not supported.");
         }
 
-        public BufferedCoordinate2D Create(params Double[] coordinates)
+        public BufferedCoordinate Create(params Double[] coordinates)
         {
             if (coordinates == null)
             {
@@ -95,7 +95,7 @@ namespace NetTopologySuite.Coordinates
 
             if (length == 0)
             {
-                return new BufferedCoordinate2D();
+                return new BufferedCoordinate();
             }
 
             if (length == 2)
@@ -118,29 +118,26 @@ namespace NetTopologySuite.Coordinates
             throw new ArgumentException("Too many components.");
         }
 
-        public BufferedCoordinate2D Create3D(Double x, Double y, Double z)
+        public BufferedCoordinate Create3D(Double x, Double y, Double z)
         {
-            return _coordinates.Add(x, y, z);
+            throw new NotSupportedException("Only 2D coordinates are supported.");
         }
 
-        public BufferedCoordinate2D Create3D(Double x, Double y, Double z, Double m)
+        public BufferedCoordinate Create3D(Double x, Double y, Double z, Double m)
         {
-            return _coordinates.Add(x, y, z, m);
+            throw new NotSupportedException("Only 2D coordinates are supported.");
         }
 
-        public BufferedCoordinate2D Create3D(params Double[] coordinates)
+        public BufferedCoordinate Create3D(params Double[] coordinates)
         {
-            Int32 count = coordinates.Length;
-            DoubleComponent[] components = new DoubleComponent[count];
-            Buffer.BlockCopy(components, 0, components, 0, count);
-            return _coordinates.Add(components);
+            throw new NotSupportedException("Only 2D coordinates are supported.");
         }
 
-        public BufferedCoordinate2D Create(BufferedCoordinate2D coordinate)
+        public BufferedCoordinate Create(BufferedCoordinate coordinate)
         {
             if (coordinate.IsEmpty)
             {
-                return new BufferedCoordinate2D();
+                return new BufferedCoordinate();
             }
             if (ReferenceEquals(coordinate.Factory, this))
             {
@@ -149,39 +146,39 @@ namespace NetTopologySuite.Coordinates
             return getVertexInternal(coordinate.X, coordinate.Y);
         }
 
-        public BufferedCoordinate2D Create(ICoordinate coordinate)
+        public BufferedCoordinate Create(ICoordinate coordinate)
         {
-            if (coordinate is BufferedCoordinate2D)
+            if (coordinate is BufferedCoordinate)
             {
-                return Create((BufferedCoordinate2D)coordinate);
+                return Create((BufferedCoordinate)coordinate);
             }
 
             return coordinate.IsEmpty
-                ? new BufferedCoordinate2D()
+                ? new BufferedCoordinate()
                 : Create(coordinate[Ordinates.X], coordinate[Ordinates.Y]);
         }
 
-        public BufferedCoordinate2D Homogenize(BufferedCoordinate2D coordinate)
+        public BufferedCoordinate Homogenize(BufferedCoordinate coordinate)
         {
-            return BufferedCoordinate2D.Homogenize(coordinate);
+            return BufferedCoordinate.Homogenize(coordinate);
         }
 
-        public IEnumerable<BufferedCoordinate2D> Homogenize(IEnumerable<BufferedCoordinate2D> coordinates)
+        public IEnumerable<BufferedCoordinate> Homogenize(IEnumerable<BufferedCoordinate> coordinates)
         {
-            foreach (BufferedCoordinate2D coordinate in coordinates)
+            foreach (BufferedCoordinate coordinate in coordinates)
             {
                 yield return Homogenize(coordinate);
             }
         }
 
-        public BufferedCoordinate2D Dehomogenize(BufferedCoordinate2D coordinate)
+        public BufferedCoordinate Dehomogenize(BufferedCoordinate coordinate)
         {
-            return BufferedCoordinate2D.Dehomogenize(coordinate);
+            return BufferedCoordinate.Dehomogenize(coordinate);
         }
 
-        public IEnumerable<BufferedCoordinate2D> Dehomogenize(IEnumerable<BufferedCoordinate2D> coordinates)
+        public IEnumerable<BufferedCoordinate> Dehomogenize(IEnumerable<BufferedCoordinate> coordinates)
         {
-            foreach (BufferedCoordinate2D coordinate in coordinates)
+            foreach (BufferedCoordinate coordinate in coordinates)
             {
                 yield return Dehomogenize(coordinate);
             }
@@ -248,25 +245,25 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region IVectorBuffer<BufferedCoordinate2D,DoubleComponent> Members
+        #region IVectorBuffer<BufferedCoordinate,DoubleComponent> Members
 
-        Int32 IVectorBuffer<DoubleComponent, BufferedCoordinate2D>.Add(IVector<DoubleComponent> vector)
+        Int32 IVectorBuffer<DoubleComponent, BufferedCoordinate>.Add(IVector<DoubleComponent> vector)
         {
             if (vector == null || vector.ComponentCount != 2)
             {
                 throw new ArgumentException(
-                    "A BufferedCoordinate2D requires exactly two components.");
+                    "A BufferedCoordinate requires exactly two components.");
             }
 
             Double x = (Double)vector[0];
             Double y = (Double)vector[1];
 
-            BufferedCoordinate2D v = getVertexInternal(x, y);
+            BufferedCoordinate v = getVertexInternal(x, y);
 
             return v.Index;
         }
 
-        Int32 IVectorBuffer<DoubleComponent, BufferedCoordinate2D>.Add(BufferedCoordinate2D vector)
+        Int32 IVectorBuffer<DoubleComponent, BufferedCoordinate>.Add(BufferedCoordinate vector)
         {
             if (isValidVertex(vector))
             {
@@ -276,43 +273,43 @@ namespace NetTopologySuite.Coordinates
             return getVertexInternal(vector.X, vector.Y).Index;
         }
 
-        BufferedCoordinate2D IVectorBuffer<DoubleComponent, BufferedCoordinate2D>.Add(params DoubleComponent[] components)
+        BufferedCoordinate IVectorBuffer<DoubleComponent, BufferedCoordinate>.Add(params DoubleComponent[] components)
         {
             if (components.Length != 2)
             {
                 throw new ArgumentException(
-                    "A BufferedCoordinate2D requires exactly two components.");
+                    "A BufferedCoordinate requires exactly two components.");
             }
 
             return getVertexInternal((Double)components[0], (Double)components[1]);
         }
 
-        void IVectorBuffer<DoubleComponent, BufferedCoordinate2D>.Clear()
+        void IVectorBuffer<DoubleComponent, BufferedCoordinate>.Clear()
         {
             _coordinates.Clear();
         }
 
-        Boolean IVectorBuffer<DoubleComponent, BufferedCoordinate2D>.Contains(IVector<DoubleComponent> item)
+        Boolean IVectorBuffer<DoubleComponent, BufferedCoordinate>.Contains(IVector<DoubleComponent> item)
         {
             return _coordinates.Contains(item);
         }
 
-        Boolean IVectorBuffer<DoubleComponent, BufferedCoordinate2D>.Contains(BufferedCoordinate2D item)
+        Boolean IVectorBuffer<DoubleComponent, BufferedCoordinate>.Contains(BufferedCoordinate item)
         {
             return _coordinates.Contains(item);
         }
 
-        void IVectorBuffer<DoubleComponent, BufferedCoordinate2D>.CopyTo(BufferedCoordinate2D[] array, Int32 startIndex, Int32 endIndex)
+        void IVectorBuffer<DoubleComponent, BufferedCoordinate>.CopyTo(BufferedCoordinate[] array, Int32 startIndex, Int32 endIndex)
         {
             _coordinates.CopyTo(array, startIndex, endIndex);
         }
 
-        Int32 IVectorBuffer<DoubleComponent, BufferedCoordinate2D>.Count
+        Int32 IVectorBuffer<DoubleComponent, BufferedCoordinate>.Count
         {
             get { return _coordinates.Count; }
         }
 
-        //IVectorFactory<DoubleComponent, BufferedCoordinate2D> IVectorBuffer<DoubleComponent, BufferedCoordinate2D>.Factory
+        //IVectorFactory<DoubleComponent, BufferedCoordinate> IVectorBuffer<DoubleComponent, BufferedCoordinate>.Factory
         //{
         //    get { return _coordinates.Factory; }
         //}
@@ -322,12 +319,12 @@ namespace NetTopologySuite.Coordinates
             throw new System.NotImplementedException();
         }
 
-        Boolean IVectorBuffer<DoubleComponent, BufferedCoordinate2D>.IsReadOnly
+        Boolean IVectorBuffer<DoubleComponent, BufferedCoordinate>.IsReadOnly
         {
             get { return _coordinates.IsReadOnly; }
         }
 
-        Int32 IVectorBuffer<DoubleComponent, BufferedCoordinate2D>.MaximumSize
+        Int32 IVectorBuffer<DoubleComponent, BufferedCoordinate>.MaximumSize
         {
             get
             {
@@ -339,31 +336,31 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
-        void IVectorBuffer<DoubleComponent, BufferedCoordinate2D>.Remove(Int32 index)
+        void IVectorBuffer<DoubleComponent, BufferedCoordinate>.Remove(Int32 index)
         {
             throw new NotImplementedException();
             //_coordinates.Remove(index); - dangerous
         }
 
-        event EventHandler IVectorBuffer<DoubleComponent, BufferedCoordinate2D>.SizeIncreased
+        event EventHandler IVectorBuffer<DoubleComponent, BufferedCoordinate>.SizeIncreased
         {
             add { _coordinates.SizeIncreased += value; }
             remove { _coordinates.SizeIncreased -= value; }
         }
 
-        event CancelEventHandler IVectorBuffer<DoubleComponent, BufferedCoordinate2D>.SizeIncreasing
+        event CancelEventHandler IVectorBuffer<DoubleComponent, BufferedCoordinate>.SizeIncreasing
         {
             add { _coordinates.SizeIncreasing += value; }
             remove { _coordinates.SizeIncreasing -= value; }
         }
 
-        event EventHandler<VectorOperationEventArgs<DoubleComponent, BufferedCoordinate2D>> IVectorBuffer<DoubleComponent, BufferedCoordinate2D>.VectorChanged
+        event EventHandler<VectorOperationEventArgs<DoubleComponent, BufferedCoordinate>> IVectorBuffer<DoubleComponent, BufferedCoordinate>.VectorChanged
         {
             add { _coordinates.VectorChanged += value; }
             remove { _coordinates.VectorChanged -= value; }
         }
 
-        BufferedCoordinate2D IVectorBuffer<DoubleComponent, BufferedCoordinate2D>.this[Int32 index]
+        BufferedCoordinate IVectorBuffer<DoubleComponent, BufferedCoordinate>.this[Int32 index]
         {
             get
             {
@@ -381,27 +378,27 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region IEnumerable<BufferedCoordinate2D> Members
+        #region IEnumerable<BufferedCoordinate> Members
 
-        public IEnumerator<BufferedCoordinate2D> GetEnumerator()
+        public IEnumerator<BufferedCoordinate> GetEnumerator()
         {
             return _coordinates.GetEnumerator();
         }
 
         #endregion
 
-        #region IBufferedVectorFactory<BufferedCoordinate2D,DoubleComponent> Members
+        #region IBufferedVectorFactory<BufferedCoordinate,DoubleComponent> Members
 
-        public BufferedCoordinate2D CreateBufferedVector(IVectorBuffer<DoubleComponent, BufferedCoordinate2D> vectorBuffer, Int32 index)
+        public BufferedCoordinate CreateBufferedVector(IVectorBuffer<DoubleComponent, BufferedCoordinate> vectorBuffer, Int32 index)
         {
             if (!ReferenceEquals(_coordinates, vectorBuffer)
                 && !ReferenceEquals(this, vectorBuffer))
             {
                 throw new ArgumentException(
-                    "The buffer must be this BufferedCoordinate2DFactory.");
+                    "The buffer must be this BufferedCoordinateFactory.");
             }
 
-            return new BufferedCoordinate2D(this, index);
+            return new BufferedCoordinate(this, index);
         }
 
         #endregion
@@ -440,9 +437,9 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region IVectorFactory<DoubleComponent,BufferedCoordinate2D> Members
+        #region IVectorFactory<DoubleComponent,BufferedCoordinate> Members
 
-        BufferedCoordinate2D IBufferedVectorFactory.CreateVector(IEnumerable<DoubleComponent> values)
+        BufferedCoordinate IBufferedVectorFactory.CreateVector(IEnumerable<DoubleComponent> values)
         {
             Pair<DoubleComponent>? pair = Slice.GetPair(values);
 
@@ -456,12 +453,12 @@ namespace NetTopologySuite.Coordinates
             return getVertexInternal((Double)coord.First, (Double)coord.Second);
         }
 
-        BufferedCoordinate2D IBufferedVectorFactory.CreateVector(Int32 componentCount)
+        BufferedCoordinate IBufferedVectorFactory.CreateVector(Int32 componentCount)
         {
             throw new NotSupportedException();
         }
 
-        public BufferedCoordinate2D CreateVector(params Double[] components)
+        public BufferedCoordinate CreateVector(params Double[] components)
         {
             switch (components.Length)
             {
@@ -471,31 +468,31 @@ namespace NetTopologySuite.Coordinates
                     return CreateVector(components[0], components[1], components[2]);
                 default:
                     throw new ArgumentException(
-                        "A BufferedCoordinate2D must have only 2 or 3 components.");
+                        "A BufferedCoordinate must have only 2 or 3 components.");
             }
         }
 
-        public BufferedCoordinate2D CreateVector(Double a, Double b, Double c)
+        public BufferedCoordinate CreateVector(Double a, Double b, Double c)
         {
             return getVertexInternal(a, b, c);
         }
 
-        public BufferedCoordinate2D CreateVector(Double a, Double b)
+        public BufferedCoordinate CreateVector(Double a, Double b)
         {
             return getVertexInternal(a, b);
         }
 
-        public BufferedCoordinate2D CreateVector(params DoubleComponent[] components)
+        public BufferedCoordinate CreateVector(params DoubleComponent[] components)
         {
             throw new NotImplementedException();
         }
 
-        public BufferedCoordinate2D CreateVector(DoubleComponent a, DoubleComponent b, DoubleComponent c)
+        public BufferedCoordinate CreateVector(DoubleComponent a, DoubleComponent b, DoubleComponent c)
         {
             return getVertexInternal(a.ToDouble(null), b.ToDouble(null), c.ToDouble(null));
         }
 
-        public BufferedCoordinate2D CreateVector(DoubleComponent a, DoubleComponent b)
+        public BufferedCoordinate CreateVector(DoubleComponent a, DoubleComponent b)
         {
             return getVertexInternal(a.ToDouble(null), b.ToDouble(null));
         }
@@ -509,77 +506,77 @@ namespace NetTopologySuite.Coordinates
             return (Double)_coordinates[index, ordinateIndex];
         }
 
-        internal BufferedCoordinate2D GetZero()
+        internal BufferedCoordinate GetZero()
         {
             return getVertexInternal(0, 0);
         }
 
-        internal BufferedCoordinate2D Add(BufferedCoordinate2D a, BufferedCoordinate2D b)
+        internal BufferedCoordinate Add(BufferedCoordinate a, BufferedCoordinate b)
         {
             return _ops.Add(a, b);
             //return getVertexInternal(a.X + b.X, a.Y + b.Y);
         }
 
-        internal BufferedCoordinate2D Add(BufferedCoordinate2D a, Double b)
+        internal BufferedCoordinate Add(BufferedCoordinate a, Double b)
         {
             return _ops.ScalarAdd(a, b);
             //return getVertexInternal(a.X + b, a.Y + b);
         }
 
-        //internal static BufferedCoordinate2D Divide(BufferedCoordinate2D a, BufferedCoordinate2D b)
+        //internal static BufferedCoordinate Divide(BufferedCoordinate a, BufferedCoordinate b)
         //{
         //    throw new NotImplementedException();
         //}
 
-        internal BufferedCoordinate2D Divide(BufferedCoordinate2D a, Double b)
+        internal BufferedCoordinate Divide(BufferedCoordinate a, Double b)
         {
             return _ops.ScalarMultiply(a, 1 / b);
         }
 
-        internal Double Distance(BufferedCoordinate2D a, BufferedCoordinate2D b)
+        internal Double Distance(BufferedCoordinate a, BufferedCoordinate b)
         {
             // the Euclidian norm over the vector difference
             return _ops.TwoNorm(_ops.Subtract(a, b));
         }
 
-        internal BufferedCoordinate2D GetOne()
+        internal BufferedCoordinate GetOne()
         {
             return getVertexInternal(1, 1);
         }
 
-        internal Double Dot(BufferedCoordinate2D a, BufferedCoordinate2D b)
+        internal Double Dot(BufferedCoordinate a, BufferedCoordinate b)
         {
             return (Double)_ops.Dot(a, b);
         }
 
-        internal BufferedCoordinate2D Cross(BufferedCoordinate2D a, BufferedCoordinate2D b)
+        internal BufferedCoordinate Cross(BufferedCoordinate a, BufferedCoordinate b)
         {
             return _ops.Cross(a, b);
         }
 
-        internal static Int32 Compare(BufferedCoordinate2D a, BufferedCoordinate2D b)
+        internal static Int32 Compare(BufferedCoordinate a, BufferedCoordinate b)
         {
             Pair<Double> aValues = new Pair<Double>(a.X, a.Y);
             Pair<Double> bValues = new Pair<Double>(b.X, b.Y);
             return _valueComparer.Compare(aValues, bValues);
         }
 
-        internal static Boolean GreaterThan(BufferedCoordinate2D a, BufferedCoordinate2D b)
+        internal static Boolean GreaterThan(BufferedCoordinate a, BufferedCoordinate b)
         {
             return Compare(a, b) > 0;
         }
 
-        internal static Boolean GreaterThanOrEqualTo(BufferedCoordinate2D a, BufferedCoordinate2D b)
+        internal static Boolean GreaterThanOrEqualTo(BufferedCoordinate a, BufferedCoordinate b)
         {
             return Compare(a, b) >= 0;
         }
 
-        internal static Boolean LessThan(BufferedCoordinate2D a, BufferedCoordinate2D b)
+        internal static Boolean LessThan(BufferedCoordinate a, BufferedCoordinate b)
         {
             return Compare(a, b) < 0;
         }
 
-        internal static Boolean LessThanOrEqualTo(BufferedCoordinate2D a, BufferedCoordinate2D b)
+        internal static Boolean LessThanOrEqualTo(BufferedCoordinate a, BufferedCoordinate b)
         {
             return Compare(a, b) <= 0;
         }
@@ -593,7 +590,7 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        private Boolean isValidVertex(BufferedCoordinate2D vector)
+        private Boolean isValidVertex(BufferedCoordinate vector)
         {
             return ReferenceEquals(vector.Factory, this)
                    && vector.Index < _coordinates.Count
@@ -613,12 +610,12 @@ namespace NetTopologySuite.Coordinates
                 new LexicographicComparer());
         }
 
-        private BufferedCoordinate2D getVertexInternal(Double x, Double y)
+        private BufferedCoordinate getVertexInternal(Double x, Double y)
         {
             return getVertexInternal(x, y, 1);
         }
 
-        private BufferedCoordinate2D getVertexInternal(Double x, Double y, Double w)
+        private BufferedCoordinate getVertexInternal(Double x, Double y, Double w)
         {
             if (Double.IsNaN(x) || Double.IsNaN(y) || Double.IsNaN(w))
             {
@@ -633,7 +630,7 @@ namespace NetTopologySuite.Coordinates
             yBits &= _mask;
             y = BitConverter.Int64BitsToDouble(yBits);
 
-            BufferedCoordinate2D v;
+            BufferedCoordinate v;
 
             _spinLock.Enter();
 
@@ -655,42 +652,42 @@ namespace NetTopologySuite.Coordinates
             return v;
         }
 
-        private BufferedCoordinate2D? findExisting(Double x, Double y)
+        private BufferedCoordinate? findExisting(Double x, Double y)
         {
-            BufferedCoordinate2D? v = null;
+            BufferedCoordinate? v = null;
             Int32 index;
 
             if (_lexicographicVertexIndex.TryGetValue(new Pair<Double>(x, y), out index))
             {
-                v = new BufferedCoordinate2D(this, index);
+                v = new BufferedCoordinate(this, index);
             }
 
             return v;
         }
 
-        private BufferedCoordinate2D? findExisting(Double x, Double y, Double w)
+        private BufferedCoordinate? findExisting(Double x, Double y, Double w)
         {
-            BufferedCoordinate2D? v = null;
+            BufferedCoordinate? v = null;
             Int32 index;
 
             if (_lexicographicHomogeneousVertexIndex.TryGetValue(new Triple<Double>(x, y, w), out index))
             {
-                v = new BufferedCoordinate2D(this, index);
+                v = new BufferedCoordinate(this, index);
             }
 
             return v;
         }
 
-        private BufferedCoordinate2D addNew(Double x, Double y)
+        private BufferedCoordinate addNew(Double x, Double y)
         {
-            BufferedCoordinate2D coord = _coordinates.Add(x, y, 1);
+            BufferedCoordinate coord = _coordinates.Add(x, y, 1);
             _lexicographicVertexIndex[new Pair<Double>(coord.X, coord.Y)] = coord.Index;
             return coord;
         }
 
-        private BufferedCoordinate2D addNew(Double x, Double y, Double w)
+        private BufferedCoordinate addNew(Double x, Double y, Double w)
         {
-            BufferedCoordinate2D coord = _coordinates.Add(x, y, w);
+            BufferedCoordinate coord = _coordinates.Add(x, y, w);
             Triple<Double> values = new Triple<Double>(coord.X, coord.Y, coord[Ordinates.W]);
             _lexicographicHomogeneousVertexIndex[values] = coord.Index;
             return coord;
@@ -717,7 +714,7 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
-        private class LexicographicCoordinateComparer : IComparer<BufferedCoordinate2D>
+        private class LexicographicCoordinateComparer : IComparer<BufferedCoordinate>
         {
             private readonly LexicographicComparer _valueComparer;
 
@@ -726,9 +723,9 @@ namespace NetTopologySuite.Coordinates
                 _valueComparer = valueComparer;
             }
 
-            #region IComparer<BufferedCoordinate2D> Members
+            #region IComparer<BufferedCoordinate> Members
 
-            public Int32 Compare(BufferedCoordinate2D a, BufferedCoordinate2D b)
+            public Int32 Compare(BufferedCoordinate a, BufferedCoordinate b)
             {
                 return a.ComponentCount == 3
                     ? _valueComparer.Compare(new Triple<Double>(a.X, a.Y, a[Ordinates.W]),

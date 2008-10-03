@@ -1,15 +1,21 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup Condition="Exists('$(ProjectDir)..\..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj')">
-    <GeoAPIProjectReference>true</GeoAPIProjectReference>
+    <GeoAPIProjectReference>Grandchild</GeoAPIProjectReference>
   </PropertyGroup>
-  <PropertyGroup Condition="!Exists('$(ProjectDir)..\..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj')">
-    <GeoAPIProjectReference>false</GeoAPIProjectReference>
+  <PropertyGroup Condition="!Exists('$(ProjectDir)..\..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj') And Exists('$(ProjectDir)..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj')">
+    <GeoAPIProjectReference>Child</GeoAPIProjectReference>
+  </PropertyGroup>
+  <PropertyGroup Condition="!Exists('$(ProjectDir)..\..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj') And !Exists('$(ProjectDir)..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj')">
+    <GeoAPIProjectReference>None</GeoAPIProjectReference>
   </PropertyGroup>
   <PropertyGroup Condition="Exists('$(ProjectDir)..\..\NPack\NPack\NPack.csproj')">
-    <NPackProjectReference>true</NPackProjectReference>
+    <NPackProjectReference>Grandchild</NPackProjectReference>
   </PropertyGroup>
-  <PropertyGroup Condition="!Exists('$(ProjectDir)..\..\NPack\NPack\NPack.csproj')">
-    <NPackProjectReference>false</NPackProjectReference>
+  <PropertyGroup Condition="!Exists('$(ProjectDir)..\..\NPack\NPack\NPack.csproj') And Exists('$(ProjectDir)..\NPack\NPack\NPack.csproj')">
+    <NPackProjectReference>Child</NPackProjectReference>
+  </PropertyGroup>
+  <PropertyGroup Condition="!Exists('$(ProjectDir)..\..\NPack\NPack\NPack.csproj') And !Exists('$(ProjectDir)..\NPack\NPack\NPack.csproj')">
+    <NPackProjectReference>None</NPackProjectReference>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug_Net20</Configuration>
@@ -58,13 +64,13 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <DocumentationFile>bin\Debug_Net35\ManagedBufferedCoordinate2D.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug_Net35\ManagedBufferedCoordinate.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release_Net35|AnyCPU' ">
     <OutputPath>bin\Release_Net35\</OutputPath>
     <DefineConstants>TRACE;DOTNET35</DefineConstants>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <DocumentationFile>bin\Release_Net35\ManagedBufferedCoordinate2D.xml</DocumentationFile>
+    <DocumentationFile>bin\Release_Net35\ManagedBufferedCoordinate.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -73,38 +79,54 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <Choose>
-    <When Condition="'$(GeoAPIProjectReference)' == 'false'">
+    <When Condition="'$(GeoAPIProjectReference)' == 'Grandchild'">
       <ItemGroup>
-        <Reference Include="GeoAPI, Version=2.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
-          <SpecificVersion>False</SpecificVersion>
-          <HintPath>..\ExternalReferences\$(Configuration)\GeoAPI.dll</HintPath>
-        </Reference>
+        <ProjectReference Include="..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj">
+          <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
+          <Name>GeoAPI.Net Project</Name>
+        </ProjectReference>
       </ItemGroup>
     </When>
-    <Otherwise>
+    <When Condition="'$(GeoAPIProjectReference)' == 'Child'">
       <ItemGroup>
         <ProjectReference Include="..\..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj">
           <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
           <Name>GeoAPI.Net Project</Name>
         </ProjectReference>
       </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="GeoAPI, Version=2.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\ExternalReferences\$(Configuration)\GeoAPI.dll</HintPath>
+        </Reference>
+      </ItemGroup>
     </Otherwise>
   </Choose>
   <Choose>
-    <When Condition="'$(NPackProjectReference)' == 'false'">
+    <When Condition="'$(NPackProjectReference)' == 'Grandchild'">
+      <ItemGroup>
+        <ProjectReference Include="..\NPack\NPack\NPack.csproj">
+          <Project>{B139E1D5-091B-40D2-B7A2-7D7D82E13019}</Project>
+          <Name>NPack Project</Name>
+        </ProjectReference>
+      </ItemGroup>
+    </When>
+    <When Condition="'$(NPackProjectReference)' == 'Child'">
+      <ItemGroup>
+        <ProjectReference Include="..\NPack\NPack\NPack.csproj">
+          <Project>{B139E1D5-091B-40D2-B7A2-7D7D82E13019}</Project>
+          <Name>NPack Project</Name>
+        </ProjectReference>
+      </ItemGroup>
+    </When>
+    <Otherwise>
       <ItemGroup>
         <Reference Include="NPack, Version=0.8.15119.0, Culture=neutral, PublicKeyToken=56f174b1685ddc6a, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\ExternalReferences\$(Configuration)\NPack.dll</HintPath>
         </Reference>
-      </ItemGroup>
-    </When>
-    <Otherwise>
-      <ItemGroup>
-        <ProjectReference Include="..\..\NPack\NPack\NPack.csproj">
-          <Project>{B139E1D5-091B-40D2-B7A2-7D7D82E13019}</Project>
-          <Name>NPack Project</Name>
-        </ProjectReference>
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -118,8 +140,6 @@
     <Otherwise>
       <ItemGroup>
         <Reference Include="System" />
-        <Reference Include="System.Data" />
-        <Reference Include="System.Xml" />
       </ItemGroup>
     </Otherwise>
   </Choose>

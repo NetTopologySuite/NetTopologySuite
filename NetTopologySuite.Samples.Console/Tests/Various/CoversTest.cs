@@ -16,8 +16,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 
         public CoversTest()
         {
-            IGeometryFactory geoFactory = new GeometryFactory<BufferedCoordinate2D>(
-                new BufferedCoordinate2DSequenceFactory());
+            IGeometryFactory geoFactory = new GeometryFactory<BufferedCoordinate>(
+                new BufferedCoordinateSequenceFactory());
 
             ICoordinate[] array1 = null;
             ICoordinate[] array2 = null;
@@ -38,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 
         private static void createCoordinates(ref ICoordinate[] array1, ref ICoordinate[] array2)
         {
-            BufferedCoordinate2DFactory coordFactory = new BufferedCoordinate2DFactory();
+            BufferedCoordinateFactory coordFactory = new BufferedCoordinateFactory();
 
             array1 = new ICoordinate[]
                      {

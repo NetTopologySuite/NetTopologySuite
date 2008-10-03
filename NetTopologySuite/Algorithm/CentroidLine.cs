@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     {
         private readonly ICoordinateFactory<TCoordinate> _factory;
         private TCoordinate _centSum;
-        private Double totalLength;
+        private Double _totalLength;
 
         public CentroidLine(ICoordinateFactory<TCoordinate> factory)
         {
@@ -58,8 +58,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             get
             {
-                Double x = _centSum[Ordinates.X] / totalLength;
-                Double y = _centSum[Ordinates.Y] / totalLength;
+                Double x = _centSum[Ordinates.X] / _totalLength;
+                Double y = _centSum[Ordinates.Y] / _totalLength;
                 return _factory.Create(x, y);
             }
         }
@@ -84,7 +84,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 TCoordinate point2 = pair.Second;
 
                 Double segmentLen = point1.Distance(point2);
-                totalLength += segmentLen;
+                _totalLength += segmentLen;
 
                 Double midX = (point1[Ordinates.X] + point2[Ordinates.X]) / 2;
                 x += segmentLen * midX;

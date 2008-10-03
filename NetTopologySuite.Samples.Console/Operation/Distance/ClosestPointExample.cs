@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Distance
     /// </summary>	
     public class ClosestPointExample
     {
-        internal static GeometryFactory<BufferedCoordinate2D> fact;
+        internal static GeometryFactory<BufferedCoordinate> fact;
         internal static IWktGeometryReader wktRdr;
 
         [STAThread]
@@ -52,18 +52,18 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Distance
 
             try
             {
-                IGeometry<BufferedCoordinate2D> a =
-                    wktRdr.Read(wktA) as IGeometry<BufferedCoordinate2D>;
-                IGeometry<BufferedCoordinate2D> b =
-                    wktRdr.Read(wktB) as IGeometry<BufferedCoordinate2D>;
+                IGeometry<BufferedCoordinate> a =
+                    wktRdr.Read(wktA) as IGeometry<BufferedCoordinate>;
+                IGeometry<BufferedCoordinate> b =
+                    wktRdr.Read(wktB) as IGeometry<BufferedCoordinate>;
                 Console.WriteLine("Geometry A: " + a);
                 Console.WriteLine("Geometry B: " + b);
-                DistanceOp<BufferedCoordinate2D> distOp = new DistanceOp<BufferedCoordinate2D>(a, b);
+                DistanceOp<BufferedCoordinate> distOp = new DistanceOp<BufferedCoordinate>(a, b);
 
                 Double distance = distOp.Distance;
                 Console.WriteLine("Distance = " + distance);
 
-                Pair<BufferedCoordinate2D>? closestPt = distOp.ClosestPoints();
+                Pair<BufferedCoordinate>? closestPt = distOp.ClosestPoints();
                 ILineString closestPtLine = fact.CreateLineString(closestPt);
                 Console.WriteLine("Closest points: " + closestPtLine + " (distance = " +
                                   closestPtLine.Length + ")");
@@ -76,9 +76,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Distance
 
         static ClosestPointExample()
         {
-            fact = new GeometryFactory<BufferedCoordinate2D>(
-                new BufferedCoordinate2DSequenceFactory());
-            wktRdr = new WktReader<BufferedCoordinate2D>(fact, null);
+            fact = new GeometryFactory<BufferedCoordinate>(
+                new BufferedCoordinateSequenceFactory());
+            wktRdr = new WktReader<BufferedCoordinate>(fact, null);
         }
     }
 }

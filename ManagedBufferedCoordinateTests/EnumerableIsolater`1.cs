@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace ManagedBufferedCoordinate2DTests
+namespace ManagedBufferedCoordinateTests
 {
     public class EnumerableIsolater<T> : IEnumerable<T>
     {

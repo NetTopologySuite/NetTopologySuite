@@ -30,12 +30,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Poligonize
 
         internal virtual void Run()
         {
-            IGeometryFactory<BufferedCoordinate2D> geoFactory =
-                new GeometryFactory<BufferedCoordinate2D>(new BufferedCoordinate2DSequenceFactory());
-            WktReader<BufferedCoordinate2D> rdr
-                = new WktReader<BufferedCoordinate2D>(geoFactory, null);
-            List<IGeometry<BufferedCoordinate2D>> lines
-                = new List<IGeometry<BufferedCoordinate2D>>();
+            IGeometryFactory<BufferedCoordinate> geoFactory =
+                new GeometryFactory<BufferedCoordinate>(new BufferedCoordinateSequenceFactory());
+            WktReader<BufferedCoordinate> rdr
+                = new WktReader<BufferedCoordinate>(geoFactory, null);
+            List<IGeometry<BufferedCoordinate>> lines
+                = new List<IGeometry<BufferedCoordinate>>();
 
             // isolated edge
             lines.Add(rdr.Read("LINESTRING (0 0 , 10 10)"));
@@ -45,11 +45,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Poligonize
             lines.Add(rdr.Read("LINESTRING (189 98, 83 187, 185 221)"));
             lines.Add(rdr.Read("LINESTRING (189 98, 325 168, 185 221)"));
 
-            Polygonizer<BufferedCoordinate2D> polygonizer
-                = new Polygonizer<BufferedCoordinate2D>();
+            Polygonizer<BufferedCoordinate> polygonizer
+                = new Polygonizer<BufferedCoordinate>();
             polygonizer.Add(lines);
 
-            IList<IPolygon<BufferedCoordinate2D>> polys = polygonizer.Polygons;
+            IList<IPolygon<BufferedCoordinate>> polys = polygonizer.Polygons;
 
             Console.WriteLine("Polygons formed (" + polys.Count + "):");
             foreach (object obj in polys)

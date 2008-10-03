@@ -6,20 +6,20 @@ using NPack.Interfaces;
 
 namespace NetTopologySuite.Coordinates
 {
-    using IBufferedCoordFactory = ICoordinateFactory<BufferedCoordinate2D>;
-    using IBufferedCoordSequence = ICoordinateSequence<BufferedCoordinate2D>;
-    using IBufferedCoordSequenceFactory = ICoordinateSequenceFactory<BufferedCoordinate2D>;
+    using IBufferedCoordFactory = ICoordinateFactory<BufferedCoordinate>;
+    using IBufferedCoordSequence = ICoordinateSequence<BufferedCoordinate>;
+    using IBufferedCoordSequenceFactory = ICoordinateSequenceFactory<BufferedCoordinate>;
     using GeoAPI.DataStructures;
 
-    public class BufferedCoordinate2DSequenceFactory : IBufferedCoordSequenceFactory
+    public class BufferedCoordinateSequenceFactory : IBufferedCoordSequenceFactory
     {
-        private readonly BufferedCoordinate2DFactory _coordFactory;
-        private readonly IVectorBuffer<DoubleComponent, BufferedCoordinate2D> _buffer;
+        private readonly BufferedCoordinateFactory _coordFactory;
+        private readonly IVectorBuffer<DoubleComponent, BufferedCoordinate> _buffer;
 
-        public BufferedCoordinate2DSequenceFactory()
-            : this(new BufferedCoordinate2DFactory()) { }
+        public BufferedCoordinateSequenceFactory()
+            : this(new BufferedCoordinateFactory()) { }
 
-        public BufferedCoordinate2DSequenceFactory(BufferedCoordinate2DFactory coordFactory)
+        public BufferedCoordinateSequenceFactory(BufferedCoordinateFactory coordFactory)
         {
             if (coordFactory == null) throw new ArgumentNullException("coordFactory"); 
             
@@ -27,12 +27,12 @@ namespace NetTopologySuite.Coordinates
             _buffer = _coordFactory.VectorBuffer;
         }
 
-        public IComparer<BufferedCoordinate2D> DefaultComparer
+        public IComparer<BufferedCoordinate> DefaultComparer
         {
             get { return _coordFactory.Comparer; }
         }
 
-        #region ICoordinateSequenceFactory<BufferedCoordinate2D> Members
+        #region ICoordinateSequenceFactory<BufferedCoordinate> Members
 
         public IBufferedCoordFactory CoordinateFactory
         {
@@ -42,13 +42,13 @@ namespace NetTopologySuite.Coordinates
         public IBufferedCoordSequence Create(CoordinateDimensions dimension)
         {
             checkDimension(dimension);
-            return new BufferedCoordinate2DSequence(this, _buffer);
+            return new BufferedCoordinateSequence(this, _buffer);
         }
 
         public IBufferedCoordSequence Create(Int32 size, CoordinateDimensions dimension)
         {
             checkDimension(dimension);
-            return new BufferedCoordinate2DSequence(size, this, _buffer);
+            return new BufferedCoordinateSequence(size, this, _buffer);
         }
 
         public IBufferedCoordSequence Create(IBufferedCoordSequence coordSeq)
@@ -59,22 +59,22 @@ namespace NetTopologySuite.Coordinates
         }
 
         public IBufferedCoordSequence Create(Func<Double, Double> componentTransform, 
-                                             IEnumerable<BufferedCoordinate2D> coordinates, 
+                                             IEnumerable<BufferedCoordinate> coordinates, 
                                              Boolean allowRepeated, 
                                              Boolean direction)
         {
             IBufferedCoordSequence newSequence = Create(CoordinateDimensions.Two);
 
-            BufferedCoordinate2D lastCoord = new BufferedCoordinate2D();
+            BufferedCoordinate lastCoord = new BufferedCoordinate();
 
             if (!direction)
             {
                 coordinates = Enumerable.Reverse(coordinates);
             }
 
-            foreach (BufferedCoordinate2D coordinate in coordinates)
+            foreach (BufferedCoordinate coordinate in coordinates)
             {
-                BufferedCoordinate2D c = coordinate;
+                BufferedCoordinate c = coordinate;
 
                 if (componentTransform != null)
                 {
@@ -96,7 +96,7 @@ namespace NetTopologySuite.Coordinates
             return newSequence;
         }
 
-        public IBufferedCoordSequence Create(IEnumerable<BufferedCoordinate2D> coordinates, 
+        public IBufferedCoordSequence Create(IEnumerable<BufferedCoordinate> coordinates, 
                                              Boolean allowRepeated, 
                                              Boolean direction)
         {
@@ -104,24 +104,24 @@ namespace NetTopologySuite.Coordinates
         }
 
         public IBufferedCoordSequence Create(Func<Double, Double> componentTransform, 
-            IEnumerable<BufferedCoordinate2D> coordinates, Boolean allowRepeated)
+            IEnumerable<BufferedCoordinate> coordinates, Boolean allowRepeated)
         {
             return Create(componentTransform, coordinates, allowRepeated, true);
         }
 
-        public IBufferedCoordSequence Create(IEnumerable<BufferedCoordinate2D> coordinates, 
+        public IBufferedCoordSequence Create(IEnumerable<BufferedCoordinate> coordinates, 
             Boolean allowRepeated)
         {
             return Create(null, coordinates, allowRepeated, true);
         }
 
         public IBufferedCoordSequence Create(Func<Double, Double> componentTransform, 
-            IEnumerable<BufferedCoordinate2D> coordinates)
+            IEnumerable<BufferedCoordinate> coordinates)
         {
             return Create(componentTransform, coordinates, true, true);
         }
 
-        public IBufferedCoordSequence Create(IEnumerable<BufferedCoordinate2D> coordinates)
+        public IBufferedCoordSequence Create(IEnumerable<BufferedCoordinate> coordinates)
         {
             return Create(null, coordinates, true, true);
         }
@@ -138,7 +138,7 @@ namespace NetTopologySuite.Coordinates
             return converted;
         }
 
-        public IBufferedCoordSequence Create(params BufferedCoordinate2D[] coordinates)
+        public IBufferedCoordSequence Create(params BufferedCoordinate[] coordinates)
         {
             return Create(null, coordinates, true, true);
         }
@@ -169,7 +169,7 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        private IEnumerable<BufferedCoordinate2D> convertCoordinates(IEnumerable<ICoordinate> coordinates)
+        private IEnumerable<BufferedCoordinate> convertCoordinates(IEnumerable<ICoordinate> coordinates)
         {
             foreach (ICoordinate coordinate in coordinates)
             {

@@ -39,11 +39,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 
         public virtual void Run()
         {
-            GeometryFactory<BufferedCoordinate2D> geometryFactory
-                = new GeometryFactory<BufferedCoordinate2D>(
-                    new BufferedCoordinate2DSequenceFactory());
-            WktReader<BufferedCoordinate2D> wktRdr
-                = new WktReader<BufferedCoordinate2D>(geometryFactory, null);
+            GeometryFactory<BufferedCoordinate> geometryFactory
+                = new GeometryFactory<BufferedCoordinate>(
+                    new BufferedCoordinateSequenceFactory());
+            WktReader<BufferedCoordinate> wktRdr
+                = new WktReader<BufferedCoordinate>(geometryFactory, null);
 
             String wktA = "POLYGON((40 100, 40 20, 120 20, 120 100, 40 100))";
             String wktB = "LINESTRING(20 80, 80 60, 100 140)";

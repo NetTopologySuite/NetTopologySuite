@@ -22,11 +22,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Technique
         [STAThread]
         public static void Main(String[] args)
         {
-            IGeometryFactory<BufferedCoordinate2D> geoFactory
-                = new GeometryFactory<BufferedCoordinate2D>(
-                    new BufferedCoordinate2DSequenceFactory());
+            IGeometryFactory<BufferedCoordinate> geoFactory
+                = new GeometryFactory<BufferedCoordinate>(
+                    new BufferedCoordinateSequenceFactory());
 
-            WktReader<BufferedCoordinate2D> rdr = new WktReader<BufferedCoordinate2D>(geoFactory,
+            WktReader<BufferedCoordinate> rdr = new WktReader<BufferedCoordinate>(geoFactory,
                                                                                       null);
             IGeometry[] geom = new IGeometry[3];
             geom[0] = rdr.Read("POLYGON (( 100 180, 100 260, 180 260, 180 180, 100 180 ))");

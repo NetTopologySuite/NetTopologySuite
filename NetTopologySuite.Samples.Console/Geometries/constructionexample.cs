@@ -20,11 +20,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
         [STAThread]
         public static void Main(String[] args)
         {
-            BufferedCoordinate2DFactory coordFactory = new BufferedCoordinate2DFactory();
+            BufferedCoordinateFactory coordFactory = new BufferedCoordinateFactory();
             // create a factory using default values (e.g. floating precision)
-            IGeometryFactory<BufferedCoordinate2D> fact
-                = new GeometryFactory<BufferedCoordinate2D>(
-                    new BufferedCoordinate2DSequenceFactory(coordFactory));
+            IGeometryFactory<BufferedCoordinate> fact
+                = new GeometryFactory<BufferedCoordinate>(
+                    new BufferedCoordinateSequenceFactory(coordFactory));
 
             IPoint p1 = fact.CreatePoint(coordFactory.Create(0, 0));
             Console.WriteLine(p1);

@@ -17,13 +17,13 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
     {
         private void InitBlock()
         {
-            reader = new WktReader<BufferedCoordinate2D>(
-                GeometryFactory<BufferedCoordinate2D>.CreateFloatingPrecision(
-                    new BufferedCoordinate2DSequenceFactory()),
+            reader = new WktReader<BufferedCoordinate>(
+                GeometryFactory<BufferedCoordinate>.CreateFloatingPrecision(
+                    new BufferedCoordinateSequenceFactory()),
                 null);
         }
 
-        internal virtual IEnumerable<IGeometry<BufferedCoordinate2D>> Data
+        internal virtual IEnumerable<IGeometry<BufferedCoordinate>> Data
         {
             get
             {
@@ -67,14 +67,14 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
 
         internal virtual void Run()
         {
-            IEnumerable<IGeometry<BufferedCoordinate2D>> lineStrings = Data;
+            IEnumerable<IGeometry<BufferedCoordinate>> lineStrings = Data;
 
-            LineMerger<BufferedCoordinate2D> lineMerger
-                = new LineMerger<BufferedCoordinate2D>();
+            LineMerger<BufferedCoordinate> lineMerger
+                = new LineMerger<BufferedCoordinate>();
 
             lineMerger.Add(lineStrings);
 
-            IEnumerable<ILineString<BufferedCoordinate2D>> mergedLineStrings
+            IEnumerable<ILineString<BufferedCoordinate>> mergedLineStrings
                 = lineMerger.MergedLineStrings;
 
             Console.WriteLine("Lines formed (" + Enumerable.Count(mergedLineStrings) + "):");
@@ -86,12 +86,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
         }
 
 
-        internal virtual IGeometry<BufferedCoordinate2D> Read(String lineWKT)
+        internal virtual IGeometry<BufferedCoordinate> Read(String lineWKT)
         {
             try
             {
-                IGeometry<BufferedCoordinate2D> geom
-                    = reader.Read(lineWKT) as IGeometry<BufferedCoordinate2D>;
+                IGeometry<BufferedCoordinate> geom
+                    = reader.Read(lineWKT) as IGeometry<BufferedCoordinate>;
                 return geom;
             }
             catch (Exception ex)

@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         [Test]
         public void LineStringReverseTest()
         {
-            BufferedCoordinate2DFactory coordFactory = new BufferedCoordinate2DFactory();
+            BufferedCoordinateFactory coordFactory = new BufferedCoordinateFactory();
 
             ILineString lineString = GeoFactory.CreateLineString(new ICoordinate[]
                                                                  {

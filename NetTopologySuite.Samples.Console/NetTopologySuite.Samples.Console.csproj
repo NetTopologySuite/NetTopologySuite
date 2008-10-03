@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug_Net20</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{39E8A390-5304-4447-99E2-3810941824AD}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -52,10 +52,6 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NPack, Version=0.7.13341.0, Culture=neutral, PublicKeyToken=56f174b1685ddc6a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ExternalReferences\$(Configuration)\NPack.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework, Version=2.2.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -95,17 +91,21 @@
     <Compile Include="Technique\UnionUsingBuffer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj">
+    <ProjectReference Include="..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj">
       <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
       <Name>GeoAPI.Net</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ManagedBufferedCoordinate2D\ManagedBufferedCoordinate2D.csproj">
+    <ProjectReference Include="..\ManagedBufferedCoordinate\ManagedBufferedCoordinate.csproj">
       <Project>{8A1C8DC2-9E24-47E9-A51C-AA46E0B0260C}</Project>
-      <Name>ManagedBufferedCoordinate2D</Name>
+      <Name>ManagedBufferedCoordinate</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
       <Name>NetTopologySuite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NPack\NPack\NPack.csproj">
+      <Project>{B139E1D5-091B-40D2-B7A2-7D7D82E13019}</Project>
+      <Name>NPack</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

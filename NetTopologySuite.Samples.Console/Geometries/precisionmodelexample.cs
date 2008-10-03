@@ -33,8 +33,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
             }
         }
 
-        private readonly ICoordinateFactory<BufferedCoordinate2D> _coordinateFactory =
-            new BufferedCoordinate2DFactory();
+        private readonly ICoordinateFactory<BufferedCoordinate> _coordinateFactory =
+            new BufferedCoordinateFactory();
 
         public virtual void Run()
         {
@@ -52,12 +52,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
             Console.WriteLine("A = " + wktA);
             Console.WriteLine("B = " + wktB);
 
-            Intersection(wktA, wktB, new PrecisionModel<BufferedCoordinate2D>(_coordinateFactory));
+            Intersection(wktA, wktB, new PrecisionModel<BufferedCoordinate>(_coordinateFactory));
             Intersection(wktA,
                          wktB,
-                         new PrecisionModel<BufferedCoordinate2D>(_coordinateFactory,
+                         new PrecisionModel<BufferedCoordinate>(_coordinateFactory,
                                                                   PrecisionModelType.SingleFloating));
-            Intersection(wktA, wktB, new PrecisionModel<BufferedCoordinate2D>(_coordinateFactory, 1));
+            Intersection(wktA, wktB, new PrecisionModel<BufferedCoordinate>(_coordinateFactory, 1));
         }
 
         public virtual void Example2()
@@ -70,19 +70,19 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
             Console.WriteLine("A = " + wktA);
             Console.WriteLine("B = " + wktB);
 
-            Difference(wktA, wktB, new PrecisionModel<BufferedCoordinate2D>(_coordinateFactory));
-            Difference(wktA, wktB, new PrecisionModel<BufferedCoordinate2D>(_coordinateFactory, 1));
+            Difference(wktA, wktB, new PrecisionModel<BufferedCoordinate>(_coordinateFactory));
+            Difference(wktA, wktB, new PrecisionModel<BufferedCoordinate>(_coordinateFactory, 1));
         }
 
 
         public virtual void Intersection(String wktA, 
                                          String wktB,
-                                         PrecisionModel<BufferedCoordinate2D> pm)
+                                         PrecisionModel<BufferedCoordinate> pm)
         {
             Console.WriteLine("Running example using Precision Model = " + pm);
-            GeometryFactory<BufferedCoordinate2D> fact
-                = new GeometryFactory<BufferedCoordinate2D>(pm);
-            WktReader<BufferedCoordinate2D> wktRdr = new WktReader<BufferedCoordinate2D>(fact, null);
+            GeometryFactory<BufferedCoordinate> fact
+                = new GeometryFactory<BufferedCoordinate>(pm);
+            WktReader<BufferedCoordinate> wktRdr = new WktReader<BufferedCoordinate>(fact, null);
 
             IGeometry a = wktRdr.Read(wktA);
             IGeometry b = wktRdr.Read(wktB);
@@ -93,13 +93,13 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 
         public virtual void Difference(String wktA, 
                                        String wktB,
-                                       PrecisionModel<BufferedCoordinate2D> pm)
+                                       PrecisionModel<BufferedCoordinate> pm)
         {
             Console.WriteLine("-------------------------------------------");
             Console.WriteLine("Running example using Precision Model = " + pm);
-            GeometryFactory<BufferedCoordinate2D> fact
-                = new GeometryFactory<BufferedCoordinate2D>(pm);
-            WktReader<BufferedCoordinate2D> wktRdr = new WktReader<BufferedCoordinate2D>(fact, null);
+            GeometryFactory<BufferedCoordinate> fact
+                = new GeometryFactory<BufferedCoordinate>(pm);
+            WktReader<BufferedCoordinate> wktRdr = new WktReader<BufferedCoordinate>(fact, null);
 
             IGeometry a = wktRdr.Read(wktA);
             IGeometry b = wktRdr.Read(wktB);

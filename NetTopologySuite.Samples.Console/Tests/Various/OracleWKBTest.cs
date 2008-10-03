@@ -38,8 +38,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                                                   FileAccess.Read,
                                                   FileShare.Read))
             {
-                WkbReader<BufferedCoordinate2D> wkbreader =
-                    new WkbReader<BufferedCoordinate2D>(GeoFactory);
+                WkbReader<BufferedCoordinate> wkbreader =
+                    new WkbReader<BufferedCoordinate>(GeoFactory);
                 result = wkbreader.Read(stream);
             }
 
@@ -50,7 +50,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         [Test]
         public void OracleWkbBigEndianWriteTest()
         {
-            ILinearRing<BufferedCoordinate2D> shell = GeoFactory.CreateLinearRing(new[]
+            ILinearRing<BufferedCoordinate> shell = GeoFactory.CreateLinearRing(new[]
                                                                   {
                                                                       CoordFactory.Create(100, 100),
                                                                       CoordFactory.Create(200, 100),
@@ -59,7 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                                                                       CoordFactory.Create(100, 100)
                                                                   });
 
-            ILinearRing<BufferedCoordinate2D> hole = GeoFactory.CreateLinearRing(new[]
+            ILinearRing<BufferedCoordinate> hole = GeoFactory.CreateLinearRing(new[]
                                                                  {
                                                                      CoordFactory.Create(120, 120),
                                                                      CoordFactory.Create(180, 120),
@@ -68,10 +68,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                                                                      CoordFactory.Create(120, 120)
                                                                  });
 
-            IPolygon<BufferedCoordinate2D> polygon = GeoFactory.CreatePolygon(shell, new[] {hole});
+            IPolygon<BufferedCoordinate> polygon = GeoFactory.CreatePolygon(shell, new[] {hole});
 
-            WkbWriter<BufferedCoordinate2D> writer =
-                new WkbWriter<BufferedCoordinate2D>(WkbByteOrder.BigEndian);
+            WkbWriter<BufferedCoordinate> writer =
+                new WkbWriter<BufferedCoordinate>(WkbByteOrder.BigEndian);
             
             Byte[] bytes = writer.Write(polygon);
             

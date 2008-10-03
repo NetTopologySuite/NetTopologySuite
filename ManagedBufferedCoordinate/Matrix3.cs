@@ -5,7 +5,7 @@ using NPack.Interfaces;
 
 namespace NetTopologySuite.Coordinates
 {
-    public struct Matrix3 : IAffineTransformMatrix<DoubleComponent, BufferedCoordinate2D, Matrix3>
+    public struct Matrix3 : IAffineTransformMatrix<DoubleComponent, BufferedCoordinate, Matrix3>
     {
         private DoubleComponent _m00, _m01, _m02;
         private DoubleComponent _m10, _m11, _m12;
@@ -47,7 +47,7 @@ namespace NetTopologySuite.Coordinates
             throw new ArgumentException("Matrix3 must have 6 or 9 values.");
         }
 
-        #region IAffineTransformMatrix<DoubleComponent,BufferedCoordinate2D,Matrix3> Members
+        #region IAffineTransformMatrix<DoubleComponent,BufferedCoordinate,Matrix3> Members
 
         public Matrix3 Inverse
         {
@@ -59,22 +59,22 @@ namespace NetTopologySuite.Coordinates
             throw new NotImplementedException();
         }
 
-        public void RotateAt(BufferedCoordinate2D point, BufferedCoordinate2D axis, Double radians, MatrixOperationOrder order)
+        public void RotateAt(BufferedCoordinate point, BufferedCoordinate axis, Double radians, MatrixOperationOrder order)
         {
             throw new NotImplementedException();
         }
 
-        public void RotateAt(BufferedCoordinate2D point, BufferedCoordinate2D axis, Double radians)
+        public void RotateAt(BufferedCoordinate point, BufferedCoordinate axis, Double radians)
         {
             throw new NotImplementedException();
         }
 
-        public void Translate(BufferedCoordinate2D translateVector, MatrixOperationOrder order)
+        public void Translate(BufferedCoordinate translateVector, MatrixOperationOrder order)
         {
             throw new NotImplementedException();
         }
 
-        public void Translate(BufferedCoordinate2D translateVector)
+        public void Translate(BufferedCoordinate translateVector)
         {
             throw new NotImplementedException();
         }
@@ -91,24 +91,24 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region ITransformMatrix<DoubleComponent,BufferedCoordinate2D,Matrix3> Members
+        #region ITransformMatrix<DoubleComponent,BufferedCoordinate,Matrix3> Members
 
-        public void RotateAlong(BufferedCoordinate2D axis, Double radians, MatrixOperationOrder order)
+        public void RotateAlong(BufferedCoordinate axis, Double radians, MatrixOperationOrder order)
         {
             throw new NotImplementedException();
         }
 
-        public void RotateAlong(BufferedCoordinate2D axis, Double radians)
+        public void RotateAlong(BufferedCoordinate axis, Double radians)
         {
             throw new NotImplementedException();
         }
 
-        public void Scale(BufferedCoordinate2D scaleVector, MatrixOperationOrder order)
+        public void Scale(BufferedCoordinate scaleVector, MatrixOperationOrder order)
         {
             throw new NotImplementedException();
         }
 
-        public void Scale(BufferedCoordinate2D scaleVector)
+        public void Scale(BufferedCoordinate scaleVector)
         {
             throw new NotImplementedException();
         }
@@ -123,12 +123,12 @@ namespace NetTopologySuite.Coordinates
             throw new NotImplementedException();
         }
 
-        public void Shear(BufferedCoordinate2D shearVector, MatrixOperationOrder order)
+        public void Shear(BufferedCoordinate shearVector, MatrixOperationOrder order)
         {
             throw new NotImplementedException();
         }
 
-        public void Shear(BufferedCoordinate2D shearVector)
+        public void Shear(BufferedCoordinate shearVector)
         {
             throw new NotImplementedException();
         }
@@ -138,7 +138,7 @@ namespace NetTopologySuite.Coordinates
             throw new NotImplementedException();
         }
 
-        public BufferedCoordinate2D TransformVector(BufferedCoordinate2D input)
+        public BufferedCoordinate TransformVector(BufferedCoordinate input)
         {
             throw new NotImplementedException();
         }
@@ -158,7 +158,7 @@ namespace NetTopologySuite.Coordinates
             throw new NotImplementedException();
         }
 
-        public IEnumerable<BufferedCoordinate2D> TransformVectors(IEnumerable<BufferedCoordinate2D> input)
+        public IEnumerable<BufferedCoordinate> TransformVectors(IEnumerable<BufferedCoordinate> input)
         {
             throw new NotImplementedException();
         }

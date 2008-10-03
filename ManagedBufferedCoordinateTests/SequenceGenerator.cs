@@ -4,46 +4,46 @@ using GeoAPI.Coordinates;
 using NetTopologySuite.Coordinates;
 using NPack;
 
-namespace ManagedBufferedCoordinate2DTests
+namespace ManagedBufferedCoordinateTests
 {
     internal class SequenceGenerator
     {
         public static readonly Int32 BigMaxLimit = Int32.MaxValue - 2;
         private readonly Random _rnd = new MersenneTwister();
         private readonly Int32 _maxRandomLimit;
-        private readonly BufferedCoordinate2DFactory _coordFactory;
-        private readonly BufferedCoordinate2DSequenceFactory _seqFactory;
-        private ICoordinateSequence<BufferedCoordinate2D> _sequence;
-        private List<BufferedCoordinate2D> _main;
-        private List<BufferedCoordinate2D> _prepend;
-        private List<BufferedCoordinate2D> _append;
+        private readonly BufferedCoordinateFactory _coordFactory;
+        private readonly BufferedCoordinateSequenceFactory _seqFactory;
+        private ICoordinateSequence<BufferedCoordinate> _sequence;
+        private List<BufferedCoordinate> _main;
+        private List<BufferedCoordinate> _prepend;
+        private List<BufferedCoordinate> _append;
 
-        public BufferedCoordinate2DFactory CoordinateFactory 
+        public BufferedCoordinateFactory CoordinateFactory 
         {
             get { return _coordFactory; }
         }
 
-        public BufferedCoordinate2DSequenceFactory SequenceFactory 
+        public BufferedCoordinateSequenceFactory SequenceFactory 
         {
             get { return _seqFactory; }
         }
 
-        public ICoordinateSequence<BufferedCoordinate2D> Sequence 
+        public ICoordinateSequence<BufferedCoordinate> Sequence 
         {
             get { return _sequence; }
         }
 
-        public List<BufferedCoordinate2D> MainList
+        public List<BufferedCoordinate> MainList
         {
             get { return _main; }
         }
         
-        public List<BufferedCoordinate2D> PrependList
+        public List<BufferedCoordinate> PrependList
         {
             get { return _prepend; }
         }
         
-        public List<BufferedCoordinate2D> AppendList
+        public List<BufferedCoordinate> AppendList
         {
             get { return _append; }
         }
@@ -69,65 +69,65 @@ namespace ManagedBufferedCoordinate2DTests
         {
             _maxRandomLimit = max;
 
-            _coordFactory = new BufferedCoordinate2DFactory();
-            _seqFactory = new BufferedCoordinate2DSequenceFactory(CoordinateFactory);
-            _main = new List<BufferedCoordinate2D>(GenerateCoordinates(mainCount));
-            _prepend = new List<BufferedCoordinate2D>(GenerateCoordinates(prependCount));
-            _append = new List<BufferedCoordinate2D>(GenerateCoordinates(appendCount));
+            _coordFactory = new BufferedCoordinateFactory();
+            _seqFactory = new BufferedCoordinateSequenceFactory(CoordinateFactory);
+            _main = new List<BufferedCoordinate>(GenerateCoordinates(mainCount));
+            _prepend = new List<BufferedCoordinate>(GenerateCoordinates(prependCount));
+            _append = new List<BufferedCoordinate>(GenerateCoordinates(appendCount));
 
             _sequence = SequenceFactory.Create(MainList);
         }
 
-        public ICoordinateSequence<BufferedCoordinate2D> NewEmptySequence()
+        public ICoordinateSequence<BufferedCoordinate> NewEmptySequence()
         {
             return SequenceFactory.Create();
         }
 
-        public ICoordinateSequence<BufferedCoordinate2D> NewSequence()
+        public ICoordinateSequence<BufferedCoordinate> NewSequence()
         {
             return NewSequence(true);
         }
 
-        public ICoordinateSequence<BufferedCoordinate2D> NewSequence(IEnumerable<BufferedCoordinate2D> coords)
+        public ICoordinateSequence<BufferedCoordinate> NewSequence(IEnumerable<BufferedCoordinate> coords)
         {
             return NewSequence(coords, true);
         }
 
-        public ICoordinateSequence<BufferedCoordinate2D> NewSequence(Boolean allowRepeated)
+        public ICoordinateSequence<BufferedCoordinate> NewSequence(Boolean allowRepeated)
         {
-            IEnumerable<BufferedCoordinate2D> coords
+            IEnumerable<BufferedCoordinate> coords
                 = GenerateCoordinates(MainList.Count, _maxRandomLimit);
             return NewSequence(coords, allowRepeated);
         }
 
-        public ICoordinateSequence<BufferedCoordinate2D> NewSequence(IEnumerable<BufferedCoordinate2D> coords, Boolean allowRepeated)
+        public ICoordinateSequence<BufferedCoordinate> NewSequence(IEnumerable<BufferedCoordinate> coords, Boolean allowRepeated)
         {
             return SequenceFactory.Create(coords, allowRepeated);
         }
 
-        public BufferedCoordinate2D NewCoordinate(Double x, Double y)
+        public BufferedCoordinate NewCoordinate(Double x, Double y)
         {
             return CoordinateFactory.Create(x, y);
         }
 
-        public BufferedCoordinate2D RandomCoordinate()
+        public BufferedCoordinate RandomCoordinate()
         {
             return RandomCoordinate(_maxRandomLimit);
         }
 
-        public BufferedCoordinate2D RandomCoordinate(Int32 max)
+        public BufferedCoordinate RandomCoordinate(Int32 max)
         {
             Double x = _rnd.Next(1, max + 1);
             Double y = _rnd.Next(1, max + 1);
             return NewCoordinate(x, y);
         }
 
-        public IEnumerable<BufferedCoordinate2D> GenerateCoordinates(Int32 count)
+        public IEnumerable<BufferedCoordinate> GenerateCoordinates(Int32 count)
         {
             return GenerateCoordinates(count, _maxRandomLimit);
         }
 
-        public IEnumerable<BufferedCoordinate2D> GenerateCoordinates(Int32 count, Int32 max)
+        public IEnumerable<BufferedCoordinate> GenerateCoordinates(Int32 count, Int32 max)
         {
             while (count-- > 0)
             {

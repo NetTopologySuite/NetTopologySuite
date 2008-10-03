@@ -16,17 +16,17 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         private readonly IWktGeometryWriter writer;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WKTTest"/> class.
+        /// Initializes a new instance of the <see cref="WktTest"/> class.
         /// </summary>
         public WktTest()
         {
-            writer = new WktWriter<BufferedCoordinate2D>();
+            writer = new WktWriter<BufferedCoordinate>();
         }
 
         [Test]
         public void WriteZeroBasedCoordinateWithDifferentFactories()
         {
-            BufferedCoordinate2DFactory coordFactory = new BufferedCoordinate2DFactory();
+            BufferedCoordinateFactory coordFactory = new BufferedCoordinateFactory();
             TestFormatting(coordFactory.Create(0.00000000001, 0.00000000002));
             TestFormatting(coordFactory.Create(0.00001, 0.00002));
             TestFormatting(coordFactory.Create(0.01, 0.02));
@@ -36,24 +36,24 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 
         private void TestFormatting(ICoordinate c)
         {
-            IGeometryFactory<BufferedCoordinate2D> geoFactory;
-            ICoordinateSequenceFactory<BufferedCoordinate2D> seqFactory
-                = new BufferedCoordinate2DSequenceFactory();
+            IGeometryFactory<BufferedCoordinate> geoFactory;
+            ICoordinateSequenceFactory<BufferedCoordinate> seqFactory
+                = new BufferedCoordinateSequenceFactory();
 
             // Double floating precision
-            geoFactory = GeometryFactory<BufferedCoordinate2D>.CreateFloatingPrecision(seqFactory);
+            geoFactory = GeometryFactory<BufferedCoordinate>.CreateFloatingPrecision(seqFactory);
             IGeometry point = geoFactory.CreatePoint(c);
             String result = writer.Write(point);
             Debug.WriteLine(result);
 
             // Single floating precision
-            geoFactory = GeometryFactory<BufferedCoordinate2D>.CreateFloatingSinglePrecision(seqFactory);
+            geoFactory = GeometryFactory<BufferedCoordinate>.CreateFloatingSinglePrecision(seqFactory);
             point = geoFactory.CreatePoint(c);
             result = writer.Write(point);
             Debug.WriteLine(result);
 
             // Fixed precision
-            geoFactory = GeometryFactory<BufferedCoordinate2D>.CreateFixedPrecision(seqFactory);
+            geoFactory = GeometryFactory<BufferedCoordinate>.CreateFixedPrecision(seqFactory);
             point = geoFactory.CreatePoint(c);
             result = writer.Write(point);
             Debug.WriteLine(result);

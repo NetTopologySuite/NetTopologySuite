@@ -6,41 +6,42 @@ using NPack.Interfaces;
 
 namespace NetTopologySuite.Coordinates
 {
-    using IVector2D = IVector<DoubleComponent, BufferedCoordinate2D>;
+    using IVector2D = IVector<DoubleComponent, BufferedCoordinate>;
     using IVectorD = IVector<DoubleComponent>;
 
-    public struct BufferedCoordinate2D : ICoordinate2D,
-                                         ICoordinate<BufferedCoordinate2D>,
-                                         IBufferedVector<DoubleComponent, BufferedCoordinate2D>,
-                                         IEquatable<BufferedCoordinate2D>,
-                                         IComparable<BufferedCoordinate2D>,
-                                         IComputable<Double, BufferedCoordinate2D>
+    public struct BufferedCoordinate : ICoordinate2D,
+                                       ICoordinate3D,
+                                       ICoordinate<BufferedCoordinate>,
+                                       IBufferedVector<DoubleComponent, BufferedCoordinate>,
+                                       IEquatable<BufferedCoordinate>,
+                                       IComparable<BufferedCoordinate>,
+                                       IComputable<Double, BufferedCoordinate>
     {
         private readonly Int32? _index;
-        private readonly BufferedCoordinate2DFactory _factory;
+        private readonly BufferedCoordinateFactory _factory;
         private readonly Boolean _isHomogeneous;
 
-        internal BufferedCoordinate2D(BufferedCoordinate2DFactory factory, Int32 index)
+        internal BufferedCoordinate(BufferedCoordinateFactory factory, Int32 index)
             : this(factory, index, false) { }
 
-        internal BufferedCoordinate2D(BufferedCoordinate2DFactory factory, Int32 index, Boolean isHomogeneous)
+        internal BufferedCoordinate(BufferedCoordinateFactory factory, Int32 index, Boolean isHomogeneous)
         {
             _factory = factory;
             _index = index;
             _isHomogeneous = isHomogeneous;
         }
 
-        public BufferedCoordinate2D Clone()
+        public BufferedCoordinate Clone()
         {
             return _factory.Create(this);
         }
 
-        public Double Dot(BufferedCoordinate2D vector)
+        public Double Dot(BufferedCoordinate vector)
         {
             return _factory.Dot(this, vector);
         }
 
-        public BufferedCoordinate2D Cross(BufferedCoordinate2D vector)
+        public BufferedCoordinate Cross(BufferedCoordinate vector)
         {
             return _factory.Homogenize(_factory.Cross(this, vector));
         }
@@ -52,9 +53,9 @@ namespace NetTopologySuite.Coordinates
                 return false;
             }
 
-            if (obj is BufferedCoordinate2D)
+            if (obj is BufferedCoordinate)
             {
-                BufferedCoordinate2D other = (BufferedCoordinate2D)obj;
+                BufferedCoordinate other = (BufferedCoordinate)obj;
 
                 return Equals(other);
             }
@@ -104,28 +105,28 @@ namespace NetTopologySuite.Coordinates
                 ^ _factory.GetHashCode();
         }
 
-        internal BufferedCoordinate2DFactory Factory
+        internal BufferedCoordinateFactory Factory
         {
             get { return _factory; }
         }
 
-        internal static BufferedCoordinate2D Homogenize(BufferedCoordinate2D coordinate)
+        internal static BufferedCoordinate Homogenize(BufferedCoordinate coordinate)
         {
             return !coordinate._index.HasValue
                        ? coordinate
-                       : new BufferedCoordinate2D(coordinate._factory, coordinate._index.Value, true);
+                       : new BufferedCoordinate(coordinate._factory, coordinate._index.Value, true);
         }
 
-        internal static BufferedCoordinate2D Dehomogenize(BufferedCoordinate2D coordinate)
+        internal static BufferedCoordinate Dehomogenize(BufferedCoordinate coordinate)
         {
             return !coordinate._index.HasValue
                        ? coordinate
-                       : new BufferedCoordinate2D(coordinate._factory, coordinate._index.Value, false);
+                       : new BufferedCoordinate(coordinate._factory, coordinate._index.Value, false);
         }
 
         #region IBufferedVector<DoubleComponent> Members
 
-        public IVectorBuffer<DoubleComponent, BufferedCoordinate2D> GetBuffer()
+        public IVectorBuffer<DoubleComponent, BufferedCoordinate> GetBuffer()
         {
             return _factory;
         }
@@ -135,7 +136,7 @@ namespace NetTopologySuite.Coordinates
             get { return _index.Value; }
         }
 
-        public Boolean ValueEquals(BufferedCoordinate2D other)
+        public Boolean ValueEquals(BufferedCoordinate other)
         {
             return IsEmpty == other.IsEmpty &&
                    _isHomogeneous == other._isHomogeneous &&
@@ -221,9 +222,9 @@ namespace NetTopologySuite.Coordinates
 
         Boolean IEquatable<ICoordinate>.Equals(ICoordinate other)
         {
-            if (other is BufferedCoordinate2D)
+            if (other is BufferedCoordinate)
             {
-                return Equals((BufferedCoordinate2D)other);
+                return Equals((BufferedCoordinate)other);
             }
 
             if (other == null)
@@ -298,18 +299,18 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region IEquatable<BufferedCoordinate2D> Members
+        #region IEquatable<BufferedCoordinate> Members
 
-        public Boolean Equals(BufferedCoordinate2D other)
+        public Boolean Equals(BufferedCoordinate other)
         {
             return _index == other._index && _factory == other._factory;
         }
 
         #endregion
 
-        #region IComparable<BufferedCoordinate2D> Members
+        #region IComparable<BufferedCoordinate> Members
 
-        public Int32 CompareTo(BufferedCoordinate2D other)
+        public Int32 CompareTo(BufferedCoordinate other)
         {
             // Empty coordinates don't compare
             if (other._index == null)
@@ -326,154 +327,154 @@ namespace NetTopologySuite.Coordinates
             // Since the coordinates are stored in lexicograpic order,
             // the index comparison works to compare coordinates
             // first by X, then by Y;
-            return BufferedCoordinate2DFactory.Compare(this, other);
+            return BufferedCoordinateFactory.Compare(this, other);
         }
 
         #endregion
 
-        #region IComputable<BufferedCoordinate2D> Members
+        #region IComputable<BufferedCoordinate> Members
 
-        public BufferedCoordinate2D Abs()
+        public BufferedCoordinate Abs()
         {
             return _factory.Create(Math.Abs(X), Math.Abs(Y));
         }
 
-        public BufferedCoordinate2D Set(Double value)
+        public BufferedCoordinate Set(Double value)
         {
             throw new NotSupportedException();
         }
 
         #endregion
 
-        #region INegatable<BufferedCoordinate2D> Members
+        #region INegatable<BufferedCoordinate> Members
 
-        public BufferedCoordinate2D Negative()
+        public BufferedCoordinate Negative()
         {
             return _factory.Create(-X, -Y);
         }
 
         #endregion
 
-        #region ISubtractable<BufferedCoordinate2D> Members
+        #region ISubtractable<BufferedCoordinate> Members
 
-        public BufferedCoordinate2D Subtract(BufferedCoordinate2D b)
+        public BufferedCoordinate Subtract(BufferedCoordinate b)
         {
             return Add(b.Negative());
         }
 
         #endregion
 
-        #region IHasZero<BufferedCoordinate2D> Members
+        #region IHasZero<BufferedCoordinate> Members
 
-        public BufferedCoordinate2D Zero
+        public BufferedCoordinate Zero
         {
             get { return _factory.GetZero(); }
         }
 
         #endregion
 
-        #region IAddable<BufferedCoordinate2D> Members
+        #region IAddable<BufferedCoordinate> Members
 
-        public BufferedCoordinate2D Add(BufferedCoordinate2D b)
+        public BufferedCoordinate Add(BufferedCoordinate b)
         {
             return _factory.Add(this, b);
         }
 
         #endregion
 
-        #region IDivisible<BufferedCoordinate2D> Members
+        #region IDivisible<BufferedCoordinate> Members
 
-        public BufferedCoordinate2D Divide(BufferedCoordinate2D b)
+        public BufferedCoordinate Divide(BufferedCoordinate b)
         {
             throw new NotSupportedException();
-            //return BufferedCoordinate2DFactory.Divide(this, b);
+            //return BufferedCoordinateFactory.Divide(this, b);
         }
 
         #endregion
 
-        #region IDivisible<Double, BufferedCoordinate2D> Members
+        #region IDivisible<Double, BufferedCoordinate> Members
 
-        public BufferedCoordinate2D Divide(Double b)
+        public BufferedCoordinate Divide(Double b)
         {
             return _factory.Divide(this, b);
         }
 
         #endregion
 
-        #region IHasOne<BufferedCoordinate2D> Members
+        #region IHasOne<BufferedCoordinate> Members
 
-        public BufferedCoordinate2D One
+        public BufferedCoordinate One
         {
             get { return _factory.GetOne(); }
         }
 
         #endregion
 
-        #region IMultipliable<BufferedCoordinate2D> Members
+        #region IMultipliable<BufferedCoordinate> Members
 
-        public BufferedCoordinate2D Multiply(BufferedCoordinate2D b)
+        public BufferedCoordinate Multiply(BufferedCoordinate b)
         {
             return _factory.Cross(this, b);
         }
 
         #endregion
 
-        #region IMultipliable<Double,BufferedCoordinate2D> Members
+        #region IMultipliable<Double,BufferedCoordinate> Members
 
-        public BufferedCoordinate2D Multiply(Double b)
+        public BufferedCoordinate Multiply(Double b)
         {
             return _factory.Create(X * b, Y * b);
         }
 
         #endregion
 
-        #region IBooleanComparable<BufferedCoordinate2D> Members
+        #region IBooleanComparable<BufferedCoordinate> Members
 
-        public Boolean GreaterThan(BufferedCoordinate2D value)
+        public Boolean GreaterThan(BufferedCoordinate value)
         {
-            return BufferedCoordinate2DFactory.GreaterThan(this, value);
+            return BufferedCoordinateFactory.GreaterThan(this, value);
         }
 
-        public Boolean GreaterThanOrEqualTo(BufferedCoordinate2D value)
+        public Boolean GreaterThanOrEqualTo(BufferedCoordinate value)
         {
-            return BufferedCoordinate2DFactory.GreaterThanOrEqualTo(this, value);
+            return BufferedCoordinateFactory.GreaterThanOrEqualTo(this, value);
         }
 
-        public Boolean LessThan(BufferedCoordinate2D value)
+        public Boolean LessThan(BufferedCoordinate value)
         {
-            return BufferedCoordinate2DFactory.LessThan(this, value);
+            return BufferedCoordinateFactory.LessThan(this, value);
         }
 
-        public Boolean LessThanOrEqualTo(BufferedCoordinate2D value)
+        public Boolean LessThanOrEqualTo(BufferedCoordinate value)
         {
-            return BufferedCoordinate2DFactory.LessThanOrEqualTo(this, value);
+            return BufferedCoordinateFactory.LessThanOrEqualTo(this, value);
         }
 
         #endregion
 
-        #region IExponential<BufferedCoordinate2D> Members
+        #region IExponential<BufferedCoordinate> Members
 
-        public BufferedCoordinate2D Exp()
+        public BufferedCoordinate Exp()
         {
             throw new NotImplementedException();
         }
 
-        public BufferedCoordinate2D Log()
+        public BufferedCoordinate Log()
         {
             throw new NotImplementedException();
         }
 
-        public BufferedCoordinate2D Log(Double newBase)
+        public BufferedCoordinate Log(Double newBase)
         {
             throw new NotImplementedException();
         }
 
-        public BufferedCoordinate2D Power(Double exponent)
+        public BufferedCoordinate Power(Double exponent)
         {
             throw new NotImplementedException();
         }
 
-        public BufferedCoordinate2D Sqrt()
+        public BufferedCoordinate Sqrt()
         {
             throw new NotImplementedException();
         }
@@ -534,9 +535,9 @@ namespace NetTopologySuite.Coordinates
 
         ICoordinate IAddable<ICoordinate>.Add(ICoordinate b)
         {
-            if (b is BufferedCoordinate2D)
+            if (b is BufferedCoordinate)
             {
-                return Add((BufferedCoordinate2D)b);
+                return Add((BufferedCoordinate)b);
             }
 
             throw new NotImplementedException();
@@ -1201,18 +1202,18 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region IAddable<Double,BufferedCoordinate2D> Members
+        #region IAddable<Double,BufferedCoordinate> Members
 
-        public BufferedCoordinate2D Add(Double b)
+        public BufferedCoordinate Add(Double b)
         {
             return _factory.Add(this, b);
         }
 
         #endregion
 
-        #region ISubtractable<Double,BufferedCoordinate2D> Members
+        #region ISubtractable<Double,BufferedCoordinate> Members
 
-        public BufferedCoordinate2D Subtract(Double b)
+        public BufferedCoordinate Subtract(Double b)
         {
             return _factory.Add(this, -b);
         }
@@ -1422,7 +1423,7 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region IAddable<Double, IVector<DoubleComponent, BufferedCoordinate2D>> Members
+        #region IAddable<Double, IVector<DoubleComponent, BufferedCoordinate>> Members
 
         IVector2D IAddable<Double, IVector2D>.Add(Double b)
         {
@@ -1431,7 +1432,7 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region ISubtractable<Double, IVector<DoubleComponent, BufferedCoordinate2D>> Members
+        #region ISubtractable<Double, IVector<DoubleComponent, BufferedCoordinate>> Members
 
         IVector2D ISubtractable<Double, IVector2D>.Subtract(Double b)
         {
@@ -1440,7 +1441,7 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region IMultipliable<Double, IVector<DoubleComponent, BufferedCoordinate2D>> Members
+        #region IMultipliable<Double, IVector<DoubleComponent, BufferedCoordinate>> Members
 
         IVector2D IMultipliable<Double, IVector2D>.Multiply(Double b)
         {
@@ -1449,7 +1450,7 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region IDivisible<Double, IVector<DoubleComponent, BufferedCoordinate2D>> Members
+        #region IDivisible<Double, IVector<DoubleComponent, BufferedCoordinate>> Members
 
         IVector2D IDivisible<Double, IVector2D>.Divide(Double b)
         {
@@ -1485,14 +1486,14 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region ICoordinate<BufferedCoordinate2D> Members
+        #region ICoordinate<BufferedCoordinate> Members
 
-        public Double Distance(BufferedCoordinate2D other)
+        public Double Distance(BufferedCoordinate other)
         {
             return _factory.Distance(this, other);
         }
 
-        DoubleComponent ICoordinate<BufferedCoordinate2D>.this[Int32 index]
+        DoubleComponent ICoordinate<BufferedCoordinate>.this[Int32 index]
         {
             get { return this[index]; }
         }
@@ -1503,5 +1504,37 @@ namespace NetTopologySuite.Coordinates
         {
             return new DoubleComponent[] { X, Y };
         }
+
+        #region ICoordinate3D Members
+
+        public double Z
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public double Distance(ICoordinate3D other)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IComparable<ICoordinate3D> Members
+
+        public int CompareTo(ICoordinate3D other)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IEquatable<ICoordinate3D> Members
+
+        public bool Equals(ICoordinate3D other)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

@@ -11,15 +11,15 @@ using NPack.Interfaces;
 
 namespace NetTopologySuite.Coordinates
 {
-    using IBufferedCoordFactory = ICoordinateFactory<BufferedCoordinate2D>;
-    using IBufferedCoordSequence = ICoordinateSequence<BufferedCoordinate2D>;
-    using IBufferedCoordSequenceFactory = ICoordinateSequenceFactory<BufferedCoordinate2D>;
+    using IBufferedCoordFactory = ICoordinateFactory<BufferedCoordinate>;
+    using IBufferedCoordSequence = ICoordinateSequence<BufferedCoordinate>;
+    using IBufferedCoordSequenceFactory = ICoordinateSequenceFactory<BufferedCoordinate>;
     using GeoAPI.DataStructures;
 
     /// <summary>
-    /// An <see cref="ICoordinateSequence{BufferedCoordinate2D}"/>.
+    /// An <see cref="ICoordinateSequence{BufferedCoordinate}"/>.
     /// </summary>
-    public class BufferedCoordinate2DSequence : IBufferedCoordSequence
+    public class BufferedCoordinateSequence : IBufferedCoordSequence
     {
         private enum SequenceStorage
         {
@@ -28,8 +28,8 @@ namespace NetTopologySuite.Coordinates
             AppendList
         }
 
-        private readonly IVectorBuffer<DoubleComponent, BufferedCoordinate2D> _buffer;
-        private readonly BufferedCoordinate2DSequenceFactory _factory;
+        private readonly IVectorBuffer<DoubleComponent, BufferedCoordinate> _buffer;
+        private readonly BufferedCoordinateSequenceFactory _factory;
         private List<Int32> _sequence;
         private Boolean _reversed;
         private Int32 _startIndex = -1;
@@ -41,12 +41,12 @@ namespace NetTopologySuite.Coordinates
         private Int32 _max = -1;
         private Int32 _min = -1;
 
-        internal BufferedCoordinate2DSequence(BufferedCoordinate2DSequenceFactory factory,
-                                              IVectorBuffer<DoubleComponent, BufferedCoordinate2D> buffer)
+        internal BufferedCoordinateSequence(BufferedCoordinateSequenceFactory factory,
+                                              IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer)
             : this(0, factory, buffer) { }
 
-        internal BufferedCoordinate2DSequence(Int32 size, BufferedCoordinate2DSequenceFactory factory,
-                                              IVectorBuffer<DoubleComponent, BufferedCoordinate2D> buffer)
+        internal BufferedCoordinateSequence(Int32 size, BufferedCoordinateSequenceFactory factory,
+                                              IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer)
         {
             if (size < 0) throw new ArgumentOutOfRangeException("size", size,
                                                                  "Size should be greater " +
@@ -61,20 +61,20 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
-        //internal BufferedCoordinate2DSequence(List<Int32> sequence,
-        //                                      BufferedCoordinate2DSequenceFactory factory,
-        //                                      IVectorBuffer<DoubleComponent, BufferedCoordinate2D> buffer)
+        //internal BufferedCoordinateSequence(List<Int32> sequence,
+        //                                      BufferedCoordinateSequenceFactory factory,
+        //                                      IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer)
         //    : this(false, sequence, null, null, null, null, null, factory, buffer) { }
 
-        internal BufferedCoordinate2DSequence(Boolean reverse,
+        internal BufferedCoordinateSequence(Boolean reverse,
                                               List<Int32> sequence,
                                               List<Int32> prepended,
                                               List<Int32> appended,
                                               SortedSet<Int32> skips,
                                               Int32? startIndex,
                                               Int32? endIndex,
-                                              BufferedCoordinate2DSequenceFactory factory,
-                                              IVectorBuffer<DoubleComponent, BufferedCoordinate2D> buffer)
+                                              BufferedCoordinateSequenceFactory factory,
+                                              IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer)
         {
             _reversed = reverse;
             _startIndex = startIndex ?? _startIndex;
@@ -133,7 +133,7 @@ namespace NetTopologySuite.Coordinates
 
         #region IBufferedCoordSequence Members
 
-        public IBufferedCoordSequence Append(BufferedCoordinate2D coordinate)
+        public IBufferedCoordSequence Append(BufferedCoordinate coordinate)
         {
             if (coordinate.IsEmpty)
             {
@@ -145,9 +145,9 @@ namespace NetTopologySuite.Coordinates
             return this;
         }
 
-        public IBufferedCoordSequence Append(IEnumerable<BufferedCoordinate2D> coordinates)
+        public IBufferedCoordSequence Append(IEnumerable<BufferedCoordinate> coordinates)
         {
-            BufferedCoordinate2DSequence seq = coordinates as BufferedCoordinate2DSequence;
+            BufferedCoordinateSequence seq = coordinates as BufferedCoordinateSequence;
 
             if (seq != null)
             {
@@ -155,7 +155,7 @@ namespace NetTopologySuite.Coordinates
             }
             else
             {
-                foreach (BufferedCoordinate2D coordinate in coordinates)
+                foreach (BufferedCoordinate coordinate in coordinates)
                 {
                     addInternal(coordinate);
                 }
@@ -168,7 +168,7 @@ namespace NetTopologySuite.Coordinates
 
         public IBufferedCoordSequence Append(IBufferedCoordSequence coordinates)
         {
-            BufferedCoordinate2DSequence seq = coordinates as BufferedCoordinate2DSequence;
+            BufferedCoordinateSequence seq = coordinates as BufferedCoordinateSequence;
 
             if (seq != null)
             {
@@ -176,7 +176,7 @@ namespace NetTopologySuite.Coordinates
                 return this;
             }
 
-            return Append((IEnumerable<BufferedCoordinate2D>)coordinates);
+            return Append((IEnumerable<BufferedCoordinate>)coordinates);
         }
 
         public IBufferedCoordSequenceFactory CoordinateSequenceFactory
@@ -184,21 +184,21 @@ namespace NetTopologySuite.Coordinates
             get { return _factory; }
         }
 
-        public BufferedCoordinate2D[] ToArray()
+        public BufferedCoordinate[] ToArray()
         {
-            BufferedCoordinate2D[] array = new BufferedCoordinate2D[Count];
+            BufferedCoordinate[] array = new BufferedCoordinate[Count];
 
             for (Int32 i = 0; i < Count; i++)
             {
                 Int32 coordIndex = _sequence[i];
-                BufferedCoordinate2D coord = _buffer[coordIndex];
+                BufferedCoordinate coord = _buffer[coordIndex];
                 array[i] = coord;
             }
 
             return array;
         }
 
-        public void Add(BufferedCoordinate2D item)
+        public void Add(BufferedCoordinate item)
         {
             checkFrozen();
 
@@ -212,7 +212,7 @@ namespace NetTopologySuite.Coordinates
             OnSequenceChanged();
         }
 
-        public IBufferedCoordSequence AddRange(IEnumerable<BufferedCoordinate2D> coordinates,
+        public IBufferedCoordSequence AddRange(IEnumerable<BufferedCoordinate> coordinates,
                                                Boolean allowRepeated,
                                                Boolean reverse)
         {
@@ -225,7 +225,7 @@ namespace NetTopologySuite.Coordinates
 
             Int32 lastIndex = -1;
 
-            foreach (BufferedCoordinate2D coordinate in coordinates)
+            foreach (BufferedCoordinate coordinate in coordinates)
             {
                 if (!allowRepeated)
                 {
@@ -246,11 +246,11 @@ namespace NetTopologySuite.Coordinates
             return this;
         }
 
-        public IBufferedCoordSequence AddRange(IEnumerable<BufferedCoordinate2D> coordinates)
+        public IBufferedCoordSequence AddRange(IEnumerable<BufferedCoordinate> coordinates)
         {
             checkFrozen();
 
-            foreach (BufferedCoordinate2D coordinate in coordinates)
+            foreach (BufferedCoordinate coordinate in coordinates)
             {
                 addInternal(coordinate);
             }
@@ -269,7 +269,7 @@ namespace NetTopologySuite.Coordinates
             _sequence.Capacity = Math.Max(_sequence.Capacity,
                                           sequence.Count - (_sequence.Capacity - Count));
 
-            BufferedCoordinate2DSequence buf2DSeq = sequence as BufferedCoordinate2DSequence;
+            BufferedCoordinateSequence buf2DSeq = sequence as BufferedCoordinateSequence;
 
             // if we share a buffer, we can just import the indexes
             if (buf2DSeq != null && buf2DSeq._buffer == _buffer)
@@ -278,7 +278,7 @@ namespace NetTopologySuite.Coordinates
             }
             else
             {
-                foreach (BufferedCoordinate2D coordinate in sequence)
+                foreach (BufferedCoordinate coordinate in sequence)
                 {
                     addInternal(coordinate);
                 }
@@ -288,9 +288,9 @@ namespace NetTopologySuite.Coordinates
             return this;
         }
 
-        public ISet<BufferedCoordinate2D> AsSet()
+        public ISet<BufferedCoordinate> AsSet()
         {
-            return new BufferedCoordinate2DSet(this, _factory, _buffer);
+            return new BufferedCoordinateSet(this, _factory, _buffer);
         }
 
         public IBufferedCoordSequence Clear()
@@ -302,8 +302,8 @@ namespace NetTopologySuite.Coordinates
 
         public IBufferedCoordSequence Clone()
         {
-            BufferedCoordinate2DSequence clone
-                = new BufferedCoordinate2DSequence(_factory, _buffer);
+            BufferedCoordinateSequence clone
+                = new BufferedCoordinateSequence(_factory, _buffer);
 
             clone._sequence.AddRange(_sequence);
 
@@ -330,7 +330,7 @@ namespace NetTopologySuite.Coordinates
             return this;
         }
 
-        public Boolean Contains(BufferedCoordinate2D item)
+        public Boolean Contains(BufferedCoordinate item)
         {
             if (!ReferenceEquals(item.Factory, _factory.CoordinateFactory))
             {
@@ -379,7 +379,7 @@ namespace NetTopologySuite.Coordinates
             get { return _factory.CoordinateFactory; }
         }
 
-        public void CopyTo(BufferedCoordinate2D[] array, Int32 arrayIndex)
+        public void CopyTo(BufferedCoordinate[] array, Int32 arrayIndex)
         {
             checkCopyToParameters(array, arrayIndex, "arrayIndex");
 
@@ -427,12 +427,12 @@ namespace NetTopologySuite.Coordinates
                 return false;
             }
 
-            //BufferedCoordinate2DSequence buf2DSeq
-            //    = other as BufferedCoordinate2DSequence;
+            //BufferedCoordinateSequence buf2DSeq
+            //    = other as BufferedCoordinateSequence;
 
             Int32 count = Count;
 
-            // [codekaizen] Removed BufferedCoordinate2DSequence optimized comparison due to incorrect
+            // [codekaizen] Removed BufferedCoordinateSequence optimized comparison due to incorrect
             //              results and complexity of correcting
             for (Int32 index = 0; index < count; index++)
             {
@@ -450,17 +450,17 @@ namespace NetTopologySuite.Coordinates
             return true;
         }
 
-        public IExtents<BufferedCoordinate2D> ExpandExtents(
-                                                 IExtents<BufferedCoordinate2D> extents)
+        public IExtents<BufferedCoordinate> ExpandExtents(
+                                                 IExtents<BufferedCoordinate> extents)
         {
-            IExtents<BufferedCoordinate2D> expanded = extents;
+            IExtents<BufferedCoordinate> expanded = extents;
             expanded.ExpandToInclude(this);
             return expanded;
         }
 
-        public BufferedCoordinate2D First
+        public BufferedCoordinate First
         {
-            get { return Count > 0 ? this[0] : new BufferedCoordinate2D(); }
+            get { return Count > 0 ? this[0] : new BufferedCoordinate(); }
         }
 
         public IBufferedCoordSequence Freeze()
@@ -469,7 +469,7 @@ namespace NetTopologySuite.Coordinates
             return this;
         }
 
-        public IEnumerator<BufferedCoordinate2D> GetEnumerator()
+        public IEnumerator<BufferedCoordinate> GetEnumerator()
         {
             Int32 count = Count;
 
@@ -531,7 +531,7 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
-        public Int32 IndexOf(BufferedCoordinate2D item)
+        public Int32 IndexOf(BufferedCoordinate item)
         {
             Int32 coordIndex = item.Index;
             Int32 index;
@@ -597,7 +597,7 @@ namespace NetTopologySuite.Coordinates
             return -1;
         }
 
-        public IBufferedCoordSequence Insert(Int32 index, BufferedCoordinate2D item)
+        public IBufferedCoordSequence Insert(Int32 index, BufferedCoordinate item)
         {
             checkFrozen();
 
@@ -636,7 +636,7 @@ namespace NetTopologySuite.Coordinates
             return this;
         }
 
-        public BufferedCoordinate2D this[Int32 index]
+        public BufferedCoordinate this[Int32 index]
         {
             get
             {
@@ -646,7 +646,7 @@ namespace NetTopologySuite.Coordinates
                 Int32 bufferIndex = getStorageValue(storage, index);
 
                 return bufferIndex < 0
-                    ? new BufferedCoordinate2D()
+                    ? new BufferedCoordinate()
                     : _buffer[bufferIndex];
             }
             set
@@ -703,9 +703,9 @@ namespace NetTopologySuite.Coordinates
             get { return IsFrozen; }
         }
 
-        public BufferedCoordinate2D Last
+        public BufferedCoordinate Last
         {
-            get { return Count > 0 ? this[Count - 1] : new BufferedCoordinate2D(); }
+            get { return Count > 0 ? this[Count - 1] : new BufferedCoordinate(); }
         }
 
         public Int32 LastIndex
@@ -713,14 +713,14 @@ namespace NetTopologySuite.Coordinates
             get { return Count - 1; }
         }
 
-        public BufferedCoordinate2D Maximum
+        public BufferedCoordinate Maximum
         {
             get
             {
                 if (_max < 0)
                 {
                     Int32 maxIndex = -1;
-                    BufferedCoordinate2D maxCoord = new BufferedCoordinate2D();
+                    BufferedCoordinate maxCoord = new BufferedCoordinate();
 
                     if (Count < 1)
                     {
@@ -730,7 +730,7 @@ namespace NetTopologySuite.Coordinates
 
                     for (int i = 0; i < Count; i++)
                     {
-                        BufferedCoordinate2D current = this[i];
+                        BufferedCoordinate current = this[i];
 
                         if (maxCoord.IsEmpty || current.GreaterThan(maxCoord))
                         {
@@ -752,23 +752,23 @@ namespace NetTopologySuite.Coordinates
             return seq.Append(other);
         }
 
-        public BufferedCoordinate2D Minimum
+        public BufferedCoordinate Minimum
         {
             get
             {
                 if (Count < 1)
                 {
-                    return new BufferedCoordinate2D();
+                    return new BufferedCoordinate();
                 }
 
                 if (_min < 0)
                 {
                     Int32 minIndex = -1;
-                    BufferedCoordinate2D? minCoord = null;
+                    BufferedCoordinate? minCoord = null;
 
                     for (int i = 0; i < Count; i++)
                     {
-                        BufferedCoordinate2D current = this[i];
+                        BufferedCoordinate current = this[i];
 
                         if (minCoord == null || current.LessThan(minCoord.Value))
                         {
@@ -784,7 +784,7 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
-        public IBufferedCoordSequence Prepend(BufferedCoordinate2D coordinate)
+        public IBufferedCoordSequence Prepend(BufferedCoordinate coordinate)
         {
             if (coordinate.IsEmpty)
             {
@@ -796,9 +796,9 @@ namespace NetTopologySuite.Coordinates
             return this;
         }
 
-        public IBufferedCoordSequence Prepend(IEnumerable<BufferedCoordinate2D> coordinates)
+        public IBufferedCoordSequence Prepend(IEnumerable<BufferedCoordinate> coordinates)
         {
-            BufferedCoordinate2DSequence seq = coordinates as BufferedCoordinate2DSequence;
+            BufferedCoordinateSequence seq = coordinates as BufferedCoordinateSequence;
 
             if (seq != null)
             {
@@ -806,7 +806,7 @@ namespace NetTopologySuite.Coordinates
             }
             else
             {
-                foreach (BufferedCoordinate2D coordinate in Enumerable.Reverse(coordinates))
+                foreach (BufferedCoordinate coordinate in Enumerable.Reverse(coordinates))
                 {
                     Prepend(coordinate);
                 }
@@ -817,7 +817,7 @@ namespace NetTopologySuite.Coordinates
 
         public IBufferedCoordSequence Prepend(IBufferedCoordSequence coordinates)
         {
-            BufferedCoordinate2DSequence seq = coordinates as BufferedCoordinate2DSequence;
+            BufferedCoordinateSequence seq = coordinates as BufferedCoordinateSequence;
 
             if (seq != null)
             {
@@ -825,10 +825,10 @@ namespace NetTopologySuite.Coordinates
                 return this;
             }
 
-            return Prepend((IEnumerable<BufferedCoordinate2D>)coordinates);
+            return Prepend((IEnumerable<BufferedCoordinate>)coordinates);
         }
 
-        public Boolean Remove(BufferedCoordinate2D item)
+        public Boolean Remove(BufferedCoordinate item)
         {
             checkFrozen();
 
@@ -952,7 +952,7 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
-        public IBufferedCoordSequence Scroll(BufferedCoordinate2D coordinateToBecomeFirst)
+        public IBufferedCoordSequence Scroll(BufferedCoordinate coordinateToBecomeFirst)
         {
             Int32 index = IndexOf(coordinateToBecomeFirst);
 
@@ -1002,7 +1002,7 @@ namespace NetTopologySuite.Coordinates
             return this;
         }
 
-        public Pair<BufferedCoordinate2D> SegmentAt(Int32 index)
+        public Pair<BufferedCoordinate> SegmentAt(Int32 index)
         {
             if (index < 0 || index >= LastIndex)
             {
@@ -1010,7 +1010,7 @@ namespace NetTopologySuite.Coordinates
                     "Index must be between 0 and LastIndex - 1");
             }
 
-            return new Pair<BufferedCoordinate2D>(this[index], this[index + 1]);
+            return new Pair<BufferedCoordinate>(this[index], this[index + 1]);
         }
 
         public IBufferedCoordSequence Slice(Int32 startIndex, Int32 endIndex)
@@ -1049,7 +1049,7 @@ namespace NetTopologySuite.Coordinates
                         // coordinates, then just create a new main sequence on it.
                         if (endStorage == SequenceStorage.PrependList)
                         {
-                            return new BufferedCoordinate2DSequence(_reversed,
+                            return new BufferedCoordinateSequence(_reversed,
                                                                     prepended,
                                                                     null,
                                                                     null,
@@ -1079,7 +1079,7 @@ namespace NetTopologySuite.Coordinates
                         // coordinates, then just create a new main sequence on it.
                         if (endStorage == SequenceStorage.AppendList)
                         {
-                            return new BufferedCoordinate2DSequence(_reversed,
+                            return new BufferedCoordinateSequence(_reversed,
                                                                     appended,
                                                                     null,
                                                                     null,
@@ -1114,7 +1114,7 @@ namespace NetTopologySuite.Coordinates
                                             .Intersect(_skipIndexes));
                 }
 
-                return new BufferedCoordinate2DSequence(_reversed,
+                return new BufferedCoordinateSequence(_reversed,
                                                         _sequence,
                                                         null,
                                                         null,
@@ -1220,7 +1220,7 @@ namespace NetTopologySuite.Coordinates
                     break;
             }
 
-            return new BufferedCoordinate2DSequence(_reversed,
+            return new BufferedCoordinateSequence(_reversed,
                                                     _sequence,
                                                     prepended,
                                                     appended,
@@ -1243,7 +1243,7 @@ namespace NetTopologySuite.Coordinates
             return this;
         }
 
-        public IBufferedCoordSequence Sort(Int32 startIndex, Int32 endIndex, IComparer<BufferedCoordinate2D> comparer)
+        public IBufferedCoordSequence Sort(Int32 startIndex, Int32 endIndex, IComparer<BufferedCoordinate> comparer)
         {
             if (isSlice())
             {
@@ -1259,7 +1259,7 @@ namespace NetTopologySuite.Coordinates
                 return this;
             }
 
-            List<BufferedCoordinate2D> coords = new List<BufferedCoordinate2D>(endIndex - startIndex + 1);
+            List<BufferedCoordinate> coords = new List<BufferedCoordinate>(endIndex - startIndex + 1);
 
             for (Int32 i = startIndex; i <= endIndex; i++)
             {
@@ -1277,82 +1277,82 @@ namespace NetTopologySuite.Coordinates
             return this;
         }
 
-        public IBufferedCoordSequence Splice(IEnumerable<BufferedCoordinate2D> coordinates,
+        public IBufferedCoordSequence Splice(IEnumerable<BufferedCoordinate> coordinates,
                                              Int32 startIndex,
                                              Int32 endIndex)
         {
-            BufferedCoordinate2DSequence seq = createSliceInternal(endIndex, startIndex);
+            BufferedCoordinateSequence seq = createSliceInternal(endIndex, startIndex);
 
             seq.Prepend(coordinates);
 
             return seq;
         }
 
-        public IBufferedCoordSequence Splice(BufferedCoordinate2D coordinate,
+        public IBufferedCoordSequence Splice(BufferedCoordinate coordinate,
                                              Int32 startIndex,
                                              Int32 endIndex)
         {
-            BufferedCoordinate2DSequence seq = createSliceInternal(endIndex, startIndex);
+            BufferedCoordinateSequence seq = createSliceInternal(endIndex, startIndex);
 
             seq.Prepend(coordinate);
 
             return seq;
         }
 
-        public IBufferedCoordSequence Splice(IEnumerable<BufferedCoordinate2D> startCoordinates,
+        public IBufferedCoordSequence Splice(IEnumerable<BufferedCoordinate> startCoordinates,
                                              Int32 startIndex,
                                              Int32 endIndex,
-                                             BufferedCoordinate2D endCoordinate)
+                                             BufferedCoordinate endCoordinate)
         {
-            BufferedCoordinate2DSequence seq = createSliceInternal(endIndex, startIndex);
+            BufferedCoordinateSequence seq = createSliceInternal(endIndex, startIndex);
 
             return seq.Prepend(startCoordinates).Append(endCoordinate);
         }
 
-        public IBufferedCoordSequence Splice(BufferedCoordinate2D startCoordinate,
+        public IBufferedCoordSequence Splice(BufferedCoordinate startCoordinate,
                                              Int32 startIndex,
                                              Int32 endIndex,
-                                             BufferedCoordinate2D endCoordinate)
+                                             BufferedCoordinate endCoordinate)
         {
-            BufferedCoordinate2DSequence seq = createSliceInternal(endIndex, startIndex);
+            BufferedCoordinateSequence seq = createSliceInternal(endIndex, startIndex);
 
             return seq.Prepend(startCoordinate).Append(endCoordinate);
         }
 
-        public IBufferedCoordSequence Splice(IEnumerable<BufferedCoordinate2D> startCoordinates,
+        public IBufferedCoordSequence Splice(IEnumerable<BufferedCoordinate> startCoordinates,
                                              Int32 startIndex,
                                              Int32 endIndex,
-                                             IEnumerable<BufferedCoordinate2D> endCoordinates)
+                                             IEnumerable<BufferedCoordinate> endCoordinates)
         {
-            BufferedCoordinate2DSequence seq = createSliceInternal(endIndex, startIndex);
+            BufferedCoordinateSequence seq = createSliceInternal(endIndex, startIndex);
 
             return seq.Prepend(startCoordinates).Append(endCoordinates);
         }
 
-        public IBufferedCoordSequence Splice(BufferedCoordinate2D startCoordinate,
+        public IBufferedCoordSequence Splice(BufferedCoordinate startCoordinate,
                                              Int32 startIndex,
                                              Int32 endIndex,
-                                             IEnumerable<BufferedCoordinate2D> endCoordinates)
+                                             IEnumerable<BufferedCoordinate> endCoordinates)
         {
-            BufferedCoordinate2DSequence seq = createSliceInternal(endIndex, startIndex);
+            BufferedCoordinateSequence seq = createSliceInternal(endIndex, startIndex);
 
             return seq.Prepend(startCoordinate).Append(endCoordinates);
         }
 
         public IBufferedCoordSequence Splice(Int32 startIndex,
                                              Int32 endIndex,
-                                             IEnumerable<BufferedCoordinate2D> coordinates)
+                                             IEnumerable<BufferedCoordinate> coordinates)
         {
-            BufferedCoordinate2DSequence seq = createSliceInternal(endIndex, startIndex);
+            BufferedCoordinateSequence seq = createSliceInternal(endIndex, startIndex);
 
             return seq.Append(coordinates);
         }
 
         public IBufferedCoordSequence Splice(Int32 startIndex,
                                              Int32 endIndex,
-                                             BufferedCoordinate2D coordinate)
+                                             BufferedCoordinate coordinate)
         {
-            BufferedCoordinate2DSequence seq = createSliceInternal(endIndex, startIndex);
+            BufferedCoordinateSequence seq = createSliceInternal(endIndex, startIndex);
 
             return seq.Append(coordinate);
         }
@@ -1382,7 +1382,7 @@ namespace NetTopologySuite.Coordinates
                 coordsToFix.Remove(duplicate);
             }
 
-            BufferedCoordinate2DSequence noDupes = new BufferedCoordinate2DSequence(_factory, _buffer);
+            BufferedCoordinateSequence noDupes = new BufferedCoordinateSequence(_factory, _buffer);
 
             noDupes._sequence.AddRange(coordsToFix);
 
@@ -1452,7 +1452,7 @@ namespace NetTopologySuite.Coordinates
             set
             {
                 if(value == null) throw new ArgumentNullException("value");
-                BufferedCoordinate2D coord = _factory.CoordinateFactory.Create(value);
+                BufferedCoordinate coord = _factory.CoordinateFactory.Create(value);
                 this[index] = coord;
             }
         }
@@ -1512,14 +1512,14 @@ namespace NetTopologySuite.Coordinates
         {
             checkFrozen();
 
-            if (value is BufferedCoordinate2D)
+            if (value is BufferedCoordinate)
             {
-                BufferedCoordinate2D coord = (BufferedCoordinate2D)value;
+                BufferedCoordinate coord = (BufferedCoordinate)value;
                 Add(coord); // OnSequenceChanged() called here
                 return _sequence.Count - 1;
             }
 
-            throw new ArgumentException("Parameter must be a BufferedCoordinate2D.");
+            throw new ArgumentException("Parameter must be a BufferedCoordinate.");
         }
 
         void IList.Remove(Object value)
@@ -1531,22 +1531,22 @@ namespace NetTopologySuite.Coordinates
 
         Boolean IList.Contains(Object value)
         {
-            if (!(value is BufferedCoordinate2D))
+            if (!(value is BufferedCoordinate))
             {
                 return false;
             }
 
-            return Contains((BufferedCoordinate2D)value);
+            return Contains((BufferedCoordinate)value);
         }
 
         Int32 IList.IndexOf(Object value)
         {
-            if (!(value is BufferedCoordinate2D))
+            if (!(value is BufferedCoordinate))
             {
                 return -1;
             }
 
-            return IndexOf((BufferedCoordinate2D)value);
+            return IndexOf((BufferedCoordinate)value);
         }
 
         void IList.Insert(Int32 index, Object value)
@@ -1607,23 +1607,23 @@ namespace NetTopologySuite.Coordinates
         }
         #endregion
 
-        #region Explicit IList<BufferedCoordinate2D> Members
+        #region Explicit IList<BufferedCoordinate> Members
 
-        void IList<BufferedCoordinate2D>.Insert(Int32 index, BufferedCoordinate2D item)
+        void IList<BufferedCoordinate>.Insert(Int32 index, BufferedCoordinate item)
         {
             Insert(index, item);
         }
 
-        void IList<BufferedCoordinate2D>.RemoveAt(Int32 index)
+        void IList<BufferedCoordinate>.RemoveAt(Int32 index)
         {
             RemoveAt(index);
         }
 
         #endregion
 
-        #region Explicit ICollection<BufferedCoordinate2D> Members
+        #region Explicit ICollection<BufferedCoordinate> Members
 
-        void ICollection<BufferedCoordinate2D>.Clear()
+        void ICollection<BufferedCoordinate>.Clear()
         {
             Clear();
         }
@@ -1643,7 +1643,7 @@ namespace NetTopologySuite.Coordinates
             _max = -1;
         }
 
-        protected void SetSequenceInternal(BufferedCoordinate2DSequence sequence)
+        protected void SetSequenceInternal(BufferedCoordinateSequence sequence)
         {
             if (sequence.IsFrozen)
             {
@@ -1833,7 +1833,7 @@ namespace NetTopologySuite.Coordinates
             return _startIndex >= 0 || _endIndex >= 0;
         }
 
-        private void addInternal(BufferedCoordinate2D item)
+        private void addInternal(BufferedCoordinate item)
         {
             if (!ReferenceEquals(item.Factory, _factory.CoordinateFactory))
             {
@@ -2040,13 +2040,13 @@ namespace NetTopologySuite.Coordinates
             _skipIndexes.Add(index);
         }
 
-        private void appendInternal(BufferedCoordinate2DSequence sequence)
+        private void appendInternal(BufferedCoordinateSequence sequence)
         {
             // check to see if the sequences have different buffers, 
             // if so, just do a normal range append
             if (!ReferenceEquals(sequence._buffer, _buffer))
             {
-                Append((IEnumerable<BufferedCoordinate2D>)sequence);
+                Append((IEnumerable<BufferedCoordinate>)sequence);
                 return;
             }
 
@@ -2060,13 +2060,13 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
-        private void prependInternal(BufferedCoordinate2DSequence sequence)
+        private void prependInternal(BufferedCoordinateSequence sequence)
         {
             // check to see if the sequences have different buffers, 
             // if so, just do a normal range prepend
             if (!ReferenceEquals(sequence._buffer, _buffer))
             {
-                Prepend((IEnumerable<BufferedCoordinate2D>)sequence);
+                Prepend((IEnumerable<BufferedCoordinate>)sequence);
                 return;
             }
 
@@ -2080,7 +2080,7 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
-        private void appendInternalForward(BufferedCoordinate2DSequence sequence)
+        private void appendInternalForward(BufferedCoordinateSequence sequence)
         {
             Int32 appendCount = sequence.Count;
             Int32 appendIndex = 0;
@@ -2119,7 +2119,7 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
-        private void prependInternalForward(BufferedCoordinate2DSequence sequence)
+        private void prependInternalForward(BufferedCoordinateSequence sequence)
         {
             Int32 prependCount = sequence.Count;
             Int32 prependIndex = prependCount - 1;
@@ -2158,7 +2158,7 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
-        private void appendInternalReverse(BufferedCoordinate2DSequence sequence)
+        private void appendInternalReverse(BufferedCoordinateSequence sequence)
         {
             Int32 appendCount = sequence.Count;
             Int32 appendIndex = 0;
@@ -2199,7 +2199,7 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
-        private void prependInternalReverse(BufferedCoordinate2DSequence sequence)
+        private void prependInternalReverse(BufferedCoordinateSequence sequence)
         {
             Int32 prependIndex = sequence.Count - 1;
 
@@ -2239,13 +2239,13 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
-        private BufferedCoordinate2DSequence createSliceInternal(Int32 endIndex, Int32 startIndex)
+        private BufferedCoordinateSequence createSliceInternal(Int32 endIndex, Int32 startIndex)
         {
             checkIndexes(endIndex, startIndex);
 
             Freeze();
 
-            return new BufferedCoordinate2DSequence(_reversed,
+            return new BufferedCoordinateSequence(_reversed,
                                                     _sequence,
                                                     _prependedIndexes,
                                                     _appendedIndexes,

@@ -729,16 +729,16 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// Initializes a new instance of the <see cref="BufferTest"/> class.
         /// </summary>
         public BufferTest()
-            : base(GeometryFactory<BufferedCoordinate2D>.CreateFixedPrecision(
-                       new BufferedCoordinate2DSequenceFactory())) {}
+            : base(GeometryFactory<BufferedCoordinate>.CreateFixedPrecision(
+                       new BufferedCoordinateSequenceFactory())) {}
 
         [Test]
         public void TestWithDefaultFactory()
         {
-            BufferedCoordinate2DSequenceFactory seqFactory
-                = new BufferedCoordinate2DSequenceFactory();
-            IGeometryFactory<BufferedCoordinate2D> @default
-                = new GeometryFactory<BufferedCoordinate2D>(seqFactory);
+            BufferedCoordinateSequenceFactory seqFactory
+                = new BufferedCoordinateSequenceFactory();
+            IGeometryFactory<BufferedCoordinate> @default
+                = new GeometryFactory<BufferedCoordinate>(seqFactory);
 
             performTest(@default);
         }
@@ -746,23 +746,23 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         [Test]
         public void TestWithFixedFactory()
         {
-            BufferedCoordinate2DSequenceFactory seqFactory
-                = new BufferedCoordinate2DSequenceFactory();
-            IGeometryFactory<BufferedCoordinate2D> @fixed
-                = GeometryFactory<BufferedCoordinate2D>.CreateFixedPrecision(seqFactory);
+            BufferedCoordinateSequenceFactory seqFactory
+                = new BufferedCoordinateSequenceFactory();
+            IGeometryFactory<BufferedCoordinate> @fixed
+                = GeometryFactory<BufferedCoordinate>.CreateFixedPrecision(seqFactory);
             performTest(@fixed);
         }
 
-        private static void performTest(IGeometryFactory<BufferedCoordinate2D> factory)
+        private static void performTest(IGeometryFactory<BufferedCoordinate> factory)
         {
-            IWktGeometryReader<BufferedCoordinate2D> decoder =
-                new WktReader<BufferedCoordinate2D>(factory, null);
-            IGeometry<BufferedCoordinate2D> path = decoder.Read(GeometryWkt);
+            IWktGeometryReader<BufferedCoordinate> decoder =
+                new WktReader<BufferedCoordinate>(factory, null);
+            IGeometry<BufferedCoordinate> path = decoder.Read(GeometryWkt);
 
             Assert.IsNotNull(path);
             Debug.WriteLine(String.Format("Original Points: {0}", path.PointCount));
 
-            IGeometry simplified = DouglasPeuckerSimplifier<BufferedCoordinate2D>.Simplify(path, 2);
+            IGeometry simplified = DouglasPeuckerSimplifier<BufferedCoordinate>.Simplify(path, 2);
             Assert.IsNotNull(simplified);
             Debug.WriteLine(String.Format("Simplified Points: {0}", simplified.PointCount));
 

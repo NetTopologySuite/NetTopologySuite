@@ -8,7 +8,7 @@ namespace NetTopologySuite.Tests
     [TestFixture]
     public class TestRunnerTests
     {
-        private String _testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\vivid";
+        private const String TestLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\vivid";
 
         private static void handleTestEvent(Object sender, XmlTestEventArgs args)
         {
@@ -23,7 +23,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestBoundary.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestBoundary.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestCentroid.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestCentroid.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestConvexHull-big.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestConvexHull-big.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -56,7 +56,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestConvexHull.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestConvexHull.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -67,7 +67,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestFunctionAA.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestFunctionAA.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -78,7 +78,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestFunctionAAPrec.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestFunctionAAPrec.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -89,7 +89,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestFunctionLA.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestFunctionLA.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -100,7 +100,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestFunctionLAPrec.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestFunctionLAPrec.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -111,7 +111,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestFunctionLL.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestFunctionLL.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -122,7 +122,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestFunctionLLPrec.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestFunctionLLPrec.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -133,7 +133,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestFunctionPA.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestFunctionPA.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -144,7 +144,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestFunctionPL.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestFunctionPL.xml"));
             tests.TestEvent += handleTestEvent;
             Boolean testResults = tests.RunTests();
             Assert.IsTrue(testResults);
@@ -156,7 +156,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestFunctionPLPrec.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestFunctionPLPrec.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -167,7 +167,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestFunctionPP.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestFunctionPP.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -178,7 +178,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestInteriorPoint.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestInteriorPoint.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -189,7 +189,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestRectanglePredicate.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestRectanglePredicate.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -200,7 +200,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestRelateAA.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestRelateAA.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -211,7 +211,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestRelateAC.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestRelateAC.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -222,7 +222,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestRelateLA.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestRelateLA.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -233,7 +233,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestRelateLC.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestRelateLC.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -244,7 +244,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestRelateLL.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestRelateLL.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -255,7 +255,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestRelatePA.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestRelatePA.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -266,7 +266,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestRelatePL.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestRelatePL.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -277,7 +277,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestRelatePP.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestRelatePP.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -287,7 +287,7 @@ namespace NetTopologySuite.Tests
         public void TestSimple()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestSimple.xml"));
+            XmlTestCollection tests = controller.Load(Path.Combine(TestLocation, "TestSimple.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -297,7 +297,7 @@ namespace NetTopologySuite.Tests
         public void TestValid()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestValid.xml"));
+            XmlTestCollection tests = controller.Load(Path.Combine(TestLocation, "TestValid.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -308,7 +308,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestValid2-big.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestValid2-big.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -318,7 +318,7 @@ namespace NetTopologySuite.Tests
         public void TestValid2()
         {
             XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(_testLocation, "TestValid2.xml"));
+            XmlTestCollection tests = controller.Load(Path.Combine(TestLocation, "TestValid2.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;
@@ -329,7 +329,7 @@ namespace NetTopologySuite.Tests
         {
             XmlTestController controller = new XmlTestController();
             XmlTestCollection tests =
-                controller.Load(Path.Combine(_testLocation, "TestWithinDistance.xml"));
+                controller.Load(Path.Combine(TestLocation, "TestWithinDistance.xml"));
             tests.TestEvent += handleTestEvent;
             Assert.IsTrue(tests.RunTests());
             tests.TestEvent -= handleTestEvent;

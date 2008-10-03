@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using SysConsole = System.Console;
 
@@ -190,7 +191,7 @@ namespace GisSharpBlog.NetTopologySuite.Console
                     {
                         SysConsole.WriteLine("Running...{0}", listTests.Name);
 
-                        XmlTestTimer timer = new XmlTestTimer();
+                        Stopwatch timer = new Stopwatch();
 
                         timer.Start();
 
@@ -200,9 +201,9 @@ namespace GisSharpBlog.NetTopologySuite.Console
 
                         PrintSimpleTestResult(listTests.Count);
 
-                        SysConsole.WriteLine("Duration in milliseconds: {0}", timer.Duration * 1000);
+                        SysConsole.WriteLine("Duration in milliseconds: {0}", timer.ElapsedMilliseconds);
 
-                        elapsedTime += (timer.Duration * 1000);
+                        elapsedTime += (timer.ElapsedMilliseconds);
 
                         _totalCount += listTests.Count;
 

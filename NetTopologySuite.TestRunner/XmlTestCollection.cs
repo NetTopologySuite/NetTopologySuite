@@ -80,8 +80,10 @@ namespace GisSharpBlog.NetTopologySuite
 
                     if (testItem != null)
                     {
+                        Boolean succeeded = testItem.Run();
+
                         XmlTestEventArgs args =
-                            new XmlTestEventArgs(i, testItem.Run(), testItem);
+                            new XmlTestEventArgs(i, succeeded, testItem);
 
                         if (TestEvent != null)
                         {

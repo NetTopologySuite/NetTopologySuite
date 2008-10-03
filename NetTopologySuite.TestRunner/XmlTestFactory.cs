@@ -3,7 +3,6 @@ using System.Globalization;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NetTopologySuite.Coordinates;
 
@@ -31,14 +30,14 @@ namespace GisSharpBlog.NetTopologySuite
             C = 3
         }
 
-        protected IGeometryFactory<BufferedCoordinate2D> _geometryFactory;
+        protected IGeometryFactory<BufferedCoordinate> _geometryFactory;
         protected IWktGeometryReader _wktReader;
 
-        public XmlTestFactory(IPrecisionModel<BufferedCoordinate2D> pm,
-                              ICoordinateSequenceFactory<BufferedCoordinate2D> seqFactory)
+        public XmlTestFactory(IPrecisionModel<BufferedCoordinate> pm,
+                              ICoordinateSequenceFactory<BufferedCoordinate> seqFactory)
         {
-            _geometryFactory = new GeometryFactory<BufferedCoordinate2D>(pm, seqFactory);
-            _wktReader = new WktReader<BufferedCoordinate2D>(_geometryFactory, null);
+            _geometryFactory = new GeometryFactory<BufferedCoordinate>(pm, seqFactory);
+            _wktReader = new WktReader<BufferedCoordinate>(_geometryFactory, null);
         }
 
         public XmlTest Create(XmlTestInfo testInfo, Double tolerance)

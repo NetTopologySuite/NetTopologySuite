@@ -17,12 +17,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Technique
         [STAThread]
         public static void main(String[] args)
         {
-            GeometryFactory<BufferedCoordinate2D> geoFactory =
-                new GeometryFactory<BufferedCoordinate2D>(
-                    new BufferedCoordinate2DSequenceFactory());
+            GeometryFactory<BufferedCoordinate> geoFactory =
+                new GeometryFactory<BufferedCoordinate>(
+                    new BufferedCoordinateSequenceFactory());
 
-            WktReader<BufferedCoordinate2D> rdr
-                = new WktReader<BufferedCoordinate2D>(geoFactory, null);
+            WktReader<BufferedCoordinate> rdr
+                = new WktReader<BufferedCoordinate>(geoFactory, null);
 
             ILineString line1 = (ILineString) rdr.Read("LINESTRING (0 0, 10 10, 20 20)");
             ShowSelfIntersections(line1);
@@ -70,9 +70,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Technique
 
             ICoordinate[] endPts = endPtList.ToArray();
 
-            IGeometryFactory<BufferedCoordinate2D> geoFactory =
-                new GeometryFactory<BufferedCoordinate2D>(
-                    new BufferedCoordinate2DSequenceFactory());
+            IGeometryFactory<BufferedCoordinate> geoFactory =
+                new GeometryFactory<BufferedCoordinate>(
+                    new BufferedCoordinateSequenceFactory());
 
             return geoFactory.CreateMultiPoint(endPts);
         }

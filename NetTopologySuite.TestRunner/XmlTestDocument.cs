@@ -133,10 +133,10 @@ namespace GisSharpBlog.NetTopologySuite
                     }
                 }
 
-                ICoordinateSequenceFactory<BufferedCoordinate2D> seqFactory =
-                    new BufferedCoordinate2DSequenceFactory();
+                ICoordinateSequenceFactory<BufferedCoordinate> seqFactory =
+                    new BufferedCoordinateSequenceFactory();
                 // Retrieve the precisionName" tag, if any.
-                PrecisionModel<BufferedCoordinate2D> pm = null;
+                PrecisionModel<BufferedCoordinate> pm = null;
                 XmlNode precision = root["precisionModel"];
 
                 if (precision != null)
@@ -165,7 +165,7 @@ namespace GisSharpBlog.NetTopologySuite
                                         = Double.Parse(precisionAttributes["offsety"].InnerText,
                                                        GetNumberFormatInfo());
 
-                                    pm = new PrecisionModel<BufferedCoordinate2D>(
+                                    pm = new PrecisionModel<BufferedCoordinate>(
                                         seqFactory.CoordinateFactory, scale);
                                 }
                                 catch (Exception ex)
@@ -175,7 +175,7 @@ namespace GisSharpBlog.NetTopologySuite
                             }
                             else
                             {
-                                pm = new PrecisionModel<BufferedCoordinate2D>(
+                                pm = new PrecisionModel<BufferedCoordinate>(
                                     seqFactory.CoordinateFactory);
                             }
                         }
@@ -193,7 +193,7 @@ namespace GisSharpBlog.NetTopologySuite
                                     Double.Parse(precisionAttributes["offsety"].InnerText,
                                                  GetNumberFormatInfo());
 
-                                pm = new PrecisionModel<BufferedCoordinate2D>(
+                                pm = new PrecisionModel<BufferedCoordinate>(
                                     seqFactory.CoordinateFactory, scale);
                             }
                         }
@@ -202,7 +202,7 @@ namespace GisSharpBlog.NetTopologySuite
 
                 if (pm == null)
                 {
-                    pm = new PrecisionModel<BufferedCoordinate2D>(seqFactory.CoordinateFactory);
+                    pm = new PrecisionModel<BufferedCoordinate>(seqFactory.CoordinateFactory);
                 }
 
                 _xmlTestFactory = new XmlTestFactory(pm, seqFactory);
