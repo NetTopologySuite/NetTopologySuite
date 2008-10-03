@@ -14,7 +14,7 @@ namespace NetTopologySuite.Coordinates
     public class BufferedCoordinate2DSequenceFactory : IBufferedCoordSequenceFactory
     {
         private readonly BufferedCoordinate2DFactory _coordFactory;
-        private readonly IVectorBuffer<BufferedCoordinate2D, DoubleComponent> _buffer;
+        private readonly IVectorBuffer<DoubleComponent, BufferedCoordinate2D> _buffer;
 
         public BufferedCoordinate2DSequenceFactory()
             : this(new BufferedCoordinate2DFactory()) { }

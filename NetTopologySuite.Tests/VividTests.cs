@@ -146,7 +146,8 @@ namespace NetTopologySuite.Tests
             XmlTestCollection tests =
                 controller.Load(Path.Combine(_testLocation, "TestFunctionPL.xml"));
             tests.TestEvent += handleTestEvent;
-            Assert.IsTrue(tests.RunTests());
+            Boolean testResults = tests.RunTests();
+            Assert.IsTrue(testResults);
             tests.TestEvent -= handleTestEvent;
         }
 

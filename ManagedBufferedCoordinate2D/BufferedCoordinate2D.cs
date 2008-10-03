@@ -11,7 +11,7 @@ namespace NetTopologySuite.Coordinates
 
     public struct BufferedCoordinate2D : ICoordinate2D,
                                          ICoordinate<BufferedCoordinate2D>,
-                                         IBufferedVector<BufferedCoordinate2D, DoubleComponent>,
+                                         IBufferedVector<DoubleComponent, BufferedCoordinate2D>,
                                          IEquatable<BufferedCoordinate2D>,
                                          IComparable<BufferedCoordinate2D>,
                                          IComputable<Double, BufferedCoordinate2D>
@@ -125,7 +125,7 @@ namespace NetTopologySuite.Coordinates
 
         #region IBufferedVector<DoubleComponent> Members
 
-        public IVectorBuffer<BufferedCoordinate2D, DoubleComponent> GetBuffer()
+        public IVectorBuffer<DoubleComponent, BufferedCoordinate2D> GetBuffer()
         {
             return _factory;
         }

@@ -9,14 +9,14 @@ namespace NetTopologySuite.Coordinates
 {
     public class BufferedCoordinate2DSet : BufferedCoordinate2DSequence, ISet<BufferedCoordinate2D>
     {
-        public BufferedCoordinate2DSet(BufferedCoordinate2DSequenceFactory factory, 
-            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer)
+        public BufferedCoordinate2DSet(BufferedCoordinate2DSequenceFactory factory,
+            IVectorBuffer<DoubleComponent, BufferedCoordinate2D> buffer)
             : base(factory, buffer) { }
 
         internal BufferedCoordinate2DSet(
             ICoordinateSequence<BufferedCoordinate2D> sequence,
             BufferedCoordinate2DSequenceFactory factory,
-            IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer)
+            IVectorBuffer<DoubleComponent, BufferedCoordinate2D> buffer)
             : base(factory, buffer)
         {
             ICoordinateSequence<BufferedCoordinate2D> withoutDupes =

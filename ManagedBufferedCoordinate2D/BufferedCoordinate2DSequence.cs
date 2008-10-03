@@ -28,7 +28,7 @@ namespace NetTopologySuite.Coordinates
             AppendList
         }
 
-        private readonly IVectorBuffer<BufferedCoordinate2D, DoubleComponent> _buffer;
+        private readonly IVectorBuffer<DoubleComponent, BufferedCoordinate2D> _buffer;
         private readonly BufferedCoordinate2DSequenceFactory _factory;
         private List<Int32> _sequence;
         private Boolean _reversed;
@@ -42,11 +42,11 @@ namespace NetTopologySuite.Coordinates
         private Int32 _min = -1;
 
         internal BufferedCoordinate2DSequence(BufferedCoordinate2DSequenceFactory factory,
-                                              IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer)
+                                              IVectorBuffer<DoubleComponent, BufferedCoordinate2D> buffer)
             : this(0, factory, buffer) { }
 
         internal BufferedCoordinate2DSequence(Int32 size, BufferedCoordinate2DSequenceFactory factory,
-                                              IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer)
+                                              IVectorBuffer<DoubleComponent, BufferedCoordinate2D> buffer)
         {
             if (size < 0) throw new ArgumentOutOfRangeException("size", size,
                                                                  "Size should be greater " +
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Coordinates
 
         //internal BufferedCoordinate2DSequence(List<Int32> sequence,
         //                                      BufferedCoordinate2DSequenceFactory factory,
-        //                                      IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer)
+        //                                      IVectorBuffer<DoubleComponent, BufferedCoordinate2D> buffer)
         //    : this(false, sequence, null, null, null, null, null, factory, buffer) { }
 
         internal BufferedCoordinate2DSequence(Boolean reverse,
@@ -74,7 +74,7 @@ namespace NetTopologySuite.Coordinates
                                               Int32? startIndex,
                                               Int32? endIndex,
                                               BufferedCoordinate2DSequenceFactory factory,
-                                              IVectorBuffer<BufferedCoordinate2D, DoubleComponent> buffer)
+                                              IVectorBuffer<DoubleComponent, BufferedCoordinate2D> buffer)
         {
             _reversed = reverse;
             _startIndex = startIndex ?? _startIndex;
