@@ -19,7 +19,7 @@ namespace NetTopologySuite.Coordinates
           IBufferedVectorFactory<DoubleComponent, BufferedCoordinate>,
           ILinearFactory<DoubleComponent, BufferedCoordinate, Matrix3>
     {
-        public static readonly Int32 MaximumBitResolution = 52;
+        //public static readonly Int32 MaximumBitResolution = 53;
         private static readonly IComparer<Pair<Double>> _valueComparer
             = new LexicographicComparer();
 
@@ -28,18 +28,25 @@ namespace NetTopologySuite.Coordinates
         private readonly ManagedVectorBuffer<DoubleComponent, BufferedCoordinate> _coordinates;
         private readonly IDictionary<Pair<Double>, Int32> _lexicographicVertexIndex;
         private readonly IDictionary<Triple<Double>, Int32> _lexicographicHomogeneousVertexIndex;
-        private Int32 _bitResolution;
-        private Int64 _mask = unchecked((Int64)0xFFFFFFFFFFFFFFFF);
+        //private Int32 _bitResolution;
+        //private Int64 _mask = unchecked((Int64)0xFFFFFFFFFFFFFFFF);
+        private readonly PrecisionModel _precisionModel;
         private readonly Int32[] _ordinateIndexTable = new Int32[4];
         private readonly IMatrixOperations<DoubleComponent, BufferedCoordinate, Matrix3> _ops;
         private readonly YieldingSpinLock _spinLock = new YieldingSpinLock();
 
         public BufferedCoordinateFactory()
-            : this(MaximumBitResolution) { }
+            : this(null) { }
 
-        public BufferedCoordinateFactory(Int32 bitResolution)
+        public BufferedCoordinateFactory(Double scale)
+            : this(new PrecisionModel(null, scale)) { }
+
+        public BufferedCoordinateFactory(PrecisionModelType type)
+            : this(new PrecisionModel(null, type)) { }
+
+        public BufferedCoordinateFactory(IPrecisionModel precisionModel)
         {
-            _bitResolution = bitResolution;
+            _precisionModel = new PrecisionModel(this, precisionModel);
             _lexicographicVertexIndex = createLexicographicIndex();
             _lexicographicHomogeneousVertexIndex = createLexicographicHomogeneousIndex();
             _coordinates = new ManagedVectorBuffer<DoubleComponent, BufferedCoordinate>(this);
@@ -63,16 +70,6 @@ namespace NetTopologySuite.Coordinates
         }
 
         #region IBufferedCoordFactory Members
-        public Int32 BitResolution
-        {
-            get { return _bitResolution; }
-            set
-            {
-                _bitResolution = value;
-                Int32 shift = MaximumBitResolution - _bitResolution;
-                _mask = unchecked((Int64)(0xFFFFFFFFFFFFFFFF << shift));
-            }
-        }
 
         public BufferedCoordinate Create(Double x, Double y)
         {
@@ -184,6 +181,21 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
+        public IPrecisionModel<BufferedCoordinate> PrecisionModel
+        {
+            get { return _precisionModel; }
+        }
+
+        public IPrecisionModel<BufferedCoordinate> CreatePrecisionModel(Double scale)
+        {
+            return new PrecisionModel(this, scale);
+        }
+
+        public IPrecisionModel<BufferedCoordinate> CreatePrecisionModel(PrecisionModelType type)
+        {
+            return new PrecisionModel(this, type);
+        }
+
         #endregion
 
         #region ICoordinateFactory Members
@@ -241,6 +253,21 @@ namespace NetTopologySuite.Coordinates
             }
 
             return Dehomogenize(getVertexInternal(coordinate[Ordinates.X], coordinate[Ordinates.Y]));
+        }
+
+        IPrecisionModel ICoordinateFactory.PrecisionModel
+        {
+            get { return PrecisionModel; }
+        }
+
+        IPrecisionModel ICoordinateFactory.CreatePrecisionModel(PrecisionModelType type)
+        {
+            return CreatePrecisionModel(type);
+        }
+
+        IPrecisionModel ICoordinateFactory.CreatePrecisionModel(Double scale)
+        {
+            return CreatePrecisionModel(scale);
         }
 
         #endregion
@@ -622,23 +649,20 @@ namespace NetTopologySuite.Coordinates
                 throw new InvalidOperationException("Vertex components can't be NaN.");
             }
 
-            Int64 xBits = BitConverter.DoubleToInt64Bits(x);
-            xBits &= _mask;
-            x = BitConverter.Int64BitsToDouble(xBits);
-
-            Int64 yBits = BitConverter.DoubleToInt64Bits(y);
-            yBits &= _mask;
-            y = BitConverter.Int64BitsToDouble(yBits);
+            x = _precisionModel.MakePrecise(x);
+            y = _precisionModel.MakePrecise(y);
 
             BufferedCoordinate v;
 
+            // TODO: locking the entire read/write is too pessimistic, and serializes 
+            // multiple readers - need to get a lock which allows this, or change the 
+            // design to put the factory index into a load state and then freeze it, 
+            // or allow some kind of user-chosen transaction policy (like databases)
             _spinLock.Enter();
 
             if (w != 1.0)
             {
-                Int64 wBits = BitConverter.DoubleToInt64Bits(w);
-                wBits &= _mask;
-                w = BitConverter.Int64BitsToDouble(wBits);
+                w = _precisionModel.MakePrecise(w);
 
                 v = findExisting(x, y, w) ?? addNew(x, y, w);
             }

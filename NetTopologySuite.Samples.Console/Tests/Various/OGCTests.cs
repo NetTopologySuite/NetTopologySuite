@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 
         public OgcTests()
             : base(GeometryFactory<BufferedCoordinate>.CreateFixedPrecision(
-                       new BufferedCoordinateSequenceFactory()))
+                       new BufferedCoordinateSequenceFactory(), 1.0))
         {
             _blueLake = Reader.Read(BlueLakeWkt);
             _ashton = Reader.Read(AshtonWkt);

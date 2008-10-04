@@ -1,13 +1,12 @@
 ﻿using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Coordinates
 {
     /// <summary> 
     /// Specifies the precision model of the <see cref="ICoordinate"/>s 
-    /// in a <see cref="Geometry{TCoordinate}"/>.
+    /// in a <see cref="IGeometry{BufferedCoordinate}"/>.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -24,23 +23,23 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Currently three types of precision model are supported:
     /// <list type="bullet">
     /// <item>
-    /// <term><see cref="GeoAPI.Geometries.PrecisionModelType.DoubleFloating"/></term>
+    /// <term><see cref="GeoAPI.Coordinates.PrecisionModelType.DoubleFloating"/></term>
     /// <description>
     /// Represents full double precision floating point. This is the default 
     /// precision model used in NTS.
     /// </description>
     /// </item>
     /// <item>
-    /// <term><see cref="GeoAPI.Geometries.PrecisionModelType.SingleFloating"/></term>
+    /// <term><see cref="GeoAPI.Coordinates.PrecisionModelType.SingleFloating"/></term>
     /// <description>
     /// Represents single precision floating point. 
     /// </description>
     /// </item>
     /// <item>
-    /// <term><see cref="GeoAPI.Geometries.PrecisionModelType.Fixed"/></term>
+    /// <term><see cref="GeoAPI.Coordinates.PrecisionModelType.Fixed"/></term>
     /// <description>
     /// Represents a model with a fixed number of decimal places. A fixed
-    /// <see cref="IPrecisionModel{TCoordinate}"/> is specified by a scale factor. 
+    /// <see cref="IPrecisionModel{BufferedCoordinate}"/> is specified by a scale factor. 
     /// The scale factor specifies the grid which numbers are rounded to. Input coordinates 
     /// are mapped to fixed coordinates according to the following equations 
     /// (known as arithmetic asymmetric rounding, since it moves away from zero if positive,
@@ -53,16 +52,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </item>
     /// </list>
     /// Coordinates are represented internally as a <see cref="Double"/> value. 
-    /// Since the CTS uses the IEEE-394 floating point standard, this provides 53 bits of precision. 
+    /// Since the CLI uses the IEEE-754 floating point standard, this provides 53 bits of precision. 
     /// (Thus the maximum precisely representable integer is 9,007,199,254,740,992). 
     /// NTS methods currently do not handle inputs with different precision models. 
     /// </para>
     /// </remarks>
     [Serializable]
-    public class PrecisionModel<TCoordinate> : IPrecisionModel<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+    public class PrecisionModel : IPrecisionModel<BufferedCoordinate>
     {
         private const Int32 FloatingPrecisionDigits = 16;
         private const Int32 FloatingSinglePrecisionDigits = 6;
@@ -75,32 +71,32 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public const Double MaximumPreciseValue = 9007199254740992.0;
 
-        //public static Boolean operator ==(PrecisionModel<TCoordinate> left, PrecisionModel<TCoordinate> right)
+        //public static Boolean operator ==(PrecisionModel<BufferedCoordinate> left, PrecisionModel<BufferedCoordinate> right)
         //{
         //    return Equals(left, right);
         //}
 
-        //public static Boolean operator !=(PrecisionModel<TCoordinate> left, PrecisionModel<TCoordinate> right)
+        //public static Boolean operator !=(PrecisionModel<BufferedCoordinate> left, PrecisionModel<BufferedCoordinate> right)
         //{
         //    return !(left == right);
         //}
 
-        private readonly ICoordinateFactory<TCoordinate> _coordFactory;
+        private readonly ICoordinateFactory<BufferedCoordinate> _coordFactory;
         private readonly PrecisionModelType _modelType;
         private readonly Double _scale;
 
         /// <summary> 
-        /// Creates a <see cref="PrecisionModel{TCoordinate}"/> with a default precision
-        /// of <see cref="GeoAPI.Geometries.PrecisionModelType.DoubleFloating"/>.
+        /// Creates a <see cref="PrecisionModel"/> with a default precision
+        /// of <see cref="GeoAPI.Coordinates.PrecisionModelType.DoubleFloating"/>.
         /// </summary>
         /// <param name="coordinateFactory">
         /// The coordinate factory to use to creat coordinates.
         /// </param>
-        public PrecisionModel(ICoordinateFactory<TCoordinate> coordinateFactory)
-            : this(coordinateFactory, GeoAPI.Geometries.PrecisionModelType.DoubleFloating) { }
+        public PrecisionModel(ICoordinateFactory<BufferedCoordinate> coordinateFactory)
+            : this(coordinateFactory, PrecisionModelType.DoubleFloating) { }
 
         /// <summary>
-        /// Creates a <see cref="PrecisionModel{TCoordinate}"/> that specifies
+        /// Creates a <see cref="PrecisionModel"/> that specifies
         /// an explicit precision model type.
         /// If the model type is Fixed the scale factor will default to 1.
         /// </summary>
@@ -110,7 +106,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="modelType">
         /// The type of the precision model.
         /// </param>
-        public PrecisionModel(ICoordinateFactory<TCoordinate> coordinateFactory, PrecisionModelType modelType)
+        public PrecisionModel(ICoordinateFactory<BufferedCoordinate> coordinateFactory, 
+                              PrecisionModelType modelType)
         {
             _coordFactory = coordinateFactory;
             _modelType = modelType;
@@ -122,7 +119,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Creates a <see cref="PrecisionModel{TCoordinate}"/> that specifies Fixed precision.
+        /// Creates a <see cref="PrecisionModel"/> that specifies Fixed precision.
         /// </summary>
         /// <param name="coordinateFactory">
         /// The coordinate factory to use to creat coordinates.
@@ -135,7 +132,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Fixed-precision coordinates are represented as precise internal coordinates,
         /// which are rounded to the grid defined by the scale factor.
         /// </remarks>
-        public PrecisionModel(ICoordinateFactory<TCoordinate> coordinateFactory, 
+        public PrecisionModel(ICoordinateFactory<BufferedCoordinate> coordinateFactory, 
                               Double scale)
             :this(coordinateFactory, PrecisionModelType.Fixed)
         {
@@ -143,18 +140,34 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary> 
-        /// Copy constructor to create a new <see cref="PrecisionModel{TCoordinate}"/>
+        /// Copy constructor to create a new <see cref="PrecisionModel"/>
+        /// from an existing one.
+        /// </summary>
+        /// <param name="coordinateFactory">
+        /// The coordinate factory to use to creat coordinates.
+        /// </param>
+        /// <param name="pm">The <see cref="IPrecisionModel"/> to copy.</param>
+        public PrecisionModel(ICoordinateFactory<BufferedCoordinate> coordinateFactory, 
+                              IPrecisionModel pm)
+        {
+            _coordFactory = coordinateFactory;
+            _modelType = pm == null ? PrecisionModelType.DoubleFloating : pm.PrecisionModelType;
+            _scale = pm == null ? 1.0 : pm.Scale;
+        }
+
+        /// <summary> 
+        /// Copy constructor to create a new <see cref="PrecisionModel"/>
         /// from an existing one.
         /// </summary>
         /// <param name="pm">The precision model to copy.</param>
-        public PrecisionModel(PrecisionModel<TCoordinate> pm)
+        public PrecisionModel(PrecisionModel pm)
         {
             _coordFactory = pm._coordFactory;
             _modelType = pm._modelType;
             _scale = pm._scale;
         }
 
-        public ICoordinateFactory<TCoordinate> CoordinateFactory
+        public ICoordinateFactory<BufferedCoordinate> CoordinateFactory
         {
             get { return _coordFactory; }
         }
@@ -226,8 +239,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
         #endregion
 
-        #region IPrecisionModel<TCoordinate> Members
-        public TCoordinate MakePrecise(TCoordinate coord)
+        #region IPrecisionModel<BufferedCoordinate> Members
+        public BufferedCoordinate MakePrecise(BufferedCoordinate coord)
         {
             // optimization for full precision
             if (_modelType == PrecisionModelType.DoubleFloating)
@@ -260,7 +273,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        public Boolean Equals(IPrecisionModel<TCoordinate> other)
+        public Boolean Equals(IPrecisionModel<BufferedCoordinate> other)
         {
             if (other == null)
             {
@@ -271,18 +284,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                    _scale == other.Scale;
         }
 
-        #region IComparable<IPrecisionModel<TCoordinate>> Members
+        #region IComparable<IPrecisionModel<BufferedCoordinate>> Members
 
         /// <summary> 
-        /// Compares this <see cref="PrecisionModel{TCoordinate}"/> object with the 
+        /// Compares this <see cref="PrecisionModel"/> object with the 
         /// specified object for order.
         /// </summary>
         /// <param name="other">
-        /// The <see cref="PrecisionModel{TCoordinate}"/> with which this 
-        /// <see cref="PrecisionModel{TCoordinate}"/> is being compared.
+        /// The <see cref="PrecisionModel"/> with which this 
+        /// <see cref="PrecisionModel"/> is being compared.
         /// </param>
         /// <remarks>
-        /// A <see cref="PrecisionModel{TCoordinate}"/> is greater than another if it 
+        /// A <see cref="PrecisionModel"/> is greater than another if it 
         /// provides greater precision. The comparison is based on the value returned by
         /// <see cref="MaximumSignificantDigits"/>.
         /// This comparison is not strictly accurate when comparing floating precision models
@@ -290,10 +303,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </remarks>
         /// <returns>
         /// A negative integer, zero, or a positive integer as this 
-        /// <see cref="PrecisionModel{TCoordinate}"/> is less than, equal to, 
-        /// or greater than the specified <see cref="PrecisionModel{TCoordinate}"/>.
+        /// <see cref="PrecisionModel"/> is less than, equal to, 
+        /// or greater than the specified <see cref="PrecisionModel"/>.
         /// </returns>
-        public Int32 CompareTo(IPrecisionModel<TCoordinate> other)
+        public Int32 CompareTo(IPrecisionModel<BufferedCoordinate> other)
         {
             return (this as IComparable<IPrecisionModel>).CompareTo(other);
         }

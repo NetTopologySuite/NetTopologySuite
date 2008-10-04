@@ -654,9 +654,8 @@ namespace ManagedBufferedCoordinateTests
         [Test]
         public void BitResolutionSnapsCoordinatesToGrid()
         {
-            BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
-
-            factory.BitResolution = 24;
+            throw new NotImplementedException("Need to put correct scale here...");
+            BufferedCoordinateFactory factory = new BufferedCoordinateFactory(24);
 
             factory.Create(10, 10);
             factory.Create(10.000000003, 10.000000003);

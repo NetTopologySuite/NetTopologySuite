@@ -9,8 +9,7 @@ namespace NetTopologySuite.Coordinates
     using IVector2D = IVector<DoubleComponent, BufferedCoordinate>;
     using IVectorD = IVector<DoubleComponent>;
 
-    public struct BufferedCoordinate : ICoordinate2D,
-                                       ICoordinate3D,
+    public struct BufferedCoordinate : ICoordinate3D,
                                        ICoordinate<BufferedCoordinate>,
                                        IBufferedVector<DoubleComponent, BufferedCoordinate>,
                                        IEquatable<BufferedCoordinate>,

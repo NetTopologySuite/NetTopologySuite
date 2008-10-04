@@ -45,6 +45,16 @@ namespace NetTopologySuite.Coordinates
             return new BufferedCoordinateSequence(this, _buffer);
         }
 
+        public IPrecisionModel<BufferedCoordinate> PrecisionModel
+        {
+            get { return _coordFactory.PrecisionModel; }
+        }
+
+        IPrecisionModel ICoordinateSequenceFactory.PrecisionModel
+        {
+            get { return PrecisionModel; }
+        }
+
         public IBufferedCoordSequence Create(Int32 size, CoordinateDimensions dimension)
         {
             checkDimension(dimension);

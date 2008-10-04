@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
 
         public LineSequencerTest() :
             base(GeometryFactory<BufferedCoordinate>.CreateFixedPrecision(
-                     new BufferedCoordinateSequenceFactory()),
+                     new BufferedCoordinateSequenceFactory(), 1.0),
                  null) {}
 
         [Test]

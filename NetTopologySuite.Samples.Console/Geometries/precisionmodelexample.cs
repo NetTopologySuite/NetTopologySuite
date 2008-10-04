@@ -52,12 +52,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
             Console.WriteLine("A = " + wktA);
             Console.WriteLine("B = " + wktB);
 
-            Intersection(wktA, wktB, new PrecisionModel<BufferedCoordinate>(_coordinateFactory));
+            Intersection(wktA, wktB, new PrecisionModel(_coordinateFactory));
             Intersection(wktA,
                          wktB,
-                         new PrecisionModel<BufferedCoordinate>(_coordinateFactory,
+                         new PrecisionModel(_coordinateFactory,
                                                                   PrecisionModelType.SingleFloating));
-            Intersection(wktA, wktB, new PrecisionModel<BufferedCoordinate>(_coordinateFactory, 1));
+            Intersection(wktA, wktB, new PrecisionModel(_coordinateFactory, 1));
         }
 
         public virtual void Example2()
@@ -70,14 +70,14 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
             Console.WriteLine("A = " + wktA);
             Console.WriteLine("B = " + wktB);
 
-            Difference(wktA, wktB, new PrecisionModel<BufferedCoordinate>(_coordinateFactory));
-            Difference(wktA, wktB, new PrecisionModel<BufferedCoordinate>(_coordinateFactory, 1));
+            Difference(wktA, wktB, new PrecisionModel(_coordinateFactory));
+            Difference(wktA, wktB, new PrecisionModel(_coordinateFactory, 1));
         }
 
 
         public virtual void Intersection(String wktA, 
                                          String wktB,
-                                         PrecisionModel<BufferedCoordinate> pm)
+                                         PrecisionModel pm)
         {
             Console.WriteLine("Running example using Precision Model = " + pm);
             GeometryFactory<BufferedCoordinate> fact
@@ -93,7 +93,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 
         public virtual void Difference(String wktA, 
                                        String wktB,
-                                       PrecisionModel<BufferedCoordinate> pm)
+                                       PrecisionModel pm)
         {
             Console.WriteLine("-------------------------------------------");
             Console.WriteLine("Running example using Precision Model = " + pm);

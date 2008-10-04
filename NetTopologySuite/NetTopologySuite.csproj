@@ -189,7 +189,6 @@
     <Compile Include="Geometries\Point.cs" />
     <Compile Include="Geometries\PointM.cs" />
     <Compile Include="Geometries\Polygon.cs" />
-    <Compile Include="Geometries\PrecisionModel.cs" />
     <Compile Include="Geometries\TopologyException.cs" />
     <Compile Include="Geometries\Triangle.cs" />
     <Compile Include="Geometries\Coordinates.cs" />

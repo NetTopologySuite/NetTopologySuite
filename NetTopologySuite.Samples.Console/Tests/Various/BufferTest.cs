@@ -730,7 +730,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// </summary>
         public BufferTest()
             : base(GeometryFactory<BufferedCoordinate>.CreateFixedPrecision(
-                       new BufferedCoordinateSequenceFactory())) {}
+                       new BufferedCoordinateSequenceFactory(), 1.0)) { }
 
         [Test]
         public void TestWithDefaultFactory()
@@ -749,7 +749,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             BufferedCoordinateSequenceFactory seqFactory
                 = new BufferedCoordinateSequenceFactory();
             IGeometryFactory<BufferedCoordinate> @fixed
-                = GeometryFactory<BufferedCoordinate>.CreateFixedPrecision(seqFactory);
+                = GeometryFactory<BufferedCoordinate>.CreateFixedPrecision(seqFactory, 1.0);
             performTest(@fixed);
         }
 

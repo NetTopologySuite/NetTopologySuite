@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// </summary>
         public IsValidTest()
             : base(GeometryFactory<BufferedCoordinate>.CreateFixedPrecision(
-                       new BufferedCoordinateSequenceFactory())) {}
+                       new BufferedCoordinateSequenceFactory(), 1.0)) {}
 
         [Test]
         public void IsCCWBugTest()

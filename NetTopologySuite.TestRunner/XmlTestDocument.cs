@@ -133,10 +133,10 @@ namespace GisSharpBlog.NetTopologySuite
                     }
                 }
 
-                ICoordinateSequenceFactory<BufferedCoordinate> seqFactory =
-                    new BufferedCoordinateSequenceFactory();
                 // Retrieve the precisionName" tag, if any.
-                PrecisionModel<BufferedCoordinate> pm = null;
+                Double scale = Double.NaN;
+                PrecisionModelType type = PrecisionModelType.DoubleFloating;
+
                 XmlNode precision = root["precisionModel"];
 
                 if (precision != null)
@@ -155,57 +155,53 @@ namespace GisSharpBlog.NetTopologySuite
                             {
                                 try
                                 {
-                                    Double scale
-                                        = Double.Parse(precisionAttributes["scale"].InnerText,
-                                                       GetNumberFormatInfo());
+                                    scale = Double.Parse(precisionAttributes["scale"].InnerText,
+                                                         GetNumberFormatInfo());
                                     Double offsetx
                                         = Double.Parse(precisionAttributes["offsetx"].InnerText,
                                                        GetNumberFormatInfo());
                                     Double offsety
                                         = Double.Parse(precisionAttributes["offsety"].InnerText,
                                                        GetNumberFormatInfo());
-
-                                    pm = new PrecisionModel<BufferedCoordinate>(
-                                        seqFactory.CoordinateFactory, scale);
                                 }
                                 catch (Exception ex)
                                 {
                                     XmlTestExceptionManager.Publish(ex);
                                 }
                             }
-                            else
-                            {
-                                pm = new PrecisionModel<BufferedCoordinate>(
-                                    seqFactory.CoordinateFactory);
-                            }
                         }
                         else
                         {
                             if (precisionAttributes.Count == 3)
                             {
-                                Double scale =
-                                    Double.Parse(precisionAttributes["scale"].InnerText,
-                                                 GetNumberFormatInfo());
+                                scale = Double.Parse(precisionAttributes["scale"].InnerText,
+                                                     GetNumberFormatInfo());
                                 Double offsetx =
                                     Double.Parse(precisionAttributes["offsetx"].InnerText,
                                                  GetNumberFormatInfo());
                                 Double offsety =
                                     Double.Parse(precisionAttributes["offsety"].InnerText,
                                                  GetNumberFormatInfo());
-
-                                pm = new PrecisionModel<BufferedCoordinate>(
-                                    seqFactory.CoordinateFactory, scale);
                             }
                         }
                     }
                 }
 
-                if (pm == null)
+                BufferedCoordinateFactory coordFactory;
+
+                if (!Double.IsNaN(scale))
                 {
-                    pm = new PrecisionModel<BufferedCoordinate>(seqFactory.CoordinateFactory);
+                    coordFactory = new BufferedCoordinateFactory(scale);
+                }
+                else
+                {
+                    coordFactory = new BufferedCoordinateFactory(type);
                 }
 
-                _xmlTestFactory = new XmlTestFactory(pm, seqFactory);
+                ICoordinateSequenceFactory<BufferedCoordinate> seqFactory =
+                    new BufferedCoordinateSequenceFactory(coordFactory);
+
+                _xmlTestFactory = new XmlTestFactory(seqFactory);
                 _listCurTests = new XmlTestCollection();
 
                 _listCurTests.Name = testDescription;

@@ -53,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             Debug.WriteLine(result);
 
             // Fixed precision
-            geoFactory = GeometryFactory<BufferedCoordinate>.CreateFixedPrecision(seqFactory);
+            geoFactory = GeometryFactory<BufferedCoordinate>.CreateFixedPrecision(seqFactory, 1.0);
             point = geoFactory.CreatePoint(c);
             result = writer.Write(point);
             Debug.WriteLine(result);

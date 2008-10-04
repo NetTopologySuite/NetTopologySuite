@@ -33,10 +33,9 @@ namespace GisSharpBlog.NetTopologySuite
         protected IGeometryFactory<BufferedCoordinate> _geometryFactory;
         protected IWktGeometryReader _wktReader;
 
-        public XmlTestFactory(IPrecisionModel<BufferedCoordinate> pm,
-                              ICoordinateSequenceFactory<BufferedCoordinate> seqFactory)
+        public XmlTestFactory(ICoordinateSequenceFactory<BufferedCoordinate> seqFactory)
         {
-            _geometryFactory = new GeometryFactory<BufferedCoordinate>(pm, seqFactory);
+            _geometryFactory = new GeometryFactory<BufferedCoordinate>(seqFactory);
             _wktReader = new WktReader<BufferedCoordinate>(_geometryFactory, null);
         }
 

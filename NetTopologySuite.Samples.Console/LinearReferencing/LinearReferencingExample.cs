@@ -13,8 +13,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.LinearReferencing
     public class LinearReferencingExample
     {
         private static readonly IGeometryFactory<BufferedCoordinate> _factory
-            = GeometryFactory<BufferedCoordinate>.CreateFixedPrecision(
-                new BufferedCoordinateSequenceFactory());
+            = new GeometryFactory<BufferedCoordinate>(
+                new BufferedCoordinateSequenceFactory(
+                    new BufferedCoordinateFactory(1.0)));
 
         private static readonly WktReader<BufferedCoordinate> _reader
             = new WktReader<BufferedCoordinate>(_factory, null);

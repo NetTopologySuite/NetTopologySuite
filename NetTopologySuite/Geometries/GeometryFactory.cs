@@ -30,42 +30,40 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         ///// </summary>
         //public static readonly IGeometryFactory<TCoordinate> Default = new GeometryFactory<TCoordinate>();
 
-        /// <summary>
-        /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
-        /// <c> == </c> <see cref="PrecisionModelType.DoubleFloating" />.
-        /// </summary>
-        public static IGeometryFactory<TCoordinate> CreateFloatingPrecision(
-            ICoordinateSequenceFactory<TCoordinate> coordSequenceFactory)
-        {
-            return new GeometryFactory<TCoordinate>(coordSequenceFactory);
-        }
+        ///// <summary>
+        ///// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
+        ///// <c> == </c> <see cref="PrecisionModelType.DoubleFloating" />.
+        ///// </summary>
+        //public static IGeometryFactory<TCoordinate> CreateFloatingPrecision(
+        //    ICoordinateSequenceFactory<TCoordinate> coordSequenceFactory)
+        //{
+        //    return new GeometryFactory<TCoordinate>(coordSequenceFactory);
+        //}
 
-        /// <summary>
-        /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
-        /// <c> == </c> <see cref="PrecisionModelType.SingleFloating" />.
-        /// </summary>
-        public static IGeometryFactory<TCoordinate> CreateFloatingSinglePrecision(
-            ICoordinateSequenceFactory<TCoordinate> coordSequenceFactory)
-        {
-            return new GeometryFactory<TCoordinate>(
-                new PrecisionModel<TCoordinate>(coordSequenceFactory.CoordinateFactory,
-                                                PrecisionModelType.SingleFloating),
-                null, coordSequenceFactory);
-        }
+        ///// <summary>
+        ///// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
+        ///// <c> == </c> <see cref="PrecisionModelType.SingleFloating" />.
+        ///// </summary>
+        //public static IGeometryFactory<TCoordinate> CreateFloatingSinglePrecision(
+        //    ICoordinateSequenceFactory<TCoordinate> coordSequenceFactory)
+        //{
+        //    return new GeometryFactory<TCoordinate>(
+        //        coordSequenceFactory.CoordinateFactory.CreatePrecisionModel(PrecisionModelType.SingleFloating),
+        //        null, coordSequenceFactory);
+        //}
 
 
-        /// <summary>
-        /// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
-        /// <c> == </c> <see cref="PrecisionModelType.Fixed" />.
-        /// </summary>
-        public static IGeometryFactory<TCoordinate> CreateFixedPrecision(
-            ICoordinateSequenceFactory<TCoordinate> coordSequenceFactory)
-        {
-            return new GeometryFactory<TCoordinate>(
-                new PrecisionModel<TCoordinate>(coordSequenceFactory.CoordinateFactory,
-                                                PrecisionModelType.Fixed),
-                null, coordSequenceFactory);
-        }
+        ///// <summary>
+        ///// A predefined <see cref="GeometryFactory{TCoordinate}" /> with <see cref="PrecisionModel" /> 
+        ///// <c> == </c> <see cref="PrecisionModelType.Fixed" />.
+        ///// </summary>
+        //public static IGeometryFactory<TCoordinate> CreateFixedPrecision(
+        //    ICoordinateSequenceFactory<TCoordinate> coordSequenceFactory, Double scale)
+        //{
+        //    return new GeometryFactory<TCoordinate>(
+        //        coordSequenceFactory.CoordinateFactory.CreatePrecisionModel(scale),
+        //        null, coordSequenceFactory);
+        //}
 
         #endregion
 
@@ -73,7 +71,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         private readonly ICoordinateSequenceFactory<TCoordinate> _coordinateSequenceFactory;
         private readonly ICoordinateFactory<TCoordinate> _coordinateFactory;
-        private readonly IPrecisionModel<TCoordinate> _precisionModel;
+        //private readonly IPrecisionModel<TCoordinate> _precisionModel;
         private Int32? _srid;
         private ICoordinateSystem<TCoordinate> _spatialReference;
         private IWktGeometryWriter<TCoordinate> _wktEncoder;
@@ -86,19 +84,24 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         #region Constructors
 
         /// <summary>
-        /// Constructs a GeometryFactory that generates Geometries having the given
-        /// PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.
-        /// </summary>    
-        public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel, Int32? srid,
-                               ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory,
-                               ICoordinateSystem<TCoordinate> spatialReference)
+        /// Constructs a <see cref="GeometryFactory{TCoordinate}"/> that generates 
+        /// geometries having the given <see cref="ICoordinateSequenceFactory{TCoordinate}"/> 
+        /// implementation and the given spatial-reference ID and the given 
+        /// <see cref="ICoordinateSystem{TCoordinate}"/>.
+        /// </summary>
+        /// <param name="coordinateSequenceFactory">The coordinate factory to use.</param>
+        /// <param name="srid">An id code for a given spatial reference.</param>
+        /// <param name="spatialReference">The spatial reference system for the created geometries.</param>   
+        protected GeometryFactory(Int32? srid,
+                                  ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory,
+                                  ICoordinateSystem<TCoordinate> spatialReference)
         {
             if (coordinateSequenceFactory == null)
             {
                 throw new ArgumentNullException("coordinateSequenceFactory");
             }
 
-            _precisionModel = precisionModel;
+            //_precisionModel = precisionModel;
             _coordinateSequenceFactory = coordinateSequenceFactory;
             _coordinateFactory = coordinateSequenceFactory.CoordinateFactory;
             _srid = srid;
@@ -110,112 +113,109 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Constructs a GeometryFactory that generates Geometries having the given
-        /// PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.
-        /// </summary>    
-        public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel, Int32? srid,
+        /// Constructs a <see cref="GeometryFactory{TCoordinate}"/> that generates 
+        /// geometries having the given <see cref="ICoordinateSequenceFactory{TCoordinate}"/> 
+        /// implementation and the given spatial-reference ID and a <see langword="null"/> 
+        /// <see cref="ICoordinateSystem{TCoordinate}"/>.
+        /// </summary>  
+        /// <remarks>
+        /// The <see cref="IPrecisionModel{TCoordinate}"/> for this factory is 
+        /// gotten from <paramref name="coordinateSequenceFactory"/>.
+        /// </remarks>
+        public GeometryFactory(Int32? srid,
                                ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory)
-            : this(precisionModel, srid, coordinateSequenceFactory, null) { }
+            : this(srid, coordinateSequenceFactory, null) { }
+
+        ///// <summary>
+        ///// Constructs a <see cref="GeometryFactory{TCoordinate}"/> that generates geometries having the given
+        ///// <see cref="IPrecisionModel{TCoordinate}"/> and spatial-reference ID, 
+        ///// and the default CoordinateSequence implementation.
+        ///// </summary>
+        ///// <param name="precisionModel">The PrecisionModel to use.</param>
+        ///// <param name="srid">The SRID to use.</param>
+        //public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel, Int32? srid)
+        //    : this(precisionModel, srid, null) { }
+
+        ///// <summary>
+        ///// Constructs a <see cref="GeometryFactory{TCoordinate}"/> that generates geometries having the given
+        ///// <see cref="IPrecisionModel{TCoordinate}"/> and the default 
+        ///// <see cref="ICoordinateSequenceFactory{TCoordinate}"/> implementation.
+        ///// </summary>
+        ///// <param name="precisionModel">
+        ///// The <see cref="IPrecisionModel{TCoordinate}"/> to use.
+        ///// </param>
+        //public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel)
+        //    : this(precisionModel, null, null) { }
+
+        //public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory,
+        //                       Int32? srid,
+        //                       ICoordinateSystem<TCoordinate> spatialReference)
+        //    : this(srid,
+        //           coordinateSequenceFactory,
+        //           spatialReference) { }
+
+        ///// <summary>
+        ///// Constructs a <see cref="GeometryFactory{TCoordinate}"/> that generates geometries having the given
+        ///// <see cref="ICoordinateSequenceFactory{TCoordinate}"/> implementation, 
+        ///// a double-precision floating <see cref="IPrecisionModel{TCoordinate}"/>, 
+        ///// and the given spatial-reference ID.
+        ///// </summary>
+        //public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory,
+        //                       Int32? srid)
+        //    : this(coordinateSequenceFactory, srid, null) { }
 
         /// <summary>
-        /// Constructs a GeometryFactory that generates Geometries having the given
-        /// <see cref="PrecisionModel{TCoordinate}"/> and spatial-reference ID, and the default CoordinateSequence
-        /// implementation.
-        /// </summary>
-        /// <param name="precisionModel">The PrecisionModel to use.</param>
-        /// <param name="srid">The SRID to use.</param>
-        public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel, Int32? srid)
-            : this(precisionModel, srid, null) { }
-
-        /// <summary>
-        /// Constructs a GeometryFactory that generates Geometries having the given
-        /// CoordinateSequence implementation, the given 
-        /// <see cref="IPrecisionModel{TCoordinate}"/> and a <see langword="null"/> 
-        /// spatial-reference ID.
-        /// </summary>
-        public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel,
-                               ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory)
-            : this(precisionModel, null, coordinateSequenceFactory) { }
-
-        /// <summary>
-        /// Constructs a GeometryFactory that generates Geometries having the given
-        /// <see cref="IPrecisionModel{TCoordinate}"/> and the default 
-        /// <see cref="ICoordinateSequenceFactory{TCoordinate}"/> implementation.
-        /// </summary>
-        /// <param name="precisionModel">
-        /// The <see cref="IPrecisionModel{TCoordinate}"/> to use.
-        /// </param>
-        public GeometryFactory(IPrecisionModel<TCoordinate> precisionModel)
-            : this(precisionModel, null, null) { }
-
-        /// <summary>
-        /// Constructs a GeometryFactory that generates Geometries having the given
-        /// CoordinateSequence implementation, a Double-precision floating 
-        /// <see cref="IPrecisionModel{TCoordinate}"/>, the given spatial-reference ID 
-        /// and the given <see cref="ICoordinateSystem{TCoordinate}"/>.
-        /// </summary>
-        public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory,
-                               Int32? srid,
-                               ICoordinateSystem<TCoordinate> spatialReference)
-            : this(new PrecisionModel<TCoordinate>(coordinateSequenceFactory.CoordinateFactory),
-                   srid,
-                   coordinateSequenceFactory,
-                   spatialReference) { }
-
-        /// <summary>
-        /// Constructs a GeometryFactory that generates Geometries having the given
-        /// CoordinateSequence implementation, a Double-precision floating 
-        /// <see cref="IPrecisionModel{TCoordinate}"/>, and the given spatial-reference ID.
-        /// </summary>
-        public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory,
-                               Int32? srid)
-            : this(coordinateSequenceFactory, srid, null) { }
-
-        /// <summary>
-        /// Constructs a GeometryFactory that generates Geometries having the given
-        /// CoordinateSequence implementation, a Double-precision floating 
-        /// <see cref="IPrecisionModel{TCoordinate}"/>, a
-        /// <see langword="null"/> spatial-reference ID and the given 
+        /// Constructs a <see cref="GeometryFactory{TCoordinate}"/> that generates 
+        /// geometries having the given <see cref="ICoordinateSequenceFactory{TCoordinate}"/> 
+        /// implementation and a <see langword="null"/> spatial-reference ID and the given 
         /// <see cref="ICoordinateSystem{TCoordinate}"/>.
         /// </summary>
+        /// <remarks>
+        /// The <see cref="IPrecisionModel{TCoordinate}"/> for this factory is 
+        /// gotten from <paramref name="coordinateSequenceFactory"/>.
+        /// </remarks>
         public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory,
                                ICoordinateSystem<TCoordinate> spatialReference)
-            : this(coordinateSequenceFactory, null, spatialReference) { }
+            : this(null, coordinateSequenceFactory, spatialReference) { }
 
         /// <summary>
-        /// Constructs a GeometryFactory that generates Geometries having the given
-        /// CoordinateSequence implementation, a Double-precision floating 
-        /// <see cref="IPrecisionModel{TCoordinate}"/>, and a
-        /// <see langword="null"/> spatial-reference ID.
+        /// Constructs a <see cref="GeometryFactory{TCoordinate}"/> that generates 
+        /// geometries having the given CoordinateSequence implementation, and a
+        /// <see langword="null"/> spatial-reference ID and a <see langword="null"/> 
+        /// <see cref="ICoordinateSystem{TCoordinate}"/>.
         /// </summary>
+        /// <remarks>
+        /// The <see cref="IPrecisionModel{TCoordinate}"/> for this factory is 
+        /// gotten from <paramref name="coordinateSequenceFactory"/>.
+        /// </remarks>
         public GeometryFactory(ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory)
-            : this(coordinateSequenceFactory, null, null) { }
+            : this(null, coordinateSequenceFactory, null) { }
 
         #endregion
 
         /// <summary>  
-        /// Build an appropriate <see cref="Geometry{TCoordinate}"/>, <c>MultiGeometry</c>, or
-        /// <see cref="GeometryCollection{TCoordinate}" /> to contain the <see cref="Geometry{TCoordinate}"/>s in
-        /// it.
+        /// Build an appropriate <see cref="Geometry{TCoordinate}"/>, multi-geometry, or
+        /// <see cref="GeometryCollection{TCoordinate}" /> to contain the 
+        /// <see cref="Geometry{TCoordinate}"/>s in it.
         /// <example>
-        ///  If <c>geomList</c> contains a single <see cref="Polygon{TCoordinate}" />,
+        /// If <paramref name="geometries"/> contains a single <see cref="Polygon{TCoordinate}" />,
         /// the <see cref="Polygon{TCoordinate}" /> is returned.
-        ///  If <c>geomList</c> contains several <see cref="Polygon{TCoordinate}" />s, a
-        /// <c>MultiPolygon</c> is returned.
-        ///  If <c>geomList</c> contains some <see cref="Polygon{TCoordinate}" />s and
-        /// some <c>LineString</c>s, a <see cref="GeometryCollection{TCoordinate}" /> is
-        /// returned.
-        ///  If <c>geomList</c> is empty, an empty <see cref="GeometryCollection{TCoordinate}" />
-        /// is returned.
-        /// Note that this method does not "flatten" Geometries in the input, and hence if
-        /// any MultiGeometries are contained in the input a GeometryCollection containing
-        /// them will be returned.
+        /// If <paramref name="geometries"/> contains several <see cref="Polygon{TCoordinate}" />s, a
+        /// <see cref="IMultiPolygon{TCoordinate}"/> is returned.
+        /// If <paramref name="geometries"/> contains some <see cref="IPolygon{TCoordinate}" />s and
+        /// some <see cref="ILineString{TCoordinate}"/>s, a 
+        /// <see cref="GeometryCollection{TCoordinate}" /> is returned.
+        /// If <paramref name="geometries"/> is empty, an empty 
+        /// <see cref="GeometryCollection{TCoordinate}" /> is returned.
+        /// Note that this method does not "flatten" geometries in the input, and hence if
+        /// any multi-geometries are contained in the input an 
+        /// <see cref="IGeometryCollection{TCoordinate}"/> containing them will be returned.
         /// </example>
         /// </summary>
         /// <param name="geometries">The <see cref="Geometry{TCoordinate}"/> to combine.</param>
         /// <returns>
         /// A <see cref="Geometry{TCoordinate}"/> of the "smallest", "most type-specific" 
-        /// class that can contain the elements of <c>geomList</c>.
+        /// class that can contain the elements of <paramref name="geometries"/>.
         /// </returns>
         public IGeometry<TCoordinate> BuildGeometry(IEnumerable<IGeometry<TCoordinate>> geometries)
         {
@@ -678,12 +678,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns the PrecisionModel that Geometries created by this factory
-        /// will be associated with.
+        /// Returns the <see cref="IPrecisionModel{TCoordinate}"/> that geometries 
+        /// created by this factory will be associated with.
         /// </summary>
         public IPrecisionModel<TCoordinate> PrecisionModel
         {
-            get { return _precisionModel; }
+            get { return _coordinateSequenceFactory.PrecisionModel; }
         }
 
         public ICoordinateSystem<TCoordinate> SpatialReference

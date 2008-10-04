@@ -790,7 +790,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// each <see cref="Geometry{TCoordinate}"/> object. 
         /// <see cref="Geometry{TCoordinate}"/> provides basic
         /// accessor operations for this field, but no others. 
+        /// <para>
         /// The SRID is represented as a nullable <see cref="Int32"/>.
+        /// </para>
         /// </remarks>     
         public Int32? Srid
         {
@@ -803,8 +805,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 }
 
                 _srid = value;
-                _factory = new GeometryFactory<TCoordinate>(_factory.PrecisionModel, 
-                                                            value,
+                _factory = new GeometryFactory<TCoordinate>(value,
                                                             _factory.CoordinateSequenceFactory);
 
                 IGeometryCollection collection = this as IGeometryCollection;

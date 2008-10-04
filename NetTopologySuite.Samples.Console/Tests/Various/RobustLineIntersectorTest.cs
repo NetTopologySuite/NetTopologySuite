@@ -24,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// </summary>
         public RobustLineIntersectorTest()
             : base(GeometryFactory<BufferedCoordinate>.CreateFixedPrecision(
-                       new BufferedCoordinateSequenceFactory())) {}
+                       new BufferedCoordinateSequenceFactory(), 1.0)) { }
 
         [Test]
         public void IntersectionIsCorrect()

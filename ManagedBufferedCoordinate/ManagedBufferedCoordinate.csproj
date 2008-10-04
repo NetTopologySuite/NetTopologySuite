@@ -144,12 +144,15 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="BufferedCoordinate2D.cs" />
-    <Compile Include="BufferedCoordinate2DFactory.cs" />
-    <Compile Include="BufferedCoordinate2DSequence.cs" />
-    <Compile Include="BufferedCoordinate2DSequenceFactory.cs" />
-    <Compile Include="BufferedCoordinate2DSet.cs" />
+    <Compile Include="BufferedCoordinate.cs" />
+    <Compile Include="BufferedCoordinateFactory.cs" />
+    <Compile Include="BufferedCoordinateSequence.cs" />
+    <Compile Include="BufferedCoordinateSequenceFactory.cs" />
+    <Compile Include="BufferedCoordinateSet.cs" />
     <Compile Include="Matrix3.cs" />
+    <Compile Include="PrecisionModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="nts.snk" />

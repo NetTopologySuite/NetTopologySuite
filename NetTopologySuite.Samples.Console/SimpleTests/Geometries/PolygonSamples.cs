@@ -16,8 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
 
         public PolygonSamples()
             : base(new GeometryFactory<BufferedCoordinate>(
-                       new PrecisionModel<BufferedCoordinate>(CoordFactory,
-                                                                PrecisionModelType.Fixed)))
+                new PrecisionModel(CoordFactory, PrecisionModelType.Fixed)))
         {
             shell = GeoFactory.CreateLinearRing(new ICoordinate[]
                                                 {
@@ -27,6 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                                                     CoordFactory.Create(100, 200),
                                                     CoordFactory.Create(100, 100),
                                                 });
+
             hole = GeoFactory.CreateLinearRing(new ICoordinate[]
                                                {
                                                    CoordFactory.Create(120, 120),
@@ -35,6 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
                                                    CoordFactory.Create(120, 180),
                                                    CoordFactory.Create(120, 120),
                                                });
+
             polygon = GeoFactory.CreatePolygon(shell, new[] {hole,});
         }
 
