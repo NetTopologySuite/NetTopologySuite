@@ -77,17 +77,17 @@
   <Choose>
     <When Condition="'$(GeoAPIProjectReference)' == 'Grandchild'">
       <ItemGroup>
-        <ProjectReference Include="..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj">
+        <ProjectReference Include="..\..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj">
           <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
-          <Name>GeoAPI.Net Project</Name>
+          <Name>GeoAPI.Net Project (Grandparent)</Name>
         </ProjectReference>
       </ItemGroup>
     </When>
     <When Condition="'$(GeoAPIProjectReference)' == 'Child'">
       <ItemGroup>
-        <ProjectReference Include="..\..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj">
+        <ProjectReference Include="..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj">
           <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
-          <Name>GeoAPI.Net Project</Name>
+          <Name>GeoAPI.Net Project (Parent)</Name>
         </ProjectReference>
       </ItemGroup>
     </When>
@@ -103,9 +103,9 @@
   <Choose>
     <When Condition="'$(NPackProjectReference)' == 'Grandchild'">
       <ItemGroup>
-        <ProjectReference Include="..\NPack\NPack\NPack.csproj">
+        <ProjectReference Include="..\..\NPack\NPack\NPack.csproj">
           <Project>{B139E1D5-091B-40D2-B7A2-7D7D82E13019}</Project>
-          <Name>NPack Project</Name>
+          <Name>NPack Project (Grandparent)</Name>
         </ProjectReference>
       </ItemGroup>
     </When>
@@ -113,7 +113,7 @@
       <ItemGroup>
         <ProjectReference Include="..\NPack\NPack\NPack.csproj">
           <Project>{B139E1D5-091B-40D2-B7A2-7D7D82E13019}</Project>
-          <Name>NPack Project</Name>
+          <Name>NPack Project (Parent)</Name>
         </ProjectReference>
       </ItemGroup>
     </When>
