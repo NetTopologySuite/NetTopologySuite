@@ -12,8 +12,9 @@ namespace GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations
     /// Helper class for transforming <see cref="Geometry{TCoordinate}" /> objects.
     /// </summary>
     public static class GeometryTransform<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>, 
-                            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible, 
+                            IComputable<Double, TCoordinate>
     {
         //private static IPoint<TCoordinate> ToNTS(Double x, Double y)
         //{
