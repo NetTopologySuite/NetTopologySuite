@@ -4,11 +4,13 @@ using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using NPack.Interfaces;
 using GeoAPI.Diagnostics;
 using GeoAPI.DataStructures;
+#if DOTNET35
+using System.Linq;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
 {
@@ -94,9 +96,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             computeNextCWEdges();
 
             // clear labels of all edges in graph
-            IEnumerable<PolygonizeDirectedEdge<TCoordinate>> directedEdges
-                =
-                Enumerable.Downcast<PolygonizeDirectedEdge<TCoordinate>, DirectedEdge<TCoordinate>>(
+            IEnumerable<PolygonizeDirectedEdge<TCoordinate>> directedEdges =
+                Caster.Downcast<PolygonizeDirectedEdge<TCoordinate>, DirectedEdge<TCoordinate>>(
                     DirectedEdges);
 
             label(directedEdges, -1);
@@ -133,7 +134,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
 
             IEnumerable<PolygonizeDirectedEdge<TCoordinate>> directedEdges
                 =
-                Enumerable.Downcast<PolygonizeDirectedEdge<TCoordinate>, DirectedEdge<TCoordinate>>(
+                Caster.Downcast<PolygonizeDirectedEdge<TCoordinate>, DirectedEdge<TCoordinate>>(
                     DirectedEdges);
 
             // label the current set of edgerings

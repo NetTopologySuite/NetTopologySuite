@@ -4,6 +4,9 @@ using System.IO;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using NPack.Interfaces;
+#if DOTNET35
+using System.Linq;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {

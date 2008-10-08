@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using NPack;
 using NPack.Interfaces;
+#if DOTNET35
+using System.Linq;
+#endif
 
 namespace NetTopologySuite.Coordinates
 {

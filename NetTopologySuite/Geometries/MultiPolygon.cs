@@ -4,7 +4,10 @@ using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
+#if DOTNET35
+using System.Linq;
 using GeoAPI.DataStructures;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -34,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </param>
         /// <remarks>
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
-        /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
+        /// with <see cref="GeometryFactory{TCoordinate}.PrecisionModel" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public MultiPolygon(params IPolygon<TCoordinate>[] polygons) : this(polygons, ExtractGeometryFactory(polygons)) { }
 
@@ -54,7 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public MultiPolygon(IEnumerable<IPolygon<TCoordinate>> polygons) 
-            : this(polygons, ExtractGeometryFactory(Enumerable.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(polygons))) { }
+            : this(polygons, ExtractGeometryFactory(Caster.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(polygons))) { }
 
         /// <summary>
         /// Constructs a <see cref="MultiPolygon{TCoordinate}"/>.
@@ -71,7 +74,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// OpenGIS Simple Features Specification for SQL</see>.   
         /// </remarks>
         public MultiPolygon(IEnumerable<IPolygon<TCoordinate>> polygons, IGeometryFactory<TCoordinate> factory)
-            : base(Enumerable.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(polygons), factory) { }
+            : base(Caster.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(polygons), factory) { }
 
         public MultiPolygon(ICoordinateSequence<TCoordinate> sequence, IGeometryFactory<TCoordinate> factory)
             : base(factory)

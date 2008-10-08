@@ -8,6 +8,9 @@ using GeoAPI.DataStructures.Collections.Generic;
 using GeoAPI.Geometries;
 using NPack;
 using NPack.Interfaces;
+#if DOTNET35
+using System.Linq;
+#endif
 
 namespace NetTopologySuite.Coordinates
 {

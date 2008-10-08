@@ -7,6 +7,9 @@ using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Operation;
 using NPack.Interfaces;
+#if DOTNET35
+using System.Linq;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -39,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                                IGeometryFactory<TCoordinate> factory)
             : base(lineStrings == null 
 /* C# syntax ->  */     ? null 
-/* can be clumsy */     : Enumerable.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(lineStrings), 
+/* can be clumsy */     : Caster.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(lineStrings), 
                     factory) { }
 
         /// <summary>
@@ -64,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         ///// </remarks>
         //public MultiLineString(IEnumerable<ILineString<TCoordinate>> lineStrings)
         //    : this(lineStrings, 
-        //           ExtractGeometryFactory(Enumerable.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(lineStrings))) { }
+        //           ExtractGeometryFactory(Caster.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(lineStrings))) { }
 
         public override IGeometry<TCoordinate> Boundary
         {

@@ -11,6 +11,9 @@ using GisSharpBlog.NetTopologySuite.Noding;
 using GisSharpBlog.NetTopologySuite.Operation.Overlay;
 using NPack.Interfaces;
 using GeoAPI.DataStructures;
+#if DOTNET35
+using System.Linq;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 {
@@ -152,7 +155,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             buildSubgraphs(subgraphs, polyBuilder);
 
             IEnumerable<IGeometry<TCoordinate>> resultPolyList
-                = Enumerable.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(polyBuilder.Polygons);
+                = Caster.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(polyBuilder.Polygons);
 
             IGeometry<TCoordinate> resultGeom = _geoFactory.BuildGeometry(resultPolyList);
             return resultGeom;
@@ -261,7 +264,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 subgraph.FindResultEdges();
                 processedGraphs.Add(subgraph);
                 IEnumerable<EdgeEnd<TCoordinate>> edges =
-                    Enumerable.Upcast<EdgeEnd<TCoordinate>, DirectedEdge<TCoordinate>>(subgraph.DirectedEdges);
+                    Caster.Upcast<EdgeEnd<TCoordinate>, DirectedEdge<TCoordinate>>(subgraph.DirectedEdges);
                 polyBuilder.Add(edges, subgraph.Nodes);
             }
         }

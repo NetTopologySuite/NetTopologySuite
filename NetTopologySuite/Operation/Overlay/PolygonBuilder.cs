@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 using GeoAPI.Diagnostics;
-using GeoAPI.DataStructures;
+#if DOTNET35
+using System.Linq;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 {
@@ -129,7 +132,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                     else
                     {
                         IEnumerable<EdgeRing<TCoordinate>> holes =
-                            Enumerable.Upcast<EdgeRing<TCoordinate>, MinimalEdgeRing<TCoordinate>>(minEdgeRings);
+                            Caster.Upcast<EdgeRing<TCoordinate>, MinimalEdgeRing<TCoordinate>>(minEdgeRings);
 
                         foreach (EdgeRing<TCoordinate> hole in holes)
                         {

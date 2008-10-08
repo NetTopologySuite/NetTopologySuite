@@ -6,6 +6,9 @@ using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Index.Chain;
 using NPack.Interfaces;
+#if DOTNET35
+using System.Linq;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 {

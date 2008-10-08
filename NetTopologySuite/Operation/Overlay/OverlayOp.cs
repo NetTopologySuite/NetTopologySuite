@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
-using GeoAPI.DataStructures;
+#if DOTNET35
+using System.Linq;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 {
@@ -132,14 +135,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         {
             IEnumerable<IGeometry<TCoordinate>> geometries;
 
-            geometries = Enumerable.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(_resultLineList);
+            geometries = Caster.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(_resultLineList);
 
             if (isCovered(coord, geometries))
             {
                 return true;
             }
 
-            geometries = Enumerable.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(_resultPolyList);
+            geometries = Caster.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(_resultPolyList);
 
             if (isCovered(coord, geometries))
             {
@@ -159,7 +162,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         public Boolean IsCoveredByArea(TCoordinate coord)
         {
             IEnumerable<IGeometry<TCoordinate>> geometries 
-                = Enumerable.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(_resultPolyList);
+                = Caster.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(_resultPolyList);
 
             if (isCovered(coord, geometries))
             {
@@ -554,9 +557,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             List<IGeometry<TCoordinate>> geomList = new List<IGeometry<TCoordinate>>();
 
             // element geometries of the result are always in the order Point, Curve, Surface
-            geomList.AddRange(Enumerable.Upcast<IGeometry<TCoordinate>, IPoint<TCoordinate>>(points));
-            geomList.AddRange(Enumerable.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(lines));
-            geomList.AddRange(Enumerable.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(polys));
+            geomList.AddRange(Caster.Upcast<IGeometry<TCoordinate>, IPoint<TCoordinate>>(points));
+            geomList.AddRange(Caster.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(lines));
+            geomList.AddRange(Caster.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(polys));
 
             // build the most specific point possible
             return _geoFactory.BuildGeometry(geomList);

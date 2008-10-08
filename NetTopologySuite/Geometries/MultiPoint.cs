@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Operation;
 using NPack.Interfaces;
-using GeoAPI.DataStructures;
+#if DOTNET35
+using System.Linq;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -44,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </param>
         public MultiPoint(IEnumerable<IPoint<TCoordinate>> points, 
                           IGeometryFactory<TCoordinate> factory)
-            : base(Enumerable.Upcast<IGeometry<TCoordinate>, IPoint<TCoordinate>>(points), factory) { }
+            : base(Caster.Upcast<IGeometry<TCoordinate>, IPoint<TCoordinate>>(points), factory) { }
 
         /// <summary>
         /// Constructs a <see cref="MultiPoint{TCoordinate}"/>.
@@ -61,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.DoubleFloating"/>.
         /// </remarks>
         public MultiPoint(IEnumerable<IPoint<TCoordinate>> points) 
-            : this(points, ExtractGeometryFactory(Enumerable.Upcast<IGeometry<TCoordinate>, IPoint<TCoordinate>>(points))) {}
+            : this(points, ExtractGeometryFactory(Caster.Upcast<IGeometry<TCoordinate>, IPoint<TCoordinate>>(points))) {}
 
         //public MultiPoint(IEnumerable<TCoordinate> points)
         //    : this(DefaultFactory.CreateMultiPoint(points), DefaultFactory) { }

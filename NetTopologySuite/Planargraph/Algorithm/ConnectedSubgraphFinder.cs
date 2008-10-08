@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using NPack.Interfaces;
+#if DOTNET35
+using System.Linq;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
 {
@@ -30,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
         public IEnumerable<Subgraph<TCoordinate>> FindConnectedSubgraphs()
         {
             IEnumerable<GraphComponent<TCoordinate>> components
-                = Enumerable.Upcast<GraphComponent<TCoordinate>, Node<TCoordinate>>(_graph.Nodes);
+                = Caster.Upcast<GraphComponent<TCoordinate>, Node<TCoordinate>>(_graph.Nodes);
 
             GraphComponent<TCoordinate>.SetVisited(components, false);
 

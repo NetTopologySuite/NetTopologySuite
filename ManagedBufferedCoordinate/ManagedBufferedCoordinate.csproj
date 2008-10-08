@@ -25,8 +25,8 @@
     <ProjectGuid>{8A1C8DC2-9E24-47E9-A51C-AA46E0B0260C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetTopologySuite.Coordinates.ManagedBufferedCoordinate2D</RootNamespace>
-    <AssemblyName>ManagedBufferedCoordinate2D</AssemblyName>
+    <RootNamespace>NetTopologySuite.Coordinates.ManagedBufferedCoordinate</RootNamespace>
+    <AssemblyName>ManagedBufferedCoordinate</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>nts.snk</AssemblyOriginatorKeyFile>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -42,7 +42,7 @@
     <RunFxCop>false</RunFxCop>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <DocumentationFile>bin\Debug_Net20\ManagedBufferedCoordinate2D.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug_Net20\ManagedBufferedCoordinate.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release_Net20|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -52,7 +52,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <DocumentationFile>bin\Release_Net20\ManagedBufferedCoordinate2D.xml</DocumentationFile>
+    <DocumentationFile>bin\Release_Net20\ManagedBufferedCoordinate.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_Net35|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -140,8 +140,6 @@
     <Otherwise>
       <ItemGroup>
         <Reference Include="System" />
-        <Reference Include="System.Data" />
-        <Reference Include="System.Xml" />
       </ItemGroup>
     </Otherwise>
   </Choose>

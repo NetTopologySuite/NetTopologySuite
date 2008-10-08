@@ -8,6 +8,9 @@ using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 using GeoAPI.Diagnostics;
 using GeoAPI.DataStructures;
+#if DOTNET35
+using System.Linq;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {

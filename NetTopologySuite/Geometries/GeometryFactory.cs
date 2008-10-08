@@ -9,6 +9,9 @@ using NPack.Interfaces;
 using GeoAPI.IO.WellKnownBinary;
 using GeoAPI.IO.WellKnownText;
 using GeoAPI.Diagnostics;
+#if DOTNET35
+using System.Linq;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -260,21 +263,21 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 if (geom0 is IPolygon)
                 {
                     IEnumerable<IPolygon<TCoordinate>> polygons =
-                        Enumerable.Downcast<IPolygon<TCoordinate>, IGeometry<TCoordinate>>(geometries);
+                        Caster.Downcast<IPolygon<TCoordinate>, IGeometry<TCoordinate>>(geometries);
 
                     return CreateMultiPolygon(polygons);
                 }
                 else if (geom0 is ILineString)
                 {
                     IEnumerable<ILineString<TCoordinate>> lines =
-                        Enumerable.Downcast<ILineString<TCoordinate>, IGeometry<TCoordinate>>(geometries);
+                        Caster.Downcast<ILineString<TCoordinate>, IGeometry<TCoordinate>>(geometries);
 
                     return CreateMultiLineString(lines);
                 }
                 else if (geom0 is IPoint)
                 {
                     IEnumerable<IPoint<TCoordinate>> points =
-                        Enumerable.Downcast<IPoint<TCoordinate>, IGeometry<TCoordinate>>(geometries);
+                        Caster.Downcast<IPoint<TCoordinate>, IGeometry<TCoordinate>>(geometries);
 
                     return CreateMultiPoint(points);
                 }
@@ -533,7 +536,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                                                    IEnumerable<ILinearRing<TCoordinate>> holes)
         {
             return new Polygon<TCoordinate>(shell,
-                                            Enumerable.Upcast<ILineString<TCoordinate>,
+                                            Caster.Upcast<ILineString<TCoordinate>,
                                                 ILinearRing<TCoordinate>>(holes),
                                             this);
         }
@@ -861,7 +864,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IGeometry IGeometryFactory.BuildGeometry(IEnumerable<IGeometry> geometryList)
         {
-            return BuildGeometry(Enumerable.Downcast<IGeometry<TCoordinate>, IGeometry>(geometryList));
+            return BuildGeometry(Caster.Downcast<IGeometry<TCoordinate>, IGeometry>(geometryList));
         }
 
         IExtents IGeometryFactory.CreateExtents(ICoordinate min, ICoordinate max)
@@ -916,7 +919,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         ILineString IGeometryFactory.CreateLineString(IEnumerable<ICoordinate> coordinates)
         {
             IEnumerable<TCoordinate> castCoords
-                = Enumerable.Downcast<TCoordinate, ICoordinate>(coordinates);
+                = Caster.Downcast<TCoordinate, ICoordinate>(coordinates);
             return CreateLineString(castCoords);
         }
 
@@ -933,7 +936,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         ILinearRing IGeometryFactory.CreateLinearRing(IEnumerable<ICoordinate> coordinates)
         {
             IEnumerable<TCoordinate> castCoords
-                = Enumerable.Downcast<TCoordinate, ICoordinate>(coordinates);
+                = Caster.Downcast<TCoordinate, ICoordinate>(coordinates);
             return CreateLinearRing(castCoords);
         }
 
@@ -949,7 +952,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IPolygon IGeometryFactory.CreatePolygon(IEnumerable<ICoordinate> shell)
         {
-            return CreatePolygon(CreateLinearRing(Enumerable.Downcast<TCoordinate, ICoordinate>(shell)));
+            return CreatePolygon(CreateLinearRing(Caster.Downcast<TCoordinate, ICoordinate>(shell)));
         }
 
         IPolygon IGeometryFactory.CreatePolygon(ILinearRing shell)
@@ -1007,12 +1010,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IMultiPoint IGeometryFactory.CreateMultiPoint(IEnumerable<ICoordinate> coordinates)
         {
-            return CreateMultiPoint(Enumerable.Downcast<TCoordinate, ICoordinate>(coordinates));
+            return CreateMultiPoint(Caster.Downcast<TCoordinate, ICoordinate>(coordinates));
         }
 
         IMultiPoint IGeometryFactory.CreateMultiPoint(IEnumerable<IPoint> point)
         {
-            return CreateMultiPoint(Enumerable.Downcast<IPoint<TCoordinate>, IPoint>(point));
+            return CreateMultiPoint(Caster.Downcast<IPoint<TCoordinate>, IPoint>(point));
         }
 
         IMultiPoint IGeometryFactory.CreateMultiPoint(ICoordinateSequence coordinates)
@@ -1037,7 +1040,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IMultiPolygon IGeometryFactory.CreateMultiPolygon(IEnumerable<IPolygon> polygons)
         {
-            return CreateMultiPolygon(Enumerable.Downcast<IPolygon<TCoordinate>, IPolygon>(polygons));
+            return CreateMultiPolygon(Caster.Downcast<IPolygon<TCoordinate>, IPolygon>(polygons));
         }
 
         IGeometryCollection IGeometryFactory.CreateGeometryCollection()
@@ -1054,7 +1057,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IGeometryCollection IGeometryFactory.CreateGeometryCollection(IEnumerable<IGeometry> geometries)
         {
-            return CreateGeometryCollection(Enumerable.Downcast<IGeometry<TCoordinate>, IGeometry>(geometries));
+            return CreateGeometryCollection(Caster.Downcast<IGeometry<TCoordinate>, IGeometry>(geometries));
         }
 
         IGeometry IGeometryFactory.ToGeometry(IExtents envelopeInternal)

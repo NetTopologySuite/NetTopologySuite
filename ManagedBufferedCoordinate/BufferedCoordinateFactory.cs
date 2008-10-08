@@ -8,6 +8,9 @@ using NPack.Interfaces;
 #if NETCF
 using BitConverter = GisSharpBlog.NetTopologySuite.Utilities;
 #endif
+#if DOTNET35
+using System.Linq;
+#endif
 
 namespace NetTopologySuite.Coordinates
 {

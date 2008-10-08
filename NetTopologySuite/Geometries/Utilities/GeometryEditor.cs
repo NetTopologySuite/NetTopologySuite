@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 using GeoAPI.Diagnostics;
-using GeoAPI.DataStructures;
+#if DOTNET35
+using System.Linq;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
@@ -239,7 +242,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             if (newCollection is IMultiPoint)
             {
                 IEnumerable<IPoint<TCoordinate>> points =
-                    Enumerable.Downcast<IPoint<TCoordinate>, IGeometry<TCoordinate>>(editedGeometries);
+                    Caster.Downcast<IPoint<TCoordinate>, IGeometry<TCoordinate>>(editedGeometries);
 
                 return _factory.CreateMultiPoint(points);
             }
@@ -247,7 +250,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             if (newCollection is IMultiLineString)
             {
                 IEnumerable<ILineString<TCoordinate>> lines =
-                    Enumerable.Downcast<ILineString<TCoordinate>, IGeometry<TCoordinate>>(editedGeometries);
+                    Caster.Downcast<ILineString<TCoordinate>, IGeometry<TCoordinate>>(editedGeometries);
 
                 return _factory.CreateMultiLineString(lines);
             }
@@ -255,7 +258,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             if (newCollection is IMultiPolygon)
             {
                 IEnumerable<IPolygon<TCoordinate>> polygons =
-                    Enumerable.Downcast<IPolygon<TCoordinate>, IGeometry<TCoordinate>>(editedGeometries);
+                    Caster.Downcast<IPolygon<TCoordinate>, IGeometry<TCoordinate>>(editedGeometries);
 
                 return _factory.CreateMultiPolygon(polygons);
             }

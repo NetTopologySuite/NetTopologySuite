@@ -3,9 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
-using GeoAPI.DataStructures;
+#if DOTNET35
+using System.Linq;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
@@ -295,7 +298,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             if (areAllValidLinearRings)
             {
                 return _factory.CreatePolygon(shell as ILinearRing<TCoordinate>,
-                    Enumerable.Downcast<ILinearRing<TCoordinate>, IGeometry<TCoordinate>>(holes));
+                    Caster.Downcast<ILinearRing<TCoordinate>, IGeometry<TCoordinate>>(holes));
             }
             else
             {

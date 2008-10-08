@@ -6,12 +6,14 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using GisSharpBlog.NetTopologySuite.Planargraph.Algorithm;
 using NPack.Interfaces;
 using GeoAPI.Diagnostics;
 using GeoAPI.DataStructures;
+#if DOTNET35
+using System.Linq;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 {
@@ -310,7 +312,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         private static IEnumerable<DirectedEdge<TCoordinate>> findSequence(Subgraph<TCoordinate> graph)
         {
             IEnumerable<GraphComponent<TCoordinate>> edges =
-                Enumerable.Upcast<GraphComponent<TCoordinate>, Edge<TCoordinate>>(graph.Edges);
+                Caster.Upcast<GraphComponent<TCoordinate>, Edge<TCoordinate>>(graph.Edges);
 
             GraphComponent<TCoordinate>.SetVisited(edges, false);
 

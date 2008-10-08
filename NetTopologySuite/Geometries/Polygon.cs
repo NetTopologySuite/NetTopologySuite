@@ -6,6 +6,9 @@ using GeoAPI.Geometries;
 using NPack.Interfaces;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GeoAPI.DataStructures;
+#if DOTNET35
+using System.Linq;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -69,7 +72,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public Polygon(ILinearRing<TCoordinate> shell, IEnumerable<ILineString<TCoordinate>> holes)
-            : this(shell, holes, ExtractGeometryFactory(Enumerable.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(holes))) { }
+            : this(shell, holes, ExtractGeometryFactory(Caster.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(holes))) { }
 
         /// <summary>
         /// Constructs a <see cref="Polygon{TCoordinate}" /> 
@@ -449,7 +452,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
 
             IEnumerable<ILinearRing<TCoordinate>> holes
-                = Enumerable.Downcast<ILinearRing<TCoordinate>, ILineString<TCoordinate>>(_holes);
+                = Caster.Downcast<ILinearRing<TCoordinate>, ILineString<TCoordinate>>(_holes);
 
             return Factory.CreatePolygon(shell, holes);
         }
