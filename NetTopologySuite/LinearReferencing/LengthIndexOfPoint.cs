@@ -8,6 +8,8 @@ using NPack.Interfaces;
 using GeoAPI.Diagnostics;
 #if DOTNET35
 using System.Linq;
+#else
+using GeoAPI.DataStructures;
 #endif
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
