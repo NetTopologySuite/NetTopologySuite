@@ -40,6 +40,7 @@ namespace NetTopologySuite.Coordinates
         private Boolean _isFrozen;
         private Int32 _max = -1;
         private Int32 _min = -1;
+        private IExtents<BufferedCoordinate> _extents;
 
         internal BufferedCoordinateSequence(BufferedCoordinateSequenceFactory factory,
                                               IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer)
@@ -49,8 +50,8 @@ namespace NetTopologySuite.Coordinates
                                               IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer)
         {
             if (size < 0) throw new ArgumentOutOfRangeException("size", size,
-                                                                 "Size should be greater " +
-                                                                 "than 0");
+                                                                "Size should be greater " +
+                                                                "than 0");
             _factory = factory;
             _buffer = buffer;
             _sequence = new List<Int32>(Math.Max(size, 8));
@@ -482,6 +483,16 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
+        public IExtents<BufferedCoordinate> GetExtents(IGeometryFactory<BufferedCoordinate> geometryFactory)
+        {
+            if (_extents == null)
+            {
+                _extents = geometryFactory.CreateExtents(Minimum, Maximum);
+            }
+
+            return _extents;
+        }
+
         public Boolean HasRepeatedCoordinates
         {
             get
@@ -719,30 +730,10 @@ namespace NetTopologySuite.Coordinates
             {
                 if (_max < 0)
                 {
-                    Int32 maxIndex = -1;
-                    BufferedCoordinate maxCoord = new BufferedCoordinate();
-
-                    if (Count < 1)
-                    {
-                        return maxCoord;
-                    }
-
-
-                    for (int i = 0; i < Count; i++)
-                    {
-                        BufferedCoordinate current = this[i];
-
-                        if (maxCoord.IsEmpty || current.GreaterThan(maxCoord))
-                        {
-                            maxIndex = i;
-                            maxCoord = current;
-                        }
-                    }
-
-                    _max = maxIndex;
+                    findMinMax();
                 }
 
-                return this[_max];
+                return _max < 0 ? new BufferedCoordinate() : this[_max];
             }
         }
 
@@ -756,31 +747,12 @@ namespace NetTopologySuite.Coordinates
         {
             get
             {
-                if (Count < 1)
-                {
-                    return new BufferedCoordinate();
-                }
-
                 if (_min < 0)
                 {
-                    Int32 minIndex = -1;
-                    BufferedCoordinate? minCoord = null;
-
-                    for (int i = 0; i < Count; i++)
-                    {
-                        BufferedCoordinate current = this[i];
-
-                        if (minCoord == null || current.LessThan(minCoord.Value))
-                        {
-                            minIndex = i;
-                            minCoord = current;
-                        }
-                    }
-
-                    _min = minIndex;
+                    findMinMax();
                 }
 
-                return this[_min];
+                return _min < 0 ? new BufferedCoordinate() : this[_min];
             }
         }
 
@@ -1462,6 +1434,11 @@ namespace NetTopologySuite.Coordinates
             throw new NotImplementedException();
         }
 
+        IExtents ICoordinateSequence.GetExtents(IGeometryFactory geometryFactory)
+        {
+            return geometryFactory.CreateExtents(Minimum, Maximum);
+        }
+
         ICoordinateSequence ICoordinateSequence.Freeze()
         {
             return Freeze();
@@ -1641,6 +1618,7 @@ namespace NetTopologySuite.Coordinates
 
             _min = -1;
             _max = -1;
+            _extents = null;
         }
 
         protected void SetSequenceInternal(BufferedCoordinateSequence sequence)
@@ -1826,6 +1804,40 @@ namespace NetTopologySuite.Coordinates
                     "The number of elements to copy is greater than the " +
                     "remaining space of 'array' when starting at '{0}'.", arrayIndexName));
             }
+        }
+
+        private void findMinMax()
+        {
+            Int32 maxIndex = -1;
+            Int32 minIndex = -1;
+
+            if (Count < 1)
+            {
+                return;
+            }
+
+            BufferedCoordinate maxCoord = new BufferedCoordinate();
+            BufferedCoordinate minCoord = new BufferedCoordinate();
+
+            for (int i = 0; i < Count; i++)
+            {
+                BufferedCoordinate current = this[i];
+
+                if (maxCoord.IsEmpty || current.GreaterThan(maxCoord))
+                {
+                    maxIndex = i;
+                    maxCoord = current;
+                }
+
+                if (minCoord.IsEmpty || current.LessThan(minCoord))
+                {
+                    minIndex = i;
+                    minCoord = current;
+                }
+            }
+
+            _max = maxIndex;
+            _min = minIndex;
         }
 
         private Boolean isSlice()
