@@ -5,51 +5,54 @@ using NPack.Interfaces;
 
 namespace NetTopologySuite.Coordinates
 {
-    public struct Matrix3 : IAffineTransformMatrix<DoubleComponent, BufferedCoordinate, Matrix3>
+    public struct BufferedMatrix : IAffineTransformMatrix<DoubleComponent, BufferedCoordinate, BufferedMatrix>
     {
-        private DoubleComponent _m00, _m01, _m02;
-        private DoubleComponent _m10, _m11, _m12;
-        private DoubleComponent _m20, _m21, _m22;
+        private BufferedCoordinate _row1;
+        private BufferedCoordinate _row2;
+        private BufferedCoordinate _row3;
+        private BufferedCoordinate _row4;
 
-        public Matrix3(params DoubleComponent[] values)
+        public BufferedMatrix(BufferedCoordinateFactory coordinateFactory, params DoubleComponent[] values)
         {
             if(values == null)
             {
                 throw new ArgumentNullException("values");
             }
 
-            if(values.Length == 6)
-            {
-                _m00 = values[0];
-                _m01 = values[1];
-                _m02 = 0;
-                _m10 = values[2];
-                _m11 = values[3];
-                _m12 = 0;
-                _m20 = values[4];
-                _m21 = values[5];
-                _m22 = 1;
-            }
+            _row4 = new BufferedCoordinate();
 
-            if(values.Length == 9)
+            switch (values.Length)
             {
-                _m00 = values[0];
-                _m01 = values[1];
-                _m02 = values[2];
-                _m10 = values[3];
-                _m11 = values[4];
-                _m12 = values[5];
-                _m20 = values[6];
-                _m21 = values[7];
-                _m22 = values[8];
+                case 6:
+                    _row1 = coordinateFactory.Create((Double)values[0], (Double)values[1], 0.0);
+                    _row2 = coordinateFactory.Create((Double)values[2], (Double)values[3], 0.0);
+                    _row3 = coordinateFactory.Create((Double)values[4], (Double)values[5], 1.0);
+                    break;
+                case 9:
+                    _row1 = coordinateFactory.Create((Double)values[0], (Double)values[1], (Double)values[2]);
+                    _row2 = coordinateFactory.Create((Double)values[3], (Double)values[4], (Double)values[5]);
+                    _row3 = coordinateFactory.Create((Double)values[6], (Double)values[7], (Double)values[8]);
+                    break;
+                case 12:
+                    _row1 = coordinateFactory.Create((Double)values[0], (Double)values[1], (Double)values[2], 0.0);
+                    _row2 = coordinateFactory.Create((Double)values[3], (Double)values[4], (Double)values[5], 0.0);
+                    _row3 = coordinateFactory.Create((Double)values[6], (Double)values[7], (Double)values[8], 0.0);
+                    _row4 = coordinateFactory.Create((Double)values[9], (Double)values[10], (Double)values[11], 1.0);
+                    break;
+                case 16:
+                    _row1 = coordinateFactory.Create((Double)values[0], (Double)values[1], (Double)values[2], (Double)values[3]);
+                    _row2 = coordinateFactory.Create((Double)values[4], (Double)values[5], (Double)values[6], (Double)values[7]);
+                    _row3 = coordinateFactory.Create((Double)values[8], (Double)values[9], (Double)values[10], (Double)values[11]);
+                    _row4 = coordinateFactory.Create((Double)values[12], (Double)values[13], (Double)values[14], (Double)values[15]);
+                    break;
+                default:
+                    throw new ArgumentException("BufferedMatrix must have 6, 9, 12 or 16 values.");
             }
-
-            throw new ArgumentException("Matrix3 must have 6 or 9 values.");
         }
 
         #region IAffineTransformMatrix<DoubleComponent,BufferedCoordinate,Matrix3> Members
 
-        public Matrix3 Inverse
+        public BufferedMatrix Inverse
         {
             get { throw new NotImplementedException(); }
         }
@@ -133,7 +136,7 @@ namespace NetTopologySuite.Coordinates
             throw new NotImplementedException();
         }
 
-        public Matrix3 TransformMatrix(Matrix3 input)
+        public BufferedMatrix TransformMatrix(BufferedMatrix input)
         {
             throw new NotImplementedException();
         }
@@ -148,7 +151,7 @@ namespace NetTopologySuite.Coordinates
             throw new NotImplementedException();
         }
 
-        public Matrix3 TransformVector(Matrix3 input)
+        public BufferedMatrix TransformVector(BufferedMatrix input)
         {
             throw new NotImplementedException();
         }
@@ -167,12 +170,12 @@ namespace NetTopologySuite.Coordinates
 
         #region IMatrix<DoubleComponent,Matrix3> Members
 
-        public Matrix3 Clone()
+        public BufferedMatrix Clone()
         {
             throw new NotImplementedException();
         }
 
-        public int ColumnCount
+        public Int32 ColumnCount
         {
             get { throw new NotImplementedException(); }
         }
@@ -187,47 +190,47 @@ namespace NetTopologySuite.Coordinates
             get { throw new NotImplementedException(); }
         }
 
-        public Matrix3 GetMatrix(int i0, int i1, int j0, int j1)
+        public BufferedMatrix GetMatrix(Int32 i0, Int32 i1, Int32 j0, Int32 j1)
         {
             throw new NotImplementedException();
         }
 
-        public Matrix3 GetMatrix(int[] rowIndexes, int startColumn, int endColumn)
+        public BufferedMatrix GetMatrix(Int32[] rowIndexes, Int32 startColumn, Int32 endColumn)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsInvertible
+        public Boolean IsInvertible
         {
             get { throw new NotImplementedException(); }
         }
 
-        public bool IsSingular
+        public Boolean IsSingular
         {
             get { throw new NotImplementedException(); }
         }
 
-        public bool IsSquare
+        public Boolean IsSquare
         {
             get { throw new NotImplementedException(); }
         }
 
-        public bool IsSymmetrical
+        public Boolean IsSymmetrical
         {
             get { throw new NotImplementedException(); }
         }
 
-        public int RowCount
+        public Int32 RowCount
         {
             get { throw new NotImplementedException(); }
         }
 
-        public Matrix3 Transpose()
+        public BufferedMatrix Transpose()
         {
             throw new NotImplementedException();
         }
 
-        public DoubleComponent this[int row, int column]
+        public DoubleComponent this[Int32 row, Int32 column]
         {
             get
             {
@@ -243,7 +246,7 @@ namespace NetTopologySuite.Coordinates
 
         #region IEquatable<Matrix3> Members
 
-        public bool Equals(Matrix3 other)
+        public Boolean Equals(BufferedMatrix other)
         {
             throw new NotImplementedException();
         }
@@ -252,7 +255,7 @@ namespace NetTopologySuite.Coordinates
 
         #region IComparable<Matrix3> Members
 
-        public int CompareTo(Matrix3 other)
+        public Int32 CompareTo(BufferedMatrix other)
         {
             throw new NotImplementedException();
         }
@@ -261,12 +264,12 @@ namespace NetTopologySuite.Coordinates
 
         #region IComputable<Matrix3> Members
 
-        public Matrix3 Abs()
+        public BufferedMatrix Abs()
         {
             throw new NotImplementedException();
         }
 
-        public Matrix3 Set(Double value)
+        public BufferedMatrix Set(Double value)
         {
             throw new NotImplementedException();
         }
@@ -275,7 +278,7 @@ namespace NetTopologySuite.Coordinates
 
         #region INegatable<Matrix3> Members
 
-        public Matrix3 Negative()
+        public BufferedMatrix Negative()
         {
             throw new NotImplementedException();
         }
@@ -284,7 +287,7 @@ namespace NetTopologySuite.Coordinates
 
         #region ISubtractable<Matrix3> Members
 
-        public Matrix3 Subtract(Matrix3 b)
+        public BufferedMatrix Subtract(BufferedMatrix b)
         {
             throw new NotImplementedException();
         }
@@ -293,7 +296,7 @@ namespace NetTopologySuite.Coordinates
 
         #region IHasZero<Matrix3> Members
 
-        public Matrix3 Zero
+        public BufferedMatrix Zero
         {
             get { throw new NotImplementedException(); }
         }
@@ -302,7 +305,7 @@ namespace NetTopologySuite.Coordinates
 
         #region IAddable<Matrix3> Members
 
-        public Matrix3 Add(Matrix3 b)
+        public BufferedMatrix Add(BufferedMatrix b)
         {
             throw new NotImplementedException();
         }
@@ -311,7 +314,7 @@ namespace NetTopologySuite.Coordinates
 
         #region IDivisible<Matrix3> Members
 
-        public Matrix3 Divide(Matrix3 b)
+        public BufferedMatrix Divide(BufferedMatrix b)
         {
             throw new NotImplementedException();
         }
@@ -320,7 +323,7 @@ namespace NetTopologySuite.Coordinates
 
         #region IHasOne<Matrix3> Members
 
-        public Matrix3 One
+        public BufferedMatrix One
         {
             get { throw new NotImplementedException(); }
         }
@@ -329,7 +332,7 @@ namespace NetTopologySuite.Coordinates
 
         #region IMultipliable<Matrix3> Members
 
-        public Matrix3 Multiply(Matrix3 b)
+        public BufferedMatrix Multiply(BufferedMatrix b)
         {
             throw new NotImplementedException();
         }
@@ -338,22 +341,22 @@ namespace NetTopologySuite.Coordinates
 
         #region IBooleanComparable<Matrix3> Members
 
-        public bool GreaterThan(Matrix3 value)
+        public Boolean GreaterThan(BufferedMatrix value)
         {
             throw new NotImplementedException();
         }
 
-        public bool GreaterThanOrEqualTo(Matrix3 value)
+        public Boolean GreaterThanOrEqualTo(BufferedMatrix value)
         {
             throw new NotImplementedException();
         }
 
-        public bool LessThan(Matrix3 value)
+        public Boolean LessThan(BufferedMatrix value)
         {
             throw new NotImplementedException();
         }
 
-        public bool LessThanOrEqualTo(Matrix3 value)
+        public Boolean LessThanOrEqualTo(BufferedMatrix value)
         {
             throw new NotImplementedException();
         }
@@ -362,27 +365,27 @@ namespace NetTopologySuite.Coordinates
 
         #region IExponential<Matrix3> Members
 
-        public Matrix3 Exp()
+        public BufferedMatrix Exp()
         {
             throw new NotImplementedException();
         }
 
-        public Matrix3 Log()
+        public BufferedMatrix Log()
         {
             throw new NotImplementedException();
         }
 
-        public Matrix3 Log(Double newBase)
+        public BufferedMatrix Log(Double newBase)
         {
             throw new NotImplementedException();
         }
 
-        public Matrix3 Power(Double exponent)
+        public BufferedMatrix Power(Double exponent)
         {
             throw new NotImplementedException();
         }
 
-        public Matrix3 Sqrt()
+        public BufferedMatrix Sqrt()
         {
             throw new NotImplementedException();
         }

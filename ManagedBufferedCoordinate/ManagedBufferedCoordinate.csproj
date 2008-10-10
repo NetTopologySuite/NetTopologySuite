@@ -140,6 +140,8 @@
     <Otherwise>
       <ItemGroup>
         <Reference Include="System" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Xml" />
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -149,7 +151,7 @@
     <Compile Include="BufferedCoordinateSequence.cs" />
     <Compile Include="BufferedCoordinateSequenceFactory.cs" />
     <Compile Include="BufferedCoordinateSet.cs" />
-    <Compile Include="Matrix3.cs" />
+    <Compile Include="BufferedMatrix.cs" />
     <Compile Include="PrecisionModel.cs">
       <SubType>Code</SubType>
     </Compile>

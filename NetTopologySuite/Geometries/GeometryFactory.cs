@@ -290,6 +290,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region IGeometryFactory<TCoordinate> Members
 
+        public IGeometryFactory Clone()
+        {
+            return new GeometryFactory<TCoordinate>(Srid, CoordinateSequenceFactory, SpatialReference);
+        }
+
         public IExtents<TCoordinate> CreateExtents()
         {
             return new Extents<TCoordinate>(this);

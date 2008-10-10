@@ -20,7 +20,8 @@ namespace NetTopologySuite.Coordinates
     public class BufferedCoordinateFactory
         : IBufferedCoordFactory, IVectorBuffer<DoubleComponent, BufferedCoordinate>,
           IBufferedVectorFactory<DoubleComponent, BufferedCoordinate>,
-          ILinearFactory<DoubleComponent, BufferedCoordinate, Matrix3>
+          ILinearFactory<DoubleComponent, BufferedCoordinate, BufferedMatrix>,
+          ILinearFactory<DoubleComponent>
     {
         //public static readonly Int32 MaximumBitResolution = 53;
         private static readonly IComparer<Pair<Double>> _valueComparer
@@ -35,7 +36,7 @@ namespace NetTopologySuite.Coordinates
         //private Int64 _mask = unchecked((Int64)0xFFFFFFFFFFFFFFFF);
         private readonly PrecisionModel _precisionModel;
         private readonly Int32[] _ordinateIndexTable = new Int32[4];
-        private readonly IMatrixOperations<DoubleComponent, BufferedCoordinate, Matrix3> _ops;
+        private readonly IMatrixOperations<DoubleComponent, BufferedCoordinate, BufferedMatrix> _ops;
         private readonly YieldingSpinLock _spinLock = new YieldingSpinLock();
 
         public BufferedCoordinateFactory()
@@ -54,7 +55,7 @@ namespace NetTopologySuite.Coordinates
             _lexicographicHomogeneousVertexIndex = createLexicographicHomogeneousIndex();
             _coordinates = new ManagedVectorBuffer<DoubleComponent, BufferedCoordinate>(this);
             initializeOrdinateIndexTable();
-            _ops = new ClrMatrixOperations<DoubleComponent, BufferedCoordinate, Matrix3>(this);
+            _ops = new ClrMatrixOperations<DoubleComponent, BufferedCoordinate, BufferedMatrix>(this);
         }
 
         public IVectorBuffer<DoubleComponent, BufferedCoordinate> VectorBuffer
@@ -62,12 +63,12 @@ namespace NetTopologySuite.Coordinates
             get { return this; }
         }
 
-        internal IComparer<BufferedCoordinate> Comparer
+        internal static IComparer<BufferedCoordinate> Comparer
         {
             get { return _coordComparer; }
         }
 
-        internal IMatrixOperations<DoubleComponent, BufferedCoordinate, Matrix3> Ops
+        internal IMatrixOperations<DoubleComponent, BufferedCoordinate, BufferedMatrix> Ops
         {
             get { return _ops; }
         }
@@ -120,17 +121,18 @@ namespace NetTopologySuite.Coordinates
 
         public BufferedCoordinate Create3D(Double x, Double y, Double z)
         {
-            throw new NotSupportedException("Only 2D coordinates are supported.");
+            return getVertexInternal(x, y, z);
         }
 
         public BufferedCoordinate Create3D(Double x, Double y, Double z, Double m)
         {
-            throw new NotSupportedException("Only 2D coordinates are supported.");
+            throw new NotSupportedException("Coordinates with 'M' values currently " +
+                                            "not supported.");
         }
 
         public BufferedCoordinate Create3D(params Double[] coordinates)
         {
-            throw new NotSupportedException("Only 2D coordinates are supported.");
+            throw new NotSupportedException("Only 2D or 3D coordinates are supported.");
         }
 
         public BufferedCoordinate Create(BufferedCoordinate coordinate)
@@ -344,7 +346,7 @@ namespace NetTopologySuite.Coordinates
         //    get { return _coordinates.Factory; }
         //}
 
-        public int GetVectorLength(int index)
+        public Int32 GetVectorLength(Int32 index)
         {
             throw new System.NotImplementedException();
         }
@@ -433,60 +435,83 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
-        #region IMatrixFactory<DoubleComponent,Matrix3> Members
+        #region IMatrixFactory<DoubleComponent,BufferedMatrix> Members
 
-        public Matrix3 CreateMatrix(MatrixFormat format, Int32 rowCount, Int32 columnCount)
+        public BufferedMatrix CreateMatrix(MatrixFormat format, Int32 rowCount, Int32 columnCount)
         {
             if (format == MatrixFormat.RowMajor)
             {
                 checkCounts(rowCount, columnCount);
-                return new Matrix3();
+                return new BufferedMatrix();
             }
 
             throw new ArgumentException("Only row-major matrixes are supported");
         }
 
-        public Matrix3 CreateMatrix(Int32 rowCount, Int32 columnCount, IEnumerable<DoubleComponent> values)
+        public BufferedMatrix CreateMatrix(Int32 rowCount, Int32 columnCount, IEnumerable<DoubleComponent> values)
         {
             checkCounts(rowCount, columnCount);
 
-            return new Matrix3(Enumerable.ToArray(values));
+            return new BufferedMatrix(this, Enumerable.ToArray(values));
         }
 
-        public Matrix3 CreateMatrix(Int32 rowCount, Int32 columnCount)
+        public BufferedMatrix CreateMatrix(Int32 rowCount, Int32 columnCount)
         {
             checkCounts(rowCount, columnCount);
 
-            return new Matrix3();
+            return new BufferedMatrix();
         }
 
-        public Matrix3 CreateMatrix(Matrix3 matrix)
+        public BufferedMatrix CreateMatrix(BufferedMatrix matrix)
         {
             return matrix;
         }
 
         #endregion
 
+        #region IMatrixFactory<DoubleComponent> Members
+        IMatrix<DoubleComponent> IMatrixFactory<DoubleComponent>.CreateMatrix(Int32 rowCount, Int32 columnCount, IEnumerable<DoubleComponent> values)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        IMatrix<DoubleComponent> IMatrixFactory<DoubleComponent>.CreateMatrix(MatrixFormat format, Int32 rowCount, Int32 columnCount)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        IMatrix<DoubleComponent> IMatrixFactory<DoubleComponent>.CreateMatrix(IMatrix<DoubleComponent> matrix)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        ITransformMatrix<DoubleComponent> IMatrixFactory<DoubleComponent>.CreateTransformMatrix(Int32 rowCount, Int32 columnCount)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        ITransformMatrix<DoubleComponent> IMatrixFactory<DoubleComponent>.CreateTransformMatrix(MatrixFormat format, Int32 rowCount, Int32 columnCount)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        IAffineTransformMatrix<DoubleComponent> IMatrixFactory<DoubleComponent>.CreateAffineMatrix(Int32 rank)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        IAffineTransformMatrix<DoubleComponent> IMatrixFactory<DoubleComponent>.CreateAffineMatrix(MatrixFormat format, Int32 rank)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        IMatrix<DoubleComponent> IMatrixFactory<DoubleComponent>.CreateMatrix(Int32 rowCount, Int32 columnCount)
+        {
+            throw new System.NotImplementedException();
+        }
+        #endregion
+
         #region IVectorFactory<DoubleComponent,BufferedCoordinate> Members
-
-        BufferedCoordinate IBufferedVectorFactory.CreateVector(IEnumerable<DoubleComponent> values)
-        {
-            Pair<DoubleComponent>? pair = Slice.GetPair(values);
-
-            if (pair == null)
-            {
-                throw new ArgumentException("Must have at least two values.");
-            }
-
-            Pair<DoubleComponent> coord = pair.Value;
-
-            return getVertexInternal((Double)coord.First, (Double)coord.Second);
-        }
-
-        BufferedCoordinate IBufferedVectorFactory.CreateVector(Int32 componentCount)
-        {
-            throw new NotSupportedException();
-        }
 
         public BufferedCoordinate CreateVector(params Double[] components)
         {
@@ -496,9 +521,11 @@ namespace NetTopologySuite.Coordinates
                     return CreateVector(components[0], components[1]);
                 case 3:
                     return CreateVector(components[0], components[1], components[2]);
+                case 4:
+                    return CreateVector(components[0], components[1], components[2]);
                 default:
-                    throw new ArgumentException(
-                        "A BufferedCoordinate must have only 2 or 3 components.");
+                    throw new ArgumentException("A BufferedCoordinate must " +
+                                                "have only 2, 3 or 4 components.");
             }
         }
 
@@ -526,8 +553,70 @@ namespace NetTopologySuite.Coordinates
         {
             return getVertexInternal(a.ToDouble(null), b.ToDouble(null));
         }
+        #endregion
 
+        #region IBufferedVectorFactory Members
 
+        BufferedCoordinate IBufferedVectorFactory.CreateVector(IEnumerable<DoubleComponent> values)
+        {
+            Pair<DoubleComponent>? pair = Slice.GetPair(values);
+
+            if (pair == null)
+            {
+                throw new ArgumentException("Must have at least two values.");
+            }
+
+            Pair<DoubleComponent> coord = pair.Value;
+
+            return getVertexInternal((Double)coord.First, (Double)coord.Second);
+        }
+
+        BufferedCoordinate IBufferedVectorFactory.CreateVector(Int32 componentCount)
+        {
+            throw new NotSupportedException();
+        }
+        #endregion
+
+        #region IVectorFactory<DoubleComponent> Members
+        IVector<DoubleComponent> IVectorFactory<DoubleComponent>.CreateVector(Int32 componentCount)
+        {
+            return CreateVector(componentCount);
+        }
+
+        IVector<DoubleComponent> IVectorFactory<DoubleComponent>.CreateVector(IEnumerable<DoubleComponent> values)
+        {
+            return CreateVector(Enumerable.ToArray(values));
+        }
+
+        IVector<DoubleComponent> IVectorFactory<DoubleComponent>.CreateVector(DoubleComponent a, DoubleComponent b)
+        {
+            return CreateVector(a, b);
+        }
+
+        IVector<DoubleComponent> IVectorFactory<DoubleComponent>.CreateVector(DoubleComponent a, DoubleComponent b, DoubleComponent c)
+        {
+            return CreateVector(a, b, c);
+        }
+
+        IVector<DoubleComponent> IVectorFactory<DoubleComponent>.CreateVector(params DoubleComponent[] components)
+        {
+            return CreateVector(components);
+        }
+
+        IVector<DoubleComponent> IVectorFactory<DoubleComponent>.CreateVector(double a, double b)
+        {
+            return CreateVector(a, b);
+        }
+
+        IVector<DoubleComponent> IVectorFactory<DoubleComponent>.CreateVector(double a, double b, double c)
+        {
+            return CreateVector(a, b, c);
+        }
+
+        IVector<DoubleComponent> IVectorFactory<DoubleComponent>.CreateVector(params double[] components)
+        {
+            return CreateVector(components);
+        }
         #endregion
 
         internal Double GetOrdinate(Int32 index, Ordinates ordinate)
@@ -757,7 +846,7 @@ namespace NetTopologySuite.Coordinates
                 return a.ComponentCount == 3
                     ? _valueComparer.Compare(new Triple<Double>(a.X, a.Y, a[Ordinates.W]),
                                              new Triple<Double>(b.X, b.Y, b[Ordinates.W]))
-                    :_valueComparer.Compare(new Pair<Double>(a.X, a.Y), 
+                    : _valueComparer.Compare(new Pair<Double>(a.X, a.Y),
                                             new Pair<Double>(b.X, b.Y));
             }
 
@@ -796,7 +885,7 @@ namespace NetTopologySuite.Coordinates
                 Int32 result = Compare(new Pair<Double>(v1.First, v2.First),
                                        new Pair<Double>(v1.Second, v2.Second));
 
-                if(result != 0)
+                if (result != 0)
                 {
                     return result;
                 }

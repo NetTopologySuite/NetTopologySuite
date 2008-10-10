@@ -32,7 +32,7 @@ namespace NetTopologySuite.Coordinates
 
         public IComparer<BufferedCoordinate> DefaultComparer
         {
-            get { return _coordFactory.Comparer; }
+            get { return BufferedCoordinateFactory.Comparer; }
         }
 
         #region ICoordinateSequenceFactory<BufferedCoordinate> Members
