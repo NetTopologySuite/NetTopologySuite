@@ -267,14 +267,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
                     return CreateMultiPolygon(polygons);
                 }
-                else if (geom0 is ILineString)
+                
+                if (geom0 is ILineString)
                 {
                     IEnumerable<ILineString<TCoordinate>> lines =
                         Caster.Downcast<ILineString<TCoordinate>, IGeometry<TCoordinate>>(geometries);
 
                     return CreateMultiLineString(lines);
                 }
-                else if (geom0 is IPoint)
+                
+                if (geom0 is IPoint)
                 {
                     IEnumerable<IPoint<TCoordinate>> points =
                         Caster.Downcast<IPoint<TCoordinate>, IGeometry<TCoordinate>>(geometries);
@@ -339,14 +341,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Converts the <see cref="IExtents{TCoordinate}"/> instance
+        /// into an <see cref="IGeometry{TCoordinate}"/> with the same 
+        /// coordinates.
+        /// </summary>
+        /// <remarks>
         /// If the <see cref="Extents{TCoordinate}"/> is a null 
         /// <see cref="Extents{TCoordinate}"/>, returns an
-        /// empty <c>Point</c>. If the <see cref="Extents{TCoordinate}"/> 
+        /// empty <see cref="IPoint{TCoordinate}"/>. 
+        /// If the <see cref="Extents{TCoordinate}"/> 
         /// is a point, returns a non-empty <see cref="Point{TCoordinate}"/>. 
         /// If the <see cref="Extents{TCoordinate}"/> is a rectangle, returns a 
         /// <see cref="Polygon{TCoordinate}" /> whose points are (minx, miny),
         /// (maxx, miny), (maxx, maxy), (minx, maxy), (minx, miny).
-        /// </summary>
+        /// </remarks>
         /// <param name="envelope">
         /// The <see cref="Extents{TCoordinate}"/> to convert to a 
         /// <see cref="Geometry{TCoordinate}"/>.
@@ -362,17 +370,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// If <c>coordinates</c> is not a closed linestring, 
         /// that is, if the first and last coordinates are not equal.
         /// </exception>
-        public IGeometry<TCoordinate> ToGeometry(IExtents<TCoordinate> envelope)
+        public IGeometry<TCoordinate> ToGeometry(IExtents<TCoordinate> extents)
         {
-            if (envelope.IsEmpty)
+            if (extents.IsEmpty)
             {
                 return CreateEmpty();
             }
 
-            Double xMin = envelope.GetMin(Ordinates.X);
-            Double xMax = envelope.GetMax(Ordinates.X);
-            Double yMin = envelope.GetMin(Ordinates.Y);
-            Double yMax = envelope.GetMax(Ordinates.Y);
+            Double xMin = extents.GetMin(Ordinates.X);
+            Double xMax = extents.GetMax(Ordinates.X);
+            Double yMin = extents.GetMin(Ordinates.Y);
+            Double yMax = extents.GetMax(Ordinates.Y);
 
             ICoordinateFactory<TCoordinate> coordFactory = CoordinateFactory;
 
@@ -424,23 +432,48 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return point;
         }
 
+        public IGeometry<TCoordinate> CreateGeometry(ICoordinateSequence<TCoordinate> coordinates, 
+                                                     OgcGeometryType type)
+        {
+            IGeometryFactory<TCoordinate> f = this;
+
+            switch (type)
+            {
+                case OgcGeometryType.Point:
+                    return f.CreatePoint(coordinates);
+                case OgcGeometryType.LineString:
+                    return f.CreateLineString(coordinates);
+                case OgcGeometryType.Polygon:
+                    return f.CreatePolygon(coordinates);
+                case OgcGeometryType.MultiPoint:
+                    return f.CreateMultiPoint(coordinates);
+                case OgcGeometryType.MultiLineString:
+                    throw new NotImplementedException();
+                case OgcGeometryType.MultiPolygon:
+                    throw new NotImplementedException();
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
         public IPoint<TCoordinate> CreatePoint()
         {
             return new Point<TCoordinate>(default(TCoordinate), this);
         }
 
         /// <summary>
-        /// Creates a <c>Point</c> using the given <c>CoordinateSequence</c>; a null or empty
-        /// CoordinateSequence will create an empty Point.
+        /// Creates an <see cref="IPoint{TCoordinate}"/> using the given 
+        /// <see cref="ICoordinateSequence{TCoordinate}"/>; a null or empty
+        /// coordinate sequence will create an empty point.
         /// </summary>
+        /// <remarks>
+        /// Uses the first coordinate in <paramref name="coordinates"/> to create the point.
+        /// </remarks>
         public IPoint<TCoordinate> CreatePoint(ICoordinateSequence<TCoordinate> coordinates)
         {
-            if (coordinates.Count == 0)
-            {
-                return new Point<TCoordinate>(default(TCoordinate), this);
-            }
-
-            return new Point<TCoordinate>(coordinates[0], this);
+            return coordinates == null || coordinates.Count == 0
+                ? new Point<TCoordinate>(default(TCoordinate), this) 
+                : new Point<TCoordinate>(coordinates[0], this);
         }
 
         public ILineString<TCoordinate> CreateLineString(params TCoordinate[] coordinates)
@@ -887,6 +920,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         IGeometry IGeometryFactory.CreateGeometry(ICoordinateSequence coordinates, OgcGeometryType type)
         {
             IGeometryFactory f = this;
+
             switch (type)
             {
                 case OgcGeometryType.Point:
@@ -897,7 +931,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     return f.CreatePolygon(coordinates);
                 case OgcGeometryType.MultiPoint:
                     return f.CreateMultiPoint(coordinates);
-                default: throw new NotImplementedException();
+                default: 
+                    throw new NotImplementedException();
             }
         }
 

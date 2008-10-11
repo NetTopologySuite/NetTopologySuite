@@ -166,9 +166,6 @@
     <Compile Include="Algorithm\SimplePointInAreaLocator.cs" />
     <Compile Include="Algorithm\SimplePointInRing.cs" />
     <Compile Include="Algorithm\SIRtreePointInRing.cs" />
-    <Compile Include="CoordinateSystems\Transformations\GeometryTransform.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="GeometriesGraph\Index\SimpleMonotoneChainSweepLineIntersector.cs" />
     <Compile Include="GeometriesGraph\Positions.cs" />
     <Compile Include="GeometriesGraph\Quadrants.cs" />
