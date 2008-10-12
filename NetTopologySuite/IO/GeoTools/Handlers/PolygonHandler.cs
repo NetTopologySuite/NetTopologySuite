@@ -45,7 +45,6 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
                 double d = file.ReadDouble();
                 bbox[bbindex] = d;
             }
-
             
             int[] partOffsets;        
             int numParts = file.ReadInt32();
@@ -144,7 +143,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
             IPolygon[] polygons = new IPolygon[shells.Count];
             for (int i = 0; i < shells.Count; i++)
                 polygons[i] = (geometryFactory.CreatePolygon((ILinearRing) shells[i], 
-                    (ILinearRing[]) ((ArrayList)holesForShells[i]).ToArray(typeof(ILinearRing))));
+                    (ILinearRing[]) ((ArrayList) holesForShells[i]).ToArray(typeof(ILinearRing))));
 
             if (polygons.Length == 1)
                  geom = polygons[0];

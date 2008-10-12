@@ -212,7 +212,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
         protected void GetZValue(BigEndianBinaryReader file, IDictionary<ShapeGeometryType, double> data)
         {
             double z = file.ReadDouble();
-            data.Add(ShapeGeometryType.PointZ, z);
+            // data.Add(ShapeGeometryType.PointZ, z);
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
         protected void GetMValue(BigEndianBinaryReader file, IDictionary<ShapeGeometryType, double> data)
         {            
             double m = file.ReadDouble();
-            data.Add(ShapeGeometryType.PointM, m);
+            // data.Add(ShapeGeometryType.PointM, m);
         }        
 
         /// <summary>
@@ -259,7 +259,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
                         GetMValue(file, datas[i]);
                     }
                 }
-                geom.UserData = datas;
+                // geom.UserData = datas;
             }
         }
 

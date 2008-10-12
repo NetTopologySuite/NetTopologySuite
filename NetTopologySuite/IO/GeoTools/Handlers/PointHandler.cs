@@ -51,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
                     GetZValue(file, data);
                 if (HasMValue())
                     GetMValue(file, data);
-                point.UserData = data;
+                // point.UserData = data;
             }
             return point;
         }

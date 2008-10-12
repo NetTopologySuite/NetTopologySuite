@@ -71,6 +71,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySute.TestRunner.Console", "NetTopologySuite.TestRunner.Console\NetTopologySute.TestRunner.Console.csproj", "{85945EF0-2BD4-42C1-A934-C3485FCE9021}"
 EndProject
 Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Bug|Any CPU = Bug|Any CPU
 		Debug|Any CPU = Debug|Any CPU
