@@ -75,7 +75,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         private readonly ICoordinateSequenceFactory<TCoordinate> _coordinateSequenceFactory;
         private readonly ICoordinateFactory<TCoordinate> _coordinateFactory;
         //private readonly IPrecisionModel<TCoordinate> _precisionModel;
-        private Int32? _srid;
+        private String _srid;
         private ICoordinateSystem<TCoordinate> _spatialReference;
         private IWktGeometryWriter<TCoordinate> _wktEncoder;
         private IWktGeometryReader<TCoordinate> _wktDecoder;
@@ -95,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coordinateSequenceFactory">The coordinate factory to use.</param>
         /// <param name="srid">An id code for a given spatial reference.</param>
         /// <param name="spatialReference">The spatial reference system for the created geometries.</param>   
-        protected GeometryFactory(Int32? srid,
+        protected GeometryFactory(String srid,
                                   ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory,
                                   ICoordinateSystem<TCoordinate> spatialReference)
         {
@@ -125,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// The <see cref="IPrecisionModel{TCoordinate}"/> for this factory is 
         /// gotten from <paramref name="coordinateSequenceFactory"/>.
         /// </remarks>
-        public GeometryFactory(Int32? srid,
+        public GeometryFactory(String srid,
                                ICoordinateSequenceFactory<TCoordinate> coordinateSequenceFactory)
             : this(srid, coordinateSequenceFactory, null) { }
 
@@ -733,7 +733,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             set { _spatialReference = value; }
         }
 
-        public Int32? Srid
+        public String Srid
         {
             get { return _srid; }
             set { _srid = value; }

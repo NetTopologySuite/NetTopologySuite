@@ -139,7 +139,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         private IGeometryFactory<TCoordinate> _factory;
         private Object _userData;
         private Extents<TCoordinate> _extents;
-        private Int32? _srid;
+        private String _srid;
         //private Dimensions _dimension;
         private IGeometry<TCoordinate> _boundary;
         private Dimensions _boundaryDimension;
@@ -794,7 +794,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// The SRID is represented as a nullable <see cref="Int32"/>.
         /// </para>
         /// </remarks>     
-        public Int32? Srid
+        public String Srid
         {
             get { return _srid; }
             set

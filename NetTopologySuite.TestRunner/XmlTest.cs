@@ -1165,18 +1165,19 @@ namespace GisSharpBlog.NetTopologySuite
 
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
-                Int32 nSRID = m_objGeometryA.Srid.Value;
+                String nSRID = m_objGeometryA.Srid;
 
-                return Math.Abs(nSRID - nResult) <= (Int32) m_dTolerance;
+                //return Math.Abs(nSRID - nResult) <= (Int32) m_dTolerance;
             }
 
             if (m_objGeometryB != null)
             {
-                Int32 nSRID = m_objGeometryB.Srid.Value;
+                String nSRID = m_objGeometryB.Srid;
 
-                return Math.Abs(nSRID - nResult) <= (Int32) m_dTolerance;
+                //return Math.Abs(nSRID - nResult) <= (Int32) m_dTolerance;
             }
 
+            throw new NotImplementedException();
             return false;
         }
 
