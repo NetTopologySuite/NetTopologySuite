@@ -16,18 +16,21 @@ namespace NetTopologySuite.Coordinates
                                        IComparable<BufferedCoordinate>,
                                        IComputable<Double, BufferedCoordinate>
     {
+        private readonly static Int32[] _ordTable2D = new Int32[] { 0, 1, -1, 2 };
         private readonly Int32? _index;
         private readonly BufferedCoordinateFactory _factory;
         private readonly Boolean _isHomogeneous;
+        private readonly Boolean _hasZ;
 
-        internal BufferedCoordinate(BufferedCoordinateFactory factory, Int32 index)
-            : this(factory, index, false) { }
+        //internal BufferedCoordinate(BufferedCoordinateFactory factory, Int32 index, Boolean hasZ)
+        //    : this(factory, index, hasZ, false) { }
 
-        internal BufferedCoordinate(BufferedCoordinateFactory factory, Int32 index, Boolean isHomogeneous)
+        internal BufferedCoordinate(BufferedCoordinateFactory factory, Int32 index, Boolean hasZ, Boolean isHomogeneous)
         {
             _factory = factory;
             _index = index;
             _isHomogeneous = isHomogeneous;
+            _hasZ = hasZ;
         }
 
         public BufferedCoordinate Clone()
@@ -113,14 +116,14 @@ namespace NetTopologySuite.Coordinates
         {
             return !coordinate._index.HasValue
                        ? coordinate
-                       : new BufferedCoordinate(coordinate._factory, coordinate._index.Value, true);
+                       : new BufferedCoordinate(coordinate._factory, coordinate._index.Value, coordinate._hasZ, true);
         }
 
         internal static BufferedCoordinate Dehomogenize(BufferedCoordinate coordinate)
         {
             return !coordinate._index.HasValue
                        ? coordinate
-                       : new BufferedCoordinate(coordinate._factory, coordinate._index.Value, false);
+                       : new BufferedCoordinate(coordinate._factory, coordinate._index.Value, coordinate._hasZ, false);
         }
 
         #region IBufferedVector<DoubleComponent> Members
@@ -145,6 +148,30 @@ namespace NetTopologySuite.Coordinates
 
         #endregion
 
+        #region ICoordinate3D Members
+
+        public Double Z
+        {
+            get
+            {
+                return _index == null || !_hasZ
+                    ? Double.NaN
+                    : _factory.GetOrdinate(_index.Value, 2);
+            }
+        }
+
+        public Double Distance(ICoordinate3D other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetComponents(out Double x, out Double y, out Double z, out Double w)
+        {
+            _factory.GetOrdinates(out x, out y, out z, out w);
+        }
+
+        #endregion
+
         #region ICoordinate2D Members
 
         public Double X
@@ -153,7 +180,7 @@ namespace NetTopologySuite.Coordinates
             {
                 return _index == null 
                     ? Double.NaN 
-                    : _factory.GetOrdinate(_index.Value, Ordinates.X);
+                    : _factory.GetOrdinate(_index.Value, 0);
             }
         }
 
@@ -163,8 +190,23 @@ namespace NetTopologySuite.Coordinates
             {
                 return _index == null
                     ? Double.NaN
-                    : _factory.GetOrdinate(_index.Value, Ordinates.Y);
+                    : _factory.GetOrdinate(_index.Value, 1);
             }
+        }
+
+        public Double W
+        {
+            get
+            {
+                return _index == null
+                    ? Double.NaN
+                    : _factory.GetOrdinate(_index.Value, _hasZ ? 3 : 2);
+            }
+        }
+
+        public void GetComponents(out Double x, out Double y, out Double w)
+        {
+            _factory.GetOrdinates(out x, out y, out w);
         }
 
         public Double Distance(ICoordinate2D other)
@@ -185,6 +227,8 @@ namespace NetTopologySuite.Coordinates
                     return true;
                 case Ordinates.W:
                     return _isHomogeneous;
+                case Ordinates.Z:
+                    return _hasZ;
                 default:
                     return false;
             }
@@ -206,7 +250,7 @@ namespace NetTopologySuite.Coordinates
             {
                 return _index == null
                     ? Double.NaN
-                    : _factory.GetOrdinate(_index.Value, ordinate);
+                    : _factory.GetOrdinate(_index.Value, _hasZ ? (Int32)ordinate : _ordTable2D[(Int32)ordinate]);
             }
         }
 
@@ -326,7 +370,7 @@ namespace NetTopologySuite.Coordinates
             // Since the coordinates are stored in lexicograpic order,
             // the index comparison works to compare coordinates
             // first by X, then by Y;
-            return BufferedCoordinateFactory.Compare(this, other);
+            return _factory.Compare(this, other);
         }
 
         #endregion
@@ -431,22 +475,22 @@ namespace NetTopologySuite.Coordinates
 
         public Boolean GreaterThan(BufferedCoordinate value)
         {
-            return BufferedCoordinateFactory.GreaterThan(this, value);
+            return _factory.GreaterThan(this, value);
         }
 
         public Boolean GreaterThanOrEqualTo(BufferedCoordinate value)
         {
-            return BufferedCoordinateFactory.GreaterThanOrEqualTo(this, value);
+            return _factory.GreaterThanOrEqualTo(this, value);
         }
 
         public Boolean LessThan(BufferedCoordinate value)
         {
-            return BufferedCoordinateFactory.LessThan(this, value);
+            return _factory.LessThan(this, value);
         }
 
         public Boolean LessThanOrEqualTo(BufferedCoordinate value)
         {
-            return BufferedCoordinateFactory.LessThanOrEqualTo(this, value);
+            return _factory.LessThanOrEqualTo(this, value);
         }
 
         #endregion
@@ -1503,20 +1547,6 @@ namespace NetTopologySuite.Coordinates
         {
             return new DoubleComponent[] { X, Y };
         }
-
-        #region ICoordinate3D Members
-
-        public double Z
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public double Distance(ICoordinate3D other)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
 
         #region IComparable<ICoordinate3D> Members
 
