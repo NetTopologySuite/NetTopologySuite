@@ -17,7 +17,7 @@ namespace NetTopologySuite.Coordinates
                                        IComputable<Double, BufferedCoordinate>
     {
         private readonly static Int32[] _ordTable2D = new Int32[] { 0, 1, -1, 2 };
-        private readonly Int32? _index;
+        private readonly Int32? _id;
         private readonly BufferedCoordinateFactory _factory;
         private readonly Boolean _isHomogeneous;
         private readonly Boolean _hasZ;
@@ -28,7 +28,7 @@ namespace NetTopologySuite.Coordinates
         internal BufferedCoordinate(BufferedCoordinateFactory factory, Int32 index, Boolean hasZ, Boolean isHomogeneous)
         {
             _factory = factory;
-            _index = index;
+            _id = index;
             _isHomogeneous = isHomogeneous;
             _hasZ = hasZ;
         }
@@ -95,14 +95,23 @@ namespace NetTopologySuite.Coordinates
 
         public override String ToString()
         {
-            return IsEmpty
-                       ? "Empty"
-                       : String.Format("({0}, {1})", X, Y);
+            if (IsEmpty)
+            {
+                return "Empty";
+            }
+
+            return _isHomogeneous
+                       ? (_hasZ
+                              ? String.Format("({0}, {1}, {2}, {3})", X, Y, Z, W)
+                              : String.Format("({0}, {1}, {2})", X, Y, W))
+                       : (_hasZ
+                              ? String.Format("({0}, {1}, {2})", X, Y, Z)
+                              : String.Format("({0}, {1})", X, Y));
         }
 
         public override Int32 GetHashCode()
         {
-            return _index.GetHashCode()
+            return _id.GetHashCode()
                 ^ _isHomogeneous.GetHashCode()
                 ^ _factory.GetHashCode();
         }
@@ -114,16 +123,16 @@ namespace NetTopologySuite.Coordinates
 
         internal static BufferedCoordinate Homogenize(BufferedCoordinate coordinate)
         {
-            return !coordinate._index.HasValue
+            return !coordinate._id.HasValue
                        ? coordinate
-                       : new BufferedCoordinate(coordinate._factory, coordinate._index.Value, coordinate._hasZ, true);
+                       : new BufferedCoordinate(coordinate._factory, coordinate._id.Value, coordinate._hasZ, true);
         }
 
         internal static BufferedCoordinate Dehomogenize(BufferedCoordinate coordinate)
         {
-            return !coordinate._index.HasValue
+            return !coordinate._id.HasValue
                        ? coordinate
-                       : new BufferedCoordinate(coordinate._factory, coordinate._index.Value, coordinate._hasZ, false);
+                       : new BufferedCoordinate(coordinate._factory, coordinate._id.Value, coordinate._hasZ, false);
         }
 
         #region IBufferedVector<DoubleComponent> Members
@@ -135,7 +144,7 @@ namespace NetTopologySuite.Coordinates
 
         public Int32 Index
         {
-            get { return _index.Value; }
+            get { return _id.Value; }
         }
 
         public Boolean ValueEquals(BufferedCoordinate other)
@@ -154,9 +163,9 @@ namespace NetTopologySuite.Coordinates
         {
             get
             {
-                return _index == null || !_hasZ
+                return _id == null || !_hasZ
                     ? Double.NaN
-                    : _factory.GetOrdinate(_index.Value, 2);
+                    : _factory.GetOrdinate(_id.Value, 2);
             }
         }
 
@@ -167,7 +176,23 @@ namespace NetTopologySuite.Coordinates
 
         public void GetComponents(out Double x, out Double y, out Double z, out Double w)
         {
-            _factory.GetOrdinates(out x, out y, out z, out w);
+            x = Double.NaN;
+            y = Double.NaN;
+            z = Double.NaN;
+            w = 1.0;
+
+            if (!_id.HasValue)
+            {
+                return;
+            }
+
+            DoubleComponent x1, y1, z1, w1;
+            _factory.GetComponents(_id.Value, out x1, out y1, out z1, out w1);
+
+            x = (Double)x1;
+            y = (Double)y1;
+            z = _hasZ ? (Double)z1 : z;
+            w = _isHomogeneous ? (Double)w1 : w;
         }
 
         #endregion
@@ -178,9 +203,9 @@ namespace NetTopologySuite.Coordinates
         {
             get
             {
-                return _index == null 
+                return _id == null 
                     ? Double.NaN 
-                    : _factory.GetOrdinate(_index.Value, 0);
+                    : _factory.GetOrdinate(_id.Value, 0);
             }
         }
 
@@ -188,9 +213,9 @@ namespace NetTopologySuite.Coordinates
         {
             get
             {
-                return _index == null
+                return _id == null
                     ? Double.NaN
-                    : _factory.GetOrdinate(_index.Value, 1);
+                    : _factory.GetOrdinate(_id.Value, 1);
             }
         }
 
@@ -198,15 +223,29 @@ namespace NetTopologySuite.Coordinates
         {
             get
             {
-                return _index == null
+                return _id == null || !_isHomogeneous
                     ? Double.NaN
-                    : _factory.GetOrdinate(_index.Value, _hasZ ? 3 : 2);
+                    : _factory.GetOrdinate(_id.Value, _hasZ ? 3 : 2);
             }
         }
 
         public void GetComponents(out Double x, out Double y, out Double w)
         {
-            _factory.GetOrdinates(out x, out y, out w);
+            x = Double.NaN;
+            y = Double.NaN;
+            w = 1.0;
+
+            if (!_id.HasValue)
+            {
+                return;
+            }
+
+            DoubleComponent x1, y1, w1;
+            _factory.GetComponents(_id.Value, out x1, out y1, out w1);
+
+            x = (Double)x1;
+            y = (Double)y1;
+            w = _isHomogeneous ? (Double)w1 : w;
         }
 
         public Double Distance(ICoordinate2D other)
@@ -241,16 +280,16 @@ namespace NetTopologySuite.Coordinates
 
         public Boolean IsEmpty
         {
-            get { return _index == null; }
+            get { return _id == null; }
         }
 
         public Double this[Ordinates ordinate]
         {
             get
             {
-                return _index == null
+                return _id == null
                     ? Double.NaN
-                    : _factory.GetOrdinate(_index.Value, _hasZ ? (Int32)ordinate : _ordTable2D[(Int32)ordinate]);
+                    : _factory.GetOrdinate(_id.Value, _hasZ ? (Int32)ordinate : _ordTable2D[(Int32)ordinate]);
             }
         }
 
@@ -346,7 +385,7 @@ namespace NetTopologySuite.Coordinates
 
         public Boolean Equals(BufferedCoordinate other)
         {
-            return _index == other._index && _factory == other._factory;
+            return _id == other._id && _factory == other._factory;
         }
 
         #endregion
@@ -356,12 +395,12 @@ namespace NetTopologySuite.Coordinates
         public Int32 CompareTo(BufferedCoordinate other)
         {
             // Empty coordinates don't compare
-            if (other._index == null)
+            if (other._id == null)
             {
                 throw new ArgumentException("Cannot compare to the empty coordinate");
             }
 
-            if (_index == null)
+            if (_id == null)
             {
                 throw new InvalidOperationException(
                     "This coordinate is empty and cannot be compared");
@@ -1317,7 +1356,9 @@ namespace NetTopologySuite.Coordinates
         {
             get
             {
-                return this[(Ordinates)(index == 2 ? 3 : index)];
+                return _id == null
+                    ? Double.NaN
+                    : _factory.GetOrdinate(_id.Value, index);
             }
             set
             {

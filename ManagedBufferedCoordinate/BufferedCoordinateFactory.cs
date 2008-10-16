@@ -152,9 +152,9 @@ namespace NetTopologySuite.Coordinates
             return getVertexInternal(x, y);
         }
 
-        public BufferedCoordinate Create(Double x, Double y, Double m)
+        public BufferedCoordinate Create(Double x, Double y, Double w)
         {
-            throw new NotSupportedException("Coordinates with 'M' values currently not supported.");
+            return getVertexInternal(x, y, w    );
         }
 
         public BufferedCoordinate Create(params Double[] coordinates)
@@ -166,40 +166,30 @@ namespace NetTopologySuite.Coordinates
 
             Int32 length = coordinates.Length;
 
-            if (length == 0)
+            switch (length)
             {
-                return new BufferedCoordinate();
+                case 0:
+                    return new BufferedCoordinate();
+                case 1:
+                    throw new ArgumentException("Only one coordinate component was provided; " +
+                                                "at least 2 are needed.");
+                case 2:
+                    return Create(coordinates[0], coordinates[1]);
+                case 3:
+                    return Create(coordinates[0], coordinates[1], coordinates[2]);
+                default:
+                    throw new ArgumentException("Too many components.");
             }
-
-            if (length == 2)
-            {
-                return Create(coordinates[0], coordinates[1]);
-            }
-
-            if (length == 1)
-            {
-                throw new ArgumentException("Only one coordinate component was provided; " +
-                                            "at least 2 are needed.");
-            }
-
-            if (length == 3)
-            {
-                throw new NotSupportedException("Coordinates with 'M' values currently " +
-                                                "not supported.");
-            }
-
-            throw new ArgumentException("Too many components.");
         }
 
         public BufferedCoordinate Create3D(Double x, Double y, Double z)
         {
-            return getVertexInternal(x, y, z);
+            return getVertexInternal3D(x, y, z);
         }
 
-        public BufferedCoordinate Create3D(Double x, Double y, Double z, Double m)
+        public BufferedCoordinate Create3D(Double x, Double y, Double z, Double w)
         {
-            throw new NotSupportedException("Coordinates with 'M' values currently " +
-                                            "not supported.");
+            return getVertexInternal(x, y, z, w);
         }
 
         public BufferedCoordinate Create3D(params Double[] coordinates)
@@ -219,7 +209,9 @@ namespace NetTopologySuite.Coordinates
                 return coordinate;
             }
 
-            return getVertexInternal(coordinate.X, coordinate.Y, coordinate.W);
+            Double x, y, w;
+            coordinate.GetComponents(out x, out y, out w);
+            return getVertexInternal(x, y, w);
         }
 
         public BufferedCoordinate Create(ICoordinate coordinate)
@@ -229,9 +221,23 @@ namespace NetTopologySuite.Coordinates
                 return Create((BufferedCoordinate)coordinate);
             }
 
-            return coordinate.IsEmpty
-                ? new BufferedCoordinate()
-                : Create(coordinate[Ordinates.X], coordinate[Ordinates.Y], coordinate[Ordinates.W]);
+            ICoordinate2D coordinate2D = coordinate as ICoordinate2D;
+
+            if (coordinate2D == null)
+            {
+                return coordinate.IsEmpty
+                           ? new BufferedCoordinate()
+                           : Create(coordinate[Ordinates.X], coordinate[Ordinates.Y], coordinate[Ordinates.W]);
+            }
+
+            if (coordinate.IsEmpty)
+            {
+                return new BufferedCoordinate();
+            }
+
+            Double x, y, w;
+            coordinate2D.GetComponents(out x, out y, out w);
+            return Create(x, y, w);
         }
 
         public BufferedCoordinate Create3D(BufferedCoordinate coordinate)
@@ -246,19 +252,39 @@ namespace NetTopologySuite.Coordinates
                 return coordinate;
             }
 
-            return getVertexInternal(coordinate.X, coordinate.Y);
+            Double x, y, z, w;
+            coordinate.GetComponents(out x, out y, out z, out w);
+            return getVertexInternal(x, y, z, w);
         }
 
         public BufferedCoordinate Create3D(ICoordinate coordinate)
         {
             if (coordinate is BufferedCoordinate)
             {
-                return Create((BufferedCoordinate)coordinate);
+                return Create3D((BufferedCoordinate)coordinate);
             }
 
-            return coordinate.IsEmpty
-                ? new BufferedCoordinate()
-                : Create(coordinate[Ordinates.X], coordinate[Ordinates.Y], coordinate[Ordinates.Z], coordinate[Ordinates.W]);
+            ICoordinate3D coordinate3D = coordinate as ICoordinate3D;
+
+            if (coordinate3D == null)
+            {
+                return coordinate.IsEmpty
+                    ? new BufferedCoordinate()
+                    : Create(coordinate[Ordinates.X], 
+                             coordinate[Ordinates.Y], 
+                             coordinate[Ordinates.Z], 
+                             coordinate[Ordinates.W]);
+
+            }
+
+            if (coordinate.IsEmpty)
+            {
+                return new BufferedCoordinate();
+            }
+
+            Double x, y, z, w;
+            coordinate3D.GetComponents(out x, out y, out z, out w);
+            return Create(x, y, z, w);
         }
 
         public BufferedCoordinate Homogenize(BufferedCoordinate coordinate)
@@ -878,14 +904,14 @@ namespace NetTopologySuite.Coordinates
             return Compare(a, b) <= 0;
         }
 
-        internal void GetOrdinates(out Double x, out Double y, out Double w)
+        internal void GetComponents(Int32 id, out DoubleComponent x, out DoubleComponent y, out DoubleComponent w)
         {
-            throw new NotImplementedException();
+            _coordinates.GetVectorComponents(id, out x, out y, out w);
         }
 
-        internal void GetOrdinates(out Double x, out Double y, out Double z, out Double w)
+        internal void GetComponents(Int32 id, out DoubleComponent x, out DoubleComponent y, out DoubleComponent z, out DoubleComponent w)
         {
-            throw new NotImplementedException();
+            _coordinates.GetVectorComponents(id, out x, out y, out z, out w);
         }
 
         #region IEnumerable Members
