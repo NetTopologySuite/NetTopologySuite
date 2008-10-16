@@ -61,14 +61,54 @@ namespace NetTopologySuite.Coordinates
         //private static readonly IComparer<BufferedCoordinate> _coordComparer
         //    = new LexicographicCoordinateComparer((LexicographicComparer)_valueComparer);
         private readonly ManagedVectorBuffer<DoubleComponent, BufferedCoordinate> _coordinates;
-        //private readonly IDictionary<Pair<Double>, Int32> _lexicographicVertexIndex;
-        //private readonly IDictionary<Triple<Double>, Int32> _lexicographicHomogeneousVertexIndex;
         //private Int32 _bitResolution;
         //private Int64 _mask = unchecked((Int64)0xFFFFFFFFFFFFFFFF);
         private readonly PrecisionModel _precisionModel;
         //private readonly Int32[] _ordinateIndexTable = new Int32[4];
         private readonly IMatrixOperations<DoubleComponent, BufferedCoordinate, BufferedMatrix> _ops;
         private readonly YieldingSpinLock _spinLock = new YieldingSpinLock();
+
+        class VertexIndex : IVectorIndex<DoubleComponent>
+        {
+            private readonly IDictionary<Pair<Double>, Int32> _2Index =
+                new Dictionary<Pair<Double>, Int32>();
+            private readonly IDictionary<Triple<Double>, Int32> _3Index =
+                new Dictionary<Triple<Double>, Int32>();
+
+            public void Add(DoubleComponent v0, DoubleComponent v1, Int32 id)
+            {
+                _2Index[new Pair<Double>((Double) v0, (Double) v1)] = id;
+            }
+
+            public void Add(DoubleComponent[] components, Int32 start, Int32 id)
+            {
+                throw new NotSupportedException();
+            }
+
+            public void Add(DoubleComponent v0, DoubleComponent v1, DoubleComponent v2, Int32 id)
+            {
+                _3Index[new Triple<Double>((Double)v0, (Double)v1, (Double)v2)] = id;
+            }
+
+            #region Implementation of IVectorIndex<DoubleComponent>
+
+            public Boolean Query(DoubleComponent v0, DoubleComponent v1, out Int32 id)
+            {
+                return _2Index.TryGetValue(new Pair<Double>((Double)v0, (Double)v1), out id);
+            }
+
+            public Boolean Query(DoubleComponent v0, DoubleComponent v1, DoubleComponent v2, out Int32 id)
+            {
+                return _3Index.TryGetValue(new Triple<Double>((Double)v0, (Double)v1, (Double)v2), out id);
+            }
+
+            public Boolean Query(out Int32 id, params DoubleComponent[] components)
+            {
+                throw new NotImplementedException();
+            }
+
+            #endregion
+        }
 
         public BufferedCoordinateFactory()
             : this(null) { }
@@ -85,6 +125,7 @@ namespace NetTopologySuite.Coordinates
             //_lexicographicVertexIndex = createLexicographicIndex();
             //_lexicographicHomogeneousVertexIndex = createLexicographicHomogeneousIndex();
             _coordinates = new ManagedVectorBuffer<DoubleComponent, BufferedCoordinate>(this);
+            _coordinates.Index = new VertexIndex();
             //initializeOrdinateIndexTable();
             _ops = new ClrMatrixOperations<DoubleComponent, BufferedCoordinate, BufferedMatrix>(this);
         }
@@ -443,6 +484,16 @@ namespace NetTopologySuite.Coordinates
         Int32 ITypedVectorBuffer.Count
         {
             get { return _coordinates.Count; }
+        }
+
+        public Boolean Find(DoubleComponent v0, DoubleComponent v1, out Int32 id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Boolean Find(DoubleComponent v0, DoubleComponent v1, DoubleComponent v2, out Int32 id)
+        {
+            throw new System.NotImplementedException();
         }
 
         //IVectorFactory<DoubleComponent, BufferedCoordinate> ITypedVectorBuffer.Factory

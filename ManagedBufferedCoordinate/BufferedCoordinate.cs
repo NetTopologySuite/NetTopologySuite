@@ -699,7 +699,7 @@ namespace NetTopologySuite.Coordinates
 
         public Int32 ComponentCount
         {
-            get { return _isHomogeneous ? 3 : 2; }
+            get { return _isHomogeneous ? (_hasZ ? 4 : 3) : (_hasZ ? 3 : 2); }
         }
 
         DoubleComponent[] IVectorD.Components
