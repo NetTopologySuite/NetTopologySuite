@@ -154,7 +154,7 @@ namespace NetTopologySuite.Coordinates
 
         public BufferedCoordinate Create(Double x, Double y, Double w)
         {
-            return getVertexInternal(x, y, w    );
+            return getVertexInternal(x, y, w);
         }
 
         public BufferedCoordinate Create(params Double[] coordinates)
