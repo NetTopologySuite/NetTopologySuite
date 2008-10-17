@@ -77,7 +77,7 @@ namespace NetTopologySuite.Coordinates
 
             public void Add(DoubleComponent v0, DoubleComponent v1, Int32 id)
             {
-                _2Index[new Pair<Double>((Double) v0, (Double) v1)] = id;
+                _2Index[new Pair<Double>((Double)v0, (Double)v1)] = id;
             }
 
             public void Add(DoubleComponent[] components, Int32 start, Int32 id)
@@ -270,9 +270,9 @@ namespace NetTopologySuite.Coordinates
             {
                 return coordinate.IsEmpty
                     ? new BufferedCoordinate()
-                    : Create(coordinate[Ordinates.X], 
-                             coordinate[Ordinates.Y], 
-                             coordinate[Ordinates.Z], 
+                    : Create(coordinate[Ordinates.X],
+                             coordinate[Ordinates.Y],
+                             coordinate[Ordinates.Z],
                              coordinate[Ordinates.W]);
 
             }
@@ -1089,6 +1089,7 @@ namespace NetTopologySuite.Coordinates
         private BufferedCoordinate addNew(Double v0, Double v1)
         {
             BufferedCoordinate coord = _coordinates.Add(v0, v1, 1);
+            _coordinates.Index.Add(v0, v1, coord.Index);
             //_lexicographicVertexIndex[new Pair<Double>(v0, v1)] = coord.Index;
             return coord;
         }
@@ -1097,6 +1098,7 @@ namespace NetTopologySuite.Coordinates
         {
             Object context = is3D ? _nonHomogeneous3DContext : _homogeneous2DContext;
             BufferedCoordinate coord = _coordinates.Add(v0, v1, v2, context);
+            _coordinates.Index.Add(v0, v1, v2, coord.Index);
             //Triple<Double> values = new Triple<Double>(v0, v1, v2);
             //_lexicographicHomogeneousVertexIndex[values] = coord.Index;
             return coord;
