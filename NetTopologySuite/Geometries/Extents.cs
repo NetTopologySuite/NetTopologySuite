@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.CoordinateSystems;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using NPack;
@@ -903,6 +904,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             throw new NotImplementedException();
         }
 
+        public ICoordinateSystem<TCoordinate> SpatialReference
+        {
+            get { return _geoFactory.SpatialReference; }
+        }
+
         public IEnumerable<IExtents<TCoordinate>> Split(TCoordinate coordinate)
         {
             throw new NotImplementedException();
@@ -1211,6 +1217,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         Boolean IExtents.Overlaps(IExtents other)
         {
             return (this as IExtents).Intersects(other);
+        }
+
+        ICoordinateSystem IExtents.SpatialReference
+        {
+            get { return SpatialReference; }
         }
 
         public void Scale(params Double[] vector)
