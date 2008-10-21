@@ -927,6 +927,11 @@ namespace NetTopologySuite.Coordinates
             }
         }
 
+        ICoordinateSequenceFactory ICoordinateSequence.CoordinateSequenceFactory
+        {
+            get { return CoordinateSequenceFactory; }
+        }
+
         public IBufferedCoordSequence Scroll(BufferedCoordinate coordinateToBecomeFirst)
         {
             Int32 index = IndexOf(coordinateToBecomeFirst);
