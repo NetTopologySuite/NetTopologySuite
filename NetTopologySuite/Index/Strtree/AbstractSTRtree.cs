@@ -314,11 +314,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
                 if (lastNode.ChildCount == NodeCapacity)
                 {
-                    parentBoundables.Add(CreateNode(newLevel));
+                    lastNode = CreateNode(newLevel);
+                    parentBoundables.Add(lastNode);
                 }
 
-                lastNode = Slice.GetLast(parentBoundables) as AbstractNode<TBounds, IBoundable<TBounds>>;
-                lastNode.AddChild(childBoundable as ISpatialIndexNode<TBounds, IBoundable<TBounds>>);
+                lastNode.AddItem(childBoundable);
             }
 
             return parentBoundables;
