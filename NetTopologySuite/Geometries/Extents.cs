@@ -42,6 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns><see langword="true"/> if q intersects the envelope p1-p2.</returns>
         public static Boolean Intersects(TCoordinate p1, TCoordinate p2, TCoordinate q)
         {
+            // FIX_PERF: read all coordinates at once
             Double qX = q[Ordinates.X], qY = q[Ordinates.Y];
             Double p1X = p1[Ordinates.X], p1Y = p1[Ordinates.Y];
             Double p2X = p1[Ordinates.X], p2Y = p1[Ordinates.Y];
@@ -66,6 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns><see langword="true"/> if Q intersects Point</returns>
         public static Boolean Intersects(TCoordinate p1, TCoordinate p2, TCoordinate q1, TCoordinate q2)
         {
+            // FIX_PERF: read all coordinates at once
             Double p1X = p1[Ordinates.X], p1Y = p1[Ordinates.Y];
             Double p2X = p1[Ordinates.X], p2Y = p1[Ordinates.Y];
             Double q1X = p1[Ordinates.X], q1Y = p1[Ordinates.Y];
@@ -211,6 +213,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="p2">The second coordinate.</param>
         public void Init(TCoordinate p1, TCoordinate p2)
         {
+            // FIX_PERF: read all coordinates at once
             Init(p1[Ordinates.X], p2[Ordinates.X], p1[Ordinates.Y], p2[Ordinates.Y]);
         }
 
@@ -225,6 +228,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return;
             }
 
+            // FIX_PERF: read all coordinates at once
             Double x = p[Ordinates.X], y = p[Ordinates.Y];
             Init(x, x, y, y);
         }
@@ -279,6 +283,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     return 0;
                 }
 
+                // FIX_PERF: read all coordinates at once
                 return Math.Abs(_max[Ordinates.X] - _min[Ordinates.X]);
             }
         }
@@ -296,6 +301,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     return 0;
                 }
 
+                // FIX_PERF: read all coordinates at once
                 return Math.Abs(_max[Ordinates.Y] - _min[Ordinates.Y]);
             }
         }
@@ -307,6 +313,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="p">The Coordinate.</param>
         public void ExpandToInclude(TCoordinate p)
         {
+            // FIX_PERF: read all coordinates at once
             ExpandToInclude(p[Ordinates.X], p[Ordinates.Y]);
         }
 
@@ -361,6 +368,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 TCoordinate otherMin = other.Min;
                 TCoordinate otherMax = other.Max;
 
+                // FIX_PERF: read all coordinates at once
                 Double xMin = Math.Min(_min[Ordinates.X], otherMin[Ordinates.X]);
                 Double xMax = Math.Max(_max[Ordinates.X], otherMax[Ordinates.X]);
                 Double yMin = Math.Min(_min[Ordinates.Y], otherMin[Ordinates.Y]);
@@ -389,11 +397,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return;
             }
 
+            // FIX_PERF: read all coordinates at once
             ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
             _min = coordFactory.Create(_min[Ordinates.X] + transX, _min[Ordinates.Y] + transY);
             _max = coordFactory.Create(_max[Ordinates.X] + transX, _max[Ordinates.Y] + transY);
         }
 
+        // FIX_PERF: read all coordinates at once
         public TCoordinate Center
         {
             get
@@ -404,8 +414,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                                  (Min[Ordinates.X] + Max[Ordinates.X]) / 2.0,
                                  (Min[Ordinates.Y] + Max[Ordinates.Y]) / 2.0);
             }
-        } 
+        }
 
+        // FIX_PERF: read all coordinates at once
         public IExtents<TCoordinate> Intersection(IExtents<TCoordinate> extents)
         {
             if (IsEmpty || extents.IsEmpty || !Intersects(extents))
@@ -428,11 +439,21 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
             }
 
+            TCoordinate min1 = other.Min;
+            TCoordinate max1 = other.Max;
+
+            DoubleComponent xMin1, yMin1, xMax1, yMax1, xMin2, yMin2, xMax2, yMax2;
+
+            min1.GetComponents(out xMin1, out yMin1);
+            max1.GetComponents(out xMax1, out yMax1);
+            _min.GetComponents(out xMin2, out yMin2);
+            _max.GetComponents(out xMax2, out yMax2);
+
             // 3D_UNSAFE
-            return !(other.Min[Ordinates.X] > _max[Ordinates.X] ||
-                     other.Max[Ordinates.X] < _min[Ordinates.X] ||
-                     other.Min[Ordinates.Y] > _max[Ordinates.Y] ||
-                     other.Max[Ordinates.Y] < _min[Ordinates.Y]);
+            return !(xMin1.GreaterThan(xMax2) ||
+                     xMax1.LessThan(xMin2) ||
+                     yMin1.GreaterThan(yMax2) ||
+                     yMax1.LessThan(yMin2));
         }
 
         public Boolean Intersects(TCoordinate coordinate)
@@ -443,6 +464,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
 
             // 3D_UNSAFE
+            // FIX_PERF: read all coordinates at once
             return Intersects(coordinate[Ordinates.X], coordinate[Ordinates.Y]);
         }
 
@@ -462,6 +484,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
             }
 
+            // FIX_PERF: read all coordinates at once
             return !(x > _max[Ordinates.X] ||
                      x < _min[Ordinates.X] ||
                      y > _max[Ordinates.Y] ||
@@ -499,6 +522,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 
         public Boolean Contains(TCoordinate p)
         {
+            // FIX_PERF: read all coordinates at once
             return Contains(p[Ordinates.X], p[Ordinates.Y]);
         }
 
@@ -513,6 +537,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// on the boundary of this <see cref="Extents{TCoordinate}"/>.</returns>
         public Boolean Contains(Double x, Double y)
         {
+            // FIX_PERF: read all coordinates at once
             return x >= _min[Ordinates.X] &&
                    x <= _max[Ordinates.X] &&
                    y >= _min[Ordinates.Y] &&
@@ -533,6 +558,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
 
             // 3D_UNSAFE
+            // FIX_PERF: read all coordinates at once
             return other.Min[Ordinates.X] >= _min[Ordinates.X] &&
                    other.Max[Ordinates.X] <= _max[Ordinates.X] &&
                    other.Min[Ordinates.Y] >= _min[Ordinates.Y] &&
@@ -556,6 +582,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             Double dx = 0.0;
 
             // 3D_UNSAFE
+            // FIX_PERF: read all coordinates at once
             if (_max[Ordinates.X] < extents.Min[Ordinates.X])
             {
                 dx = extents.Min[Ordinates.X] - _max[Ordinates.X];
@@ -637,6 +664,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return isEmpty ? -1 : 1;
             }
 
+            // FIX_PERF: read all coordinates at once
             Double area = Area, otherArea = other.GetSize(Ordinates.X, Ordinates.Y);
 
             if (area > otherArea)
@@ -719,6 +747,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get
             {
                 // 3D_UNSAFE
+                // FIX_PERF: read all coordinates at once
                 Double area = Math.Abs(_max[Ordinates.X] - _min[Ordinates.X]) * 
                               Math.Abs(_max[Ordinates.Y] - _min[Ordinates.Y]);
                 return area;
@@ -801,10 +830,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
             else
             {
-                originalXMin = _min[Ordinates.X];
-                originalYMin = _min[Ordinates.Y];
-                originalXMax = _max[Ordinates.X];
-                originalYMax = _max[Ordinates.Y];
+                DoubleComponent x, y;
+
+                _min.GetComponents(out x, out y);
+                originalXMin = (Double)x;
+                originalYMin = (Double)y;
+
+                _max.GetComponents(out x, out y);
+                originalXMax = (Double)x;
+                originalYMax = (Double)y;
             }
 
             Double xMin = originalXMin;
@@ -814,13 +848,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             foreach (TCoordinate coordinate in coordinates)
             {
-                Double x = coordinate[Ordinates.X];
-                Double y = coordinate[Ordinates.Y];
+                DoubleComponent x, y;
 
-                xMin = Math.Min(x, xMin);
-                xMax = Math.Max(x, xMax);
-                yMin = Math.Min(y, yMin);
-                yMax = Math.Max(y, yMax);
+                coordinate.GetComponents(out x, out y);
+
+                xMin = Math.Min((Double)x, xMin);
+                xMax = Math.Max((Double)x, xMax);
+                yMin = Math.Min((Double)y, yMin);
+                yMax = Math.Max((Double)y, yMax);
             }
 
             ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
@@ -922,6 +957,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
 
             ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
+            // FIX_PERF: read all coordinates at once
             ILinearRing<TCoordinate> shell = _geoFactory.CreateLinearRing(new TCoordinate[]
                           {
                               coordFactory.Create(_min),
@@ -986,6 +1022,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return box;
             }
 
+            // FIX_PERF: read all coordinates at once
             return new Extents<TCoordinate>(
                                 Factory,
                                 Math.Min(_min[Ordinates.X], box.Min[Ordinates.X]),

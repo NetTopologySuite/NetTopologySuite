@@ -231,6 +231,23 @@ namespace NetTopologySuite.Coordinates
 
         public void GetComponents(out Double x, out Double y, out Double w)
         {
+            DoubleComponent a, b, c;
+
+            GetComponents(out a, out b, out c);
+
+            x = (Double)a;
+            y = (Double)b;
+            w = (Double)c;
+        }
+
+        public void GetComponents(out DoubleComponent a, out DoubleComponent b)
+        {
+            DoubleComponent c;
+            GetComponents(out a, out b, out c);
+        }
+
+        public void GetComponents(out DoubleComponent x, out DoubleComponent y, out DoubleComponent w)
+        {
             x = Double.NaN;
             y = Double.NaN;
             w = 1.0;
@@ -243,9 +260,14 @@ namespace NetTopologySuite.Coordinates
             DoubleComponent x1, y1, w1;
             _factory.GetComponents(_id.Value, out x1, out y1, out w1);
 
-            x = (Double)x1;
-            y = (Double)y1;
-            w = _isHomogeneous ? (Double)w1 : w;
+            x = x1;
+            y = y1;
+            w = _isHomogeneous ? w1 : w;
+        }
+
+        public void GetComponents(out DoubleComponent a, out DoubleComponent b, out DoubleComponent c, out DoubleComponent d)
+        {
+            throw new System.NotImplementedException();
         }
 
         public Double Distance(ICoordinate2D other)
