@@ -368,11 +368,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 TCoordinate otherMin = other.Min;
                 TCoordinate otherMax = other.Max;
 
-                // FIX_PERF: read all coordinates at once
-                Double xMin = Math.Min(_min[Ordinates.X], otherMin[Ordinates.X]);
-                Double xMax = Math.Max(_max[Ordinates.X], otherMax[Ordinates.X]);
-                Double yMin = Math.Min(_min[Ordinates.Y], otherMin[Ordinates.Y]);
-                Double yMax = Math.Max(_max[Ordinates.Y], otherMax[Ordinates.Y]);
+                DoubleComponent xMin1, yMin1, xMax1, yMax1, xMin2, yMin2, xMax2, yMax2;
+                _min.GetComponents(out xMin1, out yMin1);
+                _max.GetComponents(out xMax1, out yMax1);
+                otherMin.GetComponents(out xMin2, out yMin2);
+                otherMax.GetComponents(out xMax2, out yMax2);
+
+                Double xMin = Math.Min((Double)xMin1, (Double)xMin2);
+                Double xMax = Math.Max((Double)xMax1, (Double)xMax2);
+                Double yMin = Math.Min((Double)yMin1, (Double)yMin2);
+                Double yMax = Math.Max((Double)yMax1, (Double)yMax2);
 
                 ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
                 _min = coordFactory.Create(xMin, yMin);

@@ -59,6 +59,16 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             return true;
         }
 
+        public override Boolean Intersects(Interval bounds)
+        {
+            return true;
+        }
+
+        protected override Interval ComputeBounds()
+        {
+            return Interval.Infinite;
+        }
+
         /// <summary> 
         /// Insert an item which is known to be contained in the tree rooted at
         /// the given Node.  Lower levels of the tree will be created
@@ -67,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         private static void insertContained(Node<TBoundable> tree, Interval itemInterval, TBoundable item)
         {
             Assert.IsTrue(tree.Interval.Contains(itemInterval));
-            
+
             /*
             * Do NOT create a new node for zero-area intervals - this would lead
             * to infinite recursion. Instead, use a heuristic of simply returning
@@ -86,16 +96,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             }
 
             node.AddItem(item);
-        }
-
-        public override Boolean Intersects(Interval bounds)
-        {
-            return true;
-        }
-
-        protected override Interval ComputeBounds()
-        {
-            return Interval.Infinite;
         }
     }
 }

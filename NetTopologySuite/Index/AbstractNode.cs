@@ -11,6 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.Index
         private List<TItem> _items;
         private List<ISpatialIndexNode<TBounds, TItem>> _subNodes;
         private TBounds _bounds;
+        private Boolean _boundsSet;
         private readonly Int32 _level;
 
         /// <summary> 
@@ -73,9 +74,10 @@ namespace GisSharpBlog.NetTopologySuite.Index
         {
             get
             {
-                if (Equals(_bounds, default(TBounds)))
+                if (!_boundsSet)
                 {
                     _bounds = ComputeBounds();
+                    _boundsSet = true;
                 }
 
                 return _bounds;

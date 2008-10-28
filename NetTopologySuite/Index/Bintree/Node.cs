@@ -25,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 
             if (node != null)
             {
-                expanded.ExpandToInclude(node._interval);
+                expanded = expanded.ExpandToInclude(node._interval);
             }
 
             Node<TBoundable> largerNode = CreateNode(expanded);
