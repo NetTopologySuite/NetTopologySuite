@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Index.Strtree;
@@ -22,22 +20,26 @@ namespace NetTopologySuite.Tests.Index.StrTree
                 _extents = extents;
             }
 
-            public bool Intersects(IExtents<BufferedCoordinate> other)
+            public Boolean Intersects(IExtents<BufferedCoordinate> other)
             {
-                throw new System.NotImplementedException();
+                return _extents.Intersects(other);
             }
 
             public IExtents<BufferedCoordinate> Bounds
             {
-                get { throw new System.NotImplementedException(); }
+                get { return _extents; }
             }
         }
 
         [Fact]
         public void InsertingItemsResultsInCorrectCount()
         {
-            StrTree<BufferedCoordinate, BoundedString> strTree = new StrTree<BufferedCoordinate, BoundedString>();
-            strTree.Insert(new BoundedString("A"));
+            StrTree<BufferedCoordinate, BoundedString> strTree 
+                = new StrTree<BufferedCoordinate, BoundedString>(TestFactories.GeometryFactory);
+            IExtents<BufferedCoordinate> bounds 
+                = TestFactories.GeometryFactory.CreateExtents2D(5, 5, 10, 10) as IExtents<BufferedCoordinate>;
+            strTree.Insert(new BoundedString("A", bounds));
+            Assert.Equal(1, strTree.Count);
         }
     }
 }

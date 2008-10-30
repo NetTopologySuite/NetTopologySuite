@@ -145,6 +145,19 @@ namespace GisSharpBlog.NetTopologySuite.Index
             get { return _subNodes == null ? 0 : _subNodes.Count; }
         }
 
+        public virtual void Clear()
+        {
+            if (HasItems)
+            {
+                _items.Clear();   
+            }
+
+            if (HasChildren)
+            {
+                _subNodes.Clear();
+            }
+        }
+
         public virtual Int32 ItemCount
         {
             get { return _items == null ? 0 : _items.Count; }
@@ -154,6 +167,11 @@ namespace GisSharpBlog.NetTopologySuite.Index
         {
             get
             {
+                if (_items == null)
+                {
+                    yield break;
+                }
+
                 foreach (TItem item in _items)
                 {
                     yield return item;
@@ -165,6 +183,11 @@ namespace GisSharpBlog.NetTopologySuite.Index
         {
             get
             {
+                if (_subNodes == null)
+                {
+                    yield break;
+                }
+
                 foreach (ISpatialIndexNode<TBounds, TItem> node in _subNodes)
                 {
                     yield return node;

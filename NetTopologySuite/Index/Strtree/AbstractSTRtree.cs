@@ -45,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         private AbstractNode<TBounds, IBoundable<TBounds>> _root;
         private Boolean _built;
         private Boolean _isDisposed;
-        private readonly List<IBoundable<TBounds>> _children = new List<IBoundable<TBounds>>();
+        //private readonly List<IBoundable<TBounds>> _children = new List<IBoundable<TBounds>>();
         private readonly Int32 _nodeCapacity;
 
         /// <summary> 
@@ -80,7 +80,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             //Insert(item.Bounds, item);
             Assert.IsTrue(!_built, "Cannot insert items into an STR packed R-tree after it has been built.");
-            _children.Add(item);
+            //_children.Add(item);
+            _root.AddItem(item);
         }
 
         /// <remarks>
@@ -88,24 +89,17 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </remarks>
         public virtual Boolean Remove(TItem item)
         {
-            if (!_built)
-            {
-                Build();
-            }
+            ensureBuilt();
 
-            if (_children.Count == 0)
+            //if (_children.Count == 0)
+            if (Count == 0)
             {
-                Assert.IsTrue(Equals(_root.Bounds, default(TBounds)));
+                return false;
             }
 
             TBounds searchBounds = item.Bounds;
 
-            if (_root.Intersects(searchBounds))
-            {
-                return remove(searchBounds, _root, item);
-            }
-
-            return false;
+            return _root.Intersects(searchBounds) && remove(searchBounds, _root, item);
         }
 
         public IEnumerable<TResult> Query<TResult>(TBounds bounds, Func<TItem, TResult> selector)
@@ -126,12 +120,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </remarks>
         public IEnumerable<TItem> Query(TBounds searchBounds, Predicate<TItem> filter)
         {
-            if (!_built)
-            {
-                Build();
-            }
+            ensureBuilt();
 
-            if (_children.Count == 0)
+            if (Count == 0)
             {
                 Assert.IsTrue(Equals(_root.Bounds, default(TBounds)));
                 yield break;
@@ -161,7 +152,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
             if (disposing)
             {
-                _children.Clear();
+                _root.Clear();
                 _root = null;
             }
         }
@@ -175,9 +166,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         public void Build()
         {
             Assert.IsTrue(!_built);
-            _root = (_children.Count == 0)
+            throw new NotImplementedException();
+            // need to finish the createHigherLevels method refactor
+            _root = (Count == 0)
                        ? CreateNode(0)
-                       : createHigherLevels(_children, -1);
+                       : createHigherLevels(null, -1);
             _built = true;
         }
 
@@ -206,12 +199,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             get
             {
-                if (!_built)
-                {
-                    Build();
-                }
+                ensureBuilt();
 
-                return _children.Count == 0 ? 0 : GetCount(_root);
+                return !_root.HasItems ? 0 : GetCount(_root);
             }
         }
 
@@ -219,12 +209,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             get
             {
-                if (!_built)
-                {
-                    Build();
-                }
+                ensureBuilt();
 
-                return _children.Count == 0 ? 0 : GetDepth(_root);
+                return !_root.HasItems ? 0 : GetDepth(_root);
             }
         }
 
@@ -508,6 +495,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             }
 
             return createHigherLevels(parentBoundables, level + 1);
+        }
+
+        private void ensureBuilt()
+        {
+            if (!_built)
+            {
+                Build();
+            }
         }
     }
 }
