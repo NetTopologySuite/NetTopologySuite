@@ -160,17 +160,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             _geoFactory = geoFactory;
         }
 
-        /// <summary>
-        /// Inserts an item having the given bounds into the tree.
-        /// </summary>
-        public void Insert(IExtents<TCoordinate> bounds, TItem item)
+        public override void Insert(TItem item)
         {
-            if (bounds.IsEmpty)
+            if (item.Bounds.IsEmpty)
             {
                 return;
             }
 
-            base.Insert(bounds, item);
+            base.Insert(item);
         }
 
         /// <summary>
@@ -193,16 +190,15 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         //    base.Query(searchEnv, visitor);
         //}
 
-        /// <summary> 
-        /// Removes a single item from the tree.
-        /// </summary>
-        /// <param name="itemEnv">The Envelope of the item to remove.</param>
-        /// <param name="item">The item to remove.</param>
-        /// <returns><see langword="true"/> if the item was found.</returns>
-        public Boolean Remove(IExtents<TCoordinate> itemEnv, TItem item)
-        {
-            return base.Remove(itemEnv, item);
-        }
+        ///// <summary> 
+        ///// Removes a single item from the tree.
+        ///// </summary>
+        ///// <param name="item">The item to remove.</param>
+        ///// <returns><see langword="true"/> if the item was found.</returns>
+        //public Boolean Remove(TItem item)
+        //{
+        //    return base.Remove(item);
+        //}
 
         protected override AbstractNode<IExtents<TCoordinate>, IBoundable<IExtents<TCoordinate>>> CreateNode(Int32 level)
         {

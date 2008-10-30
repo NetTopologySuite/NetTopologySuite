@@ -39,7 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 
             // If the subnode doesn't exist or this item is not contained in it,
             // have to expand the tree upward to contain the item.
-            if (!subNode.Interval.Contains(bounds))
+            if (!subNode.Bounds.Contains(bounds))
             {
                 Node<TBoundable> largerNode = Node<TBoundable>.CreateExpanded(subNode, bounds);
                 SetSubNode(index, largerNode);
@@ -76,7 +76,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// </summary>
         private static void insertContained(Node<TBoundable> tree, Interval itemInterval, TBoundable item)
         {
-            Assert.IsTrue(tree.Interval.Contains(itemInterval));
+            Assert.IsTrue(tree.Bounds.Contains(itemInterval));
 
             /*
             * Do NOT create a new node for zero-area intervals - this would lead

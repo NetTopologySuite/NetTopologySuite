@@ -43,8 +43,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         //}
 
         private AbstractNode<TBounds, IBoundable<TBounds>> _root;
-        private Boolean _built = false;
-        private Boolean _isDisposed = false;
+        private Boolean _built;
+        private Boolean _isDisposed;
         private readonly List<IBoundable<TBounds>> _children = new List<IBoundable<TBounds>>();
         private readonly Int32 _nodeCapacity;
 
@@ -52,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// Constructs an AbstractStrTree with the specified maximum number of child
         /// nodes that a node may have.
         /// </summary>
-        public AbstractStrTree(Int32 nodeCapacity)
+        protected AbstractStrTree(Int32 nodeCapacity)
         {
             Assert.IsTrue(nodeCapacity > 1, "Node capacity must be greater than 1");
             _nodeCapacity = nodeCapacity;
@@ -72,6 +72,79 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             GC.SuppressFinalize(this);
         }
 
+        #endregion
+
+        #region ISpatialIndex<TBounds,TItem> Members
+
+        public virtual void Insert(TItem item)
+        {
+            //Insert(item.Bounds, item);
+            Assert.IsTrue(!_built, "Cannot insert items into an STR packed R-tree after it has been built.");
+            _children.Add(item);
+        }
+
+        /// <remarks>
+        /// Also builds the tree, if necessary.
+        /// </remarks>
+        public virtual Boolean Remove(TItem item)
+        {
+            if (!_built)
+            {
+                Build();
+            }
+
+            if (_children.Count == 0)
+            {
+                Assert.IsTrue(Equals(_root.Bounds, default(TBounds)));
+            }
+
+            TBounds searchBounds = item.Bounds;
+
+            if (_root.Intersects(searchBounds))
+            {
+                return remove(searchBounds, _root, item);
+            }
+
+            return false;
+        }
+
+        public IEnumerable<TResult> Query<TResult>(TBounds bounds, Func<TItem, TResult> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <remarks>
+        /// Also builds the tree, if necessary.
+        /// </remarks>
+        public IEnumerable<TItem> Query(TBounds searchBounds)
+        {
+            return Query(searchBounds, null);
+        }
+
+        /// <remarks>
+        /// Also builds the tree, if necessary.
+        /// </remarks>
+        public IEnumerable<TItem> Query(TBounds searchBounds, Predicate<TItem> filter)
+        {
+            if (!_built)
+            {
+                Build();
+            }
+
+            if (_children.Count == 0)
+            {
+                Assert.IsTrue(Equals(_root.Bounds, default(TBounds)));
+                yield break;
+            }
+
+            if (_root.Intersects(searchBounds))
+            {
+                foreach (TItem item in query(searchBounds, _root, filter))
+                {
+                    yield return item;
+                }
+            }
+        }
         #endregion
 
         public Boolean IsDisposed
@@ -138,12 +211,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
                     Build();
                 }
 
-                if (_children.Count == 0)
-                {
-                    return 0;
-                }
-
-                return GetSize(_root);
+                return _children.Count == 0 ? 0 : GetCount(_root);
             }
         }
 
@@ -156,76 +224,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
                     Build();
                 }
 
-                if (_children.Count == 0)
-                {
-                    return 0;
-                }
-
-                return GetDepth(_root);
+                return _children.Count == 0 ? 0 : GetDepth(_root);
             }
         }
 
-        public void Insert(TBounds bounds, TItem item)
-        {
-            Assert.IsTrue(!_built, "Cannot insert items into an STR packed R-tree after it has been built.");
-            _children.Add(item);
-        }
-
-        /// <remarks>
-        /// Also builds the tree, if necessary.
-        /// </remarks>
-        public IEnumerable<TItem> Query(TBounds searchBounds)
-        {
-            return Query(searchBounds, null);
-        }
-
-        /// <remarks>
-        /// Also builds the tree, if necessary.
-        /// </remarks>
-        public IEnumerable<TItem> Query(TBounds searchBounds, Predicate<TItem> filter)
-        {
-            if (!_built)
-            {
-                Build();
-            }
-
-            if (_children.Count == 0)
-            {
-                Assert.IsTrue(Equals(_root.Bounds, default(TBounds)));
-                yield break;
-            }
-
-            if (_root.Intersects(searchBounds))
-            {
-                foreach (TItem item in query(searchBounds, _root, filter))
-                {
-                    yield return item;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Also builds the tree, if necessary.
-        /// </summary>
-        public Boolean Remove(TBounds searchBounds, TItem item)
-        {
-            if (!_built)
-            {
-                Build();
-            }
-
-            if (_children.Count == 0)
-            {
-                Assert.IsTrue(Equals(_root.Bounds, default(TBounds)));
-            }
-
-            if (_root.Intersects(searchBounds))
-            {
-                return remove(searchBounds, _root, item);
-            }
-
-            return false;
-        }
+        //public void Insert(TBounds bounds, TItem item)
+        //{
+        //}
 
         //protected AbstractNode LastNode(IList nodes)
         //{
@@ -252,7 +257,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return boundablesAtLevel(level, _root);
         }
 
-        protected static Int32 GetSize(AbstractNode<TBounds, IBoundable<TBounds>> node)
+        protected static Int32 GetCount(AbstractNode<TBounds, IBoundable<TBounds>> node)
         {
             Int32 size = 0;
 
@@ -260,7 +265,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             {
                 if (boundable is AbstractNode<TBounds, IBoundable<TBounds>>)
                 {
-                    size += GetSize(boundable as AbstractNode<TBounds, IBoundable<TBounds>>);
+                    size += GetCount(boundable as AbstractNode<TBounds, IBoundable<TBounds>>);
                 }
                 else if (boundable is ItemBoundable<TBounds, TItem>)
                 {
@@ -355,7 +360,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         //    }
         //}
 
-        private IEnumerable<TItem> query(TBounds searchBounds, AbstractNode<TBounds, IBoundable<TBounds>> node, Predicate<TItem> filter)
+        private static IEnumerable<TItem> query(TBounds searchBounds, AbstractNode<TBounds, IBoundable<TBounds>> node, Predicate<TItem> filter)
         {
             foreach (IBoundable<TBounds> childBoundable in node.Children)
             {
@@ -408,7 +413,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return false;
         }
 
-        private Boolean remove(TBounds searchBounds, AbstractNode<TBounds, IBoundable<TBounds>> node, TItem item)
+        private static Boolean remove(TBounds searchBounds, AbstractNode<TBounds, IBoundable<TBounds>> node, TItem item)
         {
             // first try removing item from this node
             Boolean found = removeItem(node, item);
@@ -504,19 +509,5 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
             return createHigherLevels(parentBoundables, level + 1);
         }
-
-        #region ISpatialIndex<TBounds,TItem> Members
-
-        public void Insert(TItem item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<TResult> Query<TResult>(TBounds bounds, Func<TItem, TResult> selector)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
     }
 }

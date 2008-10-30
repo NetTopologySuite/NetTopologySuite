@@ -75,8 +75,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         }
 
         public override IEnumerable<TNodingResult> Node<TNodingResult>(
-            IEnumerable<NodedSegmentString<TCoordinate>> segmentStrings, 
-            Func<NodedSegmentString<TCoordinate>, TNodingResult> generator)
+                                    IEnumerable<NodedSegmentString<TCoordinate>> segmentStrings, 
+                                    Func<NodedSegmentString<TCoordinate>, TNodingResult> generator)
         {
             foreach (NodedSegmentString<TCoordinate> segmentString in Node(segmentStrings))
             {
@@ -92,7 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             foreach (MonotoneChain<TCoordinate> mc in segChains)
             {
                 mc.Id = _idCount++;
-                _index.Insert(mc.Extents, mc);
+                _index.Insert(mc);
                 _monoChains.Add(mc);
             }
         }

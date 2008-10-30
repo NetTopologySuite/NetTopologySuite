@@ -37,10 +37,12 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
     /// following the usage of Samet and others.
     /// </para>
     /// </remarks>
-    public class Quadtree<TCoordinate, TItem> : ISpatialIndex<IExtents<TCoordinate>, TItem>, IEnumerable<TItem>
+    public class Quadtree<TCoordinate, TItem> : ISpatialIndex<IExtents<TCoordinate>, TItem>, 
+                                                IEnumerable<TItem>
         where TItem : IBoundable<IExtents<TCoordinate>>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         struct QuadTreeEntry : IBoundable<IExtents<TCoordinate>>
         {
@@ -208,6 +210,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             collectStats(itemExtents);
             IExtents<TCoordinate> insertExtents = EnsureExtent(_geoFactory, itemExtents, _minExtent);
             _root.Insert(new QuadTreeEntry(item, insertExtents));
+        }
+
+        public Boolean Remove(TItem item)
+        {
+            throw new System.NotImplementedException();
         }
 
         /// <summary> 

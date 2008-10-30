@@ -36,10 +36,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         private Node<TItem> _subNode1;
         private Node<TItem> _subNode2;
 
-        public BaseBinNode(Interval bounds, Int32 level) : base(bounds, level)
-        {
-            
-        }
+        protected BaseBinNode(Interval bounds, Int32 level) 
+            : base(bounds, level) { }
 
         //public IList AddAllItemsFromOverlapping(Interval interval, IList resultItems)
         //{
@@ -203,28 +201,28 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         {
             Int32 index = GetSubNodeIndex(interval, center);
 
-            if (index < 0)
-            {
-                return null;
-            }
-            else if (index == 0)
+            Node<TItem> subNode = null;
+
+            if (index == 0)
             {
                 if (SubNode1 == null)
                 {
                     SubNode1 = CreateSubNode(0);
                 }
 
-                return SubNode1;
+                subNode = SubNode1;
             }
-            else
+            else if (index > 0)
             {
                 if (SubNode2 == null)
                 {
                     SubNode2 = CreateSubNode(1);
                 }
 
-                return SubNode2;
+                subNode = SubNode2;
             }
+
+            return subNode;
         }
 
         /// <summary>
@@ -233,6 +231,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// </summary>
         protected Node<TItem> GetSubNode(Int32 index)
         {
+            Node<TItem> subNode;
+
             if (index == 0)
             {
                 if (SubNode1 == null)
@@ -240,7 +240,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
                     SubNode1 = CreateSubNode(0);
                 }
 
-                return SubNode1;
+                subNode = SubNode1;
             }
             else
             {
@@ -249,8 +249,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
                     SubNode2 = CreateSubNode(1);
                 }
 
-                return SubNode2;
+                subNode = SubNode2;
             }
+
+            return subNode;
         }
 
         protected void SetSubNode(Int32 index, Node<TItem> node)

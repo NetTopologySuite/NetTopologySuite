@@ -25,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 
             if (node != null)
             {
-                expanded = expanded.ExpandToInclude(node._interval);
+                expanded = expanded.ExpandToInclude(node.Bounds);
             }
 
             Node<TBoundable> largerNode = CreateNode(expanded);
@@ -38,50 +38,52 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             return largerNode;
         }
 
-        private readonly Interval _interval;
+        //private readonly Interval _interval;
         private readonly Double _center;
-        private readonly Int32 _level;
+        //private readonly Int32 _level;
 
-        public Node(Interval interval, Int32 level)
-            : base(interval, level)
+        internal protected Node(Interval bounds, Int32 level)
+            : base(bounds, level)
         {
-            _interval = interval;
-            _level = level;
-            _center = (interval.Min + interval.Max) / 2;
+            //_interval = interval;
+            //_level = level;
+            _center = (bounds.Min + bounds.Max) / 2;
+
+            if (Double.IsNaN(_center))
+            {
+                throw new ArgumentException("Invalid interval: ", bounds.ToString());
+            }
         }
 
-        public Interval Interval
-        {
-            get { return _interval; }
-        }
+        //public Interval Interval
+        //{
+        //    get { return _interval; }
+        //}
 
         protected override Boolean IsSearchMatch(Interval itemInterval)
         {
-            return itemInterval.Overlaps(_interval);
+            return itemInterval.Overlaps(Bounds);
         }
 
         /// <summary>
         /// Returns the subnode containing the envelope.
-        /// Creates the node if
-        /// it does not already exist.
+        /// Creates the node if it does not already exist.
         /// </summary>
         public Node<TBoundable> GetNode(Interval searchInterval)
         {
             Int32 subnodeIndex = GetSubNodeIndex(searchInterval, _center);
 
-            // if index is -1 searchEnv is not contained in a subnode
-            if (subnodeIndex != -1)
-            {
-                // create the node if it does not exist
-                Node<TBoundable> node = GetSubNode(subnodeIndex);
-
-                // recursively search the found/created node
-                return node.GetNode(searchInterval);
-            }
-            else
+            // if index is -1 searchInterval is not contained in a subnode
+            if (subnodeIndex == -1)
             {
                 return this;
             }
+
+            // create the node if it does not exist
+            Node<TBoundable> node = GetSubNode(subnodeIndex);
+
+            // recursively search the found/created node
+            return node.GetNode(searchInterval);
         }
 
         /// <summary>
@@ -102,12 +104,12 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             return this;
         }
 
-        public void Insert(Node<TBoundable> node)
+        protected void Insert(Node<TBoundable> node)
         {
-            Assert.IsTrue(_interval.Contains(node.Interval));
-            Int32 subnodeIndex = GetSubNodeIndex(node.Interval, _center);
+            Assert.IsTrue(Bounds.Contains(node.Bounds));
+            Int32 subnodeIndex = GetSubNodeIndex(node.Bounds, _center);
 
-            if (node.Level == _level - 1)
+            if (node.Level == Level - 1)
             {
                 SetSubNode(subnodeIndex, node);
             }
@@ -128,7 +130,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 
         protected override Interval ComputeBounds()
         {
-            throw new NotImplementedException();
+            Interval bounds = SubNode1 == null ? Interval.Zero : SubNode1.Bounds;
+            bounds = SubNode2 == null ? bounds : bounds.ExpandToInclude(SubNode2.Bounds);
+            return bounds;
         }
     }
 }
