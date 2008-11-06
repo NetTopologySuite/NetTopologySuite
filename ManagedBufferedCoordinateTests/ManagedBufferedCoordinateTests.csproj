@@ -120,10 +120,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.4.0.2, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ExternalReferences\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="Rhino.Mocks, Version=3.4.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ExternalReferences\Rhino.Mocks.dll</HintPath>
@@ -139,6 +135,10 @@
     <Otherwise>
       <ItemGroup>
         <Reference Include="System" />
+        <Reference Include="xunit, Version=1.0.3.1299, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\ExternalReferences\xunit.dll</HintPath>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
