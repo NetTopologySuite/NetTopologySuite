@@ -67,11 +67,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 new AxisInfo("North", AxisOrientationEnum.North));
 
             ICoordinateTransformation trans = new CoordinateTransformationFactory().CreateFromCoordinateSystems(gcs, coordsys);
-            
-            IPoint pGeo = GeometryFactory.Default.CreatePoint(new Coordinate(-75, 35));
-            IPoint pUtm = GeometryTransform.TransformPoint(pGeo, trans.MathTransform);
-            IPoint pGeo2 = GeometryTransform.TransformPoint(pUtm, trans.MathTransform.Inverse());
-            IPoint expected = GeometryFactory.Default.CreatePoint(new Coordinate(1885472.7, 1535925));
+
+            IGeometryFactory f = GeometryFactory.Default;
+            IPoint pGeo = f.CreatePoint(new Coordinate(-75, 35));
+            IPoint pUtm = GeometryTransform.TransformPoint(f, pGeo, trans.MathTransform);
+            IPoint pGeo2 = GeometryTransform.TransformPoint(f, pUtm, trans.MathTransform.Inverse());
+            IPoint expected = f.CreatePoint(new Coordinate(1885472.7, 1535925));
 
             Assert.IsTrue(ToleranceLessThan(pUtm, expected, 0.05), String.Format("Albers forward transformation outside tolerance, Expected [{0},{1}], got [{2},{3}]", expected.X, expected.Y, pUtm.X, pUtm.Y));
             Assert.IsTrue(ToleranceLessThan(pGeo, pGeo2, 0.0000001), String.Format("Albers reverse transformation outside tolerance, Expected [{0},{1}], got [{2},{3}]", pGeo.X, pGeo.Y, pGeo2.X, pGeo2.Y));
