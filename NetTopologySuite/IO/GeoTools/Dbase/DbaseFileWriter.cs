@@ -14,11 +14,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
     /// </remarks>
     public class DbaseFileWriter
     {
-        string _filename;
-        BinaryWriter _writer;
-        bool headerWritten = false;
-        bool recordsWritten = false;
-        DbaseFileHeader _header;
+        readonly BinaryWriter _writer;
+        private bool headerWritten;
+        private bool recordsWritten;
+        private DbaseFileHeader _header;
 
         /// <summary>
         /// Initializes a new instance of the DbaseFileWriter class.
@@ -28,7 +27,6 @@ namespace GisSharpBlog.NetTopologySuite.IO
         {
             if (filename == null)
                 throw new ArgumentNullException("filename");
-            _filename = filename;
             FileStream filestream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.Write);
             _writer = new BinaryWriter(filestream);
         }
@@ -95,7 +93,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <summary>
         /// Determine if the type provided is a "real" or "float" type.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="type"></param>
         /// <returns></returns>
         static private bool IsRealType(Type type)
         {
@@ -255,6 +253,15 @@ namespace GisSharpBlog.NetTopologySuite.IO
             string str = string.Empty;
             str += c;
             Write(str, length);
+        }
+
+        /// <summary>
+        /// Write a byte to the file.
+        /// </summary>
+        /// <param name="number">The byte.</param>
+        public void Write(byte number)
+        {
+            _writer.Write(number);
         }
 
         /// <summary>

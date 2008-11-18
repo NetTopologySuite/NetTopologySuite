@@ -110,7 +110,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			shpBinaryWriter.Close();
 			
 			// WriteDummyDbf(filename + ".dbf", numShapes);	
-		}
+		}       
 
         /// <summary>
         /// 
@@ -120,7 +120,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
 		public static void WriteDummyDbf(string filename, int recordCount)
 		{
 			DbaseFileHeader dbfHeader = new DbaseFileHeader();
-			dbfHeader.AddColumn("Description",'C', 20, 0);
+            dbfHeader.NumRecords = recordCount;
+            dbfHeader.AddColumn("Description",'C', 20, 0);
 			
 			DbaseFileWriter dbfWriter = new DbaseFileWriter(filename);
 			dbfWriter.Write(dbfHeader);
@@ -130,6 +131,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
 				columnValues.Add((double) i);                
 				dbfWriter.Write(columnValues);
 			}
+            // End of file flag (0x1A)
+            dbfWriter.Write(0x1A);
 			dbfWriter.Close();
 		}
 	}
