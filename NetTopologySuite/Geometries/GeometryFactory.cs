@@ -107,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             //_precisionModel = precisionModel;
             _coordinateSequenceFactory = coordinateSequenceFactory;
             _coordinateFactory = coordinateSequenceFactory.CoordinateFactory;
-            _srid = srid;
+            _srid = srid ?? (spatialReference == null ? null : spatialReference.AuthorityCode);
             _spatialReference = spatialReference;
             _wktEncoder = new WktWriter<TCoordinate>();
             _wktDecoder = new WktReader<TCoordinate>(this, null);
@@ -735,7 +735,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public String Srid
         {
-            get { return _srid; }
+            get { return _srid ?? (_spatialReference == null ? null : _spatialReference.AuthorityCode); }
             set { _srid = value; }
         }
 
