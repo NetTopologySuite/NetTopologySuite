@@ -931,6 +931,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     return f.CreatePolygon(coordinates);
                 case OgcGeometryType.MultiPoint:
                     return f.CreateMultiPoint(coordinates);
+                case OgcGeometryType.MultiPolygon:
+                    return f.CreateMultiPolygon(coordinates);
                 default: 
                     throw new NotImplementedException();
             }
