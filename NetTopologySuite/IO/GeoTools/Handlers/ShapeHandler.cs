@@ -224,7 +224,20 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
         {            
             double m = file.ReadDouble();
             // data.Add(ShapeGeometryType.PointM, m);
-        }        
+        }
+
+        protected void GrabZMValue(BigEndianBinaryReader file)
+        {
+            if (HasZValue() || HasMValue())
+            {
+                IDictionary<ShapeGeometryType, double> data = new Dictionary<ShapeGeometryType, double>(2);
+                if (HasZValue())
+                    GetZValue(file, data);
+                if (HasMValue())
+                    GetMValue(file, data);
+                // geom.UserData = data;
+            }
+        }
 
         /// <summary>
         /// 

@@ -44,15 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
             ICoordinate external = new Coordinate(x,y);			
             geometryFactory.PrecisionModel.MakePrecise(external);
             IPoint point = geometryFactory.CreatePoint(external);
-            if (HasZValue() || HasMValue())
-            {
-                IDictionary<ShapeGeometryType, double> data = new Dictionary<ShapeGeometryType, double>(2);
-                if (HasZValue())
-                    GetZValue(file, data);
-                if (HasMValue())
-                    GetMValue(file, data);
-                // point.UserData = data;
-            }
+            GrabZMValue(file);
             return point;
         }
 
