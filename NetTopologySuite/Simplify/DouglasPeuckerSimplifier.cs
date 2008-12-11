@@ -1,3 +1,4 @@
+using System;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 
@@ -119,6 +120,14 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             {
                 IGeometry roughGeom = base.TransformMultiPolygon(geom, parent);
                 return CreateValidArea(roughGeom);
+            }
+
+            protected override IGeometry TransformLinearRing(ILinearRing geom, IGeometry parent)
+            {
+                Boolean removeDegenerateRings = parent is IPolygon;
+                IGeometry simpleResult = base.TransformLinearRing(geom, parent);
+
+                return removeDegenerateRings && !(simpleResult is ILinearRing) ? null : simpleResult;
             }
 
             /// <summary>
