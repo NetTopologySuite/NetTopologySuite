@@ -104,9 +104,7 @@
       <ItemGroup>
         <ProjectReference Include="..\..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj">
           <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
-          <Name>
-            GeoAPI.Net Project (Grandparent)
-          </Name>
+          <Name>GeoAPI.Net</Name>
         </ProjectReference>
       </ItemGroup>
     </When>
@@ -132,7 +130,7 @@
       <ItemGroup>
         <ProjectReference Include="..\..\NPack\NPack\NPack.csproj">
           <Project>{B139E1D5-091B-40D2-B7A2-7D7D82E13019}</Project>
-          <Name>NPack Project (Grandparent)</Name>
+          <Name>NPack</Name>
         </ProjectReference>
       </ItemGroup>
     </When>

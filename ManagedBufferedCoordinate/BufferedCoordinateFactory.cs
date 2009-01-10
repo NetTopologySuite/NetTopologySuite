@@ -204,7 +204,7 @@ namespace NetTopologySuite.Coordinates
                 return new BufferedCoordinate();
             }
 
-            if (ReferenceEquals(coordinate.Factory, this))
+            if (ReferenceEquals(coordinate.BufferedCoordinateFactory, this))
             {
                 return coordinate;
             }
@@ -247,7 +247,7 @@ namespace NetTopologySuite.Coordinates
                 return new BufferedCoordinate();
             }
 
-            if (ReferenceEquals(coordinate.Factory, this))
+            if (ReferenceEquals(coordinate.BufferedCoordinateFactory, this))
             {
                 return coordinate;
             }
@@ -522,9 +522,9 @@ namespace NetTopologySuite.Coordinates
             throw new System.NotImplementedException();
         }
 
-        //IVectorFactory<DoubleComponent, BufferedCoordinate> ITypedVectorBuffer.Factory
+        //IVectorFactory<DoubleComponent, BufferedCoordinate> ITypedVectorBuffer.BufferedCoordinateFactory
         //{
-        //    get { return _coordinates.Factory; }
+        //    get { return _coordinates.BufferedCoordinateFactory; }
         //}
 
         public Int32 GetVectorLength(Int32 index)
@@ -925,7 +925,7 @@ namespace NetTopologySuite.Coordinates
 
         private Boolean isValidVertex(BufferedCoordinate vector)
         {
-            return ReferenceEquals(vector.Factory, this)
+            return ReferenceEquals(vector.BufferedCoordinateFactory, this)
                    && vector.Index < _coordinates.Count
                    && vector.X == _coordinates[vector.Index].X
                    && vector.Y == _coordinates[vector.Index].Y;
@@ -1213,5 +1213,25 @@ namespace NetTopologySuite.Coordinates
 
         //    #endregion
         //}
+
+        #region IBufferedCoordFactory<BufferedCoordinate> Members
+
+
+        public BufferedCoordinate Create(IVector<DoubleComponent> coordinate)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region ICoordinateFactory Members
+
+
+        ICoordinate ICoordinateFactory.Create(IVector<DoubleComponent> coordinate)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

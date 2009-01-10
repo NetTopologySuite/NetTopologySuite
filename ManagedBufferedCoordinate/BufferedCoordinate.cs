@@ -116,10 +116,19 @@ namespace NetTopologySuite.Coordinates
                 ^ _factory.GetHashCode();
         }
 
-        internal BufferedCoordinateFactory Factory
+        internal BufferedCoordinateFactory BufferedCoordinateFactory
         {
             get { return _factory; }
         }
+
+        public ICoordinateFactory Factory
+        {
+            get
+            {
+                return _factory;
+            }
+        }
+        
 
         internal static BufferedCoordinate Homogenize(BufferedCoordinate coordinate)
         {

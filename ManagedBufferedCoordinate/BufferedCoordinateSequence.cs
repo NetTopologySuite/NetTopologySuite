@@ -336,7 +336,7 @@ namespace NetTopologySuite.Coordinates
 
         public Boolean Contains(BufferedCoordinate item)
         {
-            if (!ReferenceEquals(item.Factory, _factory.CoordinateFactory))
+            if (!ReferenceEquals(item.BufferedCoordinateFactory, _factory.CoordinateFactory))
             {
                 return false;
             }
@@ -1855,7 +1855,7 @@ namespace NetTopologySuite.Coordinates
 
         private void addInternal(BufferedCoordinate item)
         {
-            if (!ReferenceEquals(item.Factory, _factory.CoordinateFactory))
+            if (!ReferenceEquals(item.BufferedCoordinateFactory, _factory.CoordinateFactory))
             {
                 item = _factory.CoordinateFactory.Create(item);
             }
