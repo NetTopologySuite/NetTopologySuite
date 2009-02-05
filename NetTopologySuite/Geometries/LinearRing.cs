@@ -1,4 +1,5 @@
 using System;
+using GeoAPI;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -82,12 +83,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (!IsEmpty && !base.IsClosed)
             {
-                throw new ArgumentException("Coordinates must form a closed linestring");
+                throw new GeometryInvalidException("Coordinates must form a closed linestring");
             }
 
             if (Coordinates.Count >= 1 && Coordinates.Count <= 3)
             {
-                throw new ArgumentException("Number of coordinates must equal 0 " +
+                throw new GeometryInvalidException("Number of coordinates must equal 0 " +
                                             "or be greater than 3");
             }
         }
