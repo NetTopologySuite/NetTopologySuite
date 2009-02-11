@@ -127,6 +127,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 }
 
                 addTriangle(_basePoint, previousPoint, point, isPositiveArea);
+                previousPoint = point;
             }
         }
 
