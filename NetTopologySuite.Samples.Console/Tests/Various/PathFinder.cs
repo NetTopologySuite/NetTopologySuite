@@ -22,8 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// <returns>The weight of the line.</returns>
         public delegate double ComputeWeightDelegate(ILineString line);
 
-        private static readonly ComputeWeightDelegate DefaultComputer =
-            delegate(ILineString line) { return line.Length; };
+        private static readonly ComputeWeightDelegate DefaultComputer = line => line.Length;
 
         private readonly bool bidirectional;
 
@@ -67,24 +66,24 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// </exception>
         public bool Add(params ILineString[] lines)
         {
-            bool result = true;
-            foreach (ILineString line in lines)
+            var result = true;
+            foreach (var line in lines)
             {
-                IGeometryFactory newfactory = line.Factory;
+                var newfactory = line.Factory;
                 if (factory == null)
                     factory = newfactory;
                 else if (!newfactory.PrecisionModel.Equals(factory.PrecisionModel))
                     throw new TopologyException("all geometries must have the same precision model");
 
-                bool lineFound = strings.Contains(line);
+                var lineFound = strings.Contains(line);
                 result &= !lineFound;
                 if (!lineFound)
                     strings.Add(line);
                 else continue; // Skip vertex check because line is already present
 
-                ICoordinate[] coordinates = line.Coordinates;
-                int start = 0;
-                int end = coordinates.GetUpperBound(0);  
+                var coordinates = line.Coordinates;
+                var start = 0;
+                var end = coordinates.GetUpperBound(0);  
                 AddCoordinateToGraph(coordinates[start]); // StartPoint
                 AddCoordinateToGraph(coordinates[end]);   // EndPoint
             }
@@ -147,7 +146,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 throw new TopologyException("you must specify two or more geometries to build a graph");
 
             // Counts the number of edges in the set we pass to this method.             
-            int numberOfEdgesInLines = strings.Count * 2;
+            var numberOfEdgesInLines = strings.Count * 2;
 
             // Double values because we use also reversed edges...
             if (bidirectional)
@@ -155,17 +154,17 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 
             consts = new Dictionary<IEdge<ICoordinate>, double>(numberOfEdgesInLines);
 
-            foreach (ILineString line in strings)
+            foreach (var line in strings)
             {
                 // Prepare a segment
-                ICoordinate[] coordinates = line.Coordinates;
-                int start = 0;
-                int end = coordinates.GetUpperBound(0);
-                ICoordinate src = coordinates[start];
-                ICoordinate dst = coordinates[end];
+                var coordinates = line.Coordinates;
+                var start = 0;
+                var end = coordinates.GetUpperBound(0);
+                var src = coordinates[start];
+                var dst = coordinates[end];
 
                 // Here we calculate the weight of the edge                
-                double weight = computer(line);
+                var weight = computer(line);
 
                 // Add the edge
                 IEdge<ICoordinate> localEdge = new Edge<ICoordinate>(src, dst);
@@ -218,16 +217,16 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 throw new ArgumentException("key not found in the graph", "destination");
 
             // Build algorithm
-            DijkstraShortestPathAlgorithm<ICoordinate, IEdge<ICoordinate>> dijkstra =
-                new DijkstraShortestPathAlgorithm<ICoordinate, IEdge<ICoordinate>>(graph, consts);
+            var dijkstra =
+                new DijkstraShortestPathAlgorithm<ICoordinate, IEdge<ICoordinate>>(graph, edge => consts[edge]);
 
             // Attach a Distance observer to give us the distances between edges
-            VertexDistanceRecorderObserver<ICoordinate, IEdge<ICoordinate>> distanceObserver =
-                new VertexDistanceRecorderObserver<ICoordinate, IEdge<ICoordinate>>();
+            var distanceObserver =
+                new VertexDistanceRecorderObserver<ICoordinate, IEdge<ICoordinate>>(edge => consts[edge]);
             distanceObserver.Attach(dijkstra);
 
             // Attach a Vertex Predecessor Recorder Observer to give us the paths
-            VertexPredecessorRecorderObserver<ICoordinate, IEdge<ICoordinate>> predecessorObserver =
+            var predecessorObserver =
                 new VertexPredecessorRecorderObserver<ICoordinate, IEdge<ICoordinate>>();
             predecessorObserver.Attach(dijkstra);
 
@@ -235,10 +234,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             dijkstra.Compute(source);
 
             // Get the path computed to the destination.
-            IList<IEdge<ICoordinate>> path = predecessorObserver.Path(destination);
+            IEnumerable<IEdge<ICoordinate>> path;
+            var result = predecessorObserver.TryGetPath(destination, out path);
 
             // Then we need to turn that into a geomery.
-            return BuildString(path);
+            return result ? BuildString(new List<IEdge<ICoordinate>>(path)) : null;
         }
 
         /// <summary>
@@ -258,19 +258,19 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             if (paths.Count < 1)
                 return null;
 
-            LineSequencer collector = new LineSequencer();
-            foreach (IEdge<ICoordinate> path in paths)
+            var collector = new LineSequencer();
+            foreach (var path in paths)
             {
-                ICoordinate src = path.Source;
-                ICoordinate dst = path.Target;
-                foreach (ILineString str in strings)
+                var src = path.Source;
+                var dst = path.Target;
+                foreach (var str in strings)
                 {
                     if (IsBound(str, src) && IsBound(str, dst))
                         collector.Add(str);
                 }
             }
 
-            IGeometry sequence = collector.GetSequencedLineStrings();
+            var sequence = collector.GetSequencedLineStrings();
             return sequence;            
         }
 
@@ -282,9 +282,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// <returns></returns>
         private static bool IsBound(IGeometry str, ICoordinate src)
         {
-            ICoordinate[] coordinates = str.Coordinates;
-            int start = 0;
-            int end = str.Coordinates.GetUpperBound(0);            
+            var coordinates = str.Coordinates;
+            var start = 0;
+            var end = str.Coordinates.GetUpperBound(0);            
             return coordinates[start].Equals(src) || 
                 coordinates[end].Equals(src);
         }        

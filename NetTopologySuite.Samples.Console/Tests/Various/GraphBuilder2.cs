@@ -13,6 +13,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
     /// </summary>
     public class GraphBuilder2
     {
+        #region Delegates
+
         /// <summary>
         /// A delegate that defines how to calculate the weight 
         /// of a <see cref="ILineString">line</see>.
@@ -21,17 +23,17 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// <returns>The weight of the line.</returns>
         public delegate double ComputeWeightDelegate(ILineString line);
 
-        private static readonly ComputeWeightDelegate DefaultComputer =
-            delegate(ILineString line) { return line.Length; };
+        #endregion
+
+        private static readonly ComputeWeightDelegate DefaultComputer = line => line.Length;
 
         private readonly bool bidirectional;
 
-        private IGeometryFactory factory;
-        private readonly IList<ILineString> strings;
-        
         private readonly AdjacencyGraph<ICoordinate, IEdge<ICoordinate>> graph;
+        private readonly IList<ILineString> strings;
         private IDictionary<IEdge<ICoordinate>, double> consts;
-       
+        private IGeometryFactory factory;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="GraphBuilder2"/> class.
         /// </summary>
@@ -44,14 +46,16 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 
             factory = null;
             strings = new List<ILineString>();
-            graph   = new AdjacencyGraph<ICoordinate, IEdge<ICoordinate>>(true);
+            graph = new AdjacencyGraph<ICoordinate, IEdge<ICoordinate>>(true);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GraphBuilder2"/> class,
         /// using a directed graph.
         /// </summary>
-        public GraphBuilder2() : this (false) { } // TODO: maybe the default value must be true...
+        public GraphBuilder2() : this(false)
+        {
+        } // TODO: maybe the default value must be true...
 
         /// <summary>
         /// Adds each line to the graph structure.
@@ -84,12 +88,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 foreach (ICoordinate coord in line.Coordinates)
                 {
                     if (!graph.ContainsVertex(coord))
-                         graph.AddVertex(coord);
-                    
+                        graph.AddVertex(coord);
                 }
             }
             return result;
-        }        
+        }
 
         /// <summary>
         /// Initialize the algorithm using the default 
@@ -164,7 +167,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 
                         // Here we calculate the weight of the edge
                         ILineString lineString = factory.CreateLineString(
-                            new ICoordinate[] { src, dst, });
+                            new[] {src, dst,});
                         double weight = computer(lineString);
 
                         // Add the edge
@@ -172,16 +175,16 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                         graph.AddEdge(localEdge);
                         consts.Add(localEdge, weight);
 
-                        if (bidirectional)
-                        {
-                            // Add the reversed edge
-                            IEdge<ICoordinate> localEdgeRev = new Edge<ICoordinate>(dst, src);
-                            graph.AddEdge(localEdgeRev);
-                            consts.Add(localEdgeRev, weight);
-                        }
+                        if (!bidirectional)
+                            continue;
+
+                        // Add the reversed edge
+                        IEdge<ICoordinate> localEdgeRev = new Edge<ICoordinate>(dst, src);
+                        graph.AddEdge(localEdgeRev);
+                        consts.Add(localEdgeRev, weight);
                     }
-                 }
-            }            
+                }
+            }
         }
 
         /// <summary>
@@ -214,16 +217,16 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 throw new ArgumentException("key not found in the graph", "destination");
 
             // Build algorithm
-            DijkstraShortestPathAlgorithm<ICoordinate, IEdge<ICoordinate>> dijkstra =
-                new DijkstraShortestPathAlgorithm<ICoordinate, IEdge<ICoordinate>>(graph, consts);
+            var dijkstra =
+                new DijkstraShortestPathAlgorithm<ICoordinate, IEdge<ICoordinate>>(graph, edge => consts[edge]);
 
             // Attach a Distance observer to give us the distances between edges
-            VertexDistanceRecorderObserver<ICoordinate, IEdge<ICoordinate>> distanceObserver =
-                new VertexDistanceRecorderObserver<ICoordinate, IEdge<ICoordinate>>();
+            var distanceObserver =
+                new VertexDistanceRecorderObserver<ICoordinate, IEdge<ICoordinate>>(edge => consts[edge]);
             distanceObserver.Attach(dijkstra);
 
             // Attach a Vertex Predecessor Recorder Observer to give us the paths
-            VertexPredecessorRecorderObserver<ICoordinate, IEdge<ICoordinate>> predecessorObserver =
+            var predecessorObserver =
                 new VertexPredecessorRecorderObserver<ICoordinate, IEdge<ICoordinate>>();
             predecessorObserver.Attach(dijkstra);
 
@@ -231,15 +234,14 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             dijkstra.Compute(source);
 
             // Get the path computed to the destination.
-            IList<IEdge<ICoordinate>> path = predecessorObserver.Path(destination);
+            IEnumerable<IEdge<ICoordinate>> path;
+            var result = predecessorObserver.TryGetPath(destination, out path);
 
             // Then we need to turn that into a geomery.
-            if (path.Count > 1)
-                return buildString(path);
+            return result ? BuildString(new List<IEdge<ICoordinate>>(path)) : null;
 
             // if the count is greater than one then a 
             // path could not be found, so we return null 
-            return null;
         }
 
         /// <summary>
@@ -249,7 +251,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// </summary>
         /// <param name="path">Shortest path from the QucikGraph Library</param>
         /// <returns></returns>
-        private ILineString buildString(IList<IEdge<ICoordinate>> path)
+        private ILineString BuildString(IList<IEdge<ICoordinate>> path)
         {
             // if the path has no links then return a null reference
             if (path.Count < 1)
@@ -257,13 +259,13 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 
             // if we get here then we now that there is at least one
             // edge in the path.
-            ICoordinate[] links = new ICoordinate[path.Count + 1];
+            var links = new ICoordinate[path.Count + 1];
 
             // Add each node to the list of coordinates in to the array.
             int i;
             for (i = 0; i < path.Count; i++)
                 links[i] = path[i].Source;
-            
+
             // Add the target node to the last loction in the list 
             links[i] = path[i - 1].Target;
 
@@ -287,7 +289,6 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             //
             // NOTE: Follows the 9th DIMACS format: http://www.dis.uniroma1.it/~challenge9/format.shtml
             return false;
-
         }
 
         /// <summary>
@@ -301,4 +302,3 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         }
     }
 }
-
