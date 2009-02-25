@@ -9,7 +9,6 @@ using NUnit.Framework;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 {
-
     /// <summary>
     /// 
     /// </summary>
@@ -27,9 +26,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         [Test]
         public void IsCCWBugTest()
         {
-            IGeometry g = Reader.Read("POLYGON ((60.0 40.0, 60.0 240.0, 460.0 240.0, 460.0 40.0, 60.0 40.0), (260.0 200.0, 340.0 60.0, 400.0 120.0, 260.0 200.0), (260.0 200.0, 120.0 100.0, 200.0 60.0, 260.0 200.0))");
+            var g = Reader.Read("POLYGON ((60.0 40.0, 60.0 240.0, 460.0 240.0, 460.0 40.0, 60.0 40.0), (260.0 200.0, 340.0 60.0, 400.0 120.0, 260.0 200.0), (260.0 200.0, 120.0 100.0, 200.0 60.0, 260.0 200.0))");
             Assert.IsNotNull(g);
-            bool result = g.IsValid;
+            var result = g.IsValid;
             Assert.IsTrue(result);
         }
 
@@ -271,18 +270,18 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         41.8709399011627,-93.4242485006204 41.8709235072776,-93.4242521428096 
         41.8709201736071))";
 
-            WKTReader reader = new WKTReader();
+            var reader = new WKTReader();
 
-            IGeometry point = reader.Read(wktPoint);
+            var point = reader.Read(wktPoint);
             Assert.IsTrue(point.IsValid);
 
-            IGeometry polygon = reader.Read(wktPolygon);
+            var polygon = reader.Read(wktPolygon);
             Assert.IsFalse(polygon.IsValid);
 
-            IGeometry fixedPol = polygon.Buffer(0);
+            var fixedPol = polygon.Buffer(0);
             Assert.IsTrue(fixedPol.IsValid);
 
-            bool result = fixedPol.Contains(point);
+            var result = fixedPol.Contains(point);
             Assert.IsFalse(result);
         }
 
@@ -327,12 +326,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 215397.403687265,159101.283398228 215370.145108237,159064.458615271 
 215370.009119945,159063.929280482 215399.247659686)";
 
-            WKTReader reader = new WKTReader(GeometryFactory.Fixed);
-            string[] wkts = new string[] { wkt1, wkt2, wkt3,};            
-            Polygonizer polygonizer = new Polygonizer();
-            foreach (string wkt in wkts)
+            var reader = new WKTReader(GeometryFactory.Fixed);
+            var wkts = new[] { wkt1, wkt2, wkt3,};            
+            var polygonizer = new Polygonizer();
+            foreach (var wkt in wkts)
             {
-                ILineString geom = (ILineString) reader.Read(wkt);
+                var geom = (ILineString) reader.Read(wkt);
                 Assert.IsNotNull(geom);
                 Assert.IsTrue(geom.IsValid);
                 Assert.AreEqual(geom.Factory.PrecisionModel, GeometryFactory.Fixed.PrecisionModel);
@@ -341,11 +340,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 
             ICollection polys = polygonizer.Polygons;
             Console.WriteLine("Polygons formed (" + polys.Count + "):");
-            foreach (object obj in polys)
+            foreach (var obj in polys)
             {
                 Assert.IsNotNull(obj);
                 Console.WriteLine(obj);
             }
-        }        
+        }
     }
 }

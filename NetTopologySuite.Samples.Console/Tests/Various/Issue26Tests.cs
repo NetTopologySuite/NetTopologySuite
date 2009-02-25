@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         private const int segments = 1; // Using 8 segments all works
         private readonly IGeometryFactory factory = GeometryFactory.Default;
 
-        private WKTReader reader = null;        
+        private WKTReader reader;        
 
         [TestFixtureSetUp]
         public void FixtureSetup()
@@ -23,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         [Test] 
         public void TestBufferInvalid1()
         {
-            IGeometry geom = reader.Read(
+            var geom = reader.Read(
 @"POLYGON((2697924.8808711283
 227546.82352091197,2697924.8808709416 227546.82352097417,2697914.0812493595
 227550.42337448979,2697914.0803210619 227550.42373623489,2697914.0785510424
@@ -77,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         [Test] 
         public void TestBufferInvalid2()
         {
-            IGeometry geom = reader.Read(
+            var geom = reader.Read(
 @"POLYGON((2721559.0259026354
 260211.64013205285,2721570.3580681849 260195.99818543479,2721529.8251821264
 260166.280999564,2721494.7831037422 260214.45285920257,2721434.0979183083
@@ -92,7 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         [Test] 
         public void TestBufferInvalid3()
         {
-            IGeometry geom = reader.Read(
+            var geom = reader.Read(
 @"POLYGON((2707378.1449053376
 249440.33464680318,2707371.3136157258 249452.75099747762,2707420.9671040061
 249479.61906280182,2707428.9462343147 249468.77519405185,2707378.1449053376
@@ -105,7 +105,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         [Test] 
         public void TestBufferInvalid4()
         {
-            IGeometry geom = reader.Read(
+            var geom = reader.Read(
 @"POLYGON((2690548.06499161
 222745.6326164779,2690515.5544364145 222805.58220019616,2690521.3511186
 222808.92183193445,2690522.4918925939 222809.30208994733,2690525.9173166361
@@ -122,7 +122,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         [Test] 
         public void TestBufferInvalid5()
         {
-            IGeometry geom = reader.Read(
+            var geom = reader.Read(
 @"POLYGON((2707210.6005991572
 250668.02735701349,2707239.1481549842 250621.1425099186,2707215.3975130767
 250607.31261745846,2707188.7325845929 250651.94412882419,2707188.7325117975
@@ -137,7 +137,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         [Test] 
         public void TestBufferInvalid6()
         {
-            IGeometry geom = reader.Read(
+            var geom = reader.Read(
 @"POLYGON((2713556.8088996187
 249866.18363983184,2713584.6975274645 249819.24009874952,2713579.4434981244
 249815.77835040639,2713579.4428831846 249815.7779110361,2713574.4509958546
@@ -151,7 +151,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         [Test] 
         public void TestBufferInvalid7()
         {
-            IGeometry geom = reader.Read(
+            var geom = reader.Read(
 @"POLYGON((2703248.7982676448
 249414.17508187954,2703240.5008770656 249425.8647261351,2703277.41985302
 249452.70889176268,2703295.3997307951 249465.5940710248,2703303.4900849606
@@ -164,7 +164,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         [Test] 
         public void TestBufferInvalid8()
         {
-            IGeometry geom = reader.Read(
+            var geom = reader.Read(
 @"POLYGON((2703544.1100440542
 246173.33303338153,2703544.0851861257 246173.31495488089,2703536.1439364534
 246184.17887997779,2703577.6534592919 246214.93367189405,2703584.795495607
@@ -178,7 +178,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         [Test] 
         public void TestBufferInvalid9()
         {
-            IGeometry geom = reader.Read(
+            var geom = reader.Read(
 @"POLYGON((2703813.9575800826
 242486.32942833903,2703788.6725914241 242528.261484131,2703814.1149073248
 242553.86470716231,2703830.4593556 242525.76097263311,2703830.4594283327
@@ -192,7 +192,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         [Test] 
         public void TestBufferInvalid10()
         {
-            IGeometry geom = reader.Read(
+            var geom = reader.Read(
 @"POLYGON((2672281.4909100723
 219605.10482511416,2672288.7362600574 219588.28761828531,2672177.2569024358
 219557.8872474494,2672169.759691271 219584.14248095002,2672169.2618649495
@@ -206,7 +206,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         [Test] 
         public void TestBufferInvalid11()
         {
-            IGeometry geom = reader.Read(
+            var geom = reader.Read(
 @"POLYGON((2679619.8984976411
 262131.15473598641,2679619.8984990148 262131.15473376829,2679646.5243171602
 262088.17409856233,2679630.7451750087 262078.04292233213,2679604.0905169365

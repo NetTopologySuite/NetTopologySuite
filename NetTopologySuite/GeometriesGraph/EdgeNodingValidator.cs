@@ -9,37 +9,25 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     public class EdgeNodingValidator
     {        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="edges"></param>
-        /// <returns></returns>
-        private static IList ToSegmentStrings(IList edges)
+        private static IList ToSegmentStrings(IEnumerable edges)
         {
             // convert Edges to SegmentStrings
             IList segStrings = new ArrayList();
-            for (IEnumerator i = edges.GetEnumerator(); i.MoveNext(); )
+            for (var i = edges.GetEnumerator(); i.MoveNext(); )
             {
-                Edge e = (Edge)i.Current;
+                var e = (Edge)i.Current;
                 segStrings.Add(new SegmentString(e.Coordinates, e));
             }
             return segStrings;
         }
 
-        private NodingValidator nv;
+        private readonly NodingValidator nv;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="edges"></param>
-        public EdgeNodingValidator(IList edges)
+        public EdgeNodingValidator(IEnumerable edges)
         {
             nv = new NodingValidator(ToSegmentStrings(edges));
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public void checkValid()
         {
             nv.CheckValid();
