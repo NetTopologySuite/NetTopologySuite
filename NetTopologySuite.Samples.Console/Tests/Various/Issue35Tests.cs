@@ -67,5 +67,32 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
 
             Assert.IsTrue(expected.EqualsExact(actual));
         }
+
+        [Test]
+        public void TestIsValid2()
+        {
+            var geom1 = reader.Read(
+                @"POLYGON ((34.6084247111331 31.2600368705728, 34.6032199980889
+31.0998473691012, 34.4841253356165 31.1049514260643, 34.4725915455589
+31.2524625304851, 34.6084247111331 31.2600368705728))");
+            geom1.SRID = 4326;            
+            Assert.IsNotNull(geom1);
+            Assert.IsTrue(geom1.IsValid);
+
+            var geom2 = reader.Read(
+                @"POLYGON ((34.6501882399183 31.4064219592108, 34.5539826799553
+31.4701726314754, 34.3859127258032 31.4180129905316, 34.3963446539919
+31.3600578339274, 34.3650488694256 31.2464657269832, 34.6768476119563
+31.2638522739645, 34.6965523652017 31.3704897621162, 34.6501882399183
+31.4064219592108))");
+            geom2.SRID = 4326;
+            Assert.IsNotNull(geom2);
+            Assert.IsTrue(geom2.IsValid);
+
+            var result = geom1.Difference(geom2);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.IsValid);
+            Assert.AreEqual(result.SRID, 4326);
+        }
     }
 }
