@@ -1,6 +1,8 @@
-﻿using GeoAPI.Geometries;
+﻿using System.Diagnostics;
+using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
+using GisSharpBlog.NetTopologySuite.Simplify;
 using NUnit.Framework;
 
 namespace GisSharpBlog.NetTopologySuite.Tests.Various
@@ -93,6 +95,25 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             Assert.IsNotNull(result);
             Assert.IsTrue(result.IsValid);
             Assert.AreEqual(result.SRID, 4326);
+        }
+
+        [Test(Description="Simplification always returns a geometry of the same type as the input geometry, and by default it attempts to ensure valid topology (by applying  a buffer(0) - which is a bit of a hack, I admit). This is why it returns an empty polygon.")]
+        public void TestSimplifyBadPoly()
+        {
+            var geom = new Polygon(new LinearRing(new ICoordinate[] 
+            {
+                new Coordinate(1, 1), 
+                new Coordinate(1, 1),
+                new Coordinate(1, 1), 
+                new Coordinate(1, 1),
+                new Coordinate(1, 1)
+            }));
+            Debug.WriteLine("Bad polygon: " + geom);
+            var simple = DouglasPeuckerSimplifier.Simplify(geom, 0.1);
+            Debug.WriteLine("Simple bad polygon: " + simple);
+            Assert.AreEqual(geom.GetType(), simple.GetType());
+            Assert.AreNotEqual(geom, simple, "Simplify didn't do anything to this invalid polygon.");
+            Assert.AreEqual(geom.GetType(), Polygon.Empty);            
         }
     }
 }
