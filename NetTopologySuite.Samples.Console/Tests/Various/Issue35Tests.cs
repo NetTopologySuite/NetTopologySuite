@@ -113,7 +113,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             Debug.WriteLine("Simple bad polygon: " + simple);
             Assert.AreEqual(geom.GetType(), simple.GetType());
             Assert.AreNotEqual(geom, simple, "Simplify didn't do anything to this invalid polygon.");
-            Assert.AreEqual(geom.GetType(), Polygon.Empty);            
+            // This happens with JTS 1.9.0, 1.8.0 still returns GeometryCollection.Empty
+            Assert.AreEqual(geom.GetType(), Polygon.Empty); 
         }
     }
 }
