@@ -1,4 +1,5 @@
-﻿using GeoAPI.Geometries;
+﻿using System;
+using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 using NUnit.Framework;
@@ -74,10 +75,28 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
 7023464.5692419875))");
             Assert.IsNotNull(geom2);
             Assert.IsTrue(geom2.IsValid);
-            
-            // Exclude Polygon
-            // var result = EnhancedPrecisionOp.Difference(geom1, geom2);
-            var result = geom1.Difference(geom2);
+
+            Exception exception = null;
+            try
+            {
+                geom1.Difference(geom2);
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+            Assert.IsNotNull(exception);
+            Assert.IsInstanceOfType(typeof(TopologyException), exception);
+
+            var buf1 = geom1.Buffer(0);
+            Assert.IsNotNull(buf1);
+            Assert.IsTrue(buf1.IsValid);
+
+            var buf2 = geom2.Buffer(0);
+            Assert.IsNotNull(buf2);
+            Assert.IsTrue(buf2.IsValid);
+
+            var result = buf1.Difference(buf2);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.IsValid);
         }
