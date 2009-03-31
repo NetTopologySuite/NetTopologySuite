@@ -104,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
                 var coord = segmentString.Coordinates[i];
                 Debug.WriteLine(String.Format("{1:R} {2:R}", i, coord.X, coord.Y));
             }
-        }
+        }        
 
         [Test]
         public void TestIsValid()

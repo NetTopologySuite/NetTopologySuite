@@ -67,8 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public ICoordinate GetCoordinate(int i)
         {
-            if (i == 0) return P0;
-            return P1;
+            return i == 0 ? P0 : P1;
         }
 
         /// <summary>
@@ -87,10 +86,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="p1"></param>
         public void SetCoordinates(ICoordinate p0, ICoordinate p1)
         {
-            this.P0.X = p0.X;
-            this.P0.Y = p0.Y;
-            this.P1.X = p1.X;
-            this.P1.Y = p1.Y;
+            P0.X = p0.X;
+            P0.Y = p0.Y;
+            P1.X = p1.X;
+            P1.Y = p1.Y;
         }
 
         /// <summary>
@@ -99,10 +98,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The length of the line segment.</returns>
         public double Length
         {
-            get
-            {
-                return P0.Distance(P1);
-            }
+            get { return P0.Distance(P1); }
         }
 
         /// <summary> 
@@ -111,10 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns><c>true</c> if the segment is horizontal.</returns>
         public bool IsHorizontal
         {
-            get
-            {
-                return P0.Y == P1.Y;
-            }
+            get { return P0.Y == P1.Y; }
         }
 
         /// <summary>
@@ -123,10 +116,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns><c>true</c> if the segment is vertical.</returns>
         public bool IsVertical
         {
-            get
-            {
-                return P0.X == P1.X;
-            }
+            get { return P0.X == P1.X; }
         }
 
         /// <summary> 
@@ -148,8 +138,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public int OrientationIndex(LineSegment seg)
         {
-            int orient0 = CGAlgorithms.OrientationIndex(P0, P1, seg.P0);
-            int orient1 = CGAlgorithms.OrientationIndex(P0, P1, seg.P1);
+            var orient0 = CGAlgorithms.OrientationIndex(P0, P1, seg.P0);
+            var orient1 = CGAlgorithms.OrientationIndex(P0, P1, seg.P1);
             // this handles the case where the points are Curve or collinear
             if (orient0 >= 0 && orient1 >= 0)
                 return Math.Max(orient0, orient1);
@@ -165,7 +155,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public void Reverse()
         {
-            ICoordinate temp = P0;
+            var temp = P0;
             P0 = P1;
             P1 = temp;
         }
@@ -186,10 +176,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public double Angle
         {
-            get
-            {
-               return Math.Atan2(P1.Y - P0.Y, P1.X - P0.X);
-            }
+            get { return Math.Atan2(P1.Y - P0.Y, P1.X - P0.X); }
         }
 
         /// <summary> 
@@ -245,19 +232,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                         r>1 Point is on the forward extension of AB
                         0<r<1 Point is interior to AB
             */
-            double dx = P1.X - P0.X;
-            double dy = P1.Y - P0.Y;
-            double len2 = dx * dx + dy * dy;
-            double r = ((p.X - P0.X) * dx + (p.Y - P0.Y) * dy) / len2;
+            var dx = P1.X - P0.X;
+            var dy = P1.Y - P0.Y;
+            var len2 = dx * dx + dy * dy;
+            var r = ((p.X - P0.X) * dx + (p.Y - P0.Y) * dy) / len2;
             return r;
         }
 
         /// <summary> 
         /// Compute the projection of a point onto the line determined
         /// by this line segment.
-        /// Note that the projected point
-        /// may lie outside the line segment.  If this is the case,
-        /// the projection factor will lie outside the range [0.0, 1.0].
+        /// Note that the projected point  may lie outside the line segment.  
+        /// If this is the case,  the projection factor will lie outside the range [0.0, 1.0].
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
@@ -266,10 +252,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (p.Equals(P0) || p.Equals(P1)) 
                 return new Coordinate(p);
 
-            double r = ProjectionFactor(p);
-            ICoordinate coord = new Coordinate();
-            coord.X = P0.X + r * (P1.X - P0.X);
-            coord.Y = P0.Y + r * (P1.Y - P0.Y);
+            var r = ProjectionFactor(p);
+            ICoordinate coord = new Coordinate {X = P0.X + r*(P1.X - P0.X), Y = P0.Y + r*(P1.Y - P0.Y)};
             return coord;
         }
 
@@ -285,17 +269,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The projected line segment, or <c>null</c> if there is no overlap.</returns>
         public LineSegment Project(LineSegment seg)
         {
-            double pf0 = ProjectionFactor(seg.P0);
-            double pf1 = ProjectionFactor(seg.P1);
+            var pf0 = ProjectionFactor(seg.P0);
+            var pf1 = ProjectionFactor(seg.P1);
             // check if segment projects at all
             if (pf0 >= 1.0 && pf1 >= 1.0) return null;
             if (pf0 <= 0.0 && pf1 <= 0.0) return null;
 
-            ICoordinate newp0 = Project(seg.P0);
+            var newp0 = Project(seg.P0);
             if (pf0 < 0.0) newp0 = P0;
             if (pf0 > 1.0) newp0 = P1;
 
-            ICoordinate newp1 = Project(seg.P1);
+            var newp1 = Project(seg.P1);
             if (pf1 < 0.0) newp1 = P0;
             if (pf1 > 1.0) newp1 = P1;
 
@@ -311,14 +295,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public ICoordinate ClosestPoint(ICoordinate p)
         {
-            double factor = ProjectionFactor(p);
+            var factor = ProjectionFactor(p);
             if (factor > 0 && factor < 1) 
                 return Project(p);
-            double dist0 = P0.Distance(p);
-            double dist1 = P1.Distance(p);
-            if (dist0 < dist1)
-                return P0;
-            else return P1;
+            var dist0 = P0.Distance(p);
+            var dist1 = P1.Distance(p);
+            return dist0 < dist1 ? P0 : P1;
         }
 
         /// <summary>
@@ -331,7 +313,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public ICoordinate[] ClosestPoints(LineSegment line)
         {
             // test for intersection
-            ICoordinate intPt = Intersection(line);
+            var intPt = Intersection(line);
             if (intPt != null)
                 return new ICoordinate[] { intPt, intPt };            
 
@@ -339,17 +321,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             *  if no intersection closest pair contains at least one endpoint.
             * Test each endpoint in turn.
             */
-            ICoordinate[] closestPt = new ICoordinate[2];
-            double minDistance = Double.MaxValue;
-            double dist;
+            var closestPt = new ICoordinate[2];
+            var minDistance = Double.MaxValue;
 
-            ICoordinate close00 = ClosestPoint(line.P0);
+            var close00 = ClosestPoint(line.P0);
             minDistance = close00.Distance(line.P0);
             closestPt[0] = close00;
             closestPt[1] = line.P0;
 
-            ICoordinate close01 = ClosestPoint(line.P1);
-            dist = close01.Distance(line.P1);
+            var close01 = ClosestPoint(line.P1);
+            double dist = close01.Distance(line.P1);
             if (dist < minDistance) 
             {
                 minDistance = dist;
@@ -357,7 +338,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 closestPt[1] = line.P1;
             }
 
-            ICoordinate close10 = line.ClosestPoint(P0);
+            var close10 = line.ClosestPoint(P0);
             dist = close10.Distance(P0);
             if (dist < minDistance) 
             {
@@ -366,7 +347,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 closestPt[1] = close10;
             }
 
-            ICoordinate close11 = line.ClosestPoint(P1);
+            var close11 = line.ClosestPoint(P1);
             dist = close11.Distance(P1);
             if (dist < minDistance) 
             {
@@ -411,7 +392,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
             if (!(o is LineSegment)) 
                 return false;            
-            LineSegment other = (LineSegment) o;
+            var other = (LineSegment) o;
             return p0.Equals(other.p0) && p1.Equals(other.p1);
         }
         
@@ -451,10 +432,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public int CompareTo(object o) 
         {
-            LineSegment other = (LineSegment) o;
-            int comp0 = P0.CompareTo(other.P0);
-            if (comp0 != 0) return comp0;
-            return P1.CompareTo(other.P1);
+            var other = (LineSegment) o;
+            var comp0 = P0.CompareTo(other.P0);
+            return comp0 != 0 ? comp0 : P1.CompareTo(other.P1);
         }
 
         /// <summary>
@@ -471,9 +451,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public bool EqualsTopologically(LineSegment other)
         {
-            return
-                P0.Equals(other.P0) && P1.Equals(other.P1) || 
-                P0.Equals(other.P1) && P1.Equals(other.P0);
+            return P0.Equals(other.P0) && P1.Equals(other.P1) || 
+                   P0.Equals(other.P1) && P1.Equals(other.P0);
         }
 
         /// <summary>
@@ -482,11 +461,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder("LINESTRING( ");
-            sb.Append(P0.X).Append(" ");
-            sb.Append(P0.Y).Append(", ");
-            sb.Append(P1.X).Append(" ");
-            sb.Append(P1.Y).Append(")");
+            var sb = new StringBuilder("LINESTRING( ");
+            sb.Append(P0.X.ToString("R")).Append(" ");
+            sb.Append(P0.Y.ToString("R")).Append(", ");
+            sb.Append(P1.X.ToString("R")).Append(" ");
+            sb.Append(P1.Y.ToString("R")).Append(")");
             return sb.ToString();
         }
 
