@@ -393,7 +393,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             var dx = seg.P1.X - seg.P0.X;
             var dy = seg.P1.Y - seg.P0.Y;
             var len = Math.Sqrt(dx * dx + dy * dy);            
-            Debug.WriteLine(len.ToString("R"));
             // u is the vector that is the length of the offset, in the direction of the segment
             var ux = sideSign * distance * dx / len;
             var uy = sideSign * distance * dy / len;
@@ -401,7 +400,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             offset.P0.Y = seg.P0.Y + ux;
             offset.P1.X = seg.P1.X - uy;
             offset.P1.Y = seg.P1.Y + ux;
-            Debug.WriteLine(offset);
         }
 
         /// <summary>

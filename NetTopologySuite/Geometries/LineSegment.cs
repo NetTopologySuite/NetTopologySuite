@@ -462,10 +462,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public override string ToString()
         {
             var sb = new StringBuilder("LINESTRING( ");
-            sb.Append(P0.X.ToString("R")).Append(" ");
-            sb.Append(P0.Y.ToString("R")).Append(", ");
-            sb.Append(P1.X.ToString("R")).Append(" ");
-            sb.Append(P1.Y.ToString("R")).Append(")");
+            sb.Append(P0.X).Append(" ");
+            sb.Append(P0.Y).Append(", ");
+            sb.Append(P1.X).Append(" ");
+            sb.Append(P1.Y).Append(")");
             return sb.ToString();
         }
 
