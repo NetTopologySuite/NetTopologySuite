@@ -7,32 +7,22 @@ using NUnit.Framework;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.IO
 {
-
-    /// <summary>
-    /// 
-    /// </summary>
     [TestFixture]
     public class ShapeFileDataReaderTest : BaseSamples    
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ShapeFileDataReaderTest"/> class.
-        /// </summary>
-        public ShapeFileDataReaderTest() : base() 
+        public ShapeFileDataReaderTest()
         {
             // Set current dir to shapefiles dir
 			Environment.CurrentDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../NetTopologySuite.Samples.Shapefiles");
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         [Test]
         public void TestReadingCrustalTestShapeFile()
         {
             // Original file with characters '°' in NAME field.
-            using (ShapefileDataReader reader = new ShapefileDataReader("crustal_test_bugged", Factory))
+            using (var reader = new ShapefileDataReader("crustal_test_bugged", Factory))
             {
-                int length = reader.DbaseHeader.NumFields;
+                var length = reader.DbaseHeader.NumFields;
                 while (reader.Read())
                 {                    
                     Debug.WriteLine(reader.GetValue(length - 1));
@@ -40,14 +30,28 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.IO
             }
 
             // Removed NAME field characters
-            using (ShapefileDataReader reader = new ShapefileDataReader("crustal_test", Factory))
+            using (var reader = new ShapefileDataReader("crustal_test", Factory))
             {
-                int length = reader.DbaseHeader.NumFields;
+                var length = reader.DbaseHeader.NumFields;
                 while (reader.Read())
                 {
                     Debug.WriteLine(reader.GetValue(length - 1));
                 }
             }      
-        }        
+        }
+
+        [Test]
+        public void TestReadingAaaShapeFile()
+        {
+            using (var reader = new ShapefileDataReader("aaa", Factory))
+            {
+                var length = reader.DbaseHeader.NumFields;
+                while (reader.Read())
+                {
+                    Debug.WriteLine(reader.GetValue(length - 1));
+                }
+            }
+            Assert.Fail();
+        }
     }
 }

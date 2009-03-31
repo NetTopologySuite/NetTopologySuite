@@ -29,14 +29,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public double X
         {
-            get
-            {
-                return x;
-            }
-            set
-            {
-                x = value;
-            }
+            get { return x; }
+            set { x = value; }
         }
 
         /// <summary>
@@ -44,14 +38,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public double Y
         {
-            get
-            {
-                return y;
-            }
-            set
-            {
-                y = value;
-            }
+            get { return y; }
+            set { y = value; }
         }
 
         /// <summary>
@@ -59,14 +47,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public double Z
         {
-            get
-            {
-                return z;
-            }
-            set
-            {
-                z = value;
-            }
+            get { return z; }
+            set { z = value; }
         }
 
         /// <summary>
@@ -106,10 +88,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public ICoordinate CoordinateValue
         {
-            get
-            {
-                return this;
-            }
+            get { return this; }
             set
             {
                 x = value.X;
@@ -128,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public bool Equals2D(ICoordinate other)
         {
-            return (x == other.X) && (y == other.Y);
+            return X == other.X && Y == other.Y;
         }
 
         /// <summary>
@@ -193,7 +172,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public int CompareTo(object o)
         {
-            ICoordinate other = (ICoordinate) o;
+            var other = (ICoordinate) o;
             return CompareTo(other);
         }
 
@@ -249,7 +228,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public object Clone()
         {
-            return new Coordinate(this.X, this.Y, this.Z);
+            return new Coordinate(X, Y, Z);
         }
 
         /// <summary>
@@ -259,8 +238,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public double Distance(ICoordinate p)
         {
-            double dx = x - p.X;
-            double dy = y - p.Y;
+            var dx = x - p.X;
+            var dy = y - p.Y;
             return Math.Sqrt(dx * dx + dy * dy);
         }
 
@@ -269,7 +248,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public override int GetHashCode()
         {
-            int result = 17;            
+            var result = 17;            
             result = 37 * result + GetHashCode(X);
             result = 37 * result + GetHashCode(Y);
             return result;
@@ -281,7 +260,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="value">Value from HashCode computation.</param>
         private static int GetHashCode(double value)
         {
-            long f = BitConverter.DoubleToInt64Bits(value);
+            var f = BitConverter.DoubleToInt64Bits(value);
             return (int)(f^(f>>32));
         }
 

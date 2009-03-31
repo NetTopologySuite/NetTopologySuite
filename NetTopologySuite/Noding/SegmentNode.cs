@@ -10,20 +10,19 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public class SegmentNode : IComparable
     {        
-
         /// <summary>
         /// 
         /// </summary>
-        public readonly ICoordinate Coordinate = null;   // the point of intersection
+        public readonly ICoordinate Coordinate;   // the point of intersection
         
         /// <summary>
         /// 
         /// </summary>
-        public readonly int SegmentIndex = 0;   // the index of the containing line segment in the parent edge
+        public readonly int SegmentIndex;   // the index of the containing line segment in the parent edge
 
         private readonly SegmentString segString = null;
         private readonly Octants segmentOctant = Octants.Null;
-        private readonly bool isInterior = false;
+        private readonly bool isInterior;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SegmentNode"/> class.
@@ -34,9 +33,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="segmentOctant"></param>
         public SegmentNode(SegmentString segString, ICoordinate coord, int segmentIndex, Octants segmentOctant) 
         {
+            Coordinate = null;
             this.segString = segString;
-            this.Coordinate = new Coordinate(coord);
-            this.SegmentIndex = segmentIndex;
+            Coordinate = new Coordinate(coord);
+            SegmentIndex = segmentIndex;
             this.segmentOctant = segmentOctant;
             isInterior = !coord.Equals2D(segString.GetCoordinate(segmentIndex));
         }
@@ -47,10 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <returns></returns>
         public bool IsInterior
         { 
-            get
-            {
-                return isInterior; 
-            }
+            get { return isInterior;  }
 
         }
 
@@ -61,11 +58,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <returns></returns>
         public bool IsEndPoint(int maxSegmentIndex)
         {
-            if(SegmentIndex == 0 && ! isInterior) 
+            if (SegmentIndex == 0 && ! isInterior) 
                 return true;
-            if(SegmentIndex == maxSegmentIndex) 
-                return true;
-            return false;
+            return SegmentIndex == maxSegmentIndex;
         } 
 
         /// <summary>
@@ -78,12 +73,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </returns>
         public int CompareTo(object obj)
         {
-            SegmentNode other = (SegmentNode) obj;
-            if(SegmentIndex < other.SegmentIndex) 
+            var other = (SegmentNode) obj;
+            if (SegmentIndex < other.SegmentIndex) 
                 return -1;
-            if(SegmentIndex > other.SegmentIndex) 
+            if (SegmentIndex > other.SegmentIndex) 
                 return 1;
-            if (Coordinate.Equals2D(other.Coordinate)) 
+            if (Coordinate.Equals2D(other.Coordinate))
                 return 0;
             return SegmentPointComparator.Compare(segmentOctant, Coordinate, other.Coordinate);
         }

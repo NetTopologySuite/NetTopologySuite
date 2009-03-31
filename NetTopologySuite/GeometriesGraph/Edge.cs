@@ -47,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="label"></param>
         public Edge(ICoordinate[] pts, Label label)
         {
-            this.eiList = new EdgeIntersectionList(this);
+            eiList = new EdgeIntersectionList(this);
 
             this.pts = pts;
             this.label = label;
@@ -92,7 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return this.name;
+                return name;
             }
             set
             {
@@ -117,8 +117,16 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="i"></param>
         /// <returns></returns>
         public ICoordinate GetCoordinate(int i)
-        {            
-            return Points[i];
+        {
+            try
+            {
+                return Points[i];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -128,9 +136,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                if (Points.Length > 0)
-                    return Points[0];
-                return null;
+                return Points.Length > 0 ? Points[0] : null;
             }
         }
 
@@ -145,7 +151,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 if (env == null) 
                 {
                     env = new Envelope();
-                    for (int i = 0; i < Points.Length; i++) 
+                    for (var i = 0; i < Points.Length; i++) 
                         env.ExpandToInclude(Points[i]);                
                 }
                 return env;
@@ -250,10 +256,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                ICoordinate[] newPts = new ICoordinate[2];
+                var newPts = new ICoordinate[2];
                 newPts[0] = Points[0];
                 newPts[1] = Points[1];
-                Edge newe = new Edge(newPts, Label.ToLineLabel(label));
+                var newe = new Edge(newPts, Label.ToLineLabel(label));
                 return newe;
             }
         }
@@ -293,7 +299,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         public void AddIntersections(LineIntersector li, int segmentIndex, int geomIndex)
         {
-            for (int i = 0; i < li.IntersectionNum; i++) 
+            for (var i = 0; i < li.IntersectionNum; i++) 
                 AddIntersection(li, segmentIndex, geomIndex, i);            
         }
 
@@ -309,14 +315,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public void AddIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
         {
             ICoordinate intPt = new Coordinate(li.GetIntersection(intIndex));
-            int normalizedSegmentIndex = segmentIndex;
-            double dist = li.GetEdgeDistance(geomIndex, intIndex);        
+            var normalizedSegmentIndex = segmentIndex;
+            var dist = li.GetEdgeDistance(geomIndex, intIndex);        
             
             // normalize the intersection point location
-            int nextSegIndex = normalizedSegmentIndex + 1;
+            var nextSegIndex = normalizedSegmentIndex + 1;
             if (nextSegIndex < Points.Length) 
             {
-                ICoordinate nextPt = Points[nextSegIndex];        
+                var nextPt = Points[nextSegIndex];        
 
                 // Normalize segment index if intPt falls on vertex
                 // The check for point equality is 2D only - Z values are ignored
@@ -326,7 +332,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                     dist = 0.0;
                 }
                 // Add the intersection point to edge intersection list.                
-                this.EdgeIntersectionList.Add(intPt, normalizedSegmentIndex, dist);
+                EdgeIntersectionList.Add(intPt, normalizedSegmentIndex, dist);
             }            
         }
 
@@ -368,10 +374,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             if (Points.Length != e.Points.Length)
                 return false;
 
-            bool isEqualForward = true;
-            bool isEqualReverse = true;
-            int iRev = Points.Length;
-            for (int i = 0; i < Points.Length; i++)
+            var isEqualForward = true;
+            var isEqualReverse = true;
+            var iRev = Points.Length;
+            for (var i = 0; i < Points.Length; i++)
             {
                 if (!Points[i].Equals2D(e.Points[i]))
                     isEqualForward = false;
@@ -422,7 +428,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             if (Points.Length != e.Points.Length) 
                 return false;
-            for (int i = 0; i < Points.Length; i++) 
+            for (var i = 0; i < Points.Length; i++) 
                 if (! Points[i].Equals2D(e.Points[i])) 
                     return false;                        
             return true;
@@ -436,7 +442,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             outstream.Write("edge " + name + ": ");
             outstream.Write("LINESTRING (");
-            for (int i = 0; i < Points.Length; i++)
+            for (var i = 0; i < Points.Length; i++)
             {
                 if (i > 0)  outstream.Write(",");
                 outstream.Write(Points[i].X + " " + Points[i].Y);
@@ -451,7 +457,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public void WriteReverse(TextWriter outstream)
         {
             outstream.Write("edge " + name + ": ");
-            for (int i = Points.Length - 1; i >= 0; i--) 
+            for (var i = Points.Length - 1; i >= 0; i--) 
                 outstream.Write(Points[i] + " ");            
             outstream.WriteLine(String.Empty);
         }
@@ -462,10 +468,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append("edge " + name + ": ");
             sb.Append("LINESTRING (");
-            for (int i = 0; i < Points.Length; i++)
+            for (var i = 0; i < Points.Length; i++)
             {
                 if (i > 0) sb.Append(",");
                 sb.Append(Points[i].X + " " + Points[i].Y);

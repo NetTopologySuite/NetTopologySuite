@@ -16,11 +16,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public class MCIndexNoder : SinglePassNoder
     {
-        private IList monoChains = new ArrayList();
-        private ISpatialIndex index = new STRtree();
-        private int idCounter = 0;
-        private IList nodedSegStrings = null;
-        private int nOverlaps = 0; // statistics
+        private readonly IList monoChains = new ArrayList();
+        private readonly ISpatialIndex index = new STRtree();
+        private int idCounter;
+        private IList nodedSegStrings;
+        private int nOverlaps; // statistics
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MCIndexNoder"/> class.
@@ -39,10 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         public IList MonotoneChains
         {
-            get
-            {
-                return monoChains;
-            }
+            get { return monoChains; }
         }
 
         /// <summary>
@@ -50,10 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         public ISpatialIndex Index
         {
-            get
-            {
-                return index;
-            }
+            get { return index; }
         }
 
         /// <summary>
@@ -75,7 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         public override void ComputeNodes(IList inputSegStrings)
         {
             nodedSegStrings = inputSegStrings;
-            foreach(object obj in inputSegStrings)
+            foreach(var obj in inputSegStrings)
                 Add((SegmentString)obj);            
             IntersectChains();            
         }
@@ -86,22 +80,21 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         private void IntersectChains()
         {
             MonotoneChainOverlapAction overlapAction = new SegmentOverlapAction(SegmentIntersector);
-            foreach(object obj in monoChains) 
+            foreach(var obj in monoChains) 
             {
-                MonotoneChain queryChain = (MonotoneChain)obj;
-                IList overlapChains = index.Query(queryChain.Envelope);
-                foreach(object j in overlapChains)
+                var queryChain = (MonotoneChain)obj;
+                var overlapChains = index.Query(queryChain.Envelope);
+                foreach(var j in overlapChains)
                 {
-                    MonotoneChain testChain = (MonotoneChain)j;
+                    var testChain = (MonotoneChain)j;
                     /*
                      * following test makes sure we only compare each pair of chains once
                      * and that we don't compare a chain to itself
                      */
-                    if (testChain.Id > queryChain.Id) 
-                    {
-                        queryChain.ComputeOverlaps(testChain, overlapAction);
-                        nOverlaps++;
-                    }
+                    if (testChain.Id <= queryChain.Id)
+                        continue;
+                    queryChain.ComputeOverlaps(testChain, overlapAction);
+                    nOverlaps++;
                 }
             }
         }
@@ -112,10 +105,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="segStr"></param>
         private void Add(SegmentString segStr)
         {
-            IList segChains = MonotoneChainBuilder.GetChains(segStr.Coordinates, segStr);
-            foreach(object obj in segChains) 
+            var segChains = MonotoneChainBuilder.GetChains(segStr.Coordinates, segStr);
+            foreach (var obj in segChains) 
             {
-                MonotoneChain mc = (MonotoneChain)obj;
+                var mc = (MonotoneChain)obj;
                 mc.Id = idCounter++;
                 index.Insert(mc.Envelope, mc);
                 monoChains.Add(mc);
@@ -127,7 +120,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         public class SegmentOverlapAction : MonotoneChainOverlapAction
         {
-            private ISegmentIntersector si = null;
+            private readonly ISegmentIntersector si;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="SegmentOverlapAction"/> class.
@@ -147,8 +140,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             /// <param name="start2"></param>
             public override void Overlap(MonotoneChain mc1, int start1, MonotoneChain mc2, int start2)
             {
-                SegmentString ss1 = (SegmentString) mc1.Context;
-                SegmentString ss2 = (SegmentString) mc2.Context;
+                var ss1 = (SegmentString) mc1.Context;
+                var ss2 = (SegmentString) mc2.Context;
                 si.ProcessIntersections(ss1, start1, ss2, start2);
             }
 

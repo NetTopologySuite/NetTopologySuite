@@ -32,8 +32,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             if (p0.Equals2D(p1)) 
                 return 0;
 
-            int xSign = RelativeSign(p0.X, p1.X);
-            int ySign = RelativeSign(p0.Y, p1.Y);
+            var xSign = RelativeSign(p0.X, p1.X);
+            var ySign = RelativeSign(p0.Y, p1.Y);
 
             switch (octant)
             {

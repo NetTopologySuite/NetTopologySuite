@@ -26,8 +26,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="label"></param>
         private static int DepthDelta(Label label)
         {
-            Locations lLoc = label.GetLocation(0, Positions.Left);
-            Locations rLoc = label.GetLocation(0, Positions.Right);
+            var lLoc = label.GetLocation(0, Positions.Left);
+            var rLoc = label.GetLocation(0, Positions.Right);
             if (lLoc == Locations.Interior && rLoc == Locations.Exterior)
                 return 1;
             else if (lLoc == Locations.Exterior && rLoc == Locations.Interior)
@@ -38,11 +38,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private int quadrantSegments = OffsetCurveBuilder.DefaultQuadrantSegments;
         private BufferStyle endCapStyle = BufferStyle.CapRound;
         
-        private IPrecisionModel workingPrecisionModel = null;
-        private INoder workingNoder = null;
-        private IGeometryFactory geomFact = null;
-        private PlanarGraph graph = null;
-        private EdgeList edgeList = new EdgeList();        
+        private IPrecisionModel workingPrecisionModel;
+        private INoder workingNoder;
+        private IGeometryFactory geomFact;
+        private PlanarGraph graph;
+        private readonly EdgeList edgeList = new EdgeList();        
 
         /// <summary>
         /// Gets/Sets the number of segments used to approximate a angle fillet.
@@ -91,18 +91,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <returns></returns>
         public IGeometry Buffer(IGeometry g, double distance)
         {
-            IPrecisionModel precisionModel = workingPrecisionModel;
-            if (precisionModel == null)
-                precisionModel = g.PrecisionModel;
+            var precisionModel = workingPrecisionModel ?? g.PrecisionModel;
 
             // factory must be the same as the one used by the input
             geomFact = g.Factory;
 
-            OffsetCurveBuilder curveBuilder = new OffsetCurveBuilder(precisionModel, quadrantSegments);
-            curveBuilder.EndCapStyle = endCapStyle;
-            OffsetCurveSetBuilder curveSetBuilder = new OffsetCurveSetBuilder(g, distance, curveBuilder);
+            var curveBuilder = new OffsetCurveBuilder(precisionModel, quadrantSegments) {EndCapStyle = endCapStyle};
+            var curveSetBuilder = new OffsetCurveSetBuilder(g, distance, curveBuilder);
 
-            IList bufferSegStrList = curveSetBuilder.GetCurves();
+            var bufferSegStrList = curveSetBuilder.GetCurves();
 
             // short-circuit test
             if (bufferSegStrList.Count <= 0)
@@ -115,12 +112,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             graph = new PlanarGraph(new OverlayNodeFactory());
             graph.AddEdges(edgeList.Edges);
 
-            IList subgraphList = CreateSubgraphs(graph);
-            PolygonBuilder polyBuilder = new PolygonBuilder(geomFact);
+            var subgraphList = CreateSubgraphs(graph);
+            var polyBuilder = new PolygonBuilder(geomFact);
             BuildSubgraphs(subgraphList, polyBuilder);
-            IList resultPolyList = polyBuilder.Polygons;
+            var resultPolyList = polyBuilder.Polygons;
 
-            IGeometry resultGeom = geomFact.BuildGeometry(resultPolyList);
+            var resultGeom = geomFact.BuildGeometry(resultPolyList);
             return resultGeom;
         }
 
@@ -135,9 +132,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 return workingNoder;
 
             // otherwise use a fast (but non-robust) noder
-            LineIntersector li = new RobustLineIntersector();
-            li.PrecisionModel = precisionModel;
-            MCIndexNoder noder = new MCIndexNoder(new IntersectionAdder(li));                     
+            var li = new RobustLineIntersector {PrecisionModel = precisionModel};
+            var noder = new MCIndexNoder(new IntersectionAdder(li));                     
             return noder;
         }
 
@@ -148,15 +144,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="precisionModel"></param>
         private void ComputeNodedEdges(IList bufferSegStrList, IPrecisionModel precisionModel)
         {
-            INoder noder = GetNoder(precisionModel);
+            var noder = GetNoder(precisionModel);
             noder.ComputeNodes(bufferSegStrList);
-            IList nodedSegStrings = noder.GetNodedSubstrings();
+            var nodedSegStrings = noder.GetNodedSubstrings();
             
-            foreach(object obj in nodedSegStrings)
+            foreach (var obj in nodedSegStrings)
             {
-                SegmentString segStr = (SegmentString) obj;
-                Label oldLabel = (Label) segStr.Data;
-                Edge edge = new Edge(segStr.Coordinates, new Label(oldLabel));
+                var segStr = (SegmentString) obj;
+                var oldLabel = (Label) segStr.Data;
+                var edge = new Edge(segStr.Coordinates, new Label(oldLabel));
                 InsertEdge(edge);
             }
         }
@@ -171,14 +167,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         {
             //<FIX> MD 8 Oct 03  speed up identical edge lookup
             // fast lookup
-            Edge existingEdge = edgeList.FindEqualEdge(e);
+            var existingEdge = edgeList.FindEqualEdge(e);
 
             // If an identical edge already exists, simply update its label
             if (existingEdge != null)
             {
-                Label existingLabel = existingEdge.Label;
+                var existingLabel = existingEdge.Label;
 
-                Label labelToMerge = e.Label;
+                var labelToMerge = e.Label;
                 // check if new edge is in reverse direction to existing edge
                 // if so, must flip the label before merging it
                 if (!existingEdge.IsPointwiseEqual(e))
@@ -189,9 +185,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 existingLabel.Merge(labelToMerge);
 
                 // compute new depth delta of sum of edges
-                int mergeDelta = DepthDelta(labelToMerge);
-                int existingDelta = existingEdge.DepthDelta;
-                int newDelta = existingDelta + mergeDelta;
+                var mergeDelta = DepthDelta(labelToMerge);
+                var existingDelta = existingEdge.DepthDelta;
+                var newDelta = existingDelta + mergeDelta;
                 existingEdge.DepthDelta = newDelta;
             }
             else
@@ -205,16 +201,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
         private IList CreateSubgraphs(PlanarGraph graph)
         {
-            ArrayList subgraphList = new ArrayList();
-            foreach(object obj in graph.Nodes)
+            var subgraphList = new ArrayList();
+            foreach(var obj in graph.Nodes)
             {
-                Node node = (Node)obj;
-                if (!node.IsVisited)
-                {
-                    BufferSubgraph subgraph = new BufferSubgraph();
-                    subgraph.Create(node);
-                    subgraphList.Add(subgraph);
-                }
+                var node = (Node)obj;
+                if (node.IsVisited)
+                    continue;
+                var subgraph = new BufferSubgraph();
+                subgraph.Create(node);
+                subgraphList.Add(subgraph);
             }
 
             /*
@@ -238,12 +233,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private void BuildSubgraphs(IList subgraphList, PolygonBuilder polyBuilder)
         {
             IList processedGraphs = new ArrayList();
-            foreach(object obj in subgraphList)
+            foreach(var obj in subgraphList)
             {
-                BufferSubgraph subgraph = (BufferSubgraph)obj;
-                ICoordinate p = subgraph.RightMostCoordinate;
-                SubgraphDepthLocater locater = new SubgraphDepthLocater(processedGraphs);
-                int outsideDepth = locater.GetDepth(p);
+                var subgraph = (BufferSubgraph)obj;
+                var p = subgraph.RightMostCoordinate;
+                var locater = new SubgraphDepthLocater(processedGraphs);
+                var outsideDepth = locater.GetDepth(p);
                 subgraph.ComputeDepth(outsideDepth);
                 subgraph.FindResultEdges();
                 processedGraphs.Add(subgraph);

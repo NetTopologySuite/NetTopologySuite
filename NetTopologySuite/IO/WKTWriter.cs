@@ -42,14 +42,14 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns></returns>
         public static String ToLineString(ICoordinateSequence seq)
         {
-            StringBuilder buf = new StringBuilder();
+            var buf = new StringBuilder();
             buf.Append("LINESTRING");
             if (seq.Count == 0)
                 buf.Append(" EMPTY");
             else 
             {
                 buf.Append("(");
-                for (int i = 0; i < seq.Count; i++) 
+                for (var i = 0; i < seq.Count; i++) 
                 {
                     if (i > 0)
                         buf.Append(",");
@@ -94,14 +94,16 @@ namespace GisSharpBlog.NetTopologySuite.IO
         {
             // the default number of decimal places is 16, which is sufficient
             // to accomodate the maximum precision of a double.
-            int decimalPlaces = precisionModel.MaximumSignificantDigits;
+            var decimalPlaces = precisionModel.MaximumSignificantDigits;
 
             // specify decimal separator explicitly to avoid problems in other locales
-            NumberFormatInfo nfi = new NumberFormatInfo();
-            nfi.NumberDecimalSeparator = ".";            
-            nfi.NumberDecimalDigits = decimalPlaces;            
-            nfi.NumberGroupSeparator = String.Empty;
-            nfi.NumberGroupSizes = new int[] { };
+            var nfi = new NumberFormatInfo
+            {
+                NumberDecimalSeparator = ".",
+                NumberDecimalDigits = decimalPlaces,
+                NumberGroupSeparator = String.Empty,
+                NumberGroupSizes = new int[] {}
+            };
             return nfi;            
         }
 
@@ -113,8 +115,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns>A <c>string</c> of characters.</returns>
         public static string StringOfChar(char ch, int count) 
         {
-            StringBuilder buf = new StringBuilder();
-            for (int i = 0; i < count; i++) 
+            var buf = new StringBuilder();
+            for (var i = 0; i < count; i++) 
                 buf.Append(ch);            
             return buf.ToString();
         }
@@ -122,13 +124,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
         private readonly string MaxPrecisionFormat = "{0:R}";
         private NumberFormatInfo formatter;
         private string format;
-        private bool isFormatted = false;
-        private bool useMaxPrecision = false;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public WKTWriter() { }
+        private bool isFormatted;
+        private bool useMaxPrecision;
 
         /// <summary>
         /// Converts a <c>Geometry</c> to its Well-known Text representation.
@@ -238,7 +235,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 
             if (geometry is IPoint) 
             {
-                IPoint point = (IPoint)geometry;
+                var point = (IPoint)geometry;
                 AppendPointTaggedText(point.Coordinate, level, writer, point.PrecisionModel);
             }
             else if (geometry is ILinearRing)
@@ -419,12 +416,12 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// </returns>
         private string WriteNumber(double d)
         {            
-            string standard = d.ToString(format, formatter);
+            var standard = d.ToString(format, formatter);
             if (!useMaxPrecision)
                 return standard;
 
             // Check if some precision is lost during text conversion: if so, use {0:R} formatter 
-            double converted = Convert.ToDouble(standard, formatter);            
+            var converted = Convert.ToDouble(standard, formatter);            
             if (converted != d)
                 return String.Format(formatter, MaxPrecisionFormat, d);
             return standard;
@@ -446,7 +443,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
             {
                 if (doIndent) Indent(level, writer);
                 writer.Write("(");
-                for (int i = 0; i < lineString.NumPoints; i++) 
+                for (var i = 0; i < lineString.NumPoints; i++) 
                 {
                     if (i > 0) 
                     {
@@ -476,7 +473,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 if (indentFirst) Indent(level, writer);
                 writer.Write("(");
                 AppendLineStringText(polygon.ExteriorRing, level, false, writer);
-                for (int i = 0; i < polygon.NumInteriorRings; i++) 
+                for (var i = 0; i < polygon.NumInteriorRings; i++) 
                 {
                     writer.Write(",");
                     AppendLineStringText(polygon.GetInteriorRingN(i), level + 1, true, writer);
@@ -499,10 +496,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
             else 
             {
                 writer.Write("(");
-                for (int i = 0; i < multiPoint.NumGeometries; i++) 
+                for (var i = 0; i < multiPoint.NumGeometries; i++) 
                 {
                     if (i > 0) writer.Write(",");
-                    AppendCoordinate(((IPoint) multiPoint.GetGeometryN(i)).Coordinate, writer, multiPoint.PrecisionModel);
+                    AppendCoordinate((multiPoint.GetGeometryN(i)).Coordinate, writer, multiPoint.PrecisionModel);
                 }
                 writer.Write(")");
             }
@@ -522,10 +519,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 writer.Write(" EMPTY");            
             else 
             {
-                int level2 = level;
-                bool doIndent = indentFirst;
+                var level2 = level;
+                var doIndent = indentFirst;
                 writer.Write("(");
-                for (int i = 0; i < multiLineString.NumGeometries; i++) 
+                for (var i = 0; i < multiLineString.NumGeometries; i++) 
                 {
                     if (i > 0) 
                     {
@@ -552,10 +549,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 writer.Write(" EMPTY");            
             else 
             {
-                int level2 = level;
-                bool doIndent = false;
+                var level2 = level;
+                var doIndent = false;
                 writer.Write("(");
-                for (int i = 0; i < multiPolygon.NumGeometries; i++) 
+                for (var i = 0; i < multiPolygon.NumGeometries; i++) 
                 {
                     if (i > 0) 
                     {
@@ -582,9 +579,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 writer.Write(" EMPTY");            
             else 
             {
-                int level2 = level;
+                var level2 = level;
                 writer.Write("(");
-                for (int i = 0; i < geometryCollection.NumGeometries; i++) 
+                for (var i = 0; i < geometryCollection.NumGeometries; i++) 
                 {
                     if (i > 0) 
                     {

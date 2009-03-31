@@ -12,8 +12,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public class SegmentNodeList : IEnumerable
     {
-        private IDictionary nodeMap = new SortedList();
-        private SegmentString edge = null;  // the parent edge
+        private readonly IDictionary nodeMap = new SortedList();
+        private readonly SegmentString edge;  // the parent edge
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SegmentNodeList"/> class.
@@ -30,10 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <value></value>
         public SegmentString Edge 
         {
-            get
-            {
-                return edge;
-            }
+            get { return edge; }
         }
 
         /// <summary>
@@ -45,9 +42,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <returns>The SegmentIntersection found or added.</returns>
         public SegmentNode Add(ICoordinate intPt, int segmentIndex)
         {
-            SegmentNode eiNew = new SegmentNode(edge, intPt, segmentIndex, edge.GetSegmentOctant(segmentIndex));
-            SegmentNode ei = (SegmentNode) nodeMap[eiNew];
-            if(ei != null)
+            var eiNew = new SegmentNode(edge, intPt, segmentIndex, edge.GetSegmentOctant(segmentIndex));
+            var ei = (SegmentNode) nodeMap[eiNew];
+            if (ei != null)
             {
                 // debugging sanity check
                 Assert.IsTrue(ei.Coordinate.Equals2D(intPt), "Found equal nodes with different coordinates");               
@@ -72,7 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         private void AddEndPoints()
         {
-            int maxSegIndex = edge.Count - 1;
+            var maxSegIndex = edge.Count - 1;
             Add(edge.GetCoordinate(0), 0);
             Add(edge.GetCoordinate(maxSegIndex), maxSegIndex);
         }
@@ -92,9 +89,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             FindCollapsesFromExistingVertices(collapsedVertexIndexes);
 
             // node the collapses
-            foreach(object obj in collapsedVertexIndexes)
+            foreach(var obj in collapsedVertexIndexes)
             {
-                int vertexIndex = (int)obj;
+                var vertexIndex = (int)obj;
                 Add(edge.GetCoordinate(vertexIndex), vertexIndex);
             }
         }
@@ -106,11 +103,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="collapsedVertexIndexes"></param>
         private void FindCollapsesFromExistingVertices(IList collapsedVertexIndexes)
         {
-            for (int i = 0; i < edge.Count - 2; i++)
+            for (var i = 0; i < edge.Count - 2; i++)
             {
-                ICoordinate p0 = edge.GetCoordinate(i);
-                ICoordinate p1 = edge.GetCoordinate(i + 1);
-                ICoordinate p2 = edge.GetCoordinate(i + 2);
+                var p0 = edge.GetCoordinate(i);
+                var p1 = edge.GetCoordinate(i + 1);
+                var p2 = edge.GetCoordinate(i + 2);
                 if (p0.Equals2D(p2))    // add base of collapse as node
                     collapsedVertexIndexes.Add(i + 1);                
             }
@@ -126,17 +123,17 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="collapsedVertexIndexes"></param>
         private void FindCollapsesFromInsertedNodes(IList collapsedVertexIndexes)
         {
-            int[] collapsedVertexIndex = new int[1];
+            var collapsedVertexIndex = new int[1];
             
-	        IEnumerator ie = GetEnumerator();
+	        var ie = GetEnumerator();
 	        ie.MoveNext();
 
             // there should always be at least two entries in the list, since the endpoints are nodes
-            SegmentNode eiPrev = (SegmentNode) ie.Current;
+            var eiPrev = (SegmentNode) ie.Current;
             while (ie.MoveNext())
             {
-                SegmentNode ei = (SegmentNode) ie.Current;
-                bool isCollapsed = FindCollapseIndex(eiPrev, ei, collapsedVertexIndex);
+                var ei = (SegmentNode) ie.Current;
+                var isCollapsed = FindCollapseIndex(eiPrev, ei, collapsedVertexIndex);
                 if (isCollapsed)
                     collapsedVertexIndexes.Add(collapsedVertexIndex[0]);
                 eiPrev = ei;
@@ -155,7 +152,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             // only looking for equal nodes
             if (!ei0.Coordinate.Equals2D(ei1.Coordinate)) 
                 return false;
-            int numVerticesBetween = ei1.SegmentIndex - ei0.SegmentIndex;
+            var numVerticesBetween = ei1.SegmentIndex - ei0.SegmentIndex;
             if (!ei1.IsInterior)
                 numVerticesBetween--;
             // if there is a single vertex between the two equal nodes, this is a collapse
@@ -181,15 +178,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             AddEndPoints();
             AddCollapsedNodes();
 
-            IEnumerator ie = GetEnumerator();
-	        ie.MoveNext();
-
             // there should always be at least two entries in the list, since the endpoints are nodes
-            SegmentNode eiPrev = (SegmentNode) ie.Current;
-            while(ie.MoveNext())
+            var ie = GetEnumerator();
+	        ie.MoveNext();            
+            var eiPrev = (SegmentNode) ie.Current;
+            while (ie.MoveNext())
             {
-                SegmentNode ei = (SegmentNode) ie.Current;
-                SegmentString newEdge = CreateSplitEdge(eiPrev, ei);
+                var ei = (SegmentNode) ie.Current;
+                var newEdge = CreateSplitEdge(eiPrev, ei);
                 edgeList.Add(newEdge);
                 eiPrev = ei;
             }
@@ -201,17 +197,17 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="splitEdges"></param>
         private void CheckSplitEdgesCorrectness(IList splitEdges)
         {
-            ICoordinate[] edgePts = edge.Coordinates;
+            var edgePts = edge.Coordinates;
 
             // check that first and last points of split edges are same as endpoints of edge
-            SegmentString split0 = (SegmentString) splitEdges[0];
-            ICoordinate pt0 = split0.GetCoordinate(0);
+            var split0 = (SegmentString) splitEdges[0];
+            var pt0 = split0.GetCoordinate(0);
             if (!pt0.Equals2D(edgePts[0]))
                 throw new Exception("bad split edge start point at " + pt0);
 
-            SegmentString splitn = (SegmentString)splitEdges[splitEdges.Count - 1];
-            ICoordinate[] splitnPts = splitn.Coordinates;
-            ICoordinate ptn = splitnPts[splitnPts.Length - 1];
+            var splitn = (SegmentString)splitEdges[splitEdges.Count - 1];
+            var splitnPts = splitn.Coordinates;
+            var ptn = splitnPts[splitnPts.Length - 1];
             if (!ptn.Equals2D(edgePts[edgePts.Length - 1]))
                 throw new Exception("bad split edge end point at " + ptn);
         }
@@ -226,20 +222,20 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <returns></returns>
         SegmentString CreateSplitEdge(SegmentNode ei0, SegmentNode ei1)
         {
-            int npts = ei1.SegmentIndex - ei0.SegmentIndex + 2;
+            var npts = ei1.SegmentIndex - ei0.SegmentIndex + 2;
 
-            ICoordinate lastSegStartPt = edge.GetCoordinate(ei1.SegmentIndex);
+            var lastSegStartPt = edge.GetCoordinate(ei1.SegmentIndex);
             // if the last intersection point is not equal to the its segment start pt, add it to the points list as well.
             // (This check is needed because the distance metric is not totally reliable!)
             // The check for point equality is 2D only - Z values are ignored
-            bool useIntPt1 = ei1.IsInterior || !ei1.Coordinate.Equals2D(lastSegStartPt);
+            var useIntPt1 = ei1.IsInterior || !ei1.Coordinate.Equals2D(lastSegStartPt);
             if(!useIntPt1)
                 npts--;
 
-            ICoordinate[] pts = new ICoordinate[npts];
-            int ipt = 0;
+            var pts = new ICoordinate[npts];
+            var ipt = 0;
             pts[ipt++] = new Coordinate(ei0.Coordinate);
-            for (int i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
+            for (var i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
                 pts[ipt++] = edge.GetCoordinate(i);            
             if (useIntPt1) 
                 pts[ipt] = ei1.Coordinate;
@@ -254,9 +250,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         public void Write(StreamWriter outstream)
         {
             outstream.Write("Intersections:");
-            foreach(object obj in this)
+            foreach(var obj in this)
             {
-                SegmentNode ei = (SegmentNode) obj;
+                var ei = (SegmentNode) obj;
                 ei.Write(outstream);
             }
         }
@@ -269,7 +265,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     {
         private SegmentNodeList nodeList;
         private SegmentString edge;
-        private IEnumerator nodeIt;
+        private readonly IEnumerator nodeIt;
         private SegmentNode currNode = null;
         private SegmentNode nextNode = null;
         private int currSegIndex = 0;
@@ -310,10 +306,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         public object Current
         {
-            get 
-            {
-                return currNode;
-            }
+            get  { return currNode; }
         }
 
         /// <summary>
@@ -329,6 +322,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                 ReadNextNode();
                 return true;
             }
+
             // check for trying to read too far
             if (nextNode == null) 
                 return false;

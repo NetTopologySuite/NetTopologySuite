@@ -1,6 +1,5 @@
 using System.Collections;
 using System.IO;
-using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Index;
 using GisSharpBlog.NetTopologySuite.Index.Quadtree;
 
@@ -12,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     public class EdgeList
     {
-        private IList edges = new ArrayList();
+        private readonly IList edges = new ArrayList();
 
         /// <summary>
         /// An index of the edges, for fast lookup.
@@ -21,12 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// An alternative would be to use an ordered set based on the values
         /// of the edge coordinates.
         /// </summary>
-        private ISpatialIndex index = new Quadtree();
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public EdgeList() { }
+        private readonly ISpatialIndex index = new Quadtree();
 
 
         /// <summary>
@@ -54,9 +48,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="edgeColl"></param>
         public void AddAll(ICollection edgeColl)
         {
-            for (IEnumerator i = edgeColl.GetEnumerator(); i.MoveNext(); ) 
+            for (var i = edgeColl.GetEnumerator(); i.MoveNext(); ) 
                 Add((Edge) i.Current);
-            
         }
 
         /// <summary>
@@ -64,10 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public IList Edges
         {
-            get
-            {
-                return edges;
-            }
+            get { return edges; }
         }
 
         // <FIX> fast lookup for edges
@@ -83,9 +73,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public Edge FindEqualEdge(Edge e)
         {
             ICollection testEdges = index.Query(e.Envelope);
-            for (IEnumerator i = testEdges.GetEnumerator(); i.MoveNext(); ) 
+            for (var i = testEdges.GetEnumerator(); i.MoveNext(); ) 
             {
-                Edge testEdge = (Edge) i.Current;
+                var testEdge = (Edge) i.Current;
                 if (testEdge.Equals(e)) 
                     return testEdge;
             }
@@ -134,8 +124,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </returns>
         public int FindEdgeIndex(Edge e)
         {
-            for (int i = 0; i < edges.Count; i++)
-                if (((Edge) edges[i]).Equals(e))
+            for (var i = 0; i < edges.Count; i++)
+                if ((edges[i]).Equals(e))
                     return i;            
             return -1;
         }
@@ -148,14 +138,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public void Write(StreamWriter outstream)
         {
             outstream.Write("MULTILINESTRING ( ");
-            for (int j = 0; j < edges.Count; j++) 
+            for (var j = 0; j < edges.Count; j++) 
             {
-                Edge e = (Edge) edges[j];
+                var e = (Edge) edges[j];
                 if (j > 0) 
                     outstream.Write(",");
                 outstream.Write("(");
-                ICoordinate[] pts = e.Coordinates;
-                for (int i = 0; i < pts.Length; i++)
+                var pts = e.Coordinates;
+                for (var i = 0; i < pts.Length; i++)
                 {
                     if (i > 0) 
                         outstream.Write(",");
