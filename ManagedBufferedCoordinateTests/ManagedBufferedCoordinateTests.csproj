@@ -124,6 +124,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ExternalReferences\Rhino.Mocks.dll</HintPath>
     </Reference>
+    <Reference Include="xunit, Version=1.0.3.1299, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ExternalReferences\xunit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(Configuration)' == 'Release_Net35' Or '$(Configuration)' == 'Debug_Net35'">
@@ -135,10 +139,7 @@
     <Otherwise>
       <ItemGroup>
         <Reference Include="System" />
-        <Reference Include="xunit, Version=1.0.3.1299, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-          <SpecificVersion>False</SpecificVersion>
-          <HintPath>..\ExternalReferences\xunit.dll</HintPath>
-        </Reference>
+        
       </ItemGroup>
     </Otherwise>
   </Choose>
