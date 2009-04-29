@@ -167,11 +167,21 @@ namespace GisSharpBlog.NetTopologySuite.IO
 								char[] ebuffer = new char[8];
 								ebuffer = _dbfStream.ReadChars(8);
 								string tempString = new string(ebuffer, 0, 4);
-								int year = Int32.Parse(tempString, CultureInfo.InvariantCulture);
+
+						        int year;
+                                if (!Int32.TryParse(tempString, NumberStyles.Integer, CultureInfo.InvariantCulture, out year))
+						             break;                                    
 								tempString = new string(ebuffer, 4, 2);
-                                int month = Int32.Parse(tempString, CultureInfo.InvariantCulture);
+
+                                int month;
+                                if (!Int32.TryParse(tempString, NumberStyles.Integer, CultureInfo.InvariantCulture, out month))
+                                     break;
 								tempString = new string(ebuffer, 6, 2);
-								int day = Int32.Parse(tempString, CultureInfo.InvariantCulture);
+								
+                                int day;
+                                if (!Int32.TryParse(tempString, NumberStyles.Integer, CultureInfo.InvariantCulture, out day))
+                                     break;
+
 								tempObject = new DateTime(year, month, day);
 								break;
                         

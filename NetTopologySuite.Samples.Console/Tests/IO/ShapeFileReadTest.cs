@@ -53,5 +53,22 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.IO
             }
             Assert.Fail();
         }
+
+         [Test]
+        public void TestReadingShapeFileWithNulls()
+         {
+             using (var reader = new ShapefileDataReader("AllNulls", Factory))
+             {
+                 while (reader.Read())
+                 {
+                     var geom = reader.Geometry;
+                     Assert.IsNotNull(geom);
+
+                     var values = new object[5];
+                     var result = reader.GetValues(values);
+                     Assert.IsNotNull(values);
+                 }
+             }             
+         }
     }
 }
