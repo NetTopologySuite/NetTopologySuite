@@ -24,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// </summary>
         private class LineStringAdder : IGeometryComponentFilter
         {
-            private Polygonizer container = null;
+            private readonly Polygonizer container;
 
             /// <summary>
             /// 
@@ -49,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Default factory.
         /// </summary>
-        private LineStringAdder lineStringAdder = null;
+        private readonly LineStringAdder lineStringAdder;
 
         /// <summary>
         /// 
@@ -74,17 +74,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// 
         /// </summary>
-        protected IList holeList = null;
+        protected IList holeList;
         
         /// <summary>
         /// 
         /// </summary>        
-        protected IList shellList = null;
+        protected IList shellList;
 
         /// <summary>
         /// 
         /// </summary>
-        protected IList polyList = null;
+        protected IList polyList;
 
         /// <summary>
         /// Create a polygonizer with the same {GeometryFactory}
@@ -104,9 +104,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <param name="geomList">A list of <c>Geometry</c>s with linework to be polygonized.</param>
         public void Add(IList geomList)
         {
-            for (IEnumerator i = geomList.GetEnumerator(); i.MoveNext(); ) 
+            for (var i = geomList.GetEnumerator(); i.MoveNext(); ) 
             {
-				IGeometry geometry = (IGeometry)i.Current;
+				var geometry = (IGeometry)i.Current;
                 Add(geometry);
             }
         }
@@ -138,49 +138,37 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Compute and returns the list of polygons formed by the polygonization.
         /// </summary>        
-        public IList Polygons
+        public IList GetPolygons()
         {
-            get
-            {
-                Polygonize();
-                return polyList;
-            }
+            Polygonize();
+            return polyList;
         }
 
         /// <summary> 
         /// Compute and returns the list of dangling lines found during polygonization.
         /// </summary>
-        public IList Dangles
+        public IList GetDangles()
         {
-            get
-            {
-                Polygonize();
-                return dangles;
-            }
+            Polygonize();
+            return dangles;
         }
 
         /// <summary>
         /// Compute and returns the list of cut edges found during polygonization.
         /// </summary>
-        public IList CutEdges
+        public IList GetCutEdges()
         {
-            get
-            {
-                Polygonize();
-                return cutEdges;
-            }
+            Polygonize();
+            return cutEdges;
         }
 
         /// <summary>
         /// Compute and returns the list of lines forming invalid rings found during polygonization.
         /// </summary>
-        public IList InvalidRingLines
+        public IList GetInvalidRingLines()
         {
-            get
-            {
-                Polygonize();
-                return invalidRingLines;
-            }
+            Polygonize();
+            return invalidRingLines;
         }
 
         /// <summary>
@@ -200,7 +188,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
 
             dangles = graph.DeleteDangles();
             cutEdges = graph.DeleteCutEdges();
-            IList edgeRingList = graph.GetEdgeRings();
+            var edgeRingList = graph.GetEdgeRings();
 
             IList validEdgeRingList = new ArrayList();
             invalidRingLines = new ArrayList();
@@ -210,41 +198,31 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             AssignHolesToShells(holeList, shellList);
 
             polyList = new ArrayList();
-            for (IEnumerator i = shellList.GetEnumerator(); i.MoveNext(); ) 
+            for (var i = shellList.GetEnumerator(); i.MoveNext(); ) 
             {
-                EdgeRing er = (EdgeRing) i.Current;
+                var er = (EdgeRing) i.Current;
                 polyList.Add(er.Polygon);
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="edgeRingList"></param>
-        /// <param name="validEdgeRingList"></param>
-        /// <param name="invalidRingList"></param>
-        private void FindValidRings(IList edgeRingList, IList validEdgeRingList, IList invalidRingList)
+        private static void FindValidRings(IList edgeRingList, IList validEdgeRingList, IList invalidRingList)
         {
-            for (IEnumerator i = edgeRingList.GetEnumerator(); i.MoveNext(); ) 
+            for (var i = edgeRingList.GetEnumerator(); i.MoveNext(); ) 
             {
-                EdgeRing er = (EdgeRing) i.Current;
+                var er = (EdgeRing) i.Current;
                 if (er.IsValid)
                      validEdgeRingList.Add(er);
                 else invalidRingList.Add(er.LineString);
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="edgeRingList"></param>
         private void FindShellsAndHoles(IList edgeRingList)
         {
             holeList = new ArrayList();
             shellList = new ArrayList();
-            for (IEnumerator i = edgeRingList.GetEnumerator(); i.MoveNext(); ) 
+            for (var i = edgeRingList.GetEnumerator(); i.MoveNext(); ) 
             {
-                EdgeRing er = (EdgeRing) i.Current;
+                var er = (EdgeRing) i.Current;
                 if (er.IsHole)
                      holeList.Add(er);
                 else shellList.Add(er);
@@ -252,28 +230,18 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="holeList"></param>
-        /// <param name="shellList"></param>
         private static void AssignHolesToShells(IList holeList, IList shellList)
         {
-            for (IEnumerator i = holeList.GetEnumerator(); i.MoveNext(); ) 
+            for (var i = holeList.GetEnumerator(); i.MoveNext(); ) 
             {
-                EdgeRing holeER = (EdgeRing) i.Current;
+                var holeER = (EdgeRing) i.Current;
                 AssignHoleToShell(holeER, shellList);
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="holeER"></param>
-        /// <param name="shellList"></param>
         private static void AssignHoleToShell(EdgeRing holeER, IList shellList)
         {
-            EdgeRing shell = EdgeRing.FindEdgeRingContaining(holeER, shellList);
+            var shell = EdgeRing.FindEdgeRingContaining(holeER, shellList);
             if (shell != null)
                 shell.AddHole(holeER.Ring);
         }

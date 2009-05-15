@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Poligonize
 			Polygonizer polygonizer = new Polygonizer();
 			polygonizer.Add(lines);
 			
-			ICollection polys = polygonizer.Polygons;
+			ICollection polys = polygonizer.GetPolygons();
 			
 			Console.WriteLine("Polygons formed (" + polys.Count + "):");
             foreach(object obj in polys)
