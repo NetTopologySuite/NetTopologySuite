@@ -250,9 +250,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 right = cwLeft;
             }
             Edge e = new Edge(coord, new Label(argIndex, Locations.Boundary, left, right));
-            if (lineEdgeMap.Contains(lr))
-                lineEdgeMap.Remove(lr);
-            lineEdgeMap.Add(lr, e);
+            lineEdgeMap[lr] = e;
             InsertEdge(e);
             // insert the endpoint as a node, to mark that it is on the boundary
             InsertPoint(argIndex, coord[0], Locations.Boundary);
@@ -289,10 +287,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             // add the edge for the LineString
             // line edges do not have locations for their left and right sides
-            Edge e = new Edge(coord, new Label(argIndex, Locations.Interior));
-            if (lineEdgeMap.Contains(line))
-                lineEdgeMap.Remove(line);
-            lineEdgeMap.Add(line, e);            
+            Edge e = new Edge(coord, new Label(argIndex, Locations.Interior));            
+            lineEdgeMap[line] = e;
             InsertEdge(e);
 
             /*

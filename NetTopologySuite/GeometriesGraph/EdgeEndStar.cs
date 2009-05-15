@@ -48,11 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="obj"></param>
         protected void InsertEdgeEnd(EdgeEnd e, object obj)
         {
-            // Diego Guidi says: i have inserted this line because if i try to add an object already present
-            // in the list, a System.ArgumentException was thrown.
-            if (edgeMap.Contains(e))                            
-                return;            
-            edgeMap.Add(e, obj);
+            edgeMap[e] = obj; 
             edgeList = null;    // edge list has changed - clear the cache
         }
 

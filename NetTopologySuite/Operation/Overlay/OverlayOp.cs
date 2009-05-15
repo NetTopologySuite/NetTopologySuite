@@ -24,6 +24,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// </summary>
     public class OverlayOp : GeometryGraphOperation
     {
+        /// <summary>
+        /// Disables <see cref="EdgeNodingValidator"/> 
+        /// when an intersection is made (<see cref="ComputeOverlay"/>), 
+        /// so performances are dramatically improved but failures are not managed.
+        /// </summary>
+        /// <remarks>
+        /// Use ay your own risk!
+        /// </remarks>        
+        public static bool NodingValidatorEnabled { get; set; }
+
         public static IGeometry Overlay(IGeometry geom0, IGeometry geom1, SpatialFunction opCode)
         {
             var gov = new OverlayOp(geom0, geom1);
@@ -129,8 +139,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             ReplaceCollapsedEdges();
 
             // Debugging only
-            var nv = new EdgeNodingValidator(edgeList.Edges);
-            nv.checkValid();
+            if (NodingValidatorEnabled)
+            {
+                var nv = new EdgeNodingValidator(edgeList.Edges);
+                nv.checkValid();
+            }
 
             graph.AddEdges(edgeList.Edges);
             ComputeLabelling();
@@ -156,7 +169,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 
             // gather the results from all calculations into a single Geometry for the result set
             resultGeom = ComputeGeometry(resultPointList, resultLineList, resultPolyList);
-        }
+        }        
 
         private void InsertUniqueEdges(IEnumerable edges)
         {

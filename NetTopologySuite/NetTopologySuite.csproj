@@ -417,7 +417,6 @@
     <Compile Include="Utilities\RToolsUtil\StreamTokenizer.cs" />
     <Compile Include="Utilities\RToolsUtil\Token.cs" />
     <Compile Include="Utilities\RToolsUtil\VerbosityLevel.cs" />
-    <Compile Include="Utilities\Stopwatch.cs" />
     <Compile Include="Utilities\GeoToolsStreamTokenizer.cs" />
     <Compile Include="Utilities\UniqueCoordinateArrayFilter.cs" />
   </ItemGroup>

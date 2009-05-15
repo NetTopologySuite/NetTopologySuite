@@ -23,10 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <returns>The added node.</returns>
         public Node Add(Node n)
         {
-            ICoordinate key = n.Coordinate;
-            bool contains = nodeMap.Contains(key);
-            if (!contains) 
-                nodeMap.Add(key, n);            
+            nodeMap[n.Coordinate] = n;            
             return n;
         }
 
