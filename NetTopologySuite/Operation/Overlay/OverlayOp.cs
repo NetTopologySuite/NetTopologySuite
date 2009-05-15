@@ -25,14 +25,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     public class OverlayOp : GeometryGraphOperation
     {
         /// <summary>
-        /// Disables <see cref="EdgeNodingValidator"/> 
+        /// Disable <see cref="EdgeNodingValidator"/> 
         /// when an intersection is made (<see cref="ComputeOverlay"/>), 
         /// so performances are dramatically improved but failures are not managed.
         /// </summary>
         /// <remarks>
         /// Use ay your own risk!
         /// </remarks>        
-        public static bool NodingValidatorEnabled { get; set; }
+        public static bool NodingValidatorDisabled { get; set; }
 
         public static IGeometry Overlay(IGeometry geom0, IGeometry geom1, SpatialFunction opCode)
         {
@@ -138,8 +138,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             ComputeLabelsFromDepths();
             ReplaceCollapsedEdges();
 
-            // Debugging only
-            if (NodingValidatorEnabled)
+            if (!NodingValidatorDisabled)
             {
                 var nv = new EdgeNodingValidator(edgeList.Edges);
                 nv.checkValid();
