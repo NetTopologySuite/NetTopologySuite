@@ -9,20 +9,11 @@ using NUnit.Framework;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 {
-    /// <summary>
-    /// 
-    /// </summary>
     [TestFixture]
     public class IsValidTest : BaseSamples
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IsValidTest"/> class.
-        /// </summary>
         public IsValidTest() : base(GeometryFactory.Fixed) { }
 
-        /// <summary>
-        /// 
-        /// </summary>
         [Test]
         public void IsCCWBugTest()
         {
@@ -32,9 +23,6 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             Assert.IsTrue(result);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         [Test]
         public void SimpleContainerTest()
         {
@@ -285,9 +273,6 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             Assert.IsFalse(result);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         [Test]
         public void IsPointInRingTest()
         {
@@ -338,7 +323,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                 polygonizer.Add(geom);
             }
 
-            ICollection polys = polygonizer.Polygons;
+            ICollection polys = polygonizer.GetPolygons();
             Console.WriteLine("Polygons formed (" + polys.Count + "):");
             foreach (var obj in polys)
             {
