@@ -4,6 +4,7 @@ using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
+using Wintellect.PowerCollections;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -17,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// A map which maintains the edges in sorted order around the node.
         /// </summary>
-        protected IDictionary edgeMap = new SortedList();
+        protected IDictionary edgeMap = new OrderedDictionary<EdgeEnd, object>();
 
         /// <summary> 
         /// A list of all outgoing edges in the result, in CCW order.

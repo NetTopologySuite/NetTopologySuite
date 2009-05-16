@@ -3,7 +3,7 @@ using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
-using Iesi_NTS.Collections;
+using Wintellect.PowerCollections;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
 {
@@ -427,7 +427,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         public IList DeleteDangles()
         {
             IList nodesToRemove = FindNodesOfDegree(1);
-            ISet dangleLines = new HashedSet();
+            Set<ILineString> dangleLines = new Set<ILineString>();
 
             Stack nodeStack = new Stack();
             for (IEnumerator i = nodesToRemove.GetEnumerator(); i.MoveNext(); ) 

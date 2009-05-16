@@ -3,7 +3,7 @@ using System.Collections;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
-using Iesi_NTS.Collections;
+using Wintellect.PowerCollections;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 {
@@ -149,7 +149,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         // <FIX> MD - use iteration & queue rather than recursion, for speed and robustness
         private void ComputeDepths(DirectedEdge startEdge)
         {
-            ISet nodesVisited = new HashedSet();
+            Set<Node> nodesVisited = new Set<Node>();
             Queue nodeQueue = new Queue();
             Node startNode = startEdge.Node;                 
             nodeQueue.Enqueue(startNode);   

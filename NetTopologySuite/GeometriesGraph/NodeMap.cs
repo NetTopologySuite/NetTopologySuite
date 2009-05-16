@@ -1,6 +1,7 @@
 using System.Collections;
 using System.IO;
 using GeoAPI.Geometries;
+using Wintellect.PowerCollections;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -9,8 +10,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     public class NodeMap
     {        
-        private IDictionary nodeMap = new SortedList();
-        private NodeFactory nodeFact;
+        private readonly IDictionary nodeMap = new OrderedDictionary<ICoordinate, object>();
+        private readonly NodeFactory nodeFact;
 
         /// <summary>
         /// 
@@ -89,10 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public IList Values
         {
-            get
-            {
-                return new ArrayList(nodeMap.Values);
-            }
+            get { return new ArrayList(nodeMap.Values); }
         }
 
         /// <summary>

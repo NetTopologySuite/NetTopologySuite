@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Iesi_NTS.Collections.Generic;
+using Wintellect.PowerCollections;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
 {
@@ -24,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// 
         /// </summary>
-        protected ISet<Edge> edges = new HashedSet<Edge>();
+        protected Set<Edge> edges = new Set<Edge>();
         
         /// <summary>
         /// 

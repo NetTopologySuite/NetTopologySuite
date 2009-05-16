@@ -3,7 +3,7 @@ using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
-using Iesi_NTS.Collections;
+using Wintellect.PowerCollections;
 
 namespace GisSharpBlog.NetTopologySuite.Operation
 {
@@ -48,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         {
             if (mp.IsEmpty) 
                 return true;
-            ISet points = new ListSet();
+            Set<ICoordinate> points = new Set<ICoordinate>();
             for (int i = 0; i < mp.NumGeometries; i++)
             {
                 IPoint pt = (IPoint) mp.GetGeometryN(i);
@@ -171,7 +171,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// <param name="graph"></param>
         private bool HasClosedEndpointIntersection(GeometryGraph graph)
         {
-            IDictionary endPoints = new SortedList();
+            IDictionary endPoints = new OrderedDictionary<ICoordinate, object>();
             for (IEnumerator i = graph.GetEdgeEnumerator(); i.MoveNext(); )
             {
                 Edge e = (Edge) i.Current;

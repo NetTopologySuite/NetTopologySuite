@@ -1,7 +1,7 @@
 using System;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
-using Iesi_NTS.Collections.Generic;
+using Wintellect.PowerCollections;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap
 {
@@ -153,7 +153,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap
         public ICoordinate[] ExtractTargetCoordinates(IGeometry g)
         {
             // TODO: should do this more efficiently.  Use CoordSeq filter to get points, KDTree for uniqueness & queries
-            ListSet<ICoordinate> ptSet = new ListSet<ICoordinate>(g.Coordinates);
+            Set<ICoordinate> ptSet = new Set<ICoordinate>(g.Coordinates);
             ICoordinate[] result = new ICoordinate[ptSet.Count];
             ptSet.CopyTo(result, 0);
             return result;

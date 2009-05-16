@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
-using Iesi_NTS.Collections.Generic;
+using Wintellect.PowerCollections;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
@@ -112,7 +112,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 return inputPts;
             
             // add points defining polygon
-            SortedSet<ICoordinate> reducedSet = new SortedSet<ICoordinate>();
+            OrderedSet<ICoordinate> reducedSet = new OrderedSet<ICoordinate>();
             for (int i = 0; i < polyPts.Length; i++)
                 reducedSet.Add(polyPts[i]);
             

@@ -5,7 +5,7 @@ using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
-using Iesi_NTS.Collections;
+using Wintellect.PowerCollections;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 {
@@ -409,7 +409,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// </summary>
         private void CheckNoSelfIntersectingRing(EdgeIntersectionList eiList)
         {
-            ISet nodeSet = new ListSet();    
+            Set<ICoordinate> nodeSet = new Set<ICoordinate>();    
             bool isFirst = true;
             foreach(EdgeIntersection ei in eiList)
             {                

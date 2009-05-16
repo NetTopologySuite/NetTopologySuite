@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GisSharpBlog.NetTopologySuite</RootNamespace>
     <AssemblyName>NetTopologySuite</AssemblyName>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <SccProjectName>
     </SccProjectName>
     <SccLocalPath>
@@ -24,7 +24,7 @@
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -68,11 +68,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ExternalReferences\GeoAPI.dll</HintPath>
     </Reference>
+    <Reference Include="PowerCollections, Version=1.0.2141.24679, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ExternalReferences\PowerCollections.dll</HintPath>
+    </Reference>
     <Reference Include="ProjNET, Version=1.0.2794.16965, Culture=neutral, PublicKeyToken=a1f5bdcd9c6f5740, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ExternalReferences\ProjNET.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -383,33 +390,10 @@
     <Compile Include="Utilities\GeometricShapeFactory.cs" />
     <Compile Include="Utilities\HexConverter.cs" />
     <Compile Include="Utilities\Global.cs" />
-    <Compile Include="Utilities\Iesi.Collections\DictionarySet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\CollectionWrapper.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\DictionarySet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\EnumerableWrapper.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\EnumeratorWrapper.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\HashedSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\HybridSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\ImmutableSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\ISet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\ListSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\ListWrapper.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\Set.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\SetWrapper.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Generic\SortedSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\HashedSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\HybridSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\ImmutableSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\ISet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\ListSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\Set.cs" />
-    <Compile Include="Utilities\Iesi.Collections\SortedSet.cs" />
-    <Compile Include="Utilities\Iesi.Collections\SynchronizedSet.cs" />
     <Compile Include="Utilities\Radians.cs" />
     <Compile Include="Utilities\ReverseOrder.cs" />
     <Compile Include="Utilities\RToolsUtil\BufferedTextReader.cs" />
     <Compile Include="Utilities\RToolsUtil\CharBuffer.cs" />
-    <Compile Include="Utilities\RToolsUtil\Finder.cs" />
     <Compile Include="Utilities\RToolsUtil\Logger.cs" />
     <Compile Include="Utilities\RToolsUtil\Opts.cs" />
     <Compile Include="Utilities\RToolsUtil\ParseUtil.cs" />
@@ -423,7 +407,6 @@
   <ItemGroup>
     <Content Include="License.txt" />
     <Content Include="ReadMe.txt" />
-    <Content Include="Utilities\Iesi.Collections\Iesi.Collections.License.txt" />
     <Content Include="Utilities\RToolsUtil\Rtools.Util.License.txt" />
   </ItemGroup>
   <ItemGroup>

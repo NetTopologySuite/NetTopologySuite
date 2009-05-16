@@ -1,5 +1,6 @@
 using System.Collections;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using Wintellect.PowerCollections;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
@@ -35,8 +36,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             void Merge(SegmentString mergeTarget, SegmentString ssToMerge, bool isSameOrientation);
         }
 
-        private ISegmentStringMerger merger;
-        private IDictionary ocaMap = new SortedList();
+        private readonly ISegmentStringMerger merger;
+        private readonly IDictionary ocaMap = new OrderedDictionary<OrientedCoordinateArray, object>();
         
         /// <summary>
         /// Creates a dissolver with a user-defined merge strategy.

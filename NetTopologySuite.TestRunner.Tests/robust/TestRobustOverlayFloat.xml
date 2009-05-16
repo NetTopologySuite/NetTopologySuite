@@ -1,7 +1,7 @@
 <run>
-	<precisionModel type="FLOATING" />
+  <precisionModel type="FLOATING" />
 <case>
-  <desc>AA - robustness failure</desc>
+  <desc>AA - OLD robustness failure (works with snapping)</desc>
   <a>
 POLYGON ((301949.68 2767249.16, 301936.52 2767241.28, 301938.87 
 2767237.43, 301952.47 2767245.59, 301950.74 2767247.81, 301949.68 
@@ -12,12 +12,14 @@ POLYGON ((302041.321 2767264.675, 301938.823 2767237.507, 301941.21 2767233.59, 
 302048.886 2767243.046, 302041.321 2767264.675))  
   </b>
 <test>
-  <op name="intersection">    GEOMETRYCOLLECTION EMPTY  </op>
+  <op name="intersection" arg1="A" arg2="B"> 
+  POLYGON ((301939.1370850084 2767237.5902510053, 301938.87 2767237.43, 301938.823 2767237.507, 301939.1370850084 2767237.5902510053)) 
+  </op>
 </test>
 </case>
 
 <case>
-  <desc>AA - robustness failure</desc>
+  <desc>AA - OLD robustness failure (works with snapping)</desc>
   <a>
 POLYGON ((301936.52 2767241.28, 301933.22 2767239.3, 301934.9 
 2767236.51, 301935.54 2767235.44, 301938.87 2767237.43, 301936.52 
@@ -28,12 +30,14 @@ POLYGON ((302041.321 2767264.675, 301938.823 2767237.507, 301941.21 2767233.59, 
 302048.886 2767243.046, 302041.321 2767264.675))  
 </b>
 <test>
-  <op name="intersection">    GEOMETRYCOLLECTION EMPTY  </op>
+  <op name="intersection" arg1="A" arg2="B">    
+  POLYGON ((301938.823 2767237.507, 301938.87 2767237.43, 301938.86994385667 2767237.4299664493, 301938.823 2767237.507))  
+  </op>
 </test>
 </case>
 
 <case>
-  <desc>AA - robustness failure (fails with EnhancedPrecisionOp)</desc>
+  <desc>AA - OLD robustness failure  (works with snapping)</desc>
   <a>
 POLYGON ((464664.782646596 5362148.87380619, 464664.713299 5362148.758128, 464686.806220838 5362136.92416521, 
 464713.650216607 5362122.5453135, 464711.113332785 5362117.30158834, 464707.408813375 5362110.21553566, 
@@ -47,12 +51,14 @@ POLYGON ((464769.977147523 5362187.88829332, 464765.146147008 5362180.84587461, 
 464746.257208116 5362179.45514151, 464752.378040379 5362191.80978275, 464769.977147523 5362187.88829332))  
 </b>
 <test>
-  <op name="intersection">    GEOMETRYCOLLECTION EMPTY  </op>
+  <op name="intersection" arg1="A" arg2="B">    
+  POINT (464712.646269 5362123.083073)  
+  </op>
 </test>
 </case>
 
 <case>
-  <desc>AA - robustness failure (fails with EnhancedPrecisionOp)</desc>
+  <desc>AA - OLD robustness failure  (works with snapping)</desc>
   <a>
 POLYGON ((698400.5682737827 2388494.3828697307, 698402.3209180075 
 2388497.0819257903, 698415.3598714538 2388498.764371397, 
@@ -66,13 +72,15 @@ POLYGON ((698231.847335025 2388474.57994264, 698440.416211779
 2388474.57994264))
 	</b>
 <test>
-  <op name="intersection">    GEOMETRYCOLLECTION EMPTY  </op>
+  <op name="intersection" arg1="A" arg2="B">    
+  LINESTRING (698413.5003455497 2388495.90071853, 698400.5682737827 2388494.3828697307)  
+  </op>
 </test>
 </case>
 
 
 <case>
-  <desc>AA - robustness failure (fails with EnhancedPrecisionOp)</desc>
+  <desc>AA - OLD robustness failure (works with snapping)</desc>
   <a>
 POLYGON ((698265.5760207245 2388415.007869463, 698266.5171698363 
 2388416.456984281, 698272.2367250263 2388406.868318228, 
@@ -85,7 +93,9 @@ POLYGON ((698230.86813842 2388473.60074604, 698104.551776442
 2388473.60074604))
 	</b>
 <test>
-  <op name="intersection">    GEOMETRYCOLLECTION EMPTY  </op>
+  <op name="intersection" arg1="A" arg2="B">    
+  POLYGON ((698265.5760207245 2388415.007869463, 698265.5760207246 2388415.007869463, 698271.2748419731 2388405.3872787533, 698265.5760207245 2388415.007869463))  
+  </op>
 </test>
 </case>
 

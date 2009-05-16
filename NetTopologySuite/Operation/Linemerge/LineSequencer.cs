@@ -6,7 +6,7 @@ using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using GisSharpBlog.NetTopologySuite.Planargraph.Algorithm;
 using GisSharpBlog.NetTopologySuite.Utilities;
-using Iesi_NTS.Collections.Generic;
+using Wintellect.PowerCollections;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 {
@@ -66,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             IMultiLineString mls = geom as IMultiLineString;
 
             // The nodes in all subgraphs which have been completely scanned
-            ISet<ICoordinate> prevSubgraphNodes = new SortedSet<ICoordinate>();
+            OrderedSet<ICoordinate> prevSubgraphNodes = new OrderedSet<ICoordinate>();
 
             ICoordinate lastNode = null;
             IList<ICoordinate> currNodes = new List<ICoordinate>();
@@ -87,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                 if (lastNode != null && startNode != lastNode) 
                 {
                     // start new connected sequence
-                    prevSubgraphNodes.AddAll(currNodes);
+                    prevSubgraphNodes.AddMany(currNodes);
                     currNodes.Clear();
                 }                
 

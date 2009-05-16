@@ -2,6 +2,7 @@ using System.Collections;
 using System.IO;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using Wintellect.PowerCollections;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -11,8 +12,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     public class EdgeIntersectionList
     {
         // a list of EdgeIntersections      
-        private IDictionary nodeMap = new SortedList();
-        private Edge edge;  // the parent edge
+        private readonly IDictionary nodeMap = new OrderedDictionary<EdgeIntersection, object>();
+        private readonly Edge edge;  // the parent edge
 
         /// <summary>
         /// 
@@ -48,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             EdgeIntersection ei = (EdgeIntersection) nodeMap[eiNew];
             if (ei != null) 
                 return ei;            
-            nodeMap.Add(eiNew, eiNew);
+            nodeMap[eiNew] = eiNew;
             return eiNew;
         }
 

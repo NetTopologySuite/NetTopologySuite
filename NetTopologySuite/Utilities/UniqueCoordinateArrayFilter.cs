@@ -1,6 +1,6 @@
 using System.Collections;
+using System.Linq;
 using GeoAPI.Geometries;
-using Iesi_NTS.Collections;
 
 namespace GisSharpBlog.NetTopologySuite.Utilities
 {
@@ -10,23 +10,14 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
     /// </summary>
     public class UniqueCoordinateArrayFilter : ICoordinateFilter 
     {
-        private ISet table = new SortedSet();
-        private ArrayList list = new ArrayList();
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public UniqueCoordinateArrayFilter() { }
+        private readonly ArrayList list = new ArrayList();
 
         /// <summary>
         /// Returns the gathered <c>Coordinate</c>s.
         /// </summary>
         public ICoordinate[] Coordinates
         {
-            get
-            {
-                return (ICoordinate[]) list.ToArray(typeof(ICoordinate));
-            }
+            get { return list.Cast<ICoordinate>().ToArray(); }
         }
 
         /// <summary>
@@ -35,11 +26,8 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <param name="coord"></param>
         public void Filter(ICoordinate coord) 
         {
-            if (!table.Contains(coord)) 
-            {
-                list.Add(coord);
-                table.Add(coord);
-            }
+            if (!list.Contains(coord))
+                 list.Add(coord);            
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -143,7 +144,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                 var nv = new EdgeNodingValidator(edgeList.Edges);
                 nv.checkValid();
             }
-
+            
             graph.AddEdges(edgeList.Edges);
             ComputeLabelling();
             LabelIncompleteNodes();

@@ -4,6 +4,7 @@ using System.IO;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
+using Wintellect.PowerCollections;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
@@ -12,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public class SegmentNodeList : IEnumerable
     {
-        private readonly IDictionary nodeMap = new SortedList();
+        private readonly IDictionary nodeMap = new OrderedDictionary<SegmentNode, Object>();
         private readonly SegmentString edge;  // the parent edge
 
         /// <summary>
