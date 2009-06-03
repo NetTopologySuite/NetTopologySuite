@@ -350,7 +350,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 }
             }
         }
-    
+
         public void ExpandToInclude(IExtents<TCoordinate> other)
         {
             if (other == null || other.IsEmpty)
@@ -439,7 +439,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Boolean Intersects(IExtents<TCoordinate> other)
         {
-            if (IsEmpty || other.IsEmpty)
+            if (IsEmpty || other == null || other.IsEmpty)//jd:added check for null extent - deleted records will return a null extent
             {
                 return false;
             }
@@ -524,7 +524,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             return Intersects(x, y);
         }
-                
+
         public Boolean Contains(TCoordinate p)
         {
             // FIX_PERF: read all coordinates at once
@@ -663,7 +663,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             {
                 return 0;
             }
-            
+
             if (isEmpty || otherEmpty)
             {
                 return isEmpty ? -1 : 1;
@@ -753,7 +753,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             {
                 // 3D_UNSAFE
                 // FIX_PERF: read all coordinates at once
-                Double area = Math.Abs(_max[Ordinates.X] - _min[Ordinates.X]) * 
+                Double area = Math.Abs(_max[Ordinates.X] - _min[Ordinates.X]) *
                               Math.Abs(_max[Ordinates.Y] - _min[Ordinates.Y]);
                 return area;
             }
@@ -1331,12 +1331,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 : _geoFactory.CreateExtents(this, box);
         }
 
-        public Boolean Touches(IExtents a) 
+        public Boolean Touches(IExtents a)
         {
             throw new NotImplementedException();
         }
 
-        public Boolean Within(IExtents a) 
+        public Boolean Within(IExtents a)
         {
             throw new NotImplementedException();
         }
