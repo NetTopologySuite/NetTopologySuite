@@ -192,6 +192,8 @@ namespace NetTopologySuite.Coordinates
 
         private static void checkDimension(CoordinateDimensions dimension)
         {
+            return;
+
             if (dimension != CoordinateDimensions.Two)
             {
                 throw new NotSupportedException("Dimension can only be 2 for "+
