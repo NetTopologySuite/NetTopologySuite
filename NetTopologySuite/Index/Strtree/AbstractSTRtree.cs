@@ -45,8 +45,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         private AbstractNode<TBounds, IBoundable<TBounds>> _root;
         private Boolean _built;
         private Boolean _isDisposed;
-        //private readonly List<IBoundable<TBounds>> _children = new List<IBoundable<TBounds>>();
+        private readonly List<IBoundable<TBounds>> _children = new List<IBoundable<TBounds>>();
         private readonly Int32 _nodeCapacity;
+        private bool _building;
 
         /// <summary> 
         /// Constructs an AbstractStrTree with the specified maximum number of child
@@ -80,8 +81,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             //Insert(item.Bounds, item);
             Assert.IsTrue(!_built, "Cannot insert items into an STR packed R-tree after it has been built.");
-            //_children.Add(item);
-            _root.AddItem(item);
+            _children.Add(item);
+            //_root.AddItem(item);
+        }
+
+        public void BulkLoad(IEnumerable<TItem> items)
+        {
+            Assert.IsTrue(!_built, "Cannot insert items into an STR packed R-tree after it has been built.");
+            _children.AddRange(Caster.Upcast<IBoundable<TBounds>, TItem>(items));
         }
 
         /// <remarks>
@@ -166,12 +173,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         public void Build()
         {
             Assert.IsTrue(!_built);
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
             // need to finish the createHigherLevels method refactor
-            _root = (Count == 0)
+            _building = true;
+            _root = (_children.Count == 0)
                        ? CreateNode(0)
-                       : createHigherLevels(null, -1);
+                       : createHigherLevels(_children, -1);
             _built = true;
+            _building = false;
         }
 
         public TBounds Bounds
@@ -301,7 +310,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
             foreach (IBoundable<TBounds> childBoundable in sortedChildBoundables)
             {
-                AbstractNode<TBounds, IBoundable<TBounds>> lastNode 
+                AbstractNode<TBounds, IBoundable<TBounds>> lastNode
                     = Slice.GetLast(parentBoundables) as AbstractNode<TBounds, IBoundable<TBounds>>;
 
                 if (lastNode.ChildCount == NodeCapacity)
@@ -499,7 +508,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
         private void ensureBuilt()
         {
-            if (!_built)
+            if (!_built && !_building)
             {
                 Build();
             }

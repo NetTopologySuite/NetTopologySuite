@@ -149,7 +149,7 @@ namespace GisSharpBlog.NetTopologySuite.Index
         {
             if (HasItems)
             {
-                _items.Clear();   
+                _items.Clear();
             }
 
             if (HasChildren)
@@ -252,25 +252,25 @@ namespace GisSharpBlog.NetTopologySuite.Index
             {
                 yield break;
             }
-
-            foreach (TItem item in ItemsInternal)
-            {
-                if (item.Intersects(query))
+            if (ItemsInternal != null)
+                foreach (TItem item in ItemsInternal)
                 {
-                    yield return item;
-                }
-            }
-
-            foreach (ISpatialIndexNode<TBounds, TItem> node in ChildrenInternal)
-            {
-                if (node != null)
-                {
-                    foreach (TItem item in node.Query(query))
+                    if (item.Intersects(query))
                     {
                         yield return item;
                     }
                 }
-            }
+            if (ChildrenInternal != null)
+                foreach (ISpatialIndexNode<TBounds, TItem> node in ChildrenInternal)
+                {
+                    if (node != null)
+                    {
+                        foreach (TItem item in node.Query(query))
+                        {
+                            yield return item;
+                        }
+                    }
+                }
         }
 
         public virtual IEnumerable<TItem> Query(TBounds query, Predicate<TItem> predicate)
@@ -321,7 +321,7 @@ namespace GisSharpBlog.NetTopologySuite.Index
                 {
                     EnsureSubNodes();
                 }
-                
+
                 return _subNodes;
             }
         }
