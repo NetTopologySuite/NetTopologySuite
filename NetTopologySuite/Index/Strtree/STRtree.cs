@@ -110,17 +110,30 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             {
                 IExtents<TCoordinate> bounds = null;
 
-                foreach (IBoundable<IExtents<TCoordinate>> childBoundable in Children)
-                {
-                    if (bounds == null)
+                if (HasChildren)
+                    foreach (IBoundable<IExtents<TCoordinate>> childBoundable in Children)
                     {
-                        bounds = _geoFactory.CreateExtents(childBoundable.Bounds);
+                        if (bounds == null)
+                        {
+                            bounds = _geoFactory.CreateExtents(childBoundable.Bounds);
+                        }
+                        else
+                        {
+                            bounds.ExpandToInclude(childBoundable.Bounds);
+                        }
                     }
-                    else
+                if (HasItems)
+                    foreach (IBoundable<IExtents<TCoordinate>> item in ItemsInternal)
                     {
-                        bounds.ExpandToInclude(childBoundable.Bounds);
+                        if (bounds == null)
+                        {
+                            bounds = _geoFactory.CreateExtents(item.Bounds);
+                        }
+                        else
+                        {
+                            bounds.ExpandToInclude(item.Bounds);
+                        }
                     }
-                }
 
                 return bounds;
             }
@@ -224,14 +237,15 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
             sortedChildBoundables.Sort(XOrdinateComparer);
 
-            IList<IList<IBoundable<IExtents<TCoordinate>>>> verticalSlices 
+            IList<IList<IBoundable<IExtents<TCoordinate>>>> verticalSlices
                 = VerticalSlices(sortedChildBoundables, (Int32)Math.Ceiling(Math.Sqrt(minLeafCount)));
 
-            IList<IBoundable<IExtents<TCoordinate>>> tempList 
+            IList<IBoundable<IExtents<TCoordinate>>> tempList
                 = CreateParentBoundablesFromVerticalSlices(verticalSlices, newLevel);
 
             return tempList;
         }
+
 
         protected static Comparison<IBoundable<IExtents<TCoordinate>>> XOrdinateComparer
         {
@@ -265,7 +279,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             Int32 newLevel)
         {
             Assert.IsTrue(Slice.CountGreaterThan(verticalSlices, 0));
-            List<IBoundable<IExtents<TCoordinate>>> parentBoundables 
+            List<IBoundable<IExtents<TCoordinate>>> parentBoundables
                 = new List<IBoundable<IExtents<TCoordinate>>>();
 
             foreach (IList<IBoundable<IExtents<TCoordinate>>> verticalSlice in verticalSlices)
@@ -344,5 +358,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         //{
         //    return avg(e.MinY, e.MaxY);
         //}
+
+
     }
 }

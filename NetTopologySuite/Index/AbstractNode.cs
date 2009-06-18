@@ -62,7 +62,10 @@ namespace GisSharpBlog.NetTopologySuite.Index
         {
             get
             {
-                throw new NotImplementedException();
+                Int32 ndcount = 0;
+                foreach (var v in ChildrenInternal)
+                    ndcount += v.TotalNodeCount;
+                return ndcount + ChildCount;
             }
         }
 

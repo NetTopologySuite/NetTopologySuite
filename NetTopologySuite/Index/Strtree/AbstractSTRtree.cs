@@ -79,16 +79,23 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
         public virtual void Insert(TItem item)
         {
-            //Insert(item.Bounds, item);
             Assert.IsTrue(!_built, "Cannot insert items into an STR packed R-tree after it has been built.");
-            _children.Add(item);
+            Insert(item.Bounds, item);
+            //_children.Add(item);
             //_root.AddItem(item);
         }
+
+        private void Insert(TBounds bounds, TItem item)
+        {
+            _children.Add(item);
+        }
+
 
         public void BulkLoad(IEnumerable<TItem> items)
         {
             Assert.IsTrue(!_built, "Cannot insert items into an STR packed R-tree after it has been built.");
-            _children.AddRange(Caster.Upcast<IBoundable<TBounds>, TItem>(items));
+            foreach (TItem item in items)
+                Insert(item);
         }
 
         /// <remarks>
@@ -210,7 +217,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             {
                 ensureBuilt();
 
-                return !_root.HasItems ? 0 : GetCount(_root);
+                return _root.TotalItemCount;
             }
         }
 
@@ -220,7 +227,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             {
                 ensureBuilt();
 
-                return !_root.HasItems ? 0 : GetDepth(_root);
+                return !_root.HasChildren ? 0 : GetDepth(_root);
             }
         }
 
@@ -257,17 +264,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             Int32 size = 0;
 
-            foreach (IBoundable<TBounds> boundable in node.Children)
+            foreach (AbstractNode<TBounds, IBoundable<TBounds>> boundable in node.Children)
             {
-                if (boundable is AbstractNode<TBounds, IBoundable<TBounds>>)
-                {
-                    size += GetCount(boundable as AbstractNode<TBounds, IBoundable<TBounds>>);
-                }
-                else if (boundable is ItemBoundable<TBounds, TItem>)
-                {
-                    size += 1;
-                }
+                    size += GetCount(boundable );
             }
+
+            size += node.ItemCount;
+
 
             return size;
         }
@@ -310,8 +313,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
             foreach (IBoundable<TBounds> childBoundable in sortedChildBoundables)
             {
-                AbstractNode<TBounds, IBoundable<TBounds>> lastNode
-                    = Slice.GetLast(parentBoundables) as AbstractNode<TBounds, IBoundable<TBounds>>;
+                ISpatialIndexNode<TBounds, IBoundable<TBounds>> lastNode
+                    = Slice.GetLast(parentBoundables) as ISpatialIndexNode<TBounds, IBoundable<TBounds>>;
 
                 if (lastNode.ChildCount == NodeCapacity)
                 {
@@ -319,7 +322,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
                     parentBoundables.Add(lastNode);
                 }
 
-                lastNode.AddItem(childBoundable);
+                if (childBoundable is TItem)
+                    lastNode.AddItem(childBoundable);
+                else
+                    lastNode.AddChild(childBoundable as ISpatialIndexNode<TBounds, IBoundable<TBounds>>);
             }
 
             return parentBoundables;
@@ -356,33 +362,36 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         //    }
         //}
 
-        private static IEnumerable<TItem> query(TBounds searchBounds, AbstractNode<TBounds, IBoundable<TBounds>> node, Predicate<TItem> filter)
+        private static IEnumerable<TItem> query(TBounds searchBounds, ISpatialIndexNode<TBounds, IBoundable<TBounds>> node, Predicate<TItem> filter)
         {
-            foreach (IBoundable<TBounds> childBoundable in node.Children)
+            foreach (TItem item in node.Items)
+            {
+                if (searchBounds.Intersects(item.Bounds))
+                {
+                    if (filter == null)
+                        yield return item;
+                    else
+                    {
+                        if (filter(item))
+                            yield return item;
+                    }
+                }
+            }
+
+            foreach (AbstractNode<TBounds, IBoundable<TBounds>> childBoundable in node.Children)
             {
                 if (!childBoundable.Intersects(searchBounds))
                 {
                     continue;
                 }
+                foreach (TItem t in query(searchBounds, childBoundable, filter))
+                    yield return t;
 
-                if (childBoundable is AbstractNode<TBounds, IBoundable<TBounds>>)
-                {
-                    query(searchBounds, childBoundable as AbstractNode<TBounds, IBoundable<TBounds>>, filter);
-                }
-                else if (childBoundable is ItemBoundable<TBounds, TItem>)
-                {
-                    ItemBoundable<TBounds, TItem> itemBoundable = (ItemBoundable<TBounds, TItem>)childBoundable;
-
-                    if (filter(itemBoundable.Item))
-                    {
-                        yield return itemBoundable.Item;
-                    }
-                }
-                else
-                {
-                    Assert.ShouldNeverReachHere();
-                }
             }
+
+
+
+
         }
 
         private static Boolean removeItem(AbstractNode<TBounds, IBoundable<TBounds>> node, TItem item)

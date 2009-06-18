@@ -30,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
         private class SirTreeNode : AbstractNode<Interval, IBoundable<Interval>>
         {
-            public SirTreeNode(Int32 nodeCapacity) : base(nodeCapacity) {}
+            public SirTreeNode(Int32 nodeCapacity) : base(nodeCapacity) { }
 
             protected override Interval ComputeBounds()
             {
@@ -67,13 +67,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <summary> 
         /// Constructs an SIRtree with the default (10) node capacity.
         /// </summary>
-        public SirTree() : this(10) {}
+        public SirTree() : this(10) { }
 
         /// <summary> 
         /// Constructs an SIRtree with the given maximum number of child nodes that
         /// a node may have.
         /// </summary>
-        public SirTree(Int32 nodeCapacity) : base(nodeCapacity) {}
+        public SirTree(Int32 nodeCapacity) : base(nodeCapacity) { }
 
         protected override AbstractNode<Interval, IBoundable<Interval>> CreateNode(Int32 level)
         {
@@ -104,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <param name="x2">Possibly equal to x1.</param>
         public IEnumerable<TItem> Query(Double x1, Double x2)
         {
-            IEnumerable<ItemBoundable<Interval, TItem>> boundedItems 
+            IEnumerable<ItemBoundable<Interval, TItem>> boundedItems
                 = Query(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)));
 
             foreach (ItemBoundable<Interval, TItem> boundable in boundedItems)
@@ -139,5 +139,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         //{
         //    return new SirTreeItemBoundable(bounds, item);
         //}
+
+   
     }
 }
