@@ -23,19 +23,19 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
                     new BufferedCoordinateSequenceFactory(coordFactory));
 
             // read a point from a WKT String (using the default point factory)
-            WktReader<BufferedCoordinate> reader = new WktReader<BufferedCoordinate>(geoFactory, 
-                                                                                         null);
+            WktReader<BufferedCoordinate> reader = new WktReader<BufferedCoordinate>(geoFactory,
+                                                                                     null);
             IGeometry g1 = reader.Read("LINESTRING (0 0, 10 10, 20 20)");
 
             Console.WriteLine("Geometry 1: " + g1);
 
             // create a point by specifying the coordinates directly
             ICoordinate[] coordinates = new ICoordinate[]
-                                        {
-                                            coordFactory.Create(0, 0),
-                                            coordFactory.Create(10, 10), 
-                                            coordFactory.Create(20, 20)
-                                        };
+                                            {
+                                                coordFactory.Create(0, 0),
+                                                coordFactory.Create(10, 10),
+                                                coordFactory.Create(20, 20)
+                                            };
 
             IGeometry g2 = geoFactory.CreateLineString(coordinates);
             Console.WriteLine("Geometry 2: " + g2);

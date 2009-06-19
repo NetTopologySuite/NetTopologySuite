@@ -1,9 +1,8 @@
 using System;
 using System.Diagnostics;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Samples.SimpleTests;
-using NetTopologySuite.Coordinates;
 using NUnit.Framework;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
@@ -23,8 +22,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// Initializes a new instance of the <see cref="RobustLineIntersectorTest"/> class.
         /// </summary>
         public RobustLineIntersectorTest()
-            : base(GeometryFactory<BufferedCoordinate>.CreateFixedPrecision(
-                       new BufferedCoordinateSequenceFactory(), 1.0)) { }
+            : base(GeometryServices.GetGeometryFactory(PrecisionModelType.Fixed))
+        {
+        }
 
         [Test]
         public void IntersectionIsCorrect()

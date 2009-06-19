@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
+using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Operation.Linemerge;
 using NetTopologySuite.Coordinates;
 
@@ -15,12 +15,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
     /// </summary>	
     public class LineMergeExample
     {
-        private void InitBlock()
+        private IWktGeometryReader reader;
+
+        public LineMergeExample()
         {
-            reader = new WktReader<BufferedCoordinate>(
-                GeometryFactory<BufferedCoordinate>.CreateFloatingPrecision(
-                    new BufferedCoordinateSequenceFactory()),
-                null);
+            InitBlock();
         }
 
         internal virtual IEnumerable<IGeometry<BufferedCoordinate>> Data
@@ -43,11 +42,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
             }
         }
 
-        private IWktGeometryReader reader;
-
-        public LineMergeExample()
+        private void InitBlock()
         {
-            InitBlock();
+            reader =
+                new WktReader<BufferedCoordinate>(
+                    GeometryServices.GetGeometryFactory(PrecisionModelType.DoubleFloating),
+                    null);
         }
 
         [STAThread]

@@ -16,11 +16,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             BufferedCoordinateFactory coordFactory = new BufferedCoordinateFactory();
 
             ILineString lineString = GeoFactory.CreateLineString(new ICoordinate[]
-                                                                 {
-                                                                     coordFactory.Create(10, 10),
-                                                                     coordFactory.Create(20, 20),
-                                                                     coordFactory.Create(20, 30),
-                                                                 });
+                                                                     {
+                                                                         coordFactory.Create(10, 10),
+                                                                         coordFactory.Create(20, 20),
+                                                                         coordFactory.Create(20, 30),
+                                                                     });
 
             ILineString reverse = lineString.Reverse();
 
@@ -40,24 +40,24 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         public void MultiLineStringReverseTest()
         {
             ILineString lineString1 = GeoFactory.CreateLineString(new ICoordinate[]
-                                                                  {
-                                                                      CoordFactory.Create(10, 10),
-                                                                      CoordFactory.Create(20, 20),
-                                                                      CoordFactory.Create(20, 30),
-                                                                  });
+                                                                      {
+                                                                          CoordFactory.Create(10, 10),
+                                                                          CoordFactory.Create(20, 20),
+                                                                          CoordFactory.Create(20, 30),
+                                                                      });
 
             ILineString lineString2 = GeoFactory.CreateLineString(new ICoordinate[]
-                                                                  {
-                                                                      CoordFactory.Create(12, 12),
-                                                                      CoordFactory.Create(24, 24),
-                                                                      CoordFactory.Create(36, 36),
-                                                                  });
+                                                                      {
+                                                                          CoordFactory.Create(12, 12),
+                                                                          CoordFactory.Create(24, 24),
+                                                                          CoordFactory.Create(36, 36),
+                                                                      });
 
             IMultiLineString multiLineString = GeoFactory.CreateMultiLineString(
                 new[]
-                {
-                    lineString1, lineString2,
-                });
+                    {
+                        lineString1, lineString2,
+                    });
 
             IMultiLineString reverse = multiLineString.Reverse();
 

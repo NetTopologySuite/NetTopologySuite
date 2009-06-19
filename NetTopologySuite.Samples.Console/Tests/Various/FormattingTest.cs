@@ -24,6 +24,13 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             _numberFormatInfo.NumberDecimalSeparator = ".";
         }
 
+        private void TestDoubleValueResult()
+        {
+            String result = Convert.ToString(PreciseDouble, _numberFormatInfo);
+            Assert.IsNotNull(result);
+            Debug.WriteLine(result);
+        }
+
         [Test]
         public void DoubleFormattingFixedTest()
         {
@@ -121,13 +128,6 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             // point has the Double values as coordinates
             Boolean result = test.Equals(point); // Are you read that Geometry not overrides ==...
             Assert.IsFalse(result);
-        }
-
-        private void TestDoubleValueResult()
-        {
-            String result = Convert.ToString(PreciseDouble, _numberFormatInfo);
-            Assert.IsNotNull(result);
-            Debug.WriteLine(result);
         }
     }
 }

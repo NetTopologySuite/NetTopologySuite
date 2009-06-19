@@ -62,6 +62,7 @@
     <Compile Include="Geometries\constructionexample.cs" />
     <Compile Include="Geometries\precisionmodelexample.cs" />
     <Compile Include="Geometries\simplemethodsexample.cs" />
+    <Compile Include="GeometryServices.cs" />
     <Compile Include="LinearReferencing\LinearReferencingExample.cs" />
     <Compile Include="Tests\Various\BufferTest.cs" />
     <Compile Include="Tests\Various\CoversTest.cs" />

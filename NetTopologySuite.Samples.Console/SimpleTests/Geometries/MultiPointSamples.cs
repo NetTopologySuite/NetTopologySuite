@@ -14,13 +14,13 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
         public MultiPointSamples()
         {
             ICoordinate[] coordinates = new ICoordinate[]
-                                        {
-                                            CoordFactory.Create(100, 100),
-                                            CoordFactory.Create(200, 200),
-                                            CoordFactory.Create(300, 300),
-                                            CoordFactory.Create(400, 400),
-                                            CoordFactory.Create(500, 500),
-                                        };
+                                            {
+                                                CoordFactory.Create(100, 100),
+                                                CoordFactory.Create(200, 200),
+                                                CoordFactory.Create(300, 300),
+                                                CoordFactory.Create(400, 400),
+                                                CoordFactory.Create(500, 500),
+                                            };
 
             _multiPoint = GeoFactory.CreateMultiPoint(coordinates);
         }

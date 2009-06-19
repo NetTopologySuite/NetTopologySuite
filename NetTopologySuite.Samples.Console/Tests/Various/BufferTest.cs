@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -13,8 +14,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
     [TestFixture]
     public class BufferTest : BaseSamples
     {
-        #region Test Geometry Wkt
-        private const String GeometryWkt = @"LINESTRING(-8.50100090092787 91.4810937292432,
+        private const String GeometryWkt =
+            @"LINESTRING(-8.50100090092787 91.4810937292432,
                                                         -10.8234006958666  91.8368026666699,
                                                         -7.00247853623872 91.1844278958622,
                                                         -8.68057207000981 91.6129332911536,
@@ -723,34 +724,13 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
                                                         -15.2839189689886 0.907756520281489,
                                                         -13.8675132484773 20.1532448292913,
                                                         -15.0093840816672 19.1108547370333)";
-        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BufferTest"/> class.
         /// </summary>
         public BufferTest()
-            : base(GeometryFactory<BufferedCoordinate>.CreateFixedPrecision(
-                       new BufferedCoordinateSequenceFactory(), 1.0)) { }
-
-        [Test]
-        public void TestWithDefaultFactory()
+            : base(GeometryServices.GetGeometryFactory(PrecisionModelType.Fixed))
         {
-            BufferedCoordinateSequenceFactory seqFactory
-                = new BufferedCoordinateSequenceFactory();
-            IGeometryFactory<BufferedCoordinate> @default
-                = new GeometryFactory<BufferedCoordinate>(seqFactory);
-
-            performTest(@default);
-        }
-
-        [Test]
-        public void TestWithFixedFactory()
-        {
-            BufferedCoordinateSequenceFactory seqFactory
-                = new BufferedCoordinateSequenceFactory();
-            IGeometryFactory<BufferedCoordinate> @fixed
-                = GeometryFactory<BufferedCoordinate>.CreateFixedPrecision(seqFactory, 1.0);
-            performTest(@fixed);
         }
 
         private static void performTest(IGeometryFactory<BufferedCoordinate> factory)
@@ -769,6 +749,27 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             IGeometry buffered = simplified.Buffer(1.143);
             Assert.IsNotNull(buffered);
             Debug.WriteLine(buffered);
+        }
+
+        [Test]
+        public void TestWithDefaultFactory()
+        {
+            BufferedCoordinateSequenceFactory seqFactory
+                = new BufferedCoordinateSequenceFactory();
+            IGeometryFactory<BufferedCoordinate> @default
+                = new GeometryFactory<BufferedCoordinate>(seqFactory);
+
+            performTest(@default);
+        }
+
+        [Test]
+        public void TestWithFixedFactory()
+        {
+            BufferedCoordinateSequenceFactory seqFactory
+                = new BufferedCoordinateSequenceFactory();
+            IGeometryFactory<BufferedCoordinate> @fixed
+                = GeometryServices.GetGeometryFactory(PrecisionModelType.Fixed);
+            performTest(@fixed);
         }
     }
 }

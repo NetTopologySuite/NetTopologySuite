@@ -10,14 +10,13 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
 {
     public class SerializationSamples : BaseSamples
     {
-        private readonly String filepath = String.Empty;
-        private readonly IFormatter serializer;
-
         private readonly ICoordinate[] coordinates;
-        private readonly IPoint point;
+        private readonly String filepath = String.Empty;
         private readonly ILineString line;
-        private readonly IPolygon polygon;
         private readonly IMultiPoint multiPoint;
+        private readonly IPoint point;
+        private readonly IPolygon polygon;
+        private readonly IFormatter serializer;
 
         public SerializationSamples()
         {
@@ -31,32 +30,32 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
             point = GeoFactory.CreatePoint(coordFactory.Create(100, 100));
 
             coordinates = new ICoordinate[]
-                          {
-                              coordFactory.Create(10, 10),
-                              coordFactory.Create(20, 20),
-                              coordFactory.Create(20, 10),
-                          };
+                              {
+                                  coordFactory.Create(10, 10),
+                                  coordFactory.Create(20, 20),
+                                  coordFactory.Create(20, 10),
+                              };
             line = GeoFactory.CreateLineString(coordinates);
 
             coordinates = new ICoordinate[]
-                          {
-                              coordFactory.Create(100, 100),
-                              coordFactory.Create(200, 100),
-                              coordFactory.Create(200, 200),
-                              coordFactory.Create(100, 200),
-                              coordFactory.Create(100, 100),
-                          };
+                              {
+                                  coordFactory.Create(100, 100),
+                                  coordFactory.Create(200, 100),
+                                  coordFactory.Create(200, 200),
+                                  coordFactory.Create(100, 200),
+                                  coordFactory.Create(100, 100),
+                              };
             ILinearRing linearRing = GeoFactory.CreateLinearRing(coordinates);
             polygon = GeoFactory.CreatePolygon(linearRing, null);
 
             coordinates = new ICoordinate[]
-                          {
-                              coordFactory.Create(100, 100),
-                              coordFactory.Create(200, 200),
-                              coordFactory.Create(300, 300),
-                              coordFactory.Create(400, 400),
-                              coordFactory.Create(500, 500),
-                          };
+                              {
+                                  coordFactory.Create(100, 100),
+                                  coordFactory.Create(200, 200),
+                                  coordFactory.Create(300, 300),
+                                  coordFactory.Create(400, 400),
+                                  coordFactory.Create(500, 500),
+                              };
             multiPoint = GeoFactory.CreateMultiPoint(coordinates);
         }
 

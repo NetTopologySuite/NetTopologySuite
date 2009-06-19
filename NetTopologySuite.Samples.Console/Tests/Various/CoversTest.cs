@@ -28,35 +28,35 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             polygon2 = geoFactory.CreatePolygon(array2);
         }
 
+        private static void createCoordinates(ref ICoordinate[] array1, ref ICoordinate[] array2)
+        {
+            BufferedCoordinateFactory coordFactory = new BufferedCoordinateFactory();
+
+            array1 = new ICoordinate[]
+                         {
+                             coordFactory.Create(10, 10),
+                             coordFactory.Create(50, 10),
+                             coordFactory.Create(50, 50),
+                             coordFactory.Create(10, 50),
+                             coordFactory.Create(10, 10),
+                         };
+
+            array2 = new ICoordinate[]
+                         {
+                             coordFactory.Create(11, 11),
+                             coordFactory.Create(20, 11),
+                             coordFactory.Create(20, 20),
+                             coordFactory.Create(11, 20),
+                             coordFactory.Create(11, 11),
+                         };
+        }
+
         [Test]
         public void CoversTestTest()
         {
             Assert.IsTrue(polygon2.Within(polygon1));
             Assert.IsTrue(polygon1.Covers(polygon2));
             Assert.IsFalse(polygon1.CoveredBy(polygon2));
-        }
-
-        private static void createCoordinates(ref ICoordinate[] array1, ref ICoordinate[] array2)
-        {
-            BufferedCoordinateFactory coordFactory = new BufferedCoordinateFactory();
-
-            array1 = new ICoordinate[]
-                     {
-                         coordFactory.Create(10, 10),
-                         coordFactory.Create(50, 10),
-                         coordFactory.Create(50, 50),
-                         coordFactory.Create(10, 50),
-                         coordFactory.Create(10, 10),
-                     };
-
-            array2 = new ICoordinate[]
-                     {
-                         coordFactory.Create(11, 11),
-                         coordFactory.Create(20, 11),
-                         coordFactory.Create(20, 20),
-                         coordFactory.Create(11, 20),
-                         coordFactory.Create(11, 11),
-                     };
         }
     }
 }

@@ -33,10 +33,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
             Console.WriteLine(p1);
 
             ICoordinate[] coords = new ICoordinate[]
-                                   {
-                                       coordFactory.Create(0, 0),
-                                       coordFactory.Create(1, 1),
-                                   };
+                                       {
+                                           coordFactory.Create(0, 0),
+                                           coordFactory.Create(1, 1),
+                                       };
 
             IMultiPoint mpt = fact.CreateMultiPoint(coords);
             Console.WriteLine(mpt);

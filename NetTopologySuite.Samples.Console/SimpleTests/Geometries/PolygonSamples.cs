@@ -3,38 +3,36 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownBinary;
 using GeoAPI.Operations.Buffer;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using NetTopologySuite.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
 {
     public class PolygonSamples : BaseSamples
     {
+        private readonly ILinearRing hole;
         private readonly IPolygon polygon;
         private readonly ILinearRing shell;
-        private readonly ILinearRing hole;
 
         public PolygonSamples()
-            : base(new GeometryFactory<BufferedCoordinate>(
-                new PrecisionModel(CoordFactory, PrecisionModelType.Fixed)))
+            : base(GeometryServices.GetGeometryFactory(PrecisionModelType.Fixed))
         {
             shell = GeoFactory.CreateLinearRing(new ICoordinate[]
-                                                {
-                                                    CoordFactory.Create(100, 100),
-                                                    CoordFactory.Create(200, 100),
-                                                    CoordFactory.Create(200, 200),
-                                                    CoordFactory.Create(100, 200),
-                                                    CoordFactory.Create(100, 100),
-                                                });
+                                                    {
+                                                        CoordFactory.Create(100, 100),
+                                                        CoordFactory.Create(200, 100),
+                                                        CoordFactory.Create(200, 200),
+                                                        CoordFactory.Create(100, 200),
+                                                        CoordFactory.Create(100, 100),
+                                                    });
 
             hole = GeoFactory.CreateLinearRing(new ICoordinate[]
-                                               {
-                                                   CoordFactory.Create(120, 120),
-                                                   CoordFactory.Create(180, 120),
-                                                   CoordFactory.Create(180, 180),
-                                                   CoordFactory.Create(120, 180),
-                                                   CoordFactory.Create(120, 120),
-                                               });
+                                                   {
+                                                       CoordFactory.Create(120, 120),
+                                                       CoordFactory.Create(180, 120),
+                                                       CoordFactory.Create(180, 180),
+                                                       CoordFactory.Create(120, 180),
+                                                       CoordFactory.Create(120, 120),
+                                                   });
 
             polygon = GeoFactory.CreatePolygon(shell, new[] {hole,});
         }
@@ -45,19 +43,18 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
             IPoint exteriorPoint = GeoFactory.CreatePoint(CoordFactory.Create(650, 1500));
             ILineString aLine =
                 GeoFactory.CreateLineString(new ICoordinate[]
-                                            {
-                                                CoordFactory.Create(23, 32.2),
-                                                CoordFactory.Create(10, 222)
-                                            });
+                                                {
+                                                    CoordFactory.Create(23, 32.2),
+                                                    CoordFactory.Create(10, 222)
+                                                });
             ILineString anotherLine =
-                GeoFactory.CreateLineString(new ICoordinate[]
-                                            {CoordFactory.Create(0, 1), CoordFactory.Create(30, 30)});
+                GeoFactory.CreateLineString(new ICoordinate[] {CoordFactory.Create(0, 1), CoordFactory.Create(30, 30)});
             ILineString intersectLine =
                 GeoFactory.CreateLineString(new ICoordinate[]
-                                            {
-                                                CoordFactory.Create(0, 1),
-                                                CoordFactory.Create(300, 300)
-                                            });
+                                                {
+                                                    CoordFactory.Create(0, 1),
+                                                    CoordFactory.Create(300, 300)
+                                                });
 
             try
             {

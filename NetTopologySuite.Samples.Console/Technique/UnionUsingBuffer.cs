@@ -27,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Technique
                     new BufferedCoordinateSequenceFactory());
 
             WktReader<BufferedCoordinate> rdr = new WktReader<BufferedCoordinate>(geoFactory,
-                                                                                      null);
+                                                                                  null);
             IGeometry[] geom = new IGeometry[3];
             geom[0] = rdr.Read("POLYGON (( 100 180, 100 260, 180 260, 180 180, 100 180 ))");
             geom[1] = rdr.Read("POLYGON (( 80 140, 80 200, 200 200, 200 140, 80 140 ))");

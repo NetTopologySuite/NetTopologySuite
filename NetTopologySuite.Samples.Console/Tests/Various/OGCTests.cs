@@ -1,9 +1,8 @@
 using System;
 using System.Diagnostics;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Samples.SimpleTests;
-using NetTopologySuite.Coordinates;
 using NUnit.Framework;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
@@ -21,25 +20,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 
 
         public OgcTests()
-            : base(GeometryFactory<BufferedCoordinate>.CreateFixedPrecision(
-                       new BufferedCoordinateSequenceFactory(), 1.0))
+            : base(GeometryServices.GetGeometryFactory(PrecisionModelType.Fixed))
         {
             _blueLake = Reader.Read(BlueLakeWkt);
             _ashton = Reader.Read(AshtonWkt);
-        }
-
-        [Test]
-        public void OgcUnionTest()
-        {
-            Assert.IsNotNull(_blueLake);
-            Assert.IsNotNull(_ashton);
-
-            IGeometry expected = Reader.Read("POLYGON((52 18,66 23,73 9,48 6,52 18))");
-            IGeometry result = _blueLake.Union(_ashton);
-
-            Debug.WriteLine(result);
-            //Assert.IsTrue(result.EqualsExact(expected));
-            Assert.IsTrue(result.Equals(expected));
         }
 
         [Test]
@@ -50,6 +34,20 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 
             IGeometry expected = Reader.Read("POLYGON((52 18,66 23,73 9,48 6,52 18))");
             IGeometry result = _blueLake.SymmetricDifference(_ashton);
+
+            Debug.WriteLine(result);
+            //Assert.IsTrue(result.EqualsExact(expected));
+            Assert.IsTrue(result.Equals(expected));
+        }
+
+        [Test]
+        public void OgcUnionTest()
+        {
+            Assert.IsNotNull(_blueLake);
+            Assert.IsNotNull(_ashton);
+
+            IGeometry expected = Reader.Read("POLYGON((52 18,66 23,73 9,48 6,52 18))");
+            IGeometry result = _blueLake.Union(_ashton);
 
             Debug.WriteLine(result);
             //Assert.IsTrue(result.EqualsExact(expected));

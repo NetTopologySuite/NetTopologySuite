@@ -16,11 +16,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
             BufferedCoordinateFactory coordFactory = new BufferedCoordinateFactory();
 
             ICoordinate[] coordinates = new ICoordinate[]
-                                        {
-                                            coordFactory.Create(10, 10),
-                                            coordFactory.Create(20, 20),
-                                            coordFactory.Create(20, 10),
-                                        };
+                                            {
+                                                coordFactory.Create(10, 10),
+                                                coordFactory.Create(20, 20),
+                                                coordFactory.Create(20, 10),
+                                            };
 
             line = GeoFactory.CreateLineString(coordinates);
         }
@@ -32,17 +32,17 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
             IPoint pointInLine = GeoFactory.CreatePoint(coordFactory.Create(20, 10));
             IPoint pointOutLine = GeoFactory.CreatePoint(coordFactory.Create(20, 31));
             ICoordinate[] coords = new ICoordinate[]
-                                   {
-                                       coordFactory.Create(23, 32.2),
-                                       coordFactory.Create(922, 11)
-                                   };
+                                       {
+                                           coordFactory.Create(23, 32.2),
+                                           coordFactory.Create(922, 11)
+                                       };
             ILineString aLine = GeoFactory.CreateLineString(coords);
 
             coords = new ICoordinate[]
-                     {
-                         coordFactory.Create(0, 1),
-                         coordFactory.Create(30, 30)
-                     };
+                         {
+                             coordFactory.Create(0, 1),
+                             coordFactory.Create(30, 30)
+                         };
             ILineString anotherLine = GeoFactory.CreateLineString(coords);
 
             try

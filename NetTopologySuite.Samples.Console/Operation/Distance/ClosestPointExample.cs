@@ -17,6 +17,13 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Distance
         internal static GeometryFactory<BufferedCoordinate> fact;
         internal static IWktGeometryReader wktRdr;
 
+        static ClosestPointExample()
+        {
+            fact = new GeometryFactory<BufferedCoordinate>(
+                new BufferedCoordinateSequenceFactory());
+            wktRdr = new WktReader<BufferedCoordinate>(fact, null);
+        }
+
         [STAThread]
         public static void Main(String[] args)
         {
@@ -72,13 +79,6 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Distance
             {
                 Console.WriteLine(ex.StackTrace);
             }
-        }
-
-        static ClosestPointExample()
-        {
-            fact = new GeometryFactory<BufferedCoordinate>(
-                new BufferedCoordinateSequenceFactory());
-            wktRdr = new WktReader<BufferedCoordinate>(fact, null);
         }
     }
 }
