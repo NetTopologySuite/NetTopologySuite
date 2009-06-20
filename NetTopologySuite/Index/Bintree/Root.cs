@@ -33,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             // if index is -1, itemInterval must contain the origin.
             if (subNode == null)
             {
-                AddItem(item);
+                Add(item);
                 return;
             }
 
@@ -95,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
                 node = tree.GetNode(itemInterval);
             }
 
-            node.AddItem(item);
+            node.Add(item);
         }
     }
 }

@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             {
                 Interval? bounds = null;
 
-                foreach (IBoundable<Interval> childBoundable in Children)
+                foreach (IBoundable<Interval> childBoundable in SubNodes)
                 {
 
                     if (bounds == null)

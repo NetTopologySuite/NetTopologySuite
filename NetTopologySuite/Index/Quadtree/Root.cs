@@ -39,7 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             // if index is -1, itemEnv must cross the X or Y axis.
             if (index == -1)
             {
-                AddItem(item);
+                Add(item);
                 return;
             }
 
@@ -47,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             * the item must be contained in one quadrant, so insert it into the
             * tree for that quadrant (which may not yet exist)
             */
-            Node<TCoordinate, TItem> node = ChildrenInternal[index] as Node<TCoordinate, TItem>;
+            Node<TCoordinate, TItem> node = SubNodesInternal[index] as Node<TCoordinate, TItem>;
 
             /*
             *  If the subquad doesn't exist or this item is not contained in it,
@@ -59,7 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
                     = Node<TCoordinate, TItem>.CreateExpanded(_geoFactory, 
                                                               node, 
                                                               item.Bounds);
-                ChildrenInternal[index] = largerNode;
+                SubNodesInternal[index] = largerNode;
             }
 
             /*
@@ -67,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             * contains the extents for the item.  Insert the item into the tree 
             * at this subnode.
             */
-            Node<TCoordinate, TItem> subQuad = ChildrenInternal[index] as Node<TCoordinate, TItem>;
+            Node<TCoordinate, TItem> subQuad = SubNodesInternal[index] as Node<TCoordinate, TItem>;
             insertContained(subQuad, item.Bounds, item);
         }
 
@@ -109,14 +109,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
                 node = tree.GetNode(itemExtents);
             }
 
-            node.AddItem(item);
+            node.Add(item);
         }
 
         protected override IExtents<TCoordinate> ComputeBounds()
         {
             IExtents<TCoordinate> bounds = _geoFactory.CreateExtents();
 
-            foreach (ISpatialIndexNode<IExtents<TCoordinate>, TItem> node in ChildrenInternal)
+            foreach (ISpatialIndexNode<IExtents<TCoordinate>, TItem> node in SubNodesInternal)
             {
                 bounds.ExpandToInclude(node.Bounds);
             }

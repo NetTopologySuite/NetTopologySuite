@@ -110,8 +110,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             {
                 IExtents<TCoordinate> bounds = null;
 
-                if (HasChildren)
-                    foreach (IBoundable<IExtents<TCoordinate>> childBoundable in Children)
+                if (HasSubNodes)
+                    foreach (IBoundable<IExtents<TCoordinate>> childBoundable in SubNodes)
                     {
                         if (bounds == null)
                         {

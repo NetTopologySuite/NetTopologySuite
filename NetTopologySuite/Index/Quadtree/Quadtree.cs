@@ -212,6 +212,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             _root.Insert(new QuadTreeEntry(item, insertExtents));
         }
 
+        public void InsertRange(IEnumerable<TItem> items)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public Boolean Remove(TItem item)
         {
             throw new System.NotImplementedException();

@@ -80,16 +80,16 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 
             for (Int32 i = 0; i < 4; i++)
             {
-                if (ChildrenInternal[i] != null)
+                if (SubNodesInternal[i] != null)
                 {
-                    found = ChildrenInternal[i].RemoveItem(item);
+                    found = SubNodesInternal[i].Remove(item);
 
                     if (found)
                     {
                         // trim subtree if empty
-                        if (ChildrenInternal[i].IsPrunable)
+                        if (SubNodesInternal[i].IsPrunable)
                         {
-                            ChildrenInternal[i] = null;
+                            SubNodesInternal[i] = null;
                         }
 
                         break;
@@ -106,7 +106,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             // otherwise, try and remove the item from the list of items in this node
             if (ItemsInternal.Contains(item))
             {
-                RemoveItem(item);
+                Remove(item);
                 found = true;
             }
 
@@ -119,7 +119,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             {
                 for (Int32 i = 0; i < 4; i++)
                 {
-                    if (ChildrenInternal[i] != null)
+                    if (SubNodesInternal[i] != null)
                     {
                         return true;
                     }
@@ -184,7 +184,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             {
                 Int32 maxSubDepth = 0;
 
-                foreach (BaseQuadNode<TCoordinate, TItem> node in ChildrenInternal)
+                foreach (BaseQuadNode<TCoordinate, TItem> node in SubNodesInternal)
                 {
                     if (node != null)
                     {
@@ -222,7 +222,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 
         protected override void CreateSubNodes()
         {
-            ChildrenInternal.AddRange(new ISpatialIndexNode<IExtents<TCoordinate>, TItem>[4]);
+            SubNodesInternal.AddRange(new ISpatialIndexNode<IExtents<TCoordinate>, TItem>[4]);
         }
 
         #region IEnumerable<TItem> Members
@@ -234,7 +234,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
                 yield return item;
             }
 
-            foreach (Node<TCoordinate, TItem> node in ChildrenInternal)
+            foreach (Node<TCoordinate, TItem> node in SubNodesInternal)
             {
                 foreach (TItem item in node)
                 {

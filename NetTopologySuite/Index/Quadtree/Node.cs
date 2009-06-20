@@ -103,10 +103,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
                 return this;
             }
 
-            if (ChildrenInternal[subnodeIndex] != null)
+            if (SubNodesInternal[subnodeIndex] != null)
             {
                 // query lies in subquad, so search it
-                Node<TCoordinate, TItem> node = ChildrenInternal[subnodeIndex] as Node<TCoordinate, TItem>;
+                Node<TCoordinate, TItem> node = SubNodesInternal[subnodeIndex] as Node<TCoordinate, TItem>;
                 return node.Find(query);
             }
 
@@ -121,7 +121,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 
             if (node._level == _level - 1)
             {
-                ChildrenInternal[index] = node;
+                SubNodesInternal[index] = node;
             }
             else
             {
@@ -129,7 +129,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
                 // and recursively insert the quad
                 Node<TCoordinate, TItem> childNode = createSubnode(index);
                 childNode.InsertNode(node);
-                ChildrenInternal[index] = childNode;
+                SubNodesInternal[index] = childNode;
             }
         }
 
@@ -149,12 +149,12 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         private Node<TCoordinate, TItem> getSubnode(Int32 index)
         {
-            if (ChildrenInternal[index] == null)
+            if (SubNodesInternal[index] == null)
             {
-                ChildrenInternal[index] = createSubnode(index);
+                SubNodesInternal[index] = createSubnode(index);
             }
 
-            return ChildrenInternal[index] as Node<TCoordinate, TItem>;
+            return SubNodesInternal[index] as Node<TCoordinate, TItem>;
         }
 
         private Node<TCoordinate, TItem> createSubnode(Int32 index)

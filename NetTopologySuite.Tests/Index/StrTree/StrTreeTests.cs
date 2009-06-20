@@ -20,6 +20,11 @@ namespace NetTopologySuite.Tests.Index.StrTree
                 _extents = extents;
             }
 
+            public String Value
+            {
+                get { return _value; }
+            }
+
             public Boolean Intersects(IExtents<BufferedCoordinate> other)
             {
                 return _extents.Intersects(other);
