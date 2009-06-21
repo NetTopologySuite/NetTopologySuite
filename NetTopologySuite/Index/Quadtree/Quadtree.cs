@@ -303,5 +303,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         }
 
         #endregion
+
+        #region ISpatialIndexNodeFactory<IExtents,TItem> Members
+
+        ISpatialIndexNode<IExtents<TCoordinate>, TItem> ISpatialIndexNodeFactory<IExtents<TCoordinate>, TItem>.CreateNode(int level)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

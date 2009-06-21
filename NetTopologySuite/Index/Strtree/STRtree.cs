@@ -96,7 +96,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             }
         }
 
-        private class StrNode : AbstractNode<IExtents<TCoordinate>, IBoundable<IExtents<TCoordinate>>>
+        private class StrNode : AbstractNode<IExtents<TCoordinate>, TItem>
         {
             private IGeometryFactory<TCoordinate> _geoFactory;
 
@@ -156,7 +156,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
         #endregion
 
-        private IGeometryFactory<TCoordinate> _geoFactory;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
 
         /// <summary> 
         /// Constructs an STRtree with the default (10) node capacity.
@@ -213,7 +213,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         //    return base.Remove(item);
         //}
 
-        protected override AbstractNode<IExtents<TCoordinate>, IBoundable<IExtents<TCoordinate>>> CreateNode(Int32 level)
+        protected override ISpatialIndexNode<IExtents<TCoordinate>, TItem> CreateNode(Int32 level)
         {
             return new StrNode(_geoFactory, level);
         }

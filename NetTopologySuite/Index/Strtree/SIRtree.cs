@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             }
         }
 
-        private class SirTreeNode : AbstractNode<Interval, IBoundable<Interval>>
+        private class SirTreeNode : AbstractNode<Interval, ItemBoundable<Interval, TItem>>
         {
             public SirTreeNode(Int32 nodeCapacity) : base(nodeCapacity) { }
 
@@ -75,7 +75,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         public SirTree(Int32 nodeCapacity) : base(nodeCapacity) { }
 
-        protected override AbstractNode<Interval, IBoundable<Interval>> CreateNode(Int32 level)
+        protected override ISpatialIndexNode<Interval, ItemBoundable<Interval, TItem>> CreateNode(Int32 level)
         {
             return new SirTreeNode(level);
         }
@@ -140,6 +140,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         //    return new SirTreeItemBoundable(bounds, item);
         //}
 
-   
+
     }
 }

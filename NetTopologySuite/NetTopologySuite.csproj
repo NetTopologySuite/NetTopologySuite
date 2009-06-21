@@ -234,6 +234,7 @@
     <Compile Include="Index\Chain\MonotoneChain.cs" />
     <Compile Include="Index\Chain\MonotoneChainBuilder.cs" />
     <Compile Include="Index\Quadtree\QuadTreeNodeKey.cs" />
+    <Compile Include="Index\Strtree\DynamicSTRtree.cs" />
     <Compile Include="Index\Sweepline\ISweepLineOverlapAction.cs" />
     <Compile Include="Index\Quadtree\IntervalSize.cs" />
     <Compile Include="Index\AbstractNodeKey.cs" />

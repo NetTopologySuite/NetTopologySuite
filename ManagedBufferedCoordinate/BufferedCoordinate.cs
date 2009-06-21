@@ -425,16 +425,22 @@ namespace NetTopologySuite.Coordinates
 
         public Int32 CompareTo(BufferedCoordinate other)
         {
+            //jd: reinstated tests against empty coordinates as many unit tests rely on this
+            if (_id == null && other._id == null)
+                return 0;
+
             // Empty coordinates don't compare
             if (other._id == null)
             {
-                throw new ArgumentException("Cannot compare to the empty coordinate");
+                return 1;
+                //throw new ArgumentException("Cannot compare to the empty coordinate");
             }
 
             if (_id == null)
             {
-                throw new InvalidOperationException(
-                    "This coordinate is empty and cannot be compared");
+                return -1;
+                //throw new InvalidOperationException(
+                //    "This coordinate is empty and cannot be compared");
             }
 
             // Since the coordinates are stored in lexicograpic order,

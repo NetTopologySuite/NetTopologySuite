@@ -47,7 +47,7 @@ namespace ManagedBufferedCoordinateTests
             Assert.Equal(200, seq.Count);
         }
 
-        [Fact]
+        [Fact(Skip = "3d Coords ok now")]
         public void CreatingCoordinateSequenceWith3DCoordinateFails()
         {
             Assert.Throws<NotSupportedException>(delegate
@@ -182,7 +182,7 @@ namespace ManagedBufferedCoordinateTests
             SequenceGenerator generator = new SequenceGenerator();
 
             IBufferedCoordSequence seq = generator.Sequence;
-            ICoordinateFactory<BufferedCoordinate> coordFactory 
+            ICoordinateFactory<BufferedCoordinate> coordFactory
                 = generator.CoordinateFactory;
 
             List<BufferedCoordinate> coordsToAdd = new List<BufferedCoordinate>();
@@ -500,7 +500,8 @@ namespace ManagedBufferedCoordinateTests
 
             seq1.Add(coordFactory1.Create(-1, 0));
 
-            Assert.Equal(1, seq1.CompareTo(seq2));
+            Assert.Equal(1, seq1.CompareTo(seq2));//jd: this is incorrect becuase the comparison is done on the index within the vector buffer
+            //in our case there are two buffers so the 5th coordinate is in index[4] in both buffers however the values are different  
         }
 
         [Fact]
@@ -655,7 +656,7 @@ namespace ManagedBufferedCoordinateTests
             Assert.Equal(generator.MainList.Count, generator.Sequence.Count);
 
             IEnumerator<BufferedCoordinate> enumerator = generator.Sequence.GetEnumerator();
-           
+
             foreach (BufferedCoordinate coordinate in generator.MainList)
             {
                 Assert.True(enumerator.MoveNext());
@@ -677,7 +678,7 @@ namespace ManagedBufferedCoordinateTests
             for (Int32 i = 0; i < generator.Sequence.Count; i++)
             {
                 Assert.True(enumerator.MoveNext());
-                BufferedCoordinate expected 
+                BufferedCoordinate expected
                     = generator.MainList[generator.MainList.Count - i - 1];
                 Assert.Equal(expected, enumerator.Current);
             }
@@ -692,7 +693,7 @@ namespace ManagedBufferedCoordinateTests
             SequenceGenerator generator = new SequenceGenerator(10);
 
             IBufferedCoordSequence slice = generator.Sequence.Slice(5, 9);
-                
+
             IEnumerator<BufferedCoordinate> enumerator = slice.GetEnumerator();
 
             for (Int32 i = 0; i < 5; i++)
@@ -812,7 +813,7 @@ namespace ManagedBufferedCoordinateTests
             slice.Append(generator.AppendList);
             slice.Reverse();
 
-            Int32 expectedCount = generator.MainList.Count - 2 + 
+            Int32 expectedCount = generator.MainList.Count - 2 +
                                   generator.PrependList.Count +
                                   generator.AppendList.Count;
 
@@ -1032,7 +1033,7 @@ namespace ManagedBufferedCoordinateTests
 
             for (Int32 i = 0; i < generator.Sequence.Count; i++)
             {
-                BufferedCoordinate expected 
+                BufferedCoordinate expected
                     = generator.MainList[generator.MainList.Count - i - 1];
                 BufferedCoordinate actual = generator.Sequence[i];
                 Assert.Equal(expected, actual);
@@ -1562,11 +1563,11 @@ namespace ManagedBufferedCoordinateTests
             seq.AddRange(generator.GenerateCoordinates(10000));
 
             Int32 count = 10000;
-          
+
             while (seq.Count > 0)
             {
                 seq.Remove(seq.Last);
-                Assert.True(--count <= 0);
+                Assert.True(--count == seq.Count);
             }
         }
 
@@ -1619,17 +1620,17 @@ namespace ManagedBufferedCoordinateTests
             Assert.Equal(sliceLength + xpendLength + xpendLength, slice.Count);
             {
                 Int32 i = 0;
-             
+
                 foreach (BufferedCoordinate coord in generator.PrependList)
                 {
                     Assert.Equal(coord, slice[i++]);
                 }
-              
+
                 for (Int32 j = 1; j <= sliceLength; j++)
                 {
                     Assert.Equal(generator.MainList[j], slice[i++]);
                 }
-               
+
                 foreach (BufferedCoordinate coord in generator.AppendList)
                 {
                     Assert.Equal(coord, slice[i++]);
@@ -1637,13 +1638,13 @@ namespace ManagedBufferedCoordinateTests
             }
 
             Int32 removals = 0;
-           
+
             for (Int32 i = segmentBufferLength + 1; i < sliceLength - segmentBufferLength + 1; i++)
             {
                 Assert.True(slice.Remove(generator.MainList[i]));
                 removals++;
             }
-           
+
             for (Int32 i = segmentBufferLength; i < xpendLength - segmentBufferLength; i++)
             {
                 Assert.True(slice.Remove(generator.AppendList[i]));
@@ -1655,7 +1656,7 @@ namespace ManagedBufferedCoordinateTests
             Assert.Equal(xpendLength + xpendLength + sliceLength - segmentBufferLength * 6, removals);
 
             Assert.Equal(segmentBufferLength * 6, slice.Count);
-            
+
             for (Int32 i = 0; i < segmentBufferLength; i++)
             {
                 Assert.Equal(generator.PrependList[i], slice[i]);
@@ -1685,17 +1686,17 @@ namespace ManagedBufferedCoordinateTests
             Assert.Equal(sliceLength + xpendLength + xpendLength, slice.Count);
             {
                 Int32 i = slice.Count - 1;
-            
+
                 foreach (BufferedCoordinate coord in generator.PrependList)
                 {
                     Assert.Equal(coord, slice[i--]);
                 }
-              
+
                 for (Int32 j = 1; j <= sliceLength; j++)
                 {
                     Assert.Equal(generator.MainList[j], slice[i--]);
                 }
-               
+
                 foreach (BufferedCoordinate coord in generator.AppendList)
                 {
                     Assert.Equal(coord, slice[i--]);
@@ -1721,9 +1722,9 @@ namespace ManagedBufferedCoordinateTests
             Assert.Equal(xpendLength + xpendLength + sliceLength - segmentBufferLength * 6, removals);
 
             Assert.Equal(segmentBufferLength * 6, slice.Count);
-            
+
             Int32 endIndex = slice.Count - 1;
-            
+
             for (Int32 i = 0; i < segmentBufferLength; i++)
             {
                 Assert.Equal(generator.PrependList[i], slice[endIndex - i]);
@@ -1743,13 +1744,13 @@ namespace ManagedBufferedCoordinateTests
             IBufferedCoordSequence seq = generator.Sequence;
 
             Int32 count = 10000;
-            
+
             Random rnd = new MersenneTwister();
 
             while (seq.Count > 0)
             {
                 seq.RemoveAt(rnd.Next(0, count));
-                Assert.True(--count <= 0);
+                Assert.True(--count == seq.Count);
             }
         }
 
@@ -1767,7 +1768,7 @@ namespace ManagedBufferedCoordinateTests
             Assert.Equal(coordsToTest.Count, seq.Count);
 
             Int32 count = coordsToTest.Count;
-            
+
             for (Int32 i = 0; i < count; i++)
             {
                 Assert.Equal(coordsToTest[i], seq[count - i - 1]);
@@ -1783,7 +1784,7 @@ namespace ManagedBufferedCoordinateTests
             IBufferedCoordSequence reversed = seq.Reversed;
 
             Assert.Equal(seq.Count, reversed.Count);
-            
+
             Int32 count = seq.Count;
 
             for (Int32 i = 0; i < count; i++)
@@ -2070,7 +2071,7 @@ namespace ManagedBufferedCoordinateTests
             BufferedCoordinateFactory coordFactory = generator.CoordinateFactory;
             IBufferedCoordSequence seq = generator.Sequence;
 
-            List<BufferedCoordinate> coordsToAdd 
+            List<BufferedCoordinate> coordsToAdd
                 = new List<BufferedCoordinate>(generator.GenerateCoordinates(100));
 
             // Prepend enumeration

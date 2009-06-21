@@ -42,12 +42,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         //    Boolean Intersects(object aBounds, object bBounds);
         //}
 
-        private AbstractNode<TBounds, IBoundable<TBounds>> _root;
+        private ISpatialIndexNode<TBounds, TItem> _root;
         private Boolean _built;
         private Boolean _isDisposed;
-        private readonly List<IBoundable<TBounds>> _children = new List<IBoundable<TBounds>>();
+        private readonly List<IBoundable<TBounds>> _bulkLoadStorage = new List<IBoundable<TBounds>>();
         private readonly Int32 _nodeCapacity;
-        private bool _building;
 
         /// <summary> 
         /// Constructs an AbstractStrTree with the specified maximum number of child
@@ -75,13 +74,21 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
         #endregion
 
+        protected IList<IBoundable<TBounds>> BulkLoadStorage
+        {
+            get
+            {
+                return _bulkLoadStorage;
+            }
+        }
+
         #region ISpatialIndex<TBounds,TItem> Members
 
         public virtual void Insert(TItem item)
         {
             checkState();
             Insert(item.Bounds, item);
-            //_children.Add(item);
+            //_bulkLoadStorage.Add(item);
             //_root.AddItem(item);
         }
 
@@ -89,19 +96,19 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             checkState();
             //Insert(item.Bounds, item);
-            //_children.Add(item);
+            //_bulkLoadStorage.Add(item);
             _root.AddRange(Caster.Upcast<IBoundable<TBounds>, TItem>(items));
         }
 
         private void Insert(TBounds bounds, TItem item)
         {
-            _children.Add(item);
+            _bulkLoadStorage.Add(item);
         }
 
 
         public void BulkLoad(IEnumerable<TItem> items)
         {
-            Assert.IsTrue(!_built, "Cannot insert items into an STR packed R-tree after it has been built.");
+            Assert.IsTrue(!IsBuilt, "Cannot insert items into an STR packed R-tree after it has been built.");
             foreach (TItem item in items)
                 Insert(item);
         }
@@ -114,7 +121,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             checkState();
             ensureBuilt();
 
-            //if (_children.Count == 0)
+            //if (_bulkLoadStorage.Count == 0)
             if (Count == 0)
             {
                 return false;
@@ -188,21 +195,18 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         public void Build()
         {
-            Assert.IsTrue(!_built);
-            //throw new NotImplementedException();
-            _building = true;
-            _root = (_children.Count == 0)
+            Assert.IsTrue(!IsBuilt);
+            _root = (_bulkLoadStorage.Count == 0)
                        ? CreateNode(0)
-                       : createHigherLevels(_children, -1);
-            _built = true;
-            _building = false;
+                       : createHigherLevels(_bulkLoadStorage, -1);
+            IsBuilt = true;
         }
 
         public TBounds Bounds
         {
             get
             {
-                if (!_built)
+                if (!IsBuilt)
                 {
                     throw new InvalidOperationException("Index not built.");
                 }
@@ -283,11 +287,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return size;
         }
 
-        protected static Int32 GetDepth(AbstractNode<TBounds, IBoundable<TBounds>> node)
+        protected static Int32 GetDepth(ISpatialIndexNode<TBounds, TItem> node)
         {
             Int32 maxChildDepth = 0;
 
-            foreach (AbstractNode<TBounds, IBoundable<TBounds>> childBoundable in node.SubNodes)
+            foreach (ISpatialIndexNode<TBounds, TItem> childBoundable in node.SubNodes)
             {
                 if (childBoundable == null)
                 {
@@ -305,7 +309,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return maxChildDepth + 1;
         }
 
-        protected abstract AbstractNode<TBounds, IBoundable<TBounds>> CreateNode(Int32 level);
+        protected abstract ISpatialIndexNode<TBounds, TItem> CreateNode(Int32 level);
 
         /// <summary>
         /// Sorts the childBoundables then divides them into groups of size M, where
@@ -324,8 +328,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
             foreach (IBoundable<TBounds> childBoundable in sortedChildBoundables)
             {
-                ISpatialIndexNode<TBounds, IBoundable<TBounds>> lastNode
-                    = Slice.GetLast(parentBoundables) as ISpatialIndexNode<TBounds, IBoundable<TBounds>>;
+                ISpatialIndexNode<TBounds, TItem> lastNode
+                    = Slice.GetLast(parentBoundables) as ISpatialIndexNode<TBounds, TItem>;
 
                 if (lastNode.SubNodeCount == NodeCapacity)
                 {
@@ -339,9 +343,21 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return parentBoundables;
         }
 
-        protected AbstractNode<TBounds, IBoundable<TBounds>> Root
+        protected ISpatialIndexNode<TBounds, TItem> Root
         {
             get { return _root; }
+            set { _root = value; }
+        }
+
+        protected void NullifyRoot()
+        {
+            _root = null;
+        }
+
+        public bool IsBuilt
+        {
+            get { return _built; }
+            protected set { _built = value; }
         }
 
         //private void query(object searchBounds, AbstractNode node, IItemVisitor visitor)
@@ -399,7 +415,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         //    }
         //}
 
-        private static IEnumerable<TItem> query(TBounds searchBounds, ISpatialIndexNode<TBounds, IBoundable<TBounds>> node, Predicate<TItem> filter)
+        private static IEnumerable<TItem> query(TBounds searchBounds, ISpatialIndexNode<TBounds, TItem> node, Predicate<TItem> filter)
         {
             foreach (TItem item in node.Items)
             {
@@ -415,7 +431,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
                 }
             }
 
-            foreach (AbstractNode<TBounds, IBoundable<TBounds>> childBoundable in node.SubNodes)
+            foreach (ISpatialIndexNode<TBounds, TItem> childBoundable in node.SubNodes)
             {
                 if (!childBoundable.Intersects(searchBounds))
                 {
@@ -431,7 +447,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
         }
 
-        private static Boolean removeItem(AbstractNode<TBounds, IBoundable<TBounds>> node, TItem item)
+        private static Boolean removeItem(ISpatialIndexNode<TBounds, TItem> node, TItem item)
         {
             IBoundable<TBounds> itemToRemove = null;
 
@@ -455,7 +471,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return false;
         }
 
-        private static Boolean remove(TBounds searchBounds, AbstractNode<TBounds, IBoundable<TBounds>> node, TItem item)
+        private static Boolean remove(TBounds searchBounds, ISpatialIndexNode<TBounds, TItem> node, TItem item)
         {
             // first try removing item from this node
             Boolean found = removeItem(node, item);
@@ -465,10 +481,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
                 return true;
             }
 
-            AbstractNode<TBounds, IBoundable<TBounds>> childToPrune = null;
+            ISpatialIndexNode<TBounds, TItem> childToPrune = null;
 
             // next try removing item from lower nodes
-            foreach (AbstractNode<TBounds, IBoundable<TBounds>> childBoundable in node.SubNodes)
+            foreach (ISpatialIndexNode<TBounds, TItem> childBoundable in node.SubNodes)
             {
                 if (childBoundable == null || !childBoundable.Intersects(searchBounds))
                 {
@@ -498,7 +514,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         }
 
         /// <param name="level">-1 to get items.</param>
-        private static IEnumerable<IBoundable<TBounds>> boundablesAtLevel(Int32 level, AbstractNode<TBounds, IBoundable<TBounds>> top)
+        private static IEnumerable<IBoundable<TBounds>> boundablesAtLevel(Int32 level, ISpatialIndexNode<TBounds, TItem> top)
         {
             Assert.IsTrue(level > -2);
 
@@ -513,7 +529,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
                 if (boundable is AbstractNode<TBounds, IBoundable<TBounds>>)
                 {
                     IEnumerable<IBoundable<TBounds>> nextLevelBoundables =
-                        boundablesAtLevel(level, boundable as AbstractNode<TBounds, IBoundable<TBounds>>);
+                        boundablesAtLevel(level, boundable as ISpatialIndexNode<TBounds, TItem>);
 
                     foreach (IBoundable<TBounds> nextLevelBoundable in nextLevelBoundables)
                     {
@@ -539,14 +555,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <param name="level">The level of the boundables, or -1 if the boundables are item
         /// boundables (that is, below level 0).</param>
         /// <returns>The root, which may be a ParentNode or a LeafNode.</returns>
-        private AbstractNode<TBounds, IBoundable<TBounds>> createHigherLevels(IList<IBoundable<TBounds>> boundablesOfALevel, Int32 level)
+        private ISpatialIndexNode<TBounds, TItem> createHigherLevels(IList<IBoundable<TBounds>> boundablesOfALevel, Int32 level)
         {
             Assert.IsTrue(boundablesOfALevel.Count != 0);
             IList<IBoundable<TBounds>> parentBoundables = CreateParentBoundables(boundablesOfALevel, level + 1);
 
             if (parentBoundables.Count == 1)
             {
-                return Slice.GetFirst(parentBoundables) as AbstractNode<TBounds, IBoundable<TBounds>>;
+                return Slice.GetFirst(parentBoundables) as ISpatialIndexNode<TBounds, TItem>;
             }
 
             return createHigherLevels(parentBoundables, level + 1);
@@ -554,7 +570,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
         private void ensureBuilt()
         {
-            if (!_built)// && !_building)
+            if (!IsBuilt)
             {
                 Build();
             }
@@ -562,11 +578,16 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
         private void checkState()
         {
-            if (_built)
+            if (IsBuilt)
             {
                 throw new InvalidOperationException("Cannot insert items into an STR packed " +
                                                     "R-tree after it has been built.");
             }
+        }
+
+        ISpatialIndexNode<TBounds, TItem> ISpatialIndexNodeFactory<TBounds,TItem>.CreateNode(Int32 level)
+        {
+            return (ISpatialIndexNode<TBounds, TItem>)CreateNode(level);
         }
     }
 }
