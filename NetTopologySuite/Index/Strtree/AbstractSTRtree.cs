@@ -554,7 +554,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
         private void ensureBuilt()
         {
-            if (!_built && !_building)
+            if (!_built)// && !_building)
             {
                 Build();
             }
