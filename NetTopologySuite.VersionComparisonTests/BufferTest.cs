@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using GeoAPI.Geometries;
+using GeoAPI.Operations.Buffer;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.Operation.Buffer;
@@ -69,6 +70,21 @@ namespace NetTopologySuite.VersionComparisonTests
             BufferBuilder bb = new BufferBuilder();
             IGeometry res = bb.Buffer(ls, 10);
             Assert.IsNotNull(res);
+        }
+
+
+
+        [TestMethod]
+        public void BasicBufferPoint()
+        {
+            IPoint ls = new WKTReader().Read("POINT(0 0)") as IPoint;
+            Assert.IsNotNull(ls);
+            BufferBuilder bb = new BufferBuilder();
+            bb.EndCapStyle = BufferStyle.CapSquare;
+            bb.QuadrantSegments = 2;
+            IGeometry actual = bb.Buffer(ls, 10);
+            IGeometry expected = new WKTReader().Read("POLYGON((10 10, -10 10, -10 -10, 10 -10, 10 10))");
+            Assert.AreEqual(actual, expected);
         }
     }
 }
