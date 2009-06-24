@@ -49,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             if (!_nodeList.ContainsKey(node))
             {
                 // node does not exist, so create it
-                _nodeList.Add(node, null);
+                _nodeList.Add(node, node); //jd: was _nodeList.Add(node, null); which seems strange...
             }
 
             return node;
@@ -80,7 +80,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
             foreach (SegmentNode<TCoordinate> node in Enumerable.Skip(this, 1))
             {
-                yield return createSplitEdge(previousNode, node);
+                NodedSegmentString<TCoordinate> nd = createSplitEdge(previousNode, node);
+                previousNode = node;
+                yield return nd;
             }
         }
 
@@ -144,7 +146,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         private IEnumerable<Int32> findCollapsesFromInsertedNodes()
         {
             SegmentNode<TCoordinate> previousEdgeIntersection = Slice.GetFirst(this);
-             
+
             // there should always be at least two entries in the list, since the endpoints are nodes
             foreach (SegmentNode<TCoordinate> edgeIntersection in Enumerable.Skip(this, 1))
             {
@@ -163,7 +165,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         }
 
         private static Boolean findCollapseIndex(
-            SegmentNode<TCoordinate> edgeIntersection0, SegmentNode<TCoordinate> edgeIntersection1, 
+            SegmentNode<TCoordinate> edgeIntersection0, SegmentNode<TCoordinate> edgeIntersection1,
             out Int32 collapsedVertexIndex)
         {
             collapsedVertexIndex = -1;
@@ -204,7 +206,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             // add it to the points list as well.
             // (This check is needed because the distance metric is not totally reliable!)
             // The check for point equality is 2D only - Z values are ignored
-            Boolean useIntersectionPoint1 = edgeIntersection1.IsInterior || 
+            Boolean useIntersectionPoint1 = edgeIntersection1.IsInterior ||
                                             !edgeIntersection1.Coordinate.Equals(lastSegStartPt);
 
             ICoordinateSequence<TCoordinate> pts;
@@ -212,12 +214,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             Int32 end = edgeIntersection1.SegmentIndex;
 
             pts = ParentSegments.Coordinates.Slice(start, end);
-
-            Slice.Prepend(pts, edgeIntersection0.Coordinate);
+            pts.Prepend(edgeIntersection0.Coordinate);
 
             if (useIntersectionPoint1)
             {
-                Slice.Append(pts, edgeIntersection1.Coordinate);
+                pts.Append(edgeIntersection1.Coordinate);
             }
 
             return new NodedSegmentString<TCoordinate>(pts, ParentSegments.Context);

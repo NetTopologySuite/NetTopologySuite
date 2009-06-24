@@ -32,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             _coordinate = coord;
             _segmentIndex = segmentIndex;
             _segmentOctant = segmentOctant;
-            _isInterior = !coord.Equals(segString[segmentIndex]);
+            _isInterior = !coord.Equals(segString.Coordinates[segmentIndex]); //jd: was !coord.Equals(segString[segmentIndex])
         }
 
         public override string ToString()

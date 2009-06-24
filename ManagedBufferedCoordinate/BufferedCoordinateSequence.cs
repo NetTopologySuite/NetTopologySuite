@@ -45,6 +45,24 @@ namespace NetTopologySuite.Coordinates
         private Int32 _min = -1;
         private IExtents<BufferedCoordinate> _extents;
 
+        private String printCoords(Int32 count)
+        {
+            StringBuilder buffer = new StringBuilder();
+            foreach (BufferedCoordinate coordinate in this)
+            {
+                if (--count < 0)
+                {
+                    break;
+                }
+
+                buffer.Append(coordinate);
+                buffer.Append("; ");
+            }
+
+            --buffer.Length;
+            return buffer.ToString();
+        }
+
         internal BufferedCoordinateSequence(BufferedCoordinateSequenceFactory factory,
                                               IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer)
             : this(0, factory, buffer) { }
@@ -130,7 +148,9 @@ namespace NetTopologySuite.Coordinates
             }
             
             buffer.Append(IsFrozen ? "Frozen " : String.Empty);
-            buffer.AppendFormat("Points: {0}", Count);
+            buffer.AppendFormat("Points: {0} ", Count);
+
+            buffer.Append(printCoords(10));
 
             return buffer.ToString();
         }

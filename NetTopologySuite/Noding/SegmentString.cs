@@ -85,7 +85,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
         public Int32 Count
         {
-            get { return _coordinates.Count - 1; }
+            get {
+                return _coordinates.Count;/*jd: was _coordinates.Count -1; */
+            }
         }
 
         public LineSegment<TCoordinate> this[Int32 index]

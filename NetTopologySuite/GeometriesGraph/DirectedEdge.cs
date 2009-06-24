@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using GeoAPI.Coordinates;
@@ -262,24 +263,24 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             SetDepth(oppositePos, oppositeDepth);
         }
 
-        public override String ToString()
-        {
-            StringBuilder sb = new StringBuilder();
+        //public override String ToString()
+        //{
+        //    StringBuilder sb = new StringBuilder();
 
-            Int32 leftDepth = _depth[(Int32)Positions.Left];
-            Int32 rightDepth = _depth[(Int32)Positions.Right];
-            sb.AppendFormat("{0} {1}/{2} ({3}) ", IsForward ? "Forward" : "Reverse", 
-                                                 leftDepth, rightDepth, DepthDelta);
-            
-            if (_isInResult)
-            {
-                sb.Append(" in result ");
-            }
+        //    Int32 leftDepth = _depth[(Int32)Positions.Left];
+        //    Int32 rightDepth = _depth[(Int32)Positions.Right];
+        //    sb.AppendFormat("{0} {1}/{2} ({3}) ", IsForward ? "Forward" : "Reverse", 
+        //                                         leftDepth, rightDepth, DepthDelta);
 
-            sb.Append(base.ToString());
+        //    if (_isInResult)
+        //    {
+        //        sb.Append(" in result ");
+        //    }
 
-            return sb.ToString();
-        }
+        //    sb.Append(base.ToString());
+
+        //    return sb.ToString();
+        //}
 
         // Compute the label in the appropriate orientation for this directed edge.
         private void computeDirectedLabel()
@@ -308,5 +309,39 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         //        Edge.WriteReverse(outstream);
         //    }
         //}
+
+
+        public override string ToString()
+        {
+            return
+                Coordinate +
+                (" -> ") +
+                DirectedCoordinate +
+                (_isForward ? "F " : "R ") +
+                (_isVisited ? "* " : "_ ") +
+                (_isInResult ? "in " : "no ") +
+                (Next == null
+                    ? "__________ "
+                    : Next.Coordinate +
+                      (" -> ") +
+                      Next.DirectedCoordinate +
+                      " ") +
+                (printCoords(Edge.Coordinates));
+        }
+
+        private static string printCoords(ICoordinateSequence coordinates)
+        {
+            StringBuilder builder = new StringBuilder();
+
+            foreach (ICoordinate coordinate in coordinates)
+            {
+                builder.Append(coordinate);
+                builder.Append(" ");
+            }
+
+            --builder.Length;
+
+            return builder.ToString();
+        }
     }
 }
