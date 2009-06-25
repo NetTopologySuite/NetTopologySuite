@@ -2230,6 +2230,17 @@ namespace ManagedBufferedCoordinateTests
             seq.Add(coordFactory.Create(1, 2));
             seq.Add(coordFactory.Create(2, 1));
             seq.Add(coordFactory.Create(2, 2));
+            seq.Add(coordFactory.Create(2, 2));
+            seq.Add(coordFactory.Create(1, 1));
+            seq.Add(coordFactory.Create(1, 2));
+            seq.Add(coordFactory.Create(2, 1));
+            seq.Add(coordFactory.Create(2, 2));
+            seq.Add(coordFactory.Create(2, 2));
+            seq.Add(coordFactory.Create(1, 1));
+            seq.Add(coordFactory.Create(1, 2));
+            seq.Add(coordFactory.Create(2, 1));
+            seq.Add(coordFactory.Create(2, 2));
+            seq.Add(coordFactory.Create(2, 2));
 
             IBufferedCoordSequence filtered = seq.WithoutDuplicatePoints();
 

@@ -157,14 +157,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                     ((coordinate[Ordinates.Y] == first[Ordinates.Y]) && (coordinate[Ordinates.X] < first[Ordinates.X])))
                 {
                     TCoordinate t;
-                    t = first;
-                    first = coordinate;
+                    t = pts[0];
+                    pts[0] = coordinate;
                     pts[i] = t;
                 }
             }
 
             // sort the points radially around the focal point.
-            pts.Sort(1, pts.Count - 1, new RadialComparator(first));
+            pts.Sort(1, pts.Count - 1, new RadialComparator(pts[0]));
             return pts;
         }
 
