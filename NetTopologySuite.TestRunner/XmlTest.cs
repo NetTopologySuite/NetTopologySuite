@@ -320,7 +320,7 @@ namespace Open.Topology.TestRunner
 
         #region Protected Methods
 
-        protected virtual bool RunTest()
+	    public virtual bool RunTest()
         {
             switch (m_enumTestType) 
             {

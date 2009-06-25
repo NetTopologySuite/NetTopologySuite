@@ -76,6 +76,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySute.TestRunner.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.VersionComparisonTests", "NetTopologySuite.VersionComparisonTests\NetTopologySuite.VersionComparisonTests.csproj", "{691AA799-4722-452A-A6C9-9DE1EC4BEFB2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Tests.Vivid.XUnit", "NetTopologySuite.Tests.Vivid.XUnit\NetTopologySuite.Tests.Vivid.XUnit.csproj", "{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = NetTopologySuite.vsmdi
@@ -116,6 +118,12 @@ Global
 		{691AA799-4722-452A-A6C9-9DE1EC4BEFB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{691AA799-4722-452A-A6C9-9DE1EC4BEFB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{691AA799-4722-452A-A6C9-9DE1EC4BEFB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8}.Bug|Any CPU.ActiveCfg = Release|Any CPU
+		{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8}.Bug|Any CPU.Build.0 = Release|Any CPU
+		{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
