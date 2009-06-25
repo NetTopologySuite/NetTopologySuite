@@ -1270,7 +1270,7 @@ namespace NetTopologySuite.Coordinates
 
             for (Int32 i = startIndex; i <= endIndex; i++)
             {
-                this[i] = coords[i];
+                this[i] = coords[i - startIndex];
             }
 
             OnSequenceChanged();

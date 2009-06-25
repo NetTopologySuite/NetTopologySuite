@@ -254,7 +254,7 @@ namespace GisSharpBlog.NetTopologySuite
 
         #region Protected Methods
 
-        protected virtual Boolean RunTest()
+        public virtual Boolean RunTest()
         {
             switch (m_enumTestType)
             {

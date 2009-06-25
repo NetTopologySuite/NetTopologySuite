@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using GeoAPI.Diagnostics;
 using GisSharpBlog.NetTopologySuite;
 
 namespace GisSharpBlog.NetTopologySuite
@@ -34,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite
 
         public XmlTest this[Int32 index]
         {
-            get { return (XmlTest) List[index]; }
+            get { return (XmlTest)List[index]; }
 
             set { List[index] = value; }
         }
@@ -76,11 +77,12 @@ namespace GisSharpBlog.NetTopologySuite
             {
                 for (Int32 i = 0; i < List.Count; i++)
                 {
-                    XmlTest testItem = (XmlTest) List[i];
+                    XmlTest testItem = (XmlTest)List[i];
 
                     if (testItem != null)
                     {
                         Boolean succeeded = testItem.Run();
+
 
                         XmlTestEventArgs args =
                             new XmlTestEventArgs(i, succeeded, testItem);

@@ -32,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 
         public static Node<TCoordinate, TItem> CreateExpanded(
             IGeometryFactory<TCoordinate> geoFactory,
-            Node<TCoordinate, TItem> node, 
+            Node<TCoordinate, TItem> node,
             IExtents<TCoordinate> addEnv)
         {
             IExtents<TCoordinate> expandExtents = new Extents<TCoordinate>(geoFactory, addEnv);
@@ -60,6 +60,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             : base(extents)
         {
             _level = level;
+            _boundsSet = true;
             _center = Bounds.Center;
             _geoFactory = extents.Factory;
         }

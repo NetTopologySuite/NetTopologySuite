@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using GeoAPI.Coordinates;
@@ -10,42 +11,48 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     public struct Intersection<TCoordinate> : IEnumerable<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
-        private readonly LineIntersectionDegrees _result;
+        private readonly Boolean _flipLine0;
+        private readonly Boolean _flipLine1;
         private readonly TCoordinate _intersectP0;
         private readonly TCoordinate _intersectP1;
-        private readonly Pair<TCoordinate> _line0;
-        private readonly Boolean _flipLine0;
-        private readonly Pair<TCoordinate> _line1;
-        private readonly Boolean _flipLine1;
         private readonly Boolean _isProper;
+        private readonly Pair<TCoordinate> _line0;
+        private readonly Pair<TCoordinate> _line1;
+        private readonly LineIntersectionDegrees _result;
 
         public Intersection(Pair<TCoordinate> line0, Pair<TCoordinate> line1)
             : this(LineIntersectionDegrees.DoesNotIntersect,
-                   default(TCoordinate), default(TCoordinate), 
-                   line0, line1, false, false, false) { }
+                   default(TCoordinate), default(TCoordinate),
+                   line0, line1, false, false, false)
+        {
+        }
 
-        public Intersection(TCoordinate intersectionPoint, 
-                            Pair<TCoordinate> line0, Pair<TCoordinate> line1, 
+        public Intersection(TCoordinate intersectionPoint,
+                            Pair<TCoordinate> line0, Pair<TCoordinate> line1,
                             Boolean flipLine0, Boolean flipLine1, Boolean isProper)
-            : this(LineIntersectionDegrees.Intersects, intersectionPoint, 
-                   default(TCoordinate), line0, line1, 
-                   flipLine0, flipLine1, isProper) { }
+            : this(LineIntersectionDegrees.Intersects, intersectionPoint,
+                   default(TCoordinate), line0, line1,
+                   flipLine0, flipLine1, isProper)
+        {
+        }
 
-        public Intersection(TCoordinate intersectionPoint0, 
+        public Intersection(TCoordinate intersectionPoint0,
                             TCoordinate intersectionPoint1,
-                            Pair<TCoordinate> line0, Pair<TCoordinate> line1, 
-                            Boolean flipLine0, Boolean flipLine1, Boolean isProper) 
-            : this(LineIntersectionDegrees.Collinear, 
+                            Pair<TCoordinate> line0, Pair<TCoordinate> line1,
+                            Boolean flipLine0, Boolean flipLine1, Boolean isProper)
+            : this(LineIntersectionDegrees.Collinear,
                    intersectionPoint0, intersectionPoint1,
-                   line0, line1, flipLine0, flipLine1, isProper) { }
+                   line0, line1, flipLine0, flipLine1, isProper)
+        {
+        }
 
-        private Intersection(LineIntersectionDegrees type, 
-                             TCoordinate intersectionPoint0, 
+        private Intersection(LineIntersectionDegrees type,
+                             TCoordinate intersectionPoint0,
                              TCoordinate intersectionPoint1,
-                             Pair<TCoordinate> line0, Pair<TCoordinate> line1, 
+                             Pair<TCoordinate> line0, Pair<TCoordinate> line1,
                              Boolean flipLine0, Boolean flipLine1, Boolean isProper)
         {
             _result = type;
@@ -56,33 +63,6 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             _flipLine0 = flipLine0;
             _flipLine1 = flipLine1;
             _isProper = isProper;
-        }
-
-        public override string ToString()
-        {
-            StringBuilder buffer = new StringBuilder();
-
-            buffer.Append(_line0.First).Append("-");
-            buffer.Append(_line0.Second).Append(" ");
-            buffer.Append(_line1.First).Append("-");
-            buffer.Append(_line1.Second).Append(" : ");
-
-            if (IsEndPoint)
-            {
-                buffer.Append(" endpoint");
-            }
-
-            if (_isProper)
-            {
-                buffer.Append(" proper");
-            }
-
-            if (IsCollinear)
-            {
-                buffer.Append(" collinear");
-            }
-
-            return buffer.ToString();
         }
 
         /// <summary>
@@ -111,6 +91,88 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         public LineIntersectionDegrees IntersectionDegree
         {
             get { return _result; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether an intersection is proper.
+        /// </summary>
+        /// <remarks>
+        /// The intersection between two line segments is considered proper if
+        /// they intersect in a single point in the interior of both segments
+        /// (e.g. the intersection is a single point and is not equal to any 
+        /// of the endpoints). 
+        /// The intersection between a point and a line segment is considered proper
+        /// if the point lies in the interior of the segment 
+        /// (e.g. is not equal to either of the endpoints).
+        /// </remarks>
+        /// <returns><see langword="true"/> if the intersection is proper.</returns>
+        public Boolean IsProper
+        {
+            get { return HasIntersection && _isProper; }
+        }
+
+        public Boolean IsEndPoint
+        {
+            get { return HasIntersection && !_isProper; }
+        }
+
+        public TCoordinate PointA
+        {
+            get { return _intersectP0; }
+        }
+
+        public TCoordinate PointB
+        {
+            get { return _intersectP1; }
+        }
+
+        #region IEnumerable<TCoordinate> Members
+
+        public IEnumerator<TCoordinate> GetEnumerator()
+        {
+            if (!Coordinates<TCoordinate>.IsEmpty(_intersectP0))
+            {
+                yield return _intersectP0;
+            }
+
+            if (!Coordinates<TCoordinate>.IsEmpty(_intersectP1))
+            {
+                yield return _intersectP1;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
+
+        public override string ToString()
+        {
+            StringBuilder buffer = new StringBuilder();
+
+            buffer.Append(_line0.First).Append("-");
+            buffer.Append(_line0.Second).Append(" ");
+            buffer.Append(_line1.First).Append("-");
+            buffer.Append(_line1.Second).Append(" : ");
+
+            if (IsEndPoint)
+            {
+                buffer.Append(" endpoint");
+            }
+
+            if (_isProper)
+            {
+                buffer.Append(" proper");
+            }
+
+            if (IsCollinear)
+            {
+                buffer.Append(" collinear");
+            }
+
+            return buffer.ToString();
         }
 
         /// <summary> 
@@ -180,29 +242,6 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return !_intersectP0.Equals(line.First) && !_intersectP0.Equals(line.Second);
         }
 
-        /// <summary>
-        /// Gets a value indicating whether an intersection is proper.
-        /// </summary>
-        /// <remarks>
-        /// The intersection between two line segments is considered proper if
-        /// they intersect in a single point in the interior of both segments
-        /// (e.g. the intersection is a single point and is not equal to any 
-        /// of the endpoints). 
-        /// The intersection between a point and a line segment is considered proper
-        /// if the point lies in the interior of the segment 
-        /// (e.g. is not equal to either of the endpoints).
-        /// </remarks>
-        /// <returns><see langword="true"/> if the intersection is proper.</returns>
-        public Boolean IsProper
-        {
-            get { return HasIntersection && _isProper; }
-        }
-
-        public Boolean IsEndPoint
-        {
-            get { return HasIntersection && !_isProper; }
-        }
-
         /// <summary> 
         /// Computes the intersection point number <paramref name="intersectionIndex"/> 
         /// in the direction of a specified input line segment.
@@ -213,7 +252,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// The intersection point at index <paramref name="intersectionIndex"/> 
         /// in the direction of the specified input line segment.
         /// </returns>
-        public TCoordinate GetIntersectionAlongSegment(Int32 segmentIndex, 
+        public TCoordinate GetIntersectionAlongSegment(Int32 segmentIndex,
                                                        Int32 intersectionIndex)
         {
             Int32 index = getSegmentIntersectionIndex(segmentIndex, intersectionIndex);
@@ -241,7 +280,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             if (intersectionIndex != 0 && intersectionIndex != 1)
             {
-                throw new ArgumentOutOfRangeException("intersectionIndex", 
+                throw new ArgumentOutOfRangeException("intersectionIndex",
                                                       intersectionIndex,
                                                       "Intersection index must be 0 or 1.");
             }
@@ -259,48 +298,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             Pair<TCoordinate> line = GetLineForIndex(segmentIndex);
             TCoordinate intersectionPoint = GetIntersectionPoint(intersectionIndex);
-            Double dist = LineIntersector<TCoordinate>.ComputeEdgeDistance(intersectionPoint, 
+            Double dist = LineIntersector<TCoordinate>.ComputeEdgeDistance(intersectionPoint,
                                                                            line);
             return dist;
         }
 
-        public TCoordinate PointA
-        {
-            get { return _intersectP0; }
-        }
-
-        public TCoordinate PointB
-        {
-            get { return _intersectP1; }
-        }
-
-        #region IEnumerable<TCoordinate> Members
-
-        public IEnumerator<TCoordinate> GetEnumerator()
-        {
-            if (!Coordinates<TCoordinate>.IsEmpty(_intersectP0))
-            {
-                yield return _intersectP0;
-            }
-
-            if (!Coordinates<TCoordinate>.IsEmpty(_intersectP1))
-            {
-                yield return _intersectP1;
-            }
-        }
-
-        #endregion
-
-        #region IEnumerable Members
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        #endregion
-
-        private Int32 getSegmentIntersectionIndex(Int32 segmentIndex, 
+        private Int32 getSegmentIntersectionIndex(Int32 segmentIndex,
                                                   Int32 intersectionIndex)
         {
             // TODO: measure the performance of this technique vs. array lookup
@@ -344,7 +347,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             if (segmentIndex < 0 || segmentIndex > 1)
             {
                 throw new ArgumentOutOfRangeException("segmentIndex", segmentIndex,
-                                                      "Parameter 'segmentIndex' must "+
+                                                      "Parameter 'segmentIndex' must " +
                                                       "be 0 or 1.");
             }
 
