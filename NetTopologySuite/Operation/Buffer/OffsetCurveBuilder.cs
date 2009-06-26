@@ -277,9 +277,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             // JTSFIX: last2Pt isn't used...
             //TCoordinate last2Pt = default(TCoordinate);
 
-            //if (_coordinates.Count >= 2)
+            //if (_coordinates.TotalItemCount >= 2)
             //{
-            //    last2Pt = _coordinates[_coordinates.Count - 2];
+            //    last2Pt = _coordinates[_coordinates.TotalItemCount - 2];
             //}
 
             if (startPt.Equals(lastPt))

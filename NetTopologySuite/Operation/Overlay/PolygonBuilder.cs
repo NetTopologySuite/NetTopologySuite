@@ -102,8 +102,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                     {
                         MaximalEdgeRing<TCoordinate> er = new MaximalEdgeRing<TCoordinate>(edge, 
                                                                                            _geometryFactory);
-                        yield return er;
                         er.SetInResult();
+                        yield return er;
                     }
                 }
             }

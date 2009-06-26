@@ -1554,7 +1554,7 @@ namespace ManagedBufferedCoordinateTests
             // cannot add empty coordinate to sequence
             //seq.Add(coordFactory.Create());
             //Assert.True(seq.Remove(new BufferedCoordinate()));
-            //Assert.Equal(0, seq.Count);
+            //Assert.Equal(0, seq.TotalItemCount);
 
             seq.Add(generator.NewCoordinate(0, 0));
             Assert.True(seq.Remove(generator.NewCoordinate(0, 0)));

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using GeoAPI.DataStructures;
 using GeoAPI.Indexing;
 
@@ -36,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         private Node<TItem> _subNode1;
         private Node<TItem> _subNode2;
 
-        protected BaseBinNode(Interval bounds, Int32 level) 
+        protected BaseBinNode(Interval bounds, Int32 level)
             : base(bounds, level) { }
 
         //public IList AddAllItemsFromOverlapping(Interval interval, IList resultItems)
@@ -116,45 +117,45 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             }
         }
 
-        //public Int32 Count
-        //{
-        //    get
-        //    {
-        //        Int32 subSize = 0;
-
-        //        if (_subNode1 != null)
-        //        {
-        //            subSize += _subNode1.Count;
-        //        }
-
-        //        if (_subNode2 != null)
-        //        {
-        //            subSize += _subNode2.Count;
-        //        }
-
-        //        return subSize + ItemsInternal.Count;
-        //    }
-        //}
-
-        public Int32 NodeCount
+        public override Int32 TotalItemCount
         {
             get
             {
-                Int32 subCount = 0;
+                Int32 subSize = 0;
 
                 if (_subNode1 != null)
                 {
-                    subCount += _subNode1.NodeCount;
+                    subSize += _subNode1.TotalItemCount;
                 }
 
                 if (_subNode2 != null)
                 {
-                    subCount += _subNode2.NodeCount;
+                    subSize += _subNode2.TotalItemCount;
                 }
 
-                return subCount + 1;
+                return subSize + ItemsInternal.Count;
             }
         }
+
+        //public Int32 TotalNodeCount
+        //{
+        //    get
+        //    {
+        //        Int32 subCount = 0;
+
+        //        if (_subNode1 != null)
+        //        {
+        //            subCount += _subNode1.TotalNodeCount;
+        //        }
+
+        //        if (_subNode2 != null)
+        //        {
+        //            subCount += _subNode2.TotalNodeCount;
+        //        }
+
+        //        return subCount + 1;
+        //    }
+        //}
 
         protected Node<TItem> SubNode1
         {
@@ -164,9 +165,35 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 
         protected Node<TItem> SubNode2
         {
-            get { return _subNode2;}
+            get { return _subNode2; }
             set { _subNode2 = value; }
         }
+
+        public override int SubNodeCount
+        {
+            get
+            {
+                int count = 0;
+                if (_subNode1 != null)
+                    count++;
+                if (_subNode2 != null)
+                    count++;
+                return count;
+            }
+        }
+
+        public override IEnumerable<ISpatialIndexNode<Interval, TItem>> SubNodes
+        {
+            get
+            {
+                if (SubNode1 != null)
+                    yield return SubNode1;
+
+                if (SubNode2 != null)
+                    yield return SubNode2;
+            }
+        }
+
 
         protected Node<TItem> CreateSubNode(Int32 index)
         {
@@ -201,28 +228,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         {
             Int32 index = GetSubNodeIndex(interval, center);
 
-            Node<TItem> subNode = null;
-
-            if (index == 0)
-            {
-                if (SubNode1 == null)
-                {
-                    SubNode1 = CreateSubNode(0);
-                }
-
-                subNode = SubNode1;
-            }
-            else if (index > 0)
-            {
-                if (SubNode2 == null)
-                {
-                    SubNode2 = CreateSubNode(1);
-                }
-
-                subNode = SubNode2;
-            }
-
-            return subNode;
+            return GetSubNode(index);
         }
 
         /// <summary>

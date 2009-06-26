@@ -121,7 +121,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             checkState();
             ensureBuilt();
 
-            //if (_bulkLoadStorage.Count == 0)
+            //if (_bulkLoadStorage.TotalItemCount == 0)
             if (Count == 0)
             {
                 return false;
@@ -249,7 +249,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
         //protected AbstractNode LastNode(IList nodes)
         //{
-        //    return (AbstractNode) nodes[nodes.Count - 1];
+        //    return (AbstractNode) nodes[nodes.TotalItemCount - 1];
         //}
 
         //protected static Int32 CompareDoubles(Double a, Double b)

@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// </summary>
     /// <typeparam name="TCoordinate">The coordinate type.</typeparam>
     public class SegmentIntersector<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {
@@ -71,8 +71,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// A flag indicating whether edges should be marked as not isolated
         /// when adding intersections.
         /// </param>
-        public SegmentIntersector(LineIntersector<TCoordinate> li, 
-                                  Boolean includeProper, 
+        public SegmentIntersector(LineIntersector<TCoordinate> li,
+                                  Boolean includeProper,
                                   Boolean recordIsolated)
         {
             _lineIntersector = li;
@@ -80,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             _recordIsolated = recordIsolated;
         }
 
-        public void SetBoundaryNodes(IEnumerable<Node<TCoordinate>> boundaryNodes0, 
+        public void SetBoundaryNodes(IEnumerable<Node<TCoordinate>> boundaryNodes0,
                                      IEnumerable<Node<TCoordinate>> boundaryNodes1)
         {
             _boundaryNodes0 = boundaryNodes0;
@@ -134,7 +134,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// Note that clients (such as MonotoneChainEdges) may choose not to intersect
         /// certain pairs of segments for efficiency reasons.
         /// </summary>
-        public void AddIntersections(Edge<TCoordinate> e0, Int32 segIndex0, 
+        public void AddIntersections(Edge<TCoordinate> e0, Int32 segIndex0,
                                      Edge<TCoordinate> e1, Int32 segIndex1)
         {
             // Need to check if this is the same edge and index, not if the edges
@@ -211,10 +211,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         // is simply the point shared by adjacent line segments.
         // Note that closed edges require a special check for the point 
         // shared by the beginning and end segments.
-        private static Boolean isTrivialIntersection(Intersection<TCoordinate> intersection, 
-                                                     Edge<TCoordinate> e0, 
-                                                     Int32 segIndex0, 
-                                                     Edge<TCoordinate> e1, 
+        private static Boolean isTrivialIntersection(Intersection<TCoordinate> intersection,
+                                                     Edge<TCoordinate> e0,
+                                                     Int32 segIndex0,
+                                                     Edge<TCoordinate> e1,
                                                      Int32 segIndex1)
         {
             if (ReferenceEquals(e0, e1))
@@ -242,7 +242,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             return false;
         }
 
-        private static Boolean isBoundaryPoint(Intersection<TCoordinate> Intersection, 
+        private static Boolean isBoundaryPoint(Intersection<TCoordinate> Intersection,
                                                params IEnumerable<Node<TCoordinate>>[] boundaryNodes)
         {
             if (boundaryNodes == null || boundaryNodes.Length < 2)
@@ -263,9 +263,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             return false;
         }
 
-        private static Boolean isBoundaryPoint(Intersection<TCoordinate> intersection, 
+        private static Boolean isBoundaryPoint(Intersection<TCoordinate> intersection,
                                                IEnumerable<Node<TCoordinate>> bdyNodes)
         {
+            if (bdyNodes == null)
+                return false;
+
             foreach (Node<TCoordinate> node in bdyNodes)
             {
                 TCoordinate pt = node.Coordinate;

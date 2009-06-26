@@ -14,9 +14,9 @@ namespace NetTopologySuite.Tests.Index
         {
             BinTree<String> binTree = new BinTree<String>();
             binTree.Insert(new Interval(5, 10), "A");
-            Assert.Equal(1, binTree.Count);
+            Assert.Equal(1, binTree.TotalItemCount);
             binTree.Insert(new Interval(15, 20), "B");
-            Assert.Equal(2, binTree.Count);
+            Assert.Equal(2, binTree.TotalItemCount);
         }
     }
 }

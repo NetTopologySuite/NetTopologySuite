@@ -242,7 +242,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         //public override void Apply(ICoordinateFilter filter)
         //{
-        //    for (Int32 i = 0; i < points.Count; i++)
+        //    for (Int32 i = 0; i < points.TotalItemCount; i++)
         //    {
         //        filter.Filter(points.GetCoordinate(i));
         //    }

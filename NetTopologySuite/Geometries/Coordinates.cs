@@ -21,6 +21,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                                                             ICoordinateSequence<TCoordinate> sequence, 
                                                             IGeometryFactory<TCoordinate> factory)
         {
+            if (sequence == null)
+                yield break;
+
             TCoordinate firstCoord = default(TCoordinate);
             Int32 firstCoordIndex = -1;
 

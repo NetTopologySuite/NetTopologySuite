@@ -10,7 +10,7 @@ namespace GisSharpBlog.NetTopologySuite.Index
     {
         private List<TItem> _items;
         private List<ISpatialIndexNode<TBounds, TItem>> _subNodes;
-        private TBounds _bounds;
+        protected TBounds _bounds;
         protected Boolean _boundsSet;
         private readonly Int32 _level;
 
@@ -48,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Index
 
         #region ISpatialIndexNode<TBounds> Members
 
-        public Int32 TotalItemCount
+        public virtual Int32 TotalItemCount
         {
             get
             {

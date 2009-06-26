@@ -202,7 +202,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         }
 
         // [codekaizen] this isn't used in JTS.
-        //public Int32 NodeCount
+        //public Int32 TotalNodeCount
         //{
         //    get
         //    {
@@ -212,7 +212,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         //        {
         //            if (ItemsInternal[i] != null)
         //            {
-        //                subSize += _subNodes[i].Count;
+        //                subSize += _subNodes[i].TotalItemCount;
         //            }
         //        }
 

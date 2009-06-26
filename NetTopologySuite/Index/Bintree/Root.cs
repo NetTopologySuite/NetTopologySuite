@@ -14,11 +14,19 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         where TBoundable : IBoundable<Interval>
     {
         // the singleton root node is centered at the origin.
-        private static readonly Double Origin = 0.0;
+        private const Double Origin = 0.0;
 
         public Root() : base(Interval.Infinite, -1)
         {
             
+        }
+
+        public override Interval Bounds
+        {
+            get
+            {
+                return ComputeBounds();
+            }
         }
 
         /// <summary> 
@@ -28,7 +36,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         {
             Interval bounds = item.Bounds;
             Int32 index = GetSubNodeIndex(bounds, Origin);
-            Node<TBoundable> subNode = GetSubNode(bounds, Origin);
+
+            Node<TBoundable> subNode = GetSubNode(index);
+
+            //Node<TBoundable> subNode = GetSubNode(bounds, Origin);
 
             // if index is -1, itemInterval must contain the origin.
             if (subNode == null)
@@ -68,6 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         {
             return Interval.Infinite;
         }
+
 
         /// <summary> 
         /// Insert an item which is known to be contained in the tree rooted at

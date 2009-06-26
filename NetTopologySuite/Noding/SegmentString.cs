@@ -86,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         public Int32 Count
         {
             get {
-                return _coordinates.Count;/*jd: was _coordinates.Count -1; */
+                return _coordinates.Count;/*jd: was _coordinates.TotalItemCount -1; */
             }
         }
 
@@ -97,7 +97,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                 if (index < 0 || index >= Count)
                 {
                     throw new ArgumentOutOfRangeException("index", index,
-                                                          "Parameter must be greater than or equal to 0 and less than Count.");
+                                                          "Parameter must be greater than or equal to 0 and less than TotalItemCount.");
                 }
 
                 return new LineSegment<TCoordinate>(_coordinates[index], _coordinates[index + 1]);

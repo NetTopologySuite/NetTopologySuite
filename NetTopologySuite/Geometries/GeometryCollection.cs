@@ -404,7 +404,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 if (index < 0 || index > _geometries.Count)
                 {
                     throw new ArgumentOutOfRangeException("index", index,
-                        "Index must be 0 or greater and less than Count.");
+                        "Index must be 0 or greater and less than TotalItemCount.");
                 }
 
                 return _geometries[index];

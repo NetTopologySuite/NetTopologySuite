@@ -5,7 +5,7 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 {
     public struct DoubleBinTreeValue : IAddable<DoubleBinTreeValue>,
-                                       IAddable<Double, DoubleBinTreeValue>, 
+                                       IAddable<Double, DoubleBinTreeValue>,
                                        IDivisible<Double, DoubleBinTreeValue>
     {
         private readonly Double _value;
@@ -91,7 +91,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 
         protected override DoubleBinTreeValue CreateLocation(Interval bounds, Double nodeSize)
         {
-            throw new NotImplementedException();
+
+            return new DoubleBinTreeValue(Math.Floor(bounds.Min / nodeSize) * nodeSize);
         }
 
         //protected override void ComputeKey(Interval bounds)

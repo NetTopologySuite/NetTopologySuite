@@ -615,7 +615,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IPoint ISurface.PointOnSurface
         {
-            get { throw new NotImplementedException(); }
+            get { return PointOnSurface; }
         }
 
         #endregion

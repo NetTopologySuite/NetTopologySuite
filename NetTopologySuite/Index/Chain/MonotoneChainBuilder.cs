@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
     {
         //public static Int32[] ToIntArray(IList list)
         //{
-        //    Int32[] array = new Int32[list.Count];
+        //    Int32[] array = new Int32[list.TotalItemCount];
 
         //    for (Int32 i = 0; i < array.Length; i++)
         //    {

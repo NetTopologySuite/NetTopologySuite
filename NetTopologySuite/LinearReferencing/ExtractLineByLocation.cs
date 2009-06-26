@@ -156,7 +156,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         //    }
 
         //    // ensure there is at least one coordinate in the result
-        //    if (newCoordinates.Count <= 0)
+        //    if (newCoordinates.TotalItemCount <= 0)
         //    {
         //        newCoordinates.Add(start.GetCoordinate(_line));
         //    }

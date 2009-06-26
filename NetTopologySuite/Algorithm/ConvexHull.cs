@@ -198,7 +198,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         //private Stack<TCoordinate> reverseStack(Stack<TCoordinate> ps)
         //{
         //    // Do a manual reverse of the stack
-        //    Int32 size = ps.Count;
+        //    Int32 size = ps.TotalItemCount;
         //    ICoordinate[] tempArray = new ICoordinate[size];
 
         //    for (Int32 i = 0; i < size; i++)

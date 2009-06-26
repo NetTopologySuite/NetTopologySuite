@@ -433,7 +433,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         //    outstream.Write("edge " + _name + ": ");
         //    outstream.Write("LINESTRING (");
 
-        //    for (Int32 i = 0; i < Coordinates.Count; i++)
+        //    for (Int32 i = 0; i < Coordinates.TotalItemCount; i++)
         //    {
         //        if (i > 0)
         //        {
@@ -449,7 +449,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         //{
         //    outstream.Write("edge " + _name + ": ");
 
-        //    for (Int32 i = Coordinates.Count - 1; i >= 0; i--)
+        //    for (Int32 i = Coordinates.TotalItemCount - 1; i >= 0; i--)
         //    {
         //        outstream.Write(Coordinates[i] + " ");
         //    }

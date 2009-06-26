@@ -247,7 +247,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     //        throw new Exception("bad split edge start point at " + pt0);
     //    }
 
-    //    SegmentString<TCoordinate> splitn = (SegmentString<TCoordinate>)splitEdges[splitEdges.Count - 1];
+    //    SegmentString<TCoordinate> splitn = (SegmentString<TCoordinate>)splitEdges[splitEdges.TotalItemCount - 1];
     //    IEnumerable<TCoordinate> splitnPts = splitn.Coordinates;
     //    ICoordinate ptn = splitnPts[splitnPts.Length - 1];
 

@@ -287,7 +287,7 @@ namespace ManagedBufferedCoordinateTests
             actual = generator.Sequence[mainLength + 1];
             Assert.Equal(expected, actual);
 
-            //for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            //for (Int32 i = 0; i <= generator.AppendList.TotalItemCount; i++)
             for (Int32 i = 0; i < generator.AppendList.Count; i++)
             {
                 Assert.Equal(generator.AppendList[i], generator.Sequence[mainLength + 2 + i]);
@@ -321,7 +321,7 @@ namespace ManagedBufferedCoordinateTests
             Assert.Equal(appendedCoordinate, slice[sliceLength]);
             Assert.Equal(preSliceCoordinate, slice[sliceLength + 1]);
 
-            //for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            //for (Int32 i = 0; i <= generator.AppendList.TotalItemCount; i++)
             for (Int32 i = 0; i < generator.AppendList.Count; i++)
             {
                 Assert.Equal(generator.AppendList[i], slice[sliceLength + 2 + i]);
@@ -772,7 +772,7 @@ namespace ManagedBufferedCoordinateTests
 
             Assert.Equal(preSliceCoordinate, generator.Sequence[mainLength + 1]);
 
-            //for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            //for (Int32 i = 0; i <= generator.AppendList.TotalItemCount; i++)
             for (Int32 i = 0; i < generator.AppendList.Count; i++)
             {
                 Assert.Equal(generator.AppendList[i], generator.Sequence[mainLength + 2 + i]);
@@ -808,7 +808,7 @@ namespace ManagedBufferedCoordinateTests
 
             Assert.Equal(preSliceCoordinate, generator.Sequence[mainLength + 1]);
 
-            //for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            //for (Int32 i = 0; i <= generator.AppendList.TotalItemCount; i++)
             for (Int32 i = 0; i < generator.AppendList.Count; i++)
             {
                 Assert.Equal(generator.AppendList[i], generator.Sequence[mainLength + 2 + i]);
@@ -851,7 +851,7 @@ namespace ManagedBufferedCoordinateTests
 
             Assert.Equal(preSliceCoordinate, slice[sliceLength + 1]);
 
-            //for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            //for (Int32 i = 0; i <= generator.AppendList.TotalItemCount; i++)
             for (Int32 i = 0; i < generator.AppendList.Count; i++)
             {
                 Assert.Equal(generator.AppendList[i], slice[sliceLength + 2 + i]);
@@ -889,7 +889,7 @@ namespace ManagedBufferedCoordinateTests
 
             Assert.Equal(preSliceCoordinate, slice[sliceLength + 1]);
 
-            //for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            //for (Int32 i = 0; i <= generator.AppendList.TotalItemCount; i++)
             for (Int32 i = 0; i < generator.AppendList.Count; i++)
             {
                 Assert.Equal(generator.AppendList[i], slice[sliceLength + 2 + i]);
@@ -1028,7 +1028,7 @@ namespace ManagedBufferedCoordinateTests
             Assert.Equal(appendedCoordinate, slice[sliceLength - 3]);
             Assert.Equal(preSliceCoordinate, slice[sliceLength - 3 + 1]);
 
-            //for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            //for (Int32 i = 0; i <= generator.AppendList.TotalItemCount; i++)
             for (Int32 i = 0; i < generator.AppendList.Count; i++)
             {
                 Assert.Equal(generator.AppendList[i], slice[sliceLength - 3 + 2 + i]);
@@ -1103,7 +1103,7 @@ namespace ManagedBufferedCoordinateTests
 
             Assert.Equal(preSliceCoordinate, slice[sliceLength - 3 + 1]);
 
-            //for (Int32 i = 0; i <= generator.AppendList.Count; i++)
+            //for (Int32 i = 0; i <= generator.AppendList.TotalItemCount; i++)
             for (Int32 i = 0; i < generator.AppendList.Count; i++)
             {
                 Assert.Equal(generator.AppendList[i], slice[sliceLength - 3 + 2 + i]);

@@ -108,7 +108,7 @@ namespace GisSharpBlog.NetTopologySuite
                 //{
                 //    XmlAttributeCollection workspaceAttributes = workspace.Attributes;
 
-                //    if (workspaceAttributes != null && workspaceAttributes.Count > 0)
+                //    if (workspaceAttributes != null && workspaceAttributes.TotalItemCount > 0)
                 //    {
                 //        m_strTestWorkspace = workspaceAttributes["dir"].InnerText;
                 //    }
