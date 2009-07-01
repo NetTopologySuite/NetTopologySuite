@@ -8,7 +8,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
     /// It is centred at the origin,
     /// and does not have a defined extent.
     /// </summary>
-    public class Root : NodeBase
+    public class Root<T> : NodeBase<T>
     {
         // the singleton root node is centred at the origin.
         private const double origin = 0.0;
@@ -23,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
         /// </summary>
         /// <param name="itemInterval"></param>
         /// <param name="item"></param>
-        public void Insert(Interval itemInterval, object item)
+        public void Insert(Interval itemInterval, T item)
         {
             int index = GetSubnodeIndex(itemInterval, origin);
             // if index is -1, itemEnv must contain the origin.
@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
             * the item must be contained in one interval, so insert it into the
             * tree for that interval (which may not yet exist)
             */
-            Node node = subnode[index];
+            Node<T> node = subnode[index];
             /*
             *  If the subnode doesn't exist or this item is not contained in it,
             *  have to expand the tree upward to contain the item.
@@ -44,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
 
             if (node == null || ! node.Interval.Contains(itemInterval)) 
             {
-                Node largerNode = Node.CreateExpanded(node, itemInterval);
+                Node<T> largerNode = Node<T>.CreateExpanded(node, itemInterval);
                 subnode[index] = largerNode;
             }
             /*
@@ -62,7 +62,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
         /// <param name="tree"></param>
         /// <param name="itemInterval"></param>
         /// <param name="item"></param>
-        private void InsertContained(Node tree, Interval itemInterval, object item)
+        private void InsertContained(Node<T> tree, Interval itemInterval, T item)
         {
             Assert.IsTrue(tree.Interval.Contains(itemInterval));
             /*
@@ -71,7 +71,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
             * the smallest existing node containing the query
             */
             bool isZeroArea = IntervalSize.IsZeroWidth(itemInterval.Min, itemInterval.Max);
-            NodeBase node;
+            NodeBase<T> node;
             if (isZeroArea)
                 node = tree.Find(itemInterval);
             else node = tree.GetNode(itemInterval);

@@ -4,10 +4,10 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Index.Bintree;
+using GisSharpBlog.NetTopologySuite.Index.BintreeTemp;
 using GisSharpBlog.NetTopologySuite.Index.Chain;
 using NPack.Interfaces;
-
+using Interval = GisSharpBlog.NetTopologySuite.Index.BintreeTemp.Interval;
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     /// <summary>
@@ -37,7 +37,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         //}
 
         private readonly ILinearRing<TCoordinate> _ring;
-        private readonly BinTree<MonotoneChain<TCoordinate>> _tree = new BinTree<MonotoneChain<TCoordinate>>();
+        //private readonly BinTree<MonotoneChain<TCoordinate>> _tree = new BinTree<MonotoneChain<TCoordinate>>();
+        private readonly Bintree<MonotoneChain<TCoordinate>> _tree = new Bintree<MonotoneChain<TCoordinate>>();
         private Int32 _crossings = 0; // number of segment/ray crossings
 
         private Interval _interval;
@@ -53,7 +54,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             if (ring.Factory == null)
             {
                 throw new ArgumentException(
-                    "Parameter must have a valid IGeometryFactory "+
+                    "Parameter must have a valid IGeometryFactory " +
                     "instance set for the Factory property.");
             }
 
@@ -74,7 +75,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             _interval = new Interval(y, y);
 
-            IEnumerable<MonotoneChain<TCoordinate>> chains = _tree.Query(_interval);
+            //IEnumerable<MonotoneChain<TCoordinate>> chains = _tree.Query(_interval);
+            IEnumerable<MonotoneChain<TCoordinate>> chains = Caster.Cast<MonotoneChain<TCoordinate>>(_tree.Query(_interval));
 
             foreach (MonotoneChain<TCoordinate> chain in chains)
             {
@@ -94,9 +96,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
         private void buildIndex()
         {
-            ICoordinateSequence<TCoordinate> coordinates 
+            ICoordinateSequence<TCoordinate> coordinates
                 = _ring.Coordinates.WithoutRepeatedPoints();
-            IEnumerable<MonotoneChain<TCoordinate>> chains 
+            IEnumerable<MonotoneChain<TCoordinate>> chains
                 = MonotoneChainBuilder.GetChains(_geoFactory, coordinates);
 
             foreach (MonotoneChain<TCoordinate> chain in chains)

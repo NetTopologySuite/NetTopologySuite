@@ -1,11 +1,12 @@
 using System.Collections;
+using System.Collections.Generic;
 
 namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
 {
     /// <summary> 
     /// The base class for nodes in a <c>Bintree</c>.
     /// </summary>
-    public abstract class NodeBase
+    public abstract class NodeBase<T>
     {
         /// <summary> 
         /// Returns the index of the subnode that wholely contains the given interval.
@@ -16,9 +17,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
         public static int GetSubnodeIndex(Interval interval, double centre)
         {
             int subnodeIndex = -1;
-            if (interval.Min >= centre) 
+            if (interval.Min >= centre)
                 subnodeIndex = 1;
-            if (interval.Max <= centre) 
+            if (interval.Max <= centre)
                 subnodeIndex = 0;
             return subnodeIndex;
         }
@@ -26,15 +27,15 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
         /// <summary>
         /// 
         /// </summary>
-        protected IList items = new ArrayList();
+        protected IList<T> items = new List<T>();
 
         /// <summary>
         /// Subnodes are numbered as follows:
         /// 0 | 1        
         /// .
         /// </summary>
-        protected Node[] subnode = new Node[2];
-        
+        protected Node<T>[] subnode = new Node<T>[2];
+
         /// <summary>
         /// 
         /// </summary>
@@ -43,11 +44,12 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
         /// <summary>
         /// 
         /// </summary>
-        public  IList Items
+        public IEnumerable<T> Items
         {
             get
-            {                
-                return items;
+            {
+                foreach (T item in items)
+                    yield return item;
             }
         }
 
@@ -55,7 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
         /// 
         /// </summary>
         /// <param name="item"></param>
-        public  void Add(object item)
+        public void Add(T item)
         {
             items.Add(item);
         }
@@ -65,15 +67,17 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        public  IList AddAllItems(IList items)
+        public IEnumerable<T> AllItems
         {
-            // items.addAll(this.items);
-            foreach (object o in this.items)
-                items.Add(o);
-            for (int i = 0; i < 2; i++)
-                if (subnode[i] != null)
-                    subnode[i].AddAllItems(items);                            
-            return items;
+            get
+            {
+                foreach (T o in this.items)
+                    yield return o;
+                for (int i = 0; i < 2; i++)
+                    if (subnode[i] != null)
+                        foreach (T o in subnode[i].AllItems)
+                            yield return o;
+            }
         }
 
         /// <summary>
@@ -89,23 +93,27 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
         /// <param name="interval"></param>
         /// <param name="resultItems"></param>
         /// <returns></returns>
-        public  IList AddAllItemsFromOverlapping(Interval interval, IList resultItems)
+        public IEnumerable<T> AddAllItemsFromOverlapping(Interval interval)
         {
             if (!IsSearchMatch(interval))
-                return items;
+                foreach (T item in Items)
+                {
+                    yield return item;
+                }
             // resultItems.addAll(items);
-            foreach (object o in items)
-                resultItems.Add(o);
+            foreach (T o in items)
+                yield return o;
             for (int i = 0; i < 2; i++)
                 if (subnode[i] != null)
-                    subnode[i].AddAllItemsFromOverlapping(interval, resultItems);                            
-            return items;
+                    foreach (T item in  subnode[i].AddAllItemsFromOverlapping(interval))
+                        yield return item;
+      
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public  int Depth
+        public int Depth
         {
             get
             {
@@ -126,7 +134,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
         /// <summary>
         /// 
         /// </summary>
-        public  int Count
+        public int Count
         {
             get
             {
@@ -141,7 +149,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
         /// <summary>
         /// 
         /// </summary>
-        public  int NodeCount
+        public int NodeCount
         {
             get
             {

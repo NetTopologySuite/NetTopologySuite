@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 
 namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
 {
@@ -15,30 +16,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
     /// This index is different to the Interval Tree of Edelsbrunner
     /// or the Segment Tree of Bentley.
     /// </summary>
-    public class Bintree
+    public class Bintree<TItem> : IEnumerable<TItem>
     {
-        /// <summary>
-        /// Ensure that the Interval for the inserted item has non-zero extents.
-        /// Use the current minExtent to pad it, if necessary.
-        /// </summary>
-        public static Interval EnsureExtent(Interval itemInterval, double minExtent)
-        {
-            double min = itemInterval.Min;
-            double max = itemInterval.Max;
-            // has a non-zero extent
-            if (min != max) 
-                return itemInterval;
-            // pad extent
-            if (min == max)
-            {
-                min = min - minExtent / 2.0;
-                max = min + minExtent / 2.0;
-            }
-            return new Interval(min, max);
-        }
+        private readonly Root<TItem> root;
 
-        private Root root;
-        
         /*
         * Statistics:
         * minExtent is the minimum extent of all items
@@ -55,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
         /// </summary>
         public Bintree()
         {
-            root = new Root();
+            root = new Root<TItem>();
         }
 
         /// <summary>
@@ -65,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
         {
             get
             {
-                if (root != null) 
+                if (root != null)
                     return root.Depth;
                 return 0;
             }
@@ -78,7 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
         {
             get
             {
-                if (root != null) 
+                if (root != null)
                     return root.Count;
                 return 0;
             }
@@ -92,10 +73,48 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
         {
             get
             {
-                if (root != null) 
+                if (root != null)
                     return root.NodeCount;
                 return 0;
             }
+        }
+
+        #region IEnumerable<TItem> Members
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator<TItem> GetEnumerator()
+        {
+            return root.AllItems.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Ensure that the Interval for the inserted item has non-zero extents.
+        /// Use the current minExtent to pad it, if necessary.
+        /// </summary>
+        public static Interval EnsureExtent(Interval itemInterval, double minExtent)
+        {
+            double min = itemInterval.Min;
+            double max = itemInterval.Max;
+            // has a non-zero extent
+            if (min != max)
+                return itemInterval;
+            // pad extent
+            if (min == max)
+            {
+                min = min - minExtent/2.0;
+                max = min + minExtent/2.0;
+            }
+            return new Interval(min, max);
         }
 
         /// <summary>
@@ -103,22 +122,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
         /// </summary>
         /// <param name="itemInterval"></param>
         /// <param name="item"></param>
-        public void Insert(Interval itemInterval, object item)
+        public void Insert(Interval itemInterval, TItem item)
         {
             CollectStats(itemInterval);
-            Interval insertInterval = EnsureExtent(itemInterval, minExtent);            
-            root.Insert(insertInterval, item);            
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator GetEnumerator()
-        {
-            IList foundItems = new ArrayList();
-            root.AddAllItems(foundItems);
-            return foundItems.GetEnumerator();
+            Interval insertInterval = EnsureExtent(itemInterval, minExtent);
+            root.Insert(insertInterval, item);
         }
 
         /// <summary>
@@ -126,34 +134,20 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
         /// </summary>
         /// <param name="x"></param>
         /// <returns></returns>
-        public IList Query(double x)
+        public IEnumerable<TItem> Query(double x)
         {
             return Query(new Interval(x, x));
         }
 
-        /// <summary>
-        /// min and max may be the same value.
-        /// </summary>
-        /// <param name="interval"></param>
-        public IList Query(Interval interval)
-        {
-            /*
-             * the items that are matched are all items in intervals
-             * which overlap the query interval
-             */
-            IList foundItems = new ArrayList();
-            Query(interval, foundItems);
-            return foundItems;
-        }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="interval"></param>
         /// <param name="foundItems"></param>
-        public void Query(Interval interval, IList foundItems)
+        public IEnumerable<TItem> Query(Interval interval)
         {
-            root.AddAllItemsFromOverlapping(interval, foundItems);
+            return root.AddAllItemsFromOverlapping(interval);
         }
 
         /// <summary>

@@ -36,8 +36,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             _indexBalanceHeuristic = indexBalanceHeuristic;
 
             _nodeSplitStrategy.NodeFactory = this;
+            _insertStrategy.NodeFactory = this;
 
-            
         }
 
         public override void Insert(TItem item)
@@ -48,11 +48,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
                 return;
             }
 
+            ISpatialIndexNode<IExtents<TCoordinate>, TItem> target = findTargetNode(item.Bounds, Root);
+
             ISpatialIndexNode<IExtents<TCoordinate>, TItem> newSiblingFromSplit;
             _insertStrategy.Insert(
                 item.Bounds,
                 item,
-                (ISpatialIndexNode<IExtents<TCoordinate>, TItem>)Root,
+                target,
                 _nodeSplitStrategy,
                 _indexBalanceHeuristic,
                 out newSiblingFromSplit);
@@ -69,8 +71,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             {
                 if (Root.IsLeaf)    // handle the first splitting of the root node.
                 {
-                    ISpatialIndexNode<IExtents<TCoordinate>, TItem> oldRoot = Root as ISpatialIndexNode<IExtents<TCoordinate>, TItem>;
-                    Root = CreateNode(Depth + 1);
+                    ISpatialIndexNode<IExtents<TCoordinate>, TItem> oldRoot = Root;
+                    Root = CreateNode(newSiblingFromSplit.Level + 1);
                     Root.Add(oldRoot);
                 }
 
@@ -78,8 +80,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             }
             else // Came from a root split
             {
-                ISpatialIndexNode<IExtents<TCoordinate>, TItem> oldRoot = Root as ISpatialIndexNode<IExtents<TCoordinate>, TItem>;
-                Root = CreateNode(Depth + 1);
+                ISpatialIndexNode<IExtents<TCoordinate>, TItem> oldRoot = Root;
+                Root = CreateNode(newSiblingFromSplit.Level + 1);
                 Root.Add(oldRoot);
                 Root.Add(newSiblingFromSplit);
             }
@@ -95,17 +97,40 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             if (!IsBuilt)
                 return BulkLoadStorage.Remove(item);
 
-            ISpatialIndexNode<IExtents<TCoordinate>, TItem> itemNode = findNodeForItem(item, (ISpatialIndexNode<IExtents<TCoordinate>, TItem>)Root);
+            ISpatialIndexNode<IExtents<TCoordinate>, TItem> itemNode = findNodeForItem(item, Root);
 
             bool removed = itemNode != null && itemNode.Remove(item);
             if (itemNode.IsPrunable)
             {
-                ISpatialIndexNode<IExtents<TCoordinate>, TItem> parent = findParentNode(itemNode, (ISpatialIndexNode<IExtents<TCoordinate>, TItem>)Root);
+                ISpatialIndexNode<IExtents<TCoordinate>, TItem> parent = findParentNode(itemNode, Root);
                 parent.Remove(itemNode);
             }
 
             return removed;
         }
+
+
+        private static ISpatialIndexNode<IExtents<TCoordinate>, TItem> findTargetNode(IExtents<TCoordinate> bounds,
+                                                                      ISpatialIndexNode<IExtents<TCoordinate>, TItem> searchNode)
+        {
+            if (!searchNode.Bounds.Intersects(bounds))
+                return null;
+
+            ISpatialIndexNode<IExtents<TCoordinate>, TItem> node;
+
+            foreach (ISpatialIndexNode<IExtents<TCoordinate>, TItem> nd in searchNode.SubNodes)
+            {
+                node = findTargetNode(bounds, nd);
+                if (node != null)
+                {
+                    return node;
+                }
+            }
+
+            return searchNode;
+        }
+
+
 
         private static ISpatialIndexNode<IExtents<TCoordinate>, TItem> findParentNode(ISpatialIndexNode<IExtents<TCoordinate>, TItem> lookFor,
                                                                       ISpatialIndexNode<IExtents<TCoordinate>, TItem> searchNode)
