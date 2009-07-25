@@ -474,7 +474,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// polygon is to be created.
         /// </param>
         /// <param name="factory"></param>
-        public Polygon(LinearRing shell, GeometryFactory factory) : this(shell, null, factory) { }
+        public Polygon(ILinearRing shell, IGeometryFactory factory) : this(shell, null, factory) { }
 
         /// <summary>
         /// Constructs a <c>Polygon</c> with the given exterior boundary.
@@ -484,7 +484,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// or <c>null</c> or an empty <c>LinearRing</c> if the empty
         /// polygon is to be created.
         /// </param>
-        public Polygon(LinearRing shell) : this(shell, null, DefaultFactory) { }
+        public Polygon(ILinearRing shell) : this(shell, null, DefaultFactory) { }
 
         /// <summary>
         /// 
