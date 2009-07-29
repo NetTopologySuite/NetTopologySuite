@@ -781,6 +781,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns><c>true</c> if the two <c>Geometry</c>s are equal.</returns>
         public bool Equals(IGeometry g)
         {
+            if (ReferenceEquals(g, this))
+                return true;
+
             // NOTE: Not in JTS!!!
 			if (IsEmpty && g.IsEmpty)
 				return true;
@@ -833,9 +836,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="obj"></param>
         /// <returns></returns>
         public override bool Equals(object obj)
-        {
+        {            
             if (obj == null)
                 return false;
+            if (ReferenceEquals(obj, this))
+                return true;
             if (GetType().Namespace != obj.GetType().Namespace)
                 return false;            
             return Equals((IGeometry) obj);         
