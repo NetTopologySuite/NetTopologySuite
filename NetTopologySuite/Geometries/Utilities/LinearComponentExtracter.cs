@@ -11,8 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
     /// components from a <see cref="Geometry{TCoordinate}"/>.
     /// </summary>
     public class LinearComponentExtracter<TCoordinate> : IGeometryComponentFilter<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+        where TCoordinate : IEquatable<TCoordinate>, IComparable<TCoordinate>, ICoordinate<TCoordinate>, IComputable<double, TCoordinate>
     {
         private readonly List<ILineString<TCoordinate>> _lines
             = new List<ILineString<TCoordinate>>();
@@ -27,9 +26,30 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <returns>The list of linear components.</returns>
         public static IEnumerable<ILineString<TCoordinate>> GetLines(IGeometry<TCoordinate> geom)
         {
-            List<ILineString<TCoordinate>> lines = new List<ILineString<TCoordinate>>();
-            geom.Apply(new LinearComponentExtracter<TCoordinate>(lines));
-            return lines;
+            if (geom is ILineString<TCoordinate>)
+                yield return geom as ILineString<TCoordinate>;
+            else
+            {
+                if(geom is IPolygon<TCoordinate>)
+                {
+                    IPolygon<TCoordinate> polygon = geom as IPolygon<TCoordinate>;
+                    yield return polygon.ExteriorRing;
+                    foreach (ILineString<TCoordinate> lineString in polygon.InteriorRings)
+                    {
+                        yield return lineString;
+                    }
+                }
+                else if (geom is IGeometryCollection<TCoordinate>)
+                {
+                    foreach (IGeometry<TCoordinate> geometry in geom as IGeometryCollection<TCoordinate>   )
+                    {
+                        foreach (ILineString<TCoordinate> lineString in GetLines(geometry))
+                            yield return lineString;
+                    }
+                }
+            }
+
+            //jd: need to compare with JTS
         }
 
         /// <summary> 

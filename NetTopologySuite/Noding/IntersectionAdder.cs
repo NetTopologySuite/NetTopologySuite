@@ -210,5 +210,15 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
             return false;
         }
+
+        #region ISegmentIntersector<TCoordinate> Member
+
+
+        public bool IsDone
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        #endregion
     }
 }

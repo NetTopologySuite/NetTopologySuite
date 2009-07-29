@@ -4,6 +4,7 @@ using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
+using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using NPack.Interfaces;
 
@@ -22,7 +23,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// <typeparam name="TCoordinate">The coordinate type to use.</typeparam>
     [Serializable]
     public struct LineSegment<TCoordinate> : IEquatable<LineSegment<TCoordinate>>, 
-                                             IComparable<LineSegment<TCoordinate>>
+                                             IComparable<LineSegment<TCoordinate>>,
+                                             IBoundable<Interval>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
@@ -549,5 +551,23 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                                                       "Index must be 0 or 1.");
             }
         }
+
+        #region IBoundable<Interval> Member
+
+        public Interval Bounds
+        {
+            get { return new Interval(P0[Ordinates.Y], P1[Ordinates.Y]); }
+        }
+
+        #endregion
+
+        #region IIntersectable<Interval> Member
+
+        public bool Intersects(Interval other)
+        {
+            return Bounds.Intersects(other);
+        }
+
+        #endregion
     }
 }

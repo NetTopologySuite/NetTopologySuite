@@ -163,6 +163,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
             return computeOverlaps(_start, _end, other, other._start, other._end);
         }
 
+        public void ComputeOverlaps(MonotoneChain<TCoordinate> other, MonotoneChainOverlapAction<TCoordinate> mco)
+        {
+            computeOverlaps(StartIndex, EndIndex, other, other.StartIndex, other.EndIndex, mco);
+        }
+
         public IEnumerable<Pair<Int32>> OverlapIndexes(MonotoneChain<TCoordinate> other)
         {
             return computeOverlapIndexes(_start, _end, other, other._start, other._end);
@@ -334,6 +339,45 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
                 }
             }
         }
+
+        private void computeOverlaps(int start0, int end0, MonotoneChain<TCoordinate> mc, int start1, int end1, MonotoneChainOverlapAction<TCoordinate> mco)
+        {
+            TCoordinate p00 = _coordinates[start0];
+            TCoordinate p01 = _coordinates[end0];
+            TCoordinate p10 = mc.Coordinates[start1];
+            TCoordinate p11 = mc.Coordinates[end1];
+            //Debug.println("computeIntersectsForChain:" + p00 + p01 + p10 + p11);
+            // terminating condition for the recursion
+            if (end0 - start0 == 1 && end1 - start1 == 1)
+            {
+                mco.Overlap(this, start0, mc, start1);
+                return;
+            }
+            // nothing to do if the envelopes of these chains don't overlap
+            mco.SearchExtents1.SetToEmpty();
+            mco.SearchExtents1.ExpandToInclude(p00, p01);
+            mco.SearchExtents2.SetToEmpty();
+            mco.SearchExtents2.ExpandToInclude(p10, p11);
+            if (!mco.SearchExtents1.Intersects(mco.SearchExtents2)) return;
+
+            // the chains overlap, so split each in half and iterate  (binary search)
+            int mid0 = (start0 + end0) / 2;
+            int mid1 = (start1 + end1) / 2;
+
+            // Assert: mid != start or end (since we checked above for end - start <= 1)
+            // check terminating conditions before recursing
+            if (start0 < mid0)
+            {
+                if (start1 < mid1) computeOverlaps(start0, mid0, mc, start1, mid1, mco);
+                if (mid1 < end1) computeOverlaps(start0, mid0, mc, mid1, end1, mco);
+            }
+            if (mid0 < end0)
+            {
+                if (start1 < mid1) computeOverlaps(mid0, end0, mc, start1, mid1, mco);
+                if (mid1 < end1) computeOverlaps(mid0, end0, mc, mid1, end1, mco);
+            }
+        }
+
         #endregion
     }
 }

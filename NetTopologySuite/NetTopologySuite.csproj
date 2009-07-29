@@ -155,6 +155,9 @@
     <Compile Include="Algorithm\Intersection.cs" />
     <Compile Include="Algorithm\LineIntersectionDegrees.cs" />
     <Compile Include="Algorithm\LineIntersector.cs" />
+    <Compile Include="Algorithm\Locate\IndexedPointInAreaLocator.cs" />
+    <Compile Include="Algorithm\Locate\IPointOnGeometryLocator.cs" />
+    <Compile Include="Algorithm\Locate\SimplePointInAreaLocator.cs" />
     <Compile Include="Algorithm\MCPointInRing.cs" />
     <Compile Include="Algorithm\MinimumDiameter.cs" />
     <Compile Include="Algorithm\Mod2BoundaryNodeRule.cs" />
@@ -163,6 +166,7 @@
     <Compile Include="Algorithm\IPointInRing.cs" />
     <Compile Include="Algorithm\Orientation.cs" />
     <Compile Include="Algorithm\PointLocator.cs" />
+    <Compile Include="Algorithm\RayCrossingCounter.cs" />
     <Compile Include="Algorithm\RobustDeterminant.cs" />
     <Compile Include="Algorithm\RobustLineIntersector.cs" />
     <Compile Include="Algorithm\SimplePointInAreaLocator.cs" />
@@ -188,6 +192,19 @@
     <Compile Include="Geometries\Point.cs" />
     <Compile Include="Geometries\PointM.cs" />
     <Compile Include="Geometries\Polygon.cs" />
+    <Compile Include="Geometries\Prepared\AbstractPreparedPolygonContains.cs" />
+    <Compile Include="Geometries\Prepared\BasicPreparedGeometry.cs" />
+    <Compile Include="Geometries\Prepared\IPreparedGeometry.cs" />
+    <Compile Include="Geometries\Prepared\PreparedGeometryFactory.cs" />
+    <Compile Include="Geometries\Prepared\PreparedLineString.cs" />
+    <Compile Include="Geometries\Prepared\PreparedLineStringIntersects.cs" />
+    <Compile Include="Geometries\Prepared\PreparedPoint.cs" />
+    <Compile Include="Geometries\Prepared\PreparedPolygon.cs" />
+    <Compile Include="Geometries\Prepared\PreparedPolygonContains.cs" />
+    <Compile Include="Geometries\Prepared\PreparedPolygonContainsProperly.cs" />
+    <Compile Include="Geometries\Prepared\PreparedPolygonCovers.cs" />
+    <Compile Include="Geometries\Prepared\PreparedPolygonIntersects.cs" />
+    <Compile Include="Geometries\Prepared\PreparedPolygonPredicate.cs" />
     <Compile Include="Geometries\TopologyException.cs" />
     <Compile Include="Geometries\Triangle.cs" />
     <Compile Include="Geometries\Coordinates.cs" />
@@ -223,6 +240,7 @@
     <Compile Include="GeometriesGraph\Position.cs" />
     <Compile Include="GeometriesGraph\QuadrantOp.cs" />
     <Compile Include="GeometriesGraph\TopologyLocation.cs" />
+    <Compile Include="Geometries\Utilities\LinearComponentExtracter.cs" />
     <Compile Include="Geometries\Utilities\ShortCircuitedGeometryVisitor.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -239,6 +257,11 @@
     <Compile Include="Index\Bintree\Root.cs" />
     <Compile Include="Index\Chain\MonotoneChain.cs" />
     <Compile Include="Index\Chain\MonotoneChainBuilder.cs" />
+    <Compile Include="Index\Chain\MonotoneChainOverlapAction.cs" />
+    <Compile Include="Index\IntervalRTree\IntervalRTreeBranchNode.cs" />
+    <Compile Include="Index\IntervalRTree\IntervalRTreeLeafNode.cs" />
+    <Compile Include="Index\IntervalRTree\IntervalRTreeNode.cs" />
+    <Compile Include="Index\IntervalRTree\SortedPackedIntervalRTree.cs" />
     <Compile Include="Index\Quadtree\QuadTreeNodeKey.cs" />
     <Compile Include="Index\Strtree\DynamicSTRtree.cs" />
     <Compile Include="Index\Sweepline\ISweepLineOverlapAction.cs" />
@@ -267,19 +290,24 @@
     <Compile Include="LinearReferencing\LocationIndexedLine.cs" />
     <Compile Include="LinearReferencing\LocationIndexOfLine.cs" />
     <Compile Include="LinearReferencing\LocationIndexOfPoint.cs" />
+    <Compile Include="Noding\FastSegmentSetIntersectionFinder.cs" />
     <Compile Include="Noding\IntersectionAdder.cs" />
     <Compile Include="Noding\IntersectionFinderAdder.cs" />
     <Compile Include="Noding\ISegmentIntersector.cs" />
     <Compile Include="Noding\IteratedNoder.cs" />
     <Compile Include="Noding\INoder.cs" />
     <Compile Include="Noding\MonotoneChainIndexNoder.cs" />
+    <Compile Include="Noding\MonotoneChainIndexSegmentSetMutualIntersector.cs" />
     <Compile Include="Noding\NodingValidator.cs" />
     <Compile Include="Noding\Octant.cs" />
     <Compile Include="Noding\ScaledNoder.cs" />
+    <Compile Include="Noding\SegmentString.cs" />
+    <Compile Include="Noding\SegmentStringUtil.cs" />
+    <Compile Include="Noding\SegmentIntersectionDetector.cs" />
     <Compile Include="Noding\SegmentNode.cs" />
     <Compile Include="Noding\SegmentNodeList.cs" />
     <Compile Include="Noding\SegmentPointComparator.cs" />
-    <Compile Include="Noding\SegmentString.cs" />
+    <Compile Include="Noding\SegmentSetMutualIntersector.cs" />
     <Compile Include="Noding\SegmentStringDissolver.cs" />
     <Compile Include="Noding\SimpleNoder.cs" />
     <Compile Include="Noding\SinglePassNoder.cs" />

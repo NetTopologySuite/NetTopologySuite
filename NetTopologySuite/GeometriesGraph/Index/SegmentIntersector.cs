@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GisSharpBlog.NetTopologySuite.Algorithm;
+using GisSharpBlog.NetTopologySuite.Noding;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
@@ -11,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// Computes the intersections of segments of <see cref="Edge{TCoordinate}"/>s.
     /// </summary>
     /// <typeparam name="TCoordinate">The coordinate type.</typeparam>
-    public class SegmentIntersector<TCoordinate>
+    public class SegmentIntersector<TCoordinate> : ISegmentIntersector<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
@@ -281,5 +282,22 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 
             return false;
         }
+
+        #region ISegmentIntersector<TCoordinate> Member
+
+        public void ProcessIntersections(NodedSegmentString<TCoordinate> e0, int segIndex0, NodedSegmentString<TCoordinate> e1, int segIndex1)
+        {
+            //nothing to do here since all
+        }
+
+        public bool IsDone
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        #endregion
     }
 }

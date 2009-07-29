@@ -11,13 +11,21 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
     /// overlap queries on a MonotoneChain.
     /// </summary>
     public class MonotoneChainOverlapAction<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                            IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly Extents<TCoordinate> _searchExtents1 = new Extents<TCoordinate>();
-        private readonly Extents<TCoordinate> _searchExtents2 = new Extents<TCoordinate>();
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
+        private readonly Extents<TCoordinate> _searchExtents1;// = new Extents<TCoordinate>();
+        private readonly Extents<TCoordinate> _searchExtents2;// = new Extents<TCoordinate>();
         private LineSegment<TCoordinate> _overlapSeg1 = new LineSegment<TCoordinate>();
         private LineSegment<TCoordinate> _overlapSeg2 = new LineSegment<TCoordinate>();
+
+        public MonotoneChainOverlapAction(IGeometryFactory<TCoordinate> geometryFactory)
+        {
+            _geoFactory = geometryFactory;
+            _searchExtents1 = new Extents<TCoordinate>(_geoFactory);
+            _searchExtents2 = new Extents<TCoordinate>(_geoFactory);
+        }
 
         /// <summary>
         /// Gets one of the <see cref="IExtents{TCoordinate}"/>s 
