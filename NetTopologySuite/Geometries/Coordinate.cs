@@ -63,11 +63,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             this.y = y;
             this.z = z;
         }
-        
+
         /// <summary>
         ///  Constructs a <c>Coordinate</c> at (0,0,NaN).
         /// </summary>
-        public Coordinate() : this(0.0, 0.0, Double.NaN) { }        
+        public Coordinate() : this(0.0, 0.0, Double.NaN) { }
 
         /// <summary>
         /// Constructs a <c>Coordinate</c> having the same (x,y,z) values as
@@ -120,9 +120,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (other == null)
                 return false;
-            if (!(other is Coordinate))
+            if (!(other is ICoordinate))
                 return false;
-            return Equals((Coordinate) other);
+            return Equals((ICoordinate)other);
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="obj1"></param>
         /// <param name="obj2"></param>
         /// <returns></returns>
-        public static bool operator ==(Coordinate obj1, Coordinate obj2)
+        public static bool operator ==(Coordinate obj1, ICoordinate obj2)
         {
             return Equals(obj1, obj2);
         }
@@ -152,10 +152,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="obj1"></param>
         /// <param name="obj2"></param>
         /// <returns></returns>
-        public static bool operator !=(Coordinate obj1, Coordinate obj2)
+        public static bool operator !=(Coordinate obj1, ICoordinate obj2)
         {
             return !(obj1 == obj2);
-        }  
+        }
 
         /// <summary>
         /// Compares this object with the specified object for order.
@@ -172,7 +172,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public int CompareTo(object o)
         {
-            var other = (ICoordinate) o;
+            var other = (ICoordinate)o;
             return CompareTo(other);
         }
 
@@ -209,7 +209,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns><c>true</c> if <c>other</c> is a <c>Coordinate</c> with the same values for x, y and z.</returns>
         public bool Equals3D(ICoordinate other)
         {
-            return  (x == other.X) && (y == other.Y) && 
+            return (x == other.X) && (y == other.Y) &&
                 ((z == other.Z) || (Double.IsNaN(Z) && Double.IsNaN(other.Z)));
         }
 
@@ -248,7 +248,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public override int GetHashCode()
         {
-            var result = 17;            
+            var result = 17;
             result = 37 * result + GetHashCode(X);
             result = 37 * result + GetHashCode(Y);
             return result;
@@ -261,7 +261,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         private static int GetHashCode(double value)
         {
             var f = BitConverter.DoubleToInt64Bits(value);
-            return (int)(f^(f>>32));
+            return (int)(f ^ (f >> 32));
         }
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
@@ -345,14 +345,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             return new Coordinate(coord1.X / coord2.X, coord1.Y / coord2.Y, coord1.Z / coord2.Z);
         }
-     
+
         /// <summary>
         /// Overloaded / operator.
         /// </summary>
         public static Coordinate operator /(Coordinate coord1, double d)
         {
             return new Coordinate(coord1.X / d, coord1.Y / d, coord1.Z / d);
-        }  
+        }
 
         /// <summary>
         /// Overloaded / operator.
@@ -362,6 +362,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return coord1 / d;
         }
 
-        /* END ADDED BY MPAUL42: monoGIS team */   
+        /* END ADDED BY MPAUL42: monoGIS team */
     }
-} 
+}

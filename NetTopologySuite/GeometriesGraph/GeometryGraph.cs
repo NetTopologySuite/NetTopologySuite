@@ -371,7 +371,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="onLocation"></param>
         private void InsertPoint(int argIndex, ICoordinate coord, Locations onLocation)
         {
-            Node n = nodes.AddNode((Coordinate) coord);
+            Node n = nodes.AddNode(coord);
             Label lbl = n.Label;
             if (lbl == null) 
                  n.Label = new Label(argIndex, onLocation);            
@@ -388,7 +388,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="coord"></param>
         private void InsertBoundaryPoint(int argIndex, ICoordinate coord)
         {
-            Node n = nodes.AddNode((Coordinate) coord);
+            Node n = nodes.AddNode(coord);
             Label lbl = n.Label;
             // the new point to insert is on a boundary
             int boundaryCount = 1;
