@@ -76,7 +76,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// Indicates that the <see cref="Ordinates.X">X</see>
         /// or <see cref="Ordinates.Y">Y</see> ordinate of
         /// an <see cref="ICoordinate" /> is not a valid 
-        /// numeric value (e.g. <see cref="Double.NaN" />).
+        /// numeric value (e.g. <see cref="double.NaN" />).
         /// </summary>
         InvalidCoordinate = 10,
 
@@ -99,6 +99,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// </summary>
         private static readonly IDictionary<TopologyValidationErrors, String> _errMsg;
 
+        private readonly ICoordinate _coordinate;
+        private readonly TopologyValidationErrors _errorType;
+
         static TopologyValidationError()
         {
             // I18N_UNSAFE
@@ -120,21 +123,20 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             _errMsg = new ReadOnlyDictionary<TopologyValidationErrors, String>(errors);
         }
 
-        private readonly TopologyValidationErrors _errorType;
-        private readonly ICoordinate _coordinate;
-
         public TopologyValidationError(TopologyValidationErrors errorType, ICoordinate coordinate)
         {
             _errorType = errorType;
 
             if (coordinate != null)
             {
-                _coordinate = (ICoordinate)coordinate.Clone();
+                _coordinate = (ICoordinate) coordinate.Clone();
             }
         }
 
         public TopologyValidationError(TopologyValidationErrors errorType)
-            : this(errorType, null) { }
+            : this(errorType, null)
+        {
+        }
 
         public ICoordinate Coordinate
         {

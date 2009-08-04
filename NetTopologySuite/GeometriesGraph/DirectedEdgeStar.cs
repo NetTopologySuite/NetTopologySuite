@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Operation.Overlay;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
-using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -19,19 +19,19 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// <see cref="MinimalEdgeRing{TCoordinate}"/>s.
     /// </summary>
     public class DirectedEdgeStar<TCoordinate> : EdgeEndStar<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
-        enum DirectedEdgeState
-        {
-            ScanningForIncoming = 1,
-            LinkingToOutgoing = 2
-        }
-
-        private readonly List<DirectedEdge<TCoordinate>> _resultAreaEdgeList 
+        private readonly List<DirectedEdge<TCoordinate>> _resultAreaEdgeList
             = new List<DirectedEdge<TCoordinate>>();
+
         private Label? _label;
+
+        public Label? Label
+        {
+            get { return _label; }
+        }
 
         public override String ToString()
         {
@@ -45,11 +45,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             DirectedEdge<TCoordinate> de = ee as DirectedEdge<TCoordinate>;
             InsertEdgeEnd(de, de);
-        }
-
-        public Label? Label
-        {
-            get { return _label; }
         }
 
         public Int32 GetOutgoingDegree()
@@ -157,9 +152,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
                     if (eLoc == Locations.Interior || eLoc == Locations.Boundary)
                     {
-                        _label = _label == null 
-                            ? new Label(i, Locations.Interior) 
-                            : new Label(_label.Value, i, Locations.Interior);
+                        _label = _label == null
+                                     ? new Label(i, Locations.Interior)
+                                     : new Label(_label.Value, i, Locations.Interior);
                     }
                 }
             }
@@ -526,5 +521,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             return currDepth;
         }
+
+        #region Nested type: DirectedEdgeState
+
+        private enum DirectedEdgeState
+        {
+            ScanningForIncoming = 1,
+            LinkingToOutgoing = 2
+        }
+
+        #endregion
     }
 }

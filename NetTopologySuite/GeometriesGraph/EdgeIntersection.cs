@@ -20,9 +20,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// The intersection point must be precise.
     /// </remarks>
     public struct EdgeIntersection<TCoordinate> : IComparable<EdgeIntersection<TCoordinate>>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         private readonly TCoordinate _coordinate;
         private readonly Double _distance;
@@ -41,26 +41,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="distance">
         /// Distance along the segment where the intersection is located.
         /// </param>
-        public EdgeIntersection(TCoordinate coordinate, Int32 segmentIndex, 
+        public EdgeIntersection(TCoordinate coordinate, Int32 segmentIndex,
                                 Double distance)
         {
             _coordinate = coordinate;
             _segmentIndex = segmentIndex;
             _distance = distance;
-        }
-
-        public override String ToString()
-        {
-            return Coordinate + 
-                   " seg # = " + SegmentIndex +
-                   " dist = " + Distance;
-        }
-
-        public override Int32 GetHashCode()
-        {
-            return _coordinate.GetHashCode() ^
-                   _distance.GetHashCode() ^
-                   _segmentIndex.GetHashCode();
         }
 
         /// <summary>
@@ -87,9 +73,27 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             get { return _distance; }
         }
 
+        #region IComparable<EdgeIntersection<TCoordinate>> Members
+
         public Int32 CompareTo(EdgeIntersection<TCoordinate> other)
         {
             return Compare(other.SegmentIndex, other.Distance);
+        }
+
+        #endregion
+
+        public override String ToString()
+        {
+            return Coordinate +
+                   " seg # = " + SegmentIndex +
+                   " dist = " + Distance;
+        }
+
+        public override Int32 GetHashCode()
+        {
+            return _coordinate.GetHashCode() ^
+                   _distance.GetHashCode() ^
+                   _segmentIndex.GetHashCode();
         }
 
         /// <returns>

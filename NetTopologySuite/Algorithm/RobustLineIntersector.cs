@@ -1,11 +1,10 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
-using Trace = GeoAPI.Diagnostics.Trace;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
@@ -14,11 +13,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class RobustLineIntersector<TCoordinate> : LineIntersector<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         public RobustLineIntersector(IGeometryFactory<TCoordinate> factory)
-            : base(factory) { }
+            : base(factory)
+        {
+        }
 
         public override Intersection<TCoordinate> ComputeIntersection(TCoordinate p,
                                                                       Pair<TCoordinate> line)
@@ -143,7 +144,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         }
 
         private TCoordinate computeIntersection(IGeometryFactory<TCoordinate> geoFactory,
-            Pair<TCoordinate> line0, Pair<TCoordinate> line1)
+                                                Pair<TCoordinate> line0, Pair<TCoordinate> line1)
         {
             TCoordinate intersection = computeIntersectionWithNormalization(line0, line1);
 
@@ -222,10 +223,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 TCoordinate hQ2 = CoordinateFactory.Homogenize(q2);
 
                 intersectionPoint = intersectHomogeneous(hP1, hP2, hQ1, hQ2);
-                Double x = (Double)intersectionPoint[0];
-                Double y = (Double)intersectionPoint[1];
-                Double w = (Double)intersectionPoint[2];
-                return CoordinateFactory.Create(x / w, y / w);
+                Double x = (Double) intersectionPoint[0];
+                Double y = (Double) intersectionPoint[1];
+                Double w = (Double) intersectionPoint[2];
+                return CoordinateFactory.Create(x/w, y/w);
             }
             catch (NotRepresentableException e)
             {
@@ -262,7 +263,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return intersection;
         }
 
-        private static Intersection<TCoordinate> computeCollinearIntersection(Pair<TCoordinate> line0, Pair<TCoordinate> line1)
+        private static Intersection<TCoordinate> computeCollinearIntersection(Pair<TCoordinate> line0,
+                                                                              Pair<TCoordinate> line1)
         {
             Boolean p1_q1_p2 = Extents<TCoordinate>.Intersects(line0.First,
                                                                line0.Second,
@@ -367,8 +369,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             Double intMinY = minY0 > minY1 ? minY0 : minY1;
             Double intMaxY = maxY0 < maxY1 ? maxY0 : maxY1;
 
-            Double intMidX = (intMinX + intMaxX) / 2.0;
-            Double intMidY = (intMinY + intMaxY) / 2.0;
+            Double intMidX = (intMinX + intMaxX)/2.0;
+            Double intMidY = (intMinY + intMaxY)/2.0;
             normPt = CoordinateFactory.Create(intMidX, intMidY);
 
             Double n00X = n00[Ordinates.X] - intMidX;

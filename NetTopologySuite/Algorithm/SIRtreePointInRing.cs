@@ -15,18 +15,22 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class SirTreePointInRing<TCoordinate> : IPointInRing<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly ILinearRing<TCoordinate> _ring;
+
         private readonly SirTree<LineSegment<TCoordinate>> _sirTree
             = new SirTree<LineSegment<TCoordinate>>();
-        private Int32 _crossings = 0; // number of segment/ray crossings
+
+        private Int32 _crossings; // number of segment/ray crossings
 
         public SirTreePointInRing(ILinearRing<TCoordinate> ring)
         {
             _ring = ring;
             buildIndex();
         }
+
+        #region IPointInRing<TCoordinate> Members
 
         public Boolean IsInside(TCoordinate coordinate)
         {
@@ -43,13 +47,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             /*
             *  p is inside if number of crossings is odd.
             */
-            if ((_crossings % 2) == 1)
+            if ((_crossings%2) == 1)
             {
                 return true;
             }
 
             return false;
         }
+
+        #endregion
 
         private void buildIndex()
         {
@@ -92,7 +98,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 /*
                 *  segment straddles x axis, so compute intersection.
                 */
-                xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2) / (y2 - y1);
+                xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2)/(y2 - y1);
 
                 /*
                 *  crosses ray if strictly positive intersection.

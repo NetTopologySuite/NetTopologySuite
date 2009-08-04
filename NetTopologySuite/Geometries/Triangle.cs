@@ -9,16 +9,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// properties of triangles.
     /// </summary>
     public struct Triangle<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         private readonly ICoordinateFactory<TCoordinate> _coordFactory;
         private readonly TCoordinate _p0;
         private readonly TCoordinate _p1;
         private readonly TCoordinate _p2;
 
-        public Triangle(ICoordinateFactory<TCoordinate> coordFactory, 
+        public Triangle(ICoordinateFactory<TCoordinate> coordFactory,
                         TCoordinate p0, TCoordinate p1, TCoordinate p2)
         {
             _coordFactory = coordFactory;
@@ -61,13 +61,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 Double len2 = P0.Distance(P1);
                 Double circum = len0 + len1 + len2;
 
-                Double inCenterX = (len0 * P0[Ordinates.X] + 
-                                    len1 * P1[Ordinates.X] + 
-                                    len2 * P2[Ordinates.X]) / circum;
+                Double inCenterX = (len0*P0[Ordinates.X] +
+                                    len1*P1[Ordinates.X] +
+                                    len2*P2[Ordinates.X])/circum;
 
-                Double inCenterY = (len0 * P0[Ordinates.Y] + 
-                                    len1 * P1[Ordinates.Y] + 
-                                    len2 * P2[Ordinates.Y]) / circum;
+                Double inCenterY = (len0*P0[Ordinates.Y] +
+                                    len1*P1[Ordinates.Y] +
+                                    len2*P2[Ordinates.Y])/circum;
 
                 return _coordFactory.Create(inCenterX, inCenterY);
             }

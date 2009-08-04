@@ -11,23 +11,24 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
     /// </summary>
     /// <typeparam name="TCoordinate"></typeparam>
     /// <typeparam name="TItem"></typeparam>
-    public class DynamicSTRtree<TCoordinate, TItem> : StrTree<TCoordinate, TItem>, IUpdatableSpatialIndex<IExtents<TCoordinate>, TItem>
+    public class DynamicSTRtree<TCoordinate, TItem> : StrTree<TCoordinate, TItem>,
+                                                      IUpdatableSpatialIndex<IExtents<TCoordinate>, TItem>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<double, TCoordinate>
         where TItem : IBoundable<IExtents<TCoordinate>>
     {
-        private readonly IItemInsertStrategy<IExtents<TCoordinate>, TItem> _insertStrategy;
-        private readonly IIndexRestructureStrategy<IExtents<TCoordinate>, TItem> _restructureStrategy;
-        private readonly INodeSplitStrategy<IExtents<TCoordinate>, TItem> _nodeSplitStrategy;
         private readonly IndexBalanceHeuristic _indexBalanceHeuristic;
+        private readonly IItemInsertStrategy<IExtents<TCoordinate>, TItem> _insertStrategy;
+        private readonly INodeSplitStrategy<IExtents<TCoordinate>, TItem> _nodeSplitStrategy;
+        private readonly IIndexRestructureStrategy<IExtents<TCoordinate>, TItem> _restructureStrategy;
 
 
         public DynamicSTRtree(IGeometryFactory<TCoordinate> geometryFactory,
-                                Int32 nodeCount,
-                                IItemInsertStrategy<IExtents<TCoordinate>, TItem> insertStrategy,
-                                IIndexRestructureStrategy<IExtents<TCoordinate>, TItem> restructureStrategy,
-                                INodeSplitStrategy<IExtents<TCoordinate>, TItem> nodeSplitStrategy,
-                                IndexBalanceHeuristic indexBalanceHeuristic)
+                              Int32 nodeCount,
+                              IItemInsertStrategy<IExtents<TCoordinate>, TItem> insertStrategy,
+                              IIndexRestructureStrategy<IExtents<TCoordinate>, TItem> restructureStrategy,
+                              INodeSplitStrategy<IExtents<TCoordinate>, TItem> nodeSplitStrategy,
+                              IndexBalanceHeuristic indexBalanceHeuristic)
             : base(geometryFactory, nodeCount)
         {
             _insertStrategy = insertStrategy;
@@ -37,8 +38,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
             _nodeSplitStrategy.NodeFactory = this;
             _insertStrategy.NodeFactory = this;
-
         }
+
+        #region IUpdatableSpatialIndex<IExtents<TCoordinate>,TItem> Members
 
         public override void Insert(TItem item)
         {
@@ -69,7 +71,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             // Add the newly split sibling
             if (newSiblingFromSplit.IsLeaf)
             {
-                if (Root.IsLeaf)    // handle the first splitting of the root node.
+                if (Root.IsLeaf) // handle the first splitting of the root node.
                 {
                     ISpatialIndexNode<IExtents<TCoordinate>, TItem> oldRoot = Root;
                     Root = CreateNode(newSiblingFromSplit.Level + 1);
@@ -85,7 +87,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
                 Root.Add(oldRoot);
                 Root.Add(newSiblingFromSplit);
             }
-
         }
 
         /// <summary>
@@ -109,9 +110,20 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return removed;
         }
 
+        public void Clear()
+        {
+            BulkLoadStorage.Clear();
+            IsBuilt = false;
+            NullifyRoot();
+            IsBuilt = false;
+        }
+
+        #endregion
 
         private static ISpatialIndexNode<IExtents<TCoordinate>, TItem> findTargetNode(IExtents<TCoordinate> bounds,
-                                                                      ISpatialIndexNode<IExtents<TCoordinate>, TItem> searchNode)
+                                                                                      ISpatialIndexNode
+                                                                                          <IExtents<TCoordinate>, TItem>
+                                                                                          searchNode)
         {
             if (!searchNode.Bounds.Intersects(bounds))
                 return null;
@@ -131,9 +143,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         }
 
 
-
-        private static ISpatialIndexNode<IExtents<TCoordinate>, TItem> findParentNode(ISpatialIndexNode<IExtents<TCoordinate>, TItem> lookFor,
-                                                                      ISpatialIndexNode<IExtents<TCoordinate>, TItem> searchNode)
+        private static ISpatialIndexNode<IExtents<TCoordinate>, TItem> findParentNode(
+            ISpatialIndexNode<IExtents<TCoordinate>, TItem> lookFor,
+            ISpatialIndexNode<IExtents<TCoordinate>, TItem> searchNode)
         {
             foreach (ISpatialIndexNode<IExtents<TCoordinate>, TItem> node in searchNode.SubNodes)
             {
@@ -162,7 +174,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         }
 
         private static ISpatialIndexNode<IExtents<TCoordinate>, TItem> findNodeForItem(TItem item,
-                                                                          ISpatialIndexNode<IExtents<TCoordinate>, TItem> node)
+                                                                                       ISpatialIndexNode
+                                                                                           <IExtents<TCoordinate>, TItem
+                                                                                           > node)
         {
             foreach (TItem nodeItem in node.Items)
             {
@@ -190,18 +204,5 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
             return null;
         }
-
-
-        #region IUpdatableSpatialIndex<IExtents<TCoordinate>,TItem> Members
-
-        public void Clear()
-        {
-            BulkLoadStorage.Clear();
-            IsBuilt = false;
-            NullifyRoot();
-            IsBuilt = false;
-        }
-
-        #endregion
     }
 }

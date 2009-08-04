@@ -21,45 +21,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation
     /// </remarks>
     public class IsSimpleOp<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        private struct EndpointInfo
-        {
-            private readonly TCoordinate _point;
-            private Boolean _isClosed;
-            private Int32 _degree;
-
-            public TCoordinate Point
-            {
-                get { return _point; }
-            }
-
-            public Boolean IsClosed
-            {
-                get { return _isClosed; }
-                private set { _isClosed = value; }
-            }
-
-            public Int32 Degree
-            {
-                get { return _degree; }
-                private set { _degree = value; }
-            }
-
-            public EndpointInfo(TCoordinate pt)
-            {
-                _point = pt;
-                _isClosed = false;
-                _degree = 0;
-            }
-
-            public void AddEndpoint(Boolean isClosed)
-            {
-                Degree++;
-                IsClosed |= isClosed;
-            }
-        }
-
         public Boolean IsSimple(ILineString<TCoordinate> geom)
         {
             return isSimpleLinearGeometry(geom);
@@ -108,7 +71,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
             GeometryGraph<TCoordinate> graph = new GeometryGraph<TCoordinate>(0, geom);
             LineIntersector<TCoordinate> li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(geom.Factory);
             SegmentIntersector<TCoordinate> si = graph.ComputeSelfNodes(li, true);
-            
+
             // if no self-intersection, must be simple
             if (!si.HasIntersection)
             {
@@ -146,7 +109,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
                     if (!intersection.IsEndPoint(maxSegmentIndex))
                     {
                         return true;
-                    } 
+                    }
                 }
             }
 
@@ -186,11 +149,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// <summary>
         /// Add an endpoint to the map, creating an entry for it if none exists.
         /// </summary>
-        private static void addEndpoint(IDictionary<TCoordinate, EndpointInfo> endPoints, TCoordinate p, Boolean isClosed)
+        private static void addEndpoint(IDictionary<TCoordinate, EndpointInfo> endPoints, TCoordinate p,
+                                        Boolean isClosed)
         {
             EndpointInfo eiInfo;
 
-            if(!endPoints.TryGetValue(p, out eiInfo))
+            if (!endPoints.TryGetValue(p, out eiInfo))
             {
                 eiInfo = new EndpointInfo(p);
                 endPoints.Add(p, eiInfo);
@@ -198,5 +162,46 @@ namespace GisSharpBlog.NetTopologySuite.Operation
 
             eiInfo.AddEndpoint(isClosed);
         }
+
+        #region Nested type: EndpointInfo
+
+        private struct EndpointInfo
+        {
+            private readonly TCoordinate _point;
+            private Int32 _degree;
+            private Boolean _isClosed;
+
+            public EndpointInfo(TCoordinate pt)
+            {
+                _point = pt;
+                _isClosed = false;
+                _degree = 0;
+            }
+
+            public TCoordinate Point
+            {
+                get { return _point; }
+            }
+
+            public Boolean IsClosed
+            {
+                get { return _isClosed; }
+                private set { _isClosed = value; }
+            }
+
+            public Int32 Degree
+            {
+                get { return _degree; }
+                private set { _degree = value; }
+            }
+
+            public void AddEndpoint(Boolean isClosed)
+            {
+                Degree++;
+                IsClosed |= isClosed;
+            }
+        }
+
+        #endregion
     }
 }

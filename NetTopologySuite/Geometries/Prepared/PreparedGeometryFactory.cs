@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
     ///</summary>
     public class PreparedGeometryFactory<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         ///</summary>
         ///Creates a new <see cref="IPreparedGeometry{TCoordinate}"/> appropriate for the argument <see cref="IGeometry{TCoordinate}"/> 
@@ -35,11 +35,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         public IPreparedGeometry<TCoordinate> Create(IGeometry<TCoordinate> geom)
         {
             if (geom is IPolygon<TCoordinate>)
-                return new PreparedPolygon<TCoordinate>((IPolygon<TCoordinate>)geom);
+                return new PreparedPolygon<TCoordinate>((IPolygon<TCoordinate>) geom);
             if (geom is ILineString<TCoordinate>)
-                return new PreparedLineString<TCoordinate>((ILineString<TCoordinate>)geom);
+                return new PreparedLineString<TCoordinate>((ILineString<TCoordinate>) geom);
             if (geom is IPoint<TCoordinate>)
-               return new PreparedPoint<TCoordinate>((IPoint<TCoordinate>)geom);
+                return new PreparedPoint<TCoordinate>((IPoint<TCoordinate>) geom);
 
             ///</summary>
             ///Default representation.

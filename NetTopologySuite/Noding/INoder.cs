@@ -5,7 +5,6 @@ using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
-
     /// <summary>
     /// Computes all intersections between segments in a set of 
     /// <see cref="NodedSegmentString{TCoordinate}" />s. Intersections found 
@@ -17,9 +16,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     /// <typeparam name="TCoordinate">The type of coordinate.</typeparam>
     public interface INoder<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         /// <summary>
         /// Computes the noding for a collection of 

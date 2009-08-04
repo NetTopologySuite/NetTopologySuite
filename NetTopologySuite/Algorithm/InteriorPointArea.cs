@@ -22,16 +22,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </remarks>
     public class InteriorPointArea<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        private static Double Avg(Double a, Double b)
-        {
-            return (a + b) / 2.0;
-        }
-
         private readonly IGeometryFactory<TCoordinate> _factory;
-        private TCoordinate _interiorPoint = default(TCoordinate);
-        private Double _maxWidth = 0;
+        private TCoordinate _interiorPoint;
+        private Double _maxWidth;
 
         public InteriorPointArea(IGeometry<TCoordinate> g)
         {
@@ -42,6 +37,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         public TCoordinate InteriorPoint
         {
             get { return _interiorPoint; }
+        }
+
+        private static Double Avg(Double a, Double b)
+        {
+            return (a + b)/2.0;
         }
 
         /// <summary> 
@@ -79,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             ILineString<TCoordinate> bisector = HorizontalBisector(geometry);
 
-            ISpatialOperator<TCoordinate> intersector = bisector as ISpatialOperator<TCoordinate>;
+            ISpatialOperator<TCoordinate> intersector = bisector;
             Debug.Assert(intersector != null);
             IGeometry<TCoordinate> intersections = intersector.Intersection(geometry);
             IGeometry<TCoordinate> widestIntersection = WidestGeometry(intersections);
@@ -141,7 +141,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             for (Int32 i = 1; i < gc.Count; i++) // Start at 1        
             {
-                if (gc[i].Extents.GetSize(Ordinates.X, Ordinates.Y) > widestGeometry.Extents.GetSize(Ordinates.X, Ordinates.Y))
+                if (gc[i].Extents.GetSize(Ordinates.X, Ordinates.Y) >
+                    widestGeometry.Extents.GetSize(Ordinates.X, Ordinates.Y))
                 {
                     widestGeometry = gc[i];
                 }

@@ -23,17 +23,9 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
-        /// Returns all Edges that connect the two nodes (which are assumed to be different).
+        /// The collection of DirectedEdges that leave this Node.
         /// </summary>
-        public static IEnumerable<Edge<TCoordinate>> GetEdgesBetween(Node<TCoordinate> node0, Node<TCoordinate> node1)
-        {
-            IEnumerable<Edge<TCoordinate>> edges0 = DirectedEdge<TCoordinate>.ToEdges(node0.OutEdges.Edges);
-            ISet<Edge<TCoordinate>> commonEdges = new HashedSet<Edge<TCoordinate>>(edges0);
-            IEnumerable<Edge<TCoordinate>> edges1 = DirectedEdge<TCoordinate>.ToEdges(node1.OutEdges.Edges);
-
-            commonEdges.RetainAll(edges1);
-            return commonEdges;
-        }
+        private readonly DirectedEdgeStar<TCoordinate> _directedEdgeStar;
 
         /// <summary>
         /// The location of this Node.
@@ -41,15 +33,12 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         private TCoordinate _coordinate;
 
         /// <summary>
-        /// The collection of DirectedEdges that leave this Node.
-        /// </summary>
-        private readonly DirectedEdgeStar<TCoordinate> _directedEdgeStar;
-
-        /// <summary>
         /// Constructs a Node with the given location.
         /// </summary>
-        public Node(TCoordinate coordinate) 
-            : this(coordinate, new DirectedEdgeStar<TCoordinate>()) {}
+        public Node(TCoordinate coordinate)
+            : this(coordinate, new DirectedEdgeStar<TCoordinate>())
+        {
+        }
 
         /// <summary>
         /// Constructs a Node with the given location and collection of outgoing DirectedEdges.
@@ -69,14 +58,6 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         }
 
         /// <summary>
-        /// Adds an outgoing DirectedEdge to this Node.
-        /// </summary>
-        public void AddOutEdge(DirectedEdge<TCoordinate> de)
-        {
-            _directedEdgeStar.Add(de);
-        }
-
-        /// <summary>
         /// Returns the collection of DirectedEdges that leave this Node.
         /// </summary>
         public DirectedEdgeStar<TCoordinate> OutEdges
@@ -90,6 +71,35 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         public Int32 Degree
         {
             get { return _directedEdgeStar.Degree; }
+        }
+
+        /// <summary>
+        /// Tests whether this component has been removed from its containing graph.
+        /// </summary>
+        public override Boolean IsRemoved
+        {
+            get { return Coordinates<TCoordinate>.IsEmpty(_coordinate); }
+        }
+
+        /// <summary>
+        /// Returns all Edges that connect the two nodes (which are assumed to be different).
+        /// </summary>
+        public static IEnumerable<Edge<TCoordinate>> GetEdgesBetween(Node<TCoordinate> node0, Node<TCoordinate> node1)
+        {
+            IEnumerable<Edge<TCoordinate>> edges0 = DirectedEdge<TCoordinate>.ToEdges(node0.OutEdges.Edges);
+            ISet<Edge<TCoordinate>> commonEdges = new HashedSet<Edge<TCoordinate>>(edges0);
+            IEnumerable<Edge<TCoordinate>> edges1 = DirectedEdge<TCoordinate>.ToEdges(node1.OutEdges.Edges);
+
+            commonEdges.RetainAll(edges1);
+            return commonEdges;
+        }
+
+        /// <summary>
+        /// Adds an outgoing DirectedEdge to this Node.
+        /// </summary>
+        public void AddOutEdge(DirectedEdge<TCoordinate> de)
+        {
+            _directedEdgeStar.Add(de);
         }
 
         /// <summary>
@@ -107,14 +117,6 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         internal void Remove()
         {
             _coordinate = default(TCoordinate);
-        }
-
-        /// <summary>
-        /// Tests whether this component has been removed from its containing graph.
-        /// </summary>
-        public override Boolean IsRemoved
-        {
-            get { return Coordinates<TCoordinate>.IsEmpty(_coordinate); }
         }
 
         public override string ToString()

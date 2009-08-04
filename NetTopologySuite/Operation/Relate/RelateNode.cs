@@ -14,11 +14,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// </summary>
     public class RelateNode<TCoordinate> : Node<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         public RelateNode(TCoordinate coord, EdgeEndStar<TCoordinate> edges) :
-            base(coord, edges) {}
+            base(coord, edges)
+        {
+        }
 
         /// <summary>
         /// Update the <see cref="IntersectionMatrix"/> with the 

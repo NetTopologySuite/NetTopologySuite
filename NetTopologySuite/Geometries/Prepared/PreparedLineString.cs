@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
     ///<typeparam name="TCoordinate"></typeparam>
     public class PreparedLineString<TCoordinate> : BasicPreparedGeometry<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private FastSegmentSetIntersectionFinder<TCoordinate> _segIntFinder;
 

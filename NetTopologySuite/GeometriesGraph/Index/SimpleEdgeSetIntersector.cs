@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
-using NPack;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
@@ -16,7 +15,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
-        public override void ComputeIntersections(IEnumerable<Edge<TCoordinate>> edges, SegmentIntersector<TCoordinate> si, Boolean testAllSegments)
+        public override void ComputeIntersections(IEnumerable<Edge<TCoordinate>> edges,
+                                                  SegmentIntersector<TCoordinate> si, Boolean testAllSegments)
         {
             foreach (Edge<TCoordinate> edge0 in edges)
             {
@@ -27,11 +27,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
                         computeIntersects(edge0, edge1, si);
                     }
                 }
-                
             }
         }
 
-        public override void ComputeIntersections(IEnumerable<Edge<TCoordinate>> edges0, IEnumerable<Edge<TCoordinate>> edges1, SegmentIntersector<TCoordinate> si)
+        public override void ComputeIntersections(IEnumerable<Edge<TCoordinate>> edges0,
+                                                  IEnumerable<Edge<TCoordinate>> edges1,
+                                                  SegmentIntersector<TCoordinate> si)
         {
             foreach (Edge<TCoordinate> edge0 in edges0)
             {

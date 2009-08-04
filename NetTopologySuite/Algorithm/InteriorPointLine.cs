@@ -5,7 +5,6 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
-using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
@@ -23,10 +22,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
+        private readonly TCoordinate _centroid;
         private readonly ICoordinateFactory<TCoordinate> _factory;
-        private readonly TCoordinate _centroid = default(TCoordinate);
+        private TCoordinate _interiorPoint;
         private Double minDistance = Double.MaxValue;
-        private TCoordinate _interiorPoint = default(TCoordinate);
 
         public InteriorPointLine(IGeometry<TCoordinate> g)
         {

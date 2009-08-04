@@ -30,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// </remarks>
     public abstract class GraphComponent<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         #region Static
 
@@ -79,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         {
             foreach (GraphComponent<TCoordinate> component in components)
             {
-                if(visitedState == component.Visited)
+                if (visitedState == component.Visited)
                 {
                     return component;
                 }
@@ -90,8 +90,8 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
 
         #endregion
 
-        protected Boolean _isMarked = false;
-        protected Boolean _isVisited = false;
+        protected Boolean _isMarked;
+        protected Boolean _isVisited;
 
         /// <summary>
         /// Gets a value indicating if a component has been 

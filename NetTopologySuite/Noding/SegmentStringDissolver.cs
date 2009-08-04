@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
@@ -23,27 +22,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </remarks>
     public class SegmentStringDissolver<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        public interface ISegmentStringMerger
-        {
-            /// <summary>
-            /// Updates the context data of a <see cref="NodedSegmentString{TCoordinate}" />
-            /// when an identical (up to orientation) one is found during dissolving.
-            /// </summary>
-            /// <param name="mergeTarget">The segment string to update.</param>
-            /// <param name="ssToMerge">The segment string being dissolved.</param>
-            /// <param name="isSameOrientation">
-            /// <see langword="true"/> if the strings are in the same direction,
-            /// <c>false</c> if they are opposite.
-            /// </param>
-            void Merge(NodedSegmentString<TCoordinate> mergeTarget, NodedSegmentString<TCoordinate> ssToMerge, Boolean isSameOrientation);
-        }
-
         private readonly ISegmentStringMerger _merger;
 
-        private readonly SortedDictionary<ICoordinateSequence<TCoordinate>, NodedSegmentString<TCoordinate>> _orientedCoordinateMap =
-            new SortedDictionary<ICoordinateSequence<TCoordinate>, NodedSegmentString<TCoordinate>>();
+        private readonly SortedDictionary<ICoordinateSequence<TCoordinate>, NodedSegmentString<TCoordinate>>
+            _orientedCoordinateMap =
+                new SortedDictionary<ICoordinateSequence<TCoordinate>, NodedSegmentString<TCoordinate>>();
 
         /// <summary>
         /// Creates a dissolver with a user-defined merge strategy.
@@ -57,7 +42,17 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// Creates a dissolver with the default merging strategy.
         /// </summary>
         public SegmentStringDissolver()
-            : this(null) {}
+            : this(null)
+        {
+        }
+
+        /// <summary>
+        /// Gets the collection of dissolved (i.e. unique) <see cref="NodedSegmentString{TCoordinate}" />s
+        /// </summary>
+        public IEnumerable<NodedSegmentString<TCoordinate>> Dissolved
+        {
+            get { return _orientedCoordinateMap.Values; }
+        }
 
         /// <summary>
         /// Dissolve all <see cref="NodedSegmentString{TCoordinate}" />s 
@@ -97,17 +92,29 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             }
         }
 
-        /// <summary>
-        /// Gets the collection of dissolved (i.e. unique) <see cref="NodedSegmentString{TCoordinate}" />s
-        /// </summary>
-        public IEnumerable<NodedSegmentString<TCoordinate>> Dissolved
-        {
-            get { return _orientedCoordinateMap.Values; }
-        }
-
         private void add(ICoordinateSequence<TCoordinate> oca, NodedSegmentString<TCoordinate> segString)
         {
             _orientedCoordinateMap.Add(oca, segString);
         }
+
+        #region Nested type: ISegmentStringMerger
+
+        public interface ISegmentStringMerger
+        {
+            /// <summary>
+            /// Updates the context data of a <see cref="NodedSegmentString{TCoordinate}" />
+            /// when an identical (up to orientation) one is found during dissolving.
+            /// </summary>
+            /// <param name="mergeTarget">The segment string to update.</param>
+            /// <param name="ssToMerge">The segment string being dissolved.</param>
+            /// <param name="isSameOrientation">
+            /// <see langword="true"/> if the strings are in the same direction,
+            /// <c>false</c> if they are opposite.
+            /// </param>
+            void Merge(NodedSegmentString<TCoordinate> mergeTarget, NodedSegmentString<TCoordinate> ssToMerge,
+                       Boolean isSameOrientation);
+        }
+
+        #endregion
     }
 }

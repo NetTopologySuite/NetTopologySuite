@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -19,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     ///</summary>
     public class FastSegmentSetIntersectionFinder<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private static LineIntersector<TCoordinate> _li;
         private readonly IGeometryFactory<TCoordinate> _geometryFactory;
@@ -28,7 +26,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         // for testing purposes
         // private SimpleSegmentSetMutualIntersector mci;
 
-        public FastSegmentSetIntersectionFinder(IGeometryFactory<TCoordinate> geometryFactory, EdgeList<TCoordinate> baseSegStrings)
+        public FastSegmentSetIntersectionFinder(IGeometryFactory<TCoordinate> geometryFactory,
+                                                EdgeList<TCoordinate> baseSegStrings)
         {
             _geometryFactory = geometryFactory;
             if (_li == null || _li.GeometryFactory != geometryFactory)
@@ -39,7 +38,6 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
         private void Init(EdgeList<TCoordinate> baseSegStrings)
         {
-
             _segSetMutInt = new MonotoneChainIndexSegmentSetMutualIntersector<TCoordinate>(_geometryFactory);
             //    segSetMutInt = new MCIndexIntersectionSegmentSetMutualIntersector();
 

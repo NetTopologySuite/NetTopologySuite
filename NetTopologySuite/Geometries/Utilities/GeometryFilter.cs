@@ -1,21 +1,20 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
-    static class GeometryFilter
+    internal static class GeometryFilter
     {
         public static IEnumerable<TGeometry> Filter<TGeometry>(IGeometry geometry)
             where TGeometry : IGeometry
         {
-            if(geometry is TGeometry)
+            if (geometry is TGeometry)
             {
-                yield return (TGeometry)geometry;
+                yield return (TGeometry) geometry;
             }
 
-            if(geometry is IEnumerable<IGeometry>)
+            if (geometry is IEnumerable<IGeometry>)
             {
                 foreach (TGeometry g in Filter<TGeometry>(geometry as IEnumerable<IGeometry>))
                 {
@@ -29,9 +28,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         {
             foreach (IGeometry geometry in geometries)
             {
-                if(geometry is TGeometry)
+                if (geometry is TGeometry)
                 {
-                    yield return (TGeometry)geometry;
+                    yield return (TGeometry) geometry;
                 }
             }
         }
@@ -45,7 +44,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             }
         }
 
-        public static IEnumerable<TOutput> Apply<TGeometry, TOutput>(IEnumerable<TGeometry> geometries, Func<TGeometry, TOutput> function)
+        public static IEnumerable<TOutput> Apply<TGeometry, TOutput>(IEnumerable<TGeometry> geometries,
+                                                                     Func<TGeometry, TOutput> function)
             where TGeometry : IGeometry
         {
             foreach (TGeometry geometry in geometries)

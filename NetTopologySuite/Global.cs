@@ -9,7 +9,8 @@ namespace GisSharpBlog.NetTopologySuite
          *        i try to use readonly members and singleton implementations...
          */
 
-        private readonly NumberFormatInfo _nfi = null;
+        private static readonly Global global = new Global();
+        private readonly NumberFormatInfo _nfi;
 
         private Global()
         {
@@ -17,14 +18,9 @@ namespace GisSharpBlog.NetTopologySuite
             _nfi.NumberDecimalSeparator = ".";
         }
 
-        private static readonly Global global = new Global();
-
         public static NumberFormatInfo NumberFormatInfo
         {
-            get
-            {
-                return global._nfi;
-            }
+            get { return global._nfi; }
         }
     }
 }

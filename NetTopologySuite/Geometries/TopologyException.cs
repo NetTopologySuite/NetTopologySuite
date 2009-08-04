@@ -11,7 +11,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     {
         private readonly ICoordinate _coordinate;
 
-        public TopologyException(string msg) : base(msg) {}
+        public TopologyException(string msg) : base(msg)
+        {
+        }
 
         public TopologyException(string msg, ICoordinate pt)
             : base(formatMessageAndCoordinate(msg, pt))

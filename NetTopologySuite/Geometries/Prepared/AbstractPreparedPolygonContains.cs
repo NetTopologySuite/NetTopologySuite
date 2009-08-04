@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -12,8 +10,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
 {
     public abstract class AbstractPreparedPolygonContains<TCoordinate> : PreparedPolygonPredicate<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         /**
          * This flag controls a difference between contains and covers.
@@ -21,12 +19,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
          * For contains the value is true.
          * For covers the value is false.
          */
+        private Boolean HasNonProperIntersection;
+        private Boolean HasProperIntersection;
+        private Boolean HasSegmentIntersection;
         protected Boolean RequireSomePointInInterior = true;
-
-        // information about geometric situation
-        private Boolean HasSegmentIntersection = false;
-        private Boolean HasProperIntersection = false;
-        private Boolean HasNonProperIntersection = false;
 
         ///<summary>
         /// Creates an instance of this operation.
@@ -164,18 +160,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
          *  
          * @return true if the geometry is a single polygon with no holes
          */
+
         private Boolean IsSingleShell(IGeometry<TCoordinate> geom)
         {
             IPolygon<TCoordinate> poly = null;
             // handles single-element MultiPolygons, as well as Polygons
-            var mpoly = geom as IMultiPolygon<TCoordinate>;
+            IMultiPolygon<TCoordinate> mpoly = geom as IMultiPolygon<TCoordinate>;
             if (mpoly != null)
             {
                 if (mpoly.Count != 1) return false;
                 poly = mpoly[0];
             }
             else
-                poly = (IPolygon<TCoordinate>)geom;
+                poly = (IPolygon<TCoordinate>) geom;
 
             return poly.InteriorRingsCount == 0;
         }
@@ -184,7 +181,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         {
             EdgeList<TCoordinate> lineSegStr = SegmentStringUtil<TCoordinate>.ExtractSegmentStrings(geom);
 
-            LineIntersector<TCoordinate> li = new RobustLineIntersector<TCoordinate>( geom.Factory );
+            LineIntersector<TCoordinate> li = new RobustLineIntersector<TCoordinate>(geom.Factory);
             SegmentIntersectionDetector<TCoordinate> intDetector = new SegmentIntersectionDetector<TCoordinate>(li);
             intDetector.FindAllTypes = true;
             _prepPoly.IntersectionFinder.Intersects(lineSegStr, intDetector);
@@ -202,7 +199,5 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
          * @return true if this prepared polygon has the relationship with the test geometry
          */
         protected abstract Boolean FullTopologicalPredicate(IGeometry<TCoordinate> geom);
-    
-
     }
 }

@@ -1,10 +1,10 @@
 using System;
 using GeoAPI.Coordinates;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 {
@@ -15,9 +15,22 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
     /// </summary>
     public class Node<TCoordinate, TItem> : BaseQuadNode<TCoordinate, TItem>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IDivisible<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IDivisible<Double, TCoordinate>, IConvertible
         where TItem : IBoundable<IExtents<TCoordinate>>
     {
+        private readonly TCoordinate _center;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
+        private readonly Int32 _level;
+
+        public Node(IExtents<TCoordinate> extents, Int32 level)
+            : base(extents)
+        {
+            _level = level;
+            _boundsSet = true;
+            _center = Bounds.Center;
+            _geoFactory = extents.Factory;
+        }
+
         public static Node<TCoordinate, TItem> CreateNode(IExtents<TCoordinate> extents)
         {
             if (extents == null)
@@ -50,19 +63,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             }
 
             return largerNode;
-        }
-
-        private readonly TCoordinate _center;
-        private readonly Int32 _level;
-        private readonly IGeometryFactory<TCoordinate> _geoFactory;
-
-        public Node(IExtents<TCoordinate> extents, Int32 level)
-            : base(extents)
-        {
-            _level = level;
-            _boundsSet = true;
-            _center = Bounds.Center;
-            _geoFactory = extents.Factory;
         }
 
         protected override Boolean IsSearchMatch(IExtents<TCoordinate> query)

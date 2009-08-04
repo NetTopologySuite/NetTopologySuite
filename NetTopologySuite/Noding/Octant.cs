@@ -104,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                 }
             }
         }
-        
+
         /// <summary>
         /// Returns the octant of a directed line segment from p0 to p1.
         /// </summary>

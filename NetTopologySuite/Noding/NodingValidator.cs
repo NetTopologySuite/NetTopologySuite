@@ -6,6 +6,7 @@ using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
+
 #if DOTNET35
 using System.Linq;
 #endif
@@ -18,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public class NodingValidator<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly LineIntersector<TCoordinate> _li;
         private readonly List<NodedSegmentString<TCoordinate>> _segStrings = new List<NodedSegmentString<TCoordinate>>();
@@ -28,7 +29,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// class.
         /// </summary>
         /// <param name="segStrings">The seg strings.</param>
-        public NodingValidator(IGeometryFactory<TCoordinate> geoFactory, IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
+        public NodingValidator(IGeometryFactory<TCoordinate> geoFactory,
+                               IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
         {
             _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(geoFactory);
             _segStrings.AddRange(segStrings);
@@ -98,7 +100,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             }
         }
 
-        private void checkInteriorIntersections(NodedSegmentString<TCoordinate> e0, TCoordinate p00, TCoordinate p01, NodedSegmentString<TCoordinate> e1, TCoordinate p10, TCoordinate p11)
+        private void checkInteriorIntersections(NodedSegmentString<TCoordinate> e0, TCoordinate p00, TCoordinate p01,
+                                                NodedSegmentString<TCoordinate> e1, TCoordinate p10, TCoordinate p11)
         {
             if (e0 == e1 && p00.Equals(p10) && p01.Equals(p11))
             {
@@ -109,19 +112,20 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
             if (intersection.HasIntersection)
             {
-                if (intersection.IsProper || hasInteriorIntersection(intersection, p00, p01) 
+                if (intersection.IsProper || hasInteriorIntersection(intersection, p00, p01)
                     || hasInteriorIntersection(intersection, p10, p11))
                 {
-                    throw new TopologyException("Found non-noded intersection at " 
-                        + p00 + "-" + p01 + " and " + p10 + "-" + p11);
+                    throw new TopologyException("Found non-noded intersection at "
+                                                + p00 + "-" + p01 + " and " + p10 + "-" + p11);
                 }
             }
         }
 
         /// <returns><see langword="true"/> if there is an intersection point which is not an endpoint of the segment p0-p1.</returns>
-        private static Boolean hasInteriorIntersection(Intersection<TCoordinate> intersection, TCoordinate p0, TCoordinate p1)
+        private static Boolean hasInteriorIntersection(Intersection<TCoordinate> intersection, TCoordinate p0,
+                                                       TCoordinate p1)
         {
-            for (Int32 i = 0; i < (Int32)intersection.IntersectionDegree; i++)
+            for (Int32 i = 0; i < (Int32) intersection.IntersectionDegree; i++)
             {
                 TCoordinate intPt = intersection.GetIntersectionPoint(i);
 
@@ -148,7 +152,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             }
         }
 
-        private static void checkEndPtVertexIntersections(ICoordinate testPt, IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
+        private static void checkEndPtVertexIntersections(ICoordinate testPt,
+                                                          IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
         {
             foreach (NodedSegmentString<TCoordinate> ss in segStrings)
             {
@@ -161,7 +166,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                     if (coordinate.Equals(testPt))
                     {
                         throw new TopologyException(
-                            "Found end point / interior point intersection at index " 
+                            "Found end point / interior point intersection at index "
                             + pointIndex + " :pt " + testPt);
                     }
 

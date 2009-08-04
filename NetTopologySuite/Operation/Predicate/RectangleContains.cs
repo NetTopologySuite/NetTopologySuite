@@ -13,17 +13,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
     /// </summary>
     public class RectangleContains<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
-        public static Boolean Contains(IPolygon<TCoordinate> rectangle, IGeometry<TCoordinate> b)
-        {
-            RectangleContains<TCoordinate> rc = new RectangleContains<TCoordinate>(rectangle);
-            return rc.Contains(b);
-        }
-
-        private IPolygon<TCoordinate> _rectangle;
         private readonly IExtents<TCoordinate> _rectExtents;
+        private IPolygon<TCoordinate> _rectangle;
 
         /// <summary>
         /// Create a new contains computer for two geometries.
@@ -33,6 +27,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         {
             _rectangle = rectangle;
             _rectExtents = rectangle.Extents;
+        }
+
+        public static Boolean Contains(IPolygon<TCoordinate> rectangle, IGeometry<TCoordinate> b)
+        {
+            RectangleContains<TCoordinate> rc = new RectangleContains<TCoordinate>(rectangle);
+            return rc.Contains(b);
         }
 
         public Boolean Contains(IGeometry<TCoordinate> geom)
@@ -75,7 +75,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
 
             IGeometryCollection<TCoordinate> collection = geom as IGeometryCollection<TCoordinate>;
 
-            if(collection != null)
+            if (collection != null)
             {
                 foreach (IGeometry<TCoordinate> geometry in collection)
                 {
@@ -108,7 +108,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
             for (Int32 i = 0; i < seq.Count - 1; i++)
             {
                 TCoordinate p0 = seq[i];
-                TCoordinate p1= seq[i + 1];
+                TCoordinate p1 = seq[i + 1];
 
                 if (!isLineSegmentContainedInBoundary(p0, p1))
                 {

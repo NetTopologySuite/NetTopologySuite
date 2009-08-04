@@ -23,27 +23,14 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
-        /// <summary>
-        /// Returns a set containing the parent <see cref="Edge"/> 
-        /// (possibly <see langword="null"/>) for each of the given 
-        /// <see cref="DirectedEdge{TCoordinate}"/>s.
-        /// </summary>
-        public static IEnumerable<Edge<TCoordinate>> ToEdges(IEnumerable<DirectedEdge<TCoordinate>> dirEdges)
-        {
-            foreach (DirectedEdge<TCoordinate> directedEdge in dirEdges)
-            {
-                yield return directedEdge._parentEdge;
-            }
-        }
-
-        private Edge<TCoordinate> _parentEdge;
-        private readonly Node<TCoordinate> _from;
-        private readonly Node<TCoordinate> _to;
-        private readonly TCoordinate _p0, _p1;
-        private DirectedEdge<TCoordinate> _sym = null; // optional
-        private readonly Boolean _edgeDirection;
-        private readonly Quadrants _quadrant;
         private readonly Double _angle;
+        private readonly Boolean _edgeDirection;
+        private readonly Node<TCoordinate> _from;
+        private readonly TCoordinate _p0, _p1;
+        private readonly Quadrants _quadrant;
+        private readonly Node<TCoordinate> _to;
+        private Edge<TCoordinate> _parentEdge;
+        private DirectedEdge<TCoordinate> _sym; // optional
 
         /// <summary>
         /// Constructs a DirectedEdge connecting the <c>from</c> node to the
@@ -154,6 +141,16 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         }
 
         /// <summary>
+        /// Tests whether this component has been removed from its containing graph.
+        /// </summary>
+        public override Boolean IsRemoved
+        {
+            get { return _parentEdge == null; }
+        }
+
+        #region IComparable<DirectedEdge<TCoordinate>> Members
+
+        /// <summary>
         /// Returns 1 if this DirectedEdge has a greater angle with the
         /// positive x-axis than b", 0 if the DirectedEdges are collinear, and -1 otherwise.
         /// Using the obvious algorithm of simply computing the angle is not robust,
@@ -168,6 +165,21 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         public Int32 CompareTo(DirectedEdge<TCoordinate> other)
         {
             return (Int32) CompareDirection(other);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Returns a set containing the parent <see cref="Edge"/> 
+        /// (possibly <see langword="null"/>) for each of the given 
+        /// <see cref="DirectedEdge{TCoordinate}"/>s.
+        /// </summary>
+        public static IEnumerable<Edge<TCoordinate>> ToEdges(IEnumerable<DirectedEdge<TCoordinate>> dirEdges)
+        {
+            foreach (DirectedEdge<TCoordinate> directedEdge in dirEdges)
+            {
+                yield return directedEdge._parentEdge;
+            }
         }
 
         /// <summary>
@@ -210,14 +222,6 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             Int32 lastDotPos = className.LastIndexOf('.');
             String name = className.Substring(lastDotPos + 1);
             outstream.Write("  " + name + ": " + _p0 + " - " + _p1 + " " + _quadrant + ":" + _angle);
-        }
-
-        /// <summary>
-        /// Tests whether this component has been removed from its containing graph.
-        /// </summary>
-        public override Boolean IsRemoved
-        {
-            get { return _parentEdge == null; }
         }
 
         public override String ToString()

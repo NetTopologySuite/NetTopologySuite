@@ -10,9 +10,29 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
     ///</summary>
     public class SimplePointInAreaLocator<TCoordinate> : IPointOnGeometryLocator<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
+        private readonly IGeometry<TCoordinate> _geom;
+
+        ///<summary>
+        /// Constructs an instance of this class
+        ///</summary>
+        ///<param name="geom">an areal geometry</param>
+        public SimplePointInAreaLocator(IGeometry<TCoordinate> geom)
+        {
+            _geom = geom;
+        }
+
+        #region IPointOnGeometryLocator<TCoordinate> Members
+
+        public Locations Locate(TCoordinate p)
+        {
+            return SimplePointInAreaLocator.Locate(p, _geom);
+        }
+
+        #endregion
+
         /// <summary>
         /// Determines the <see cref="Locations"/> of a point in an areal <see cref="IGeometry{TCoordinate}"/>.
         /// </summary>
@@ -31,12 +51,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
 
         private static Boolean ContainsPoint(TCoordinate p, IGeometry<TCoordinate> geom)
         {
-            if (geom is IPolygon<TCoordinate>) {
+            if (geom is IPolygon<TCoordinate>)
+            {
                 return ContainsPointInPolygon(p, (IPolygon<TCoordinate>) geom);
             }
             if (geom is IGeometryCollection<TCoordinate>)
             {
-                foreach (var tmpGeometry in ((IGeometryCollection<TCoordinate>)geom))
+                foreach (IGeometry<TCoordinate> tmpGeometry in ((IGeometryCollection<TCoordinate>) geom))
                 {
                     if (ContainsPoint(p, tmpGeometry))
                         return true;
@@ -56,12 +77,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
             if (poly.IsEmpty)
                 return false;
 
-            if (!IsPointInRing(p, (ILinearRing<TCoordinate>)poly.ExteriorRing))
+            if (!IsPointInRing(p, (ILinearRing<TCoordinate>) poly.ExteriorRing))
                 return false;
             // now test if the point lies in or on the holes
-            foreach (var ring in poly.InteriorRings)
+            foreach (ILineString<TCoordinate> ring in poly.InteriorRings)
             {
-                if (IsPointInRing(p, (ILinearRing<TCoordinate>)ring))
+                if (IsPointInRing(p, (ILinearRing<TCoordinate>) ring))
                     return false;
             }
             return true;
@@ -80,22 +101,5 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
                 return false;
             return CGAlgorithms<TCoordinate>.IsPointInRing(p, ring.Coordinates);
         }
-
-        private readonly IGeometry<TCoordinate> _geom;
-
-        ///<summary>
-        /// Constructs an instance of this class
-        ///</summary>
-        ///<param name="geom">an areal geometry</param>
-        public SimplePointInAreaLocator(IGeometry<TCoordinate> geom)
-        {
-            _geom = geom;
-        }
-
-        public Locations Locate(TCoordinate p)
-        {
-            return SimplePointInAreaLocator.Locate(p, _geom);
-        }
-
     }
 }

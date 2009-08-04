@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// </remarks>
     public class Edge<TCoordinate> : GraphComponent<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         // The two DirectedEdges associated with this Edge.
         private DirectedEdge<TCoordinate> _directedEdge0;
@@ -30,6 +30,14 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         public Edge(DirectedEdge<TCoordinate> directedEdge0, DirectedEdge<TCoordinate> directedEdge1)
         {
             SetDirectedEdges(directedEdge0, directedEdge1);
+        }
+
+        /// <summary>
+        /// Tests whether this component has been removed from its containing graph.
+        /// </summary>
+        public override Boolean IsRemoved
+        {
+            get { return (_directedEdge0 ?? _directedEdge1) == null; }
         }
 
         /// <summary>
@@ -65,8 +73,8 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             }
             else
             {
-                throw new ArgumentOutOfRangeException("i", i, 
-                    "Parameter 'i' must be 0 or 1.");
+                throw new ArgumentOutOfRangeException("i", i,
+                                                      "Parameter 'i' must be 0 or 1.");
             }
         }
 
@@ -111,14 +119,6 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             // node not found
             // possibly should throw an exception here?
             return null;
-        }
-
-        /// <summary>
-        /// Tests whether this component has been removed from its containing graph.
-        /// </summary>
-        public override Boolean IsRemoved
-        {
-            get { return (_directedEdge0 ?? _directedEdge1) == null; }
         }
 
         /// <summary>

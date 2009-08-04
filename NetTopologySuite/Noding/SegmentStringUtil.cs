@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
@@ -14,8 +12,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     ///<typeparam name="TCoordinate"></typeparam>
     public class SegmentStringUtil<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         /**
          * 
@@ -23,6 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
          * @param geom 
          * @return 
          */
+
         ///<summary>
         /// Extracts all linear components from a given <see cref="IGeometry{TCoordinate}"/>
         /// to <see cref="EdgeList{TCoordinate}"/>.
@@ -33,13 +32,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         public static EdgeList<TCoordinate> ExtractSegmentStrings(IGeometry<TCoordinate> geom)
         {
             EdgeList<TCoordinate> segStr = new EdgeList<TCoordinate>(geom.Factory);
-            foreach ( var line in LinearComponentExtracter<TCoordinate>.GetLines(geom) )
+            foreach (ILineString<TCoordinate> line in LinearComponentExtracter<TCoordinate>.GetLines(geom))
             {
                 ICoordinateSequence<TCoordinate> pts = line.Coordinates;
                 segStr.Add(new Edge<TCoordinate>(geom.Factory, pts));
             }
             return segStr;
         }
-
     }
 }

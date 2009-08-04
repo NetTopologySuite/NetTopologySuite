@@ -15,6 +15,15 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             _value = value;
         }
 
+        #region IAddable<double,DoubleBinTreeValue> Members
+
+        public DoubleBinTreeValue Add(Double other)
+        {
+            return new DoubleBinTreeValue(_value + other);
+        }
+
+        #endregion
+
         #region IAddable<DoubleBinTreeValue> Members
 
         public DoubleBinTreeValue Add(DoubleBinTreeValue other)
@@ -24,20 +33,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 
         #endregion
 
-        #region IAddable<DoubleBinTreeValue> Members
-
-        public DoubleBinTreeValue Add(Double other)
-        {
-            return new DoubleBinTreeValue(_value + other);
-        }
-
-        #endregion
-
-        #region IDivisible<Double,DoubleBinTreeValue> Members
+        #region IDivisible<double,DoubleBinTreeValue> Members
 
         public DoubleBinTreeValue Divide(Double other)
         {
-            return new DoubleBinTreeValue(_value / other);
+            return new DoubleBinTreeValue(_value/other);
         }
 
         #endregion
@@ -57,15 +57,17 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
     /// </remarks>
     public class BinTreeKey : AbstractNodeKey<Interval, DoubleBinTreeValue>
     {
+        public BinTreeKey(Interval interval)
+            : base(interval)
+        {
+        }
+
         protected override Int32 ComputeLevel(Interval interval)
         {
             Double dx = interval.Width;
             Int32 level = DoubleBits.GetExponent(dx) + 1;
             return level;
         }
-
-        public BinTreeKey(Interval interval)
-            : base(interval) { }
 
         //private void computeInterval(Int32 level, Interval itemInterval)
         //{
@@ -91,8 +93,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 
         protected override DoubleBinTreeValue CreateLocation(Interval bounds, Double nodeSize)
         {
-
-            return new DoubleBinTreeValue(Math.Floor(bounds.Min / nodeSize) * nodeSize);
+            return new DoubleBinTreeValue(Math.Floor(bounds.Min/nodeSize)*nodeSize);
         }
 
         //protected override void ComputeKey(Interval bounds)

@@ -15,88 +15,37 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// Represents an edge in a <see cref="GeometryGraph{TCoordinate}"/>.
     /// </summary>
     /// <typeparam name="TCoordinate">The type of coordinate.</typeparam>
-    public class Edge<TCoordinate> : GraphComponent<TCoordinate>, 
+    public class Edge<TCoordinate> : GraphComponent<TCoordinate>,
                                      IBoundable<IExtents<TCoordinate>>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
-        /// <summary> 
-        /// Updates an <see cref="IntersectionMatrix"/> from the label for an edge.
-        /// Handles edges from both L and A geometries.
-        /// </summary>
-        public static void UpdateIntersectionMatrix(Label label, IntersectionMatrix im)
-        {
-            im.SetAtLeastIfValid(label[0, Positions.On], 
-                                 label[1, Positions.On],
-                                 Dimensions.Curve);
-
-            if (!label.IsArea())
-            {
-                return;
-            }
-
-            im.SetAtLeastIfValid(label[0, Positions.Left], 
-                                 label[1, Positions.Left],
-                                 Dimensions.Surface);
-
-            im.SetAtLeastIfValid(label[0, Positions.Right], 
-                                 label[1, Positions.Right],
-                                 Dimensions.Surface);
-        }
-
-        //public static Boolean operator ==(Edge<TCoordinate> obj1, Edge<TCoordinate> obj2)
-        //{
-        //    return Equals(obj1, obj2);
-        //}
-
-        //public static Boolean operator !=(Edge<TCoordinate> obj1, Edge<TCoordinate> obj2)
-        //{
-        //    return !(obj1 == obj2);
-        //}
-
-        private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private readonly ICoordinateSequence<TCoordinate> _coordinates;
-        private readonly EdgeIntersectionList<TCoordinate> _edgeIntersectionList;
-        private IExtents<TCoordinate> _extents;
-        private MonotoneChainEdge<TCoordinate> _monotoneChainEdge;
-        private Boolean _isIsolated = true;
         private readonly Depth _depth = new Depth();
-        // the change in area depth from the R to Curve side of this edge
+        private readonly EdgeIntersectionList<TCoordinate> _edgeIntersectionList;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private Int32 _depthDelta;
+        private IExtents<TCoordinate> _extents;
+        private Boolean _isIsolated = true;
+        private MonotoneChainEdge<TCoordinate> _monotoneChainEdge;
         //private String _name;
 
         public Edge(IGeometryFactory<TCoordinate> geoFactory,
                     ICoordinateSequence<TCoordinate> coordinates)
-            : this(geoFactory, coordinates, null) { }
-        
-        public Edge(IGeometryFactory<TCoordinate> geoFactory, 
-                    ICoordinateSequence<TCoordinate> coordinates, 
+            : this(geoFactory, coordinates, null)
+        {
+        }
+
+        public Edge(IGeometryFactory<TCoordinate> geoFactory,
+                    ICoordinateSequence<TCoordinate> coordinates,
                     Label? label)
         {
             _geoFactory = geoFactory;
-            _edgeIntersectionList 
+            _edgeIntersectionList
                 = new EdgeIntersectionList<TCoordinate>(geoFactory, this);
             _coordinates = coordinates;
             Label = label;
-        }
-
-        public override String ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            //sb.Append("edge " + _name + ": ");
-            sb.Append("edge: ");
-            sb.Append("LINESTRING (");
-
-            for (Int32 i = 0; i < Coordinates.Count; i++)
-            {
-                if (i > 0) sb.Append(",");
-                sb.Append(Coordinates[i][Ordinates.X] + " " +
-                          Coordinates[i][Ordinates.Y]);
-            }
-
-            sb.Append(")  " + Label + " " + _depthDelta);
-            return sb.ToString();
         }
 
         public Int32 PointCount
@@ -185,7 +134,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             {
                 if (_monotoneChainEdge == null)
                 {
-                    _monotoneChainEdge 
+                    _monotoneChainEdge
                         = new MonotoneChainEdge<TCoordinate>(this, _geoFactory);
                 }
 
@@ -231,7 +180,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             {
                 ICoordinateSequence<TCoordinate> newPts = Coordinates.Slice(0, 1);
                 Label lineLabel = GeometriesGraph.Label.ToLineLabel(Label.Value);
-                Edge<TCoordinate> newEdge 
+                Edge<TCoordinate> newEdge
                     = new Edge<TCoordinate>(_geoFactory, newPts, lineLabel);
                 return newEdge;
             }
@@ -248,12 +197,68 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             get { return _isIsolated; }
         }
 
+        #region IBoundable<IExtents<TCoordinate>> Members
+
+        IExtents<TCoordinate> IBoundable<IExtents<TCoordinate>>.Bounds
+        {
+            get { return Extents; }
+        }
+
+        Boolean IIntersectable<IExtents<TCoordinate>>.Intersects(IExtents<TCoordinate> bounds)
+        {
+            return Extents.Intersects(bounds);
+        }
+
+        #endregion
+
+        /// <summary> 
+        /// Updates an <see cref="IntersectionMatrix"/> from the label for an edge.
+        /// Handles edges from both L and A geometries.
+        /// </summary>
+        public static void UpdateIntersectionMatrix(Label label, IntersectionMatrix im)
+        {
+            im.SetAtLeastIfValid(label[0, Positions.On],
+                                 label[1, Positions.On],
+                                 Dimensions.Curve);
+
+            if (!label.IsArea())
+            {
+                return;
+            }
+
+            im.SetAtLeastIfValid(label[0, Positions.Left],
+                                 label[1, Positions.Left],
+                                 Dimensions.Surface);
+
+            im.SetAtLeastIfValid(label[0, Positions.Right],
+                                 label[1, Positions.Right],
+                                 Dimensions.Surface);
+        }
+
+        public override String ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            //sb.Append("edge " + _name + ": ");
+            sb.Append("edge: ");
+            sb.Append("LINESTRING (");
+
+            for (Int32 i = 0; i < Coordinates.Count; i++)
+            {
+                if (i > 0) sb.Append(",");
+                sb.Append(Coordinates[i][Ordinates.X] + " " +
+                          Coordinates[i][Ordinates.Y]);
+            }
+
+            sb.Append(")  " + Label + " " + _depthDelta);
+            return sb.ToString();
+        }
+
         /// <summary>
         /// Adds <see cref="EdgeIntersection{TCoordinate}"/>s for one or both
         /// intersections found for a segment of an edge to the edge intersection list.
         /// </summary>
-        public void AddIntersections(Intersection<TCoordinate> intersection, 
-                                     Int32 segmentIndex, 
+        public void AddIntersections(Intersection<TCoordinate> intersection,
+                                     Int32 segmentIndex,
                                      Int32 geometryIndex)
         {
             Int32 count = (Int32) intersection.IntersectionDegree;
@@ -270,9 +275,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// An intersection that falls exactly on a vertex of the edge is normalized
         /// to use the higher of the two possible <paramref name="segmentIndex"/>es.
         /// </summary>
-        public void AddIntersection(Intersection<TCoordinate> intersection, 
-                                    Int32 segmentIndex, 
-                                    Int32 geometryIndex, 
+        public void AddIntersection(Intersection<TCoordinate> intersection,
+                                    Int32 segmentIndex,
+                                    Int32 geometryIndex,
                                     Int32 intersectionIndex)
         {
             TCoordinate intersectionPoint = intersection.GetIntersectionPoint(intersectionIndex);
@@ -392,20 +397,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             return true;
         }
-
-        #region IBoundable<IExtents<TCoordinate>> Members
-
-        IExtents<TCoordinate> IBoundable<IExtents<TCoordinate>>.Bounds
-        {
-            get { return Extents; }
-        }
-
-        Boolean IIntersectable<IExtents<TCoordinate>>.Intersects(IExtents<TCoordinate> bounds)
-        {
-            return Extents.Intersects(bounds);
-        }
-
-        #endregion
 
         //public IList<TCoordinate> Points
         //{

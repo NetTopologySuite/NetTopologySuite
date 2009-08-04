@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using NPack.Interfaces;
 using GeoAPI.Coordinates;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
 {
@@ -20,33 +20,11 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// </remarks>
     public abstract class PlanarGraph<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly List<Edge<TCoordinate>> _edges = new List<Edge<TCoordinate>>();
         private readonly List<DirectedEdge<TCoordinate>> _dirEdges = new List<DirectedEdge<TCoordinate>>();
+        private readonly List<Edge<TCoordinate>> _edges = new List<Edge<TCoordinate>>();
         private readonly NodeMap<TCoordinate> _nodeMap = new NodeMap<TCoordinate>();
-
-        /// <summary>
-        /// Returns the Node at the given location, or null if no Node is there.
-        /// </summary>
-        public Node<TCoordinate> FindNode(TCoordinate pt)
-        {
-            return _nodeMap.Find(pt);
-        }
-
-        /// <summary>
-        /// Tests whether an <see cref="Edge{TCoordinate}" /> 
-        /// is contained in this graph.
-        /// </summary>
-        /// <param name="e">The <see cref="Edge{TCoordinate}" /> to test.</param>
-        /// <returns>
-        /// <see langword="true"/> if the <see cref="Edge{TCoordinate}" /> 
-        /// is contained in this graph.
-        /// </returns>
-        public Boolean Contains(Edge<TCoordinate> e)
-        {
-            return _edges.Contains(e);
-        }
 
         /// <summary>
         /// Returns the Nodes in this PlanarGraph.
@@ -72,6 +50,33 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         public IList<Edge<TCoordinate>> Edges
         {
             get { return _edges; }
+        }
+
+        protected NodeMap<TCoordinate> NodeMap
+        {
+            get { return _nodeMap; }
+        }
+
+        /// <summary>
+        /// Returns the Node at the given location, or null if no Node is there.
+        /// </summary>
+        public Node<TCoordinate> FindNode(TCoordinate pt)
+        {
+            return _nodeMap.Find(pt);
+        }
+
+        /// <summary>
+        /// Tests whether an <see cref="Edge{TCoordinate}" /> 
+        /// is contained in this graph.
+        /// </summary>
+        /// <param name="e">The <see cref="Edge{TCoordinate}" /> to test.</param>
+        /// <returns>
+        /// <see langword="true"/> if the <see cref="Edge{TCoordinate}" /> 
+        /// is contained in this graph.
+        /// </returns>
+        public Boolean Contains(Edge<TCoordinate> e)
+        {
+            return _edges.Contains(e);
         }
 
         /// <summary>
@@ -135,7 +140,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
                 if (edge != null)
                 {
                     _edges.Remove(edge);
-                }   
+                }
             }
 
             // remove the node from the graph
@@ -192,11 +197,6 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         protected void Add(DirectedEdge<TCoordinate> dirEdge)
         {
             _dirEdges.Add(dirEdge);
-        }
-
-        protected NodeMap<TCoordinate> NodeMap
-        {
-            get { return _nodeMap; }
         }
     }
 }

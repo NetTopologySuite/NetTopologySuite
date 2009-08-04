@@ -14,10 +14,9 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
     /// and <see cref="IMultiLineString{TCoordinate}" />s.
     /// </summary>
     public class LinearIterator<TCoordinate> : IEnumerable<LinearIterator<TCoordinate>.LinearElement>
-            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<Double, TCoordinate>, IConvertible
     {
-
         #region LinearElement
 
         /// <summary>
@@ -92,43 +91,25 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
         #endregion
 
-        private static Int32 SegmentEndVertexIndex(LinearLocation<TCoordinate> loc)
-        {
-            if (loc.SegmentFraction > 0.0)
-            {
-                return loc.SegmentIndex + 1;
-            }
-
-            return loc.SegmentIndex;
-        }
-
         private readonly IGeometry<TCoordinate> _linear;
-        private Int32 _lineCount;
-
-        /*
-         * Invariant: currentLine != null if the iterator is pointing 
-         * at a valid coordinate
-         */
-        private ILineString<TCoordinate> _currentLine;
-
-        private Int32 _componentIndex = 0;
-        private Int32 _vertexIndex = 0;
-
-        // Used for avoid the first call to Next() in MoveNext()
-        private Boolean _atStart;
-
-        // Returned by Ienumerator.Current
-        private LinearElement? _current = null;
 
         // Cached start values - for Reset() call
-        private readonly Int32 _startComponentIndex = 0;
-        private readonly Int32 _startVertexIndex = 0;
+        private readonly Int32 _startComponentIndex;
+        private readonly Int32 _startVertexIndex;
+        private Boolean _atStart;
+        private Int32 _componentIndex;
+        private LinearElement? _current;
+        private ILineString<TCoordinate> _currentLine;
+        private Int32 _lineCount;
+        private Int32 _vertexIndex;
 
         /// <summary>
         /// Creates an iterator initialized to the start of a linear <see cref="Geometry{TCoordinate}" />.
         /// </summary>
         /// <param name="linear">The linear geometry to iterate over.</param>
-        public LinearIterator(IGeometry<TCoordinate> linear) : this(linear, 0, 0) { }
+        public LinearIterator(IGeometry<TCoordinate> linear) : this(linear, 0, 0)
+        {
+        }
 
         /// <summary>
         /// Creates an iterator starting at a <see cref="LinearLocation{TCoordinate}" /> 
@@ -137,7 +118,9 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="linear">The linear geometry to iterate over.</param>
         /// <param name="start">The location to start at.</param>
         public LinearIterator(IGeometry<TCoordinate> linear, LinearLocation<TCoordinate> start) :
-            this(linear, start.ComponentIndex, SegmentEndVertexIndex(start)) {}
+            this(linear, start.ComponentIndex, SegmentEndVertexIndex(start))
+        {
+        }
 
         /// <summary>
         /// Creates an iterator starting at
@@ -158,48 +141,6 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Evaluate if the iterator could step over.
-        /// Does not perform the step at all.
-        /// </summary>
-        /// <returns><see langword="true"/> if there are more vertices to scan.</returns>
-        protected Boolean HasNext()
-        {
-            if (_componentIndex >= _lineCount)
-            {
-                return false;
-            }
-
-            if ((_componentIndex == _lineCount - 1) && (_vertexIndex >= _currentLine.PointCount))
-            {
-                return false;
-            }
-            
-            return true;
-        }
-
-        /// <summary>
-        /// Jump to the next element of the iteration.
-        /// </summary>
-        protected void Next()
-        {
-            if (!HasNext())
-            {
-                return;
-            }
-
-            _vertexIndex++;
-
-            if (_vertexIndex >= _currentLine.PointCount)
-            {
-                _componentIndex++;
-                loadCurrentLine();
-                _vertexIndex = 0;
-            }
-        }
-
-        #region IEnumerator<LinearIterator.LinearElement> Members
-
-        /// <summary>
         /// Gets the <see cref="LinearElement">element</see> in the collection 
         /// at the current position of the enumerator.
         /// </summary>
@@ -212,7 +153,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         {
             get
             {
-                if(_current != null)
+                if (_current != null)
                 {
                     return _current.Value;
                 }
@@ -221,129 +162,6 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
                     throw new InvalidOperationException("Enumeration complete.");
                 }
             }
-        }
-
-        #endregion
-
-        #region IEnumerator Members
-
-        /// <summary>
-        /// Tests whether there are any vertices left to iterator over.
-        /// If <see langword="true"/>, then moves the iterator ahead to the next vertex and (possibly) linear component,
-        /// so that <see cref="Current" /> exposes the elements.
-        /// </summary>
-        /// <returns><see langword="true"/> if there are more vertices to scan.</returns>
-        public Boolean MoveNext()
-        {
-            // We must call HasNext() twice because, when in the Next() method
-            // another line is loaded, it's necessary to re-ckeck with the new conditions.
-            if (HasNext())
-            {
-                if (_atStart)
-                {
-                    _atStart = false;
-                }
-                else
-                {
-                    Next();
-                }
-            }
-
-            return HasNext();
-        }
-
-
-        /// <summary>
-        /// Sets the enumerator to its initial position, 
-        /// which is before the first element in the collection.
-        /// </summary>
-        /// <exception cref="System.InvalidOperationException">
-        /// The collection was modified after the enumerator was created. 
-        /// </exception>
-        public void Reset()
-        {
-            _lineCount = LinearHelper.GetLineCount(_linear);
-            _componentIndex = _startComponentIndex;
-            _vertexIndex = _startVertexIndex;
-            loadCurrentLine();
-
-            _atStart = true;
-        }
-
-        #endregion
-
-        #region IDisposable Members
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, 
-        /// releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(false);
-        }
-
-        protected void Dispose(Boolean dispose)
-        {
-            if (dispose)
-            {
-                // Dispose unmanaged resources
-            }
-
-            // Dispose managed resources
-            _current = null;
-            _currentLine = null;
-        }
-
-        #endregion
-
-        #region IEnumerable<LinearIterator.LinearElement> Members
-
-        /// <summary>
-        /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.Collections.Generic.IEnumerator{T}" /> that can be used 
-        /// to iterate through the collection.
-        /// </returns>
-        public IEnumerator<LinearElement> GetEnumerator()
-        {
-            while (MoveNext())
-            {
-                yield return _current.Value;
-            }
-
-            Reset();
-        }
-
-        #endregion
-
-        #region IEnumerable Members
-
-        /// <summary>
-        /// Returns an enumerator (of <see cref="LinearElement" />elements) 
-        /// that iterates through a collection.
-        /// </summary>
-        /// <returns>
-        /// An <see cref="System.Collections.IEnumerator"></see> object 
-        /// that can be used to iterate through the collection.
-        /// </returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        #endregion
-
-        private void loadCurrentLine()
-        {
-            if (_componentIndex >= _lineCount)
-            {
-                _currentLine = null;
-                return;
-            }
-
-            _currentLine = LinearHelper.GetLine(_linear, _componentIndex);
         }
 
         /// <summary>
@@ -417,6 +235,165 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
                 return default(TCoordinate);
             }
+        }
+
+        #region IEnumerable<LinearElement> Members
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.Collections.Generic.IEnumerator{T}" /> that can be used 
+        /// to iterate through the collection.
+        /// </returns>
+        public IEnumerator<LinearElement> GetEnumerator()
+        {
+            while (MoveNext())
+            {
+                yield return _current.Value;
+            }
+
+            Reset();
+        }
+
+        /// <summary>
+        /// Returns an enumerator (of <see cref="LinearElement" />elements) 
+        /// that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="System.Collections.IEnumerator"></see> object 
+        /// that can be used to iterate through the collection.
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
+
+        private static Int32 SegmentEndVertexIndex(LinearLocation<TCoordinate> loc)
+        {
+            if (loc.SegmentFraction > 0.0)
+            {
+                return loc.SegmentIndex + 1;
+            }
+
+            return loc.SegmentIndex;
+        }
+
+        /// <summary>
+        /// Evaluate if the iterator could step over.
+        /// Does not perform the step at all.
+        /// </summary>
+        /// <returns><see langword="true"/> if there are more vertices to scan.</returns>
+        protected Boolean HasNext()
+        {
+            if (_componentIndex >= _lineCount)
+            {
+                return false;
+            }
+
+            if ((_componentIndex == _lineCount - 1) && (_vertexIndex >= _currentLine.PointCount))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Jump to the next element of the iteration.
+        /// </summary>
+        protected void Next()
+        {
+            if (!HasNext())
+            {
+                return;
+            }
+
+            _vertexIndex++;
+
+            if (_vertexIndex >= _currentLine.PointCount)
+            {
+                _componentIndex++;
+                loadCurrentLine();
+                _vertexIndex = 0;
+            }
+        }
+
+        /// <summary>
+        /// Tests whether there are any vertices left to iterator over.
+        /// If <see langword="true"/>, then moves the iterator ahead to the next vertex and (possibly) linear component,
+        /// so that <see cref="Current" /> exposes the elements.
+        /// </summary>
+        /// <returns><see langword="true"/> if there are more vertices to scan.</returns>
+        public Boolean MoveNext()
+        {
+            // We must call HasNext() twice because, when in the Next() method
+            // another line is loaded, it's necessary to re-ckeck with the new conditions.
+            if (HasNext())
+            {
+                if (_atStart)
+                {
+                    _atStart = false;
+                }
+                else
+                {
+                    Next();
+                }
+            }
+
+            return HasNext();
+        }
+
+
+        /// <summary>
+        /// Sets the enumerator to its initial position, 
+        /// which is before the first element in the collection.
+        /// </summary>
+        /// <exception cref="System.InvalidOperationException">
+        /// The collection was modified after the enumerator was created. 
+        /// </exception>
+        public void Reset()
+        {
+            _lineCount = LinearHelper.GetLineCount(_linear);
+            _componentIndex = _startComponentIndex;
+            _vertexIndex = _startVertexIndex;
+            loadCurrentLine();
+
+            _atStart = true;
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, 
+        /// releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(false);
+        }
+
+        protected void Dispose(Boolean dispose)
+        {
+            if (dispose)
+            {
+                // Dispose unmanaged resources
+            }
+
+            // Dispose managed resources
+            _current = null;
+            _currentLine = null;
+        }
+
+        private void loadCurrentLine()
+        {
+            if (_componentIndex >= _lineCount)
+            {
+                _currentLine = null;
+                return;
+            }
+
+            _currentLine = LinearHelper.GetLine(_linear, _componentIndex);
         }
     }
 }

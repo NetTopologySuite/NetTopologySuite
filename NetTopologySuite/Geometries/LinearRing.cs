@@ -19,8 +19,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     public class LinearRing<TCoordinate> : LineString<TCoordinate>,
                                            ILinearRing<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         /// <summary>
         /// Constructs a <see cref="LinearRing{TCoordinate}" /> with the given coordinates.
@@ -36,6 +36,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             validateConstruction();
         }
+
+        #region ILinearRing<TCoordinate> Members
 
         public override IGeometry<TCoordinate> Clone()
         {
@@ -64,6 +66,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return CGAlgorithms<TCoordinate>.IsCCW(Coordinates); }
         }
 
+        #endregion
+
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         ///// <summary>
@@ -89,7 +93,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (Coordinates.Count >= 1 && Coordinates.Count <= 3)
             {
                 throw new GeometryInvalidException("Number of coordinates must equal 0 " +
-                                            "or be greater than 3");
+                                                   "or be greater than 3");
             }
         }
     }

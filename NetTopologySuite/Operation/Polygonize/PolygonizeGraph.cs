@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.DataStructures.Collections.Generic;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
-using GeoAPI.DataStructures;
+
 #if DOTNET35
 using System.Linq;
 #endif
@@ -25,6 +26,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
+        private readonly IGeometryFactory<TCoordinate> _factory;
+
+        /// <summary>
+        /// Create a new polygonization graph.
+        /// </summary>
+        public PolygonizeGraph(IGeometryFactory<TCoordinate> factory)
+        {
+            _factory = factory;
+        }
+
         /// <summary>
         /// Deletes all edges at a node.
         /// </summary>
@@ -41,16 +52,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
                     sym.Marked = true;
                 }
             }
-        }
-
-        private readonly IGeometryFactory<TCoordinate> _factory;
-
-        /// <summary>
-        /// Create a new polygonization graph.
-        /// </summary>
-        public PolygonizeGraph(IGeometryFactory<TCoordinate> factory)
-        {
-            _factory = factory;
         }
 
         /// <summary>
@@ -77,9 +78,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             Node<TCoordinate> startNode = GetNode(startPt);
             Node<TCoordinate> endNode = GetNode(endPt);
 
-            DirectedEdge<TCoordinate> de0 
+            DirectedEdge<TCoordinate> de0
                 = new PolygonizeDirectedEdge<TCoordinate>(startNode, endNode, linePts[1], true);
-            DirectedEdge<TCoordinate> de1 
+            DirectedEdge<TCoordinate> de1
                 = new PolygonizeDirectedEdge<TCoordinate>(endNode, startNode, linePts[linePts.Count - 2], false);
             Edge<TCoordinate> edge = new PolygonizeEdge<TCoordinate>(line, de0, de1);
             //edge.SetDirectedEdges(de0, de1);

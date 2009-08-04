@@ -6,7 +6,6 @@ using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Noding;
 using NPack.Interfaces;
@@ -19,16 +18,18 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// </summary>
     public class OffsetCurveSetBuilder<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly IGeometry<TCoordinate> _inputGeometry;
-        private readonly Double _distance;
         private readonly OffsetCurveBuilder<TCoordinate> _curveBuilder;
 
         private readonly List<NodedSegmentString<TCoordinate>> _curveList
             = new List<NodedSegmentString<TCoordinate>>();
 
-        public OffsetCurveSetBuilder(IGeometry<TCoordinate> inputGeom, Double distance, OffsetCurveBuilder<TCoordinate> curveBuilder)
+        private readonly Double _distance;
+        private readonly IGeometry<TCoordinate> _inputGeometry;
+
+        public OffsetCurveSetBuilder(IGeometry<TCoordinate> inputGeom, Double distance,
+                                     OffsetCurveBuilder<TCoordinate> curveBuilder)
         {
             _inputGeometry = inputGeom;
             _distance = distance;
@@ -50,7 +51,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             return _curveList;
         }
 
-        private void addCurves(IEnumerable<ICoordinateSequence<TCoordinate>> lineList, Locations leftLoc, Locations rightLoc)
+        private void addCurves(IEnumerable<ICoordinateSequence<TCoordinate>> lineList, Locations leftLoc,
+                               Locations rightLoc)
         {
             foreach (ICoordinateSequence<TCoordinate> line in lineList)
             {
@@ -95,7 +97,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             {
                 addPolygon(g as IPolygon<TCoordinate>);
             }
-            // LineString also handles LinearRings
+                // LineString also handles LinearRings
             else if (g is ILineString<TCoordinate>)
             {
                 addLineString(g as ILineString<TCoordinate>);
@@ -229,7 +231,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 side = Position.Opposite(side);
             }
 
-            IEnumerable<ICoordinateSequence<TCoordinate>> lineList 
+            IEnumerable<ICoordinateSequence<TCoordinate>> lineList
                 = _curveBuilder.GetRingCurve(coord, side, offsetDistance);
 
             addCurves(lineList, leftLoc, rightLoc);
@@ -256,10 +258,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             // also optimizes erosion test for triangles
             if (count == 4)
             {
-                ICoordinateFactory<TCoordinate> coordinateFactory 
+                ICoordinateFactory<TCoordinate> coordinateFactory
                     = _inputGeometry.Factory.CoordinateFactory;
-                return isTriangleErodedCompletely(coordinateFactory, 
-                                                  ringCoord, 
+                return isTriangleErodedCompletely(coordinateFactory,
+                                                  ringCoord,
                                                   bufferDistance);
             }
 
@@ -277,7 +279,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             ILinearRing<TCoordinate> ring = _inputGeometry.Factory.CreateLinearRing(ringCoord);
             MinimumDiameter<TCoordinate> md = new MinimumDiameter<TCoordinate>(ring);
             minDiam = md.Length;
-            return minDiam < 2 * Math.Abs(bufferDistance);
+            return minDiam < 2*Math.Abs(bufferDistance);
         }
 
         /// <summary>
@@ -293,13 +295,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// producing an incorrect hole in the buffer.       
         /// </summary>
         private static Boolean isTriangleErodedCompletely(ICoordinateFactory<TCoordinate> coordinateFactory,
-                                                          IEnumerable<TCoordinate> triangleCoord, 
+                                                          IEnumerable<TCoordinate> triangleCoord,
                                                           Double bufferDistance)
         {
             Triple<TCoordinate> points = Slice.GetTriple(triangleCoord).Value;
-            Triangle<TCoordinate> tri = new Triangle<TCoordinate>(coordinateFactory, 
-                                                                  points.First, 
-                                                                  points.Second, 
+            Triangle<TCoordinate> tri = new Triangle<TCoordinate>(coordinateFactory,
+                                                                  points.First,
+                                                                  points.Second,
                                                                   points.Third);
             TCoordinate inCenter = tri.InCenter;
             Double distToCentre = CGAlgorithms<TCoordinate>.DistancePointLine(inCenter, tri.P0, tri.P1);

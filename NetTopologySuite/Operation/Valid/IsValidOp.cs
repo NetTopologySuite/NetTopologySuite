@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures.Collections.Generic;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 {
@@ -19,72 +19,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// </summary>
     public class IsValidOp<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        /// <summary>
-        /// Checks whether a coordinate is valid for processing.
-        /// Coordinates are valid iff their x and y ordinates are in the
-        /// range of the floating point representation.
-        /// </summary>
-        /// <param name="coord">The coordinate to validate.</param>
-        /// <returns><see langword="true"/> if the coordinate is valid.</returns>
-        public static Boolean IsValidCoordinate(TCoordinate coord)
-        {
-            if (Double.IsNaN(coord[Ordinates.X]))
-            {
-                return false;
-            }
-
-            if (Double.IsInfinity(coord[Ordinates.X]))
-            {
-                return false;
-            }
-
-            if (Double.IsNaN(coord[Ordinates.Y]))
-            {
-                return false;
-            }
-
-            if (Double.IsInfinity(coord[Ordinates.Y]))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Find a point from the list of testCoords
-        /// that is NOT a node in the edge for the list of searchCoords.
-        /// </summary>
-        /// <returns>The point found, or <see langword="null" /> if none found.</returns>
-        public static TCoordinate FindPointNotNode(IEnumerable<TCoordinate> testCoords, ILinearRing<TCoordinate> searchRing, GeometryGraph<TCoordinate> graph)
-        {
-            // find edge corresponding to searchRing.
-            Edge<TCoordinate> searchEdge = graph.FindEdge(searchRing);
-            
-            // find a point in the testCoords which is not a node of the searchRing
-            EdgeIntersectionList<TCoordinate> eiList = searchEdge.EdgeIntersections;
-            
-            // TODO: somewhat inefficient - is there a better way? (Use a node map, for instance?)
-            foreach (TCoordinate pt in testCoords)
-            {
-                if (!eiList.IsIntersection(pt))
-                {
-                    return pt;
-                }
-            }
-
-            return default(TCoordinate);
-        }
-
-        private readonly IGeometry<TCoordinate> _parentGeometry = null; // the base Geometry to be validated
+        private readonly Boolean _isChecked;
+        private readonly IGeometry<TCoordinate> _parentGeometry; // the base Geometry to be validated
 
         // If the following condition is TRUE JTS will validate inverted shells and 
         // exverted holes (the ESRI SDE model).
-        private Boolean _isSelfTouchingRingFormingHoleValid = false;
-        private readonly Boolean _isChecked = false;
-        private TopologyValidationError _validErr = null;
+        private Boolean _isSelfTouchingRingFormingHoleValid;
+        private TopologyValidationError _validErr;
 
         public IsValidOp(IGeometry<TCoordinate> parentGeometry)
         {
@@ -137,6 +80,64 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                 checkValid(_parentGeometry);
                 return _validErr;
             }
+        }
+
+        /// <summary>
+        /// Checks whether a coordinate is valid for processing.
+        /// Coordinates are valid iff their x and y ordinates are in the
+        /// range of the floating point representation.
+        /// </summary>
+        /// <param name="coord">The coordinate to validate.</param>
+        /// <returns><see langword="true"/> if the coordinate is valid.</returns>
+        public static Boolean IsValidCoordinate(TCoordinate coord)
+        {
+            if (Double.IsNaN(coord[Ordinates.X]))
+            {
+                return false;
+            }
+
+            if (Double.IsInfinity(coord[Ordinates.X]))
+            {
+                return false;
+            }
+
+            if (Double.IsNaN(coord[Ordinates.Y]))
+            {
+                return false;
+            }
+
+            if (Double.IsInfinity(coord[Ordinates.Y]))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Find a point from the list of testCoords
+        /// that is NOT a node in the edge for the list of searchCoords.
+        /// </summary>
+        /// <returns>The point found, or <see langword="null" /> if none found.</returns>
+        public static TCoordinate FindPointNotNode(IEnumerable<TCoordinate> testCoords,
+                                                   ILinearRing<TCoordinate> searchRing, GeometryGraph<TCoordinate> graph)
+        {
+            // find edge corresponding to searchRing.
+            Edge<TCoordinate> searchEdge = graph.FindEdge(searchRing);
+
+            // find a point in the testCoords which is not a node of the searchRing
+            EdgeIntersectionList<TCoordinate> eiList = searchEdge.EdgeIntersections;
+
+            // TODO: somewhat inefficient - is there a better way? (Use a node map, for instance?)
+            foreach (TCoordinate pt in testCoords)
+            {
+                if (!eiList.IsIntersection(pt))
+                {
+                    return pt;
+                }
+            }
+
+            return default(TCoordinate);
         }
 
         private void checkValid(IGeometry g)
@@ -254,7 +255,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                 throw new InvalidOperationException("ILinearRing's factory is null.");
             }
 
-            LineIntersector<TCoordinate> li 
+            LineIntersector<TCoordinate> li
                 = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(geoFactory);
             graph.ComputeSelfNodes(li, true);
             checkNoSelfIntersectingRings(graph);
@@ -386,12 +387,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             }
 
             checkShellsNotNested(g, graph);
-            
+
             if (_validErr != null)
             {
                 return;
             }
-            
+
             checkConnectedInteriors(graph);
         }
 
@@ -465,7 +466,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             if (!ring.IsClosed)
             {
                 _validErr = new TopologyValidationError(TopologyValidationErrors.RingNotClosed,
-                                                       ring.Coordinates[0]);
+                                                        ring.Coordinates[0]);
             }
         }
 
@@ -474,7 +475,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             if (graph.HasTooFewPoints)
             {
                 _validErr = new TopologyValidationError(TopologyValidationErrors.TooFewPoints,
-                                                       graph.InvalidPoint);
+                                                        graph.InvalidPoint);
                 return;
             }
         }
@@ -560,7 +561,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             ILinearRing<TCoordinate> shell = p.ExteriorRing as ILinearRing<TCoordinate>;
 
             IPointInRing<TCoordinate> pir = new MCPointInRing<TCoordinate>(shell);
-            
+
             foreach (ILinearRing<TCoordinate> hole in p.InteriorRings)
             {
                 Debug.Assert(hole != null);
@@ -599,7 +600,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                 throw new InvalidOperationException("IPolygon has a null IGeometryFactory.");
             }
 
-            QuadtreeNestedRingTester<TCoordinate> nestedTester 
+            QuadtreeNestedRingTester<TCoordinate> nestedTester
                 = new QuadtreeNestedRingTester<TCoordinate>(p.Factory, graph);
 
             foreach (ILinearRing<TCoordinate> innerHole in p.InteriorRings)
@@ -612,7 +613,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             if (!isNonNested)
             {
                 _validErr = new TopologyValidationError(TopologyValidationErrors.NestedHoles,
-                                                       nestedTester.NestedPoint);
+                                                        nestedTester.NestedPoint);
             }
         }
 
@@ -637,7 +638,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                     }
 
                     checkShellNotNested(shell, p2, graph);
-                    
+
                     if (_validErr != null)
                     {
                         return;
@@ -654,7 +655,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// E.g. they cannot partially overlap (this has been previously checked by
         /// <c>CheckRelateConsistency</c>).
         /// </summary>
-        private void checkShellNotNested(ILinearRing<TCoordinate> shell, IPolygon<TCoordinate> p, GeometryGraph<TCoordinate> graph)
+        private void checkShellNotNested(ILinearRing<TCoordinate> shell, IPolygon<TCoordinate> p,
+                                         GeometryGraph<TCoordinate> graph)
         {
             IEnumerable<TCoordinate> shellPts = shell.Coordinates;
 
@@ -662,7 +664,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             ILinearRing<TCoordinate> polyShell = p.ExteriorRing as ILinearRing<TCoordinate>;
             Debug.Assert(polyShell != null);
             IEnumerable<TCoordinate> polyPts = polyShell.Coordinates;
-            
+
             TCoordinate shellPt = FindPointNotNode(shellPts, polyShell, graph);
 
             // if no point could be found, we can assume that the shell is outside the polygon
@@ -670,14 +672,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             {
                 return;
             }
-            
+
             Boolean insidePolyShell = CGAlgorithms<TCoordinate>.IsPointInRing(shellPt, polyPts);
-            
+
             if (!insidePolyShell)
             {
                 return;
             }
-            
+
             // if no holes, this is an error!
             if (p.InteriorRingsCount <= 0)
             {
@@ -715,7 +717,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <see langword="null" /> if the shell is properly contained, or
         /// a Coordinate which is not inside the hole if it is not.
         /// </returns>
-        private static TCoordinate checkShellInsideHole(ILinearRing<TCoordinate> shell, ILinearRing<TCoordinate> hole, GeometryGraph<TCoordinate> graph)
+        private static TCoordinate checkShellInsideHole(ILinearRing<TCoordinate> shell, ILinearRing<TCoordinate> hole,
+                                                        GeometryGraph<TCoordinate> graph)
         {
             IEnumerable<TCoordinate> shellPts = shell.Coordinates;
             IEnumerable<TCoordinate> holePts = hole.Coordinates;
@@ -754,12 +757,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
         private void checkConnectedInteriors(GeometryGraph<TCoordinate> graph)
         {
-            ConnectedInteriorTester<TCoordinate> cit = new ConnectedInteriorTester<TCoordinate>(graph, _parentGeometry.Factory);
+            ConnectedInteriorTester<TCoordinate> cit = new ConnectedInteriorTester<TCoordinate>(graph,
+                                                                                                _parentGeometry.Factory);
 
             if (!cit.AreInteriorsConnected)
             {
                 _validErr = new TopologyValidationError(TopologyValidationErrors.DisconnectedInteriors,
-                                                       cit.Coordinate);
+                                                        cit.Coordinate);
             }
         }
     }

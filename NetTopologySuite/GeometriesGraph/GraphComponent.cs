@@ -14,18 +14,17 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     public abstract class GraphComponent<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
+        private Boolean _isCovered;
+        private Boolean _isCoveredSet;
+        private Boolean _isInResult;
+        private Boolean _isVisited;
         private Label? _label;
 
-        // isInResult indicates if this component has already been included in the result
-        private Boolean _isInResult = false;
-
-        private Boolean _isCovered = false;
-        private Boolean _isCoveredSet = false;
-        private Boolean _isVisited = false;
-
-        public GraphComponent() {}
+        public GraphComponent()
+        {
+        }
 
         public GraphComponent(Label label)
         {
@@ -90,17 +89,17 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public abstract TCoordinate Coordinate { get; }
 
         /// <summary>
-        /// Compute the contribution to an IM for this component.
-        /// </summary>
-        public abstract void ComputeIntersectionMatrix(IntersectionMatrix im);
-
-        /// <summary>
         /// An isolated component is one that does not intersect or touch any other
         /// component.  This is the case if the label has valid locations for
         /// only a single Geometry.
         /// </summary>
         /// <returns><see langword="true"/> if this component is isolated.</returns>
         public abstract Boolean IsIsolated { get; }
+
+        /// <summary>
+        /// Compute the contribution to an IM for this component.
+        /// </summary>
+        public abstract void ComputeIntersectionMatrix(IntersectionMatrix im);
 
         /// <summary>
         /// Update the IM with the contribution for this component.

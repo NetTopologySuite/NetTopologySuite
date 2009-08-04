@@ -1,7 +1,7 @@
 using System;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GeoAPI.Geometries;
 using GeoAPI.Coordinates;
+using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Algorithm;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
@@ -17,10 +17,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
     ///</summary>
     public class BasicPreparedGeometry<TCoordinate> : IPreparedGeometry<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IGeometry<TCoordinate> _baseGeom;
-        private readonly ICoordinateSequence<TCoordinate> _representativePts;  // List<Coordinate>
+        private readonly ICoordinateSequence<TCoordinate> _representativePts; // List<Coordinate>
 
         /// <summary>
         /// constructs an instance of this class
@@ -30,11 +30,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         {
             _baseGeom = geom;
             _representativePts = geom.Coordinates;
-        }
-
-        public IGeometry<TCoordinate> Geometry
-        {
-            get { return _baseGeom; }
         }
 
         ///<summary>
@@ -47,44 +42,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
             get { return _representativePts; }
         }
 
-        ///<summary>
-        ///Tests whether any representative of the target geometry 
-        ///intersects the test geometry.
-        ///This is useful in A/A, A/L, A/P, L/P, and P/P cases.
-        ///</summary>
-        ///<param name="testGeom"> The test geometry</param>
-        ///<returns><value>True</value> if any component intersects the areal test geometry</returns>
-        public Boolean IsAnyTargetComponentInTest(IGeometry<TCoordinate> testGeom)
-        {
-            var locator = new PointLocator<TCoordinate>();
-            foreach (var p in _representativePts )
-            {
-                if (locator.Intersects(p, testGeom))
-                    return true;
-            }
-            return false;
-        }
+        #region IPreparedGeometry<TCoordinate> Members
 
-        ///<summary>
-        ///Determines whether a Geometry g interacts with 
-        ///this geometry by testing the geometry envelopes.
-        ///</summary>
-        ///<param name="g"> a Geometry</param>
-        ///<returns><value>True</value> if the envelopes intersect</returns>
-        protected Boolean EnvelopesIntersect(IGeometry<TCoordinate> g)
+        public IGeometry<TCoordinate> Geometry
         {
-            return _baseGeom.Extents.Intersects(g.Extents);
-        }
-
-        ///<summary>
-        ///Determines whether the envelope of 
-        ///this geometry covers the Geometry g.
-        ///</summary>
-        ///<param name="g"> a Geometry</param>
-        ///<returns><value>True</value> if g is contained in this envelopes</returns>
-        protected Boolean EnvelopeCovers(IGeometry<TCoordinate> g)
-        {
-            return _baseGeom.Envelope.Covers(g.Envelope);
+            get { return _baseGeom; }
         }
 
         ///<summary>
@@ -174,6 +136,49 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         {
             return _baseGeom.Within(g);
         }
+
+        #endregion
+
+        ///<summary>
+        ///Tests whether any representative of the target geometry 
+        ///intersects the test geometry.
+        ///This is useful in A/A, A/L, A/P, L/P, and P/P cases.
+        ///</summary>
+        ///<param name="testGeom"> The test geometry</param>
+        ///<returns><value>True</value> if any component intersects the areal test geometry</returns>
+        public Boolean IsAnyTargetComponentInTest(IGeometry<TCoordinate> testGeom)
+        {
+            PointLocator<TCoordinate> locator = new PointLocator<TCoordinate>();
+            foreach (TCoordinate p in _representativePts)
+            {
+                if (locator.Intersects(p, testGeom))
+                    return true;
+            }
+            return false;
+        }
+
+        ///<summary>
+        ///Determines whether a Geometry g interacts with 
+        ///this geometry by testing the geometry envelopes.
+        ///</summary>
+        ///<param name="g"> a Geometry</param>
+        ///<returns><value>True</value> if the envelopes intersect</returns>
+        protected Boolean EnvelopesIntersect(IGeometry<TCoordinate> g)
+        {
+            return _baseGeom.Extents.Intersects(g.Extents);
+        }
+
+        ///<summary>
+        ///Determines whether the envelope of 
+        ///this geometry covers the Geometry g.
+        ///</summary>
+        ///<param name="g"> a Geometry</param>
+        ///<returns><value>True</value> if g is contained in this envelopes</returns>
+        protected Boolean EnvelopeCovers(IGeometry<TCoordinate> g)
+        {
+            return _baseGeom.Envelope.Covers(g.Envelope);
+        }
+
         /// <summary>
         /// 
         /// </summary>

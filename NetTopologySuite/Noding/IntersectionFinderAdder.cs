@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
-using GeoAPI.DataStructures;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Index.Chain;
@@ -16,10 +15,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public class IntersectionFinderAdder<TCoordinate> : ISegmentIntersector<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly LineIntersector<TCoordinate> _li = null;
         private readonly List<TCoordinate> _interiorIntersections = new List<TCoordinate>();
+        private readonly LineIntersector<TCoordinate> _li;
 
         /// <summary>
         /// Creates an intersection finder which finds all proper intersections.
@@ -35,6 +34,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             get { return _interiorIntersections; }
         }
 
+        #region ISegmentIntersector<TCoordinate> Members
+
         /// <summary>
         /// This method is called by clients
         /// of the <see cref="ISegmentIntersector{TCoordinate}" /> class to process
@@ -46,7 +47,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// may optimize away this call for segment pairs which they have determined 
         /// do not intersect (e.g. by an disjoint envelope test).
         /// </remarks>
-        public void ProcessIntersections(NodedSegmentString<TCoordinate> e0, Int32 segIndex0, NodedSegmentString<TCoordinate> e1, Int32 segIndex1)
+        public void ProcessIntersections(NodedSegmentString<TCoordinate> e0, Int32 segIndex0,
+                                         NodedSegmentString<TCoordinate> e1, Int32 segIndex1)
         {
             // don't bother intersecting a segment with itself
             if (e0 == e1 && segIndex0 == segIndex1)
@@ -77,8 +79,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             }
         }
 
-        #region ISegmentIntersector<TCoordinate> Member
+        #endregion
 
+        #region ISegmentIntersector<TCoordinate> Member
 
         public bool IsDone
         {

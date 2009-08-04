@@ -1,10 +1,10 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
@@ -20,88 +20,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// an integer grid.)
     /// </remarks>
     public abstract class LineIntersector<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
-        /// <summary> 
-        /// Computes the "edge distance" of an intersection point p along a segment.
-        /// </summary>
-        /// <remarks>
-        /// The edge distance is a metric of the point along the edge.
-        /// The metric used is a robust and easy to compute metric function.
-        /// It is not equivalent to the usual Euclidean metric.
-        /// It relies on the fact that either the x or the y ordinates of the
-        /// points in the edge are unique, depending on whether the edge is longer in
-        /// the horizontal or vertical direction.
-        /// NOTE: This function may produce incorrect distances
-        /// for inputs where <paramref name="p"/> is not precisely on 
-        /// <paramref name="line"/>.
-        /// (E.g. p = (139, 9) p1 = (139, 10), p2 = (280, 1) produces a distance of 0.0, 
-        /// which is incorrect). My hypothesis is that the function is safe to use for 
-        /// points which are the result of rounding points which lie on the line, but not 
-        /// safe to use for truncated points.
-        /// </remarks>
-        public static Double ComputeEdgeDistance(TCoordinate p, Pair<TCoordinate> line)
-        {
-            Double dx = Math.Abs(line.Second[Ordinates.X] - line.First[Ordinates.X]);
-            Double dy = Math.Abs(line.Second[Ordinates.Y] - line.First[Ordinates.Y]);
-
-            Double distance;
-
-            if (p.Equals(line.First))
-            {
-                distance = 0.0;
-            }
-            else if (p.Equals(line.Second))
-            {
-                distance = dx > dy ? dx : dy;
-            }
-            else
-            {
-                Double pdx = Math.Abs(p[Ordinates.X] - line.First[Ordinates.X]);
-                Double pdy = Math.Abs(p[Ordinates.Y] - line.First[Ordinates.Y]);
-
-                distance = dx > dy ? pdx : pdy;
-
-                // HACK: to ensure that non-endpoints always have a non-zero distance
-                if (distance == 0.0 && !p.Equals(line.First))
-                {
-                    distance = Math.Max(pdx, pdy);
-                }
-            }
-
-            Assert.IsTrue(!(distance == 0.0 && !p.Equals(line.First)), 
-                          "Bad distance calculation");
-            return distance;
-        }
-
-        /// <summary> 
-        /// Computes the "edge distance" of an intersection point p along a segment.
-        /// </summary>
-        /// <seealso cref="ComputeEdgeDistance(TCoordinate, Pair{TCoordinate})"/>
-        public static Double ComputeEdgeDistance(TCoordinate p, LineSegment<TCoordinate> line)
-        {
-            return ComputeEdgeDistance(p, line.Points);
-        }
-
-        /// <summary>
-        /// This function is non-robust, since it may compute the square of large numbers.
-        /// Currently not sure how to improve this.
-        /// </summary>
-        public static Double NonRobustComputeEdgeDistance(TCoordinate p, 
-                                                          Pair<TCoordinate> line)
-        {
-            Double dx = p[Ordinates.X] - line.First[Ordinates.X];
-            Double dy = p[Ordinates.Y] - line.First[Ordinates.Y];
-            Double dist = Math.Sqrt(dx * dx + dy * dy); // dummy value
-            Assert.IsTrue(!(dist == 0.0 && !p.Equals(line.First)), 
-                          "Invalid distance calculation");
-            return dist;
-        }
-
-        private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private readonly ICoordinateFactory<TCoordinate> _coordFactory;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private IPrecisionModel<TCoordinate> _precisionModel;
 
         // The indexes of the endpoints of the intersection lines, in order along
@@ -149,6 +73,82 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         }
 
         /// <summary> 
+        /// Computes the "edge distance" of an intersection point p along a segment.
+        /// </summary>
+        /// <remarks>
+        /// The edge distance is a metric of the point along the edge.
+        /// The metric used is a robust and easy to compute metric function.
+        /// It is not equivalent to the usual Euclidean metric.
+        /// It relies on the fact that either the x or the y ordinates of the
+        /// points in the edge are unique, depending on whether the edge is longer in
+        /// the horizontal or vertical direction.
+        /// NOTE: This function may produce incorrect distances
+        /// for inputs where <paramref name="p"/> is not precisely on 
+        /// <paramref name="line"/>.
+        /// (E.g. p = (139, 9) p1 = (139, 10), p2 = (280, 1) produces a distance of 0.0, 
+        /// which is incorrect). My hypothesis is that the function is safe to use for 
+        /// points which are the result of rounding points which lie on the line, but not 
+        /// safe to use for truncated points.
+        /// </remarks>
+        public static Double ComputeEdgeDistance(TCoordinate p, Pair<TCoordinate> line)
+        {
+            Double dx = Math.Abs(line.Second[Ordinates.X] - line.First[Ordinates.X]);
+            Double dy = Math.Abs(line.Second[Ordinates.Y] - line.First[Ordinates.Y]);
+
+            Double distance;
+
+            if (p.Equals(line.First))
+            {
+                distance = 0.0;
+            }
+            else if (p.Equals(line.Second))
+            {
+                distance = dx > dy ? dx : dy;
+            }
+            else
+            {
+                Double pdx = Math.Abs(p[Ordinates.X] - line.First[Ordinates.X]);
+                Double pdy = Math.Abs(p[Ordinates.Y] - line.First[Ordinates.Y]);
+
+                distance = dx > dy ? pdx : pdy;
+
+                // HACK: to ensure that non-endpoints always have a non-zero distance
+                if (distance == 0.0 && !p.Equals(line.First))
+                {
+                    distance = Math.Max(pdx, pdy);
+                }
+            }
+
+            Assert.IsTrue(!(distance == 0.0 && !p.Equals(line.First)),
+                          "Bad distance calculation");
+            return distance;
+        }
+
+        /// <summary> 
+        /// Computes the "edge distance" of an intersection point p along a segment.
+        /// </summary>
+        /// <seealso cref="ComputeEdgeDistance(TCoordinate, Pair{TCoordinate})"/>
+        public static Double ComputeEdgeDistance(TCoordinate p, LineSegment<TCoordinate> line)
+        {
+            return ComputeEdgeDistance(p, line.Points);
+        }
+
+        /// <summary>
+        /// This function is non-robust, since it may compute the square of large numbers.
+        /// Currently not sure how to improve this.
+        /// </summary>
+        public static Double NonRobustComputeEdgeDistance(TCoordinate p,
+                                                          Pair<TCoordinate> line)
+        {
+            Double dx = p[Ordinates.X] - line.First[Ordinates.X];
+            Double dy = p[Ordinates.Y] - line.First[Ordinates.Y];
+            Double dist = Math.Sqrt(dx*dx + dy*dy); // dummy value
+            Assert.IsTrue(!(dist == 0.0 && !p.Equals(line.First)),
+                          "Invalid distance calculation");
+            return dist;
+        }
+
+        /// <summary> 
         /// Compute the intersection of a point p and the line p1-p2.
         /// This function computes the boolean value of the "has intersection" test.
         /// The actual value of the intersection (if there is one)
@@ -165,7 +165,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// describing the relationship of <paramref name="p"/> with 
         /// <paramref name="line"/>.
         /// </returns>
-        public abstract Intersection<TCoordinate> ComputeIntersection(TCoordinate p, 
+        public abstract Intersection<TCoordinate> ComputeIntersection(TCoordinate p,
                                                                       Pair<TCoordinate> line);
 
         /// <summary>
@@ -181,12 +181,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// An <see cref="Intersection{TCoordinate}"/> instance
         /// describing the relationship of the two lines.
         /// </returns>
-        public Intersection<TCoordinate> ComputeIntersection(TCoordinate p1, 
-                                                             TCoordinate p2, 
-                                                             TCoordinate p3, 
+        public Intersection<TCoordinate> ComputeIntersection(TCoordinate p1,
+                                                             TCoordinate p2,
+                                                             TCoordinate p3,
                                                              TCoordinate p4)
         {
-            return ComputeIntersectInternal(new Pair<TCoordinate>(p1, p2), 
+            return ComputeIntersectInternal(new Pair<TCoordinate>(p1, p2),
                                             new Pair<TCoordinate>(p3, p4));
         }
 
@@ -206,7 +206,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// An <see cref="Intersection{TCoordinate}"/> instance
         /// describing the relationship of the two line segments.
         /// </returns>
-        public Intersection<TCoordinate> ComputeIntersection(Pair<TCoordinate> line0, 
+        public Intersection<TCoordinate> ComputeIntersection(Pair<TCoordinate> line0,
                                                              Pair<TCoordinate> line1)
         {
             return ComputeIntersectInternal(line0, line1);
@@ -228,13 +228,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// An <see cref="Intersection{TCoordinate}"/> instance
         /// describing the relationship of the two line segments.
         /// </returns>
-        public Intersection<TCoordinate> ComputeIntersection(LineSegment<TCoordinate> line0, 
+        public Intersection<TCoordinate> ComputeIntersection(LineSegment<TCoordinate> line0,
                                                              LineSegment<TCoordinate> line1)
         {
             return ComputeIntersectInternal(line0.Points, line1.Points);
         }
 
-        protected abstract Intersection<TCoordinate> ComputeIntersectInternal(Pair<TCoordinate> line0, 
+        protected abstract Intersection<TCoordinate> ComputeIntersectInternal(Pair<TCoordinate> line0,
                                                                               Pair<TCoordinate> line1);
 
         protected static Pair<Boolean> ComputeIntersectionLineDirections(Intersection<TCoordinate> intersection)
@@ -245,7 +245,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return new Pair<Boolean>(directionLine0, directionLine1);
         }
 
-        protected static Boolean ComputeIntersectionLineDirection(Intersection<TCoordinate> intersection, 
+        protected static Boolean ComputeIntersectionLineDirection(Intersection<TCoordinate> intersection,
                                                                   Int32 segmentIndex)
         {
             //Int32[] indexes = GetIndexesForSegmentIndex(segmentIndex);

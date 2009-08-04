@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         private readonly ILineString<TCoordinate> _line;
 
         public PolygonizeEdge(ILineString<TCoordinate> line,
-            DirectedEdge<TCoordinate> directedEdge0, DirectedEdge<TCoordinate> directedEdge1)
+                              DirectedEdge<TCoordinate> directedEdge0, DirectedEdge<TCoordinate> directedEdge1)
             : base(directedEdge0, directedEdge1)
         {
             _line = line;

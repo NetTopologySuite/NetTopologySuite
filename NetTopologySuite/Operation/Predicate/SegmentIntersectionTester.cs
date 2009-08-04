@@ -16,8 +16,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
     /// </summary>
     public class SegmentIntersectionTester<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         // for purposes of intersection testing, don't need to set precision model
         private readonly LineIntersector<TCoordinate> _li;
@@ -64,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
                     }
                 }
 
-                if(_hasIntersection)
+                if (_hasIntersection)
                 {
                     break;
                 }

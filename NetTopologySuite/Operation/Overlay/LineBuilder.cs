@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
-using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 {
@@ -18,8 +18,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly OverlayOp<TCoordinate> _op;
         private readonly IGeometryFactory<TCoordinate> _geometryFactory;
+        private readonly OverlayOp<TCoordinate> _op;
 
         // [codekaizen 2008-01-06] field '_ptLocator' isn't used in JTS source LineBuilder.java rev. 1.15
         //private readonly PointLocator<TCoordinate> _ptLocator;
@@ -56,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             {
                 DirectedEdgeStar<TCoordinate> edges = node.Edges as DirectedEdgeStar<TCoordinate>;
                 Debug.Assert(edges != null);
-                edges.FindCoveredLineEdges();   
+                edges.FindCoveredLineEdges();
             }
 
             /*
@@ -71,7 +71,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                 {
                     Boolean isCovered = _op.IsCoveredByArea(de.Coordinate);
                     e.Covered = isCovered;
-                }   
+                }
             }
         }
 
@@ -89,7 +89,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             }
         }
 
-        private static IEnumerable<Edge<TCoordinate>> collectLineEdge(DirectedEdge<TCoordinate> de, SpatialFunctions opCode)
+        private static IEnumerable<Edge<TCoordinate>> collectLineEdge(DirectedEdge<TCoordinate> de,
+                                                                      SpatialFunctions opCode)
         {
             Debug.Assert(de.Label.HasValue);
             Label label = de.Label.Value;
@@ -114,7 +115,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// areas touch in a line segment
         /// OR as a result of a dimensional collapse.
         /// </summary>
-        private static IEnumerable<Edge<TCoordinate>> collectBoundaryTouchEdge(DirectedEdge<TCoordinate> de, SpatialFunctions opCode)
+        private static IEnumerable<Edge<TCoordinate>> collectBoundaryTouchEdge(DirectedEdge<TCoordinate> de,
+                                                                               SpatialFunctions opCode)
         {
             if (de.IsLineEdge)
             {
@@ -143,7 +145,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             Label label = de.Label.Value;
 
             // include the linework if it's in the result of the operation
-            if (OverlayOp<TCoordinate>.IsResultOfOp(label, opCode) 
+            if (OverlayOp<TCoordinate>.IsResultOfOp(label, opCode)
                 && opCode == SpatialFunctions.Intersection)
             {
                 yield return de.Edge;
@@ -152,7 +154,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         }
 
         // [codekaizen 2008-01-06] parameter 'opCode' isn't used in JTS source LineBuilder.java rev. 1.15
-        private IEnumerable<ILineString<TCoordinate>> buildLines(SpatialFunctions opCode, IEnumerable<Edge<TCoordinate>> edges)
+        private IEnumerable<ILineString<TCoordinate>> buildLines(SpatialFunctions opCode,
+                                                                 IEnumerable<Edge<TCoordinate>> edges)
         {
             foreach (Edge<TCoordinate> edge in edges)
             {
@@ -169,7 +172,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         //    {
         //        Debug.Assert(edge.Label.HasValue);
         //        Label label = edge.Label.Value;
-                
+
         //        if (edge.IsIsolated)
         //        {
         //            if (label.IsNull(0))

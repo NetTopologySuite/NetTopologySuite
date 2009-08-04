@@ -8,13 +8,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
     internal static class GenericInterfaceConverter<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         public static ICoordinateSequence<TCoordinate> Convert(ICoordinateSequence coordinates,
                                                                ICoordinateSequenceFactory<TCoordinate> coordSeqFactory)
         {
-            ICoordinateSequence<TCoordinate> converted 
+            ICoordinateSequence<TCoordinate> converted
                 = coordinates as ICoordinateSequence<TCoordinate>;
 
             if (converted != null)
@@ -26,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             return converted;
         }
 
-        public static IEnumerable<ILineString<TCoordinate>> Convert(IEnumerable<ILineString> lineStrings, 
+        public static IEnumerable<ILineString<TCoordinate>> Convert(IEnumerable<ILineString> lineStrings,
                                                                     IGeometryFactory<TCoordinate> geoFactory)
         {
             foreach (ILineString lineString in lineStrings)
@@ -39,7 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                 }
                 else
                 {
-                    ICoordinateSequence<TCoordinate> coordSeq 
+                    ICoordinateSequence<TCoordinate> coordSeq
                         = Convert(lineString.Coordinates, geoFactory.CoordinateSequenceFactory);
                     yield return geoFactory.CreateLineString(coordSeq);
                 }
@@ -64,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             return geometry;
         }
 
-        public static IEnumerable<IGeometry<TCoordinate>> Convert(IEnumerable<IGeometry> geometries, 
+        public static IEnumerable<IGeometry<TCoordinate>> Convert(IEnumerable<IGeometry> geometries,
                                                                   IGeometryFactory<TCoordinate> geoFactory)
         {
             foreach (IGeometry geometry in geometries)

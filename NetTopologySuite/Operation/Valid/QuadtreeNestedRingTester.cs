@@ -5,7 +5,6 @@ using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Index.Quadtree;
 using NPack.Interfaces;
@@ -14,19 +13,19 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 {
     /// <summary>
     /// Tests whether any of a set of <see cref="LinearRing{TCoordinate}" />s are
-    /// nested inside another ring in the set, using a <see cref="Quadtree{TCoordinate, TItem}"/>
+    /// nested inside another ring in the set, using a <see cref="Quadtree{TCoordinate,TItem}"/>
     /// index to speed up the comparisons.
     /// </summary>
     public class QuadtreeNestedRingTester<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IDivisible<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IDivisible<Double, TCoordinate>, IConvertible
     {
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private readonly GeometryGraph<TCoordinate> _graph; // used to find non-node vertices
         private readonly List<ILinearRing<TCoordinate>> _rings = new List<ILinearRing<TCoordinate>>();
         private readonly IExtents<TCoordinate> _totalExtents;
         private Quadtree<TCoordinate, ILinearRing<TCoordinate>> _index;
         private TCoordinate _nestedPoint;
-        private IGeometryFactory<TCoordinate> _geoFactory;
 
         public QuadtreeNestedRingTester(IGeometryFactory<TCoordinate> geoFactory, GeometryGraph<TCoordinate> graph)
         {

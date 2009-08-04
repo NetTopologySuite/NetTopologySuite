@@ -12,13 +12,15 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public class SimpleNoder<TCoordinate> : SinglePassNoder<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleNoder{TCoordinate}"/> class.
         /// </summary>
         public SimpleNoder(ISegmentIntersector<TCoordinate> segInt)
-            : base(segInt) {}
+            : base(segInt)
+        {
+        }
 
         /// <summary>
         /// Computes the noding for a collection of <see cref="NodedSegmentString{TCoordinate}" />s
@@ -28,7 +30,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// Some noders may add all these nodes to the input <see cref="NodedSegmentString{TCoordinate}" />s;
         /// others may only add some or none at all.
         /// </summary>
-        public override IEnumerable<NodedSegmentString<TCoordinate>> Node(IEnumerable<NodedSegmentString<TCoordinate>> inputSegStrings)
+        public override IEnumerable<NodedSegmentString<TCoordinate>> Node(
+            IEnumerable<NodedSegmentString<TCoordinate>> inputSegStrings)
         {
             foreach (NodedSegmentString<TCoordinate> edge0 in inputSegStrings)
             {
@@ -41,7 +44,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             return NodedSegmentString<TCoordinate>.GetNodedSubstrings(inputSegStrings);
         }
 
-        public override IEnumerable<TNodingResult> Node<TNodingResult>(IEnumerable<NodedSegmentString<TCoordinate>> segmentStrings, Func<NodedSegmentString<TCoordinate>, TNodingResult> generator)
+        public override IEnumerable<TNodingResult> Node<TNodingResult>(
+            IEnumerable<NodedSegmentString<TCoordinate>> segmentStrings,
+            Func<NodedSegmentString<TCoordinate>, TNodingResult> generator)
         {
             foreach (NodedSegmentString<TCoordinate> segmentString in Node(segmentStrings))
             {
@@ -56,9 +61,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
             Int32 i0 = 0, i1 = 0;
 
-            while(pts0.MoveNext())
+            while (pts0.MoveNext())
             {
-                while(pts1.MoveNext())
+                while (pts1.MoveNext())
                 {
                     SegmentIntersector.ProcessIntersections(e0, i0, e1, i1);
 

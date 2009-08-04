@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
+using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
-using GeoAPI.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Distance
 {
@@ -26,9 +26,56 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
     /// </remarks>
     public class DistanceOp<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
+        private readonly IGeometry<TCoordinate> _g0;
+        private readonly IGeometry<TCoordinate> _g1;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
+        private readonly PointLocator<TCoordinate> _ptLocator = new PointLocator<TCoordinate>();
+        private readonly Double _terminateDistance;
+        private Double _minDistance = Double.MaxValue;
+        private GeometryLocation<TCoordinate>? _minDistanceLocation0;
+        private GeometryLocation<TCoordinate>? _minDistanceLocation1;
+
+        /// <summary>
+        /// Constructs a <see cref="DistanceOp{TCoordinate}" />  that computes the distance and closest points between
+        /// the two specified geometries.
+        /// </summary>
+        public DistanceOp(IGeometry<TCoordinate> g0, IGeometry<TCoordinate> g1)
+            : this(g0, g1, 0)
+        {
+        }
+
+        /// <summary>
+        /// Constructs a <see cref="DistanceOp{TCoordinate}" /> that computes the distance and closest points between
+        /// the two specified geometries.
+        /// </summary>
+        /// <param name="terminateDistance">The distance on which to terminate the search.</param>
+        public DistanceOp(IGeometry<TCoordinate> g0, IGeometry<TCoordinate> g1, Double terminateDistance)
+        {
+            if (g0 == null) throw new ArgumentNullException("g0");
+            if (g1 == null) throw new ArgumentNullException("g1");
+
+            _g0 = g0;
+            _g1 = g1;
+            _geoFactory = _g0.Factory ?? _g1.Factory;
+            _terminateDistance = terminateDistance;
+        }
+
+        /// <summary>
+        /// Gets the distance between the closest points on the input geometries.
+        /// </summary>
+        /// <returns>The distance between the geometries.</returns>
+        public Double Distance
+        {
+            get
+            {
+                computeMinDistance();
+                return _minDistance;
+            }
+        }
+
         /// <summary>
         /// Compute the distance between the closest points of two geometries.
         /// </summary>
@@ -47,8 +94,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <param name="g0">The first <see cref="IGeometry{TCoordinate}"/> to comapre.</param>
         /// <param name="g1">The second <see cref="IGeometry{TCoordinate}"/> to comapre.</param>
         /// <param name="distance">The distance value to test.</param>
-        public static Boolean IsWithinDistance(IGeometry<TCoordinate> g0, 
-                                               IGeometry<TCoordinate> g1, 
+        public static Boolean IsWithinDistance(IGeometry<TCoordinate> g0,
+                                               IGeometry<TCoordinate> g1,
                                                Double distance)
         {
             return IsWithinDistance(g0, g1, distance, Tolerance.Global);
@@ -84,51 +131,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
             return distOp.ClosestPoints();
         }
 
-        private readonly PointLocator<TCoordinate> _ptLocator = new PointLocator<TCoordinate>();
-        private IGeometry<TCoordinate> _g0;
-        private IGeometry<TCoordinate> _g1;
-        private GeometryLocation<TCoordinate>? _minDistanceLocation0;
-        private GeometryLocation<TCoordinate>? _minDistanceLocation1;
-        private Double _minDistance = Double.MaxValue;
-        private readonly Double _terminateDistance;
-        private readonly IGeometryFactory<TCoordinate> _geoFactory;
-
-        /// <summary>
-        /// Constructs a <see cref="DistanceOp{TCoordinate}" />  that computes the distance and closest points between
-        /// the two specified geometries.
-        /// </summary>
-        public DistanceOp(IGeometry<TCoordinate> g0, IGeometry<TCoordinate> g1)
-            : this(g0, g1, 0) { }
-
-        /// <summary>
-        /// Constructs a <see cref="DistanceOp{TCoordinate}" /> that computes the distance and closest points between
-        /// the two specified geometries.
-        /// </summary>
-        /// <param name="terminateDistance">The distance on which to terminate the search.</param>
-        public DistanceOp(IGeometry<TCoordinate> g0, IGeometry<TCoordinate> g1, Double terminateDistance)
-        {
-            if (g0 == null) throw new ArgumentNullException("g0");
-            if (g1 == null) throw new ArgumentNullException("g1");
-
-            _g0 = g0;
-            _g1 = g1;
-            _geoFactory = _g0.Factory ?? _g1.Factory;
-            _terminateDistance = terminateDistance;
-        }
-
-        /// <summary>
-        /// Gets the distance between the closest points on the input geometries.
-        /// </summary>
-        /// <returns>The distance between the geometries.</returns>
-        public Double Distance
-        {
-            get
-            {
-                computeMinDistance();
-                return _minDistance;
-            }
-        }
-
         /// <summary>
         /// Report the coordinates of the closest points in the input geometries.
         /// The points are presented in the same order as the input Geometries.
@@ -144,7 +146,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
             }
 
             return new Pair<TCoordinate>(_minDistanceLocation0.Value.Coordinate,
-                _minDistanceLocation1.Value.Coordinate);
+                                         _minDistanceLocation1.Value.Coordinate);
         }
 
         /// <summary>
@@ -165,7 +167,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
             }
 
             return new Pair<GeometryLocation<TCoordinate>>(_minDistanceLocation0.Value,
-                _minDistanceLocation1.Value);
+                                                           _minDistanceLocation1.Value);
         }
 
         // [codekaizen 2008-01-14] Not used in JTS 
@@ -332,11 +334,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
              * Geometries are not wholely inside, so compute distance from lines and points
              * of one to lines and points of the other
              */
-            IEnumerable<ILineString<TCoordinate>> lines0 = GeometryFilter.Filter<ILineString<TCoordinate>>(_g0); // LinearComponentExtracter<TCoordinate>.GetLines(_g0);
-            IEnumerable<ILineString<TCoordinate>> lines1 = GeometryFilter.Filter<ILineString<TCoordinate>>(_g1); // LinearComponentExtracter<TCoordinate>.GetLines(_g1);
+            IEnumerable<ILineString<TCoordinate>> lines0 = GeometryFilter.Filter<ILineString<TCoordinate>>(_g0);
+                // LinearComponentExtracter<TCoordinate>.GetLines(_g0);
+            IEnumerable<ILineString<TCoordinate>> lines1 = GeometryFilter.Filter<ILineString<TCoordinate>>(_g1);
+                // LinearComponentExtracter<TCoordinate>.GetLines(_g1);
 
-            IEnumerable<IPoint<TCoordinate>> pts0 = GeometryFilter.Filter<IPoint<TCoordinate>>(_g0); // PointExtracter<TCoordinate>.GetPoints(_g0);
-            IEnumerable<IPoint<TCoordinate>> pts1 = GeometryFilter.Filter<IPoint<TCoordinate>>(_g1); // PointExtracter<TCoordinate>.GetPoints(_g1);
+            IEnumerable<IPoint<TCoordinate>> pts0 = GeometryFilter.Filter<IPoint<TCoordinate>>(_g0);
+                // PointExtracter<TCoordinate>.GetPoints(_g0);
+            IEnumerable<IPoint<TCoordinate>> pts1 = GeometryFilter.Filter<IPoint<TCoordinate>>(_g1);
+                // PointExtracter<TCoordinate>.GetPoints(_g1);
 
             // bail whenever minDistance goes to zero, since it can't get any less
             locGeom0 = computeMinDistanceLines(lines0, lines1, out locGeom1);
@@ -426,9 +432,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
             return null;
         }
 
-        private GeometryLocation<TCoordinate>? computeMinDistanceLinesPoints(IEnumerable<ILineString<TCoordinate>> lines,
-                                                                             IEnumerable<IPoint<TCoordinate>> points,
-                                                                             out GeometryLocation<TCoordinate>? locGeom1)
+        private GeometryLocation<TCoordinate>? computeMinDistanceLinesPoints(
+            IEnumerable<ILineString<TCoordinate>> lines,
+            IEnumerable<IPoint<TCoordinate>> points,
+            out GeometryLocation<TCoordinate>? locGeom1)
         {
             locGeom1 = null;
 

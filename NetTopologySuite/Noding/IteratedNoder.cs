@@ -36,8 +36,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// Initializes a new instance of the 
         /// <see cref="IteratedNoder{TCoordinate}"/> class.
         /// </summary>
-        public IteratedNoder(IGeometryFactory<TCoordinate> geoFactory) 
-            : this(geoFactory, geoFactory.PrecisionModel) { }
+        public IteratedNoder(IGeometryFactory<TCoordinate> geoFactory)
+            : this(geoFactory, geoFactory.PrecisionModel)
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the 
@@ -60,6 +62,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             get { return _maxIter; }
             set { _maxIter = value; }
         }
+
+        #region INoder<TCoordinate> Members
 
         /// <summary>
         /// Fully nodes a set of <see cref="NodedSegmentString{TCoordinate}" />s, 
@@ -85,7 +89,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                 nodingIterationCount++;
                 Int32 nodesCreated = numInteriorIntersections;
 
-               /*
+                /*
                 * Fail if the number of nodes created is not declining.
                 * However, allow a few iterations at least before doing this
                 */
@@ -103,11 +107,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             return segStrings;
         }
 
+        #endregion
+
         /// <summary>
         /// Node the input segment strings once
         /// and create the split edges between the nodes.
         /// </summary>
-        private IEnumerable<NodedSegmentString<TCoordinate>> node(IEnumerable<NodedSegmentString<TCoordinate>> segStrings, out Int32 interiorIntersectionsCount)
+        private IEnumerable<NodedSegmentString<TCoordinate>> node(
+            IEnumerable<NodedSegmentString<TCoordinate>> segStrings, out Int32 interiorIntersectionsCount)
         {
             IntersectionAdder<TCoordinate> si = new IntersectionAdder<TCoordinate>(_li);
             MonotoneChainIndexNoder<TCoordinate> noder = new MonotoneChainIndexNoder<TCoordinate>(_geoFactory, si);

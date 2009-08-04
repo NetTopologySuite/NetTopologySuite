@@ -31,10 +31,8 @@
  *     www.vividsolutions.com
  */
 using System;
-using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
@@ -52,7 +50,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     ///</summary>
     public abstract class SegmentSetMutualIntersector<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         protected ISegmentIntersector<TCoordinate> _segInt;
 

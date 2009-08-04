@@ -25,9 +25,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// kinds of intersections were found.
     /// </remarks>
     public abstract class EdgeSetIntersector<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         /// <summary>
         /// Computes all self-intersections between edges in a set of edges,
@@ -40,8 +40,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <param name="testAllSegments">
         /// <see langword="true"/> if self-intersections are to be tested as well.
         /// </param>
-        public abstract void ComputeIntersections(IEnumerable<Edge<TCoordinate>> edges, 
-                                                  SegmentIntersector<TCoordinate> si, 
+        public abstract void ComputeIntersections(IEnumerable<Edge<TCoordinate>> edges,
+                                                  SegmentIntersector<TCoordinate> si,
                                                   Boolean testAllSegments);
 
         /// <summary> 
@@ -56,8 +56,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <param name="si">
         /// The <see cref="SegmentIntersector{TCoordinate}"/> to use.
         /// </param>
-        public abstract void ComputeIntersections(IEnumerable<Edge<TCoordinate>> edges0, 
-                                                  IEnumerable<Edge<TCoordinate>> edges1, 
+        public abstract void ComputeIntersections(IEnumerable<Edge<TCoordinate>> edges0,
+                                                  IEnumerable<Edge<TCoordinate>> edges1,
                                                   SegmentIntersector<TCoordinate> si);
     }
 }

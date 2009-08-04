@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -10,7 +11,7 @@ using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Noding;
 using GisSharpBlog.NetTopologySuite.Operation.Overlay;
 using NPack.Interfaces;
-using GeoAPI.DataStructures;
+
 #if DOTNET35
 using System.Linq;
 #endif
@@ -31,18 +32,18 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// can produce more robust results.    
     /// </remarks>
     public class BufferBuilder<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
-        private Int32 _quadrantSegments = OffsetCurveBuilder<TCoordinate>.DefaultQuadrantSegments;
+        private readonly EdgeList<TCoordinate> _edgeList;
         private BufferStyle _endCapStyle = BufferStyle.Round;
 
-        private IPrecisionModel<TCoordinate> _workingPrecisionModel;
-        private INoder<TCoordinate> _workingNoder;
         private IGeometryFactory<TCoordinate> _geoFactory;
         private PlanarGraph<TCoordinate> _graph;
-        private readonly EdgeList<TCoordinate> _edgeList;
+        private Int32 _quadrantSegments = OffsetCurveBuilder<TCoordinate>.DefaultQuadrantSegments;
+        private INoder<TCoordinate> _workingNoder;
+        private IPrecisionModel<TCoordinate> _workingPrecisionModel;
 
         /// <summary>
         /// Constructs a new <see cref="BufferBuilder{TCoordinate}"/>
@@ -124,9 +125,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             // factory must be the same as the one used by the input
             _geoFactory = g.Factory;
 
-            OffsetCurveBuilder<TCoordinate> curveBuilder 
-                = new OffsetCurveBuilder<TCoordinate>(_geoFactory, 
-                                                      precisionModel, 
+            OffsetCurveBuilder<TCoordinate> curveBuilder
+                = new OffsetCurveBuilder<TCoordinate>(_geoFactory,
+                                                      precisionModel,
                                                       _quadrantSegments);
 
             curveBuilder.EndCapStyle = _endCapStyle;
@@ -134,13 +135,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             OffsetCurveSetBuilder<TCoordinate> curveSetBuilder
                 = new OffsetCurveSetBuilder<TCoordinate>(g, distance, curveBuilder);
 
-            IEnumerable<NodedSegmentString<TCoordinate>> bufferSegStrList 
+            IEnumerable<NodedSegmentString<TCoordinate>> bufferSegStrList
                 = curveSetBuilder.GetCurves();
 
             // short-circuit test
             if (!Slice.CountGreaterThan(bufferSegStrList, 0))
             {
-                IGeometry<TCoordinate> emptyGeom 
+                IGeometry<TCoordinate> emptyGeom
                     = _geoFactory.CreateGeometryCollection();
                 return emptyGeom;
             }
@@ -150,7 +151,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             _graph.AddEdges(_edgeList);
 
             IEnumerable<BufferSubgraph<TCoordinate>> subgraphs = createSubgraphs(_graph);
-            PolygonBuilder<TCoordinate> polyBuilder 
+            PolygonBuilder<TCoordinate> polyBuilder
                 = new PolygonBuilder<TCoordinate>(_geoFactory);
             buildSubgraphs(subgraphs, polyBuilder);
 
@@ -208,6 +209,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         }
 
         #region Private helper routines
+
         private INoder<TCoordinate> getNoder(IPrecisionModel<TCoordinate> precisionModel)
         {
             if (_workingNoder != null)
@@ -223,12 +225,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             MonotoneChainIndexNoder<TCoordinate> noder
                 = new MonotoneChainIndexNoder<TCoordinate>(_geoFactory,
-                    new IntersectionAdder<TCoordinate>(li));
+                                                           new IntersectionAdder<TCoordinate>(li));
 
             return noder;
         }
 
-        private void computeNodedEdges(IEnumerable<NodedSegmentString<TCoordinate>> bufferSegStrList, 
+        private void computeNodedEdges(IEnumerable<NodedSegmentString<TCoordinate>> bufferSegStrList,
                                        IPrecisionModel<TCoordinate> precisionModel)
         {
             INoder<TCoordinate> noder = getNoder(precisionModel);
@@ -236,7 +238,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             foreach (NodedSegmentString<TCoordinate> segStr in nodedSegStrings)
             {
-                Label oldLabel = (Label)segStr.Context;
+                Label oldLabel = (Label) segStr.Context;
                 Edge<TCoordinate> edge = new Edge<TCoordinate>(
                     _geoFactory, segStr.Coordinates, oldLabel);
                 InsertEdge(edge);
@@ -250,7 +252,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <param name="subgraphList">The subgraphs to build.</param>
         /// <param name="polyBuilder">The PolygonBuilder which will build the final polygons.</param>
-        private static void buildSubgraphs(IEnumerable<BufferSubgraph<TCoordinate>> subgraphList, 
+        private static void buildSubgraphs(IEnumerable<BufferSubgraph<TCoordinate>> subgraphList,
                                            PolygonBuilder<TCoordinate> polyBuilder)
         {
             List<BufferSubgraph<TCoordinate>> processedGraphs = new List<BufferSubgraph<TCoordinate>>();
@@ -281,7 +283,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             {
                 return 1;
             }
-            
+
             if (left == Locations.Exterior && right == Locations.Interior)
             {
                 return -1;
@@ -292,14 +294,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
         private static IEnumerable<BufferSubgraph<TCoordinate>> createSubgraphs(PlanarGraph<TCoordinate> graph)
         {
-            List<BufferSubgraph<TCoordinate>> subgraphList 
+            List<BufferSubgraph<TCoordinate>> subgraphList
                 = new List<BufferSubgraph<TCoordinate>>();
 
             foreach (Node<TCoordinate> node in graph.Nodes)
             {
                 if (!node.IsVisited)
                 {
-                    BufferSubgraph<TCoordinate> subgraph 
+                    BufferSubgraph<TCoordinate> subgraph
                         = new BufferSubgraph<TCoordinate>();
 
                     subgraph.Create(node);
@@ -317,6 +319,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             subgraphList.Reverse();
             return subgraphList;
         }
+
         #endregion
     }
 }

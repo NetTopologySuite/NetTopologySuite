@@ -1,9 +1,9 @@
 using System;
 using GeoAPI.Coordinates;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 {
@@ -14,14 +14,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
     /// </summary>
     public class Root<TCoordinate, TItem> : BaseQuadNode<TCoordinate, TItem>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IDivisible<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IDivisible<Double, TCoordinate>, IConvertible
         where TItem : IBoundable<IExtents<TCoordinate>>
     {
         // the singleton root quad is centred at the origin.
-        private readonly TCoordinate _origin;
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
+        private readonly TCoordinate _origin;
 
-        public Root(IGeometryFactory<TCoordinate> geoFactory) 
+        public Root(IGeometryFactory<TCoordinate> geoFactory)
             : base(null)
         {
             // 3D_UNSAFE
@@ -55,9 +55,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             */
             if (node == null || !node.Bounds.Contains(item.Bounds))
             {
-                Node<TCoordinate, TItem> largerNode 
-                    = Node<TCoordinate, TItem>.CreateExpanded(_geoFactory, 
-                                                              node, 
+                Node<TCoordinate, TItem> largerNode
+                    = Node<TCoordinate, TItem>.CreateExpanded(_geoFactory,
+                                                              node,
                                                               item.Bounds);
                 SubNodesInternal[index] = largerNode;
             }

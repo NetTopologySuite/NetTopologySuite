@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
+using GeoAPI.Diagnostics;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 {
@@ -19,12 +19,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// </summary>
     public class RightmostEdgeFinder<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
+        private TCoordinate _minCoord;
+        private DirectedEdge<TCoordinate> _minDe;
         private Int32 _minIndex = -1;
-        private TCoordinate _minCoord = default(TCoordinate);
-        private DirectedEdge<TCoordinate> _minDe = null;
-        private DirectedEdge<TCoordinate> _orientedDe = null;
+        private DirectedEdge<TCoordinate> _orientedDe;
 
         public DirectedEdge<TCoordinate> Edge
         {
@@ -56,9 +56,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
              * If the rightmost point is a node, we need to identify which of
              * the incident edges is rightmost.
              */
-            Assert.IsTrue(_minIndex != 0 || _minCoord.Equals(_minDe.Coordinate), 
+            Assert.IsTrue(_minIndex != 0 || _minCoord.Equals(_minDe.Coordinate),
                           "inconsistency in rightmost processing");
-           
+
             if (_minIndex == 0)
             {
                 findRightmostEdgeAtNode();
@@ -107,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             ICoordinateSequence<TCoordinate> pts = _minDe.Edge.Coordinates;
             Assert.IsTrue(_minIndex > 0 && _minIndex < pts.Count,
                           "rightmost point expected to be interior vertex of edge");
-            
+
             TCoordinate pPrev = pts[_minIndex - 1];
             TCoordinate pNext = pts[_minIndex + 1];
 
@@ -117,14 +117,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             // both segments are below min point
             if (pPrev[Ordinates.Y] < _minCoord[Ordinates.Y]
-                && pNext[Ordinates.Y] < _minCoord[Ordinates.Y] 
+                && pNext[Ordinates.Y] < _minCoord[Ordinates.Y]
                 && orientation == Orientation.CounterClockwise)
             {
                 usePrev = true;
             }
             else if (pPrev[Ordinates.Y] > _minCoord[Ordinates.Y]
-                && pNext[Ordinates.Y] > _minCoord[Ordinates.Y] 
-                && orientation == Orientation.Clockwise)
+                     && pNext[Ordinates.Y] > _minCoord[Ordinates.Y]
+                     && orientation == Orientation.Clockwise)
             {
                 usePrev = true;
             }
@@ -148,7 +148,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 // only check vertices which are the start or end point of a non-horizontal segment
                 // <FIX> MD 19 Sep 03 - NO!  we can test all vertices, since the rightmost 
                 //                    - must have a non-horiz segment adjacent to it
-                if (Coordinates<TCoordinate>.IsEmpty(_minCoord) 
+                if (Coordinates<TCoordinate>.IsEmpty(_minCoord)
                     || coordinate[Ordinates.X] > _minCoord[Ordinates.X])
                 {
                     _minDe = de;

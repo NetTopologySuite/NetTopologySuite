@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -16,12 +17,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// that are pointwise equal to a target edge.
     /// </summary>
     public class EdgeList<TCoordinate> : IList<Edge<TCoordinate>>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
-        private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private readonly List<Edge<TCoordinate>> _edges = new List<Edge<TCoordinate>>();
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
 
         /// <summary>
         /// An index of the edges, for fast lookup.
@@ -39,6 +40,87 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             _geoFactory = geoFactory;
             initIndex();
         }
+
+        #region IList<Edge<TCoordinate>> Members
+
+        /// <summary> 
+        /// Insert an edge unless it is already in the list.
+        /// </summary>
+        public void Add(Edge<TCoordinate> e)
+        {
+            _edges.Add(e);
+            _index.Insert(e);
+        }
+
+        public int IndexOf(Edge<TCoordinate> item)
+        {
+            return _edges.IndexOf(item);
+        }
+
+        public void Insert(Int32 index, Edge<TCoordinate> item)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void RemoveAt(Int32 index)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Edge<TCoordinate> this[Int32 index]
+        {
+            get { return _edges[index]; }
+            set { throw new NotSupportedException(); }
+        }
+
+        public void Clear()
+        {
+            _edges.Clear();
+            initIndex();
+        }
+
+        public Boolean Contains(Edge<TCoordinate> item)
+        {
+            return _edges.Contains(item);
+        }
+
+        public void CopyTo(Edge<TCoordinate>[] array, Int32 arrayIndex)
+        {
+            _edges.CopyTo(array, arrayIndex);
+        }
+
+        public Int32 Count
+        {
+            get { return _edges.Count; }
+        }
+
+        public Boolean IsReadOnly
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Remove the selected Edge element from the list if present.
+        /// </summary>
+        /// <param name="e">Edge element to remove from list.</param>
+        public Boolean Remove(Edge<TCoordinate> e)
+        {
+            throw new NotSupportedException();
+            //return _index.Remove(e) && 
+            //       _edges.Remove(e);
+        }
+
+        public IEnumerator<Edge<TCoordinate>> GetEnumerator()
+        {
+            return _edges.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _edges.GetEnumerator();
+        }
+
+        #endregion
 
         public override String ToString()
         {
@@ -86,38 +168,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             return buffer.ToString();
         }
 
-        #region IList<Edge<TCoordinate>> Members
-
-        /// <summary> 
-        /// Insert an edge unless it is already in the list.
-        /// </summary>
-        public void Add(Edge<TCoordinate> e)
-        {
-            _edges.Add(e);
-            _index.Insert(e);
-        }
-
         public void AddRange(IEnumerable<Edge<TCoordinate>> edges)
         {
             _edges.AddRange(edges);
         }
-
-        public int IndexOf(Edge<TCoordinate> item)
-        {
-            return _edges.IndexOf(item);
-        }
-
-        public void Insert(Int32 index, Edge<TCoordinate> item)
-        {
-            throw new NotSupportedException();
-        }
-
-        public void RemoveAt(Int32 index)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
 
         public void RemoveRange(IEnumerable<Edge<TCoordinate>> items)
         {
@@ -151,12 +205,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             return null;
         }
 
-        public Edge<TCoordinate> this[Int32 index]
-        {
-            get { return _edges[index]; }
-            set { throw new NotSupportedException(); }
-        }
-
         /// <summary>
         /// If the edge e is already in the list, return its index.
         /// </summary>
@@ -166,69 +214,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </returns>
         public Int32 FindEdgeIndex(Edge<TCoordinate> e)
         {
-            return _edges.FindIndex(delegate(Edge<TCoordinate> match)
-                                    {
-                                        return e == match;
-                                    });
+            return _edges.FindIndex(delegate(Edge<TCoordinate> match) { return e == match; });
         }
-
-        #region ICollection<Edge<TCoordinate>> Members
-
-        public void Clear()
-        {
-            _edges.Clear();
-            initIndex();
-        }
-
-        public Boolean Contains(Edge<TCoordinate> item)
-        {
-            return _edges.Contains(item);
-        }
-
-        public void CopyTo(Edge<TCoordinate>[] array, Int32 arrayIndex)
-        {
-            _edges.CopyTo(array, arrayIndex);
-        }
-
-        public Int32 Count
-        {
-            get { return _edges.Count; }
-        }
-
-        public Boolean IsReadOnly
-        {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// Remove the selected Edge element from the list if present.
-        /// </summary>
-        /// <param name="e">Edge element to remove from list.</param>
-        public Boolean Remove(Edge<TCoordinate> e)
-        {
-            throw new NotSupportedException();
-            //return _index.Remove(e) && 
-            //       _edges.Remove(e);
-        }
-
-        #endregion
-
-        #region IEnumerable<Edge<TCoordinate>> Members
-
-        public IEnumerator<Edge<TCoordinate>> GetEnumerator()
-        {
-            return _edges.GetEnumerator();
-        }
-        #endregion
-
-        #region IEnumerable Members
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return _edges.GetEnumerator();
-        }
-
-        #endregion
 
         private void initIndex()
         {

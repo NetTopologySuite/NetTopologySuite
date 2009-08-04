@@ -21,11 +21,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly GeometryGraph<TCoordinate> _graph; // used to find non-node vertices
+
         private readonly List<ILinearRing<TCoordinate>> _rings
             = new List<ILinearRing<TCoordinate>>();
+
         //private IExtents<TCoordinate> _totalExtents = new Extents<TCoordinate>();
+        private TCoordinate _nestedPoint;
         private SweepLineIndex _sweepLine;
-        private TCoordinate _nestedPoint = default(TCoordinate);
 
         public SweeplineNestedRingTester(GeometryGraph<TCoordinate> graph)
         {
@@ -74,8 +76,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             }
 
             TCoordinate innerRingPt = IsValidOp<TCoordinate>.FindPointNotNode(innerRingCoordinates, searchRing, _graph);
-            Assert.IsTrue(!Equals(innerRingPt, default(TCoordinate)), 
-                "Unable to find a ring point not a node of the search ring");
+            Assert.IsTrue(!Equals(innerRingPt, default(TCoordinate)),
+                          "Unable to find a ring point not a node of the search ring");
             Boolean isInside = CGAlgorithms<TCoordinate>.IsPointInRing(innerRingPt, searchRingCoordinates);
 
             if (isInside)
@@ -87,20 +89,24 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             return false;
         }
 
+        #region Nested type: OverlapAction
+
         public class OverlapAction : ISweepLineOverlapAction
         {
-            private readonly SweeplineNestedRingTester<TCoordinate> _container = null;
+            private readonly SweeplineNestedRingTester<TCoordinate> _container;
             private Boolean _isNonNested = true;
+
+            public OverlapAction(SweeplineNestedRingTester<TCoordinate> container)
+            {
+                _container = container;
+            }
 
             public Boolean IsNonNested
             {
                 get { return _isNonNested; }
             }
 
-            public OverlapAction(SweeplineNestedRingTester<TCoordinate> container)
-            {
-                _container = container;
-            }
+            #region ISweepLineOverlapAction Members
 
             public void Overlap(SweepLineInterval s0, SweepLineInterval s1)
             {
@@ -116,6 +122,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                     _isNonNested = false;
                 }
             }
+
+            #endregion
         }
+
+        #endregion
     }
 }

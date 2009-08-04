@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using NPack.Interfaces;
@@ -12,40 +13,14 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// </summary>
     public class DirectedEdgeStar<TCoordinate> : IEnumerable<DirectedEdge<TCoordinate>>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// The underlying list of outgoing DirectedEdges.
         /// </summary>
         private readonly List<DirectedEdge<TCoordinate>> _outEdges = new List<DirectedEdge<TCoordinate>>();
-        private Boolean _isSorted = false;
 
-        /// <summary>
-        /// Adds a new member to this DirectedEdgeStar.
-        /// </summary>
-        public void Add(DirectedEdge<TCoordinate> de)
-        {
-            _outEdges.Add(de);
-            _isSorted = false;
-        }
-
-        /// <summary>
-        /// Drops a member of this DirectedEdgeStar.
-        /// </summary>
-        public void Remove(DirectedEdge<TCoordinate> de)
-        {
-            _outEdges.Remove(de);
-        }
-
-        /// <summary>
-        /// Returns an Iterator over the DirectedEdges, in ascending order by 
-        /// angle with the positive x-axis.
-        /// </summary>
-        public IEnumerator<DirectedEdge<TCoordinate>> GetEnumerator()
-        {
-            sortEdges();
-            return _outEdges.GetEnumerator();
-        }
+        private Boolean _isSorted;
 
         /// <summary>
         /// Returns the number of edges around the Node associated with this 
@@ -63,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         {
             get
             {
-                if(_outEdges.Count == 0)
+                if (_outEdges.Count == 0)
                 {
                     return default(TCoordinate);
                 }
@@ -86,6 +61,42 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
                 sortEdges();
                 return _outEdges.AsReadOnly();
             }
+        }
+
+        #region IEnumerable<DirectedEdge<TCoordinate>> Members
+
+        /// <summary>
+        /// Returns an Iterator over the DirectedEdges, in ascending order by 
+        /// angle with the positive x-axis.
+        /// </summary>
+        public IEnumerator<DirectedEdge<TCoordinate>> GetEnumerator()
+        {
+            sortEdges();
+            return _outEdges.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Adds a new member to this DirectedEdgeStar.
+        /// </summary>
+        public void Add(DirectedEdge<TCoordinate> de)
+        {
+            _outEdges.Add(de);
+            _isSorted = false;
+        }
+
+        /// <summary>
+        /// Drops a member of this DirectedEdgeStar.
+        /// </summary>
+        public void Remove(DirectedEdge<TCoordinate> de)
+        {
+            _outEdges.Remove(de);
         }
 
         /// <summary>
@@ -121,7 +132,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public Int32 GetIndex(Int32 i)
         {
-            Int32 modi = i % _outEdges.Count;
+            Int32 modi = i%_outEdges.Count;
 
             //I don't think modi can be 0 (assuming i is positive) [Jon Aquino 10/28/2003] 
             if (modi < 0)
@@ -150,14 +161,5 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
                 _isSorted = true;
             }
         }
-
-        #region IEnumerable Members
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        #endregion
     }
 }

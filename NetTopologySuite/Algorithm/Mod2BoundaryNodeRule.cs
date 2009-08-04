@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
         public Boolean IsInBoundary(Int32 boundaryCount)
         {
-            return boundaryCount % 2 == 1;
+            return boundaryCount%2 == 1;
         }
 
         #endregion

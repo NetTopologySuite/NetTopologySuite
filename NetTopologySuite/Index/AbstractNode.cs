@@ -8,11 +8,11 @@ namespace GisSharpBlog.NetTopologySuite.Index
     public abstract class AbstractNode<TBounds, TItem> : ISpatialIndexNode<TBounds, TItem>
         where TItem : IBoundable<TBounds>
     {
-        private List<TItem> _items;
-        private List<ISpatialIndexNode<TBounds, TItem>> _subNodes;
+        private readonly Int32 _level;
         protected TBounds _bounds;
         protected Boolean _boundsSet;
-        private readonly Int32 _level;
+        private List<TItem> _items;
+        private List<ISpatialIndexNode<TBounds, TItem>> _subNodes;
 
         /// <summary> 
         /// Constructs an <see cref="AbstractNode{TBounds, TItem}"/> at the 
@@ -33,6 +33,26 @@ namespace GisSharpBlog.NetTopologySuite.Index
             _bounds = bounds;
         }
 
+        protected List<TItem> ItemsInternal
+        {
+            get { return _items; }
+        }
+
+        protected List<ISpatialIndexNode<TBounds, TItem>> SubNodesInternal
+        {
+            get
+            {
+                if (_subNodes == null)
+                {
+                    EnsureSubNodes();
+                }
+
+                return _subNodes;
+            }
+        }
+
+        #region ISpatialIndexNode<TBounds,TItem> Members
+
         /// <summary>
         /// Returns 0 if this node is a leaf, 1 if a parent of a leaf, and so on; the
         /// root node will have the highest level.
@@ -42,11 +62,7 @@ namespace GisSharpBlog.NetTopologySuite.Index
             get { return _level; }
         }
 
-        #region ISpatialIndexNode<TBounds> Members
         public abstract Boolean Intersects(TBounds bounds);
-        #endregion
-
-        #region ISpatialIndexNode<TBounds> Members
 
         public virtual Int32 TotalItemCount
         {
@@ -68,7 +84,7 @@ namespace GisSharpBlog.NetTopologySuite.Index
             get
             {
                 Int32 ndcount = 0;
-                foreach (var v in SubNodesInternal)
+                foreach (ISpatialIndexNode<TBounds, TItem> v in SubNodesInternal)
                     ndcount += v.TotalNodeCount;
                 return ndcount + SubNodeCount;
             }
@@ -96,9 +112,9 @@ namespace GisSharpBlog.NetTopologySuite.Index
         public virtual void Add(IBoundable<TBounds> child)
         {
             if (child is ISpatialIndexNode<TBounds, TItem>)
-                addSubNode((ISpatialIndexNode<TBounds, TItem>)child);
+                addSubNode((ISpatialIndexNode<TBounds, TItem>) child);
             else if (child is TItem)
-                addItem((TItem)child);
+                addItem((TItem) child);
             else
                 throw new ArgumentException();
         }
@@ -262,9 +278,9 @@ namespace GisSharpBlog.NetTopologySuite.Index
         public bool Remove(IBoundable<TBounds> child)
         {
             if (child is ISpatialIndexNode<TBounds, TItem>)
-                return removeSubNode((ISpatialIndexNode<TBounds, TItem>)child);
+                return removeSubNode((ISpatialIndexNode<TBounds, TItem>) child);
             if (child is TItem)
-                return removeItem((TItem)child);
+                return removeItem((TItem) child);
             throw new ArgumentException();
         }
 
@@ -274,7 +290,7 @@ namespace GisSharpBlog.NetTopologySuite.Index
             {
                 Remove(child);
             }
-            return true;//temp hack
+            return true; //temp hack
         }
 
         public virtual IEnumerable<ISpatialIndexNode<TBounds, TItem>> SubNodes
@@ -297,8 +313,8 @@ namespace GisSharpBlog.NetTopologySuite.Index
         {
             get { return _subNodes == null ? 0 : _subNodes.Count; }
         }
-        #endregion
 
+        #endregion
 
         /// <summary>
         /// Computes a representation of space that encloses this node,
@@ -306,24 +322,6 @@ namespace GisSharpBlog.NetTopologySuite.Index
         /// test for intersection with the bounds of other nodes and bounded items. 
         /// </summary>    
         protected abstract TBounds ComputeBounds();
-
-        protected List<TItem> ItemsInternal
-        {
-            get { return _items; }
-        }
-
-        protected List<ISpatialIndexNode<TBounds, TItem>> SubNodesInternal
-        {
-            get
-            {
-                if (_subNodes == null)
-                {
-                    EnsureSubNodes();
-                }
-
-                return _subNodes;
-            }
-        }
 
         protected void EnsureItems()
         {
@@ -333,7 +331,9 @@ namespace GisSharpBlog.NetTopologySuite.Index
             }
         }
 
-        protected virtual void CreateSubNodes() { }
+        protected virtual void CreateSubNodes()
+        {
+        }
 
         protected void EnsureSubNodes()
         {

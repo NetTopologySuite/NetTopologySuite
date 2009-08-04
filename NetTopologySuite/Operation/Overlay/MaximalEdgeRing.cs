@@ -32,12 +32,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// <see cref="BuildMinimalRings"/>.
     /// </remarks>
     public class MaximalEdgeRing<TCoordinate> : EdgeRing<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         public MaximalEdgeRing(DirectedEdge<TCoordinate> start, IGeometryFactory<TCoordinate> geometryFactory)
-            : base(start, geometryFactory) {}
+            : base(start, geometryFactory)
+        {
+        }
 
         public override DirectedEdge<TCoordinate> GetNext(DirectedEdge<TCoordinate> de)
         {

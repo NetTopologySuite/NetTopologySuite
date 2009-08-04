@@ -69,19 +69,19 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
 
         //private readonly LineStringAdder _lineStringAdder = null;
 
-        private PolygonizeGraph<TCoordinate> _graph;
+        private readonly List<EdgeRing<TCoordinate>> _holeList = new List<EdgeRing<TCoordinate>>();
+        private readonly List<ILineString<TCoordinate>> _invalidRingLines = new List<ILineString<TCoordinate>>();
+        private readonly List<IPolygon<TCoordinate>> _polyList = new List<IPolygon<TCoordinate>>();
+        private readonly List<EdgeRing<TCoordinate>> _shellList = new List<EdgeRing<TCoordinate>>();
+        private IEnumerable<ILineString<TCoordinate>> _cutEdges;
 
         /// <summary>
         /// Initialized with empty collections, in case nothing is computed
         /// </summary>
         private IEnumerable<ILineString<TCoordinate>> _dangles;
 
-        private Boolean _doneComputing = false;
-        private IEnumerable<ILineString<TCoordinate>> _cutEdges;
-        private readonly List<ILineString<TCoordinate>> _invalidRingLines = new List<ILineString<TCoordinate>>();
-        private readonly List<EdgeRing<TCoordinate>> _holeList = new List<EdgeRing<TCoordinate>>();
-        private readonly List<EdgeRing<TCoordinate>> _shellList = new List<EdgeRing<TCoordinate>>();
-        private readonly List<IPolygon<TCoordinate>> _polyList = new List<IPolygon<TCoordinate>>();
+        private Boolean _doneComputing;
+        private PolygonizeGraph<TCoordinate> _graph;
 
         /*
          * [codekaizen 2008-01-14]  removed during translation of visitor patterns
@@ -95,70 +95,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         //{
         //    _lineStringAdder = new LineStringAdder(this);
         //}
-
-        /// <summary>
-        /// Add a collection of geometries to be polygonized.
-        /// May be called multiple times.
-        /// Any dimension of Geometry may be added;
-        /// the constituent linework will be extracted and used.
-        /// </summary>
-        /// <param name="geomList">A list of <see cref="Geometry{TCoordinate}"/>s with linework to be polygonized.</param>
-        public void Add(IEnumerable<IGeometry<TCoordinate>> geomList)
-        {
-            foreach (IGeometry<TCoordinate> geometry in geomList)
-            {
-                Add(geometry);
-            }
-        }
-
-        /// <summary>
-        /// Add a point to the linework to be polygonized.
-        /// May be called multiple times.
-        /// Any dimension of Geometry may be added;
-        /// the constituent linework will be extracted and used
-        /// </summary>
-        /// <param name="g">
-        /// A <see cref="Geometry{TCoordinate}"/> with linework to be polygonized.
-        /// </param>
-        public void Add(IGeometry<TCoordinate> g)
-        {
-            if (g == null)
-            {
-                throw new ArgumentNullException("g");
-            }
-
-            if (g is IHasGeometryComponents<TCoordinate>)
-            {
-                IHasGeometryComponents<TCoordinate> container 
-                    = g as IHasGeometryComponents<TCoordinate>;
-
-                foreach (ILineString<TCoordinate> s in container.Components)
-                {
-                    if (s != null)
-                    {
-                        addLine(s);
-                    }
-                }
-            }
-            else if (g is ILineString<TCoordinate>)
-            {
-                addLine(g as ILineString<TCoordinate>);
-            }
-        }
-
-        /// <summary>
-        /// Add a linestring to the graph of polygon edges.
-        /// </summary>
-        /// <param name="line">The <c>LineString</c> to add.</param>
-        private void addLine(ILineString<TCoordinate> line)
-        {
-            // create a new graph using the factory from the input Geometry
-            if (_graph == null)
-            {
-                _graph = new PolygonizeGraph<TCoordinate>(line.Factory);
-            }
-            _graph.AddEdge(line);
-        }
 
         /// <summary>
         /// Compute and returns the list of polygons formed by the polygonization.
@@ -209,6 +145,70 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
+        /// Add a collection of geometries to be polygonized.
+        /// May be called multiple times.
+        /// Any dimension of Geometry may be added;
+        /// the constituent linework will be extracted and used.
+        /// </summary>
+        /// <param name="geomList">A list of <see cref="Geometry{TCoordinate}"/>s with linework to be polygonized.</param>
+        public void Add(IEnumerable<IGeometry<TCoordinate>> geomList)
+        {
+            foreach (IGeometry<TCoordinate> geometry in geomList)
+            {
+                Add(geometry);
+            }
+        }
+
+        /// <summary>
+        /// Add a point to the linework to be polygonized.
+        /// May be called multiple times.
+        /// Any dimension of Geometry may be added;
+        /// the constituent linework will be extracted and used
+        /// </summary>
+        /// <param name="g">
+        /// A <see cref="Geometry{TCoordinate}"/> with linework to be polygonized.
+        /// </param>
+        public void Add(IGeometry<TCoordinate> g)
+        {
+            if (g == null)
+            {
+                throw new ArgumentNullException("g");
+            }
+
+            if (g is IHasGeometryComponents<TCoordinate>)
+            {
+                IHasGeometryComponents<TCoordinate> container
+                    = g as IHasGeometryComponents<TCoordinate>;
+
+                foreach (ILineString<TCoordinate> s in container.Components)
+                {
+                    if (s != null)
+                    {
+                        addLine(s);
+                    }
+                }
+            }
+            else if (g is ILineString<TCoordinate>)
+            {
+                addLine(g as ILineString<TCoordinate>);
+            }
+        }
+
+        /// <summary>
+        /// Add a linestring to the graph of polygon edges.
+        /// </summary>
+        /// <param name="line">The <c>LineString</c> to add.</param>
+        private void addLine(ILineString<TCoordinate> line)
+        {
+            // create a new graph using the factory from the input Geometry
+            if (_graph == null)
+            {
+                _graph = new PolygonizeGraph<TCoordinate>(line.Factory);
+            }
+            _graph.AddEdge(line);
+        }
+
+        /// <summary>
         /// Perform the polygonization, if it has not already been carried out.
         /// </summary>
         private void polygonize()
@@ -245,7 +245,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
 
         // in Ruby: valid, invalid = edgeRingList.partition{|ring| ring.IsValid?}
         private static void findValidRings(IEnumerable<EdgeRing<TCoordinate>> edgeRingList,
-            ICollection<EdgeRing<TCoordinate>> validEdgeRingList, ICollection<ILineString<TCoordinate>> invalidRingList)
+                                           ICollection<EdgeRing<TCoordinate>> validEdgeRingList,
+                                           ICollection<ILineString<TCoordinate>> invalidRingList)
         {
             foreach (EdgeRing<TCoordinate> ring in edgeRingList)
             {
@@ -256,7 +257,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
                 else
                 {
                     invalidRingList.Add(ring.LineString);
-                }   
+                }
             }
         }
 
@@ -275,7 +276,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             }
         }
 
-        private static void assignHolesToShells(IEnumerable<EdgeRing<TCoordinate>> holeList, IEnumerable<EdgeRing<TCoordinate>> shellList)
+        private static void assignHolesToShells(IEnumerable<EdgeRing<TCoordinate>> holeList,
+                                                IEnumerable<EdgeRing<TCoordinate>> shellList)
         {
             foreach (EdgeRing<TCoordinate> hole in holeList)
             {

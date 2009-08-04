@@ -4,8 +4,6 @@ using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Index;
 using GisSharpBlog.NetTopologySuite.Index.Chain;
 using NPack.Interfaces;
 
@@ -13,30 +11,30 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
 {
     /// <summary>
     /// "Snaps" all <see cref="NodedSegmentString{TCoordinate}" />s in 
-    /// a <see cref="ISpatialIndex{TCoordinate,TItem}" /> containing
+    /// a <see cref="ISpatialIndex{TBounds,TItem}" /> containing
     /// <see cref="MonotoneChain{TCoordinate}" />s to a given
     /// <see cref="HotPixel{TCoordinate}" />.
     /// </summary>
     public class MonotoneChaintIndexPointSnapper<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         // [codekaizen] This doesn't appear to be used at all...
         // Public in java code... temporary modified for "safe assembly" in Sql2005
         //internal static readonly Int32 numberSnaps = 0;
 
-        private readonly List<MonotoneChain<TCoordinate>> _monoChains = new List<MonotoneChain<TCoordinate>>();
-        private readonly ISpatialIndex<IExtents<TCoordinate>, MonotoneChain<TCoordinate>> _index;
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
+        private readonly ISpatialIndex<IExtents<TCoordinate>, MonotoneChain<TCoordinate>> _index;
+        private readonly List<MonotoneChain<TCoordinate>> _monoChains = new List<MonotoneChain<TCoordinate>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MonotoneChaintIndexPointSnapper{TCoordinate}"/> class.
         /// </summary>
         public MonotoneChaintIndexPointSnapper(
             IGeometryFactory<TCoordinate> geoFactory,
-            IEnumerable<MonotoneChain<TCoordinate>> chains, 
-            ISpatialIndex<IExtents<TCoordinate>, 
-            MonotoneChain<TCoordinate>> index)
+            IEnumerable<MonotoneChain<TCoordinate>> chains,
+            ISpatialIndex<IExtents<TCoordinate>,
+                MonotoneChain<TCoordinate>> index)
         {
             _geoFactory = geoFactory;
             _monoChains.AddRange(chains);
@@ -52,7 +50,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <param name="hotPixel">The hot pixel to snap to.</param>
         /// <param name="parentEdge">The edge containing the vertex, if applicable, or <see langword="null" />.</param>
         /// <returns><see langword="true"/> if a node was added for this pixel.</returns>
-        public Boolean Snap(HotPixel<TCoordinate> hotPixel, NodedSegmentString<TCoordinate> parentEdge, Int32 vertexIndex)
+        public Boolean Snap(HotPixel<TCoordinate> hotPixel, NodedSegmentString<TCoordinate> parentEdge,
+                            Int32 vertexIndex)
         {
             IExtents<TCoordinate> pixelExtents = hotPixel.GetSafeExtents(_geoFactory);
             //HotPixelSnapAction hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, vertexIndex);
@@ -134,7 +133,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         //        SegmentString<TCoordinate> segmentString = mc.Context as SegmentString<TCoordinate>;
 
         //        Debug.Assert(segmentString != null);
-                
+
         //        // don't snap a vertex to itself
         //        if (_parentEdge != null)
         //        {

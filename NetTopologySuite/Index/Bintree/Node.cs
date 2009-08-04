@@ -11,6 +11,23 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
     public class Node<TBoundable> : BaseBinNode<TBoundable>
         where TBoundable : IBoundable<Interval>
     {
+        //private readonly Interval _interval;
+        private readonly Double _center;
+        //private readonly Int32 _level;
+
+        protected internal Node(Interval bounds, Int32 level)
+            : base(bounds, level)
+        {
+            //_interval = interval;
+            //_level = level;
+            _center = (bounds.Min + bounds.Max)/2;
+
+            if (Double.IsNaN(_center))
+            {
+                throw new ArgumentException("Invalid interval: ", bounds.ToString());
+            }
+        }
+
         public static Node<TBoundable> CreateNode(Interval itemInterval)
         {
             BinTreeKey key = new BinTreeKey(itemInterval);
@@ -36,23 +53,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             }
 
             return largerNode;
-        }
-
-        //private readonly Interval _interval;
-        private readonly Double _center;
-        //private readonly Int32 _level;
-
-        internal protected Node(Interval bounds, Int32 level)
-            : base(bounds, level)
-        {
-            //_interval = interval;
-            //_level = level;
-            _center = (bounds.Min + bounds.Max) / 2;
-
-            if (Double.IsNaN(_center))
-            {
-                throw new ArgumentException("Invalid interval: ", bounds.ToString());
-            }
         }
 
         //public Interval Interval

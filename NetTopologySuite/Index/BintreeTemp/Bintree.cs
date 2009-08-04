@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
 {

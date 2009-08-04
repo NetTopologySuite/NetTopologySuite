@@ -17,63 +17,29 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
     /// </remarks>
     public class SirTree<TItem> : AbstractStrTree<Interval, ItemBoundable<Interval, TItem>>
     {
-        private class SirTreeItemBoundable : ItemBoundable<Interval, TItem>
-        {
-            public SirTreeItemBoundable(Interval bounds, TItem item)
-                : base(bounds, item) { }
-
-            public override Boolean Intersects(Interval bounds)
-            {
-                return Bounds.Overlaps(bounds);
-            }
-        }
-
-        private class SirTreeNode : AbstractNode<Interval, ItemBoundable<Interval, TItem>>
-        {
-            public SirTreeNode(Int32 nodeCapacity) : base(nodeCapacity) { }
-
-            protected override Interval ComputeBounds()
-            {
-                Interval? bounds = null;
-
-                foreach (IBoundable<Interval> childBoundable in SubNodes)
-                {
-
-                    if (bounds == null)
-                    {
-                        bounds = childBoundable.Bounds;
-                    }
-                    else
-                    {
-                        bounds.Value.ExpandToInclude(childBoundable.Bounds);
-                    }
-                }
-
-                Debug.Assert(bounds != null);
-                return bounds.Value;
-            }
-
-            public override Boolean Intersects(Interval bounds)
-            {
-                return Bounds.Overlaps(bounds);
-            }
-
-            protected override Boolean IsSearchMatch(Interval query)
-            {
-                return query.Overlaps(Bounds);
-            }
-        }
-
         /// <summary> 
         /// Constructs an SIRtree with the default (10) node capacity.
         /// </summary>
-        public SirTree() : this(10) { }
+        public SirTree() : this(10)
+        {
+        }
 
         /// <summary> 
         /// Constructs an SIRtree with the given maximum number of child nodes that
         /// a node may have.
         /// </summary>
-        public SirTree(Int32 nodeCapacity) : base(nodeCapacity) { }
+        public SirTree(Int32 nodeCapacity) : base(nodeCapacity)
+        {
+        }
+
+        protected override Comparison<IBoundable<Interval>> CompareOp
+        {
+            get
+            {
+                return
+                    delegate(IBoundable<Interval> left, IBoundable<Interval> right) { return left.Bounds.Center.CompareTo(right.Bounds.Center); };
+            }
+        }
 
         protected override ISpatialIndexNode<Interval, ItemBoundable<Interval, TItem>> CreateNode(Int32 level)
         {
@@ -113,6 +79,64 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             }
         }
 
+        #region Nested type: SirTreeItemBoundable
+
+        private class SirTreeItemBoundable : ItemBoundable<Interval, TItem>
+        {
+            public SirTreeItemBoundable(Interval bounds, TItem item)
+                : base(bounds, item)
+            {
+            }
+
+            public override Boolean Intersects(Interval bounds)
+            {
+                return Bounds.Overlaps(bounds);
+            }
+        }
+
+        #endregion
+
+        #region Nested type: SirTreeNode
+
+        private class SirTreeNode : AbstractNode<Interval, ItemBoundable<Interval, TItem>>
+        {
+            public SirTreeNode(Int32 nodeCapacity) : base(nodeCapacity)
+            {
+            }
+
+            protected override Interval ComputeBounds()
+            {
+                Interval? bounds = null;
+
+                foreach (IBoundable<Interval> childBoundable in SubNodes)
+                {
+                    if (bounds == null)
+                    {
+                        bounds = childBoundable.Bounds;
+                    }
+                    else
+                    {
+                        bounds.Value.ExpandToInclude(childBoundable.Bounds);
+                    }
+                }
+
+                Debug.Assert(bounds != null);
+                return bounds.Value;
+            }
+
+            public override Boolean Intersects(Interval bounds)
+            {
+                return Bounds.Overlaps(bounds);
+            }
+
+            protected override Boolean IsSearchMatch(Interval query)
+            {
+                return query.Overlaps(Bounds);
+            }
+        }
+
+        #endregion
+
         //protected override Func<Interval, Interval, Boolean> IntersectsOp
         //{
         //    get
@@ -124,22 +148,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         //    }
         //}
 
-        protected override Comparison<IBoundable<Interval>> CompareOp
-        {
-            get
-            {
-                return delegate(IBoundable<Interval> left, IBoundable<Interval> right)
-                {
-                    return left.Bounds.Center.CompareTo(right.Bounds.Center);
-                };
-            }
-        }
-
         //protected override IBoundable<Interval> CreateItemBoundable(Interval bounds, ItemBoundable<Interval, TItem> item)
         //{
         //    return new SirTreeItemBoundable(bounds, item);
         //}
-
-
     }
 }

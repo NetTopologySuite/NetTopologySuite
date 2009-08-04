@@ -35,23 +35,23 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             {
                 return false;
             }
-            
+
             if (g is IMultiPoint<TCoordinate>)
             {
                 return false;
             }
-            
+
             if (g is ILineString<TCoordinate>)
             {
                 // LineString also handles LinearRings
                 return HasRepeatedPoint(g.Coordinates);
             }
-            
+
             if (g is IPolygon<TCoordinate>)
             {
                 return HasRepeatedPoint(g as IPolygon<TCoordinate>);
             }
-            
+
             if (g is IGeometryCollection<TCoordinate>)
             {
                 return HasRepeatedPoint(g as IGeometryCollection<TCoordinate>);
@@ -64,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         {
             foreach (Pair<TCoordinate> pair in Slice.GetOverlappingPairs(coord))
             {
-                if(pair.First.Equals(pair.Second))
+                if (pair.First.Equals(pair.Second))
                 {
                     _repeatedCoord = pair.First;
                     return true;
@@ -86,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                 if (HasRepeatedPoint(ring.Coordinates))
                 {
                     return true;
-                }  
+                }
             }
 
             return false;

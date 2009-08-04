@@ -2,7 +2,6 @@
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
-  
     /// <summary>
     /// An interface for rules which determine whether node points
     /// which are in boundaries of linear geometry components

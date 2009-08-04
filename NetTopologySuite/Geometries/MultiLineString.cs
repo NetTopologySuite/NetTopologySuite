@@ -7,6 +7,7 @@ using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Operation;
 using NPack.Interfaces;
+
 #if DOTNET35
 using System.Linq;
 #endif
@@ -16,11 +17,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// <summary>
     /// Basic implementation of <see cref="IMultiLineString{TCoordinate}"/>.
     /// </summary>    
-    public class MultiLineString<TCoordinate> 
+    public class MultiLineString<TCoordinate>
         : GeometryCollection<TCoordinate>, IMultiLineString<TCoordinate>
-            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                                IComputable<Double, TCoordinate>,  
-                                IComparable<TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComputable<Double, TCoordinate>,
+            IComparable<TCoordinate>, IConvertible
 
     {
         ///// <summary>
@@ -38,18 +39,53 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// point. Elements may be empty <see cref="LineString{TCoordinate}"/>s,
         /// but not <see langword="null" />s.
         /// </param>
-        public MultiLineString(IEnumerable<ILineString<TCoordinate>> lineStrings, 
+        public MultiLineString(IEnumerable<ILineString<TCoordinate>> lineStrings,
                                IGeometryFactory<TCoordinate> factory)
             : base(lineStrings == null 
-/* C# syntax ->  */     ? null 
-/* can be clumsy */     : Caster.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(lineStrings), 
-                    factory) { }
+/* C# syntax ->  */
+                       ? null 
+/* can be clumsy */
+                       : Caster.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(lineStrings),
+                   factory)
+        {
+        }
 
         /// <summary>
         /// Constructs an empty <see cref="MultiLineString{TCoordinate}"/>.
         /// </summary>
         public MultiLineString(IGeometryFactory<TCoordinate> factory)
-            : base(factory) { }
+            : base(factory)
+        {
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is closed.
+        /// </summary>
+        /// <value>
+        /// <see langword="true"/> if this instance is closed; otherwise, <see langword="false"/>.
+        /// </value>
+        public Boolean IsClosed
+        {
+            get
+            {
+                if (IsEmpty)
+                {
+                    return false;
+                }
+
+                foreach (ICurve curve in GeometriesInternal)
+                {
+                    Debug.Assert(curve != null);
+
+                    if (!curve.IsClosed)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        }
 
         ///// <summary>
         ///// Constructs a <c>MultiLineString</c>.
@@ -68,6 +104,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         //public MultiLineString(IEnumerable<ILineString<TCoordinate>> lineStrings)
         //    : this(lineStrings, 
         //           ExtractGeometryFactory(Caster.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(lineStrings))) { }
+
+        #region IMultiLineString<TCoordinate> Members
 
         public override IGeometry<TCoordinate> Boundary
         {
@@ -119,35 +157,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return OgcGeometryType.MultiLineString; }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether this instance is closed.
-        /// </summary>
-        /// <value>
-        /// <see langword="true"/> if this instance is closed; otherwise, <see langword="false"/>.
-        /// </value>
-        public Boolean IsClosed
-        {
-            get
-            {
-                if (IsEmpty)
-                {
-                    return false;
-                }
-
-                foreach (ICurve curve in GeometriesInternal)
-                {
-                    Debug.Assert(curve != null);
-
-                    if(!curve.IsClosed)
-                    {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-        }
-
         public override Boolean IsSimple
         {
             get { return (new IsSimpleOp<TCoordinate>()).IsSimple(this); }
@@ -167,7 +176,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>a <see cref="MultiLineString{TCoordinate}" /> in the reverse order.</returns>
         public IMultiLineString<TCoordinate> Reverse()
         {
-            IEnumerable<ILineString<TCoordinate>> reversed 
+            IEnumerable<ILineString<TCoordinate>> reversed
                 = Enumerable.Reverse(this as IEnumerable<ILineString<TCoordinate>>);
             return Factory.CreateMultiLineString(reversed);
         }
@@ -205,22 +214,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         ILineString IMultiLineString.this[Int32 index]
         {
-            get
-            {
-                return this[index];
-            }
-            set
-            {
-                this[index] = value as ILineString<TCoordinate>;
-            }
+            get { return this[index]; }
+            set { this[index] = value as ILineString<TCoordinate>; }
         }
+
+        #endregion
 
         protected override void CheckItemType(IGeometry<TCoordinate> item)
         {
             if (!(item is ILineString<TCoordinate>))
             {
                 throw new InvalidOperationException(String.Format(
-                                                        "Cannot add geometry of type {0} "+
+                                                        "Cannot add geometry of type {0} " +
                                                         "to a MultiLineString",
                                                         item.GetType()));
             }

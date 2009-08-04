@@ -5,6 +5,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
+
 #if DOTNET35
 using System.Linq;
 using GeoAPI.DataStructures;
@@ -18,13 +19,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     [Serializable]
     public class MultiPolygon<TCoordinate> : GeometryCollection<TCoordinate>, IMultiPolygon<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                    IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Represents an empty <c>MultiPolygon</c>.
         /// </summary>
         //public new static readonly IMultiPolygon<TCoordinate> Empty = new GeometryFactory<TCoordinate>().CreateMultiPolygon();
-
         /// <summary>
         /// Constructs a <c>MultiPolygon</c>.
         /// </summary>
@@ -40,7 +40,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="GeometryFactory{TCoordinate}.PrecisionModel" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
-        public MultiPolygon(params IPolygon<TCoordinate>[] polygons) : this(polygons, ExtractGeometryFactory(polygons)) { }
+        public MultiPolygon(params IPolygon<TCoordinate>[] polygons) : this(polygons, ExtractGeometryFactory(polygons))
+        {
+        }
 
         /// <summary>
         /// Constructs a <c>MultiPolygon</c>.
@@ -57,8 +59,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
-        public MultiPolygon(IEnumerable<IPolygon<TCoordinate>> polygons) 
-            : this(polygons, ExtractGeometryFactory(Caster.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(polygons))) { }
+        public MultiPolygon(IEnumerable<IPolygon<TCoordinate>> polygons)
+            : this(
+                polygons, ExtractGeometryFactory(Caster.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(polygons))
+                )
+        {
+        }
 
         /// <summary>
         /// Constructs a <see cref="MultiPolygon{TCoordinate}"/>.
@@ -75,12 +81,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// OpenGIS Simple Features Specification for SQL</see>.   
         /// </remarks>
         public MultiPolygon(IEnumerable<IPolygon<TCoordinate>> polygons, IGeometryFactory<TCoordinate> factory)
-            : base(Caster.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(polygons), factory) { }
+            : base(Caster.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(polygons), factory)
+        {
+        }
 
         public MultiPolygon(ICoordinateSequence<TCoordinate> sequence, IGeometryFactory<TCoordinate> factory)
             : base(factory)
         {
-            IEnumerable<ILinearRing<TCoordinate>> rings 
+            IEnumerable<ILinearRing<TCoordinate>> rings
                 = Coordinates<TCoordinate>.CreateLinearRings(sequence, factory);
 
             ILinearRing<TCoordinate> shell = null;
@@ -115,7 +123,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         public MultiPolygon(IGeometryFactory<TCoordinate> factory)
-            : base(factory) { }
+            : base(factory)
+        {
+        }
+
+        #region IMultiPolygon<TCoordinate> Members
 
         public override IGeometry<TCoordinate> Boundary
         {
@@ -131,10 +143,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 foreach (IPolygon<TCoordinate> polygon in GeometriesInternal)
                 {
                     IGeometry<TCoordinate> boundary = polygon.Boundary;
-                    
+
                     Debug.Assert(boundary != null);
 
-                    if(boundary is IGeometryCollection)
+                    if (boundary is IGeometryCollection)
                     {
                         IMultiLineString<TCoordinate> boundaryLines = boundary as IMultiLineString<TCoordinate>;
                         allRings.AddRange(boundaryLines);
@@ -215,6 +227,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
+        #endregion
+
         protected override void CheckItemType(IGeometry<TCoordinate> item)
         {
             if (!(item is IPolygon<TCoordinate>))
@@ -228,7 +242,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #region Private helpers
 
-        private void addPolygonFromRings(ILinearRing<TCoordinate> shell, List<ILinearRing<TCoordinate>> holes, IGeometryFactory<TCoordinate> factory)
+        private void addPolygonFromRings(ILinearRing<TCoordinate> shell, List<ILinearRing<TCoordinate>> holes,
+                                         IGeometryFactory<TCoordinate> factory)
         {
             if (shell == null) return;
             if (holes == null)
@@ -240,6 +255,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 Add(factory.CreatePolygon(shell, holes));
             }
         }
+
         #endregion
     }
 }

@@ -1,9 +1,9 @@
 using System;
+using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
-using GeoAPI.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 {
@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly IGeometry<TCoordinate> _linearGeom = null;
+        private readonly IGeometry<TCoordinate> _linearGeom;
 
         /// <summary>
         /// Constructs an object which allows linear referencing along
@@ -29,6 +29,22 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             }
 
             _linearGeom = linearGeom;
+        }
+
+        /// <summary>
+        /// Returns the index of the start of the line.
+        /// </summary>
+        public LinearLocation<TCoordinate> StartIndex
+        {
+            get { return new LinearLocation<TCoordinate>(); }
+        }
+
+        /// <summary>
+        /// Returns the index of the end of the line.
+        /// </summary>
+        public LinearLocation<TCoordinate> EndIndex
+        {
+            get { return LinearLocation<TCoordinate>.GetEndLocation(_linearGeom); }
         }
 
         /// <summary>
@@ -50,7 +66,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="startIndex">The index of the start of the interval.</param>
         /// <param name="endIndex">The index of the end of the interval.</param>
         /// <returns>The linear interval between the indices.</returns>
-        public IGeometry<TCoordinate> ExtractLine(LinearLocation<TCoordinate> startIndex, LinearLocation<TCoordinate> endIndex)
+        public IGeometry<TCoordinate> ExtractLine(LinearLocation<TCoordinate> startIndex,
+                                                  LinearLocation<TCoordinate> endIndex)
         {
             return ExtractLineByLocation<TCoordinate>.Extract(_linearGeom, startIndex, endIndex);
         }
@@ -93,22 +110,6 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         public LinearLocation<TCoordinate> Project(TCoordinate pt)
         {
             return LocationIndexOfPoint<TCoordinate>.IndexOf(_linearGeom, pt);
-        }
-
-        /// <summary>
-        /// Returns the index of the start of the line.
-        /// </summary>
-        public LinearLocation<TCoordinate> StartIndex
-        {
-            get { return new LinearLocation<TCoordinate>(); }
-        }
-
-        /// <summary>
-        /// Returns the index of the end of the line.
-        /// </summary>
-        public LinearLocation<TCoordinate> EndIndex
-        {
-            get { return LinearLocation<TCoordinate>.GetEndLocation(_linearGeom); }
         }
 
         /// <summary>

@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
-using GeoAPI.DataStructures;
+
 #if DOTNET35
 using System.Linq;
 #endif
@@ -20,36 +21,33 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// <typeparam name="TCoordinate">The type of the coordinate to use.</typeparam>
     public abstract class EdgeRing<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         // The maximum degree of vertexes permitted in this ring
-        private Int32 _maxNodeDegree = -1;
-
-        // The directed edge which starts the list of edges for this EdgeRing.
-        private DirectedEdge<TCoordinate> _startingEdge;
-
-        // the DirectedEdges making up this EdgeRing
-        private readonly List<DirectedEdge<TCoordinate>> _edges 
-            = new List<DirectedEdge<TCoordinate>>(); 
 
         private readonly List<TCoordinate> _coordinates = new List<TCoordinate>();
-        
+
+        private readonly List<DirectedEdge<TCoordinate>> _edges
+            = new List<DirectedEdge<TCoordinate>>();
+
+        private readonly List<EdgeRing<TCoordinate>> _holes
+            = new List<EdgeRing<TCoordinate>>();
+
+        protected IGeometryFactory<TCoordinate> _geometryFactory;
+        private Boolean _isHole;
+
         // label stores the locations of each point on the face surrounded by this ring
         private Label _label = new Label(Locations.None);
+        private Int32 _maxNodeDegree = -1;
 
         // the ring created for this EdgeRing
-        private ILinearRing<TCoordinate> _ring; 
-
-        private Boolean _isHole;
+        private ILinearRing<TCoordinate> _ring;
 
         // if non-null, the ring is a hole and this EdgeRing is its containing shell
         private EdgeRing<TCoordinate> _shell;
+        private DirectedEdge<TCoordinate> _startingEdge;
 
         // a list of EdgeRings which are holes in this EdgeRing
-        private readonly List<EdgeRing<TCoordinate>> _holes 
-            = new List<EdgeRing<TCoordinate>>(); 
-
-        protected IGeometryFactory<TCoordinate> _geometryFactory;
 
         public EdgeRing(DirectedEdge<TCoordinate> start, IGeometryFactory<TCoordinate> geometryFactory)
         {
@@ -66,11 +64,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public Boolean IsHole
         {
             get { return _isHole; }
-        }
-
-        public TCoordinate GetCoordinate(Int32 i)
-        {
-            return _coordinates[i];
         }
 
         public ILinearRing<TCoordinate> LinearRing
@@ -102,39 +95,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        public void AddHole(EdgeRing<TCoordinate> ring)
-        {
-            _holes.Add(ring);
-        }
-
-        public IPolygon<TCoordinate> ToPolygon(IGeometryFactory<TCoordinate> geometryFactory)
-        {
-            IPolygon<TCoordinate> poly = geometryFactory.CreatePolygon(LinearRing, 
-                                                                       getLinearRings(_holes));
-            return poly;
-        }
-
-        /// <summary>
-        /// Compute a LinearRing from the point list previously collected.
-        /// Test if the ring is a hole (i.e. if it is CCW) and set the hole flag
-        /// accordingly.
-        /// </summary>
-        public void ComputeRing()
-        {
-            if (_ring != null)
-            {
-                return; // don't compute more than once
-            }
-
-            _ring = _geometryFactory.CreateLinearRing(_coordinates);
-            _isHole = CGAlgorithms<TCoordinate>.IsCCW(_ring.Coordinates);
-        }
-
-        public abstract DirectedEdge<TCoordinate> GetNext(DirectedEdge<TCoordinate> de);
-
-        public abstract void SetEdgeRing(DirectedEdge<TCoordinate> de, 
-                                         EdgeRing<TCoordinate> er);
-
         /// <summary> 
         /// Returns the list of DirectedEdges that make up this EdgeRing.
         /// </summary>
@@ -159,6 +119,57 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             get { return _geometryFactory; }
         }
 
+        public Int32 MaxNodeDegree
+        {
+            get
+            {
+                if (_maxNodeDegree < 0)
+                {
+                    computeMaxNodeDegree();
+                }
+
+                return _maxNodeDegree;
+            }
+        }
+
+        public TCoordinate GetCoordinate(Int32 i)
+        {
+            return _coordinates[i];
+        }
+
+        public void AddHole(EdgeRing<TCoordinate> ring)
+        {
+            _holes.Add(ring);
+        }
+
+        public IPolygon<TCoordinate> ToPolygon(IGeometryFactory<TCoordinate> geometryFactory)
+        {
+            IPolygon<TCoordinate> poly = geometryFactory.CreatePolygon(LinearRing,
+                                                                       getLinearRings(_holes));
+            return poly;
+        }
+
+        /// <summary>
+        /// Compute a LinearRing from the point list previously collected.
+        /// Test if the ring is a hole (i.e. if it is CCW) and set the hole flag
+        /// accordingly.
+        /// </summary>
+        public void ComputeRing()
+        {
+            if (_ring != null)
+            {
+                return; // don't compute more than once
+            }
+
+            _ring = _geometryFactory.CreateLinearRing(_coordinates);
+            _isHole = CGAlgorithms<TCoordinate>.IsCCW(_ring.Coordinates);
+        }
+
+        public abstract DirectedEdge<TCoordinate> GetNext(DirectedEdge<TCoordinate> de);
+
+        public abstract void SetEdgeRing(DirectedEdge<TCoordinate> de,
+                                         EdgeRing<TCoordinate> er);
+
         /// <summary> 
         /// Collect all the points from the <see cref="DirectedEdge{TCooordinate}"/>s 
         /// of this ring into a contiguous list.
@@ -176,7 +187,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
                 if (de.EdgeRing == this)
                 {
-                    throw new TopologyException("Directed Edge visited twice during "+
+                    throw new TopologyException("Directed Edge visited twice during " +
                                                 "ring-building at " + de.Coordinate);
                 }
 
@@ -190,19 +201,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 SetEdgeRing(de, this);
                 de = GetNext(de);
             } while (de != _startingEdge);
-        }
-
-        public Int32 MaxNodeDegree
-        {
-            get
-            {
-                if (_maxNodeDegree < 0)
-                {
-                    computeMaxNodeDegree();
-                }
-
-                return _maxNodeDegree;
-            }
         }
 
         public void SetInResult()

@@ -5,6 +5,7 @@ using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
+
 #if DOTNET35
 using System.Linq;
 #endif
@@ -17,11 +18,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public static class CGAlgorithms<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        public static RobustLineIntersector<TCoordinate> CreateRobustLineIntersector(IGeometryFactory<TCoordinate> geoFactory)
+        public static RobustLineIntersector<TCoordinate> CreateRobustLineIntersector(
+            IGeometryFactory<TCoordinate> geoFactory)
         {
-            return new RobustLineIntersector<TCoordinate>(geoFactory); 
+            return new RobustLineIntersector<TCoordinate>(geoFactory);
         }
 
         /// <summary> 
@@ -63,13 +65,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns><see langword="true"/> if p is inside ring.</returns>
         public static Boolean IsPointInRing(TCoordinate p, IEnumerable<TCoordinate> ring)
         {
-            Int32 crossings = 0;        // number of segment/ray crossings
+            Int32 crossings = 0; // number of segment/ray crossings
 
             // For each segment l = (i-1, i), see if it crosses ray 
             // from test point in positive x direction.
             foreach (Pair<TCoordinate> pair in Slice.GetOverlappingPairs(ring))
             {
-                Double x1;  // translated coordinates
+                Double x1; // translated coordinates
                 Double y1;
                 Double x2;
                 Double y2;
@@ -88,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
                     // segment straddles x axis, so compute intersection.
                     // NOTE: Can this be moved down to NPack?
-                    xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2) / (y2 - y1);
+                    xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2)/(y2 - y1);
 
                     // crosses ray if strictly positive intersection.
                     if (0.0 < xInt)
@@ -99,7 +101,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
 
             // p is inside if number of crossings is odd.
-            return (crossings % 2) == 1;
+            return (crossings%2) == 1;
         }
 
         /// <summary> 
@@ -111,7 +113,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// the point is a vertex of the line or lies in the interior of a line
         /// segment in the linestring.
         /// </returns>
-        public static Boolean IsOnLine(TCoordinate p, IEnumerable<TCoordinate> line, IGeometryFactory<TCoordinate> geoFactory)
+        public static Boolean IsOnLine(TCoordinate p, IEnumerable<TCoordinate> line,
+                                       IGeometryFactory<TCoordinate> geoFactory)
         {
             LineIntersector<TCoordinate> lineIntersector = CreateRobustLineIntersector(geoFactory);
 
@@ -172,12 +175,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 }
 
                 if (!firstIsSet)
-	            {
-	                firstIsSet = true;
-	                first = coordinate;
+                {
+                    firstIsSet = true;
+                    first = coordinate;
                     highPoint = first;
-	                needToSetNextPoint = true;
-	            }
+                    needToSetNextPoint = true;
+                }
 
                 if (current[Ordinates.Y] > highPoint[Ordinates.Y])
                 {
@@ -239,8 +242,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
              * (including the case where the input array has fewer than 4 elements),
              * or it contains coincident line segments.
              */
-            if (beforeHighPoint.Equals(highPoint) || 
-                afterHighPoint.Equals(highPoint) || 
+            if (beforeHighPoint.Equals(highPoint) ||
+                afterHighPoint.Equals(highPoint) ||
                 beforeHighPoint.Equals(afterHighPoint))
             {
                 return false;
@@ -259,8 +262,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
              */
 
             Boolean isCCW = discriminant == 0
-                             ? beforeHighPoint[Ordinates.X] > afterHighPoint[Ordinates.X]
-                             : discriminant > 0;
+                                ? beforeHighPoint[Ordinates.X] > afterHighPoint[Ordinates.X]
+                                : discriminant > 0;
 
             return isCCW;
         }
@@ -279,7 +282,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </returns>
         public static Orientation ComputeOrientation(TCoordinate p1, TCoordinate p2, TCoordinate q)
         {
-            return (Orientation)OrientationIndex(p1, p2, q);
+            return (Orientation) OrientationIndex(p1, p2, q);
         }
 
 #warning Non-robust method
@@ -317,11 +320,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 		                0<r<1 Point is interior to AB
 	        */
 
-            Double r = ((p[Ordinates.X] - A[Ordinates.X]) * (B[Ordinates.X] - A[Ordinates.X])
-                            + (p[Ordinates.Y] - A[Ordinates.Y]) * (B[Ordinates.Y] - A[Ordinates.Y]))
+            Double r = ((p[Ordinates.X] - A[Ordinates.X])*(B[Ordinates.X] - A[Ordinates.X])
+                        + (p[Ordinates.Y] - A[Ordinates.Y])*(B[Ordinates.Y] - A[Ordinates.Y]))
                        /
-                       ((B[Ordinates.X] - A[Ordinates.X]) * (B[Ordinates.X] - A[Ordinates.X])
-                            + (B[Ordinates.Y] - A[Ordinates.Y]) * (B[Ordinates.Y] - A[Ordinates.Y]));
+                       ((B[Ordinates.X] - A[Ordinates.X])*(B[Ordinates.X] - A[Ordinates.X])
+                        + (B[Ordinates.Y] - A[Ordinates.Y])*(B[Ordinates.Y] - A[Ordinates.Y]));
 
             if (r <= 0.0)
             {
@@ -342,16 +345,16 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 		                Then the distance from C to Point = |s|*Curve.
 	        */
 
-            Double s = ((A[Ordinates.Y] - p[Ordinates.Y]) * (B[Ordinates.X] - A[Ordinates.X]) - 
-                            (A[Ordinates.X] - p[Ordinates.X]) * (B[Ordinates.Y] - A[Ordinates.Y]))
+            Double s = ((A[Ordinates.Y] - p[Ordinates.Y])*(B[Ordinates.X] - A[Ordinates.X]) -
+                        (A[Ordinates.X] - p[Ordinates.X])*(B[Ordinates.Y] - A[Ordinates.Y]))
                        /
-                       ((B[Ordinates.X] - A[Ordinates.X]) * (B[Ordinates.X] - A[Ordinates.X]) + 
-                            (B[Ordinates.Y] - A[Ordinates.Y]) * (B[Ordinates.Y] - A[Ordinates.Y]));
+                       ((B[Ordinates.X] - A[Ordinates.X])*(B[Ordinates.X] - A[Ordinates.X]) +
+                        (B[Ordinates.Y] - A[Ordinates.Y])*(B[Ordinates.Y] - A[Ordinates.Y]));
 
-            return Math.Abs(s) * 
-                Math.Sqrt(  
-                    (B[Ordinates.X] - A[Ordinates.X]) * (B[Ordinates.X] - A[Ordinates.X]) + 
-                    (B[Ordinates.Y] - A[Ordinates.Y]) * (B[Ordinates.Y] - A[Ordinates.Y]));
+            return Math.Abs(s)*
+                   Math.Sqrt(
+                       (B[Ordinates.X] - A[Ordinates.X])*(B[Ordinates.X] - A[Ordinates.X]) +
+                       (B[Ordinates.Y] - A[Ordinates.Y])*(B[Ordinates.Y] - A[Ordinates.Y]));
         }
 
         // NOTE: Can this be moved down to NPack?
@@ -374,13 +377,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                         Then the distance from C to Point = |s|*Curve.
             */
 
-            Double s = ((A[Ordinates.Y] - p[Ordinates.Y]) * (B[Ordinates.X] - A[Ordinates.X]) - 
-                            (A[Ordinates.X] - p[Ordinates.X]) * (B[Ordinates.Y] - A[Ordinates.Y]))
+            Double s = ((A[Ordinates.Y] - p[Ordinates.Y])*(B[Ordinates.X] - A[Ordinates.X]) -
+                        (A[Ordinates.X] - p[Ordinates.X])*(B[Ordinates.Y] - A[Ordinates.Y]))
                        /
-                       ((B[Ordinates.X] - A[Ordinates.X]) * (B[Ordinates.X] - A[Ordinates.X]) + 
-                            (B[Ordinates.Y] - A[Ordinates.Y]) * (B[Ordinates.Y] - A[Ordinates.Y]));
+                       ((B[Ordinates.X] - A[Ordinates.X])*(B[Ordinates.X] - A[Ordinates.X]) +
+                        (B[Ordinates.Y] - A[Ordinates.Y])*(B[Ordinates.Y] - A[Ordinates.Y]));
 
-            return Math.Abs(s) * Math.Sqrt(((B[Ordinates.X] - A[Ordinates.X]) * (B[Ordinates.X] - A[Ordinates.X]) + (B[Ordinates.Y] - A[Ordinates.Y]) * (B[Ordinates.Y] - A[Ordinates.Y])));
+            return Math.Abs(s)*
+                   Math.Sqrt(((B[Ordinates.X] - A[Ordinates.X])*(B[Ordinates.X] - A[Ordinates.X]) +
+                              (B[Ordinates.Y] - A[Ordinates.Y])*(B[Ordinates.Y] - A[Ordinates.Y])));
         }
 
         public static Double DistanceLineLine(Pair<TCoordinate> line0, Pair<TCoordinate> line1)
@@ -435,11 +440,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 		            If the numerator in eqn 1 is also zero, AB & CD are collinear.
 
 	        */
-            Double r_top = (a[Ordinates.Y] - c[Ordinates.Y]) * (d[Ordinates.X] - c[Ordinates.X]) - (a[Ordinates.X] - c[Ordinates.X]) * (d[Ordinates.Y] - c[Ordinates.Y]);
-            Double r_bot = (b[Ordinates.X] - a[Ordinates.X]) * (d[Ordinates.Y] - c[Ordinates.Y]) - (b[Ordinates.Y] - a[Ordinates.Y]) * (d[Ordinates.X] - c[Ordinates.X]);
+            Double r_top = (a[Ordinates.Y] - c[Ordinates.Y])*(d[Ordinates.X] - c[Ordinates.X]) -
+                           (a[Ordinates.X] - c[Ordinates.X])*(d[Ordinates.Y] - c[Ordinates.Y]);
+            Double r_bot = (b[Ordinates.X] - a[Ordinates.X])*(d[Ordinates.Y] - c[Ordinates.Y]) -
+                           (b[Ordinates.Y] - a[Ordinates.Y])*(d[Ordinates.X] - c[Ordinates.X]);
 
-            Double s_top = (a[Ordinates.Y] - c[Ordinates.Y]) * (b[Ordinates.X] - a[Ordinates.X]) - (a[Ordinates.X] - c[Ordinates.X]) * (b[Ordinates.Y] - a[Ordinates.Y]);
-            Double s_bot = (b[Ordinates.X] - a[Ordinates.X]) * (d[Ordinates.Y] - c[Ordinates.Y]) - (b[Ordinates.Y] - a[Ordinates.Y]) * (d[Ordinates.X] - c[Ordinates.X]);
+            Double s_top = (a[Ordinates.Y] - c[Ordinates.Y])*(b[Ordinates.X] - a[Ordinates.X]) -
+                           (a[Ordinates.X] - c[Ordinates.X])*(b[Ordinates.Y] - a[Ordinates.Y]);
+            Double s_bot = (b[Ordinates.X] - a[Ordinates.X])*(d[Ordinates.Y] - c[Ordinates.Y]) -
+                           (b[Ordinates.Y] - a[Ordinates.Y])*(d[Ordinates.X] - c[Ordinates.X]);
 
             if ((r_bot == 0) || (s_bot == 0))
             {
@@ -450,8 +459,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
 
 
-            Double s = s_top / s_bot;
-            Double r = r_top / r_bot;
+            Double s = s_top/s_bot;
+            Double r = r_top/r_bot;
 
             if ((r < 0) || (r > 1) || (s < 0) || (s > 1))
             {
@@ -487,10 +496,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 Double by = p1[Ordinates.Y];
                 Double cx = p2[Ordinates.X];
                 Double cy = p2[Ordinates.Y];
-                sum += (bx + cx) * (cy - by);
+                sum += (bx + cx)*(cy - by);
             }
 
-            return -sum / 2.0;
+            return -sum/2.0;
         }
 
         /// <summary> 

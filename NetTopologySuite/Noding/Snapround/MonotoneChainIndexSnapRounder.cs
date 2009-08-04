@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
@@ -31,16 +29,16 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
     /// </remarks>
     public class MonotoneChainIndexSnapRounder<TCoordinate> : INoder<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly ICoordinateFactory<TCoordinate> _coordFactory;
-        private readonly LineIntersector<TCoordinate> _li = null;
-        private readonly Double _scaleFactor;
-        private MonotoneChainIndexNoder<TCoordinate> _noder = null;
-        private MonotoneChaintIndexPointSnapper<TCoordinate> _pointSnapper = null;
-        private IEnumerable<NodedSegmentString<TCoordinate>> _nodedSegStrings = null;
-        private IList<TCoordinate> _interiorIntersections;
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
+        private readonly LineIntersector<TCoordinate> _li;
+        private readonly Double _scaleFactor;
+        private IList<TCoordinate> _interiorIntersections;
+        private IEnumerable<NodedSegmentString<TCoordinate>> _nodedSegStrings;
+        private MonotoneChainIndexNoder<TCoordinate> _noder;
+        private MonotoneChaintIndexPointSnapper<TCoordinate> _pointSnapper;
 
         /// <summary>
         /// Initializes a new instance of the 
@@ -48,15 +46,17 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// </summary>
         /// <param name="geoFactory">The <see cref="IGeometryFactory{TCoordinate}" /> to use.</param>
         public MonotoneChainIndexSnapRounder(IGeometryFactory<TCoordinate> geoFactory)
-            :this(geoFactory, geoFactory.PrecisionModel) { }
+            : this(geoFactory, geoFactory.PrecisionModel)
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the 
         /// <see cref="MonotoneChainIndexSnapRounder{TCoordinate}"/> class.
         /// </summary>
         /// <param name="geoFactory">The <see cref="IGeometryFactory{TCoordinate}" /> to use.</param>
-        public MonotoneChainIndexSnapRounder(IGeometryFactory<TCoordinate> geoFactory, 
-            IPrecisionModel<TCoordinate> precisionModel)
+        public MonotoneChainIndexSnapRounder(IGeometryFactory<TCoordinate> geoFactory,
+                                             IPrecisionModel<TCoordinate> precisionModel)
         {
             _geoFactory = geoFactory;
             _coordFactory = geoFactory.CoordinateFactory;
@@ -65,6 +65,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             _li.PrecisionModel = pm;
             _scaleFactor = pm.Scale;
         }
+
+        #region INoder<TCoordinate> Members
 
         /// <summary>
         /// Computes the noding for a collection of <see cref="NodedSegmentString{TCoordinate}" />s
@@ -76,18 +78,22 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// Some noders may add all these nodes to the input <see cref="NodedSegmentString{TCoordinate}" />s;
         /// others may only add some or none at all.
         /// </remarks>
-        public IEnumerable<NodedSegmentString<TCoordinate>> Node(IEnumerable<NodedSegmentString<TCoordinate>> inputSegmentStrings)
+        public IEnumerable<NodedSegmentString<TCoordinate>> Node(
+            IEnumerable<NodedSegmentString<TCoordinate>> inputSegmentStrings)
         {
             _nodedSegStrings = inputSegmentStrings;
             IntersectionFinderAdder<TCoordinate> intFinderAdder = new IntersectionFinderAdder<TCoordinate>(_li);
             _noder = new MonotoneChainIndexNoder<TCoordinate>(_geoFactory, intFinderAdder);
-            _pointSnapper = new MonotoneChaintIndexPointSnapper<TCoordinate>(_geoFactory, _noder.MonotoneChains, _noder.Index);
+            _pointSnapper = new MonotoneChaintIndexPointSnapper<TCoordinate>(_geoFactory, _noder.MonotoneChains,
+                                                                             _noder.Index);
             snapRound(inputSegmentStrings, _li);
 
             _interiorIntersections = intFinderAdder.InteriorIntersections;
 
             return NodedSegmentString<TCoordinate>.GetNodedSubstrings(_nodedSegStrings);
         }
+
+        #endregion
 
         private void snapRound(IEnumerable<NodedSegmentString<TCoordinate>> segStrings, LineIntersector<TCoordinate> li)
         {

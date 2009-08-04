@@ -12,9 +12,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public abstract class SinglePassNoder<TCoordinate> : INoder<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly ISegmentIntersector<TCoordinate> _segInt = null;
+        private readonly ISegmentIntersector<TCoordinate> _segInt;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SinglePassNoder{TCoordinate}"/> class.
@@ -34,9 +34,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         public ISegmentIntersector<TCoordinate> SegmentIntersector
         {
-            get  {  return _segInt; }
+            get { return _segInt; }
         }
 
+        #region INoder<TCoordinate> Members
 
         /// <summary>
         /// Returns a set of fully noded <see cref="NodedSegmentString{TCoordinate}"/>s.
@@ -47,7 +48,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// Some Noders may add all these nodes to the input <see cref="NodedSegmentString{TCoordinate}"/>s;
         /// others may only add some or none at all.
         /// </remarks>
-        public abstract IEnumerable<NodedSegmentString<TCoordinate>> Node(IEnumerable<NodedSegmentString<TCoordinate>> segmentStrings);
+        public abstract IEnumerable<NodedSegmentString<TCoordinate>> Node(
+            IEnumerable<NodedSegmentString<TCoordinate>> segmentStrings);
+
+        #endregion
 
         public abstract IEnumerable<TNodingResult> Node<TNodingResult>(
             IEnumerable<NodedSegmentString<TCoordinate>> segmentStrings,

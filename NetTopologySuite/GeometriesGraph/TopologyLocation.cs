@@ -62,21 +62,21 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     public struct TopologyLocation : IEquatable<TopologyLocation>
     {
         private const Int32 AllLocationsNone =
-            ((Byte)Locations.None) << 16 |
-            ((Byte)Locations.None) << 8 |
-             (Byte)Locations.None;
+            ((Byte) Locations.None) << 16 |
+            ((Byte) Locations.None) << 8 |
+            (Byte) Locations.None;
 
-        private const Int32 OnOffset = 16;
-        private const Int32 LeftOffset = 8;
-        private const Int32 RightOffset = 0;
-
-        private const UInt32 OnMask = 0xFF00FFFF;
         private const UInt32 LeftMask = 0xFFFF00FF;
-        private const UInt32 RightMask = 0xFFFFFF00;
 
+        private const Int32 LeftOffset = 8;
         private const UInt32 NoneMask = 0xFF7F7F7F;
 
-        public static readonly TopologyLocation None 
+        private const UInt32 OnMask = 0xFF00FFFF;
+        private const Int32 OnOffset = 16;
+        private const UInt32 RightMask = 0xFFFFFF00;
+        private const Int32 RightOffset = 0;
+
+        public static readonly TopologyLocation None
             = new TopologyLocation(AllLocationsNone);
 
         private Int32 _locations;
@@ -116,7 +116,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="other">The <see cref="TopologyLocation"/> to copy.</param>
         public TopologyLocation(TopologyLocation other)
-            : this(other._locations) { }
+            : this(other._locations)
+        {
+        }
 
         /// <summary> 
         /// Constructs a <see cref="TopologyLocation"/> which is a copy of the 
@@ -161,7 +163,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                         return Left;
                     case Positions.Right:
                         return Right;
-                    //case Positions.Parallel:
+                        //case Positions.Parallel:
                     default:
                         return Locations.None;
                 }
@@ -189,26 +191,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                        Left == Locations.None ||
                        Right == Locations.None;
             }
-        }
-
-        /// <summary>
-        /// Gets a value indicating if the given <see cref="TopologyLocation"/>
-        /// has the same <see cref="Locations"/> value on the side specified by 
-        /// <paramref name="position"/>.
-        /// </summary>
-        /// <param name="other">
-        /// The other <see cref="TopologyLocation"/> to compare.
-        /// </param>
-        /// <param name="position">
-        /// The side to compare.
-        /// </param>
-        /// <returns>
-        /// <see langword="true"/> if the values at <paramref name="position"/>
-        /// are equal; false otherwise.
-        /// </returns>
-        public Boolean IsEqualOnSide(TopologyLocation other, Positions position)
-        {
-            return this[position] == other[position];
         }
 
         /// <summary>
@@ -240,6 +222,64 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
+        /// Gets the location of points on this <see cref="TopologyLocation"/>
+        /// relative to some geometry as a <see cref="Locations"/> value.
+        /// </summary>
+        public Locations On
+        {
+            get { return (Locations) (Byte) (_locations >> OnOffset); }
+        }
+
+        /// <summary>
+        /// Gets the location of points to the left of this 
+        /// <see cref="TopologyLocation"/> relative to some geometry 
+        /// as a <see cref="Locations"/> value.
+        /// </summary>
+        public Locations Left
+        {
+            get { return (Locations) (Byte) (_locations >> LeftOffset); }
+        }
+
+        /// <summary>
+        /// Gets the location of points to the right of this 
+        /// <see cref="TopologyLocation"/> relative to some geometry 
+        /// as a <see cref="Locations"/> value.
+        /// </summary>
+        public Locations Right
+        {
+            get { return (Locations) (Byte) (_locations >> RightOffset); }
+        }
+
+        #region IEquatable<TopologyLocation> Members
+
+        public Boolean Equals(TopologyLocation other)
+        {
+            return other._locations == _locations;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Gets a value indicating if the given <see cref="TopologyLocation"/>
+        /// has the same <see cref="Locations"/> value on the side specified by 
+        /// <paramref name="position"/>.
+        /// </summary>
+        /// <param name="other">
+        /// The other <see cref="TopologyLocation"/> to compare.
+        /// </param>
+        /// <param name="position">
+        /// The side to compare.
+        /// </param>
+        /// <returns>
+        /// <see langword="true"/> if the values at <paramref name="position"/>
+        /// are equal; false otherwise.
+        /// </returns>
+        public Boolean IsEqualOnSide(TopologyLocation other, Positions position)
+        {
+            return this[position] == other[position];
+        }
+
+        /// <summary>
         /// Computes a <see cref="TopologyLocation"/> which has the
         /// <see cref="Left"/> and <see cref="Right"/> <see cref="Locations"/>
         /// values swapped.
@@ -255,44 +295,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             Locations flippedRight = Left;
             Locations flippedLeft = Right;
             return new TopologyLocation(On, flippedLeft, flippedRight);
-        }
-
-        /// <summary>
-        /// Gets the location of points on this <see cref="TopologyLocation"/>
-        /// relative to some geometry as a <see cref="Locations"/> value.
-        /// </summary>
-        public Locations On
-        {
-            get
-            {
-                return (Locations)(Byte)(_locations >> OnOffset);
-            }
-        }
-
-        /// <summary>
-        /// Gets the location of points to the left of this 
-        /// <see cref="TopologyLocation"/> relative to some geometry 
-        /// as a <see cref="Locations"/> value.
-        /// </summary>
-        public Locations Left
-        {
-            get
-            {
-                return (Locations)(Byte)(_locations >> LeftOffset);
-            }
-        }
-
-        /// <summary>
-        /// Gets the location of points to the right of this 
-        /// <see cref="TopologyLocation"/> relative to some geometry 
-        /// as a <see cref="Locations"/> value.
-        /// </summary>
-        public Locations Right
-        {
-            get
-            {
-                return (Locations)(Byte)(_locations >> RightOffset);
-            }
         }
 
         /// <summary>
@@ -326,8 +328,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             unchecked
             {
                 // Suppress the None bit so it doesn't emerge in the output
-                Int32 merge = (Int32)(NoneMask & (UInt32)_locations | 
-                                      NoneMask & (UInt32)other._locations);
+                Int32 merge = (Int32) (NoneMask & (UInt32) _locations |
+                                       NoneMask & (UInt32) other._locations);
                 // add the Locations.None bit back if it exists in both locations
                 merge |= _locations & other._locations;
                 return new TopologyLocation(merge);
@@ -355,15 +357,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             return sb.ToString();
         }
 
-        #region IEquatable<TopologyLocation> Members
-
-        public Boolean Equals(TopologyLocation other)
-        {
-            return other._locations == _locations;
-        }
-
-        #endregion
-
         private void setLocation(Positions locIndex, Locations locValue)
         {
             Int32 locations = _locations;
@@ -375,18 +368,18 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 switch (locIndex)
                 {
                     case Positions.On:
-                        locations &= (Int32)OnMask;
+                        locations &= (Int32) OnMask;
                         locations |= locValueByte << OnOffset;
                         break;
                     case Positions.Left:
-                        locations &= (Int32)LeftMask;
+                        locations &= (Int32) LeftMask;
                         locations |= locValueByte << LeftOffset;
                         break;
                     case Positions.Right:
-                        locations &= (Int32)RightMask;
+                        locations &= (Int32) RightMask;
                         locations |= locValueByte << RightOffset;
                         break;
-                    //case Positions.Parallel:
+                        //case Positions.Parallel:
                     default:
                         break;
                 }

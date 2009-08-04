@@ -11,17 +11,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// on <see cref="Geometry{TCoordinate}"/>s.
     /// </summary>
     public class RelateOp<TCoordinate> : GeometryGraphOperation<TCoordinate>
-         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                             IComparable<TCoordinate>, IConvertible, 
-                             IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
-        public static IntersectionMatrix Relate(IGeometry<TCoordinate> a, IGeometry<TCoordinate> b)
-        {
-            RelateOp<TCoordinate> relOp = new RelateOp<TCoordinate>(a, b);
-            IntersectionMatrix im = relOp.IntersectionMatrix;
-            return im;
-        }
-
         private readonly RelateComputer<TCoordinate> _relate;
 
         /// <summary>
@@ -42,6 +35,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         public IntersectionMatrix IntersectionMatrix
         {
             get { return _relate.ComputeIntersectionMatrix(); }
+        }
+
+        public static IntersectionMatrix Relate(IGeometry<TCoordinate> a, IGeometry<TCoordinate> b)
+        {
+            RelateOp<TCoordinate> relOp = new RelateOp<TCoordinate>(a, b);
+            IntersectionMatrix im = relOp.IntersectionMatrix;
+            return im;
         }
     }
 }

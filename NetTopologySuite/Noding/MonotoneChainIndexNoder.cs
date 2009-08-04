@@ -5,31 +5,30 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Index.Chain;
-using GisSharpBlog.NetTopologySuite.Index.Strtree;
 using GisSharpBlog.NetTopologySuite.Index.Quadtree;
+using GisSharpBlog.NetTopologySuite.Index.Strtree;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
     /// <summary>
     /// Nodes a set of <see cref="NodedSegmentString{TCoordinate}" />s using a index based
-    /// on <see cref="MonotoneChain{TCoordinate}" />s and a <see cref="ISpatialIndex{TCoordinate,TItem}" />.
+    /// on <see cref="MonotoneChain{TCoordinate}" />s and a <see cref="ISpatialIndex{TBounds,TItem}" />.
     /// The <see cref="ISpatialIndex{TCoordinate, TItem}" /> used should be something that supports
-    /// envelope (range) queries efficiently (such as a <see cref="Quadtree{TCoordinate, TItem}" />
-    /// or <see cref="StrTree{TCoordinate, TItem}" />.
+    /// envelope (range) queries efficiently (such as a <see cref="Quadtree{TCoordinate,TItem}" />
+    /// or <see cref="StrTree{TCoordinate,TItem}" />.
     /// </summary>
     public class MonotoneChainIndexNoder<TCoordinate> : SinglePassNoder<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
-        private readonly List<MonotoneChain<TCoordinate>> _monoChains = new List<MonotoneChain<TCoordinate>>();
         private readonly StrTree<TCoordinate, MonotoneChain<TCoordinate>> _index;
+        private readonly List<MonotoneChain<TCoordinate>> _monoChains = new List<MonotoneChain<TCoordinate>>();
         //private readonly List<SegmentString<TCoordinate>> _nodedSegStrings = new List<SegmentString<TCoordinate>>();
-        private Int32 _idCount = 0;
-        private Int32 _overlapCount = 0; // statistics
+        private Int32 _idCount;
+        private Int32 _overlapCount; // statistics
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MonotoneChainIndexNoder{TCoordinate}"/> class.
@@ -75,8 +74,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         }
 
         public override IEnumerable<TNodingResult> Node<TNodingResult>(
-                                    IEnumerable<NodedSegmentString<TCoordinate>> segmentStrings, 
-                                    Func<NodedSegmentString<TCoordinate>, TNodingResult> generator)
+            IEnumerable<NodedSegmentString<TCoordinate>> segmentStrings,
+            Func<NodedSegmentString<TCoordinate>, TNodingResult> generator)
         {
             foreach (NodedSegmentString<TCoordinate> segmentString in Node(segmentStrings))
             {
@@ -86,9 +85,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
         private void add(NodedSegmentString<TCoordinate> item)
         {
-            IEnumerable<MonotoneChain<TCoordinate>> segChains 
+            IEnumerable<MonotoneChain<TCoordinate>> segChains
                 = MonotoneChainBuilder.GetChains(_geoFactory, item.Coordinates, item);
-            
+
             foreach (MonotoneChain<TCoordinate> mc in segChains)
             {
                 mc.Id = _idCount++;
@@ -117,7 +116,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                         {
                             NodedSegmentString<TCoordinate> ss1 = testChain.Context as NodedSegmentString<TCoordinate>;
                             NodedSegmentString<TCoordinate> ss2 = queryChain.Context as NodedSegmentString<TCoordinate>;
-                            
+
                             Debug.Assert(ss1 != null);
                             Debug.Assert(ss2 != null);
 
@@ -147,7 +146,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         //    {
         //        SegmentString<TCoordinate> ss1 = mc1.Context as SegmentString<TCoordinate>;
         //        SegmentString<TCoordinate> ss2 = mc2.Context as SegmentString<TCoordinate>;
-                
+
         //        Debug.Assert(ss1 != null);
         //        Debug.Assert(ss2 != null);
 

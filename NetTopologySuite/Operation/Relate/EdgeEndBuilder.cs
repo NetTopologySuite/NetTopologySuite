@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// </remarks>
     public class EdgeEndBuilder<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         public IEnumerable<EdgeEnd<TCoordinate>> ComputeEdgeEnds(IEnumerable<Edge<TCoordinate>> edges)
         {
@@ -38,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         public IEnumerable<EdgeEnd<TCoordinate>> ComputeEdgeEnds(Edge<TCoordinate> edge)
         {
             EdgeIntersectionList<TCoordinate> eiList = edge.EdgeIntersections;
-            
+
             // ensure that the list has entries for the first and last point of the edge
             eiList.AddEndpoints();
 
@@ -89,7 +89,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// eiCurr will always be an EdgeIntersection, but eiPrev may be null.
         /// </remarks>
         public IEnumerable<EdgeEnd<TCoordinate>> CreateEdgeEndForPrev(
-            Edge<TCoordinate> edge, EdgeIntersection<TCoordinate> eiCurr, 
+            Edge<TCoordinate> edge, EdgeIntersection<TCoordinate> eiCurr,
             EdgeIntersection<TCoordinate>? eiPrev)
         {
             Int32 iPrev = eiCurr.SegmentIndex;
@@ -137,7 +137,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// eiCurr will always be an EdgeIntersection, but eiNext may be null.
         /// </remarks>
         public IEnumerable<EdgeEnd<TCoordinate>> CreateEdgeEndForNext(
-            Edge<TCoordinate> edge, EdgeIntersection<TCoordinate> eiCurr, 
+            Edge<TCoordinate> edge, EdgeIntersection<TCoordinate> eiCurr,
             EdgeIntersection<TCoordinate>? eiNext)
         {
             Int32 iNext = eiCurr.SegmentIndex + 1;

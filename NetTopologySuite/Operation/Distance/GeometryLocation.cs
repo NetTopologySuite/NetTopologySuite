@@ -1,8 +1,8 @@
 using System;
 using System.Diagnostics;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
-using GeoAPI.Coordinates;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Distance
 {
@@ -16,13 +16,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
     /// Locations inside area Geometries will not have an associated segment index,
     /// so in this case the segment index will be null.
     /// </remarks>
-    public struct GeometryLocation<TCoordinate> : IEquatable<GeometryLocation<TCoordinate>>, IComparable<GeometryLocation<TCoordinate>>
+    public struct GeometryLocation<TCoordinate> : IEquatable<GeometryLocation<TCoordinate>>,
+                                                  IComparable<GeometryLocation<TCoordinate>>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IGeometry<TCoordinate> _component;
-        private readonly Int32? _segIndex;
         private readonly TCoordinate _coordinate;
+        private readonly Int32? _segIndex;
 
         /// <summary>
         /// Constructs a GeometryLocation specifying a point on a point, as well as the 
@@ -38,19 +39,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <summary> 
         /// Constructs a GeometryLocation specifying a point inside an area point.
         /// </summary>
-        public GeometryLocation(IGeometry<TCoordinate> component, TCoordinate pt) 
+        public GeometryLocation(IGeometry<TCoordinate> component, TCoordinate pt)
             : this(component, null, pt)
         {
-        }
-
-        public override Boolean Equals(Object obj)
-        {
-            if(!(obj is GeometryLocation<TCoordinate>))
-            {
-                return false;
-            }
-
-            return Equals((GeometryLocation<TCoordinate>) obj);
         }
 
         /// <summary>
@@ -86,22 +77,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
             get { return !_segIndex.HasValue; }
         }
 
-        #region IEquatable<GeometryLocation<TCoordinate>> Members
-
-        public Boolean Equals(GeometryLocation<TCoordinate> other)
-        {
-            return other._segIndex == _segIndex &&
-                   other._coordinate.Equals(_coordinate) &&
-                   other._component == _component;
-        }
-
-        #endregion
-
         #region IComparable<GeometryLocation<TCoordinate>> Members
 
         public Int32 CompareTo(GeometryLocation<TCoordinate> other)
         {
-            if(Equals(other))
+            if (Equals(other))
             {
                 return 0;
             }
@@ -112,7 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
                 // First compare the geometries
                 comparison = other._component.CompareTo(_component);
 
-                if(comparison != 0)
+                if (comparison != 0)
                 {
                     return comparison;
                 }
@@ -120,9 +100,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
                 // If the geometries are equal, check the segment indexes.
                 // If either has a null segment index (they aren't equal here),
                 // it's less.
-                if(!other._segIndex.HasValue || !_segIndex.HasValue)
+                if (!other._segIndex.HasValue || !_segIndex.HasValue)
                 {
-                    if(_segIndex.HasValue)
+                    if (_segIndex.HasValue)
                     {
                         return -1;
                     }
@@ -134,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
 
                 comparison = other._segIndex.Value.CompareTo(_segIndex.Value);
 
-                if(comparison != 0)
+                if (comparison != 0)
                 {
                     return comparison;
                 }
@@ -148,5 +128,26 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         }
 
         #endregion
+
+        #region IEquatable<GeometryLocation<TCoordinate>> Members
+
+        public Boolean Equals(GeometryLocation<TCoordinate> other)
+        {
+            return other._segIndex == _segIndex &&
+                   other._coordinate.Equals(_coordinate) &&
+                   other._component == _component;
+        }
+
+        #endregion
+
+        public override Boolean Equals(Object obj)
+        {
+            if (!(obj is GeometryLocation<TCoordinate>))
+            {
+                return false;
+            }
+
+            return Equals((GeometryLocation<TCoordinate>) obj);
+        }
     }
 }

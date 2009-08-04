@@ -8,11 +8,11 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 {
     internal static class LinearHelper
     {
-        internal static ILineString<TCoordinate> GetLine<TCoordinate>(IGeometry<TCoordinate> linear, 
+        internal static ILineString<TCoordinate> GetLine<TCoordinate>(IGeometry<TCoordinate> linear,
                                                                       Int32 lineIndex)
             where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                                IComparable<TCoordinate>, IConvertible,
-                                IComputable<Double, TCoordinate>
+                IComparable<TCoordinate>, IConvertible,
+                IComputable<Double, TCoordinate>
         {
             ILineString<TCoordinate> line = linear as ILineString<TCoordinate>;
 
@@ -29,8 +29,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
         internal static Int32 GetLineCount<TCoordinate>(IGeometry<TCoordinate> linear)
             where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                                IComparable<TCoordinate>, IConvertible,
-                                IComputable<Double, TCoordinate>
+                IComparable<TCoordinate>, IConvertible,
+                IComputable<Double, TCoordinate>
         {
             IMultiLineString multiLine = linear as IMultiLineString;
 
@@ -41,8 +41,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
         internal static Double GetLength<TCoordinate>(IGeometry<TCoordinate> linear)
             where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                                IComparable<TCoordinate>, IConvertible,
-                                IComputable<Double, TCoordinate>
+                IComparable<TCoordinate>, IConvertible,
+                IComputable<Double, TCoordinate>
         {
             Double length = Double.NaN;
 
@@ -57,7 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
             if (line != null)
             {
-                length = line.Length;   
+                length = line.Length;
             }
 
             if (Double.IsNaN(length))

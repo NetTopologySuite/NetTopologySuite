@@ -12,13 +12,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
     /// </summary>
     public class MonotoneChainOverlapAction<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
-        private readonly Extents<TCoordinate> _searchExtents1;// = new Extents<TCoordinate>();
-        private readonly Extents<TCoordinate> _searchExtents2;// = new Extents<TCoordinate>();
-        private LineSegment<TCoordinate> _overlapSeg1 = new LineSegment<TCoordinate>();
-        private LineSegment<TCoordinate> _overlapSeg2 = new LineSegment<TCoordinate>();
+        private readonly Extents<TCoordinate> _searchExtents1; // = new Extents<TCoordinate>();
+        private readonly Extents<TCoordinate> _searchExtents2; // = new Extents<TCoordinate>();
+        private LineSegment<TCoordinate> _overlapSeg1;
+        private LineSegment<TCoordinate> _overlapSeg2;
 
         public MonotoneChainOverlapAction(IGeometryFactory<TCoordinate> geometryFactory)
         {
@@ -54,7 +54,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <param name="start2">
         /// The index of the start of the overlapping segment from mc2.
         /// </param>
-        public virtual void Overlap(MonotoneChain<TCoordinate> mc1, Int32 start1, MonotoneChain<TCoordinate> mc2, Int32 start2)
+        public virtual void Overlap(MonotoneChain<TCoordinate> mc1, Int32 start1, MonotoneChain<TCoordinate> mc2,
+                                    Int32 start2)
         {
             _overlapSeg1 = mc1.GetLineSegment(start1);
             _overlapSeg2 = mc2.GetLineSegment(start2);
@@ -65,6 +66,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// This is a convenience function which can be overridden to obtain the actual
         /// line segments which overlap.
         /// </summary>
-        public virtual void Overlap(LineSegment<TCoordinate> seg1, LineSegment<TCoordinate> seg2) { }
+        public virtual void Overlap(LineSegment<TCoordinate> seg1, LineSegment<TCoordinate> seg2)
+        {
+        }
     }
 }

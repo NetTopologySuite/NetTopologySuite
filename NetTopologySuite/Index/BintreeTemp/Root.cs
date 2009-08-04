@@ -1,3 +1,4 @@
+using GeoAPI.DataStructures;
 using GeoAPI.Diagnostics;
 using GisSharpBlog.NetTopologySuite.Index.Quadtree;
 
@@ -13,11 +14,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
         // the singleton root node is centred at the origin.
         private const double origin = 0.0;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public Root() { }
-
         /// <summary> 
         /// Insert an item into the tree this is the root of.
         /// </summary>
@@ -27,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
         {
             int index = GetSubnodeIndex(itemInterval, origin);
             // if index is -1, itemEnv must contain the origin.
-            if (index == -1) 
+            if (index == -1)
             {
                 Add(item);
                 return;
@@ -42,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
             *  have to expand the tree upward to contain the item.
             */
 
-            if (node == null || ! node.Interval.Contains(itemInterval)) 
+            if (node == null || ! node.Interval.Contains(itemInterval))
             {
                 Node<T> largerNode = Node<T>.CreateExpanded(node, itemInterval);
                 subnode[index] = largerNode;
@@ -51,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
             * At this point we have a subnode which exists and must contain
             * contains the env for the item.  Insert the item into the tree.
             */
-            InsertContained(subnode[index], itemInterval, item);        
+            InsertContained(subnode[index], itemInterval, item);
         }
 
         /// <summary> 

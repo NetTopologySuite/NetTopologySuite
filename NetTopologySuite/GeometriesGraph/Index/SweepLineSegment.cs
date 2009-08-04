@@ -11,8 +11,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly Edge<TCoordinate> _edge;
-        private readonly IEnumerable<TCoordinate> _pts;
         private readonly Int32 _ptIndex;
+        private readonly IEnumerable<TCoordinate> _pts;
 
         public SweepLineSegment(Edge<TCoordinate> edge, Int32 ptIndex)
         {

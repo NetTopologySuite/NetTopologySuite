@@ -25,8 +25,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         ///  1 if node1 occurs first.
         /// </returns>
         public static Int32 Compare<TCoordinate>(Octants octant, TCoordinate p0, TCoordinate p1)
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                IComputable<Double, TCoordinate>, IConvertible
         {
             // nodes can only be equal if their coordinates are equal
             if (p0.Equals(p1))

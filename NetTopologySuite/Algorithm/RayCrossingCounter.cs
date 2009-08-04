@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
@@ -9,17 +7,88 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     public class RayCrossingCounter<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
+        private readonly TCoordinate _point;
+        private int _crossingCount;
+        // true if the test point lies on an input segment
+        private Boolean _isPointOnSegment;
+
+        public RayCrossingCounter(TCoordinate point)
+        {
+            _point = point;
+        }
+
+        /**
+         * Reports whether the point lies exactly on one of the supplied segments.
+         * This method may be called at any time as segments are processed.
+         * If the result of this method is <tt>true</tt>, 
+         * no further segments need be supplied, since the result
+         * will never change again.
+         * 
+         * @return true if the point lies exactly on a segment
+         */
+
+        public Boolean IsOnSegment
+        {
+            get { return _isPointOnSegment; }
+        }
+
+        /**
+         * Gets the {@link Location} of the point relative to 
+         * the ring, polygon
+         * or multipolygon from which the processed segments were provided.
+         * <p>
+         * This method only determines the correct location 
+         * if <b>all</b> relevant segments must have been processed. 
+         * 
+         * @return the Location of the point
+         */
+
+        public Locations Location
+        {
+            get
+            {
+                if (_isPointOnSegment)
+                    return Locations.Boundary;
+
+                // The point is in the interior of the ring if the number of X-crossings is
+                // odd.
+                if ((_crossingCount%2) == 1)
+                {
+                    return Locations.Interior;
+                }
+                return Locations.Exterior;
+            }
+        }
+
+        /**
+         * Tests whether the point lies in or on 
+         * the ring, polygon
+         * or multipolygon from which the processed segments were provided.
+         * <p>
+         * This method only determines the correct location 
+         * if <b>all</b> relevant segments must have been processed. 
+         * 
+         * @return true if the point lies in or on the supplied polygon
+         */
+
+        ///<summary>
+        ///</summary>
+        public Boolean IsPointInPolygon
+        {
+            get { return Location != Locations.Exterior; }
+        }
+
         public static Locations LocatePointInRing(TCoordinate p, ILinearRing<TCoordinate> ring)
         {
-            if ( ring == null )
+            if (ring == null)
                 return Locations.None;
 
             RayCrossingCounter<TCoordinate> counter = new RayCrossingCounter<TCoordinate>(p);
             TCoordinate p1 = default(TCoordinate);
-            foreach (var p2 in ring.Coordinates)
+            foreach (TCoordinate p2 in ring.Coordinates)
             {
                 counter.CountSegment(p1, p2);
                 if (counter.IsOnSegment)
@@ -27,16 +96,6 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
 
             return counter.Location;
-        }
-
-        private TCoordinate _point;
-        private int _crossingCount = 0;
-        // true if the test point lies on an input segment
-        private Boolean _isPointOnSegment = false;
-
-        public RayCrossingCounter(TCoordinate point)
-        {
-            _point = point;
         }
 
         public void CountSegment(TCoordinate p1, TCoordinate p2)
@@ -87,7 +146,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
              * </ul>
              */
             if (((p1[Ordinates.Y] > _point[Ordinates.Y]) && (p2[Ordinates.Y] <= _point[Ordinates.Y]))
-                    || ((p2[Ordinates.Y] > _point[Ordinates.Y]) && (p1[Ordinates.Y] <= _point[Ordinates.Y])))
+                || ((p2[Ordinates.Y] > _point[Ordinates.Y]) && (p1[Ordinates.Y] <= _point[Ordinates.Y])))
             {
                 // translate the segment so that the test point lies on the origin
                 double x1 = p1[Ordinates.X] - _point[Ordinates.X];
@@ -120,61 +179,5 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 }
             }
         }
-
-        /**
-         * Reports whether the point lies exactly on one of the supplied segments.
-         * This method may be called at any time as segments are processed.
-         * If the result of this method is <tt>true</tt>, 
-         * no further segments need be supplied, since the result
-         * will never change again.
-         * 
-         * @return true if the point lies exactly on a segment
-         */
-        public Boolean IsOnSegment { get { return _isPointOnSegment; } }
-
-        /**
-         * Gets the {@link Location} of the point relative to 
-         * the ring, polygon
-         * or multipolygon from which the processed segments were provided.
-         * <p>
-         * This method only determines the correct location 
-         * if <b>all</b> relevant segments must have been processed. 
-         * 
-         * @return the Location of the point
-         */
-        public Locations Location
-        {
-            get
-            {
-                if (_isPointOnSegment)
-                    return Locations.Boundary;
-
-                // The point is in the interior of the ring if the number of X-crossings is
-                // odd.
-                if ((_crossingCount % 2) == 1)
-                {
-                    return Locations.Interior;
-                }
-                return Locations.Exterior;
-            }
-        }
-
-        /**
-         * Tests whether the point lies in or on 
-         * the ring, polygon
-         * or multipolygon from which the processed segments were provided.
-         * <p>
-         * This method only determines the correct location 
-         * if <b>all</b> relevant segments must have been processed. 
-         * 
-         * @return true if the point lies in or on the supplied polygon
-         */
-        ///<summary>
-        ///</summary>
-        public Boolean IsPointInPolygon
-        {
-            get { return Location != Locations.Exterior; }
-        }
-
     }
 }

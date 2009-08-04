@@ -3,14 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.DataStructures.Collections.Generic;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using GisSharpBlog.NetTopologySuite.Planargraph.Algorithm;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
-using GeoAPI.DataStructures;
+
 #if DOTNET35
 using System.Linq;
 #endif
@@ -54,8 +55,18 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     /// </remarks>
     public class LineSequencer<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
+        private readonly LineMergeGraph<TCoordinate> _graph = new LineMergeGraph<TCoordinate>();
+
+        // Initialize with default, in case no lines are input        
+        private IGeometryFactory<TCoordinate> _geoFactory;
+
+        private Boolean _isRun;
+        private Boolean _isSequenceable;
+        private Int32 _lineCount;
+        private IGeometry<TCoordinate> _sequencedGeometry;
+
         /// <summary>
         /// Tests whether a <see cref="Geometry{TCoordinate}" /> is sequenced correctly.
         /// <see cref="ILineString" />s are trivially sequenced.
@@ -116,17 +127,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             return true;
         }
 
-        private readonly LineMergeGraph<TCoordinate> _graph = new LineMergeGraph<TCoordinate>();
-
-        // Initialize with default, in case no lines are input        
-        private IGeometryFactory<TCoordinate> _geoFactory;
-
-        private IGeometry<TCoordinate> _sequencedGeometry = null;
-
-        private Int32 _lineCount = 0;
-        private Boolean _isRun = false;
-        private Boolean _isSequenceable = false;
-
         /// <summary>
         /// Adds a <see cref="IEnumerable" /> of <see cref="Geometry{TCoordinate}" />s to be sequenced.
         /// May be called multiple times.
@@ -172,7 +172,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                 addLine(geometry as ILineString<TCoordinate>);
             }
         }
-        
+
         /*
          * [codekaizen 2008-01-14]  removed during translation of visitor patterns
          *                          to enumeration / query patterns.
@@ -262,8 +262,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             _isSequenceable = true;
 
             Int32 finalLineCount = (_sequencedGeometry is IGeometryCollection)
-                ? ((IGeometryCollection)_sequencedGeometry).Count
-                : 1;
+                                       ? ((IGeometryCollection) _sequencedGeometry).Count
+                                       : 1;
 
             Assert.IsTrue(_lineCount == finalLineCount, "Lines were missing from result");
             Assert.IsTrue(_sequencedGeometry is ILineString || _sequencedGeometry is IMultiLineString,
@@ -300,7 +300,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             Int32 oddDegreeCount = 0;
             foreach (Node<TCoordinate> node in graph.Nodes)
             {
-                if (node.Degree % 2 == 1)
+                if (node.Degree%2 == 1)
                 {
                     oddDegreeCount++;
                 }
@@ -549,7 +549,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// <returns>
         /// The sequenced geometry, or <see langword="null" /> if no sequence exists.
         /// </returns>
-        private IGeometry<TCoordinate> buildSequencedGeometry(IEnumerable<IEnumerable<DirectedEdge<TCoordinate>>> sequences)
+        private IGeometry<TCoordinate> buildSequencedGeometry(
+            IEnumerable<IEnumerable<DirectedEdge<TCoordinate>>> sequences)
         {
             List<IGeometry<TCoordinate>> lines = new List<IGeometry<TCoordinate>>();
 

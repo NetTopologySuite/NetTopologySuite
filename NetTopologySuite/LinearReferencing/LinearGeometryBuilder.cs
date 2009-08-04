@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
-using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 {
@@ -17,14 +17,14 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly IGeometryFactory<TCoordinate> _geometryFactory = null;
+        private readonly IGeometryFactory<TCoordinate> _geometryFactory;
         private readonly List<IGeometry<TCoordinate>> _lines = new List<IGeometry<TCoordinate>>();
-        private List<TCoordinate> _coordList = null;
+        private List<TCoordinate> _coordList;
 
-        private Boolean _ignoreInvalidLines = false;
-        private Boolean _fixInvalidLines = false;
+        private Boolean _fixInvalidLines;
+        private Boolean _ignoreInvalidLines;
 
-        private TCoordinate _lastPt = default(TCoordinate);
+        private TCoordinate _lastPt;
 
         public LinearGeometryBuilder(IGeometryFactory<TCoordinate> geomFact)
         {
@@ -49,6 +49,11 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         {
             get { return _ignoreInvalidLines; }
             set { _ignoreInvalidLines = value; }
+        }
+
+        public TCoordinate LastCoordinate
+        {
+            get { return _lastPt; }
         }
 
         /// <summary>
@@ -78,11 +83,6 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             }
 
             _lastPt = pt;
-        }
-
-        public TCoordinate LastCoordinate
-        {
-            get { return _lastPt; }
         }
 
         /// <summary>

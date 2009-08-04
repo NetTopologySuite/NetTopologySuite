@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
@@ -28,11 +27,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         //}
 
         public static IEnumerable<MonotoneChain<TCoordinate>> GetChains<TCoordinate>(
-                                            IGeometryFactory<TCoordinate> geoFactory, 
-                                            ICoordinateSequence<TCoordinate> coordinates)
-            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                                IComparable<TCoordinate>, IConvertible,
-                                IComputable<Double, TCoordinate>
+            IGeometryFactory<TCoordinate> geoFactory,
+            ICoordinateSequence<TCoordinate> coordinates)
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                IComparable<TCoordinate>, IConvertible,
+                IComputable<Double, TCoordinate>
         {
             return GetChains(geoFactory, coordinates, null);
         }
@@ -42,23 +41,23 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// for the given list of coordinates.
         /// </summary>
         public static IEnumerable<MonotoneChain<TCoordinate>> GetChains<TCoordinate>(
-                                            IGeometryFactory<TCoordinate> geoFactory, 
-                                            ICoordinateSequence<TCoordinate> coordinates, 
-                                            Object context)
-            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                                IComparable<TCoordinate>, IConvertible,
-                                IComputable<Double, TCoordinate>
+            IGeometryFactory<TCoordinate> geoFactory,
+            ICoordinateSequence<TCoordinate> coordinates,
+            Object context)
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                IComparable<TCoordinate>, IConvertible,
+                IComputable<Double, TCoordinate>
         {
             IEnumerable<Int32> startIndicies = GetChainStartIndices(coordinates);
 
             foreach (Pair<Int32> indexPair in Slice.GetOverlappingPairs(startIndicies))
             {
                 MonotoneChain<TCoordinate> mc = new MonotoneChain<TCoordinate>(
-                                                                geoFactory, 
-                                                                coordinates, 
-                                                                indexPair.First, 
-                                                                indexPair.Second, 
-                                                                context);
+                    geoFactory,
+                    coordinates,
+                    indexPair.First,
+                    indexPair.Second,
+                    context);
 
                 yield return mc;
             }
@@ -81,10 +80,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// of the point set, for use as a sentinel.
         /// </summary>
         public static IEnumerable<Int32> GetChainStartIndices<TCoordinate>(
-                                            ICoordinateSequence<TCoordinate> points)
-            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                                IComparable<TCoordinate>, IConvertible,
-                                IComputable<Double, TCoordinate>
+            ICoordinateSequence<TCoordinate> points)
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                IComparable<TCoordinate>, IConvertible,
+                IComputable<Double, TCoordinate>
         {
             // find the startpoint (and endpoints) of all monotone chains in this edge
             Int32 start = 0;
@@ -103,11 +102,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         }
 
         // Returns the index of the last point in the monotone chain starting at 'start'.
-        private static Int32 findChainEnd<TCoordinate>(ICoordinateSequence<TCoordinate> points, 
+        private static Int32 findChainEnd<TCoordinate>(ICoordinateSequence<TCoordinate> points,
                                                        Int32 start)
-            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                                IComparable<TCoordinate>, IConvertible,
-                                IComputable<Double, TCoordinate>
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                IComparable<TCoordinate>, IConvertible,
+                IComputable<Double, TCoordinate>
         {
             Int32 lastSegmentStartIndex = points.LastIndex - 1;
 
@@ -118,7 +117,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
 
             Pair<TCoordinate> segment = points.SegmentAt(start);
 
-            Quadrants chainQuad = QuadrantOp<TCoordinate>.Quadrant(segment.First, 
+            Quadrants chainQuad = QuadrantOp<TCoordinate>.Quadrant(segment.First,
                                                                    segment.Second);
 
             Quadrants quad = chainQuad;

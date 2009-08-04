@@ -13,20 +13,13 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// </summary>
     public class DouglasPeuckerLineSimplifier<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        public static ICoordinateSequence<TCoordinate> Simplify(ICoordinateSequence<TCoordinate> coordinates, Double distanceTolerance)
-        {
-            DouglasPeuckerLineSimplifier<TCoordinate> simp = new DouglasPeuckerLineSimplifier<TCoordinate>(coordinates);
-            simp.DistanceTolerance = distanceTolerance;
-            return coordinates.CoordinateSequenceFactory.Create(simp.Simplify());
-        }
-
         private readonly ICoordinateSequence<TCoordinate> _coordinates;
+        private readonly List<BitVector32> _useCoordinate = new List<BitVector32>();
         private Double _distanceTolerance;
         private Int32 _outputCoordinateCount;
-        private LineSegment<TCoordinate> _segment = new LineSegment<TCoordinate>();
-        private readonly List<BitVector32> _useCoordinate = new List<BitVector32>();
+        private LineSegment<TCoordinate> _segment;
 
         public DouglasPeuckerLineSimplifier(ICoordinateSequence<TCoordinate> coordinates)
         {
@@ -37,6 +30,14 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         {
             get { return _distanceTolerance; }
             set { _distanceTolerance = value; }
+        }
+
+        public static ICoordinateSequence<TCoordinate> Simplify(ICoordinateSequence<TCoordinate> coordinates,
+                                                                Double distanceTolerance)
+        {
+            DouglasPeuckerLineSimplifier<TCoordinate> simp = new DouglasPeuckerLineSimplifier<TCoordinate>(coordinates);
+            simp.DistanceTolerance = distanceTolerance;
+            return coordinates.CoordinateSequenceFactory.Create(simp.Simplify());
         }
 
         public IEnumerable<TCoordinate> Simplify()
@@ -97,13 +98,13 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         {
             Int32 index = coordinateIndex >> 5; // divide by 32
             BitVector32 bits = _useCoordinate[index];
-            bits[coordinateIndex % 32] = use;
+            bits[coordinateIndex%32] = use;
             _useCoordinate[index] = bits;
         }
 
         private Boolean getUseCoordinate(Int32 coordinateIndex)
         {
-            return _useCoordinate[coordinateIndex >> 5][coordinateIndex % 32];
+            return _useCoordinate[coordinateIndex >> 5][coordinateIndex%32];
         }
     }
 }

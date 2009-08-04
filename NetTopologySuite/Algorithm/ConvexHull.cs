@@ -7,6 +7,7 @@ using GeoAPI.DataStructures.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
+
 #if DOTNET35
 using System.Linq;
 #endif
@@ -20,8 +21,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// Uses the Graham Scan algorithm.
     /// </summary>
     public class ConvexHull<TCoordinate>
-         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                             IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<Double, TCoordinate>, IConvertible
     {
         //private static IEnumerable<TCoordinate> extractCoordinates(IGeometry<TCoordinate> geom)
         //{
@@ -30,14 +31,16 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         //    return filter.Coordinates;
         //}
 
-        private readonly IGeometryFactory<TCoordinate> _geomFactory = null;
-        private readonly ICoordinateSequence<TCoordinate> _inputPts = null;
+        private readonly IGeometryFactory<TCoordinate> _geomFactory;
+        private readonly ICoordinateSequence<TCoordinate> _inputPts;
 
         /// <summary> 
         /// Create a new convex hull construction for the input <see cref="Geometry{TCoordinate}"/>.
         /// </summary>
         public ConvexHull(IGeometry<TCoordinate> geometry)
-            : this(geometry.Coordinates.WithoutDuplicatePoints(), geometry.Factory) { }
+            : this(geometry.Coordinates.WithoutDuplicatePoints(), geometry.Factory)
+        {
+        }
 
         /// <summary>
         /// Create a new convex hull construction for the input 
@@ -259,7 +262,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private IEnumerable<TCoordinate> computeOctRing(IEnumerable<TCoordinate> inputPts)
         {
             IEnumerable<TCoordinate> octPts = computeOctPts(inputPts);
-            ICoordinateSequence<TCoordinate> coords 
+            ICoordinateSequence<TCoordinate> coords
                 = _geomFactory.CoordinateSequenceFactory.Create(octPts, false);
 
             // points must all lie in a line
@@ -384,13 +387,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return cleanedRing;
         }
 
+        #region Nested type: RadialComparator
+
         /// <summary>
         /// Compares <typeparamref name="TCoordinate" />s for their angle and distance
         /// relative to an origin.
         /// </summary>
         private class RadialComparator : IComparer<TCoordinate>
         {
-            private readonly TCoordinate _origin = default(TCoordinate);
+            private readonly TCoordinate _origin;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="RadialComparator"/> class.
@@ -400,10 +405,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 _origin = origin;
             }
 
+            #region IComparer<TCoordinate> Members
+
             public Int32 Compare(TCoordinate p1, TCoordinate p2)
             {
                 return polarCompare(_origin, p1, p2);
             }
+
+            #endregion
 
             private static Int32 polarCompare(TCoordinate o, TCoordinate p, TCoordinate q)
             {
@@ -425,8 +434,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 }
 
                 // points are collinear - check distance
-                Double op = dxp * dxp + dyp * dyp;
-                Double oq = dxq * dxq + dyq * dyq;
+                Double op = dxp*dxp + dyp*dyp;
+                Double oq = dxq*dxq + dyq*dyq;
 
                 if (op < oq)
                 {
@@ -441,5 +450,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 return 0;
             }
         }
+
+        #endregion
     }
 }

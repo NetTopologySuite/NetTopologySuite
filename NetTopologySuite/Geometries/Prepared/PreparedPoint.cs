@@ -12,14 +12,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
     ///</summary>
     public class PreparedPoint<TCoordinate> : BasicPreparedGeometry<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         ///<summary>
         /// Constructs an instance of <see cref="PreparedPoint{TCoordinate}"/>
         ///</summary>
         ///<param name="point">base geometry</param>
         public PreparedPoint(IPoint<TCoordinate> point)
-            :base(point)
+            : base(point)
         {
         }
 
@@ -32,7 +32,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
              * This avoids computing topology for the test geometry
              */
             return IsAnyTargetComponentInTest(g);
-        }  
-
+        }
     }
 }

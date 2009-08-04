@@ -5,6 +5,7 @@ using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Operation;
 using NPack.Interfaces;
+
 #if DOTNET35
 using System.Linq;
 #endif
@@ -15,11 +16,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Models a collection of <see cref="IPoint{TCoordinate}"/>s.
     /// </summary>
     [Serializable]
-    public class MultiPoint<TCoordinate> : GeometryCollection<TCoordinate>, 
+    public class MultiPoint<TCoordinate> : GeometryCollection<TCoordinate>,
                                            IMultiPoint<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible, 
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         ///// <summary>
         ///// Represents an empty <c>MultiPoint</c>.
@@ -30,7 +31,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Constructs an empty <see cref="MultiPoint{TCoordinate}"/>.
         /// </summary>
         public MultiPoint(IGeometryFactory<TCoordinate> factory)
-            : base(factory) { }
+            : base(factory)
+        {
+        }
 
         /// <summary>
         /// Constructs a <see cref="MultiPoint{TCoordinate}"/>.
@@ -45,9 +48,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// The <see cref="IGeometryFactory{TCoordinate}"/> used to create the 
         /// <see cref="IPoint{TCoordinate}"/>.
         /// </param>
-        public MultiPoint(IEnumerable<IPoint<TCoordinate>> points, 
+        public MultiPoint(IEnumerable<IPoint<TCoordinate>> points,
                           IGeometryFactory<TCoordinate> factory)
-            : base(Caster.Upcast<IGeometry<TCoordinate>, IPoint<TCoordinate>>(points), factory) { }
+            : base(Caster.Upcast<IGeometry<TCoordinate>, IPoint<TCoordinate>>(points), factory)
+        {
+        }
 
         /// <summary>
         /// Constructs a <see cref="MultiPoint{TCoordinate}"/>.
@@ -63,11 +68,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="IPrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.DoubleFloating"/>.
         /// </remarks>
-        public MultiPoint(IEnumerable<IPoint<TCoordinate>> points) 
-            : this(points, ExtractGeometryFactory(Caster.Upcast<IGeometry<TCoordinate>, IPoint<TCoordinate>>(points))) {}
+        public MultiPoint(IEnumerable<IPoint<TCoordinate>> points)
+            : this(points, ExtractGeometryFactory(Caster.Upcast<IGeometry<TCoordinate>, IPoint<TCoordinate>>(points)))
+        {
+        }
 
         //public MultiPoint(IEnumerable<TCoordinate> points)
         //    : this(DefaultFactory.CreateMultiPoint(points), DefaultFactory) { }
+
+        #region IMultiPoint<TCoordinate> Members
 
         public override Dimensions Dimension
         {
@@ -116,6 +125,36 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return IsEquivalentClass(other) && base.Equals(other, tolerance);
         }
 
+        public new IEnumerator<IPoint<TCoordinate>> GetEnumerator()
+        {
+            foreach (IPoint<TCoordinate> point in GeometriesInternal)
+            {
+                yield return point;
+            }
+        }
+
+        public new IPoint<TCoordinate> this[Int32 index]
+        {
+            get { return base[index] as IPoint<TCoordinate>; }
+            set { base[index] = value; }
+        }
+
+        IPoint IMultiPoint.this[Int32 index]
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        IEnumerator<IPoint> IEnumerable<IPoint>.GetEnumerator()
+        {
+            foreach (IPoint point in GeometriesInternal)
+            {
+                yield return point;
+            }
+        }
+
+        #endregion
+
         /// <summary>
         /// Returns the <typeparamref name="TCoordinate"/> at the given <paramref name="index"/>.
         /// </summary>
@@ -127,42 +166,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         protected TCoordinate GetCoordinate(Int32 index)
         {
             return this[index].Coordinate;
-        }
-
-        public new IEnumerator<IPoint<TCoordinate>> GetEnumerator()
-        {
-            foreach (IPoint<TCoordinate> point in GeometriesInternal)
-            {
-                yield return point;
-            }
-        }
-
-        #region IMultiPoint<TCoordinate> Members
-
-        public new IPoint<TCoordinate> this[Int32 index]
-        {
-            get { return base[index] as IPoint<TCoordinate>; }
-            set { base[index] = value; }
-        }
-
-        #endregion
-
-        #region IMultiPoint Members
-
-        IPoint IMultiPoint.this[Int32 index]
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        #endregion
-
-        IEnumerator<IPoint> IEnumerable<IPoint>.GetEnumerator()
-        {
-            foreach (IPoint point in GeometriesInternal)
-            {
-                yield return point;
-            }
         }
 
         protected override void CheckItemType(IGeometry<TCoordinate> item)

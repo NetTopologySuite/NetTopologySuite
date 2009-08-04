@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
 
         public void Add(SweepLineInterval sweepLineInterval)
         {
-            SweepLineEvent insertEvent 
+            SweepLineEvent insertEvent
                 = new SweepLineEvent(sweepLineInterval.Min, null, sweepLineInterval);
             _events.Add(insertEvent);
             _events.Add(new SweepLineEvent(sweepLineInterval.Max, insertEvent, sweepLineInterval));

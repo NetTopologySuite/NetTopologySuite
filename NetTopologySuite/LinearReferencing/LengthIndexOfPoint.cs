@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
 #if DOTNET35
 using System.Linq;
 #else
-using GeoAPI.DataStructures;
+
 #endif
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
@@ -18,6 +19,17 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
+        private readonly IGeometry<TCoordinate> _linearGeometry;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LengthIndexOfPoint{TCoordinate}"/> class.
+        /// </summary>
+        /// <param name="linearGeom">A linear geometry.</param>
+        public LengthIndexOfPoint(IGeometry<TCoordinate> linearGeom)
+        {
+            _linearGeometry = linearGeom;
+        }
+
         public static Double IndexOf(IGeometry<TCoordinate> linearGeometry, TCoordinate inputPt)
         {
             LengthIndexOfPoint<TCoordinate> locater = new LengthIndexOfPoint<TCoordinate>(linearGeometry);
@@ -28,17 +40,6 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         {
             LengthIndexOfPoint<TCoordinate> locater = new LengthIndexOfPoint<TCoordinate>(linearGeometry);
             return locater.IndexOfAfter(inputPt, minIndex);
-        }
-
-        private readonly IGeometry<TCoordinate> _linearGeometry;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LengthIndexOfPoint{TCoordinate}"/> class.
-        /// </summary>
-        /// <param name="linearGeom">A linear geometry.</param>
-        public LengthIndexOfPoint(IGeometry<TCoordinate> linearGeom)
-        {
-            _linearGeometry = linearGeom;
         }
 
         /// <summary>
@@ -72,17 +73,15 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
                 return IndexOf(inputPt);
             }
 
-            Func<ILineString<TCoordinate>, Double> getLength = delegate(ILineString<TCoordinate> line)
-                                                         {
-                                                             return line.Length;
-                                                         };
+            Func<ILineString<TCoordinate>, Double> getLength =
+                delegate(ILineString<TCoordinate> line) { return line.Length; };
 
             Debug.Assert(_linearGeometry is ILineString || _linearGeometry is IEnumerable<ILineString<TCoordinate>>);
 
             // sanity check for minIndex at or past end of line
             Double endIndex = _linearGeometry is IEnumerable<ILineString<TCoordinate>>
                                   ? Enumerable.Sum(_linearGeometry as IEnumerable<ILineString<TCoordinate>>, getLength)
-                                  : ((ILineString)_linearGeometry).Length;
+                                  : ((ILineString) _linearGeometry).Length;
 
             if (endIndex < minIndex)
             {
@@ -108,7 +107,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
             LineSegment<TCoordinate> seg = new LineSegment<TCoordinate>();
 
-            foreach (LinearIterator<TCoordinate>.LinearElement element in new LinearIterator<TCoordinate>(_linearGeometry))
+            foreach (
+                LinearIterator<TCoordinate>.LinearElement element in new LinearIterator<TCoordinate>(_linearGeometry))
             {
                 if (!element.IsEndOfLine)
                 {
@@ -129,7 +129,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             return ptMeasure;
         }
 
-        private static Double segmentNearestMeasure(LineSegment<TCoordinate> seg, TCoordinate inputPt, Double segmentStartMeasure)
+        private static Double segmentNearestMeasure(LineSegment<TCoordinate> seg, TCoordinate inputPt,
+                                                    Double segmentStartMeasure)
         {
             // found new minimum, so compute location distance of point
             Double projFactor = seg.ProjectionFactor(inputPt);
@@ -138,7 +139,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             {
                 return segmentStartMeasure;
             }
-            
+
             if (projFactor <= 1.0)
             {
                 return segmentStartMeasure + projFactor*seg.Length;

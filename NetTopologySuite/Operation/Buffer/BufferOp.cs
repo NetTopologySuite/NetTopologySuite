@@ -7,6 +7,7 @@ using GisSharpBlog.NetTopologySuite.Noding;
 using GisSharpBlog.NetTopologySuite.Noding.Snapround;
 using NPack;
 using NPack.Interfaces;
+
 //using GisSharpBlog.NetTopologySuite.Precision;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
@@ -56,128 +57,21 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// </para>
     /// </remarks>
     public class BufferOp<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         // NOTE: modified for "safe" assembly in Sql 2005
         // Const added!
         private const Int32 MaxPrecisionDigits = 12;
 
-        /// <summary>
-        /// Compute a reasonable scale factor to limit the precision of
-        /// a given combination of geometry and buffer distance.
-        /// The scale factor is based on a heuristic.
-        /// </summary>
-        /// <param name="g">
-        /// The <see cref="IGeometry{TCoordinate}"/> being buffered.
-        /// </param>
-        /// <param name="distance">The buffer distance.</param>
-        /// <param name="maxPrecisionDigits">
-        /// The max # of digits that should be allowed by
-        /// the precision determined by the computed scale factor.
-        /// </param>
-        /// <returns>
-        /// A scale factor that allows a reasonable amount of precision 
-        /// for the buffer computation.
-        /// </returns>
-        public static Double PrecisionScaleFactor(IGeometry<TCoordinate> g,
-                                                  Double distance,
-                                                  Int32 maxPrecisionDigits)
-        {
-            IExtents<TCoordinate> extents = g.Extents;
-            Double envSize = Math.Max(extents.GetSize(Ordinates.Y), 
-                                      extents.GetSize(Ordinates.X));
-            Double expandByDistance = distance > 0.0 ? distance : 0.0;
-            Double bufEnvSize = envSize + 2 * expandByDistance;
-
-            // the smallest power of 10 greater than the buffer envelope
-            Int32 bufEnvLog10 = (Int32)(Math.Log(bufEnvSize) / Math.Log(10) + 1.0);
-            Int32 minUnitLog10 = bufEnvLog10 - maxPrecisionDigits;
-
-            // scale factor is inverse of min Unit size, so flip sign of exponent
-            Double scaleFactor = Math.Pow(10.0, -minUnitLog10);
-            return scaleFactor;
-        }
-
-        /// <summary>
-        /// Computes the buffer of a geometry for a given buffer distance.
-        /// </summary>
-        /// <param name="g">The point to buffer.</param>
-        /// <param name="distance">The buffer distance.</param>
-        /// <returns> The buffer of the input point.</returns>
-        public static IGeometry<TCoordinate> Buffer(IGeometry<TCoordinate> g, 
-                                                    Double distance)
-        {
-            BufferOp<TCoordinate> gBuf = new BufferOp<TCoordinate>(g);
-            IGeometry<TCoordinate> geomBuf = gBuf.GetResultGeometry(distance);
-            return geomBuf;
-        }
-
-        /// <summary>
-        /// Computes the buffer of a point for a given buffer distance,
-        /// using the given Cap Style for borders of the point.
-        /// </summary>
-        /// <param name="g">The point to buffer.</param>
-        /// <param name="distance">The buffer distance.</param>        
-        /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
-        /// <returns> The buffer of the input point.</returns>
-        public static IGeometry<TCoordinate> Buffer(IGeometry<TCoordinate> g, 
-                                                    Double distance, 
-                                                    BufferStyle endCapStyle)
-        {
-            BufferOp<TCoordinate> gBuf = new BufferOp<TCoordinate>(g);
-            gBuf.EndCapStyle = endCapStyle;
-            IGeometry<TCoordinate> geomBuf = gBuf.GetResultGeometry(distance);
-            return geomBuf;
-        }
-
-        /// <summary>
-        /// Computes the buffer for a point for a given buffer distance
-        /// and accuracy of approximation.
-        /// </summary>
-        /// <param name="g">The point to buffer.</param>
-        /// <param name="distance">The buffer distance.</param>
-        /// <param name="quadrantSegments">The number of segments used to approximate a quarter circle.</param>
-        /// <returns>The buffer of the input point.</returns>
-        public static IGeometry<TCoordinate> Buffer(IGeometry<TCoordinate> g, 
-                                                    Double distance, 
-                                                    Int32 quadrantSegments)
-        {
-            BufferOp<TCoordinate> bufOp = new BufferOp<TCoordinate>(g);
-            bufOp.QuadrantSegments = quadrantSegments;
-            IGeometry<TCoordinate> geomBuf = bufOp.GetResultGeometry(distance);
-            return geomBuf;
-        }
-
-        /// <summary>
-        /// Computes the buffer for a point for a given buffer distance
-        /// and accuracy of approximation.
-        /// </summary>
-        /// <param name="g">The point to buffer.</param>
-        /// <param name="distance">The buffer distance.</param>
-        /// <param name="quadrantSegments">The number of segments used to approximate a quarter circle.</param>
-        /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
-        /// <returns>The buffer of the input point.</returns>
-        public static IGeometry<TCoordinate> Buffer(IGeometry<TCoordinate> g, 
-                                                    Double distance, 
-                                                    Int32 quadrantSegments,
-                                                    BufferStyle endCapStyle)
-        {
-            BufferOp<TCoordinate> bufOp = new BufferOp<TCoordinate>(g);
-            bufOp.EndCapStyle = endCapStyle;
-            bufOp.QuadrantSegments = quadrantSegments;
-            IGeometry<TCoordinate> geomBuf = bufOp.GetResultGeometry(distance);
-            return geomBuf;
-        }
-
         private readonly IGeometry<TCoordinate> _argGeom;
-        private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private readonly ICoordinateFactory<TCoordinate> _coordFactory;
         private readonly ICoordinateSequenceFactory<TCoordinate> _coordSequenceFactory;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private Double _distance;
-        private Int32 _quadrantSegments = OffsetCurveBuilder<TCoordinate>.DefaultQuadrantSegments;
         private BufferStyle _endCapStyle = BufferStyle.Round;
+        private Int32 _quadrantSegments = OffsetCurveBuilder<TCoordinate>.DefaultQuadrantSegments;
         private IGeometry<TCoordinate> _resultGeometry;
         private TopologyException _saveException; // debugging only
 
@@ -211,6 +105,113 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             set { _quadrantSegments = value; }
         }
 
+        /// <summary>
+        /// Compute a reasonable scale factor to limit the precision of
+        /// a given combination of geometry and buffer distance.
+        /// The scale factor is based on a heuristic.
+        /// </summary>
+        /// <param name="g">
+        /// The <see cref="IGeometry{TCoordinate}"/> being buffered.
+        /// </param>
+        /// <param name="distance">The buffer distance.</param>
+        /// <param name="maxPrecisionDigits">
+        /// The max # of digits that should be allowed by
+        /// the precision determined by the computed scale factor.
+        /// </param>
+        /// <returns>
+        /// A scale factor that allows a reasonable amount of precision 
+        /// for the buffer computation.
+        /// </returns>
+        public static Double PrecisionScaleFactor(IGeometry<TCoordinate> g,
+                                                  Double distance,
+                                                  Int32 maxPrecisionDigits)
+        {
+            IExtents<TCoordinate> extents = g.Extents;
+            Double envSize = Math.Max(extents.GetSize(Ordinates.Y),
+                                      extents.GetSize(Ordinates.X));
+            Double expandByDistance = distance > 0.0 ? distance : 0.0;
+            Double bufEnvSize = envSize + 2*expandByDistance;
+
+            // the smallest power of 10 greater than the buffer envelope
+            Int32 bufEnvLog10 = (Int32) (Math.Log(bufEnvSize)/Math.Log(10) + 1.0);
+            Int32 minUnitLog10 = bufEnvLog10 - maxPrecisionDigits;
+
+            // scale factor is inverse of min Unit size, so flip sign of exponent
+            Double scaleFactor = Math.Pow(10.0, -minUnitLog10);
+            return scaleFactor;
+        }
+
+        /// <summary>
+        /// Computes the buffer of a geometry for a given buffer distance.
+        /// </summary>
+        /// <param name="g">The point to buffer.</param>
+        /// <param name="distance">The buffer distance.</param>
+        /// <returns> The buffer of the input point.</returns>
+        public static IGeometry<TCoordinate> Buffer(IGeometry<TCoordinate> g,
+                                                    Double distance)
+        {
+            BufferOp<TCoordinate> gBuf = new BufferOp<TCoordinate>(g);
+            IGeometry<TCoordinate> geomBuf = gBuf.GetResultGeometry(distance);
+            return geomBuf;
+        }
+
+        /// <summary>
+        /// Computes the buffer of a point for a given buffer distance,
+        /// using the given Cap Style for borders of the point.
+        /// </summary>
+        /// <param name="g">The point to buffer.</param>
+        /// <param name="distance">The buffer distance.</param>        
+        /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
+        /// <returns> The buffer of the input point.</returns>
+        public static IGeometry<TCoordinate> Buffer(IGeometry<TCoordinate> g,
+                                                    Double distance,
+                                                    BufferStyle endCapStyle)
+        {
+            BufferOp<TCoordinate> gBuf = new BufferOp<TCoordinate>(g);
+            gBuf.EndCapStyle = endCapStyle;
+            IGeometry<TCoordinate> geomBuf = gBuf.GetResultGeometry(distance);
+            return geomBuf;
+        }
+
+        /// <summary>
+        /// Computes the buffer for a point for a given buffer distance
+        /// and accuracy of approximation.
+        /// </summary>
+        /// <param name="g">The point to buffer.</param>
+        /// <param name="distance">The buffer distance.</param>
+        /// <param name="quadrantSegments">The number of segments used to approximate a quarter circle.</param>
+        /// <returns>The buffer of the input point.</returns>
+        public static IGeometry<TCoordinate> Buffer(IGeometry<TCoordinate> g,
+                                                    Double distance,
+                                                    Int32 quadrantSegments)
+        {
+            BufferOp<TCoordinate> bufOp = new BufferOp<TCoordinate>(g);
+            bufOp.QuadrantSegments = quadrantSegments;
+            IGeometry<TCoordinate> geomBuf = bufOp.GetResultGeometry(distance);
+            return geomBuf;
+        }
+
+        /// <summary>
+        /// Computes the buffer for a point for a given buffer distance
+        /// and accuracy of approximation.
+        /// </summary>
+        /// <param name="g">The point to buffer.</param>
+        /// <param name="distance">The buffer distance.</param>
+        /// <param name="quadrantSegments">The number of segments used to approximate a quarter circle.</param>
+        /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
+        /// <returns>The buffer of the input point.</returns>
+        public static IGeometry<TCoordinate> Buffer(IGeometry<TCoordinate> g,
+                                                    Double distance,
+                                                    Int32 quadrantSegments,
+                                                    BufferStyle endCapStyle)
+        {
+            BufferOp<TCoordinate> bufOp = new BufferOp<TCoordinate>(g);
+            bufOp.EndCapStyle = endCapStyle;
+            bufOp.QuadrantSegments = quadrantSegments;
+            IGeometry<TCoordinate> geomBuf = bufOp.GetResultGeometry(distance);
+            return geomBuf;
+        }
+
         public IGeometry<TCoordinate> GetResultGeometry(Double distance)
         {
             _distance = distance;
@@ -218,7 +219,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             return _resultGeometry;
         }
 
-        public IGeometry<TCoordinate> GetResultGeometry(Double distance, 
+        public IGeometry<TCoordinate> GetResultGeometry(Double distance,
                                                         Int32 quadrantSegments)
         {
             _distance = distance;
@@ -273,12 +274,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         {
             MonotoneChainIndexSnapRounder<TCoordinate> snapRounder =
                 new MonotoneChainIndexSnapRounder<TCoordinate>(_geoFactory,
-                    _coordFactory.CreatePrecisionModel(1.0));
+                                                               _coordFactory.CreatePrecisionModel(1.0));
 
             INoder<TCoordinate> noder = new ScaledNoder<TCoordinate, TMatrix>(
-                                                                     snapRounder, 
-                                                                     fixedPM.Scale, 
-                                                                     _coordSequenceFactory);
+                snapRounder,
+                fixedPM.Scale,
+                _coordSequenceFactory);
 
             BufferBuilder<TCoordinate> bufBuilder
                 = new BufferBuilder<TCoordinate>(_geoFactory);
@@ -321,7 +322,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             Double sizeBasedScaleFactor = PrecisionScaleFactor(_argGeom, _distance, precisionDigits);
             // Debug.WriteLine(String.Format("recomputing with precision scale factor = {0}", sizeBasedScaleFactor));
 
-            IPrecisionModel<TCoordinate> fixedPM = 
+            IPrecisionModel<TCoordinate> fixedPM =
                 _coordFactory.CreatePrecisionModel(sizeBasedScaleFactor);
 
             // TODO: Fix scaled noder.

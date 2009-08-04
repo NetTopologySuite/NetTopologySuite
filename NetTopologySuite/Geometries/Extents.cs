@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.CoordinateSystems;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using NPack;
 using NPack.Interfaces;
-using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -24,87 +24,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </remarks>
     [Serializable]
     public class Extents<TCoordinate> : IExtents<TCoordinate>, IExtents2D
-            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                                IComputable<Double, TCoordinate>,
-                                IComparable<TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComputable<Double, TCoordinate>,
+            IComparable<TCoordinate>, IConvertible
     {
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
-        private TCoordinate _min;
         private TCoordinate _max;
-
-        /// <summary>
-        /// Test the point q to see whether it intersects the Envelope
-        /// defined by p1-p2.
-        /// </summary>
-        /// <param name="p1">One extremal point of the envelope.</param>
-        /// <param name="p2">The other extremal point of the envelope.</param>
-        /// <param name="q">Point to test for intersection.</param>
-        /// <returns><see langword="true"/> if q intersects the envelope p1-p2.</returns>
-        public static Boolean Intersects(TCoordinate p1, TCoordinate p2, TCoordinate q)
-        {
-            // FIX_PERF: read all coordinates at once
-            Double qX = q[Ordinates.X], qY = q[Ordinates.Y];
-            Double p1X = p1[Ordinates.X], p1Y = p1[Ordinates.Y];
-            Double p2X = p1[Ordinates.X], p2Y = p1[Ordinates.Y];
-
-            if (((qX >= (p1X < p2X ? p1X : p2X)) && (qX <= (p1X > p2X ? p1X : p2X))) &&
-                ((qY >= (p1Y < p2Y ? p1Y : p2Y)) && (qY <= (p1Y > p2Y ? p1Y : p2Y))))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Test the envelope defined by p1-p2 for intersection
-        /// with the envelope defined by q1-q2.
-        /// </summary>
-        /// <param name="p1">One extremal point of the envelope Point.</param>
-        /// <param name="p2">Another extremal point of the envelope Point.</param>
-        /// <param name="q1">One extremal point of the envelope Q.</param>
-        /// <param name="q2">Another extremal point of the envelope Q.</param>
-        /// <returns><see langword="true"/> if Q intersects Point</returns>
-        public static Boolean Intersects(TCoordinate p1, TCoordinate p2, TCoordinate q1, TCoordinate q2)
-        {
-            // FIX_PERF: read all coordinates at once
-            Double p1X = p1[Ordinates.X], p1Y = p1[Ordinates.Y];
-            Double p2X = p1[Ordinates.X], p2Y = p1[Ordinates.Y];
-            Double q1X = p1[Ordinates.X], q1Y = p1[Ordinates.Y];
-            Double q2X = p1[Ordinates.X], q2Y = p1[Ordinates.Y];
-
-            Double minq = Math.Min(q1X, q2X);
-            Double maxq = Math.Max(q1X, q2X);
-            Double minp = Math.Min(p1X, p2X);
-            Double maxp = Math.Max(p1X, p2X);
-
-            if (minp > maxq)
-            {
-                return false;
-            }
-
-            if (maxp < minq)
-            {
-                return false;
-            }
-
-            minq = Math.Min(q1Y, q2Y);
-            maxq = Math.Max(q1Y, q2Y);
-            minp = Math.Min(p1Y, p2Y);
-            maxp = Math.Max(p1Y, p2Y);
-
-            if (minp > maxq)
-            {
-                return false;
-            }
-
-            if (maxp < minq)
-            {
-                return false;
-            }
-
-            return true;
-        }
+        private TCoordinate _min;
 
         /// <summary>
         /// Creates a null <see cref="Extents{TCoordinate}"/>.
@@ -159,90 +85,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             Init(extents);
         }
 
-        /// <summary>
-        /// Initialize to a null <see cref="Extents{TCoordinate}"/>.
-        /// </summary>
-        public void Init()
-        {
-            SetToEmpty();
-        }
-
-        /// <summary>
-        /// Initialize an <see cref="Extents{TCoordinate}"/> for a region defined by maximum and minimum values.
-        /// </summary>
-        /// <param name="x1">The first x-value.</param>
-        /// <param name="x2">The second x-value.</param>
-        /// <param name="y1">The first y-value.</param>
-        /// <param name="y2">The second y-value.</param>
-        public void Init(Double x1, Double x2, Double y1, Double y2)
-        {
-            Double minX, maxX, minY, maxY;
-
-            if (x1 < x2)
-            {
-                minX = x1;
-                maxX = x2;
-            }
-            else
-            {
-                minX = x2;
-                maxX = x1;
-            }
-
-            if (y1 < y2)
-            {
-                minY = y1;
-                maxY = y2;
-            }
-            else
-            {
-                minY = y2;
-                maxY = y1;
-            }
-
-            ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
-            _min = coordFactory.Create(minX, minY);
-            _max = coordFactory.Create(maxX, maxY);
-        }
-
-        /// <summary>
-        /// Initialize an <see cref="Extents{TCoordinate}"/> 
-        /// for a region defined by two <typeparamref name="TCoordinate"/>s.
-        /// </summary>
-        /// <param name="p1">The first coordinate.</param>
-        /// <param name="p2">The second coordinate.</param>
-        public void Init(TCoordinate p1, TCoordinate p2)
-        {
-            // FIX_PERF: read all coordinates at once
-            Init(p1[Ordinates.X], p2[Ordinates.X], p1[Ordinates.Y], p2[Ordinates.Y]);
-        }
-
-        /// <summary>
-        /// Initialize an <see cref="Extents{TCoordinate}"/> for a region defined by a single Coordinate.
-        /// </summary>
-        /// <param name="p">The Coordinate.</param>
-        public void Init(TCoordinate p)
-        {
-            if (Coordinates<TCoordinate>.IsEmpty(p))
-            {
-                return;
-            }
-
-            // FIX_PERF: read all coordinates at once
-            Double x = p[Ordinates.X], y = p[Ordinates.Y];
-            Init(x, x, y, y);
-        }
-
-        /// <summary>
-        /// Initialize an <see cref="Extents{TCoordinate}"/> from an existing 
-        /// <see cref="IExtents{TCoordinate}"/>.
-        /// </summary>
-        /// <param name="extents">The Envelope to initialize from.</param>
-        public void Init(IExtents<TCoordinate> extents)
-        {
-            _min = extents.Min;
-            _max = extents.Max;
-        }
+        #region IExtents<TCoordinate> Members
 
         /// <summary>
         /// Makes this <see cref="Extents{TCoordinate}"/> a "null" envelope..
@@ -266,43 +109,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get
             {
                 return Coordinates<TCoordinate>.IsEmpty(_min)
-                    || Coordinates<TCoordinate>.IsEmpty(_max);
-            }
-        }
-
-        /// <summary>
-        /// Returns the difference between the maximum and minimum x values.
-        /// </summary>
-        /// <returns>max x - min x, or 0 if this is a null <see cref="Extents{TCoordinate}"/>.</returns>
-        public Double Width
-        {
-            get
-            {
-                if (IsEmpty)
-                {
-                    return 0;
-                }
-
-                // FIX_PERF: read all coordinates at once
-                return Math.Abs(_max[Ordinates.X] - _min[Ordinates.X]);
-            }
-        }
-
-        /// <summary>
-        /// Returns the difference between the maximum and minimum y values.
-        /// </summary>
-        /// <returns>max y - min y, or 0 if this is a null <see cref="Extents{TCoordinate}"/>.</returns>
-        public Double Height
-        {
-            get
-            {
-                if (IsEmpty)
-                {
-                    return 0;
-                }
-
-                // FIX_PERF: read all coordinates at once
-                return Math.Abs(_max[Ordinates.Y] - _min[Ordinates.Y]);
+                       || Coordinates<TCoordinate>.IsEmpty(_max);
             }
         }
 
@@ -315,40 +122,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             // FIX_PERF: read all coordinates at once
             ExpandToInclude(p[Ordinates.X], p[Ordinates.Y]);
-        }
-
-        /// <summary>
-        /// Enlarges the boundary of the <see cref="Extents{TCoordinate}"/> 
-        /// so that it contains (x, y). Does nothing if (x, y) is already on 
-        /// or within the boundaries.
-        /// </summary>
-        /// <param name="x">
-        /// The value to lower the minimum x to or to raise the maximum x to.
-        /// </param>
-        /// <param name="y">
-        /// The value to lower the minimum y to or to raise the maximum y to.
-        /// </param>
-        public void ExpandToInclude(Double x, Double y)
-        {
-            TCoordinate coordinate = _geoFactory.CoordinateFactory.Create(x, y);
-
-            if (IsEmpty)
-            {
-                _min = coordinate;
-                _max = coordinate;
-            }
-            else
-            {
-                if (_min.GreaterThan(coordinate))
-                {
-                    _min = coordinate;
-                }
-
-                if (_max.LessThan(coordinate))
-                {
-                    _max = coordinate;
-                }
-            }
         }
 
         public void ExpandToInclude(IExtents<TCoordinate> other)
@@ -374,10 +147,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 otherMin.GetComponents(out xMin2, out yMin2);
                 otherMax.GetComponents(out xMax2, out yMax2);
 
-                Double xMin = Math.Min((Double)xMin1, (Double)xMin2);
-                Double xMax = Math.Max((Double)xMax1, (Double)xMax2);
-                Double yMin = Math.Min((Double)yMin1, (Double)yMin2);
-                Double yMax = Math.Max((Double)yMax1, (Double)yMax2);
+                Double xMin = Math.Min((Double) xMin1, (Double) xMin2);
+                Double xMax = Math.Max((Double) xMax1, (Double) xMax2);
+                Double yMin = Math.Min((Double) yMin1, (Double) yMin2);
+                Double yMax = Math.Max((Double) yMax1, (Double) yMax2);
 
                 ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
                 _min = coordFactory.Create(xMin, yMin);
@@ -390,24 +163,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return _geoFactory; }
         }
 
-        /// <summary>
-        /// Translates this envelope by given amounts in the X and Y direction.
-        /// </summary>
-        /// <param name="transX">The amount to translate along the X axis.</param>
-        /// <param name="transY">The amount to translate along the Y axis.</param>
-        public void Translate(Double transX, Double transY)
-        {
-            if (IsEmpty)
-            {
-                return;
-            }
-
-            // FIX_PERF: read all coordinates at once
-            ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
-            _min = coordFactory.Create(_min[Ordinates.X] + transX, _min[Ordinates.Y] + transY);
-            _max = coordFactory.Create(_max[Ordinates.X] + transX, _max[Ordinates.Y] + transY);
-        }
-
         // FIX_PERF: read all coordinates at once
         public TCoordinate Center
         {
@@ -416,8 +171,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return IsEmpty
                            ? default(TCoordinate)
                            : _geoFactory.CoordinateFactory.Create(
-                                 (Min[Ordinates.X] + Max[Ordinates.X]) / 2.0,
-                                 (Min[Ordinates.Y] + Max[Ordinates.Y]) / 2.0);
+                                 (Min[Ordinates.X] + Max[Ordinates.X])/2.0,
+                                 (Min[Ordinates.Y] + Max[Ordinates.Y])/2.0);
             }
         }
 
@@ -439,7 +194,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Boolean Intersects(IExtents<TCoordinate> other)
         {
-            if (IsEmpty || other == null || other.IsEmpty)//jd:added check for null extent - deleted records will return a null extent
+            if (IsEmpty || other == null || other.IsEmpty)
+                //jd:added check for null extent - deleted records will return a null extent
             {
                 return false;
             }
@@ -473,29 +229,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Intersects(coordinate[Ordinates.X], coordinate[Ordinates.Y]);
         }
 
-        /// <summary>  
-        /// Check if the point <c>(x, y)</c> overlaps (lies inside) the region 
-        /// of this <see cref="Extents{TCoordinate}"/>.
-        /// </summary>
-        /// <param name="x">The x-ordinate of the point.</param>
-        /// <param name="y">The y-ordinate of the point.</param>
-        /// <returns>
-        /// <see langword="true"/> if the point overlaps this <see cref="Extents{TCoordinate}"/>.
-        /// </returns>
-        public Boolean Intersects(Double x, Double y)
-        {
-            if (IsEmpty || Double.IsNaN(x) || Double.IsNaN(y))
-            {
-                return false;
-            }
-
-            // FIX_PERF: read all coordinates at once
-            return !(x > _max[Ordinates.X] ||
-                     x < _min[Ordinates.X] ||
-                     y > _max[Ordinates.Y] ||
-                     y < _min[Ordinates.Y]);
-        }
-
         /// <summary>
         /// Use Intersects instead. In the future, Overlaps may be
         /// changed to be a true overlap check; that is, whether the intersection is
@@ -516,37 +249,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Intersects(p);
         }
 
-        /// <summary>
-        /// Use Intersects instead.
-        /// </summary>
-        [Obsolete("Use Intersects instead")]
-        public Boolean Overlaps(Double x, Double y)
-        {
-            return Intersects(x, y);
-        }
-
         public Boolean Contains(TCoordinate p)
         {
             // FIX_PERF: read all coordinates at once
             return Contains(p[Ordinates.X], p[Ordinates.Y]);
-        }
-
-        /// <summary>  
-        /// Returns <see langword="true"/> if the given point lies in or on the envelope.
-        /// </summary>
-        /// <param name="x"> the x-coordinate of the point which this <see cref="Extents{TCoordinate}"/> is
-        /// being checked for containing.</param>
-        /// <param name="y"> the y-coordinate of the point which this <see cref="Extents{TCoordinate}"/> is
-        /// being checked for containing.</param>
-        /// <returns><see langword="true"/> if <c>(x, y)</c> lies in the interior or
-        /// on the boundary of this <see cref="Extents{TCoordinate}"/>.</returns>
-        public Boolean Contains(Double x, Double y)
-        {
-            // FIX_PERF: read all coordinates at once
-            return x >= _min[Ordinates.X] &&
-                   x <= _max[Ordinates.X] &&
-                   y >= _min[Ordinates.Y] &&
-                   y <= _max[Ordinates.Y];
         }
 
         /// <summary>  
@@ -621,12 +327,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return dx;
             }
 
-            return Math.Sqrt(dx * dx + dy * dy);
-        }
-
-        public override Boolean Equals(object other)
-        {
-            return Equals(other as IExtents<TCoordinate>);
+            return Math.Sqrt(dx*dx + dy*dy);
         }
 
         public Boolean Equals(IExtents<TCoordinate> other)
@@ -685,54 +386,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return 0;
         }
 
-        public override Int32 GetHashCode()
-        {
-            Int32 result = 861101 ^ _min.GetHashCode() ^ _max.GetHashCode();
-            return result;
-        }
-
-        /// <summary>
-        /// Compares two <see cref="Extents{TCoordinate}"/> instances for value equality.
-        /// </summary>
-        /// <param name="left">The left <see cref="Extents{TCoordinate}"/> instance.</param>
-        /// <param name="right">The right <see cref="Extents{TCoordinate}"/> instance.</param>
-        /// <returns>
-        /// <see langword="true"/> if the <typeparamref name="TCoordinate"/> values of the 
-        /// <see cref="Extents{TCoordinate}"/> are equal.
-        /// </returns>
-        public static Boolean operator ==(Extents<TCoordinate> left, Extents<TCoordinate> right)
-        {
-            if (ReferenceEquals(left, right))
-            {
-                return true;
-            }
-
-            return !ReferenceEquals(left, null)
-                       ? left.Equals(right)
-                       : right.Equals(left);
-        }
-
-        /// <summary>
-        /// Compares two <see cref="Extents{TCoordinate}"/> instances for value inequality.
-        /// </summary>
-        /// <param name="left">The left <see cref="Extents{TCoordinate}"/> instance.</param>
-        /// <param name="right">The right <see cref="Extents{TCoordinate}"/> instance.</param>
-        /// <returns>
-        /// <see langword="true"/> if the <typeparamref name="TCoordinate"/> values of the 
-        /// <see cref="Extents{TCoordinate}"/> are not equal.
-        /// </returns>
-        public static Boolean operator !=(Extents<TCoordinate> left, Extents<TCoordinate> right)
-        {
-            return !(left == right);
-        }
-
-        public override string ToString()
-        {
-            // 3D_UNSAFE
-            return "Extents [" + _min[Ordinates.X] + " - " + _max[Ordinates.X] +
-                   ", " + _min[Ordinates.Y] + " - " + _max[Ordinates.Y] + "]";
-        }
-
         /// <summary>
         /// Creates a new object that is a copy of the current instance.
         /// </summary>
@@ -744,41 +397,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
-        /// <summary>
-        /// Returns the area of the envelope.
-        /// </summary>
-        public Double Area
-        {
-            get
-            {
-                // 3D_UNSAFE
-                // FIX_PERF: read all coordinates at once
-                Double area = Math.Abs(_max[Ordinates.X] - _min[Ordinates.X]) *
-                              Math.Abs(_max[Ordinates.Y] - _min[Ordinates.Y]);
-                return area;
-            }
-        }
-
-        /// <summary>
-        /// Creates a deep copy of the current envelope.
-        /// </summary>
-        /// <returns></returns>
-        public IExtents<TCoordinate> Clone()
-        {
-            if (IsEmpty)
-            {
-                return new Extents<TCoordinate>(Factory);
-            }
-
-            ICoordinateFactory<TCoordinate> coordFactory = Factory.CoordinateFactory;
-            TCoordinate cloneMin = coordFactory.Create(_min);
-            TCoordinate cloneMax = coordFactory.Create(_max);
-            return new Extents<TCoordinate>(Factory, cloneMin, cloneMax);
-        }
-
         /* END ADDED BY MPAUL42: monoGIS team */
-
-        #region IExtents<TCoordinate> Members
 
         public Boolean Borders(TCoordinate coordinate)
         {
@@ -838,12 +457,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 DoubleComponent x, y;
 
                 _min.GetComponents(out x, out y);
-                originalXMin = (Double)x;
-                originalYMin = (Double)y;
+                originalXMin = (Double) x;
+                originalYMin = (Double) y;
 
                 _max.GetComponents(out x, out y);
-                originalXMax = (Double)x;
-                originalYMax = (Double)y;
+                originalXMax = (Double) x;
+                originalYMax = (Double) y;
             }
 
             Double xMin = originalXMin;
@@ -857,10 +476,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
                 coordinate.GetComponents(out x, out y);
 
-                xMin = Math.Min((Double)x, xMin);
-                xMax = Math.Max((Double)x, xMax);
-                yMin = Math.Min((Double)y, yMin);
-                yMax = Math.Max((Double)y, yMax);
+                xMin = Math.Min((Double) x, xMin);
+                xMax = Math.Max((Double) x, xMax);
+                yMin = Math.Min((Double) y, yMin);
+                yMax = Math.Max((Double) y, yMax);
             }
 
             ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
@@ -963,14 +582,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
             // FIX_PERF: read all coordinates at once
-            ILinearRing<TCoordinate> shell = _geoFactory.CreateLinearRing(new TCoordinate[]
-                          {
-                              coordFactory.Create(_min),
-                              coordFactory.Create(_min[Ordinates.X], _max[Ordinates.Y]),
-                              coordFactory.Create(_max[Ordinates.X], _max[Ordinates.Y]),
-                              coordFactory.Create(_max[Ordinates.X], _min[Ordinates.Y]),
-                              coordFactory.Create(_min)
-                          });
+            ILinearRing<TCoordinate> shell = _geoFactory.CreateLinearRing(new[]
+                                                                              {
+                                                                                  coordFactory.Create(_min),
+                                                                                  coordFactory.Create(
+                                                                                      _min[Ordinates.X],
+                                                                                      _max[Ordinates.Y]),
+                                                                                  coordFactory.Create(
+                                                                                      _max[Ordinates.X],
+                                                                                      _max[Ordinates.Y]),
+                                                                                  coordFactory.Create(
+                                                                                      _max[Ordinates.X],
+                                                                                      _min[Ordinates.Y]),
+                                                                                  coordFactory.Create(_min)
+                                                                              });
             return _geoFactory.CreatePolygon(shell);
         }
 
@@ -992,14 +617,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public Boolean Touches(IExtents<TCoordinate> other, Tolerance tolerance)
         {
             throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Calculates the union of the current box and the given point.
-        /// </summary>
-        public IExtents<TCoordinate> Union(IPoint<TCoordinate> point)
-        {
-            return Union(point.Coordinate);
         }
 
         /// <summary>
@@ -1029,11 +646,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             // FIX_PERF: read all coordinates at once
             return new Extents<TCoordinate>(
-                                Factory,
-                                Math.Min(_min[Ordinates.X], box.Min[Ordinates.X]),
-                                Math.Max(_max[Ordinates.X], box.Max[Ordinates.X]),
-                                Math.Min(_min[Ordinates.Y], box.Min[Ordinates.Y]),
-                                Math.Max(_max[Ordinates.Y], box.Max[Ordinates.Y]));
+                Factory,
+                Math.Min(_min[Ordinates.X], box.Min[Ordinates.X]),
+                Math.Max(_max[Ordinates.X], box.Max[Ordinates.X]),
+                Math.Min(_min[Ordinates.Y], box.Min[Ordinates.Y]),
+                Math.Max(_max[Ordinates.Y], box.Max[Ordinates.Y]));
         }
 
         public Boolean Within(TCoordinate coordinate)
@@ -1055,10 +672,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             throw new NotImplementedException();
         }
-
-        #endregion
-
-        #region IExtents Members
 
         Boolean IExtents.Borders(IExtents other)
         {
@@ -1121,11 +734,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
 
-            if (coordinate.Length % 3 == 0)
+            if (coordinate.Length%3 == 0)
             {
                 throw new NotImplementedException();
             }
-            else if (coordinate.Length % 2 == 0)
+            else if (coordinate.Length%2 == 0)
             {
                 for (Int32 i = 0; i < coordinate.Length; i *= 2)
                 {
@@ -1218,14 +831,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Double GetSize(Ordinates axis1, Ordinates axis2)
         {
-            return Math.Abs(_max[axis1] - _min[axis1]) *
+            return Math.Abs(_max[axis1] - _min[axis1])*
                    Math.Abs(_max[axis2] - _min[axis2]);
         }
 
         public Double GetSize(Ordinates axis1, Ordinates axis2, Ordinates axis3)
         {
-            return Math.Abs(_max[axis1] - _min[axis1]) *
-                   Math.Abs(_max[axis2] - _min[axis2]) *
+            return Math.Abs(_max[axis1] - _min[axis1])*
+                   Math.Abs(_max[axis2] - _min[axis2])*
                    Math.Abs(_max[axis3] - _min[axis3]);
         }
 
@@ -1313,22 +926,22 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public void Transform(ITransformMatrix<DoubleComponent> transformMatrix)
         {
-            _min = (TCoordinate)transformMatrix.TransformVector(_min);
-            _max = (TCoordinate)transformMatrix.TransformVector(_max);
+            _min = (TCoordinate) transformMatrix.TransformVector(_min);
+            _max = (TCoordinate) transformMatrix.TransformVector(_max);
         }
 
         IExtents IExtents.Union(IPoint point)
         {
             return point == null
-                ? Clone()
-                : _geoFactory.CreateExtents(this, point.Extents);
+                       ? Clone()
+                       : _geoFactory.CreateExtents(this, point.Extents);
         }
 
         IExtents IExtents.Union(IExtents box)
         {
             return box == null
-                ? Clone()
-                : _geoFactory.CreateExtents(this, box);
+                       ? Clone()
+                       : _geoFactory.CreateExtents(this, box);
         }
 
         public Boolean Touches(IExtents a)
@@ -1351,11 +964,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 case 0:
                     return;
                 case 1:
-                    xShift = yShift = vector[0] * Width;
+                    xShift = yShift = vector[0]*Width;
                     break;
                 default:
-                    xShift = vector[0] * Width;
-                    yShift = vector[1] * Width;
+                    xShift = vector[0]*Width;
+                    yShift = vector[1]*Width;
                     break;
             }
 
@@ -1368,10 +981,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return _geoFactory; }
         }
 
-        #endregion
-
-        #region IEquatable<IExtents> Members
-
         public Boolean Equals(IExtents other)
         {
             throw new NotImplementedException();
@@ -1380,6 +989,57 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         #endregion
 
         #region IExtents2D Members
+
+        /// <summary>
+        /// Returns the difference between the maximum and minimum x values.
+        /// </summary>
+        /// <returns>max x - min x, or 0 if this is a null <see cref="Extents{TCoordinate}"/>.</returns>
+        public Double Width
+        {
+            get
+            {
+                if (IsEmpty)
+                {
+                    return 0;
+                }
+
+                // FIX_PERF: read all coordinates at once
+                return Math.Abs(_max[Ordinates.X] - _min[Ordinates.X]);
+            }
+        }
+
+        /// <summary>
+        /// Returns the difference between the maximum and minimum y values.
+        /// </summary>
+        /// <returns>max y - min y, or 0 if this is a null <see cref="Extents{TCoordinate}"/>.</returns>
+        public Double Height
+        {
+            get
+            {
+                if (IsEmpty)
+                {
+                    return 0;
+                }
+
+                // FIX_PERF: read all coordinates at once
+                return Math.Abs(_max[Ordinates.Y] - _min[Ordinates.Y]);
+            }
+        }
+
+        /// <summary>
+        /// Returns the area of the envelope.
+        /// </summary>
+        public Double Area
+        {
+            get
+            {
+                // 3D_UNSAFE
+                // FIX_PERF: read all coordinates at once
+                Double area = Math.Abs(_max[Ordinates.X] - _min[Ordinates.X])*
+                              Math.Abs(_max[Ordinates.Y] - _min[Ordinates.Y]);
+                return area;
+            }
+        }
 
         public Double XMin
         {
@@ -1404,6 +1064,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         #endregion
 
         #region Private helper members
+
         private IExtents<TCoordinate> convert(IExtents extents)
         {
             if (extents == null)
@@ -1423,6 +1084,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return _geoFactory.CreateExtents(coordFactory.Create(extents.Min),
                                              coordFactory.Create(extents.Max));
         }
+
         #endregion
 
         #region Obsolete commented out code
@@ -1553,6 +1215,346 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         //    Double h = (Height * perCent / 100);
         //    SetCenter(w, h);
         //}
+
         #endregion
+
+        /// <summary>
+        /// Test the point q to see whether it intersects the Envelope
+        /// defined by p1-p2.
+        /// </summary>
+        /// <param name="p1">One extremal point of the envelope.</param>
+        /// <param name="p2">The other extremal point of the envelope.</param>
+        /// <param name="q">Point to test for intersection.</param>
+        /// <returns><see langword="true"/> if q intersects the envelope p1-p2.</returns>
+        public static Boolean Intersects(TCoordinate p1, TCoordinate p2, TCoordinate q)
+        {
+            // FIX_PERF: read all coordinates at once
+            Double qX = q[Ordinates.X], qY = q[Ordinates.Y];
+            Double p1X = p1[Ordinates.X], p1Y = p1[Ordinates.Y];
+            Double p2X = p1[Ordinates.X], p2Y = p1[Ordinates.Y];
+
+            if (((qX >= (p1X < p2X ? p1X : p2X)) && (qX <= (p1X > p2X ? p1X : p2X))) &&
+                ((qY >= (p1Y < p2Y ? p1Y : p2Y)) && (qY <= (p1Y > p2Y ? p1Y : p2Y))))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Test the envelope defined by p1-p2 for intersection
+        /// with the envelope defined by q1-q2.
+        /// </summary>
+        /// <param name="p1">One extremal point of the envelope Point.</param>
+        /// <param name="p2">Another extremal point of the envelope Point.</param>
+        /// <param name="q1">One extremal point of the envelope Q.</param>
+        /// <param name="q2">Another extremal point of the envelope Q.</param>
+        /// <returns><see langword="true"/> if Q intersects Point</returns>
+        public static Boolean Intersects(TCoordinate p1, TCoordinate p2, TCoordinate q1, TCoordinate q2)
+        {
+            // FIX_PERF: read all coordinates at once
+            Double p1X = p1[Ordinates.X], p1Y = p1[Ordinates.Y];
+            Double p2X = p1[Ordinates.X], p2Y = p1[Ordinates.Y];
+            Double q1X = p1[Ordinates.X], q1Y = p1[Ordinates.Y];
+            Double q2X = p1[Ordinates.X], q2Y = p1[Ordinates.Y];
+
+            Double minq = Math.Min(q1X, q2X);
+            Double maxq = Math.Max(q1X, q2X);
+            Double minp = Math.Min(p1X, p2X);
+            Double maxp = Math.Max(p1X, p2X);
+
+            if (minp > maxq)
+            {
+                return false;
+            }
+
+            if (maxp < minq)
+            {
+                return false;
+            }
+
+            minq = Math.Min(q1Y, q2Y);
+            maxq = Math.Max(q1Y, q2Y);
+            minp = Math.Min(p1Y, p2Y);
+            maxp = Math.Max(p1Y, p2Y);
+
+            if (minp > maxq)
+            {
+                return false;
+            }
+
+            if (maxp < minq)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Initialize to a null <see cref="Extents{TCoordinate}"/>.
+        /// </summary>
+        public void Init()
+        {
+            SetToEmpty();
+        }
+
+        /// <summary>
+        /// Initialize an <see cref="Extents{TCoordinate}"/> for a region defined by maximum and minimum values.
+        /// </summary>
+        /// <param name="x1">The first x-value.</param>
+        /// <param name="x2">The second x-value.</param>
+        /// <param name="y1">The first y-value.</param>
+        /// <param name="y2">The second y-value.</param>
+        public void Init(Double x1, Double x2, Double y1, Double y2)
+        {
+            Double minX, maxX, minY, maxY;
+
+            if (x1 < x2)
+            {
+                minX = x1;
+                maxX = x2;
+            }
+            else
+            {
+                minX = x2;
+                maxX = x1;
+            }
+
+            if (y1 < y2)
+            {
+                minY = y1;
+                maxY = y2;
+            }
+            else
+            {
+                minY = y2;
+                maxY = y1;
+            }
+
+            ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
+            _min = coordFactory.Create(minX, minY);
+            _max = coordFactory.Create(maxX, maxY);
+        }
+
+        /// <summary>
+        /// Initialize an <see cref="Extents{TCoordinate}"/> 
+        /// for a region defined by two <typeparamref name="TCoordinate"/>s.
+        /// </summary>
+        /// <param name="p1">The first coordinate.</param>
+        /// <param name="p2">The second coordinate.</param>
+        public void Init(TCoordinate p1, TCoordinate p2)
+        {
+            // FIX_PERF: read all coordinates at once
+            Init(p1[Ordinates.X], p2[Ordinates.X], p1[Ordinates.Y], p2[Ordinates.Y]);
+        }
+
+        /// <summary>
+        /// Initialize an <see cref="Extents{TCoordinate}"/> for a region defined by a single Coordinate.
+        /// </summary>
+        /// <param name="p">The Coordinate.</param>
+        public void Init(TCoordinate p)
+        {
+            if (Coordinates<TCoordinate>.IsEmpty(p))
+            {
+                return;
+            }
+
+            // FIX_PERF: read all coordinates at once
+            Double x = p[Ordinates.X], y = p[Ordinates.Y];
+            Init(x, x, y, y);
+        }
+
+        /// <summary>
+        /// Initialize an <see cref="Extents{TCoordinate}"/> from an existing 
+        /// <see cref="IExtents{TCoordinate}"/>.
+        /// </summary>
+        /// <param name="extents">The Envelope to initialize from.</param>
+        public void Init(IExtents<TCoordinate> extents)
+        {
+            _min = extents.Min;
+            _max = extents.Max;
+        }
+
+        /// <summary>
+        /// Enlarges the boundary of the <see cref="Extents{TCoordinate}"/> 
+        /// so that it contains (x, y). Does nothing if (x, y) is already on 
+        /// or within the boundaries.
+        /// </summary>
+        /// <param name="x">
+        /// The value to lower the minimum x to or to raise the maximum x to.
+        /// </param>
+        /// <param name="y">
+        /// The value to lower the minimum y to or to raise the maximum y to.
+        /// </param>
+        public void ExpandToInclude(Double x, Double y)
+        {
+            TCoordinate coordinate = _geoFactory.CoordinateFactory.Create(x, y);
+
+            if (IsEmpty)
+            {
+                _min = coordinate;
+                _max = coordinate;
+            }
+            else
+            {
+                if (_min.GreaterThan(coordinate))
+                {
+                    _min = coordinate;
+                }
+
+                if (_max.LessThan(coordinate))
+                {
+                    _max = coordinate;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Translates this envelope by given amounts in the X and Y direction.
+        /// </summary>
+        /// <param name="transX">The amount to translate along the X axis.</param>
+        /// <param name="transY">The amount to translate along the Y axis.</param>
+        public void Translate(Double transX, Double transY)
+        {
+            if (IsEmpty)
+            {
+                return;
+            }
+
+            // FIX_PERF: read all coordinates at once
+            ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
+            _min = coordFactory.Create(_min[Ordinates.X] + transX, _min[Ordinates.Y] + transY);
+            _max = coordFactory.Create(_max[Ordinates.X] + transX, _max[Ordinates.Y] + transY);
+        }
+
+        /// <summary>  
+        /// Check if the point <c>(x, y)</c> overlaps (lies inside) the region 
+        /// of this <see cref="Extents{TCoordinate}"/>.
+        /// </summary>
+        /// <param name="x">The x-ordinate of the point.</param>
+        /// <param name="y">The y-ordinate of the point.</param>
+        /// <returns>
+        /// <see langword="true"/> if the point overlaps this <see cref="Extents{TCoordinate}"/>.
+        /// </returns>
+        public Boolean Intersects(Double x, Double y)
+        {
+            if (IsEmpty || Double.IsNaN(x) || Double.IsNaN(y))
+            {
+                return false;
+            }
+
+            // FIX_PERF: read all coordinates at once
+            return !(x > _max[Ordinates.X] ||
+                     x < _min[Ordinates.X] ||
+                     y > _max[Ordinates.Y] ||
+                     y < _min[Ordinates.Y]);
+        }
+
+        /// <summary>
+        /// Use Intersects instead.
+        /// </summary>
+        [Obsolete("Use Intersects instead")]
+        public Boolean Overlaps(Double x, Double y)
+        {
+            return Intersects(x, y);
+        }
+
+        /// <summary>  
+        /// Returns <see langword="true"/> if the given point lies in or on the envelope.
+        /// </summary>
+        /// <param name="x"> the x-coordinate of the point which this <see cref="Extents{TCoordinate}"/> is
+        /// being checked for containing.</param>
+        /// <param name="y"> the y-coordinate of the point which this <see cref="Extents{TCoordinate}"/> is
+        /// being checked for containing.</param>
+        /// <returns><see langword="true"/> if <c>(x, y)</c> lies in the interior or
+        /// on the boundary of this <see cref="Extents{TCoordinate}"/>.</returns>
+        public Boolean Contains(Double x, Double y)
+        {
+            // FIX_PERF: read all coordinates at once
+            return x >= _min[Ordinates.X] &&
+                   x <= _max[Ordinates.X] &&
+                   y >= _min[Ordinates.Y] &&
+                   y <= _max[Ordinates.Y];
+        }
+
+        public override Boolean Equals(object other)
+        {
+            return Equals(other as IExtents<TCoordinate>);
+        }
+
+        public override Int32 GetHashCode()
+        {
+            Int32 result = 861101 ^ _min.GetHashCode() ^ _max.GetHashCode();
+            return result;
+        }
+
+        /// <summary>
+        /// Compares two <see cref="Extents{TCoordinate}"/> instances for value equality.
+        /// </summary>
+        /// <param name="left">The left <see cref="Extents{TCoordinate}"/> instance.</param>
+        /// <param name="right">The right <see cref="Extents{TCoordinate}"/> instance.</param>
+        /// <returns>
+        /// <see langword="true"/> if the <typeparamref name="TCoordinate"/> values of the 
+        /// <see cref="Extents{TCoordinate}"/> are equal.
+        /// </returns>
+        public static Boolean operator ==(Extents<TCoordinate> left, Extents<TCoordinate> right)
+        {
+            if (ReferenceEquals(left, right))
+            {
+                return true;
+            }
+
+            return !ReferenceEquals(left, null)
+                       ? left.Equals(right)
+                       : right.Equals(left);
+        }
+
+        /// <summary>
+        /// Compares two <see cref="Extents{TCoordinate}"/> instances for value inequality.
+        /// </summary>
+        /// <param name="left">The left <see cref="Extents{TCoordinate}"/> instance.</param>
+        /// <param name="right">The right <see cref="Extents{TCoordinate}"/> instance.</param>
+        /// <returns>
+        /// <see langword="true"/> if the <typeparamref name="TCoordinate"/> values of the 
+        /// <see cref="Extents{TCoordinate}"/> are not equal.
+        /// </returns>
+        public static Boolean operator !=(Extents<TCoordinate> left, Extents<TCoordinate> right)
+        {
+            return !(left == right);
+        }
+
+        public override string ToString()
+        {
+            // 3D_UNSAFE
+            return "Extents [" + _min[Ordinates.X] + " - " + _max[Ordinates.X] +
+                   ", " + _min[Ordinates.Y] + " - " + _max[Ordinates.Y] + "]";
+        }
+
+        /// <summary>
+        /// Creates a deep copy of the current envelope.
+        /// </summary>
+        /// <returns></returns>
+        public IExtents<TCoordinate> Clone()
+        {
+            if (IsEmpty)
+            {
+                return new Extents<TCoordinate>(Factory);
+            }
+
+            ICoordinateFactory<TCoordinate> coordFactory = Factory.CoordinateFactory;
+            TCoordinate cloneMin = coordFactory.Create(_min);
+            TCoordinate cloneMax = coordFactory.Create(_max);
+            return new Extents<TCoordinate>(Factory, cloneMin, cloneMax);
+        }
+
+        /// <summary>
+        /// Calculates the union of the current box and the given point.
+        /// </summary>
+        public IExtents<TCoordinate> Union(IPoint<TCoordinate> point)
+        {
+            return Union(point.Coordinate);
+        }
     }
 }

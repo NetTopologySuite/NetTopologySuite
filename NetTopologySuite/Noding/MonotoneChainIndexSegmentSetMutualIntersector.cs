@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Index.Chain;
 using GisSharpBlog.NetTopologySuite.Index.Strtree;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
@@ -14,10 +14,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     ///<typeparam name="TCoordinate"></typeparam>
     public class MonotoneChainIndexSegmentSetMutualIntersector<TCoordinate> : SegmentSetMutualIntersector<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
-        private readonly List<MonotoneChain<TCoordinate>> _monoChains = new List<MonotoneChain<TCoordinate>>();
 
         /*
         * The {@link SpatialIndex} used should be something that supports
@@ -25,16 +24,16 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         * or {@link STRtree}.
         */
         private readonly StrTree<TCoordinate, MonotoneChain<TCoordinate>> _index;
-        private int _indexCounter = 0;
-        private int _processCounter = 0;
+        private readonly List<MonotoneChain<TCoordinate>> _monoChains = new List<MonotoneChain<TCoordinate>>();
+        private int _indexCounter;
         // statistics
-        private int _nOverlaps = 0;
+        private int _nOverlaps;
+        private int _processCounter;
 
         ///<summary>
         ///</summary>
         ///<param name="geoFactory"></param>
         public MonotoneChainIndexSegmentSetMutualIntersector(IGeometryFactory<TCoordinate> geoFactory)
-            :base()
         {
             _geoFactory = geoFactory;
             _index = new StrTree<TCoordinate, MonotoneChain<TCoordinate>>(geoFactory);
@@ -52,14 +51,16 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
         public override void SetBaseSegments(EdgeList<TCoordinate> segStrings)
         {
-            foreach (var segString in segStrings)
+            foreach (Edge<TCoordinate> segString in segStrings)
                 AddToIndex(segString);
         }
 
         private void AddToIndex(Edge<TCoordinate> segStr)
         {
-            IEnumerable<MonotoneChain<TCoordinate>> segChains = MonotoneChainBuilder.GetChains(_geoFactory, segStr.Coordinates, segStr);
-            foreach (var monotoneChain in segChains)
+            IEnumerable<MonotoneChain<TCoordinate>> segChains = MonotoneChainBuilder.GetChains(_geoFactory,
+                                                                                               segStr.Coordinates,
+                                                                                               segStr);
+            foreach (MonotoneChain<TCoordinate> monotoneChain in segChains)
             {
                 monotoneChain.Id = _indexCounter++;
                 _index.Insert(monotoneChain);
@@ -71,7 +72,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             _processCounter = _indexCounter + 1;
             _nOverlaps = 0;
             _monoChains.Clear();
-            foreach (var segString in segStrings)
+            foreach (Edge<TCoordinate> segString in segStrings)
                 AddToMonoChains(segString);
 
             IntersectChains();
@@ -81,8 +82,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
         private void AddToMonoChains(Edge<TCoordinate> segStr)
         {
-            IEnumerable<MonotoneChain<TCoordinate>> segChains = MonotoneChainBuilder.GetChains(_geoFactory, segStr.Coordinates, segStr);
-            foreach (var monotoneChain in segChains)
+            IEnumerable<MonotoneChain<TCoordinate>> segChains = MonotoneChainBuilder.GetChains(_geoFactory,
+                                                                                               segStr.Coordinates,
+                                                                                               segStr);
+            foreach (MonotoneChain<TCoordinate> monotoneChain in segChains)
             {
                 monotoneChain.Id = _processCounter++;
                 _monoChains.Add(monotoneChain);
@@ -91,30 +94,33 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
         private void IntersectChains()
         {
-            MonotoneChainOverlapAction<TCoordinate> overlapAction = 
+            MonotoneChainOverlapAction<TCoordinate> overlapAction =
                 new SegmentOverlapAction<TCoordinate>(_geoFactory, _segInt);
 
-            foreach (var queryChain in _monoChains)
+            foreach (MonotoneChain<TCoordinate> queryChain in _monoChains)
             {
-                var overlapChains = _index.Query(queryChain.Extents);
-                foreach (var testChain in overlapChains)
+                IEnumerable<MonotoneChain<TCoordinate>> overlapChains = _index.Query(queryChain.Extents);
+                foreach (MonotoneChain<TCoordinate> testChain in overlapChains)
                     queryChain.ComputeOverlaps(testChain, overlapAction);
                 _nOverlaps++;
                 //if (((ISegmentIntersector<TCoordinate>)_segInt).IsDone) return;
             }
         }
 
+        #region Nested type: SegmentOverlapAction
+
         public class SegmentOverlapAction<TCoordinate> : MonotoneChainOverlapAction<TCoordinate>
             where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                                IComputable<Double, TCoordinate>, IConvertible
+                IComputable<Double, TCoordinate>, IConvertible
         {
-            private readonly ISegmentIntersector<TCoordinate> _si = null;
+            private readonly ISegmentIntersector<TCoordinate> _si;
 
             ///<summary>
             ///</summary>
             ///<param name="geometryFactory"></param>
             ///<param name="si"></param>
-            public SegmentOverlapAction(IGeometryFactory<TCoordinate> geometryFactory, ISegmentIntersector<TCoordinate> si)
+            public SegmentOverlapAction(IGeometryFactory<TCoordinate> geometryFactory,
+                                        ISegmentIntersector<TCoordinate> si)
                 : base(geometryFactory)
             {
                 _si = si;
@@ -124,11 +130,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                 MonotoneChain<TCoordinate> mc1, int start1,
                 MonotoneChain<TCoordinate> mc2, int start2)
             {
-                NodedSegmentString<TCoordinate> ss1 = (NodedSegmentString<TCoordinate>)mc1.Context;
-                NodedSegmentString<TCoordinate> ss2 = (NodedSegmentString<TCoordinate>)mc2.Context;
+                NodedSegmentString<TCoordinate> ss1 = (NodedSegmentString<TCoordinate>) mc1.Context;
+                NodedSegmentString<TCoordinate> ss2 = (NodedSegmentString<TCoordinate>) mc2.Context;
                 _si.ProcessIntersections(ss1, start1, ss2, start2);
             }
-
         }
+
+        #endregion
     }
 }

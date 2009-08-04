@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
@@ -16,11 +17,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </summary>    
     public class GeometryCollectionEnumerator<TCoordinate> : IEnumerator<IGeometry<TCoordinate>>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        private Boolean _isDisposed = false;
-
         // The <see cref="GeometryCollection{TCoordinate}" /> being iterated over.
+        private readonly Int32 _max;
         private readonly IGeometryCollection<TCoordinate> _parent;
 
         // Indicates whether or not the first element 
@@ -30,11 +30,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         // The number of <see cref="Geometry{TCoordinate}"/>s in the
         // <see cref="GeometryCollection{TCoordinate}" />.
-        private readonly Int32 _max;
 
         // The index of the <see cref="Geometry{TCoordinate}"/> that 
         // will be returned when <see cref="MoveNext"/> is called.
         private Int32 _index;
+        private Boolean _isDisposed;
 
         // The iterator over a nested <see cref="GeometryCollection{TCoordinate}" />, or <see langword="null" />
         // if this <c>GeometryCollectionIterator</c> is not currently iterating
@@ -55,6 +55,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             _index = 0;
             _max = parent.Count;
         }
+
+        public Boolean IsDisposed
+        {
+            get { return _isDisposed; }
+            private set { _isDisposed = value; }
+        }
+
+        #region IEnumerator<IGeometry<TCoordinate>> Members
 
         public Boolean MoveNext()
         {
@@ -121,7 +129,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
                 if (obj is IGeometryCollection<TCoordinate>)
                 {
-                    _subcollectionEnumerator = new GeometryCollectionEnumerator<TCoordinate>(obj as IGeometryCollection<TCoordinate>);
+                    _subcollectionEnumerator =
+                        new GeometryCollectionEnumerator<TCoordinate>(obj as IGeometryCollection<TCoordinate>);
                     // there will always be at least one element in the sub-collection
                     return _subcollectionEnumerator.Current;
                 }
@@ -138,14 +147,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             _index = 0;
         }
 
-        public Boolean IsDisposed
-        {
-            get { return _isDisposed; }
-            private set { _isDisposed = value; }
-        }
-
-        #region IDisposable Members
-
         public void Dispose()
         {
             if (IsDisposed)
@@ -158,21 +159,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             GC.SuppressFinalize(this);
         }
 
-        #endregion
-
-        #region IEnumerator Members
-
-        object System.Collections.IEnumerator.Current
+        object IEnumerator.Current
         {
-            get
-            {
-                return Current;
-            }
+            get { return Current; }
         }
 
         #endregion
 
-        protected virtual void Dispose(Boolean disposing) { }
+        protected virtual void Dispose(Boolean disposing)
+        {
+        }
 
         private void checkDisposed()
         {

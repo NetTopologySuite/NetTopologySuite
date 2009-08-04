@@ -22,12 +22,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </summary>
     /// <typeparam name="TCoordinate">The coordinate type to use.</typeparam>
     [Serializable]
-    public struct LineSegment<TCoordinate> : IEquatable<LineSegment<TCoordinate>>, 
+    public struct LineSegment<TCoordinate> : IEquatable<LineSegment<TCoordinate>>,
                                              IComparable<LineSegment<TCoordinate>>,
                                              IBoundable<Interval>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         private readonly TCoordinate _p0, _p1;
 
@@ -43,7 +43,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             _p1 = coordinates.Second;
         }
 
-        public LineSegment(LineSegment<TCoordinate> ls) : this(ls._p0, ls._p1) { }
+        public LineSegment(LineSegment<TCoordinate> ls) : this(ls._p0, ls._p1)
+        {
+        }
 
         public Pair<TCoordinate> Points
         {
@@ -77,12 +79,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        public static LineSegment<TCoordinate> SetCoordinates(TCoordinate p0, TCoordinate p1)
-        {
-            LineSegment<TCoordinate> newSegment =  new LineSegment<TCoordinate>(p0, p1);
-            return newSegment;
-        }
-
         /// <summary>
         /// Computes the length of the line segment.
         /// </summary>
@@ -108,6 +104,85 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public Boolean IsVertical
         {
             get { return P0[Ordinates.X] == P1[Ordinates.X]; }
+        }
+
+        /// <summary> 
+        /// Reverses the direction of the line segment.
+        /// </summary>
+        public LineSegment<TCoordinate> Reversed
+        {
+            get { return new LineSegment<TCoordinate>(_p1, _p0); }
+        }
+
+        /// <summary> 
+        /// Puts the line segment into a normalized form.
+        /// This is useful for using line segments in maps and indexes when
+        /// topological equality rather than exact equality is desired.
+        /// </summary>
+        public LineSegment<TCoordinate> Normalized
+        {
+            get
+            {
+                if (P1.CompareTo(P0) < 0)
+                {
+                    return Reversed;
+                }
+                else
+                {
+                    return this;
+                }
+            }
+        }
+
+        /// <returns> 
+        /// The angle this segment makes with the x-axis (in radians).
+        /// </returns>
+        public Double Angle
+        {
+            get { return Math.Atan2(P1[Ordinates.Y] - P0[Ordinates.Y], P1[Ordinates.X] - P0[Ordinates.X]); }
+        }
+
+        #region IComparable<LineSegment<TCoordinate>> Members
+
+        /// <summary>
+        /// Compares this object with the specified object for order.
+        /// Uses the standard lexicographic ordering for the points in the LineSegment.
+        /// </summary>
+        /// <param name="other">
+        /// The <see cref="LineSegment{TCoordinate}"/> with which this <c>LineSegment</c>
+        /// is being compared.
+        /// </param>
+        /// <returns>
+        /// A negative integer, zero, or a positive integer as this <c>LineSegment</c>
+        /// is less than, equal to, or greater than the specified <c>LineSegment</c>.
+        /// </returns>
+        public Int32 CompareTo(LineSegment<TCoordinate> other)
+        {
+            Int32 comp0 = P0.CompareTo(other.P0);
+
+            if (comp0 != 0)
+            {
+                return comp0;
+            }
+
+            return P1.CompareTo(other.P1);
+        }
+
+        #endregion
+
+        #region IEquatable<LineSegment<TCoordinate>> Members
+
+        public Boolean Equals(LineSegment<TCoordinate> other)
+        {
+            return _p0.Equals(other._p0) && _p1.Equals(other._p1);
+        }
+
+        #endregion
+
+        public static LineSegment<TCoordinate> SetCoordinates(TCoordinate p0, TCoordinate p1)
+        {
+            LineSegment<TCoordinate> newSegment = new LineSegment<TCoordinate>(p0, p1);
+            return newSegment;
         }
 
         /// <summary> 
@@ -146,45 +221,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             // points lie on opposite sides ==> indeterminate orientation
             return 0;
-        }
-
-        /// <summary> 
-        /// Reverses the direction of the line segment.
-        /// </summary>
-        public LineSegment<TCoordinate> Reversed
-        {
-            get
-            {
-                return new LineSegment<TCoordinate>(_p1, _p0);
-            }
-        }
-
-        /// <summary> 
-        /// Puts the line segment into a normalized form.
-        /// This is useful for using line segments in maps and indexes when
-        /// topological equality rather than exact equality is desired.
-        /// </summary>
-        public LineSegment<TCoordinate> Normalized
-        {
-            get
-            {
-                if (P1.CompareTo(P0) < 0)
-                {
-                    return Reversed;
-                }
-                else
-                {
-                    return this;
-                }
-            }
-        }
-
-        /// <returns> 
-        /// The angle this segment makes with the x-axis (in radians).
-        /// </returns>
-        public Double Angle
-        {
-            get { return Math.Atan2(P1[Ordinates.Y] - P0[Ordinates.Y], P1[Ordinates.X] - P0[Ordinates.X]); }
         }
 
         /// <summary> 
@@ -243,9 +279,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             */
             Double dx = P1[Ordinates.X] - P0[Ordinates.X];
             Double dy = P1[Ordinates.Y] - P0[Ordinates.Y];
-            Double len2 = dx * dx + dy * dy;
-            Double r = ((p[Ordinates.X] - P0[Ordinates.X]) * dx 
-                + (p[Ordinates.Y] - P0[Ordinates.Y]) * dy) / len2;
+            Double len2 = dx*dx + dy*dy;
+            Double r = ((p[Ordinates.X] - P0[Ordinates.X])*dx
+                        + (p[Ordinates.Y] - P0[Ordinates.Y])*dy)/len2;
             return r;
         }
 
@@ -264,8 +300,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
 
             Double r = ProjectionFactor(p);
-            Double x = P0[Ordinates.X] + r * (P1[Ordinates.X] - P0[Ordinates.X]);
-            Double y = P0[Ordinates.Y] + r * (P1[Ordinates.Y] - P0[Ordinates.Y]);
+            Double x = P0[Ordinates.X] + r*(P1[Ordinates.X] - P0[Ordinates.X]);
+            Double y = P0[Ordinates.Y] + r*(P1[Ordinates.Y] - P0[Ordinates.Y]);
 
             TCoordinate coord = coordFactory.Create(x, y);
             return coord;
@@ -281,7 +317,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="seg">The line segment to project.</param>
         /// <returns>The projected line segment, or <see langword="null" /> if there is no overlap.</returns>
-        public LineSegment<TCoordinate>? Project(LineSegment<TCoordinate> seg, ICoordinateFactory<TCoordinate> coordFactory)
+        public LineSegment<TCoordinate>? Project(LineSegment<TCoordinate> seg,
+                                                 ICoordinateFactory<TCoordinate> coordFactory)
         {
             Double pf0 = ProjectionFactor(seg.P0);
             Double pf1 = ProjectionFactor(seg.P1);
@@ -359,7 +396,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>
         /// A pair of Coordinates which are the closest points on the line segments.
         /// </returns>
-        public IEnumerable<TCoordinate> ClosestPoints(LineSegment<TCoordinate> line, IGeometryFactory<TCoordinate> geoFactory)
+        public IEnumerable<TCoordinate> ClosestPoints(LineSegment<TCoordinate> line,
+                                                      IGeometryFactory<TCoordinate> geoFactory)
         {
             // test for intersection
             TCoordinate intersection = Intersection(line, geoFactory);
@@ -416,7 +454,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 closestPoint1 = P1;
                 closestPoint2 = close11;
             }
-            
+
             yield return closestPoint1;
             yield return closestPoint2;
         }
@@ -472,12 +510,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
             }
 
-            return Equals((LineSegment<TCoordinate>)other);
-        }
-
-        public Boolean Equals(LineSegment<TCoordinate> other)
-        {
-            return _p0.Equals(other._p0) && _p1.Equals(other._p1);
+            return Equals((LineSegment<TCoordinate>) other);
         }
 
         public static Boolean operator ==(LineSegment<TCoordinate> left, LineSegment<TCoordinate> right)
@@ -488,30 +521,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public static Boolean operator !=(LineSegment<TCoordinate> left, LineSegment<TCoordinate> right)
         {
             return !(left == right);
-        }
-
-        /// <summary>
-        /// Compares this object with the specified object for order.
-        /// Uses the standard lexicographic ordering for the points in the LineSegment.
-        /// </summary>
-        /// <param name="other">
-        /// The <see cref="LineSegment{TCoordinate}"/> with which this <c>LineSegment</c>
-        /// is being compared.
-        /// </param>
-        /// <returns>
-        /// A negative integer, zero, or a positive integer as this <c>LineSegment</c>
-        /// is less than, equal to, or greater than the specified <c>LineSegment</c>.
-        /// </returns>
-        public Int32 CompareTo(LineSegment<TCoordinate> other)
-        {
-            Int32 comp0 = P0.CompareTo(other.P0);
-
-            if (comp0 != 0)
-            {
-                return comp0;
-            }
-
-            return P1.CompareTo(other.P1);
         }
 
         /// <summary>

@@ -12,9 +12,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
     ///</summary>
     public class PreparedPolygonIntersects<TCoordinate> : PreparedPolygonPredicate<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
+        ///<summary>
+        /// Creates an instance of this operation.
+        ///</summary>
+        ///<param name="prepPoly">the PreparedPolygon to evaluate</param>
+        public PreparedPolygonIntersects(PreparedPolygon<TCoordinate> prepPoly)
+            : base(prepPoly)
+        {
+        }
+
         ///<summary>
         /// Computes the intersects predicate between a <see cref="PreparedPolygon{TCoordinate}"/>
         /// and a <see cref="IGeometry{TCoordinate}"/>.
@@ -26,15 +35,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         {
             PreparedPolygonIntersects<TCoordinate> polyInt = new PreparedPolygonIntersects<TCoordinate>(prep);
             return polyInt.Intersects(geom);
-        }
-
-        ///<summary>
-        /// Creates an instance of this operation.
-        ///</summary>
-        ///<param name="prepPoly">the PreparedPolygon to evaluate</param>
-        public PreparedPolygonIntersects(PreparedPolygon<TCoordinate> prepPoly)
-            : base(prepPoly)
-        {
         }
 
         ///<summary>
@@ -68,7 +68,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
             if (geom.Dimension == Dimensions.Curve)
             {
                 // TODO: generalize this to handle GeometryCollections
-                if (IsAnyTargetComponentInAreaTest(geom, _prepPoly.RepresentativePoints)) 
+                if (IsAnyTargetComponentInAreaTest(geom, _prepPoly.RepresentativePoints))
                     return true;
             }
 

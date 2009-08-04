@@ -14,9 +14,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </para>
     /// </summary>
     public static class QuadrantOp<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         /// <summary> 
         /// Returns the quadrant of a directed line segment (specified as x and y
@@ -51,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             return Quadrant(coordinate[Ordinates.X], coordinate[Ordinates.Y]);
         }
-        
+
         /// <summary> 
         /// Returns the quadrant of a directed line segment.
         /// </summary>
@@ -86,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 return false;
             }
 
-            Int32 diff = (quad1 - quad2 + 4) % 4;
+            Int32 diff = (quad1 - quad2 + 4)%4;
 
             // if quadrants are not adjacent, they are opposite
             if (diff == 2)
@@ -110,7 +110,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 return quad1;
             }
 
-            Int32 diff = (quad1 - quad2 + 4) % 4;
+            Int32 diff = (quad1 - quad2 + 4)%4;
 
             // if quadrants are not adjacent, they do not share a common halfplane
             if (diff == 2)

@@ -20,7 +20,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// <summary>
         /// Constructs a LineMergeEdge with vertices given by the specified LineString.
         /// </summary>
-        public LineMergeEdge(ILineString<TCoordinate> line, DirectedEdge<TCoordinate> directedEdge0, DirectedEdge<TCoordinate> directedEdge1)
+        public LineMergeEdge(ILineString<TCoordinate> line, DirectedEdge<TCoordinate> directedEdge0,
+                             DirectedEdge<TCoordinate> directedEdge1)
             : base(directedEdge0, directedEdge1)
         {
             _line = line;

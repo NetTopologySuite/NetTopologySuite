@@ -12,12 +12,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </summary>
     /// <typeparam name="TCoordinate">Type of coordinate to use.</typeparam>
     [Serializable]
-    public class Point<TCoordinate> : Geometry<TCoordinate>, 
+    public class Point<TCoordinate> : Geometry<TCoordinate>,
                                       IPoint<TCoordinate>,
                                       IPoint3D
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         ///// <summary>
         ///// Represents an empty <see cref="Point{TCoordinate}"/>.
@@ -50,12 +50,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             _coordinate = coordinate;
         }
 
+        #region IPoint<TCoordinate> Members
+
         public override ICoordinateSequence<TCoordinate> Coordinates
         {
-            get
-            {
-                return Factory.CoordinateSequenceFactory.Create(Coordinate);
-            }
+            get { return Factory.CoordinateSequenceFactory.Create(Coordinate); }
         }
 
         public override Int32 PointCount
@@ -86,45 +85,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public override Dimensions BoundaryDimension
         {
             get { return Dimensions.False; }
-        }
-
-        public Double X
-        {
-            get
-            {
-                if (Coordinates<TCoordinate>.IsEmpty(Coordinate))
-                {
-                    throw new InvalidOperationException("X called on empty Point");
-                }
-
-                return Coordinate[Ordinates.X];
-            }
-        }
-
-        public Double Y
-        {
-            get
-            {
-                if (Coordinates<TCoordinate>.IsEmpty(Coordinate))
-                {
-                    throw new InvalidOperationException("Y called on empty Point");
-                }
-
-                return Coordinate[Ordinates.Y];
-            }
-        }
-
-        public Double Z
-        {
-            get
-            {
-                if (Coordinates<TCoordinate>.IsEmpty(Coordinate))
-                {
-                    throw new InvalidOperationException("Z called on empty Point");
-                }
-
-                return Coordinate[Ordinates.Z];
-            }
         }
 
         public TCoordinate Coordinate
@@ -189,7 +149,207 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Factory.CreatePoint(Coordinate);
         }
 
-        public override void Normalize() { }
+        public override void Normalize()
+        {
+        }
+
+        public Double this[Ordinates ordinate]
+        {
+            get
+            {
+                if (Coordinates<TCoordinate>.IsEmpty(Coordinate))
+                {
+                    throw new InvalidOperationException("Point is empty.");
+                }
+
+                if (Coordinate.ContainsOrdinate(ordinate))
+                {
+                    return Coordinate[ordinate];
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException("ordinate", ordinate,
+                                                          "Ordinate value doesn't " +
+                                                          "exist in this point");
+                }
+            }
+        }
+
+        ICoordinate IPoint.Coordinate
+        {
+            get { return Coordinate; }
+        }
+
+        public Int32 OrdinateCount
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        IPoint IAddable<Double, IPoint>.Add(Double b)
+        {
+            throw new NotImplementedException();
+        }
+
+        IPoint ISubtractable<Double, IPoint>.Subtract(Double b)
+        {
+            throw new NotImplementedException();
+        }
+
+        IPoint IComputable<Double, IPoint>.Set(Double value)
+        {
+            throw new NotImplementedException();
+        }
+
+        IPoint IComputable<IPoint>.Set(Double value)
+        {
+            throw new NotImplementedException();
+        }
+
+        IPoint IComputable<IPoint>.Abs()
+        {
+            throw new NotImplementedException();
+        }
+
+        IPoint INegatable<IPoint>.Negative()
+        {
+            throw new NotImplementedException();
+        }
+
+        IPoint ISubtractable<IPoint>.Subtract(IPoint b)
+        {
+            throw new NotImplementedException();
+        }
+
+        IPoint IHasZero<IPoint>.Zero
+        {
+            get
+            {
+                Double[] ordinates = new Double[(Int32) Dimension];
+                return Factory.CreatePoint(Factory.CoordinateFactory.Create(ordinates));
+            }
+        }
+
+        IPoint IAddable<IPoint>.Add(IPoint b)
+        {
+            throw new NotImplementedException();
+        }
+
+        IPoint IDivisible<IPoint>.Divide(IPoint b)
+        {
+            throw new NotImplementedException();
+        }
+
+        IPoint IHasOne<IPoint>.One
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        IPoint IMultipliable<IPoint>.Multiply(IPoint b)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean IBooleanComparable<IPoint>.GreaterThan(IPoint value)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean IBooleanComparable<IPoint>.GreaterThanOrEqualTo(IPoint value)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean IBooleanComparable<IPoint>.LessThan(IPoint value)
+        {
+            throw new NotImplementedException();
+        }
+
+        Boolean IBooleanComparable<IPoint>.LessThanOrEqualTo(IPoint value)
+        {
+            throw new NotImplementedException();
+        }
+
+        IPoint IExponential<IPoint>.Exp()
+        {
+            throw new NotSupportedException();
+        }
+
+        IPoint IExponential<IPoint>.Log()
+        {
+            throw new NotSupportedException();
+        }
+
+        IPoint IExponential<IPoint>.Log(Double newBase)
+        {
+            throw new NotSupportedException();
+        }
+
+        IPoint IExponential<IPoint>.Power(Double exponent)
+        {
+            throw new NotSupportedException();
+        }
+
+        IPoint IExponential<IPoint>.Sqrt()
+        {
+            throw new NotImplementedException();
+        }
+
+        IPoint IMultipliable<Double, IPoint>.Multiply(Double b)
+        {
+            // TODO: need to disambiguate the interface call here...
+            TCoordinate p = ((IMultipliable<Double, TCoordinate>) _coordinate).Multiply(b);
+            return Factory.CreatePoint(p);
+        }
+
+        IPoint IDivisible<Double, IPoint>.Divide(Double b)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IPoint3D Members
+
+        public Double X
+        {
+            get
+            {
+                if (Coordinates<TCoordinate>.IsEmpty(Coordinate))
+                {
+                    throw new InvalidOperationException("X called on empty Point");
+                }
+
+                return Coordinate[Ordinates.X];
+            }
+        }
+
+        public Double Y
+        {
+            get
+            {
+                if (Coordinates<TCoordinate>.IsEmpty(Coordinate))
+                {
+                    throw new InvalidOperationException("Y called on empty Point");
+                }
+
+                return Coordinate[Ordinates.Y];
+            }
+        }
+
+        public Double Z
+        {
+            get
+            {
+                if (Coordinates<TCoordinate>.IsEmpty(Coordinate))
+                {
+                    throw new InvalidOperationException("Z called on empty Point");
+                }
+
+                return Coordinate[Ordinates.Z];
+            }
+        }
+
+        #endregion
 
         protected override Extents<TCoordinate> ComputeExtentsInternal()
         {
@@ -218,227 +378,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             return Coordinate.CompareTo(point.Coordinate);
         }
-
-        #region IPoint Members
-
-        public Double this[Ordinates ordinate]
-        {
-            get
-            {
-                if (Coordinates<TCoordinate>.IsEmpty(Coordinate))
-                {
-                    throw new InvalidOperationException("Point is empty.");
-                }
-
-                if (Coordinate.ContainsOrdinate(ordinate))
-                {
-                    return Coordinate[ordinate];
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException("ordinate", ordinate,
-                                                          "Ordinate value doesn't "+
-                                                          "exist in this point");
-                }
-            }
-        }
-
-        ICoordinate IPoint.Coordinate
-        {
-            get { return Coordinate; }
-        }
-
-        public Int32 OrdinateCount
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        #endregion
-
-        #region IAddable<Double,IPoint> Members
-
-        IPoint IAddable<Double, IPoint>.Add(Double b)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region ISubtractable<Double,IPoint> Members
-
-        IPoint ISubtractable<Double, IPoint>.Subtract(Double b)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IComputable<Double, IPoint> Members
-
-        IPoint IComputable<Double, IPoint>.Set(Double value)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IComputable<Double, IPoint> Members
-
-        IPoint IComputable<IPoint>.Set(Double value)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IComputable<IPoint> Members
-
-        IPoint IComputable<IPoint>.Abs()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region INegatable<IPoint> Members
-
-        IPoint INegatable<IPoint>.Negative()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region ISubtractable<IPoint> Members
-
-        IPoint ISubtractable<IPoint>.Subtract(IPoint b)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IHasZero<IPoint> Members
-
-        IPoint IHasZero<IPoint>.Zero
-        {
-            get
-            {
-                Double[] ordinates = new Double[(Int32)Dimension];
-                return Factory.CreatePoint(Factory.CoordinateFactory.Create(ordinates));
-            }
-        }
-
-        #endregion
-
-        #region IAddable<IPoint> Members
-
-        IPoint IAddable<IPoint>.Add(IPoint b)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IDivisible<IPoint> Members
-
-        IPoint IDivisible<IPoint>.Divide(IPoint b)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IHasOne<IPoint> Members
-
-        IPoint IHasOne<IPoint>.One
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        #endregion
-
-        #region IMultipliable<IPoint> Members
-
-        IPoint IMultipliable<IPoint>.Multiply(IPoint b)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IBooleanComparable<IPoint> Members
-
-        Boolean IBooleanComparable<IPoint>.GreaterThan(IPoint value)
-        {
-            throw new NotImplementedException();
-        }
-
-        Boolean IBooleanComparable<IPoint>.GreaterThanOrEqualTo(IPoint value)
-        {
-            throw new NotImplementedException();
-        }
-
-        Boolean IBooleanComparable<IPoint>.LessThan(IPoint value)
-        {
-            throw new NotImplementedException();
-        }
-
-        Boolean IBooleanComparable<IPoint>.LessThanOrEqualTo(IPoint value)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IExponential<IPoint> Members
-
-        IPoint IExponential<IPoint>.Exp()
-        {
-            throw new NotSupportedException();
-        }
-
-        IPoint IExponential<IPoint>.Log()
-        {
-            throw new NotSupportedException();
-        }
-
-        IPoint IExponential<IPoint>.Log(Double newBase)
-        {
-            throw new NotSupportedException();
-        }
-
-        IPoint IExponential<IPoint>.Power(Double exponent)
-        {
-            throw new NotSupportedException();
-        }
-
-        IPoint IExponential<IPoint>.Sqrt()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IMultipliable<Double, IPoint> Members
-
-        IPoint IMultipliable<Double, IPoint>.Multiply(Double b)
-        {
-            // TODO: need to disambiguate the interface call here...
-            TCoordinate p = ((IMultipliable<Double, TCoordinate>)_coordinate).Multiply(b);
-            return Factory.CreatePoint(p);
-        }
-
-        #endregion
-
-        #region IDivisible<Double, IPoint> Members
-
-        IPoint IDivisible<Double, IPoint>.Divide(Double b)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
 
         //public override void Apply(ICoordinateFilter<TCoordinate> filter)
         //{

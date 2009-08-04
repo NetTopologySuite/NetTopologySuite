@@ -1,9 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using NPack.Interfaces;
+
 #if DOTNET35
 using System.Linq;
 #endif
@@ -16,10 +18,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public class SegmentNodeList<TCoordinate> : IEnumerable<SegmentNode<TCoordinate>>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly SortedList<SegmentNode<TCoordinate>, Object> _nodeList
             = new SortedList<SegmentNode<TCoordinate>, Object>();
+
         private readonly NodedSegmentString<TCoordinate> _segments; // the parent edge
 
         /// <summary>
@@ -28,13 +31,31 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="segments">The edge.</param>
         public SegmentNodeList(NodedSegmentString<TCoordinate> segments)
         {
-            _segments = segments; 
+            _segments = segments;
         }
 
         public NodedSegmentString<TCoordinate> ParentSegments
         {
             get { return _segments; }
         }
+
+        #region IEnumerable<SegmentNode<TCoordinate>> Members
+
+        /// <summary>
+        /// Returns an iterator of SegmentNodes.
+        /// </summary>
+        /// <returns>An iterator of SegmentNodes.</returns>
+        public IEnumerator<SegmentNode<TCoordinate>> GetEnumerator()
+        {
+            return _nodeList.Keys.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
 
         /// <summary>
         /// Adds an intersection into the list, if it isn't already there.
@@ -53,15 +74,6 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             }
 
             return node;
-        }
-
-        /// <summary>
-        /// Returns an iterator of SegmentNodes.
-        /// </summary>
-        /// <returns>An iterator of SegmentNodes.</returns>
-        public IEnumerator<SegmentNode<TCoordinate>> GetEnumerator()
-        {
-            return _nodeList.Keys.GetEnumerator();
         }
 
         /// <summary>
@@ -223,15 +235,6 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
             return new NodedSegmentString<TCoordinate>(pts, ParentSegments.Context);
         }
-
-        #region IEnumerable Members
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        #endregion
     }
 
     //private void checkSplitEdgesCorrectness(IEnumerable<SegmentString<TCoordinate>> splitEdges)

@@ -12,8 +12,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
     ///</summary>
     public class PreparedLineStringIntersects<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
+        protected PreparedLineString<TCoordinate> _prepLine;
+
+        ///<summary>
+        /// Creates an instance of this operation.
+        ///</summary>
+        ///<param name="prepLine">the target PreparedLineString</param>
+        public PreparedLineStringIntersects(PreparedLineString<TCoordinate> prepLine)
+        {
+            _prepLine = prepLine;
+        }
+
         ///<summary>
         /// Computes the intersects predicate between a <see cref="PreparedLineString{TCoordinate}"/>
         /// and a <see cref="IGeometry{TCoordinate}"/>.
@@ -27,17 +38,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
             return op.Intersects(geom);
         }
 
-        protected PreparedLineString<TCoordinate> _prepLine;
-
-        ///<summary>
-        /// Creates an instance of this operation.
-        ///</summary>
-        ///<param name="prepLine">the target PreparedLineString</param>
-        public PreparedLineStringIntersects(PreparedLineString<TCoordinate> prepLine)
-        {
-            _prepLine = prepLine;
-        }
-
         ///<summary>
         /// Tests whether this geometry intersects a given geometry.
         ///</summary>
@@ -48,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
             /**
              * If any segments intersect, obviously intersects = true
              */
-            EdgeList<TCoordinate> lineSegStr = new EdgeList<TCoordinate>( geom.Factory );
+            EdgeList<TCoordinate> lineSegStr = new EdgeList<TCoordinate>(geom.Factory);
             //IList lineSegStr = SegmentStringUtil.extractSegmentStrings(geom);
             Boolean segsIntersect = _prepLine.IntersectionFinder.Intersects(lineSegStr);
             // MD - performance testing
@@ -65,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
              * For L/A case, need to check for proper inclusion of the target in the test
              */
             if (geom.Dimension == Dimensions.Curve
-                    && _prepLine.IsAnyTargetComponentInTest(geom)) return true;
+                && _prepLine.IsAnyTargetComponentInTest(geom)) return true;
 
             /** 
              * For L/P case, need to check if any points lie on line(s)
@@ -91,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
              * However, it seems like the L/P case would be pretty rare in practice.
              */
             PointLocator<TCoordinate> locator = new PointLocator<TCoordinate>();
-            foreach (var p in testGeom.Coordinates)
+            foreach (TCoordinate p in testGeom.Coordinates)
             {
                 if (locator.Intersects(p, _prepLine.Geometry))
                     return true;

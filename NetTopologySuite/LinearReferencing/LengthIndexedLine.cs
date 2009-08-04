@@ -23,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly IGeometry<TCoordinate> _linearGeom = null;
+        private readonly IGeometry<TCoordinate> _linearGeom;
 
         /// <summary>
         /// Constructs an object which allows a linear <see cref="Geometry{TCoordinate}" />
@@ -33,6 +33,22 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         public LengthIndexedLine(IGeometry<TCoordinate> linearGeom)
         {
             _linearGeom = linearGeom;
+        }
+
+        /// <summary>
+        /// Returns the index of the start of the line.
+        /// </summary>
+        public Double StartIndex
+        {
+            get { return 0; }
+        }
+
+        /// <summary>
+        /// Returns the index of the end of the line.
+        /// </summary>
+        public Double EndIndex
+        {
+            get { return LinearHelper.GetLength(_linearGeom); }
         }
 
         /// <summary>
@@ -117,11 +133,11 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             Pair<LinearLocation<TCoordinate>> locIndex
                 = LocationIndexOfLine<TCoordinate>.IndicesOf(_linearGeom, subLine);
 
-            Double[] index = new Double[]
-                {
-                    LengthLocationMap<TCoordinate>.GetLength(_linearGeom, locIndex.First),
-                    LengthLocationMap<TCoordinate>.GetLength(_linearGeom, locIndex.Second),
-                };
+            Double[] index = new[]
+                                 {
+                                     LengthLocationMap<TCoordinate>.GetLength(_linearGeom, locIndex.First),
+                                     LengthLocationMap<TCoordinate>.GetLength(_linearGeom, locIndex.Second),
+                                 };
 
             return index;
         }
@@ -136,22 +152,6 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         public Double Project(TCoordinate pt)
         {
             return LengthIndexOfPoint<TCoordinate>.IndexOf(_linearGeom, pt);
-        }
-
-        /// <summary>
-        /// Returns the index of the start of the line.
-        /// </summary>
-        public Double StartIndex
-        {
-            get { return 0; }
-        }
-
-        /// <summary>
-        /// Returns the index of the end of the line.
-        /// </summary>
-        public Double EndIndex
-        {
-            get { return LinearHelper.GetLength(_linearGeom); }
         }
 
         /// <summary>

@@ -38,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             }
 
             Double maxAbs = Math.Max(Math.Abs(min), Math.Abs(max));
-            Double scaledInterval = width / maxAbs;
+            Double scaledInterval = width/maxAbs;
             Int32 level = DoubleBits.GetExponent(scaledInterval);
             return level <= MinBinaryExponent;
         }

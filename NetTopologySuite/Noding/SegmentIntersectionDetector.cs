@@ -7,42 +7,27 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 {
     public class SegmentIntersectionDetector<TCoordinate> : ISegmentIntersector<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-
         private readonly LineIntersector<TCoordinate> _lineIntersector;
 
-        public Boolean FindProper { get; set;}
-        public Boolean FindAllTypes { get; set; }
+        private Boolean _hasIntersection;
 
-        private Boolean _hasIntersection = false;
-        public Boolean HasIntersection
-        {
-            get { return _hasIntersection; }
-        }
+        private Boolean _hasNonProperIntersection;
+        private Boolean _hasProperIntersection;
 
-        private Boolean _hasProperIntersection = false;
-        public Boolean HasProperIntersection
-        {
-            get { return _hasProperIntersection; }
-        }
-
-        private Boolean _hasNonProperIntersection = false;
-        public Boolean HasNonProperIntersection
-        {
-            get { return _hasNonProperIntersection; }
-        }
-
-        private TCoordinate _intPt = default(TCoordinate);
-        private TCoordinate[] _intSegments = null;
+        private TCoordinate _intPt;
+        private TCoordinate[] _intSegments;
 
         public SegmentIntersectionDetector(LineIntersector<TCoordinate> lineIntersector)
         {
             _lineIntersector = lineIntersector;
         }
+
         #region ISegmentIntersector<TCoordinate> Member
 
-        public void ProcessIntersections(NodedSegmentString<TCoordinate> e0, int segIndex0, NodedSegmentString<TCoordinate> e1, int segIndex1)
+        public void ProcessIntersections(NodedSegmentString<TCoordinate> e0, int segIndex0,
+                                         NodedSegmentString<TCoordinate> e1, int segIndex1)
         {
             // don't bother intersecting a segment with itself
             if (e0 == e1 && segIndex0 == segIndex1) return;
@@ -52,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             TCoordinate p10 = e1[segIndex1][0];
             TCoordinate p11 = e1[segIndex1][1];
 
-            var intersection = _lineIntersector.ComputeIntersection(p00, p01, p10, p11);
+            Intersection<TCoordinate> intersection = _lineIntersector.ComputeIntersection(p00, p01, p10, p11);
             //  if (li.hasIntersection() && li.isProper()) Debug.println(li);
 
             if (intersection.HasIntersection)
@@ -78,7 +63,6 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
                 if (_intPt.Equals(default(TCoordinate)) || saveLocation)
                 {
-
                     // record intersection location (approximate)
                     _intPt = intersection.GetIntersectionPoint(0);
 
@@ -117,5 +101,23 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         }
 
         #endregion
+
+        public Boolean FindProper { get; set; }
+        public Boolean FindAllTypes { get; set; }
+
+        public Boolean HasIntersection
+        {
+            get { return _hasIntersection; }
+        }
+
+        public Boolean HasProperIntersection
+        {
+            get { return _hasProperIntersection; }
+        }
+
+        public Boolean HasNonProperIntersection
+        {
+            get { return _hasNonProperIntersection; }
+        }
     }
 }

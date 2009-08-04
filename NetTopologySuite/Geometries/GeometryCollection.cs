@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -12,34 +12,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Basic implementation of <see cref="GeometryCollection{TCoordinate}" />.
     /// </summary>
     [Serializable]
-    public class GeometryCollection<TCoordinate> 
-        : Geometry<TCoordinate>, 
-          IGeometryCollection<TCoordinate>, 
-          IHasGeometryComponents<TCoordinate>, 
+    public class GeometryCollection<TCoordinate>
+        : Geometry<TCoordinate>,
+          IGeometryCollection<TCoordinate>,
+          IHasGeometryComponents<TCoordinate>,
           IComparable<IGeometryCollection<TCoordinate>>
-                where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                                    IComputable<Double, TCoordinate>,
-                                    IComparable<TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComputable<Double, TCoordinate>,
+            IComparable<TCoordinate>, IConvertible
     {
-        /// <summary>
-        /// Represents an empty <see cref="GeometryCollection{TCoordinate}" />.
-        /// </summary>
-        //public static readonly IGeometryCollection<TCoordinate> Empty = DefaultFactory.CreateGeometryCollection(null);
-
-        public static Boolean HasNonEmptyElements<TGeometry>(IEnumerable<TGeometry> geometries)
-            where TGeometry : IGeometry
-        {
-            foreach (TGeometry geometry in geometries)
-            {
-                if (!geometry.IsEmpty)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         /// <summary>
         /// Internal representation of this <see cref="GeometryCollection{TCoordinate}" />.        
         /// </summary>
@@ -49,8 +30,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         //public GeometryCollection() : this(DefaultFactory) { }
 
-        public GeometryCollection(IGeometryFactory<TCoordinate> factory) 
-            : base(factory) { }
+        public GeometryCollection(IGeometryFactory<TCoordinate> factory)
+            : base(factory)
+        {
+        }
 
         /// <param name="geometries">
         /// The <see cref="Geometry{TCoordinate}"/>s for this <see cref="GeometryCollection{TCoordinate}" />,
@@ -62,8 +45,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// For create this <see cref="Geometry{TCoordinate}"/> is used a standard <see cref="GeometryFactory{TCoordinate}"/> 
         /// with <see cref="PrecisionModel{TCoordinate}" /> <c> == </c> <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
-        public GeometryCollection(IEnumerable<IGeometry<TCoordinate>> geometries) 
-            : this(geometries, ExtractGeometryFactory(geometries)) { }
+        public GeometryCollection(IEnumerable<IGeometry<TCoordinate>> geometries)
+            : this(geometries, ExtractGeometryFactory(geometries))
+        {
+        }
 
         /// <param name="geometries">
         /// The <see cref="Geometry{TCoordinate}"/>s for this <see cref="GeometryCollection{TCoordinate}" />,
@@ -71,13 +56,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// point. Elements may be empty <see cref="Geometry{TCoordinate}"/>s,
         /// but not <see langword="null" />s.
         /// </param>
-        public GeometryCollection(IEnumerable<IGeometry<TCoordinate>> geometries, 
+        public GeometryCollection(IEnumerable<IGeometry<TCoordinate>> geometries,
                                   IGeometryFactory<TCoordinate> factory)
             : base(factory)
         {
             if (geometries == null)
             {
-                geometries = new IGeometry<TCoordinate>[] { };
+                geometries = new IGeometry<TCoordinate>[] {};
             }
 
             foreach (IGeometry<TCoordinate> geometry in geometries)
@@ -85,6 +70,105 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 _geometries.Add(geometry);
             }
         }
+
+        public override Int32 GeometryCount
+        {
+            get { return _geometries.Count; }
+        }
+
+        public IList<IGeometry<TCoordinate>> Geometries
+        {
+            get { return _geometries.AsReadOnly(); }
+        }
+
+        /// <summary>  
+        /// Returns the area of this <see cref="GeometryCollection{TCoordinate}" />.
+        /// </summary>        
+        public override Double Area
+        {
+            get
+            {
+                Double area = 0.0;
+
+                foreach (ISurface<TCoordinate> surface in _geometries)
+                {
+                    if (surface != null)
+                    {
+                        area += surface.Area;
+                    }
+                }
+
+                return area;
+            }
+        }
+
+        /// <summary>  
+        /// Returns the length of this <see cref="GeometryCollection{TCoordinate}" />.
+        /// </summary>        
+        public override Double Length
+        {
+            get
+            {
+                Double sum = 0.0;
+
+                foreach (ICurve<TCoordinate> curve in _geometries)
+                {
+                    if (curve != null)
+                    {
+                        sum += curve.Length;
+                    }
+                }
+
+                return sum;
+            }
+        }
+
+        protected List<IGeometry<TCoordinate>> GeometriesInternal
+        {
+            get { return _geometries; }
+        }
+
+        #region IComparable<IGeometryCollection<TCoordinate>> Members
+
+        public Int32 CompareTo(IGeometryCollection<TCoordinate> other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+
+            IEnumerator<IGeometry<TCoordinate>> i = GetEnumerator();
+            IEnumerator<IGeometry<TCoordinate>> j = other.GetEnumerator();
+
+            Boolean iHasNext = i.MoveNext();
+            Boolean jHasNext = j.MoveNext();
+
+            while (iHasNext && jHasNext)
+            {
+                int comparison = i.Current.CompareTo(j.Current);
+
+                if (comparison != 0)
+                {
+                    return comparison;
+                }
+            }
+
+            if (iHasNext)
+            {
+                return 1;
+            }
+
+            if (jHasNext)
+            {
+                return -1;
+            }
+
+            return 0;
+        }
+
+        #endregion
+
+        #region IGeometryCollection<TCoordinate> Members
 
         /// <summary>
         /// Collects all coordinates of all subgeometries into an Array.
@@ -134,7 +218,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
                 foreach (IGeometry<TCoordinate> geometry in _geometries)
                 {
-                    dimension = (Dimensions)Math.Max((Int32)dimension, (Int32)geometry.Dimension);
+                    dimension = (Dimensions) Math.Max((Int32) dimension, (Int32) geometry.Dimension);
                 }
 
                 return dimension;
@@ -149,21 +233,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
                 foreach (IGeometry<TCoordinate> geometry in _geometries)
                 {
-                    dimension = (Dimensions)Math.Max((Int32)dimension, (Int32)geometry.BoundaryDimension);
+                    dimension = (Dimensions) Math.Max((Int32) dimension, (Int32) geometry.BoundaryDimension);
                 }
 
                 return dimension;
             }
-        }
-
-        public override Int32 GeometryCount
-        {
-            get { return _geometries.Count; }
-        }
-
-        public IList<IGeometry<TCoordinate>> Geometries
-        {
-            get { return _geometries.AsReadOnly(); }
         }
 
         public override Int32 PointCount
@@ -216,48 +290,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>  
-        /// Returns the area of this <see cref="GeometryCollection{TCoordinate}" />.
-        /// </summary>        
-        public override Double Area
-        {
-            get
-            {
-                Double area = 0.0;
-
-                foreach (ISurface<TCoordinate> surface in _geometries)
-                {
-                    if (surface != null)
-                    {
-                        area += surface.Area;
-                    }
-                }
-
-                return area;
-            }
-        }
-
-        /// <summary>  
-        /// Returns the length of this <see cref="GeometryCollection{TCoordinate}" />.
-        /// </summary>        
-        public override Double Length
-        {
-            get
-            {
-                Double sum = 0.0;
-
-                foreach (ICurve<TCoordinate> curve in _geometries)
-                {
-                    if (curve != null)
-                    {
-                        sum += curve.Length;
-                    }
-                }
-
-                return sum;
-            }
-        }
-
         public override Boolean Equals(IGeometry<TCoordinate> other, Tolerance tolerance)
         {
             if (!IsEquivalentClass(other))
@@ -297,7 +329,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
             }
 
-            GeometryCollection<TCoordinate> otherCollection 
+            GeometryCollection<TCoordinate> otherCollection
                 = g as GeometryCollection<TCoordinate>;
 
             Int32 count = Count;
@@ -338,29 +370,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
 
             _geometries.Sort();
-        }
-
-        protected override Extents<TCoordinate> ComputeExtentsInternal()
-        {
-            Extents<TCoordinate> extents = new Extents<TCoordinate>(Factory);
-
-            foreach (IGeometry<TCoordinate> geometry in _geometries)
-            {
-                extents.ExpandToInclude(geometry.Extents);
-            }
-
-            return extents;
-        }
-
-        protected internal override Int32 CompareToSameClass(IGeometry<TCoordinate> other)
-        {
-            if (other == null)
-            {
-                return 1;
-            }
-
-            IGeometryCollection<TCoordinate> collection = other as IGeometryCollection<TCoordinate>;
-            return CompareTo(collection);
         }
 
         /// <summary>
@@ -404,7 +413,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 if (index < 0 || index > _geometries.Count)
                 {
                     throw new ArgumentOutOfRangeException("index", index,
-                        "Index must be 0 or greater and less than TotalItemCount.");
+                                                          "Index must be 0 or greater and less than TotalItemCount.");
                 }
 
                 return _geometries[index];
@@ -419,26 +428,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get { return _geometries.Count; }
         }
-
-        #region IHasGeometryComponents<TCoordinate> Members
-
-        public IEnumerable<IGeometry<TCoordinate>> Components
-        {
-            get
-            {
-                foreach (IGeometry<TCoordinate> geometry in _geometries)
-                {
-                    foreach (IGeometry<TCoordinate> component in enumerateComponents(geometry))
-                    {
-                        yield return component;
-                    }
-                }
-            }
-        }
-
-        #endregion
-
-        #region IList<IGeometry> Members
 
         /// <summary>
         /// Finds the index of a geometry is in the list.
@@ -465,8 +454,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             Insert(index, item as IGeometry<TCoordinate>);
         }
-
-        #region ICollection<IGeometry> Members
 
         void ICollection<IGeometry>.Add(IGeometry item)
         {
@@ -515,10 +502,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Remove(item as IGeometry<TCoordinate>);
         }
 
-        #endregion
-
-        #region IEnumerable<IGeometry> Members
-
         /// <summary>
         /// Returns a <see cref="GeometryCollectionEnumerator{TCoordinate}"/>:
         /// this IEnumerator returns the parent geometry as first element.
@@ -533,10 +516,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 }
             }
         }
-
-        #endregion
-
-        #region IList<IGeometry<TCoordinate>> Members
 
         public Int32 IndexOf(IGeometry<TCoordinate> item)
         {
@@ -557,10 +536,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             _geometries.RemoveAt(index);
         }
 
-        #endregion
-
-        #region ICollection<IGeometry<TCoordinate>> Members
-
         public virtual void Add(IGeometry<TCoordinate> item)
         {
             if (item == null) throw new ArgumentNullException("item");
@@ -579,7 +554,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (array == null) throw new ArgumentNullException("array");
             if (arrayIndex < 0) throw new ArgumentOutOfRangeException("arrayIndex");
-            
+
             if (arrayIndex >= array.Length)
             {
                 throw new ArgumentException("arrayIndex is greater than array length.");
@@ -588,7 +563,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (_geometries.Count > array.Length - arrayIndex)
             {
                 throw new ArgumentException(
-                    "There is not enough room betwen 'arrayIndex' and the end of 'array'"+
+                    "There is not enough room betwen 'arrayIndex' and the end of 'array'" +
                     " to contain the items in this collection.");
             }
 
@@ -603,8 +578,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             CheckFrozen();
             return _geometries.Remove(item);
         }
-
-        #endregion
 
         public void CopyTo(IGeometry<TCoordinate>[] array, Int32 arrayIndex)
         {
@@ -622,18 +595,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             set { this[index] = value as IGeometry<TCoordinate>; }
         }
 
-        #endregion
-
-        #region IEnumerable Members
-
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
-
-        #endregion
-
-        #region IEnumerable<IGeometry> Members
 
         IEnumerator<IGeometry> IEnumerable<IGeometry>.GetEnumerator()
         {
@@ -645,45 +610,64 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #endregion
 
-        #region IComparable<IGeometryCollection<TCoordinate>> Members
+        #region IHasGeometryComponents<TCoordinate> Members
 
-        public Int32 CompareTo(IGeometryCollection<TCoordinate> other)
+        public IEnumerable<IGeometry<TCoordinate>> Components
+        {
+            get
+            {
+                foreach (IGeometry<TCoordinate> geometry in _geometries)
+                {
+                    foreach (IGeometry<TCoordinate> component in enumerateComponents(geometry))
+                    {
+                        yield return component;
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Represents an empty <see cref="GeometryCollection{TCoordinate}" />.
+        /// </summary>
+        //public static readonly IGeometryCollection<TCoordinate> Empty = DefaultFactory.CreateGeometryCollection(null);
+        public static Boolean HasNonEmptyElements<TGeometry>(IEnumerable<TGeometry> geometries)
+            where TGeometry : IGeometry
+        {
+            foreach (TGeometry geometry in geometries)
+            {
+                if (!geometry.IsEmpty)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        protected override Extents<TCoordinate> ComputeExtentsInternal()
+        {
+            Extents<TCoordinate> extents = new Extents<TCoordinate>(Factory);
+
+            foreach (IGeometry<TCoordinate> geometry in _geometries)
+            {
+                extents.ExpandToInclude(geometry.Extents);
+            }
+
+            return extents;
+        }
+
+        protected internal override Int32 CompareToSameClass(IGeometry<TCoordinate> other)
         {
             if (other == null)
             {
                 return 1;
             }
 
-            IEnumerator<IGeometry<TCoordinate>> i = GetEnumerator();
-            IEnumerator<IGeometry<TCoordinate>> j = other.GetEnumerator();
-
-            Boolean iHasNext = i.MoveNext();
-            Boolean jHasNext = j.MoveNext();
-
-            while (iHasNext && jHasNext)
-            {
-                int comparison = i.Current.CompareTo(j.Current);
-
-                if (comparison != 0)
-                {
-                    return comparison;
-                }
-            }
-
-            if (iHasNext)
-            {
-                return 1;
-            }
-
-            if (jHasNext)
-            {
-                return -1;
-            }
-
-            return 0;
+            IGeometryCollection<TCoordinate> collection = other as IGeometryCollection<TCoordinate>;
+            return CompareTo(collection);
         }
-
-        #endregion
 
         protected void CheckFrozen()
         {
@@ -693,11 +677,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        protected virtual void CheckItemType(IGeometry<TCoordinate> item) { }
-
-        protected List<IGeometry<TCoordinate>> GeometriesInternal
+        protected virtual void CheckItemType(IGeometry<TCoordinate> item)
         {
-            get { return _geometries; }
         }
 
         private static IEnumerable<IGeometry<TCoordinate>> enumerateComponents(IGeometry<TCoordinate> geometry)
@@ -757,6 +738,5 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         //        geometry.Apply(filter);
         //    }
         //}
-
     }
 }

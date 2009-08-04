@@ -7,14 +7,43 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     public abstract class MultiCoordinateGeometry<TCoordinate> : Geometry<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         private ICoordinateSequence<TCoordinate> _coordinates;
 
         public MultiCoordinateGeometry(IGeometryFactory<TCoordinate> factory)
-            : base(factory) { }
+            : base(factory)
+        {
+        }
+
+        public override ICoordinateSequence<TCoordinate> Coordinates
+        {
+            get { return CoordinatesInternal; }
+        }
+
+        protected ICoordinateSequence<TCoordinate> CoordinatesInternal
+        {
+            get { return _coordinates; }
+            set
+            {
+                if (_coordinates != value)
+                {
+                    if (_coordinates != null)
+                    {
+                        _coordinates.SequenceChanged -= handleCoordinatesChanged;
+                    }
+
+                    _coordinates = value;
+
+                    if (_coordinates != null)
+                    {
+                        _coordinates.SequenceChanged += handleCoordinatesChanged;
+                    }
+                }
+            }
+        }
 
         public override Boolean EqualsExact(IGeometry<TCoordinate> g, Tolerance tolerance)
         {
@@ -33,41 +62,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return CoordinatesInternal.Equals(otherCoords, tolerance);
         }
 
-        public override ICoordinateSequence<TCoordinate> Coordinates
-        {
-            get { return CoordinatesInternal; }
-        }
-
         public override IGeometry<TCoordinate> Clone()
         {
-            MultiCoordinateGeometry<TCoordinate> geom 
+            MultiCoordinateGeometry<TCoordinate> geom
                 = Clone() as MultiCoordinateGeometry<TCoordinate>;
 
             geom._coordinates = _coordinates.Clone();
 
             return geom;
-        }
-
-        protected ICoordinateSequence<TCoordinate> CoordinatesInternal
-        {
-            get { return _coordinates; }
-            set 
-            {
-                if (_coordinates != value)
-                {
-                    if (_coordinates != null)
-                    {
-                        _coordinates.SequenceChanged -= handleCoordinatesChanged;
-                    }
-
-                    _coordinates = value;
-
-                    if (_coordinates != null)
-                    {
-                        _coordinates.SequenceChanged += handleCoordinatesChanged;
-                    }
-                }
-            }
         }
 
         protected virtual void OnCoordinatesChanged()

@@ -14,12 +14,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </remarks>
     public class InteriorPointPoint<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly TCoordinate _centroid;
-        private Double _minDistance = Double.MaxValue;
-        private TCoordinate _interiorPoint = default(TCoordinate);
         private readonly ICoordinateFactory<TCoordinate> _factory;
+        private TCoordinate _interiorPoint;
+        private Double _minDistance = Double.MaxValue;
 
         public InteriorPointPoint(IGeometry<TCoordinate> g)
         {

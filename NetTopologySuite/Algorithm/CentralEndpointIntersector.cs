@@ -5,7 +5,6 @@ using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
-
     /// <summary>
     /// Computes an approximate intersection of two line segments
     /// by taking the most central of the endpoints of the segments.
@@ -24,39 +23,40 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// cause other methods to fail.
     /// </remarks>
     public class CentralEndpointIntersector<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
-        public static TCoordinate GetIntersection(ICoordinateFactory<TCoordinate> coordinateFactory,
-                                                  TCoordinate p00, TCoordinate p01,
-                                                  TCoordinate p10, TCoordinate p11)
-        {
-            CentralEndpointIntersector<TCoordinate> intersector
-                = new CentralEndpointIntersector<TCoordinate>(coordinateFactory, 
-                                                              p00, p01, p10, p11);
-            return intersector.GetIntersectionPoint();
-        }
-
+        private TCoordinate _intPt;
         private LineSegment<TCoordinate> _line0;
         private LineSegment<TCoordinate> _line1;
-        private TCoordinate _intPt;
 
-        public CentralEndpointIntersector(ICoordinateFactory<TCoordinate> coordinateFactory, 
+        public CentralEndpointIntersector(ICoordinateFactory<TCoordinate> coordinateFactory,
                                           TCoordinate p00, TCoordinate p01,
                                           TCoordinate p10, TCoordinate p11)
             : this(coordinateFactory,
-                   new LineSegment<TCoordinate>(p00, p01), 
+                   new LineSegment<TCoordinate>(p00, p01),
                    new LineSegment<TCoordinate>(p10, p11))
-        { }
+        {
+        }
 
         public CentralEndpointIntersector(ICoordinateFactory<TCoordinate> coordinateFactory,
-                                          LineSegment<TCoordinate> line0, 
+                                          LineSegment<TCoordinate> line0,
                                           LineSegment<TCoordinate> line1)
         {
             _line0 = line0;
             _line1 = line1;
             compute(coordinateFactory);
+        }
+
+        public static TCoordinate GetIntersection(ICoordinateFactory<TCoordinate> coordinateFactory,
+                                                  TCoordinate p00, TCoordinate p01,
+                                                  TCoordinate p10, TCoordinate p11)
+        {
+            CentralEndpointIntersector<TCoordinate> intersector
+                = new CentralEndpointIntersector<TCoordinate>(coordinateFactory,
+                                                              p00, p01, p10, p11);
+            return intersector.GetIntersectionPoint();
         }
 
         private void compute(ICoordinateFactory<TCoordinate> coordinateFactory)
@@ -74,16 +74,16 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                                            params TCoordinate[] pts)
         {
             if (pts.Length == 0)
-	        {
-	            return default(TCoordinate);
-	        }
+            {
+                return default(TCoordinate);
+            }
 
             TCoordinate first = pts[0];
 
             if (pts.Length == 1)
-	        {
-	            return first;
-	        }
+            {
+                return first;
+            }
 
             Int32 componentCount = first.ComponentCount;
 
@@ -95,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             {
                 for (Int32 componentIndex = 0; componentIndex < componentCount; componentIndex++)
                 {
-                    avg[componentIndex] += (Double)pts[i][componentIndex];
+                    avg[componentIndex] += (Double) pts[i][componentIndex];
                 }
             }
 

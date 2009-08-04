@@ -13,21 +13,22 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     public class EdgeNodingValidator<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        private static IEnumerable<NodedSegmentString<TCoordinate>> toSegmentStrings(IEnumerable<Edge<TCoordinate>> edges)
-        {
-            foreach (Edge<TCoordinate> e in edges)
-            {
-                yield return new NodedSegmentString<TCoordinate>(e.Coordinates, e);
-            }
-        }
-
         private readonly NodingValidator<TCoordinate> _nodingValidator;
 
         public EdgeNodingValidator(IGeometryFactory<TCoordinate> geoFactory, IEnumerable<Edge<TCoordinate>> edges)
         {
             _nodingValidator = new NodingValidator<TCoordinate>(geoFactory, toSegmentStrings(edges));
+        }
+
+        private static IEnumerable<NodedSegmentString<TCoordinate>> toSegmentStrings(
+            IEnumerable<Edge<TCoordinate>> edges)
+        {
+            foreach (Edge<TCoordinate> e in edges)
+            {
+                yield return new NodedSegmentString<TCoordinate>(e.Coordinates, e);
+            }
         }
 
         public void CheckValid()

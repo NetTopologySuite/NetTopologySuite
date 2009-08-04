@@ -1,7 +1,6 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
@@ -15,8 +14,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private readonly Dimensions _dim;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private Int32 _pointCount = 100;
 
         ///// <summary>
@@ -98,22 +97,22 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         {
             Int32 i;
             Int32 ipt = 0;
-            Int32 nSide = _pointCount / 4;
+            Int32 nSide = _pointCount/4;
 
             if (nSide < 1)
             {
                 nSide = 1;
             }
 
-            Double xSegLen = _dim.Extents.Width / nSide;
-            Double ySegLen = _dim.Extents.Height / nSide;
+            Double xSegLen = _dim.Extents.Width/nSide;
+            Double ySegLen = _dim.Extents.Height/nSide;
 
-            TCoordinate[] pts = new TCoordinate[4 * nSide + 1];
+            TCoordinate[] pts = new TCoordinate[4*nSide + 1];
             Extents<TCoordinate> extents = _dim.Extents;
 
             for (i = 0; i < nSide; i++)
             {
-                Double x = extents.Min[Ordinates.X] + i * xSegLen;
+                Double x = extents.Min[Ordinates.X] + i*xSegLen;
                 Double y = extents.Min[Ordinates.Y];
                 pts[ipt++] = _geoFactory.CoordinateFactory.Create(x, y);
             }
@@ -121,13 +120,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             for (i = 0; i < nSide; i++)
             {
                 Double x = extents.Max[Ordinates.X];
-                Double y = extents.Min[Ordinates.Y] + i * ySegLen;
+                Double y = extents.Min[Ordinates.Y] + i*ySegLen;
                 pts[ipt++] = _geoFactory.CoordinateFactory.Create(x, y);
             }
 
             for (i = 0; i < nSide; i++)
             {
-                Double x = extents.Max[Ordinates.X] - i * xSegLen;
+                Double x = extents.Max[Ordinates.X] - i*xSegLen;
                 Double y = extents.Max[Ordinates.Y];
                 pts[ipt++] = _geoFactory.CoordinateFactory.Create(x, y);
             }
@@ -135,7 +134,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             for (i = 0; i < nSide; i++)
             {
                 Double x = extents.Min[Ordinates.X];
-                Double y = extents.Max[Ordinates.Y] - i * ySegLen;
+                Double y = extents.Max[Ordinates.Y] - i*ySegLen;
                 pts[ipt++] = _geoFactory.CoordinateFactory.Create(x, y);
             }
 
@@ -153,8 +152,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         public IPolygon<TCoordinate> CreateCircle()
         {
             Extents<TCoordinate> extents = _dim.Extents;
-            Double xRadius = extents.Width / 2.0;
-            Double yRadius = extents.Height / 2.0;
+            Double xRadius = extents.Width/2.0;
+            Double yRadius = extents.Height/2.0;
 
             Double centerX = extents.Min[Ordinates.X] + xRadius;
             Double centerY = extents.Min[Ordinates.Y] + yRadius;
@@ -164,9 +163,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 
             for (Int32 i = 0; i < _pointCount; i++)
             {
-                Double ang = i * (2 * Math.PI / _pointCount);
-                Double x = xRadius * Math.Cos(ang) + centerX;
-                Double y = yRadius * Math.Sin(ang) + centerY;
+                Double ang = i*(2*Math.PI/_pointCount);
+                Double x = xRadius*Math.Cos(ang) + centerX;
+                Double y = yRadius*Math.Sin(ang) + centerY;
                 TCoordinate pt = _geoFactory.CoordinateFactory.Create(x, y);
                 pts[iPt++] = pt;
             }
@@ -185,29 +184,29 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         {
             Extents<TCoordinate> extents = _dim.Extents;
 
-            Double xRadius = extents.Width / 2.0;
-            Double yRadius = extents.Height / 2.0;
+            Double xRadius = extents.Width/2.0;
+            Double yRadius = extents.Height/2.0;
 
             Double centerX = extents.Min[Ordinates.X] + xRadius;
             Double centerY = extents.Min[Ordinates.Y] + yRadius;
 
             Double angSize = (endAng - startAng);
 
-            if (angSize <= 0.0 || angSize > 2 * Math.PI)
+            if (angSize <= 0.0 || angSize > 2*Math.PI)
             {
-                angSize = 2 * Math.PI;
+                angSize = 2*Math.PI;
             }
 
-            Double angInc = angSize / _pointCount;
+            Double angInc = angSize/_pointCount;
 
             TCoordinate[] pts = new TCoordinate[_pointCount];
             Int32 iPt = 0;
 
             for (Int32 i = 0; i < _pointCount; i++)
             {
-                Double ang = startAng + i * angInc;
-                Double x = xRadius * Math.Cos(ang) + centerX;
-                Double y = yRadius * Math.Sin(ang) + centerY;
+                Double ang = startAng + i*angInc;
+                Double x = xRadius*Math.Cos(ang) + centerX;
+                Double y = yRadius*Math.Sin(ang) + centerY;
                 TCoordinate pt = _geoFactory.CoordinateFactory.Create(x, y);
                 pt = _geoFactory.PrecisionModel.MakePrecise(pt);
                 pts[iPt++] = pt;
@@ -217,13 +216,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             return line;
         }
 
+        #region Nested type: Dimensions
+
         private class Dimensions
         {
+            private readonly IGeometryFactory<TCoordinate> _geoFactory;
             private TCoordinate _base;
             private TCoordinate _center;
-            private Double _width;
             private Double _height;
-            private readonly IGeometryFactory<TCoordinate> _geoFactory;
+            private Double _width;
 
             public Dimensions(IGeometryFactory<TCoordinate> geoFactory)
             {
@@ -272,7 +273,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                     {
                         Double x = Base[Ordinates.X], y = Base[Ordinates.Y];
                         return new Extents<TCoordinate>(_geoFactory,
-                            x, x + Width, y, y + Height);
+                                                        x, x + Width, y, y + Height);
                     }
 
                     if (!Coordinates<TCoordinate>.IsEmpty(Center))
@@ -280,13 +281,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                         Double x = Center[Ordinates.X], y = Center[Ordinates.Y];
                         return new Extents<TCoordinate>(
                             _geoFactory,
-                            x - Width / 2, x + Width / 2,
-                            y - Height / 2, y + Height / 2);
+                            x - Width/2, x + Width/2,
+                            y - Height/2, y + Height/2);
                     }
 
                     return new Extents<TCoordinate>(_geoFactory, 0, Width, 0, Height);
                 }
             }
         }
+
+        #endregion
     }
 }

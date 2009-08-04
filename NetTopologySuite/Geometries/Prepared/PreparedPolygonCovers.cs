@@ -10,9 +10,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
     ///</summary>
     public class PreparedPolygonCovers<TCoordinate> : AbstractPreparedPolygonContains<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
+        ///<summary>
+        /// Creates an instance of this operation.
+        ///</summary>
+        ///<param name="prepPoly">the PreparedPolygon to evaluate</param>
+        public PreparedPolygonCovers(PreparedPolygon<TCoordinate> prepPoly)
+            : base(prepPoly)
+        {
+            RequireSomePointInInterior = false;
+        }
+
         ///<summary>
         /// Computes the <see cref="ISpatialRelation.Covers(GeoAPI.Geometries.IGeometry)"/> predicate between a <see cref="PreparedPolygon{TCoordinate}"/> and a <see cref="IGeometry{TCoordinate}"/>.
         ///</summary>
@@ -23,16 +33,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         {
             PreparedPolygonCovers<TCoordinate> polyInt = new PreparedPolygonCovers<TCoordinate>(prep);
             return polyInt.Covers(geom);
-        }
-
-        ///<summary>
-        /// Creates an instance of this operation.
-        ///</summary>
-        ///<param name="prepPoly">the PreparedPolygon to evaluate</param>
-        public PreparedPolygonCovers(PreparedPolygon<TCoordinate> prepPoly)
-            : base(prepPoly)
-        {
-            RequireSomePointInInterior = false;
         }
 
         ///<summary>
@@ -54,6 +54,5 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         {
             return _prepPoly.Geometry.Covers(geom);
         }
-
     }
 }

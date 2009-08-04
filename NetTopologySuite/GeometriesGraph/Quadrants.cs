@@ -1,5 +1,4 @@
-﻿
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+﻿namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     public enum Quadrants
     {

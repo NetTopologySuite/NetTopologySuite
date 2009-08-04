@@ -10,22 +10,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
     ///</summary>
     public class PreparedPolygonContains<TCoordinate> : AbstractPreparedPolygonContains<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
-   {
-        ///<summary>
-       /// Computes the <see cref="ISpatialRelation{TCoordinate}.Contains(GeoAPI.Geometries.IGeometry{TCoordinate})"/> predicate between a <see cref="PreparedPolygon{TCoordinate}"/>
-       /// and a <see cref="IGeometry{TCoordinate}"/>.
-        ///</summary>
-       ///<param name="prep">the prepared polygon</param>
-       ///<param name="geom"> a test geometry</param>
-       ///<returns>true if the polygon contains the geometry</returns>
-        public static Boolean Contains(PreparedPolygon<TCoordinate> prep, IGeometry<TCoordinate> geom)
-        {
-            PreparedPolygonContains<TCoordinate> polyInt = new PreparedPolygonContains<TCoordinate>(prep);
-            return polyInt.Contains(geom);
-        }
-
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
+    {
         ///<summary>
         /// Creates an instance of this operation.
         ///</summary>
@@ -33,6 +20,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         public PreparedPolygonContains(PreparedPolygon<TCoordinate> prepPoly)
             : base(prepPoly)
         {
+        }
+
+        ///<summary>
+        /// Computes the <see cref="ISpatialRelation{TCoordinate}.Contains(GeoAPI.Geometries.IGeometry{TCoordinate})"/> predicate between a <see cref="PreparedPolygon{TCoordinate}"/>
+        /// and a <see cref="IGeometry{TCoordinate}"/>.
+        ///</summary>
+        ///<param name="prep">the prepared polygon</param>
+        ///<param name="geom"> a test geometry</param>
+        ///<returns>true if the polygon contains the geometry</returns>
+        public static Boolean Contains(PreparedPolygon<TCoordinate> prep, IGeometry<TCoordinate> geom)
+        {
+            PreparedPolygonContains<TCoordinate> polyInt = new PreparedPolygonContains<TCoordinate>(prep);
+            return polyInt.Contains(geom);
         }
 
         ///<summary>
@@ -55,6 +55,5 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         {
             return _prepPoly.Geometry.Contains(geom);
         }
-
-   }
+    }
 }

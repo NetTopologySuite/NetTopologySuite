@@ -19,24 +19,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
     /// </remarks>
     public struct HotPixel<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
-        private readonly LineIntersector<TCoordinate> _li;
-
-        private readonly TCoordinate _pt;
-        private readonly TCoordinate _originalPt;
-
-        //private readonly TCoordinate _p0Scaled;
-        //private readonly TCoordinate _p1Scaled;
-
-        private readonly Double _scaleFactor;
-
-        private readonly Double _minx;
-        private readonly Double _maxx;
-        private readonly Double _miny;
-        private readonly Double _maxy;
-
         /*
          * The corners of the hot pixel, in the order:
          *  10
@@ -47,14 +32,22 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         private readonly TCoordinate _corner2;
         private readonly TCoordinate _corner3;
 
-        private Extents<TCoordinate> _safeExtents;
         private readonly ICoordinateFactory<TCoordinate> _factory;
+        private readonly LineIntersector<TCoordinate> _li;
+        private readonly Double _maxx;
+        private readonly Double _maxy;
+        private readonly Double _minx;
+        private readonly Double _miny;
+        private readonly TCoordinate _originalPt;
+        private readonly TCoordinate _pt;
+        private readonly Double _scaleFactor;
+        private Extents<TCoordinate> _safeExtents;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HotPixel{TCoordinate}"/> class.
         /// </summary>
-        public HotPixel(TCoordinate pt, Double scaleFactor, 
-            LineIntersector<TCoordinate> li, ICoordinateFactory<TCoordinate> factory)
+        public HotPixel(TCoordinate pt, Double scaleFactor,
+                        LineIntersector<TCoordinate> li, ICoordinateFactory<TCoordinate> factory)
         {
             _originalPt = pt;
             _pt = pt;
@@ -97,13 +90,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         {
             if (_safeExtents == null)
             {
-                Double safeTolerance = 0.75 / _scaleFactor;
+                Double safeTolerance = 0.75/_scaleFactor;
 
                 _safeExtents = new Extents<TCoordinate>(
                     geoFactory,
-                    _originalPt[Ordinates.X] - safeTolerance, 
+                    _originalPt[Ordinates.X] - safeTolerance,
                     _originalPt[Ordinates.X] + safeTolerance,
-                    _originalPt[Ordinates.Y] - safeTolerance, 
+                    _originalPt[Ordinates.Y] - safeTolerance,
                     _originalPt[Ordinates.Y] + safeTolerance);
             }
 
@@ -149,7 +142,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
 
         private Double scale(Double val)
         {
-            return Math.Round(val * _scaleFactor);
+            return Math.Round(val*_scaleFactor);
         }
 
         private TCoordinate copyScaled(TCoordinate p)

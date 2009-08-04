@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
+
 #if DOTNET35
 using System.Linq;
 #endif
@@ -19,9 +20,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// The edges to use are marked as being in the result Area.
     /// </summary>
     public class PolygonBuilder<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         private readonly IGeometryFactory<TCoordinate> _geometryFactory;
         private readonly List<EdgeRing<TCoordinate>> _shellList = new List<EdgeRing<TCoordinate>>();
@@ -29,6 +30,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         public PolygonBuilder(IGeometryFactory<TCoordinate> geometryFactory)
         {
             _geometryFactory = geometryFactory;
+        }
+
+        public IEnumerable<IPolygon<TCoordinate>> Polygons
+        {
+            get { return computePolygons(_shellList); }
         }
 
         /// <summary>
@@ -50,23 +56,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         {
             PlanarGraph<TCoordinate>.LinkResultDirectedEdges(nodes);
             IEnumerable<MaximalEdgeRing<TCoordinate>> maxEdgeRings = buildMaximalEdgeRings(dirEdges);
-                //= Enumerable.ToArray(buildMaximalEdgeRings(dirEdges));
+            //= Enumerable.ToArray(buildMaximalEdgeRings(dirEdges));
             List<EdgeRing<TCoordinate>> freeHoleList = new List<EdgeRing<TCoordinate>>();
-            IEnumerable<EdgeRing<TCoordinate>> edgeRings = buildMinimalEdgeRings(maxEdgeRings, 
-                                                                                 _shellList, 
+            IEnumerable<EdgeRing<TCoordinate>> edgeRings = buildMinimalEdgeRings(maxEdgeRings,
+                                                                                 _shellList,
                                                                                  freeHoleList);
-                //= Enumerable.ToArray(buildMinimalEdgeRings(maxEdgeRings, _shellList, freeHoleList));
+            //= Enumerable.ToArray(buildMinimalEdgeRings(maxEdgeRings, _shellList, freeHoleList));
             sortShellsAndHoles(edgeRings, _shellList, freeHoleList);
             placeFreeHoles(_shellList, freeHoleList);
             //Assert: every hole on freeHoleList has a shell assigned to it
-        }
-
-        public IEnumerable<IPolygon<TCoordinate>> Polygons
-        {
-            get
-            {
-                return computePolygons(_shellList);
-            }
         }
 
         /// <summary> 
@@ -91,7 +89,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// form them into MaximalEdgeRings.
         /// </summary>
         private IEnumerable<MaximalEdgeRing<TCoordinate>> buildMaximalEdgeRings(
-                                                            IEnumerable<EdgeEnd<TCoordinate>> dirEdges)
+            IEnumerable<EdgeEnd<TCoordinate>> dirEdges)
         {
             foreach (DirectedEdge<TCoordinate> edge in dirEdges)
             {
@@ -100,7 +98,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                     // if this edge has not yet been processed
                     if (edge.EdgeRing == null)
                     {
-                        MaximalEdgeRing<TCoordinate> er = new MaximalEdgeRing<TCoordinate>(edge, 
+                        MaximalEdgeRing<TCoordinate> er = new MaximalEdgeRing<TCoordinate>(edge,
                                                                                            _geometryFactory);
                         er.SetInResult();
                         yield return er;
@@ -110,9 +108,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         }
 
         private static IEnumerable<EdgeRing<TCoordinate>> buildMinimalEdgeRings(
-                                            IEnumerable<MaximalEdgeRing<TCoordinate>> maxEdgeRings,
-                                            ICollection<EdgeRing<TCoordinate>> shellList, 
-                                            ICollection<EdgeRing<TCoordinate>> freeHoleList)
+            IEnumerable<MaximalEdgeRing<TCoordinate>> maxEdgeRings,
+            ICollection<EdgeRing<TCoordinate>> shellList,
+            ICollection<EdgeRing<TCoordinate>> freeHoleList)
         {
             foreach (MaximalEdgeRing<TCoordinate> er in maxEdgeRings)
             {
@@ -183,7 +181,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// chosen might lie on the shell, which might return an incorrect result from the
         /// PIP test.
         /// </summary>
-        private static void placePolygonHoles(EdgeRing<TCoordinate> shell, 
+        private static void placePolygonHoles(EdgeRing<TCoordinate> shell,
                                               IEnumerable<MinimalEdgeRing<TCoordinate>> minEdgeRings)
         {
             foreach (MinimalEdgeRing<TCoordinate> ring in minEdgeRings)
@@ -203,7 +201,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// a ring is a shell if it is oriented CW, a hole otherwise.
         /// </summary>
         private static void sortShellsAndHoles(IEnumerable<EdgeRing<TCoordinate>> edgeRings,
-                                               ICollection<EdgeRing<TCoordinate>> shellList, 
+                                               ICollection<EdgeRing<TCoordinate>> shellList,
                                                ICollection<EdgeRing<TCoordinate>> freeHoleList)
         {
             foreach (EdgeRing<TCoordinate> edgeRing in edgeRings)
@@ -232,7 +230,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// parent shell) would have formed part of a MaximalEdgeRing
         /// and been handled in a previous step).
         /// </summary>
-        private static void placeFreeHoles(IEnumerable<EdgeRing<TCoordinate>> shellList, 
+        private static void placeFreeHoles(IEnumerable<EdgeRing<TCoordinate>> shellList,
                                            IEnumerable<EdgeRing<TCoordinate>> freeHoleList)
         {
             foreach (EdgeRing<TCoordinate> hole in freeHoleList)
@@ -256,7 +254,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         // is known to be properly contained in a shell
         // (which is guaranteed to be the case if the hole does not touch its shell).
         // Returns containing EdgeRing, if there is one, OR null if no containing EdgeRing is found.
-        private static EdgeRing<TCoordinate> findEdgeRingContaining(EdgeRing<TCoordinate> testEdgeRing, 
+        private static EdgeRing<TCoordinate> findEdgeRingContaining(EdgeRing<TCoordinate> testEdgeRing,
                                                                     IEnumerable<EdgeRing<TCoordinate>> shellList)
         {
             ILinearRing<TCoordinate> teString = testEdgeRing.LinearRing;
@@ -278,14 +276,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 
                 Boolean isContained = false;
 
-                if (tryEnv.Contains(testEnv) && 
+                if (tryEnv.Contains(testEnv) &&
                     CGAlgorithms<TCoordinate>.IsPointInRing(testPt, tryRing.Coordinates))
                 {
                     isContained = true;
                 }
 
                 // check if this new containing ring is smaller than the current minimum ring
-                if (isContained && 
+                if (isContained &&
                     (minShell == null || minEnv.Contains(tryEnv)))
                 {
                     minShell = tryShell;

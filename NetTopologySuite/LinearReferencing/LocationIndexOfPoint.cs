@@ -1,9 +1,9 @@
 using System;
 using GeoAPI.Coordinates;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 {
@@ -17,12 +17,6 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
-        public static LinearLocation<TCoordinate> IndexOf(IGeometry<TCoordinate> linearGeom, TCoordinate inputPt)
-        {
-            LocationIndexOfPoint<TCoordinate> locater = new LocationIndexOfPoint<TCoordinate>(linearGeom);
-            return locater.IndexOf(inputPt);
-        }
-
         private readonly IGeometry<TCoordinate> _linearGeom;
 
         /// <summary>
@@ -32,6 +26,12 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         public LocationIndexOfPoint(IGeometry<TCoordinate> linearGeom)
         {
             _linearGeom = linearGeom;
+        }
+
+        public static LinearLocation<TCoordinate> IndexOf(IGeometry<TCoordinate> linearGeom, TCoordinate inputPt)
+        {
+            LocationIndexOfPoint<TCoordinate> locater = new LocationIndexOfPoint<TCoordinate>(linearGeom);
+            return locater.IndexOf(inputPt);
         }
 
         /// <summary>     
@@ -113,7 +113,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
                     {
                         // ensure after minLocation, if any                        
                         if (minIndex == null ||
-                            minIndex.Value.CompareLocationValues(candidateComponentIndex, candidateSegmentIndex, segFrac) < 0)
+                            minIndex.Value.CompareLocationValues(candidateComponentIndex, candidateSegmentIndex, segFrac) <
+                            0)
                         {
                             // otherwise, save this as new minimum
                             minComponentIndex = candidateComponentIndex;
@@ -125,7 +126,8 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
                 }
             }
 
-            LinearLocation<TCoordinate> loc = new LinearLocation<TCoordinate>(minComponentIndex, minSegmentIndex, minFrac);
+            LinearLocation<TCoordinate> loc = new LinearLocation<TCoordinate>(minComponentIndex, minSegmentIndex,
+                                                                              minFrac);
             return loc;
         }
 

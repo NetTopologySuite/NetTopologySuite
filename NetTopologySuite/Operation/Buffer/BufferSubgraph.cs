@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures.Collections.Generic;
+using GeoAPI.Diagnostics;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 {
@@ -19,12 +19,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// </summary>
     public class BufferSubgraph<TCoordinate> : IComparable<BufferSubgraph<TCoordinate>>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly RightmostEdgeFinder<TCoordinate> _finder = new RightmostEdgeFinder<TCoordinate>();
         private readonly List<DirectedEdge<TCoordinate>> _dirEdgeList = new List<DirectedEdge<TCoordinate>>();
+        private readonly RightmostEdgeFinder<TCoordinate> _finder = new RightmostEdgeFinder<TCoordinate>();
         private readonly List<Node<TCoordinate>> _nodes = new List<Node<TCoordinate>>();
-        private TCoordinate rightMostCoord = default(TCoordinate);
+        private TCoordinate rightMostCoord;
 
         public IList<DirectedEdge<TCoordinate>> DirectedEdges
         {
@@ -43,6 +43,38 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         {
             get { return rightMostCoord; }
         }
+
+        #region IComparable<BufferSubgraph<TCoordinate>> Members
+
+        /// <summary>
+        /// BufferSubgraphs are compared on the x-value of their rightmost Coordinate.
+        /// This defines a partial ordering on the graphs such that:
+        /// g1 >= g2 - Ring(g2) does not contain Ring(g1)
+        /// where Polygon(g) is the buffer polygon that is built from g.
+        /// This relationship is used to sort the BufferSubgraphs so that shells are guaranteed to
+        /// be built before holes.
+        /// </summary>
+        public Int32 CompareTo(BufferSubgraph<TCoordinate> other)
+        {
+            if (other == null)
+            {
+                throw new ArgumentNullException("other");
+            }
+
+            if (RightMostCoordinate[Ordinates.X] < other.RightMostCoordinate[Ordinates.X])
+            {
+                return -1;
+            }
+
+            if (RightMostCoordinate[Ordinates.X] > other.RightMostCoordinate[Ordinates.X])
+            {
+                return 1;
+            }
+
+            return 0;
+        }
+
+        #endregion
 
         /// <summary>
         /// Creates the subgraph consisting of all edges reachable from this node.
@@ -94,34 +126,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                     de.IsInResult = true;
                 }
             }
-        }
-
-        /// <summary>
-        /// BufferSubgraphs are compared on the x-value of their rightmost Coordinate.
-        /// This defines a partial ordering on the graphs such that:
-        /// g1 >= g2 - Ring(g2) does not contain Ring(g1)
-        /// where Polygon(g) is the buffer polygon that is built from g.
-        /// This relationship is used to sort the BufferSubgraphs so that shells are guaranteed to
-        /// be built before holes.
-        /// </summary>
-        public Int32 CompareTo(BufferSubgraph<TCoordinate> other)
-        {
-            if (other == null)
-            {
-                throw new ArgumentNullException("other");
-            }
-
-            if (RightMostCoordinate[Ordinates.X] < other.RightMostCoordinate[Ordinates.X])
-            {
-                return -1;
-            }
-
-            if (RightMostCoordinate[Ordinates.X] > other.RightMostCoordinate[Ordinates.X])
-            {
-                return 1;
-            }
-
-            return 0;
         }
 
         /// <summary>
@@ -206,7 +210,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 {
                     DirectedEdge<TCoordinate> sym = de.Sym;
                     Debug.Assert(sym != null);
-                    
+
                     if (sym.IsVisited)
                     {
                         continue;

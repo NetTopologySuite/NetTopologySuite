@@ -11,21 +11,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     public class Depth
     {
-        public static Int32? DepthAtLocation(Locations location)
-        {
-            if (location == Locations.Exterior)
-            {
-                return 0;
-            }
-
-            if (location == Locations.Interior)
-            {
-                return 1;
-            }
-
-            return null;
-        }
-
         private Int32? _depth00;
         private Int32? _depth01;
         private Int32? _depth02;
@@ -83,7 +68,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                                 return _depth11;
                             case Positions.Right:
                                 return _depth12;
-                            //case Positions.Parallel:
+                                //case Positions.Parallel:
                             default:
                                 return null;
                         }
@@ -139,11 +124,26 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
+        public static Int32? DepthAtLocation(Locations location)
+        {
+            if (location == Locations.Exterior)
+            {
+                return 0;
+            }
+
+            if (location == Locations.Interior)
+            {
+                return 1;
+            }
+
+            return null;
+        }
+
         public Locations GetLocation(Int32 geometryIndex, Positions position)
         {
-            return this[geometryIndex, position] <= 0 
-                                ? Locations.Exterior 
-                                : Locations.Interior;
+            return this[geometryIndex, position] <= 0
+                       ? Locations.Exterior
+                       : Locations.Interior;
         }
 
         public void Add(Int32 geometryIndex, Positions position, Locations location)
@@ -163,7 +163,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             {
                 for (Int32 j = 0; j < 3; j++)
                 {
-                    if (this[i, (Positions)j] != null)
+                    if (this[i, (Positions) j] != null)
                     {
                         return false;
                     }
@@ -175,7 +175,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public Boolean IsNull(Int32 geometryIndex)
         {
-            return this[geometryIndex, (Positions)1] == null;
+            return this[geometryIndex, (Positions) 1] == null;
         }
 
         public Boolean IsNull(Int32 geometryIndex, Positions position)
@@ -189,18 +189,18 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             {
                 for (Int32 j = 1; j < 3; j++)
                 {
-                    Locations loc = label[i, (Positions)j];
+                    Locations loc = label[i, (Positions) j];
 
                     if (loc == Locations.Exterior || loc == Locations.Interior)
                     {
                         // initialize depth if it is null, otherwise add this location value
-                        if (IsNull(i, (Positions)j))
+                        if (IsNull(i, (Positions) j))
                         {
-                            this[i, (Positions)j] = DepthAtLocation(loc);
+                            this[i, (Positions) j] = DepthAtLocation(loc);
                         }
                         else
                         {
-                            this[i, (Positions)j] += DepthAtLocation(loc);
+                            this[i, (Positions) j] += DepthAtLocation(loc);
                         }
                     }
                 }
@@ -209,8 +209,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public Int32? GetDelta(Int32 geometryIndex)
         {
-            return this[geometryIndex, Positions.Right] 
-                 - this[geometryIndex, Positions.Left];
+            return this[geometryIndex, Positions.Right]
+                   - this[geometryIndex, Positions.Left];
         }
 
         /// <summary>
@@ -229,11 +229,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             {
                 if (!IsNull(i))
                 {
-                    Int32? minDepth = this[i, (Positions)1];
+                    Int32? minDepth = this[i, (Positions) 1];
 
-                    if (this[i, (Positions)2] < minDepth)
+                    if (this[i, (Positions) 2] < minDepth)
                     {
-                        minDepth = this[i, (Positions)2];
+                        minDepth = this[i, (Positions) 2];
                     }
 
                     if (minDepth < 0)
@@ -245,12 +245,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                     {
                         Int32 newValue = 0;
 
-                        if (this[i, (Positions)j] > minDepth)
+                        if (this[i, (Positions) j] > minDepth)
                         {
                             newValue = 1;
                         }
 
-                        this[i, (Positions)j] = newValue;
+                        this[i, (Positions) j] = newValue;
                     }
                 }
             }
@@ -258,8 +258,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public override string ToString()
         {
-            return "A: " + this[0, Positions.Left] + "," + this[0, Positions.Right] + 
-                  " B: " + this[1, Positions.Left] + "," + this[1, Positions.Right];
+            return "A: " + this[0, Positions.Left] + "," + this[0, Positions.Right] +
+                   " B: " + this[1, Positions.Left] + "," + this[1, Positions.Right];
         }
     }
 }

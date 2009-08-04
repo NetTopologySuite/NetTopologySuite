@@ -17,10 +17,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// </summary>
     public class SubgraphDepthLocater<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IEnumerable<BufferSubgraph<TCoordinate>> _subgraphs;
-        private LineSegment<TCoordinate> _segment = new LineSegment<TCoordinate>();
+        private LineSegment<TCoordinate> _segment;
 
         public SubgraphDepthLocater(IEnumerable<BufferSubgraph<TCoordinate>> subgraphs)
         {
@@ -70,7 +70,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <returns>
         /// A set of <see cref="DepthSegment"/>s intersecting the stabbing line.
         /// </returns>
-        private IEnumerable<DepthSegment> findStabbedSegments(TCoordinate stabbingRayLeftPt, IEnumerable<DirectedEdge<TCoordinate>> dirEdges)
+        private IEnumerable<DepthSegment> findStabbedSegments(TCoordinate stabbingRayLeftPt,
+                                                              IEnumerable<DirectedEdge<TCoordinate>> dirEdges)
         {
             /*
             * Check all forward DirectedEdges only.  This is still general,
@@ -101,7 +102,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <returns>
         /// A set of <see cref="DepthSegment"/>s intersecting the stabbing line.
         /// </returns>
-        private IEnumerable<DepthSegment> findStabbedSegments(TCoordinate stabbingRayLeftPt, DirectedEdge<TCoordinate> dirEdge)
+        private IEnumerable<DepthSegment> findStabbedSegments(TCoordinate stabbingRayLeftPt,
+                                                              DirectedEdge<TCoordinate> dirEdge)
         {
             IEnumerable<TCoordinate> coordinates = dirEdge.Edge.Coordinates;
 
@@ -111,7 +113,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
                 // ensure segment always points upwards
                 if (_segment.P0[Ordinates.Y] > _segment.P1[Ordinates.Y])
-                { 
+                {
                     _segment = _segment.Reversed;
                 }
 
@@ -159,19 +161,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             }
         }
 
+        #region Nested type: DepthSegment
+
         /// <summary>
         /// A segment from a directed edge which has been assigned a depth value
         /// for its sides.
         /// </summary>
         private struct DepthSegment : IComparable<DepthSegment>
         {
-            private readonly LineSegment<TCoordinate> _upwardSeg;
             private readonly Int32 _leftDepth;
-
-            public Int32 LeftDepth
-            {
-                get { return _leftDepth; }
-            }
+            private readonly LineSegment<TCoordinate> _upwardSeg;
 
             public DepthSegment(LineSegment<TCoordinate> seg, Int32 depth)
             {
@@ -179,6 +178,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 _upwardSeg = new LineSegment<TCoordinate>(seg);
                 _leftDepth = depth;
             }
+
+            public Int32 LeftDepth
+            {
+                get { return _leftDepth; }
+            }
+
+            #region IComparable<SubgraphDepthLocater<TCoordinate>.DepthSegment> Members
 
             /// <summary>
             /// Defines a comparision operation on DepthSegments
@@ -216,6 +222,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 return compareXOrdinate(_upwardSeg, other._upwardSeg);
             }
 
+            #endregion
+
             /// <summary>
             /// Compare two collinear segments for left-most ordering.
             /// If segs are vertical, use vertical ordering for comparison.
@@ -237,5 +245,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 return seg0.P1.CompareTo(seg1.P1);
             }
         }
+
+        #endregion
     }
 }

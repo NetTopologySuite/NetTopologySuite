@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using GeoAPI.Coordinates;
@@ -11,46 +10,25 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     public class DirectedEdge<TCoordinate> : EdgeEnd<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
-        /// <summary>
-        /// Computes the factor for the change in depth 
-        /// when moving from one location to another.
-        /// E.g. if crossing from the <see cref="Locations.Interior"/> 
-        /// to the <see cref="Locations.Exterior"/>
-        /// the depth decreases, so the factor is -1.
-        /// </summary>
-        public static Int32 DepthFactor(Locations from, Locations to)
-        {
-            if (from == Locations.Exterior && to == Locations.Interior)
-            {
-                return 1;
-            }
-
-            if (from == Locations.Interior && to == Locations.Exterior)
-            {
-                return -1;
-            }
-
-            return 0;
-        }
-
-        private Boolean _isForward;
-        private Boolean _isInResult;
-        private Boolean _isVisited;
-
-        private DirectedEdge<TCoordinate> _sym; // the symmetric edge
-        private DirectedEdge<TCoordinate> _next; // the next edge in the edge ring for the polygon containing this edge
-        private DirectedEdge<TCoordinate> _nextMin; // the next edge in the MinimalEdgeRing that contains this edge
-        private EdgeRing<TCoordinate> _edgeRing; // the EdgeRing that this edge is part of
-        private EdgeRing<TCoordinate> _minEdgeRing; // the MinimalEdgeRing that this edge is part of
-
         /// <summary> 
         /// The depth of each side (position) of this edge.
         /// The 0 element of the array is never used.
         /// </summary>
-        private readonly Int32[] _depth = { 0, -999, -999 };
+        private readonly Int32[] _depth = {0, -999, -999};
+
+        private EdgeRing<TCoordinate> _edgeRing; // the EdgeRing that this edge is part of
+
+        private Boolean _isForward;
+        private Boolean _isInResult;
+        private Boolean _isVisited;
+        private EdgeRing<TCoordinate> _minEdgeRing; // the MinimalEdgeRing that this edge is part of
+
+        private DirectedEdge<TCoordinate> _next; // the next edge in the edge ring for the polygon containing this edge
+        private DirectedEdge<TCoordinate> _nextMin; // the next edge in the MinimalEdgeRing that contains this edge
+        private DirectedEdge<TCoordinate> _sym; // the symmetric edge
 
         public DirectedEdge(Edge<TCoordinate> edge, Boolean isForward)
             : base(edge)
@@ -102,24 +80,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get { return _minEdgeRing; }
             set { _minEdgeRing = value; }
-        }
-
-        public Int32 GetDepth(Positions position)
-        {
-            return _depth[(Int32)position];
-        }
-
-        public void SetDepth(Positions position, Int32 depthVal)
-        {
-            if (_depth[(Int32)position] != -999)
-            {
-                if (_depth[(Int32)position] != depthVal)
-                {
-                    throw new TopologyException("Assigned depths do not match", Coordinate);
-                }
-            }
-
-            _depth[(Int32)position] = depthVal;
         }
 
         public Int32 DepthDelta
@@ -232,6 +192,46 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
+        /// <summary>
+        /// Computes the factor for the change in depth 
+        /// when moving from one location to another.
+        /// E.g. if crossing from the <see cref="Locations.Interior"/> 
+        /// to the <see cref="Locations.Exterior"/>
+        /// the depth decreases, so the factor is -1.
+        /// </summary>
+        public static Int32 DepthFactor(Locations from, Locations to)
+        {
+            if (from == Locations.Exterior && to == Locations.Interior)
+            {
+                return 1;
+            }
+
+            if (from == Locations.Interior && to == Locations.Exterior)
+            {
+                return -1;
+            }
+
+            return 0;
+        }
+
+        public Int32 GetDepth(Positions position)
+        {
+            return _depth[(Int32) position];
+        }
+
+        public void SetDepth(Positions position, Int32 depthVal)
+        {
+            if (_depth[(Int32) position] != -999)
+            {
+                if (_depth[(Int32) position] != depthVal)
+                {
+                    throw new TopologyException("Assigned depths do not match", Coordinate);
+                }
+            }
+
+            _depth[(Int32) position] = depthVal;
+        }
+
         /// <summary> 
         /// Set both edge depths.  
         /// One depth for a given side is provided.  
@@ -257,7 +257,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
 
             Positions oppositePos = Position.Opposite(position);
-            Int32 delta = depthDelta * directionFactor;
+            Int32 delta = depthDelta*directionFactor;
             Int32 oppositeDepth = depth + delta;
             SetDepth(position, depth);
             SetDepth(oppositePos, oppositeDepth);
@@ -321,11 +321,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 (_isVisited ? "* " : "_ ") +
                 (_isInResult ? "in " : "no ") +
                 (Next == null
-                    ? "__________ "
-                    : Next.Coordinate +
-                      (" -> ") +
-                      Next.DirectedCoordinate +
-                      " ") +
+                     ? "__________ "
+                     : Next.Coordinate +
+                       (" -> ") +
+                       Next.DirectedCoordinate +
+                       " ") +
                 (printCoords(Edge.Coordinates));
         }
 

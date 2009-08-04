@@ -10,11 +10,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
 
     public class SweepLineEvent : IComparable<SweepLineEvent>
     {
-        private readonly Double _xValue;
         private readonly SweepLineEventType _eventType;
-        private readonly SweepLineEvent _insertEvent = null; // null if this is an Insert event
-        private Int32 _deleteEventIndex;
+        private readonly SweepLineEvent _insertEvent; // null if this is an Insert event
         private readonly SweepLineInterval _sweepLineInterval;
+        private readonly Double _xValue;
+        private Int32 _deleteEventIndex;
 
         public SweepLineEvent(Double x, SweepLineEvent insertEvent, SweepLineInterval sweepInt)
         {
@@ -59,6 +59,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
             get { return _sweepLineInterval; }
         }
 
+        #region IComparable<SweepLineEvent> Members
+
         /// <summary>
         /// Compares two <see cref="SweepLineEvent"/>s to sort them according to 
         /// coordinate value and <see cref="SweepLineEventType"/>.
@@ -70,7 +72,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
         /// correctly handled.
         /// </remarks>
         public Int32 CompareTo(SweepLineEvent other)
-        { 
+        {
             if (_xValue < other._xValue)
             {
                 return -1;
@@ -93,5 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
 
             return 0;
         }
+
+        #endregion
     }
 }

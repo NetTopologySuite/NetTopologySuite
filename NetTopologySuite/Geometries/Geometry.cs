@@ -14,8 +14,8 @@ using GisSharpBlog.NetTopologySuite.Operation.Overlay;
 using GisSharpBlog.NetTopologySuite.Operation.Predicate;
 using GisSharpBlog.NetTopologySuite.Operation.Relate;
 using GisSharpBlog.NetTopologySuite.Operation.Valid;
-using NPack.Interfaces;
 using NPack;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -119,31 +119,31 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// </remarks>
     [Serializable]
     public abstract class Geometry<TCoordinate> : IGeometry<TCoordinate>
-         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                             IComparable<TCoordinate>, IConvertible,
-                             IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         private static readonly RuntimeTypeHandle[] _sortedClasses
-            = new RuntimeTypeHandle[]
-            {
-                typeof (IPoint<TCoordinate>).TypeHandle,
-                typeof (IMultiPoint<TCoordinate>).TypeHandle,
-                typeof (ILineString<TCoordinate>).TypeHandle,
-                typeof (ILinearRing<TCoordinate>).TypeHandle,
-                typeof (IMultiLineString<TCoordinate>).TypeHandle,
-                typeof (IPolygon<TCoordinate>).TypeHandle,
-                typeof (IMultiPolygon<TCoordinate>).TypeHandle,
-                typeof (IGeometryCollection<TCoordinate>).TypeHandle,
-            };
+            = new[]
+                  {
+                      typeof (IPoint<TCoordinate>).TypeHandle,
+                      typeof (IMultiPoint<TCoordinate>).TypeHandle,
+                      typeof (ILineString<TCoordinate>).TypeHandle,
+                      typeof (ILinearRing<TCoordinate>).TypeHandle,
+                      typeof (IMultiLineString<TCoordinate>).TypeHandle,
+                      typeof (IPolygon<TCoordinate>).TypeHandle,
+                      typeof (IMultiPolygon<TCoordinate>).TypeHandle,
+                      typeof (IGeometryCollection<TCoordinate>).TypeHandle,
+                  };
 
-        private IGeometryFactory<TCoordinate> _factory;
-        private Object _userData;
-        private Extents<TCoordinate> _extents;
-        private String _srid;
         //private Dimensions _dimension;
         private IGeometry<TCoordinate> _boundary;
         private Dimensions _boundaryDimension;
+        private Extents<TCoordinate> _extents;
+        private IGeometryFactory<TCoordinate> _factory;
         private ICoordinateSystem<TCoordinate> _spatialReference;
+        private String _srid;
+        private Object _userData;
 
         protected Geometry(IGeometryFactory<TCoordinate> factory)
         {
@@ -155,41 +155,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             _factory = factory;
             _srid = factory.Srid;
             _spatialReference = factory.SpatialReference;
-        }
-
-        public override Boolean Equals(Object obj)
-        {
-            IGeometry<TCoordinate> other = obj as IGeometry<TCoordinate>;
-            return Equals(other);
-        }
-
-        /// <summary>
-        /// Returns the Well-Known Text representation of this 
-        /// <see cref="Geometry{TCoordinate}"/>.
-        /// </summary>
-        /// <remarks>
-        /// For a definition of the Well-Known Text format, see the OpenGIS Simple
-        /// Features Specification.
-        /// </remarks>
-        /// <returns>
-        /// The Well-Known Text representation of this 
-        /// <see cref="Geometry{TCoordinate}"/>.
-        /// </returns>
-        public override String ToString()
-        {
-            return AsText();
-        }
-
-        public override Int32 GetHashCode()
-        {
-            Int32 result = 17;
-
-            foreach (TCoordinate coord in Coordinates)
-            {
-                result = 37 * result ^ coord.GetHashCode();
-            }
-
-            return result;
         }
 
         /// <summary>
@@ -277,7 +242,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return InteriorPoint; }
         }
 
-        #region IComparable<IGeometry<TCoordinate>> Members
+        #region IGeometry<TCoordinate> Members
+
         /// <summary>
         /// Returns whether this <see cref="Geometry{TCoordinate}"/> is greater than, 
         /// equal to, or less than another <see cref="Geometry{TCoordinate}"/>. 
@@ -344,43 +310,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// elements are compared. If those are the same, the second elements are
         /// compared, etc.
         /// </remarks>
-        public Int32 CompareTo(IGeometry other)
-        {
-            if (other == null) throw new ArgumentNullException("other");
-
-            IGeometry<TCoordinate> g = other as IGeometry<TCoordinate>;
-            return CompareTo(g);
-        }
-
-        /// <summary>
-        /// Returns whether this <see cref="Geometry{TCoordinate}"/> is greater than, 
-        /// equal to, or less than another <see cref="Geometry{TCoordinate}"/>. 
-        /// </summary>
-        /// <param name="other">
-        /// A <see cref="Geometry{TCoordinate}"/> with which to 
-        /// compare this <see cref="Geometry{TCoordinate}"/>.
-        /// </param>
-        /// <returns>
-        /// A positive number, 0, or a negative number, depending on whether
-        /// this object is greater than, equal to, or less than <paramref name="other"/>, 
-        /// as defined in "Normal Form For Geometry" in the NTS Technical
-        /// Specifications.
-        /// </returns>
-        /// <remarks>
-        /// If their classes are different, they are compared using the following
-        /// ordering:
-        ///     <see cref="Point{TCoordinate}"/> (lowest),
-        ///     <see cref="MultiPoint{TCoordinate}"/>,
-        ///     <see cref="MultiPoint{TCoordinate}"/>,
-        ///     <see cref="LinearRing{TCoordinate}"/>,
-        ///     <see cref="MultiLineString{TCoordinate}"/>,
-        ///     <see cref="Polygon{TCoordinate}"/>,
-        ///     <see cref="MultiPolygon{TCoordinate}"/>,
-        ///     <see cref="GeometryCollection{TCoordinate}"/> (highest).
-        /// If the two <see cref="Geometry{TCoordinate}"/>s have the same class, their first
-        /// elements are compared. If those are the same, the second elements are
-        /// compared, etc.
-        /// </remarks>
         public Int32 CompareTo(IGeometry<TCoordinate> other)
         {
             if (other == null) throw new ArgumentNullException("other");
@@ -411,10 +340,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return CompareToSameClass(other);
         }
 
-        #endregion
-
-        #region IEquatable<IGeometry<TCoordinate>> Members
-
         public Boolean Equals(IGeometry<TCoordinate> g)
         {
             if (ReferenceEquals(g, null))
@@ -444,10 +369,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Relate(g).IsEquals(Dimension, g.Dimension);
         }
 
-        #endregion
-
-        #region IVertexStream<TCoordinate,DoubleComponent> Members
-
         public IEnumerable<TCoordinate> GetVertexes(ITransformMatrix<DoubleComponent> transform)
         {
             throw new NotImplementedException();
@@ -457,10 +378,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             throw new NotImplementedException();
         }
-
-        #endregion
-
-        #region IGeometry<TCoordinate> Members
 
         /// <summary> 
         /// Computes the centroid of this <see cref="Geometry{TCoordinate}"/>.
@@ -514,11 +431,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public virtual IGeometry<TCoordinate> Clone()
         {
-            Geometry<TCoordinate> clone = (Geometry<TCoordinate>)MemberwiseClone();
+            Geometry<TCoordinate> clone = (Geometry<TCoordinate>) MemberwiseClone();
 
             if (clone.ExtentsInternal != null)
             {
-                clone.ExtentsInternal = (Extents<TCoordinate>)ExtentsInternal.Clone();
+                clone.ExtentsInternal = (Extents<TCoordinate>) ExtentsInternal.Clone();
             }
 
             if (clone._boundary != null)
@@ -596,10 +513,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return _spatialReference; }
             set { _spatialReference = value; }
         }
-
-        #endregion
-
-        #region IGeometry Members
 
         public Byte[] AsBinary()
         {
@@ -818,7 +731,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                         geometry._factory = _factory;
                     }
                 }
-
             }
         }
 
@@ -836,18 +748,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             set { _userData = value; }
         }
 
-        #endregion
-
-        #region ICloneable Members
-
         Object ICloneable.Clone()
         {
             return Clone();
         }
-
-        #endregion
-
-        #region ISpatialOperator<TCoordinate> Members
 
         /// <summary>  
         /// Gets the boundary, or the empty point if this <see cref="Geometry{TCoordinate}"/>
@@ -950,8 +854,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// All points whose distance from this <see cref="Geometry{TCoordinate}"/>
         /// are less than or equal to <c>distance</c>.
         /// </returns>
-        public IGeometry<TCoordinate> Buffer(Double distance, 
-                                             Int32 quadrantSegments, 
+        public IGeometry<TCoordinate> Buffer(Double distance,
+                                             Int32 quadrantSegments,
                                              BufferStyle endCapStyle)
         {
             return BufferOp<TCoordinate>.Buffer(this, distance, quadrantSegments, endCapStyle);
@@ -1033,10 +937,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return (new ConvexHull<TCoordinate>(this)).GetConvexHull();
         }
 
-        #endregion
-
-        #region ISpatialRelation<TCoordinate> Members
-
         public Boolean Contains(IGeometry<TCoordinate> g)
         {
             if (g == null) throw new ArgumentNullException("g");
@@ -1109,7 +1009,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (g == null) throw new ArgumentNullException("g");
 
             // short-circuit test
-            return ExtentsInternal.Intersects(g.Extents) && 
+            return ExtentsInternal.Intersects(g.Extents) &&
                    Relate(g).IsCrosses(Dimension, g.Dimension);
         }
 
@@ -1287,10 +1187,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region ISpatialOperator Members
-
         IGeometry ISpatialOperator.Boundary
         {
             get { return Boundary; }
@@ -1347,10 +1243,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             return Union(convertIGeometry(other));
         }
-
-        #endregion
-
-        #region ISpatialRelation Members
 
         Boolean ISpatialRelation.Contains(IGeometry other)
         {
@@ -1550,10 +1442,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Within(convertIGeometry(other), tolerance);
         }
 
-        #endregion
-
-        #region IBoundable<IExtents<TCoordinate>> Members
-
         IExtents<TCoordinate> IBoundable<IExtents<TCoordinate>>.Bounds
         {
             get { return Extents; }
@@ -1564,9 +1452,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Extents.Intersects(bounds);
         }
 
-        #endregion
-
-        #region Explicit IGeometry Members
         ICoordinateSystem IGeometry.SpatialReference
         {
             get { return SpatialReference; }
@@ -1575,12 +1460,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         #endregion
 
         #region Protected helper members
-        protected static Boolean Equal(TCoordinate a, TCoordinate b, Tolerance tolerance)
-        {
-            return tolerance == Tolerance.Zero
-                        ? a.Equals(b)
-                        : tolerance.Equal(0, a.Distance(b));
-        }
 
         /// <summary> 
         /// Returns the minimum and maximum x and y values in this 
@@ -1604,10 +1483,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
                 return _extents;
             }
-            set
-            {
-                _extents = value;
-            }
+            set { _extents = value; }
+        }
+
+        protected static Boolean Equal(TCoordinate a, TCoordinate b, Tolerance tolerance)
+        {
+            return tolerance == Tolerance.Zero
+                       ? a.Equals(b)
+                       : tolerance.Equal(0, a.Distance(b));
         }
 
         /// <summary>
@@ -1670,7 +1553,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         protected abstract Extents<TCoordinate> ComputeExtentsInternal();
 
-        protected static IGeometryFactory<TCoordinate> ExtractGeometryFactory(IEnumerable<IGeometry<TCoordinate>> geometries)
+        protected static IGeometryFactory<TCoordinate> ExtractGeometryFactory(
+            IEnumerable<IGeometry<TCoordinate>> geometries)
         {
             foreach (IGeometry<TCoordinate> geometry in geometries)
             {
@@ -1702,6 +1586,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         #endregion
 
         #region Private helper members
+
         private static IGeometry<TCoordinate> convertIGeometry(IGeometry other)
         {
             return GenericInterfaceConverter<TCoordinate>.Convert(other);
@@ -1718,12 +1603,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         private static Boolean isGeometryCollection(IGeometry g)
         {
             return g is IGeometryCollection &&
-                !(g is IMultiPoint) &&
-                !(g is IMultiCurve) &&
-                !(g is IMultiSurface);
+                   !(g is IMultiPoint) &&
+                   !(g is IMultiCurve) &&
+                   !(g is IMultiSurface);
         }
 
-        private static IPoint<TCoordinate> createPointFromInternalCoord(TCoordinate coord, IGeometry<TCoordinate> exemplar)
+        private static IPoint<TCoordinate> createPointFromInternalCoord(TCoordinate coord,
+                                                                        IGeometry<TCoordinate> exemplar)
         {
             exemplar.PrecisionModel.MakePrecise(coord);
             return exemplar.Factory.CreatePoint(coord);
@@ -1937,6 +1823,79 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         //public static readonly IGeometryFactory<TCoordinate> DefaultFactory = GeometryFactory<TCoordinate>.Default;
 
         // ============= END ADDED BY MPAUL42: monoGIS team
+
         #endregion
+
+        public override Boolean Equals(Object obj)
+        {
+            IGeometry<TCoordinate> other = obj as IGeometry<TCoordinate>;
+            return Equals(other);
+        }
+
+        /// <summary>
+        /// Returns the Well-Known Text representation of this 
+        /// <see cref="Geometry{TCoordinate}"/>.
+        /// </summary>
+        /// <remarks>
+        /// For a definition of the Well-Known Text format, see the OpenGIS Simple
+        /// Features Specification.
+        /// </remarks>
+        /// <returns>
+        /// The Well-Known Text representation of this 
+        /// <see cref="Geometry{TCoordinate}"/>.
+        /// </returns>
+        public override String ToString()
+        {
+            return AsText();
+        }
+
+        public override Int32 GetHashCode()
+        {
+            Int32 result = 17;
+
+            foreach (TCoordinate coord in Coordinates)
+            {
+                result = 37*result ^ coord.GetHashCode();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Returns whether this <see cref="Geometry{TCoordinate}"/> is greater than, 
+        /// equal to, or less than another <see cref="Geometry{TCoordinate}"/>. 
+        /// </summary>
+        /// <param name="other">
+        /// A <see cref="Geometry{TCoordinate}"/> with which to 
+        /// compare this <see cref="Geometry{TCoordinate}"/>.
+        /// </param>
+        /// <returns>
+        /// A positive number, 0, or a negative number, depending on whether
+        /// this object is greater than, equal to, or less than <paramref name="other"/>, 
+        /// as defined in "Normal Form For Geometry" in the NTS Technical
+        /// Specifications.
+        /// </returns>
+        /// <remarks>
+        /// If their classes are different, they are compared using the following
+        /// ordering:
+        ///     <see cref="Point{TCoordinate}"/> (lowest),
+        ///     <see cref="MultiPoint{TCoordinate}"/>,
+        ///     <see cref="MultiPoint{TCoordinate}"/>,
+        ///     <see cref="LinearRing{TCoordinate}"/>,
+        ///     <see cref="MultiLineString{TCoordinate}"/>,
+        ///     <see cref="Polygon{TCoordinate}"/>,
+        ///     <see cref="MultiPolygon{TCoordinate}"/>,
+        ///     <see cref="GeometryCollection{TCoordinate}"/> (highest).
+        /// If the two <see cref="Geometry{TCoordinate}"/>s have the same class, their first
+        /// elements are compared. If those are the same, the second elements are
+        /// compared, etc.
+        /// </remarks>
+        public Int32 CompareTo(IGeometry other)
+        {
+            if (other == null) throw new ArgumentNullException("other");
+
+            IGeometry<TCoordinate> g = other as IGeometry<TCoordinate>;
+            return CompareTo(g);
+        }
     }
 }

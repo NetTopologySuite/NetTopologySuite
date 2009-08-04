@@ -11,34 +11,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
     public abstract class BaseBinNode<TItem> : AbstractNode<Interval, TItem>
         where TItem : IBoundable<Interval>
     {
-        /// <summary> 
-        /// Returns the index of the subnode that wholely contains the given interval.
-        /// If none does, returns -1.
-        /// Subnodes are numbered as follows:
-        ///     0 | 1
-        /// </summary>
-        public static Int32 GetSubNodeIndex(Interval interval, Double center)
-        {
-            Int32 subnodeIndex = -1;
-
-            if (interval.Min >= center)
-            {
-                subnodeIndex = 1;
-            }
-
-            if (interval.Max <= center)
-            {
-                subnodeIndex = 0;
-            }
-
-            return subnodeIndex;
-        }
-
         private Node<TItem> _subNode1;
         private Node<TItem> _subNode2;
 
         protected BaseBinNode(Interval bounds, Int32 level)
-            : base(bounds, level) { }
+            : base(bounds, level)
+        {
+        }
 
         //public IList AddAllItemsFromOverlapping(Interval interval, IList resultItems)
         //{
@@ -192,6 +171,29 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
                 if (SubNode2 != null)
                     yield return SubNode2;
             }
+        }
+
+        /// <summary> 
+        /// Returns the index of the subnode that wholely contains the given interval.
+        /// If none does, returns -1.
+        /// Subnodes are numbered as follows:
+        ///     0 | 1
+        /// </summary>
+        public static Int32 GetSubNodeIndex(Interval interval, Double center)
+        {
+            Int32 subnodeIndex = -1;
+
+            if (interval.Min >= center)
+            {
+                subnodeIndex = 1;
+            }
+
+            if (interval.Max <= center)
+            {
+                subnodeIndex = 0;
+            }
+
+            return subnodeIndex;
         }
 
 

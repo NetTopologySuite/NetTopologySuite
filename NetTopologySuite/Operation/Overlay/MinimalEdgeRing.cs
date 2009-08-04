@@ -13,10 +13,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// </summary>
     public class MinimalEdgeRing<TCoordinate> : EdgeRing<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         public MinimalEdgeRing(DirectedEdge<TCoordinate> start, IGeometryFactory<TCoordinate> geometryFactory)
-            : base(start, geometryFactory) {}
+            : base(start, geometryFactory)
+        {
+        }
 
         public override DirectedEdge<TCoordinate> GetNext(DirectedEdge<TCoordinate> de)
         {

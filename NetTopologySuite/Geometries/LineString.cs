@@ -1,13 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.Units;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Operation;
 using NPack.Interfaces;
-using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -18,8 +17,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     public class LineString<TCoordinate> : MultiCoordinateGeometry<TCoordinate>,
                                            ILineString<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         ///// <summary>
         ///// Represents an empty <c>LineString</c>.
@@ -53,6 +52,49 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             CoordinatesInternal = points;
         }
+
+        public TCoordinate this[Int32 index]
+        {
+            get { return CoordinatesInternal[index]; }
+            set { CoordinatesInternal[index] = value; }
+        }
+
+        public Int32 Count
+        {
+            get { return CoordinatesInternal.Count; }
+        }
+
+        /// <summary>
+        /// Returns the value of the angle between the <see cref="StartPoint" />
+        /// and the <see cref="EndPoint" />.
+        /// </summary>
+        public Degrees Angle
+        {
+            get
+            {
+                TCoordinate startPoint = CoordinatesInternal.First;
+                TCoordinate endPoint = CoordinatesInternal.Last;
+
+                Double startX = startPoint[Ordinates.X], startY = startPoint[Ordinates.Y];
+                Double endX = endPoint[Ordinates.X], endY = endPoint[Ordinates.Y];
+
+                Double deltaX = endPoint[Ordinates.X] - startPoint[Ordinates.X];
+                Double deltaY = endPoint[Ordinates.Y] - startPoint[Ordinates.Y];
+                Double length = Math.Sqrt(deltaX*deltaX + deltaY*deltaY);
+                Radians radians = (Radians) Math.Asin(Math.Abs(endY - startY)/length);
+                Degrees angle = (Degrees) radians;
+
+                if (((startX < endX) && (startY > endY)) ||
+                    ((startX > endX) && (startY < endY)))
+                {
+                    angle = (Degrees) 360 - angle;
+                }
+
+                return angle;
+            }
+        }
+
+        #region ILineString<TCoordinate> Members
 
         public override Dimensions Dimension
         {
@@ -181,28 +223,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public ILineString<TCoordinate> Reverse()
         {
-            ICoordinateSequence<TCoordinate> seq = CoordinatesInternal.Clone() as ICoordinateSequence<TCoordinate>;
+            ICoordinateSequence<TCoordinate> seq = CoordinatesInternal.Clone();
             Debug.Assert(seq != null);
             seq.Reverse();
             return Factory.CreateLineString(seq);
-        }
-
-        /// <summary>
-        /// Returns true if the given point is a vertex of this <see cref="LineString{TCoordinate}"/>.
-        /// </summary>
-        /// <param name="pt">The <c>Coordinate</c> to check.</param>
-        /// <returns><see langword="true"/> if <c>pt</c> is one of this <c>LineString</c>'s vertices.</returns>
-        public Boolean IsCoordinate(TCoordinate pt)
-        {
-            foreach (TCoordinate coordinate in CoordinatesInternal)
-            {
-                if (coordinate.Equals(pt))
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         public override Boolean Equals(IGeometry<TCoordinate> other, Tolerance tolerance)
@@ -272,7 +296,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public override void Normalize()
         {
-            for (Int32 i = 0; i < CoordinatesInternal.Count / 2; i++)
+            for (Int32 i = 0; i < CoordinatesInternal.Count/2; i++)
             {
                 Int32 j = CoordinatesInternal.Count - 1 - i;
 
@@ -302,53 +326,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         //public LineString(IEnumerable<TCoordinate> points) :
         //    this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
 
-        public TCoordinate this[Int32 index]
-        {
-            get { return CoordinatesInternal[index]; }
-            set
-            {
-                CoordinatesInternal[index] = value;
-            }
-        }
-
-        public Int32 Count
-        {
-            get { return CoordinatesInternal.Count; }
-        }
-
-        /// <summary>
-        /// Returns the value of the angle between the <see cref="StartPoint" />
-        /// and the <see cref="EndPoint" />.
-        /// </summary>
-        public Degrees Angle
-        {
-            get
-            {
-                TCoordinate startPoint = CoordinatesInternal.First;
-                TCoordinate endPoint = CoordinatesInternal.Last;
-
-                Double startX = startPoint[Ordinates.X], startY = startPoint[Ordinates.Y];
-                Double endX = endPoint[Ordinates.X], endY = endPoint[Ordinates.Y];
-
-                Double deltaX = endPoint[Ordinates.X] - startPoint[Ordinates.X];
-                Double deltaY = endPoint[Ordinates.Y] - startPoint[Ordinates.Y];
-                Double length = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
-                Radians radians = (Radians)Math.Asin(Math.Abs(endY - startY) / length);
-                Degrees angle = (Degrees)radians;
-
-                if (((startX < endX) && (startY > endY)) ||
-                    ((startX > endX) && (startY < endY)))
-                {
-                    angle = (Degrees)360 - angle;
-                }
-
-                return angle;
-            }
-        }
-
         /* END ADDED BY MPAUL42: monoGIS team */
-
-        #region ILineString Members
 
         IPoint ILineString.GetPoint(Int32 index)
         {
@@ -359,10 +337,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             return Reverse();
         }
-
-        #endregion
-
-        #region ICurve Members
 
         IPoint ICurve.StartPoint
         {
@@ -375,6 +349,24 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         #endregion
+
+        /// <summary>
+        /// Returns true if the given point is a vertex of this <see cref="LineString{TCoordinate}"/>.
+        /// </summary>
+        /// <param name="pt">The <c>Coordinate</c> to check.</param>
+        /// <returns><see langword="true"/> if <c>pt</c> is one of this <c>LineString</c>'s vertices.</returns>
+        public Boolean IsCoordinate(TCoordinate pt)
+        {
+            foreach (TCoordinate coordinate in CoordinatesInternal)
+            {
+                if (coordinate.Equals(pt))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         protected override Extents<TCoordinate> ComputeExtentsInternal()
         {

@@ -18,26 +18,21 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly LineIntersector<TCoordinate> _li = null;
         private readonly List<Edge<TCoordinate>> _inputEdges = new List<Edge<TCoordinate>>();
+        private readonly LineIntersector<TCoordinate> _li;
 
         public EdgeSetNoder(LineIntersector<TCoordinate> li)
         {
             _li = li;
         }
 
-        public void AddEdges(IEnumerable<Edge<TCoordinate>> edges)
-        {
-            _inputEdges.AddRange(edges);
-        }
-
         public IEnumerable<Edge<TCoordinate>> NodedEdges
         {
             get
             {
-                EdgeSetIntersector<TCoordinate> esi 
+                EdgeSetIntersector<TCoordinate> esi
                     = new SimpleMonotoneChainSweepLineIntersector<TCoordinate>();
-                SegmentIntersector<TCoordinate> si 
+                SegmentIntersector<TCoordinate> si
                     = new SegmentIntersector<TCoordinate>(_li, true, false);
 
                 esi.ComputeIntersections(_inputEdges, si, true);
@@ -52,6 +47,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                     }
                 }
             }
+        }
+
+        public void AddEdges(IEnumerable<Edge<TCoordinate>> edges)
+        {
+            _inputEdges.AddRange(edges);
         }
     }
 }

@@ -66,20 +66,20 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
     /// </list>
     /// </remarks>
     public class MonotoneChain<TCoordinate> : IBoundable<IExtents<TCoordinate>>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
-        private readonly IGeometryFactory<TCoordinate> _geoFactory;
-        private readonly ICoordinateSequence<TCoordinate> _coordinates;
-        private readonly Int32 _start;
-        private readonly Int32 _end;
-        private IExtents<TCoordinate> _extents;
         private readonly Object _context; // user-defined information
+        private readonly ICoordinateSequence<TCoordinate> _coordinates;
+        private readonly Int32 _end;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
+        private readonly Int32 _start;
+        private IExtents<TCoordinate> _extents;
         private Int32 _id; // useful for optimizing chain comparisons
 
-        public MonotoneChain(IGeometryFactory<TCoordinate> geoFactory, 
-                             ICoordinateSequence<TCoordinate> pts, 
+        public MonotoneChain(IGeometryFactory<TCoordinate> geoFactory,
+                             ICoordinateSequence<TCoordinate> pts,
                              Int32 start, Int32 end, Object context)
         {
             if (pts == null) throw new ArgumentNullException("pts");
@@ -127,50 +127,12 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
             get { return _end; }
         }
 
-        public LineSegment<TCoordinate> GetLineSegment(Int32 index)
-        {
-            Pair<TCoordinate> pair = Slice.GetPairAt(_coordinates, index).Value;
-            return new LineSegment<TCoordinate>(pair);
-        }
-
         /// <summary>
         /// Return the subsequence of coordinates forming this chain.
         /// </summary>
         public ICoordinateSequence<TCoordinate> Coordinates
         {
-            get
-            {
-                return _coordinates.Slice(_start, _end);
-            }
-        }
-
-        /// <summary> 
-        /// Determine all the line segments in the chain whose envelopes intersect
-        /// the <paramref name="searchExtents"/>, and return them.
-        /// </summary>
-        public IEnumerable<LineSegment<TCoordinate>> Select(IExtents<TCoordinate> searchExtents)
-        {
-            return computeSelect(searchExtents, _start, _end);
-        }
-
-        public IEnumerable<Int32> SelectIndexes(IExtents<TCoordinate> searchExtents)
-        {
-            return computeSelectIndexes(searchExtents, _start, _end);
-        }
-
-        public IEnumerable<Pair<LineSegment<TCoordinate>>> Overlap(MonotoneChain<TCoordinate> other)
-        {
-            return computeOverlaps(_start, _end, other, other._start, other._end);
-        }
-
-        public void ComputeOverlaps(MonotoneChain<TCoordinate> other, MonotoneChainOverlapAction<TCoordinate> mco)
-        {
-            computeOverlaps(StartIndex, EndIndex, other, other.StartIndex, other.EndIndex, mco);
-        }
-
-        public IEnumerable<Pair<Int32>> OverlapIndexes(MonotoneChain<TCoordinate> other)
-        {
-            return computeOverlapIndexes(_start, _end, other, other._start, other._end);
+            get { return _coordinates.Slice(_start, _end); }
         }
 
         #region IBoundable<IExtents<TCoordinate>> Members
@@ -190,27 +152,31 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         #region Private helper routines
 
         private IEnumerable<LineSegment<TCoordinate>> computeSelect(
-                                                IExtents<TCoordinate> searchExtents, 
-                                                Int32 start, Int32 end)
+            IExtents<TCoordinate> searchExtents,
+            Int32 start, Int32 end)
         {
-            foreach (KeyValuePair<Int32, LineSegment<TCoordinate>> pair in computeSelectWithIndexes(searchExtents, start, end))
+            foreach (
+                KeyValuePair<Int32, LineSegment<TCoordinate>> pair in
+                    computeSelectWithIndexes(searchExtents, start, end))
             {
                 yield return pair.Value;
             }
         }
 
-        private IEnumerable<Int32> computeSelectIndexes(IExtents<TCoordinate> searchExtents, 
+        private IEnumerable<Int32> computeSelectIndexes(IExtents<TCoordinate> searchExtents,
                                                         Int32 start, Int32 end)
         {
-            foreach (KeyValuePair<Int32, LineSegment<TCoordinate>> pair in computeSelectWithIndexes(searchExtents, start, end))
+            foreach (
+                KeyValuePair<Int32, LineSegment<TCoordinate>> pair in
+                    computeSelectWithIndexes(searchExtents, start, end))
             {
                 yield return pair.Key;
             }
         }
 
         private IEnumerable<KeyValuePair<Int32, LineSegment<TCoordinate>>> computeSelectWithIndexes(
-                                                    IExtents<TCoordinate> searchExtents, 
-                                                    Int32 start, Int32 end)
+            IExtents<TCoordinate> searchExtents,
+            Int32 start, Int32 end)
         {
             TCoordinate p0 = Slice.GetAt(_coordinates, start);
             TCoordinate p1 = Slice.GetAt(_coordinates, end);
@@ -231,7 +197,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
             }
 
             // the chains overlap, so split each in half and iterate  (binary search)
-            Int32 mid = (start + end) / 2;
+            Int32 mid = (start + end)/2;
 
             // Assert: mid != start or end (since we checked above for end - start <= 1)
             // check terminating conditions before recursing
@@ -247,24 +213,24 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         }
 
         private IEnumerable<Pair<LineSegment<TCoordinate>>> computeOverlaps(
-                                                        Int32 start0, Int32 end0, 
-                                                        MonotoneChain<TCoordinate> other, 
-                                                        Int32 start1, Int32 end1)
+            Int32 start0, Int32 end0,
+            MonotoneChain<TCoordinate> other,
+            Int32 start1, Int32 end1)
         {
-            IEnumerable<Pair<Pair<Int32, LineSegment<TCoordinate>>>> overlaps 
+            IEnumerable<Pair<Pair<Int32, LineSegment<TCoordinate>>>> overlaps
                 = computeOverlapsWithIndexes(start0, end0, other, start1, end1);
 
             foreach (Pair<Pair<Int32, LineSegment<TCoordinate>>> pair in overlaps)
             {
-                yield return new Pair<LineSegment<TCoordinate>>(pair.First.Second, 
+                yield return new Pair<LineSegment<TCoordinate>>(pair.First.Second,
                                                                 pair.Second.Second);
             }
         }
 
         private IEnumerable<Pair<Int32>> computeOverlapIndexes(
-                                                        Int32 start0, Int32 end0, 
-                                                        MonotoneChain<TCoordinate> other, 
-                                                        Int32 start1, Int32 end1)
+            Int32 start0, Int32 end0,
+            MonotoneChain<TCoordinate> other,
+            Int32 start1, Int32 end1)
         {
             // this is starting to look like Lisp, except with angle brackets...
             IEnumerable<Pair<Pair<Int32, LineSegment<TCoordinate>>>> overlaps
@@ -277,9 +243,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         }
 
         private IEnumerable<Pair<Pair<Int32, LineSegment<TCoordinate>>>> computeOverlapsWithIndexes(
-                                                        Int32 start0, Int32 end0, 
-                                                        MonotoneChain<TCoordinate> other, 
-                                                        Int32 start1, Int32 end1)
+            Int32 start0, Int32 end0,
+            MonotoneChain<TCoordinate> other,
+            Int32 start1, Int32 end1)
         {
             TCoordinate p00 = Slice.GetAt(_coordinates, start0);
             TCoordinate p01 = Slice.GetAt(_coordinates, end0);
@@ -308,8 +274,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
             }
 
             // the chains overlap, so split each in half and iterate  (binary search)
-            Int32 mid0 = (start0 + end0) / 2;
-            Int32 mid1 = (start1 + end1) / 2;
+            Int32 mid0 = (start0 + end0)/2;
+            Int32 mid1 = (start1 + end1)/2;
 
             // Assert: mid != start or end (since we checked above for end - start <= 1)
             // check terminating conditions before recursing
@@ -340,7 +306,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
             }
         }
 
-        private void computeOverlaps(int start0, int end0, MonotoneChain<TCoordinate> mc, int start1, int end1, MonotoneChainOverlapAction<TCoordinate> mco)
+        private void computeOverlaps(int start0, int end0, MonotoneChain<TCoordinate> mc, int start1, int end1,
+                                     MonotoneChainOverlapAction<TCoordinate> mco)
         {
             TCoordinate p00 = _coordinates[start0];
             TCoordinate p01 = _coordinates[end0];
@@ -361,8 +328,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
             if (!mco.SearchExtents1.Intersects(mco.SearchExtents2)) return;
 
             // the chains overlap, so split each in half and iterate  (binary search)
-            int mid0 = (start0 + end0) / 2;
-            int mid1 = (start1 + end1) / 2;
+            int mid0 = (start0 + end0)/2;
+            int mid1 = (start1 + end1)/2;
 
             // Assert: mid != start or end (since we checked above for end - start <= 1)
             // check terminating conditions before recursing
@@ -379,5 +346,40 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         }
 
         #endregion
+
+        public LineSegment<TCoordinate> GetLineSegment(Int32 index)
+        {
+            Pair<TCoordinate> pair = Slice.GetPairAt(_coordinates, index).Value;
+            return new LineSegment<TCoordinate>(pair);
+        }
+
+        /// <summary> 
+        /// Determine all the line segments in the chain whose envelopes intersect
+        /// the <paramref name="searchExtents"/>, and return them.
+        /// </summary>
+        public IEnumerable<LineSegment<TCoordinate>> Select(IExtents<TCoordinate> searchExtents)
+        {
+            return computeSelect(searchExtents, _start, _end);
+        }
+
+        public IEnumerable<Int32> SelectIndexes(IExtents<TCoordinate> searchExtents)
+        {
+            return computeSelectIndexes(searchExtents, _start, _end);
+        }
+
+        public IEnumerable<Pair<LineSegment<TCoordinate>>> Overlap(MonotoneChain<TCoordinate> other)
+        {
+            return computeOverlaps(_start, _end, other, other._start, other._end);
+        }
+
+        public void ComputeOverlaps(MonotoneChain<TCoordinate> other, MonotoneChainOverlapAction<TCoordinate> mco)
+        {
+            computeOverlaps(StartIndex, EndIndex, other, other.StartIndex, other.EndIndex, mco);
+        }
+
+        public IEnumerable<Pair<Int32>> OverlapIndexes(MonotoneChain<TCoordinate> other)
+        {
+            return computeOverlapIndexes(_start, _end, other, other._start, other._end);
+        }
     }
 }

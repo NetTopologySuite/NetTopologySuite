@@ -11,16 +11,16 @@ namespace GisSharpBlog.NetTopologySuite.Index
     /// </summary>
     public abstract class AbstractNodeKey<TBounds, TLocation>
         where TBounds : IContainable<TBounds>, IIntersectable<TBounds>
-        where TLocation : IAddable<TLocation>, 
-                          IAddable<Double, TLocation>, 
-                          IDivisible<Double, TLocation>
+        where TLocation : IAddable<TLocation>,
+            IAddable<Double, TLocation>,
+            IDivisible<Double, TLocation>
     {
         // the fields which make up the key
-        private TLocation _location;
         private readonly Int32 _level;
 
         // auxiliary data which is derived from the key for use in computation
         private TBounds _bounds;
+        private TLocation _location;
 
         protected AbstractNodeKey(TBounds bounds)
         {
@@ -73,7 +73,6 @@ namespace GisSharpBlog.NetTopologySuite.Index
         /// whose extent is a power of two and which is based at a power of 2.
         /// </summary>
         //protected abstract void ComputeKey(TBounds bounds);
-
         protected abstract Int32 ComputeLevel(TBounds bounds);
 
         protected abstract TBounds CreateBounds(TLocation min, Double nodeSize);

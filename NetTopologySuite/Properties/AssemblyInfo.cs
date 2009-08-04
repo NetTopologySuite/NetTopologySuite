@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("NetTopologySuite")]
 [assembly: AssemblyDescription("A CLR library for geometry and spatial operations, " +
-    "derived from JTS - the Java Topology Suite v1.7.2 through v1.9.")]
+                               "derived from JTS - the Java Topology Suite v1.7.2 through v1.9.")]
 #if NETCF
 #if DEBUG
 #if UNSAFE
@@ -24,6 +24,7 @@ using System.Runtime.InteropServices;
 #if UNSAFE
 [assembly: AssemblyConfiguration("Performance Debug")]
 #else
+
 [assembly: AssemblyConfiguration("Safe Debug")]
 #endif
 #else
@@ -34,6 +35,7 @@ using System.Runtime.InteropServices;
 #endif
 #endif
 #endif
+
 [assembly: AssemblyCopyright("Copyright © 2006-2008 Diego Guidi, Rory Plaire")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

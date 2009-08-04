@@ -13,9 +13,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     /// <typeparam name="TCoordinate">The type of coordinate.</typeparam>
     public class Node<TCoordinate> : GraphComponent<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         // Only valid if this node is precise.
         private readonly TCoordinate _coord;
@@ -60,7 +60,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// Basic nodes do not compute intersection matrixes.
         /// </summary>
-        public override void ComputeIntersectionMatrix(IntersectionMatrix matrix) { }
+        public override void ComputeIntersectionMatrix(IntersectionMatrix matrix)
+        {
+        }
 
         /// <summary> 
         /// Add the edge to the list of edges at this node.
@@ -104,9 +106,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
                 if (thisLoc == Locations.None)
                 {
-                    Label = Label == null 
-                        ? new Label(i, loc) 
-                        : new Label(Label.Value, i, loc);
+                    Label = Label == null
+                                ? new Label(i, loc)
+                                : new Label(Label.Value, i, loc);
                 }
             }
         }
@@ -125,9 +127,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </param>
         public void SetLabel(Int32 geometryIndex, Locations onLocation)
         {
-            Label = Label == null 
-                ? new Label(geometryIndex, onLocation) 
-                : new Label(Label.Value, geometryIndex, onLocation);
+            Label = Label == null
+                        ? new Label(geometryIndex, onLocation)
+                        : new Label(Label.Value, geometryIndex, onLocation);
         }
 
         /// <summary> 
@@ -167,8 +169,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </remarks>
         public Locations ComputeMergedLocation(Label otherLabel, Int32 elementIndex)
         {
-            Locations loc = Label == null 
-                                ? Locations.None 
+            Locations loc = Label == null
+                                ? Locations.None
                                 : Label.Value[elementIndex].On;
 
             if (!otherLabel.IsNone(elementIndex))

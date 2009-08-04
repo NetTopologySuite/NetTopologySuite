@@ -5,7 +5,6 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -32,16 +31,18 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private readonly Boolean _isConvex;
 
         private LineSegment<TCoordinate>? _minBaseSeg;
-        private TCoordinate _minWidthPt = default(TCoordinate);
         private Int32 _minPtIndex;
-        private Double _minWidth = 0.0;
+        private Double _minWidth;
+        private TCoordinate _minWidthPt;
 
         /// <summary> 
         /// Compute a minimum diameter for a giver <see cref="Geometry{TCoordinate}"/>.
         /// </summary>
         /// <param name="inputGeom">a Geometry.</param>
         public MinimumDiameter(IGeometry<TCoordinate> inputGeom)
-            : this(inputGeom, false) {}
+            : this(inputGeom, false)
+        {
+        }
 
         /// <summary> 
         /// Compute a minimum diameter for a giver <see cref="Geometry{TCoordinate}"/>,
@@ -204,7 +205,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
         }
 
-        private Int32 findMaxPerpendicularDistance(IEnumerable<TCoordinate> pts, LineSegment<TCoordinate> seg, Int32 startIndex, Int32 count)
+        private Int32 findMaxPerpendicularDistance(IEnumerable<TCoordinate> pts, LineSegment<TCoordinate> seg,
+                                                   Int32 startIndex, Int32 count)
         {
             Double maxPerpDistance = seg.DistancePerpendicular(Slice.GetAt(pts, startIndex));
             Double nextPerpDistance = maxPerpDistance;

@@ -10,12 +10,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 
     public class SweepLineEvent : IComparable<SweepLineEvent>
     {
-        private Object _edgeSet; // used for red-blue intersection detection
-        private readonly Double _xValue;
         private readonly SweepLineEventType _eventType;
-        private SweepLineEvent _insertEvent; // null if this is an Insert event
-        private Int32 _deleteEventIndex;
+        private readonly SweepLineEvent _insertEvent; // null if this is an Insert event
         private readonly Object _obj;
+        private readonly Double _xValue;
+        private Int32 _deleteEventIndex;
+        private Object _edgeSet; // used for red-blue intersection detection
         //private SweepLineEvent _next;
 
         public SweepLineEvent(Object edgeSet, Double x, SweepLineEvent insertEvent, Object obj)
@@ -25,20 +25,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             _insertEvent = insertEvent;
             _eventType = SweepLineEventType.Insert;
 
-            if (insertEvent!= null)
+            if (insertEvent != null)
             {
                 _eventType = SweepLineEventType.Delete;
             }
 
             _obj = obj;
             _deleteEventIndex = 0;
-        }
-
-        public override string ToString()
-        {
-            return String.Format("{0} event at {1}", 
-                                 _eventType == SweepLineEventType.Insert ? "Insert" : "Delete",
-                                 _xValue);
         }
 
         public Object EdgeSet
@@ -49,12 +42,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 
         public Boolean IsInsert
         {
-            get { return _insertEvent== null; }
+            get { return _insertEvent == null; }
         }
 
         public Boolean IsDelete
         {
-            get { return _insertEvent!= null; }
+            get { return _insertEvent != null; }
         }
 
         public SweepLineEvent InsertEvent
@@ -72,6 +65,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         {
             get { return _obj; }
         }
+
+        #region IComparable<SweepLineEvent> Members
 
         /// <summary>
         /// <see cref="SweepLineEvent"/>s are ordered first by their x-value, 
@@ -94,6 +89,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             }
 
             return _eventType.CompareTo(other._eventType);
+        }
+
+        #endregion
+
+        public override string ToString()
+        {
+            return String.Format("{0} event at {1}",
+                                 _eventType == SweepLineEventType.Insert ? "Insert" : "Delete",
+                                 _xValue);
         }
     }
 }

@@ -13,19 +13,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
     ///</summary>
     public class PreparedPolygon<TCoordinate> : BasicPreparedGeometry<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly Boolean _isRectangle = false;
+        private readonly Boolean _isRectangle;
         // create these lazily, since they are expensive
-        private FastSegmentSetIntersectionFinder<TCoordinate> _segIntFinder = null;
-        private IPointOnGeometryLocator<TCoordinate> _pia = null;
+        private IPointOnGeometryLocator<TCoordinate> _pia;
+        private FastSegmentSetIntersectionFinder<TCoordinate> _segIntFinder;
 
         ///<summary>
         /// Constructs an instance of <see cref="PreparedPolygon{TCoordinate}"/>.
         ///</summary>
         ///<param name="polygon">the polygon to prepare</param>
         public PreparedPolygon(IPolygon<TCoordinate> polygon)
-            :base(polygon)
+            : base(polygon)
         {
             _isRectangle = polygon.IsRectangle;
         }
@@ -67,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
 
             // optimization for rectangles
             if (_isRectangle)
-                return RectangleIntersects<TCoordinate>.Intersects((IPolygon<TCoordinate>)Geometry, g);
+                return RectangleIntersects<TCoordinate>.Intersects((IPolygon<TCoordinate>) Geometry, g);
 
             return PreparedPolygonIntersects<TCoordinate>.Intersects(this, g);
         }

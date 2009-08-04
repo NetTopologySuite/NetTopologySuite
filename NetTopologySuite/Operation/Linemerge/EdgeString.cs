@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
@@ -14,11 +13,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     /// </summary>
     public class EdgeString<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly IGeometryFactory<TCoordinate> _factory;
-        private readonly List<LineMergeDirectedEdge<TCoordinate>> _directedEdges 
+        private readonly List<LineMergeDirectedEdge<TCoordinate>> _directedEdges
             = new List<LineMergeDirectedEdge<TCoordinate>>();
+
+        private readonly IGeometryFactory<TCoordinate> _factory;
 
         private ICoordinateSequence<TCoordinate> _coordinates;
 

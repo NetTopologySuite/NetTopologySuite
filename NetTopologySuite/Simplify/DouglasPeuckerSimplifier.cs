@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
@@ -20,15 +19,8 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// </summary>
     public class DouglasPeuckerSimplifier<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        public static IGeometry<TCoordinate> Simplify(IGeometry<TCoordinate> geom, Double distanceTolerance)
-        {
-            DouglasPeuckerSimplifier<TCoordinate> tss = new DouglasPeuckerSimplifier<TCoordinate>(geom);
-            tss.DistanceTolerance = distanceTolerance;
-            return tss.GetResultGeometry();
-        }
-
         private readonly IGeometry<TCoordinate> _inputGeometry;
         private Double distanceTolerance;
 
@@ -43,10 +35,19 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             set { distanceTolerance = value; }
         }
 
+        public static IGeometry<TCoordinate> Simplify(IGeometry<TCoordinate> geom, Double distanceTolerance)
+        {
+            DouglasPeuckerSimplifier<TCoordinate> tss = new DouglasPeuckerSimplifier<TCoordinate>(geom);
+            tss.DistanceTolerance = distanceTolerance;
+            return tss.GetResultGeometry();
+        }
+
         public IGeometry<TCoordinate> GetResultGeometry()
         {
             return (new DPTransformer(this)).Transform(_inputGeometry);
         }
+
+        #region Nested type: DPTransformer
 
         private class DPTransformer : GeometryTransformer<TCoordinate>
         {
@@ -57,13 +58,15 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
                 this.container = container;
             }
 
-            protected override ICoordinateSequence<TCoordinate> TransformCoordinates(ICoordinateSequence<TCoordinate> coords, IGeometry<TCoordinate> parent)
+            protected override ICoordinateSequence<TCoordinate> TransformCoordinates(
+                ICoordinateSequence<TCoordinate> coords, IGeometry<TCoordinate> parent)
             {
                 return DouglasPeuckerLineSimplifier<TCoordinate>.Simplify(
                     coords, container.DistanceTolerance);
             }
 
-            protected override IGeometry<TCoordinate> TransformPolygon(IPolygon<TCoordinate> geom, IGeometry<TCoordinate> parent)
+            protected override IGeometry<TCoordinate> TransformPolygon(IPolygon<TCoordinate> geom,
+                                                                       IGeometry<TCoordinate> parent)
             {
                 IGeometry<TCoordinate> roughGeom = base.TransformPolygon(geom, parent);
 
@@ -76,7 +79,8 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
                 return createValidArea(roughGeom);
             }
 
-            protected override IGeometry<TCoordinate> TransformMultiPolygon(IMultiPolygon<TCoordinate> geom, IGeometry<TCoordinate> parent)
+            protected override IGeometry<TCoordinate> TransformMultiPolygon(IMultiPolygon<TCoordinate> geom,
+                                                                            IGeometry<TCoordinate> parent)
             {
                 IGeometry<TCoordinate> roughGeom = base.TransformMultiPolygon(geom, parent);
                 return createValidArea(roughGeom);
@@ -105,5 +109,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
                 return null;
             }
         }
+
+        #endregion
     }
 }

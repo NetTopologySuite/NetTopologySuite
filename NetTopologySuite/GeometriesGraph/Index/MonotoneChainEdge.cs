@@ -6,6 +6,7 @@ using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Index.Chain;
 using NPack.Interfaces;
+
 #if DOTNET35
 using System.Linq;
 #endif
@@ -47,21 +48,21 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// </remarks>
     public class MonotoneChainEdge<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
-        private readonly Edge<TCoordinate> _edge;
         private readonly ICoordinateSequence<TCoordinate> _coordinates;
+        private readonly Edge<TCoordinate> _edge;
 
         // the lists of start/end indexes of the monotone chains.
         // Includes the end point of the edge as a sentinel
-        private Int32[] _startIndexes;
 
         // these envelopes are created once and reused
         private readonly IExtents<TCoordinate> _extents1;
         private readonly IExtents<TCoordinate> _extents2;
+        private Int32[] _startIndexes;
 
-        public MonotoneChainEdge(Edge<TCoordinate> edge, 
+        public MonotoneChainEdge(Edge<TCoordinate> edge,
                                  IGeometryFactory<TCoordinate> geoFactory)
         {
             _edge = edge;
@@ -77,9 +78,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 
         public Int32[] StartIndexes
         {
-            get 
+            get
             {
-                if(_startIndexes == null)
+                if (_startIndexes == null)
                 {
                     //MonotoneChainIndexer<TCoordinate> mcBuilder
                     //    = new MonotoneChainIndexer<TCoordinate>();
@@ -109,7 +110,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             return Math.Max(x1, x2);
         }
 
-        public void ComputeIntersects(MonotoneChainEdge<TCoordinate> other, 
+        public void ComputeIntersects(MonotoneChainEdge<TCoordinate> other,
                                       SegmentIntersector<TCoordinate> segmentIntersector)
         {
             if (other == null) throw new ArgumentNullException("other");
@@ -125,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         }
 
         public void ComputeIntersectsForChain(Int32 chainIndex0,
-                                              MonotoneChainEdge<TCoordinate> other, 
+                                              MonotoneChainEdge<TCoordinate> other,
                                               Int32 chainIndex1,
                                               SegmentIntersector<TCoordinate> si)
         {
@@ -136,7 +137,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
                                       startIndexes0[chainIndex0 + 1],
                                       other,
                                       startIndexes1[chainIndex1],
-                                      startIndexes1[chainIndex1 + 1], 
+                                      startIndexes1[chainIndex1 + 1],
                                       si);
         }
 
@@ -150,7 +151,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         }
 
         private void computeIntersectsForChain(Int32 start0, Int32 end0,
-                                               MonotoneChainEdge<TCoordinate> other, 
+                                               MonotoneChainEdge<TCoordinate> other,
                                                Int32 start1, Int32 end1,
                                                SegmentIntersector<TCoordinate> segmentIntersector)
         {
@@ -176,24 +177,24 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             }
 
             // the chains overlap, so split each in half and iterate  (binary search)
-            Int32 mid0 = (start0 + end0) / 2;
-            Int32 mid1 = (start1 + end1) / 2;
+            Int32 mid0 = (start0 + end0)/2;
+            Int32 mid1 = (start1 + end1)/2;
 
             // check terminating conditions before recursing
             if (start0 < mid0)
             {
                 if (start1 < mid1)
                 {
-                    computeIntersectsForChain(start0, mid0, 
-                                              other, 
-                                              start1, mid1, 
+                    computeIntersectsForChain(start0, mid0,
+                                              other,
+                                              start1, mid1,
                                               segmentIntersector);
                 }
                 if (mid1 < end1)
                 {
-                    computeIntersectsForChain(start0, mid0, 
-                                              other, 
-                                              mid1, end1, 
+                    computeIntersectsForChain(start0, mid0,
+                                              other,
+                                              mid1, end1,
                                               segmentIntersector);
                 }
             }
@@ -202,16 +203,16 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             {
                 if (start1 < mid1)
                 {
-                    computeIntersectsForChain(mid0, end0, 
-                                              other, 
-                                              start1, mid1, 
+                    computeIntersectsForChain(mid0, end0,
+                                              other,
+                                              start1, mid1,
                                               segmentIntersector);
                 }
                 if (mid1 < end1)
                 {
-                    computeIntersectsForChain(mid0, end0, 
-                                              other, 
-                                              mid1, end1, 
+                    computeIntersectsForChain(mid0, end0,
+                                              other,
+                                              mid1, end1,
                                               segmentIntersector);
                 }
             }

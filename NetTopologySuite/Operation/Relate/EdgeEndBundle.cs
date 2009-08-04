@@ -16,10 +16,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// Contains all <see cref="EdgeEnd{TCoordinate}"/>s which start 
     /// at the same point and are parallel.
     /// </summary>
-    public class EdgeEndBundle<TCoordinate> : EdgeEnd<TCoordinate>, 
+    public class EdgeEndBundle<TCoordinate> : EdgeEnd<TCoordinate>,
                                               IEnumerable<EdgeEnd<TCoordinate>>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly List<EdgeEnd<TCoordinate>> _edgeEnds = new List<EdgeEnd<TCoordinate>>();
 
@@ -27,14 +27,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             : base(e.Edge, e.Coordinate, e.DirectedCoordinate, e.Label)
         {
             Insert(e);
-        }
-
-        public IEnumerator<EdgeEnd<TCoordinate>> GetEnumerator()
-        {
-            foreach (EdgeEnd<TCoordinate> edgeEnd in _edgeEnds)
-            {
-                yield return edgeEnd;
-            }
         }
 
         public Int32 EdgeEndsCount
@@ -52,6 +44,23 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                 }
             }
         }
+
+        #region IEnumerable<EdgeEnd<TCoordinate>> Members
+
+        public IEnumerator<EdgeEnd<TCoordinate>> GetEnumerator()
+        {
+            foreach (EdgeEnd<TCoordinate> edgeEnd in _edgeEnds)
+            {
+                yield return edgeEnd;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
 
         public void Insert(EdgeEnd<TCoordinate> e)
         {
@@ -164,9 +173,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 
             if (boundaryCount > 0)
             {
-                loc = boundaryNodeRule.IsInBoundary(boundaryCount) 
-                    ? Locations.Boundary 
-                    : Locations.Interior;
+                loc = boundaryNodeRule.IsInBoundary(boundaryCount)
+                          ? Locations.Boundary
+                          : Locations.Interior;
             }
 
             Label = new Label(Label.Value, geomIndex, loc);
@@ -210,14 +219,5 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                 }
             }
         }
-
-        #region IEnumerable Members
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        #endregion
     }
 }

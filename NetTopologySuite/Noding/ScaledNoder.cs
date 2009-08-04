@@ -5,6 +5,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using NPack;
 using NPack.Interfaces;
+
 #if DOTNET35
 using System.Linq;
 #endif
@@ -19,33 +20,32 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// Offsets can be provided to increase the number of digits of available precision.
     /// </summary>
     public class ScaledNoder<TCoordinate, TMatrix> : INoder<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
         where TMatrix : ITransformMatrix<DoubleComponent, TCoordinate, TMatrix>
     {
-        private readonly INoder<TCoordinate> _noder;
-        //private readonly Double _scaleFactor = 0;
-        //private readonly Double _offsetX = 0;
-        //private readonly Double _offsetY = 0;
-        private readonly TMatrix _transform;
         private readonly TMatrix _inverse;
         private readonly Boolean _isScaled;
+        private readonly INoder<TCoordinate> _noder;
         private readonly ICoordinateSequenceFactory<TCoordinate> _sequenceFactory;
+        private readonly TMatrix _transform;
 
         /// <summary>
         /// Initializes a new instance of the 
         /// <see cref="ScaledNoder{TCoordinate, TMatrix}"/> class.
         /// </summary>
-        public ScaledNoder(INoder<TCoordinate> noder, 
-                           Double scaleFactor, 
+        public ScaledNoder(INoder<TCoordinate> noder,
+                           Double scaleFactor,
                            ICoordinateSequenceFactory<TCoordinate> factory)
-            : this(noder, scaleFactor, 0, 0, factory) {}
+            : this(noder, scaleFactor, 0, 0, factory)
+        {
+        }
 
-        public ScaledNoder(INoder<TCoordinate> noder, 
-                           Double scaleFactor, 
-                           Double offsetX, 
-                           Double offsetY, 
+        public ScaledNoder(INoder<TCoordinate> noder,
+                           Double scaleFactor,
+                           Double offsetX,
+                           Double offsetY,
                            ICoordinateSequenceFactory<TCoordinate> factory)
         {
             _noder = noder;
@@ -56,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             TCoordinate offsetVector = coordinateFactory.Create(offsetX, offsetY);
 
             throw new NotImplementedException();
-            
+
             // Need to inject an IMatrixFactory here...
             //_transform = coordinateFactory.CreateTransform<TMatrix>(scaleVector, 
             //                                                        0, 
@@ -72,10 +72,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             get { return _transform[0, 0].Equals(1.0); }
         }
 
+        #region INoder<TCoordinate> Members
+
         public IEnumerable<NodedSegmentString<TCoordinate>> Node(
             IEnumerable<NodedSegmentString<TCoordinate>> inputSegStrings)
         {
-            IEnumerable<NodedSegmentString<TCoordinate>> intSegStrings 
+            IEnumerable<NodedSegmentString<TCoordinate>> intSegStrings
                 = inputSegStrings;
 
             if (_isScaled)
@@ -83,7 +85,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                 intSegStrings = scale(inputSegStrings);
             }
 
-            IEnumerable<NodedSegmentString<TCoordinate>> splitSS 
+            IEnumerable<NodedSegmentString<TCoordinate>> splitSS
                 = _noder.Node(intSegStrings);
 
             if (_isScaled)
@@ -94,16 +96,18 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             return splitSS;
         }
 
+        #endregion
+
         private IEnumerable<NodedSegmentString<TCoordinate>> scale(
             IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
         {
             Func<NodedSegmentString<TCoordinate>, NodedSegmentString<TCoordinate>>
                 componentTransform = delegate(NodedSegmentString<TCoordinate> segmentString)
-                                     {
-                                         return new NodedSegmentString<TCoordinate>(
-                                             scale(segmentString.Coordinates), 
-                                             segmentString.Context);
-                                     };
+                                         {
+                                             return new NodedSegmentString<TCoordinate>(
+                                                 scale(segmentString.Coordinates),
+                                                 segmentString.Context);
+                                         };
             return Processor.Transform<NodedSegmentString<TCoordinate>>(segStrings, componentTransform);
         }
 

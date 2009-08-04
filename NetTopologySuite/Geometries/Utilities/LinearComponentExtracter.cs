@@ -11,10 +11,31 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
     /// components from a <see cref="Geometry{TCoordinate}"/>.
     /// </summary>
     public class LinearComponentExtracter<TCoordinate> : IGeometryComponentFilter<TCoordinate>
-        where TCoordinate : IEquatable<TCoordinate>, IComparable<TCoordinate>, ICoordinate<TCoordinate>, IComputable<double, TCoordinate>
+        where TCoordinate : IEquatable<TCoordinate>, IComparable<TCoordinate>, ICoordinate<TCoordinate>,
+            IComputable<double, TCoordinate>
     {
         private readonly List<ILineString<TCoordinate>> _lines
             = new List<ILineString<TCoordinate>>();
+
+        /// <summary> 
+        /// Constructs a LineExtracterFilter with a list in which to store LineStrings found.
+        /// </summary>
+        public LinearComponentExtracter(IEnumerable<ILineString<TCoordinate>> lines)
+        {
+            _lines.AddRange(lines);
+        }
+
+        #region IGeometryComponentFilter<TCoordinate> Members
+
+        public void Filter(IGeometry<TCoordinate> geom)
+        {
+            if (geom is ILineString<TCoordinate>)
+            {
+                _lines.Add(geom as ILineString<TCoordinate>);
+            }
+        }
+
+        #endregion
 
         /// <summary> 
         /// Extracts the linear components from a single point.
@@ -30,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                 yield return geom as ILineString<TCoordinate>;
             else
             {
-                if(geom is IPolygon<TCoordinate>)
+                if (geom is IPolygon<TCoordinate>)
                 {
                     IPolygon<TCoordinate> polygon = geom as IPolygon<TCoordinate>;
                     yield return polygon.ExteriorRing;
@@ -41,7 +62,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                 }
                 else if (geom is IGeometryCollection<TCoordinate>)
                 {
-                    foreach (IGeometry<TCoordinate> geometry in geom as IGeometryCollection<TCoordinate>   )
+                    foreach (IGeometry<TCoordinate> geometry in geom as IGeometryCollection<TCoordinate>)
                     {
                         foreach (ILineString<TCoordinate> lineString in GetLines(geometry))
                             yield return lineString;
@@ -50,22 +71,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             }
 
             //jd: need to compare with JTS
-        }
-
-        /// <summary> 
-        /// Constructs a LineExtracterFilter with a list in which to store LineStrings found.
-        /// </summary>
-        public LinearComponentExtracter(IEnumerable<ILineString<TCoordinate>> lines)
-        {
-            _lines.AddRange(lines);
-        }
-
-        public void Filter(IGeometry<TCoordinate> geom)
-        {
-            if (geom is ILineString<TCoordinate>)
-            {
-                _lines.Add(geom as ILineString<TCoordinate>);
-            }
         }
     }
 }

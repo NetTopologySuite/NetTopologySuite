@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using NPack.Interfaces;
+
 #if DOTNET35
 using System.Linq;
 #endif
@@ -15,8 +16,8 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
     /// </summary>
     public class ConnectedSubgraphFinder<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible, 
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         private readonly PlanarGraph<TCoordinate> _graph;
 
@@ -70,7 +71,8 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
         }
 
         // Adds the argument node and all its out edges to the subgraph.
-        private static void addEdgesToSubgraph(Subgraph<TCoordinate> subgraph, Node<TCoordinate> node, Stack<Node<TCoordinate>> nodeStack)
+        private static void addEdgesToSubgraph(Subgraph<TCoordinate> subgraph, Node<TCoordinate> node,
+                                               Stack<Node<TCoordinate>> nodeStack)
         {
             node.Visited = true;
             IEnumerator<DirectedEdge<TCoordinate>> i = node.OutEdges.GetEnumerator();

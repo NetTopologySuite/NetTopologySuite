@@ -13,18 +13,28 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// Compute the average of all points.
     /// </remarks>
     public class CentroidPoint<TCoordinate>
-         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                             IComparable<TCoordinate>, IConvertible,
-                             IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         private readonly ICoordinateFactory<TCoordinate> _factory;
-        private Int32 _pointCount = 0;
         private TCoordinate _centSum;
+        private Int32 _pointCount;
 
         public CentroidPoint(ICoordinateFactory<TCoordinate> factory)
         {
             _factory = factory;
             _centSum = _factory.Create();
+        }
+
+        public TCoordinate Centroid
+        {
+            get
+            {
+                return _pointCount == 0
+                           ? _centSum
+                           : ((IComputable<Double, TCoordinate>) _centSum).Divide(_pointCount);
+            }
         }
 
         /// <summary> 
@@ -66,16 +76,6 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             else
             {
                 _centSum = _centSum.Add(point);
-            }
-        }
-
-        public TCoordinate Centroid
-        {
-            get
-            {
-                return _pointCount == 0 
-                    ? _centSum 
-                    : ((IComputable<Double, TCoordinate>)_centSum).Divide(_pointCount);
             }
         }
     }

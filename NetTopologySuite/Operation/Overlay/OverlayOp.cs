@@ -7,6 +7,7 @@ using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
+
 #if DOTNET35
 using System.Linq;
 #endif
@@ -31,12 +32,50 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// The overlay can be used to determine any Boolean combination of the geometries.
     /// </summary>
     public class OverlayOp<TCoordinate> : GeometryGraphOperation<TCoordinate>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
-        public static IGeometry<TCoordinate> Overlay(IGeometry<TCoordinate> geom0, 
-                                                     IGeometry<TCoordinate> geom1, 
+        private readonly EdgeList<TCoordinate> _edgeList;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
+
+        private readonly PlanarGraph<TCoordinate> _graph;
+
+        private readonly PointLocator<TCoordinate> _pointtLocator
+            = new PointLocator<TCoordinate>();
+
+        private readonly List<ILineString<TCoordinate>> _resultLineList
+            = new List<ILineString<TCoordinate>>();
+
+        private readonly List<IPoint<TCoordinate>> _resultPointList
+            = new List<IPoint<TCoordinate>>();
+
+        private readonly List<IPolygon<TCoordinate>> _resultPolyList
+            = new List<IPolygon<TCoordinate>>();
+
+        private IGeometry<TCoordinate> _resultGeometry;
+
+        public OverlayOp(IGeometry<TCoordinate> g0, IGeometry<TCoordinate> g1)
+            : base(g0, g1)
+        {
+            _graph = new PlanarGraph<TCoordinate>(new OverlayNodeFactory<TCoordinate>());
+
+            /*
+            * Use factory of primary point.
+            * Note that this does NOT handle mixed-precision arguments
+            * where the second arg has greater precision than the first.
+            */
+            _geoFactory = g0.Factory;
+            _edgeList = new EdgeList<TCoordinate>(_geoFactory);
+        }
+
+        public PlanarGraph<TCoordinate> Graph
+        {
+            get { return _graph; }
+        }
+
+        public static IGeometry<TCoordinate> Overlay(IGeometry<TCoordinate> geom0,
+                                                     IGeometry<TCoordinate> geom1,
                                                      SpatialFunctions opCode)
         {
             OverlayOp<TCoordinate> gov = new OverlayOp<TCoordinate>(geom0, geom1);
@@ -83,44 +122,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             }
         }
 
-        private readonly PointLocator<TCoordinate> _pointtLocator 
-            = new PointLocator<TCoordinate>();
-        private readonly IGeometryFactory<TCoordinate> _geoFactory;
-        private IGeometry<TCoordinate> _resultGeometry;
-
-        private readonly PlanarGraph<TCoordinate> _graph;
-        private readonly EdgeList<TCoordinate> _edgeList;
-
-        private readonly List<IPolygon<TCoordinate>> _resultPolyList 
-            = new List<IPolygon<TCoordinate>>();
-        private readonly List<ILineString<TCoordinate>> _resultLineList 
-            = new List<ILineString<TCoordinate>>();
-        private readonly List<IPoint<TCoordinate>> _resultPointList 
-            = new List<IPoint<TCoordinate>>();
-
-        public OverlayOp(IGeometry<TCoordinate> g0, IGeometry<TCoordinate> g1)
-            : base(g0, g1)
-        {
-            _graph = new PlanarGraph<TCoordinate>(new OverlayNodeFactory<TCoordinate>());
-
-            /*
-            * Use factory of primary point.
-            * Note that this does NOT handle mixed-precision arguments
-            * where the second arg has greater precision than the first.
-            */
-            _geoFactory = g0.Factory;
-            _edgeList = new EdgeList<TCoordinate>(_geoFactory);
-        }
-
         public IGeometry<TCoordinate> GetResultGeometry(SpatialFunctions funcCode)
         {
             computeOverlay(funcCode);
             return _resultGeometry;
-        }
-
-        public PlanarGraph<TCoordinate> Graph
-        {
-            get { return _graph; }
         }
 
         /// <summary>
@@ -161,7 +166,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </returns>
         public Boolean IsCoveredByArea(TCoordinate coord)
         {
-            IEnumerable<IGeometry<TCoordinate>> geometries 
+            IEnumerable<IGeometry<TCoordinate>> geometries
                 = Caster.Upcast<IGeometry<TCoordinate>, IPolygon<TCoordinate>>(_resultPolyList);
 
             if (isCovered(coord, geometries))
@@ -324,9 +329,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                                 * side locations indicated by the depth values.
                                 */
                                 Debug.Assert(!depth.IsNull(i, Positions.Left),
-                                              "Depth of left side has not been initialized.");
+                                             "Depth of left side has not been initialized.");
                                 Debug.Assert(!depth.IsNull(i, Positions.Right),
-                                              "Depth of right side has not been initialized");
+                                             "Depth of right side has not been initialized");
 
                                 Locations left = depth.GetLocation(i, Positions.Left);
                                 Locations right = depth.GetLocation(i, Positions.Right);
@@ -483,7 +488,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             n.Label = new Label(n.Label.Value, targetIndex, loc);
         }
 
-        private GeometryGraph<TCoordinate> getArgument(Int32 targetIndex) 
+        private GeometryGraph<TCoordinate> getArgument(Int32 targetIndex)
         {
             return targetIndex == 0 ? Argument1 : Argument2;
         }
@@ -552,7 +557,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         }
 
         private IGeometry<TCoordinate> computeGeometry(IEnumerable<IPoint<TCoordinate>> points,
-            IEnumerable<ILineString<TCoordinate>> lines, IEnumerable<IPolygon<TCoordinate>> polys)
+                                                       IEnumerable<ILineString<TCoordinate>> lines,
+                                                       IEnumerable<IPolygon<TCoordinate>> polys)
         {
             List<IGeometry<TCoordinate>> geomList = new List<IGeometry<TCoordinate>>();
 

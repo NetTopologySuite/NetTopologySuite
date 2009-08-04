@@ -7,7 +7,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
 {
     public interface IPreparedGeometry<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Gets the original <see cref="IGeometry{TCoordinate}"/> which has been prepared
@@ -108,6 +108,5 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         ///<seealso cref="ISpatialRelation{TCoordinate}.Within(GeoAPI.Geometries.IGeometry{TCoordinate})"/>
         ///</summary>
         Boolean Within(IGeometry<TCoordinate> geom);
-    
     }
 }

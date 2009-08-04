@@ -18,15 +18,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 
         public Root() : base(Interval.Infinite, -1)
         {
-            
         }
 
         public override Interval Bounds
         {
-            get
-            {
-                return ComputeBounds();
-            }
+            get { return ComputeBounds(); }
         }
 
         /// <summary> 

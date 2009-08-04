@@ -6,7 +6,6 @@ using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using NPack.Interfaces;
 
-
 namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 {
     /// <summary>
@@ -17,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     /// </summary>
     public class LineMergeGraph<TCoordinate> : PlanarGraph<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Adds an Edge, DirectedEdges, and Nodes for the given LineString representation
@@ -38,11 +37,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             Node<TCoordinate> endNode = getNode(endPair.Second);
 
             DirectedEdge<TCoordinate> directedEdge0 = new LineMergeDirectedEdge<TCoordinate>(startNode, endNode,
-                                                                   startPair.Second, true);
+                                                                                             startPair.Second, true);
 
             DirectedEdge<TCoordinate> directedEdge1 = new LineMergeDirectedEdge<TCoordinate>(endNode, startNode,
-                                                                   endPair.First, false);
-            
+                                                                                             endPair.First, false);
+
             Edge<TCoordinate> edge = new LineMergeEdge<TCoordinate>(lineString, directedEdge0, directedEdge1);
             //edge.SetDirectedEdges();
             Add(edge);

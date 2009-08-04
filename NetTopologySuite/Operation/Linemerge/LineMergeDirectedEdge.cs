@@ -26,8 +26,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// whether this DirectedEdge's direction is the same as or
         /// opposite to that of the parent Edge (if any).
         /// </param>
-        public LineMergeDirectedEdge(Node<TCoordinate> from, Node<TCoordinate> to, TCoordinate directionPt, Boolean edgeDirection)
-            : base(from, to, directionPt, edgeDirection) {}
+        public LineMergeDirectedEdge(Node<TCoordinate> from, Node<TCoordinate> to, TCoordinate directionPt,
+                                     Boolean edgeDirection)
+            : base(from, to, directionPt, edgeDirection)
+        {
+        }
 
         /// <summary>
         /// Returns the directed edge that starts at this directed edge's end point, or null

@@ -12,9 +12,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
     ///</summary>
     public class PreparedPolygonContainsProperly<TCoordinate> : PreparedPolygonPredicate<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
+        ///<summary>
+        /// Creates an instance of this operation.
+        ///</summary>
+        ///<param name="prepPoly">the PreparedPolygon to evaluate</param>
+        public PreparedPolygonContainsProperly(PreparedPolygon<TCoordinate> prepPoly)
+            : base(prepPoly)
+        {
+        }
+
         ///<summary>
         /// Computes the </see>ContainsProperly</see> predicate between a <see cref="PreparedPolygon{TCoordinate}"/> and a <see cref="IGeometry{TCoordinate}"/>.
         ///</summary>
@@ -25,15 +34,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         {
             PreparedPolygonContainsProperly<TCoordinate> polyInt = new PreparedPolygonContainsProperly<TCoordinate>(prep);
             return polyInt.ContainsProperly(geom);
-        }
-
-        ///<summary>
-        /// Creates an instance of this operation.
-        ///</summary>
-        ///<param name="prepPoly">the PreparedPolygon to evaluate</param>
-        public PreparedPolygonContainsProperly(PreparedPolygon<TCoordinate> prepPoly)
-            : base(prepPoly)
-        {
         }
 
         ///<summary>
@@ -75,6 +75,5 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
 
             return true;
         }
-
     }
 }

@@ -14,44 +14,28 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// <typeparam name="TCoordinate">The coordinate type.</typeparam>
     public class SegmentIntersector<TCoordinate> : ISegmentIntersector<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
-        /// <summary>
-        /// Computes if two segments, referred to by their indexes, 
-        /// are sequential in either direction.
-        /// </summary>
-        /// <param name="i1">The index of the first segment to test.</param>
-        /// <param name="i2">The index of the second segment to test.</param>
-        /// <returns>
-        /// <see langword="true"/> if the indexes differ by 1 or -1.
-        /// </returns>
-        public static Boolean AreAdjacentSegments(Int32 i1, Int32 i2)
-        {
-            return Math.Abs(i1 - i2) == 1;
-        }
-
         /*
          * These variables keep track of what types of intersections were
          * found during ALL edges that have been intersected.
          */
+        private readonly Boolean _includeProper;
+        private readonly LineIntersector<TCoordinate> _lineIntersector;
+        private readonly Boolean _recordIsolated;
+        private IEnumerable<Node<TCoordinate>> _boundaryNodes0;
+        private IEnumerable<Node<TCoordinate>> _boundaryNodes1;
         private Boolean _hasIntersection;
         private Boolean _hasProper;
         private Boolean _hasProperInterior;
 
         // the proper intersection point found
-        private TCoordinate _properIntersectionPoint;
-
-        private readonly LineIntersector<TCoordinate> _lineIntersector;
-        private readonly Boolean _includeProper;
-        private readonly Boolean _recordIsolated;
         private Int32 _intersectionCount;
 
         // Testing only.
         private Int32 _numTests;
-
-        private IEnumerable<Node<TCoordinate>> _boundaryNodes0;
-        private IEnumerable<Node<TCoordinate>> _boundaryNodes1;
+        private TCoordinate _properIntersectionPoint;
 
         /// <summary>
         /// Creates a new <see cref="SegmentIntersector{TCoordinate}"/>
@@ -79,13 +63,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             _lineIntersector = li;
             _includeProper = includeProper;
             _recordIsolated = recordIsolated;
-        }
-
-        public void SetBoundaryNodes(IEnumerable<Node<TCoordinate>> boundaryNodes0,
-                                     IEnumerable<Node<TCoordinate>> boundaryNodes1)
-        {
-            _boundaryNodes0 = boundaryNodes0;
-            _boundaryNodes1 = boundaryNodes1;
         }
 
         /// <summary> 
@@ -125,6 +102,27 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         public Boolean HasProperInteriorIntersection
         {
             get { return _hasProperInterior; }
+        }
+
+        /// <summary>
+        /// Computes if two segments, referred to by their indexes, 
+        /// are sequential in either direction.
+        /// </summary>
+        /// <param name="i1">The index of the first segment to test.</param>
+        /// <param name="i2">The index of the second segment to test.</param>
+        /// <returns>
+        /// <see langword="true"/> if the indexes differ by 1 or -1.
+        /// </returns>
+        public static Boolean AreAdjacentSegments(Int32 i1, Int32 i2)
+        {
+            return Math.Abs(i1 - i2) == 1;
+        }
+
+        public void SetBoundaryNodes(IEnumerable<Node<TCoordinate>> boundaryNodes0,
+                                     IEnumerable<Node<TCoordinate>> boundaryNodes1)
+        {
+            _boundaryNodes0 = boundaryNodes0;
+            _boundaryNodes1 = boundaryNodes1;
         }
 
         /// <summary> 
@@ -285,17 +283,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 
         #region ISegmentIntersector<TCoordinate> Member
 
-        public void ProcessIntersections(NodedSegmentString<TCoordinate> e0, int segIndex0, NodedSegmentString<TCoordinate> e1, int segIndex1)
+        public void ProcessIntersections(NodedSegmentString<TCoordinate> e0, int segIndex0,
+                                         NodedSegmentString<TCoordinate> e1, int segIndex1)
         {
             //nothing to do here since all
         }
 
         public bool IsDone
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get { throw new NotImplementedException(); }
         }
 
         #endregion

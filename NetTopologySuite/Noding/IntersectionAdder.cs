@@ -20,31 +20,22 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public class IntersectionAdder<TCoordinate> : ISegmentIntersector<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        public static Boolean IsAdjacentSegments(Int32 i1, Int32 i2)
-        {
-            return Math.Abs(i1 - i2) == 1;
-        }
-
         /**
          * These variables keep track of what types of intersections were
          * found during ALL edges that have been intersected.
          */
-        private Boolean _hasIntersection = false;
-        private Boolean _hasProper = false;
-        private Boolean _hasProperInterior = false;
-        private Boolean _hasInterior = false;
-
-        // the proper intersection point found
+        private readonly LineIntersector<TCoordinate> _li;
+        private Boolean _hasInterior;
+        private Boolean _hasIntersection;
+        private Boolean _hasProper;
+        private Boolean _hasProperInterior;
+        private Int32 _interiorIntersectionCount;
+        private Int32 _intersectionCount;
+        private Int32 _properIntersectionCount;
         private TCoordinate _properIntersectionPoint;
-
-        private readonly LineIntersector<TCoordinate> _li = null;
-
-        private Int32 _intersectionCount = 0;
-        private Int32 _interiorIntersectionCount = 0;
-        private Int32 _properIntersectionCount = 0;
-        private Int32 _testCount = 0;
+        private Int32 _testCount;
 
         /// <summary>
         /// Initializes a new instance of the 
@@ -129,6 +120,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             private set { _testCount = value; }
         }
 
+        #region ISegmentIntersector<TCoordinate> Members
+
         /// <summary>
         /// This method is called by clients
         /// of the <see cref="ISegmentIntersector{TCoordinate}" /> class to process
@@ -137,7 +130,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// this call for segment pairs which they have determined do not intersect
         /// (e.g. by an disjoint envelope test).
         /// </summary>
-        public void ProcessIntersections(NodedSegmentString<TCoordinate> e0, Int32 segIndex0, NodedSegmentString<TCoordinate> e1, Int32 segIndex1)
+        public void ProcessIntersections(NodedSegmentString<TCoordinate> e0, Int32 segIndex0,
+                                         NodedSegmentString<TCoordinate> e1, Int32 segIndex1)
         {
             if (e0 == e1 && segIndex0 == segIndex1)
             {
@@ -179,12 +173,21 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             }
         }
 
+        #endregion
+
+        public static Boolean IsAdjacentSegments(Int32 i1, Int32 i2)
+        {
+            return Math.Abs(i1 - i2) == 1;
+        }
+
         /// <summary>
         /// A trivial intersection is an apparent self-intersection which in fact
         /// is simply the point shared by adjacent line segments.
         /// Note that closed edges require a special check for the point shared by the beginning and end segments.
         /// </summary>
-        private static Boolean isTrivialIntersection(Intersection<TCoordinate> intersection, NodedSegmentString<TCoordinate> e0, Int32 segIndex0, NodedSegmentString<TCoordinate> e1, Int32 segIndex1)
+        private static Boolean isTrivialIntersection(Intersection<TCoordinate> intersection,
+                                                     NodedSegmentString<TCoordinate> e0, Int32 segIndex0,
+                                                     NodedSegmentString<TCoordinate> e1, Int32 segIndex1)
         {
             if (e0 == e1)
             {
@@ -212,7 +215,6 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         }
 
         #region ISegmentIntersector<TCoordinate> Member
-
 
         public bool IsDone
         {

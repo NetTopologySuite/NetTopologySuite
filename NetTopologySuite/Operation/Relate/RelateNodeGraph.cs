@@ -30,8 +30,19 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly NodeMap<TCoordinate> _nodes 
+        private readonly NodeMap<TCoordinate> _nodes
             = new NodeMap<TCoordinate>(new RelateNodeFactory<TCoordinate>());
+
+        public IEnumerable<RelateNode<TCoordinate>> Nodes
+        {
+            get
+            {
+                foreach (Node<TCoordinate> node in _nodes)
+                {
+                    yield return node as RelateNode<TCoordinate>;
+                }
+            }
+        }
 
         //public IEnumerator GetNodeEnumerator()
         //{
@@ -101,7 +112,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         public void CopyNodesAndLabels(GeometryGraph<TCoordinate> geomGraph, Int32 argIndex)
         {
             foreach (Node<TCoordinate> node in geomGraph.Nodes)
-            {   
+            {
                 Node<TCoordinate> newNode = _nodes.AddNode(node.Coordinate);
                 newNode.SetLabel(argIndex, node.Label.Value[argIndex].On);
             }
@@ -111,18 +122,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         {
             foreach (EdgeEnd<TCoordinate> end in ee)
             {
-                _nodes.Add(end);   
-            }
-        }
-
-        public IEnumerable<RelateNode<TCoordinate>> Nodes
-        {
-            get
-            {
-                foreach (Node<TCoordinate> node in _nodes)
-                {
-                    yield return node as RelateNode<TCoordinate>;
-                }
+                _nodes.Add(end);
             }
         }
     }

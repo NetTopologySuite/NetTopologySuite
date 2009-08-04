@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 {
@@ -17,10 +17,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// </summary>
     public class SimpleNestedRingTester<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        private GeometryGraph<TCoordinate> _graph; // used to find non-node vertices
-        private List<ILinearRing<TCoordinate>> _rings = new List<ILinearRing<TCoordinate>>();
+        private readonly GeometryGraph<TCoordinate> _graph; // used to find non-node vertices
+        private readonly List<ILinearRing<TCoordinate>> _rings = new List<ILinearRing<TCoordinate>>();
         private TCoordinate nestedPt;
 
         public SimpleNestedRingTester(GeometryGraph<TCoordinate> graph)
@@ -28,14 +28,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             _graph = graph;
         }
 
-        public void Add(ILinearRing<TCoordinate> ring)
-        {
-            _rings.Add(ring);
-        }
-
         public ICoordinate NestedPoint
         {
             get { return nestedPt; }
+        }
+
+        public void Add(ILinearRing<TCoordinate> ring)
+        {
+            _rings.Add(ring);
         }
 
         public Boolean IsNonNested()

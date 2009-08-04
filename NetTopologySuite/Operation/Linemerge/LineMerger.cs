@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
     /// </remarks>
     public class LineMerger<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /*
          * [codekaizen 2008-01-14]  removed during translation of visitor patterns
@@ -54,9 +54,21 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         //}
 
         private readonly LineMergeGraph<TCoordinate> _graph = new LineMergeGraph<TCoordinate>();
-        private List<ILineString<TCoordinate>> mergedLineStrings = new List<ILineString<TCoordinate>>();
         private readonly List<EdgeString<TCoordinate>> edgeStrings = new List<EdgeString<TCoordinate>>();
-        private IGeometryFactory<TCoordinate> _factory = null;
+        private IGeometryFactory<TCoordinate> _factory;
+        private List<ILineString<TCoordinate>> mergedLineStrings = new List<ILineString<TCoordinate>>();
+
+        /// <summary>
+        /// Gets the <see cref="ILineString{TCoordinate}"/>s built by the merging process.
+        /// </summary>
+        public IEnumerable<ILineString<TCoordinate>> MergedLineStrings
+        {
+            get
+            {
+                merge();
+                return mergedLineStrings;
+            }
+        }
 
         /// <summary>
         /// Adds a Geometry to be processed. May be called multiple times.
@@ -99,18 +111,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             foreach (IGeometry<TCoordinate> geometry in geometries)
             {
                 Add(geometry);
-            }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ILineString{TCoordinate}"/>s built by the merging process.
-        /// </summary>
-        public IEnumerable<ILineString<TCoordinate>> MergedLineStrings
-        {
-            get
-            {
-                merge();
-                return mergedLineStrings;
             }
         }
 
@@ -172,7 +172,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                 {
                     buildEdgeStringsStartingAt(node);
                     node.Marked = true;
-                } 
+                }
             }
         }
 

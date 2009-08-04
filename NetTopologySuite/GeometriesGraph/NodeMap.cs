@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
@@ -10,18 +11,33 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// A map of nodes, indexed by the coordinate of the node.
     /// </summary>
     public class NodeMap<TCoordinate> : IEnumerable<Node<TCoordinate>>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
-        private readonly SortedList<TCoordinate, Node<TCoordinate>> _nodeMap 
-            = new SortedList<TCoordinate, Node<TCoordinate>>();
         private readonly NodeFactory<TCoordinate> _nodeFactory;
+
+        private readonly SortedList<TCoordinate, Node<TCoordinate>> _nodeMap
+            = new SortedList<TCoordinate, Node<TCoordinate>>();
 
         public NodeMap(NodeFactory<TCoordinate> nodeFact)
         {
             _nodeFactory = nodeFact;
         }
+
+        #region IEnumerable<Node<TCoordinate>> Members
+
+        public IEnumerator<Node<TCoordinate>> GetEnumerator()
+        {
+            return _nodeMap.Values.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
 
         public override String ToString()
         {
@@ -51,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             Node<TCoordinate> mappedNode;
             TCoordinate coordinate = node.Coordinate;
 
-            if(!_nodeMap.TryGetValue(coordinate, out mappedNode))
+            if (!_nodeMap.TryGetValue(coordinate, out mappedNode))
             {
                 _nodeMap.Add(coordinate, node);
                 return node;
@@ -84,16 +100,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             return node;
         }
 
-        public IEnumerator<Node<TCoordinate>> GetEnumerator()
-        {
-            return _nodeMap.Values.GetEnumerator();
-        }
-
         public IEnumerable<Node<TCoordinate>> GetBoundaryNodes(Int32 geomIndex)
         {
             foreach (Node<TCoordinate> node in this)
             {
-                if(node.Label == null)
+                if (node.Label == null)
                 {
                     continue;
                 }
@@ -112,14 +123,5 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         //        node.Write(outstream);
         //    }
         //}
-
-        #region IEnumerable Members
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        #endregion
     }
 }

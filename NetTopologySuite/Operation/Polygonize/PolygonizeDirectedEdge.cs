@@ -12,11 +12,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
     /// </summary>
     public class PolygonizeDirectedEdge<TCoordinate> : DirectedEdge<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                    IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        private EdgeRing<TCoordinate> _edgeRing = null;
-        private PolygonizeDirectedEdge<TCoordinate> _next = null;
+        private EdgeRing<TCoordinate> _edgeRing;
         private Int64 _label = -1;
+        private PolygonizeDirectedEdge<TCoordinate> _next;
 
         /// <summary>
         /// Constructs a directed edge connecting the <c>from</c> node to the
@@ -32,8 +32,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Whether this DirectedEdge's direction is the same as or
         /// opposite to that of the parent Edge (if any).
         /// </param>
-        public PolygonizeDirectedEdge(Node<TCoordinate> from, Node<TCoordinate> to, TCoordinate directionPt, Boolean edgeDirection)
-            : base(from, to, directionPt, edgeDirection) {}
+        public PolygonizeDirectedEdge(Node<TCoordinate> from, Node<TCoordinate> to, TCoordinate directionPt,
+                                      Boolean edgeDirection)
+            : base(from, to, directionPt, edgeDirection)
+        {
+        }
 
         /// <summary> 
         /// Returns the identifier attached to this directed edge.

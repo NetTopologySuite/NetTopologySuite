@@ -16,8 +16,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly OverlayOp<TCoordinate> _op;
         private readonly IGeometryFactory<TCoordinate> _geometryFactory;
+        private readonly OverlayOp<TCoordinate> _op;
         //private PointLocator<TCoordinate> _ptLocator;
 
         // [codekaizen 2008-01-06] parameter 'ptLocator' isn't used in JTS source PointBuilder.java rev. 1.16
@@ -55,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                     {
                         yield return node;
                     }
-                }   
+                }
             }
         }
 
@@ -74,7 +74,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                 {
                     IPoint<TCoordinate> pt = _geometryFactory.CreatePoint(coord);
                     yield return pt;
-                }   
+                }
             }
         }
     }

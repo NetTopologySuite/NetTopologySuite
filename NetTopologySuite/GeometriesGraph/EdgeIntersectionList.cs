@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using GeoAPI.Coordinates;
@@ -11,16 +12,16 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// A list of edge intersections along an <see cref="Edge{TCoordinate}"/>.
     /// </summary>
     public class EdgeIntersectionList<TCoordinate> : IEnumerable<EdgeIntersection<TCoordinate>>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         // a map of EdgeIntersections      
+        private readonly Edge<TCoordinate> _edge; // the parent edge
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
+
         private readonly SortedDictionary<EdgeIntersection<TCoordinate>, EdgeIntersection<TCoordinate>> _nodeMap
             = new SortedDictionary<EdgeIntersection<TCoordinate>, EdgeIntersection<TCoordinate>>();
-
-        private readonly IGeometryFactory<TCoordinate> _geoFactory;
-        private readonly Edge<TCoordinate> _edge; // the parent edge
 
         /// <summary>
         /// Creates a new <see cref="EdgeIntersectionList{TCoordinate}"/>.
@@ -31,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="edge">
         /// The containing <see cref="Edge{TCoordinate}"/>.
         /// </param>
-        public EdgeIntersectionList(IGeometryFactory<TCoordinate> geoFactory, 
+        public EdgeIntersectionList(IGeometryFactory<TCoordinate> geoFactory,
                                     Edge<TCoordinate> edge)
         {
             if (geoFactory == null) throw new ArgumentNullException("geoFactory");
@@ -40,6 +41,32 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             _geoFactory = geoFactory;
             _edge = edge;
         }
+
+        /// <summary>
+        /// Gets the number of <see cref="EdgeIntersection{TCoordinate}"/>s
+        /// in the list.
+        /// </summary>
+        public Int32 Count
+        {
+            get { return _nodeMap.Count; }
+        }
+
+        #region IEnumerable<EdgeIntersection<TCoordinate>> Members
+
+        /// <summary> 
+        /// Returns an iterator of EdgeIntersections.
+        /// </summary>
+        public IEnumerator<EdgeIntersection<TCoordinate>> GetEnumerator()
+        {
+            return _nodeMap.Values.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
 
         public override String ToString()
         {
@@ -119,14 +146,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// (and including) the two intersections.
         /// The label for the new edge is the same as the label for the parent edge.
         /// </summary>
-        public Edge<TCoordinate> CreateSplitEdge(EdgeIntersection<TCoordinate> ei0, 
+        public Edge<TCoordinate> CreateSplitEdge(EdgeIntersection<TCoordinate> ei0,
                                                  EdgeIntersection<TCoordinate> ei1)
         {
             ICoordinateSequence<TCoordinate> pts;
 
             if (ei0.SegmentIndex == ei1.SegmentIndex)
             {
-                ICoordinateSequenceFactory<TCoordinate> seqFactory 
+                ICoordinateSequenceFactory<TCoordinate> seqFactory
                     = _edge.Coordinates.CoordinateSequenceFactory;
 
                 pts = seqFactory.Create(ei0.Coordinate, ei1.Coordinate);
@@ -139,17 +166,17 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 // The check for point equality is 2D only - Z values are ignored
                 // 3D_UNSAFE
                 TCoordinate lastSegStartPt = _edge.Coordinates[ei1.SegmentIndex];
-                Boolean useIntersectionPt1 = ei1.Distance > 0.0 || 
+                Boolean useIntersectionPt1 = ei1.Distance > 0.0 ||
                                              !ei1.Coordinate.Equals(lastSegStartPt);
 
                 pts = useIntersectionPt1
-                            ? _edge.Coordinates.Splice(ei0.Coordinate, 
-                                                       ei0.SegmentIndex + 1, 
-                                                       ei1.SegmentIndex,
-                                                       ei1.Coordinate)
-                            : _edge.Coordinates.Splice(ei0.Coordinate, 
-                                                       ei0.SegmentIndex + 1, 
-                                                       ei1.SegmentIndex);
+                          ? _edge.Coordinates.Splice(ei0.Coordinate,
+                                                     ei0.SegmentIndex + 1,
+                                                     ei1.SegmentIndex,
+                                                     ei1.Coordinate)
+                          : _edge.Coordinates.Splice(ei0.Coordinate,
+                                                     ei0.SegmentIndex + 1,
+                                                     ei1.SegmentIndex);
             }
 
             return new Edge<TCoordinate>(_geoFactory, pts, _edge.Label.Value);
@@ -162,11 +189,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns>
         /// The <see cref="EdgeIntersection{TCoordinate}"/> found or added.
         /// </returns>
-        public EdgeIntersection<TCoordinate> Add(TCoordinate intersection, 
-                                                 Int32 segmentIndex, 
+        public EdgeIntersection<TCoordinate> Add(TCoordinate intersection,
+                                                 Int32 segmentIndex,
                                                  Double dist)
         {
-            EdgeIntersection<TCoordinate> eiNew 
+            EdgeIntersection<TCoordinate> eiNew
                 = new EdgeIntersection<TCoordinate>(intersection, segmentIndex, dist);
             EdgeIntersection<TCoordinate> ei;
 
@@ -187,33 +214,5 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             _nodeMap.Clear();
         }
-
-        /// <summary>
-        /// Gets the number of <see cref="EdgeIntersection{TCoordinate}"/>s
-        /// in the list.
-        /// </summary>
-        public Int32 Count
-        {
-            get { return _nodeMap.Count; }
-        }
-
-        #region IEnumerable<EdgeIntersection<TCoordinate>> Members
-        /// <summary> 
-        /// Returns an iterator of EdgeIntersections.
-        /// </summary>
-        public IEnumerator<EdgeIntersection<TCoordinate>> GetEnumerator()
-        {
-            return _nodeMap.Values.GetEnumerator();
-        }
-        #endregion
-
-        #region IEnumerable Members
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
     }
 }

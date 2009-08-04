@@ -1,10 +1,10 @@
 using System;
 using System.Text;
 using GeoAPI.Coordinates;
+using GeoAPI.Diagnostics;
 using GeoAPI.Units;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -21,9 +21,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     public class EdgeEnd<TCoordinate> : IComparable<EdgeEnd<TCoordinate>>,
                                         IEquatable<EdgeEnd<TCoordinate>>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
+        private TCoordinate _direction;
         private Edge<TCoordinate> _edge;
         private Label? _label;
         // the node this edge end originates at
@@ -32,7 +33,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         private TCoordinate _p0, _p1;
         // the direction vector for this edge end from its incident
         // segment start point
-        private TCoordinate _direction; 
         private Quadrants _quadrant;
 
         protected EdgeEnd(Edge<TCoordinate> edge)
@@ -40,28 +40,16 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             _edge = edge;
         }
 
-        public EdgeEnd(Edge<TCoordinate> edge, TCoordinate p0, TCoordinate p1) 
-            : this(edge, p0, p1, null) { }
+        public EdgeEnd(Edge<TCoordinate> edge, TCoordinate p0, TCoordinate p1)
+            : this(edge, p0, p1, null)
+        {
+        }
 
         public EdgeEnd(Edge<TCoordinate> edge, TCoordinate p0, TCoordinate p1, Label? label)
             : this(edge)
         {
             Init(p0, p1);
             _label = label;
-        }
-
-        protected void Init(TCoordinate p0, TCoordinate p1)
-        {
-            _p0 = p0;
-            _p1 = p1;
-            //Double dx = p1[Ordinates.X] - p0[Ordinates.X];
-            //Double dy = p1[Ordinates.Y] - p0[Ordinates.Y];
-            //_direction = _edge.Coordinates.CoordinateFactory.Create(dx, dy);
-            _direction = p1.Subtract(p0);
-            _quadrant = QuadrantOp<TCoordinate>.Quadrant(_direction);
-
-            Assert.IsTrue(!_direction.Equals(((ICoordinate)_direction).Zero), 
-                          "EdgeEnd with identical endpoints found.");
         }
 
         public Edge<TCoordinate> Edge
@@ -102,6 +90,17 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             set { _origin = value; }
         }
 
+        #region IComparable<EdgeEnd<TCoordinate>> Members
+
+        public Int32 CompareTo(EdgeEnd<TCoordinate> other)
+        {
+            return CompareDirection(other);
+        }
+
+        #endregion
+
+        #region IEquatable<EdgeEnd<TCoordinate>> Members
+
         public Boolean Equals(EdgeEnd<TCoordinate> other)
         {
             // referential equality should suffice due to the constrained
@@ -110,9 +109,20 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             return ReferenceEquals(this, other);
         }
 
-        public Int32 CompareTo(EdgeEnd<TCoordinate> other)
+        #endregion
+
+        protected void Init(TCoordinate p0, TCoordinate p1)
         {
-            return CompareDirection(other);
+            _p0 = p0;
+            _p1 = p1;
+            //Double dx = p1[Ordinates.X] - p0[Ordinates.X];
+            //Double dy = p1[Ordinates.Y] - p0[Ordinates.Y];
+            //_direction = _edge.Coordinates.CoordinateFactory.Create(dx, dy);
+            _direction = p1.Subtract(p0);
+            _quadrant = QuadrantOp<TCoordinate>.Quadrant(_direction);
+
+            Assert.IsTrue(!_direction.Equals(((ICoordinate) _direction).Zero),
+                          "EdgeEnd with identical endpoints found.");
         }
 
         /// <summary> 
@@ -149,21 +159,23 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             // of direction vectors
             // 
             // this is > e if it is CCW of e
-            return (Int32)CGAlgorithms<TCoordinate>.ComputeOrientation(e.Coordinate, 
-                                                                       e.DirectedCoordinate, 
-                                                                       _p1);
+            return (Int32) CGAlgorithms<TCoordinate>.ComputeOrientation(e.Coordinate,
+                                                                        e.DirectedCoordinate,
+                                                                        _p1);
         }
 
         /// <summary>
         /// Subclasses should override this if they are using labels
         /// </summary>
-        public virtual void ComputeLabel(IBoundaryNodeRule boundaryNodeRule) { }
+        public virtual void ComputeLabel(IBoundaryNodeRule boundaryNodeRule)
+        {
+        }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            Radians angle = (Radians)Math.Atan2(_direction[Ordinates.Y], _direction[Ordinates.X]);
-            Degrees degrees = (Degrees)angle;
+            Radians angle = (Radians) Math.Atan2(_direction[Ordinates.Y], _direction[Ordinates.X]);
+            Degrees degrees = (Degrees) angle;
 
             sb.Append('[');
             sb.Append(_p0);

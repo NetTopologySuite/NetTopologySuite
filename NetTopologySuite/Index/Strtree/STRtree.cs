@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
-using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
-using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 {
@@ -23,9 +22,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
     /// Described in: P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
     /// </remarks>
-    public class StrTree<TCoordinate, TItem> : AbstractStrTree<IExtents<TCoordinate>, TItem>, ISpatialIndex<IExtents<TCoordinate>, TItem>
+    public class StrTree<TCoordinate, TItem> : AbstractStrTree<IExtents<TCoordinate>, TItem>,
+                                               ISpatialIndex<IExtents<TCoordinate>, TItem>
         where TItem : IBoundable<IExtents<TCoordinate>>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>, IComputable<Double, TCoordinate>,
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<Double, TCoordinate>,
             IConvertible
     {
         #region Nested types
@@ -80,10 +81,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         //    }
         //}
 
+        #region Nested type: StrItemBoundable
+
         private class StrItemBoundable : ItemBoundable<IExtents<TCoordinate>, TItem>
         {
             public StrItemBoundable(IExtents<TCoordinate> bounds, TItem item)
-                : base(bounds, item) { }
+                : base(bounds, item)
+            {
+            }
 
             public override Boolean Intersects(IExtents<TCoordinate> bounds)
             {
@@ -96,9 +101,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             }
         }
 
+        #endregion
+
+        #region Nested type: StrNode
+
         private class StrNode : AbstractNode<IExtents<TCoordinate>, TItem>
         {
-            private IGeometryFactory<TCoordinate> _geoFactory;
+            private readonly IGeometryFactory<TCoordinate> _geoFactory;
 
             public StrNode(IGeometryFactory<TCoordinate> geoFactory, Int32 nodeCapacity) :
                 base(nodeCapacity)
@@ -156,12 +165,16 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
         #endregion
 
+        #endregion
+
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
 
         /// <summary> 
         /// Constructs an STRtree with the default (10) node capacity.
         /// </summary>
-        public StrTree(IGeometryFactory<TCoordinate> geoFactory) : this(geoFactory, 10) { }
+        public StrTree(IGeometryFactory<TCoordinate> geoFactory) : this(geoFactory, 10)
+        {
+        }
 
         /// <summary> 
         /// Constructs an STRtree with the given maximum number of child nodes that
@@ -172,6 +185,31 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             _geoFactory = geoFactory;
         }
+
+        protected static Comparison<IBoundable<IExtents<TCoordinate>>> XOrdinateComparer
+        {
+            get
+            {
+                return
+                    delegate(IBoundable<IExtents<TCoordinate>> left, IBoundable<IExtents<TCoordinate>> right) { return left.Bounds.Center[Ordinates.X].CompareTo(right.Bounds.Center[Ordinates.X]); };
+            }
+        }
+
+        protected static Comparison<IBoundable<IExtents<TCoordinate>>> YOrdinateComparer
+        {
+            get
+            {
+                return
+                    delegate(IBoundable<IExtents<TCoordinate>> left, IBoundable<IExtents<TCoordinate>> right) { return left.Bounds.Center[Ordinates.Y].CompareTo(right.Bounds.Center[Ordinates.Y]); };
+            }
+        }
+
+        protected override Comparison<IBoundable<IExtents<TCoordinate>>> CompareOp
+        {
+            get { return YOrdinateComparer; }
+        }
+
+        #region ISpatialIndex<IExtents<TCoordinate>,TItem> Members
 
         public override void Insert(TItem item)
         {
@@ -192,6 +230,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             //Envelope. super.query takes an object, not an Envelope. [Jon Aquino 10/24/2003]
             return base.Query(bounds);
         }
+
+        #endregion
 
         ///// <summary>
         ///// Returns items whose bounds intersect the given envelope.
@@ -230,7 +270,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             Assert.IsTrue(childBoundables.Count != 0);
 
-            Int32 minLeafCount = (Int32)Math.Ceiling((childBoundables.Count / (Double)NodeCapacity));
+            Int32 minLeafCount = (Int32) Math.Ceiling((childBoundables.Count/(Double) NodeCapacity));
 
             List<IBoundable<IExtents<TCoordinate>>> sortedChildBoundables
                 = new List<IBoundable<IExtents<TCoordinate>>>(childBoundables);
@@ -238,7 +278,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             sortedChildBoundables.Sort(XOrdinateComparer);
 
             IList<IList<IBoundable<IExtents<TCoordinate>>>> verticalSlices
-                = VerticalSlices(sortedChildBoundables, (Int32)Math.Ceiling(Math.Sqrt(minLeafCount)));
+                = VerticalSlices(sortedChildBoundables, (Int32) Math.Ceiling(Math.Sqrt(minLeafCount)));
 
             IList<IBoundable<IExtents<TCoordinate>>> tempList
                 = CreateParentBoundablesFromVerticalSlices(verticalSlices, newLevel);
@@ -246,33 +286,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return tempList;
         }
 
-
-        protected static Comparison<IBoundable<IExtents<TCoordinate>>> XOrdinateComparer
-        {
-            get
-            {
-                return delegate(IBoundable<IExtents<TCoordinate>> left, IBoundable<IExtents<TCoordinate>> right)
-                       {
-                           return left.Bounds.Center[Ordinates.X].CompareTo(right.Bounds.Center[Ordinates.X]);
-                       };
-            }
-        }
-
-        protected static Comparison<IBoundable<IExtents<TCoordinate>>> YOrdinateComparer
-        {
-            get
-            {
-                return delegate(IBoundable<IExtents<TCoordinate>> left, IBoundable<IExtents<TCoordinate>> right)
-                {
-                    return left.Bounds.Center[Ordinates.Y].CompareTo(right.Bounds.Center[Ordinates.Y]);
-                };
-            }
-        }
-
-        protected override Comparison<IBoundable<IExtents<TCoordinate>>> CompareOp
-        {
-            get { return YOrdinateComparer; }
-        }
 
         protected IList<IBoundable<IExtents<TCoordinate>>> CreateParentBoundablesFromVerticalSlices(
             IEnumerable<IList<IBoundable<IExtents<TCoordinate>>>> verticalSlices,
@@ -319,8 +332,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         protected IList<IList<IBoundable<IExtents<TCoordinate>>>> VerticalSlices(
             ICollection<IBoundable<IExtents<TCoordinate>>> childBoundables, Int32 sliceCount)
         {
-            Int32 sliceCapacity = (Int32)Math.Ceiling(childBoundables.Count / (Double)sliceCount);
-            IList<IList<IBoundable<IExtents<TCoordinate>>>> slices = new IList<IBoundable<IExtents<TCoordinate>>>[sliceCount];
+            Int32 sliceCapacity = (Int32) Math.Ceiling(childBoundables.Count/(Double) sliceCount);
+            IList<IList<IBoundable<IExtents<TCoordinate>>>> slices =
+                new IList<IBoundable<IExtents<TCoordinate>>>[sliceCount];
 
             for (Int32 j = 0; j < sliceCount; j++)
             {
@@ -358,7 +372,5 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         //{
         //    return avg(e.MinY, e.MaxY);
         //}
-
-
     }
 }

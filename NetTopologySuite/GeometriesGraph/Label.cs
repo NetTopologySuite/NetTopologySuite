@@ -41,23 +41,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </remarks>
     public struct Label
     {
-        /// <summary>
-        /// Converts a label to a line label (that is, one with no side Locations).
-        /// </summary>
-        /// <param name="label">Label to convert.</param>
-        /// <returns>Label as line label.</returns>
-        public static Label ToLineLabel(Label label)
-        {
-            Label lineLabel = new Label(Locations.None);
-
-            for (Int32 i = 0; i < 2; i++)
-            {
-                lineLabel = new Label(lineLabel, i, label[i].On);
-            }
-
-            return lineLabel;
-        }
-
         private readonly TopologyLocation _g0;
         private readonly TopologyLocation _g1;
 
@@ -115,7 +98,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </param>
         /// <param name="on">The <see cref="Locations"/> value to label with.</param>
         public Label(Int32 geometryIndex, Locations on)
-            : this(geometryIndex, on, Locations.None, Locations.None) { }
+            : this(geometryIndex, on, Locations.None, Locations.None)
+        {
+        }
 
         /// <summary>
         /// Construct a <see cref="Label"/> with <see cref="TopologyLocation.On"/>,
@@ -281,21 +266,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// Computes a <see cref="Label"/> which has each of the 
-        /// <see cref="TopologyLocation"/>s flipped.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="Label"/> which has each <see cref="TopologyLocation"/>
-        /// flipped.
-        /// </returns>
-        /// <seealso cref="TopologyLocation.Flip"/>
-        public Label Flip()
-        {
-            Label flipped = new Label(_g0.Flip(), _g1.Flip());
-            return flipped;
-        }
-
-        /// <summary>
         /// Gets the <see cref="Locations"/> value for the given 
         /// <paramref name="position"/> for the geometry at
         /// <paramref name="geometryIndex"/>.
@@ -358,6 +328,64 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
+        /// <summary>
+        /// The number of geometries represented by this <see cref="Label"/>.
+        /// </summary>
+        /// <remarks>
+        /// Each <see cref="Label"/> might represent 0, 1 or 2 geometries.
+        /// </remarks>
+        public Int32 GeometryCount
+        {
+            get
+            {
+                Int32 count = 0;
+
+                if (!_g0.IsNone)
+                {
+                    count++;
+                }
+
+                if (!_g1.IsNone)
+                {
+                    count++;
+                }
+
+                return count;
+            }
+        }
+
+        /// <summary>
+        /// Converts a label to a line label (that is, one with no side Locations).
+        /// </summary>
+        /// <param name="label">Label to convert.</param>
+        /// <returns>Label as line label.</returns>
+        public static Label ToLineLabel(Label label)
+        {
+            Label lineLabel = new Label(Locations.None);
+
+            for (Int32 i = 0; i < 2; i++)
+            {
+                lineLabel = new Label(lineLabel, i, label[i].On);
+            }
+
+            return lineLabel;
+        }
+
+        /// <summary>
+        /// Computes a <see cref="Label"/> which has each of the 
+        /// <see cref="TopologyLocation"/>s flipped.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="Label"/> which has each <see cref="TopologyLocation"/>
+        /// flipped.
+        /// </returns>
+        /// <seealso cref="TopologyLocation.Flip"/>
+        public Label Flip()
+        {
+            Label flipped = new Label(_g0.Flip(), _g1.Flip());
+            return flipped;
+        }
+
         //public void SetLocation(Int32 geomIndex, Positions posIndex, Locations location)
         //{
         //    _elt[geomIndex].setLocation(posIndex, location);
@@ -391,12 +419,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             checkIndex(geometryIndex);
 
             TopologyLocation newLocation = label.IsArea()
-                            ? new TopologyLocation(location, location, location)
-                            : new TopologyLocation(location);
+                                               ? new TopologyLocation(location, location, location)
+                                               : new TopologyLocation(location);
 
             return geometryIndex == 0
-                ? new Label(newLocation, label._g1)
-                : new Label(label._g0, newLocation);
+                       ? new Label(newLocation, label._g1)
+                       : new Label(label._g0, newLocation);
         }
 
         /// <summary>
@@ -434,8 +462,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 labelLocation.Right == Locations.None ? location : labelLocation.Right);
 
             return geometryIndex == 0
-                ? new Label(newLocation, label._g1)
-                : new Label(label._g0, newLocation);
+                       ? new Label(newLocation, label._g1)
+                       : new Label(label._g0, newLocation);
         }
 
         /// <summary>
@@ -497,32 +525,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
 
             return new Label(l0, l1);
-        }
-
-        /// <summary>
-        /// The number of geometries represented by this <see cref="Label"/>.
-        /// </summary>
-        /// <remarks>
-        /// Each <see cref="Label"/> might represent 0, 1 or 2 geometries.
-        /// </remarks>
-        public Int32 GeometryCount
-        {
-            get
-            {
-                Int32 count = 0;
-
-                if (!_g0.IsNone)
-                {
-                    count++;
-                }
-
-                if (!_g1.IsNone)
-                {
-                    count++;
-                }
-
-                return count;
-            }
         }
 
         /// <summary>

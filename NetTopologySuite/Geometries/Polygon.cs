@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
-using GeoAPI.Geometries;
-using NPack.Interfaces;
-using GisSharpBlog.NetTopologySuite.Algorithm;
 using GeoAPI.DataStructures;
+using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Algorithm;
+using NPack.Interfaces;
+
 #if DOTNET35
 using System.Linq;
 #endif
@@ -26,12 +27,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// OpenGIS Simple Features Specification for SQL </see>.     
     /// </remarks>
     [Serializable]
-    public class Polygon<TCoordinate> : MultiCoordinateGeometry<TCoordinate>, 
-                                        IPolygon<TCoordinate>, 
+    public class Polygon<TCoordinate> : MultiCoordinateGeometry<TCoordinate>,
+                                        IPolygon<TCoordinate>,
                                         IHasGeometryComponents<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         ///// <summary>
         ///// Represents an empty <see cref="Polygon{TCoordinate}"/>.
@@ -72,7 +73,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <see cref="PrecisionModelType.Floating"/>.
         /// </remarks>
         public Polygon(ILinearRing<TCoordinate> shell, IEnumerable<ILineString<TCoordinate>> holes)
-            : this(shell, holes, ExtractGeometryFactory(Caster.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(holes))) { }
+            : this(
+                shell, holes,
+                ExtractGeometryFactory(Caster.Upcast<IGeometry<TCoordinate>, ILineString<TCoordinate>>(holes)))
+        {
+        }
 
         /// <summary>
         /// Constructs a <see cref="Polygon{TCoordinate}" /> 
@@ -181,7 +186,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// polygon is to be created.
         /// </param>
         public Polygon(ILinearRing<TCoordinate> shell, IGeometryFactory<TCoordinate> factory)
-            : this(shell, null, factory) { }
+            : this(shell, null, factory)
+        {
+        }
 
         /// <summary>
         /// Constructs a <see cref="Polygon{TCoordinate}" /> with the given exterior boundary.
@@ -191,9 +198,56 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// or <see langword="null" /> or an empty <see cref="LinearRing{TCoordinate}" /> if the empty
         /// polygon is to be created.
         /// </param>
-        public Polygon(ILinearRing<TCoordinate> shell) : this(shell, null, shell.Factory) { }
+        public Polygon(ILinearRing<TCoordinate> shell)
+            : this(shell, null, shell.Factory)
+        {
+        }
+
+        /// <summary>
+        /// Returns the perimeter of this <see cref="Polygon{TCoordinate}" />.
+        /// </summary>
+        public override Double Length
+        {
+            get
+            {
+                Double len = 0.0;
+                len += _shell.Length;
+
+                if (_holes != null)
+                {
+                    for (Int32 i = 0; i < _holes.Count; i++)
+                    {
+                        len += _holes[i].Length;
+                    }
+                }
+
+                return len;
+            }
+        }
+
+        #region IHasGeometryComponents<TCoordinate> Members
+
+        public IEnumerable<IGeometry<TCoordinate>> Components
+        {
+            get
+            {
+                yield return _shell;
+
+                if (_holes != null)
+                {
+                    foreach (ILineString<TCoordinate> hole in _holes)
+                    {
+                        yield return hole;
+                    }
+                }
+            }
+        }
+
+        #endregion
 
         /* END ADDED BY MPAUL42: monoGIS team */
+
+        #region IPolygon<TCoordinate> Members
 
         public override ICoordinateSequence<TCoordinate> Coordinates
         {
@@ -262,7 +316,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public override Boolean IsEmpty
         {
-            get { return _shell.IsEmpty; }
+            get { return _shell == null || _shell.IsEmpty; }
         }
 
         public override Boolean IsSimple
@@ -325,28 +379,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        /// Returns the perimeter of this <see cref="Polygon{TCoordinate}" />.
-        /// </summary>
-        public override Double Length
-        {
-            get
-            {
-                Double len = 0.0;
-                len += _shell.Length;
-
-                if (_holes != null)
-                {
-                    for (Int32 i = 0; i < _holes.Count; i++)
-                    {
-                        len += _holes[i].Length;
-                    }
-                }
-
-                return len;
-            }
-        }
-
         public override IGeometry<TCoordinate> Boundary
         {
             get
@@ -363,8 +395,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
                 // Leave the explicit type parameter on Slice.Append,
                 // since compiling with ToolsVersion=2.0 fails otherwise.
-                IEnumerable<ILineString<TCoordinate>> lineStrings 
-                    = Slice.Append<ILineString<TCoordinate>>(InteriorRings, _shell);
+                IEnumerable<ILineString<TCoordinate>> lineStrings
+                    = Slice.Append(InteriorRings, _shell);
                 return Factory.CreateMultiLineString(lineStrings);
             }
         }
@@ -477,31 +509,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        protected override Extents<TCoordinate> ComputeExtentsInternal()
-        {
-            Debug.Assert(_shell.Extents is Extents<TCoordinate>);
-            return _shell.Extents as Extents<TCoordinate>;
-        }
-
-        protected internal override Int32 CompareToSameClass(IGeometry<TCoordinate> other)
-        {
-            IPolygon<TCoordinate> otherPolygon = other as IPolygon<TCoordinate>;
-            Debug.Assert(otherPolygon != null);
-            ILineString<TCoordinate> otherShell = otherPolygon.ExteriorRing;
-
-            if (_shell is LinearRing<TCoordinate>)
-            {
-                return (_shell as LinearRing<TCoordinate>).CompareToSameClass(otherShell);
-            }
-            else
-            {
-                throw new NotSupportedException(
-                    "The polygon exterior boundary is an ILinearRing type " +
-                    "other than LinearRing<TCoordinate>, and comparison is " +
-                    "not currently supported.");
-            }
-        }
-
         public override Boolean IsRectangle
         {
             get
@@ -585,8 +592,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /*END ADDED BY MPAUL42 */
 
-        #region IPolygon Members
-
         ILineString IPolygon.ExteriorRing
         {
             get { return _shell; }
@@ -608,11 +613,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        #endregion
-
-        #region ISurface Members
-
-
         IPoint ISurface.PointOnSurface
         {
             get { return PointOnSurface; }
@@ -620,25 +620,30 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         #endregion
 
-        #region IHasGeometryComponents<TCoordinate> Members
-
-        public IEnumerable<IGeometry<TCoordinate>> Components
+        protected override Extents<TCoordinate> ComputeExtentsInternal()
         {
-            get
-            {
-                yield return _shell;
-
-                if (_holes != null)
-                {
-                    foreach (ILineString<TCoordinate> hole in _holes)
-                    {
-                        yield return hole;
-                    }
-                }
-            }
+            Debug.Assert(_shell.Extents is Extents<TCoordinate>);
+            return _shell.Extents as Extents<TCoordinate>;
         }
 
-        #endregion
+        protected internal override Int32 CompareToSameClass(IGeometry<TCoordinate> other)
+        {
+            IPolygon<TCoordinate> otherPolygon = other as IPolygon<TCoordinate>;
+            Debug.Assert(otherPolygon != null);
+            ILineString<TCoordinate> otherShell = otherPolygon.ExteriorRing;
+
+            if (_shell is LinearRing<TCoordinate>)
+            {
+                return (_shell as LinearRing<TCoordinate>).CompareToSameClass(otherShell);
+            }
+            else
+            {
+                throw new NotSupportedException(
+                    "The polygon exterior boundary is an ILinearRing type " +
+                    "other than LinearRing<TCoordinate>, and comparison is " +
+                    "not currently supported.");
+            }
+        }
 
         protected override void OnCoordinatesChanged()
         {

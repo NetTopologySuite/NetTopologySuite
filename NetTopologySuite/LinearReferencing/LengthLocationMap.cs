@@ -16,6 +16,17 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
+        private readonly IGeometry<TCoordinate> _linearGeom;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LengthLocationMap{TCoordinate}"/> class.
+        /// </summary>
+        /// <param name="linearGeom">A linear geometry.</param>
+        public LengthLocationMap(IGeometry<TCoordinate> linearGeom)
+        {
+            _linearGeom = linearGeom;
+        }
+
         /// <summary>
         /// Computes the <see cref="LinearLocation{TCoordinate}" /> for a
         /// given length along a linear <see cref="Geometry{TCoordinate}" />.
@@ -40,17 +51,6 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         {
             LengthLocationMap<TCoordinate> locater = new LengthLocationMap<TCoordinate>(linearGeom);
             return locater.GetLength(loc);
-        }
-
-        private readonly IGeometry<TCoordinate> _linearGeom;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LengthLocationMap{TCoordinate}"/> class.
-        /// </summary>
-        /// <param name="linearGeom">A linear geometry.</param>
-        public LengthLocationMap(IGeometry<TCoordinate> linearGeom)
-        {
-            _linearGeom = linearGeom;
         }
 
         /// <summary>

@@ -26,10 +26,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// </para>
     /// </remarks>
     public class SimpleMonotoneChainSweepLineIntersector<TCoordinate>
-            : EdgeSetIntersector<TCoordinate>
+        : EdgeSetIntersector<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         // TODO: implement as tree list to allow neighbor-only evaluation
         //private readonly TreeList<SweepLineEvent> _events = new TreeList<SweepLineEvent>();
@@ -90,13 +90,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
                 // create a monotone chain from the edge, which we can use instead
                 // of segments to feed into the sweepline algorithm
                 MonotoneChain<TCoordinate> mc = new MonotoneChain<TCoordinate>(mce, i);
-                
+
                 SweepLineEvent insertEvent
                     = new SweepLineEvent(edgeSet, mce.GetMinX(i), null, mc);
 
                 _events.Add(insertEvent);
                 _events.Add(new SweepLineEvent(edgeSet, mce.GetMaxX(i), insertEvent, mc));
-                
+
                 /*
                  * 
                 // now we can add proceed with the sweepline using the chains in place
@@ -178,7 +178,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             }
         }
 
-        private void processOverlaps(Int32 start, Int32 end, 
+        private void processOverlaps(Int32 start, Int32 end,
                                      SweepLineEvent ev0,
                                      SegmentIntersector<TCoordinate> si)
         {

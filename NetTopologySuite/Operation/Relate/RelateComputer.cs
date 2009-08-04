@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 {
@@ -25,20 +25,24 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// implicitly).
     /// </remarks>
     public class RelateComputer<TCoordinate>
-         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                             IComparable<TCoordinate>, IConvertible,
-                             IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
-        private readonly LineIntersector<TCoordinate> _li;
-        private readonly PointLocator<TCoordinate> _ptLocator 
-            = new PointLocator<TCoordinate>();
         // the arg(s) of the operation
         private readonly GeometryGraph<TCoordinate> _g0;
         private readonly GeometryGraph<TCoordinate> _g1;
-        private readonly NodeMap<TCoordinate> _nodes
-            = new NodeMap<TCoordinate>(new RelateNodeFactory<TCoordinate>());
+
         private readonly List<Edge<TCoordinate>> _isolatedEdges
             = new List<Edge<TCoordinate>>();
+
+        private readonly LineIntersector<TCoordinate> _li;
+
+        private readonly NodeMap<TCoordinate> _nodes
+            = new NodeMap<TCoordinate>(new RelateNodeFactory<TCoordinate>());
+
+        private readonly PointLocator<TCoordinate> _ptLocator
+            = new PointLocator<TCoordinate>();
 
         public RelateComputer(GeometryGraph<TCoordinate> graph1, GeometryGraph<TCoordinate> graph2)
         {
@@ -54,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             * where the second arg has greater precision than the first.
             */
             _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(
-                                                _g0.Geometry.Factory);
+                _g0.Geometry.Factory);
         }
 
         public IntersectionMatrix ComputeIntersectionMatrix()
@@ -74,7 +78,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             _g1.ComputeSelfNodes(_li, false);
 
             // compute intersections between edges of the two input geometries
-            SegmentIntersector<TCoordinate> intersector 
+            SegmentIntersector<TCoordinate> intersector
                 = _g0.ComputeEdgeIntersections(_g1, _li, false);
 
             computeIntersectionNodes(0);
@@ -135,7 +139,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             }
         }
 
-        private void computeProperIntersectionIntersectionMatrix(SegmentIntersector<TCoordinate> intersector, IntersectionMatrix im)
+        private void computeProperIntersectionIntersectionMatrix(SegmentIntersector<TCoordinate> intersector,
+                                                                 IntersectionMatrix im)
         {
             // If a proper intersection is found, we can set a lower bound on the IM.
             Dimensions dimA = _g0.Geometry.Dimension;
@@ -279,8 +284,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
 
                 foreach (EdgeIntersection<TCoordinate> intersection in e.EdgeIntersections)
                 {
-                    RelateNode<TCoordinate> n = _nodes.Find(intersection.Coordinate) 
-                                                    as RelateNode<TCoordinate>;
+                    RelateNode<TCoordinate> n = _nodes.Find(intersection.Coordinate)
+                                                as RelateNode<TCoordinate>;
                     Debug.Assert(n != null);
                     Debug.Assert(n.Label != null);
                     if (n.Label.Value.IsNone(argIndex))

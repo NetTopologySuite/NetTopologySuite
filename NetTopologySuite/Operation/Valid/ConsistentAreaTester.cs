@@ -20,15 +20,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// </summary>
     public class ConsistentAreaTester<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly LineIntersector<TCoordinate> _li;
         private readonly GeometryGraph<TCoordinate> _geomGraph;
+        private readonly LineIntersector<TCoordinate> _li;
         private readonly RelateNodeGraph<TCoordinate> _nodeGraph = new RelateNodeGraph<TCoordinate>();
 
         // the intersection point found (if any)
         private TCoordinate _invalidPoint;
-         
+
         public ConsistentAreaTester(GeometryGraph<TCoordinate> geomGraph)
         {
             if (geomGraph == null) throw new ArgumentNullException("geomGraph");
@@ -77,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                 {
                     if (!node.Edges.IsAreaLabelsConsistent(_geomGraph.BoundaryNodeRule))
                     {
-                        _invalidPoint = (TCoordinate)node.Coordinate.Clone();
+                        _invalidPoint = node.Coordinate.Clone();
                         return false;
                     }
                 }

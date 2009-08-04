@@ -4,7 +4,6 @@ using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -17,15 +16,16 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class PointLocator<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         // true if the point lies in or on any Geometry element
-        private Boolean _isIn; 
-        // the number of sub-elements whose boundaries the point lies in
-        private Int32 _boundaryCount;
         private readonly IBoundaryNodeRule _boundaryRule;
+        private Int32 _boundaryCount;
+        private Boolean _isIn;
 
-        public PointLocator() : this(new Mod2BoundaryNodeRule()) { }
+        public PointLocator() : this(new Mod2BoundaryNodeRule())
+        {
+        }
 
         public PointLocator(IBoundaryNodeRule boundaryRule)
         {
@@ -65,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             {
                 return locate(p, geom as ILineString<TCoordinate>);
             }
-            
+
             if (geom is IPolygon<TCoordinate>)
             {
                 return locate(p, geom as IPolygon<TCoordinate>);
@@ -111,7 +111,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             else if (geom is IMultiPolygon<TCoordinate>)
             {
                 IMultiPolygon<TCoordinate> mpoly = geom as IMultiPolygon<TCoordinate>;
-                
+
                 foreach (IPolygon<TCoordinate> poly in mpoly)
                 {
                     updateLocationInfo(locate(p, poly));
@@ -121,9 +121,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             {
                 IGeometryCollection<TCoordinate> collection = geom as IGeometryCollection<TCoordinate>;
 
-                IEnumerator<IGeometry<TCoordinate>> geomi 
+                IEnumerator<IGeometry<TCoordinate>> geomi
                     = new GeometryCollectionEnumerator<TCoordinate>(collection);
-               
+
                 while (geomi.MoveNext())
                 {
                     IGeometry<TCoordinate> computeGeometry = geomi.Current;
@@ -212,7 +212,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             ILinearRing<TCoordinate> shell = poly.ExteriorRing as ILinearRing<TCoordinate>;
             Debug.Assert(shell != null);
             Locations shellLoc = locateInPolygonRing(p, shell);
-           
+
             if (shellLoc == Locations.Exterior)
             {
                 return Locations.Exterior;

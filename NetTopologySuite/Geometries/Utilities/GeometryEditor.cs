@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
+
 #if DOTNET35
 using System.Linq;
 #endif
@@ -60,27 +61,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
     /// </remarks>
     public class GeometryEditor<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         #region Nested Types
-        /// <summary> 
-        /// A interface which specifies an edit operation for Geometries.
-        /// </summary>
-        public interface IGeometryEditorOperation
-        {
-            /// <summary>
-            /// Edits a Geometry by returning a new Geometry with a modification.
-            /// The returned Geometry might be the same as the Geometry passed in.
-            /// </summary>
-            /// <param name="geometry">The Geometry to modify.</param>
-            /// <param name="factory">
-            /// The factory with which to construct the modified Geometry
-            /// (may be different to the factory of the input point).
-            /// </param>
-            /// <returns>A new Geometry which is a modification of the input Geometry.</returns>
-            IGeometry<TCoordinate> Edit(IGeometry<TCoordinate> geometry, IGeometryFactory<TCoordinate> factory);
-        }
+
+        #region Nested type: CoordinateOperation
 
         /// <summary>
         /// A GeometryEditorOperation which modifies the coordinate list of a <see cref="Geometry{TCoordinate}"/>.
@@ -88,6 +74,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// </summary>      
         public abstract class CoordinateOperation : IGeometryEditorOperation
         {
+            #region IGeometryEditorOperation Members
+
             public IGeometry<TCoordinate> Edit(IGeometry<TCoordinate> geometry, IGeometryFactory<TCoordinate> factory)
             {
                 if (geometry is ILinearRing)
@@ -109,14 +97,42 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                 return geometry;
             }
 
+            #endregion
+
             /// <summary> 
             /// Edits the array of <c>Coordinate</c>s from a <see cref="Geometry{TCoordinate}"/>.
             /// </summary>
             /// <param name="coordinates">The coordinate array to operate on.</param>
             /// <param name="geometry">The point containing the coordinate list.</param>
             /// <returns>An edited coordinate array (which may be the same as the input).</returns>
-            public abstract IEnumerable<TCoordinate> Edit(IEnumerable<TCoordinate> coordinates, IGeometry<TCoordinate> geometry);
+            public abstract IEnumerable<TCoordinate> Edit(IEnumerable<TCoordinate> coordinates,
+                                                          IGeometry<TCoordinate> geometry);
         }
+
+        #endregion
+
+        #region Nested type: IGeometryEditorOperation
+
+        /// <summary> 
+        /// A interface which specifies an edit operation for Geometries.
+        /// </summary>
+        public interface IGeometryEditorOperation
+        {
+            /// <summary>
+            /// Edits a Geometry by returning a new Geometry with a modification.
+            /// The returned Geometry might be the same as the Geometry passed in.
+            /// </summary>
+            /// <param name="geometry">The Geometry to modify.</param>
+            /// <param name="factory">
+            /// The factory with which to construct the modified Geometry
+            /// (may be different to the factory of the input point).
+            /// </param>
+            /// <returns>A new Geometry which is a modification of the input Geometry.</returns>
+            IGeometry<TCoordinate> Edit(IGeometry<TCoordinate> geometry, IGeometryFactory<TCoordinate> factory);
+        }
+
+        #endregion
+
         #endregion
 
         /// <summary> 
@@ -128,7 +144,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// Creates a new GeometryEditor object which will create
         /// an edited <see cref="Geometry{TCoordinate}"/> with the same {GeometryFactory} as the input Geometry.
         /// </summary>
-        public GeometryEditor() { }
+        public GeometryEditor()
+        {
+        }
 
         /// <summary> 
         /// Creates a new GeometryEditor object which will create
@@ -161,12 +179,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 
             if (geometry is IGeometryCollection<TCoordinate>)
             {
-                return editGeometryCollection((IGeometryCollection<TCoordinate>)geometry, operation);
+                return editGeometryCollection((IGeometryCollection<TCoordinate>) geometry, operation);
             }
 
             if (geometry is IPolygon<TCoordinate>)
             {
-                return editPolygon((IPolygon<TCoordinate>)geometry, operation);
+                return editPolygon((IPolygon<TCoordinate>) geometry, operation);
             }
 
             if (geometry is IPoint<TCoordinate>)
@@ -185,9 +203,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         }
 
         #region Private helper methods
+
         private IPolygon<TCoordinate> editPolygon(IPolygon<TCoordinate> polygon, IGeometryEditorOperation operation)
         {
-            IPolygon<TCoordinate> newPolygon = (IPolygon<TCoordinate>)operation.Edit(polygon, _factory);
+            IPolygon<TCoordinate> newPolygon = (IPolygon<TCoordinate>) operation.Edit(polygon, _factory);
 
             if (newPolygon.IsEmpty)
             {
@@ -195,7 +214,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                 return newPolygon;
             }
 
-            ILinearRing<TCoordinate> shell = (ILinearRing<TCoordinate>)Edit(newPolygon.ExteriorRing, operation);
+            ILinearRing<TCoordinate> shell = (ILinearRing<TCoordinate>) Edit(newPolygon.ExteriorRing, operation);
 
             if (shell.IsEmpty)
             {
@@ -208,7 +227,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 
             foreach (ILineString<TCoordinate> ring in newPolygon.InteriorRings)
             {
-                ILinearRing<TCoordinate> hole = (ILinearRing<TCoordinate>)Edit(ring, operation);
+                ILinearRing<TCoordinate> hole = (ILinearRing<TCoordinate>) Edit(ring, operation);
 
                 if (hole.IsEmpty)
                 {
@@ -222,12 +241,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         }
 
         private IGeometryCollection<TCoordinate> editGeometryCollection(IGeometryCollection<TCoordinate> collection,
-                                                           IGeometryEditorOperation operation)
+                                                                        IGeometryEditorOperation operation)
         {
-            IGeometryCollection<TCoordinate> newCollection = (IGeometryCollection<TCoordinate>)operation.Edit(collection, _factory);
+            IGeometryCollection<TCoordinate> newCollection =
+                (IGeometryCollection<TCoordinate>) operation.Edit(collection, _factory);
             List<IGeometry<TCoordinate>> editedGeometries = new List<IGeometry<TCoordinate>>();
 
-			foreach (IGeometry<TCoordinate> geometry in newCollection)
+            foreach (IGeometry<TCoordinate> geometry in newCollection)
             {
                 IGeometry<TCoordinate> newGeometry = Edit(geometry, operation);
 
@@ -265,6 +285,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 
             return _factory.CreateGeometryCollection(editedGeometries);
         }
+
         #endregion
     }
 }

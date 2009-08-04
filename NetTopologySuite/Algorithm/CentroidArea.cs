@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
-using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
@@ -22,18 +21,28 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// for further details of the basic approach.
     /// </remarks>
     public class CentroidArea<TCoordinate>
-         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                             IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly ICoordinateFactory<TCoordinate> _factory;
-        private TCoordinate _basePoint = default(TCoordinate); // the point all triangles are based at
-        private TCoordinate _triangleCent3 = default(TCoordinate); // temporary variable to hold centroid of triangle
-        private Double _areasum2 = 0; // Partial area sum
-        private TCoordinate _cg3 = default(TCoordinate); // partial centroid sum
+        private Double _areasum2; // Partial area sum
+        private TCoordinate _basePoint; // the point all triangles are based at
+        private TCoordinate _cg3; // partial centroid sum
+        private TCoordinate _triangleCent3; // temporary variable to hold centroid of triangle
 
         public CentroidArea(ICoordinateFactory<TCoordinate> factory)
         {
             _factory = factory;
+        }
+
+        public TCoordinate Centroid
+        {
+            get
+            {
+                Double x = _cg3[Ordinates.X]/3/_areasum2;
+                Double y = _cg3[Ordinates.Y]/3/_areasum2;
+                return _factory.Create(x, y);
+            }
         }
 
         /// <summary> 
@@ -70,16 +79,6 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             setBasePoint(Slice.GetFirst(ring));
             addShell(ring);
-        }
-
-        public TCoordinate Centroid
-        {
-            get
-            {
-                Double x = _cg3[Ordinates.X] / 3 / _areasum2;
-                Double y = _cg3[Ordinates.Y] / 3 / _areasum2;
-                return _factory.Create(x, y);
-            }
         }
 
         private void setBasePoint(TCoordinate basePoint)
@@ -146,10 +145,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 y = _cg3[Ordinates.Y];
             }
 
-            x += sign * a2 * _triangleCent3[Ordinates.X];
-            y += sign * a2 * _triangleCent3[Ordinates.Y];
+            x += sign*a2*_triangleCent3[Ordinates.X];
+            y += sign*a2*_triangleCent3[Ordinates.Y];
             _cg3 = _factory.Create(x, y);
-            _areasum2 += sign * a2;
+            _areasum2 += sign*a2;
         }
 
         /// <summary> 
@@ -170,8 +169,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         private static Double area2(TCoordinate p1, TCoordinate p2, TCoordinate p3)
         {
-            return (p2[Ordinates.X] - p1[Ordinates.X]) * (p3[Ordinates.Y] - p1[Ordinates.Y])
-                - (p3[Ordinates.X] - p1[Ordinates.X]) * (p2[Ordinates.Y] - p1[Ordinates.Y]);
+            return (p2[Ordinates.X] - p1[Ordinates.X])*(p3[Ordinates.Y] - p1[Ordinates.Y])
+                   - (p3[Ordinates.X] - p1[Ordinates.X])*(p2[Ordinates.Y] - p1[Ordinates.Y]);
         }
     }
 }

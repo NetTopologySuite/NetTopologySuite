@@ -245,7 +245,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Index\BintreeTemp\Bintree.cs" />
-    <Compile Include="Index\BintreeTemp\Interval.cs" />
     <Compile Include="Index\BintreeTemp\Key.cs" />
     <Compile Include="Index\BintreeTemp\Node.cs" />
     <Compile Include="Index\BintreeTemp\NodeBase.cs" />
@@ -258,10 +257,10 @@
     <Compile Include="Index\Chain\MonotoneChain.cs" />
     <Compile Include="Index\Chain\MonotoneChainBuilder.cs" />
     <Compile Include="Index\Chain\MonotoneChainOverlapAction.cs" />
-    <Compile Include="Index\IntervalRTree\IntervalRTreeBranchNode.cs" />
-    <Compile Include="Index\IntervalRTree\IntervalRTreeLeafNode.cs" />
-    <Compile Include="Index\IntervalRTree\IntervalRTreeNode.cs" />
-    <Compile Include="Index\IntervalRTree\SortedPackedIntervalRTree.cs" />
+    <Compile Include="Index\RTree\RTreeBranchNode.cs" />
+    <Compile Include="Index\RTree\RTreeLeafNode.cs" />
+    <Compile Include="Index\RTree\RTreeNode.cs" />
+    <Compile Include="Index\RTree\SortedPackedRTree.cs" />
     <Compile Include="Index\Quadtree\QuadTreeNodeKey.cs" />
     <Compile Include="Index\Strtree\DynamicSTRtree.cs" />
     <Compile Include="Index\Sweepline\ISweepLineOverlapAction.cs" />

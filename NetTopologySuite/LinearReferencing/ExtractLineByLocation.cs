@@ -1,9 +1,9 @@
 using System;
 using GeoAPI.Coordinates;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
 
 namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 {
@@ -15,6 +15,16 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
+        private readonly IGeometry<TCoordinate> _line;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExtractLineByLocation{TCoordinate}"/> class.
+        /// </summary>
+        public ExtractLineByLocation(IGeometry<TCoordinate> line)
+        {
+            _line = line;
+        }
+
         /// <summary>
         /// Computes the subline of a <see cref="ILineString{TCoordinate}" /> between
         /// two LineStringLocations on the line.
@@ -25,20 +35,11 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="start">The start location.</param>
         /// <param name="end">The end location.</param>
         /// <returns>The extracted subline.</returns>
-        public static IGeometry<TCoordinate> Extract(IGeometry<TCoordinate> line, LinearLocation<TCoordinate> start, LinearLocation<TCoordinate> end)
+        public static IGeometry<TCoordinate> Extract(IGeometry<TCoordinate> line, LinearLocation<TCoordinate> start,
+                                                     LinearLocation<TCoordinate> end)
         {
             ExtractLineByLocation<TCoordinate> ls = new ExtractLineByLocation<TCoordinate>(line);
             return ls.Extract(start, end);
-        }
-
-        private readonly IGeometry<TCoordinate> _line = null;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExtractLineByLocation{TCoordinate}"/> class.
-        /// </summary>
-        public ExtractLineByLocation(IGeometry<TCoordinate> line)
-        {
-            _line = line;
         }
 
         /// <summary>
@@ -101,7 +102,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
                 TCoordinate pt = element.SegmentStart;
                 builder.Add(pt);
-                
+
                 if (element.IsEndOfLine)
                 {
                     builder.EndLine();

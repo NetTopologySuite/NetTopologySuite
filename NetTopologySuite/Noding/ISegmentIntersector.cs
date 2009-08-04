@@ -14,19 +14,20 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public interface ISegmentIntersector<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        /// <summary>
-        /// This method is called by clients
-        /// of the <see cref="ISegmentIntersector{TCoordinate}" /> interface to process
-        /// intersections for two segments of the <see cref="NodedSegmentString{TCoordinate}" />s being intersected.
-        /// </summary>
-        void ProcessIntersections(NodedSegmentString<TCoordinate> e0, Int32 segIndex0, NodedSegmentString<TCoordinate> e1, Int32 segIndex1);
-
         /// <summary>
         ///Reports whether the client of this class
         ///needs to continue testing all intersections in an arrangement.
         ///</summary>
         Boolean IsDone { get; }
+
+        /// <summary>
+        /// This method is called by clients
+        /// of the <see cref="ISegmentIntersector{TCoordinate}" /> interface to process
+        /// intersections for two segments of the <see cref="NodedSegmentString{TCoordinate}" />s being intersected.
+        /// </summary>
+        void ProcessIntersections(NodedSegmentString<TCoordinate> e0, Int32 segIndex0,
+                                  NodedSegmentString<TCoordinate> e1, Int32 segIndex1);
     }
 }

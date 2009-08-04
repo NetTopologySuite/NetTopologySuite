@@ -1,13 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
-using System.Collections.Generic;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -41,10 +40,34 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </para>
     /// </remarks>
     public class PlanarGraph<TCoordinate>
-         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
-                             IComparable<TCoordinate>, IConvertible,
-                             IComputable<Double, TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
+        private readonly IList<EdgeEnd<TCoordinate>> _edgeEndList;
+        private readonly IList<Edge<TCoordinate>> _edgeList;
+        private readonly NodeMap<TCoordinate> _nodes;
+
+        public PlanarGraph(NodeFactory<TCoordinate> nodeFactory)
+        {
+            _nodes = new NodeMap<TCoordinate>(nodeFactory);
+            _edgeList = CreateEdgeList();
+            _edgeEndList = CreateEdgeEndList();
+        }
+
+        public PlanarGraph()
+            : this(new NodeFactory<TCoordinate>())
+        {
+        }
+
+        /// <summary>
+        /// Gets the internal <see cref="GeometriesGraph.NodeMap{TCoordinate}"/>.
+        /// </summary>
+        protected NodeMap<TCoordinate> NodeMap
+        {
+            get { return _nodes; }
+        }
+
         /// <summary> 
         /// For nodes in the enumeration, link the <see cref="DirectedEdge{TCoordinate}"/>s 
         /// at the node that are in the result.
@@ -55,23 +78,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             foreach (Node<TCoordinate> node in nodes)
             {
-                ((DirectedEdgeStar<TCoordinate>)node.Edges).LinkResultDirectedEdges();
+                ((DirectedEdgeStar<TCoordinate>) node.Edges).LinkResultDirectedEdges();
             }
         }
-
-        private readonly IList<Edge<TCoordinate>> _edgeList;
-        private readonly NodeMap<TCoordinate> _nodes;
-        private readonly IList<EdgeEnd<TCoordinate>> _edgeEndList;
-
-        public PlanarGraph(NodeFactory<TCoordinate> nodeFactory)
-        {
-            _nodes = new NodeMap<TCoordinate>(nodeFactory);
-            _edgeList = CreateEdgeList();
-            _edgeEndList = CreateEdgeEndList();
-        }
-
-        public PlanarGraph()
-            : this(new NodeFactory<TCoordinate>()) { }
 
         protected virtual IList<Edge<TCoordinate>> CreateEdgeList()
         {
@@ -85,9 +94,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public override String ToString()
         {
-            return String.Format("{0}; Edges: {1}; Edge Ends {2};", NodeMap, 
-                                                                    _edgeList.Count, 
-                                                                    _edgeEndList.Count);
+            return String.Format("{0}; Edges: {1}; Edge Ends {2};", NodeMap,
+                                 _edgeList.Count,
+                                 _edgeEndList.Count);
         }
 
         public void Add(EdgeEnd<TCoordinate> e)
@@ -283,7 +292,34 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
+        /// <summary>
+        /// Adds an <see cref="Edge{TCoordinate}"/> to the graph.
+        /// </summary>
+        /// <param name="e">The <see cref="Edge{TCoordinate}"/> to add.</param>
+        protected void InsertEdge(Edge<TCoordinate> e)
+        {
+            _edgeList.Add(e);
+        }
+
+        /// <summary>
+        /// The coordinate pairs match if they define line segments lying in the same direction.
+        /// E.g. the segments are parallel and in the same quadrant
+        /// (as opposed to parallel and opposite!).
+        /// </summary>
+        private static Boolean matchInSameDirection(TCoordinate p0, TCoordinate p1,
+                                                    TCoordinate ep0, TCoordinate ep1)
+        {
+            if (!p0.Equals(ep0))
+            {
+                return false;
+            }
+
+            return CGAlgorithms<TCoordinate>.ComputeOrientation(p0, p1, ep1) == Orientation.Collinear &&
+                   QuadrantOp<TCoordinate>.Quadrant(p0, p1) == QuadrantOp<TCoordinate>.Quadrant(ep0, ep1);
+        }
+
         #region Public Properties
+
         /// <summary>
         /// Gets the set of <see cref="Edge{TCoordinate}"/>s in this graph.
         /// </summary>
@@ -325,40 +361,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 }
             }
         }
+
         #endregion
-
-        /// <summary>
-        /// Adds an <see cref="Edge{TCoordinate}"/> to the graph.
-        /// </summary>
-        /// <param name="e">The <see cref="Edge{TCoordinate}"/> to add.</param>
-        protected void InsertEdge(Edge<TCoordinate> e)
-        {
-            _edgeList.Add(e);
-        }
-
-        /// <summary>
-        /// Gets the internal <see cref="GeometriesGraph.NodeMap{TCoordinate}"/>.
-        /// </summary>
-        protected NodeMap<TCoordinate> NodeMap
-        {
-            get { return _nodes; }
-        }
-
-        /// <summary>
-        /// The coordinate pairs match if they define line segments lying in the same direction.
-        /// E.g. the segments are parallel and in the same quadrant
-        /// (as opposed to parallel and opposite!).
-        /// </summary>
-        private static Boolean matchInSameDirection(TCoordinate p0, TCoordinate p1, 
-                                                    TCoordinate ep0, TCoordinate ep1)
-        {
-            if (!p0.Equals(ep0))
-            {
-                return false;
-            }
-
-            return CGAlgorithms<TCoordinate>.ComputeOrientation(p0, p1, ep1) == Orientation.Collinear &&
-                   QuadrantOp<TCoordinate>.Quadrant(p0, p1) == QuadrantOp<TCoordinate>.Quadrant(ep0, ep1);
-        }
     }
 }

@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
     /// <typeparam name="TCoordinate"></typeparam>
     public interface IPointOnGeometryLocator<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary>
         /// Determines the <see cref="Locations"/>  of a point in the <see cref="IGeometry{TCoordinate}"/>.

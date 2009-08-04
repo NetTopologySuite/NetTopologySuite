@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
+using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Operation.Overlay;
 using NPack.Interfaces;
-using GeoAPI.Diagnostics;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 {
@@ -25,21 +25,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// </summary>
     public class ConnectedInteriorTester<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
-        public static TCoordinate FindDifferentPoint(IEnumerable<TCoordinate> coord, TCoordinate pt)
-        {
-            foreach (TCoordinate c in coord)
-            {
-                if (!c.Equals(pt))
-                {
-                    return c;
-                }
-            }
-
-            return default(TCoordinate);
-        }
-
         private readonly IGeometryFactory<TCoordinate> _geometryFactory;
         private readonly GeometryGraph<TCoordinate> _geometryGraph;
 
@@ -47,7 +34,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         // the coordinate will be somewhere on the ring surrounding the disconnected interior
         private TCoordinate _disconnectedRingCoord;
 
-        public ConnectedInteriorTester(GeometryGraph<TCoordinate> geometryGraph, IGeometryFactory<TCoordinate> geoFactory)
+        public ConnectedInteriorTester(GeometryGraph<TCoordinate> geometryGraph,
+                                       IGeometryFactory<TCoordinate> geoFactory)
         {
             _geometryFactory = geoFactory;
             _geometryGraph = geometryGraph;
@@ -87,6 +75,19 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                  */
                 return !hasUnvisitedShellEdge(edgeRings);
             }
+        }
+
+        public static TCoordinate FindDifferentPoint(IEnumerable<TCoordinate> coord, TCoordinate pt)
+        {
+            foreach (TCoordinate c in coord)
+            {
+                if (!c.Equals(pt))
+                {
+                    return c;
+                }
+            }
+
+            return default(TCoordinate);
         }
 
         protected static void VisitLinkedDirectedEdges(DirectedEdge<TCoordinate> start)

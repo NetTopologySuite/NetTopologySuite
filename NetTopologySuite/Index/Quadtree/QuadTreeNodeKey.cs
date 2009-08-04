@@ -1,18 +1,20 @@
 ﻿using System;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
-using GeoAPI.DataStructures;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 {
     public class QuadTreeNodeKey<TCoordinate> : AbstractNodeKey<IExtents<TCoordinate>, TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible, 
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
-        public QuadTreeNodeKey(IExtents<TCoordinate> bounds) 
-            : base(bounds) { }
+        public QuadTreeNodeKey(IExtents<TCoordinate> bounds)
+            : base(bounds)
+        {
+        }
 
         protected override TCoordinate GetBoundsMax()
         {
@@ -36,14 +38,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         protected override IExtents<TCoordinate> CreateBounds(TCoordinate min, Double nodeSize)
         {
             return Bounds.Factory.CreateExtents(
-                min, ((IAddable<Double, TCoordinate>)min).Add(nodeSize));
+                min, ((IAddable<Double, TCoordinate>) min).Add(nodeSize));
         }
 
         protected override TCoordinate CreateLocation(IExtents<TCoordinate> bounds, Double nodeSize)
         {
             TCoordinate min = bounds.Min;
-            Double x = Math.Floor(min[Ordinates.X] / nodeSize) * nodeSize;
-            Double y = Math.Floor(min[Ordinates.Y] / nodeSize) * nodeSize;
+            Double x = Math.Floor(min[Ordinates.X]/nodeSize)*nodeSize;
+            Double y = Math.Floor(min[Ordinates.Y]/nodeSize)*nodeSize;
             return Bounds.Factory.CoordinateFactory.Create(x, y);
         }
     }

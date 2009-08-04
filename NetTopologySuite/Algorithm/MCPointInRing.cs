@@ -7,7 +7,7 @@ using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Index.BintreeTemp;
 using GisSharpBlog.NetTopologySuite.Index.Chain;
 using NPack.Interfaces;
-using Interval = GisSharpBlog.NetTopologySuite.Index.BintreeTemp.Interval;
+
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     /// <summary>
@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class MCPointInRing<TCoordinate> : IPointInRing<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<Double, TCoordinate>, IConvertible
+            IComputable<Double, TCoordinate>, IConvertible
     {
         //private class MCSelector : MonotoneChainSelectAction<TCoordinate>
         //{
@@ -36,13 +36,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         //    }
         //}
 
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private readonly ILinearRing<TCoordinate> _ring;
         //private readonly BinTree<MonotoneChain<TCoordinate>> _tree = new BinTree<MonotoneChain<TCoordinate>>();
         private readonly Bintree<MonotoneChain<TCoordinate>> _tree = new Bintree<MonotoneChain<TCoordinate>>();
-        private Int32 _crossings = 0; // number of segment/ray crossings
+        private Int32 _crossings; // number of segment/ray crossings
 
         private Interval _interval;
-        private readonly IGeometryFactory<TCoordinate> _geoFactory;
 
         public MCPointInRing(ILinearRing<TCoordinate> ring)
         {
@@ -63,6 +63,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             buildIndex();
         }
 
+        #region IPointInRing<TCoordinate> Members
+
         public Boolean IsInside(TCoordinate pt)
         {
             _crossings = 0;
@@ -76,7 +78,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             _interval = new Interval(y, y);
 
             //IEnumerable<MonotoneChain<TCoordinate>> chains = _tree.Query(_interval);
-            IEnumerable<MonotoneChain<TCoordinate>> chains = Caster.Cast<MonotoneChain<TCoordinate>>(_tree.Query(_interval));
+            IEnumerable<MonotoneChain<TCoordinate>> chains =
+                Caster.Cast<MonotoneChain<TCoordinate>>(_tree.Query(_interval));
 
             foreach (MonotoneChain<TCoordinate> chain in chains)
             {
@@ -86,13 +89,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             /*
             *  p is inside if number of crossings is odd.
             */
-            if ((_crossings % 2) == 1)
+            if ((_crossings%2) == 1)
             {
                 return true;
             }
 
             return false;
         }
+
+        #endregion
 
         private void buildIndex()
         {
@@ -111,7 +116,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
         }
 
-        private void testMonotoneChain(IExtents<TCoordinate> rayExtents, TCoordinate point, MonotoneChain<TCoordinate> chain)
+        private void testMonotoneChain(IExtents<TCoordinate> rayExtents, TCoordinate point,
+                                       MonotoneChain<TCoordinate> chain)
         {
             foreach (LineSegment<TCoordinate> segment in chain.Select(rayExtents))
             {
@@ -144,7 +150,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 /*
                 *  segment straddles x axis, so compute intersection.
                 */
-                xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2) / (y2 - y1);
+                xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2)/(y2 - y1);
 
                 /*
                 *  crosses ray if strictly positive intersection.

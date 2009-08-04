@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm.Locate;
@@ -12,11 +11,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
     ///</summary>
     public abstract class PreparedPolygonPredicate<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
-        protected PreparedPolygon<TCoordinate> _prepPoly;
         private readonly IPointOnGeometryLocator<TCoordinate> _targetPointLocator;
+        protected PreparedPolygon<TCoordinate> _prepPoly;
 
         ///<summary>
         /// Creates an instance of this operation.
@@ -36,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         /// <returns>true if all componenta of the argument are contained in the target geometry</returns>
         protected Boolean IsAllTestComponentsInTarget(IGeometry<TCoordinate> testGeom)
         {
-            foreach (var p in testGeom.Coordinates)
+            foreach (TCoordinate p in testGeom.Coordinates)
             {
                 Locations loc = _targetPointLocator.Locate(p);
                 if (loc == Locations.Exterior)
@@ -53,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         /// <returns>true if all componenta of the argument are contained in the target geometry interior</returns>
         protected Boolean IsAllTestComponentsInTargetInterior(IGeometry<TCoordinate> testGeom)
         {
-            foreach (var p in testGeom.Coordinates)
+            foreach (TCoordinate p in testGeom.Coordinates)
             {
                 Locations loc = _targetPointLocator.Locate(p);
                 if (loc == Locations.Interior)
@@ -70,7 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         /// <returns>true if any component of the argument intersects the prepared area geometry the area of the target geometry.</returns>
         protected Boolean IsAnyTestComponentInTarget(IGeometry<TCoordinate> testGeom)
         {
-            foreach (var p in testGeom.Coordinates)
+            foreach (TCoordinate p in testGeom.Coordinates)
             {
                 Locations loc = _targetPointLocator.Locate(p);
                 if (loc != Locations.Exterior)
@@ -87,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         /// <returns>true if any component of the argument intersects the prepared area geometry interior</returns>
         protected Boolean IsAnyTestComponentInTargetInterior(IGeometry<TCoordinate> testGeom)
         {
-            foreach (var p in testGeom.Coordinates)
+            foreach (TCoordinate p in testGeom.Coordinates)
             {
                 Locations loc = _targetPointLocator.Locate(p);
                 if (loc != Locations.Interior)
@@ -102,10 +101,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         /// <param name="testGeom">the test geometry</param>
         /// <param name="targetRepPts">the representative points of the target geometry</param>
         /// <returns>true if any component intersects the areal test geometry</returns>
-        protected Boolean IsAnyTargetComponentInAreaTest(IGeometry<TCoordinate> testGeom, IEnumerable<TCoordinate> targetRepPts)
+        protected Boolean IsAnyTargetComponentInAreaTest(IGeometry<TCoordinate> testGeom,
+                                                         IEnumerable<TCoordinate> targetRepPts)
         {
             IPointOnGeometryLocator<TCoordinate> piaLoc = new SimplePointInAreaLocator<TCoordinate>(testGeom);
-            foreach(var p in targetRepPts)
+            foreach (TCoordinate p in targetRepPts)
             {
                 Locations loc = piaLoc.Locate(p);
                 if (loc != Locations.Exterior)
@@ -113,6 +113,5 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
             }
             return false;
         }
-
     }
 }

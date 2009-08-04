@@ -7,8 +7,8 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     public static class Coordinates<TCoordinate>
-            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                                IComputable<Double, TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<Double, TCoordinate>, IConvertible
     {
         public static Boolean IsEmpty(TCoordinate coordinate)
         {
@@ -18,8 +18,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         internal static IEnumerable<ILinearRing<TCoordinate>> CreateLinearRings(
-                                                            ICoordinateSequence<TCoordinate> sequence, 
-                                                            IGeometryFactory<TCoordinate> factory)
+            ICoordinateSequence<TCoordinate> sequence,
+            IGeometryFactory<TCoordinate> factory)
         {
             if (sequence == null)
                 yield break;
@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 }
                 else if (firstCoord.Equals(sequence[i])) // we have a ring
                 {
-                    ICoordinateSequence<TCoordinate> ring 
+                    ICoordinateSequence<TCoordinate> ring
                         = sequence.Slice(firstCoordIndex, i);
 
                     yield return factory.CreateLinearRing(ring);

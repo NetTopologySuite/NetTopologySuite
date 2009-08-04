@@ -21,18 +21,6 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
-        public static Pair<LinearLocation<TCoordinate>> IndicesOf(IGeometry<TCoordinate> linearGeom,
-                                                                  IGeometry<TCoordinate> subLine)
-        {
-            /*
-             * MD - this algorithm has been extracted into a class
-             * because it is intended to validate that the subline truly is a subline,
-             * and also to use the internal vertex information to unambiguously locate the subline.
-             */
-            LocationIndexOfLine<TCoordinate> locater = new LocationIndexOfLine<TCoordinate>(linearGeom);
-            return locater.IndexesOf(subLine);
-        }
-
         private readonly IGeometry<TCoordinate> _linearGeom;
 
         /// <summary>
@@ -57,6 +45,18 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             }
 
             _linearGeom = linearGeom;
+        }
+
+        public static Pair<LinearLocation<TCoordinate>> IndicesOf(IGeometry<TCoordinate> linearGeom,
+                                                                  IGeometry<TCoordinate> subLine)
+        {
+            /*
+             * MD - this algorithm has been extracted into a class
+             * because it is intended to validate that the subline truly is a subline,
+             * and also to use the internal vertex information to unambiguously locate the subline.
+             */
+            LocationIndexOfLine<TCoordinate> locater = new LocationIndexOfLine<TCoordinate>(linearGeom);
+            return locater.IndexesOf(subLine);
         }
 
         public virtual Pair<LinearLocation<TCoordinate>> IndexesOf(IGeometry<TCoordinate> subLine)

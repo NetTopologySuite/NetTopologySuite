@@ -7,8 +7,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     public class PointM<TCoordinate> : Point<TCoordinate>, IPoint2DM, IPoint3DM
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-                            IComparable<TCoordinate>, IConvertible,
-                            IComputable<Double, TCoordinate>
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         private readonly Double _measure = Double.NaN;
 
