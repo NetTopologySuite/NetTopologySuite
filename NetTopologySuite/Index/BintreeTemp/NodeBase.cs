@@ -23,13 +23,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
         /// <summary>
         /// 
         /// </summary>
-        public NodeBase()
-        {
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         public IEnumerable<T> Items
         {
             get

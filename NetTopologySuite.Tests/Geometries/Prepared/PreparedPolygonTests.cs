@@ -1,3 +1,4 @@
+
 using System;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
@@ -42,7 +43,7 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
                 }
                 approxPi = 4.0*inCount/count;
 
-                Debug.WriteLine(string.Format("Duration PreparedGeometry: {0} ({1}, {2})",
+                Console.WriteLine(string.Format("Duration PreparedGeometry: {0} ({1}, {2})",
                                               DateTime.Now.Subtract(start), inCount, approxPi));
             }
 
@@ -63,15 +64,24 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
                     Assert.False(prepCircle.Intersects(randPt));
                 }
             }
-            approxPi = 4.0*inCount/count;
-            double approxDiff = 1.0 - approxPi/Math.PI;
 
-            Debug.WriteLine(string.Format("Duration just Geometry: {0} ({1}, {2})",
+            Console.WriteLine("Geometry.Intersects and PreparedGeometry.Intersects produce same result");
+
+            count = 0;
+            inCount = 0;
+            start = DateTime.Now;
+            for (int i = 0; i < MaxIter; i++)
+            {
+                count++;
+                IPoint<BufferedCoordinate> randPt = CreateRandomPoint();
+                if (circle.Intersects(randPt))
+                    inCount++;
+            }
+            approxPi = 4.0*inCount/count;
+
+            Console.WriteLine(string.Format("Duration just Geometry: {0} ({1}, {2})",
                                           DateTime.Now.Subtract(start), inCount, approxPi));
 
-            //System.out.println("Approximation to PI: " + approxPi
-            //    + "  (difference from actual = " + approxDiff
-            //    ); 
         }
 
         private static IGeometry<BufferedCoordinate> createCircle(int pts)

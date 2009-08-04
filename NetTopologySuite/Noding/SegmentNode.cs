@@ -34,7 +34,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             _segmentIndex = segmentIndex;
             _segmentOctant = segmentOctant;
             _isInterior = !coord.Equals(segString.Coordinates[segmentIndex]);
-                //jd: was !coord.Equals(segString[segmentIndex])
+            //jd: was !coord.Equals(segString[segmentIndex])
         }
 
         public Int32 SegmentIndex

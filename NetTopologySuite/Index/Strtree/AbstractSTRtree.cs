@@ -236,6 +236,12 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
         #endregion
 
+        public virtual void Insert(ItemBoundable<TBounds, TItem> itemBoundable)
+        {
+            checkState();
+            Insert(itemBoundable.Bounds, itemBoundable.Item);
+        }
+
         private void Insert(TBounds bounds, TItem item)
         {
             _bulkLoadStorage.Add(item);
@@ -581,6 +587,46 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
                 throw new InvalidOperationException("Cannot insert items into an STR packed " +
                                                     "R-tree after it has been built.");
             }
+        }
+
+        /// <summary>
+        /// Gets a tree structure (as a nested list) 
+        /// corresponding to the structure of the items and nodes in this tree.
+        /// The returned Lists contain either Object items, 
+        /// or Lists which correspond to subtrees of the tree
+        /// Subtrees which do not contain any items are not included.
+        /// Builds the tree if necessary.
+        /// </summary>
+        public IList<TItem> ItemsTree()
+        {
+            if (!_built)
+            {
+                Build();
+            }
+
+            return ItemsTree(_root);
+        }
+
+        private IList<TItem> ItemsTree(ISpatialIndexNode<TBounds, TItem> node)
+        {
+            IList<TItem> valuesTreeForNode = new List<TItem>();
+            foreach (IBoundable<TBounds> childBoundable in node.ChildBoundables)
+            {
+                if (childBoundable is AbstractNode<TBounds, TItem>)
+                {
+                    IList<TItem> valuesTreeForChild = ItemsTree((AbstractNode<TBounds, TItem>) childBoundable);
+                    // only add if not null (which indicates an item somewhere in this tree
+                    if (valuesTreeForChild != null)
+                        foreach (TItem val in valuesTreeForChild)
+                            valuesTreeForNode.Add(val);
+                }
+                else if (childBoundable is TItem)
+                    valuesTreeForNode.Add((TItem) childBoundable);
+                else
+                    Assert.ShouldNeverReachHere();
+            }
+
+            return valuesTreeForNode.Count <= 0 ? null : valuesTreeForNode;
         }
     }
 }

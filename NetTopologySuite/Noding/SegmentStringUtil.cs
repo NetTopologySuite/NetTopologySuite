@@ -1,8 +1,8 @@
 using System;
+using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
@@ -24,18 +24,19 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
         ///<summary>
         /// Extracts all linear components from a given <see cref="IGeometry{TCoordinate}"/>
-        /// to <see cref="EdgeList{TCoordinate}"/>.
+        /// to <see cref="List{T}<NodedSegmentString{TCoordinate}"/>.
         /// The SegmentString data item is set to be the source Geometry.
         ///</summary>
         ///<param name="geom">the geometry to extract from</param>
         ///<returns>a List of SegmentStrings</returns>
-        public static EdgeList<TCoordinate> ExtractSegmentStrings(IGeometry<TCoordinate> geom)
+        public static List<NodedSegmentString<TCoordinate>> ExtractSegmentStrings(IGeometry<TCoordinate> geom)
         {
-            EdgeList<TCoordinate> segStr = new EdgeList<TCoordinate>(geom.Factory);
-            foreach (ILineString<TCoordinate> line in LinearComponentExtracter<TCoordinate>.GetLines(geom))
+            List<NodedSegmentString<TCoordinate>> segStr = new List<NodedSegmentString<TCoordinate>>();
+            foreach (ILineString<TCoordinate> line in GeometryFilter.Filter<ILineString<TCoordinate>, TCoordinate>(geom)
+                ) // LinearComponentExtracter<TCoordinate>.GetLines(geom) )
             {
                 ICoordinateSequence<TCoordinate> pts = line.Coordinates;
-                segStr.Add(new Edge<TCoordinate>(geom.Factory, pts));
+                segStr.Add(new NodedSegmentString<TCoordinate>(pts, null));
             }
             return segStr;
         }

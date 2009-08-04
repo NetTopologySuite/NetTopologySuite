@@ -1231,7 +1231,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             // FIX_PERF: read all coordinates at once
             Double qX = q[Ordinates.X], qY = q[Ordinates.Y];
             Double p1X = p1[Ordinates.X], p1Y = p1[Ordinates.Y];
-            Double p2X = p1[Ordinates.X], p2Y = p1[Ordinates.Y];
+            Double p2X = p2[Ordinates.X], p2Y = p2[Ordinates.Y];
 
             if (((qX >= (p1X < p2X ? p1X : p2X)) && (qX <= (p1X > p2X ? p1X : p2X))) &&
                 ((qY >= (p1Y < p2Y ? p1Y : p2Y)) && (qY <= (p1Y > p2Y ? p1Y : p2Y))))
@@ -1255,9 +1255,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             // FIX_PERF: read all coordinates at once
             Double p1X = p1[Ordinates.X], p1Y = p1[Ordinates.Y];
-            Double p2X = p1[Ordinates.X], p2Y = p1[Ordinates.Y];
-            Double q1X = p1[Ordinates.X], q1Y = p1[Ordinates.Y];
-            Double q2X = p1[Ordinates.X], q2Y = p1[Ordinates.Y];
+            Double p2X = p2[Ordinates.X], p2Y = p2[Ordinates.Y];
+            Double q1X = q1[Ordinates.X], q1Y = q1[Ordinates.Y];
+            Double q2X = q2[Ordinates.X], q2Y = q2[Ordinates.Y];
 
             Double minq = Math.Min(q1X, q2X);
             Double maxq = Math.Max(q1X, q2X);

@@ -54,7 +54,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public override ICoordinateSequence<TCoordinate> Coordinates
         {
-            get { return Factory.CoordinateSequenceFactory.Create(Coordinate); }
+            get
+            {
+                if (!IsEmpty)
+                    return Factory.CoordinateSequenceFactory.Create(Coordinate);
+                return null;
+            }
         }
 
         public override Int32 PointCount

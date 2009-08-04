@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Noding;
 using NPack.Interfaces;
 
@@ -55,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
             /**
              * If any segments intersect, result is false.
              */
-            EdgeList<TCoordinate> lineSegStr = SegmentStringUtil<TCoordinate>.ExtractSegmentStrings(geom);
+            List<NodedSegmentString<TCoordinate>> lineSegStr = SegmentStringUtil<TCoordinate>.ExtractSegmentStrings(geom);
             Boolean segsIntersect = _prepPoly.IntersectionFinder.Intersects(lineSegStr);
             if (segsIntersect)
                 return false;
@@ -65,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
              * is contained in some test component.
              * the test is NOT properly contained.
              */
-            if (geom is IPolygon<TCoordinate>)
+            if (geom is IPolygonal<TCoordinate>)
             {
                 // TODO: generalize this to handle GeometryCollections
                 Boolean isTargetGeomInTestArea = IsAnyTargetComponentInAreaTest(geom, _prepPoly.RepresentativePoints);

@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         /// Constructs a <see cref="PreparedLineString{TCoordinate}"/>.
         ///</summary>
         ///<param name="line"><see cref="ILineString{TCoordinate}"/> to prepare</param>
-        public PreparedLineString(ILineString<TCoordinate> line)
+        public PreparedLineString(ILineal<TCoordinate> line)
             : base(line)
         {
         }

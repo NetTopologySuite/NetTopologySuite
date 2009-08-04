@@ -218,7 +218,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
                 return;
             }
 
-            base.Insert(item);
+            base.Insert(new StrItemBoundable(item.Bounds, item));
         }
 
         /// <summary>

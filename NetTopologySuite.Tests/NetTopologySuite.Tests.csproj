@@ -41,10 +41,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithm\Distance\DiscreteHausdorffDistanceTests.cs" />
+    <Compile Include="Geometries\Prepared\PreparedGeometryTests.cs" />
     <Compile Include="Geometries\Prepared\PreparedPolygonTests.cs" />
     <Compile Include="Geometries\Prepared\PreparedGeometryFactoryTests.cs" />
     <Compile Include="Index\BinTree\BinTreeTests.cs" />
     <Compile Include="Index\StrTree\StrTreeTests.cs" />
+    <Compile Include="OperationTests\Union\CascadedPolygonUnionTest.cs" />
     <Compile Include="OperationTests\VividTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestFactories.cs" />
@@ -70,6 +73,14 @@
       <Project>{13669184-2446-404F-8894-5E20B6C3FCC6}</Project>
       <Name>NetTopologySuite.TestRunner</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="sh.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Algorithm\Locate\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

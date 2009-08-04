@@ -18,7 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         /// Constructs an instance of <see cref="PreparedPoint{TCoordinate}"/>
         ///</summary>
         ///<param name="point">base geometry</param>
-        public PreparedPoint(IPoint<TCoordinate> point)
+        public PreparedPoint(IPuntal<TCoordinate> point)
             : base(point)
         {
         }

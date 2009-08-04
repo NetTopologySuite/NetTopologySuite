@@ -25,8 +25,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
         ///<exception cref="ArgumentException"></exception>
         public IndexedPointInAreaLocator(IGeometry<TCoordinate> g)
         {
-            if (!(g is IPolygon<TCoordinate>))
-                throw new ArgumentException("Argument must be IPolygon<TCoordinate>");
+            if (! (g is IPolygonal<TCoordinate>))
+                throw new ArgumentException("Argument must be IPolygonal<TCoordinate>");
             BuildIndex(g);
         }
 
@@ -65,15 +65,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
         #region Nested type: IntervalIndexedGeometry
 
         private class IntervalIndexedGeometry
-        //private class IntervalIndexedGeometry<TCoordinate>
-        //    where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-        //                        IComparable<TCoordinate>, IConvertible,
-        //                        IComputable<Double, TCoordinate>
+            //private class IntervalIndexedGeometry<TCoordinate>
+            //    where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            //                        IComparable<TCoordinate>, IConvertible,
+            //                        IComputable<Double, TCoordinate>
         {
-            private static readonly IBoundsFactory<Interval> BoundsFactory = new IntervalFactory();
+            private static readonly IBoundsFactory<Interval> _boundsFactory = new IntervalFactory();
 
             private readonly SortedPackedRTree<Interval, LineSegment<TCoordinate>> _index =
-                new SortedPackedRTree<Interval, LineSegment<TCoordinate>>(BoundsFactory);
+                new SortedPackedRTree<Interval, LineSegment<TCoordinate>>(_boundsFactory);
 
             public IntervalIndexedGeometry(IGeometry<TCoordinate> geom)
             {
@@ -86,10 +86,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
                     AddLine(line.Coordinates);
             }
 
-            private void AddLine(ICoordinateSequence<TCoordinate> iCoordinateSequence)
+            private void AddLine(ICoordinateSequence<TCoordinate> coordinateSequence)
             {
                 TCoordinate p0 = default(TCoordinate);
-                foreach (TCoordinate p1 in iCoordinateSequence)
+                foreach (TCoordinate p1 in coordinateSequence)
                 {
                     if (!p0.Equals(default(TCoordinate)))
                     {

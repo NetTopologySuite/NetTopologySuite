@@ -31,8 +31,8 @@
  *     www.vividsolutions.com
  */
 using System;
+using System.Collections.Generic;
 using GeoAPI.Coordinates;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
@@ -68,12 +68,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <summary>
         /// </summary>
         ///<param name="segStrings">a collection of {@link SegmentString}s to node</param>
-        public abstract void SetBaseSegments(EdgeList<TCoordinate> segStrings);
+        public abstract void SetBaseSegments(List<NodedSegmentString<TCoordinate>> segStrings);
 
         ///<summary>
         ///Computes the intersections for two collections of {@link SegmentString}s.
         ///<summary>
         ///@param segStrings1 a collection of {@link SegmentString}s to node
-        public abstract void Process(EdgeList<TCoordinate> segStrings);
+        public abstract void Process(List<NodedSegmentString<TCoordinate>> segStrings);
     }
 }

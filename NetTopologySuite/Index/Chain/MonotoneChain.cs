@@ -311,8 +311,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         {
             TCoordinate p00 = _coordinates[start0];
             TCoordinate p01 = _coordinates[end0];
-            TCoordinate p10 = mc.Coordinates[start1];
-            TCoordinate p11 = mc.Coordinates[end1];
+            TCoordinate p10 = mc._coordinates[start1];
+            TCoordinate p11 = mc._coordinates[end1];
             //Debug.println("computeIntersectsForChain:" + p00 + p01 + p10 + p11);
             // terminating condition for the recursion
             if (end0 - start0 == 1 && end1 - start1 == 1)

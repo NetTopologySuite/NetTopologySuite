@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using GisSharpBlog.NetTopologySuite.Noding;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
@@ -48,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
             /**
              * If any segments intersect, obviously intersects = true
              */
-            EdgeList<TCoordinate> lineSegStr = new EdgeList<TCoordinate>(geom.Factory);
+            List<NodedSegmentString<TCoordinate>> lineSegStr = new List<NodedSegmentString<TCoordinate>>();
             //IList lineSegStr = SegmentStringUtil.extractSegmentStrings(geom);
             Boolean segsIntersect = _prepLine.IntersectionFinder.Intersects(lineSegStr);
             // MD - performance testing

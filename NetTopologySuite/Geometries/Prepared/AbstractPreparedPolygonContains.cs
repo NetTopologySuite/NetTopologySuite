@@ -1,8 +1,8 @@
 using System;
+using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Noding;
 using NPack.Interfaces;
 
@@ -122,7 +122,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
              * a test polygon - which implies the exterior of the Target
              * intersects the interior of the Test, and hence the result is false
              */
-            if (geom is IPolygon<TCoordinate>)
+            if (geom is IPolygonal<TCoordinate>)
             {
                 // TODO: generalize this to handle GeometryCollections
                 Boolean isTargetInTestArea = IsAnyTargetComponentInAreaTest(geom, _prepPoly.RepresentativePoints);
@@ -142,7 +142,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
              * where the interior of the test intersects the exterior of the target.
              * This implies the test is NOT contained in the target. 
              */
-            if (testGeom is IPolygon<TCoordinate>)
+            if (testGeom is IPolygonal<TCoordinate>)
                 return true;
             /**
              * A single shell with no holes allows concluding that 
@@ -179,7 +179,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
 
         private void FindAndClassifyIntersections(IGeometry<TCoordinate> geom)
         {
-            EdgeList<TCoordinate> lineSegStr = SegmentStringUtil<TCoordinate>.ExtractSegmentStrings(geom);
+            List<NodedSegmentString<TCoordinate>> lineSegStr = SegmentStringUtil<TCoordinate>.ExtractSegmentStrings(geom);
 
             LineIntersector<TCoordinate> li = new RobustLineIntersector<TCoordinate>(geom.Factory);
             SegmentIntersectionDetector<TCoordinate> intDetector = new SegmentIntersectionDetector<TCoordinate>(li);

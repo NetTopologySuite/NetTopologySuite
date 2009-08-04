@@ -148,6 +148,9 @@
     <Compile Include="Algorithm\CentroidPoint.cs" />
     <Compile Include="Algorithm\CGAlgorithms.cs" />
     <Compile Include="Algorithm\ConvexHull.cs" />
+    <Compile Include="Algorithm\Distance\DiscreteHausdorffDistance.cs" />
+    <Compile Include="Algorithm\Distance\EuclideanDistanceToPoint.cs" />
+    <Compile Include="Algorithm\Distance\PointPairDistance.cs" />
     <Compile Include="Algorithm\IBoundaryNodeRule.cs" />
     <Compile Include="Algorithm\InteriorPointArea.cs" />
     <Compile Include="Algorithm\InteriorPointLine.cs" />
@@ -172,6 +175,45 @@
     <Compile Include="Algorithm\SimplePointInAreaLocator.cs" />
     <Compile Include="Algorithm\SimplePointInRing.cs" />
     <Compile Include="Algorithm\SIRtreePointInRing.cs" />
+    <Compile Include="Collections\C5\arrays\ArrayList.cs" />
+    <Compile Include="Collections\C5\arrays\CircularQueue.cs" />
+    <Compile Include="Collections\C5\arrays\HashedArrayList.cs" />
+    <Compile Include="Collections\C5\arrays\SortedArray.cs" />
+    <Compile Include="Collections\C5\Attributes.cs" />
+    <Compile Include="Collections\C5\Builtin.cs" />
+    <Compile Include="Collections\C5\Collections.cs" />
+    <Compile Include="Collections\C5\Comparer.cs" />
+    <Compile Include="Collections\C5\Delegates.cs" />
+    <Compile Include="Collections\C5\Dictionaries.cs" />
+    <Compile Include="Collections\C5\Enums.cs" />
+    <Compile Include="Collections\C5\Events.cs" />
+    <Compile Include="Collections\C5\Exceptions.cs" />
+    <Compile Include="Collections\C5\Formatting.cs" />
+    <Compile Include="Collections\C5\Hashers.cs" />
+    <Compile Include="Collections\C5\hashing\HashBag.cs" />
+    <Compile Include="Collections\C5\hashing\HashDictionary.cs" />
+    <Compile Include="Collections\C5\hashing\HashTable.cs" />
+    <Compile Include="Collections\C5\heaps\IntervalHeap.cs" />
+    <Compile Include="Collections\C5\Interfaces.cs" />
+    <Compile Include="Collections\C5\linkedlists\HashedLinkedList.cs" />
+    <Compile Include="Collections\C5\linkedlists\LinkedList.cs" />
+    <Compile Include="Collections\C5\MappedEnumerators.cs" />
+    <Compile Include="Collections\C5\Random.cs" />
+    <Compile Include="Collections\C5\Records.cs" />
+    <Compile Include="Collections\C5\Sorting.cs" />
+    <Compile Include="Collections\C5\trees\RedBlackTreeBag.cs" />
+    <Compile Include="Collections\C5\trees\RedBlackTreeDictionary.cs" />
+    <Compile Include="Collections\C5\trees\RedBlackTreeSet.cs" />
+    <Compile Include="Collections\C5\ViewSupport.cs" />
+    <Compile Include="Collections\C5\WrappedArray.cs" />
+    <Compile Include="Collections\C5\Wrappers.cs" />
+    <Compile Include="Collections\Goletas.Collections\ICollection.cs" />
+    <Compile Include="Collections\Goletas.Collections\IDictionary.cs" />
+    <Compile Include="Collections\Goletas.Collections\KeyValuePair.cs" />
+    <Compile Include="Collections\Goletas.Collections\LinkedQueue.cs" />
+    <Compile Include="Collections\Goletas.Collections\LinkedStack.cs" />
+    <Compile Include="Collections\Goletas.Collections\SortedDictionary.cs" />
+    <Compile Include="Collections\Goletas.Collections\SortedSet.cs" />
     <Compile Include="GeometriesGraph\Index\SimpleMonotoneChainSweepLineIntersector.cs" />
     <Compile Include="GeometriesGraph\Positions.cs" />
     <Compile Include="GeometriesGraph\Quadrants.cs" />
@@ -209,6 +251,7 @@
     <Compile Include="Geometries\Triangle.cs" />
     <Compile Include="Geometries\Coordinates.cs" />
     <Compile Include="Geometries\Utilities\GenericInterfaceConverter.cs" />
+    <Compile Include="Geometries\Utilities\GeometryCombiner.cs" />
     <Compile Include="Geometries\Utilities\GeometryEditor.cs" />
     <Compile Include="Geometries\Utilities\GeometryFilter.cs" />
     <Compile Include="Geometries\Utilities\GeometryTransformer.cs" />
@@ -356,6 +399,9 @@
     <Compile Include="Operation\Relate\RelateNodeFactory.cs" />
     <Compile Include="Operation\Relate\RelateNodeGraph.cs" />
     <Compile Include="Operation\Relate\RelateOp.cs" />
+    <Compile Include="Operation\Union\CascadedPolygonUnion.cs" />
+    <Compile Include="Operation\Union\PointGeometryUnion.cs" />
+    <Compile Include="Operation\Union\UnaryUnionOp.cs" />
     <Compile Include="Operation\Valid\ConnectedInteriorTester.cs" />
     <Compile Include="Operation\Valid\ConsistentAreaTester.cs" />
     <Compile Include="Operation\Valid\IsValidOp.cs" />
@@ -380,6 +426,9 @@
     <Compile Include="Global.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Collections\C5\C5.csproj" />
+    <Content Include="Collections\Goletas.Collections\License.htm" />
+    <Content Include="Collections\C5\LICENSE.txt" />
     <Content Include="License.txt" />
     <Content Include="ReadMe.txt" />
   </ItemGroup>

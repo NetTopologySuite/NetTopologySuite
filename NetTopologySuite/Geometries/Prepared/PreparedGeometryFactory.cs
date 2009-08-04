@@ -34,12 +34,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         ///<returns>the prepared geometry</returns>
         public IPreparedGeometry<TCoordinate> Create(IGeometry<TCoordinate> geom)
         {
-            if (geom is IPolygon<TCoordinate>)
-                return new PreparedPolygon<TCoordinate>((IPolygon<TCoordinate>) geom);
-            if (geom is ILineString<TCoordinate>)
-                return new PreparedLineString<TCoordinate>((ILineString<TCoordinate>) geom);
-            if (geom is IPoint<TCoordinate>)
-                return new PreparedPoint<TCoordinate>((IPoint<TCoordinate>) geom);
+            if (geom is IPolygonal<TCoordinate>)
+                return new PreparedPolygon<TCoordinate>((IPolygonal<TCoordinate>) geom);
+            if (geom is ILineal<TCoordinate>)
+                return new PreparedLineString<TCoordinate>((ILineal<TCoordinate>) geom);
+            if (geom is IPuntal<TCoordinate>)
+                return new PreparedPoint<TCoordinate>((IPuntal<TCoordinate>) geom);
 
             ///</summary>
             ///Default representation.

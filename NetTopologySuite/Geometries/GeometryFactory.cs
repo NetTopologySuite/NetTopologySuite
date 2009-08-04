@@ -5,6 +5,7 @@ using GeoAPI.CoordinateSystems;
 using GeoAPI.DataStructures;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
+using GeoAPI.Indexing;
 using GeoAPI.IO.WellKnownBinary;
 using GeoAPI.IO.WellKnownText;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
@@ -550,7 +551,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public IPolygon<TCoordinate> CreatePolygon()
         {
-            return new Polygon<TCoordinate>((ICoordinateSequence<TCoordinate>)null, this);
+            return new Polygon<TCoordinate>((ICoordinateSequence<TCoordinate>) null, this);
         }
 
         public IPolygon<TCoordinate> CreatePolygon(ILinearRing<TCoordinate> shell)
@@ -705,7 +706,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public IGeometryCollection<TCoordinate> CreateGeometryCollection(IGeometry<TCoordinate> a,
                                                                          IGeometry<TCoordinate> b)
         {
-            return new GeometryCollection<TCoordinate>(new[] { a, b }, this);
+            return new GeometryCollection<TCoordinate>(new[] {a, b}, this);
         }
 
         /// <returns>
@@ -836,7 +837,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             TCoordinate min = _coordinateFactory.Create(left, bottom);
             TCoordinate max = _coordinateFactory.Create(right, top);
-            return (IExtents2D)CreateExtents(min, max);
+            return (IExtents2D) CreateExtents(min, max);
         }
 
         IExtents2D IGeometryFactory.CreateExtents2D(Pair<Double> min, Pair<Double> max)
@@ -851,13 +852,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                                                     Double front, Double right,
                                                     Double top, Double back)
         {
-            return (IExtents3D)CreateExtents(_coordinateFactory.Create3D(left, bottom, front),
+            return (IExtents3D) CreateExtents(_coordinateFactory.Create3D(left, bottom, front),
                                               _coordinateFactory.Create3D(right, top, back));
         }
 
         IExtents3D IGeometryFactory.CreateExtents3D(Triple<Double> lowerLeft, Triple<Double> upperRight)
         {
-            return (IExtents3D)CreateExtents(_coordinateFactory.Create3D(lowerLeft.First,
+            return (IExtents3D) CreateExtents(_coordinateFactory.Create3D(lowerLeft.First,
                                                                           lowerLeft.Second,
                                                                           lowerLeft.Third),
                                               _coordinateFactory.Create3D(upperRight.First,
@@ -903,7 +904,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IGeometry IGeometryFactory.CreateGeometry(IGeometry g)
         {
-            return CreateGeometry((IGeometry<TCoordinate>)g);
+            return CreateGeometry((IGeometry<TCoordinate>) g);
         }
 
         IGeometry IGeometryFactory.CreateGeometry(ICoordinateSequence coordinates, OgcGeometryType type)
@@ -973,7 +974,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         ILinearRing IGeometryFactory.CreateLinearRing(ICoordinateSequence coordinates)
         {
-            return CreateLinearRing((ICoordinateSequence<TCoordinate>)coordinates);
+            return CreateLinearRing((ICoordinateSequence<TCoordinate>) coordinates);
         }
 
         IPolygon IGeometryFactory.CreatePolygon()
@@ -1051,7 +1052,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IMultiPoint IGeometryFactory.CreateMultiPoint(ICoordinateSequence coordinates)
         {
-            return CreateMultiPoint((ICoordinateSequence<TCoordinate>)coordinates);
+            return CreateMultiPoint((ICoordinateSequence<TCoordinate>) coordinates);
         }
 
         IMultiLineString IGeometryFactory.CreateMultiLineString()
@@ -1082,7 +1083,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         IGeometryCollection IGeometryFactory.CreateGeometryCollection(IGeometry a, IGeometry b)
         {
             IEnumerable<IGeometry<TCoordinate>> geometries =
-                GenericInterfaceConverter<TCoordinate>.Convert(new[] { a, b }, this);
+                GenericInterfaceConverter<TCoordinate>.Convert(new[] {a, b}, this);
             return new GeometryCollection<TCoordinate>(geometries, this);
         }
 
@@ -1093,17 +1094,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IGeometry IGeometryFactory.ToGeometry(IExtents envelopeInternal)
         {
-            return ToGeometry((IExtents<TCoordinate>)envelopeInternal);
+            return ToGeometry((IExtents<TCoordinate>) envelopeInternal);
         }
 
         IPolygon IGeometryFactory.CreatePolygon(ICoordinateSequence coordinates)
         {
-            return CreatePolygon((ICoordinateSequence<TCoordinate>)coordinates);
+            return CreatePolygon((ICoordinateSequence<TCoordinate>) coordinates);
         }
 
         IMultiPolygon IGeometryFactory.CreateMultiPolygon(ICoordinateSequence coordinates)
         {
-            return CreateMultiPolygon((ICoordinateSequence<TCoordinate>)coordinates);
+            return CreateMultiPolygon((ICoordinateSequence<TCoordinate>) coordinates);
         }
 
         IWktGeometryWriter IGeometryFactory.WktWriter
@@ -1144,6 +1145,29 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 throw new NotSupportedException(
                     "Use IGeometryFactory<TCoordinate>.WkbReader instead.");
             }
+        }
+
+        IExtents IBoundsFactory<IExtents>.CreateNullBounds()
+        {
+            return CreateNullBounds();
+        }
+
+        public IExtents CreateMinimumSpanningBounds(IEnumerable<IExtents> bounds)
+        {
+            return CreateMinimumSpanningBounds(Caster.Cast<IExtents<TCoordinate>>(bounds));
+        }
+
+        public IExtents<TCoordinate> CreateNullBounds()
+        {
+            return CreateExtents();
+        }
+
+        public IExtents<TCoordinate> CreateMinimumSpanningBounds(IEnumerable<IExtents<TCoordinate>> bounds)
+        {
+            IExtents<TCoordinate> spanningBounds = CreateExtents();
+            foreach (IExtents<TCoordinate> ext in bounds)
+                spanningBounds.ExpandToInclude(ext);
+            return spanningBounds;
         }
 
         #endregion
@@ -1216,36 +1240,5 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         //    exemplar.PrecisionModel.MakePrecise(coord);
         //    return exemplar.Factory.CreatePoint(coord);
         //}
-
-        #region IBoundsFactory<IExtents> Members
-
-        IExtents GeoAPI.Indexing.IBoundsFactory<IExtents>.CreateNullBounds()
-        {
-            return CreateNullBounds();
-        }
-
-        public IExtents CreateMinimumSpanningBounds(IEnumerable<IExtents> bounds)
-        {
-            return CreateMinimumSpanningBounds(Caster.Cast<IExtents<TCoordinate>>(bounds));
-        }
-
-        #endregion
-
-        #region IBoundsFactory<IExtents<TCoordinate>> Members
-
-        public IExtents<TCoordinate> CreateNullBounds()
-        {
-            return CreateExtents();
-        }
-
-        public IExtents<TCoordinate> CreateMinimumSpanningBounds(IEnumerable<IExtents<TCoordinate>> bounds)
-        {
-            IExtents<TCoordinate> spanningBounds = CreateExtents();
-            foreach(IExtents<TCoordinate> ext in bounds)
-                spanningBounds.ExpandToInclude(ext);
-            return spanningBounds;
-        }
-
-        #endregion
     }
 }

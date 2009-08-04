@@ -11,15 +11,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.RTree
         where TBounds : IContainable<TBounds>, IIntersectable<TBounds>, IComparable<TBounds>
         where TItem : IBoundable<TBounds>
     {
-        protected IBoundsFactory<TBounds> BoundsFactory
-        {
-            get; set;
-        }
-
         ///<summary>
         ///</summary>
         ///<param name="level"></param>
-        public RTreeNode(IBoundsFactory<TBounds> boundsFactory,  int level)
+        public RTreeNode(IBoundsFactory<TBounds> boundsFactory, int level)
             : base(level)
         {
             BoundsFactory = boundsFactory;
@@ -34,6 +29,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.RTree
         {
             BoundsFactory = boundsFactory;
         }
+
+        protected IBoundsFactory<TBounds> BoundsFactory { get; set; }
 
         public override bool Intersects(TBounds bounds)
         {

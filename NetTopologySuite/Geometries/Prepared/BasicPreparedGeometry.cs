@@ -176,7 +176,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         ///<returns><value>True</value> if g is contained in this envelopes</returns>
         protected Boolean EnvelopeCovers(IGeometry<TCoordinate> g)
         {
-            return _baseGeom.Envelope.Covers(g.Envelope);
+            return _baseGeom.Extents.Contains(g.Extents);
+            //_baseGeom.Extents.Envelope.Covers(g.Envelope);
         }
 
         /// <summary>

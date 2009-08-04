@@ -257,7 +257,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         {
             // check segment intersection
             // get all lines from geom (e.g. if it's a multi-ring polygon)
-            IEnumerable<ILineString<TCoordinate>> lines = GeometryFilter.Filter<ILineString<TCoordinate>>(geom);
+            IEnumerable<ILineString<TCoordinate>> lines =
+                GeometryFilter.Filter<ILineString<TCoordinate>, TCoordinate>(geom);
 
             SegmentIntersectionTester<TCoordinate> si = new SegmentIntersectionTester<TCoordinate>(geom.Factory);
             Boolean hasIntersection = si.HasIntersectionWithLineStrings(_rectSeq, lines);

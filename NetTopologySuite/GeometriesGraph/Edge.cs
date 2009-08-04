@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
@@ -16,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     /// <typeparam name="TCoordinate">The type of coordinate.</typeparam>
     public class Edge<TCoordinate> : GraphComponent<TCoordinate>,
-                                     IBoundable<IExtents<TCoordinate>>
+                                     IBoundable<IExtents<TCoordinate>>, IBoundable<Interval>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
             IComparable<TCoordinate>, IConvertible,
             IComputable<Double, TCoordinate>
@@ -211,6 +212,25 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         #endregion
 
+        #region IBoundable<Interval> Member
+
+        Interval IBoundable<Interval>.Bounds
+        {
+            get { return new Interval(Extents.Min[Ordinates.X], Extents.Max[Ordinates.Y]); }
+        }
+
+        #endregion
+
+        #region IIntersectable<Interval> Member
+
+        bool IIntersectable<Interval>.Intersects(Interval other)
+        {
+            Interval bounds = new Interval(Extents.Min[Ordinates.X], Extents.Max[Ordinates.Y]);
+            return bounds.Intersects(other);
+        }
+
+        #endregion
+
         /// <summary> 
         /// Updates an <see cref="IntersectionMatrix"/> from the label for an edge.
         /// Handles edges from both L and A geometries.
@@ -244,9 +264,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             for (Int32 i = 0; i < Coordinates.Count; i++)
             {
-                if (i > 0) sb.Append(",");
-                sb.Append(Coordinates[i][Ordinates.X] + " " +
-                          Coordinates[i][Ordinates.Y]);
+                if (i > 0) sb.Append(", ");
+                sb.AppendFormat(
+                    CultureInfo.InvariantCulture, "{0} {1}",
+                    Coordinates[i][Ordinates.X], Coordinates[i][Ordinates.Y]);
             }
 
             sb.Append(")  " + Label + " " + _depthDelta);

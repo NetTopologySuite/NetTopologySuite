@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.RTree
 
         private int _level;
         private RTreeNode<TBounds, TItem> _root;
-        protected IBoundsFactory<TBounds> BoundsFactory { get; set; }
+
         ///<summary>
         /// constructor of this class
         ///</summary>
@@ -30,6 +30,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.RTree
             BoundsFactory = boundsFactory;
             _leaves = new List<RTreeNode<TBounds, TItem>>();
         }
+
+        protected IBoundsFactory<TBounds> BoundsFactory { get; set; }
 
         protected Comparison<RTreeNode<TBounds, TItem>> CompareOp
         {
@@ -172,7 +174,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.RTree
                 else
                 {
                     RTreeNode<TBounds, TItem> node = new RTreeBranchNode<TBounds, TItem>(BoundsFactory,
-                        _level, n1, src[i + 1]);
+                                                                                         _level, n1, src[i + 1]);
                     dest.Add(node);
                 }
             }

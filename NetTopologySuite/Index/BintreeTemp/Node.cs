@@ -21,7 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
         {
             this.interval = interval;
             this.level = level;
-            centre = (interval.Min + interval.Max) / 2;
+            centre = (interval.Min + interval.Max)/2;
         }
 
         /// <summary>

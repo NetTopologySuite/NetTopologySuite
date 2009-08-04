@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
@@ -83,14 +85,18 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
         public static Locations LocatePointInRing(TCoordinate p, ILinearRing<TCoordinate> ring)
         {
+            return LocatePointInRing(p, ring.Coordinates);
+        }
+
+        public static Locations LocatePointInRing(TCoordinate p, IEnumerable<TCoordinate> ring)
+        {
             if (ring == null)
                 return Locations.None;
 
             RayCrossingCounter<TCoordinate> counter = new RayCrossingCounter<TCoordinate>(p);
-            TCoordinate p1 = default(TCoordinate);
-            foreach (TCoordinate p2 in ring.Coordinates)
+            foreach (Pair<TCoordinate> pair in Slice.GetOverlappingPairs(ring))
             {
-                counter.CountSegment(p1, p2);
+                counter.CountSegment(pair.First, pair.Second);
                 if (counter.IsOnSegment)
                     return counter.Location;
             }

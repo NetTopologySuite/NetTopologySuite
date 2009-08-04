@@ -86,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.BintreeTemp
         private void ComputeInterval(int level, Interval itemInterval)
         {
             double size = DoubleBits.PowerOf2(level);
-            pt = Math.Floor(itemInterval.Min / size) * size;
+            pt = Math.Floor(itemInterval.Min/size)*size;
             interval = new Interval(pt, pt + size);
         }
     }

@@ -9,7 +9,7 @@ using NPack.Interfaces;
 namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
-    /// A prepared version for <see cref="IPolygon{TCoordinate}"/> geometries.
+    /// A prepared version for <see cref="IPolygonal"/> geometries.
     ///</summary>
     public class PreparedPolygon<TCoordinate> : BasicPreparedGeometry<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
@@ -24,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         /// Constructs an instance of <see cref="PreparedPolygon{TCoordinate}"/>.
         ///</summary>
         ///<param name="polygon">the polygon to prepare</param>
-        public PreparedPolygon(IPolygon<TCoordinate> polygon)
+        public PreparedPolygon(IPolygonal<TCoordinate> polygon)
             : base(polygon)
         {
             _isRectangle = polygon.IsRectangle;

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Index.Chain;
 using GisSharpBlog.NetTopologySuite.Index.Strtree;
 using NPack.Interfaces;
@@ -49,13 +48,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             get { return _index; }
         }
 
-        public override void SetBaseSegments(EdgeList<TCoordinate> segStrings)
+        public override void SetBaseSegments(List<NodedSegmentString<TCoordinate>> segStrings)
         {
-            foreach (Edge<TCoordinate> segString in segStrings)
+            foreach (NodedSegmentString<TCoordinate> segString in segStrings)
                 AddToIndex(segString);
         }
 
-        private void AddToIndex(Edge<TCoordinate> segStr)
+        private void AddToIndex(NodedSegmentString<TCoordinate> segStr)
         {
             IEnumerable<MonotoneChain<TCoordinate>> segChains = MonotoneChainBuilder.GetChains(_geoFactory,
                                                                                                segStr.Coordinates,
@@ -67,12 +66,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             }
         }
 
-        public override void Process(EdgeList<TCoordinate> segStrings)
+        public override void Process(List<NodedSegmentString<TCoordinate>> segStrings)
         {
             _processCounter = _indexCounter + 1;
             _nOverlaps = 0;
             _monoChains.Clear();
-            foreach (Edge<TCoordinate> segString in segStrings)
+            foreach (NodedSegmentString<TCoordinate> segString in segStrings)
                 AddToMonoChains(segString);
 
             IntersectChains();
@@ -80,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             //System.out.println("MCIndexBichromaticIntersector: # oct chain overlaps = " + nOctOverlaps);
         }
 
-        private void AddToMonoChains(Edge<TCoordinate> segStr)
+        private void AddToMonoChains(NodedSegmentString<TCoordinate> segStr)
         {
             IEnumerable<MonotoneChain<TCoordinate>> segChains = MonotoneChainBuilder.GetChains(_geoFactory,
                                                                                                segStr.Coordinates,

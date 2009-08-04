@@ -222,8 +222,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
 
         private void computeContainmentDistance()
         {
-            IEnumerable<IPolygon<TCoordinate>> polys0 = GeometryFilter.Filter<IPolygon<TCoordinate>>(_g0);
-            IEnumerable<IPolygon<TCoordinate>> polys1 = GeometryFilter.Filter<IPolygon<TCoordinate>>(_g1);
+            IEnumerable<IPolygon<TCoordinate>> polys0 = GeometryFilter.Filter<IPolygon<TCoordinate>, TCoordinate>(_g0);
+            IEnumerable<IPolygon<TCoordinate>> polys1 = GeometryFilter.Filter<IPolygon<TCoordinate>, TCoordinate>(_g1);
             //IList polys0 = PolygonExtracter<TCoordinate>.GetPolygons(geom[0]);
             //IList polys1 = PolygonExtracter<TCoordinate>.GetPolygons(geom[1]);
 
@@ -334,14 +334,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
              * Geometries are not wholely inside, so compute distance from lines and points
              * of one to lines and points of the other
              */
-            IEnumerable<ILineString<TCoordinate>> lines0 = GeometryFilter.Filter<ILineString<TCoordinate>>(_g0);
+            IEnumerable<ILineString<TCoordinate>> lines0 =
+                GeometryFilter.Filter<ILineString<TCoordinate>, TCoordinate>(_g0);
                 // LinearComponentExtracter<TCoordinate>.GetLines(_g0);
-            IEnumerable<ILineString<TCoordinate>> lines1 = GeometryFilter.Filter<ILineString<TCoordinate>>(_g1);
+            IEnumerable<ILineString<TCoordinate>> lines1 =
+                GeometryFilter.Filter<ILineString<TCoordinate>, TCoordinate>(_g1);
                 // LinearComponentExtracter<TCoordinate>.GetLines(_g1);
 
-            IEnumerable<IPoint<TCoordinate>> pts0 = GeometryFilter.Filter<IPoint<TCoordinate>>(_g0);
+            IEnumerable<IPoint<TCoordinate>> pts0 = GeometryFilter.Filter<IPoint<TCoordinate>, TCoordinate>(_g0);
                 // PointExtracter<TCoordinate>.GetPoints(_g0);
-            IEnumerable<IPoint<TCoordinate>> pts1 = GeometryFilter.Filter<IPoint<TCoordinate>>(_g1);
+            IEnumerable<IPoint<TCoordinate>> pts1 = GeometryFilter.Filter<IPoint<TCoordinate>, TCoordinate>(_g1);
                 // PointExtracter<TCoordinate>.GetPoints(_g1);
 
             // bail whenever minDistance goes to zero, since it can't get any less
