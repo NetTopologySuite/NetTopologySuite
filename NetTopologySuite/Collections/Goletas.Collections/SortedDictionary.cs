@@ -415,7 +415,7 @@ namespace Goletas.Collections
         /// <exception cref="ArgumentNullException">
         /// <paramref name="key"/> is a <c>null</c> reference.
         /// </exception>
-        public bool Retrieve(K key, out V value)
+        public bool TryGetValue(K key, out V value)
         {
             if (key == null)
             {

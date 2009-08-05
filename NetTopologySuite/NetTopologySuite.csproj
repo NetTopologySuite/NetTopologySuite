@@ -212,6 +212,8 @@
     <Compile Include="Collections\Goletas.Collections\KeyValuePair.cs" />
     <Compile Include="Collections\Goletas.Collections\LinkedQueue.cs" />
     <Compile Include="Collections\Goletas.Collections\LinkedStack.cs" />
+    <Compile Include="Collections\Goletas.Collections\SCGCollectionWrapper.cs" />
+    <Compile Include="Collections\Goletas.Collections\SCGDictionaryWrapper.cs" />
     <Compile Include="Collections\Goletas.Collections\SortedDictionary.cs" />
     <Compile Include="Collections\Goletas.Collections\SortedSet.cs" />
     <Compile Include="GeometriesGraph\Index\SimpleMonotoneChainSweepLineIntersector.cs" />
