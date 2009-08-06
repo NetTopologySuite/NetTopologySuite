@@ -50,6 +50,13 @@ namespace NetTopologySuite.Tests.Vivid.XUnit
         }
 
         [Fact]
+        public void Test0()
+        {
+            ExecuteTest(0);
+        }
+
+
+        [Fact]
         public void Test1()
         {
             ExecuteTest(1);

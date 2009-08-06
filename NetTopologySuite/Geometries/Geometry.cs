@@ -1897,5 +1897,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             IGeometry<TCoordinate> g = other as IGeometry<TCoordinate>;
             return CompareTo(g);
         }
+
+        #region IGeometry Members
+
+
+        IPoint IGeometry.PointOnSurface
+        {
+            get { return PointOnSurface; }
+        }
+
+        #endregion
     }
 }

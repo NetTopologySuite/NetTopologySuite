@@ -836,7 +836,7 @@ namespace GisSharpBlog.NetTopologySuite
             if (m_bIsDefaultTarget && m_objGeometryA != null)
             {
                 Geometry<BufferedCoordinate> interiorpoint =
-                    (Geometry<BufferedCoordinate>) (m_objGeometryA as ISurface).PointOnSurface;
+                    (Geometry<BufferedCoordinate>) m_objGeometryA.PointOnSurface;
 
                 if (interiorpoint != null)
                 {
