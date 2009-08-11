@@ -1,3 +1,4 @@
+#define C5
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,8 +8,16 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Index.Quadtree;
+using GisSharpBlog.NetTopologySuite.Noding;
 using NPack.Interfaces;
 
+#if goletas
+using Goletas.Collections;
+#else
+#if C5
+using C5;
+#endif
+#endif
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     /// <summary>
@@ -16,14 +25,22 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// <see cref="Edge{TCoordinate}"/>s. It supports locating edges 
     /// that are pointwise equal to a target edge.
     /// </summary>
-    public class EdgeList<TCoordinate> : IList<Edge<TCoordinate>>
+    public class EdgeList<TCoordinate> : System.Collections.Generic.IList<Edge<TCoordinate>>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-            IComparable<TCoordinate>, IConvertible,
-            IComputable<Double, TCoordinate>
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         private readonly List<Edge<TCoordinate>> _edges = new List<Edge<TCoordinate>>();
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
 
+#if goletas
+        Goletas.Collections.SortedDictionary<OrientedCoordinateSequence<TCoordinate>, Edge<TCoordinate>> _ocaMap = 
+            new Goletas.Collections.SortedDictionary<OrientedCoordinateSequence<TCoordinate>, Edge<TCoordinate>>();
+#else
+#if C5
+        C5.TreeDictionary<OrientedCoordinateSequence<TCoordinate>, Edge<TCoordinate>> _ocaMap = 
+            new TreeDictionary<OrientedCoordinateSequence<TCoordinate>, Edge<TCoordinate>>();
+#else
         /// <summary>
         /// An index of the edges, for fast lookup.
         /// a Quadtree is used, because this index needs to be dynamic
@@ -32,13 +49,25 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// of the edge coordinates.
         /// </summary>
         private ISpatialIndex<IExtents<TCoordinate>, Edge<TCoordinate>> _index;
-
+#endif
+#endif
+#if goletas
+#else
+#if C5
+#endif
+#endif
         public EdgeList(IGeometryFactory<TCoordinate> geoFactory)
         {
             if (geoFactory == null) throw new ArgumentNullException("geoFactory");
 
             _geoFactory = geoFactory;
+#if goletas
+#else
+#if C5
+#else
             initIndex();
+#endif
+#endif
         }
 
         #region IList<Edge<TCoordinate>> Members
@@ -49,7 +78,19 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public void Add(Edge<TCoordinate> e)
         {
             _edges.Add(e);
+#if goletas
+            OrientedCoordinateSequence<TCoordinate> oca = new OrientedCoordinateSequence<TCoordinate>(e.Coordinates);
+            _ocaMap.Add(oca, e);
+#else
+#if C5
+            OrientedCoordinateSequence<TCoordinate> oca = new OrientedCoordinateSequence<TCoordinate>(e.Coordinates);
+            if (!_ocaMap.Contains(oca))
+                _ocaMap.Add(oca, e);
+#else
             _index.Insert(e);
+
+#endif
+#endif
         }
 
         public int IndexOf(Edge<TCoordinate> item)
@@ -76,7 +117,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public void Clear()
         {
             _edges.Clear();
+#if goletas
+            _ocaMap.Clear();
+#else
+#if C5
+            _ocaMap.Clear();
+#else
             initIndex();
+#endif
+#endif
         }
 
         public Boolean Contains(Edge<TCoordinate> item)
@@ -171,6 +220,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public void AddRange(IEnumerable<Edge<TCoordinate>> edges)
         {
             _edges.AddRange(edges);
+            foreach (Edge<TCoordinate> edge in edges)
+                Add(edge);
         }
 
         public void RemoveRange(IEnumerable<Edge<TCoordinate>> items)
@@ -192,8 +243,20 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </returns>
         public Edge<TCoordinate> FindEqualEdge(Edge<TCoordinate> e)
         {
+#if goletas
+    OrientedCoordinateSequence<TCoordinate> oca = new OrientedCoordinateSequence<TCoordinate>(e.Coordinates);
+    // will return null if no edge matches
+    Edge<TCoordinate> matchEdge = _ocaMap[oca];
+            return matchEdge;
+#else
+#if C5
+            OrientedCoordinateSequence<TCoordinate> oca = new OrientedCoordinateSequence<TCoordinate>(e.Coordinates);
+            // will return null if no edge matches
+            Edge<TCoordinate> matchEdge = null;
+            _ocaMap.Find(oca, out matchEdge);
+            return matchEdge;
+#else
             IEnumerable<Edge<TCoordinate>> result = _index.Query(e.Extents);
-
             foreach (Edge<TCoordinate> edge in result)
             {
                 if (edge.Equals(e))
@@ -203,6 +266,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
 
             return null;
+#endif
+#endif
+
         }
 
         /// <summary>
@@ -214,13 +280,19 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </returns>
         public Int32 FindEdgeIndex(Edge<TCoordinate> e)
         {
-            return _edges.FindIndex(delegate(Edge<TCoordinate> match) { return e == match; });
+            return _edges.FindIndex(e.Equals);
         }
 
+#if goletas
+#else
+#if C5
+#else
         private void initIndex()
         {
             // TODO: reevaluate whether a dynamic RTree would work better here.
             _index = new Quadtree<TCoordinate, Edge<TCoordinate>>(_geoFactory);
         }
+#endif
+#endif
     }
 }

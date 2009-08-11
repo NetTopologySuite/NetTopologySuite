@@ -336,6 +336,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             IList<IList<IBoundable<IExtents<TCoordinate>>>> slices =
                 new IList<IBoundable<IExtents<TCoordinate>>>[sliceCount];
 
+            Int32 offset = 0;
             for (Int32 j = 0; j < sliceCount; j++)
             {
                 List<IBoundable<IExtents<TCoordinate>>> sliceChildren
@@ -343,7 +344,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
                 slices[j] = sliceChildren;
                 Int32 boundablesAddedToSlice = 0;
 
-                foreach (IBoundable<IExtents<TCoordinate>> childBoundable in childBoundables)
+                foreach (IBoundable<IExtents<TCoordinate>> childBoundable in Enumerable.Skip(childBoundables, offset))
                 {
                     if (boundablesAddedToSlice >= sliceCapacity)
                     {
@@ -353,6 +354,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
                     slices[j].Add(childBoundable);
                     boundablesAddedToSlice++;
                 }
+                offset += sliceCapacity;
             }
 
             return slices;
@@ -372,5 +374,12 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         //{
         //    return avg(e.MinY, e.MaxY);
         //}
+
+        internal IEnumerable<TItem> Query()
+        {
+            if ( !IsBuilt)
+                Build();
+            return Query(Root.Bounds);
+        }
     }
 }

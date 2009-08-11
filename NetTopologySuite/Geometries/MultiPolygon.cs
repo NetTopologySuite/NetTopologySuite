@@ -4,6 +4,7 @@ using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Operation;
 using NPack.Interfaces;
 
 #if DOTNET35
@@ -104,10 +105,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 }
                 else
                 {
+                    ILinearRing<TCoordinate> ccwRing = null;
                     if (shell == null)
                     {
-                        throw new TopologyException(
-                            "The coordinate sequence specifies holes without a shell.");
+                        ccwRing = new LinearRing<TCoordinate>(ring.Reverse().Coordinates, factory);
+                        addPolygonFromRings(shell, holes, factory);
+                        shell = ccwRing;
+                        holes = new List<ILinearRing<TCoordinate>>();
+                        
+                        //throw new TopologyException(
+                        //    "The coordinate sequence specifies holes without a shell.");
                     }
 
                     if (holes == null)
@@ -115,7 +122,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                         holes = new List<ILinearRing<TCoordinate>>();
                     }
 
-                    holes.Add(ring);
+                    if (ccwRing == null )
+                        holes.Add(ring);
                 }
             }
 
@@ -151,6 +159,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                         IMultiLineString<TCoordinate> boundaryLines = boundary as IMultiLineString<TCoordinate>;
                         allRings.AddRange(boundaryLines);
                     }
+                    else
+                        allRings.Add((ILineString<TCoordinate>)boundary);
                 }
 
                 return Factory.CreateMultiLineString(allRings.ToArray());

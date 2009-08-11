@@ -86,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             _curveList.Add(e);
         }
 
-        private void add(IGeometry g)
+        private void add(IGeometry<TCoordinate> g)
         {
             if (g.IsEmpty)
             {

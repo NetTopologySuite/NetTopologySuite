@@ -17,10 +17,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
     ///</summary>
     public class BasicPreparedGeometry<TCoordinate> : IPreparedGeometry<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly IGeometry<TCoordinate> _baseGeom;
-        private readonly ICoordinateSequence<TCoordinate> _representativePts; // List<Coordinate>
+        private readonly ICoordinateSequence<TCoordinate> _representativePts;  // List<Coordinate>
 
         /// <summary>
         /// constructs an instance of this class
@@ -47,6 +47,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         public IGeometry<TCoordinate> Geometry
         {
             get { return _baseGeom; }
+        }
+
+        ///<summary>
+        ///Determines whether the envelope of 
+        ///this geometry covers the Geometry g.
+        ///</summary>
+        ///<param name="g"> a Geometry</param>
+        ///<returns><value>True</value> if g is contained in this envelopes</returns>
+        protected Boolean EnvelopeCovers(IGeometry<TCoordinate> g)
+        {
+            return _baseGeom.Extents.Contains(g.Extents);
+                //_baseGeom.Extents.Envelope.Covers(g.Envelope);
         }
 
         ///<summary>
@@ -166,18 +178,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
         protected Boolean EnvelopesIntersect(IGeometry<TCoordinate> g)
         {
             return _baseGeom.Extents.Intersects(g.Extents);
-        }
-
-        ///<summary>
-        ///Determines whether the envelope of 
-        ///this geometry covers the Geometry g.
-        ///</summary>
-        ///<param name="g"> a Geometry</param>
-        ///<returns><value>True</value> if g is contained in this envelopes</returns>
-        protected Boolean EnvelopeCovers(IGeometry<TCoordinate> g)
-        {
-            return _baseGeom.Extents.Contains(g.Extents);
-            //_baseGeom.Extents.Envelope.Covers(g.Envelope);
         }
 
         /// <summary>

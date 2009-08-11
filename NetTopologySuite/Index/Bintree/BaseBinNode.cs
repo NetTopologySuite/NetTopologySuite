@@ -112,7 +112,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
                     subSize += _subNode2.TotalItemCount;
                 }
 
-                return subSize + ItemsInternal.Count;
+                return subSize + (ItemsInternal == null ? 0 : ItemsInternal.Count);
             }
         }
 

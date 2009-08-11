@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.DataStructures;
 using GeoAPI.Diagnostics;
@@ -338,7 +339,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             Assert.IsTrue(childBoundables.Count != 0);
 
             List<IBoundable<TBounds>> parentBoundables = new List<IBoundable<TBounds>>();
-            parentBoundables.Add(CreateNode(newLevel));
+            ISpatialIndexNode<TBounds, TItem> lastNode = CreateNode(newLevel);
+            parentBoundables.Add(lastNode);
 
             List<IBoundable<TBounds>> sortedChildBoundables
                 = new List<IBoundable<TBounds>>(childBoundables);
@@ -346,13 +348,21 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
             foreach (IBoundable<TBounds> childBoundable in sortedChildBoundables)
             {
-                ISpatialIndexNode<TBounds, TItem> lastNode
-                    = Slice.GetLast(parentBoundables) as ISpatialIndexNode<TBounds, TItem>;
-
-                if (lastNode.SubNodeCount == NodeCapacity)
+                if (lastNode.HasItems)
                 {
-                    lastNode = CreateNode(newLevel);
-                    parentBoundables.Add(lastNode);
+                    if (lastNode.ItemCount == NodeCapacity)
+                    {
+                        lastNode = CreateNode(newLevel);
+                        parentBoundables.Add(lastNode);
+                    }
+                }
+                else
+                {
+                    if (lastNode.SubNodeCount == NodeCapacity)
+                    {
+                        lastNode = CreateNode(newLevel);
+                        parentBoundables.Add(lastNode);
+                    }
                 }
 
                 lastNode.Add(childBoundable);
@@ -609,16 +619,16 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
         private IList<TItem> ItemsTree(ISpatialIndexNode<TBounds, TItem> node)
         {
-            IList<TItem> valuesTreeForNode = new List<TItem>();
+            List<TItem> valuesTreeForNode = new List<TItem>();
             foreach (IBoundable<TBounds> childBoundable in node.ChildBoundables)
             {
                 if (childBoundable is AbstractNode<TBounds, TItem>)
                 {
-                    IList<TItem> valuesTreeForChild = ItemsTree((AbstractNode<TBounds, TItem>) childBoundable);
+                    IList<TItem>  valuesTreeForChild = ItemsTree((AbstractNode<TBounds, TItem>)childBoundable); //new ArrayList();
+                    //IList<TItem> valuesTreeForChild = ;
                     // only add if not null (which indicates an item somewhere in this tree
                     if (valuesTreeForChild != null)
-                        foreach (TItem val in valuesTreeForChild)
-                            valuesTreeForNode.Add(val);
+                        valuesTreeForNode.AddRange(valuesTreeForChild);
                 }
                 else if (childBoundable is TItem)
                     valuesTreeForNode.Add((TItem) childBoundable);

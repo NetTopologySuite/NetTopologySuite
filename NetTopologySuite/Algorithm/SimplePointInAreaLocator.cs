@@ -41,6 +41,16 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return Locations.Exterior;
         }
 
+        private static Boolean IsPointInRing<TCoordinate>(TCoordinate p, ILinearRing<TCoordinate> ring)
+                     where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                                IComputable<Double, TCoordinate>, IConvertible
+        {
+            if ( !ring.Extents.Intersects(p) )
+                return false;
+
+            return CGAlgorithms<TCoordinate>.IsPointInRing(p, ring.Coordinates);
+        }
+
         public static Boolean ContainsPointInPolygon<TCoordinate>(TCoordinate p, IPolygon<TCoordinate> poly)
             where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                 IComputable<Double, TCoordinate>, IConvertible
@@ -51,19 +61,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
 
             ILinearRing<TCoordinate> shell = (ILinearRing<TCoordinate>) poly.ExteriorRing;
-
-            if (!CGAlgorithms<TCoordinate>.IsPointInRing(p, shell.Coordinates))
-            {
+            if (!IsPointInRing( p, shell ))
                 return false;
-            }
 
             // now test if the point lies in or on the holes
             foreach (ILinearRing<TCoordinate> hole in poly.InteriorRings)
             {
-                if (CGAlgorithms<TCoordinate>.IsPointInRing(p, hole.Coordinates))
-                {
+                if (IsPointInRing(p, hole))
                     return false;
-                }
             }
 
             return true;

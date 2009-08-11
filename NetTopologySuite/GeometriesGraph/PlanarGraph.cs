@@ -323,14 +323,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// Gets the set of <see cref="Edge{TCoordinate}"/>s in this graph.
         /// </summary>
-        public IEnumerable<Edge<TCoordinate>> Edges
+        public IList<Edge<TCoordinate>> Edges
         {
             get
             {
-                foreach (Edge<TCoordinate> edge in _edgeList)
-                {
-                    yield return edge;
-                }
+                return _edgeList;
+                //foreach (Edge<TCoordinate> edge in _edgeList)
+                //{
+                //    yield return edge;
+                //}
             }
         }
 

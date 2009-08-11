@@ -147,8 +147,6 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
         private static ICoordinateSequence<TCoordinate> preSort(ICoordinateSequence<TCoordinate> pts)
         {
-            TCoordinate first = Slice.GetFirst(pts);
-
             // find the lowest point in the set. If two or more points have
             // the same minimum y coordinate choose the one with the minimum x.
             // This focal point is put in array location first.
@@ -156,11 +154,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             {
                 TCoordinate coordinate = pts[i];
 
-                if ((coordinate[Ordinates.Y] < first[Ordinates.Y]) ||
-                    ((coordinate[Ordinates.Y] == first[Ordinates.Y]) && (coordinate[Ordinates.X] < first[Ordinates.X])))
+                if ((coordinate[Ordinates.Y] < pts[0][Ordinates.Y]) ||
+                    ((coordinate[Ordinates.Y] == pts[0][Ordinates.Y]) && (coordinate[Ordinates.X] < pts[0][Ordinates.X])))
                 {
-                    TCoordinate t;
-                    t = pts[0];
+                    TCoordinate t = pts[0];
                     pts[0] = coordinate;
                     pts[i] = t;
                 }

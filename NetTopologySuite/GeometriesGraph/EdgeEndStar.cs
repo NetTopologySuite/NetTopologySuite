@@ -378,7 +378,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
                 // set side labels (if any)
                 if (label.IsArea())
-                    //if (label.IsArea(geomIndex))
+                //if (label.IsArea(geomIndex))
                 {
                     Locations left = label[geomIndex, Positions.Left];
                     Locations right = label[geomIndex, Positions.Right];

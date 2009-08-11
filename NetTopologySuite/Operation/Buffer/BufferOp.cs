@@ -1,3 +1,4 @@
+#define one_ten
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
@@ -269,17 +270,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             }
         }
 
-        private void bufferFixedPrecision<TMatrix>(IPrecisionModel<TCoordinate> fixedPM)
-            where TMatrix : ITransformMatrix<DoubleComponent, TCoordinate, TMatrix>
+        private void bufferFixedPrecision(IPrecisionModel<TCoordinate> fixedPM)
         {
             MonotoneChainIndexSnapRounder<TCoordinate> snapRounder =
                 new MonotoneChainIndexSnapRounder<TCoordinate>(_geoFactory,
                                                                _coordFactory.CreatePrecisionModel(1.0));
 
-            INoder<TCoordinate> noder = new ScaledNoder<TCoordinate, TMatrix>(
-                snapRounder,
-                fixedPM.Scale,
-                _coordSequenceFactory);
+            INoder<TCoordinate> noder = new ScaledNoder<TCoordinate>(
+                _coordSequenceFactory,snapRounder,
+                fixedPM.Scale
+                );
 
             BufferBuilder<TCoordinate> bufBuilder
                 = new BufferBuilder<TCoordinate>(_geoFactory);
@@ -325,9 +325,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             IPrecisionModel<TCoordinate> fixedPM =
                 _coordFactory.CreatePrecisionModel(sizeBasedScaleFactor);
 
-            // TODO: Fix scaled noder.
-            throw new NotImplementedException("Fix scaled noder.");
-            //bufferFixedPrecision(fixedPM);
+            //// TODO: Fix scaled noder.
+            //throw new NotImplementedException("Fix scaled noder.");
+            bufferFixedPrecision(fixedPM);
         }
     }
 }

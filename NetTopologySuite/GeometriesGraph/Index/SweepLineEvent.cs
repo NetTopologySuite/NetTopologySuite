@@ -88,7 +88,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
                 return 1;
             }
 
-            return _eventType.CompareTo(other._eventType);
+            return ((Int32)_eventType).CompareTo((Int32)other._eventType);
         }
 
         #endregion

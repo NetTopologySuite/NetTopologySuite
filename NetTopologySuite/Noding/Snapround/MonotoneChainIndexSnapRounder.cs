@@ -99,6 +99,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         {
             segStrings = _noder.Node(segStrings);
             IEnumerable<TCoordinate> intersections = _interiorIntersections;
+            //_noder.Node(segStrings,  Func<NodedSegmentString<TCoordinate>,TCoordinate>( ) );
             computeIntersectionSnaps(intersections);
             computeVertexSnaps(segStrings);
         }

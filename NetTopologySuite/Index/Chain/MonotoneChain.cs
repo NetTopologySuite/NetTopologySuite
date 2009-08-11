@@ -5,6 +5,7 @@ using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Chain
@@ -201,14 +202,25 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
 
             // Assert: mid != start or end (since we checked above for end - start <= 1)
             // check terminating conditions before recursing
+            if ((start == mid) || (mid == end))
+                yield break;
+
             if (start < mid)
             {
-                computeSelect(searchExtents, start, mid);
+                foreach (LineSegment<TCoordinate> ls in computeSelect(searchExtents, start, mid))
+                {
+                    yield return new KeyValuePair<int, LineSegment<TCoordinate>>(start, ls);
+                }
+                //computeSelect(searchExtents, start, mid);
             }
 
             if (mid < end)
             {
-                computeSelect(searchExtents, mid, end);
+                foreach (LineSegment<TCoordinate> ls in computeSelect(searchExtents, mid, end))
+                {
+                    yield return new KeyValuePair<int, LineSegment<TCoordinate>>(mid, ls);
+                }
+                //computeSelect(searchExtents, mid, end);
             }
         }
 

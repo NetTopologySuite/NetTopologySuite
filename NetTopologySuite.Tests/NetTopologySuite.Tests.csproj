@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithm\Distance\DiscreteHausdorffDistanceTests.cs" />
+    <Compile Include="Geometries\PolygonPerformanceTest.cs" />
     <Compile Include="Geometries\Prepared\PreparedGeometryTests.cs" />
     <Compile Include="Geometries\Prepared\PreparedPolygonTests.cs" />
     <Compile Include="Geometries\Prepared\PreparedGeometryFactoryTests.cs" />

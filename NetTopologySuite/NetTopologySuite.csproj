@@ -142,6 +142,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Algorithm\Angle.cs" />
     <Compile Include="Algorithm\CentralEndpointIntersector.cs" />
     <Compile Include="Algorithm\CentroidArea.cs" />
     <Compile Include="Algorithm\CentroidLine.cs" />
@@ -216,10 +217,32 @@
     <Compile Include="Collections\Goletas.Collections\SCGDictionaryWrapper.cs" />
     <Compile Include="Collections\Goletas.Collections\SortedDictionary.cs" />
     <Compile Include="Collections\Goletas.Collections\SortedSet.cs" />
+    <Compile Include="IBoundaryNodeRule.cs" />
+    <Compile Include="Noding\FastNodingValidator.cs" />
+    <Compile Include="Noding\InteriorIntersectionFinder.cs" />
+    <Compile Include="Noding\NodedSegmentString.cs" />
+    <Compile Include="Noding\ScaledNoder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operation\BoundaryOp.cs" />
+    <Compile Include="Operation\Buffer\BufferBuilder_110.cs" />
+    <Compile Include="Operation\Buffer\BufferInputLineSimplifier_110.cs" />
+    <Compile Include="Operation\Buffer\BufferOp_110.cs" />
+    <Compile Include="Operation\Buffer\OffsetCurveBuilder_110.cs" />
+    <Compile Include="Operation\Buffer\OffsetCurveSetBuilder_110.cs" />
+    <Compile Include="Operation\Buffer\OffsetCurveVertexList_110.cs" />
+    <Compile Include="Operation\Buffer\Validate\BufferCurveMaximumDistanceFinder.cs" />
+    <Compile Include="Operation\Buffer\Validate\DistanceToPointFinder.cs" />
+    <Compile Include="Operation\Valid\IndexedNestedRingTester.cs" />
+    <Compile Include="Precision2\CommonBits.cs" />
+    <None Include="Precision2\CommonBitsOp.cs" />
+    <Compile Include="Precision2\CommonBitsRemover.cs" />
+    <None Include="Precision2\EnhancedPrecisionOp.cs" />
     <Compile Include="GeometriesGraph\Index\SimpleMonotoneChainSweepLineIntersector.cs" />
     <Compile Include="GeometriesGraph\Positions.cs" />
     <Compile Include="GeometriesGraph\Quadrants.cs" />
     <Compile Include="Algorithm\EndPointBoundaryNodeRule.cs" />
+    <Compile Include="Geometries\CoordinatesList.cs" />
     <Compile Include="Geometries\Extents.cs" />
     <Compile Include="Geometries\Geometry.cs" />
     <Compile Include="Geometries\GeometryCollection.cs" />
@@ -344,8 +367,7 @@
     <Compile Include="Noding\MonotoneChainIndexSegmentSetMutualIntersector.cs" />
     <Compile Include="Noding\NodingValidator.cs" />
     <Compile Include="Noding\Octant.cs" />
-    <Compile Include="Noding\ScaledNoder.cs" />
-    <Compile Include="Noding\SegmentString.cs" />
+    <Compile Include="Noding\OrientedCoordinateSequence.cs" />
     <Compile Include="Noding\SegmentStringUtil.cs" />
     <Compile Include="Noding\SegmentIntersectionDetector.cs" />
     <Compile Include="Noding\SegmentNode.cs" />
@@ -385,6 +407,10 @@
     <Compile Include="Operation\Overlay\OverlayOp.cs" />
     <Compile Include="Operation\Overlay\PointBuilder.cs" />
     <Compile Include="Operation\Overlay\PolygonBuilder.cs" />
+    <Compile Include="Operation\Overlay\Snap\GeometrySnapper.cs" />
+    <Compile Include="Operation\Overlay\Snap\LineStringSnapper.cs" />
+    <Compile Include="Operation\Overlay\Snap\SnapIfNeededOverlayOp.cs" />
+    <Compile Include="Operation\Overlay\Snap\SnapOverlayOp.cs" />
     <Compile Include="Operation\Polygonize\EdgeRing.cs" />
     <Compile Include="Operation\Polygonize\PolygonizeDirectedEdge.cs" />
     <Compile Include="Operation\Polygonize\PolygonizeEdge.cs" />
@@ -422,6 +448,7 @@
     <Compile Include="Planargraph\PlanarGraph.cs" />
     <Compile Include="Planargraph\Subgraph.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Precision2\SimpleGeometryPrecisionReducer.cs" />
     <Compile Include="Simplify\DouglasPeuckerLineSimplifier.cs" />
     <Compile Include="Simplify\DouglasPeuckerSimplifier.cs" />
     <Compile Include="Geometries\Utilities\GeometricShapeFactory.cs" />

@@ -58,16 +58,18 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         // Includes the end point of the edge as a sentinel
 
         // these envelopes are created once and reused
-        private readonly IExtents<TCoordinate> _extents1;
-        private readonly IExtents<TCoordinate> _extents2;
+        //private readonly IExtents<TCoordinate> _extents1;
+        //private readonly IExtents<TCoordinate> _extents2;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private Int32[] _startIndexes;
 
         public MonotoneChainEdge(Edge<TCoordinate> edge,
                                  IGeometryFactory<TCoordinate> geoFactory)
         {
             _edge = edge;
-            _extents1 = geoFactory.CreateExtents();
-            _extents2 = geoFactory.CreateExtents();
+            _geoFactory = geoFactory;
+            //_extents1 = geoFactory.CreateExtents();
+            //_extents2 = geoFactory.CreateExtents();
             _coordinates = edge.Coordinates;
         }
 
@@ -155,11 +157,6 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
                                                Int32 start1, Int32 end1,
                                                SegmentIntersector<TCoordinate> segmentIntersector)
         {
-            TCoordinate p00 = _coordinates[start0];
-            TCoordinate p01 = _coordinates[end0];
-            TCoordinate p10 = other._coordinates[start1];
-            TCoordinate p11 = other._coordinates[end1];
-
             // terminating condition for the recursion
             if (end0 - start0 == 1 && end1 - start1 == 1)
             {
@@ -167,11 +164,18 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
                 return;
             }
 
-            // nothing to do if the envelopes of these chains don't overlap
-            _extents1.ExpandToInclude(p00, p01);
-            _extents2.ExpandToInclude(p10, p11);
+            TCoordinate p00 = _coordinates[start0];
+            TCoordinate p01 = _coordinates[end0];
+            TCoordinate p10 = other._coordinates[start1];
+            TCoordinate p11 = other._coordinates[end1];
 
-            if (!_extents1.Intersects(_extents2))
+            // nothing to do if the envelopes of these chains don't overlap
+            IExtents<TCoordinate> extents1 = _geoFactory.CreateExtents(p00, p01);
+            IExtents<TCoordinate> extents2 = _geoFactory.CreateExtents(p10, p11);
+            //_extents1.ExpandToInclude(p00, p01);
+            //_extents2.ExpandToInclude(p10, p11);
+
+            if (!extents1.Intersects(extents2))
             {
                 return;
             }

@@ -64,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
                 if (!item.IsEmpty)
                     index.Insert(item);
             }
-            IList<IGeometry<TCoordinate>> itemTree = index.ItemsTree();
+            IEnumerable<IGeometry<TCoordinate>> itemTree = index.ItemsTree();
             IGeometry<TCoordinate> unionAll = UnionTree(itemTree);
             return unionAll;
         }

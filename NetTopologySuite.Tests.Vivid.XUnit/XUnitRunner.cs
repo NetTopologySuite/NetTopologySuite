@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using GeoAPI.DataStructures;
 using GisSharpBlog.NetTopologySuite;
 using Xunit;
 
@@ -186,8 +189,60 @@ namespace NetTopologySuite.Tests.Vivid.XUnit
 
         public void TestAll()
         {
+            List<ExceptionWrapper> exceptions = new List<ExceptionWrapper>();
+
+
             for (int i = 0; i < Count; i++)
-                ExecuteTest(i);
+            {
+                try
+                {
+                    ExecuteTest(i);
+                }
+                catch (Exception ex)
+                {
+                    exceptions.Add(new ExceptionWrapper { Exception = ex, TestIndex = i });
+                }
+            }
+
+            if (exceptions.Count > 0)
+            {
+                throw new AggregateException(exceptions);
+            }
         }
+    }
+
+    public class AggregateException : Exception
+    {
+        private readonly IList<ExceptionWrapper> _innerExceptions;
+
+        internal AggregateException(IList<ExceptionWrapper> exceptions)
+        {
+            _innerExceptions = exceptions;
+        }
+
+        public override string Message
+        {
+            get
+            {
+                return "\r\n" + string.Format("{0} Child tests failed \r\n", _innerExceptions.Count) + String.Join("\r\n==========================================\r\n",
+                                   Enumerable.ToArray(Processor.Select(_innerExceptions,
+                                                                       delegate(
+                                                                           ExceptionWrapper
+                                                                           o)
+                                                                       {
+                                                                           return
+                                                                               string.Format(
+                                                                                   "Test Index : {0}\r\n{1}\r\n{2}",
+                                                                                   o.TestIndex, o.Exception.Message,
+                                                                                   o.Exception.StackTrace);
+                                                                       })));
+            }
+        }
+    }
+
+    internal struct ExceptionWrapper
+    {
+        public Exception Exception { get; set; }
+        public Int32 TestIndex { get; set; }
     }
 }

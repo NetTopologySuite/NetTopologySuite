@@ -1,3 +1,5 @@
+#define buffer110
+
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
@@ -11,8 +13,10 @@ using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using GisSharpBlog.NetTopologySuite.Operation.Buffer;
 using GisSharpBlog.NetTopologySuite.Operation.Distance;
 using GisSharpBlog.NetTopologySuite.Operation.Overlay;
+using GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap;
 using GisSharpBlog.NetTopologySuite.Operation.Predicate;
 using GisSharpBlog.NetTopologySuite.Operation.Relate;
+using GisSharpBlog.NetTopologySuite.Operation.Union;
 using GisSharpBlog.NetTopologySuite.Operation.Valid;
 using NPack;
 using NPack.Interfaces;
@@ -50,7 +54,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// <see cref="GeometryCollection{TCoordinate}" /> will be returned.
     /// </para>
     /// <para>
-    /// Representation of Computed Geometries:  
+    /// Representation of Computed Geometries:
     /// The SFS states that the result
     /// of a set-theoretic method is the "point-set" result of the usual
     /// set-theoretic definition of the operation (SFS 3.2.21.1). However, there are
@@ -342,12 +346,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Boolean Equals(IGeometry<TCoordinate> g)
         {
+            if (ReferenceEquals(g, this))
+                return true;
+
             if (ReferenceEquals(g, null))
             {
                 return false;
             }
 
-            if (IsEmpty && g.IsEmpty || ReferenceEquals(this, g))
+            if (IsEmpty && g.IsEmpty)
             {
                 return true;
             }
@@ -791,7 +798,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public IGeometry<TCoordinate> Buffer(Double distance)
         {
+#if buffer110
+            return BufferOp_110<TCoordinate>.Buffer(this, distance);
+#else
             return BufferOp<TCoordinate>.Buffer(this, distance);
+#endif
         }
 
         /// <summary>
@@ -813,8 +824,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public IGeometry<TCoordinate> Buffer(Double distance, Int32 quadrantSegments)
         {
+#if buffer110
+            return BufferOp_110<TCoordinate>.Buffer(this, distance, quadrantSegments);
+#else
             return BufferOp<TCoordinate>.Buffer(this, distance, quadrantSegments);
-        }
+#endif
+            }
 
         /// <summary>
         /// Returns a buffer region around this <see cref="Geometry{TCoordinate}"/> having the given width.
@@ -831,7 +846,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public IGeometry<TCoordinate> Buffer(Double distance, BufferStyle endCapStyle)
         {
+#if buffer110
+            BufferParameters bp = new BufferParameters(BufferParameters.DefaultQuadrantSegments, (BufferParameters.BufferEndCapStyle)endCapStyle);
+            return BufferOp_110<TCoordinate>.Buffer(this, distance, bp);
+#else
             return BufferOp<TCoordinate>.Buffer(this, distance, endCapStyle);
+#endif
         }
 
         /// <summary>
@@ -858,7 +878,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                                              Int32 quadrantSegments,
                                              BufferStyle endCapStyle)
         {
+#if buffer110
+            return BufferOp_110<TCoordinate>.Buffer(this, distance, quadrantSegments, endCapStyle);
+#else
             return BufferOp<TCoordinate>.Buffer(this, distance, quadrantSegments, endCapStyle);
+#endif
         }
 
         /// <summary>
@@ -869,10 +893,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The points common to the two <see cref="Geometry{TCoordinate}"/>s.</returns>
         public IGeometry<TCoordinate> Intersection(IGeometry<TCoordinate> other)
         {
+            // special case: if one input is empty ==> empty
+            if (IsEmpty) return _factory.CreateGeometryCollection();
+            if (other.IsEmpty) return _factory.CreateGeometryCollection();
+
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
 
-            return OverlayOp<TCoordinate>.Overlay(this, other, SpatialFunctions.Intersection);
+            return SnapIfNeededOverlayOp<TCoordinate>.Overlay(this, other, SpatialFunctions.Intersection);
         }
 
         /// <summary>
@@ -885,10 +913,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (other == null) throw new ArgumentNullException("other");
 
+            // special case: if either input is empty ==> other input
+            if (IsEmpty) return other.Clone();
+            if (other.IsEmpty) return Clone();
+
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
 
-            return OverlayOp<TCoordinate>.Overlay(this, other, SpatialFunctions.Union);
+            //return UnaryUnionOp<TCoordinate>.Union(other);
+            return SnapIfNeededOverlayOp<TCoordinate>.Overlay(this, other, SpatialFunctions.Union);
         }
 
         /// <summary>
@@ -902,10 +935,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (other == null) throw new ArgumentNullException("other");
 
+            // special case: if A.isEmpty ==> empty; if B.isEmpty ==> A
+            if (IsEmpty) return _factory.CreateGeometryCollection();
+            if (other.IsEmpty) return Clone();
+
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
 
-            return OverlayOp<TCoordinate>.Overlay(this, other, SpatialFunctions.Difference);
+            return SnapIfNeededOverlayOp<TCoordinate>.Overlay(this, other, SpatialFunctions.Difference);
         }
 
         /// <summary>
@@ -920,10 +957,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (other == null) throw new ArgumentNullException("other");
 
+            // special case: if either input is empty ==> other input
+            if (IsEmpty) return other.Clone();
+            if (other.IsEmpty) return Clone();
+
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
 
-            return OverlayOp<TCoordinate>.Overlay(this, other, SpatialFunctions.SymDifference);
+            return SnapIfNeededOverlayOp<TCoordinate>.Overlay(this, other, SpatialFunctions.SymDifference);
         }
 
         /// <summary>
@@ -1119,7 +1160,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (g == null) throw new ArgumentNullException("g");
 
-            throw new NotImplementedException();
+            return Relate(g).Equals(intersectionPattern);
         }
 
         public Boolean Relate(IGeometry<TCoordinate> g,
@@ -1526,7 +1567,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// if <paramref name="g"/> is a <see cref="GeometryCollection{TCoordinate}" />, 
         /// but not one of its subclasses.
         /// </exception>
-        protected static void CheckNotGeometryCollection(IGeometry g)
+        protected static void CheckNotGeometryCollection(IGeometry<TCoordinate> g)
         {
             if (isGeometryCollection(g))
             {
@@ -1600,12 +1641,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <exception cref="ArgumentException">
         /// If <c>g</c> is a <see cref="GeometryCollection{TCoordinate}" />, but not one of its subclasses.
         /// </exception>        
-        private static Boolean isGeometryCollection(IGeometry g)
+        private static Boolean isGeometryCollection(IGeometry<TCoordinate> g)
         {
-            return g is IGeometryCollection &&
-                   !(g is IMultiPoint) &&
-                   !(g is IMultiCurve) &&
-                   !(g is IMultiSurface);
+            return g is IGeometryCollection<TCoordinate> &&
+                   !(g is IMultiPoint<TCoordinate>) &&
+                   !(g is IMultiCurve<TCoordinate>) &&
+                   !(g is IMultiSurface<TCoordinate>);
         }
 
         private static IPoint<TCoordinate> createPointFromInternalCoord(TCoordinate coord,

@@ -1,150 +1,175 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
-using NPack;
+using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
-
-#if DOTNET35
-using System.Linq;
-#endif
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
+
     /// <summary>
-    /// Wraps a <see cref="INoder{TCoordinate}" /> and transforms its input into 
-    /// the integer domain.
+    /// Wraps a <see cref="INoder" /> and transforms its input into the integer domain.
     /// This is intended for use with Snap-Rounding noders,
     /// which typically are only intended to work in the integer domain.
     /// Offsets can be provided to increase the number of digits of available precision.
     /// </summary>
-    public class ScaledNoder<TCoordinate, TMatrix> : INoder<TCoordinate>
+    public class ScaledNoder<TCoordinate> : INoder<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
             IComparable<TCoordinate>, IConvertible,
             IComputable<Double, TCoordinate>
-        where TMatrix : ITransformMatrix<DoubleComponent, TCoordinate, TMatrix>
     {
-        private readonly TMatrix _inverse;
-        private readonly Boolean _isScaled;
-        private readonly INoder<TCoordinate> _noder;
-        private readonly ICoordinateSequenceFactory<TCoordinate> _sequenceFactory;
-        private readonly TMatrix _transform;
+        private INoder<TCoordinate> _noder = null;
+        private Double _scaleFactor = 0;
+        private Double _offsetX = 0;
+        private Double _offsetY = 0;
+        private Boolean _isScaled = false;
+        private ICoordinateSequenceFactory<TCoordinate> _sequenceFactory;
+        private ICoordinateFactory<TCoordinate> _coordFactory;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScaledNoder{TCoordinate}"/> class.
+        /// </summary>
+        /// <param name="noder"></param>
+        /// <param name="scaleFactor"></param>
+        public ScaledNoder(ICoordinateSequenceFactory<TCoordinate> sequenceFactory, INoder<TCoordinate> noder, Double scaleFactor)
+            : this(sequenceFactory, noder, scaleFactor, 0, 0) { }
 
         /// <summary>
-        /// Initializes a new instance of the 
-        /// <see cref="ScaledNoder{TCoordinate, TMatrix}"/> class.
+        /// 
         /// </summary>
-        public ScaledNoder(INoder<TCoordinate> noder,
-                           Double scaleFactor,
-                           ICoordinateSequenceFactory<TCoordinate> factory)
-            : this(noder, scaleFactor, 0, 0, factory)
+        /// <param name="noder"></param>
+        /// <param name="scaleFactor"></param>
+        /// <param name="offsetX"></param>
+        /// <param name="offsetY"></param>
+        public ScaledNoder(ICoordinateSequenceFactory<TCoordinate> sequenceFactory, INoder<TCoordinate> noder, Double scaleFactor, Double offsetX, Double offsetY)
         {
-        }
-
-        public ScaledNoder(INoder<TCoordinate> noder,
-                           Double scaleFactor,
-                           Double offsetX,
-                           Double offsetY,
-                           ICoordinateSequenceFactory<TCoordinate> factory)
-        {
+            _sequenceFactory = sequenceFactory;
+            _coordFactory = sequenceFactory.CoordinateFactory;
             _noder = noder;
-            _sequenceFactory = factory;
-            ICoordinateFactory<TCoordinate> coordinateFactory = factory.CoordinateFactory;
-            Debug.Assert(coordinateFactory != null);
-            TCoordinate scaleVector = coordinateFactory.Create(scaleFactor, scaleFactor);
-            TCoordinate offsetVector = coordinateFactory.Create(offsetX, offsetY);
-
-            throw new NotImplementedException();
-
-            // Need to inject an IMatrixFactory here...
-            //_transform = coordinateFactory.CreateTransform<TMatrix>(scaleVector, 
-            //                                                        0, 
-            //                                                        offsetVector);
-            _inverse = _transform.Inverse;
-
+            _scaleFactor = scaleFactor;
             // no need to scale if input precision is already integral
             _isScaled = !IsIntegerPrecision;
+            _offsetX = offsetX;
+            _offsetY = offsetY;
         }
 
-        public Boolean IsIntegerPrecision
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsIntegerPrecision
         {
-            get { return _transform[0, 0].Equals(1.0); }
-        }
-
-        #region INoder<TCoordinate> Members
-
-        public IEnumerable<NodedSegmentString<TCoordinate>> Node(
-            IEnumerable<NodedSegmentString<TCoordinate>> inputSegStrings)
-        {
-            IEnumerable<NodedSegmentString<TCoordinate>> intSegStrings
-                = inputSegStrings;
-
-            if (_isScaled)
+            get
             {
-                intSegStrings = scale(inputSegStrings);
+                return _scaleFactor == 1.0;
             }
+            set
+            {
+                _scaleFactor = 1.0d;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="segStrings"></param>
+        /// <returns></returns>
+        private IEnumerable<NodedSegmentString<TCoordinate>> Scale(
+            IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
+        {
+            Func<NodedSegmentString<TCoordinate>, NodedSegmentString<TCoordinate>>
+                componentTransform = delegate(NodedSegmentString<TCoordinate> segmentString)
+                {
+                    return new NodedSegmentString<TCoordinate>(
+                        Scale(segmentString.Coordinates),
+                        segmentString.Context);
+                };
+            return Processor.Transform<NodedSegmentString<TCoordinate>>(segStrings, componentTransform);
+        }
+
+        private ICoordinateSequence<TCoordinate> Scale(ICoordinateSequence<TCoordinate> pts)
+        {
+            return _sequenceFactory.Create(Math.Round, Scale((IEnumerable<TCoordinate>)pts));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pts"></param>
+        /// <returns></returns>
+        private IEnumerable<TCoordinate> Scale(IEnumerable<TCoordinate> coords)
+        {
+            TCoordinate last = default(TCoordinate);
+            foreach (TCoordinate coord in coords)
+            {
+                TCoordinate current = _coordFactory.Create(
+                    Math.Round((coord[Ordinates.X] - _offsetX)*_scaleFactor),
+                    Math.Round((coord[Ordinates.Y] - _offsetY)*_scaleFactor));
+                if (!current.Equals(last))
+                    yield return current;
+                last = current;
+            }
+        }
+        private ICoordinateSequence<TCoordinate> Rescale(ICoordinateSequence<TCoordinate> pts)
+        {
+            return _sequenceFactory.Create(Math.Round, Rescale((IEnumerable<TCoordinate>)pts));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pts"></param>
+        /// <returns></returns>
+        private IEnumerable<TCoordinate> Rescale(IEnumerable<TCoordinate> coords)
+        {
+            foreach (TCoordinate coord in coords)
+            {
+                yield return _coordFactory.Create(
+                    coord[Ordinates.X] / _scaleFactor + _offsetX,
+                    coord[Ordinates.Y] / _scaleFactor + _offsetY);
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="segStrings"></param>
+        /// <returns></returns>
+        private IEnumerable<NodedSegmentString<TCoordinate>> Rescale(
+            IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
+        {
+            Func<NodedSegmentString<TCoordinate>, NodedSegmentString<TCoordinate>>
+                componentTransform = delegate(NodedSegmentString<TCoordinate> segmentString)
+                {
+                    return new NodedSegmentString<TCoordinate>(
+                        Rescale(segmentString.Coordinates),
+                        segmentString.Context);
+                };
+            return Processor.Transform<NodedSegmentString<TCoordinate>>(segStrings, componentTransform);
+        }
+
+        #region INoder<TCoordinate> Member
+
+        public IEnumerable<NodedSegmentString<TCoordinate>> Node(IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
+        {
+            IEnumerable<NodedSegmentString<TCoordinate>> intSegStrings = IsIntegerPrecision
+                                                                             ?
+                                                                                 segStrings
+                                                                             :
+                                                                                 Scale(segStrings);
 
             IEnumerable<NodedSegmentString<TCoordinate>> splitSS
                 = _noder.Node(intSegStrings);
 
             if (_isScaled)
             {
-                rescale(splitSS);
+                Rescale(splitSS);
             }
 
             return splitSS;
         }
 
         #endregion
-
-        private IEnumerable<NodedSegmentString<TCoordinate>> scale(
-            IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
-        {
-            Func<NodedSegmentString<TCoordinate>, NodedSegmentString<TCoordinate>>
-                componentTransform = delegate(NodedSegmentString<TCoordinate> segmentString)
-                                         {
-                                             return new NodedSegmentString<TCoordinate>(
-                                                 scale(segmentString.Coordinates),
-                                                 segmentString.Context);
-                                         };
-            return Processor.Transform<NodedSegmentString<TCoordinate>>(segStrings, componentTransform);
-        }
-
-        private ICoordinateSequence<TCoordinate> scale(ICoordinateSequence<TCoordinate> pts)
-        {
-            IEnumerable<TCoordinate> transformed = _transform.TransformVectors(pts);
-
-            return _sequenceFactory.Create(Math.Round, transformed);
-        }
-
-        private static IEnumerable<NodedSegmentString<TCoordinate>> rescale(
-            IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
-        {
-            yield break;
-
-            // TODO rescale the cooridnates...
-
-            //CollectionUtil.Apply(segStrings, delegate(object obj)
-            //                                 {
-            //                                     SegmentString ss = (SegmentString) obj;
-            //                                     rescale(ss.Coordinates);
-            //                                     return null;
-            //                                 });
-        }
-
-        private IEnumerable<TCoordinate> rescale(IEnumerable<TCoordinate> pts)
-        {
-            yield break;
-
-            // TODO compute inverse of cooridnates
-            // _inverse.Transform(pts)...
-            //
-            //for (Int32 i = 0; i < pts.Length; i++)
-            //{
-            //    pts[i].X = pts[i].X/_scaleFactor + _offsetX;
-            //    pts[i].Y = pts[i].Y/_scaleFactor + _offsetY;
-            //}
-        }
     }
 }

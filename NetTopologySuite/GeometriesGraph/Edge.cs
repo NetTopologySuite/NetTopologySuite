@@ -16,11 +16,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// Represents an edge in a <see cref="GeometryGraph{TCoordinate}"/>.
     /// </summary>
     /// <typeparam name="TCoordinate">The type of coordinate.</typeparam>
-    public class Edge<TCoordinate> : GraphComponent<TCoordinate>,
-                                     IBoundable<IExtents<TCoordinate>>, IBoundable<Interval>
-        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
-            IComparable<TCoordinate>, IConvertible,
-            IComputable<Double, TCoordinate>
+    public class Edge<TCoordinate> : GraphComponent<TCoordinate>, 
+                                     IBoundable<IExtents<TCoordinate>> //, IBoundable<Interval>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, 
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         private readonly ICoordinateSequence<TCoordinate> _coordinates;
         private readonly Depth _depth = new Depth();
@@ -212,24 +212,24 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         #endregion
 
-        #region IBoundable<Interval> Member
+        //#region IBoundable<Interval> Member
 
-        Interval IBoundable<Interval>.Bounds
-        {
-            get { return new Interval(Extents.Min[Ordinates.X], Extents.Max[Ordinates.Y]); }
-        }
+        //Interval IBoundable<Interval>.Bounds
+        //{
+        //    get { return new Interval(Extents.Min[Ordinates.X], Extents.Max[Ordinates.Y]); }
+        //}
 
-        #endregion
+        //#endregion
 
-        #region IIntersectable<Interval> Member
+        //#region IIntersectable<Interval> Member
 
-        bool IIntersectable<Interval>.Intersects(Interval other)
-        {
-            Interval bounds = new Interval(Extents.Min[Ordinates.X], Extents.Max[Ordinates.Y]);
-            return bounds.Intersects(other);
-        }
+        //bool IIntersectable<Interval>.Intersects(Interval other)
+        //{
+        //    Interval bounds = new Interval(Extents.Min[Ordinates.X], Extents.Max[Ordinates.Y]);
+        //    return bounds.Intersects(other);
+        //}
 
-        #endregion
+        //#endregion
 
         /// <summary> 
         /// Updates an <see cref="IntersectionMatrix"/> from the label for an edge.
@@ -468,5 +468,24 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         //    outstream.WriteLine(String.Empty);
         //}
+
+        //#region IBoundable<Interval> Member
+
+        //Interval IBoundable<Interval>.Bounds
+        //{
+        //    get { return new Interval(Extents.Min[Ordinates.X], Extents.Max[Ordinates.Y]); }
+        //}
+
+        //#endregion
+
+        //#region IIntersectable<Interval> Member
+
+        //bool IIntersectable<Interval>.Intersects(Interval other)
+        //{
+        //    Interval bounds = new Interval(Extents.Min[Ordinates.X], Extents.Max[Ordinates.Y]);
+        //    return bounds.Intersects(other);
+        //}
+
+        //#endregion
     }
 }

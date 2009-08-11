@@ -57,6 +57,64 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return _p0; }
         }
 
+        public TCoordinate MidPoint(ICoordinateFactory<TCoordinate> coordFact)
+        {
+            return coordFact.Create((_p0[Ordinates.X] + _p1[Ordinates.X])*0.5d,
+                                     (_p0[Ordinates.X] + _p1[Ordinates.X])*0.5d);
+        }
+
+        ///<summary>
+        /// Computes the {@link Coordinate} that lies a given
+        /// fraction along the line defined by this segment.
+        /// A fraction of <code>0.0</code> returns the start point of the segment;
+        /// a fraction of <code>1.0</code> returns the end point of the segment.
+        /// If the fraction is &lt; 0.0 or &gt; 1.0 the point returned 
+        /// will lie before the start or beyond the end of the segment. 
+        ///</summary>
+        ///<param name="coordFact">factory to create the point</param>
+        ///<param name="segmentLengthFraction">the fraction of the segment length along the line</param>
+        ///<returns>the point at that distance</returns>
+        public TCoordinate PointAlong(ICoordinateFactory<TCoordinate> coordFact, Double segmentLengthFraction)
+        {
+            return coordFact.Create(
+                P0[Ordinates.X] + segmentLengthFraction * (P1[Ordinates.X] - P0[Ordinates.X]),
+                P0[Ordinates.Y] + segmentLengthFraction * (P1[Ordinates.Y] - P0[Ordinates.Y]));
+        }
+
+        /**
+         * Computes the {@link Coordinate} that lies a given
+         * fraction along the line defined by this segment and offset from 
+         * the segment by a given distance.
+         * A fraction of <code>0.0</code> offsets from the start point of the segment;
+         * a fraction of <code>1.0</code> offsets from the end point of the segment.
+         * The computed point is offset to the left of the line if the offset distance is
+         * positive, to the right if negative.
+         *
+         * @param segmentLengthFraction the fraction of the segment length along the line
+         * @param offsetDistance the distance the point is offset from the segment
+         *    (positive is to the left, negative is to the right)
+         * @return the point at that distance and offset
+         */
+        public TCoordinate PointAlongOffset(ICoordinateFactory<TCoordinate> coordFact, Double segmentLengthFraction, Double offsetDistance)
+        {
+            // the point on the segment line
+            Double segx = P0[Ordinates.X] + segmentLengthFraction * (P1[Ordinates.X] - P0[Ordinates.X]);
+            Double segy = P0[Ordinates.Y] + segmentLengthFraction * (P1[Ordinates.Y] - P0[Ordinates.Y]);
+
+            Double dx = P1[Ordinates.X] - P0[Ordinates.X];
+            Double dy = P1[Ordinates.Y] - P0[Ordinates.Y];
+            Double len = Math.Sqrt(dx * dx + dy * dy);
+            // u is the vector that is the length of the offset, in the direction of the segment
+            Double ux = offsetDistance * dx / len;
+            Double uy = offsetDistance * dy / len;
+
+            // the offset point is the seg point plus the offset vector rotated 90 degrees CCW
+            Double offsetx = segx - uy;
+            Double offsety = segy + ux;
+
+            return coordFact.Create(offsetx, offsety);
+        }
+
         public TCoordinate P1
         {
             get { return _p1; }

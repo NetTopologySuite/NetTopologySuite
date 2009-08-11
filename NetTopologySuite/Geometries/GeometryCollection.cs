@@ -704,7 +704,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     }
                 }
             }
-        }
+           else
+			{
+				 yield return geometry;
+        	}
+		}
 
         /*
          * [codekaizen 2008-01-14] removed when replaced visitor patterns with

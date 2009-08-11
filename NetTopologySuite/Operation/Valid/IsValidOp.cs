@@ -19,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
     /// </summary>
     public class IsValidOp<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<Double, TCoordinate>, IConvertible
+                            IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly Boolean _isChecked;
         private readonly IGeometry<TCoordinate> _parentGeometry; // the base Geometry to be validated
@@ -466,7 +466,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             if (!ring.IsClosed)
             {
                 _validErr = new TopologyValidationError(TopologyValidationErrors.RingNotClosed,
-                                                        ring.Coordinates[0]);
+                                                       ring.Coordinates[0]);
             }
         }
 
@@ -475,7 +475,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             if (graph.HasTooFewPoints)
             {
                 _validErr = new TopologyValidationError(TopologyValidationErrors.TooFewPoints,
-                                                        graph.InvalidPoint);
+                                                       graph.InvalidPoint);
                 return;
             }
         }
@@ -602,6 +602,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 
             QuadtreeNestedRingTester<TCoordinate> nestedTester
                 = new QuadtreeNestedRingTester<TCoordinate>(p.Factory, graph);
+            //IndexedNestedRingTester<TCoordinate> nestedTester =
+            //    new IndexedNestedRingTester<TCoordinate>(p.Factory, graph);
 
             foreach (ILinearRing<TCoordinate> innerHole in p.InteriorRings)
             {
@@ -613,7 +615,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             if (!isNonNested)
             {
                 _validErr = new TopologyValidationError(TopologyValidationErrors.NestedHoles,
-                                                        nestedTester.NestedPoint);
+                                                       nestedTester.NestedPoint);
             }
         }
 
@@ -763,7 +765,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             if (!cit.AreInteriorsConnected)
             {
                 _validErr = new TopologyValidationError(TopologyValidationErrors.DisconnectedInteriors,
-                                                        cit.Coordinate);
+                                                       cit.Coordinate);
             }
         }
     }

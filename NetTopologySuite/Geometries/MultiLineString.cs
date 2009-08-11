@@ -111,14 +111,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                if (IsEmpty)
-                {
-                    return Factory.CreateGeometryCollection(null);
-                }
+                return new BoundaryOp<TCoordinate>(this).GetBoundary();
+                //if (IsEmpty)
+                //{
+                //    return Factory.CreateGeometryCollection(null);
+                //}
 
-                GeometryGraph<TCoordinate> g = new GeometryGraph<TCoordinate>(0, this);
-                IEnumerable<TCoordinate> pts = g.GetBoundaryPoints();
-                return Factory.CreateMultiPoint(pts);
+                //GeometryGraph<TCoordinate> g = new GeometryGraph<TCoordinate>(0, this);
+                //IEnumerable<TCoordinate> pts = g.GetBoundaryPoints();
+                //return Factory.CreateMultiPoint(pts);
             }
         }
 

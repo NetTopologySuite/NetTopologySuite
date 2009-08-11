@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
@@ -657,10 +658,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return;
             }
 
+            TCoordinate last = ring.Coordinates.Last;
             TCoordinate minCoordinate = ring.Coordinates.Minimum;
-            ring.Coordinates.Scroll(minCoordinate);
+            Int32 minIndex = ring.Coordinates.IndexOf(minCoordinate);
+            if (minIndex > 0)
+            {
+                ring.Coordinates.Scroll(minCoordinate);
+            ring.Coordinates.RemoveAt(ring.Coordinates.Count - minIndex);
+            ring.Coordinates.CloseRing();
+            }
 
-            if (CGAlgorithms<TCoordinate>.IsCCW(ring.Coordinates) == clockwise)
+    if (CGAlgorithms<TCoordinate>.IsCCW(ring.Coordinates) == clockwise)
             {
                 ring.Coordinates.Reverse();
             }

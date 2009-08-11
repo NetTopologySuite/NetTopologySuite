@@ -57,7 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         }
 
         public OffsetCurveBuilder(IGeometryFactory<TCoordinate> geoFactory,
-                                  IPrecisionModel<TCoordinate> precisionModel, Int32 quadrantSegments)
+            IPrecisionModel<TCoordinate> precisionModel, Int32 quadrantSegments)
         {
             _coordinateFactory = geoFactory.CoordinateFactory;
             _sequenceFactory = geoFactory.CoordinateSequenceFactory;

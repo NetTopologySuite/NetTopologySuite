@@ -199,17 +199,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                if (IsEmpty)
-                {
-                    return Factory.CreateGeometryCollection();
-                }
+                return new BoundaryOp<TCoordinate>(this).GetBoundary();
+                //if (IsEmpty)
+                //{
+                //    return Factory.CreateGeometryCollection();
+                //}
 
-                if (IsClosed)
-                {
-                    return Factory.CreateMultiPoint();
-                }
+                //if (IsClosed)
+                //{
+                //    return Factory.CreateMultiPoint();
+                //}
 
-                return Factory.CreateMultiPoint(StartPoint, EndPoint);
+                //return Factory.CreateMultiPoint(StartPoint, EndPoint);
             }
         }
 

@@ -65,7 +65,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns><see langword="true"/> if p is inside ring.</returns>
         public static Boolean IsPointInRing(TCoordinate p, IEnumerable<TCoordinate> ring)
         {
-            Int32 crossings = 0; // number of segment/ray crossings
+            return RayCrossingCounter<TCoordinate>.LocatePointInRing(p, ring) != Locations.Exterior;
+            Int32 crossings = 0;        // number of segment/ray crossings
 
             // For each segment l = (i-1, i), see if it crosses ray 
             // from test point in positive x direction.
