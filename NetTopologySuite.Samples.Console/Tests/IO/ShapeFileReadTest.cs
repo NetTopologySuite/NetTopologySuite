@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.Samples.SimpleTests;
 using NUnit.Framework;
@@ -8,12 +9,12 @@ using NUnit.Framework;
 namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.IO
 {
     [TestFixture]
-    public class ShapeFileDataReaderTest : BaseSamples    
+    public class ShapeFileDataReaderTest : BaseSamples
     {
         public ShapeFileDataReaderTest()
         {
             // Set current dir to shapefiles dir
-			Environment.CurrentDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../NetTopologySuite.Samples.Shapefiles");
+            Environment.CurrentDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../NetTopologySuite.Samples.Shapefiles");
         }
 
         [Test]
@@ -24,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.IO
             {
                 var length = reader.DbaseHeader.NumFields;
                 while (reader.Read())
-                {                    
+                {
                     Debug.WriteLine(reader.GetValue(length - 1));
                 }
             }
@@ -37,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.IO
                 {
                     Debug.WriteLine(reader.GetValue(length - 1));
                 }
-            }      
+            }
         }
 
         [Test]
@@ -54,21 +55,40 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.IO
             Assert.Fail();
         }
 
-         [Test]
+        [Test]
         public void TestReadingShapeFileWithNulls()
-         {
-             using (var reader = new ShapefileDataReader("AllNulls", Factory))
-             {
-                 while (reader.Read())
-                 {
-                     var geom = reader.Geometry;
-                     Assert.IsNotNull(geom);
+        {
+            using (var reader = new ShapefileDataReader("AllNulls", Factory))
+            {
+                while (reader.Read())
+                {
+                    var geom = reader.Geometry;
+                    Assert.IsNotNull(geom);
 
-                     var values = new object[5];
-                     var result = reader.GetValues(values);
-                     Assert.IsNotNull(values);
-                 }
-             }             
-         }
+                    var values = new object[5];
+                    var result = reader.GetValues(values);
+                    Assert.IsNotNull(values);
+                }
+            }
+        }
+
+        [Test]
+        public void TestReadingShapeFileAfvalbakken()
+        {
+            using (var reader = new ShapefileDataReader("afvalbakken", GeometryFactory.Default))
+            {
+                var index = 0;
+                while (reader.Read())
+                {                    
+                    var geom = reader.Geometry;
+                    Assert.IsNotNull(geom);
+                    Debug.WriteLine(String.Format("Geom {0}: {1}", index++, geom));
+
+                    Assert.IsTrue(geom.IsValid);
+                    var buff = geom.Buffer(10);
+                    Assert.IsNotNull(buff);
+                }
+            }
+        }
     }
 }
