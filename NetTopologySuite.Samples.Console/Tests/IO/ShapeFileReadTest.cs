@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.Samples.SimpleTests;
@@ -75,20 +77,32 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.IO
         [Test]
         public void TestReadingShapeFileAfvalbakken()
         {
-            using (var reader = new ShapefileDataReader("afvalbakken", GeometryFactory.Default))
+            var factory = GeometryFactory.Default;
+            var polys = new List<IPolygon>();            
+            using (var reader = new ShapefileDataReader("afvalbakken", factory))
             {
                 var index = 0;
                 while (reader.Read())
                 {                    
                     var geom = reader.Geometry;
                     Assert.IsNotNull(geom);
-                    Debug.WriteLine(String.Format("Geom {0}: {1}", index++, geom));
-
                     Assert.IsTrue(geom.IsValid);
+                    Debug.WriteLine(String.Format("Geom {0}: {1}", index++, geom));
+                    
                     var buff = geom.Buffer(10);
                     Assert.IsNotNull(buff);
+
+                    polys.Add((IPolygon) geom);
                 }
             }
+
+            var multiPolygon = factory.CreateMultiPolygon(polys.ToArray());
+            Assert.IsNotNull(multiPolygon);
+            Assert.IsTrue(multiPolygon.IsValid);
+
+            var multiBuffer = multiPolygon.Buffer(10);
+            Assert.IsNotNull(multiBuffer);
+            Assert.IsTrue(multiBuffer.IsValid);
         }
     }
 }
