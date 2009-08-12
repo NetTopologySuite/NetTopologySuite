@@ -64,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                 ILinearRing innerRing = (ILinearRing) rings[i];
                 ICoordinate[] innerRingPts = innerRing.Coordinates;
 
-                IList results = quadtree.Query((Envelope) innerRing.EnvelopeInternal);
+                IList results = quadtree.Query(innerRing.EnvelopeInternal);
                 for (int j = 0; j < results.Count; j++)
                 {
                     ILinearRing searchRing = (ILinearRing) results[j];

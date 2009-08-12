@@ -78,7 +78,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.IO
         public void TestReadingShapeFileAfvalbakken()
         {
             var factory = GeometryFactory.Default;
-            var polys = new List<IPolygon>();            
+            var polys = new List<IPolygon>();
+            const int distance = 500;
             using (var reader = new ShapefileDataReader("afvalbakken", factory))
             {
                 var index = 0;
@@ -89,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.IO
                     Assert.IsTrue(geom.IsValid);
                     Debug.WriteLine(String.Format("Geom {0}: {1}", index++, geom));
                     
-                    var buff = geom.Buffer(10);
+                    var buff = geom.Buffer(distance);
                     Assert.IsNotNull(buff);
 
                     polys.Add((IPolygon) geom);
@@ -100,9 +101,13 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.IO
             Assert.IsNotNull(multiPolygon);
             Assert.IsTrue(multiPolygon.IsValid);
 
-            var multiBuffer = multiPolygon.Buffer(10);
-            Assert.IsNotNull(multiBuffer);
+            var multiBuffer = (IMultiPolygon) multiPolygon.Buffer(distance);
+            Assert.IsNotNull(multiBuffer);            
             Assert.IsTrue(multiBuffer.IsValid);
+
+            var writer = new ShapefileWriter(factory); 
+            writer.Write(@"c:\test_buffer", multiBuffer); 
+            ShapefileWriter.WriteDummyDbf(@"c:\test_buffer.dbf", multiBuffer.NumGeometries);        
         }
     }
 }
