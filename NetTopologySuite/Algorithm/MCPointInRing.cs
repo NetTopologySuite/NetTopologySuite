@@ -4,7 +4,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Index.BintreeTemp;
+using GisSharpBlog.NetTopologySuite.Index.Bintree;
 using GisSharpBlog.NetTopologySuite.Index.Chain;
 using NPack.Interfaces;
 
@@ -38,8 +38,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private readonly ILinearRing<TCoordinate> _ring;
-        //private readonly BinTree<MonotoneChain<TCoordinate>> _tree = new BinTree<MonotoneChain<TCoordinate>>();
-        private readonly Bintree<MonotoneChain<TCoordinate>> _tree = new Bintree<MonotoneChain<TCoordinate>>();
+        private readonly BinTree<MonotoneChain<TCoordinate>> _tree = new BinTree<MonotoneChain<TCoordinate>>();
+        //private readonly Bintree<MonotoneChain<TCoordinate>> _tree = new Bintree<MonotoneChain<TCoordinate>>();
         private Int32 _crossings; // number of segment/ray crossings
 
         private Interval _interval;

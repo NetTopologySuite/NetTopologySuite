@@ -104,6 +104,14 @@ namespace GisSharpBlog.NetTopologySuite.Index
             }
         }
 
+        public virtual bool BoundsSet
+        {
+            get
+            {
+                return _boundsSet;
+            }
+        }
+
         public Boolean IsLeaf
         {
             get { return Level == 0; }

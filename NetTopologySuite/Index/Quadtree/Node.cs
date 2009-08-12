@@ -118,7 +118,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         public void InsertNode(Node<TCoordinate, TItem> node)
         {
             Assert.IsTrue(Bounds == null || Bounds.Contains(node.Bounds));
-            Int32 index = GetSubnodeIndex(node.Bounds, _center);
+            Int32 index = GetChildSubnodeIndex(node.Bounds, _center);
 
             if (node._level == _level - 1)
             {

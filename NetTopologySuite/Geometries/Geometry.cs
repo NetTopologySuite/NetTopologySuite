@@ -917,8 +917,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (IsEmpty) return other.Clone();
             if (other.IsEmpty) return Clone();
 
-            CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection(other);
+            //CheckNotGeometryCollection(this);
+            //CheckNotGeometryCollection(other);
 
             //return UnaryUnionOp<TCoordinate>.Union(other);
             return SnapIfNeededOverlayOp<TCoordinate>.Overlay(this, other, SpatialFunctions.Union);

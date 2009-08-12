@@ -312,11 +312,6 @@
     <Compile Include="Geometries\Utilities\ShortCircuitedGeometryVisitor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Index\BintreeTemp\Bintree.cs" />
-    <Compile Include="Index\BintreeTemp\Key.cs" />
-    <Compile Include="Index\BintreeTemp\Node.cs" />
-    <Compile Include="Index\BintreeTemp\NodeBase.cs" />
-    <Compile Include="Index\BintreeTemp\Root.cs" />
     <Compile Include="Index\Bintree\Bintree.cs" />
     <Compile Include="Index\Bintree\BinTreeKey.cs" />
     <Compile Include="Index\Bintree\Node.cs" />

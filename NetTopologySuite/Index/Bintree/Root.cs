@@ -16,7 +16,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         // the singleton root node is centered at the origin.
         private const Double Origin = 0.0;
 
-        public Root() : base(Interval.Infinite, -1)
+        public Root()
+            : base(Interval.Infinite, -1)
         {
         }
 
@@ -33,7 +34,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             Interval bounds = item.Bounds;
             Int32 index = GetSubNodeIndex(bounds, Origin);
 
-            Node<TBoundable> subNode = GetSubNode(index);
+            Node<TBoundable> subNode = GetSubNode(index, false);
 
             //Node<TBoundable> subNode = GetSubNode(bounds, Origin);
 
@@ -46,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 
             // If the subnode doesn't exist or this item is not contained in it,
             // have to expand the tree upward to contain the item.
-            if (!subNode.Bounds.Contains(bounds))
+            if (subNode.BoundsSet && !subNode.Bounds.Contains(bounds))
             {
                 Node<TBoundable> largerNode = Node<TBoundable>.CreateExpanded(subNode, bounds);
                 SetSubNode(index, largerNode);
@@ -54,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 
             // At this point we have a subnode which exists and must contain
             // contains the extents for the item.  Insert the item into the tree.
-            subNode = GetSubNode(index);
+            subNode = GetSubNode(index, true);
             insertContained(subNode, bounds, item);
         }
 
@@ -84,7 +85,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// </summary>
         private static void insertContained(Node<TBoundable> tree, Interval itemInterval, TBoundable item)
         {
-            Assert.IsTrue(tree.Bounds.Contains(itemInterval));
+            //Assert.IsTrue(tree.Bounds.Contains(itemInterval)); //jd:invalid assertion
 
             /*
             * Do NOT create a new node for zero-area intervals - this would lead

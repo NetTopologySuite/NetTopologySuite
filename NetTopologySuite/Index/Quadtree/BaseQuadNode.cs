@@ -173,6 +173,37 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         {
             Int32 subnodeIndex = -1;
 
+            if (extents.GetMin(Ordinates.X) > center[Ordinates.X])
+            {
+                if (extents.GetMin(Ordinates.Y) > center[Ordinates.Y])
+                {
+                    subnodeIndex = 3;
+                }
+                if (extents.GetMax(Ordinates.Y) < center[Ordinates.Y])
+                {
+                    subnodeIndex = 1;
+                }
+            }
+
+            if (extents.GetMax(Ordinates.X) < center[Ordinates.X])
+            {
+                if (extents.GetMin(Ordinates.Y) > center[Ordinates.Y])
+                {
+                    subnodeIndex = 2;
+                }
+                if (extents.GetMax(Ordinates.Y) < center[Ordinates.Y])
+                {
+                    subnodeIndex = 0;
+                }
+            }
+
+            return subnodeIndex;
+        }
+
+        protected static Int32 GetChildSubnodeIndex(IExtents<TCoordinate> extents, TCoordinate center)
+        {
+            Int32 subnodeIndex = -1;
+
             if (extents.GetMin(Ordinates.X) >= center[Ordinates.X])
             {
                 if (extents.GetMin(Ordinates.Y) >= center[Ordinates.Y])

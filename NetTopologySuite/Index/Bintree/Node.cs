@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         {
             //_interval = interval;
             //_level = level;
-            _center = (bounds.Min + bounds.Max)/2;
+            _center = (bounds.Min + bounds.Max) / 2;
 
             if (Double.IsNaN(_center))
             {
@@ -80,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             }
 
             // create the node if it does not exist
-            Node<TBoundable> node = GetSubNode(subnodeIndex);
+            Node<TBoundable> node = GetSubNode(subnodeIndex, true);
 
             // recursively search the found/created node
             return node.GetNode(searchInterval);
@@ -92,7 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// </summary>
         public BaseBinNode<TBoundable> Find(Interval searchInterval)
         {
-            Node<TBoundable> subNode = GetSubNode(searchInterval, _center);
+            Node<TBoundable> subNode = GetSubNode(searchInterval, _center, false);
 
             if (subNode != null)
             {
@@ -109,7 +109,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             Assert.IsTrue(Bounds.Contains(node.Bounds));
             Int32 subnodeIndex = GetSubNodeIndex(node.Bounds, _center);
 
-            if (node.Level == Level - 1)
+            if (!BoundsSet || node.Level == Level - 1)
             {
                 SetSubNode(subnodeIndex, node);
             }

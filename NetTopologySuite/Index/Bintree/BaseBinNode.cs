@@ -226,24 +226,24 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// Get the subnode for the index.
         /// If it doesn't exist, create it.
         /// </summary>
-        protected Node<TItem> GetSubNode(Interval interval, Double center)
+        protected Node<TItem> GetSubNode(Interval interval, Double center, bool createNew)
         {
             Int32 index = GetSubNodeIndex(interval, center);
 
-            return GetSubNode(index);
+            return GetSubNode(index, createNew);
         }
 
         /// <summary>
         /// Get the subnode for the index.
         /// If it doesn't exist, create it.
         /// </summary>
-        protected Node<TItem> GetSubNode(Int32 index)
+        protected Node<TItem> GetSubNode(Int32 index, bool createNew)
         {
             Node<TItem> subNode;
 
             if (index == 0)
             {
-                if (SubNode1 == null)
+                if (SubNode1 == null && createNew)
                 {
                     SubNode1 = CreateSubNode(0);
                 }
@@ -252,7 +252,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             }
             else
             {
-                if (SubNode2 == null)
+                if (SubNode2 == null && createNew)
                 {
                     SubNode2 = CreateSubNode(1);
                 }
