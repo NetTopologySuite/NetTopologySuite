@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using GeoAPI.Coordinates;
@@ -32,51 +33,43 @@ namespace NetTopologySuite.Tests.OperationTests.Union
                 while (!txt.EndOfStream)
                 {
                     IGeometry<BufferedCoordinate> geom = _geometryFactory.WktReader.Read(txt.ReadLine());
-                    var mp =  geom as IMultiPolygon<BufferedCoordinate>;
+                    var mp = geom as IMultiPolygon<BufferedCoordinate>;
                     if (mp != null)
                     {
                         foreach (var polygon in mp)
                             geoms.Add(polygon);
                         continue;
                     }
-                    var p =  geom as IPolygon<BufferedCoordinate>;
-                    if ( p != null )
+                    var p = geom as IPolygon<BufferedCoordinate>;
+                    if (p != null)
                         geoms.Add(p);
                 }
-                //geoms.Add(_geometryFactory.WktReader.Read());
             }
 
-            //DateTime start = DateTime.Now;
-            //
-            //foreach (var geometry in geoms)
-            //{
-            //    u1 = u1 == null ? geometry.Clone() : SnapIfNeededOverlayOp<BufferedCoordinate>.Overlay(u1, geometry, SpatialFunctions.Union);
-            //}
-            //Console.WriteLine(string.Format("PolygonUnion duration: {0}", DateTime.Now.Subtract(start)));
-            //Console.WriteLine(u1.ToString());
-            //Console.WriteLine(u1.Extents.ToString());
+            Stopwatch stopwatch = new Stopwatch();
 
-            DateTime start = DateTime.Now;
+            stopwatch.Start();
+
             IGeometry<BufferedCoordinate> u2 = UnaryUnionOp<BufferedCoordinate>.Union(geoms);
-            Console.WriteLine(string.Format("UnaryUnionOp duration: {0}", DateTime.Now.Subtract(start)));
+
+            stopwatch.Stop();
+            Console.WriteLine(string.Format("UnaryUnionOp duration: {0}", stopwatch.Elapsed));
             Console.WriteLine(u2.ToString());
             Console.WriteLine(u2.Extents.ToString());
 
             IGeometry<BufferedCoordinate> u1 = geoms[0];
-            start = DateTime.Now;
-            foreach (IPolygonal<BufferedCoordinate> geometry in Enumerable.Skip(geoms,1))
+            stopwatch.Reset();
+            stopwatch.Start();
+            foreach (IPolygonal<BufferedCoordinate> geometry in Enumerable.Skip(geoms, 1))
             {
                 u1 = SnapIfNeededOverlayOp<BufferedCoordinate>.Overlay(u1, geometry, SpatialFunctions.Union);
             }
-            Console.WriteLine(string.Format("SnapIfNeededOverlayOp duration: {0}", DateTime.Now.Subtract(start)));
+            stopwatch.Stop();
+            Console.WriteLine(string.Format("SnapIfNeededOverlayOp duration: {0}", stopwatch.Elapsed));
             Console.WriteLine(u1.ToString());
             Console.WriteLine(u1.Extents.ToString());
 
             Assert.True(u1.Extents.Equals(u2.Extents));
-            //Assert.True(u1.Equals(u2));
-// Console.WriteLine("equal");
-//else
-// Console.WriteLine("shit");
 
         }
     }

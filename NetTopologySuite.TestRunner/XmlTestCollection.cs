@@ -81,22 +81,37 @@ namespace GisSharpBlog.NetTopologySuite
 
                     if (testItem != null)
                     {
-                        Boolean succeeded = testItem.Run();
-
-
-                        XmlTestEventArgs args =
-                            new XmlTestEventArgs(i, succeeded, testItem);
-
-                        if (TestEvent != null)
-                        {
-                            TestEvent(this, args);
-                        }
+                        RunTest(i);
                     }
                 }
 
                 return true;
             }
 
+            return false;
+        }
+
+        public bool RunTest(int index)
+        {
+            if (List.Count > index)
+            {
+                XmlTest testItem = (XmlTest)List[index];
+
+                if (testItem != null)
+                {
+                    Boolean succeeded = testItem.Run();
+
+
+                    XmlTestEventArgs args = new XmlTestEventArgs(index, succeeded, testItem);
+
+                    if (TestEvent != null)
+                    {
+                        TestEvent(this, args);
+                    }
+
+                    return succeeded;
+                }
+            }
             return false;
         }
 

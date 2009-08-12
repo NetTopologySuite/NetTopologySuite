@@ -12,6 +12,7 @@ namespace NetTopologySuite.Tests.Index
         [Fact]
         public void InsertingItemsResultsInCorrectCount()
         {
+           
             BinTree<String> binTree = new BinTree<String>();
             binTree.Insert(new Interval(5, 10), "A");
             Assert.Equal(1, binTree.TotalItemCount);

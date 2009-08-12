@@ -42,7 +42,14 @@ namespace NetTopologySuite.Tests.Vivid.XUnit
 
         private XmlTestCollection LoadTests()
         {
-            return controller.Load(Path.Combine(TestLocation, TestFile));
+            XmlTestCollection tests = controller.Load(Path.Combine(TestLocation, TestFile));
+            tests.TestEvent += tests_TestEvent;
+            return tests;
+        }
+
+        private void tests_TestEvent(object sender, XmlTestEventArgs args)
+        {
+            Assert.True(args.Success);
         }
 
         [Fact]
@@ -179,10 +186,32 @@ namespace NetTopologySuite.Tests.Vivid.XUnit
             ExecuteTest(20);
         }
 
+        //[Fact]
+        public void ManualTest()
+        {
+            int id = GetTestId();
+            {
+                if (id > -1)
+                    ExecuteTest(id);
+            }
+        }
+
+        private int GetTestId()
+        {
+            using (ArbitaryTestIdForm frm = new ArbitaryTestIdForm())
+            {
+                frm.ShowDialog();
+                return frm.TestId;
+            }
+        }
+
         private void ExecuteTest(int i)
         {
             if (i < Count)
-                Tests[i].RunTest();
+            {
+                Console.WriteLine(string.Format("Executing test {0}", i));
+                Tests.RunTest(i);
+            }
         }
 
         //some test files contain hundreds of tests..
@@ -200,7 +229,7 @@ namespace NetTopologySuite.Tests.Vivid.XUnit
                 }
                 catch (Exception ex)
                 {
-                    exceptions.Add(new ExceptionWrapper { Exception = ex, TestIndex = i });
+                    exceptions.Add(new ExceptionWrapper {Exception = ex, TestIndex = i});
                 }
             }
 
@@ -224,18 +253,19 @@ namespace NetTopologySuite.Tests.Vivid.XUnit
         {
             get
             {
-                return "\r\n" + string.Format("{0} Child tests failed \r\n", _innerExceptions.Count) + String.Join("\r\n==========================================\r\n",
+                return "\r\n" + string.Format("{0} Child tests failed \r\n", _innerExceptions.Count) +
+                       String.Join("\r\n==========================================\r\n",
                                    Enumerable.ToArray(Processor.Select(_innerExceptions,
                                                                        delegate(
                                                                            ExceptionWrapper
                                                                            o)
-                                                                       {
-                                                                           return
-                                                                               string.Format(
-                                                                                   "Test Index : {0}\r\n{1}\r\n{2}",
-                                                                                   o.TestIndex, o.Exception.Message,
-                                                                                   o.Exception.StackTrace);
-                                                                       })));
+                                                                           {
+                                                                               return
+                                                                                   string.Format(
+                                                                                       "Test Index : {0}\r\n{1}\r\n{2}",
+                                                                                       o.TestIndex, o.Exception.Message,
+                                                                                       o.Exception.StackTrace);
+                                                                           })));
             }
         }
     }

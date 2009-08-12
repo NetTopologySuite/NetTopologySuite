@@ -33,6 +33,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="xunit, Version=1.1.0.1323, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -40,6 +42,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArbitaryTestIdForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ArbitaryTestIdForm.Designer.cs">
+      <DependentUpon>ArbitaryTestIdForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="XUnitRunner.cs" />
     <Compile Include="XUnitTests.cs" />
   </ItemGroup>
@@ -52,6 +60,11 @@
       <Project>{13669184-2446-404F-8894-5E20B6C3FCC6}</Project>
       <Name>NetTopologySuite.TestRunner</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ArbitaryTestIdForm.resx">
+      <DependentUpon>ArbitaryTestIdForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
