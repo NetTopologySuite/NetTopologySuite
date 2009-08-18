@@ -165,7 +165,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation
 
         #region Nested type: EndpointInfo
 
-        private struct EndpointInfo
+        //[FObermaier: If this is a struct, eiInfo in the Dictionary is not beeing updated!
+        //If this is supposed to be a struct it needs to be removed and reinserted in the
+        //Dictionary]
+        private class EndpointInfo
         {
             private readonly TCoordinate _point;
             private Int32 _degree;

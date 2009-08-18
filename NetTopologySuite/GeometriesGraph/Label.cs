@@ -98,8 +98,20 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </param>
         /// <param name="on">The <see cref="Locations"/> value to label with.</param>
         public Label(Int32 geometryIndex, Locations on)
-            : this(geometryIndex, on, Locations.None, Locations.None)
+        //    : this(geometryIndex, on, Locations.None, Locations.None)
         {
+            checkIndex(geometryIndex);
+
+            if (geometryIndex == 0)
+            {
+                _g0 = new TopologyLocation(on);
+                _g1 = TopologyLocation.None;
+            }
+            else
+            {
+                _g0 = TopologyLocation.None;
+                _g1 = new TopologyLocation(on);
+            }
         }
 
         /// <summary>
@@ -169,7 +181,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </param>
         public Label(Label other, Int32 geometryIndex, Locations on)
         {
-            TopologyLocation newLocation = new TopologyLocation(on);
+            TopologyLocation newLocation;
+            if (other.IsLine(geometryIndex))
+                newLocation = new TopologyLocation(on);
+            else
+                newLocation = new TopologyLocation(on, Locations.None, Locations.None);
 
             if (geometryIndex == 0)
             {
@@ -454,12 +470,24 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             checkIndex(geometryIndex);
 
             TopologyLocation labelLocation = label[geometryIndex];
-
-            // TODO: rewrite using bitwise operators
-            TopologyLocation newLocation = new TopologyLocation(
-                labelLocation.On == Locations.None ? location : labelLocation.On,
-                labelLocation.Left == Locations.None ? location : labelLocation.Left,
-                labelLocation.Right == Locations.None ? location : labelLocation.Right);
+            TopologyLocation newLocation;
+            if (labelLocation.IsLine)
+            {
+                newLocation = new TopologyLocation(
+                    labelLocation.On == Locations.None ? location : labelLocation.On);
+            }
+            else
+            {
+                newLocation = new TopologyLocation(
+                    labelLocation.On == Locations.None ? location : labelLocation.On,
+                    labelLocation.Left == Locations.None ? location : labelLocation.Left,
+                    labelLocation.Right == Locations.None ? location : labelLocation.Right);
+            }
+            //// TODO: rewrite using bitwise operators
+            //TopologyLocation newLocation = new TopologyLocation(
+            //    labelLocation.On == Locations.None ? location : labelLocation.On,
+            //    labelLocation.Left == Locations.None ? location : labelLocation.Left,
+            //    labelLocation.Right == Locations.None ? location : labelLocation.Right);
 
             return geometryIndex == 0
                        ? new Label(newLocation, label._g1)
@@ -512,7 +540,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
             else
             {
-                l0 = l0.Merge(other._g0);
+                l0 = l0.AreAnyNone ? l0.Merge(other._g0) : l0;
             }
 
             if (l1.IsNone && !other._g1.IsNone)
@@ -521,7 +549,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
             else
             {
-                l1 = l1.Merge(other._g1);
+                l1 = l1.AreAnyNone ? l1.Merge(other._g1) : l1;
             }
 
             return new Label(l0, l1);

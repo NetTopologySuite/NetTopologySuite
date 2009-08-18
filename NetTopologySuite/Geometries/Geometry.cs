@@ -438,11 +438,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public virtual IGeometry<TCoordinate> Clone()
         {
-            Geometry<TCoordinate> clone = (Geometry<TCoordinate>) MemberwiseClone();
+            Geometry<TCoordinate> clone = (Geometry<TCoordinate>)MemberwiseClone();
 
             if (clone.ExtentsInternal != null)
             {
-                clone.ExtentsInternal = (Extents<TCoordinate>) ExtentsInternal.Clone();
+                clone.ExtentsInternal = (Extents<TCoordinate>)ExtentsInternal.Clone();
             }
 
             if (clone._boundary != null)
@@ -829,7 +829,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 #else
             return BufferOp<TCoordinate>.Buffer(this, distance, quadrantSegments);
 #endif
-            }
+        }
 
         /// <summary>
         /// Returns a buffer region around this <see cref="Geometry{TCoordinate}"/> having the given width.
@@ -897,8 +897,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (IsEmpty) return _factory.CreateGeometryCollection();
             if (other.IsEmpty) return _factory.CreateGeometryCollection();
 
-            CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection(other);
+            CheckNotNonEmptyGeometryCollection(this);
+            CheckNotNonEmptyGeometryCollection(other);
 
             return SnapIfNeededOverlayOp<TCoordinate>.Overlay(this, other, SpatialFunctions.Intersection);
         }
@@ -917,8 +917,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (IsEmpty) return other.Clone();
             if (other.IsEmpty) return Clone();
 
-            //CheckNotGeometryCollection(this);
-            //CheckNotGeometryCollection(other);
+            CheckNotNonEmptyGeometryCollection(this);
+            CheckNotNonEmptyGeometryCollection(other);
 
             //return UnaryUnionOp<TCoordinate>.Union(other);
             return SnapIfNeededOverlayOp<TCoordinate>.Overlay(this, other, SpatialFunctions.Union);
@@ -939,8 +939,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (IsEmpty) return _factory.CreateGeometryCollection();
             if (other.IsEmpty) return Clone();
 
-            CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection(other);
+            CheckNotNonEmptyGeometryCollection(this);
+            CheckNotNonEmptyGeometryCollection(other);
 
             return SnapIfNeededOverlayOp<TCoordinate>.Overlay(this, other, SpatialFunctions.Difference);
         }
@@ -961,8 +961,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (IsEmpty) return other.Clone();
             if (other.IsEmpty) return Clone();
 
-            CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection(other);
+            CheckNotNonEmptyGeometryCollection(this);
+            CheckNotNonEmptyGeometryCollection(other);
 
             return SnapIfNeededOverlayOp<TCoordinate>.Overlay(this, other, SpatialFunctions.SymDifference);
         }
@@ -1192,8 +1192,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (g == null) throw new ArgumentNullException("g");
 
-            CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection(g);
+            CheckNotNonEmptyGeometryCollection(this);
+            CheckNotNonEmptyGeometryCollection(g);
 
             return RelateOp<TCoordinate>.Relate(this, g);
         }
@@ -1567,9 +1567,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// if <paramref name="g"/> is a <see cref="GeometryCollection{TCoordinate}" />, 
         /// but not one of its subclasses.
         /// </exception>
-        protected static void CheckNotGeometryCollection(IGeometry<TCoordinate> g)
+        protected static void CheckNotNonEmptyGeometryCollection(IGeometry<TCoordinate> g)
         {
-            if (isGeometryCollection(g))
+            if (isGeometryCollection(g) && !g.IsEmpty)//jd:allowing empty collections to pass 
             {
                 throw new ArgumentException("This method does not support " +
                                             "GeometryCollection arguments");
@@ -1896,7 +1896,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             foreach (TCoordinate coord in Coordinates)
             {
-                result = 37*result ^ coord.GetHashCode();
+                result = 37 * result ^ coord.GetHashCode();
             }
 
             return result;

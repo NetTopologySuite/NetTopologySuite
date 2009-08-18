@@ -154,9 +154,17 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="e">Edge element to remove from list.</param>
         public Boolean Remove(Edge<TCoordinate> e)
         {
-            throw new NotSupportedException();
+            return _edges.Remove(e);
+#if goletas
+#else
+#if C5
+#else
+#endif
+#endif
+            //throw new NotSupportedException();
             //return _index.Remove(e) && 
             //       _edges.Remove(e);
+
         }
 
         public IEnumerator<Edge<TCoordinate>> GetEnumerator()

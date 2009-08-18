@@ -16,6 +16,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             IComparable<TCoordinate>, IConvertible,
             IComputable<Double, TCoordinate>
     {
+
+        ///<summary>
+        /// Floating Precision Coordinate Factory is used for internal computation in
+        /// the RobustLineIntersector Class to avoid problems with FixedPrecision
+        ///</summary>
+        public static ICoordinateFactory<TCoordinate> FloatingPrecisionCoordinateFactory = null;
+
         public RobustLineIntersector(IGeometryFactory<TCoordinate> factory)
             : base(factory)
         {
@@ -181,19 +188,21 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         private TCoordinate computeIntersectionWithNormalization(Pair<TCoordinate> line0, Pair<TCoordinate> line1)
         {
-            TCoordinate n1 = CoordinateFactory.Create(line0.First);
-            TCoordinate n2 = CoordinateFactory.Create(line0.Second);
-            TCoordinate n3 = CoordinateFactory.Create(line1.First);
-            TCoordinate n4 = CoordinateFactory.Create(line1.Second);
+            ICoordinateFactory<TCoordinate> cf = FloatingPrecisionCoordinateFactory ?? CoordinateFactory;
+
+            TCoordinate n1 = cf.Create(line0.First);
+            TCoordinate n2 = cf.Create(line0.Second);
+            TCoordinate n3 = cf.Create(line1.First);
+            TCoordinate n4 = cf.Create(line1.Second);
 
             TCoordinate normPt;
-            normalizeToExtentCenter(ref n1, ref n2, ref n3, ref n4, out normPt);
+            normalizeToExtentCenter(cf, ref n1, ref n2, ref n3, ref n4, out normPt);
 
-            TCoordinate intersection = CoordinateFactory.Create();
+            TCoordinate intersection = cf.Create();
 
             try
             {
-                intersection = safeHCoordinateIntersection(n1, n2, n3, n4);
+                intersection = safeHCoordinateIntersection(cf, n1, n2, n3, n4);
             }
             catch (NotRepresentableException)
             {
@@ -211,22 +220,21 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         // Round-off error can cause the raw computation to fail, 
         // (usually due to the segments being approximately parallel).
         // If this happens, a reasonable approximation is computed instead.
-        private TCoordinate safeHCoordinateIntersection(TCoordinate p1, TCoordinate p2, TCoordinate q1, TCoordinate q2)
+        private static TCoordinate safeHCoordinateIntersection(ICoordinateFactory<TCoordinate> cf, TCoordinate p1, TCoordinate p2, TCoordinate q1, TCoordinate q2)
         {
-            TCoordinate intersectionPoint = default(TCoordinate);
-
+            TCoordinate intersectionPoint;
             try
             {
-                TCoordinate hP1 = CoordinateFactory.Homogenize(p1);
-                TCoordinate hP2 = CoordinateFactory.Homogenize(p2);
-                TCoordinate hQ1 = CoordinateFactory.Homogenize(q1);
-                TCoordinate hQ2 = CoordinateFactory.Homogenize(q2);
+                TCoordinate hP1 = cf.Homogenize(p1);
+                TCoordinate hP2 = cf.Homogenize(p2);
+                TCoordinate hQ1 = cf.Homogenize(q1);
+                TCoordinate hQ2 = cf.Homogenize(q2);
 
                 intersectionPoint = intersectHomogeneous(hP1, hP2, hQ1, hQ2);
                 Double x = (Double) intersectionPoint[0];
                 Double y = (Double) intersectionPoint[1];
                 Double w = (Double) intersectionPoint[2];
-                return CoordinateFactory.Create(x/w, y/w);
+                return cf.Create(x/w, y/w);
             }
             catch (NotRepresentableException e)
             {
@@ -234,7 +242,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
                 // compute an approximate result
                 intersectionPoint = CentralEndpointIntersector<TCoordinate>
-                    .GetIntersection(CoordinateFactory, p1, p2, q1, q2);
+                    .GetIntersection(cf, p1, p2, q1, q2);
             }
 
             return intersectionPoint;
@@ -350,7 +358,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// so that the midpoint of their intersection envelope
         /// lies at the origin.
         /// </summary>
-        private void normalizeToExtentCenter(ref TCoordinate n00, ref TCoordinate n01,
+        private void normalizeToExtentCenter(ICoordinateFactory<TCoordinate> cf,
+                                             ref TCoordinate n00, ref TCoordinate n01,
                                              ref TCoordinate n10, ref TCoordinate n11,
                                              out TCoordinate normPt)
         {
@@ -371,7 +380,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             Double intMidX = (intMinX + intMaxX)/2.0;
             Double intMidY = (intMinY + intMaxY)/2.0;
-            normPt = CoordinateFactory.Create(intMidX, intMidY);
+            normPt = cf.Create(intMidX, intMidY);
 
             Double n00X = n00[Ordinates.X] - intMidX;
             Double n00Y = n00[Ordinates.Y] - intMidY;
@@ -382,10 +391,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             Double n11X = n11[Ordinates.X] - intMidX;
             Double n11Y = n11[Ordinates.Y] - intMidY;
 
-            n00 = CoordinateFactory.Create(n00X, n00Y);
-            n01 = CoordinateFactory.Create(n01X, n01Y);
-            n10 = CoordinateFactory.Create(n10X, n10Y);
-            n11 = CoordinateFactory.Create(n11X, n11Y);
+            n00 = cf.Create(n00X, n00Y);
+            n01 = cf.Create(n01X, n01Y);
+            n10 = cf.Create(n10X, n10Y);
+            n11 = cf.Create(n11X, n11Y);
         }
 
         /// <summary> 

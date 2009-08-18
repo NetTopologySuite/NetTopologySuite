@@ -279,7 +279,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
             {
                 if (g is IPoint || g is ILineString || g is IPolygon)
                 {
-                    Slice.GetFirst(g.Coordinates);
+                    yield return new GeometryLocation<TCoordinate>(g, 0, Slice.GetFirst(g.Coordinates));
                 }
             }
         }

@@ -172,9 +172,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 Debug.Assert(de != null);
                 Debug.Assert(de.Label.HasValue);
                 Debug.Assert(de.Sym.Label.HasValue);
-                Label label = de.Label.Value;
-                label.Merge(de.Sym.Label.Value);
-                de.Label = label;
+                //[FObermaier: Label is a structure, and using Merge( . ) does not report the changes to label!]
+                //Label label = de.Label.Value;
+                //label.Merge(de.Sym.Label.Value);
+                //de.Label = label;
+                Label label= de.Label.Value;
+                Label lblMerge = label.Merge(de.Sym.Label);
+                de.Label = lblMerge;
             }
         }
 

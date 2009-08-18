@@ -67,15 +67,23 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             } while (de != StartingEdge);
         }
 
+        private IList<MinimalEdgeRing<TCoordinate>> _minEdgeRings;
         public IEnumerable<MinimalEdgeRing<TCoordinate>> BuildMinimalRings()
         {
+            if ( _minEdgeRings != null )
+                foreach (MinimalEdgeRing<TCoordinate> minEdgeRing in _minEdgeRings)
+                    yield return minEdgeRing;
+
+            _minEdgeRings = new List<MinimalEdgeRing<TCoordinate>>();
             DirectedEdge<TCoordinate> de = StartingEdge;
 
             do
             {
                 if (de.MinEdgeRing == null)
                 {
-                    yield return new MinimalEdgeRing<TCoordinate>(de, GeometryFactory);
+                    MinimalEdgeRing<TCoordinate> mer = new MinimalEdgeRing<TCoordinate>(de, GeometryFactory);
+                    _minEdgeRings.Add(mer);
+                    yield return mer;
                 }
 
                 de = de.Next;

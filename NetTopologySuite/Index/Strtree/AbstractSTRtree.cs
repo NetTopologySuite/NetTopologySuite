@@ -607,7 +607,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// Subtrees which do not contain any items are not included.
         /// Builds the tree if necessary.
         /// </summary>
-        public IList<TItem> ItemsTree()
+        public IList ItemsTree()
         {
             if (!_built)
             {
@@ -617,18 +617,20 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return ItemsTree(_root);
         }
 
-        private IList<TItem> ItemsTree(ISpatialIndexNode<TBounds, TItem> node)
+        //private IList<TItem> ItemsTree(ISpatialIndexNode<TBounds, TItem> node)
+        private IList ItemsTree(ISpatialIndexNode<TBounds, TItem> node)
         {
-            List<TItem> valuesTreeForNode = new List<TItem>();
+            //List<TItem> valuesTreeForNode = new List<TItem>();
+            ArrayList valuesTreeForNode = new ArrayList();
             foreach (IBoundable<TBounds> childBoundable in node.ChildBoundables)
             {
                 if (childBoundable is AbstractNode<TBounds, TItem>)
                 {
-                    IList<TItem>  valuesTreeForChild = ItemsTree((AbstractNode<TBounds, TItem>)childBoundable); //new ArrayList();
+                    IList valuesTreeForChild = ItemsTree((AbstractNode<TBounds, TItem>)childBoundable); //new ArrayList();
                     //IList<TItem> valuesTreeForChild = ;
                     // only add if not null (which indicates an item somewhere in this tree
                     if (valuesTreeForChild != null)
-                        valuesTreeForNode.AddRange(valuesTreeForChild);
+                        valuesTreeForNode.Add(valuesTreeForChild);
                 }
                 else if (childBoundable is TItem)
                     valuesTreeForNode.Add((TItem) childBoundable);

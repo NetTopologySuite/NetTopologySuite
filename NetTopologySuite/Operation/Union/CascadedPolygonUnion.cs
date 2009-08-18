@@ -1,7 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+#if useWorker
 using System.Threading;
+#endif
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
 using GisSharpBlog.NetTopologySuite.Index.Strtree;
@@ -42,9 +46,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
 
         private IGeometryFactory<TCoordinate> Factory()
         {
-            IEnumerator<IPolygon<TCoordinate>> geomenumerator = _inputPolys.GetEnumerator();
-            geomenumerator.MoveNext();
-            return ((IGeometry<TCoordinate>) geomenumerator.Current).Factory;
+            if ( _inputPolys == null || !Slice.CountGreaterThan(_inputPolys, 0))
+                return null;
+
+            return Slice.GetFirst(_inputPolys).Factory;
         }
 
         public IGeometry<TCoordinate> Union()
@@ -64,18 +69,18 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
                 if (!item.IsEmpty)
                     index.Insert(item);
             }
-            IEnumerable<IGeometry<TCoordinate>> itemTree = index.ItemsTree();
+            IList itemTree = index.ItemsTree();
             IGeometry<TCoordinate> unionAll = UnionTree(itemTree);
             return unionAll;
         }
 
-        private IGeometry<TCoordinate> UnionTree(IEnumerable<IGeometry<TCoordinate>> geomTree)
+        private IGeometry<TCoordinate> UnionTree(IList geomTree)
         {
             /**
              * Recursively unions all subtrees in the list into single geometries.
              * The result is a list of Geometrys only
              */
-            IList<IGeometry<TCoordinate>> geoms = ReduceToGeometries(geomTree);
+            IList geoms = ReduceToGeometries(geomTree);
             IGeometry<TCoordinate> union = BinaryUnion(geoms);
 
             return union;
@@ -115,29 +120,29 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
 
         //=======================================
 
-        private IGeometry<TCoordinate> BinaryUnion(IList<IGeometry<TCoordinate>> geoms)
+        private IGeometry<TCoordinate> BinaryUnion(IList geoms)
         {
             return BinaryUnion(geoms, 0, geoms.Count);
         }
 
-        private IGeometry<TCoordinate> BinaryUnion(IList<IGeometry<TCoordinate>> geoms, int start, int end)
+        private IGeometry<TCoordinate> BinaryUnion(IList geoms, int start, int end)
         {
+            IGeometry<TCoordinate> g0;
             if (end - start <= 1)
             {
-                IGeometry<TCoordinate> g0 = GetGeometry(geoms, start);
+                g0 = GetGeometry(geoms, start);
                 return UnionSafe(g0, null);
             }
             if (end - start == 2)
                 return UnionSafe(GetGeometry(geoms, start), GetGeometry(geoms, start + 1));
 
             // recurse on both halves of the list
-            int mid = (end + start)/2;
+            int mid = (end + start) / 2;
 
-            //IGeometry g0 = BinaryUnion(geoms, start, mid);
+#if useWorker
             Worker worker0 = new Worker(this, geoms, start, mid);
             Thread t0 = new Thread(worker0.Execute);
 
-            //IGeometry g1 = BinaryUnion(geoms, mid, end);
             Worker worker1 = new Worker(this, geoms, mid, end);
             Thread t1 = new Thread(worker1.Execute);
 
@@ -145,34 +150,34 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
             t1.Start();
             t0.Join();
             t1.Join();
-
-            //return UnionSafe(g0, g1);
             return UnionSafe(worker0.Geometry, worker1.Geometry);
+#else
+            g0 = BinaryUnion(geoms, start, mid);
+            IGeometry<TCoordinate> g1 = BinaryUnion(geoms, mid, end);
+            return UnionSafe(g0, g1);
+#endif
         }
 
-
-        private static IGeometry<TCoordinate> GetGeometry(IList<IGeometry<TCoordinate>> list, int index)
+        private static IGeometry<TCoordinate> GetGeometry(IList list, int index)
         {
             if (index >= list.Count)
                 return null;
-            return list[index];
+            return list[index] as IGeometry<TCoordinate>;
         }
 
-        private IList<IGeometry<TCoordinate>> ReduceToGeometries(IEnumerable<IGeometry<TCoordinate>> geomTree)
+        private IList ReduceToGeometries(IList geomTree)
         {
-            List<IGeometry<TCoordinate>> geoms = new List<IGeometry<TCoordinate>>();
-            foreach (IGeometry<TCoordinate> o in geomTree)
+            IList geoms = new ArrayList();
+            foreach (Object o in geomTree)
             {
-                if (o is IGeometryCollection<TCoordinate>)
-                {
-                    geoms.Add(UnionTree(o as IGeometryCollection<TCoordinate>));
-                }
-                else if (o is IPolygon<TCoordinate>)
-                    geoms.Add(o);
+                IGeometry<TCoordinate> geom;
+                if (o is IList)
+                    geom = UnionTree(o as IList);
+                else if (o is IPolygonal<TCoordinate>)
+                    geom = (IGeometry<TCoordinate>)o;
                 else
-                {
                     throw new ArgumentException("Invalid Geometry");
-                }
+                geoms.Add(geom);
             }
             return geoms;
         }
@@ -207,8 +212,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
                 IExtents<TCoordinate> commonEnv = g0Env.Intersection(g1Env);
                 return UnionUsingExtentsIntersection(g0, g1, commonEnv);
             }
-            else
-                return UnionActual(g0, g1);
+
+            return UnionActual(g0, g1);
         }
 
         private IGeometry<TCoordinate> UnionUsingExtentsIntersection(IGeometry<TCoordinate> g0,
@@ -217,8 +222,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
         {
             List<IGeometry<TCoordinate>> disjointPolys = new List<IGeometry<TCoordinate>>();
 
-            IGeometry<TCoordinate> g0Int = ExtractByEnvelope(common, g0, disjointPolys);
-            IGeometry<TCoordinate> g1Int = ExtractByEnvelope(common, g1, disjointPolys);
+            IGeometry<TCoordinate> g0Int = ExtractByExtent(common, g0, disjointPolys);
+            IGeometry<TCoordinate> g1Int = ExtractByExtent(common, g1, disjointPolys);
 
             IGeometry<TCoordinate> union = UnionActual(g0Int, g1Int);
 
@@ -228,20 +233,27 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
             return overallUnion;
         }
 
-        private IGeometry<TCoordinate> ExtractByEnvelope(IExtents<TCoordinate> env, IGeometry<TCoordinate> geom,
-                                                         IList<IGeometry<TCoordinate>> disjointGeoms)
+        private IEnumerable<IGeometry<TCoordinate>> EnumerateGeometriesElements(IGeometry<TCoordinate> geometry)
+        {
+            IGeometryCollection<TCoordinate> geomColl = geometry as IGeometryCollection<TCoordinate>;
+            if (geomColl != null)
+                foreach (IGeometry<TCoordinate> item in geomColl)
+                    yield return item;
+            else
+                yield return geometry;
+        }
+
+        private IGeometry<TCoordinate> ExtractByExtent(IExtents<TCoordinate> env, IGeometry<TCoordinate> geom,
+                                                       IList<IGeometry<TCoordinate>> disjointGeoms)
         {
             List<IGeometry<TCoordinate>> intersectingGeoms = new List<IGeometry<TCoordinate>>();
-            IGeometryCollection<TCoordinate> geomColl = geom as IGeometryCollection<TCoordinate>;
-            if (geomColl != null)
-                foreach (IGeometry<TCoordinate> elem in geomColl)
-                {
-                    if (elem.Extents.Intersects(env))
-                        intersectingGeoms.Add(elem);
-                    else
-                        disjointGeoms.Add(elem);
-                }
-            ;
+            foreach (IGeometry<TCoordinate> elem in EnumerateGeometriesElements(geom))
+            {
+                if (elem.Extents.Intersects(env))
+                    intersectingGeoms.Add(elem);
+                else
+                    disjointGeoms.Add(elem);
+            }
             return _geomFactory.BuildGeometry(intersectingGeoms);
         }
 
@@ -251,6 +263,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
         }
 
         #region Nested type: Worker
+#if useWorker
 
         private class Worker
         {
@@ -281,6 +294,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
             }
         }
 
+#endif
         #endregion
     }
 }

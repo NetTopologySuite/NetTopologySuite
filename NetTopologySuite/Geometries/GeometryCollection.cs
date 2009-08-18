@@ -274,7 +274,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                CheckNotGeometryCollection(this);
+                CheckNotNonEmptyGeometryCollection(this);
                 Assert.ShouldNeverReachHere();
                 return false;
             }
@@ -284,7 +284,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                CheckNotGeometryCollection(this);
+                CheckNotNonEmptyGeometryCollection(this);
                 Assert.ShouldNeverReachHere();
                 return null;
             }

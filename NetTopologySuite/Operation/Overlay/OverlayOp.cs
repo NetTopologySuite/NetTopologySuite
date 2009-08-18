@@ -270,7 +270,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                 }
 
                 depth.Add(labelToMerge);
-                existingLabel.Merge(labelToMerge);
+                //[FObermaier: since Label is a structure this is not enough]
+                //existingLabel.Merge(labelToMerge);
+                existingEdge.Label = existingLabel.Merge(labelToMerge);
             }
             else
             {
@@ -340,9 +342,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                             }
                         }
                     }
-                }
 
-                e.Label = lbl;
+                    e.Label = lbl;
+
+                }
             }
         }
 

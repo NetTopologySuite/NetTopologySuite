@@ -61,7 +61,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </remarks>
     public struct TopologyLocation : IEquatable<TopologyLocation>
     {
-        private const Int32 AllLocationsNone =
+        private const Int32 AllLocationsNone = 
             ((Byte) Locations.None) << 16 |
             ((Byte) Locations.None) << 8 |
             (Byte) Locations.None;
@@ -75,6 +75,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         private const Int32 OnOffset = 16;
         private const UInt32 RightMask = 0xFFFFFF00;
         private const Int32 RightOffset = 0;
+
+        private const Int32 LineFlag = 0x01000000;
+        private const Int32 NoLineMask = 0x7effffff;
+        private const Int32 AreaFlag = 0x02000000;
+        private const Int32 NoTypeFlag = 0xffffff;
 
         public static readonly TopologyLocation None
             = new TopologyLocation(AllLocationsNone);
@@ -108,6 +113,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             _locations = AllLocationsNone;
             setLocation(Positions.On, on);
+            _locations = _locations | LineFlag;
         }
 
         /// <summary> 
@@ -176,7 +182,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public Boolean IsNone
         {
-            get { return _locations == AllLocationsNone; }
+            get { return (_locations & NoTypeFlag) == AllLocationsNone; }
         }
 
         /// <summary>
@@ -187,6 +193,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
+                if (IsLine)
+                    return On == Locations.None;
+
                 return On == Locations.None ||
                        Left == Locations.None ||
                        Right == Locations.None;
@@ -202,8 +211,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return Left != Locations.None ||
-                       Right != Locations.None;
+                return (_locations & AreaFlag) == AreaFlag;
+                //return Left != Locations.None ||
+                //       Right != Locations.None;
             }
         }
 
@@ -216,8 +226,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return Left == Locations.None &&
-                       Right == Locations.None;
+                return (_locations & LineFlag) == LineFlag;
+                //return Left == Locations.None &&
+                //       Right == Locations.None;
             }
         }
 
@@ -309,9 +320,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </returns>
         public Boolean AllPositionsEqual(Locations location)
         {
-            return On == location &&
-                   Left == location &&
-                   Right == location;
+            return IsLine
+                       ?
+                           On == location
+                       :
+                           On == location &&
+                           Left == location &&
+                           Right == location;
         }
 
         /// <summary>
@@ -325,15 +340,25 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </remarks>
         public TopologyLocation Merge(TopologyLocation other)
         {
-            unchecked
-            {
-                // Suppress the None bit so it doesn't emerge in the output
-                Int32 merge = (Int32) (NoneMask & (UInt32) _locations |
-                                       NoneMask & (UInt32) other._locations);
-                // add the Locations.None bit back if it exists in both locations
-                merge |= _locations & other._locations;
-                return new TopologyLocation(merge);
-            }
+            if (IsLine && other.IsLine)
+                return new TopologyLocation(
+                On != Locations.None ? On : other.On);
+
+            return new TopologyLocation(
+                On != Locations.None ? On : other.On,
+                Left != Locations.None ? Left : other.Left,
+                Right != Locations.None ? Right : other.Right);
+
+            //[FObermaier: does not work]
+            //unchecked
+            //{
+            //    // Suppress the None bit so it doesn't emerge in the output
+            //    Int32 merge = (Int32) (NoneMask & (UInt32) _locations |
+            //                           NoneMask & (UInt32) other._locations);
+            //    // add the Locations.None bit back if it exists in both locations
+            //    merge |= _locations & other._locations;
+            //    return new TopologyLocation(merge);
+            //}
         }
 
         public override string ToString()
@@ -373,11 +398,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                         break;
                     case Positions.Left:
                         locations &= (Int32) LeftMask;
-                        locations |= locValueByte << LeftOffset;
+                        locations |= locValueByte << LeftOffset | AreaFlag & NoLineMask;
                         break;
                     case Positions.Right:
                         locations &= (Int32) RightMask;
-                        locations |= locValueByte << RightOffset;
+                        locations |= locValueByte << RightOffset | AreaFlag & NoLineMask;
                         break;
                         //case Positions.Parallel:
                     default:
