@@ -48,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         public void Add(TCoordinate pt)
         {
             TCoordinate bufPt = pt.Clone();
-            _precisionModel.MakePrecise(bufPt);
+            //_precisionModel.MakePrecise(bufPt);
             // don't add duplicate (or near-duplicate) points
             if (IsDuplicate(bufPt))
                 return;

@@ -117,8 +117,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
 
             Pair<TCoordinate> segment = points.SegmentAt(start);
 
-            Quadrants chainQuad = QuadrantOp<TCoordinate>.Quadrant(segment.First,
-                                                                   segment.Second);
+            Quadrants chainQuad = QuadrantOp<TCoordinate>.Quadrant(segment);
 
             Quadrants quad = chainQuad;
 
@@ -131,7 +130,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
             do
             {
                 segment = points.SegmentAt(++start);
-                quad = QuadrantOp<TCoordinate>.Quadrant(segment.First, segment.Second);
+                quad = QuadrantOp<TCoordinate>.Quadrant(segment);
             } while (quad == chainQuad && start < lastSegmentStartIndex);
 
             return quad == chainQuad ? start + 1 : start;

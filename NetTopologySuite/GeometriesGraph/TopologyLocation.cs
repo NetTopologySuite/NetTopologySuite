@@ -84,6 +84,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public static readonly TopologyLocation None
             = new TopologyLocation(AllLocationsNone);
 
+        public static readonly TopologyLocation NoneArea
+            = new TopologyLocation(AllLocationsNone | AreaFlag);
+
         private Int32 _locations;
 
         /// <summary> 

@@ -1,5 +1,6 @@
 ﻿using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NetTopologySuite.Coordinates;
 
@@ -16,6 +17,8 @@ namespace NetTopologySuite.Tests
             _coordFactory = new BufferedCoordinateFactory();
             _coordSequenceFactory = new BufferedCoordinateSequenceFactory();
             _geoFactory = new GeometryFactory<BufferedCoordinate>(CoordSequenceFactory);
+            RobustLineIntersector<BufferedCoordinate>.FloatingPrecisionCoordinateFactory =
+                _coordFactory;
         }
 
         public static IGeometryFactory<BufferedCoordinate> GeometryFactory

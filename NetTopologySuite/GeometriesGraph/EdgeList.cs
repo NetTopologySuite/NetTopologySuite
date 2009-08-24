@@ -227,7 +227,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public void AddRange(IEnumerable<Edge<TCoordinate>> edges)
         {
-            _edges.AddRange(edges);
+            //_edges.AddRange(edges);
             foreach (Edge<TCoordinate> edge in edges)
                 Add(edge);
         }

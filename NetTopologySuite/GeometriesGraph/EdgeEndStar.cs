@@ -371,14 +371,18 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 // set null On values to be in current location
                 if (label[geomIndex, Positions.On] == Locations.None)
                 {
-                    Locations left = label[geomIndex, Positions.Left];
-                    Locations right = label[geomIndex, Positions.Right];
-                    label = new Label(label, geomIndex, currLoc, left, right);
+                    if (label.IsLine(geomIndex))
+                        label = new Label(label, geomIndex, currLoc);
+                    else
+                    {
+                        Locations left = label[geomIndex, Positions.Left];
+                        Locations right = label[geomIndex, Positions.Right];
+                        label = new Label(label, geomIndex, currLoc, left, right);
+                    }
                 }
 
                 // set side labels (if any)
-                if (label.IsArea())
-                //if (label.IsArea(geomIndex))
+                if (label.IsArea(geomIndex))
                 {
                     Locations left = label[geomIndex, Positions.Left];
                     Locations right = label[geomIndex, Positions.Right];
@@ -411,6 +415,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
                         Locations on = label[geomIndex, Positions.On];
                         label = new Label(label, geomIndex, on, currLoc, currLoc);
+
                     }
                 }
 

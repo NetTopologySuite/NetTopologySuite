@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
-using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -20,13 +18,12 @@ namespace NetTopologySuite.Tests.OperationTests.Union
         private const string polygonfile = @"sh.txt";
 
         private static IGeometryFactory<BufferedCoordinate> _geometryFactory =
-            new GeometryFactory<BufferedCoordinate>(new BufferedCoordinateSequenceFactory());//new BufferedCoordinateFactory(1000) ));
+            new GeometryFactory<BufferedCoordinate>(new BufferedCoordinateSequenceFactory());
 
         [Fact]
-        public void Test()
+        public void SchleswigHolsteinTest()
         {
-            //IGeometry<BufferedCoordinate> geometrySH = _geometryFactory.WktReader.Read(File.ReadAllText(polygonfile));
-            IList<IGeometry<BufferedCoordinate>> geoms = new List<IGeometry<BufferedCoordinate>>();//.CreateGeometryCollection();
+            IList<IGeometry<BufferedCoordinate>> geoms = new List<IGeometry<BufferedCoordinate>>();
 
             using (StreamReader txt = new StreamReader(polygonfile))
             {

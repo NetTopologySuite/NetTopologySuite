@@ -39,9 +39,9 @@ namespace GisSharpBlog.NetTopologySuite
             _wktReader = new WktReader<BufferedCoordinate>(_geometryFactory, null);
         }
 
-        public XmlTest Create(XmlTestInfo testInfo, Double tolerance)
+        public XmlTest Create(Int32 index, XmlTestInfo testInfo, Double tolerance)
         {
-            XmlTest xmlTest = new XmlTest(testInfo.GetValue("desc"),
+            XmlTest xmlTest = new XmlTest(index, testInfo.GetValue("desc"),
                                           testInfo.IsDefaultTarget(),
                                           tolerance);
 

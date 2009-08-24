@@ -144,11 +144,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             if (geometryIndex == 0)
             {
                 _g0 = new TopologyLocation(on, left, right);
-                _g1 = TopologyLocation.None;
+                _g1 = TopologyLocation.NoneArea;
             }
             else
             {
-                _g0 = TopologyLocation.None;
+                _g0 = TopologyLocation.NoneArea;
                 _g1 = new TopologyLocation(on, left, right);
             }
         }

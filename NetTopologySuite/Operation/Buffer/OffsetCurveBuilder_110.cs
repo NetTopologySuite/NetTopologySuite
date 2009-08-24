@@ -187,7 +187,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             /**
              * Choose the min vertex separation as a small fraction of the offset distance.
              */
-            _vertexList.MinimumVertexDistance = distance * CurveVertexSnapDistanceFactor;
+            _vertexList.MinimumVertexDistance = distance*CurveVertexSnapDistanceFactor;
+            if ( _vertexList.MinimumVertexDistance ==  0d)
+                _vertexList.MinimumVertexDistance = 1E-10;
         }
 
         ///<summary>

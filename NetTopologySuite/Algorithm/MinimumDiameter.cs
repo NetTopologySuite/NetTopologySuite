@@ -126,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private void computeMinimumDiameter()
         {
             // check if computation is cached
-            if (Coordinates<TCoordinate>.IsEmpty(_minWidthPt))
+            if (!Coordinates<TCoordinate>.IsEmpty(_minWidthPt))
             {
                 return;
             }

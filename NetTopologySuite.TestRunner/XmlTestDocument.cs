@@ -298,7 +298,7 @@ namespace GisSharpBlog.NetTopologySuite
                         testInfo.SetValue("arg3", testElement.GetAttribute("arg3"));
                     }
 
-                    XmlTest xmlTest = _xmlTestFactory.Create(testInfo, tolerance);
+                    XmlTest xmlTest = _xmlTestFactory.Create(_listCurTests.Count, testInfo, tolerance);
 
                     if (xmlTest != null && _listCurTests != null)
                     {
@@ -339,7 +339,7 @@ namespace GisSharpBlog.NetTopologySuite
                             testInfo.SetValue("arg3", testElement.GetAttribute("arg3"));
                         }
 
-                        XmlTest xmlTest = _xmlTestFactory.Create(testInfo, tolerance);
+                        XmlTest xmlTest = _xmlTestFactory.Create(_listCurTests.Count, testInfo, tolerance);
 
                         if (xmlTest != null && _listCurTests != null)
                         {
