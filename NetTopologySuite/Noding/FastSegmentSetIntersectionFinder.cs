@@ -27,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         // private SimpleSegmentSetMutualIntersector mci;
 
         public FastSegmentSetIntersectionFinder(IGeometryFactory<TCoordinate> geometryFactory,
-                                                List<NodedSegmentString<TCoordinate>> baseSegStrings)
+                                                List<ISegmentString<TCoordinate>> baseSegStrings)
         {
             _geometryFactory = geometryFactory;
             if (_li == null || _li.GeometryFactory != geometryFactory)
@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             Init(baseSegStrings);
         }
 
-        private void Init(List<NodedSegmentString<TCoordinate>> baseSegStrings)
+        private void Init(List<ISegmentString<TCoordinate>> baseSegStrings)
         {
             _segSetMutInt = new MonotoneChainIndexSegmentSetMutualIntersector<TCoordinate>(_geometryFactory);
             //    segSetMutInt = new MCIndexIntersectionSegmentSetMutualIntersector();
@@ -55,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             return _segSetMutInt;
         }
 
-        public Boolean Intersects(List<NodedSegmentString<TCoordinate>> segStrings)
+        public Boolean Intersects(List<ISegmentString<TCoordinate>> segStrings)
         {
             SegmentIntersectionDetector<TCoordinate> intFinder = new SegmentIntersectionDetector<TCoordinate>(_li);
             _segSetMutInt.SetSegmentIntersector(intFinder);
@@ -64,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             return intFinder.HasIntersection;
         }
 
-        public Boolean Intersects(List<NodedSegmentString<TCoordinate>> segStrings,
+        public Boolean Intersects(List<ISegmentString<TCoordinate>> segStrings,
                                   SegmentIntersectionDetector<TCoordinate> intDetector)
         {
             _segSetMutInt.SetSegmentIntersector(intDetector);

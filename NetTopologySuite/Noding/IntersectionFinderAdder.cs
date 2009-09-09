@@ -47,8 +47,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// may optimize away this call for segment pairs which they have determined 
         /// do not intersect (e.g. by an disjoint envelope test).
         /// </remarks>
-        public void ProcessIntersections(NodedSegmentString<TCoordinate> e0, Int32 segIndex0,
-                                         NodedSegmentString<TCoordinate> e1, Int32 segIndex1)
+        public void ProcessIntersections(ISegmentString<TCoordinate> e0, Int32 segIndex0,
+                                         ISegmentString<TCoordinate> e1, Int32 segIndex1)
         {
             // don't bother intersecting a segment with itself
             if (e0 == e1 && segIndex0 == segIndex1)
@@ -73,8 +73,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                         _interiorIntersections.Add(intersectionPoint);
                     }
 
-                    e0.AddIntersections(intersection, segIndex0, 0);
-                    e1.AddIntersections(intersection, segIndex1, 1);
+                    ((NodedSegmentString<TCoordinate>)e0).AddIntersections(intersection, segIndex0, 0);
+                    ((NodedSegmentString<TCoordinate>)e1).AddIntersections(intersection, segIndex1, 1);
                 }
             }
         }
@@ -85,7 +85,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
         public bool IsDone
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
 
         #endregion

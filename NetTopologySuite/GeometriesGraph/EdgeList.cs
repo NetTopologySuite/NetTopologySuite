@@ -34,11 +34,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
 
 #if goletas
-        Goletas.Collections.SortedDictionary<OrientedCoordinateSequence<TCoordinate>, Edge<TCoordinate>> _ocaMap = 
+        private readonly Goletas.Collections.SortedDictionary<OrientedCoordinateSequence<TCoordinate>, Edge<TCoordinate>> _ocaMap = 
             new Goletas.Collections.SortedDictionary<OrientedCoordinateSequence<TCoordinate>, Edge<TCoordinate>>();
 #else
 #if C5
-        C5.TreeDictionary<OrientedCoordinateSequence<TCoordinate>, Edge<TCoordinate>> _ocaMap = 
+        private readonly TreeDictionary<OrientedCoordinateSequence<TCoordinate>, Edge<TCoordinate>> _ocaMap = 
             new TreeDictionary<OrientedCoordinateSequence<TCoordinate>, Edge<TCoordinate>>();
 #else
         /// <summary>

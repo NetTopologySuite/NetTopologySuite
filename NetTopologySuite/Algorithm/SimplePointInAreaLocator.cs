@@ -16,7 +16,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// The algorithm used is only guaranteed to return correct results
     /// for points which are not on the boundary of the Geometry.
     /// </remarks>
-    public static class SimplePointInAreaLocator
+    public class SimplePointInAreaLocator<TCoordinate> : IPointInAreaLocator<TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<Double, TCoordinate>, IConvertible
     {
         /// <summary> 
         /// Locate is the main location function.  It handles both single-element
@@ -24,9 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// The algorithm for multi-element geometries is more complex, 
         /// since it has to take into account the boundary determination rule.
         /// </summary>
-        public static Locations Locate<TCoordinate>(TCoordinate p, IGeometry<TCoordinate> geom)
-            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<Double, TCoordinate>, IConvertible
+        public static Locations Locate(TCoordinate p, IGeometry<TCoordinate> geom)
         {
             if (geom.IsEmpty)
             {
@@ -41,9 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return Locations.Exterior;
         }
 
-        private static Boolean IsPointInRing<TCoordinate>(TCoordinate p, ILinearRing<TCoordinate> ring)
-                     where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                                IComputable<Double, TCoordinate>, IConvertible
+        private static Boolean IsPointInRing(TCoordinate p, ILinearRing<TCoordinate> ring)
         {
             if ( !ring.Extents.Intersects(p) )
                 return false;
@@ -51,9 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return CGAlgorithms<TCoordinate>.IsPointInRing(p, ring.Coordinates);
         }
 
-        public static Boolean ContainsPointInPolygon<TCoordinate>(TCoordinate p, IPolygon<TCoordinate> poly)
-            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<Double, TCoordinate>, IConvertible
+        public static Boolean ContainsPointInPolygon(TCoordinate p, IPolygon<TCoordinate> poly)
         {
             if (poly.IsEmpty)
             {
@@ -74,9 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return true;
         }
 
-        public static Boolean ContainsPoint<TCoordinate>(TCoordinate p, IGeometry<TCoordinate> geom)
-            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                IComputable<Double, TCoordinate>, IConvertible
+        public static Boolean ContainsPoint(TCoordinate p, IGeometry<TCoordinate> geom)
         {
             if (geom is IPolygon<TCoordinate>)
             {
@@ -106,5 +100,18 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             return false;
         }
+
+        private IGeometry<TCoordinate> _geom;
+
+        public SimplePointInAreaLocator(IGeometry<TCoordinate> geom)
+        {
+            _geom = geom;
+        }
+
+        public Locations Locate(TCoordinate p)
+        {
+            return Locate(p, _geom);
+        }
+
     }
 }

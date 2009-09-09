@@ -335,16 +335,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
              * of one to lines and points of the other
              */
             IEnumerable<ILineString<TCoordinate>> lines0 =
-                GeometryFilter.Filter<ILineString<TCoordinate>, TCoordinate>(_g0);
-                // LinearComponentExtracter<TCoordinate>.GetLines(_g0);
+                //GeometryFilter.Filter<ILineString<TCoordinate>, TCoordinate>(_g0);
+               LinearComponentExtracter<TCoordinate>.GetLines(_g0);
             IEnumerable<ILineString<TCoordinate>> lines1 =
-                GeometryFilter.Filter<ILineString<TCoordinate>, TCoordinate>(_g1);
-                // LinearComponentExtracter<TCoordinate>.GetLines(_g1);
+                //GeometryFilter.Filter<ILineString<TCoordinate>, TCoordinate>(_g1);
+                LinearComponentExtracter<TCoordinate>.GetLines(_g1);
 
             IEnumerable<IPoint<TCoordinate>> pts0 = GeometryFilter.Filter<IPoint<TCoordinate>, TCoordinate>(_g0);
-                // PointExtracter<TCoordinate>.GetPoints(_g0);
+                //PointExtracter<TCoordinate>.GetPoints(_g0);
             IEnumerable<IPoint<TCoordinate>> pts1 = GeometryFilter.Filter<IPoint<TCoordinate>, TCoordinate>(_g1);
-                // PointExtracter<TCoordinate>.GetPoints(_g1);
+                //PointExtracter<TCoordinate>.GetPoints(_g1);
 
             // bail whenever minDistance goes to zero, since it can't get any less
             locGeom0 = computeMinDistanceLines(lines0, lines1, out locGeom1);

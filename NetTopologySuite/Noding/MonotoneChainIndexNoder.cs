@@ -60,10 +60,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// Some noders may add all these nodes to the input <see cref="NodedSegmentString{TCoordinate}"/>s;
         /// others may only add some or none at all.
         /// </remarks>
-        public override IEnumerable<NodedSegmentString<TCoordinate>> Node(
-            IEnumerable<NodedSegmentString<TCoordinate>> inputSegmentStrings)
+        public override IEnumerable<ISegmentString<TCoordinate>> Node(
+            IEnumerable<ISegmentString<TCoordinate>> inputSegmentStrings)
         {
-            foreach (NodedSegmentString<TCoordinate> segmentString in inputSegmentStrings)
+            foreach (ISegmentString<TCoordinate> segmentString in inputSegmentStrings)
             {
                 add(segmentString);
             }
@@ -73,17 +73,26 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             return NodedSegmentString<TCoordinate>.GetNodedSubstrings(inputSegmentStrings);
         }
 
-        public override IEnumerable<TNodingResult> Node<TNodingResult>(
-            IEnumerable<NodedSegmentString<TCoordinate>> segmentStrings,
-            Func<NodedSegmentString<TCoordinate>, TNodingResult> generator)
+        public override void ComputeNodes(IEnumerable<ISegmentString<TCoordinate>> segmentStrings)
         {
-            foreach (NodedSegmentString<TCoordinate> segmentString in Node(segmentStrings))
+            foreach (ISegmentString<TCoordinate> segmentString in segmentStrings)
+            {
+                add(segmentString);
+            }
+
+            intersectChains();
+        }
+        public override IEnumerable<TNodingResult> Node<TNodingResult>(
+            IEnumerable<ISegmentString<TCoordinate>> segmentStrings,
+            Func<ISegmentString<TCoordinate>, TNodingResult> generator)
+        {
+            foreach (ISegmentString<TCoordinate> segmentString in Node(segmentStrings))
             {
                 yield return generator(segmentString);
             }
         }
 
-        private void add(NodedSegmentString<TCoordinate> item)
+        private void add(ISegmentString<TCoordinate> item)
         {
             IEnumerable<MonotoneChain<TCoordinate>> segChains
                 = MonotoneChainBuilder.GetChains(_geoFactory, item.Coordinates, item);
@@ -112,10 +121,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                      */
                     if (testChain.Id > queryChain.Id)
                     {
+                        ISegmentString<TCoordinate> ss1 = queryChain.Context as ISegmentString<TCoordinate>;
                         foreach (Pair<Int32> pair in queryChain.OverlapIndexes(testChain))
                         {
-                            NodedSegmentString<TCoordinate> ss1 = testChain.Context as NodedSegmentString<TCoordinate>;
-                            NodedSegmentString<TCoordinate> ss2 = queryChain.Context as NodedSegmentString<TCoordinate>;
+                            ISegmentString<TCoordinate> ss2 = testChain.Context as ISegmentString<TCoordinate>;
 
                             Debug.Assert(ss1 != null);
                             Debug.Assert(ss2 != null);
@@ -125,6 +134,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
                         _overlapCount++;
                     }
+                    if (SegmentIntersector.IsDone)
+                        return;
                 }
             }
         }

@@ -48,13 +48,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// Some Noders may add all these nodes to the input <see cref="NodedSegmentString{TCoordinate}"/>s;
         /// others may only add some or none at all.
         /// </remarks>
-        public abstract IEnumerable<NodedSegmentString<TCoordinate>> Node(
-            IEnumerable<NodedSegmentString<TCoordinate>> segmentStrings);
+        public abstract IEnumerable<ISegmentString<TCoordinate>> Node(
+            IEnumerable<ISegmentString<TCoordinate>> segmentStrings);
 
+        public abstract void ComputeNodes(IEnumerable<ISegmentString<TCoordinate>> segmentStrings);
         #endregion
 
         public abstract IEnumerable<TNodingResult> Node<TNodingResult>(
-            IEnumerable<NodedSegmentString<TCoordinate>> segmentStrings,
-            Func<NodedSegmentString<TCoordinate>, TNodingResult> generator);
+            IEnumerable<ISegmentString<TCoordinate>> segmentStrings,
+            Func<ISegmentString<TCoordinate>, TNodingResult> generator);
     }
 }

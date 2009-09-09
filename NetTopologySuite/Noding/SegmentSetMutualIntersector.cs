@@ -55,11 +55,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         protected ISegmentIntersector<TCoordinate> _segInt;
 
         ///<summary>
-        ///Sets the {@link SegmentIntersector} to use with this intersector.
+        ///Sets the <see cref="ISegmentIntersector{TCoordinate}"/> to use with this intersector.
         ///The SegmentIntersector will either rocord or add intersection nodes
         ///for the input segment strings.
-        ///<(summary>
-        ///<para  segInt the segment intersector to use
+        ///<summary>
+        ///<param name="segInt">the segment intersector to use</param>
         public void SetSegmentIntersector(ISegmentIntersector<TCoordinate> segInt)
         {
             _segInt = segInt;
@@ -67,13 +67,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
         /// <summary>
         /// </summary>
-        ///<param name="segStrings">a collection of {@link SegmentString}s to node</param>
-        public abstract void SetBaseSegments(List<NodedSegmentString<TCoordinate>> segStrings);
+        ///<param name="segStrings">a collection of <see cref="ISegmentString{TCoordinate}"/>s to node</param>
+        public abstract void SetBaseSegments(IEnumerable<ISegmentString<TCoordinate>> segStrings);
 
         ///<summary>
-        ///Computes the intersections for two collections of {@link SegmentString}s.
+        ///Computes the intersections for two collections of <see cref="ISegmentString{TCoordinate}"/>s.
         ///<summary>
-        ///@param segStrings1 a collection of {@link SegmentString}s to node
-        public abstract void Process(List<NodedSegmentString<TCoordinate>> segStrings);
+        ///<param name="segStrings">a collection of <see cref="ISegmentString{TCoordinate}"/>s to node</param>
+        public abstract void Process(List<ISegmentString<TCoordinate>> segStrings);
     }
 }

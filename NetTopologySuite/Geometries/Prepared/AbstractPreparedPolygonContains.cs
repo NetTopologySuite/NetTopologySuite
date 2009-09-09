@@ -179,7 +179,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
 
         private void FindAndClassifyIntersections(IGeometry<TCoordinate> geom)
         {
-            List<NodedSegmentString<TCoordinate>> lineSegStr = SegmentStringUtil<TCoordinate>.ExtractSegmentStrings(geom);
+            List<ISegmentString<TCoordinate>> lineSegStr = SegmentStringUtil<TCoordinate>.ExtractSegmentStrings(geom);
 
             LineIntersector<TCoordinate> li = new RobustLineIntersector<TCoordinate>(geom.Factory);
             SegmentIntersectionDetector<TCoordinate> intDetector = new SegmentIntersectionDetector<TCoordinate>(li);

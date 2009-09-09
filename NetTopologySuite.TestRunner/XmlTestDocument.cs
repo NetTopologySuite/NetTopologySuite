@@ -8,10 +8,14 @@ using GeoAPI.Coordinates;
 using GisSharpBlog.NetTopologySuite;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NetTopologySuite.Coordinates;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite
 {
-    public class XmlTestDocument
+    public class XmlTestDocument<TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         private static NumberFormatInfo _numberFormatInfo;
 
@@ -30,9 +34,9 @@ namespace GisSharpBlog.NetTopologySuite
 
         private readonly ArrayList _listarrTests;
 
-        private XmlTestCollection _listCurTests;
+        private XmlTestCollection<TCoordinate> _listCurTests;
 
-        private XmlTestFactory _xmlTestFactory;
+        private XmlTestFactory<TCoordinate> _xmlTestFactory;
 
         #endregion
 
@@ -61,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite
             _xmlTestFactory = null;
         }
 
-        public XmlTestCollection CurrentTests
+        public XmlTestCollection<TCoordinate> CurrentTests
         {
             get { return _listCurTests; }
         }
@@ -71,7 +75,12 @@ namespace GisSharpBlog.NetTopologySuite
             get { return _listarrTests; }
         }
 
-        public Boolean LoadFile(String fileName)
+        public delegate ICoordinateFactory<TCoordinate> CreateCoordinateFactory(PrecisionModelType type,  Double scale);
+
+        public delegate ICoordinateSequenceFactory<TCoordinate> CreateCoordinateSequenceFactory(
+            ICoordinateFactory<TCoordinate> coordinateFactory);
+
+        public Boolean LoadFile(String fileName, CreateCoordinateFactory createCoordinateFactory, CreateCoordinateSequenceFactory createCoordinateSequenceFactory )
         {
             if (!File.Exists(fileName))
             {
@@ -187,22 +196,23 @@ namespace GisSharpBlog.NetTopologySuite
                     }
                 }
 
-                BufferedCoordinateFactory coordFactory;
+                ICoordinateFactory<TCoordinate> coordFactory = createCoordinateFactory(type, scale);;
 
-                if (!Double.IsNaN(scale))
-                {
-                    coordFactory = new BufferedCoordinateFactory(scale);
-                }
-                else
-                {
-                    coordFactory = new BufferedCoordinateFactory(type);
-                }
+                //if (!Double.IsNaN(scale))
+                //{
+                //    coordFactory = 
+                //}
+                //else
+                //{
+                //    coordFactory = new BufferedCoordinateFactory(type);
+                //}
 
-                ICoordinateSequenceFactory<BufferedCoordinate> seqFactory =
-                    new BufferedCoordinateSequenceFactory(coordFactory);
+                ICoordinateSequenceFactory<TCoordinate> seqFactory =
+                    createCoordinateSequenceFactory(coordFactory);
+                    //new BufferedCoordinateSequenceFactory(coordFactory);
 
-                _xmlTestFactory = new XmlTestFactory(seqFactory);
-                _listCurTests = new XmlTestCollection();
+                _xmlTestFactory = new XmlTestFactory<TCoordinate>(seqFactory);
+                _listCurTests = new XmlTestCollection<TCoordinate>();
 
                 _listCurTests.Name = testDescription;
 
@@ -298,7 +308,7 @@ namespace GisSharpBlog.NetTopologySuite
                         testInfo.SetValue("arg3", testElement.GetAttribute("arg3"));
                     }
 
-                    XmlTest xmlTest = _xmlTestFactory.Create(_listCurTests.Count, testInfo, tolerance);
+                    XmlTest<TCoordinate> xmlTest = _xmlTestFactory.Create(_listCurTests.Count, testInfo, tolerance);
 
                     if (xmlTest != null && _listCurTests != null)
                     {
@@ -339,7 +349,7 @@ namespace GisSharpBlog.NetTopologySuite
                             testInfo.SetValue("arg3", testElement.GetAttribute("arg3"));
                         }
 
-                        XmlTest xmlTest = _xmlTestFactory.Create(_listCurTests.Count, testInfo, tolerance);
+                        XmlTest<TCoordinate> xmlTest = _xmlTestFactory.Create(_listCurTests.Count, testInfo, tolerance);
 
                         if (xmlTest != null && _listCurTests != null)
                         {

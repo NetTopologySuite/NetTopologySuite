@@ -307,7 +307,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             if (location == Locations.None)
             {
                 IGeometry<TCoordinate> g = Slice.GetAt(geometries, geometryIndex).Geometry;
-                location = SimplePointInAreaLocator.Locate(p, g);
+                location = SimplePointInAreaLocator<TCoordinate>.Locate(p, g);
 
                 if (geometryIndex == 0)
                 {

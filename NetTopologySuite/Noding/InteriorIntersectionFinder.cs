@@ -5,15 +5,18 @@ using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
+    ///<summary>
+    ///</summary>
+    ///<typeparam name="TCoordinate"></typeparam>
     public class InteriorIntersectionFinder<TCoordinate> : ISegmentIntersector<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IConvertible
     {
 
         private Boolean _isCheckEndSegmentsOnly;
-        private LineIntersector<TCoordinate> _li;
-        private TCoordinate _interiorIntersection = default(TCoordinate);
-        private TCoordinate[] _intSegments = null;
+        private readonly LineIntersector<TCoordinate> _li;
+        private TCoordinate _interiorIntersection;
+        private TCoordinate[] _intSegments;
 
         ///<summary>
         /// Creates an intersection finder which finds an interior intersection if one exists
@@ -25,15 +28,6 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             _interiorIntersection = default(TCoordinate);
         }
 
-        /**
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         * @param isCheckEndSegmentsOnly 
-         */
         ///<summary>
         /// Gets/Sets whether only end segments should be tested for interior intersection.
         /// This is a performance optimization that may be used if
@@ -52,7 +46,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         ///</summary>
         public Boolean HasIntersection
         {
-            get { return _interiorIntersection.Equals(default(TCoordinate)); }
+            get
+            {
+                if (typeof(TCoordinate).IsValueType)
+                    return !_interiorIntersection.Equals(default(TCoordinate));
+                return _interiorIntersection != null;
+            }
         }
 
         ///<summary>
@@ -72,17 +71,20 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             get { return _intSegments; }
         }
 
-        /**
-         * This method is called by clients
-         * of the {@link SegmentIntersector} class to process
-         * intersections for two segments of the {@link SegmentStrings} being intersected.
-         * Note that some clients (such as {@link MonotoneChain}s) may optimize away
-         * this call for segment pairs which they have determined do not intersect
-         * (e.g. by an disjoint envelope test).
-         */
+        ///<summary>
+        /// This method is called by clients of the <see cref="ISegmentIntersector{TCoordinate}"/> class to process
+        /// intersections for two segments of the <see cref="ISegmentString{TCoordinate}"/>s being intersected.
+        /// Note that some clients (such as <see cref="MonotoneChain{TCoordinate}"/>}s) may optimize away
+        /// this call for segment pairs which they have determined do not intersect
+        /// (e.g. by an disjoint envelope test).
+        ///</summary>
+        ///<param name="e0"></param>
+        ///<param name="segIndex0"></param>
+        ///<param name="e1"></param>
+        ///<param name="segIndex1"></param>
         public void ProcessIntersections(
-            NodedSegmentString<TCoordinate> e0, int segIndex0,
-            NodedSegmentString<TCoordinate> e1, int segIndex1
+            ISegmentString<TCoordinate> e0, int segIndex0,
+            ISegmentString<TCoordinate> e1, int segIndex1
             )
         {
             // short-circuit if intersection already found
@@ -124,15 +126,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             }
         }
 
-        /**
-         * Tests whether a segment in a {@link SegmentString} is an end segment.
-         * (either the first or last).
-         * 
-         * @param segStr a segment string
-         * @param index the index of a segment in the segment string
-         * @return true if the segment is an end segment
-         */
-        private Boolean IsEndSegment(NodedSegmentString<TCoordinate>  segStr, int index)
+        ///<summary>
+        /// Tests whether a segment in a {@link SegmentString} is an end segment.
+        /// (either the first or last).
+        ///</summary>
+        ///<param name="segStr">a segment string</param>
+        ///<param name="index">the index of a segment in the segment string</param>
+        ///<returns>true if the segment is an end segment</returns>
+        private static Boolean IsEndSegment(ISegmentString<TCoordinate>  segStr, int index)
         {
             if (index == 0) return true;
             if (index >= segStr.Count - 2) return true;
@@ -141,7 +142,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
         public Boolean IsDone
         {
-            get { return _interiorIntersection != null; }
+            get
+            {
+                if ( typeof(TCoordinate).IsValueType)
+                    return !_interiorIntersection.Equals(default(TCoordinate));
+                return _interiorIntersection != null;
+            }
         }
 
     }

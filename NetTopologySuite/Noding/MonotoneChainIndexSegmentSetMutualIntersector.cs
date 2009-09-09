@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Index.Chain;
+using GisSharpBlog.NetTopologySuite.Index.Quadtree;
 using GisSharpBlog.NetTopologySuite.Index.Strtree;
 using NPack.Interfaces;
 
@@ -17,11 +19,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     {
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
 
-        /*
-        * The {@link SpatialIndex} used should be something that supports
-        * envelope (range) queries efficiently (such as a {@link Quadtree}
-        * or {@link STRtree}.
-        */
+        /// <summary>
+        /// The Spatial index used should be something that supports
+        /// envelope (range) queries efficiently (such as a <see cref="Quadtree{TCoordinate,TItem}"/>
+        /// or <see cref="StrTree{TCoordinate,TItem}"/>
+        /// </summary>
         private readonly StrTree<TCoordinate, MonotoneChain<TCoordinate>> _index;
         private readonly List<MonotoneChain<TCoordinate>> _monoChains = new List<MonotoneChain<TCoordinate>>();
         private int _indexCounter;
@@ -30,6 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         private int _processCounter;
 
         ///<summary>
+        /// Creates an instance of this class
         ///</summary>
         ///<param name="geoFactory"></param>
         public MonotoneChainIndexSegmentSetMutualIntersector(IGeometryFactory<TCoordinate> geoFactory)
@@ -48,13 +51,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             get { return _index; }
         }
 
-        public override void SetBaseSegments(List<NodedSegmentString<TCoordinate>> segStrings)
+        public override void SetBaseSegments(IEnumerable<ISegmentString<TCoordinate>> segStrings)
         {
-            foreach (NodedSegmentString<TCoordinate> segString in segStrings)
+            foreach (ISegmentString<TCoordinate> segString in segStrings)
                 AddToIndex(segString);
         }
 
-        private void AddToIndex(NodedSegmentString<TCoordinate> segStr)
+        private void AddToIndex(ISegmentString<TCoordinate> segStr)
         {
             IEnumerable<MonotoneChain<TCoordinate>> segChains = MonotoneChainBuilder.GetChains(_geoFactory,
                                                                                                segStr.Coordinates,
@@ -66,7 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             }
         }
 
-        public override void Process(List<NodedSegmentString<TCoordinate>> segStrings)
+        public override void Process(List<ISegmentString<TCoordinate>> segStrings)
         {
             _processCounter = _indexCounter + 1;
             _nOverlaps = 0;
@@ -79,7 +82,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             //System.out.println("MCIndexBichromaticIntersector: # oct chain overlaps = " + nOctOverlaps);
         }
 
-        private void AddToMonoChains(NodedSegmentString<TCoordinate> segStr)
+        private void AddToMonoChains(ISegmentString<TCoordinate> segStr)
         {
             IEnumerable<MonotoneChain<TCoordinate>> segChains = MonotoneChainBuilder.GetChains(_geoFactory,
                                                                                                segStr.Coordinates,
@@ -129,8 +132,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                 MonotoneChain<TCoordinate> mc1, int start1,
                 MonotoneChain<TCoordinate> mc2, int start2)
             {
-                NodedSegmentString<TCoordinate> ss1 = (NodedSegmentString<TCoordinate>) mc1.Context;
-                NodedSegmentString<TCoordinate> ss2 = (NodedSegmentString<TCoordinate>) mc2.Context;
+                ISegmentString<TCoordinate> ss1 = (ISegmentString<TCoordinate>) mc1.Context;
+                ISegmentString<TCoordinate> ss2 = (ISegmentString<TCoordinate>) mc2.Context;
                 _si.ProcessIntersections(ss1, start1, ss2, start2);
             }
         }

@@ -76,7 +76,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// An enumeration of <see cref="NodedSegmentString{TCoordinate}"/>s to be noded.
         /// </param>
         /// <exception cref="TopologyException">If the iterated noding fails to converge.</exception>
-        public IEnumerable<NodedSegmentString<TCoordinate>> Node(IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
+        public IEnumerable<ISegmentString<TCoordinate>> Node(IEnumerable<ISegmentString<TCoordinate>> segStrings)
         {
             //_nodedSegStrings = segStrings;
             Int32 nodingIterationCount = 0;
@@ -107,18 +107,22 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             return segStrings;
         }
 
+        public void ComputeNodes(IEnumerable<ISegmentString<TCoordinate>> segStrings)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
 
         /// <summary>
         /// Node the input segment strings once
         /// and create the split edges between the nodes.
         /// </summary>
-        private IEnumerable<NodedSegmentString<TCoordinate>> node(
-            IEnumerable<NodedSegmentString<TCoordinate>> segStrings, out Int32 interiorIntersectionsCount)
+        private IEnumerable<ISegmentString<TCoordinate>> node(
+            IEnumerable<ISegmentString<TCoordinate>> segStrings, out Int32 interiorIntersectionsCount)
         {
             IntersectionAdder<TCoordinate> si = new IntersectionAdder<TCoordinate>(_li);
             MonotoneChainIndexNoder<TCoordinate> noder = new MonotoneChainIndexNoder<TCoordinate>(_geoFactory, si);
-            IEnumerable<NodedSegmentString<TCoordinate>> nodedSegments = noder.Node(segStrings);
+            IEnumerable<ISegmentString<TCoordinate>> nodedSegments = noder.Node(segStrings);
             interiorIntersectionsCount = si.InteriorIntersectionCount;
             return nodedSegments;
         }

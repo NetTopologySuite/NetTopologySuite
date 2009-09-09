@@ -55,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
             /**
              * If any segments intersect, result is false.
              */
-            List<NodedSegmentString<TCoordinate>> lineSegStr = SegmentStringUtil<TCoordinate>.ExtractSegmentStrings(geom);
+            List<ISegmentString<TCoordinate>> lineSegStr = SegmentStringUtil<TCoordinate>.ExtractSegmentStrings(geom);
             Boolean segsIntersect = _prepPoly.IntersectionFinder.Intersects(lineSegStr);
             if (segsIntersect)
                 return false;

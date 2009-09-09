@@ -135,7 +135,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             OffsetCurveSetBuilder<TCoordinate> curveSetBuilder
                 = new OffsetCurveSetBuilder<TCoordinate>(g, distance, curveBuilder);
 
-            IEnumerable<NodedSegmentString<TCoordinate>> bufferSegStrList
+            IEnumerable<ISegmentString<TCoordinate>> bufferSegStrList
                 = curveSetBuilder.GetCurves();
 
             // short-circuit test
@@ -230,11 +230,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             return noder;
         }
 
-        private void computeNodedEdges(IEnumerable<NodedSegmentString<TCoordinate>> bufferSegStrList,
+        private void computeNodedEdges(IEnumerable<ISegmentString<TCoordinate>> bufferSegStrList,
                                        IPrecisionModel<TCoordinate> precisionModel)
         {
             INoder<TCoordinate> noder = getNoder(precisionModel);
-            IEnumerable<NodedSegmentString<TCoordinate>> nodedSegStrings = noder.Node(bufferSegStrList);
+            IEnumerable<ISegmentString<TCoordinate>> nodedSegStrings = noder.Node(bufferSegStrList);
 
             foreach (NodedSegmentString<TCoordinate> segStr in nodedSegStrings)
             {

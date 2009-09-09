@@ -8,20 +8,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
     internal static class GeometryFilter
     {
+
         public static IEnumerable<TGeometry> Filter<TGeometry, TCoordinate>(IGeometry<TCoordinate> geometry)
             where TGeometry : IGeometry<TCoordinate>
             where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                 IComputable<Double, TCoordinate>, IConvertible
-
         {
             if (geometry is TGeometry)
             {
-                yield return (TGeometry) geometry;
+                yield return (TGeometry)geometry;
             }
 
-            if (geometry is IHasGeometryComponents<TCoordinate>)
+            if (geometry is IGeometryCollection<TCoordinate>)
             {
-                foreach (TGeometry g in Filter<TGeometry, TCoordinate>((IHasGeometryComponents<TCoordinate>) geometry))
+                foreach (TGeometry g in Filter<TGeometry, TCoordinate>((IGeometryCollection<TCoordinate>)geometry))
                 {
                     yield return g;
                 }
@@ -37,19 +37,62 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         }
 
         public static IEnumerable<TGeometry> Filter<TGeometry, TCoordinate>(
-            IHasGeometryComponents<TCoordinate> geometries)
+            IGeometryCollection<TCoordinate> geometries)
             where TGeometry : IGeometry<TCoordinate>
             where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                 IComputable<Double, TCoordinate>, IConvertible
         {
-            foreach (IGeometry<TCoordinate> geometry in geometries.Components)
+            foreach (IGeometry<TCoordinate> geometry in geometries)
             {
                 if (geometry is TGeometry)
                 {
-                    yield return (TGeometry) geometry;
+                    yield return (TGeometry)geometry;
                 }
             }
         }
+
+        //public static IEnumerable<TGeometry> Filter<TGeometry, TCoordinate>(IGeometry<TCoordinate> geometry)
+        //    where TGeometry : IGeometry<TCoordinate>
+        //    where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        //        IComputable<Double, TCoordinate>, IConvertible
+
+        //{
+        //    if (geometry is TGeometry)
+        //    {
+        //        yield return (TGeometry) geometry;
+        //    }
+
+        //    if (geometry is IHasGeometryComponents<TCoordinate>)
+        //    {
+        //        foreach (TGeometry g in Filter<TGeometry, TCoordinate>((IHasGeometryComponents<TCoordinate>) geometry))
+        //        {
+        //            yield return g;
+        //        }
+        //    }
+
+        //    //if (geometry is IEnumerable<IGeometry>)
+        //    //{
+        //    //    foreach (TGeometry g in Filter<TGeometry>(geometry as IEnumerable<IGeometry>))
+        //    //    {
+        //    //        yield return g;
+        //    //    }
+        //    //}
+        //}
+
+        //public static IEnumerable<TGeometry> Filter<TGeometry, TCoordinate>(
+        //    IHasGeometryComponents<TCoordinate> geometries)
+        //    where TGeometry : IGeometry<TCoordinate>
+        //    where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+        //        IComputable<Double, TCoordinate>, IConvertible
+        //{
+        //    foreach (IGeometry<TCoordinate> geometry in geometries.Components)
+        //    {
+        //        if (geometry is TGeometry)
+        //        {
+        //            yield return (TGeometry) geometry;
+        //        }
+        //    }
+        //}
 
         public static void Apply<TGeometry>(IEnumerable<TGeometry> geometries, Action<TGeometry> action)
             where TGeometry : IGeometry

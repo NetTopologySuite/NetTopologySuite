@@ -26,8 +26,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
         #region ISegmentIntersector<TCoordinate> Member
 
-        public void ProcessIntersections(NodedSegmentString<TCoordinate> e0, int segIndex0,
-                                         NodedSegmentString<TCoordinate> e1, int segIndex1)
+        public void ProcessIntersections(ISegmentString<TCoordinate> e0, int segIndex0,
+                                         ISegmentString<TCoordinate> e1, int segIndex1)
         {
             // don't bother intersecting a segment with itself
             if (e0 == e1 && segIndex0 == segIndex1) return;
@@ -61,7 +61,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                 Boolean saveLocation = true;
                 if (FindProper && !isProper) saveLocation = false;
 
-                if (_intPt.Equals(default(TCoordinate)) || saveLocation)
+                Boolean equal = typeof (TCoordinate).IsValueType ? _intPt.Equals(default(TCoordinate)) : _intPt == null;
+                if (equal || saveLocation)
                 {
                     // record intersection location (approximate)
                     _intPt = intersection.GetIntersectionPoint(0);

@@ -11,6 +11,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             IComparable<TCoordinate>, IConvertible,
             IComputable<Double, TCoordinate>
     {
+        public static IExtents<TCoordinate> Convert(IExtents extents, IGeometryFactory<TCoordinate> geoFactory)
+        {
+            IExtents<TCoordinate> converted = extents as IExtents<TCoordinate>;
+            if (converted != null)
+                return converted;
+
+            return geoFactory.CreateExtents(extents);
+        }
+
+        
         public static ICoordinateSequence<TCoordinate> Convert(ICoordinateSequence coordinates,
                                                                ICoordinateSequenceFactory<TCoordinate> coordSeqFactory)
         {

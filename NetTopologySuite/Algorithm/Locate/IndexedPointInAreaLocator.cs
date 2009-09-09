@@ -88,14 +88,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
 
             private void AddLine(ICoordinateSequence<TCoordinate> coordinateSequence)
             {
-                TCoordinate p0 = default(TCoordinate);
-                foreach (TCoordinate p1 in coordinateSequence)
+                TCoordinate p0 = coordinateSequence.First;
+                foreach (TCoordinate p1 in Enumerable.Skip(coordinateSequence,1))
                 {
-                    if (!p0.Equals(default(TCoordinate)))
-                    {
-                        LineSegment<TCoordinate> segment = new LineSegment<TCoordinate>(p0, p1);
-                        _index.Insert(segment.Bounds, segment);
-                    }
+                    LineSegment<TCoordinate> segment = new LineSegment<TCoordinate>(p0, p1);
+                    _index.Insert(segment.Bounds, segment);
                     p0 = p1;
                 }
             }

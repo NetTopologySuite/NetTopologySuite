@@ -31,7 +31,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private Double _distance;
         private OffsetCurveBuilder_110<TCoordinate> _curveBuilder;
 
-        private List<NodedSegmentString<TCoordinate>> _curveList = new List<NodedSegmentString<TCoordinate>>();
+        private List<ISegmentString<TCoordinate>> _curveList = new List<ISegmentString<TCoordinate>>();
 
         ///<summary>
         /// Creates an instance of this class
@@ -56,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
          *
          * @return a Collection of SegmentStrings representing the raw buffer curves
          */
-        public IEnumerable<NodedSegmentString<TCoordinate>> GetCurves()
+        public IEnumerable<ISegmentString<TCoordinate>> GetCurves()
         {
             Add(_inputGeom);
             return _curveList;

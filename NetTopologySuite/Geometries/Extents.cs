@@ -28,6 +28,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             IComputable<Double, TCoordinate>,
             IComparable<TCoordinate>, IConvertible
     {
+
+        private IExtents<TCoordinate> ConvertIExtents(IExtents other)
+        {
+            return GenericInterfaceConverter<TCoordinate>.Convert(other, _geoFactory);
+        }
+
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
         private TCoordinate _max;
         private TCoordinate _min;
@@ -141,16 +147,21 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 TCoordinate otherMin = other.Min;
                 TCoordinate otherMax = other.Max;
 
-                DoubleComponent xMin1, yMin1, xMax1, yMax1, xMin2, yMin2, xMax2, yMax2;
-                _min.GetComponents(out xMin1, out yMin1);
-                _max.GetComponents(out xMax1, out yMax1);
-                otherMin.GetComponents(out xMin2, out yMin2);
-                otherMax.GetComponents(out xMax2, out yMax2);
+                //DoubleComponent xMin1, yMin1, xMax1, yMax1, xMin2, yMin2, xMax2, yMax2;
+                //_min.GetComponents(out xMin1, out yMin1);
+                //_max.GetComponents(out xMax1, out yMax1);
+                //otherMin.GetComponents(out xMin2, out yMin2);
+                //otherMax.GetComponents(out xMax2, out yMax2);
 
-                Double xMin = Math.Min((Double) xMin1, (Double) xMin2);
-                Double xMax = Math.Max((Double) xMax1, (Double) xMax2);
-                Double yMin = Math.Min((Double) yMin1, (Double) yMin2);
-                Double yMax = Math.Max((Double) yMax1, (Double) yMax2);
+                //Double xMin = Math.Min((Double) xMin1, (Double) xMin2);
+                //Double xMax = Math.Max((Double) xMax1, (Double) xMax2);
+                //Double yMin = Math.Min((Double) yMin1, (Double) yMin2);
+                //Double yMax = Math.Max((Double) yMax1, (Double) yMax2);
+
+                Double xMin = Math.Min(_min[Ordinates.X], other.Min[Ordinates.X]);
+                Double xMax = Math.Max(_max[Ordinates.X], other.Max[Ordinates.X]);
+                Double yMin = Math.Min(_min[Ordinates.Y], other.Min[Ordinates.Y]);
+                Double yMax = Math.Max(_max[Ordinates.Y], other.Max[Ordinates.Y]);
 
                 ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
                 _min = coordFactory.Create(xMin, yMin);
@@ -203,18 +214,24 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             TCoordinate min1 = other.Min;
             TCoordinate max1 = other.Max;
 
-            DoubleComponent xMin1, yMin1, xMax1, yMax1, xMin2, yMin2, xMax2, yMax2;
+            //DoubleComponent xMin1, yMin1, xMax1, yMax1, xMin2, yMin2, xMax2, yMax2;
 
-            min1.GetComponents(out xMin1, out yMin1);
-            max1.GetComponents(out xMax1, out yMax1);
-            _min.GetComponents(out xMin2, out yMin2);
-            _max.GetComponents(out xMax2, out yMax2);
+            //min1.GetComponents(out xMin1, out yMin1);
+            //max1.GetComponents(out xMax1, out yMax1);
+            //_min.GetComponents(out xMin2, out yMin2);
+            //_max.GetComponents(out xMax2, out yMax2);
 
+            //// 3D_UNSAFE
+            //return !(xMin1.GreaterThan(xMax2) ||
+            //         xMax1.LessThan(xMin2) ||
+            //         yMin1.GreaterThan(yMax2) ||
+            //         yMax1.LessThan(yMin2));
             // 3D_UNSAFE
-            return !(xMin1.GreaterThan(xMax2) ||
-                     xMax1.LessThan(xMin2) ||
-                     yMin1.GreaterThan(yMax2) ||
-                     yMax1.LessThan(yMin2));
+            return !(min1[Ordinates.X] > _max[Ordinates.X] ||
+                     max1[Ordinates.X] < _min[Ordinates.X] ||
+                     min1[Ordinates.Y] > _max[Ordinates.Y] ||
+                     max1[Ordinates.Y] < _min[Ordinates.Y]);
+
         }
 
         public Boolean Intersects(TCoordinate coordinate)
@@ -454,15 +471,21 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
             else
             {
-                DoubleComponent x, y;
+                //DoubleComponent x, y;
 
-                _min.GetComponents(out x, out y);
-                originalXMin = (Double) x;
-                originalYMin = (Double) y;
+                //_min.GetComponents(out x, out y);
+                //originalXMin = (Double) x;
+                //originalYMin = (Double) y;
 
-                _max.GetComponents(out x, out y);
-                originalXMax = (Double) x;
-                originalYMax = (Double) y;
+                //_max.GetComponents(out x, out y);
+                //originalXMax = (Double) x;
+                //originalYMax = (Double) y;
+
+                originalXMin = _min[Ordinates.X];
+                originalYMin = _min[Ordinates.Y];
+
+                originalXMax = _max[Ordinates.X];
+                originalYMax = _max[Ordinates.Y];
             }
 
             Double xMin = originalXMin;
@@ -472,14 +495,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             foreach (TCoordinate coordinate in coordinates)
             {
-                DoubleComponent x, y;
+                //DoubleComponent x, y;
 
-                coordinate.GetComponents(out x, out y);
+                //coordinate.GetComponents(out x, out y);
+                Double x = coordinate[Ordinates.X];
+                Double y = coordinate[Ordinates.Y];
 
-                xMin = Math.Min((Double) x, xMin);
-                xMax = Math.Max((Double) x, xMax);
-                yMin = Math.Min((Double) y, yMin);
-                yMax = Math.Max((Double) y, yMax);
+                xMin = x < xMin ? x : xMin;// Math.Min(x, xMin);
+                xMax = x > xMax ? x : xMax;// Math.Max(x, xMax);
+                yMin = y < yMin ? y : yMin;// Math.Min(y, yMin);
+                yMax = y > yMax ? y : yMax;// Math.Max(y, yMax);
             }
 
             ICoordinateFactory<TCoordinate> coordFactory = _geoFactory.CoordinateFactory;
@@ -1556,5 +1581,71 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             return Union(point.Coordinate);
         }
+        ///<summary>
+        /// Tests if the given point lies in or on the envelope.
+        ///</summary>
+        ///<param name="p">the point which this <code>Envelope</code> is being checked for containing</param>
+        ///<returns><code>true</code> if the point lies in the interior or on the boundary of this <code>Envelope</code>.</returns>
+        public Boolean Covers(TCoordinate p)
+        {
+            return Covers(new[] { p[Ordinates.X], p[Ordinates.Y] });
+        }
+
+        public Boolean Covers(ICoordinate p)
+        {
+            return Covers((TCoordinate)p);
+        }
+
+        ///<summary>
+        /// Tests if the <code>Envelope other</code>
+        /// lies wholely inside this <code>Envelope</code> (inclusive of the boundary).
+        ///</summary>
+        ///<param name="other"> the <code>Envelope</code> to check</param>
+        ///<returns>true if this <code>Envelope</code> covers the <code>other</code> </returns>
+        public Boolean Covers(IExtents other)
+        {
+            return Covers(other, Tolerance.Zero);
+        }
+
+        public Boolean Covers(IExtents other, Tolerance tolerance)
+        {
+            return Covers(ConvertIExtents(other), tolerance);
+        }
+        public Boolean Covers(IExtents<TCoordinate> other)
+        {
+            return Covers(other, Tolerance.Zero);
+        }
+        public Boolean Covers(IExtents<TCoordinate> other, Tolerance tolerance)
+        {
+            if (IsEmpty || other.IsEmpty)
+                return false;
+
+            return
+                other.Min[Ordinates.X] >= Min[Ordinates.X] &&
+                other.Max[Ordinates.X] <= Max[Ordinates.X] &&
+                other.Min[Ordinates.Y] >= Min[Ordinates.Y] &&
+                other.Max[Ordinates.Y] <= Max[Ordinates.Y];
+        }
+        ///<summary>
+        /// Tests if the given point lies in or on the envelope.
+        ///</summary>
+        /// <param name="coordinates">coordinate of the point which this Extent is being checked for containing</param>
+        /// <returns>true if (x, y) lies in the interior or on the boundary of this Extent.</returns>
+        public Boolean Covers(params Double[] coordinates)
+        {
+            if (IsEmpty)
+                return false;
+
+            Int32 index = 0;
+            foreach (double d in coordinates)
+            {
+                if (coordinates[index] >= (Double)Min[index] &&
+                    coordinates[index] <= (Double)Max[index])
+                    return false;
+                index++;
+            }
+            return true;
+        }
+
     }
 }

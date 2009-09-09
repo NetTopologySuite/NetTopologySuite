@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,9 +22,9 @@ namespace NetTopologySuite.Tests.Geometries
         static StreamWriter outfile = new StreamWriter(CLRVersion + "_" + GCSettings.IsServerGC + "_" + GCSettings.LatencyMode + ".txt");
 
         private static readonly BufferedCoordinateFactory _coordFact = new BufferedCoordinateFactory(100000);
-
         private static readonly GeometryFactory<BufferedCoordinate> _geomFact =
             new GeometryFactory<BufferedCoordinate>(new BufferedCoordinateSequenceFactory(_coordFact));
+
 
         public const int OuterRingPoints = 500; // Increase here
         public const int InnerRingPoints = 100; // Increase here
@@ -57,40 +56,39 @@ namespace NetTopologySuite.Tests.Geometries
             BenchmarkIntersection(poly);
         }
 
+
         private static void BenchmarkIsValid(IPolygon<BufferedCoordinate> poly)
         {
-            DateTime start = DateTime.Now;
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             bool valid = poly.IsValid;
-            DateTime end = DateTime.Now;
-            var diff = end - start;
-            double td = diff.TotalSeconds;
-            LogLine("IsValid     : \t{0} \t{1} \t{2} \t{3}", poly.InteriorRingsCount, poly.Coordinates.Count, valid, td);
+            sw.Stop();
+            LogLine("IsValid     : \t{0} \t{1} \t{2} \t{3}", poly.InteriorRingsCount, poly.Coordinates.Count, valid, sw.Elapsed);
         }
 
         private static void BenchmarkIntersection(IPolygon<BufferedCoordinate> poly)
         {
             for (double w = 1; w <= 100; w *= 10)
             {
-                DateTime start = DateTime.Now;
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
                 int points = poly.Intersection(CreateBox(0, 0, w, w)).Coordinates.Count;
-                DateTime end = DateTime.Now;
-                var diff = end - start;
-                double td = diff.TotalSeconds;
-                LogLine("Intersection: \t{0} \t{1} \t{2} \t{3} \t{4}", poly.InteriorRingsCount, poly.Coordinates.Count, points, td, w);
+                sw.Stop();
+                LogLine("Intersection: \t{0} \t{1} \t{2} \t{3} \t{4}", poly.InteriorRingsCount, poly.Coordinates.Count, points, sw.Elapsed, w);
             }
         }
 
         public static void BenchmarkPolygons()
         {
-            List<ILinearRing<BufferedCoordinate>> holes = new List<ILinearRing<BufferedCoordinate>>(100);
+            List<ILinearRing<BufferedCoordinate>> holes = new List<ILinearRing<BufferedCoordinate>>();
             ILinearRing<BufferedCoordinate> shell = CreateRing(0, 0, 20, OuterRingPoints);
-            Benchmark(_geomFact.CreatePolygon(shell, holes.ToArray()));
+            Benchmark(_geomFact.CreatePolygon(shell, holes));
             for (int i = 0; i <= 100; i += 1)
             {
                 holes.Add(CreateRing((i % 10) - 5, (i / 10) - 5, 0.4, InnerRingPoints));
                 if (i % 5 == 0)
                 {
-                    Benchmark(_geomFact.CreatePolygon(shell, holes.ToArray()));
+                    Benchmark(_geomFact.CreatePolygon(shell, holes));
                 }
             }
         }
@@ -102,7 +100,7 @@ namespace NetTopologySuite.Tests.Geometries
             return (ILinearRing<BufferedCoordinate>)poly.ExteriorRing;
         }
 
-        public static IGeometry CreateBox(double x, double y, double w, double h)
+        public static IPolygon<BufferedCoordinate> CreateBox(double x, double y, double w, double h)
         {
             ICoordinateSequence<BufferedCoordinate> seq = _geomFact.CoordinateSequenceFactory.Create(
                 _coordFact.Create(x,y),

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
+using NPack;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
@@ -173,29 +174,51 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         {
             Int32 subnodeIndex = -1;
 
-            if (extents.GetMin(Ordinates.X) > center[Ordinates.X])
+            DoubleComponent cx, cy;
+            center.GetComponents(out cx,out cy);
+
+            DoubleComponent xMin, yMin, xMax, yMax;
+            extents.Min.GetComponents(out xMin, out yMin);
+            extents.Max.GetComponents(out xMax, out yMax);
+
+            if (xMin.GreaterThan(cx))
             {
-                if (extents.GetMin(Ordinates.Y) > center[Ordinates.Y])
-                {
+                if (yMin.GreaterThan(cy))
                     subnodeIndex = 3;
-                }
-                if (extents.GetMax(Ordinates.Y) < center[Ordinates.Y])
-                {
+                if (yMax.LessThan(cy))
                     subnodeIndex = 1;
-                }
             }
 
-            if (extents.GetMax(Ordinates.X) < center[Ordinates.X])
+            if (xMax.LessThan(cx))
             {
-                if (extents.GetMin(Ordinates.Y) > center[Ordinates.Y])
-                {
+                if (yMin.GreaterThan(cy))
                     subnodeIndex = 2;
-                }
-                if (extents.GetMax(Ordinates.Y) < center[Ordinates.Y])
-                {
+                if (yMax.LessThan(cy))
                     subnodeIndex = 0;
-                }
             }
+            //if (extents.GetMin(Ordinates.X) > center[Ordinates.X])
+            //{
+            //    if (extents.GetMin(Ordinates.Y) > center[Ordinates.Y])
+            //    {
+            //        subnodeIndex = 3;
+            //    }
+            //    if (extents.GetMax(Ordinates.Y) < center[Ordinates.Y])
+            //    {
+            //        subnodeIndex = 1;
+            //    }
+            //}
+
+            //if (extents.GetMax(Ordinates.X) < center[Ordinates.X])
+            //{
+            //    if (extents.GetMin(Ordinates.Y) > center[Ordinates.Y])
+            //    {
+            //        subnodeIndex = 2;
+            //    }
+            //    if (extents.GetMax(Ordinates.Y) < center[Ordinates.Y])
+            //    {
+            //        subnodeIndex = 0;
+            //    }
+            //}
 
             return subnodeIndex;
         }

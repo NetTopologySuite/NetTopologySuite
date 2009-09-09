@@ -3,6 +3,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
+using NPack;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
@@ -95,8 +96,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             * to infinite recursion. Instead, use a heuristic of simply returning
             * the smallest existing quad containing the query
             */
-            Boolean isZeroX = IntervalSize.IsZeroWidth(itemExtents.GetMin(Ordinates.X), itemExtents.GetMax(Ordinates.X));
-            Boolean isZeroY = IntervalSize.IsZeroWidth(itemExtents.GetMin(Ordinates.Y), itemExtents.GetMax(Ordinates.Y));
+            DoubleComponent dminx, dmaxx, dminy, dmaxy;
+            itemExtents.Min.GetComponents(out dminx, out dminy);
+            itemExtents.Max.GetComponents(out dmaxx, out dmaxy);
+            Boolean isZeroX = IntervalSize.IsZeroWidth((Double)dminx, (Double)dmaxx);
+            Boolean isZeroY = IntervalSize.IsZeroWidth((Double)dminy, (Double)dmaxy);
+            //Boolean isZeroX = IntervalSize.IsZeroWidth(itemExtents.GetMin(Ordinates.X), itemExtents.GetMax(Ordinates.X));
+            //Boolean isZeroY = IntervalSize.IsZeroWidth(itemExtents.GetMin(Ordinates.Y), itemExtents.GetMax(Ordinates.Y));
 
             BaseQuadNode<TCoordinate, TItem> node;
 

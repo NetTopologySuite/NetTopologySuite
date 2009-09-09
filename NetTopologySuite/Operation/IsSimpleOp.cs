@@ -1,6 +1,10 @@
+#define C5
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+#if C5
+using C5;
+#endif
 using GeoAPI.DataStructures.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -23,11 +27,66 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
+
+
+
+        private readonly IGeometry<TCoordinate> _geom;
+        private Boolean _isClosedEndpointsInInterior = true;
+        private TCoordinate _nonSimpleLocation;
+
+        ///<summary>
+        /// Creates a simplicity checker using the default SFS Mod-2 Boundary Node Rule
+        ///</summary>
+        [Obsolete("IsSimpleOp(IGeometry<TCoordinate>)")]
+        public IsSimpleOp()
+        {}
+
+        ///<summary>
+        /// Creates a simplicity checker using the default SFS Mod-2 Boundary Node Rule
+        ///</summary>
+        ///<param name="geometry">the geometry to test</param>
+        public IsSimpleOp(IGeometry<TCoordinate> geometry)
+        {
+            _geom = geometry;
+        }
+
+        ///<summary>
+        /// Creates a simplicity checker using a given <see cref="Algorithm.IBoundaryNodeRule"/>
+        ///</summary>
+        ///<param name="geometry">the geometry to test</param>
+        /// <param name="boundaryNodeRule">the rule to use.</param>
+        public IsSimpleOp(IGeometry<TCoordinate> geometry, IBoundaryNodeRule boundaryNodeRule)
+        {
+            _geom = geometry;
+            _isClosedEndpointsInInterior = !boundaryNodeRule.IsInBoundary(2);
+        }
+
+        public Boolean IsSimple()
+        {
+            if (_geom is ILineString<TCoordinate>) 
+                return isSimpleLinearGeometry(_geom);
+
+            if (_geom is IMultiLineString<TCoordinate>)
+                return isSimpleLinearGeometry(_geom);
+
+            if (_geom is IMultiPoint<TCoordinate>) 
+                return isSimpleMultiPoint((IMultiPoint<TCoordinate>)_geom);
+
+            return true;
+        }
+
+        public TCoordinate NonSimpleLocation
+        {
+            get { return _nonSimpleLocation; }
+        }
+
+        [Obsolete]
         public Boolean IsSimple(ILineString<TCoordinate> geom)
         {
             return isSimpleLinearGeometry(geom);
         }
 
+        [Obsolete]
         public Boolean IsSimple(IMultiLineString<TCoordinate> geom)
         {
             return isSimpleLinearGeometry(geom);
@@ -36,15 +95,23 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// <summary>
         /// A MultiPoint is simple if it has no repeated points.
         /// </summary>
+        [Obsolete]
         public Boolean IsSimple(IMultiPoint<TCoordinate> mp)
+        {
+            return isSimpleMultiPoint(mp);
+        }
+
+        private static Boolean isSimpleMultiPoint(IMultiPoint<TCoordinate> mp)
         {
             if (mp.IsEmpty)
             {
                 return true;
             }
-
+#if C5
+            TreeSet<TCoordinate> points = new TreeSet<TCoordinate>();
+#else
             ISet<TCoordinate> points = new ListSet<TCoordinate>();
-
+#endif
             for (Int32 i = 0; i < mp.Count; i++)
             {
                 IPoint<TCoordinate> pt = mp[i];
@@ -61,7 +128,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
             return true;
         }
 
-        private static Boolean isSimpleLinearGeometry(IGeometry<TCoordinate> geom)
+        private Boolean isSimpleLinearGeometry(IGeometry<TCoordinate> geom)
         {
             if (geom.IsEmpty)
             {
@@ -80,6 +147,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
 
             if (si.HasProperIntersection)
             {
+                _nonSimpleLocation = si.ProperIntersectionPoint;
                 return false;
             }
 
@@ -87,7 +155,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
             {
                 return false;
             }
-            if (hasClosedEndpointIntersection(graph))
+            if (_isClosedEndpointsInInterior && hasClosedEndpointIntersection(graph))
             {
                 return false;
             }
@@ -98,7 +166,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// For all edges, check if there are any intersections which are NOT at an endpoint.
         /// The Geometry is not simple if there are intersections not at endpoints.
         /// </summary>
-        private static Boolean hasNonEndpointIntersection(PlanarGraph<TCoordinate> graph)
+        private Boolean hasNonEndpointIntersection(PlanarGraph<TCoordinate> graph)
         {
             foreach (Edge<TCoordinate> e in graph.Edges)
             {
@@ -108,6 +176,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation
                 {
                     if (!intersection.IsEndPoint(maxSegmentIndex))
                     {
+                        _nonSimpleLocation = intersection.Coordinate;
                         return true;
                     }
                 }
@@ -149,8 +218,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// <summary>
         /// Add an endpoint to the map, creating an entry for it if none exists.
         /// </summary>
+#if C5        /// 
+        private static void addEndpoint(System.Collections.Generic.IDictionary<TCoordinate, EndpointInfo> endPoints, TCoordinate p,
+                                        Boolean isClosed)
+#else
         private static void addEndpoint(IDictionary<TCoordinate, EndpointInfo> endPoints, TCoordinate p,
                                         Boolean isClosed)
+#endif
         {
             EndpointInfo eiInfo;
 

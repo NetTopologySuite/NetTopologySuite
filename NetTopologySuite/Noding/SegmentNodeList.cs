@@ -225,7 +225,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             Int32 start = edgeIntersection0.SegmentIndex + 1;
             Int32 end = edgeIntersection1.SegmentIndex;
 
-            pts = ParentSegments.Coordinates.Slice(start, end);
+            pts = ParentSegments.Coordinates.Slice(start, Math.Max(start, end));
             pts.Prepend(edgeIntersection0.Coordinate);
 
             if (useIntersectionPoint1)

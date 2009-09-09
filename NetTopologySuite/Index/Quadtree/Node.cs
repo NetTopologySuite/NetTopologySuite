@@ -4,6 +4,7 @@ using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
@@ -166,34 +167,51 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             Double miny = 0.0;
             Double maxy = 0.0;
 
+            DoubleComponent cx, cy, bx, by;
+            _center.GetComponents(out cx, out cy);
+
             switch (index)
             {
                 case 0:
-                    minx = Bounds.GetMin(Ordinates.X);
-                    maxx = _center[Ordinates.X];
-                    miny = Bounds.GetMin(Ordinates.Y);
-                    maxy = _center[Ordinates.Y];
+                    Bounds.Min.GetComponents(out bx, out by);
+                    minx = (Double)bx;
+                    maxx = (Double)cx;
+                    miny = (Double)by;
+                    maxy = (Double)cy;
+                    //minx = Bounds.GetMin(Ordinates.X);
+                    //maxx = _center[Ordinates.X];
+                    //miny = Bounds.GetMin(Ordinates.Y);
+                    //maxy = _center[Ordinates.Y];
                     break;
 
                 case 1:
-                    minx = _center[Ordinates.X];
-                    maxx = Bounds.GetMax(Ordinates.X);
-                    miny = Bounds.GetMin(Ordinates.Y);
-                    maxy = _center[Ordinates.Y];
+                    minx = (Double)cx;
+                    //minx = _center[Ordinates.X];
+                    maxx = Bounds.Max[Ordinates.X];
+                    miny = Bounds.Min[Ordinates.Y];
+                    maxy = (Double)cy;
+                    //maxy = _center[Ordinates.Y];
                     break;
 
                 case 2:
-                    minx = Bounds.GetMin(Ordinates.X);
-                    maxx = _center[Ordinates.X];
-                    miny = _center[Ordinates.Y];
-                    maxy = Bounds.GetMax(Ordinates.Y);
+                    minx = Bounds.Min[Ordinates.X];
+                    maxx = (Double)cx;
+                    miny = (Double)cy;
+                    //maxx = _center[Ordinates.X];
+                    //miny = _center[Ordinates.Y];
+                    maxy = Bounds.Max[Ordinates.Y];
                     break;
 
                 case 3:
-                    minx = _center[Ordinates.X];
-                    maxx = Bounds.GetMax(Ordinates.X);
-                    miny = _center[Ordinates.Y];
-                    maxy = Bounds.GetMax(Ordinates.Y);
+                    Bounds.Max.GetComponents(out bx, out by);
+                    minx = (Double)cx;
+                    maxx = (Double)bx;
+                    miny = (Double)cy;
+                    maxy = (Double)by;
+                    //minx = _center[Ordinates.X];
+                    //maxx = Bounds.GetMax(Ordinates.X);
+                    //miny = _center[Ordinates.Y];
+                    //maxy = Bounds.GetMax(Ordinates.Y);
                     break;
 
                 default:

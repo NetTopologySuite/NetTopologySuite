@@ -1,6 +1,10 @@
+#define C5
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+#if C5
+using C5;
+#endif
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures.Collections.Generic;
 using GeoAPI.Diagnostics;
@@ -8,6 +12,7 @@ using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NPack;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Valid
@@ -91,21 +96,30 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// <returns><see langword="true"/> if the coordinate is valid.</returns>
         public static Boolean IsValidCoordinate(TCoordinate coord)
         {
+            //DoubleComponent dx, dy;
+            //coord.GetComponents(out dx, out dy);
+
+            ////Double x = (Double) dx;
+            //if (Double.IsNaN(x))
             if (Double.IsNaN(coord[Ordinates.X]))
             {
                 return false;
             }
 
+            //if (Double.IsInfinity(x))
             if (Double.IsInfinity(coord[Ordinates.X]))
             {
                 return false;
             }
 
+            //Double y = (Double) dy;
+            //if (Double.IsNaN(y))
             if (Double.IsNaN(coord[Ordinates.Y]))
             {
                 return false;
             }
 
+            //if (Double.IsInfinity(y))
             if (Double.IsInfinity(coord[Ordinates.Y]))
             {
                 return false;
@@ -140,7 +154,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             return default(TCoordinate);
         }
 
-        private void checkValid(IGeometry g)
+        private void checkValid(IGeometry<TCoordinate> g)
         {
             if (_isChecked)
             {
@@ -523,7 +537,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
         /// </summary>
         private void checkNoSelfIntersectingRing(EdgeIntersectionList<TCoordinate> eiList)
         {
+#if C5
+            TreeSet<TCoordinate> nodeSet = new TreeSet<TCoordinate>();
+#else
             ISet<TCoordinate> nodeSet = new ListSet<TCoordinate>();
+#endif
             Boolean isFirst = true;
 
             foreach (EdgeIntersection<TCoordinate> ei in eiList)
@@ -539,10 +557,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                     _validErr = new TopologyValidationError(TopologyValidationErrors.RingSelfIntersection, ei.Coordinate);
                     return;
                 }
-                else
-                {
-                    nodeSet.Add(ei.Coordinate);
-                }
+
+                nodeSet.Add(ei.Coordinate);
             }
         }
 
@@ -572,9 +588,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                  * split the polygon into disconnected interiors.
                  * This will be caught by a subsequent check.
                  */
-                if (holePt.Equals(default(TCoordinate)))
+                if(typeof(TCoordinate).IsValueType)
                 {
-                    return;
+                    if (holePt.Equals(default(TCoordinate))) return;
+                }
+                else
+                {
+                    if (holePt == null) return;
                 }
 
                 Boolean outside = !pir.IsInside(holePt);

@@ -1,6 +1,10 @@
+#define C5
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+#if C5
+using C5;
+#endif
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
@@ -10,6 +14,7 @@ using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
+    using sgc = System.Collections.Generic;
     /// <summary> 
     /// The computation of the <see cref="IntersectionMatrix"/> relies on the use of a structure
     /// called a "topology graph". The topology graph contains nodes and edges
@@ -44,8 +49,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             IComparable<TCoordinate>, IConvertible,
             IComputable<Double, TCoordinate>
     {
-        private readonly IList<EdgeEnd<TCoordinate>> _edgeEndList;
-        private readonly IList<Edge<TCoordinate>> _edgeList;
+        private readonly sgc.IList<EdgeEnd<TCoordinate>> _edgeEndList;
+        private readonly sgc.IList<Edge<TCoordinate>> _edgeList;
         private readonly NodeMap<TCoordinate> _nodes;
 
         public PlanarGraph(NodeFactory<TCoordinate> nodeFactory)
@@ -82,15 +87,23 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        protected virtual IList<Edge<TCoordinate>> CreateEdgeList()
+        protected virtual sgc.IList<Edge<TCoordinate>> CreateEdgeList()
         {
-            return new List<Edge<TCoordinate>>();
+#if C5
+            return new C5.ArrayList<Edge<TCoordinate>>();
+#else
+            return new List<EdgeEnd<TCoordinate>>();
+#endif
         }
 
-        protected virtual IList<EdgeEnd<TCoordinate>> CreateEdgeEndList()
+        protected virtual sgc.IList<EdgeEnd<TCoordinate>> CreateEdgeEndList()
         {
+#if C5
+            return new C5.ArrayList<EdgeEnd<TCoordinate>>();
+#else
             return new List<EdgeEnd<TCoordinate>>();
-        }
+#endif
+            }
 
         public override String ToString()
         {
@@ -323,7 +336,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// Gets the set of <see cref="Edge{TCoordinate}"/>s in this graph.
         /// </summary>
-        public IList<Edge<TCoordinate>> Edges
+        public sgc.IList<Edge<TCoordinate>> Edges
         {
             get
             {

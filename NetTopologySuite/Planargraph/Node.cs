@@ -1,5 +1,9 @@
+#define C5
 using System;
 using System.Collections.Generic;
+#if C5
+using C5;
+#endif
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures.Collections.Generic;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -87,7 +91,11 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         public static IEnumerable<Edge<TCoordinate>> GetEdgesBetween(Node<TCoordinate> node0, Node<TCoordinate> node1)
         {
             IEnumerable<Edge<TCoordinate>> edges0 = DirectedEdge<TCoordinate>.ToEdges(node0.OutEdges.Edges);
+#if C5
+            HashSet<Edge<TCoordinate>> commonEdges = new HashSet<Edge<TCoordinate>>();
+#else
             ISet<Edge<TCoordinate>> commonEdges = new HashedSet<Edge<TCoordinate>>(edges0);
+#endif
             IEnumerable<Edge<TCoordinate>> edges1 = DirectedEdge<TCoordinate>.ToEdges(node1.OutEdges.Edges);
 
             commonEdges.RetainAll(edges1);

@@ -11,7 +11,7 @@ POLYGON ((484 290, 558 359, 543 309, 484 290))
 
   	</b>
 <test>
-  <op name="intersection">    GEOMETRYCOLLECTION EMPTY  </op>
+  <op name="intersection" arg1="A" arg2="B"> POINT (545 317) </op>
 </test>
 </case>
 

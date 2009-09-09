@@ -133,7 +133,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
                 quad = QuadrantOp<TCoordinate>.Quadrant(segment);
             } while (quad == chainQuad && start < lastSegmentStartIndex);
 
-            return quad == chainQuad ? start + 1 : start;
+            return quad == chainQuad 
+                ? start + 1 
+                : start;
         }
     }
 }

@@ -1,6 +1,10 @@
+#define C5
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+#if C5
+using C5;
+#endif
 using GeoAPI.Coordinates;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
@@ -25,9 +29,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         private readonly IBoundaryNodeRule _boundaryNodeRule;
 
+#if C5
+        private readonly C5.HashDictionary<ILineString<TCoordinate>, Edge<TCoordinate>> _lineEdgeMap = 
+            new HashDictionary<ILineString<TCoordinate>, Edge<TCoordinate>>();
+#else
         private readonly Dictionary<ILineString<TCoordinate>, Edge<TCoordinate>> _lineEdgeMap
             = new Dictionary<ILineString<TCoordinate>, Edge<TCoordinate>>();
-
+#endif
         private readonly IGeometry<TCoordinate> _parentGeometry;
 
         private IEnumerable<Node<TCoordinate>> _boundaryNodes;
@@ -345,12 +353,19 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                                                         coord,
                                                         label);
 
+#if C5
+            Edge<TCoordinate> oe;
+            if (_lineEdgeMap.Find(line, out oe))
+                _lineEdgeMap.Remove(line);
+            _lineEdgeMap.Add(line, e);
+#else
             if (_lineEdgeMap.ContainsKey(line))
             {
                 _lineEdgeMap.Remove(line);
             }
 
             _lineEdgeMap.Add(line, e);
+#endif
             InsertEdge(e);
 
             /*

@@ -198,7 +198,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
                 }
 
                 // check rect point in poly (rect is known not to touch polygon at this point)
-                if (SimplePointInAreaLocator.ContainsPointInPolygon(rectPt, geom as IPolygon<TCoordinate>))
+                if (SimplePointInAreaLocator<TCoordinate>.ContainsPointInPolygon(rectPt, geom as IPolygon<TCoordinate>))
                 {
                     _containsPoint = true;
                     return;

@@ -59,6 +59,32 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             return index.GetCoordinate(_linearGeom);
         }
 
+        /**
+         * Computes the {@link Coordinate} for the point
+         * on the line at the given index, offset by the given distance.
+         * If the index is out of range the first or last point on the
+         * line will be returned.
+         * The computed point is offset to the left of the line if the offset distance is
+         * positive, to the right if negative.
+         * 
+         * The Z-ordinate of the computed point will be interpolated from
+         * the Z-ordinates of the line segment containing it, if they exist.
+         *
+         * @param index the index of the desired point
+         * @param offsetDistance the distance the point is offset from the segment
+         *    (positive is to the left, negative is to the right)
+         * @return the Coordinate at the given index
+         */
+        ///<summary>
+        ///</summary>
+        ///<param name="index"></param>
+        ///<param name="offsetDistance"></param>
+        ///<returns></returns>
+        public TCoordinate ExtractPoint(LinearLocation<TCoordinate> index, Double offsetDistance)
+        {
+            return index.GetSegment(_linearGeom).PointAlongOffset(_linearGeom.Coordinates.CoordinateFactory, index.SegmentFraction, offsetDistance);
+        }
+
         /// <summary>
         /// Computes the <see cref="ILineString{TCoordinate}" /> for the interval
         /// on the line between the given indices.

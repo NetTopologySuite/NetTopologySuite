@@ -4,6 +4,7 @@ using GeoAPI.DataStructures;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
@@ -231,10 +232,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 TCoordinate hQ2 = cf.Homogenize(q2);
 
                 intersectionPoint = intersectHomogeneous(hP1, hP2, hQ1, hQ2);
-                Double x = (Double) intersectionPoint[0];
-                Double y = (Double) intersectionPoint[1];
-                Double w = (Double) intersectionPoint[2];
-                return cf.Create(x/w, y/w);
+                //DoubleComponent x, y, w;
+                //intersectionPoint.GetComponents(out x, out y, out w);
+                Double x = (Double) intersectionPoint[Ordinates.X];
+                Double y = (Double) intersectionPoint[Ordinates.Y];
+                Double w = (Double) intersectionPoint[Ordinates.W];
+                return cf.Create((Double)x / (Double)w, (Double)y / (Double)w);
             }
             catch (NotRepresentableException e)
             {
@@ -363,38 +366,69 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                                              ref TCoordinate n10, ref TCoordinate n11,
                                              out TCoordinate normPt)
         {
-            Double minX0 = n00[Ordinates.X] < n01[Ordinates.X] ? n00[Ordinates.X] : n01[Ordinates.X];
-            Double minY0 = n00[Ordinates.Y] < n01[Ordinates.Y] ? n00[Ordinates.Y] : n01[Ordinates.Y];
-            Double maxX0 = n00[Ordinates.X] > n01[Ordinates.X] ? n00[Ordinates.X] : n01[Ordinates.X];
-            Double maxY0 = n00[Ordinates.Y] > n01[Ordinates.Y] ? n00[Ordinates.Y] : n01[Ordinates.Y];
+            DoubleComponent n00X, n00Y, n01X, n01Y, n10X, n10Y, n11X, n11Y;
+            n00.GetComponents(out n00X, out n00Y);
+            n01.GetComponents(out n01X, out n01Y);
+            n10.GetComponents(out n10X, out n10Y);
+            n11.GetComponents(out n11X, out n11Y);
 
-            Double minX1 = n10[Ordinates.X] < n11[Ordinates.X] ? n10[Ordinates.X] : n11[Ordinates.X];
-            Double minY1 = n10[Ordinates.Y] < n11[Ordinates.Y] ? n10[Ordinates.Y] : n11[Ordinates.Y];
-            Double maxX1 = n10[Ordinates.X] > n11[Ordinates.X] ? n10[Ordinates.X] : n11[Ordinates.X];
-            Double maxY1 = n10[Ordinates.Y] > n11[Ordinates.Y] ? n10[Ordinates.Y] : n11[Ordinates.Y];
+            //Double minX0 = n00[Ordinates.X] < n01[Ordinates.X] ? n00[Ordinates.X] : n01[Ordinates.X];
+            //Double minY0 = n00[Ordinates.Y] < n01[Ordinates.Y] ? n00[Ordinates.Y] : n01[Ordinates.Y];
+            //Double maxX0 = n00[Ordinates.X] > n01[Ordinates.X] ? n00[Ordinates.X] : n01[Ordinates.X];
+            //Double maxY0 = n00[Ordinates.Y] > n01[Ordinates.Y] ? n00[Ordinates.Y] : n01[Ordinates.Y];
+            DoubleComponent minX0 = n00X.LessThan(n01X) ? n00X : n01X;
+            DoubleComponent minY0 = n00Y.LessThan(n01Y) ? n00Y : n01Y;
+            DoubleComponent maxX0 = n00X.GreaterThan(n01X) ? n00X : n01X;
+            DoubleComponent maxY0 = n00X.GreaterThan(n01X) ? n00X : n01X;
 
-            Double intMinX = minX0 > minX1 ? minX0 : minX1;
-            Double intMaxX = maxX0 < maxX1 ? maxX0 : maxX1;
-            Double intMinY = minY0 > minY1 ? minY0 : minY1;
-            Double intMaxY = maxY0 < maxY1 ? maxY0 : maxY1;
+            //Double minX1 = n10[Ordinates.X] < n11[Ordinates.X] ? n10[Ordinates.X] : n11[Ordinates.X];
+            //Double minY1 = n10[Ordinates.Y] < n11[Ordinates.Y] ? n10[Ordinates.Y] : n11[Ordinates.Y];
+            //Double maxX1 = n10[Ordinates.X] > n11[Ordinates.X] ? n10[Ordinates.X] : n11[Ordinates.X];
+            //Double maxY1 = n10[Ordinates.Y] > n11[Ordinates.Y] ? n10[Ordinates.Y] : n11[Ordinates.Y];
 
-            Double intMidX = (intMinX + intMaxX)/2.0;
-            Double intMidY = (intMinY + intMaxY)/2.0;
+            DoubleComponent minX1 = n10X.LessThan(n11X) ? n10X : n11X;
+            DoubleComponent minY1 = n10Y.LessThan(n11Y) ? n10Y : n11Y;
+            DoubleComponent maxX1 = n10X.GreaterThan(n11X) ? n10X : n11X;
+            DoubleComponent maxY1 = n10X.GreaterThan(n11X) ? n10X : n11X;
+
+            //Double intMinX = minX0 > minX1 ? minX0 : minX1;
+            //Double intMaxX = maxX0 < maxX1 ? maxX0 : maxX1;
+            //Double intMinY = minY0 > minY1 ? minY0 : minY1;
+            //Double intMaxY = maxY0 < maxY1 ? maxY0 : maxY1;
+
+            DoubleComponent intMinX = minX0.GreaterThan(minX1) ? minX0 : minX1;
+            DoubleComponent intMaxX = maxX0.LessThan(maxX1) ? maxX0 : maxX1;
+            DoubleComponent intMinY = minY0.GreaterThan(minY1) ? minY0 : minY1;
+            DoubleComponent intMaxY = maxY0.LessThan(maxY1) ? maxY0 : maxY1;
+
+            //Double intMidX = (intMinX + intMaxX)/2.0;
+            //Double intMidY = (intMinY + intMaxY)/2.0;
+            Double intMidX = ((Double)intMinX + (Double)intMaxX) / 2.0;
+            Double intMidY = ((Double)intMinY + (Double)intMaxY) / 2.0;
             normPt = cf.Create(intMidX, intMidY);
 
-            Double n00X = n00[Ordinates.X] - intMidX;
-            Double n00Y = n00[Ordinates.Y] - intMidY;
-            Double n01X = n01[Ordinates.X] - intMidX;
-            Double n01Y = n01[Ordinates.Y] - intMidY;
-            Double n10X = n10[Ordinates.X] - intMidX;
-            Double n10Y = n10[Ordinates.Y] - intMidY;
-            Double n11X = n11[Ordinates.X] - intMidX;
-            Double n11Y = n11[Ordinates.Y] - intMidY;
+            //Double n00X = n00[Ordinates.X] - intMidX;
+            //Double n00Y = n00[Ordinates.Y] - intMidY;
+            //Double n01X = n01[Ordinates.X] - intMidX;
+            //Double n01Y = n01[Ordinates.Y] - intMidY;
+            //Double n10X = n10[Ordinates.X] - intMidX;
+            //Double n10Y = n10[Ordinates.Y] - intMidY;
+            //Double n11X = n11[Ordinates.X] - intMidX;
+            //Double n11Y = n11[Ordinates.Y] - intMidY;
 
-            n00 = cf.Create(n00X, n00Y);
-            n01 = cf.Create(n01X, n01Y);
-            n10 = cf.Create(n10X, n10Y);
-            n11 = cf.Create(n11X, n11Y);
+            n00X -= intMidX;
+            n00Y -= intMidY;
+            n01X -= intMidX;
+            n01Y -= intMidY;
+            n10X -= intMidX;
+            n10Y -= intMidY;
+            n11X -= intMidX;
+            n11Y -= intMidY;
+
+            n00 = cf.Create((Double)n00X, (Double)n00Y);
+            n01 = cf.Create((Double)n01X, (Double)n01Y);
+            n10 = cf.Create((Double)n10X, (Double)n10Y);
+            n11 = cf.Create((Double)n11X, (Double)n11Y);
         }
 
         /// <summary> 

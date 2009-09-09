@@ -93,6 +93,28 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             get { return _componentIndex; }
         }
 
+        ///<summary>
+        /// Gets a <see cref="LineSegment{TCoordinate}"/> representing the segment of the
+        /// given linear <see cref="IGeometry{TCoordinate}"/> which contains this location.
+        ///</summary>
+        /// 
+        ///<param name="linearGeom"> a linear geometry</param>
+        ///<returns>the <tt>LineSegment</tt> containing the location</returns>
+        public LineSegment<TCoordinate> GetSegment(IGeometry<TCoordinate> linearGeom)
+        {
+            ILineString<TCoordinate> lineComp =
+                LinearHelper.GetLine(linearGeom, _componentIndex);
+
+            TCoordinate p0 = lineComp.Coordinates[SegmentIndex];
+            // check for endpoint - return last segment of the line if so
+            if (SegmentIndex >= lineComp.Coordinates.Count - 1)
+            {
+                TCoordinate prev = lineComp.Coordinates[lineComp.Coordinates.Count - 2];
+                return new LineSegment<TCoordinate>(prev, p0);
+            }
+            TCoordinate p1 = lineComp.Coordinates[SegmentIndex + 1];
+            return new LineSegment<TCoordinate>(p0, p1);
+        }
         /// <summary>
         /// Gets the segment index for this location.
         /// </summary>
@@ -392,6 +414,25 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             }
 
             return true;
+        }
+
+        ///<summary>
+        /// Tests whether two locations 
+        /// are on the same segment in the parent <see cref="IGeometry{TCoordinate}"/>.
+        ///</summary>
+        ///<param name="loc">a location on the same geometry</param>
+        ///<returns>true if the locations are on the same segment of the parent geometry</returns>
+        public Boolean IsOnSameSegment(LinearLocation<TCoordinate> loc)
+        {
+            if (ComponentIndex != loc.ComponentIndex) return false;
+            if (SegmentIndex == loc.SegmentIndex) return true;
+            if (loc.SegmentIndex - SegmentIndex == 1
+                    && loc.SegmentFraction == 0.0)
+                return true;
+            if (SegmentIndex - loc.SegmentIndex == 1
+                    && SegmentFraction == 0.0)
+                return true;
+            return false;
         }
 
         /// <summary>

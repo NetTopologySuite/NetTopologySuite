@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using GeoAPI.Coordinates;
 using GisSharpBlog.NetTopologySuite;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using NetTopologySuite.Coordinates;
@@ -18,17 +19,29 @@ namespace NetTopologySuite.Tests.OperationTests
                 new BufferedCoordinateFactory();
         }
 
-        private static void HandleTestEvent(Object sender, XmlTestEventArgs args)
+        private static void HandleTestEvent(Object sender, XmlTestEventArgs<BufferedCoordinate> args)
         {
             Assert.True(args.Success);
+        }
+
+        private static ICoordinateFactory<BufferedCoordinate> CreateCoordinateFactory(PrecisionModelType type, Double scale)
+        {
+            if (Double.IsNaN(scale))
+                return new BufferedCoordinateFactory(type);
+            return new BufferedCoordinateFactory(scale);
+        }
+
+        public static ICoordinateSequenceFactory<BufferedCoordinate> CreateCoordinateSequenceFactory(ICoordinateFactory<BufferedCoordinate> coordinateFactory)
+        {
+            return new BufferedCoordinateSequenceFactory((BufferedCoordinateFactory)coordinateFactory);
         }
 
         [Fact]
         public void TestBoundary()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestBoundary.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestBoundary.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -37,9 +50,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestCentroid()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestCentroid.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestCentroid.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -48,9 +61,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestConvexHullBig()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestConvexHull-big.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestConvexHull-big.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -59,9 +72,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestConvexHull()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestConvexHull.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestConvexHull.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -70,9 +83,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestFunctionAA()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestFunctionAA.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestFunctionAA.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -81,9 +94,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestFunctionAAPrec()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestFunctionAAPrec.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestFunctionAAPrec.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -92,9 +105,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestFunctionLA()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestFunctionLA.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestFunctionLA.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -103,9 +116,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestFunctionLAPrec()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestFunctionLAPrec.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestFunctionLAPrec.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -114,9 +127,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestFunctionLL()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestFunctionLL.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestFunctionLL.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -125,9 +138,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestFunctionLLPrec()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestFunctionLLPrec.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestFunctionLLPrec.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -136,9 +149,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestFunctionPA()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestFunctionPA.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestFunctionPA.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -147,9 +160,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestFunctionPL()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestFunctionPL.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestFunctionPL.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Boolean testResults = tests.RunTests();
             Assert.True(testResults);
@@ -159,9 +172,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestFunctionPLPrec()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestFunctionPLPrec.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestFunctionPLPrec.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -170,9 +183,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestFunctionPP()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestFunctionPP.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestFunctionPP.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -181,9 +194,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestInteriorPoint()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestInteriorPoint.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestInteriorPoint.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -192,9 +205,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestRectanglePredicate()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestRectanglePredicate.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestRectanglePredicate.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -203,9 +216,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestRelateAA()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestRelateAA.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestRelateAA.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -214,9 +227,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestRelateAC()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestRelateAC.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestRelateAC.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -225,9 +238,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestRelateLA()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestRelateLA.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestRelateLA.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -236,9 +249,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestRelateLC()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestRelateLC.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestRelateLC.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -247,9 +260,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestRelateLL()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestRelateLL.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestRelateLL.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -258,9 +271,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestRelatePA()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestRelatePA.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestRelatePA.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -269,9 +282,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestRelatePL()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestRelatePL.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestRelatePL.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -280,9 +293,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestRelatePP()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestRelatePP.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestRelatePP.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -291,8 +304,8 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestSimple()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(TestLocation, "TestSimple.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests = controller.Load(Path.Combine(TestLocation, "TestSimple.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -301,8 +314,8 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestValid()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(TestLocation, "TestValid.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests = controller.Load(Path.Combine(TestLocation, "TestValid.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -311,9 +324,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestValid2_Big()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestValid2-big.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestValid2-big.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -322,8 +335,8 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestValid2()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests = controller.Load(Path.Combine(TestLocation, "TestValid2.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests = controller.Load(Path.Combine(TestLocation, "TestValid2.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;
@@ -332,9 +345,9 @@ namespace NetTopologySuite.Tests.OperationTests
         [Fact]
         public void TestWithinDistance()
         {
-            XmlTestController controller = new XmlTestController();
-            XmlTestCollection tests =
-                controller.Load(Path.Combine(TestLocation, "TestWithinDistance.xml"));
+            XmlTestController<BufferedCoordinate> controller = new XmlTestController<BufferedCoordinate>();
+            XmlTestCollection<BufferedCoordinate> tests =
+                controller.Load(Path.Combine(TestLocation, "TestWithinDistance.xml"), CreateCoordinateFactory, CreateCoordinateSequenceFactory);
             tests.TestEvent += HandleTestEvent;
             Assert.True(tests.RunTests());
             tests.TestEvent -= HandleTestEvent;

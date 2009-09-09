@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using GeoAPI.Coordinates;
 using NPack.Interfaces;
 
@@ -22,14 +23,23 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     {
         /// <summary>
         /// Computes the noding for a collection of 
-        /// <see cref="NodedSegmentString{TCoordinate}" />s.
+        /// <see cref="ISegmentString{TCoordinate}" />s.
         /// Some noders may add all these nodes to the input 
-        /// <see cref="NodedSegmentString{TCoordinate}" />s;
+        /// <see cref="ISegmentString{TCoordinate}" />s;
         /// others may only add some or none at all.
         /// </summary>
         /// <param name="segStrings">
-        /// The <see cref="NodedSegmentString{TCoordinate}"/>s to node.
+        /// The <see cref="ISegmentString{TCoordinate}"/>s to node.
         /// </param>
-        IEnumerable<NodedSegmentString<TCoordinate>> Node(IEnumerable<NodedSegmentString<TCoordinate>> segStrings);
+        IEnumerable<ISegmentString<TCoordinate>> Node(IEnumerable<ISegmentString<TCoordinate>> segStrings);
+
+        ///<summary>
+        /// Computes the noding for a collection of {@link SegmentString}s.
+        /// Some Noders may add all these nodes to the input SegmentStrings;
+        /// others may only add some or none at all.
+        ///</summary>
+        ///<param name="segStrings">segStrings an enumerable of <see cref="ISegmentString{TCoordinate}"/>s to node</param>
+        void ComputeNodes(IEnumerable<ISegmentString<TCoordinate>> segStrings);
+
     }
 }

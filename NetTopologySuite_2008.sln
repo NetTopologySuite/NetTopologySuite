@@ -86,6 +86,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Tests", "N
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.VersionComparisonTests", "NetTopologySuite.VersionComparisonTests\NetTopologySuite.VersionComparisonTests.csproj", "{2D87677A-8817-420F-96CA-45573F326618}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coordinates.Simple", "SimpleCoordinate\Coordinates.Simple.csproj", "{FA286D16-E405-4FCB-95EA-BE1F9A4A83A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleCoordinateTests", "SimpleCoordinateTests\SimpleCoordinateTests.csproj", "{7720519A-F124-40C5-B10F-07728970BF53}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = NetTopologySuite_2008.vsmdi
@@ -219,6 +223,30 @@ Global
 		{2D87677A-8817-420F-96CA-45573F326618}.Release_Net35|Any CPU.Build.0 = Release|Any CPU
 		{2D87677A-8817-420F-96CA-45573F326618}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D87677A-8817-420F-96CA-45573F326618}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA286D16-E405-4FCB-95EA-BE1F9A4A83A4}.Debug_Net20|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA286D16-E405-4FCB-95EA-BE1F9A4A83A4}.Debug_Net20|Any CPU.Build.0 = Debug|Any CPU
+		{FA286D16-E405-4FCB-95EA-BE1F9A4A83A4}.Debug_Net35|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA286D16-E405-4FCB-95EA-BE1F9A4A83A4}.Debug_Net35|Any CPU.Build.0 = Debug|Any CPU
+		{FA286D16-E405-4FCB-95EA-BE1F9A4A83A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA286D16-E405-4FCB-95EA-BE1F9A4A83A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA286D16-E405-4FCB-95EA-BE1F9A4A83A4}.Release_Net20|Any CPU.ActiveCfg = Release|Any CPU
+		{FA286D16-E405-4FCB-95EA-BE1F9A4A83A4}.Release_Net20|Any CPU.Build.0 = Release|Any CPU
+		{FA286D16-E405-4FCB-95EA-BE1F9A4A83A4}.Release_Net35|Any CPU.ActiveCfg = Release|Any CPU
+		{FA286D16-E405-4FCB-95EA-BE1F9A4A83A4}.Release_Net35|Any CPU.Build.0 = Release|Any CPU
+		{FA286D16-E405-4FCB-95EA-BE1F9A4A83A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA286D16-E405-4FCB-95EA-BE1F9A4A83A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7720519A-F124-40C5-B10F-07728970BF53}.Debug_Net20|Any CPU.ActiveCfg = Debug|Any CPU
+		{7720519A-F124-40C5-B10F-07728970BF53}.Debug_Net20|Any CPU.Build.0 = Debug|Any CPU
+		{7720519A-F124-40C5-B10F-07728970BF53}.Debug_Net35|Any CPU.ActiveCfg = Debug|Any CPU
+		{7720519A-F124-40C5-B10F-07728970BF53}.Debug_Net35|Any CPU.Build.0 = Debug|Any CPU
+		{7720519A-F124-40C5-B10F-07728970BF53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7720519A-F124-40C5-B10F-07728970BF53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7720519A-F124-40C5-B10F-07728970BF53}.Release_Net20|Any CPU.ActiveCfg = Release|Any CPU
+		{7720519A-F124-40C5-B10F-07728970BF53}.Release_Net20|Any CPU.Build.0 = Release|Any CPU
+		{7720519A-F124-40C5-B10F-07728970BF53}.Release_Net35|Any CPU.ActiveCfg = Release|Any CPU
+		{7720519A-F124-40C5-B10F-07728970BF53}.Release_Net35|Any CPU.Build.0 = Release|Any CPU
+		{7720519A-F124-40C5-B10F-07728970BF53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7720519A-F124-40C5-B10F-07728970BF53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -47,6 +47,7 @@ namespace NetTopologySuite.Tests.OperationTests.Union
 
             stopwatch.Start();
 
+            //CascadedPolygonUnion<BufferedCoordinate> cpu = new CascadedPolygonUnion<BufferedCoordinate>(geoms;);
             IGeometry<BufferedCoordinate> u2 = UnaryUnionOp<BufferedCoordinate>.Union(geoms);
 
             stopwatch.Stop();

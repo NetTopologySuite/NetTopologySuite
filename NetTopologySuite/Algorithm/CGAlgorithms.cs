@@ -53,6 +53,20 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return RobustDeterminant.SignOfDet2x2(dx1, dy1, dx2, dy2);
         }
 
+        ///<summary>
+        /// Determines whether a point lies in the interior, on the boundary, or in the exterior
+        /// of a ring. The ring may be oriented in either direction.
+        /// This method does <i>not</i> first check the point against the envelope
+        /// of the ring.
+        ///</summary>
+        ///<param name="p">point to check for ring inclusion</param>
+        ///<param name="ring">an array of coordinates representing the ring (which must have first point identical to last point)</param>
+        ///<returns>the <see cref="Locations"/> of p relative to the ring</returns>
+        public static Locations LocatePointInRing(TCoordinate p, IEnumerable<TCoordinate> ring)
+        {
+            return RayCrossingCounter<TCoordinate>.LocatePointInRing(p, ring);
+        }
+
         /// <summary> 
         /// Test whether a point lies inside a ring.
         /// The ring may be oriented in either direction.
@@ -65,44 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns><see langword="true"/> if p is inside ring.</returns>
         public static Boolean IsPointInRing(TCoordinate p, IEnumerable<TCoordinate> ring)
         {
-            return RayCrossingCounter<TCoordinate>.LocatePointInRing(p, ring) != Locations.Exterior;
-            Int32 crossings = 0;        // number of segment/ray crossings
-
-            // For each segment l = (i-1, i), see if it crosses ray 
-            // from test point in positive x direction.
-            foreach (Pair<TCoordinate> pair in Slice.GetOverlappingPairs(ring))
-            {
-                Double x1; // translated coordinates
-                Double y1;
-                Double x2;
-                Double y2;
-
-                TCoordinate p1 = pair.Second;
-                TCoordinate p2 = pair.First;
-
-                x1 = p1[Ordinates.X] - p[Ordinates.X];
-                y1 = p1[Ordinates.Y] - p[Ordinates.Y];
-                x2 = p2[Ordinates.X] - p[Ordinates.X];
-                y2 = p2[Ordinates.Y] - p[Ordinates.Y];
-
-                if (((y1 > 0) && (y2 <= 0)) || ((y2 > 0) && (y1 <= 0)))
-                {
-                    Double xInt; // x intersection of segment with ray
-
-                    // segment straddles x axis, so compute intersection.
-                    // NOTE: Can this be moved down to NPack?
-                    xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2)/(y2 - y1);
-
-                    // crosses ray if strictly positive intersection.
-                    if (0.0 < xInt)
-                    {
-                        crossings++;
-                    }
-                }
-            }
-
-            // p is inside if number of crossings is odd.
-            return (crossings%2) == 1;
+            return LocatePointInRing(p, ring) != Locations.Exterior;
         }
 
         /// <summary> 

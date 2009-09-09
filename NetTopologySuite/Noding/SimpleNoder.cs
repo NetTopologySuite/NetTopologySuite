@@ -30,12 +30,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// Some noders may add all these nodes to the input <see cref="NodedSegmentString{TCoordinate}" />s;
         /// others may only add some or none at all.
         /// </summary>
-        public override IEnumerable<NodedSegmentString<TCoordinate>> Node(
-            IEnumerable<NodedSegmentString<TCoordinate>> inputSegStrings)
+        public override IEnumerable<ISegmentString<TCoordinate>> Node(
+            IEnumerable<ISegmentString<TCoordinate>> inputSegStrings)
         {
-            foreach (NodedSegmentString<TCoordinate> edge0 in inputSegStrings)
+            foreach (ISegmentString<TCoordinate> edge0 in inputSegStrings)
             {
-                foreach (NodedSegmentString<TCoordinate> edge1 in inputSegStrings)
+                foreach (ISegmentString<TCoordinate> edge1 in inputSegStrings)
                 {
                     computeIntersects(edge0, edge1);
                 }
@@ -44,17 +44,28 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             return NodedSegmentString<TCoordinate>.GetNodedSubstrings(inputSegStrings);
         }
 
-        public override IEnumerable<TNodingResult> Node<TNodingResult>(
-            IEnumerable<NodedSegmentString<TCoordinate>> segmentStrings,
-            Func<NodedSegmentString<TCoordinate>, TNodingResult> generator)
+        public override void ComputeNodes(IEnumerable<ISegmentString<TCoordinate>> inputSegStrings)
         {
-            foreach (NodedSegmentString<TCoordinate> segmentString in Node(segmentStrings))
+            foreach (ISegmentString<TCoordinate> edge0 in inputSegStrings)
+            {
+                foreach (ISegmentString<TCoordinate> edge1 in inputSegStrings)
+                {
+                    computeIntersects(edge0, edge1);
+                }
+            }
+        }
+
+        public override IEnumerable<TNodingResult> Node<TNodingResult>(
+            IEnumerable<ISegmentString<TCoordinate>> segmentStrings,
+            Func<ISegmentString<TCoordinate>, TNodingResult> generator)
+        {
+            foreach (ISegmentString<TCoordinate> segmentString in Node(segmentStrings))
             {
                 yield return generator(segmentString);
             }
         }
 
-        private void computeIntersects(NodedSegmentString<TCoordinate> e0, NodedSegmentString<TCoordinate> e1)
+        private void computeIntersects(ISegmentString<TCoordinate> e0, ISegmentString<TCoordinate> e1)
         {
             IEnumerator<TCoordinate> pts0 = e0.Coordinates.GetEnumerator();
             IEnumerator<TCoordinate> pts1 = e1.Coordinates.GetEnumerator();

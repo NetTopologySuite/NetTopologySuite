@@ -97,7 +97,7 @@ namespace GisSharpBlog.NetTopologySuite.Index
                 if (!_boundsSet)
                 {
                     _bounds = ComputeBounds();
-                    _boundsSet = !_bounds.Equals(default(TBounds));
+                    _boundsSet = !Equals(_bounds, default(TBounds));
                 }
 
                 return _bounds;

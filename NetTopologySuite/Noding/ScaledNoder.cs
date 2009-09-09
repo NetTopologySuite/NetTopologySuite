@@ -74,17 +74,17 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         /// <param name="segStrings"></param>
         /// <returns></returns>
-        private IEnumerable<NodedSegmentString<TCoordinate>> Scale(
-            IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
+        private IEnumerable<ISegmentString<TCoordinate>> Scale(
+            IEnumerable<ISegmentString<TCoordinate>> segStrings)
         {
-            Func<NodedSegmentString<TCoordinate>, NodedSegmentString<TCoordinate>>
-                componentTransform = delegate(NodedSegmentString<TCoordinate> segmentString)
+            Func<ISegmentString<TCoordinate>, ISegmentString<TCoordinate>>
+                componentTransform = delegate(ISegmentString<TCoordinate> segmentString)
                 {
                     return new NodedSegmentString<TCoordinate>(
                         Scale(segmentString.Coordinates),
                         segmentString.Context);
                 };
-            return Processor.Transform<NodedSegmentString<TCoordinate>>(segStrings, componentTransform);
+            return Processor.Transform<ISegmentString<TCoordinate>>(segStrings, componentTransform);
         }
 
         private ICoordinateSequence<TCoordinate> Scale(ICoordinateSequence<TCoordinate> pts)
@@ -136,30 +136,30 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         /// <param name="segStrings"></param>
         /// <returns></returns>
-        private IEnumerable<NodedSegmentString<TCoordinate>> Rescale(
-            IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
+        private IEnumerable<ISegmentString<TCoordinate>> Rescale(
+            IEnumerable<ISegmentString<TCoordinate>> segStrings)
         {
-            Func<NodedSegmentString<TCoordinate>, NodedSegmentString<TCoordinate>>
-                componentTransform = delegate(NodedSegmentString<TCoordinate> segmentString)
+            Func<ISegmentString<TCoordinate>, ISegmentString<TCoordinate>>
+                componentTransform = delegate(ISegmentString<TCoordinate> segmentString)
                 {
                     return new NodedSegmentString<TCoordinate>(
                         Rescale(segmentString.Coordinates),
                         segmentString.Context);
                 };
-            return Processor.Transform<NodedSegmentString<TCoordinate>>(segStrings, componentTransform);
+            return Processor.Transform<ISegmentString<TCoordinate>>(segStrings, componentTransform);
         }
 
         #region INoder<TCoordinate> Member
 
-        public IEnumerable<NodedSegmentString<TCoordinate>> Node(IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
+        public IEnumerable<ISegmentString<TCoordinate>> Node(IEnumerable<ISegmentString<TCoordinate>> segStrings)
         {
-            IEnumerable<NodedSegmentString<TCoordinate>> intSegStrings = IsIntegerPrecision
+            IEnumerable<ISegmentString<TCoordinate>> intSegStrings = IsIntegerPrecision
                                                                              ?
                                                                                  segStrings
                                                                              :
                                                                                  Scale(segStrings);
 
-            IEnumerable<NodedSegmentString<TCoordinate>> splitSS
+            IEnumerable<ISegmentString<TCoordinate>> splitSS
                 = _noder.Node(intSegStrings);
 
             if (_isScaled)
@@ -168,6 +168,17 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             }
 
             return splitSS;
+        }
+
+        public void ComputeNodes(IEnumerable<ISegmentString<TCoordinate>> segStrings)
+        {
+            IEnumerable<ISegmentString<TCoordinate>> intSegStrings = IsIntegerPrecision
+                                                                             ?
+                                                                                 segStrings
+                                                                             :
+                                                                                 Scale(segStrings);
+
+            _noder.ComputeNodes(intSegStrings);
         }
 
         #endregion

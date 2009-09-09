@@ -262,7 +262,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
     IPrecisionModel<TCoordinate> fixedPM =
         _coordFactory.CreatePrecisionModel(sizeBasedScaleFactor);
-    //BufferFixedPrecision(fixedPM);
+    BufferFixedPrecision(fixedPM);
   }
 
   private void BufferFixedPrecision(IPrecisionModel<TCoordinate> fixedPM)

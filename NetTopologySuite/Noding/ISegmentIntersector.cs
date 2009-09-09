@@ -27,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// of the <see cref="ISegmentIntersector{TCoordinate}" /> interface to process
         /// intersections for two segments of the <see cref="NodedSegmentString{TCoordinate}" />s being intersected.
         /// </summary>
-        void ProcessIntersections(NodedSegmentString<TCoordinate> e0, Int32 segIndex0,
-                                  NodedSegmentString<TCoordinate> e1, Int32 segIndex1);
+        void ProcessIntersections(ISegmentString<TCoordinate> e0, Int32 segIndex0,
+                                  ISegmentString<TCoordinate> e1, Int32 segIndex1);
     }
 }

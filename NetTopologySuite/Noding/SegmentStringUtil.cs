@@ -29,9 +29,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         ///</summary>
         ///<param name="geom">the geometry to extract from</param>
         ///<returns>a List of SegmentStrings</returns>
-        public static List<NodedSegmentString<TCoordinate>> ExtractSegmentStrings(IGeometry<TCoordinate> geom)
+        public static List<ISegmentString<TCoordinate>> ExtractSegmentStrings(IGeometry<TCoordinate> geom)
         {
-            List<NodedSegmentString<TCoordinate>> segStr = new List<NodedSegmentString<TCoordinate>>();
+            List<ISegmentString<TCoordinate>> segStr = new List<ISegmentString<TCoordinate>>();
             foreach (ILineString<TCoordinate> line in GeometryFilter.Filter<ILineString<TCoordinate>, TCoordinate>(geom)
                 ) // LinearComponentExtracter<TCoordinate>.GetLines(geom) )
             {

@@ -57,20 +57,24 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// Some Noders may add all these nodes to the input <see cref="NodedSegmentString{TCoordinate}" />s;
         /// others may only add some or none at all.
         /// </summary>
-        public IEnumerable<NodedSegmentString<TCoordinate>> Node(
-            IEnumerable<NodedSegmentString<TCoordinate>> inputSegmentStrings)
+        public IEnumerable<ISegmentString<TCoordinate>> Node(
+            IEnumerable<ISegmentString<TCoordinate>> inputSegmentStrings)
         {
             inputSegmentStrings = snapRound(_geoFactory, inputSegmentStrings, _li);
             return NodedSegmentString<TCoordinate>.GetNodedSubstrings(inputSegmentStrings);
         }
 
+        public void ComputeNodes(IEnumerable<ISegmentString<TCoordinate>> inputSegmentStrings)
+        {
+            snapRound(_geoFactory, inputSegmentStrings, _li);
+        }
         #endregion
 
         /// <summary>
         /// Adds a new node (equal to the snap pt) to the segment
         /// if the segment passes through the hot pixel.
         /// </summary>
-        public static Boolean AddSnappedNode(HotPixel<TCoordinate> hotPix, NodedSegmentString<TCoordinate> segStr,
+        public static Boolean AddSnappedNode(HotPixel<TCoordinate> hotPix, INodableSegmentString<TCoordinate> segStr,
                                              Int32 segIndex)
         {
             LineSegment<TCoordinate> segment = segStr[segIndex];
@@ -88,8 +92,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// Computes nodes introduced as a result of
         /// snapping segments to vertices of other segments.
         /// </summary>
-        public IEnumerable<NodedSegmentString<TCoordinate>> ComputeVertexSnaps(
-            IEnumerable<NodedSegmentString<TCoordinate>> edges)
+        public IEnumerable<ISegmentString<TCoordinate>> ComputeVertexSnaps(
+            IEnumerable<ISegmentString<TCoordinate>> edges)
         {
             foreach (NodedSegmentString<TCoordinate> edge0 in edges)
             {
@@ -102,9 +106,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             return edges;
         }
 
-        private void checkCorrectness(IEnumerable<NodedSegmentString<TCoordinate>> inputSegmentStrings)
+        private void checkCorrectness(IEnumerable<ISegmentString<TCoordinate>> inputSegmentStrings)
         {
-            IEnumerable<NodedSegmentString<TCoordinate>> resultSegStrings
+            IEnumerable<ISegmentString<TCoordinate>> resultSegStrings
                 = NodedSegmentString<TCoordinate>.GetNodedSubstrings(inputSegmentStrings);
             NodingValidator<TCoordinate> nv
                 = new NodingValidator<TCoordinate>(_geoFactory, resultSegStrings);
@@ -119,9 +123,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             }
         }
 
-        private IEnumerable<NodedSegmentString<TCoordinate>> snapRound(
+        private IEnumerable<ISegmentString<TCoordinate>> snapRound(
             IGeometryFactory<TCoordinate> geoFactory,
-            IEnumerable<NodedSegmentString<TCoordinate>> segStrings,
+            IEnumerable<ISegmentString<TCoordinate>> segStrings,
             LineIntersector<TCoordinate> li)
         {
             IEnumerable<TCoordinate> intersections
@@ -139,7 +143,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <returns>A list of <typeparamref name="TCoordinate"/>s for the intersections.</returns>
         private static IEnumerable<TCoordinate> findInteriorIntersections(
             IGeometryFactory<TCoordinate> geoFactory,
-            IEnumerable<NodedSegmentString<TCoordinate>> segStrings,
+            IEnumerable<ISegmentString<TCoordinate>> segStrings,
             LineIntersector<TCoordinate> li)
         {
             IntersectionFinderAdder<TCoordinate> intFinderAdder = new IntersectionFinderAdder<TCoordinate>(li);
@@ -151,7 +155,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <summary>
         /// Computes nodes introduced as a result of snapping segments to snap points (hot pixels).
         /// </summary>
-        private void computeSnaps(IEnumerable<NodedSegmentString<TCoordinate>> segStrings,
+        private void computeSnaps(IEnumerable<ISegmentString<TCoordinate>> segStrings,
                                   IEnumerable<TCoordinate> snapPts)
         {
             foreach (NodedSegmentString<TCoordinate> ss in segStrings)
@@ -160,7 +164,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             }
         }
 
-        private void computeSnaps(NodedSegmentString<TCoordinate> ss, IEnumerable<TCoordinate> snapPts)
+        private void computeSnaps(ISegmentString<TCoordinate> ss, IEnumerable<TCoordinate> snapPts)
         {
             foreach (TCoordinate snapPt in snapPts)
             {
@@ -168,7 +172,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
 
                 for (Int32 i = 0; i < ss.Count - 1; i++)
                 {
-                    AddSnappedNode(hotPixel, ss, i);
+                    AddSnappedNode(hotPixel, (INodableSegmentString<TCoordinate>)ss, i);
                 }
             }
         }

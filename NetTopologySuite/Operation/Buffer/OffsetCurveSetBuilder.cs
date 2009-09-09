@@ -22,8 +22,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     {
         private readonly OffsetCurveBuilder<TCoordinate> _curveBuilder;
 
-        private readonly List<NodedSegmentString<TCoordinate>> _curveList
-            = new List<NodedSegmentString<TCoordinate>>();
+        private readonly List<ISegmentString<TCoordinate>> _curveList
+            = new List<ISegmentString<TCoordinate>>();
 
         private readonly Double _distance;
         private readonly IGeometry<TCoordinate> _inputGeometry;
@@ -45,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// A set of <see cref="NodedSegmentString{TCoordinate}"/>s 
         /// representing the raw buffer curves.
         /// </returns>
-        public IEnumerable<NodedSegmentString<TCoordinate>> GetCurves()
+        public IEnumerable<ISegmentString<TCoordinate>> GetCurves()
         {
             add(_inputGeometry);
             return _curveList;

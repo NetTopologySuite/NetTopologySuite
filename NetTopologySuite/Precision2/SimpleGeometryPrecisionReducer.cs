@@ -96,19 +96,19 @@ namespace GisSharpBlog.NetTopologySuite.Precision
                     return null;
                 }
 
-                IEnumerable<TCoordinate> reducedCoords = new ICoordinate[coordinates.Length];
+                TCoordinate[] reducedCoords = new TCoordinate[coordinates.Length];
 
                 // copy coordinates and reduce
                 for (Int32 i = 0; i < coordinates.Length; i++)
                 {
-                    ICoordinate coord = new Coordinate(coordinates[i]);
+                    TCoordinate coord = new Coordinate(coordinates[i]);
                     _container._newPrecisionModel.MakePrecise(coord);
                     reducedCoords[i] = coord;
                 }
 
                 // remove repeated points, to simplify returned point as much as possible
                 CoordinateList noRepeatedCoordList = new CoordinateList(reducedCoords, false);
-                ICoordinate[] noRepeatedCoords = noRepeatedCoordList.ToCoordinateArray();
+                TCoordinate[] noRepeatedCoords = noRepeatedCoordList.ToCoordinateArray();
 
                 /*
                 * Check to see if the removal of repeated points

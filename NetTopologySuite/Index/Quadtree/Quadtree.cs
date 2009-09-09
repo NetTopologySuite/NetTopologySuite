@@ -7,6 +7,7 @@ using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using NPack;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
@@ -209,31 +210,55 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             // this method ensures that the extents are greater than minExtent.
             // Perhaps we should rename them to "ensurePositiveExtent" and "defaultExtent".
             // [Jon Aquino]
-            Double minx = itemExtents.GetMin(Ordinates.X);
-            Double maxx = itemExtents.GetMax(Ordinates.X);
-            Double miny = itemExtents.GetMin(Ordinates.Y);
-            Double maxy = itemExtents.GetMax(Ordinates.Y);
+            DoubleComponent minx, maxx, miny, maxy;
+            itemExtents.Min.GetComponents(out minx, out miny);
+            itemExtents.Max.GetComponents(out maxx, out maxy);
+
+            //Double minx = itemExtents.GetMin(Ordinates.X);
+            //Double maxx = itemExtents.GetMax(Ordinates.X);
+            //Double miny = itemExtents.GetMin(Ordinates.Y);
+            //Double maxy = itemExtents.GetMax(Ordinates.Y);
 
             // has a non-zero extent
-            if (minx != maxx && miny != maxy)
-            {
+            if (!minx.Equals(maxx) && !miny.Equals(maxy))
                 return itemExtents;
-            }
+
+            //// has a non-zero extent
+            //if (minx != maxx && miny != maxy)
+            //{
+            //    return itemExtents;
+            //}
 
             // pad one or both extents
-            if (minx == maxx)
+            Double pad = minExtent / 2.0;
+            if (minx.Equals(maxx))
             {
-                minx = minx - minExtent/2.0;
-                maxx = minx + minExtent/2.0;
+                minx.Subtract(pad);
+                maxx.Add(pad);
             }
 
-            if (miny == maxy)
+            if (miny.Equals(maxy))
             {
-                miny = miny - minExtent/2.0;
-                maxy = miny + minExtent/2.0;
+                miny.Subtract(pad);
+                maxy.Add(pad);
             }
 
-            return new Extents<TCoordinate>(geoFactory, minx, maxx, miny, maxy);
+            return new Extents<TCoordinate>(geoFactory, (Double)minx, (Double)maxx, (Double)miny, (Double)maxy);
+
+            //// pad one or both extents
+            //if (minx == maxx)
+            //{
+            //    minx = minx - minExtent/2.0;
+            //    maxx = minx + minExtent/2.0;
+            //}
+
+            //if (miny == maxy)
+            //{
+            //    miny = miny - minExtent/2.0;
+            //    maxy = miny + minExtent/2.0;
+            //}
+
+            //return new Extents<TCoordinate>(geoFactory, minx, maxx, miny, maxy);
         }
 
         protected virtual void Dispose(Boolean disposing)

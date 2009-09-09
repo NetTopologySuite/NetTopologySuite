@@ -1,14 +1,20 @@
 using System;
 using System.Globalization;
+using System.IO;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
+using GeoAPI.IO.WellKnownBinary;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NetTopologySuite.Coordinates;
+using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite
 {
-    public class XmlTestFactory
+    public class XmlTestFactory<TCoordinate>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         private static NumberFormatInfo _numberFormapInfo;
 
@@ -30,18 +36,21 @@ namespace GisSharpBlog.NetTopologySuite
             C = 3
         }
 
-        protected IGeometryFactory<BufferedCoordinate> _geometryFactory;
-        protected IWktGeometryReader _wktReader;
+        protected IGeometryFactory<TCoordinate> _geometryFactory;
+        protected IWktGeometryReader<TCoordinate> _wktReader;
+        protected IWkbReader<TCoordinate> _wkbReader;
 
-        public XmlTestFactory(ICoordinateSequenceFactory<BufferedCoordinate> seqFactory)
+        public XmlTestFactory(ICoordinateSequenceFactory<TCoordinate> seqFactory)
         {
-            _geometryFactory = new GeometryFactory<BufferedCoordinate>(seqFactory);
-            _wktReader = new WktReader<BufferedCoordinate>(_geometryFactory, null);
+            _geometryFactory = new GeometryFactory<TCoordinate>(seqFactory);
+            _wktReader =  new WktReader<TCoordinate>(_geometryFactory, null);
+            _wkbReader = new WkbReader<TCoordinate>(_geometryFactory);
+
         }
 
-        public XmlTest Create(Int32 index, XmlTestInfo testInfo, Double tolerance)
+        public XmlTest<TCoordinate> Create(Int32 index, XmlTestInfo testInfo, Double tolerance)
         {
-            XmlTest xmlTest = new XmlTest(index, testInfo.GetValue("desc"),
+            XmlTest<TCoordinate> xmlTest = new XmlTest<TCoordinate>(index, testInfo.GetValue("desc"),
                                           testInfo.IsDefaultTarget(),
                                           tolerance);
 
@@ -108,7 +117,7 @@ namespace GisSharpBlog.NetTopologySuite
             return xmlTest;
         }
 
-        protected Boolean ParseType(String testType, XmlTest xmlTestItem)
+        protected Boolean ParseType(String testType, XmlTest<TCoordinate> xmlTestItem)
         {
             testType = testType.ToLower();
 
@@ -221,7 +230,7 @@ namespace GisSharpBlog.NetTopologySuite
             return true;
         }
 
-        protected Boolean ParseResult(String result, XmlTest xmlTestItem)
+        protected Boolean ParseResult(String result, XmlTest<TCoordinate> xmlTestItem)
         {
             switch (xmlTestItem.TestType)
             {
@@ -272,16 +281,26 @@ namespace GisSharpBlog.NetTopologySuite
                 case XmlTestType.SymmetricDifference:
                 case XmlTestType.Union:
                 {
+                    IGeometry<TCoordinate> geo = null;
                     try
                     {
-                        xmlTestItem.Result = _wktReader.Read(result);
-                        return true;
+                        geo = _wktReader.Read(result);
                     }
                     catch (Exception ex)
                     {
-                        XmlTestExceptionManager.Publish(ex);
-                        return false;
+                        try
+                        {
+                            geo = _wkbReader.Read(HexStringToByteArray(result));
+                        }
+                        catch (Exception ex1)
+                        {
+                            XmlTestExceptionManager.Publish(ex);
+                            XmlTestExceptionManager.Publish(ex1);
+                            return false;
+                        }
                     }
+                    xmlTestItem.Result = geo;
+                    return true;
                 }
 
                     // Here we expect boolean
@@ -319,20 +338,57 @@ namespace GisSharpBlog.NetTopologySuite
             return false;
         }
 
-        protected Boolean ParseGeometry(Target targetType, String targetText, XmlTest xmlTestItem)
+        //public static byte[] HexStringToByteArray(String s)
+        //{
+        //    int len = s.length();
+        //    byte[] data = new byte[len / 2];
+        //    for (int i = 0; i < len; i += 2)
+        //    {
+        //        data[i / 2] = (byte)((Character.digit(s.charAt(i), 16) << 4)
+        //                             + Character.digit(s.charAt(i + 1), 16));
+        //    }
+        //    return data;
+        //}
+
+        private static Byte[] HexStringToByteArray(string hexString)
         {
-            IGeometry geom;
+            if (hexString.Length == 0)
+                return null;
+
+            hexString = hexString.Replace("\n", "").Trim();
+            Int32 size = hexString.Length / 2;
+            Byte[] ret = new Byte[size];
+
+            for (Int32 i = 0; i < hexString.Length; i += 2)
+                ret[i/2] = Convert.ToByte(hexString.Substring(i, 2), 16);
+
+            return ret;
+        }
+
+        protected Boolean ParseGeometry(Target targetType, String targetText, XmlTest<TCoordinate> xmlTestItem)
+        {
+            IGeometry<TCoordinate> geom;
 
             try
             {
                 geom = _wktReader.Read(targetText);
             }
-            catch (Exception ex)
+            catch
             {
-                xmlTestItem.Thrown = ex;
-                XmlTestExceptionManager.Publish(ex);
-                return false;
+                try
+                {
+                    geom = _wkbReader.Read(HexStringToByteArray(targetText));
+                }
+                catch (Exception ex)
+                {
+                    xmlTestItem.Thrown = ex;
+                    XmlTestExceptionManager.Publish(ex);
+                    return false;
+                }
             }
+
+            if (geom == null)
+                geom = _wkbReader.Read(HexStringToByteArray(targetText));
 
             if (geom == null)
             {

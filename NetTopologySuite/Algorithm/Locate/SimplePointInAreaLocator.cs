@@ -28,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
 
         public Locations Locate(TCoordinate p)
         {
-            return SimplePointInAreaLocator.Locate(p, _geom);
+            return Locate(p, _geom);
         }
 
         #endregion

@@ -1,6 +1,14 @@
+#define C5
+//#define goletas
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if C5
+using C5;
+#endif
+#if goletas
+using Goletas.Collections;
+#endif
 using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
@@ -20,9 +28,19 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         private readonly Edge<TCoordinate> _edge; // the parent edge
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
 
+#if C5
+        private readonly TreeDictionary<EdgeIntersection<TCoordinate>, EdgeIntersection<TCoordinate>> _nodeMap =
+            new TreeDictionary<EdgeIntersection<TCoordinate>, EdgeIntersection<TCoordinate>>();
+#else
+#if goletas
+        private readonly Goletas.Collections.SortedDictionary<EdgeIntersection<TCoordinate>, EdgeIntersection<TCoordinate>> _nodeMap =
+            new Goletas.Collections.SortedDictionary<EdgeIntersection<TCoordinate>, EdgeIntersection<TCoordinate>>();
+
+#else
         private readonly SortedDictionary<EdgeIntersection<TCoordinate>, EdgeIntersection<TCoordinate>> _nodeMap
             = new SortedDictionary<EdgeIntersection<TCoordinate>, EdgeIntersection<TCoordinate>>();
-
+#endif
+#endif
         /// <summary>
         /// Creates a new <see cref="EdgeIntersectionList{TCoordinate}"/>.
         /// </summary>
@@ -197,11 +215,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 = new EdgeIntersection<TCoordinate>(intersection, segmentIndex, dist);
             EdgeIntersection<TCoordinate> ei;
 
+#if C5
+            if ( _nodeMap.Find(eiNew, out ei) )
+#else
             if (_nodeMap.TryGetValue(eiNew, out ei))
+#endif
             {
                 return ei;
             }
-
             _nodeMap.Add(eiNew, eiNew);
             return eiNew;
         }

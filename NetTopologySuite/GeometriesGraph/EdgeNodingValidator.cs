@@ -15,19 +15,25 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly NodingValidator<TCoordinate> _nodingValidator;
+        public static void CheckValid(IGeometryFactory<TCoordinate> geoFactory, IEnumerable<Edge<TCoordinate>> edges)
+        {
+            EdgeNodingValidator<TCoordinate> env = new EdgeNodingValidator<TCoordinate>(geoFactory,edges);
+            env.CheckValid();
+        }
+
+        private readonly FastNodingValidator<TCoordinate> _nodingValidator;
 
         public EdgeNodingValidator(IGeometryFactory<TCoordinate> geoFactory, IEnumerable<Edge<TCoordinate>> edges)
         {
-            _nodingValidator = new NodingValidator<TCoordinate>(geoFactory, toSegmentStrings(edges));
+            _nodingValidator = new FastNodingValidator<TCoordinate>(geoFactory, toSegmentStrings(edges));
         }
 
-        private static IEnumerable<NodedSegmentString<TCoordinate>> toSegmentStrings(
+        private static IEnumerable<ISegmentString<TCoordinate>> toSegmentStrings(
             IEnumerable<Edge<TCoordinate>> edges)
         {
             foreach (Edge<TCoordinate> e in edges)
             {
-                yield return new NodedSegmentString<TCoordinate>(e.Coordinates, e);
+                yield return new BasicSegmentString<TCoordinate>(e.Coordinates, e);
             }
         }
 

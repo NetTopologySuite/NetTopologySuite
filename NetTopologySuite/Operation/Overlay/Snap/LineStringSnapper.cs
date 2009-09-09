@@ -86,7 +86,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap
             foreach (TCoordinate srcPt in srcCoords)
             {
                 TCoordinate snapVert = FindSnapForVertex(srcPt, snapPts);
-                if (!snapVert.Equals(default(TCoordinate)))
+                Boolean snapPt;
+                if( typeof(TCoordinate).IsValueType)
+                    snapPt = snapVert.Equals(default(TCoordinate));
+                else
+                    snapPt = snapVert == null;
+                if (!snapPt)
                 {
                     // update src with snap pt
                     retVal[index] = snapVert;

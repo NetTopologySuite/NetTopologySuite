@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
@@ -89,6 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
             _coordinates = pts;
             _start = start;
             _end = end;
+            Debug.Assert(end - start + 1 <= _coordinates.Count);
             _context = context;
         }
 

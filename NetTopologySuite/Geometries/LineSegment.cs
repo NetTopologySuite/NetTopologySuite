@@ -82,19 +82,32 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /**
-         * Computes the {@link Coordinate} that lies a given
-         * fraction along the line defined by this segment and offset from 
-         * the segment by a given distance.
-         * A fraction of <code>0.0</code> offsets from the start point of the segment;
-         * a fraction of <code>1.0</code> offsets from the end point of the segment.
-         * The computed point is offset to the left of the line if the offset distance is
-         * positive, to the right if negative.
+         * 
+         * 
+         * 
+         * 
+         * 
+         * 
+         * 
          *
-         * @param segmentLengthFraction the fraction of the segment length along the line
-         * @param offsetDistance the distance the point is offset from the segment
-         *    (positive is to the left, negative is to the right)
-         * @return the point at that distance and offset
+         * @param segmentLengthFraction 
+         * @param offsetDistance 
+         *    
+         * @return 
          */
+        ///<summary>
+        /// Computes the <see cref="TCoordinate"/> that lies a given
+        /// fraction along the line defined by this segment and offset from 
+        /// the segment by a given distance.
+        /// A fraction of <code>0.0</code> offsets from the start point of the segment;
+        /// a fraction of <code>1.0</code> offsets from the end point of the segment.
+        /// The computed point is offset to the left of the line if the offset distance is
+        /// positive, to the right if negative.
+        ///</summary>
+        ///<param name="coordFact">Factory to create the <see cref="TCoordinate"/></param>
+        ///<param name="segmentLengthFraction">the fraction of the segment length along the line</param>
+        ///<param name="offsetDistance">the distance the point is offset from the segment (positive is to the left, negative is to the right)</param>
+        ///<returns>the point at that distance and offset</returns>
         public TCoordinate PointAlongOffset(ICoordinateFactory<TCoordinate> coordFact, Double segmentLengthFraction, Double offsetDistance)
         {
             // the point on the segment line

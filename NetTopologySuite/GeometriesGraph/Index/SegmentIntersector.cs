@@ -283,8 +283,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
 
         #region ISegmentIntersector<TCoordinate> Member
 
-        public void ProcessIntersections(NodedSegmentString<TCoordinate> e0, int segIndex0,
-                                         NodedSegmentString<TCoordinate> e1, int segIndex1)
+        public void ProcessIntersections(ISegmentString<TCoordinate> e0, int segIndex0,
+                                         ISegmentString<TCoordinate> e1, int segIndex1)
         {
             //nothing to do here since all
         }

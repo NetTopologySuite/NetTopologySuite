@@ -30,12 +30,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     {
         private LineIntersector<TCoordinate> _li;// = new RobustLineIntersector<TCoordinate>();
 
-        private List<NodedSegmentString<TCoordinate>> _segStrings = new List<NodedSegmentString<TCoordinate>>();
+        private List<ISegmentString<TCoordinate>> _segStrings = new List<ISegmentString<TCoordinate>>();
         private InteriorIntersectionFinder<TCoordinate> _segInt = null;
         private Boolean _isValid = true;
         private IGeometryFactory<TCoordinate> _geoFactory;
 
-        public FastNodingValidator(IGeometryFactory<TCoordinate> geoFactory, IEnumerable<NodedSegmentString<TCoordinate>> segStrings)
+        public FastNodingValidator(IGeometryFactory<TCoordinate> geoFactory, IEnumerable<ISegmentString<TCoordinate>> segStrings)
         {
             _geoFactory = geoFactory;
             _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(geoFactory);
@@ -103,7 +103,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             _isValid = true;
             _segInt = new InteriorIntersectionFinder<TCoordinate>(_li);
             MonotoneChainIndexNoder<TCoordinate> noder = new MonotoneChainIndexNoder<TCoordinate>(_geoFactory, _segInt);
-            var res = noder.Node(_segStrings); //.ComputeNodes(segStrings);
+            noder.ComputeNodes(_segStrings); //.ComputeNodes(segStrings);
             if (_segInt.HasIntersection)
             {
                 _isValid = false;

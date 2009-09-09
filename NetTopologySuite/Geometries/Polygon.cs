@@ -664,11 +664,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (minIndex > 0)
             {
                 ring.Coordinates.Scroll(minCoordinate);
-            ring.Coordinates.RemoveAt(ring.Coordinates.Count - minIndex);
-            ring.Coordinates.CloseRing();
+                //ring.Coordinates.RemoveAt(ring.Coordinates.Count - minIndex);
+                //ring.Coordinates.CloseRing();
             }
 
-    if (CGAlgorithms<TCoordinate>.IsCCW(ring.Coordinates) == clockwise)
+            if (CGAlgorithms<TCoordinate>.IsCCW(ring.Coordinates) == clockwise)
             {
                 ring.Coordinates.Reverse();
             }

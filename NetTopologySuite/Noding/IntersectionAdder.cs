@@ -130,8 +130,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// this call for segment pairs which they have determined do not intersect
         /// (e.g. by an disjoint envelope test).
         /// </summary>
-        public void ProcessIntersections(NodedSegmentString<TCoordinate> e0, Int32 segIndex0,
-                                         NodedSegmentString<TCoordinate> e1, Int32 segIndex1)
+        public void ProcessIntersections(ISegmentString<TCoordinate> e0, Int32 segIndex0,
+                                         ISegmentString<TCoordinate> e1, Int32 segIndex1)
         {
             if (e0 == e1 && segIndex0 == segIndex1)
             {
@@ -160,8 +160,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                 if (!isTrivialIntersection(intersection, e0, segIndex0, e1, segIndex1))
                 {
                     _hasIntersection = true;
-                    e0.AddIntersections(intersection, segIndex0, 0);
-                    e1.AddIntersections(intersection, segIndex1, 1);
+                    ((NodedSegmentString<TCoordinate>)e0).AddIntersections(intersection, segIndex0, 0);
+                    ((NodedSegmentString<TCoordinate>)e1).AddIntersections(intersection, segIndex1, 1);
 
                     if (intersection.IsProper)
                     {
@@ -186,8 +186,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// Note that closed edges require a special check for the point shared by the beginning and end segments.
         /// </summary>
         private static Boolean isTrivialIntersection(Intersection<TCoordinate> intersection,
-                                                     NodedSegmentString<TCoordinate> e0, Int32 segIndex0,
-                                                     NodedSegmentString<TCoordinate> e1, Int32 segIndex1)
+                                                     ISegmentString<TCoordinate> e0, Int32 segIndex0,
+                                                     ISegmentString<TCoordinate> e1, Int32 segIndex1)
         {
             if (e0 == e1)
             {
@@ -218,7 +218,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
         public bool IsDone
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
 
         #endregion

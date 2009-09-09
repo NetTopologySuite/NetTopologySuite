@@ -401,34 +401,35 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     "not currently supported.");
             }
 
-            // MD - optimized implementation
-            Int32 i = 0;
-            Int32 j = 0;
+            return CoordinatesInternal.CompareTo(line.CoordinatesInternal);
+            //// MD - optimized implementation
+            //Int32 i = 0;
+            //Int32 j = 0;
 
-            while (i < CoordinatesInternal.Count && j < line.CoordinatesInternal.Count)
-            {
-                Int32 comparison = CoordinatesInternal[i].CompareTo(line.CoordinatesInternal[j]);
+            //while (i < CoordinatesInternal.Count && j < line.CoordinatesInternal.Count)
+            //{
+            //    Int32 comparison = CoordinatesInternal[i].CompareTo(line.CoordinatesInternal[j]);
 
-                if (comparison != 0)
-                {
-                    return comparison;
-                }
+            //    if (comparison != 0)
+            //    {
+            //        return comparison;
+            //    }
 
-                i++;
-                j++;
-            }
+            //    i++;
+            //    j++;
+            //}
 
-            if (i < CoordinatesInternal.Count)
-            {
-                return 1;
-            }
+            //if (i < CoordinatesInternal.Count)
+            //{
+            //    return 1;
+            //}
 
-            if (j < line.CoordinatesInternal.Count)
-            {
-                return -1;
-            }
+            //if (j < line.CoordinatesInternal.Count)
+            //{
+            //    return -1;
+            //}
 
-            return 0;
+            //return 0;
         }
 
         protected override Boolean IsEquivalentClass(IGeometry other)

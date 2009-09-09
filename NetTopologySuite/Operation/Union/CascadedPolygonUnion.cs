@@ -1,3 +1,4 @@
+#define useWorker
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -268,13 +269,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
         private class Worker
         {
             private readonly int end;
-            private readonly IList<IGeometry<TCoordinate>> geoms;
+            private readonly IList geoms;
             private readonly int start;
             private readonly CascadedPolygonUnion<TCoordinate> tool;
 
             private IGeometry<TCoordinate> ret;
 
-            protected internal Worker(CascadedPolygonUnion<TCoordinate> tool, IList<IGeometry<TCoordinate>> geoms,
+            protected internal Worker(CascadedPolygonUnion<TCoordinate> tool, IList geoms,
                                       int start, int end)
             {
                 this.tool = tool;

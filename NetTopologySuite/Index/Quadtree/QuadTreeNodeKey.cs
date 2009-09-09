@@ -2,6 +2,7 @@
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
+using NPack;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
@@ -44,8 +45,12 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         protected override TCoordinate CreateLocation(IExtents<TCoordinate> bounds, Double nodeSize)
         {
             TCoordinate min = bounds.Min;
-            Double x = Math.Floor(min[Ordinates.X]/nodeSize)*nodeSize;
-            Double y = Math.Floor(min[Ordinates.Y]/nodeSize)*nodeSize;
+            DoubleComponent dminx, dminy;
+            min.GetComponents(out dminx, out dminy);
+            Double x = Math.Floor((Double)dminx/nodeSize)*nodeSize;
+            Double y = Math.Floor((Double)dminy/nodeSize)*nodeSize;
+            //Double x = Math.Floor(min[Ordinates.X] / nodeSize) * nodeSize;
+            //Double y = Math.Floor(min[Ordinates.Y] / nodeSize) * nodeSize;
             return Bounds.Factory.CoordinateFactory.Create(x, y);
         }
     }
