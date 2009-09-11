@@ -979,6 +979,14 @@ namespace NetTopologySuite.Coordinates
             Int32 count = Count;
             List<Int32> scrolled = new List<Int32>(count);
 
+            Boolean wasClosed = false;
+            if (First.Equals(Last))
+            {
+                wasClosed = true;
+                RemoveAt(LastIndex);
+                count--;
+            }
+
             for (Int32 i = indexToBecomeFirst; i < count; i++)
             {
                 scrolled.Add(this[i].Index);
@@ -996,6 +1004,9 @@ namespace NetTopologySuite.Coordinates
             _endIndex = -1;
             _reversed = false;
             _sequence = scrolled;
+
+            if (wasClosed)
+                Add(First);
 
             OnSequenceChanged();
 

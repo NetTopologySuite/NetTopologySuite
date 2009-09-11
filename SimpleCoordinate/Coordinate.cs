@@ -1,3 +1,25 @@
+#region License
+
+/*
+ *  The attached / following is part of NetTopologySuite.Coordinates.Simple.
+ *  
+ *  NetTopologySuite.Coordinates.Simple is free software ? 2009 Ingenieurgruppe IVV GmbH & Co. KG, 
+ *  www.ivv-aachen.de; you can redistribute it and/or modify it under the terms 
+ *  of the current GNU Lesser General Public License (LGPL) as published by and 
+ *  available from the Free Software Foundation, Inc., 
+ *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA: http://fsf.org/.
+ *  This program is distributed without any warranty; 
+ *  without even the implied warranty of merchantability or fitness for purpose.
+ *  See the GNU Lesser General Public License for the full details. 
+ *  
+ *  This work was derived from NetTopologySuite.Coordinates.ManagedBufferedCoordinate
+ *  by codekaizen
+ *  
+ *  Author: Felix Obermaier 2009
+ *  
+ */
+
+#endregion
 #define class
 using System;
 using System.Globalization;
@@ -123,7 +145,7 @@ namespace NetTopologySuite.Coordinates.Simple
             _coordFactory = factory;
             _x = pm.MakePrecise(x);
             _y = pm.MakePrecise(y);
-            _z = pm.MakePrecise(z);
+            _z = z; // MD says its safe not to makeprecise z ordinates
             if (IsW(flags))
             {
                 _w = mw;
@@ -144,7 +166,7 @@ namespace NetTopologySuite.Coordinates.Simple
             _coordFactory = factory;
             _x = pm.MakePrecise(coordinate._x);
             _y = pm.MakePrecise(coordinate._y);
-            _z = pm.MakePrecise(coordinate._z);
+            _z = coordinate._z; // MD says its safe not to makeprecise z ordinates
             _m = coordinate._m;
             _w = coordinate._w;
             _flags = coordinate._flags;
@@ -156,7 +178,7 @@ namespace NetTopologySuite.Coordinates.Simple
             _coordFactory = factory;
             _x = pm.MakePrecise(x);
             _y = pm.MakePrecise(y);
-            _z = pm.MakePrecise(z);
+            _z = z; // MD says its safe not to makeprecise z ordinates
             _m = m;
             _w = w;
             _flags = OrdinateFlags.XY |
@@ -603,134 +625,130 @@ namespace NetTopologySuite.Coordinates.Simple
 
         #region IComputable<IMatrix<DoubleComponent>> Member
 
-        public IMatrix<NPack.DoubleComponent> Abs()
+        public IMatrix<DoubleComponent> Abs()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
-        public IMatrix<NPack.DoubleComponent> Set(double value)
+        public IMatrix<DoubleComponent> Set(double value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
 
         #region INegatable<IMatrix<DoubleComponent>> Member
 
-        IMatrix<NPack.DoubleComponent> INegatable<IMatrix<NPack.DoubleComponent>>.Negative()
+        IMatrix<DoubleComponent> INegatable<IMatrix<DoubleComponent>>.Negative()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
 
         #region ISubtractable<IMatrix<DoubleComponent>> Member
 
-        public IMatrix<NPack.DoubleComponent> Subtract(IMatrix<NPack.DoubleComponent> b)
+        public IMatrix<DoubleComponent> Subtract(IMatrix<DoubleComponent> b)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
 
         #region IHasZero<IMatrix<DoubleComponent>> Member
 
-        IMatrix<NPack.DoubleComponent> IHasZero<IMatrix<NPack.DoubleComponent>>.Zero
+        IMatrix<DoubleComponent> IHasZero<IMatrix<DoubleComponent>>.Zero
         {
-            get { throw new NotImplementedException(); }
+            get { throw new NotSupportedException(); }
         }
 
         #endregion
 
         #region IAddable<IMatrix<DoubleComponent>> Member
 
-        public IMatrix<NPack.DoubleComponent> Add(IMatrix<NPack.DoubleComponent> b)
+        public IMatrix<DoubleComponent> Add(IMatrix<DoubleComponent> b)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
 
         #region IDivisible<IMatrix<DoubleComponent>> Member
 
-        public IMatrix<NPack.DoubleComponent> Divide(IMatrix<NPack.DoubleComponent> b)
+        public IMatrix<DoubleComponent> Divide(IMatrix<DoubleComponent> b)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
 
         #region IMultipliable<IMatrix<DoubleComponent>> Member
 
-        public IMatrix<NPack.DoubleComponent> Multiply(IMatrix<NPack.DoubleComponent> b)
+        public IMatrix<DoubleComponent> Multiply(IMatrix<DoubleComponent> b)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
 
         #region IBooleanComparable<IMatrix<DoubleComponent>> Member
 
-        public bool GreaterThan(IMatrix<NPack.DoubleComponent> value)
+        public bool GreaterThan(IMatrix<DoubleComponent> value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
-        public bool GreaterThanOrEqualTo(IMatrix<NPack.DoubleComponent> value)
+        public bool GreaterThanOrEqualTo(IMatrix<DoubleComponent> value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
-        public bool LessThan(IMatrix<NPack.DoubleComponent> value)
+        public bool LessThan(IMatrix<DoubleComponent> value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
-        public bool LessThanOrEqualTo(IMatrix<NPack.DoubleComponent> value)
+        public bool LessThanOrEqualTo(IMatrix<DoubleComponent> value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
 
         #region IExponential<IMatrix<DoubleComponent>> Member
 
-        public IMatrix<NPack.DoubleComponent> Power(double exponent)
+        public IMatrix<DoubleComponent> Power(double exponent)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
-        public IMatrix<NPack.DoubleComponent> Sqrt()
+        public IMatrix<DoubleComponent> Sqrt()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
-        public IMatrix<NPack.DoubleComponent> Log(double newBase)
+        public IMatrix<DoubleComponent> Log(double newBase)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
-        public IMatrix<NPack.DoubleComponent> Log()
+        public IMatrix<DoubleComponent> Log()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
-        public IMatrix<NPack.DoubleComponent> Exp()
+        public IMatrix<DoubleComponent> Exp()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
 
         #region IEnumerable<DoubleComponent> Member
 
-        public System.Collections.Generic.IEnumerator<NPack.DoubleComponent> GetEnumerator()
+        public System.Collections.Generic.IEnumerator<DoubleComponent> GetEnumerator()
         {
-            yield return _x;
-            yield return _y;
-            yield return _z;
-            yield return _m;
-            yield return _w;
+            throw new NotSupportedException();
         }
 
         #endregion
@@ -739,66 +757,66 @@ namespace NetTopologySuite.Coordinates.Simple
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            throw new NotSupportedException();
         }
 
         #endregion
 
         #region IComputable<double,IVector<DoubleComponent>> Member
 
-        IVector<NPack.DoubleComponent> IComputable<double, IVector<NPack.DoubleComponent>>.Set(double value)
+        IVector<DoubleComponent> IComputable<double, IVector<DoubleComponent>>.Set(double value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
 
         #region IComputable<IVector<DoubleComponent>> Member
 
-        IVector<NPack.DoubleComponent> IComputable<IVector<NPack.DoubleComponent>>.Abs()
+        IVector<DoubleComponent> IComputable<IVector<DoubleComponent>>.Abs()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
-        IVector<NPack.DoubleComponent> IComputable<IVector<NPack.DoubleComponent>>.Set(double value)
+        IVector<DoubleComponent> IComputable<IVector<DoubleComponent>>.Set(double value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
 
         #region ISubtractable<IVector<DoubleComponent>> Member
 
-        public IVector<NPack.DoubleComponent> Subtract(IVector<NPack.DoubleComponent> b)
+        public IVector<DoubleComponent> Subtract(IVector<DoubleComponent> b)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
 
         #region IHasZero<IVector<DoubleComponent>> Member
 
-        IVector<NPack.DoubleComponent> IHasZero<IVector<NPack.DoubleComponent>>.Zero
+        IVector<DoubleComponent> IHasZero<IVector<DoubleComponent>>.Zero
         {
-            get { throw new NotImplementedException(); }
+            get { throw new NotSupportedException(); }
         }
 
         #endregion
 
         #region IAddable<IVector<DoubleComponent>> Member
 
-        public IVector<NPack.DoubleComponent> Add(IVector<NPack.DoubleComponent> b)
+        public IVector<DoubleComponent> Add(IVector<DoubleComponent> b)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
 
         #region IDivisible<IVector<DoubleComponent>> Member
 
-        public IVector<NPack.DoubleComponent> Divide(IVector<NPack.DoubleComponent> b)
+        public IVector<DoubleComponent> Divide(IVector<DoubleComponent> b)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
@@ -814,105 +832,105 @@ namespace NetTopologySuite.Coordinates.Simple
 
         #region IMultipliable<IVector<DoubleComponent>> Member
 
-        public IVector<NPack.DoubleComponent> Multiply(IVector<NPack.DoubleComponent> b)
+        public IVector<DoubleComponent> Multiply(IVector<DoubleComponent> b)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
 
         #region IBooleanComparable<IVector<DoubleComponent>> Member
 
-        public bool GreaterThan(IVector<NPack.DoubleComponent> value)
+        public bool GreaterThan(IVector<DoubleComponent> value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
-        public bool GreaterThanOrEqualTo(IVector<NPack.DoubleComponent> value)
+        public bool GreaterThanOrEqualTo(IVector<DoubleComponent> value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
-        public bool LessThan(IVector<NPack.DoubleComponent> value)
+        public bool LessThan(IVector<DoubleComponent> value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
-        public bool LessThanOrEqualTo(IVector<NPack.DoubleComponent> value)
+        public bool LessThanOrEqualTo(IVector<DoubleComponent> value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
 
         #region IExponential<IVector<DoubleComponent>> Member
 
-        IVector<NPack.DoubleComponent> IExponential<IVector<NPack.DoubleComponent>>.Power(double exponent)
+        IVector<DoubleComponent> IExponential<IVector<DoubleComponent>>.Power(double exponent)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
-        IVector<NPack.DoubleComponent> IExponential<IVector<NPack.DoubleComponent>>.Sqrt()
+        IVector<DoubleComponent> IExponential<IVector<DoubleComponent>>.Sqrt()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
-        IVector<NPack.DoubleComponent> IExponential<IVector<NPack.DoubleComponent>>.Log(double newBase)
+        IVector<DoubleComponent> IExponential<IVector<DoubleComponent>>.Log(double newBase)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
-        IVector<NPack.DoubleComponent> IExponential<IVector<NPack.DoubleComponent>>.Log()
+        IVector<DoubleComponent> IExponential<IVector<DoubleComponent>>.Log()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
-        IVector<NPack.DoubleComponent> IExponential<IVector<NPack.DoubleComponent>>.Exp()
+        IVector<DoubleComponent> IExponential<IVector<DoubleComponent>>.Exp()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
 
         #region IAddable<double,IVector<DoubleComponent>> Member
 
-        public IVector<NPack.DoubleComponent> Add(double b)
+        public IVector<DoubleComponent> Add(double b)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
 
         #region ISubtractable<double,IVector<DoubleComponent>> Member
 
-        public IVector<NPack.DoubleComponent> Subtract(double b)
+        public IVector<DoubleComponent> Subtract(double b)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
 
         #region IMultipliable<double,IVector<DoubleComponent>> Member
 
-        public IVector<NPack.DoubleComponent> Multiply(double b)
+        public IVector<DoubleComponent> Multiply(double b)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
 
         #region IDivisible<double,IVector<DoubleComponent>> Member
 
-        public IVector<NPack.DoubleComponent> Divide(double b)
+        public IVector<DoubleComponent> Divide(double b)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
 
         #region IEquatable<IVector<DoubleComponent>> Member
 
-        public bool Equals(IVector<NPack.DoubleComponent> other)
+        public bool Equals(IVector<DoubleComponent> other)
         {
             throw new NotSupportedException();
         }
@@ -921,9 +939,9 @@ namespace NetTopologySuite.Coordinates.Simple
 
         #region IComparable<IVector<DoubleComponent>> Member
 
-        public int CompareTo(IVector<NPack.DoubleComponent> other)
+        public int CompareTo(IVector<DoubleComponent> other)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
@@ -1446,7 +1464,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         IMatrix<DoubleComponent> IMatrix<DoubleComponent>.Transpose()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
@@ -1455,7 +1473,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         bool IEquatable<IMatrix<DoubleComponent>>.Equals(IMatrix<DoubleComponent> other)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
@@ -1464,7 +1482,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         int IComparable<IMatrix<DoubleComponent>>.CompareTo(IMatrix<DoubleComponent> other)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
@@ -1473,7 +1491,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         IMatrix<DoubleComponent> IComputable<IMatrix<DoubleComponent>>.Abs()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         IMatrix<DoubleComponent> IComputable<IMatrix<DoubleComponent>>.Set(double value)
@@ -2122,27 +2140,27 @@ namespace NetTopologySuite.Coordinates.Simple
 
         Coordinate IExponential<Coordinate>.Power(double exponent)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         Coordinate IExponential<Coordinate>.Sqrt()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         Coordinate IExponential<Coordinate>.Log(double newBase)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         Coordinate IExponential<Coordinate>.Log()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         Coordinate IExponential<Coordinate>.Exp()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
@@ -2169,7 +2187,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         Coordinate IMultipliable<double, Coordinate>.Multiply(double b)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
@@ -2206,7 +2224,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         Coordinate ICoordinate<Coordinate>.Multiply(double factor)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
@@ -2224,7 +2242,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public int CompareTo(ICoordinate2DM other)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
@@ -2233,7 +2251,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public bool Equals(ICoordinate2DM other)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
@@ -2242,7 +2260,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public int CompareTo(ICoordinate3DM other)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
@@ -2251,7 +2269,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public bool Equals(ICoordinate3DM other)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
@@ -2458,7 +2476,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public int CompareTo(IVector<DoubleComponent, Coordinate> other)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
@@ -2494,7 +2512,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         Coordinate IDivisible<Coordinate>.Divide(Coordinate b)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
@@ -2503,7 +2521,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         Coordinate IMultipliable<Coordinate>.Multiply(Coordinate b)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
@@ -2512,22 +2530,22 @@ namespace NetTopologySuite.Coordinates.Simple
 
         bool IBooleanComparable<Coordinate>.GreaterThan(Coordinate value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         bool IBooleanComparable<Coordinate>.GreaterThanOrEqualTo(Coordinate value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         bool IBooleanComparable<Coordinate>.LessThan(Coordinate value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         bool IBooleanComparable<Coordinate>.LessThanOrEqualTo(Coordinate value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion

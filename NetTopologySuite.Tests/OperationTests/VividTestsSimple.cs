@@ -6,7 +6,6 @@ using GisSharpBlog.NetTopologySuite.Algorithm;
 using NetTopologySuite.Coordinates;
 using NetTopologySuite.Coordinates.Simple;
 using Xunit;
-using PrecisionModel=NetTopologySuite.Coordinates.PrecisionModel;
 
 namespace NetTopologySuite.Tests.OperationTests
 {

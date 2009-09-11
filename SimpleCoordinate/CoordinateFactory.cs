@@ -1,3 +1,22 @@
+#region License
+
+/*
+ *  The attached / following is part of NetTopologySuite.Coordinates.Simple.
+ *  
+ *  NetTopologySuite.Coordinates.Simple is free software ? 2009 Ingenieurgruppe IVV GmbH & Co. KG, 
+ *  www.ivv-aachen.de; you can redistribute it and/or modify it under the terms 
+ *  of the current GNU Lesser General Public License (LGPL) as published by and 
+ *  available from the Free Software Foundation, Inc., 
+ *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA: http://fsf.org/.
+ *  This program is distributed without any warranty; 
+ *  without even the implied warranty of merchantability or fitness for purpose.
+ *  See the GNU Lesser General Public License for the full details. 
+ *  
+ *  Author: Felix Obermaier 2009
+ *  
+ */
+
+#endregion
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
@@ -130,7 +149,7 @@ namespace NetTopologySuite.Coordinates.Simple
                 case 0:
                 case 1:
                 case 2:
-                    throw new ArgumentException("Only one coordinate component was provided; " +
+                    throw new ArgumentException("Less then 3 coordinate components were provided; " +
                                                 "at least 3 are needed.");
                 case 3:
                     return Create3D(coordinates[0], coordinates[1], coordinates[2]);
@@ -188,19 +207,6 @@ namespace NetTopologySuite.Coordinates.Simple
         public Coordinate Create3D(Coordinate coordinate)
         {
             return Create(coordinate);
-            //if (coordinate.IsEmpty)
-            //{
-            //    return new Coordinate();
-            //}
-
-            //if (ReferenceEquals(coordinate.CoordinateFactory, this))
-            //{
-            //    return coordinate;
-            //}
-
-            //Double x, y, z, w;
-            //coordinate.GetComponents(out x, out y, out z, out w);
-            //return getVertexInternal(x, y, z, w);
         }
 
         public Coordinate Create3D(ICoordinate coordinate)

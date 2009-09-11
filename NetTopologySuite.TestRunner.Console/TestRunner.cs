@@ -1,11 +1,15 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using GeoAPI.Coordinates;
+using NPack.Interfaces;
 using SysConsole = System.Console;
 
 namespace GisSharpBlog.NetTopologySuite.Console
 {
-    internal class TestRunner
+    internal class TestRunner<TCoordinate> where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
         private static Double elapsedTime;
 
@@ -42,7 +46,7 @@ namespace GisSharpBlog.NetTopologySuite.Console
             _verbose = verbose;
         }
 
-        public void OnSimpleTest(Object sender, XmlTestEventArgs args)
+        public void OnSimpleTest(Object sender, XmlTestEventArgs<TCoordinate> args)
         {
             if (_filterType == XmlTestType.None ||
                 args.Test.TestType == _filterType)
@@ -70,7 +74,7 @@ namespace GisSharpBlog.NetTopologySuite.Console
             }
         }
 
-        public void OnTest(Object sender, XmlTestEventArgs args)
+        public void OnTest(Object sender, XmlTestEventArgs<TCoordinate> args)
         {
             ++_testCount;
             if (!args.Success)
@@ -112,13 +116,15 @@ namespace GisSharpBlog.NetTopologySuite.Console
             SysConsole.WriteLine();
         }
 
-        public Boolean Run()
+        public Boolean Run(
+            XmlTestDocument<TCoordinate>.CreateCoordinateFactory createCoordinateFactory,
+            XmlTestDocument<TCoordinate>.CreateCoordinateSequenceFactory createCoordinateSequenceFactory)
         {
             if (_listTestInfo != null)
             {
                 try
                 {
-                    XmlTestController controller = new XmlTestController();
+                    XmlTestController<TCoordinate> controller = new XmlTestController<TCoordinate>();
 
                     _totalCount = 0;
                     for (Int32 i = 0; i < _listTestInfo.Count; i++)
@@ -128,11 +134,11 @@ namespace GisSharpBlog.NetTopologySuite.Console
                         {
                             if (info.FileName != null)
                             {
-                                runTestFile(info, controller);
+                                runTestFile(info, controller, createCoordinateFactory, createCoordinateSequenceFactory);
                             }
                             else if (info.Directory != null)
                             {
-                                runTestDirectory(info, controller);
+                                runTestDirectory(info, controller, createCoordinateFactory, createCoordinateSequenceFactory );
                             }
                         }
                     }
@@ -161,14 +167,16 @@ namespace GisSharpBlog.NetTopologySuite.Console
             }
         }
 
-        private void runTestFile(TestInfo info, XmlTestController controller)
+        private void runTestFile(TestInfo info, XmlTestController<TCoordinate> controller, 
+            XmlTestDocument<TCoordinate>.CreateCoordinateFactory createCoordinateFactory,
+            XmlTestDocument<TCoordinate>.CreateCoordinateSequenceFactory createCoordinateSequenceFactory)
         {
             if (info != null)
             {
-                XmlTestCollection listTests = null;
+                XmlTestCollection<TCoordinate> listTests = null;
                 try
                 {
-                    listTests = controller.Load(info.FileName);
+                    listTests = controller.Load(info.FileName, createCoordinateFactory, createCoordinateSequenceFactory );
                 }
                 catch (Exception ex)
                 {
@@ -223,7 +231,9 @@ namespace GisSharpBlog.NetTopologySuite.Console
             }
         }
 
-        private void runTestDirectory(TestInfo info, XmlTestController controller)
+        private void runTestDirectory(TestInfo info, XmlTestController<TCoordinate> controller, 
+            XmlTestDocument<TCoordinate>.CreateCoordinateFactory createCoordinateFactory,
+            XmlTestDocument<TCoordinate>.CreateCoordinateSequenceFactory createCoordinateSequenceFactory)
         {
             if (info != null && info.Directory != null)
             {
@@ -234,7 +244,7 @@ namespace GisSharpBlog.NetTopologySuite.Console
                     foreach (String file in files)
                     {
                         info.FileName = file;
-                        runTestFile(info, controller);
+                        runTestFile(info, controller, createCoordinateFactory, createCoordinateSequenceFactory);
                     }
                 }
                 catch (Exception ex)

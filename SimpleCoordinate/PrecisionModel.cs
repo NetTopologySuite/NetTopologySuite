@@ -1,4 +1,25 @@
-﻿using System;
+﻿#region "License"
+
+/*
+ *  The attached / following is part of NetTopologySuite.Coordinates.Simple.
+ *  
+ *  NetTopologySuite.Coordinates.Simple is free software © 2009 Ingenieurgruppe IVV GmbH & Co. KG, 
+ *  www.ivv-aachen.de; you can redistribute it and/or modify it under the terms 
+ *  of the current GNU Lesser General Public License (LGPL) as published by and 
+ *  available from the Free Software Foundation, Inc., 
+ *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA: http://fsf.org/.
+ *  This program is distributed without any warranty; 
+ *  without even the implied warranty of merchantability or fitness for purpose.
+ *  See the GNU Lesser General Public License for the full details. 
+ *  
+ *  This work was derived from NetTopologySuite.Coordinates.ManagedBufferedCoordinate
+ *  by codekaizen
+ *  
+ *  Author: Felix Obermaier 2009
+ *  
+ */
+#endregion
+using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 
@@ -10,7 +31,7 @@ namespace NetTopologySuite.Coordinates.Simple
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The <see cref="MakePrecise"/> method allows for rounding a coordinate to a "precise" value; 
+    /// The <see cref="MakePrecise(Coordinate)"/> method allows for rounding a coordinate to a "precise" value; 
     /// that is, one whose precision is known exactly. Coordinates are assumed to be precise in 
     /// geometries; the coordinates are assumed to be rounded to the precision model given for the 
     /// geometry. NTS factory routines automatically round

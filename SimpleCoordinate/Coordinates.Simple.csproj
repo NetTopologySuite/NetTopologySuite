@@ -1,7 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="Exists('$(ProjectDir)..\..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj')">
+    <GeoAPIProjectReference>Grandchild</GeoAPIProjectReference>
+  </PropertyGroup>
+  <PropertyGroup Condition="!Exists('$(ProjectDir)..\..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj') And Exists('$(ProjectDir)..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj')">
+    <GeoAPIProjectReference>Child</GeoAPIProjectReference>
+  </PropertyGroup>
+  <PropertyGroup Condition="!Exists('$(ProjectDir)..\..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj') And !Exists('$(ProjectDir)..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj')">
+    <GeoAPIProjectReference>None</GeoAPIProjectReference>
+  </PropertyGroup>
+  <PropertyGroup Condition="Exists('$(ProjectDir)..\..\NPack\NPack\NPack.csproj')">
+    <NPackProjectReference>Grandchild</NPackProjectReference>
+  </PropertyGroup>
+  <PropertyGroup Condition="!Exists('$(ProjectDir)..\..\NPack\NPack\NPack.csproj') And Exists('$(ProjectDir)..\NPack\NPack\NPack.csproj')">
+    <NPackProjectReference>Child</NPackProjectReference>
+  </PropertyGroup>
+  <PropertyGroup Condition="!Exists('$(ProjectDir)..\..\NPack\NPack\NPack.csproj') And !Exists('$(ProjectDir)..\NPack\NPack\NPack.csproj')">
+    <NPackProjectReference>None</NPackProjectReference>
+  </PropertyGroup>
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug_Net20</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
@@ -13,32 +31,108 @@
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_Net20|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug_Net20\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release_Net20|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\Release_Net20\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="C5, Version=1.1.0.0, Culture=neutral, PublicKeyToken=c6b945f01301d1e8, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ExternalReferences\C5.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_Net35|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug_Net35\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;DOTNET35</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release_Net35|AnyCPU' ">
+    <OutputPath>bin\Release_Net35\</OutputPath>
+    <DefineConstants>TRACE;DOTNET35</DefineConstants>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <Choose>
+    <When Condition="'$(GeoAPIProjectReference)' == 'Grandchild'">
+      <ItemGroup>
+        <ProjectReference Include="..\..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj">
+          <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
+          <Name>GeoAPI.Net</Name>
+        </ProjectReference>
+      </ItemGroup>
+    </When>
+    <When Condition="'$(GeoAPIProjectReference)' == 'Child'">
+      <ItemGroup>
+        <ProjectReference Include="..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj">
+          <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
+          <Name>GeoAPI.Net Project (Parent)</Name>
+        </ProjectReference>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="GeoAPI, Version=2.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\ExternalReferences\$(Configuration)\GeoAPI.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <Choose>
+    <When Condition="'$(NPackProjectReference)' == 'Grandchild'">
+      <ItemGroup>
+        <ProjectReference Include="..\..\NPack\NPack\NPack.csproj">
+          <Project>{B139E1D5-091B-40D2-B7A2-7D7D82E13019}</Project>
+          <Name>NPack</Name>
+        </ProjectReference>
+      </ItemGroup>
+    </When>
+    <When Condition="'$(NPackProjectReference)' == 'Child'">
+      <ItemGroup>
+        <ProjectReference Include="..\NPack\NPack\NPack.csproj">
+          <Project>{B139E1D5-091B-40D2-B7A2-7D7D82E13019}</Project>
+          <Name>NPack Project (Parent)</Name>
+        </ProjectReference>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="NPack, Version=0.8.15119.0, Culture=neutral, PublicKeyToken=56f174b1685ddc6a, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\ExternalReferences\$(Configuration)\NPack.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <Choose>
+    <When Condition="'$(Configuration)' == 'Release_Net35' Or '$(Configuration)' == 'Debug_Net35'">
+      <ItemGroup>
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="System" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Xml" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
   <ItemGroup>
     <Compile Include="Coordinate.cs" />
     <Compile Include="CoordinateFactory.cs" />
