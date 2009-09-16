@@ -695,9 +695,19 @@ namespace NetTopologySuite.Coordinates.Simple
         #region ISimpleCoordFactory<Coordinate> Member
 
 
-        Coordinate ISimpleCoordFactory.Create(IVector<DoubleComponent> coordinate)
+        public Coordinate Create(IVector<DoubleComponent> coordinate)
         {
-            throw new NotImplementedException();
+            switch (coordinate.ComponentCount)
+            {
+                //case 2:
+                //    return Create((Double) coordinate[0], (Double) coordinate[1]);
+                case 3:
+                    return Create((Double)coordinate[0], (Double)coordinate[1]);
+                case 4:
+                    return new Coordinate(this, (Double)coordinate[0], (Double)coordinate[1], (Double)coordinate[2],OrdinateFlags.XYZ);
+            }
+            return new Coordinate();
+
         }
 
         #endregion

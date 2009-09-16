@@ -271,7 +271,8 @@ namespace NetTopologySuite.Coordinates
 
             x = x1;
             y = y1;
-            w = _isHomogeneous ? w1 : w;
+            w = _hasZ ? w1 :
+                _isHomogeneous ? w1 : w;
         }
 
         public void GetComponents(out DoubleComponent a, out DoubleComponent b, out DoubleComponent c, out DoubleComponent d)
@@ -1623,7 +1624,15 @@ namespace NetTopologySuite.Coordinates
 
         private DoubleComponent[] getComponents()
         {
-            return new DoubleComponent[] { X, Y };
+            DoubleComponent x, y, z;
+            if (!_hasZ)
+            {
+                GetComponents(out x, out y);
+                return new[] { x, y, (DoubleComponent)1 };
+            }
+
+            GetComponents(out x, out y, out z);
+            return new[] {x, y, z, (DoubleComponent)1};
         }
 
         #region IComparable<ICoordinate3D> Members

@@ -187,6 +187,19 @@ namespace NetTopologySuite.Coordinates.Simple
                      (Double.IsNaN(w) ? OrdinateFlags.None : OrdinateFlags.W);
         }
 
+        private DoubleComponent[] getComponents()
+        {
+            DoubleComponent x, y, z;
+            if (!HasZ)
+            {
+                GetComponents(out x, out y);
+                return new[] { x, y, (DoubleComponent)1 };
+            }
+
+            GetComponents(out x, out y, out z);
+            return new[] { x, y, z, (DoubleComponent)1 };
+        }
+
         public static Coordinate Clone(Coordinate coordinate)
         {
             return new Coordinate(coordinate._coordFactory, coordinate);
@@ -447,7 +460,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public int ComponentCount
         {
-            get { return 2 + (HasZ ? 1 : 0) + (HasM ? 1 : 0) + (HasW ? +1 : 0); }
+            get { return 2 + (HasZ ? 1 : 0) + (HasM ? 1 : 0) + (HasW ? 1 : 0); }
         }
 
         public DoubleComponent[] Components
@@ -1333,10 +1346,10 @@ namespace NetTopologySuite.Coordinates.Simple
             get { return Zero; }
         }
 
-        ICoordinateFactory ICoordinate.Factory
-        {
-            get { throw new NotSupportedException(); }
-        }
+        //ICoordinateFactory ICoordinate.Factory
+        //{
+        //    get { throw new NotSupportedException(); }
+        //}
 
         #endregion
 
@@ -1347,16 +1360,16 @@ namespace NetTopologySuite.Coordinates.Simple
             return Clone();
         }
 
-        int IVector<DoubleComponent>.ComponentCount
-        {
-            get { throw new NotSupportedException(); }
-        }
+        //int IVector<DoubleComponent>.ComponentCount
+        //{
+        //    get { Com; }
+        //}
 
         DoubleComponent[] IVector<DoubleComponent>.Components
         {
             get
             {
-                throw new NotSupportedException();
+                return getComponents();
             }
             set
             {
@@ -1373,11 +1386,11 @@ namespace NetTopologySuite.Coordinates.Simple
         {
             get
             {
-                throw new NotSupportedException();
+                return this[index];
             }
             set
             {
-                throw new NotSupportedException();
+                this[index] = value;
             }
         }
 

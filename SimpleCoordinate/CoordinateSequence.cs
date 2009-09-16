@@ -35,6 +35,7 @@ namespace NetTopologySuite.Coordinates.Simple
     using ICoordFactory = ICoordinateFactory<Coordinate>;
     using ICoordSequence = ICoordinateSequence<Coordinate>;
     using ICoordSequenceFactory = ICoordinateSequenceFactory<Coordinate>;
+    using C5;
 
     /// <summary>
     /// An <see cref="ICoordinateSequence{Coordinate}"/>.
@@ -817,7 +818,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public ICoordinateSequence<Coordinate> WithoutDuplicatePoints()
         {
-            C5.HashSet<Coordinate> hs= new C5.HashSet<Coordinate>();
+            HashSet<Coordinate> hs= new HashSet<Coordinate>();
             //hs.AllowsDuplicates = false;
             hs.AddAll(_coordinates);
             return new CoordinateSequence(_factory, hs.UniqueItems());
@@ -842,17 +843,17 @@ namespace NetTopologySuite.Coordinates.Simple
             return _coordinates.IndexOf(item);
         }
 
-        void IList<Coordinate>.Insert(int index, Coordinate item)
+        void System.Collections.Generic.IList<Coordinate>.Insert(int index, Coordinate item)
         {
             throw new NotImplementedException();
         }
 
-        void IList<Coordinate>.RemoveAt(int index)
+        void System.Collections.Generic.IList<Coordinate>.RemoveAt(int index)
         {
             throw new NotImplementedException();
         }
 
-        Coordinate IList<Coordinate>.this[int index]
+        Coordinate System.Collections.Generic.IList<Coordinate>.this[int index]
         {
             get { return this[index]; }
             set { this[index] = value; }
@@ -867,7 +868,7 @@ namespace NetTopologySuite.Coordinates.Simple
             Append(item);
         }
 
-        void ICollection<Coordinate>.Clear()
+        void System.Collections.Generic.ICollection<Coordinate>.Clear()
         {
             Clear();
         }
@@ -885,7 +886,7 @@ namespace NetTopologySuite.Coordinates.Simple
             }
         }
 
-        int ICollection<Coordinate>.Count
+        int System.Collections.Generic.ICollection<Coordinate>.Count
         {
             get { return Count; }
         }

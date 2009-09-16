@@ -787,7 +787,7 @@ namespace NetTopologySuite.Coordinates
         #region IVectorFactoryD Members
         IVectorD IVectorFactoryD.CreateVector(Int32 componentCount)
         {
-            return CreateVector(componentCount);
+            return CreateVector(new double[componentCount]);
         }
 
         IVectorD IVectorFactoryD.CreateVector(IEnumerable<DoubleComponent> values)
@@ -1219,7 +1219,17 @@ namespace NetTopologySuite.Coordinates
 
         public BufferedCoordinate Create(IVector<DoubleComponent> coordinate)
         {
-            throw new NotImplementedException();
+            switch (coordinate.ComponentCount)
+            {
+                case 2:
+                    return addNew((Double) coordinate[0], (Double) coordinate[1]);
+                case 3:
+                    return addNew((Double) coordinate[0], (Double) coordinate[1]);
+                case 4:
+                    return addNew((Double)coordinate[0], (Double)coordinate[1], (Double)coordinate[2], true);
+            }
+            return new BufferedCoordinate();
+
         }
 
         #endregion
