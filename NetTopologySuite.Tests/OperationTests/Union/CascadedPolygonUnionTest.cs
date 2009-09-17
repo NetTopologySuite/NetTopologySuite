@@ -59,7 +59,7 @@ namespace NetTopologySuite.Tests.OperationTests.Union
             stopwatch.Reset();
             stopwatch.Start();
             foreach (IPolygonal<BufferedCoordinate> geometry in Enumerable.Skip(geoms, 1))
-            {
+            { 
                 u1 = SnapIfNeededOverlayOp<BufferedCoordinate>.Overlay(u1, geometry, SpatialFunctions.Union);
             }
             stopwatch.Stop();
