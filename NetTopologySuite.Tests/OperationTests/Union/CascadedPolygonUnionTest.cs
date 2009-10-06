@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -9,10 +10,37 @@ using GisSharpBlog.NetTopologySuite.Operation.Overlay;
 using GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap;
 using GisSharpBlog.NetTopologySuite.Operation.Union;
 using NetTopologySuite.Coordinates;
+using NPack.Interfaces;
 using Xunit;
 
 namespace NetTopologySuite.Tests.OperationTests.Union
 {
+    public class IOTool<TCoordinate>
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+            IComputable<Double, TCoordinate>, IDivisible<Double, TCoordinate>, IConvertible
+    {
+        public static IEnumerable<IGeometry<TCoordinate>> ReadGeometries(IGeometryFactory<TCoordinate> factory, String file)
+        {
+            using (StreamReader txt = new StreamReader(file))
+            {
+                while (!txt.EndOfStream)
+                {
+                    IGeometry<TCoordinate> geom = factory.WktReader.Read(txt.ReadLine());
+                    var mp = geom as IMultiPolygon<TCoordinate>;
+                    if (mp != null)
+                    {
+                        foreach (var polygon in mp)
+                            yield return polygon;
+                        continue;
+                    }
+                    var p = geom as IPolygon<TCoordinate>;
+                    if (p != null)
+                        yield return p;
+                }
+            }
+        }
+    }
+    
     public class CascadedPolygonUnionTest
     {
         private const string polygonfile = @"sh.txt";
@@ -23,25 +51,7 @@ namespace NetTopologySuite.Tests.OperationTests.Union
         [Fact]
         public void SchleswigHolsteinTest()
         {
-            IList<IGeometry<BufferedCoordinate>> geoms = new List<IGeometry<BufferedCoordinate>>();
-
-            using (StreamReader txt = new StreamReader(polygonfile))
-            {
-                while (!txt.EndOfStream)
-                {
-                    IGeometry<BufferedCoordinate> geom = _geometryFactory.WktReader.Read(txt.ReadLine());
-                    var mp = geom as IMultiPolygon<BufferedCoordinate>;
-                    if (mp != null)
-                    {
-                        foreach (var polygon in mp)
-                            geoms.Add(polygon);
-                        continue;
-                    }
-                    var p = geom as IPolygon<BufferedCoordinate>;
-                    if (p != null)
-                        geoms.Add(p);
-                }
-            }
+            IList<IGeometry<BufferedCoordinate>> geoms = new List<IGeometry<BufferedCoordinate>>(IOTool<BufferedCoordinate>.ReadGeometries(_geometryFactory, polygonfile));
 
             Stopwatch stopwatch = new Stopwatch();
 

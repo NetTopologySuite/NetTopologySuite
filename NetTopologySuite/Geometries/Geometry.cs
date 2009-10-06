@@ -376,15 +376,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return Relate(g).IsEquals(Dimension, g.Dimension);
         }
 
-        public IEnumerable<TCoordinate> GetVertexes(ITransformMatrix<DoubleComponent> transform)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract IEnumerable<TCoordinate> GetVertexes(ITransformMatrix<DoubleComponent> transform);
 
-        public IEnumerable<TCoordinate> GetVertexes()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract IEnumerable<TCoordinate> GetVertexes();
 
         /// <summary> 
         /// Computes the centroid of this <see cref="Geometry{TCoordinate}"/>.

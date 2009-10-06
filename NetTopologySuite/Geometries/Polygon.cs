@@ -270,6 +270,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
+        public override IEnumerable<TCoordinate> GetVertexes()
+        {
+            foreach (TCoordinate coordinate in _shell.Coordinates)
+                yield return coordinate;
+            if ( _holes != null )
+                foreach (ILineString<TCoordinate> s in _holes)
+                    foreach (TCoordinate coord in s.Coordinates)
+                        yield return coord;
+        }
+
         public override Boolean EqualsExact(IGeometry<TCoordinate> g, Tolerance tolerance)
         {
             // TODO: drop this when the get_Coordinates TODO is fixed

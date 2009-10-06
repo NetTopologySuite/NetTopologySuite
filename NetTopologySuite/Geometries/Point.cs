@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
@@ -100,6 +101,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public override OgcGeometryType GeometryType
         {
             get { return OgcGeometryType.Point; }
+        }
+
+        public override IEnumerable<TCoordinate> GetVertexes(ITransformMatrix<NPack.DoubleComponent> transform)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerable<TCoordinate> GetVertexes()
+        {
+            yield return _coordinate;
         }
 
         public override IGeometry<TCoordinate> Boundary

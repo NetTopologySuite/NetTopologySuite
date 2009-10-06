@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
@@ -43,6 +44,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     }
                 }
             }
+        }
+
+        public override IEnumerable<TCoordinate> GetVertexes(ITransformMatrix<NPack.DoubleComponent> transform)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerable<TCoordinate> GetVertexes()
+        {
+            return _coordinates;
         }
 
         public override Boolean EqualsExact(IGeometry<TCoordinate> g, Tolerance tolerance)

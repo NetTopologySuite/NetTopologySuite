@@ -51,6 +51,7 @@
     <Compile Include="Geometries\Prepared\PreparedPolygonTests.cs" />
     <Compile Include="Geometries\Prepared\PreparedGeometryFactoryTests.cs" />
     <Compile Include="Index\BinTree\BinTreeTests.cs" />
+    <Compile Include="Index\KdTreeTests.cs" />
     <Compile Include="Index\StrTree\StrTreeTests.cs" />
     <Compile Include="OperationTests\RobustTests.cs" />
     <Compile Include="OperationTests\ValidateTests.cs" />
@@ -94,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Algorithm\Locate\" />
+    <Folder Include="Index\KdTree\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

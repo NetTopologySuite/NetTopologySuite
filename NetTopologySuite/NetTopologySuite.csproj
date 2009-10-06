@@ -178,6 +178,8 @@
     <Compile Include="Algorithm\SimplePointInRing.cs" />
     <Compile Include="Algorithm\SIRtreePointInRing.cs" />
     <Compile Include="IBoundaryNodeRule.cs" />
+    <Compile Include="Index\KdTree\KdNode.cs" />
+    <Compile Include="Index\KdTree\KdTree.cs" />
     <Compile Include="Noding\BasicSegmentString.cs" />
     <Compile Include="Noding\FastNodingValidator.cs" />
     <Compile Include="Noding\InteriorIntersectionFinder.cs" />

@@ -81,6 +81,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return _geometries.AsReadOnly(); }
         }
 
+        public override IEnumerable<TCoordinate> GetVertexes(ITransformMatrix<NPack.DoubleComponent> transform)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerable<TCoordinate> GetVertexes()
+        {
+            foreach (IGeometry<TCoordinate> geometry in _geometries)
+            {
+                foreach (TCoordinate vertex in geometry.GetVertexes())
+                    yield return vertex;
+            }
+        }
+
         /// <summary>  
         /// Returns the area of this <see cref="GeometryCollection{TCoordinate}" />.
         /// </summary>        
