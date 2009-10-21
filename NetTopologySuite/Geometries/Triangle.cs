@@ -48,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             // returns the perpendicular bisector of the line segment ab
             Double dx = b[Ordinates.X] - a[Ordinates.X];
             Double dy = b[Ordinates.Y] - a[Ordinates.Y];
-            TCoordinate l1 = factory.Create(a[Ordinates.X] + dx/2.0, a[Ordinates.Y] + dy/2.0, 1.0);
+            TCoordinate l1 = factory.Create(a[Ordinates.X] + dx/2.0, a[Ordinates.Y] + dy/2.0);
             TCoordinate l2 = factory.Create(a[Ordinates.X] - dy + dx/2.0, a[Ordinates.Y] + dx + dy/2.0);
             return l1.Cross(l2);
         }
@@ -70,7 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             // compute the perpendicular bisector of chord bc
             TCoordinate cbc = PerpendicularBisector(factory, b, c);
             // compute the intersection of the bisectors (circle radii)
-            TCoordinate cc = default(TCoordinate);
+            TCoordinate cc;
             try
             {
                 TCoordinate hcc = cab.Cross(cbc);

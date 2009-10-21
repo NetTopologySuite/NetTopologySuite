@@ -12,6 +12,16 @@ using GisSharpBlog.NetTopologySuite.Operation.Union;
 using NetTopologySuite.Coordinates;
 using NPack.Interfaces;
 using Xunit;
+#if unbuffered
+using coord = NetTopologySuite.Coordinates.Simple.Coordinate;
+using coordFac = NetTopologySuite.Coordinates.Simple.CoordinateFactory;
+using coordSeqFac = NetTopologySuite.Coordinates.Simple.CoordinateSequenceFactory;
+
+#else
+using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
+using coordFac = NetTopologySuite.Coordinates.BufferedCoordinateFactory;
+using coordSeqFac = NetTopologySuite.Coordinates.BufferedCoordinateSequenceFactory;
+#endif
 
 namespace NetTopologySuite.Tests.OperationTests.Union
 {
@@ -45,32 +55,32 @@ namespace NetTopologySuite.Tests.OperationTests.Union
     {
         private const string polygonfile = @"sh.txt";
 
-        private static IGeometryFactory<BufferedCoordinate> _geometryFactory =
-            new GeometryFactory<BufferedCoordinate>(new BufferedCoordinateSequenceFactory());
+        private static IGeometryFactory<coord> _geometryFactory =
+            new GeometryFactory<coord>(new coordSeqFac());
 
         [Fact]
         public void SchleswigHolsteinTest()
         {
-            IList<IGeometry<BufferedCoordinate>> geoms = new List<IGeometry<BufferedCoordinate>>(IOTool<BufferedCoordinate>.ReadGeometries(_geometryFactory, polygonfile));
+            IList<IGeometry<coord>> geoms = new List<IGeometry<coord>>(IOTool<coord>.ReadGeometries(_geometryFactory, polygonfile));
 
             Stopwatch stopwatch = new Stopwatch();
 
             stopwatch.Start();
 
-            //CascadedPolygonUnion<BufferedCoordinate> cpu = new CascadedPolygonUnion<BufferedCoordinate>(geoms;);
-            IGeometry<BufferedCoordinate> u2 = UnaryUnionOp<BufferedCoordinate>.Union(geoms);
+            //CascadedPolygonUnion<coord> cpu = new CascadedPolygonUnion<coord>(geoms;);
+            IGeometry<coord> u2 = UnaryUnionOp<coord>.Union(geoms);
 
             stopwatch.Stop();
             Console.WriteLine(string.Format("UnaryUnionOp duration: {0}", stopwatch.Elapsed));
             Console.WriteLine(u2.ToString());
             Console.WriteLine(u2.Extents.ToString());
 
-            IGeometry<BufferedCoordinate> u1 = geoms[0];
+            IGeometry<coord> u1 = geoms[0];
             stopwatch.Reset();
             stopwatch.Start();
-            foreach (IPolygonal<BufferedCoordinate> geometry in Enumerable.Skip(geoms, 1))
+            foreach (IPolygonal<coord> geometry in Enumerable.Skip(geoms, 1))
             { 
-                u1 = SnapIfNeededOverlayOp<BufferedCoordinate>.Overlay(u1, geometry, SpatialFunctions.Union);
+                u1 = SnapIfNeededOverlayOp<coord>.Overlay(u1, geometry, SpatialFunctions.Union);
             }
             stopwatch.Stop();
             Console.WriteLine(string.Format("SnapIfNeededOverlayOp duration: {0}", stopwatch.Elapsed));

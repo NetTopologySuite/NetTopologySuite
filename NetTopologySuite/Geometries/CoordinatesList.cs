@@ -1,6 +1,7 @@
 //#define C5
 using System;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using NPack.Interfaces;
 
 #if C5
@@ -32,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// as the input array.)
         ///</summary>
         ///<param name="coord">the initial coordinates</param>
-        public CoordinateList(ICoordinateSequence<TCoordinate> coord)
+        public CoordinateList(IEnumerable<TCoordinate> coord)
             : base(coord)
         {
         }
@@ -40,12 +41,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         ///<summary>
         /// Constructs a new list from an array of Coordinates, allowing caller to specify if repeated points are to be removed.
         ///</summary>
-        ///<param name="coord">the array of coordinates to load into the list</param>
+        ///<param name="coords">the array of coordinates to load into the list</param>
         ///<param name="allowRepeated">if <see langword="false"/>, repeated points are removed</param>
-        public CoordinateList(ICoordinateSequence<TCoordinate> coord, Boolean allowRepeated)
-            : base(coord.Count)
+        public CoordinateList(IEnumerable<TCoordinate> coords, Boolean allowRepeated)
+            : base(Slice.GetLength(coords))
         {
-            AddRange(coord, allowRepeated);
+            AddRange(coords, allowRepeated);
         }
 
         ///<summary>

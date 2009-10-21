@@ -1402,6 +1402,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             _max = extents.Max;
         }
 
+        public void ExpandBy(Double distance)
+        {
+            ExpandBy(distance, distance);
+        }
+
+        public void ExpandBy(Double dx, Double dy)
+        {
+            _min = _geoFactory.CoordinateFactory.Create(_min[Ordinates.X] - dx, _min[Ordinates.Y] - dy);
+            _max = _geoFactory.CoordinateFactory.Create(_max[Ordinates.X] + dx, _max[Ordinates.Y] + dy);
+        }
+
         /// <summary>
         /// Enlarges the boundary of the <see cref="Extents{TCoordinate}"/> 
         /// so that it contains (x, y). Does nothing if (x, y) is already on 
@@ -1424,15 +1435,24 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
             else
             {
-                if (_min.GreaterThan(coordinate))
-                {
-                    _min = coordinate;
-                }
 
-                if (_max.LessThan(coordinate))
-                {
-                    _max = coordinate;
-                }
+                Double minx = Math.Min(x, _min[Ordinates.X]);
+                Double maxx = Math.Max(x, _max[Ordinates.X]);
+                Double miny = Math.Min(y, _min[Ordinates.Y]);
+                Double maxy = Math.Max(y, _max[Ordinates.Y]);
+
+                _min = _geoFactory.CoordinateFactory.Create(minx, miny);
+                _max = _geoFactory.CoordinateFactory.Create(maxx, maxy);
+                
+                //if (_min.GreaterThan(coordinate))
+                //{
+                //    _min = coordinate;
+                //}
+
+                //if (_max.LessThan(coordinate))
+                //{
+                //    _max = coordinate;
+                //}
             }
         }
 

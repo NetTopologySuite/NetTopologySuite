@@ -8,6 +8,17 @@ using System.Runtime;
 using System.Diagnostics;
 using NetTopologySuite.Coordinates;
 using Xunit;
+#if unbuffered
+using coord = NetTopologySuite.Coordinates.Simple.Coordinate;
+using coordFac = NetTopologySuite.Coordinates.Simple.CoordinateFactory;
+using coordSeqFac = NetTopologySuite.Coordinates.Simple.CoordinateSequenceFactory;
+
+#else
+using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
+using coordFac = NetTopologySuite.Coordinates.BufferedCoordinateFactory;
+using coordSeqFac = NetTopologySuite.Coordinates.BufferedCoordinateSequenceFactory;
+#endif
+
 namespace NetTopologySuite.Tests.Geometries
 {
     ///<summary>
@@ -21,9 +32,9 @@ namespace NetTopologySuite.Tests.Geometries
 
         static StreamWriter outfile = new StreamWriter(CLRVersion + "_" + GCSettings.IsServerGC + "_" + GCSettings.LatencyMode + ".txt");
 
-        private static readonly BufferedCoordinateFactory _coordFact = new BufferedCoordinateFactory(100000);
-        private static readonly GeometryFactory<BufferedCoordinate> _geomFact =
-            new GeometryFactory<BufferedCoordinate>(new BufferedCoordinateSequenceFactory(_coordFact));
+        private static readonly coordFac _coordFact = new coordFac(100000);
+        private static readonly GeometryFactory<coord> _geomFact =
+            new GeometryFactory<coord>(new coordSeqFac(_coordFact));
 
 
         public const int OuterRingPoints = 500; // Increase here
@@ -50,14 +61,14 @@ namespace NetTopologySuite.Tests.Geometries
             //Console.ReadKey(true);
         }
 
-        private static void Benchmark(IPolygon<BufferedCoordinate> poly)
+        private static void Benchmark(IPolygon<coord> poly)
         {
             BenchmarkIsValid(poly);
             BenchmarkIntersection(poly);
         }
 
 
-        private static void BenchmarkIsValid(IPolygon<BufferedCoordinate> poly)
+        private static void BenchmarkIsValid(IPolygon<coord> poly)
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -66,7 +77,7 @@ namespace NetTopologySuite.Tests.Geometries
             LogLine("IsValid     : \t{0} \t{1} \t{2} \t{3}", poly.InteriorRingsCount, poly.Coordinates.Count, valid, sw.Elapsed);
         }
 
-        private static void BenchmarkIntersection(IPolygon<BufferedCoordinate> poly)
+        private static void BenchmarkIntersection(IPolygon<coord> poly)
         {
             for (double w = 1; w <= 100; w *= 10)
             {
@@ -80,8 +91,8 @@ namespace NetTopologySuite.Tests.Geometries
 
         public static void BenchmarkPolygons()
         {
-            List<ILinearRing<BufferedCoordinate>> holes = new List<ILinearRing<BufferedCoordinate>>();
-            ILinearRing<BufferedCoordinate> shell = CreateRing(0, 0, 20, OuterRingPoints);
+            List<ILinearRing<coord>> holes = new List<ILinearRing<coord>>();
+            ILinearRing<coord> shell = CreateRing(0, 0, 20, OuterRingPoints);
             Benchmark(_geomFact.CreatePolygon(shell, holes));
             for (int i = 0; i <= 100; i += 1)
             {
@@ -93,16 +104,16 @@ namespace NetTopologySuite.Tests.Geometries
             }
         }
 
-        static ILinearRing<BufferedCoordinate> CreateRing(Double x, Double y, Double radius, Int32 points)
+        static ILinearRing<coord> CreateRing(Double x, Double y, Double radius, Int32 points)
         {
-            IPoint<BufferedCoordinate> point = _geomFact.CreatePoint(_coordFact.Create(x, y));
-            IPolygon<BufferedCoordinate> poly = (IPolygon<BufferedCoordinate>)point.Buffer(radius, points, GeoAPI.Operations.Buffer.BufferStyle.Round);
-            return (ILinearRing<BufferedCoordinate>)poly.ExteriorRing;
+            IPoint<coord> point = _geomFact.CreatePoint(_coordFact.Create(x, y));
+            IPolygon<coord> poly = (IPolygon<coord>)point.Buffer(radius, points, GeoAPI.Operations.Buffer.BufferStyle.Round);
+            return (ILinearRing<coord>)poly.ExteriorRing;
         }
 
-        public static IPolygon<BufferedCoordinate> CreateBox(double x, double y, double w, double h)
+        public static IPolygon<coord> CreateBox(double x, double y, double w, double h)
         {
-            ICoordinateSequence<BufferedCoordinate> seq = _geomFact.CoordinateSequenceFactory.Create(
+            ICoordinateSequence<coord> seq = _geomFact.CoordinateSequenceFactory.Create(
                 _coordFact.Create(x,y),
                 _coordFact.Create(x+w,y),
                 _coordFact.Create(x+w,y+h),

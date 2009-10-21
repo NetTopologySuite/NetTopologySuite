@@ -45,7 +45,13 @@ namespace NetTopologySuite.Coordinates
 
         public BufferedCoordinate Cross(BufferedCoordinate vector)
         {
-            return _factory.Homogenize(_factory.Cross(this, vector));
+            BufferedCoordinate t = _factory.Homogenize(this);
+            BufferedCoordinate o = _factory.Homogenize(vector);
+
+            BufferedCoordinate r = _factory.Cross(t, o);
+            return r;
+            //return
+            //return _factory.Dehomogenize( _factory.Cross(_factory.Homogenize(this), _factory.Homogenize(vector)));
         }
 
         public override Boolean Equals(Object obj)
@@ -141,7 +147,7 @@ namespace NetTopologySuite.Coordinates
         {
             return !coordinate._id.HasValue
                        ? coordinate
-                       : new BufferedCoordinate(coordinate._factory, coordinate._id.Value, coordinate._hasZ, false);
+                       : coordinate._factory.Create(coordinate[Ordinates.X] / coordinate[Ordinates.W], coordinate[Ordinates.Y] / coordinate[Ordinates.W]); new BufferedCoordinate(coordinate._factory, coordinate._id.Value, coordinate._hasZ, false);
         }
 
         #region IBufferedVector<DoubleComponent> Members
@@ -319,9 +325,15 @@ namespace NetTopologySuite.Coordinates
         {
             get
             {
-                return _id == null
-                    ? Double.NaN
-                    : _factory.GetOrdinate(_id.Value, _hasZ ? (Int32)ordinate : _ordTable2D[(Int32)ordinate]);
+                if ( _id == null )
+                    return Double.NaN;
+
+                if (_hasZ)
+                    return _factory.GetOrdinate(_id.Value, (Int32) ordinate);
+
+                return _ordTable2D[(Int32) ordinate] < 0
+                           ? Double.NaN
+                           : _factory.GetOrdinate(_id.Value, _ordTable2D[(Int32) ordinate]);
             }
         }
 

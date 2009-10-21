@@ -20,7 +20,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug_Net20</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5770DAA9-84E5-4770-AF43-F6B815894368}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -163,6 +163,10 @@
     <Compile Include="Algorithm\Locate\IndexedPointInAreaLocator.cs" />
     <Compile Include="Algorithm\Locate\IPointOnGeometryLocator.cs" />
     <Compile Include="Algorithm\Locate\SimplePointInAreaLocator.cs" />
+    <Compile Include="Algorithm\Match\AreaSimilarityMeasure.cs" />
+    <Compile Include="Algorithm\Match\HausdorffSimilarityMeasure.cs" />
+    <Compile Include="Algorithm\Match\ISimilarityMeasure.cs" />
+    <Compile Include="Algorithm\Match\SimilarityMeasureCombiner.cs" />
     <Compile Include="Algorithm\MCPointInRing.cs" />
     <Compile Include="Algorithm\MinimumDiameter.cs" />
     <Compile Include="Algorithm\Mod2BoundaryNodeRule.cs" />
@@ -177,6 +181,7 @@
     <Compile Include="Algorithm\SimplePointInAreaLocator.cs" />
     <Compile Include="Algorithm\SimplePointInRing.cs" />
     <Compile Include="Algorithm\SIRtreePointInRing.cs" />
+    <Compile Include="Densify\Densifier.cs" />
     <Compile Include="IBoundaryNodeRule.cs" />
     <Compile Include="Index\KdTree\KdNode.cs" />
     <Compile Include="Index\KdTree\KdTree.cs" />
@@ -412,6 +417,31 @@
     <Compile Include="Simplify\DouglasPeuckerSimplifier.cs" />
     <Compile Include="Geometries\Utilities\GeometricShapeFactory.cs" />
     <Compile Include="Global.cs" />
+    <Compile Include="Triangulate\ConformingDelaunayTriangulator.cs" />
+    <Compile Include="Triangulate\ConformingDelaunayTriangulationBuilder.cs" />
+    <Compile Include="Triangulate\ConstraintEnforcementException.cs" />
+    <Compile Include="Triangulate\IConstraintSplitPointFinder.cs" />
+    <Compile Include="Triangulate\ConstraintVertex.cs" />
+    <Compile Include="Triangulate\DelaunayTriangulationBuilder.cs" />
+    <Compile Include="Triangulate\IConstraintVertexFactory.cs" />
+    <Compile Include="Triangulate\IncrementalDelaunayTriangulator.cs" />
+    <Compile Include="Triangulate\MidpointSplitPointFinder.cs" />
+    <Compile Include="Triangulate\NonEncroachingSplitPointFinder.cs" />
+    <Compile Include="Triangulate\Quadedge\EdgeConnectedTriangleTraversal.cs" />
+    <Compile Include="Triangulate\Quadedge\ITraversalVisitor.cs" />
+    <Compile Include="Triangulate\Quadedge\ITriangleVisitor.cs" />
+    <Compile Include="Triangulate\Quadedge\LastFoundQuadEdgeLocator.cs" />
+    <Compile Include="Triangulate\Quadedge\LocateFailureException.cs" />
+    <Compile Include="Triangulate\Quadedge\QuadEdge.cs" />
+    <Compile Include="Triangulate\Quadedge\IQuadEdgeLocator.cs" />
+    <Compile Include="Triangulate\Quadedge\QuadEdgeSubdivision.cs" />
+    <Compile Include="Triangulate\Quadedge\QuadEdgeTriangle.cs" />
+    <Compile Include="Triangulate\Quadedge\QuadEdgeUtil.cs" />
+    <Compile Include="Triangulate\Quadedge\Vertex.cs" />
+    <Compile Include="Triangulate\Segment.cs" />
+    <Compile Include="Triangulate\SplitSegment.cs" />
+    <Compile Include="Triangulate\VertexTaggedGeometryDataMapper.cs" />
+    <Compile Include="Triangulate\VoronoiDiagramBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="License.txt" />

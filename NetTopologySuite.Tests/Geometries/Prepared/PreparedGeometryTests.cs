@@ -4,6 +4,12 @@ using GisSharpBlog.NetTopologySuite.Geometries.Prepared;
 using NetTopologySuite.Coordinates;
 using Xunit;
 
+#if unbuffered
+using coord = NetTopologySuite.Coordinates.Simple.Coordinate;
+#else
+using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
+#endif
+
 namespace NetTopologySuite.Tests.Geometries.Prepared
 {
     public class PreparedPointPredicateTests
@@ -11,11 +17,11 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
         [Fact]
         public void PA_PointInInteriorOfPoly()
         {
-            IGeometry<BufferedCoordinate> geom0 = TestFactories.GeometryFactory.WktReader.Read("POINT (100 100)");
-            IGeometry<BufferedCoordinate> geom1 =
+            IGeometry<coord> geom0 = TestFactories.GeometryFactory.WktReader.Read("POINT (100 100)");
+            IGeometry<coord> geom1 =
                 TestFactories.GeometryFactory.WktReader.Read("POLYGON ((50 130, 150 130, 100 50, 50 130))");
 
-            IPreparedGeometry<BufferedCoordinate> prepGeom = PreparedGeometryFactory<BufferedCoordinate>.Prepare(geom0);
+            IPreparedGeometry<coord> prepGeom = PreparedGeometryFactory<coord>.Prepare(geom0);
 
             Assert.True(prepGeom.Intersects(geom1));
         }
@@ -23,11 +29,11 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
         [Fact]
         public void PA_PointOnBoundaryOfPoly()
         {
-            IGeometry<BufferedCoordinate> geom0 = TestFactories.GeometryFactory.WktReader.Read("POINT (50 100)");
-            IGeometry<BufferedCoordinate> geom1 =
+            IGeometry<coord> geom0 = TestFactories.GeometryFactory.WktReader.Read("POINT (50 100)");
+            IGeometry<coord> geom1 =
                 TestFactories.GeometryFactory.WktReader.Read("POLYGON ((50 130, 150 130, 100 50, 50 130))");
 
-            IPreparedGeometry<BufferedCoordinate> prepGeom = PreparedGeometryFactory<BufferedCoordinate>.Prepare(geom0);
+            IPreparedGeometry<coord> prepGeom = PreparedGeometryFactory<coord>.Prepare(geom0);
 
             Assert.False(prepGeom.Intersects(geom1));
         }
@@ -35,11 +41,11 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
         [Fact]
         public void PA_PointOutsideOfPoly()
         {
-            IGeometry<BufferedCoordinate> geom0 = TestFactories.GeometryFactory.WktReader.Read("POINT (200 200)");
-            IGeometry<BufferedCoordinate> geom1 =
+            IGeometry<coord> geom0 = TestFactories.GeometryFactory.WktReader.Read("POINT (200 200)");
+            IGeometry<coord> geom1 =
                 TestFactories.GeometryFactory.WktReader.Read("POLYGON ((50 130, 150 130, 100 50, 50 130))");
 
-            IPreparedGeometry<BufferedCoordinate> prepGeom = PreparedGeometryFactory<BufferedCoordinate>.Prepare(geom0);
+            IPreparedGeometry<coord> prepGeom = PreparedGeometryFactory<coord>.Prepare(geom0);
 
             Assert.False(prepGeom.Intersects(geom1));
         }
@@ -55,12 +61,12 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
         /// </summary>
         public void Test01()
         {
-            IGeometry<BufferedCoordinate> geom0 =
+            IGeometry<coord> geom0 =
                 TestFactories.GeometryFactory.WktReader.Read("POINT (10 10)");
-            IGeometry<BufferedCoordinate> geom1 =
+            IGeometry<coord> geom1 =
                 TestFactories.GeometryFactory.WktReader.Read("POLYGON ((10 10, 60 100, 110 10, 10 10))");
 
-            IPreparedGeometry<BufferedCoordinate> prepGeom = PreparedGeometryFactory<BufferedCoordinate>.Prepare(geom0);
+            IPreparedGeometry<coord> prepGeom = PreparedGeometryFactory<coord>.Prepare(geom0);
 
             Assert.False(prepGeom.Contains(geom1));
             Assert.False(prepGeom.Covers(geom1));
@@ -74,12 +80,12 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
         /// </summary>
         public void Test02()
         {
-            IGeometry<BufferedCoordinate> geom0 =
+            IGeometry<coord> geom0 =
                 TestFactories.GeometryFactory.WktReader.Read("MULTIPOLYGON (((100 30, 30 110, 150 110, 100 30)), ((90 110, 30 170, 140 170, 90 110)))");
-            IGeometry<BufferedCoordinate> geom1 =
+            IGeometry<coord> geom1 =
                 TestFactories.GeometryFactory.WktReader.Read("LINESTRING (90 80, 90 150)");
 
-            IPreparedGeometry<BufferedCoordinate> prepGeom = PreparedGeometryFactory<BufferedCoordinate>.Prepare(geom0);
+            IPreparedGeometry<coord> prepGeom = PreparedGeometryFactory<coord>.Prepare(geom0);
 
             Assert.True(prepGeom.Contains(geom1));
             Assert.True(prepGeom.Intersects(geom1));
@@ -93,12 +99,12 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
         [Fact]
         public void Test03()
         {
-            IGeometry<BufferedCoordinate> geom0 =
+            IGeometry<coord> geom0 =
                 TestFactories.GeometryFactory.WktReader.Read("MULTIPOLYGON (((100 30, 30 110, 150 110, 100 30)), ((90 110, 30 170, 140 170, 90 110)))");
-            IGeometry<BufferedCoordinate> geom1 =
+            IGeometry<coord> geom1 =
                 TestFactories.GeometryFactory.WktReader.Read("LINESTRING (90.1 80, 90 150)");
 
-            IPreparedGeometry<BufferedCoordinate> prepGeom = PreparedGeometryFactory<BufferedCoordinate>.Prepare(geom0);
+            IPreparedGeometry<coord> prepGeom = PreparedGeometryFactory<coord>.Prepare(geom0);
 
             Assert.False(prepGeom.Contains(geom1));
             Assert.True(prepGeom.Intersects(geom1));
@@ -111,12 +117,12 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
         [Fact]
         public void Test04()
         {
-            IGeometry<BufferedCoordinate> geom0 =
+            IGeometry<coord> geom0 =
                 TestFactories.GeometryFactory.WktReader.Read("MULTIPOLYGON (((50 20, 10 70, 80 70, 50 20)),((10 90, 80 90, 50 140, 10 90)))");
-            IGeometry<BufferedCoordinate> geom1 =
+            IGeometry<coord> geom1 =
                 TestFactories.GeometryFactory.WktReader.Read("LINESTRING (50 110, 50 60)");
 
-            IPreparedGeometry<BufferedCoordinate> prepGeom = PreparedGeometryFactory<BufferedCoordinate>.Prepare(geom0);
+            IPreparedGeometry<coord> prepGeom = PreparedGeometryFactory<coord>.Prepare(geom0);
 
             Assert.False(prepGeom.Contains(geom1));
             Assert.False(prepGeom.Covers(geom1));
@@ -130,12 +136,12 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
         [Fact]
         public void Test05()
         {
-            IGeometry<BufferedCoordinate> geom0 =
+            IGeometry<coord> geom0 =
                 TestFactories.GeometryFactory.WktReader.Read("POLYGON ((10 10, 10 100, 120 110, 120 30, 10 10))");
-            IGeometry<BufferedCoordinate> geom1 =
+            IGeometry<coord> geom1 =
                 TestFactories.GeometryFactory.WktReader.Read("LINESTRING (60 60, 70 140)");
 
-            IPreparedGeometry<BufferedCoordinate> prepGeom = PreparedGeometryFactory<BufferedCoordinate>.Prepare(geom0);
+            IPreparedGeometry<coord> prepGeom = PreparedGeometryFactory<coord>.Prepare(geom0);
 
             Assert.False(prepGeom.Contains(geom1));
             Assert.True(prepGeom.Intersects(geom1));
@@ -148,12 +154,12 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
         [Fact]
         public void Test06()
         {
-            IGeometry<BufferedCoordinate> geom0 =
+            IGeometry<coord> geom0 =
                 TestFactories.GeometryFactory.WktReader.Read("POLYGON ((10 10, 60 100, 110 10, 10 10))");
-            IGeometry<BufferedCoordinate> geom1 =
+            IGeometry<coord> geom1 =
                 TestFactories.GeometryFactory.WktReader.Read("LINESTRING (60 60, 70 140)");
 
-            IPreparedGeometry<BufferedCoordinate> prepGeom = PreparedGeometryFactory<BufferedCoordinate>.Prepare(geom0);
+            IPreparedGeometry<coord> prepGeom = PreparedGeometryFactory<coord>.Prepare(geom0);
 
             Assert.False(prepGeom.Contains(geom1));
             Assert.True(prepGeom.Intersects(geom1));
@@ -166,12 +172,12 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
         [Fact]
         public void Test07()
         {
-            IGeometry<BufferedCoordinate> geom0 =
+            IGeometry<coord> geom0 =
                 TestFactories.GeometryFactory.WktReader.Read("POLYGON ((10 10, 60 100, 110 10, 10 10))");
-            IGeometry<BufferedCoordinate> geom1 =
+            IGeometry<coord> geom1 =
                 TestFactories.GeometryFactory.WktReader.Read("LINESTRING (50 30, 70 60)");
 
-            IPreparedGeometry<BufferedCoordinate> prepGeom = PreparedGeometryFactory<BufferedCoordinate>.Prepare(geom0);
+            IPreparedGeometry<coord> prepGeom = PreparedGeometryFactory<coord>.Prepare(geom0);
 
             Assert.True(prepGeom.Contains(geom1));
             Assert.True(prepGeom.Covers(geom1));
@@ -185,12 +191,12 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
         [Fact]
         public void Test08()
         {
-            IGeometry<BufferedCoordinate> geom0 =
+            IGeometry<coord> geom0 =
                 TestFactories.GeometryFactory.WktReader.Read("POLYGON ((10 10, 60 100, 110 10, 10 10))");
-            IGeometry<BufferedCoordinate> geom1 =
+            IGeometry<coord> geom1 =
                 TestFactories.GeometryFactory.WktReader.Read("LINESTRING (60 10, 70 60)");
 
-            IPreparedGeometry<BufferedCoordinate> prepGeom = PreparedGeometryFactory<BufferedCoordinate>.Prepare(geom0);
+            IPreparedGeometry<coord> prepGeom = PreparedGeometryFactory<coord>.Prepare(geom0);
 
             Assert.True(prepGeom.Contains(geom1));
             Assert.True(prepGeom.Covers(geom1));
@@ -202,12 +208,12 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
         [Fact]
         public void Test09()
         {
-            IGeometry<BufferedCoordinate> geom0 =
+            IGeometry<coord> geom0 =
                 TestFactories.GeometryFactory.WktReader.Read("POLYGON ((10 10, 60 100, 110 10, 10 10))");
-            IGeometry<BufferedCoordinate> geom1 =
+            IGeometry<coord> geom1 =
                 TestFactories.GeometryFactory.WktReader.Read("LINESTRING (30 10, 90 10)");
 
-            IPreparedGeometry<BufferedCoordinate> prepGeom = PreparedGeometryFactory<BufferedCoordinate>.Prepare(geom0);
+            IPreparedGeometry<coord> prepGeom = PreparedGeometryFactory<coord>.Prepare(geom0);
 
             Assert.False(prepGeom.Contains(geom1));
             Assert.True(prepGeom.Covers(geom1));
@@ -219,12 +225,12 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
         [Fact]
         public void Test10()
         {
-            IGeometry<BufferedCoordinate> geom0 =
+            IGeometry<coord> geom0 =
                 TestFactories.GeometryFactory.WktReader.Read("POLYGON((20 20, 20 100, 120 100, 140 20, 20 20))");
-            IGeometry<BufferedCoordinate> geom1 =
+            IGeometry<coord> geom1 =
                 TestFactories.GeometryFactory.WktReader.Read("POLYGON((20 20, 20 100, 120 100, 140 20, 20 20))");
 
-            IPreparedGeometry<BufferedCoordinate> prepGeom = PreparedGeometryFactory<BufferedCoordinate>.Prepare(geom0);
+            IPreparedGeometry<coord> prepGeom = PreparedGeometryFactory<coord>.Prepare(geom0);
 
             Assert.True(prepGeom.Contains(geom1));
             Assert.True(prepGeom.Covers(geom1));
@@ -237,12 +243,12 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
         [Fact]
         public void Test11()
         {
-            IGeometry<BufferedCoordinate> geom0 =
+            IGeometry<coord> geom0 =
                 TestFactories.GeometryFactory.WktReader.Read("POLYGON((20 20, 20 100, 120 100, 140 20, 20 20))");
-            IGeometry<BufferedCoordinate> geom1 =
+            IGeometry<coord> geom1 =
                 TestFactories.GeometryFactory.WktReader.Read("LINESTRING (10 60, 50 60, 60 30, 60 30, 90 80, 90 80, 160 70)");
 
-            IPreparedGeometry<BufferedCoordinate> prepGeom = PreparedGeometryFactory<BufferedCoordinate>.Prepare(geom0);
+            IPreparedGeometry<coord> prepGeom = PreparedGeometryFactory<coord>.Prepare(geom0);
 
             Assert.False(prepGeom.Contains(geom1));
             Assert.False(prepGeom.Covers(geom1));
@@ -255,12 +261,12 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
         [Fact]
         public void Test12()
         {
-            IGeometry<BufferedCoordinate> geom0 =
+            IGeometry<coord> geom0 =
                 TestFactories.GeometryFactory.WktReader.Read("POLYGON((20 20, 20 100, 120 100, 120 100, 120 100, 140 20, 140 20, 140 20, 20 20))");
-            IGeometry<BufferedCoordinate> geom1 =
+            IGeometry<coord> geom1 =
                 TestFactories.GeometryFactory.WktReader.Read("LINESTRING (10 60, 50 60, 60 30, 60 30, 90 80, 90 80, 160 70)");
 
-            IPreparedGeometry<BufferedCoordinate> prepGeom = PreparedGeometryFactory<BufferedCoordinate>.Prepare(geom0);
+            IPreparedGeometry<coord> prepGeom = PreparedGeometryFactory<coord>.Prepare(geom0);
 
             Assert.False(prepGeom.Contains(geom1));
             Assert.False(prepGeom.Covers(geom1));
@@ -275,14 +281,14 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
         [Fact]
         public void Test01()
         {
-            IGeometry<BufferedCoordinate> geom0 =
+            IGeometry<coord> geom0 =
                 TestFactories.GeometryFactory.WktReader.Read("POLYGON ((0 0, 0 100, 200 100, 200 0, 0 0))");
-            IGeometry<BufferedCoordinate> geom1 =
+            IGeometry<coord> geom1 =
                 TestFactories.GeometryFactory.WktReader.Read(
                     "GEOMETRYCOLLECTION (POLYGON ((50 160, 110 60, 150 160, 50 160)),LINESTRING (50 40, 170 120))");
 
-            IPreparedGeometry<BufferedCoordinate> prepGeom =
-                PreparedGeometryFactory<BufferedCoordinate>.Prepare(geom0);
+            IPreparedGeometry<coord> prepGeom =
+                PreparedGeometryFactory<coord>.Prepare(geom0);
 
             Assert.False(prepGeom.Contains(geom1));
             Assert.False(prepGeom.Covers(geom1));
@@ -295,14 +301,14 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
         [Fact]
         public void Test02()
         {
-            IGeometry<BufferedCoordinate> geom0 =
+            IGeometry<coord> geom0 =
                 TestFactories.GeometryFactory.WktReader.Read("POLYGON ((0 0, 0 200, 200 200, 200 0, 0 0))");
-            IGeometry<BufferedCoordinate> geom1 =
+            IGeometry<coord> geom1 =
                 TestFactories.GeometryFactory.WktReader.Read(
                     "GEOMETRYCOLLECTION (POLYGON ((50 160, 110 60, 150 160, 50 160)),LINESTRING (50 40, 170 120))");
 
-            IPreparedGeometry<BufferedCoordinate> prepGeom =
-                PreparedGeometryFactory<BufferedCoordinate>.Prepare(geom0);
+            IPreparedGeometry<coord> prepGeom =
+                PreparedGeometryFactory<coord>.Prepare(geom0);
 
             Assert.True(prepGeom.Contains(geom1));
             Assert.True(prepGeom.Covers(geom1));
@@ -315,14 +321,14 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
         [Fact]
         public void Test03()
         {
-            IGeometry<BufferedCoordinate> geom0 =
+            IGeometry<coord> geom0 =
                 TestFactories.GeometryFactory.WktReader.Read("POLYGON ((0 0, 0 270, 200 270, 200 0, 0 0),(30 210, 170 210, 60 20, 30 210))");
-            IGeometry<BufferedCoordinate> geom1 =
+            IGeometry<coord> geom1 =
                 TestFactories.GeometryFactory.WktReader.Read(
                     "GEOMETRYCOLLECTION (POLYGON ((50 160, 110 60, 150 160, 50 160)),LINESTRING (50 40, 170 120))");
 
-            IPreparedGeometry<BufferedCoordinate> prepGeom =
-                PreparedGeometryFactory<BufferedCoordinate>.Prepare(geom0);
+            IPreparedGeometry<coord> prepGeom =
+                PreparedGeometryFactory<coord>.Prepare(geom0);
 
             Assert.False(prepGeom.Contains(geom1));
             //Assert.True(prepGeom.Covers(geom1));
@@ -335,14 +341,14 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
         [Fact]
         public void Test04()
         {
-            IGeometry<BufferedCoordinate> geom0 =
+            IGeometry<coord> geom0 =
                 TestFactories.GeometryFactory.WktReader.Read("LINESTRING (20 90, 90 190, 170 50)");
-            IGeometry<BufferedCoordinate> geom1 =
+            IGeometry<coord> geom1 =
                 TestFactories.GeometryFactory.WktReader.Read(
                     "GEOMETRYCOLLECTION (POLYGON ((50 160, 110 60, 150 160, 50 160)),LINESTRING (50 40, 170 120))");
 
-            IPreparedGeometry<BufferedCoordinate> prepGeom =
-                PreparedGeometryFactory<BufferedCoordinate>.Prepare(geom0);
+            IPreparedGeometry<coord> prepGeom =
+                PreparedGeometryFactory<coord>.Prepare(geom0);
 
             Assert.True(prepGeom.Intersects(geom1));
 
@@ -353,14 +359,14 @@ namespace NetTopologySuite.Tests.Geometries.Prepared
         [Fact]
         public void Test05()
         {
-            IGeometry<BufferedCoordinate> geom0 =
+            IGeometry<coord> geom0 =
                 TestFactories.GeometryFactory.WktReader.Read("LINESTRING (20 20, 100 100, 180 20)");
-            IGeometry<BufferedCoordinate> geom1 =
+            IGeometry<coord> geom1 =
                 TestFactories.GeometryFactory.WktReader.Read(
                     "GEOMETRYCOLLECTION (LINESTRING (40 40, 80 80),   POINT (120 80))");
 
-            IPreparedGeometry<BufferedCoordinate> prepGeom =
-                PreparedGeometryFactory<BufferedCoordinate>.Prepare(geom0);
+            IPreparedGeometry<coord> prepGeom =
+                PreparedGeometryFactory<coord>.Prepare(geom0);
 
             Assert.True(prepGeom.Intersects(geom1));
 
