@@ -761,7 +761,8 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public System.Collections.Generic.IEnumerator<DoubleComponent> GetEnumerator()
         {
-            throw new NotSupportedException();
+           foreach(DoubleComponent c in Components)
+               yield return c;
         }
 
         #endregion
@@ -1616,7 +1617,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         System.Collections.Generic.IEnumerator<DoubleComponent> System.Collections.Generic.IEnumerable<DoubleComponent>.GetEnumerator()
         {
-            throw new NotSupportedException();
+            return GetEnumerator();
         }
 
         #endregion
