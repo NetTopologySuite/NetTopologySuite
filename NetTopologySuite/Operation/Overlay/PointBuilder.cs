@@ -66,16 +66,19 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         // in which case the point can be eliminated from the resultant).
         private IEnumerable<IPoint<TCoordinate>> simplifyPoints(IEnumerable<Node<TCoordinate>> resultNodeList)
         {
+            List<IPoint<TCoordinate>> ret = new List<IPoint<TCoordinate>>();
             foreach (Node<TCoordinate> node in resultNodeList)
             {
                 TCoordinate coord = node.Coordinate;
 
                 if (!_op.IsCoveredByLineOrArea(coord))
                 {
-                    IPoint<TCoordinate> pt = _geometryFactory.CreatePoint(coord);
-                    yield return pt;
+                    ret.Add(_geometryFactory.CreatePoint(coord));
+                    //yield return pt;
                 }
             }
+            return ret;
         }
+
     }
 }

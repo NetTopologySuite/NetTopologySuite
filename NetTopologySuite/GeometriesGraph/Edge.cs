@@ -1,4 +1,6 @@
+#define usecs
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using GeoAPI.Coordinates;
@@ -22,7 +24,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
     {
+#if usecs
         private readonly ICoordinateSequence<TCoordinate> _coordinates;
+#else
+        private readonly TCoordinate[] _coordinates;
+#endif
         private readonly Depth _depth = new Depth();
         private readonly EdgeIntersectionList<TCoordinate> _edgeIntersectionList;
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
@@ -33,37 +39,45 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         //private String _name;
 
         public Edge(IGeometryFactory<TCoordinate> geoFactory,
-                    ICoordinateSequence<TCoordinate> coordinates)
+                    IEnumerable<TCoordinate> coordinates)
             : this(geoFactory, coordinates, null)
         {
         }
 
         public Edge(IGeometryFactory<TCoordinate> geoFactory,
-                    ICoordinateSequence<TCoordinate> coordinates,
+                    IEnumerable<TCoordinate> coordinates,
                     Label? label)
         {
             _geoFactory = geoFactory;
             _edgeIntersectionList
                 = new EdgeIntersectionList<TCoordinate>(geoFactory, this);
-            _coordinates = coordinates;
+#if usecs
+            _coordinates = coordinates as ICoordinateSequence<TCoordinate>;
+#else
+            List<TCoordinate> tmp = new List<TCoordinate>(coordinates);
+            _coordinates = tmp.ToArray();
+#endif
             Label = label;
         }
 
         public Int32 PointCount
         {
+#if usecs
             get { return _coordinates.Count; }
+#else
+            get { return _coordinates.Length; }
+#endif
         }
 
+#if usecs
         public ICoordinateSequence<TCoordinate> Coordinates
         {
             get { return _coordinates; }
         }
-
         public ICoordinateSequence<TCoordinate> CoordinatesReversed
         {
             get { return _coordinates.Reversed; }
         }
-
         public override TCoordinate Coordinate
         {
             get
@@ -76,6 +90,37 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 return default(TCoordinate);
             }
         }
+#else
+        public IEnumerable<TCoordinate> Coordinates
+        {
+            get { return _coordinates; }
+        }
+
+        public IEnumerable<TCoordinate> CoordinatesReversed
+        {
+            get { return new Stack<TCoordinate>(_coordinates); }
+        }
+
+        protected TCoordinate[] CoordinatesInternal
+        {
+            get { return _coordinates; }
+        }
+
+        protected TCoordinate[] CoordinatesReversedInternal
+        {
+            get { return new Stack<TCoordinate>(_coordinates).ToArray(); }
+        }
+
+        public override TCoordinate Coordinate
+        {
+            get
+            {
+                if (_coordinates != null)
+                    return _coordinates[0];
+                return default(TCoordinate);
+            }
+        }
+#endif
 
         public IExtents<TCoordinate> Extents
         {
@@ -113,7 +158,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public Int32 MaximumSegmentIndex
         {
+#if usecs
             get { return _coordinates.LastIndex; }
+#else
+            get { return _coordinates.Length - 1; }
+#endif
         }
 
         /// <summary>
@@ -149,7 +198,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public Boolean IsClosed
         {
+#if usecs
             get { return Coordinates.First.Equals(Coordinates.Last); }
+#else
+            get { return _coordinates[0].Equals(_coordinates[MaximumSegmentIndex]); }
+#endif
         }
 
         /// <summary> 
@@ -166,12 +219,16 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                     return false;
                 }
 
+#if usecs
                 if (Coordinates.Count != 3)
+#else
+                if (_coordinates.Length != 3)
+#endif
                 {
                     return false;
                 }
 
-                return Coordinates[0].Equals(Coordinates[2]);
+                return _coordinates[0].Equals(_coordinates[2]);
             }
         }
 
@@ -179,12 +236,16 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
+#if usecs
                 ICoordinateSequence<TCoordinate> newPts = Coordinates.Slice(0, 1);
+#else
+                TCoordinate[] newPts = new TCoordinate[] { _coordinates[0], _coordinates[1] };
+#endif
                 Label lineLabel = GeometriesGraph.Label.ToLineLabel(Label.Value);
                 Edge<TCoordinate> newEdge
                     = new Edge<TCoordinate>(_geoFactory, newPts, lineLabel);
                 return newEdge;
-            }
+                }
         }
 
         public Boolean Isolated
@@ -262,12 +323,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             sb.Append("edge: ");
             sb.Append("LINESTRING (");
 
-            for (Int32 i = 0; i < Coordinates.Count; i++)
+            for (Int32 i = 0; i <= MaximumSegmentIndex; i++)
             {
                 if (i > 0) sb.Append(", ");
                 sb.AppendFormat(
                     CultureInfo.InvariantCulture, "{0} {1}",
-                    Coordinates[i][Ordinates.X], Coordinates[i][Ordinates.Y]);
+                    _coordinates[i][Ordinates.X], _coordinates[i][Ordinates.Y]);
             }
 
             sb.Append(")  " + Label + " " + _depthDelta);
@@ -308,12 +369,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             // normalize the intersection point location
             Int32 nextSegIndex = normalizedSegmentIndex + 1;
 
-            if (nextSegIndex >= Coordinates.Count)
+            if (nextSegIndex > MaximumSegmentIndex)
             {
                 return;
             }
 
-            TCoordinate nextPt = Coordinates[nextSegIndex];
+            TCoordinate nextPt = _coordinates[nextSegIndex];
 
             // Normalize segment index if intersectionPoint falls on vertex
             // The check for point equality is 2D only - Z values are ignored
@@ -347,14 +408,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </returns>
         public Boolean IsPointwiseEqual(Edge<TCoordinate> e)
         {
-            if (Coordinates.Count != e.Coordinates.Count)
+            if (MaximumSegmentIndex != e.MaximumSegmentIndex)
             {
                 return false;
             }
 
-            for (Int32 i = 0; i < Coordinates.Count; i++)
+            for (Int32 i = 0; i < MaximumSegmentIndex; i++)
             {
-                if (!Coordinates[i].Equals(e.Coordinates[i]))
+                if (!_coordinates[i].Equals(e._coordinates[i]))
                 {
                     return false;
                 }
@@ -389,23 +450,24 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         protected Boolean Equals(Edge<TCoordinate> e)
         {
-            if (Coordinates.Count != e.Coordinates.Count)
+            if (MaximumSegmentIndex != e.MaximumSegmentIndex)
             {
                 return false;
             }
 
             Boolean isEqualForward = true;
             Boolean isEqualReverse = true;
-            Int32 iRev = Coordinates.Count;
 
-            for (Int32 i = 0; i < Coordinates.Count; i++)
+            Int32 iRev = MaximumSegmentIndex + 1;
+
+            for (Int32 i = 0; i <= MaximumSegmentIndex; i++)
             {
-                if (!Coordinates[i].Equals(e.Coordinates[i]))
+                if (!_coordinates[i].Equals(e._coordinates[i]))
                 {
                     isEqualForward = false;
                 }
 
-                if (!Coordinates[i].Equals(e.Coordinates[--iRev]))
+                if (!_coordinates[i].Equals(e._coordinates[--iRev]))
                 {
                     isEqualReverse = false;
                 }

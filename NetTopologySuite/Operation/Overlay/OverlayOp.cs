@@ -36,6 +36,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             IComparable<TCoordinate>, IConvertible,
             IComputable<Double, TCoordinate>
     {
+        public static Boolean NodingValidatorEnabled
+        {
+            get; set;
+        }
+        static OverlayOp()
+        {
+            NodingValidatorEnabled = true;
+        }
+        
         private readonly EdgeList<TCoordinate> _edgeList;
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
 
@@ -202,18 +211,21 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             computeLabelsFromDepths();
             replaceCollapsedEdges();
 
-            /**
-             * Check that the noding completed correctly.
-             * 
-             * This test is slow, but necessary in order to catch robustness failure 
-             * situations.
-             * If an exception is thrown because of a noding failure, 
-             * then snapping will be performed, which will hopefully avoid the problem.
-             * In the future hopefully a faster check can be developed.  
-             * 
-             */
-            EdgeNodingValidator<TCoordinate> env = new EdgeNodingValidator<TCoordinate>(_geoFactory,_edgeList);
-            env.CheckValid();
+            if (NodingValidatorEnabled)
+            {
+                /**
+                 * Check that the noding completed correctly.
+                 * 
+                 * This test is slow, but necessary in order to catch robustness failure 
+                 * situations.
+                 * If an exception is thrown because of a noding failure, 
+                 * then snapping will be performed, which will hopefully avoid the problem.
+                 * In the future hopefully a faster check can be developed.  
+                 * 
+                 */
+                EdgeNodingValidator<TCoordinate> env = new EdgeNodingValidator<TCoordinate>(_geoFactory, _edgeList);
+                env.CheckValid();
+            }
 
             _graph.AddEdges(_edgeList);
             computeLabeling();

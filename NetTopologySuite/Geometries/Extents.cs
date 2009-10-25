@@ -1255,16 +1255,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             // FIX_PERF: read all coordinates at once
             Double qX = q[Ordinates.X], qY = q[Ordinates.Y];
+
             Double p1X = p1[Ordinates.X], p1Y = p1[Ordinates.Y];
             Double p2X = p2[Ordinates.X], p2Y = p2[Ordinates.Y];
 
-            if (((qX >= (p1X < p2X ? p1X : p2X)) && (qX <= (p1X > p2X ? p1X : p2X))) &&
-                ((qY >= (p1Y < p2Y ? p1Y : p2Y)) && (qY <= (p1Y > p2Y ? p1Y : p2Y))))
-            {
-                return true;
-            }
-
-            return false;
+            return (((qX >= (p1X < p2X ? p1X : p2X)) && (qX <= (p1X > p2X ? p1X : p2X))) &&
+                    ((qY >= (p1Y < p2Y ? p1Y : p2Y)) && (qY <= (p1Y > p2Y ? p1Y : p2Y))));
         }
 
         /// <summary>

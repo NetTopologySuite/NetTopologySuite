@@ -1,4 +1,5 @@
-﻿using System;
+﻿#define class
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,11 @@ using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
+#if class
+    public class Intersection<TCoordinate> : IEnumerable<TCoordinate>
+#else
     public struct Intersection<TCoordinate> : IEnumerable<TCoordinate>
+#endif
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
             IComparable<TCoordinate>, IConvertible,
             IComputable<Double, TCoordinate>
@@ -23,30 +28,51 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private readonly Pair<TCoordinate> _line1;
         private readonly LineIntersectionDegrees _result;
 
+#if class
+        public Intersection(){}
+#endif
         public Intersection(Pair<TCoordinate> line0, Pair<TCoordinate> line1)
-            : this(LineIntersectionDegrees.DoesNotIntersect,
-                   default(TCoordinate), default(TCoordinate),
-                   line0, line1, false, false, false)
+            //: this(LineIntersectionDegrees.DoesNotIntersect,
+            //       default(TCoordinate), default(TCoordinate),
+            //       line0, line1, false, false, false)
         {
+            _result = LineIntersectionDegrees.DoesNotIntersect;
+            _line0 = line0;
+            _line1 = line1;
         }
 
         public Intersection(TCoordinate intersectionPoint,
                             Pair<TCoordinate> line0, Pair<TCoordinate> line1,
                             Boolean flipLine0, Boolean flipLine1, Boolean isProper)
-            : this(LineIntersectionDegrees.Intersects, intersectionPoint,
-                   default(TCoordinate), line0, line1,
-                   flipLine0, flipLine1, isProper)
+            //: this(LineIntersectionDegrees.Intersects, intersectionPoint,
+            //       default(TCoordinate), line0, line1,
+            //       flipLine0, flipLine1, isProper)
         {
+            _result = LineIntersectionDegrees.Intersects;
+            _intersectP0 = intersectionPoint;
+            _line0 = line0;
+            _line1 = line1;
+            _flipLine0 = flipLine0;
+            _flipLine1 = flipLine1;
+            _isProper = isProper;
         }
 
         public Intersection(TCoordinate intersectionPoint0,
                             TCoordinate intersectionPoint1,
                             Pair<TCoordinate> line0, Pair<TCoordinate> line1,
                             Boolean flipLine0, Boolean flipLine1, Boolean isProper)
-            : this(LineIntersectionDegrees.Collinear,
-                   intersectionPoint0, intersectionPoint1,
-                   line0, line1, flipLine0, flipLine1, isProper)
+            //: this(LineIntersectionDegrees.Collinear,
+            //       intersectionPoint0, intersectionPoint1,
+            //       line0, line1, flipLine0, flipLine1, isProper)
         {
+            _result = LineIntersectionDegrees.Collinear;
+            _intersectP0 = intersectionPoint0;
+            _intersectP1 = intersectionPoint1;
+            _line0 = line0;
+            _line1 = line1;
+            _flipLine0 = flipLine0;
+            _flipLine1 = flipLine1;
+            _isProper = isProper;
         }
 
         private Intersection(LineIntersectionDegrees type,

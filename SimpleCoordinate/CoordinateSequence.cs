@@ -38,10 +38,26 @@ namespace NetTopologySuite.Coordinates.Simple
     using C5;
 
     /// <summary>
+    /// Delegate to compute the index
+    /// </summary>
+    /// <param name="index">Index</param>
+    /// <returns>Index</returns>
+    internal delegate Int32 IndexComputer(Int32 index);
+    /// <summary>
     /// An <see cref="ICoordinateSequence{Coordinate}"/>.
     /// </summary>
     public class CoordinateSequence : ICoordSequence
     {
+        private static Int32 ForwardIndex(Int32 index)
+        {
+            return index;
+        }
+
+        private Int32 ReverseIndex(Int32 index)
+        {
+            return _coordinates.Count - (index + 1);
+        }
+
         private List<Coordinate> _coordinates = new List<Coordinate>();
         private readonly CoordinateSequenceFactory _factory;
         //private Int32 _startIndex, _endIndex;
@@ -531,8 +547,8 @@ namespace NetTopologySuite.Coordinates.Simple
         }
         public Coordinate this[int index]
         {
-            get { return _coordinates[computeIndex(index)]; }
-            set { _coordinates[computeIndex(index)] = value; }
+            get { return _coordinates[_indexComputer(index)]; }
+            set { _coordinates[_indexComputer(index)] = value; }
         }
 
         public Coordinate Last
@@ -600,9 +616,16 @@ namespace NetTopologySuite.Coordinates.Simple
         }
 
         private Boolean _reversed;
+        private IndexComputer _indexComputer = ForwardIndex;
         public ICoordinateSequence<Coordinate> Reverse()
         {
             CheckFrozen();
+            if (_reversed)
+                _indexComputer = ForwardIndex;
+            else
+            {
+                _indexComputer = ReverseIndex;
+            }
             _reversed = !_reversed;
             OnSequenceChanged();
             return this;

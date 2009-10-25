@@ -163,11 +163,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 {
                     return false;
                 }
+                return CoordinatesInternal.First.Equals(CoordinatesInternal.Last);
 
-                TCoordinate first = Slice.GetFirst(Coordinates);
-                TCoordinate last = Slice.GetLast(Coordinates);
+                //TCoordinate first = Slice.GetFirst(Coordinates);
+                //TCoordinate last = Slice.GetLast(Coordinates);
 
-                return first.Equals(last);
+                //return first.Equals(last);
             }
         }
 

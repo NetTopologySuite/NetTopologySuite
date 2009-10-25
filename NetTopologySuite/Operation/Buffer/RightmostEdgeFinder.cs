@@ -171,7 +171,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             if (side < 0)
             {
-                // reaching here can indicate that segment is horizontal                
+                // reaching here can indicate that segment is horizontal
                 _minCoord = default(TCoordinate);
                 checkForRightmostCoordinate(de);
             }

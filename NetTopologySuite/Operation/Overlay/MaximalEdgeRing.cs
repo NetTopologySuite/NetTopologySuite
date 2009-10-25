@@ -68,11 +68,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         }
 
         private IList<MinimalEdgeRing<TCoordinate>> _minEdgeRings;
-        public IEnumerable<MinimalEdgeRing<TCoordinate>> BuildMinimalRings()
+        public IList<MinimalEdgeRing<TCoordinate>> BuildMinimalRings()
         {
-            if ( _minEdgeRings != null )
-                foreach (MinimalEdgeRing<TCoordinate> minEdgeRing in _minEdgeRings)
-                    yield return minEdgeRing;
+            if (_minEdgeRings != null)
+                return _minEdgeRings;
+                //foreach (MinimalEdgeRing<TCoordinate> minEdgeRing in _minEdgeRings)
+                //    yield return minEdgeRing;
 
             _minEdgeRings = new List<MinimalEdgeRing<TCoordinate>>();
             DirectedEdge<TCoordinate> de = StartingEdge;
@@ -83,11 +84,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                 {
                     MinimalEdgeRing<TCoordinate> mer = new MinimalEdgeRing<TCoordinate>(de, GeometryFactory);
                     _minEdgeRings.Add(mer);
-                    yield return mer;
+                    //yield return mer;
                 }
 
                 de = de.Next;
             } while (de != StartingEdge);
+
+            return _minEdgeRings;
         }
     }
 }

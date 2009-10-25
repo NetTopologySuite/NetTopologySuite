@@ -91,6 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         private IEnumerable<MaximalEdgeRing<TCoordinate>> buildMaximalEdgeRings(
             IEnumerable<EdgeEnd<TCoordinate>> dirEdges)
         {
+            List<MaximalEdgeRing<TCoordinate>> ret = new List<MaximalEdgeRing<TCoordinate>>();
             foreach (DirectedEdge<TCoordinate> edge in dirEdges)
             {
                 if (edge.IsInResult && edge.Label.Value.IsArea())
@@ -101,10 +102,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                         MaximalEdgeRing<TCoordinate> er = new MaximalEdgeRing<TCoordinate>(edge,
                                                                                            _geometryFactory);
                         er.SetInResult();
-                        yield return er;
+                        ret.Add(er);
+                        //yield return er;
                     }
                 }
             }
+            return ret;
         }
 
         private static IEnumerable<EdgeRing<TCoordinate>> buildMinimalEdgeRings(
@@ -112,12 +115,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             ICollection<EdgeRing<TCoordinate>> shellList,
             ICollection<EdgeRing<TCoordinate>> freeHoleList)
         {
+            List<EdgeRing<TCoordinate>> ret = new List<EdgeRing<TCoordinate>>();
             foreach (MaximalEdgeRing<TCoordinate> er in maxEdgeRings)
             {
                 if (er.MaxNodeDegree > 2)
                 {
                     er.LinkDirectedEdgesForMinimalEdgeRings();
-                    IEnumerable<MinimalEdgeRing<TCoordinate>> minEdgeRings = er.BuildMinimalRings();
+                    IList<MinimalEdgeRing<TCoordinate>> minEdgeRings = er.BuildMinimalRings();
 
                     // at this point we can go ahead and attempt to place holes, if this EdgeRing is a polygon
                     EdgeRing<TCoordinate> shell = findShell(minEdgeRings);
@@ -140,9 +144,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                 }
                 else
                 {
-                    yield return er;
+                    ret.Add(er);
+                    //yield return er;
                 }
             }
+            return ret;
         }
 
         /// <summary>

@@ -88,6 +88,8 @@ namespace NetTopologySuite.Coordinates.Simple
         private readonly Double _m;
         private readonly Double _w;
 
+        private const Int32 _hashCodeBase = 8547169;
+
 #if class
         public Coordinate()
         {
@@ -110,6 +112,11 @@ namespace NetTopologySuite.Coordinates.Simple
             _w = CoordinateNullValue;
             _m = CoordinateNullValue;
             _flags = OrdinateFlags.XY;
+            //_hashCode ^= _x.GetHashCode();
+            //_hashCode ^= _y.GetHashCode();
+            //_hashCode ^= _z.GetHashCode();
+            //_hashCode ^= _m.GetHashCode();
+            //_hashCode ^= _w.GetHashCode();
         }
 
         internal Coordinate(CoordinateFactory factory, Double x, Double y, Double zmw, OrdinateFlags flags)
@@ -137,6 +144,11 @@ namespace NetTopologySuite.Coordinates.Simple
                 _m = zmw;
             }
             _flags = OrdinateFlags.XY | flags;
+            //_hashCode ^= _x.GetHashCode();
+            //_hashCode ^= _y.GetHashCode();
+            //_hashCode ^= _z.GetHashCode();
+            //_hashCode ^= _m.GetHashCode();
+            //_hashCode ^= _w.GetHashCode();
         }
 
         internal Coordinate(CoordinateFactory factory, Double x, Double y, Double z, Double mw, OrdinateFlags flags)
@@ -157,6 +169,11 @@ namespace NetTopologySuite.Coordinates.Simple
                 _m = mw;
             }
             _flags = OrdinateFlags.XYZ | flags;
+            //_hashCode ^= _x.GetHashCode();
+            //_hashCode ^= _y.GetHashCode();
+            //_hashCode ^= _z.GetHashCode();
+            //_hashCode ^= _m.GetHashCode();
+            //_hashCode ^= _w.GetHashCode();
         }
 
 
@@ -170,6 +187,11 @@ namespace NetTopologySuite.Coordinates.Simple
             _m = coordinate._m;
             _w = coordinate._w;
             _flags = coordinate._flags;
+            //_hashCode ^= _x.GetHashCode();
+            //_hashCode ^= _y.GetHashCode();
+            //_hashCode ^= _z.GetHashCode();
+            //_hashCode ^= _m.GetHashCode();
+            //_hashCode ^= _w.GetHashCode();
         }
 
         internal Coordinate(CoordinateFactory factory, Double x, Double y, Double z, Double m, Double w)
@@ -185,6 +207,11 @@ namespace NetTopologySuite.Coordinates.Simple
                      (Double.IsNaN(z) ? OrdinateFlags.None : OrdinateFlags.Z) |
                      (Double.IsNaN(m) ? OrdinateFlags.None : OrdinateFlags.M) |
                      (Double.IsNaN(w) ? OrdinateFlags.None : OrdinateFlags.W);
+            //_hashCode ^= _x.GetHashCode();
+            //_hashCode ^= _y.GetHashCode();
+            //_hashCode ^= _z.GetHashCode();
+            //_hashCode ^= _m.GetHashCode();
+            //_hashCode ^= _w.GetHashCode();
         }
 
         private DoubleComponent[] getComponents()
@@ -217,21 +244,25 @@ namespace NetTopologySuite.Coordinates.Simple
 
         public Boolean ValueEquals(Coordinate other)
         {
-            Boolean e = IsEmpty && other.IsEmpty;
-            if (e) return true;
+            ////return _hashCode == other._hashCode;
+            //Boolean e = IsEmpty && other.IsEmpty;
+            //if (e) return true;
 
-            Boolean xy =  _x == other._x &&
-                          _y == other._y;
+            Boolean xy = _x == other._x &&
+                         _y == other._y;
 
             if (!xy)
                 return false;
 
+            if ((_flags & OrdinateFlags.XYZMW) > OrdinateFlags.XY)
+            {
             Boolean z = (HasZ || other.HasZ) ? _z == other._z : true;
             Boolean m = (HasM || other.HasM) ? _m == other._m : true;
             Boolean w = (HasW || other.HasW) ? _w == other._w : true;
-
             return z && m && w;
+            }
 
+            return true;
         }
 
 
@@ -315,10 +346,12 @@ namespace NetTopologySuite.Coordinates.Simple
         internal Boolean HasW
         { get { return IsW(_flags); } }
 
+        private Int32 _hashCode = 0;
         public override Int32 GetHashCode()
         {
-            return _x.GetHashCode() ^ _y.GetHashCode() ^ _z.GetHashCode() ^
-                   _m.GetHashCode() ^ _w.GetHashCode() ^ HasW.GetHashCode();
+            if ( _hashCode == 0 )
+                _hashCode = _hashCodeBase ^ _x.GetHashCode() ^ _y.GetHashCode() ^ _z.GetHashCode() ^ _w.GetHashCode() ^ _m.GetHashCode();
+            return _hashCode;
         }
 
         internal CoordinateFactory CoordinateFactory
@@ -771,7 +804,7 @@ namespace NetTopologySuite.Coordinates.Simple
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            throw new NotSupportedException();
+            return GetEnumerator();
         }
 
         #endregion
