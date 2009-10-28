@@ -16,6 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
     {
         private readonly Dimensions _dim;
         private readonly IGeometryFactory<TCoordinate> _geoFactory;
+        private readonly ICoordinateFactory<TCoordinate> _coordFactory;
         private Int32 _pointCount = 100;
 
         ///// <summary>
@@ -30,6 +31,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         public GeometricShapeFactory(IGeometryFactory<TCoordinate> geoFactory)
         {
             _geoFactory = geoFactory;
+            _coordFactory = geoFactory.CoordinateFactory;
             _dim = new Dimensions(geoFactory);
         }
 
@@ -114,31 +116,31 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             {
                 Double x = extents.Min[Ordinates.X] + i*xSegLen;
                 Double y = extents.Min[Ordinates.Y];
-                pts[ipt++] = _geoFactory.CoordinateFactory.Create(x, y);
+                pts[ipt++] = _coordFactory.Create(x, y);
             }
 
             for (i = 0; i < nSide; i++)
             {
                 Double x = extents.Max[Ordinates.X];
                 Double y = extents.Min[Ordinates.Y] + i*ySegLen;
-                pts[ipt++] = _geoFactory.CoordinateFactory.Create(x, y);
+                pts[ipt++] = _coordFactory.Create(x, y);
             }
 
             for (i = 0; i < nSide; i++)
             {
                 Double x = extents.Max[Ordinates.X] - i*xSegLen;
                 Double y = extents.Max[Ordinates.Y];
-                pts[ipt++] = _geoFactory.CoordinateFactory.Create(x, y);
+                pts[ipt++] = _coordFactory.Create(x, y);
             }
 
             for (i = 0; i < nSide; i++)
             {
                 Double x = extents.Min[Ordinates.X];
                 Double y = extents.Max[Ordinates.Y] - i*ySegLen;
-                pts[ipt++] = _geoFactory.CoordinateFactory.Create(x, y);
+                pts[ipt++] = _coordFactory.Create(x, y);
             }
 
-            pts[ipt++] = _geoFactory.CoordinateFactory.Create(pts[0]);
+            pts[ipt] = pts[0];
 
             ILinearRing<TCoordinate> ring = _geoFactory.CreateLinearRing(pts);
             IPolygon<TCoordinate> poly = _geoFactory.CreatePolygon(ring, null);
@@ -166,7 +168,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                 Double ang = i*(2*Math.PI/_pointCount);
                 Double x = xRadius*Math.Cos(ang) + centerX;
                 Double y = yRadius*Math.Sin(ang) + centerY;
-                TCoordinate pt = _geoFactory.CoordinateFactory.Create(x, y);
+                TCoordinate pt = _coordFactory.Create(x, y);
                 pts[iPt++] = pt;
             }
 
@@ -207,13 +209,54 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                 Double ang = startAng + i*angInc;
                 Double x = xRadius*Math.Cos(ang) + centerX;
                 Double y = yRadius*Math.Sin(ang) + centerY;
-                TCoordinate pt = _geoFactory.CoordinateFactory.Create(x, y);
-                pt = _geoFactory.PrecisionModel.MakePrecise(pt);
+                TCoordinate pt = _coordFactory.Create(x, y);
                 pts[iPt++] = pt;
             }
 
             ILineString<TCoordinate> line = _geoFactory.CreateLineString(pts);
             return line;
+        }
+
+        ///<summary>
+        /// Creates an elliptical arc polygon.
+        /// The polygon is formed from the specified arc of an ellipse
+        /// and the two radii connecting the endpoints to the centre of the ellipse.
+        ///</summary>
+        ///<param name="startAng">start angle in radians</param>
+        ///<param name="angExtent">size of angle in radians</param>
+        ///<returns>an elliptical arc polygon</returns>
+        public IPolygon<TCoordinate> CreateArcPolygon(double startAng, double angExtent)
+        {
+            IExtents<TCoordinate> env = _dim.Extents;
+            Double xRadius = env.GetSize(Ordinates.X) / 2.0;
+            Double yRadius = env.GetSize(Ordinates.Y) / 2.0;
+
+            Double centreX = env.Min[Ordinates.X] + xRadius;
+            Double centreY = env.Min[Ordinates.Y] + yRadius;
+
+            double angSize = angExtent;
+            if (angSize <= 0.0 || angSize > 2 * Math.PI)
+                angSize = 2 * Math.PI;
+            double angInc = angSize / (_pointCount - 1);
+            // double check = angInc * nPts;
+            // double checkEndAng = startAng + check;
+
+            TCoordinate[] pts = new TCoordinate[_pointCount + 2];
+
+            int iPt = 0;
+            pts[iPt++] = _coordFactory.Create(centreX, centreY);
+            for (int i = 0; i < _pointCount; i++)
+            {
+                double ang = startAng + angInc * i;
+
+                double x = xRadius * Math.Cos(ang) + centreX;
+                double y = yRadius * Math.Sin(ang) + centreY;
+                pts[iPt++] = _coordFactory.Create(x, y);
+            }
+            pts[iPt] = _coordFactory.Create(centreX, centreY);
+            ILinearRing<TCoordinate> ring = _geoFactory.CreateLinearRing(pts);
+            IPolygon<TCoordinate> geom = _geoFactory.CreatePolygon(ring, null);
+            return geom;
         }
 
         #region Nested type: Dimensions
