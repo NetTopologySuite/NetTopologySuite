@@ -37,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             _geoFactory = factory;
             _coordFactory = factory.CoordinateFactory;
-            _precisionModel = factory.PrecisionModel;
+            _precisionModel = _coordFactory.PrecisionModel;
         }
 
         protected ICoordinateFactory<TCoordinate> CoordinateFactory
@@ -147,6 +147,25 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                           "Invalid distance calculation");
             return dist;
         }
+
+        /// <summary> 
+        /// Compute the intersection of a point p and the line p1-p2.
+        /// This function computes the boolean value of the "has intersection" test.
+        /// The actual value of the intersection (if there is one)
+        /// is equal to the value of <paramref name="p"/>.
+        /// </summary>
+        /// <param name="p">
+        /// The coordinate to test for intersection with the given <paramref name="line"/>.
+        /// </param>
+        /// <param name="p1">First point of the line </param>
+        /// <param name="p2">Second point of the line </param>
+        /// <returns>
+        /// An <see cref="Intersection{TCoordinate}"/> instance
+        /// describing the relationship of <paramref name="p"/> with a line
+        /// from <paramref name="p1"/>.to <paramref name="p2"/>
+        /// </returns>
+        public abstract Intersection<TCoordinate> ComputeIntersection(TCoordinate p,
+                                                                      TCoordinate p1, TCoordinate p2);
 
         /// <summary> 
         /// Compute the intersection of a point p and the line p1-p2.

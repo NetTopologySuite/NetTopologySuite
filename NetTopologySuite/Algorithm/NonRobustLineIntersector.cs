@@ -35,37 +35,21 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                    ((a < 0 && b < 0) || (a > 0 && b > 0));
         }
 
-        public override Intersection<TCoordinate> ComputeIntersection(TCoordinate p, Pair<TCoordinate> line)
+        public override Intersection<TCoordinate> ComputeIntersection(TCoordinate p, TCoordinate p1, TCoordinate p2)
         {
-            Double a1;
-            Double b1;
-            Double c1;
+            Pair<TCoordinate> line = new Pair<TCoordinate>(p1, p2);
             /*
-            *  Coefficients of line eqns.
-            */
-
-            Double r;
-            /*
-            *  'Sign' values
-            */
-
-            Boolean isProper;
-
-            TCoordinate p1 = line.First;
-            TCoordinate p2 = line.Second;
+             *  Compute a1, b1, c1, where line joining points 1 and 2
+             *  is "a1 x  +  b1 y  +  c1  =  0".
+             */
+            Double a1 = p2[Ordinates.Y] - p1[Ordinates.Y];
+            Double b1 = p1[Ordinates.X] - p2[Ordinates.X];
+            Double c1 = p2[Ordinates.X] * p1[Ordinates.Y] - p1[Ordinates.X] * p2[Ordinates.Y];
 
             /*
-            *  Compute a1, b1, c1, where line joining points 1 and 2
-            *  is "a1 x  +  b1 y  +  c1  =  0".
-            */
-            a1 = p2[Ordinates.Y] - p1[Ordinates.Y];
-            b1 = p1[Ordinates.X] - p2[Ordinates.X];
-            c1 = p2[Ordinates.X]*p1[Ordinates.Y] - p1[Ordinates.X]*p2[Ordinates.Y];
-
-            /*
-            *  Compute r3 and r4.
-            */
-            r = a1*p[Ordinates.X] + b1*p[Ordinates.Y] + c1;
+             *  Compute r3 and r4.
+             */
+            Double r = a1 * p[Ordinates.X] + b1 * p[Ordinates.Y] + c1;
 
             // if r != 0 the point does not lie on the line
             if (r != 0)
@@ -82,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 return new Intersection<TCoordinate>(new Pair<TCoordinate>(p, p), line);
             }
 
-            isProper = true;
+            Boolean isProper = true;
 
             if (p.Equals(p1) || p.Equals(p2))
             {
@@ -90,6 +74,11 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
 
             return new Intersection<TCoordinate>(p, new Pair<TCoordinate>(p, p), line, false, false, isProper);
+        }
+
+        public override Intersection<TCoordinate> ComputeIntersection(TCoordinate p, Pair<TCoordinate> line)
+        {
+            return ComputeIntersection(p, line.First, line.Second);
         }
 
         protected override Intersection<TCoordinate> ComputeIntersectInternal(Pair<TCoordinate> line0,

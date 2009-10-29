@@ -34,13 +34,57 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </returns>
         public IEnumerable<IPoint<TCoordinate>> Build(SpatialFunctions opCode)
         {
-            // in JTS 1.7, there is a function 'extractNonCoveredResultNodes'
-            // which is used instead
-            IEnumerable<Node<TCoordinate>> nodeList = collectNodes(opCode);
-            IEnumerable<IPoint<TCoordinate>> resultPointList = simplifyPoints(nodeList);
-            return resultPointList;
+            return ExtractNonCoveredResultNodes(opCode);
+            //IEnumerable<Node<TCoordinate>> nodeList = collectNodes(opCode);
+            //IEnumerable<IPoint<TCoordinate>> resultPointList = simplifyPoints(nodeList);
+            //return resultPointList;
         }
 
+        private IEnumerable<IPoint<TCoordinate>> ExtractNonCoveredResultNodes(SpatialFunctions opCode)
+        {
+            List<IPoint<TCoordinate>> ret = new List<IPoint<TCoordinate>>();
+            foreach(Node<TCoordinate> node in _op.Graph.Nodes)
+            {
+
+                // filter out nodes which are known to be in the result
+                if (node.IsInResult)
+                    continue;
+                // if an incident edge is in the result, then the node coordinate is included already
+                if (node.IsIncidentEdgeInResult())
+                    continue;
+                if (node.Edges.Degree == 0 || opCode == SpatialFunctions.Intersection)
+                {
+
+                    /**
+                     * For nodes on edges, only INTERSECTION can result in edge nodes being included even
+                     * if none of their incident edges are included
+                     */
+                    Label label = node.Label.GetValueOrDefault();
+                    if (OverlayOp<TCoordinate>.IsResultOfOp(label, opCode))
+                    {
+                        FilterCoveredNodeToPoint(node, ret);
+                    }
+                }
+            }
+            return ret;
+        }
+
+        ///<summary>
+        /// Converts non-covered nodes to Point objects and adds them to the result.
+        /// A node is covered if it is contained in another element Geometry
+        /// with higher dimension (e.g. a node point might be contained in a polygon,
+        /// in which case the point can be eliminated from the result).
+        ///</summary>
+        /// <param name="n">the node to test</param>
+        /// <param name="lst">collection of uncovered points</param>
+        private void FilterCoveredNodeToPoint(Node<TCoordinate> n, ICollection<IPoint<TCoordinate>> lst)
+        {
+            TCoordinate coord = n.Coordinate;
+            if (!_op.IsCoveredByLineOrArea(coord))
+                lst.Add(_geometryFactory.CreatePoint(coord));
+        }
+
+        /*
         private IEnumerable<Node<TCoordinate>> collectNodes(SpatialFunctions opCode)
         {
             // add nodes from edge intersections which have not already been included in the result
@@ -79,6 +123,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             }
             return ret;
         }
-
+        */
     }
 }

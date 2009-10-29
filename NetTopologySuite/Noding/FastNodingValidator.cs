@@ -31,9 +31,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         private LineIntersector<TCoordinate> _li;// = new RobustLineIntersector<TCoordinate>();
 
         private List<ISegmentString<TCoordinate>> _segStrings = new List<ISegmentString<TCoordinate>>();
-        private InteriorIntersectionFinder<TCoordinate> _segInt = null;
+        private InteriorIntersectionFinder<TCoordinate> _segInt;
         private Boolean _isValid = true;
-        private IGeometryFactory<TCoordinate> _geoFactory;
+        private readonly IGeometryFactory<TCoordinate> _geoFactory;
 
         public FastNodingValidator(IGeometryFactory<TCoordinate> geoFactory, IEnumerable<ISegmentString<TCoordinate>> segStrings)
         {
@@ -42,12 +42,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             _segStrings.AddRange(segStrings);
         }
 
-        /**
-         * Checks for an intersection and 
-         * reports if one is found.
-         * 
-         * @return true if the arrangement contains an interior intersection
-         */
+        ///<summary>
+        /// Checks for an intersection and reports if one is found.
+        ///</summary>
         public Boolean IsValid
         {
             get
@@ -57,12 +54,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             }
         }
 
-            /**
-         * Returns an error message indicating the segments containing
-         * the intersection.
-         * 
-         * @return an error message documenting the intersection location
-         */
+        ///<summary>
+        /// Returns an error message indicating the segments containing the intersection.
+        ///</summary>
+        ///<returns>an error message documenting the intersection location</returns>
         public String GetErrorMessage()
         {
             if (IsValid)

@@ -153,6 +153,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             ICoordinateSequence<TCoordinate> line = l.Coordinates;
 
+            if (!l.Extents.Intersects(p))
+                return Locations.Exterior;
+
             if (!l.IsClosed)
             {
                 TCoordinate start = line.First;

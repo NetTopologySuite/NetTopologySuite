@@ -30,8 +30,40 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         }
 
         public override Intersection<TCoordinate> ComputeIntersection(TCoordinate p,
+                                                                      TCoordinate p1, TCoordinate p2)
+        {
+            // do between check first, since it is faster than the orientation test
+            if (Extents<TCoordinate>.Intersects(p1, p2, p))
+            {
+                Boolean isProper;
+
+                if ((CGAlgorithms<TCoordinate>.OrientationIndex(p1, p2, p) == 0) &&
+                    (CGAlgorithms<TCoordinate>.OrientationIndex(p2, p1, p) == 0))
+                {
+                    isProper = true;
+
+                    if (p.Equals(p1) || p.Equals(p2))
+                    {
+                        isProper = false;
+                    }
+
+                    return new Intersection<TCoordinate>(p,
+                                                         new Pair<TCoordinate>(p, p),
+                                                         new Pair<TCoordinate>(p1, p2), 
+                                                         false,
+                                                         false,
+                                                         isProper);
+                }
+            }
+
+            return new Intersection<TCoordinate>(new Pair<TCoordinate>(p, p), new Pair<TCoordinate>(p1, p2));
+        }
+
+        public override Intersection<TCoordinate> ComputeIntersection(TCoordinate p,
                                                                       Pair<TCoordinate> line)
         {
+            return ComputeIntersection(p, line.First, line.Second);
+            /*
             TCoordinate p1 = line.First;
             TCoordinate p2 = line.Second;
 
@@ -60,6 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
 
             return new Intersection<TCoordinate>(new Pair<TCoordinate>(p, p), line);
+             */
         }
 
         protected override Intersection<TCoordinate> ComputeIntersectInternal(Pair<TCoordinate> line0,

@@ -369,10 +369,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                foreach (Node<TCoordinate> node in _nodes)
-                {
-                    yield return node;
-                }
+                return _nodes;
+                //foreach (Node<TCoordinate> node in _nodes)
+                //{
+                //    yield return node;
+                //}
             }
         }
 

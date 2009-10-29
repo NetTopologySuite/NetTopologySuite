@@ -1,3 +1,4 @@
+//#define useGetOverlappingPairs
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
@@ -96,6 +97,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             LineIntersector<TCoordinate> lineIntersector = CreateRobustLineIntersector(geoFactory);
 
+            #if useGetOverlappingPairs
             foreach (Pair<TCoordinate> segment in Slice.GetOverlappingPairs(line))
             {
                 Intersection<TCoordinate> intersection = lineIntersector.ComputeIntersection(p, segment);
@@ -105,6 +107,18 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                     return true;
                 }
             }
+            #else
+            IEnumerator<TCoordinate> it = line.GetEnumerator();
+            it.MoveNext();
+            TCoordinate p1 = it.Current;
+            while (it.MoveNext())
+            {
+                TCoordinate p2 = it.Current;
+                if (lineIntersector.ComputeIntersection(p, p1, p2).HasIntersection)
+                    return true;
+                p1 = p2;
+            }
+            #endif
 
             return false;
         }

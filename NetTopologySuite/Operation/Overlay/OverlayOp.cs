@@ -270,12 +270,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         protected void insertUniqueEdge(Edge<TCoordinate> e)
         {
-            Int32 foundIndex = _edgeList.FindEdgeIndex(e);
+            Edge<TCoordinate> existingEdge = _edgeList.FindEqualEdge(e);
 
             // If an identical edge already exists, simply update its label
-            if (foundIndex >= 0)
+            if( existingEdge != null )
             {
-                Edge<TCoordinate> existingEdge = _edgeList[foundIndex];
+                //Edge<TCoordinate> existingEdge = _edgeList[foundIndex];
                 Label existingLabel = existingEdge.Label.Value;
                 Label labelToMerge = e.Label.Value;
 

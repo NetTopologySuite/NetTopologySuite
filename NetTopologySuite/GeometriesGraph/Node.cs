@@ -57,6 +57,23 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             get { return Label == null || Label.Value.GeometryCount == 1; }
         }
 
+        ///<summary>
+        /// Tests whether any incident edge is flagged as being in the result.
+        /// This test can be used to determine if the node is in the result,
+        /// since if any incident edge is in the result, the node must be in the result as well.
+        ///</summary>
+        ///<returns>true if any indicident edge in the in the result</returns>
+        public Boolean IsIncidentEdgeInResult()
+        {
+            foreach (DirectedEdge<TCoordinate> de in Edges)
+            {
+                //DirectedEdge<TCoordinate> de = DirectedEdge<TCoordinate>e;
+                if (de.Edge.IsInResult)
+                    return true;
+            }
+            return false;
+        }
+
         /// <summary>
         /// Basic nodes do not compute intersection matrixes.
         /// </summary>
