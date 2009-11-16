@@ -878,6 +878,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return BufferOp<TCoordinate>.Buffer(this, distance, quadrantSegments, endCapStyle);
 #endif
         }
+        public IGeometry<TCoordinate> Buffer(Double distance, BufferParameters bufferParameters)
+        {
+#if buffer110
+            return BufferOp_110<TCoordinate>.Buffer(this, distance, bufferParameters);
+#else
+            throw new NotSupportedException();
+#endif
+        }
 
         /// <summary>
         /// Returns a <see cref="Geometry{TCoordinate}"/> representing the points shared by this
@@ -1247,6 +1255,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                                           BufferStyle endCapStyle)
         {
             return Buffer(distance, quadrantSegments, endCapStyle);
+        }
+
+        IGeometry ISpatialOperator.Buffer(Double distance,
+                                          BufferParameters bufferParameters )
+        {
+            return Buffer(distance, bufferParameters);
         }
 
         IGeometry ISpatialOperator.ConvexHull()

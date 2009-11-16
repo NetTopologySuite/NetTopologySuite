@@ -1,6 +1,7 @@
 using System;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
+using GeoAPI.Operations.Buffer;
 using NUnit.Framework;
 
 #if unbuffered
@@ -25,5 +26,26 @@ namespace NetTopologySuite.Tests.Issues
             Console.WriteLine(buffer.ToString());
             Assert.AreEqual(buffer.GeometryType, OgcGeometryType.Polygon);
         }
+
+        [Test]
+        public void IssueKishoreViaGoogleGroups()
+        {
+            IPolygon<coord> poly = (IPolygon<coord>)Reader.Read("POLYGON((5 5, 95 5, 95 95, 5 95, 5 5))");
+            BufferParameters bp = new BufferParameters(
+                1, BufferParameters.BufferEndCapStyle.CapSquare, BufferParameters.BufferJoinStyle.JoinMitre, 5);
+            IGeometry<coord> geom = GisSharpBlog.NetTopologySuite.Operation.Buffer.BufferOp_110<coord>.Buffer(poly, 5, bp);
+            System.Diagnostics.Debug.WriteLine(geom.ToString());
+            IPolygon<coord> result =
+                (IPolygon<coord>) Reader.Read("POLYGON((0 0, 100 0, 100 100, 0 100, 0 0))");
+            geom.Normalize();
+            result.Normalize();
+
+            IPolygon<coord> geom2 = (IPolygon<coord>)poly.Buffer(5, bp);
+            geom2.Normalize();
+
+            Assert.IsTrue(geom.Equals(result));
+            Assert.IsTrue(geom2.Equals(result));
+        }
+ 
     }
 }
