@@ -175,7 +175,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             Int32 subnodeIndex = -1;
 
             DoubleComponent cx, cy;
-            center.GetComponents(out cx,out cy);
+            center.GetComponents(out cx, out cy);
 
             DoubleComponent xMin, yMin, xMax, yMax;
             extents.Min.GetComponents(out xMin, out yMin);
@@ -274,7 +274,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             {
                 if (SubNodesInternal[i] != null)
                 {
-                    found = SubNodesInternal[i].Remove(item);
+                    found = (SubNodesInternal[i] as BaseQuadNode<TCoordinate, TItem>).Remove(item.Bounds, item);
 
                     if (found)
                     {
@@ -304,6 +304,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 
             return found;
         }
+
 
         protected override void CreateSubNodes()
         {

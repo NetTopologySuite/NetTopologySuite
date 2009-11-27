@@ -142,12 +142,20 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 
         public void InsertRange(IEnumerable<TItem> items)
         {
-            throw new NotImplementedException();
+            foreach (TItem item in items)
+            {
+                Insert(item);
+            }
         }
 
         public Boolean Remove(TItem item)
         {
-            throw new NotImplementedException();
+            foreach (QuadTreeEntry entry in _root.Query(item.Bounds))
+           {
+               if (Equals(entry.Item, item))
+                   return _root.Remove(entry);
+           }
+            return false;
         }
 
         public IEnumerable<TItem> Query(IExtents<TCoordinate> query)
@@ -164,7 +172,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 
         public IEnumerable<TResult> Query<TResult>(IExtents<TCoordinate> bounds, Func<TItem, TResult> selector)
         {
-            throw new NotImplementedException();
+            foreach (TItem item in Query(bounds))
+                yield return selector(item);
         }
 
         public IEnumerable<TItem> Query(IExtents<TCoordinate> query, Predicate<TItem> filter)
@@ -300,7 +309,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 
         #region Nested type: QuadTreeEntry
 
-        private struct QuadTreeEntry : IBoundable<IExtents<TCoordinate>>
+        private struct QuadTreeEntry : IBoundable<IExtents<TCoordinate>>, IEquatable<QuadTreeEntry> 
         {
             private readonly IExtents<TCoordinate> _bounds;
             private readonly TItem _item;
@@ -331,6 +340,17 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             public Boolean Intersects(IExtents<TCoordinate> bounds)
             {
                 return _bounds.Intersects(bounds);
+            }
+
+            #endregion
+
+          
+
+            #region IEquatable<QuadTreeEntry> Members
+
+            public bool Equals(QuadTreeEntry other)
+            {
+                return Equals(Bounds, other.Bounds) && Equals(Item, other.Item);
             }
 
             #endregion

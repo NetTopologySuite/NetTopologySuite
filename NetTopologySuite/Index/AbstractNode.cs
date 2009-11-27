@@ -35,7 +35,14 @@ namespace GisSharpBlog.NetTopologySuite.Index
 
         protected List<TItem> ItemsInternal
         {
-            get { return _items; }
+            get
+            {
+                if (_items == null)
+                {
+                    EnsureItems();
+                }
+                return _items;
+            }
         }
 
         protected List<ISpatialIndexNode<TBounds, TItem>> SubNodesInternal
@@ -120,9 +127,9 @@ namespace GisSharpBlog.NetTopologySuite.Index
         public virtual void Add(IBoundable<TBounds> child)
         {
             if (child is ISpatialIndexNode<TBounds, TItem>)
-                addSubNode((ISpatialIndexNode<TBounds, TItem>) child);
+                addSubNode((ISpatialIndexNode<TBounds, TItem>)child);
             else if (child is TItem)
-                addItem((TItem) child);
+                addItem((TItem)child);
             else
                 throw new ArgumentException();
         }
@@ -286,9 +293,9 @@ namespace GisSharpBlog.NetTopologySuite.Index
         public bool Remove(IBoundable<TBounds> child)
         {
             if (child is ISpatialIndexNode<TBounds, TItem>)
-                return removeSubNode((ISpatialIndexNode<TBounds, TItem>) child);
+                return removeSubNode((ISpatialIndexNode<TBounds, TItem>)child);
             if (child is TItem)
-                return removeItem((TItem) child);
+                return removeItem((TItem)child);
             throw new ArgumentException();
         }
 
@@ -399,9 +406,9 @@ namespace GisSharpBlog.NetTopologySuite.Index
             return _subNodes.Remove(child);
         }
 
-        private Boolean removeItem(TItem item)
+        protected virtual Boolean removeItem(TItem item)
         {
-            return _items.Remove(item);
+            return ItemsInternal.Remove(item);
         }
 
         private Boolean removeItem(ISpatialIndexNode<TBounds, TItem> item)

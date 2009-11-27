@@ -124,7 +124,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 
             foreach (ISpatialIndexNode<IExtents<TCoordinate>, TItem> node in SubNodesInternal)
             {
-                bounds.ExpandToInclude(node.Bounds);
+                if (node != null)
+                    bounds.ExpandToInclude(node.Bounds);
             }
 
             return bounds;
