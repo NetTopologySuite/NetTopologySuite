@@ -150,12 +150,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 
         public Boolean Remove(TItem item)
         {
-            foreach (QuadTreeEntry entry in _root.Query(item.Bounds))
-           {
-               if (Equals(entry.Item, item))
-                   return _root.Remove(entry);
-           }
-            return false;
+            return Remove(item.Bounds, item);
         }
 
         public IEnumerable<TItem> Query(IExtents<TCoordinate> query)
