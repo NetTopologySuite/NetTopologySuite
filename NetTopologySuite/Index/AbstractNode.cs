@@ -79,7 +79,8 @@ namespace GisSharpBlog.NetTopologySuite.Index
 
                 foreach (ISpatialIndexNode<TBounds, TItem> node in SubNodesInternal)
                 {
-                    subSize += node.TotalItemCount;
+                    if (node != null)//jd:quad trees may or may not have actually instantiated a node but always have 4 children.
+                        subSize += node.TotalItemCount;
                 }
 
                 return subSize + ItemCount;
