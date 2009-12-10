@@ -147,10 +147,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 
             foreach (Node<TCoordinate, TItem> node in SubNodesInternal)
             {
-                foreach (TItem item in node)
-                {
-                    yield return item;
-                }
+                if (node != null)
+                    foreach (TItem item in node)
+                    {
+                        yield return item;
+                    }
             }
         }
 
