@@ -1430,17 +1430,23 @@ namespace NetTopologySuite.Coordinates.Simple
 
         void IVector<DoubleComponent>.GetComponents(out DoubleComponent a, out DoubleComponent b)
         {
-            throw new NotSupportedException();
+            a = _x;
+            b = _y;
         }
 
         void IVector<DoubleComponent>.GetComponents(out DoubleComponent a, out DoubleComponent b, out DoubleComponent c)
         {
-            throw new NotSupportedException();
+            a = _x;
+            b = _y;
+            if (HasZ) { c = _z; return;}
+            if (HasM) { c = _m; return; }
+            if (HasW) { c = _w; return; }
+            c = Double.NaN;
         }
 
         void IVector<DoubleComponent>.GetComponents(out DoubleComponent a, out DoubleComponent b, out DoubleComponent c, out DoubleComponent d)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
         #endregion
