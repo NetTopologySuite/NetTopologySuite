@@ -420,11 +420,20 @@ namespace GisSharpBlog.NetTopologySuite.IO
             if (!useMaxPrecision)
                 return standard;
 
-            // Check if some precision is lost during text conversion: if so, use {0:R} formatter 
-            var converted = Convert.ToDouble(standard, formatter);            
-            if (converted != d)
+            try
+            {
+                var converted = Convert.ToDouble(standard, formatter);
+                // Check if some precision is lost during text conversion: if so, use {0:R} formatter
+                if (converted != d)
+                    return String.Format(formatter, MaxPrecisionFormat, d);
+                return standard;
+            }
+            catch (OverflowException ex)
+            {
+                // http://groups.google.com/group/microsoft.public.dotnet.framework/browse_thread/thread/ed77db2f3fcb5a4a
+                // Use MaxPrecisionFormat
                 return String.Format(formatter, MaxPrecisionFormat, d);
-            return standard;
+            }
         }
 
         /// <summary>
