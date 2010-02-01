@@ -198,7 +198,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Int32 OrdinateCount
         {
-            get { throw new NotImplementedException(); }
+            get { return _coordinate.ComponentCount; }
         }
 
         IPoint IAddable<Double, IPoint>.Add(Double b)
@@ -240,7 +240,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                Double[] ordinates = new Double[(Int32) Dimension];
+                Double[] ordinates = new Double[(Int32)Dimension];
                 return Factory.CreatePoint(Factory.CoordinateFactory.Create(ordinates));
             }
         }
@@ -313,7 +313,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         IPoint IMultipliable<Double, IPoint>.Multiply(Double b)
         {
             // TODO: need to disambiguate the interface call here...
-            TCoordinate p = ((IMultipliable<Double, TCoordinate>) _coordinate).Multiply(b);
+            TCoordinate p = ((IMultipliable<Double, TCoordinate>)_coordinate).Multiply(b);
             return Factory.CreatePoint(p);
         }
 
