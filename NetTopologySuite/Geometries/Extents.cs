@@ -50,6 +50,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Creates an <see cref="Extents{TCoordinate}"/> for a region defined by maximum and minimum values.
         /// </summary>
+        /// <param name="factory">The factory to create the extents with</param>
         /// <param name="x1">The first x-value.</param>
         /// <param name="x2">The second x-value.</param>
         /// <param name="y1">The first y-value.</param>
@@ -63,6 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Creates an <see cref="Extents{TCoordinate}"/> for a region defined by two Coordinates.
         /// </summary>
+        /// <param name="factory">The factory to create the extents with</param>
         /// <param name="p1">The first Coordinate.</param>
         /// <param name="p2">The second Coordinate.</param>
         internal Extents(IGeometryFactory<TCoordinate> factory, TCoordinate p1, TCoordinate p2)
@@ -74,6 +76,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Creates an <see cref="Extents{TCoordinate}"/> for a region defined by a single Coordinate.
         /// </summary>
+        /// <param name="factory">The factory to create the extents with</param>
         /// <param name="p">The Coordinate.</param>
         internal Extents(IGeometryFactory<TCoordinate> factory, TCoordinate p)
             : this(factory)
@@ -85,6 +88,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Create an <see cref="Extents{TCoordinate}"/> from an existing Envelope.
         /// </summary>
         /// <param name="extents">The Envelope to initialize from.</param>
+        /// <param name="factory">The factory to create the extents with</param>
         internal Extents(IGeometryFactory<TCoordinate> factory, IExtents<TCoordinate> extents)
             : this(factory)
         {
@@ -144,8 +148,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
             else
             {
-                TCoordinate otherMin = other.Min;
-                TCoordinate otherMax = other.Max;
+                //TCoordinate otherMin = other.Min;
+                //TCoordinate otherMax = other.Max;
 
                 //DoubleComponent xMin1, yMin1, xMax1, yMax1, xMin2, yMin2, xMax2, yMax2;
                 //_min.GetComponents(out xMin1, out yMin1);
@@ -186,7 +190,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                                  (Min[Ordinates.Y] + Max[Ordinates.Y])/2.0);
             }
         }
-
+        ///<summary>
+        ///</summary>
         // FIX_PERF: read all coordinates at once
         public IExtents<TCoordinate> Intersection(IExtents<TCoordinate> extents)
         {
@@ -1008,7 +1013,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public Boolean Equals(IExtents other)
         {
-            throw new NotImplementedException();
+            if (other is IExtents<TCoordinate>)
+                return Equals(other as IExtents<TCoordinate>);
+            return Equals(_geoFactory.CreateExtents(other));
         }
 
         #endregion
