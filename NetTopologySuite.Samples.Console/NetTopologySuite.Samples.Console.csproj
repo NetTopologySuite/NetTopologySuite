@@ -109,6 +109,7 @@
     <Compile Include="Tests\Various\Issue36Tests.cs" />
     <Compile Include="Tests\Various\Issue37Test.cs" />
     <Compile Include="Tests\Various\Issue56Test.cs" />
+    <Compile Include="Tests\Various\Issue58Tests.cs" />
     <Compile Include="Tests\Various\IsValidTest.cs" />
     <Compile Include="Tests\Operation\Linemerge\LineSequencerTest.cs" />
     <Compile Include="Tests\Various\NormalizeTest.cs" />
