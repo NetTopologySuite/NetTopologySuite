@@ -412,7 +412,6 @@
     <Content Include="Utilities\RToolsUtil\Rtools.Util.License.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="NTS.ndoc" />
     <None Include="nts.snk" />
   </ItemGroup>
