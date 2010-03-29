@@ -1,3 +1,4 @@
+#define simple
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
@@ -6,15 +7,25 @@ using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Operation.Polygonize;
 using NetTopologySuite.Coordinates;
 
+#if simple
+using NUnit.Framework;
+using Coord = NetTopologySuite.Coordinates.Simple.Coordinate;
+using CoordSeqFac = NetTopologySuite.Coordinates.Simple.CoordinateSequenceFactory;
+#else
+using Coord = NetTopologySuite.Coordinates.BufferedCoordinate;
+using CoordSeqFac = NetTopologySuite.Coordinates.Simple.BufferedCoordinateSequenceFactory;
+#endif
+
 namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Poligonize
 {
     /// <summary>  
     /// Example of using Polygonizer class to polygonize a set of fully noded linestrings.
     /// </summary>	
+    [TestFixture]
     public class PolygonizeExample
     {
         [STAThread]
-        public static void main(String[] args)
+        public static void Main(String[] args)
         {
             PolygonizeExample test = new PolygonizeExample();
             try
@@ -27,15 +38,15 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Poligonize
             }
         }
 
-
-        internal virtual void Run()
+        [Test]
+        public void Run()
         {
-            IGeometryFactory<BufferedCoordinate> geoFactory =
-                new GeometryFactory<BufferedCoordinate>(new BufferedCoordinateSequenceFactory());
-            WktReader<BufferedCoordinate> rdr
-                = new WktReader<BufferedCoordinate>(geoFactory, null);
-            List<IGeometry<BufferedCoordinate>> lines
-                = new List<IGeometry<BufferedCoordinate>>();
+            IGeometryFactory<Coord> geoFactory =
+                new GeometryFactory<Coord>(new CoordSeqFac());
+            WktReader<Coord> rdr
+                = new WktReader<Coord>(geoFactory, null);
+            List<IGeometry<Coord>> lines
+                = new List<IGeometry<Coord>>();
 
             // isolated edge
             lines.Add(rdr.Read("LINESTRING (0 0 , 10 10)"));
@@ -45,11 +56,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Poligonize
             lines.Add(rdr.Read("LINESTRING (189 98, 83 187, 185 221)"));
             lines.Add(rdr.Read("LINESTRING (189 98, 325 168, 185 221)"));
 
-            Polygonizer<BufferedCoordinate> polygonizer
-                = new Polygonizer<BufferedCoordinate>();
+            Polygonizer<Coord> polygonizer
+                = new Polygonizer<Coord>();
             polygonizer.Add(lines);
 
-            IList<IPolygon<BufferedCoordinate>> polys = polygonizer.Polygons;
+            IList<IPolygon<Coord>> polys = polygonizer.Polygons;
 
             Console.WriteLine("Polygons formed (" + polys.Count + "):");
             foreach (object obj in polys)

@@ -5,6 +5,7 @@ using GeoAPI.IO.WellKnownText;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Operation.Distance;
 using NetTopologySuite.Coordinates;
+using NUnit.Framework;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Distance
 {
@@ -12,6 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Distance
     /// Example of computing distance and closest points between geometries
     /// using the <see cref="DistanceOp{TCoordinate}"/> class.
     /// </summary>	
+    [TestFixture]
     public class ClosestPointExample
     {
         internal static GeometryFactory<BufferedCoordinate> fact;
@@ -31,6 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Distance
             example.Run();
         }
 
+        [Test]
         public virtual void Run()
         {
             String polygon = "POLYGON ((200 180, 60 140, 60 260, 200 180))";

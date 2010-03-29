@@ -117,7 +117,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         {
             TCoordinate key = n.Coordinate;
 
-            if (_nodeMap.ContainsKey(key))
+            if (!_nodeMap.ContainsKey(key))
             {
                 _nodeMap.Add(key, n);
             }

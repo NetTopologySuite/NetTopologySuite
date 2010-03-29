@@ -75,6 +75,11 @@ namespace NetTopologySuite.Tests.OperationTests.Union
             Console.WriteLine(u2.ToString());
             Console.WriteLine(u2.Extents.ToString());
 
+            stopwatch.Stop();
+            Console.WriteLine(string.Format("UnaryUnionOp duration: {0}", stopwatch.Elapsed));
+            Console.WriteLine(u2.ToString());
+            Console.WriteLine(u2.Extents.ToString());
+
             IGeometry<coord> u1 = geoms[0];
             stopwatch.Reset();
             stopwatch.Start();

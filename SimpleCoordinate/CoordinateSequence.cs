@@ -868,12 +868,12 @@ namespace NetTopologySuite.Coordinates.Simple
 
         void System.Collections.Generic.IList<Coordinate>.Insert(int index, Coordinate item)
         {
-            throw new NotImplementedException();
+            Insert(index, item);
         }
 
         void System.Collections.Generic.IList<Coordinate>.RemoveAt(int index)
         {
-            throw new NotImplementedException();
+            RemoveAt(index);
         }
 
         Coordinate System.Collections.Generic.IList<Coordinate>.this[int index]

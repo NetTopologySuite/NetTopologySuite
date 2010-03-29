@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GisSharpBlog.NetTopologySuite</RootNamespace>
     <AssemblyName>NetTopologySuite.Samples.Console</AssemblyName>
-    <StartupObject>GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Program</StartupObject>
+    <StartupObject>GisSharpBlog.NetTopologySuite.Samples.Operation.Poligonize.PolygonizeExample</StartupObject>
     <OldToolsVersion>2.0</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_Net20|AnyCPU' ">
@@ -107,6 +107,10 @@
     <ProjectReference Include="..\NPack\NPack\NPack.csproj">
       <Project>{B139E1D5-091B-40D2-B7A2-7D7D82E13019}</Project>
       <Name>NPack</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SimpleCoordinate\Coordinates.Simple.csproj">
+      <Project>{FA286D16-E405-4FCB-95EA-BE1F9A4A83A4}</Project>
+      <Name>Coordinates.Simple</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

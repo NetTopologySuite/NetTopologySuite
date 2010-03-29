@@ -4,12 +4,14 @@ using GeoAPI.IO.WellKnownText;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.LinearReferencing;
 using NetTopologySuite.Coordinates;
+using NUnit.Framework;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.LinearReferencing
 {
     /// <summary>
     /// Examples of Linear Referencing
     /// </summary>
+    [TestFixture]
     public class LinearReferencingExample
     {
         private static readonly IGeometryFactory<BufferedCoordinate> _factory
@@ -20,6 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.LinearReferencing
         private static readonly WktReader<BufferedCoordinate> _reader
             = new WktReader<BufferedCoordinate>(_factory, null);
 
+        [Test]
         public void Run()
         {
             RunExtractedLine("LINESTRING (0 0, 10 10, 20 20)", 1, 10);

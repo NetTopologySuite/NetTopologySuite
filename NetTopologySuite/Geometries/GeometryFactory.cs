@@ -1058,17 +1058,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
 
             List<ILinearRing<TCoordinate>> holesTyped = new List<ILinearRing<TCoordinate>>();
-
-            foreach (ILinearRing hole in holes)
+            
+            if (holes != null)
             {
-                ILinearRing<TCoordinate> holeTyped = hole as ILinearRing<TCoordinate>;
-
-                if (holeTyped == null)
+                foreach (ILinearRing hole in holes)
                 {
-                    holeTyped = CreateLinearRing(convertSequence(hole.Coordinates));
-                }
+                    ILinearRing<TCoordinate> holeTyped = hole as ILinearRing<TCoordinate>;
 
-                holesTyped.Add(holeTyped);
+                    if (holeTyped == null)
+                    {
+                        holeTyped = CreateLinearRing(convertSequence(hole.Coordinates));
+                    }
+
+                    holesTyped.Add(holeTyped);
+                }
             }
 
             return CreatePolygon(shellTyped, holesTyped);

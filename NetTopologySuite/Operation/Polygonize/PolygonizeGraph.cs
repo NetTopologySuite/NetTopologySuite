@@ -91,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Computes the EdgeRings formed by the edges in this graph.        
         /// </summary>
         /// <returns>A list of the{EdgeRings found by the polygonization process.</returns>
-        public IEnumerable<EdgeRing<TCoordinate>> GetEdgeRings()
+        public IList<EdgeRing<TCoordinate>> GetEdgeRings()
         {
             // maybe could optimize this, since most of these pointers should be set correctly already by deleteCutEdges()
             computeNextCWEdges();
@@ -106,6 +106,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             ConvertMaximalToMinimalEdgeRings(maximalRings);
 
             // find all edgerings
+            IList<EdgeRing<TCoordinate>> edgeRingList = new List<EdgeRing<TCoordinate>>();
             foreach (PolygonizeDirectedEdge<TCoordinate> de in directedEdges)
             {
                 if (de.IsMarked)
@@ -118,8 +119,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
                     continue;
                 }
 
-                yield return findEdgeRing(de);
+                edgeRingList.Add( findEdgeRing(de));
             }
+            return edgeRingList;
         }
 
         /// <summary>
@@ -226,9 +228,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
 
         /// <param name="dirEdges">A List of the DirectedEdges in the graph.</param>
         /// <returns>A set of DirectedEdges, one for each edge ring found.</returns>
-        private static IEnumerable<PolygonizeDirectedEdge<TCoordinate>> findLabeledEdgeRings(
+        private static IList<PolygonizeDirectedEdge<TCoordinate>> findLabeledEdgeRings(
             IEnumerable<PolygonizeDirectedEdge<TCoordinate>> dirEdges)
         {
+            IList<PolygonizeDirectedEdge<TCoordinate>> edgeRingStarts = new List<PolygonizeDirectedEdge<TCoordinate>>();
             // label the edge rings formed
             Int64 currLabel = 1;
 
@@ -244,12 +247,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
                     continue;
                 }
 
-                yield return de;
+                edgeRingStarts.Add(de);
                 IEnumerable<PolygonizeDirectedEdge<TCoordinate>> edges = findDirEdgesInRing(de);
 
                 label(edges, currLabel);
                 currLabel++;
             }
+            return edgeRingStarts;
         }
 
         private static void label(IEnumerable<PolygonizeDirectedEdge<TCoordinate>> directedEdges, Int64 label)
@@ -396,25 +400,27 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// The list of intersection nodes found,
         /// or null if no intersection nodes were found.       
         /// </returns>
-        private static IEnumerable<Node<TCoordinate>> findIntersectionNodes(PolygonizeDirectedEdge<TCoordinate> startDE,
+        private static IList<Node<TCoordinate>> findIntersectionNodes(PolygonizeDirectedEdge<TCoordinate> startDE,
                                                                             Int64 label)
         {
             PolygonizeDirectedEdge<TCoordinate> de = startDE;
-
+            IList<Node<TCoordinate>> intNodes = null;
             do
             {
                 Node<TCoordinate> node = de.FromNode;
 
                 if (getDegree(node, label) > 1)
                 {
-                    yield return node;
+                    if (intNodes == null)
+                        intNodes = new List<Node<TCoordinate>>();
+                    intNodes.Add(node);
                 }
 
                 de = de.Next;
                 Assert.IsTrue(de != null, "Found null DE in ring.");
-                Debug.Assert(de != null);
                 Assert.IsTrue(de == startDE || !de.IsInRing, "Found DE already in ring.");
             } while (de != startDE);
+            return intNodes;
         }
 
         /// <summary>
@@ -429,7 +435,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
                 Int64 label = de.Label;
                 IEnumerable<Node<TCoordinate>> intersectionNodes = findIntersectionNodes(de, label);
 
-                Debug.Assert(intersectionNodes != null);
+                if (intersectionNodes == null) continue;
+                //Debug.Assert(intersectionNodes != null);
 
                 // flip the next pointers on the intersection nodes to create minimal edge rings
                 foreach (Node<TCoordinate> node in intersectionNodes)
@@ -446,19 +453,21 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// </summary>
         /// <param name="startDE">The DirectedEdge to start traversing at.</param>
         /// <returns>A List of DirectedEdges that form a ring.</returns>
-        private static IEnumerable<PolygonizeDirectedEdge<TCoordinate>> findDirEdgesInRing(
+        private static IList<PolygonizeDirectedEdge<TCoordinate>> findDirEdgesInRing(
             PolygonizeDirectedEdge<TCoordinate> startDE)
         {
+            IList<PolygonizeDirectedEdge<TCoordinate>> edges = new List<PolygonizeDirectedEdge<TCoordinate>>();
             PolygonizeDirectedEdge<TCoordinate> de = startDE;
 
             do
             {
-                yield return de;
+                edges.Add(de);
                 de = de.Next;
                 Assert.IsTrue(de != null, "found null DE in ring");
                 Debug.Assert(de != null);
                 Assert.IsTrue(de == startDE || ! de.IsInRing, "found DE already in ring");
             } while (de != startDE);
+            return edges;
         }
 
         private EdgeRing<TCoordinate> findEdgeRing(PolygonizeDirectedEdge<TCoordinate> startDE)

@@ -56,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         private readonly LineMergeGraph<TCoordinate> _graph = new LineMergeGraph<TCoordinate>();
         private readonly List<EdgeString<TCoordinate>> edgeStrings = new List<EdgeString<TCoordinate>>();
         private IGeometryFactory<TCoordinate> _factory;
-        private List<ILineString<TCoordinate>> mergedLineStrings = new List<ILineString<TCoordinate>>();
+        private List<ILineString<TCoordinate>> _mergedLineStrings;// = new List<ILineString<TCoordinate>>();
 
         /// <summary>
         /// Gets the <see cref="ILineString{TCoordinate}"/>s built by the merging process.
@@ -66,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             get
             {
                 merge();
-                return mergedLineStrings;
+                return _mergedLineStrings;
             }
         }
 
@@ -126,18 +126,18 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 
         private void merge()
         {
-            if (mergedLineStrings != null)
+            if (_mergedLineStrings != null)
             {
                 return;
             }
 
             buildEdgeStringsForObviousStartNodes();
             buildEdgeStringsForIsolatedLoops();
-            mergedLineStrings = new List<ILineString<TCoordinate>>();
+            _mergedLineStrings = new List<ILineString<TCoordinate>>();
 
             foreach (EdgeString<TCoordinate> edgeString in edgeStrings)
             {
-                mergedLineStrings.Add(edgeString.ToLineString());
+                _mergedLineStrings.Add(edgeString.ToLineString());
             }
         }
 

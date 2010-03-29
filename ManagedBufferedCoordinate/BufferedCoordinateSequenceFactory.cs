@@ -77,6 +77,7 @@ namespace NetTopologySuite.Coordinates
                                              Boolean direction)
         {
             IBufferedCoordSequence newSequence = Create(CoordinateDimensions.Two);
+            if (coordinates == null) return newSequence;
 
             BufferedCoordinate lastCoord = new BufferedCoordinate();
 

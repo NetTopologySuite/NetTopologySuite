@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
     /// The hot pixel operations are all computed in the integer domain
     /// to avoid rounding problems.
     /// </remarks>
-    public struct HotPixel<TCoordinate>
+    public class HotPixel<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
             IComparable<TCoordinate>, IConvertible,
             IComputable<Double, TCoordinate>

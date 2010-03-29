@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
+using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using NPack.Interfaces;
 
@@ -19,8 +20,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         // cache the following data for efficiency
         private readonly List<DirectedEdge<TCoordinate>> _deList = new List<DirectedEdge<TCoordinate>>();
         private readonly IGeometryFactory<TCoordinate> _factory;
-        private readonly List<TCoordinate> _ringPoints = new List<TCoordinate>();
-        private List<ILinearRing<TCoordinate>> _holes;
+        private GisSharpBlog.NetTopologySuite.Geometries.CoordinateList<TCoordinate> _ringPoints;
+        private IList<ILinearRing<TCoordinate>> _holes;
         private ILinearRing<TCoordinate> _ring;
 
         public EdgeRing(IGeometryFactory<TCoordinate> factory)
@@ -52,6 +53,22 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             }
         }
 
+        private CoordinateList<TCoordinate> RingPoints
+        {
+            get
+            {
+                if (_ringPoints == null)
+                {
+                    _ringPoints = new CoordinateList<TCoordinate>();
+                    foreach (DirectedEdge<TCoordinate> de in _deList)
+                    {
+                        PolygonizeEdge<TCoordinate> pde = de.Edge as PolygonizeEdge<TCoordinate>;
+                        addEdge(pde.Line.Coordinates, de.EdgeDirection, _ringPoints);
+                    }
+                }
+                return _ringPoints;
+            }
+        }
         /// <summary>
         /// Tests if the LinearRing ring formed by this edge ring is topologically valid.
         /// </summary>
@@ -59,12 +76,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         {
             get
             {
-                if (_ringPoints.Count <= 3)
+                if (RingPoints.Count <= 3)
                 {
                     return false;
                 }
 
-                return _ring.IsValid;
+                return Ring.IsValid;
             }
         }
 
@@ -99,7 +116,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// </summary>        
         public ILineString<TCoordinate> LineString
         {
-            get { return _factory.CreateLineString(_ringPoints); }
+            get { return _factory.CreateLineString(RingPoints); }
         }
 
         /// <summary>
@@ -118,7 +135,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
 
                 try
                 {
-                    _ring = _factory.CreateLinearRing(_ringPoints);
+                    _ring = _factory.CreateLinearRing(RingPoints);
                 }
                 catch (NtsException)
                 {
@@ -256,21 +273,26 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             _holes.Add(hole);
         }
 
-        private static void addEdge(IEnumerable<TCoordinate> coords, Boolean isForward, IList<TCoordinate> coordinates)
+        private static void addEdge(IEnumerable<TCoordinate> coords, Boolean isForward, CoordinateList<TCoordinate> coordinates)
         {
-            foreach (TCoordinate coord in coords)
+            //foreach (TCoordinate coord in coords)
             {
-                if (!coordinates.Contains(coord))
-                {
+                //if (!coordinates.Contains(coord))
+                //{
                     if (isForward)
                     {
-                        coordinates.Add(coord);
+                        foreach (TCoordinate coord in coords)
+                            coordinates.Add(coord, false);
                     }
                     else
                     {
-                        coordinates.Insert(0, coord);
+                        foreach (TCoordinate coord in coords)
+                        {
+                            if (coordinates.Count > 0 &&  coord.Equals(coordinates[0])) continue;
+                            coordinates.Insert(0, coord);
+                        }
                     }
-                }
+                //}
             }
         }
     }

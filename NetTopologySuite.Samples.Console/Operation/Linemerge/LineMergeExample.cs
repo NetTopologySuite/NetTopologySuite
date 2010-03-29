@@ -6,6 +6,7 @@ using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
 using GisSharpBlog.NetTopologySuite.Operation.Linemerge;
 using NetTopologySuite.Coordinates;
+using NUnit.Framework;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
 {
@@ -13,11 +14,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
     /// Example of using the <see cref="LineMerger{TCoordinate}"/> class to 
     /// sew together a set of fully noded linestrings.
     /// </summary>	
+    [TestFixture]
     public class LineMergeExample
     {
-        private IWktGeometryReader reader;
+        private static IWktGeometryReader _reader;
 
-        public LineMergeExample()
+        static LineMergeExample()
         {
             InitBlock();
         }
@@ -42,9 +44,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
             }
         }
 
-        private void InitBlock()
+        private static void InitBlock()
         {
-            reader =
+            _reader =
                 new WktReader<BufferedCoordinate>(
                     GeometryServices.GetGeometryFactory(PrecisionModelType.DoubleFloating),
                     null);
@@ -65,7 +67,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
             }
         }
 
-        internal virtual void Run()
+        [Test]
+        public void Run()
         {
             IEnumerable<IGeometry<BufferedCoordinate>> lineStrings = Data;
 
@@ -91,7 +94,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
             try
             {
                 IGeometry<BufferedCoordinate> geom
-                    = reader.Read(lineWKT) as IGeometry<BufferedCoordinate>;
+                    = _reader.Read(lineWKT) as IGeometry<BufferedCoordinate>;
                 return geom;
             }
             catch (Exception ex)

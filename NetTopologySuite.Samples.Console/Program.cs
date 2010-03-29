@@ -45,11 +45,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
                 sample = new ValidationSuite();
                 sample.Start();
                 Console.WriteLine();
-
+                /*
                 sample = new SerializationSamples();
                 sample.Start();
                 Console.WriteLine();
-
+                */
                 /*
 				sample = new AttributesTest();
 				sample.Start();
