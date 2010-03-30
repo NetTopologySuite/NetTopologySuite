@@ -44,6 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <param name="geoFactory">The <see cref="IGeometryFactory{TCoordinate}" /> to use.</param>
         public SimpleSnapRounder(IGeometryFactory<TCoordinate> geoFactory)
         {
+            _geoFactory = geoFactory;
             _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(geoFactory);
             _li.PrecisionModel = geoFactory.PrecisionModel;
             _scaleFactor = geoFactory.PrecisionModel.Scale;

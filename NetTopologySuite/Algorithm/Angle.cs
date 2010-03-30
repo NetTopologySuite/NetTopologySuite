@@ -62,7 +62,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         ///<returns>the normalized angle (in radians) that p makes with the positive x-axis.</returns>
         public static Double CalculateAngle(TCoordinate p)
         {
-            return Math.Atan2(p[Ordinates.Y], p[Ordinates.Y]);
+            return Math.Atan2(p[Ordinates.Y], p[Ordinates.X]);
         }
 
         ///<summary>
@@ -198,7 +198,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             while (angle > Math.PI)
                 angle -= PiTimes2;
-            while (angle < -Math.PI)
+            while (angle <= -Math.PI)
                 angle += PiTimes2;
             return angle;
         }
@@ -211,8 +211,22 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         ///<returns>an equivalent positive angle</returns>
         public static Double NormalizePositive(Double angle)
         {
-            while (angle < 0.0)
-                angle += PiTimes2;
+            if (angle < 0.0)
+            {
+                while (angle < 0.0)
+                    angle += PiTimes2;
+                // in case round-off error bumps the value over 
+                if (angle >= PiTimes2)
+                    angle = 0.0;
+            }
+            else
+            {
+                while (angle >= PiTimes2)
+                    angle -= PiTimes2;
+                // in case round-off error bumps the value under 
+                if (angle < 0.0)
+                    angle = 0.0;
+            }
             return angle;
         }
 
