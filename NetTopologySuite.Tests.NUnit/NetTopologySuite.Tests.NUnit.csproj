@@ -47,6 +47,11 @@
     <Compile Include="Algorithm\ComputeOrientationTest.cs" />
     <Compile Include="Algorithm\ConvexHullTest.cs" />
     <Compile Include="Algorithm\Distance\DiscreteHaussdorfDistanceTest.cs" />
+    <Compile Include="Algorithm\IndexedPointInAreaStressTest.cs" />
+    <Compile Include="Algorithm\IsCCWTest.cs" />
+    <Compile Include="Algorithm\LocatePointInRingTest.cs" />
+    <Compile Include="Algorithm\PerturbedGridPolygonBuilder.cs" />
+    <Compile Include="Algorithm\PointInAreaStressTester.cs" />
     <Compile Include="Algorithm\PointInRingTest.cs" />
     <Compile Include="GeometryUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
