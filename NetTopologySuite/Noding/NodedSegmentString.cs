@@ -175,13 +175,16 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         public static IEnumerable<ISegmentString<TCoordinate>> GetNodedSubstrings(
             IEnumerable<ISegmentString<TCoordinate>> segStrings)
         {
+            List<ISegmentString<TCoordinate>> ret = new List<ISegmentString<TCoordinate>>();
             foreach (NodedSegmentString<TCoordinate> ss in segStrings)
             {
                 foreach (NodedSegmentString<TCoordinate> segmentString in ss.Nodes.CreateSplitEdges())
                 {
-                    yield return segmentString;
+                    ret.Add(segmentString);
+                    //yield return segmentString;
                 }
             }
+            return ret;
         }
 
         public override Int32 GetHashCode()

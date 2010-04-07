@@ -22,6 +22,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             IComparable<TCoordinate>, IConvertible,
             IComputable<Double, TCoordinate>
     {
+        //static coordinatefactory that creates double_precision coordinate values!
+        public static ICoordinateFactory<TCoordinate> CoordinateFactory;
+        
         /*
          * The corners of the hot pixel, in the order:
          *  10
@@ -32,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         private readonly TCoordinate _corner2;
         private readonly TCoordinate _corner3;
 
-        private readonly ICoordinateFactory<TCoordinate> _factory;
+        //private readonly ICoordinateFactory<TCoordinate> _factory;
         private readonly LineIntersector<TCoordinate> _li;
         private readonly Double _maxx;
         private readonly Double _maxy;
@@ -56,11 +59,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             _minx = _miny = _maxx = _maxy = 0;
             _corner0 = _corner1 = _corner2 = _corner3 = default(TCoordinate);
             _safeExtents = null;
-            _factory = factory;
+            //_factory = factory;
 
             if (scaleFactor != 1.0)
             {
-                _pt = _factory.Create(scale(pt[Ordinates.X]), scale(pt[Ordinates.Y]));
+                //_pt = _factory.Create(scale(pt[Ordinates.X]), scale(pt[Ordinates.Y]));
+                _pt = CoordinateFactory.Create(scale(pt[Ordinates.X]), scale(pt[Ordinates.Y]));
                 //_p0Scaled = new TCoordinate();
                 //_p1Scaled = new TCoordinate();
             }
@@ -71,10 +75,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             _miny = pt[Ordinates.Y] - tolerance;
             _maxy = pt[Ordinates.Y] + tolerance;
 
-            _corner0 = _factory.Create(_maxx, _maxy);
+            /*_corner0 = _factory.Create(_maxx, _maxy);
             _corner1 = _factory.Create(_minx, _maxy);
             _corner2 = _factory.Create(_minx, _miny);
-            _corner3 = _factory.Create(_maxx, _miny);
+            _corner3 = _factory.Create(_maxx, _miny);*/
+            _corner0 = CoordinateFactory.Create(_maxx, _maxy);
+            _corner1 = CoordinateFactory.Create(_minx, _maxy);
+            _corner2 = CoordinateFactory.Create(_minx, _miny);
+            _corner3 = CoordinateFactory.Create(_maxx, _miny);
         }
 
         public TCoordinate Coordinate
@@ -147,7 +155,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
 
         private TCoordinate copyScaled(TCoordinate p)
         {
-            return _factory.Create(scale(p[Ordinates.X]), scale(p[Ordinates.Y]));
+            //return _factory.Create(scale(p[Ordinates.X]), scale(p[Ordinates.Y]));
+            return CoordinateFactory.Create(scale(p[Ordinates.X]), scale(p[Ordinates.Y]));
         }
 
         // Tests whether the segment p0-p1 intersects the hot pixel tolerance square.

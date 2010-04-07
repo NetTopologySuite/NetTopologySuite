@@ -54,6 +54,13 @@
     <Compile Include="Algorithm\PointInAreaStressTester.cs" />
     <Compile Include="Algorithm\PointInRingTest.cs" />
     <Compile Include="GeometryUtils.cs" />
+    <Compile Include="Index\DoubleBitsTest.cs" />
+    <Compile Include="Index\IntervalTest.cs" />
+    <Compile Include="Index\SpatialIndexTest.cs" />
+    <Compile Include="Index\STRTreeTest.cs" />
+    <Compile Include="Noding\SegmentPointComparatorFullTest.cs" />
+    <Compile Include="Noding\SegmentPointComparatorTest.cs" />
+    <Compile Include="Noding\SnapRound\SnapRoundingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

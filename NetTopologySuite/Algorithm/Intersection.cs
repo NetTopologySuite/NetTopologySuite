@@ -250,7 +250,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </returns>
         public Boolean IsInteriorIntersection()
         {
-            return IsInteriorIntersection(0) || IsInteriorIntersection(1);
+            if (IsInteriorIntersection(0))
+                return true;
+            return 
+                IsInteriorIntersection(1);
         }
 
         /// <summary>
@@ -265,7 +268,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             Pair<TCoordinate> line = GetLineForIndex(inputLineIndex);
 
-            return !_intersectP0.Equals(line.First) && !_intersectP0.Equals(line.Second);
+            return !(_intersectP0.Equals(line.First) || _intersectP0.Equals(line.Second));
         }
 
         /// <summary> 

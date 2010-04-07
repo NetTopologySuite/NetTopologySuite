@@ -279,6 +279,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
                     = new Pair<Int32, LineSegment<TCoordinate>>(start1, s1);
 
                 yield return new Pair<Pair<Int32, LineSegment<TCoordinate>>>(first, second);
+                yield break;
             }
 
             // nothing to do if the envelopes of these chains don't overlap
@@ -297,12 +298,16 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
             {
                 if (start1 < mid1)
                 {
-                    computeOverlaps(start0, mid0, other, start1, mid1);
+                    //computeOverlaps(start0, mid0, other, start1, mid1);
+                    foreach (Pair<Pair<int, LineSegment<TCoordinate>>> pair in computeOverlapsWithIndexes(start0, mid0, other, start1, mid1))
+                        yield return pair;
                 }
 
                 if (mid1 < end1)
                 {
-                    computeOverlaps(start0, mid0, other, mid1, end1);
+                    //computeOverlaps(start0, mid0, other, mid1, end1);
+                    foreach (Pair<Pair<int, LineSegment<TCoordinate>>> pair in computeOverlapsWithIndexes(start0, mid0, other, mid1, end1))
+                        yield return pair;
                 }
             }
 
@@ -310,12 +315,16 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
             {
                 if (start1 < mid1)
                 {
-                    computeOverlaps(mid0, end0, other, start1, mid1);
+                    //computeOverlaps(mid0, end0, other, start1, mid1);
+                    foreach (Pair<Pair<int, LineSegment<TCoordinate>>> pair in computeOverlapsWithIndexes(mid0, end0, other, start1, mid1))
+                        yield return pair;
                 }
 
                 if (mid1 < end1)
                 {
-                    computeOverlaps(mid0, end0, other, mid1, end1);
+                    //computeOverlaps(mid0, end0, other, mid1, end1);
+                    foreach (Pair<Pair<int, LineSegment<TCoordinate>>> pair in computeOverlapsWithIndexes(mid0, end0, other, mid1, end1))
+                        yield return pair;
                 }
             }
         }

@@ -17,17 +17,18 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
                 IComparable<TCoordinate>, IConvertible,
                 IComputable<Double, TCoordinate>
     {
-        private IGeometryFactory<TCoordinate> _geomFact;
+        private readonly IGeometryFactory<TCoordinate> _geomFact;
         private IPrecisionModel<TCoordinate> _pm;
         private Boolean _isValidityChecked;
 
         ///<summary>
         /// Creates an instance of this class
         ///</summary>
-        ///<param name="pm">Precision model</param>
-        public GeometryNoder(IPrecisionModel<TCoordinate> pm)
+        ///<param name="geomFactory">Geometry Factory with desired Precision model</param>
+        public GeometryNoder(IGeometryFactory<TCoordinate> geomFactory)
         {
-            _pm = pm;
+            _geomFact = geomFactory;
+            _pm = _geomFact.PrecisionModel;
         }
 
         ///<summary>
@@ -47,9 +48,6 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
          */
         public List<IGeometry<TCoordinate>> Node(IEnumerable<IGeometry<TCoordinate>> geoms)
         {
-            // get geometry factory
-            IGeometry<TCoordinate> geom0 = Slice.GetFirst(geoms);
-            _geomFact = geom0.Factory;
 
             IEnumerable<ISegmentString<TCoordinate>> segStrings = ToSegmentStrings(ExtractLines(geoms));
             //Noder sr = new SimpleSnapRounder(_pm);
@@ -58,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             //Collection nodedLines = sr.getNodedSubstrings();
             IEnumerable<ISegmentString<TCoordinate>> nodedLines = sr.Node(segStrings);
 
-            if (_isValidityChecked)
+            if (!_isValidityChecked)
             {
                 NodingValidator<TCoordinate> nv = new NodingValidator<TCoordinate>(_geomFact, nodedLines);
                 nv.CheckValid();
@@ -79,12 +77,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             return lines;
         }
 
-        private IEnumerable<ILineString<TCoordinate>> ExtractLines(IEnumerable<IGeometry<TCoordinate>> geoms)
+        private static IEnumerable<ILineString<TCoordinate>> ExtractLines(IEnumerable<IGeometry<TCoordinate>> geoms)
         {
             List<ILineString<TCoordinate>> lines = new List<ILineString<TCoordinate>>();
-            LinearComponentExtracter<TCoordinate> lce = new LinearComponentExtracter<TCoordinate>(lines);
-
-            Enumerable.Apply(lines, lce.Filter);
+            foreach (IGeometry<TCoordinate> geom in geoms)
+                lines.AddRange(GeometryFilter.Filter<ILineString<TCoordinate>, TCoordinate>(geom));
             return lines;
         }
 
@@ -97,10 +94,18 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             }
             return segStrings;
              */
+            /*
             foreach (ILineString<TCoordinate> line in lines)
             {
                 yield return new NodedSegmentString<TCoordinate>(line.Coordinates, null);
             }
+             */
+            List<ISegmentString<TCoordinate>> segmentStrings = new List<ISegmentString<TCoordinate>>();
+            foreach (ILineString<TCoordinate> line in lines)
+            {
+                segmentStrings.Add(new NodedSegmentString<TCoordinate>(line.Coordinates, null));
+            }
+            return segmentStrings;
         }
     }
 }

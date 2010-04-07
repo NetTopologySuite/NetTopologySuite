@@ -71,9 +71,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             {
                 // node does not exist, so create it
                 _nodeList.Add(node, node); //jd: was _nodeList.Add(node, null); which seems strange...
+                return node;
             }
+            return (SegmentNode<TCoordinate>)_nodeList[node];
 
-            return node;
         }
 
         /// <summary>
@@ -89,13 +90,15 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             // there should always be at least two entries in the list, 
             // since the endpoints are nodes
             SegmentNode<TCoordinate> previousNode = Slice.GetFirst(this);
-
+            List<NodedSegmentString<TCoordinate>> retval = new List<NodedSegmentString<TCoordinate>>();
             foreach (SegmentNode<TCoordinate> node in Enumerable.Skip(this, 1))
             {
                 NodedSegmentString<TCoordinate> nd = createSplitEdge(previousNode, node);
                 previousNode = node;
-                yield return nd;
+                //yield return nd;
+                retval.Add(nd);
             }
+            return retval;
         }
 
         public void Write(StreamWriter outstream)
@@ -123,8 +126,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         // the vertex at the base of a collapsed pair must also be added as a node.
         private void addCollapsedNodes()
         {
-            IEnumerable<Int32> collapseIndexes = findCollapsesFromInsertedNodes();
-            collapseIndexes = Slice.Append(collapseIndexes, findCollapsesFromExistingVertices());
+            IEnumerable<Int32> collapseIndexes = FindCollapsesFromInsertedNodes();
+            collapseIndexes = Slice.Append(collapseIndexes, FindCollapsesFromExistingVertices());
 
             // node the collapses
             foreach (Int32 vertexIndex in collapseIndexes)
@@ -135,19 +138,21 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
         // Adds nodes for any collapsed edge pairs
         // which are pre-existing in the vertex list.
-        private IEnumerable<Int32> findCollapsesFromExistingVertices()
+        private IEnumerable<Int32> FindCollapsesFromExistingVertices()
         {
             Int32 i = 0;
-
+            List<Int32> collapsesFromExistingVerteces = new List<int>();
             foreach (Triple<TCoordinate> triple in Slice.GetOverlappingTriples(_segments.Coordinates))
             {
                 if (triple.First.Equals(triple.Third)) // add base of collapse as node
                 {
-                    yield return i + 1;
+                    //yield return i + 1;
+                    collapsesFromExistingVerteces.Add(i+1);
                 }
 
                 i += 1;
             }
+            return collapsesFromExistingVerteces;
         }
 
         // Adds nodes for any collapsed edge pairs caused by inserted nodes
@@ -155,8 +160,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         // both before and after an existing edge vertex.
         // To provide the correct fully noded semantics,
         // the vertex must be added as a node as well.
-        private IEnumerable<Int32> findCollapsesFromInsertedNodes()
+        private IEnumerable<Int32> FindCollapsesFromInsertedNodes()
         {
+            List<Int32> collapsedVertexIndeces = new List<int>();
             SegmentNode<TCoordinate> previousEdgeIntersection = Slice.GetFirst(this);
 
             // there should always be at least two entries in the list, since the endpoints are nodes
@@ -169,11 +175,13 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
                 if (isCollapsed)
                 {
-                    yield return collapsedVertexIndex;
+                    //yield return collapsedVertexIndex;
+                    collapsedVertexIndeces.Add(collapsedVertexIndex);
                 }
 
                 previousEdgeIntersection = edgeIntersection;
             }
+            return collapsedVertexIndeces;
         }
 
         private static Boolean findCollapseIndex(
@@ -223,9 +231,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
             ICoordinateSequence<TCoordinate> pts;
             Int32 start = edgeIntersection0.SegmentIndex + 1;
+            //Int32 end0 = edgeIntersection0.SegmentIndex + 1;
+            //Int32 end1 = edgeIntersection1.SegmentIndex;
             Int32 end = edgeIntersection1.SegmentIndex;
-
-            pts = ParentSegments.Coordinates.Slice(start, Math.Max(start, end));
+            pts = ParentSegments.Coordinates.Slice(start, end);
             pts.Prepend(edgeIntersection0.Coordinate);
 
             if (useIntersectionPoint1)

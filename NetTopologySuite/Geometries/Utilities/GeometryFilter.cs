@@ -9,6 +9,29 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
     internal static class GeometryFilter
     {
 
+        public static IEnumerable<TGeometry> Extract<TGeometry, TCoordinate>(IGeometry<TCoordinate> geometry)
+            where TGeometry : IGeometry<TCoordinate>
+            where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
+                IComputable<Double, TCoordinate>, IConvertible
+        {
+            if (geometry is TGeometry)
+            {
+                yield return (TGeometry)geometry;
+            }
+
+            if (geometry is IHasGeometryComponents<TCoordinate>)
+            {
+            }
+
+            if (geometry is IGeometryCollection<TCoordinate>)
+            {
+                foreach (TGeometry g in Extract<TGeometry, TCoordinate>(geometry))
+                {
+                    yield return g;
+                }
+            }
+        }
+
         public static IEnumerable<TGeometry> Filter<TGeometry, TCoordinate>(IGeometry<TCoordinate> geometry)
             where TGeometry : IGeometry<TCoordinate>
             where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
@@ -17,6 +40,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             if (geometry is TGeometry)
             {
                 yield return (TGeometry)geometry;
+            }
+
+            if (geometry is IHasGeometryComponents<TCoordinate>)
+            {
+                foreach (IGeometry<TCoordinate> g in (((IHasGeometryComponents<TCoordinate>)geometry).Components))
+                {
+                    foreach( TGeometry g2 in Filter<TGeometry, TCoordinate>(g))
+                        yield return g2;
+                }
+                yield break;
             }
 
             if (geometry is IGeometryCollection<TCoordinate>)

@@ -107,7 +107,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
          */
         private Boolean TestPIA(Coordinate p)
         {
-            //System.out.println(WKTWriter.toPoint(p));
+            //Console.WriteLine(WKTWriter.toPoint(p));
 
             Locations loc1 = pia1.Locate(p);
             Locations loc2 = pia2.Locate(p);

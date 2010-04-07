@@ -50,15 +50,18 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <returns>A set of <see cref="DepthSegment"/>s intersecting the stabbing line.</returns>
         private IEnumerable<DepthSegment> findStabbedSegments(TCoordinate stabbingRayLeftPt)
         {
+            List<DepthSegment> retval = new List<DepthSegment>();
             foreach (BufferSubgraph<TCoordinate> subgraph in _subgraphs)
             {
-                IEnumerable<DepthSegment> segments = findStabbedSegments(stabbingRayLeftPt, subgraph.DirectedEdges);
+                retval.AddRange(findStabbedSegments(stabbingRayLeftPt, subgraph.DirectedEdges));
+                //IEnumerable<DepthSegment> segments = findStabbedSegments(stabbingRayLeftPt, subgraph.DirectedEdges);
 
-                foreach (DepthSegment segment in segments)
-                {
-                    yield return segment;
-                }
+                //foreach (DepthSegment segment in segments)
+                //{
+                //    yield return segment;
+                //}
             }
+            return retval;
         }
 
         /// <summary>

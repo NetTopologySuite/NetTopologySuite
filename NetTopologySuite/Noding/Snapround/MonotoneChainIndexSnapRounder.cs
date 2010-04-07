@@ -38,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         private IList<TCoordinate> _interiorIntersections;
         private IEnumerable<ISegmentString<TCoordinate>> _nodedSegStrings;
         private MonotoneChainIndexNoder<TCoordinate> _noder;
-        private MonotoneChaintIndexPointSnapper<TCoordinate> _pointSnapper;
+        private MonotoneChainIndexPointSnapper<TCoordinate> _pointSnapper;
 
         /// <summary>
         /// Initializes a new instance of the 
@@ -81,14 +81,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         public IEnumerable<ISegmentString<TCoordinate>> Node(
             IEnumerable<ISegmentString<TCoordinate>> inputSegmentStrings)
         {
-            _nodedSegStrings = inputSegmentStrings;
-            IntersectionFinderAdder<TCoordinate> intFinderAdder = new IntersectionFinderAdder<TCoordinate>(_li);
-            _noder = new MonotoneChainIndexNoder<TCoordinate>(_geoFactory, intFinderAdder);
-            _pointSnapper = new MonotoneChaintIndexPointSnapper<TCoordinate>(_geoFactory, _noder.MonotoneChains,
-                                                                             _noder.Index);
-            _interiorIntersections = intFinderAdder.InteriorIntersections;
-            snapRound(inputSegmentStrings, _li);
-
+            //_nodedSegStrings = inputSegmentStrings;
+            //IntersectionFinderAdder<TCoordinate> intFinderAdder = new IntersectionFinderAdder<TCoordinate>(_li);
+            //_noder = new MonotoneChainIndexNoder<TCoordinate>(_geoFactory, intFinderAdder);
+            //_pointSnapper = new MonotoneChainIndexPointSnapper<TCoordinate>(_geoFactory, _noder.MonotoneChains,
+            //                                                                 _noder.Index);
+            //_interiorIntersections = intFinderAdder.InteriorIntersections;
+            //snapRound(inputSegmentStrings, _li);
+            ComputeNodes(inputSegmentStrings);
             return NodedSegmentString<TCoordinate>.GetNodedSubstrings(_nodedSegStrings);
         }
 
@@ -98,7 +98,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             _nodedSegStrings = inputSegmentStrings;
             IntersectionFinderAdder<TCoordinate> intFinderAdder = new IntersectionFinderAdder<TCoordinate>(_li);
             _noder = new MonotoneChainIndexNoder<TCoordinate>(_geoFactory, intFinderAdder);
-            _pointSnapper = new MonotoneChaintIndexPointSnapper<TCoordinate>(_geoFactory, _noder.MonotoneChains,
+            _pointSnapper = new MonotoneChainIndexPointSnapper<TCoordinate>(_geoFactory, _noder.MonotoneChains,
                                                                              _noder.Index);
             _interiorIntersections = intFinderAdder.InteriorIntersections;
             snapRound(inputSegmentStrings, _li);
@@ -108,6 +108,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
 
         private void snapRound(IEnumerable<ISegmentString<TCoordinate>> segStrings, LineIntersector<TCoordinate> li)
         {
+            //_noder.ComputeNodes(segStrings);
             segStrings = _noder.Node(segStrings);
             IEnumerable<TCoordinate> intersections = _interiorIntersections;
             //_noder.Node(segStrings,  Func<NodedSegmentString<TCoordinate>,TCoordinate>( ) );

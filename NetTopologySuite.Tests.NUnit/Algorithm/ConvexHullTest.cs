@@ -95,10 +95,10 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     stack.Push(new Coordinate(1, 1));
     stack.Push(new Coordinate(2, 2));
     Object[] array1 = convexHull.toCoordinateArray(stack);
-    assertEquals(3, array1.length);
-    assertEquals(new Coordinate(0, 0), array1[0]);
-    assertEquals(new Coordinate(1, 1), array1[1]);
-    assertEquals(new Coordinate(2, 2), array1[2]);
+    Assert.IsEqual(3, array1.length);
+    Assert.IsEqual(new Coordinate(0, 0), array1[0]);
+    Assert.IsEqual(new Coordinate(1, 1), array1[1]);
+    Assert.IsEqual(new Coordinate(2, 2), array1[2]);
     Assert.IsTrue(!array1[0].equals(array1[1]));
   }
 

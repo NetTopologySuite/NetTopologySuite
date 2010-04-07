@@ -215,8 +215,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
     IPrecisionModel<TCoordinate> argPM = _argGeom.Factory.PrecisionModel;
     if (argPM.PrecisionModelType == PrecisionModelType.Fixed)
-        throw new NotImplementedException("Fix scaled noder");
-      //BufferFixedPrecision(argPM);
+        //throw new NotImplementedException("Fix scaled noder");
+        BufferFixedPrecision(argPM);
     else
       BufferReducedPrecision();
   }

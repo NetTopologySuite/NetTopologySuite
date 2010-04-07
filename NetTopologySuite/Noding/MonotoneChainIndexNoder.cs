@@ -45,7 +45,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
         public IEnumerable<MonotoneChain<TCoordinate>> MonotoneChains
         {
-            get { return _monoChains; }
+            get
+            {
+                return _monoChains;
+            }
         }
 
         public ISpatialIndex<IExtents<TCoordinate>, MonotoneChain<TCoordinate>> Index

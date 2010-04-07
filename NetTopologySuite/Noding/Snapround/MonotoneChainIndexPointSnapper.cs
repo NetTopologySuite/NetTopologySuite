@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
     /// <see cref="MonotoneChain{TCoordinate}" />s to a given
     /// <see cref="HotPixel{TCoordinate}" />.
     /// </summary>
-    public class MonotoneChaintIndexPointSnapper<TCoordinate>
+    public class MonotoneChainIndexPointSnapper<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
@@ -28,9 +28,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         private readonly List<MonotoneChain<TCoordinate>> _monoChains = new List<MonotoneChain<TCoordinate>>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MonotoneChaintIndexPointSnapper{TCoordinate}"/> class.
+        /// Initializes a new instance of the <see cref="MonotoneChainIndexPointSnapper{TCoordinate}"/> class.
         /// </summary>
-        public MonotoneChaintIndexPointSnapper(
+        public MonotoneChainIndexPointSnapper(
             IGeometryFactory<TCoordinate> geoFactory,
             IEnumerable<MonotoneChain<TCoordinate>> chains,
             ISpatialIndex<IExtents<TCoordinate>,
@@ -76,7 +76,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
                         }
                     }
 
-                    isNodeAdded = SimpleSnapRounder<TCoordinate>.AddSnappedNode(hotPixel, segmentString, startIndex);
+                    isNodeAdded |= SimpleSnapRounder<TCoordinate>.AddSnappedNode(hotPixel, segmentString, startIndex);
                 }
             }
 
