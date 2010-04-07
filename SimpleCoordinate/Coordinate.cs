@@ -106,6 +106,9 @@ namespace NetTopologySuite.Coordinates.Simple
         {
             IPrecisionModel pm = factory.PrecisionModel;
             _coordFactory = factory;
+            //FObermaier:
+            //This is not a good idea, since some functionality relies on double precision
+            //for intermediate calculations. This is a performance penalty as well!
             _x = pm.MakePrecise(x);
             _y = pm.MakePrecise(y);
             _z = CoordinateNullValue;
@@ -123,6 +126,9 @@ namespace NetTopologySuite.Coordinates.Simple
         {
             IPrecisionModel pm = factory.PrecisionModel;
             _coordFactory = factory;
+            //FObermaier:
+            //This is not a good idea, since some functionality relies on double precision
+            //for intermediate calculations. This is a performance penalty as well!
             _x = pm.MakePrecise(x);
             _y = pm.MakePrecise(y);
             if (IsW(flags))
@@ -134,7 +140,7 @@ namespace NetTopologySuite.Coordinates.Simple
             else if(IsZ(flags))
             {
                 _w = CoordinateNullValue;
-                _z = pm.MakePrecise(zmw);
+                _z = zmw;
                 _m = CoordinateNullValue;
             }
             else
@@ -155,6 +161,9 @@ namespace NetTopologySuite.Coordinates.Simple
         {
             IPrecisionModel pm = factory.PrecisionModel;
             _coordFactory = factory;
+            //FObermaier:
+            //This is not a good idea, since some functionality relies on double precision
+            //for intermediate calculations. This is a performance penalty as well!
             _x = pm.MakePrecise(x);
             _y = pm.MakePrecise(y);
             _z = z; // MD says its safe not to makeprecise z ordinates
@@ -181,6 +190,9 @@ namespace NetTopologySuite.Coordinates.Simple
         {
             IPrecisionModel pm = factory.PrecisionModel;
             _coordFactory = factory;
+            //FObermaier:
+            //This is not a good idea, since some functionality relies on double precision
+            //for intermediate calculations. This is a performance penalty as well!
             _x = pm.MakePrecise(coordinate._x);
             _y = pm.MakePrecise(coordinate._y);
             _z = coordinate._z; // MD says its safe not to makeprecise z ordinates
@@ -198,6 +210,9 @@ namespace NetTopologySuite.Coordinates.Simple
         {
             IPrecisionModel pm = factory.PrecisionModel;
             _coordFactory = factory;
+            //FObermaier:
+            //This is not a good idea, since some functionality relies on double precision
+            //for intermediate calculations. This is a performance penalty as well!
             _x = pm.MakePrecise(x);
             _y = pm.MakePrecise(y);
             _z = z; // MD says its safe not to makeprecise z ordinates
@@ -2008,7 +2023,7 @@ namespace NetTopologySuite.Coordinates.Simple
             if (ReferenceEquals(other, null))
                 return false;
 #endif
-            return ValueEquals(other) && _coordFactory == other._coordFactory;
+            return ValueEquals(other);// && _coordFactory == other._coordFactory;
         }
 
         #endregion
