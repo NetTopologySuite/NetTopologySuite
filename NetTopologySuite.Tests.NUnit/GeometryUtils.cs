@@ -18,7 +18,7 @@ namespace NetTopologySuite.Tests.NUnit
         public static readonly CoordFac CoordFac;
         public static readonly IGeometryFactory<Coord> GeometryFactory;
 
-        public static Dictionary<Double, IGeometryFactory<Coord>> GeometryFactories = new Dictionary<double, IGeometryFactory<Coord>>();
+        private static readonly Dictionary<Double, IGeometryFactory<Coord>> GeometryFactories = new Dictionary<double, IGeometryFactory<Coord>>();
 
         //TODO: allow specifying GeometryFactory
         static GeometryUtils()

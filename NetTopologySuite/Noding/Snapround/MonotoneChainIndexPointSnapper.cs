@@ -49,17 +49,15 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// </summary>
         /// <param name="hotPixel">The hot pixel to snap to.</param>
         /// <param name="parentEdge">The edge containing the vertex, if applicable, or <see langword="null" />.</param>
+        /// <param name="vertexIndex"></param>
         /// <returns><see langword="true"/> if a node was added for this pixel.</returns>
         public Boolean Snap(HotPixel<TCoordinate> hotPixel, ISegmentString<TCoordinate> parentEdge,
                             Int32 vertexIndex)
         {
-            IExtents<TCoordinate> pixelExtents = hotPixel.GetSafeExtents(_geoFactory);
-            //HotPixelSnapAction hotPixelSnapAction = new HotPixelSnapAction(hotPixel, parentEdge, vertexIndex);
+            IExtents<TCoordinate> pixelExtents = hotPixel.GetSafeExtents();
 
             // This used to be in the class HotPixelSnapAction, but was refactored to 
             // move responsibility for visiting index nodes to the querying class
-            Boolean isNodeAdded = false;
-
             foreach (MonotoneChain<TCoordinate> chain in _index.Query(pixelExtents))
             {
                 NodedSegmentString<TCoordinate> segmentString = chain.Context as NodedSegmentString<TCoordinate>;
@@ -69,18 +67,15 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
                 {
                     // don't snap a vertex to itself
                     if (parentEdge != null)
-                    {
                         if (segmentString == parentEdge && startIndex == vertexIndex)
-                        {
                             continue;
-                        }
-                    }
 
-                    isNodeAdded |= SimpleSnapRounder<TCoordinate>.AddSnappedNode(hotPixel, segmentString, startIndex);
+                    if (SimpleSnapRounder<TCoordinate>.AddSnappedNode(hotPixel, segmentString, startIndex))
+                        return true;
                 }
             }
 
-            return isNodeAdded;
+            return false;
         }
 
         public Boolean Snap(HotPixel<TCoordinate> hotPixel)
@@ -88,63 +83,5 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
             return Snap(hotPixel, null, -1);
         }
 
-        //private class QueryVisitor : IItemVisitor
-        //{
-        //    private readonly IExtents<TCoordinate> _extents = null;
-        //    private readonly HotPixelSnapAction _action = null;
-
-        //    public QueryVisitor(IExtents<TCoordinate> extents, HotPixelSnapAction action)
-        //    {
-        //        _extents = extents;
-        //        _action = action;
-        //    }
-
-        //    public void VisitItem(object item)
-        //    {
-        //        MonotoneChain<TCoordinate> testChain = (MonotoneChain<TCoordinate>) item;
-        //        testChain.Select(_extents, _action);
-        //    }
-        //}
-
-        //public class HotPixelSnapAction : MonotoneChainSelectAction<TCoordinate>
-        //{
-        //    private readonly HotPixel<TCoordinate> _hotPixel;
-        //    private readonly SegmentString<TCoordinate> _parentEdge = null;
-        //    private readonly Int32 _vertexIndex;
-        //    private Boolean _isNodeAdded = false;
-
-        //    /// <summary>
-        //    /// Initializes a new instance of the <see cref="HotPixelSnapAction"/> class.
-        //    /// </summary>
-        //    public HotPixelSnapAction(HotPixel<TCoordinate> hotPixel, SegmentString<TCoordinate> parentEdge, Int32 vertexIndex)
-        //    {
-        //        _hotPixel = hotPixel;
-        //        _parentEdge = parentEdge;
-        //        _vertexIndex = vertexIndex;
-        //    }
-
-        //    public Boolean IsNodeAdded
-        //    {
-        //        get { return _isNodeAdded; }
-        //    }
-
-        //    public override void Select(MonotoneChain<TCoordinate> mc, Int32 startIndex)
-        //    {
-        //        SegmentString<TCoordinate> segmentString = mc.Context as SegmentString<TCoordinate>;
-
-        //        Debug.Assert(segmentString != null);
-
-        //        // don't snap a vertex to itself
-        //        if (_parentEdge != null)
-        //        {
-        //            if (segmentString == _parentEdge && startIndex == _vertexIndex)
-        //            {
-        //                return;
-        //            }
-        //        }
-
-        //        _isNodeAdded = SimpleSnapRounder<TCoordinate>.AddSnappedNode(_hotPixel, segmentString, startIndex);
-        //    }
-        //}
     }
 }

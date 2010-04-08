@@ -1,6 +1,9 @@
-/*
+
 using System;
-using GeoAPI.Diagnostics;
+using System.Collections.Generic;
+//using GeoAPI.Diagnostics;
+using System.IO;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -15,97 +18,297 @@ namespace NetTopologySuite.Tests.NUnit.Index
     {
 
         [Test]
-        public void TestCreateParentsFromVerticalSlice() {
-    doTestCreateParentsFromVerticalSlice(3, 2, 2, 1);
-    doTestCreateParentsFromVerticalSlice(4, 2, 2, 2);
-    doTestCreateParentsFromVerticalSlice(5, 2, 2, 1);
-  }
+        public void TestCreateParentsFromVerticalSlice()
+        {
+            DoTestCreateParentsFromVerticalSlice(3, 2, 2, 1);
+            DoTestCreateParentsFromVerticalSlice(4, 2, 2, 2);
+            DoTestCreateParentsFromVerticalSlice(5, 2, 2, 1);
+        }
 
-  public override ISpatialIndex<IExtents<Coordinate>, IGeometry<Coordinate>> CreateSpatialIndex() {
-    return new StrTree<Coordinate, IGeometry<Coordinate>>(GeometryUtils.GeometryFactory);
-  }
+        public override ISpatialIndex<IExtents<Coordinate>, IGeometry<Coordinate>> CreateSpatialIndex()
+        {
+            return new StrTree<Coordinate, IGeometry<Coordinate>>(GeometryUtils.GeometryFactory);
+        }
+
 
         [Test]
-  public void TestDisallowedInserts() {
-    StrTree<Coordinate, IGeometry<Coordinate>> t = new StrTree<Coordinate, IGeometry<Coordinate>>(GeometryUtils.GeometryFactory);
-    t.Insert(new Envelope(0, 0, 0, 0), new Object());
-    t.Insert(new Envelope(0, 0, 0, 0), new Object());
-    t.Query(new Envelope());
-    try {
-      t.insert(new Envelope(0, 0, 0, 0), new Object());
-      assertTrue(false);
-    }
-    catch (AssertionFailedException e) {
-      assertTrue(true);
-    }
-  }
+        public void TestDisallowedInserts()
+        {
+            StrTree<Coordinate, IGeometry<Coordinate>> t =
+                new StrTree<Coordinate, IGeometry<Coordinate>>(GeometryUtils.GeometryFactory);
+            t.Insert(GeometryUtils.GeometryFactory.CreatePoint2D(0, 0) as IGeometry<Coordinate>);
+            t.Insert(GeometryUtils.GeometryFactory.CreatePoint2D(0, 0) as IGeometry<Coordinate>);
+            t.Query(GeometryUtils.GeometryFactory.CreateGeometryCollection().Extents);
+            try
+            {
+                t.Insert(GeometryUtils.GeometryFactory.CreatePoint2D(0, 0) as IGeometry<Coordinate>);
+                Assert.IsTrue(false);
+            }
+            catch (Exception e)
+            {
+                Assert.IsTrue(true);
+            }
+        }
 
-  public void TestQuery() {
-    ArrayList geometries = new ArrayList();
-    geometries.add(factory.createLineString(new Coordinate[]{
-        new Coordinate(0, 0), new Coordinate(10, 10)}));
-    geometries.add(factory.createLineString(new Coordinate[]{
-        new Coordinate(20, 20), new Coordinate(30, 30)}));
-    geometries.add(factory.createLineString(new Coordinate[]{
-        new Coordinate(20, 20), new Coordinate(30, 30)}));
-    STRtreeDemo.TestTree t = new STRtreeDemo.TestTree(4);
-    for (Iterator i = geometries.iterator(); i.hasNext(); ) {
-      Geometry<Coordinate> g = (Geometry<Coordinate>) i.next();
-      t.Insert(g.getEnvelopeInternal(), new Object());
-    }
-    t.build();
-    try {
-      assertEquals(1, t.query(new Envelope(5, 6, 5, 6)).size());
-      assertEquals(0, t.query(new Envelope(20, 30, 0, 10)).size());
-      assertEquals(2, t.query(new Envelope(25, 26, 25, 26)).size());
-      assertEquals(3, t.query(new Envelope(0, 100, 0, 100)).size());
-    }
-    catch (Throwable x) {
-      STRtreeDemo.printSourceData(geometries, System.out);
-      STRtreeDemo.printLevels(t, System.out);
-      throw x;
-    }
-  }
+        public void TestQuery()
+        {
+            List<IGeometry<Coordinate>> geometries = new List<IGeometry<Coordinate>>();
+            geometries.Add(GeometryUtils.GeometryFactory.CreateLineString(new Coordinate[]
+                                                        {
+                                                            GeometryUtils.CoordFac.Create(0, 0), GeometryUtils.CoordFac.Create(10, 10)
+                                                        }));
+            geometries.Add(GeometryUtils.GeometryFactory.CreateLineString(new Coordinate[]
+                                                        {
+                                                            GeometryUtils.CoordFac.Create(20, 20), GeometryUtils.CoordFac.Create(30, 30)
+                                                        }));
+            geometries.Add(GeometryUtils.GeometryFactory.CreateLineString(new Coordinate[]
+                                                        {
+                                                            GeometryUtils.CoordFac.Create(20, 20), GeometryUtils.CoordFac.Create(30, 30)
+                                                        }));
+            STRTreeDemo.TestTree t = new STRTreeDemo.TestTree(4);
+            foreach (IGeometry<Coordinate> g in geometries)
+            {
+                t.Insert(g);
+            }
+
+            try
+            {
+                Assert.AreEqual(1, t.Query((IExtents<Coordinate>)GeometryUtils.GeometryFactory.CreatePoint2D(5, 6).Extents));
+                Assert.AreEqual(0, t.Query(GeometryUtils.GeometryFactory.CreatePolygon(
+                    GeometryUtils.CoordSeqFac.Create(new Coordinate[]
+                                                         {
+                                                             GeometryUtils.CoordFac.Create(20,30), 
+                                                             GeometryUtils.CoordFac.Create(20,10), 
+                                                             GeometryUtils.CoordFac.Create(0,10), 
+                                                             GeometryUtils.CoordFac.Create(0,30), 
+                                                             GeometryUtils.CoordFac.Create(20,30)})
+                    ).Extents));
+                //Envelope(20, 30, 0, 10)).size());
+                Assert.AreEqual(2, t.Query((IExtents<Coordinate>)GeometryUtils.GeometryFactory.CreatePoint2D(25, 26).Extents));
+                Assert.AreEqual(3, t.Query((IExtents<Coordinate>)GeometryUtils.GeometryFactory.CreatePoint2D(0, 100).Extents));
+            }
+            catch (Exception x)
+            {
+                STRTreeDemo.PrintSourceData(geometries, Console.Out);
+                STRTreeDemo.PrintLevels(t, Console.Out);
+                throw x;
+            }
+        }
+
         [Test]
-  public void TestVerticalSlices() {
-    doTestVerticalSlices(3, 2, 2, 1);
-    doTestVerticalSlices(4, 2, 2, 2);
-    doTestVerticalSlices(5, 3, 2, 1);
-  }
+        public void TestVerticalSlices()
+        {
+            DoTestVerticalSlices(3, 2, 2, 1);
+            DoTestVerticalSlices(4, 2, 2, 2);
+            DoTestVerticalSlices(5, 3, 2, 1);
+        }
 
-  private void doTestCreateParentsFromVerticalSlice(int childCount,
-      int nodeCapacity, int expectedChildrenPerParentBoundable,
-      int expectedChildrenOfLastParent) {
-    STRtreeDemo.TestTree t = new STRtreeDemo.TestTree(nodeCapacity);
-    List parentBoundables
-         = t.createParentBoundablesFromVerticalSlice(itemWrappers(childCount), 0);
-    for (int i = 0; i < parentBoundables.size() - 1; i++) {//-1
-      AbstractNode<Coordinate,IGeometry<Coordinate>> parentBoundable = (AbstractNode) parentBoundables.get(i);
-      assertEquals(expectedChildrenPerParentBoundable, parentBoundable.getChildBoundables().size());
-    }
-    AbstractNode lastParent = (AbstractNode) parentBoundables.get(parentBoundables.size() - 1);
-    assertEquals(expectedChildrenOfLastParent, lastParent.getChildBoundables().size());
-  }
+        private void DoTestCreateParentsFromVerticalSlice(int childCount, int nodeCapacity, int expectedChildrenPerParentBoundable, int expectedChildrenOfLastParent)
+        {
+            STRTreeDemo.TestTree t = new STRTreeDemo.TestTree(nodeCapacity);
+            IList<IBoundable<IExtents<Coordinate>>> parentBoundables
+                = t.CreateParentBoundablesFromVerticalSlice(ItemWrappers(childCount), 0);
+            List<IBoundable<IExtents<Coordinate>>> childBoundables;
+            for (int i = 0; i < parentBoundables.Count - 1; i++)
+            {
+                //-1
+                ISpatialIndexNode<IExtents<Coordinate>, IGeometry<Coordinate>> parentBoundable = parentBoundables[i] as ISpatialIndexNode<IExtents<Coordinate>, IGeometry<Coordinate>>;
+                childBoundables = new List<IBoundable<IExtents<Coordinate>>>(parentBoundable.ChildBoundables);
+                Assert.AreEqual(expectedChildrenPerParentBoundable, childBoundables.Count);
+            }
+            ISpatialIndexNode<IExtents<Coordinate>, IGeometry<Coordinate>> lastParent =
+                parentBoundables[parentBoundables.Count - 1] as ISpatialIndexNode<IExtents<Coordinate>, IGeometry<Coordinate>>;
+            childBoundables = new List<IBoundable<IExtents<Coordinate>>>(lastParent.ChildBoundables);
+            Assert.AreEqual(expectedChildrenOfLastParent, childBoundables.Count);
+        }
 
-  private void doTestVerticalSlices(int itemCount, int sliceCount,
-      int expectedBoundablesPerSlice, int expectedBoundablesOnLastSlice) {
-    STRtreeDemo.TestTree t = new STRtreeDemo.TestTree(2);
-    List[] slices =
-        t.verticalSlices(itemWrappers(itemCount), sliceCount);
-    assertEquals(sliceCount, slices.length);
-    for (int i = 0; i < sliceCount - 1; i++) {//-1
-      assertEquals(expectedBoundablesPerSlice, slices[i].size());
-    }
-    assertEquals(expectedBoundablesOnLastSlice, slices[sliceCount - 1].size());
-  }
+        private void DoTestVerticalSlices(int itemCount, int sliceCount, int expectedBoundablesPerSlice, int expectedBoundablesOnLastSlice)
+        {
+            STRTreeDemo.TestTree t = new STRTreeDemo.TestTree(2);
+            IList<IList<IBoundable<IExtents<Coordinate>>>> slices =
+                t.VerticalSlices(ItemWrappers(itemCount), sliceCount);
+            Assert.AreEqual(sliceCount, slices.Count);
+            for (int i = 0; i < sliceCount - 1; i++)
+            {
+                //-1
+                Assert.AreEqual(expectedBoundablesPerSlice, slices[i].Count);
+            }
+            Assert.AreEqual(expectedBoundablesOnLastSlice, slices[sliceCount - 1].Count);
+        }
 
-  private List itemWrappers(int size) {
-    ArrayList itemWrappers = new ArrayList();
-    for (int i = 0; i < size; i++) {
-      itemWrappers.add(new ItemBoundable(new Envelope(0, 0, 0, 0), new Object()));
+        private IList<IBoundable<IExtents<Coordinate>>> ItemWrappers(int size)
+        {
+            List<IBoundable<IExtents<Coordinate>>> itemWrappers = new List<IBoundable<IExtents<Coordinate>>>();
+            for (int i = 0; i < size; i++)
+            {
+                IGeometry<Coordinate> tmp = GeometryUtils.GeometryFactory.CreatePoint(
+                    GeometryUtils.CoordFac.Create(0, 0));
+                itemWrappers.Add(tmp);
+            }
+            return itemWrappers;
+        }
     }
-    return itemWrappers;
-  }
+
+    public static class STRTreeDemo
+    {
+
+        static STRTreeDemo()
+        {
+        }
+
+        public class TestTree : StrTree<Coordinate, IGeometry<Coordinate>>
+        {
+
+            public TestTree(int nodeCapacity)
+                : base(GeometryUtils.GeometryFactory, nodeCapacity)
+            {
+            }
+
+            public new IEnumerable<IBoundable<IExtents<Coordinate>>> BoundablesAtLevel(int level)
+            {
+                return base.BoundablesAtLevel(level);
+            }
+
+            public new ISpatialIndexNode<IExtents<Coordinate>, IGeometry<Coordinate>> Root
+            {
+                get { return base.Root; }
+            }
+
+            public new IList<IBoundable<IExtents<Coordinate>>> CreateParentBoundables(IList<IBoundable<IExtents<Coordinate>>> verticalSlice, int newLevel)
+            {
+                return base.CreateParentBoundables(verticalSlice, newLevel);
+            }
+
+            public new IList<IList<IBoundable<IExtents<Coordinate>>>> VerticalSlices(ICollection<IBoundable<IExtents<Coordinate>>> childBoundables, int size)
+            {
+                return base.VerticalSlices(childBoundables, size);
+            }
+
+            public new IList<IBoundable<IExtents<Coordinate>>> CreateParentBoundablesFromVerticalSlice(IList<IBoundable<IExtents<Coordinate>>> childBoundables, int newLevel)
+            {
+                return base.CreateParentBoundablesFromVerticalSlice(childBoundables, newLevel);
+            }
+        }
+
+        /*
+
+      private static void initTree(TestTree t, List sourceEnvelopes) {
+        for (Iterator i = sourceEnvelopes.iterator(); i.hasNext(); ) {
+          Envelope sourceEnvelope = (Envelope) i.next();
+          t.insert(sourceEnvelope, sourceEnvelope);
+        }
+        t.build();
+      }
+
+      public static void main(String[] args) throws Exception {
+        List envelopes = sourceData();
+        TestTree t = new TestTree(NODE_CAPACITY);
+        initTree(t, envelopes);
+        PrintStream printStream = System.out;
+        printSourceData(envelopes, printStream);
+        printLevels(t, printStream);
+      }
+         */
+        public static void PrintSourceData(IEnumerable<IGeometry<Coordinate>> sourceEnvelopes, TextWriter o)
+        {
+            o.WriteLine("============ Source Data ============\n");
+            o.Write("GEOMETRYCOLLECTION(");
+            Boolean first = true;
+            foreach (IGeometry<Coordinate> geom in sourceEnvelopes)
+            {
+                IGeometry<Coordinate> g = geom.Extents.ToGeometry();
+                if (first)
+                {
+                    first = false;
+                }
+                else
+                {
+                    o.Write(",");
+                }
+                o.Write(g);
+            }
+            o.WriteLine(")\n");
+        }
+
+        /*
+          private static List sourceData() {
+            ArrayList envelopes = new ArrayList();
+            for (int i = 0; i < ItemCount; i++) {
+              envelopes.add(RandomRectangle().getEnvelopeInternal());
+            }
+            return envelopes;
+          }
+
+          private const double Extent = 100;
+          private const double MaxItemExtent = 15;
+          private const double MinItemExtent = 3;
+          private const int ItemCount = 20;
+          private const int NODE_CAPACITY = 4;
+          //private static GeometryFactory factory = new GeometryFactory();
+
+          private static IPolygon<Coordinate> RandomRectangle() {
+            double width = MinItemExtent + ((MaxItemExtent-MinItemExtent) * Math.random());
+            double height = MinItemExtent + ((MaxItemExtent-MinItemExtent) * Math.random());
+            double bottom = Extent * Math.random();
+            double left = Extent * Math.random();
+            double top = bottom + height;
+            double right = left + width;
+            return factory.createPolygon(factory.createLinearRing(new Coordinate[]{
+                  new Coordinate(left, bottom), new Coordinate(right, bottom),
+                  new Coordinate(right, top), new Coordinate(left, top),
+                  new Coordinate(left, bottom) }), null);
+          }
+            */
+        public static void PrintLevels(TestTree t, TextWriter o)
+        {
+            for (int i = 0; i <= t.Root.Level; i++)
+            {
+                PrintBoundables(t.BoundablesAtLevel(i), "Level " + i, o);
+            }
+        }
+
+        public static void PrintBoundables(IEnumerable<IBoundable<IExtents<Coordinate>>> boundables, String title, TextWriter o)
+        {
+            o.WriteLine("============ " + title + " ============\n");
+            o.Write("GEOMETRYCOLLECTION(");
+            Boolean first = true;
+            foreach (IBoundable<IExtents<Coordinate>> boundable in boundables)
+            {
+                if (first)
+                {
+                    first = false;
+                }
+                else
+                {
+                    o.Write(",");
+                }
+                o.Write(ToString(boundable));
+            }
+            o.WriteLine(")\n");
+        }
+
+        private static String ToString(IBoundable<IExtents<Coordinate>> b)
+        {
+            IExtents<Coordinate> envelope = Extents(b);
+            return "POLYGON(("
+             + envelope.GetMin(Ordinates.X) + " "
+             + envelope.GetMin(Ordinates.Y) + ", "
+             + envelope.GetMin(Ordinates.X) + " "
+             + envelope.GetMax(Ordinates.Y) + ", "
+             + envelope.GetMax(Ordinates.X) + " "
+             + envelope.GetMax(Ordinates.Y) + ", "
+             + envelope.GetMax(Ordinates.X) + " "
+             + envelope.GetMin(Ordinates.Y) + ","
+             + envelope.GetMin(Ordinates.X) + " "
+             + envelope.GetMin(Ordinates.Y) + "))";
+        }
+
+        private static IExtents<Coordinate> Extents(IBoundable<IExtents<Coordinate>> b)
+        {
+            return b.Bounds;
+        }
+
+
     }
 }
-*/
+

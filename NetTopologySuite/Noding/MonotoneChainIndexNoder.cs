@@ -85,6 +85,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
             intersectChains();
         }
+
         public override IEnumerable<TNodingResult> Node<TNodingResult>(
             IEnumerable<ISegmentString<TCoordinate>> segmentStrings,
             Func<ISegmentString<TCoordinate>, TNodingResult> generator)

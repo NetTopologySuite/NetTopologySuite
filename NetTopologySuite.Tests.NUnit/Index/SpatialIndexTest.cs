@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
+using GisSharpBlog.NetTopologySuite.Index.Strtree;
 using NetTopologySuite.Coordinates.Simple;
 using NUnit.Framework;
 
@@ -13,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
         public abstract ISpatialIndex<IExtents<Coordinate>, IGeometry<Coordinate>> CreateSpatialIndex();
 
         [Test]
-        public void testSpatialIndex()
+        public void TestSpatialIndex()
         {
             Console.WriteLine("===============================");
             Console.WriteLine("Spatial-Index Test: " + GetType().Name);
@@ -32,8 +33,30 @@ namespace NetTopologySuite.Tests.NUnit.Index
             DoTest(index, QueryEnvelopeExtent2, sourceData);
         }
 
+        protected IExtents<Coordinate> CreateExtents(double a, double b, double c, double d)
+        {
+            Coordinate min = GeometryUtils.CoordFac.Create(a, b);
+            Coordinate max = GeometryUtils.CoordFac.Create(c, d);
+            return GeometryUtils.GeometryFactory.CreateExtents(min, max);
+        }
+
         private void Insert(IEnumerable<IGeometry<Coordinate>> sourceData, ISpatialIndex<IExtents<Coordinate>, IGeometry<Coordinate>> index)
         {
+            //index.InsertRange(sourceData);
+            StrTree<Coordinate, IGeometry<Coordinate>> str = index as StrTree<Coordinate, IGeometry<Coordinate>>;
+            if (str != null)
+            {
+                str.BulkLoad(sourceData);
+                return;
+            }
+            /*
+            SirTree<IGeometry<Coordinate>> sir = index as SirTree<IGeometry<Coordinate>>;
+            if (sir != null)
+            {
+                sir.BulkLoad(sourceData);
+                return;
+            }
+             */
             index.InsertRange(sourceData);
         }
 

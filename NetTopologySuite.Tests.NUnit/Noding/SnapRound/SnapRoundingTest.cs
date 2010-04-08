@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
+using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Noding.Snapround;
 using NetTopologySuite.Coordinates.Simple;
 using NUnit.Framework;
@@ -13,7 +14,8 @@ namespace NetTopologySuite.Tests.NUnit.Noding.SnapRound
     {
         static SnapRoundingTest()
         {
-            HotPixel<Coordinate>.CoordinateFactory = GeometryUtils.CoordFac;
+            HotPixel<Coordinate>.FloatingPrecisionGeometryFactory = GeometryUtils.GeometryFactory;
+            RobustLineIntersector<Coordinate>.FloatingPrecisionCoordinateFactory = GeometryUtils.CoordFac;
         }
 
         [Test]

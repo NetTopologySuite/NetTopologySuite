@@ -108,8 +108,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
 
         private void snapRound(IEnumerable<ISegmentString<TCoordinate>> segStrings, LineIntersector<TCoordinate> li)
         {
-            //_noder.ComputeNodes(segStrings);
-            segStrings = _noder.Node(segStrings);
+            _noder.ComputeNodes(segStrings);
+            //segStrings = _noder.Node(segStrings);
             IEnumerable<TCoordinate> intersections = _interiorIntersections;
             //_noder.Node(segStrings,  Func<NodedSegmentString<TCoordinate>,TCoordinate>( ) );
             computeIntersectionSnaps(intersections);
@@ -164,6 +164,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
                 {
                     e.AddIntersection(coordinate, index);
                 }
+                index++;
             }
         }
 

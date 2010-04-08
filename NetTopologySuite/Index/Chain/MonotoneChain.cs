@@ -191,6 +191,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
             {
                 LineSegment<TCoordinate> selectedSegment = GetLineSegment(start);
                 yield return new KeyValuePair<Int32, LineSegment<TCoordinate>>(start, selectedSegment);
+                yield break;
             }
 
             // nothing to do if the envelopes don't overlap
@@ -209,18 +210,18 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
 
             if (start < mid)
             {
-                foreach (LineSegment<TCoordinate> ls in computeSelect(searchExtents, start, mid))
+                foreach (KeyValuePair<Int32, LineSegment<TCoordinate>> ls in computeSelectWithIndexes(searchExtents, start, mid))
                 {
-                    yield return new KeyValuePair<int, LineSegment<TCoordinate>>(start, ls);
+                    yield return ls;// new KeyValuePair<int, LineSegment<TCoordinate>>(start, ls);
                 }
                 //computeSelect(searchExtents, start, mid);
             }
 
             if (mid < end)
             {
-                foreach (LineSegment<TCoordinate> ls in computeSelect(searchExtents, mid, end))
+                foreach (KeyValuePair<Int32, LineSegment<TCoordinate>> ls in computeSelectWithIndexes(searchExtents, mid, end))
                 {
-                    yield return new KeyValuePair<int, LineSegment<TCoordinate>>(mid, ls);
+                    yield return ls;// new KeyValuePair<int, LineSegment<TCoordinate>>(mid, ls);
                 }
                 //computeSelect(searchExtents, mid, end);
             }
