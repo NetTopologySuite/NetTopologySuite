@@ -412,7 +412,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             DoubleComponent minX0 = n00X.LessThan(n01X) ? n00X : n01X;
             DoubleComponent minY0 = n00Y.LessThan(n01Y) ? n00Y : n01Y;
             DoubleComponent maxX0 = n00X.GreaterThan(n01X) ? n00X : n01X;
-            DoubleComponent maxY0 = n00X.GreaterThan(n01X) ? n00X : n01X;
+            DoubleComponent maxY0 = n00Y.GreaterThan(n01Y) ? n00Y : n01Y;
 
             //Double minX1 = n10[Ordinates.X] < n11[Ordinates.X] ? n10[Ordinates.X] : n11[Ordinates.X];
             //Double minY1 = n10[Ordinates.Y] < n11[Ordinates.Y] ? n10[Ordinates.Y] : n11[Ordinates.Y];
@@ -422,7 +422,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             DoubleComponent minX1 = n10X.LessThan(n11X) ? n10X : n11X;
             DoubleComponent minY1 = n10Y.LessThan(n11Y) ? n10Y : n11Y;
             DoubleComponent maxX1 = n10X.GreaterThan(n11X) ? n10X : n11X;
-            DoubleComponent maxY1 = n10X.GreaterThan(n11X) ? n10X : n11X;
+            DoubleComponent maxY1 = n10Y.GreaterThan(n11Y) ? n10Y : n11Y;
 
             //Double intMinX = minX0 > minX1 ? minX0 : minX1;
             //Double intMaxX = maxX0 < maxX1 ? maxX0 : maxX1;

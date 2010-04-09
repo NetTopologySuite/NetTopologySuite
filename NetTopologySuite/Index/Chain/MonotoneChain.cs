@@ -6,7 +6,6 @@ using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using NPack;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Chain
@@ -80,6 +79,15 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         private IExtents<TCoordinate> _extents;
         private Int32 _id; // useful for optimizing chain comparisons
 
+        ///<summary>
+        /// Creates an instance of this class
+        ///</summary>
+        ///<param name="geoFactory">Factory to create Extents of chain</param>
+        ///<param name="pts">Points that make up the chain</param>
+        ///<param name="start">Starting point of chain segment</param>
+        ///<param name="end">Endpoint of chain segment</param>
+        ///<param name="context">user-defined information</param>
+        ///<exception cref="ArgumentNullException"></exception>
         public MonotoneChain(IGeometryFactory<TCoordinate> geoFactory,
                              ICoordinateSequence<TCoordinate> pts,
                              Int32 start, Int32 end, Object context)
@@ -94,12 +102,18 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
             _context = context;
         }
 
+        /// <summary>
+        /// Useful for opimizing chain comparisions
+        /// </summary>
         public Int32 Id
         {
             get { return _id; }
             set { _id = value; }
         }
 
+        /// <summary>
+        /// User-defined information
+        /// </summary>
         public Object Context
         {
             get { return _context; }

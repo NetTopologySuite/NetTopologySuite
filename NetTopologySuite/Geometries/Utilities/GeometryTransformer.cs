@@ -91,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 
             if (inputGeom is ILinearRing<TCoordinate>)
             {
-                return TransformLineString((ILinearRing<TCoordinate>) inputGeom, null);
+                return TransformLinearRing((ILinearRing<TCoordinate>) inputGeom, null);
             }
 
             if (inputGeom is ILineString<TCoordinate>)
@@ -181,7 +181,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                 new LineStringCoordinateEnumerator<TCoordinate>(transformed);
 
             // ensure a valid LinearRing
-            if (!_preserveType && lineEnumerator.IsValidRing)
+            if (!_preserveType && !lineEnumerator.IsValidRing)
             {
                 return _factory.CreateLineString(lineEnumerator);
             }
