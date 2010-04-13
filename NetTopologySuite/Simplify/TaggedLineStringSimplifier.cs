@@ -14,15 +14,16 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// Uses the recursive D-P algorithm.
     /// </summary>
     public class TaggedLineStringSimplifier<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         // NOTE: modified for "safe" assembly in Sql 2005
         // Added readonly!
-        private static readonly LineIntersector<TCoordinate> _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
+        private readonly LineIntersector<TCoordinate> _li;//= CGAlgorithms<TCoordinate>.CreateRobustLineIntersector();
 
-        private readonly LineSegmentIndex<TCoordinate> _inputIndex = new LineSegmentIndex<TCoordinate>();
-        private readonly LineSegmentIndex<TCoordinate> _outputIndex = new LineSegmentIndex<TCoordinate>();
+        private readonly LineSegmentIndex<TCoordinate> _inputIndex;// = new LineSegmentIndex<TCoordinate>();
+        private readonly LineSegmentIndex<TCoordinate> _outputIndex;// = new LineSegmentIndex<TCoordinate>();
         private TaggedLineString<TCoordinate> _line;
         private IList<TCoordinate> _linePts;
         private Double _distanceTolerance = 0.0;
@@ -30,6 +31,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         public TaggedLineStringSimplifier(LineSegmentIndex<TCoordinate> inputIndex,
                                           LineSegmentIndex<TCoordinate> outputIndex)
         {
+            _li = CGAlgorithms<TCoordinate>.CreateRobustLineIntersector(TopologyPreservingSimplifier<TCoordinate>.GeometryFactory);
             _inputIndex = inputIndex;
             _outputIndex = outputIndex;
         }
@@ -54,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
 
             if ((i + 1) == j)
             {
-                TaggedLineSegment<TCoordinate> newSeg = _line.Segments[i];
+                LineSegment<TCoordinate> newSeg = _line.Segments[i].LineSegment;
                 _line.AddToResult(newSeg);
                 // leave this segment in the input index, for efficiency
                 return;
@@ -77,7 +79,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             }
 
             // test if flattened section would cause intersection
-            LineSegment<TCoordinate> candidateSeg = new LineSegment<TCoordinate>(
+            TaggedLineSegment<TCoordinate> candidateSeg = new TaggedLineSegment<TCoordinate>(
                 _linePts[i], _linePts[j]);
 
             sectionIndex[0] = i;
@@ -90,7 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
 
             if (isValidToFlatten)
             {
-                TaggedLineSegment<TCoordinate> newSeg = flatten(i, j);
+                LineSegment<TCoordinate> newSeg = flatten(i, j);
                 _line.AddToResult(newSeg);
                 return;
             }
@@ -132,7 +134,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
 
             // update the indexes
             remove(_line, start, end);
-            _outputIndex.Add(newSeg);
+            _outputIndex.Add(new TaggedLineSegment<TCoordinate>(p0, p1));
             return newSeg;
         }
 
@@ -142,7 +144,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         //private Int32[] validSectionIndex = new Int32[2];
 
         private Boolean hasBadIntersection(TaggedLineString<TCoordinate> parentLine, Int32[] sectionIndex,
-                                           LineSegment<TCoordinate> candidateSeg)
+                                           TaggedLineSegment<TCoordinate> candidateSeg)
         {
             if (hasBadOutputIntersection(candidateSeg))
             {
@@ -157,13 +159,13 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             return false;
         }
 
-        private Boolean hasBadOutputIntersection(LineSegment<TCoordinate> candidateSeg)
+        private Boolean hasBadOutputIntersection(TaggedLineSegment<TCoordinate> candidateSeg)
         {
-            IEnumerable<LineSegment<TCoordinate>> querySegs = _outputIndex.Query(candidateSeg);
+            IEnumerable<TaggedLineSegment<TCoordinate>> querySegs = _outputIndex.Query(candidateSeg);
 
-            foreach (LineSegment<TCoordinate> querySeg in querySegs)
+            foreach (TaggedLineSegment<TCoordinate> querySeg in querySegs)
             {
-                if (hasInteriorIntersection(querySeg, candidateSeg))
+                if (hasInteriorIntersection(querySeg.LineSegment, candidateSeg.LineSegment))
                 {
                     return true;
                 }
@@ -173,13 +175,13 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         }
 
         private Boolean hasBadInputIntersection(TaggedLineString<TCoordinate> parentLine, Int32[] sectionIndex,
-                                                LineSegment<TCoordinate> candidateSeg)
+                                                TaggedLineSegment<TCoordinate> candidateSeg)
         {
-            IEnumerable<LineSegment<TCoordinate>> querySegs = _inputIndex.Query(candidateSeg);
+            IEnumerable<TaggedLineSegment<TCoordinate>> querySegs = _inputIndex.Query(candidateSeg);
 
-            foreach (LineSegment<TCoordinate> querySeg in querySegs)
+            foreach (TaggedLineSegment<TCoordinate> querySeg in querySegs)
             {
-                if (hasInteriorIntersection(querySeg, candidateSeg))
+                if (hasInteriorIntersection(querySeg.LineSegment, candidateSeg.LineSegment))
                 {
                     if (isInLineSection(parentLine, sectionIndex, querySeg))
                     {
@@ -215,10 +217,13 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             return false;
         }
 
-        private static Boolean hasInteriorIntersection(LineSegment<TCoordinate> seg0, LineSegment<TCoordinate> seg1)
+        private Boolean hasInteriorIntersection(LineSegment<TCoordinate> seg0, LineSegment<TCoordinate> seg1)
         {
-            _li.ComputeIntersection(seg0.P0, seg0.P1, seg1.P0, seg1.P1);
-            return _li.IsInteriorIntersection();
+            Intersection<TCoordinate> intersection = _li.ComputeIntersection(seg0.P0, seg0.P1, seg1.P0, seg1.P1);
+            return intersection.HasIntersection
+                       ?
+                           intersection.IsInteriorIntersection()
+                       : false;
         }
 
         /// <summary>

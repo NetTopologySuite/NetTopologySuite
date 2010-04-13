@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Index.Quadtree;
 using NPack.Interfaces;
@@ -11,12 +12,17 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// An index of <see cref="LineSegment{TCoordinate}"/>s.
     /// </summary>
     public class LineSegmentIndex<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
-        private readonly Quadtree<TCoordinate, TaggedLineSegment<TCoordinate>> _index
-            = new Quadtree<TCoordinate, TaggedLineSegment<TCoordinate>>();
+        private readonly Quadtree<TCoordinate, TaggedLineSegment<TCoordinate>> _index;
 
+        public LineSegmentIndex(IGeometryFactory<TCoordinate> geometryFactory)
+        {
+            _index = new Quadtree<TCoordinate, TaggedLineSegment<TCoordinate>>(geometryFactory);
+        }
+        
         public void Add(TaggedLineString<TCoordinate> line)
         {
             foreach (TaggedLineSegment<TCoordinate> segment in line.Segments)
@@ -27,28 +33,35 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
 
         public void Add(TaggedLineSegment<TCoordinate> seg)
         {
-            _index.Insert(new Extents<TCoordinate>(seg.LineSegment.P0, seg.LineSegment.P1), seg);
+        
+            _index.Insert(seg);
         }
 
         public void Remove(TaggedLineSegment<TCoordinate> seg)
         {
-            _index.Remove(new Extents<TCoordinate>(seg.LineSegment.P0, seg.LineSegment.P1), seg);
+            _index.Remove(seg);
         }
 
         public IEnumerable<TaggedLineSegment<TCoordinate>> Query(TaggedLineSegment<TCoordinate> querySeg)
         {
-            Extents<TCoordinate> extents = new Extents<TCoordinate>(querySeg.LineSegment.P0, querySeg.LineSegment.P1);
+            IExtents<TCoordinate> extents = querySeg.Bounds;
 
             Predicate<TaggedLineSegment<TCoordinate>> predicate =
                 delegate(TaggedLineSegment<TCoordinate> seg)
                 {
                     return Extents<TCoordinate>.Intersects(
-                        seg.LineSegment.P0, seg.LineSegment.P1, 
+                        seg.LineSegment.P0, seg.LineSegment.P1,
                         querySeg.LineSegment.P0, querySeg.LineSegment.P1);
                 };
 
             return _index.Query(extents, predicate);
         }
+
+        //public IGeometryFactory<TCoordinate> Factory
+        //{
+        //    get { return _index.Factory; }
+        //}
+
     }
 
     ///// <summary>

@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GeoAPI.Utilities;
+using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Simplify
 {
     public class TaggedLineString<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
         private readonly ILineString<TCoordinate> _parentLine;
         private readonly List<TaggedLineSegment<TCoordinate>> _segs = new List<TaggedLineSegment<TCoordinate>>();
-        private readonly List<TaggedLineSegment<TCoordinate>> _resultSegs = new List<TaggedLineSegment<TCoordinate>>();
+        private readonly List<LineSegment<TCoordinate>> _resultSegs = new List<LineSegment<TCoordinate>>();
         private readonly Int32 _minimumSize;
 
         public TaggedLineString(ILineString<TCoordinate> parentLine) : this(parentLine, 2) {}
@@ -71,7 +72,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             get { return _segs.AsReadOnly(); }
         }
 
-        public void AddToResult(TaggedLineSegment<TCoordinate> seg)
+        public void AddToResult(LineSegment<TCoordinate> seg)
         {
             _resultSegs.Add(seg);
         }
@@ -86,20 +87,17 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             return _parentLine.Factory.CreateLinearRing(ResultCoordinates);
         }
 
-        private static IEnumerable<TCoordinate> extractCoordinates(IEnumerable<TaggedLineSegment<TCoordinate>> segs)
+        private static IEnumerable<TCoordinate> extractCoordinates(IEnumerable<LineSegment<TCoordinate>> segs)
         {
-            TaggedLineSegment<TCoordinate> lastSegment = null;
+            LineSegment<TCoordinate> lastSegment = default(LineSegment<TCoordinate>);
 
-            foreach (TaggedLineSegment<TCoordinate> segment in segs)
+            foreach (LineSegment<TCoordinate> segment in segs)
             {
-                yield return segment.LineSegment.P0;
+                yield return segment.P0;
                 lastSegment = segment;
             }
 
-            if (lastSegment != null)
-            {
-                yield return lastSegment.LineSegment.P1;
-            }
+            yield return lastSegment.P1;
         }
     }
 }

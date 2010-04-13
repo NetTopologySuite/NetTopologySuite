@@ -163,9 +163,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             // optimize creating ring for for zero distance
             if (distance == 0.0)
                 yield return _sequenceFactory.Create(inputPts);
-
-            ComputeRingBufferCurve(inputPts, side);
-            yield return _sequenceFactory.Create(_vertexList.Coordinates);
+            else
+            {
+                ComputeRingBufferCurve(inputPts, side);
+                yield return _sequenceFactory.Create(_vertexList.Coordinates);
+            }
         }
 
         private static TCoordinate[] CopyCoordinates(TCoordinate[] pts)

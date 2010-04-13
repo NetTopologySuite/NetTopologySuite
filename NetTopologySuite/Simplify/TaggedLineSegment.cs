@@ -1,6 +1,7 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
+using GeoAPI.Indexing;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
@@ -11,10 +12,12 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// Used to index the segments in a point and recover the segment locations
     /// from the index.
     /// </summary>
-    public class TaggedLineSegment<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-            IComputable<TCoordinate>, IConvertible
+    public class TaggedLineSegment<TCoordinate> : IBoundable<IExtents<TCoordinate>>
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+            IComparable<TCoordinate>, IConvertible,
+            IComputable<Double, TCoordinate>
     {
+        
         private readonly LineSegment<TCoordinate> _segment;
         private readonly IGeometry<TCoordinate> _parent;
         private readonly Int32 _index;
@@ -43,6 +46,18 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         {
             get { return _segment; }
         }
-        
+
+        public bool Intersects(IExtents<TCoordinate> other)
+        {
+            return Bounds.Intersects(other);
+        }
+
+        public IExtents<TCoordinate> Bounds
+        {
+            get
+            {
+                return TopologyPreservingSimplifier<TCoordinate>.GeometryFactory.CreateExtents(LineSegment.P0, LineSegment.P1);
+            }
+        }
     }
 }

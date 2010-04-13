@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
+using GeoAPI.Geometries;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Simplify
@@ -10,12 +12,13 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// (in the sense that no new intersections are introduced).
     /// </summary>
     public class TaggedLinesSimplifier<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+        where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
-        private readonly LineSegmentIndex<TCoordinate> _inputIndex = new LineSegmentIndex<TCoordinate>();
-        private readonly LineSegmentIndex<TCoordinate> _outputIndex = new LineSegmentIndex<TCoordinate>();
-        private Double _distanceTolerance = 0.0;
+        private LineSegmentIndex<TCoordinate> _inputIndex;//= new LineSegmentIndex<TCoordinate>();
+        private LineSegmentIndex<TCoordinate> _outputIndex;// = new LineSegmentIndex<TCoordinate>();
+        private Double _distanceTolerance;
 
         /// <summary>
         /// Gets or sets the distance tolerance for the simplification.
@@ -34,6 +37,10 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <param name="taggedLines">The collection of lines to simplify.</param>
         public void Simplify(IEnumerable<TaggedLineString<TCoordinate>> taggedLines)
         {
+            //TaggedLineString<TCoordinate> first = Slice.GetFirst(taggedLines);
+            _inputIndex = new LineSegmentIndex<TCoordinate>(TopologyPreservingSimplifier<TCoordinate>.GeometryFactory);
+            _outputIndex = new LineSegmentIndex<TCoordinate>(TopologyPreservingSimplifier<TCoordinate>.GeometryFactory);    
+
             foreach (TaggedLineString<TCoordinate> taggedLine in taggedLines)
             {
                 _inputIndex.Add(taggedLine);

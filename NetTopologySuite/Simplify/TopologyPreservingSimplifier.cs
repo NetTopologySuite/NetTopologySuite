@@ -24,9 +24,18 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// (although they may touch at fewer points).
     /// </remarks>
     public class TopologyPreservingSimplifier<TCoordinate>
-        where TCoordinate : ICoordinate, IEquatable<TCoordinate>, IComparable<TCoordinate>,
-                            IComputable<TCoordinate>, IConvertible
+         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
+                            IComparable<TCoordinate>, IConvertible,
+                            IComputable<Double, TCoordinate>
     {
+
+        private static IGeometryFactory<TCoordinate> _geoFactory;
+        public static IGeometryFactory<TCoordinate> GeometryFactory
+        {
+            get { return _geoFactory; }
+            set { _geoFactory = value; }
+        }
+        
         public static IGeometry<TCoordinate> Simplify(IGeometry<TCoordinate> geom, Double distanceTolerance)
         {
             TopologyPreservingSimplifier<TCoordinate> simplifier 
@@ -53,7 +62,17 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
 
         public IGeometry<TCoordinate> GetResultGeometry()
         {
-            _inputGeom.Apply(new LineStringMapBuilderFilter(this));
+
+            TopologyPreservingSimplifier<TCoordinate> container;
+            foreach (ILineString<TCoordinate> lineString in GeometryFilter.Filter<ILineString<TCoordinate>, TCoordinate>(_inputGeom))
+            {
+                Int32 pointCount = lineString is ILinearRing<TCoordinate> ? 4 : 2;
+
+                TaggedLineString<TCoordinate> taggedLine = new TaggedLineString<TCoordinate>(lineString, pointCount);
+                _lineStringMap.Add(lineString, taggedLine);
+            }
+
+            //_inputGeom.Apply(new LineStringMapBuilderFilter(this));
             IEnumerable<TaggedLineString<TCoordinate>> lineStrings = _lineStringMap.Values;
             _lineSimplifier.Simplify(lineStrings);
             IGeometry<TCoordinate> result = (new LineStringTransformer(this)).Transform(_inputGeom);
@@ -67,11 +86,12 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             public LineStringTransformer(TopologyPreservingSimplifier<TCoordinate> container)
             {
                 _container = container;
+                
             }
 
-            protected override IEnumerable<TCoordinate> TransformCoordinates(IEnumerable<TCoordinate> coords, IGeometry<TCoordinate> parent)
+            protected override ICoordinateSequence<TCoordinate> TransformCoordinates(ICoordinateSequence<TCoordinate> coords, IGeometry<TCoordinate> parent)
             {
-                if (parent is ILineString)
+                if (parent is ILineString<TCoordinate>)
                 {
                     TaggedLineString<TCoordinate> taggedLine;
                     _container._lineStringMap.TryGetValue(parent, out taggedLine);
@@ -84,6 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             }
         }
 
+        /*
         private class LineStringMapBuilderFilter : IGeometryComponentFilter<TCoordinate>
         {
             private readonly TopologyPreservingSimplifier<TCoordinate> _container = null;
@@ -115,5 +136,6 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
                 _container._lineStringMap.Add(geom, taggedLine);
             }
         }
+         */
     }
 }

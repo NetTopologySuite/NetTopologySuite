@@ -178,6 +178,10 @@ namespace GisSharpBlog.NetTopologySuite
                                     XmlTestExceptionManager.Publish(ex);
                                 }
                             }
+                            else if (strPrecision == "FLOATING_SINGLE")
+                            {
+                                type = PrecisionModelType.SingleFloating;
+                            }
                         }
                         else
                         {

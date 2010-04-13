@@ -86,6 +86,15 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
                 return createValidArea(roughGeom);
             }
 
+            protected override IGeometry<TCoordinate> TransformLinearRing(ILinearRing<TCoordinate> geom, IGeometry<TCoordinate> parent)
+            {
+                Boolean removeDegenerateRings = parent is IPolygon;
+                IGeometry<TCoordinate> simpleResult = base.TransformLinearRing(geom, parent);
+
+                return removeDegenerateRings && !(simpleResult is ILinearRing<TCoordinate>) ? null : simpleResult;
+            }
+
+
             /// <summary>
             /// Creates a valid area point from one that possibly has
             /// bad topology (i.e. self-intersections).

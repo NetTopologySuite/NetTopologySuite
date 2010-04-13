@@ -65,6 +65,10 @@
     <Compile Include="Operation\Overlay\FixedPrecisionSnappingTest.cs" />
     <Compile Include="Operation\Overlay\OverlayNodingStressTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Simplify\DouglasPeuckerSimplifierTest.cs" />
+    <Compile Include="Simplify\GeometryOperationValidator.cs" />
+    <Compile Include="Simplify\SameStructureTester.cs" />
+    <Compile Include="Simplify\TopologyPreservingSimplifierTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj">
