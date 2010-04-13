@@ -24,6 +24,10 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         public DouglasPeuckerLineSimplifier(ICoordinateSequence<TCoordinate> coordinates)
         {
             _coordinates = coordinates;
+            Int32 numVectors = Convert.ToInt32(Math.Ceiling((double)_coordinates.Count/32));
+            while (_useCoordinate.Count < numVectors)
+                _useCoordinate.Add(new BitVector32(-1));
+
         }
 
         public Double DistanceTolerance
@@ -45,7 +49,6 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             simplifySection(0, _coordinates.Count - 1);
 
             Int32 index = 0;
-
             foreach (TCoordinate coordinate in _coordinates)
             {
                 if (getUseCoordinate(index))
@@ -98,13 +101,13 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         {
             Int32 index = coordinateIndex >> 5; // divide by 32
             BitVector32 bits = _useCoordinate[index];
-            bits[coordinateIndex%32] = use;
+            bits[1 << (coordinateIndex%32)] = use;
             _useCoordinate[index] = bits;
         }
 
         private Boolean getUseCoordinate(Int32 coordinateIndex)
         {
-            return _useCoordinate[coordinateIndex >> 5][coordinateIndex%32];
+            return _useCoordinate[coordinateIndex >> 5][1 << (coordinateIndex % 32)];
         }
     }
 }

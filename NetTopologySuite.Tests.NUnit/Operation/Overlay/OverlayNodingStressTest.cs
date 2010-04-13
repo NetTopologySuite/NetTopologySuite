@@ -24,7 +24,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
         }
 
         [Test]
-        public void testNoding()
+        public void TestNoding()
         {
             const int iterLimit = IterLimit;
             for (int i = 0; i < iterLimit; i++)
