@@ -139,10 +139,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
         private void checkForRightmostCoordinate(DirectedEdge<TCoordinate> de)
         {
-            IEnumerable<TCoordinate> coordinates = de.Edge.Coordinates;
+            ICoordinateSequence<TCoordinate> coordinates = de.Edge.Coordinates;
 
             Int32 i = 0;
-
+            Int32 limit = coordinates.Count - 2;
             foreach (TCoordinate coordinate in coordinates)
             {
                 // only check vertices which are the start or end point of a non-horizontal segment
@@ -157,6 +157,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 }
 
                 i += 1;
+                if (i == limit) break;
             }
         }
 

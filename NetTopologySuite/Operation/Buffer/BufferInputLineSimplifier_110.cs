@@ -122,11 +122,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
         private IEnumerable<TCoordinate> CollapseLine()
         {
+            List<TCoordinate> coords = new List<TCoordinate>();
             for (int i = 0; i < _inputLine.Length; i++)
             {
                 if (!_isDeleted[i])
-                    yield return _inputLine[i];
+                    coords.Add(_inputLine[i]);
+                    //yield return _inputLine[i];
             }
+            return coords;
         }
 
         private Boolean IsShallowConcavity(TCoordinate p0, TCoordinate p1, TCoordinate p2, Double distanceTol)

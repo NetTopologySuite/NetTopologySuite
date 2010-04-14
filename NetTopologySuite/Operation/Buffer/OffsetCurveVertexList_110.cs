@@ -89,22 +89,24 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             _ptList.Add(startPt);
         }
 
-        public TCoordinate[] Coordinates
+        public TCoordinate[] GetCoordinates()
         {
-            get
-            {
+            //get
+            //{
                 if (_ptList.Count > 1)
                 {
                     CloseRing();
                     return _ptList.ToArray();
                 }
                 return null;
-            }
+            //}
         }
 
         public override String ToString()
         {
-            ILineString<TCoordinate> line = _geomFact.CreateLineString(Coordinates);
+            ICoordinateSequence<TCoordinate> tmp = _geomFact.CoordinateSequenceFactory.Create(_ptList);
+            tmp.CloseRing();
+            ILineString<TCoordinate> line = _geomFact.CreateLineString(tmp);
             return line.ToString();
         }
     }
