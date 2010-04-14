@@ -61,7 +61,7 @@
     <Compile Include="Noding\SegmentPointComparatorFullTest.cs" />
     <Compile Include="Noding\SegmentPointComparatorTest.cs" />
     <Compile Include="Noding\SnapRound\SnapRoundingTest.cs" />
-    <Compile Include="NTS\Issue60.cs" />
+    <Compile Include="NTS\Issues.cs" />
     <Compile Include="Operation\Overlay\FixedPrecisionSnappingTest.cs" />
     <Compile Include="Operation\Overlay\OverlayNodingStressTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
