@@ -44,15 +44,23 @@ namespace NetTopologySuite.Tests.NUnit.NTS
             double tolerance = 63.0;
 
             IGeometry < Coordinate > inputGeometry = geomFactory.WktReader.Read("LINESTRING (2783 2949, 2788 -1237, 764 -2410, -1589 -2274, -2724 2451, 2783 2949)");
-            try
-            {
-                IGeometry<Coordinate> buffer = inputGeometry.Buffer(tolerance);
-                Console.WriteLine(buffer);
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
+            IGeometry<Coordinate> buffer = inputGeometry.Buffer(tolerance);
+            Console.WriteLine(buffer);
+
+            inputGeometry = geomFactory.WktReader.Read(@"LINESTRING (3155 91, 2975 -3041, 979 -2893, -1497 -4490, -2664 -2422, -1486 -490,
+-4033 1558, -2373 3682, 368 3548, 3155 91)");
+            buffer = inputGeometry.Buffer(tolerance);
+            Console.WriteLine(buffer);
+            inputGeometry = geomFactory.WktReader.Read(@"LINESTRING (3282 89, 3062 -2335, -104 -1722, -3146 -2745, -2676 990, -1014 1831, -508
+4821, 664 987, 3282 89)
+");
+            buffer = inputGeometry.Buffer(tolerance);
+            Console.WriteLine(buffer);
+            inputGeometry = geomFactory.WktReader.Read(@"LINESTRING (6757 5207, 6602 3743, 3575 4282, 3294 4897, 3623 6276, 4925 7132, 5947
+6943, 6757 5207)
+");
+            buffer = inputGeometry.Buffer(tolerance);
+            Console.WriteLine(buffer);
         }
 
     }

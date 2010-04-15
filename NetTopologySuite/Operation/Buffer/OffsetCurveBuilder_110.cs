@@ -144,7 +144,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             //System.out.println(vertexList);
 
-            yield return _sequenceFactory.Create(_vertexList.Coordinates);
+            yield return _sequenceFactory.Create(_vertexList.GetCoordinates());
         }
 
         /**
@@ -166,7 +166,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             else
             {
                 ComputeRingBufferCurve(inputPts, side);
-                yield return _sequenceFactory.Create(_vertexList.Coordinates);
+                yield return _sequenceFactory.Create(_vertexList.GetCoordinates());
             }
         }
 

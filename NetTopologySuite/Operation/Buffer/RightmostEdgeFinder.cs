@@ -142,7 +142,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             ICoordinateSequence<TCoordinate> coordinates = de.Edge.Coordinates;
 
             Int32 i = 0;
-            Int32 limit = coordinates.Count - 2;
+            Int32 limit = coordinates.Count - 1;
             foreach (TCoordinate coordinate in coordinates)
             {
                 // only check vertices which are the start or end point of a non-horizontal segment
