@@ -84,6 +84,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
             IGeometry<Coord> actualGeometry = _reader.Read("MULTIPOINT (0 0, 5 1, 10 0)").ConvexHull();
             IGeometry<Coord> expectedGeometry = _reader.Read("POLYGON ((0 0, 5 1, 10 0, 0 0))");
+            actualGeometry.Normalize();
             Assert.AreEqual(expectedGeometry.ToString(), actualGeometry.ToString());
         }
         /*
