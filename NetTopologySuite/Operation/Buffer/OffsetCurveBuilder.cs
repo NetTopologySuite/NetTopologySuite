@@ -237,10 +237,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             ICoordinate bufPt = new Coordinate(pt);
             precisionModel.MakePrecise( bufPt);
             // don't add duplicate points
-            ICoordinate lastPt = null;
             if (ptList.Count >= 1)
-                lastPt = (ICoordinate) ptList[ptList.Count - 1];
-            if (lastPt != null && bufPt.Equals(lastPt)) return;            
+            {
+                var lastPt = (ICoordinate)this.ptList[this.ptList.Count - 1];
+                if (lastPt != null && (bufPt.Distance(lastPt) < 1e-8))                 
+                // if (lastPt != null && bufPt.Equals(lastPt))
+                    return;
+            }
             ptList.Add(bufPt);
         }
 
