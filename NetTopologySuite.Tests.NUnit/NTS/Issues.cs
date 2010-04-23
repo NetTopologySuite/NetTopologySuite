@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
+using GeoAPI.Operations.Buffer;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Operation.Distance;
 using GisSharpBlog.NetTopologySuite.Simplify;
+using NetTopologySuite.Coordinates;
 using NetTopologySuite.Coordinates.Simple;
 using NUnit.Framework;
 
@@ -13,6 +17,59 @@ namespace NetTopologySuite.Tests.NUnit.NTS
     [TestFixture]
     public class Issues
     {
+        [Test]
+        public void Issue62()
+        {
+            IGeometryFactory<Coordinate> geomFactory
+                = new GeometryFactory<Coordinate>(new CoordinateSequenceFactory());
+            IWktGeometryReader<Coordinate> wktReader = new WktReader<Coordinate>(geomFactory, null);
+
+            // Examples of failing combinations: (s1,*), (s2,*), (s3,s4)
+            string[] s = new string[]
+                             {
+                                 "POINT (140 280)",
+                                 "MULTIPOINT ((-500 -500), (-500 500), (500 500), (500 -500))",
+                                 "LINESTRING (150 100, 200 100, 200 200, 100 200)",
+                                 "POLYGON ((-80 210, -10 250, 60 160, -10 110, -100 120, -80 210))"
+                             };
+
+            try
+            {
+                for (int i = 1; i < s.Length; i += 1)
+                {
+                    // Select the 2 input geometries that we want to test
+                    IGeometry<Coordinate> g1 = wktReader.Read(s[i-1]);
+                    IGeometry<Coordinate> g2 = wktReader.Read(s[i]);
+                    Console.WriteLine("Geometry 1: " + g1);
+                    Console.WriteLine("Geometry 2: " + g2);
+
+                    //g1.Distance(g2);
+                    DistanceOp<Coordinate> distOp = new DistanceOp<Coordinate>(g1, g2);
+
+                    // Get the 2 closest points between g1 and g2
+                    //var neares = distOp.ClosestLocations();
+                    Pair<Coordinate>? closestPt = distOp.ClosestPoints();
+                    if (closestPt == null)
+                        Console.WriteLine("==> Computation of closestPt returned null.");
+                    else
+                    {
+                        ILineString line = geomFactory.CreateLineString(closestPt);
+                        Console.WriteLine("==> Line: " + line);
+                    }
+
+                    // Display distance between the 2 input geometries
+                    double distance = distOp.Distance;
+                    Console.WriteLine(string.Format("Distance between closest points: {0}\n", distance));
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error:\n" + e.Message);
+            }
+        }
+        
+        
         [Test]
         public void Issue60()
         {
@@ -61,6 +118,19 @@ namespace NetTopologySuite.Tests.NUnit.NTS
 ");
             buffer = inputGeometry.Buffer(tolerance);
             Console.WriteLine(buffer);
+        }
+
+        [Test]
+        public void Issue54()
+        {
+            var geom = GeometryUtils.Reader.Read(@"POLYGON((906.4827 217.8143,927.6762 
+0.0099999999999909051,36.486899999999991 
+0.0099999999999909051,0.0099999999999909051 374.8819,906.4827 217.8143))
+");
+            var res = geom.Buffer(2d, 4, BufferStyle.Round);
+            Console.WriteLine(res);
+     
+
         }
 
         [Test]
@@ -147,6 +217,23 @@ namespace NetTopologySuite.Tests.NUnit.NTS
             expected.Normalize();
             Console.WriteLine(string.Format("\nExpected:\n{0}",expected));
             Assert.IsTrue(expected.Equals(result, new Tolerance(1e-8)));
+        }
+
+        [Test]
+        public void Issue23()
+        {
+            const string wkt = "LINESTRING (-3 2, 0 -2, 3 2)";
+
+            var csf =
+                (ICoordinateSequenceFactory<BufferedCoordinate>)
+                new BufferedCoordinateSequenceFactory(new BufferedCoordinateFactory(PrecisionModelType.DoubleFloating));
+            var gf = (IGeometryFactory<BufferedCoordinate>) new GeometryFactory<BufferedCoordinate>(csf);
+
+            var linestring = gf.WktReader.Read(wkt);
+
+            var centroid = linestring.Centroid;
+            var expected = gf.CreatePoint2D(0, 0);
+            Assert.AreEqual(expected, centroid);
         }
     }
 }

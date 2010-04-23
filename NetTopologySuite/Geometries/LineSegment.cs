@@ -473,7 +473,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             // test for intersection
             TCoordinate intersection = Intersection(line, geoFactory);
 
-            if (Coordinates<TCoordinate>.IsEmpty(intersection))
+            if (!Coordinates<TCoordinate>.IsEmpty(intersection))
             {
                 yield return intersection;
                 yield return intersection;
