@@ -71,6 +71,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         {
             get
             {
+                if (_g0 == null || _g1 == null)
+                    throw new ArgumentNullException("null geometries are not supported");
+                if (_g0.IsEmpty || _g1.IsEmpty)
+                    return 0.0;
+
                 computeMinDistance();
                 return _minDistance;
             }
@@ -125,8 +130,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// <param name="g0">A <see cref="Geometry{TCoordinate}"/>.</param>
         /// <param name="g1">Another <see cref="Geometry{TCoordinate}"/>.</param>
         /// <returns>The closest points in the geometries.</returns>
+        [Obsolete("Use NearestPoints(g1,g2) instead")]
         public static IEnumerable<TCoordinate> ClosestPoints(IGeometry<TCoordinate> g0, IGeometry<TCoordinate> g1)
         {
+            return NearestPoints(g0, g1);
             DistanceOp<TCoordinate> distOp = new DistanceOp<TCoordinate>(g0, g1);
             return distOp.ClosestPoints();
         }
@@ -136,17 +143,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// The points are presented in the same order as the input Geometries.
         /// </summary>
         /// <returns>A pair of <c>Coordinate</c>s of the closest points.</returns>
+        [Obsolete("Use NearestPoints instead")]
         public Pair<TCoordinate>? ClosestPoints()
         {
-            computeMinDistance();
-
-            if (!_minDistanceLocation0.HasValue || !_minDistanceLocation1.HasValue)
-            {
-                return null;
-            }
-
-            return new Pair<TCoordinate>(_minDistanceLocation0.Value.Coordinate,
-                                         _minDistanceLocation1.Value.Coordinate);
+            return NearestPoints();
         }
 
         /// <summary>
@@ -157,17 +157,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
         /// A <see cref="Pair{TItem}"/> of <see cref="GeometryLocation{TCoordinate}"/>s 
         /// for the closest points.
         /// </returns>
+        [Obsolete("Use NearestLocations() instead")]
         public Pair<GeometryLocation<TCoordinate>>? ClosestLocations()
         {
-            computeMinDistance();
-
-            if (!_minDistanceLocation0.HasValue || !_minDistanceLocation1.HasValue)
-            {
-                return null;
-            }
-
-            return new Pair<GeometryLocation<TCoordinate>>(_minDistanceLocation0.Value,
-                                                           _minDistanceLocation1.Value);
+            return NearestLocations();
         }
 
         // [codekaizen 2008-01-14] Not used in JTS 
@@ -569,6 +562,58 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Distance
             }
 
             return locGeom0;
+        }
+        /// <summary>
+        /// Compute the the nearest points of two geometries.
+        /// The points are presented in the same order as the input Geometries.
+        /// </summary>
+        /// <param name="g0">A <see cref="Geometry{TCoordinate}"/>.</param>
+        /// <param name="g1">Another <see cref="Geometry{TCoordinate}"/>.</param>
+        /// <returns>The nearest points in the geometries.</returns>
+        public static IEnumerable<TCoordinate> NearestPoints(IGeometry<TCoordinate> g0, IGeometry<TCoordinate> g1)
+        {
+            DistanceOp<TCoordinate> distOp = new DistanceOp<TCoordinate>(g0, g1);
+            return distOp.NearestPoints();
+        }
+
+
+        /// <summary>
+        /// Report the coordinates of the nearest points in the input geometries.
+        /// The points are presented in the same order as the input Geometries.
+        /// </summary>
+        /// <returns>A pair of <c>Coordinate</c>s of the nearest points.</returns>
+        public Pair<TCoordinate>? NearestPoints()
+        {
+            computeMinDistance();
+
+            if (!_minDistanceLocation0.HasValue || !_minDistanceLocation1.HasValue)
+            {
+                return null;
+            }
+
+            return new Pair<TCoordinate>(_minDistanceLocation0.Value.Coordinate,
+                                         _minDistanceLocation1.Value.Coordinate);
+        }
+
+        /// <summary>
+        /// Report the locations of the nearest points in the input geometries.
+        /// The locations are presented in the same order as the input Geometries.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="Pair{TItem}"/> of <see cref="GeometryLocation{TCoordinate}"/>s 
+        /// for the nearest points.
+        /// </returns>
+        public Pair<GeometryLocation<TCoordinate>>? NearestLocations()
+        {
+            computeMinDistance();
+
+            if (!_minDistanceLocation0.HasValue || !_minDistanceLocation1.HasValue)
+            {
+                return null;
+            }
+
+            return new Pair<GeometryLocation<TCoordinate>>(_minDistanceLocation0.Value,
+                                                           _minDistanceLocation1.Value);
         }
     }
 }

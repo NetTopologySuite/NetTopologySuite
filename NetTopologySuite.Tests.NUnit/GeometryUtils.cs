@@ -47,6 +47,16 @@ namespace NetTopologySuite.Tests.NUnit
             return GeometryFactories[dblScale];
         }
 
+        public static IGeometryFactory<Coord> GetPrecisedFactory(IPrecisionModel<Coord> precisionModel)
+        {
+            Double dblScale = precisionModel.Scale;
+
+            if (!GeometryFactories.ContainsKey(dblScale))
+                GeometryFactories.Add(dblScale, new GeometryFactory<Coord>(new CoordSeqFac(new CoordFac(dblScale))));
+
+            return GeometryFactories[dblScale];
+        }
+
 
         public static IEnumerable<IGeometry<Coord>> ReadWKT(String[] inputWKT)
         {

@@ -132,6 +132,8 @@
     <Compile Include="Operation\Buffer\OffsetCurveSetBuilder_110.cs" />
     <Compile Include="Operation\Buffer\OffsetCurveVertexList_110.cs" />
     <Compile Include="Operation\Buffer\Validate\BufferCurveMaximumDistanceFinder.cs" />
+    <Compile Include="Operation\Buffer\Validate\BufferDistanceValidator.cs" />
+    <Compile Include="Operation\Buffer\Validate\BufferResultValidator.cs" />
     <Compile Include="Operation\Buffer\Validate\DistanceToPointFinder.cs" />
     <Compile Include="Operation\Valid\IndexedNestedRingTester.cs" />
     <Compile Include="Precision2\CommonBits.cs" />

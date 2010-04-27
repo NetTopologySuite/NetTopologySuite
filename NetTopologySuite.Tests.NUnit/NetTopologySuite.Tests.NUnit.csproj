@@ -62,6 +62,10 @@
     <Compile Include="Noding\SegmentPointComparatorTest.cs" />
     <Compile Include="Noding\SnapRound\SnapRoundingTest.cs" />
     <Compile Include="NTS\Issues.cs" />
+    <Compile Include="Operation\Buffer\BufferTest.cs" />
+    <Compile Include="Operation\Buffer\BufferValidator.cs" />
+    <Compile Include="Operation\Buffer\FileBufferResultValidatorTest.cs" />
+    <Compile Include="Operation\Distance\DistanceTest.cs" />
     <Compile Include="Operation\Overlay\FixedPrecisionSnappingTest.cs" />
     <Compile Include="Operation\Overlay\OverlayNodingStressTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -74,6 +78,10 @@
     <ProjectReference Include="..\GeoAPI\src\GeoAPI\GeoAPI.Net.csproj">
       <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
       <Name>GeoAPI.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ManagedBufferedCoordinate\ManagedBufferedCoordinate.csproj">
+      <Project>{8A1C8DC2-9E24-47E9-A51C-AA46E0B0260C}</Project>
+      <Name>ManagedBufferedCoordinate</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj">
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>

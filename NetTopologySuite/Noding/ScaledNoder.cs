@@ -164,7 +164,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
             if (_isScaled)
             {
-                Rescale(splitSS);
+                splitSS = Rescale(splitSS);
             }
 
             return splitSS;
