@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
+using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Noding.Snapround;
 using Coord = NetTopologySuite.Coordinates.Simple.Coordinate;
 using CoordSeq = NetTopologySuite.Coordinates.Simple.CoordinateSequence;
 using CoordFac = NetTopologySuite.Coordinates.Simple.CoordinateFactory;
@@ -28,6 +30,9 @@ namespace NetTopologySuite.Tests.NUnit
             GeometryFactory = new GeometryFactory<Coord>(CoordSeqFac);
             Reader = GeometryFactory.WktReader;
             GeometryFactories.Add(0, GeometryFactory);
+
+            HotPixel<Coord>.FloatingPrecisionGeometryFactory = GeometryFactory;
+            RobustLineIntersector<Coord>.FloatingPrecisionCoordinateFactory = GeometryFactory.CoordinateFactory;
         }
 
         public readonly static IWktGeometryReader<Coord> Reader;

@@ -242,9 +242,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             if (argPM.PrecisionModelType == PrecisionModelType.Fixed)
             {
-                // TODO: Fix scaled noder.
-                throw new NotImplementedException("Fix scaled noder.");
-                //bufferFixedPrecision(argPM);
+                bufferFixedPrecision(argPM);
             }
             else
             {

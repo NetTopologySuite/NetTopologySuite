@@ -20,11 +20,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             IComparable<TCoordinate>, IConvertible,
             IComputable<Double, TCoordinate>
     {
-        private INoder<TCoordinate> _noder = null;
-        private Double _scaleFactor = 0;
-        private Double _offsetX = 0;
-        private Double _offsetY = 0;
-        private Boolean _isScaled = false;
+        private INoder<TCoordinate> _noder;
+        private Double _scaleFactor;
+        private Double _offsetX;
+        private Double _offsetY;
+        private Boolean _isScaled;
         private ICoordinateSequenceFactory<TCoordinate> _sequenceFactory;
         private ICoordinateFactory<TCoordinate> _coordFactory;
         /// <summary>
@@ -38,6 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="sequenceFactory"></param>
         /// <param name="noder"></param>
         /// <param name="scaleFactor"></param>
         /// <param name="offsetX"></param>
@@ -63,10 +64,6 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             {
                 return _scaleFactor == 1.0;
             }
-            set
-            {
-                _scaleFactor = 1.0d;
-            }
         }
 
         /// <summary>
@@ -84,7 +81,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                         Scale(segmentString.Coordinates),
                         segmentString.Context);
                 };
-            return Processor.Transform<ISegmentString<TCoordinate>>(segStrings, componentTransform);
+            //return Processor.Transform<ISegmentString<TCoordinate>>(segStrings, componentTransform);
+            List<ISegmentString<TCoordinate>> scaled = new List<ISegmentString<TCoordinate>>(Processor.Transform<ISegmentString<TCoordinate>>(segStrings, componentTransform));
+            return scaled;
         }
 
         private ICoordinateSequence<TCoordinate> Scale(ICoordinateSequence<TCoordinate> pts)
@@ -112,7 +111,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         }
         private ICoordinateSequence<TCoordinate> Rescale(ICoordinateSequence<TCoordinate> pts)
         {
-            return _sequenceFactory.Create(Math.Round, Rescale((IEnumerable<TCoordinate>)pts));
+            //return _sequenceFactory.Create(Math.Round, Rescale((IEnumerable<TCoordinate>)pts));
+            return _sequenceFactory.Create(Rescale((IEnumerable<TCoordinate>)pts));
         }
 
         /// <summary>
@@ -146,7 +146,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                         Rescale(segmentString.Coordinates),
                         segmentString.Context);
                 };
-            return Processor.Transform<ISegmentString<TCoordinate>>(segStrings, componentTransform);
+            //return Processor.Transform<ISegmentString<TCoordinate>>(segStrings, componentTransform);
+            List<ISegmentString<TCoordinate>> rescaled =
+                new List<ISegmentString<TCoordinate>>(Processor.Transform<ISegmentString<TCoordinate>>(segStrings, componentTransform));
+            return rescaled;
         }
 
         #region INoder<TCoordinate> Member
