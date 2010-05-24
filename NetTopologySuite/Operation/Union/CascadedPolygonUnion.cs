@@ -23,14 +23,29 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
             IComputable<Double, TCoordinate>
     {
         private const int StrTreeNodeCapacity = 4;
-        private readonly IEnumerable<IPolygon<TCoordinate>> _inputPolys;
+        private readonly IList<IGeometry<TCoordinate>> _inputPolys;
         private IGeometryFactory<TCoordinate> _geomFactory;
 
         public CascadedPolygonUnion(IEnumerable<IPolygon<TCoordinate>> polys)
         {
-            _inputPolys = polys;
+            _inputPolys = new List<IGeometry<TCoordinate>>();
+            foreach (IPolygon<TCoordinate> poly in polys)
+                _inputPolys.Add((IGeometry<TCoordinate>)poly);
+        }
+        
+        
+        public CascadedPolygonUnion(IEnumerable<IGeometry<TCoordinate>> polys)
+        {
+            _inputPolys = (polys is IList<IGeometry<TCoordinate>>)
+                ? (IList<IGeometry<TCoordinate>>)polys 
+                : new List<IGeometry<TCoordinate>>(polys);
         }
 
+        public static IGeometry<TCoordinate> Union(IEnumerable<IGeometry<TCoordinate>> polys)
+        {
+            CascadedPolygonUnion<TCoordinate> op = new CascadedPolygonUnion<TCoordinate>(polys);
+            return op.Union();
+        }
         public static IGeometry<TCoordinate> Union(IEnumerable<IPolygon<TCoordinate>> polys)
         {
             CascadedPolygonUnion<TCoordinate> op = new CascadedPolygonUnion<TCoordinate>(polys);
@@ -65,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
              */
             StrTree<TCoordinate, IGeometry<TCoordinate>> index =
                 new StrTree<TCoordinate, IGeometry<TCoordinate>>(_geomFactory, StrTreeNodeCapacity);
-            foreach (IPolygon<TCoordinate> item in _inputPolys)
+            foreach (IGeometry<TCoordinate> item in _inputPolys)
             {
                 if (!item.IsEmpty)
                     index.Insert(item);
@@ -297,5 +312,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
 
 #endif
         #endregion
+
     }
 }

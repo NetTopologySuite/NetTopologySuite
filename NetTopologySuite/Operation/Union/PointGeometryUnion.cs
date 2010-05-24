@@ -23,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
         private readonly IGeometry<TCoordinate> _otherGeom;
         private readonly IGeometry<TCoordinate> _pointGeom;
 
-        public PointGeometryUnion(IPoint<TCoordinate> pointGeom, IGeometry<TCoordinate> otherGeom)
+        public PointGeometryUnion(IPuntal<TCoordinate> pointGeom, IGeometry<TCoordinate> otherGeom)
         {
             _pointGeom = pointGeom;
             _otherGeom = otherGeom;
@@ -38,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
         ///<param name="pointGeom"></param>
         ///<param name="otherGeom"></param>
         ///<returns></returns>
-        public static IGeometry<TCoordinate> Union(IPoint<TCoordinate> pointGeom, IGeometry<TCoordinate> otherGeom)
+        public static IGeometry<TCoordinate> Union(IPuntal<TCoordinate> pointGeom, IGeometry<TCoordinate> otherGeom)
         {
             PointGeometryUnion<TCoordinate> unioner = new PointGeometryUnion<TCoordinate>(pointGeom, otherGeom);
             return unioner.Union();

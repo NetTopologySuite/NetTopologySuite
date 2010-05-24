@@ -98,6 +98,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <returns></returns>
         private IEnumerable<TCoordinate> Scale(IEnumerable<TCoordinate> coords)
         {
+            /*
             TCoordinate last = default(TCoordinate);
             foreach (TCoordinate coord in coords)
             {
@@ -108,7 +109,24 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                     yield return current;
                 last = current;
             }
+             */
+            List<TCoordinate> lst = new List<TCoordinate>();
+            TCoordinate last = default(TCoordinate);
+            foreach (TCoordinate coord in coords)
+            {
+                TCoordinate current = _coordFactory.Create(
+                    Math.Round((coord[Ordinates.X] - _offsetX)*_scaleFactor),
+                    Math.Round((coord[Ordinates.Y] - _offsetY)*_scaleFactor));
+
+                if (!current.Equals(last))
+                {
+                    lst.Add(current);
+                    last = current;
+                }
+            }
+            return    lst;
         }
+
         private ICoordinateSequence<TCoordinate> Rescale(ICoordinateSequence<TCoordinate> pts)
         {
             //return _sequenceFactory.Create(Math.Round, Rescale((IEnumerable<TCoordinate>)pts));
@@ -122,12 +140,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <returns></returns>
         private IEnumerable<TCoordinate> Rescale(IEnumerable<TCoordinate> coords)
         {
+            List<TCoordinate> lst = new List<TCoordinate>();
             foreach (TCoordinate coord in coords)
             {
-                yield return _coordFactory.Create(
+                lst.Add(_coordFactory.Create(
                     coord[Ordinates.X] / _scaleFactor + _offsetX,
-                    coord[Ordinates.Y] / _scaleFactor + _offsetY);
+                    coord[Ordinates.Y] / _scaleFactor + _offsetY));
             }
+            return lst;
         }
 
 

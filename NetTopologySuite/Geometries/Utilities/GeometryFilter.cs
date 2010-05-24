@@ -19,15 +19,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                 yield return (TGeometry)geometry;
             }
 
-            if (geometry is IHasGeometryComponents<TCoordinate>)
+            /*if (geometry is IHasGeometryComponents<TCoordinate>)
             {
-            }
+            }*/
 
             if (geometry is IGeometryCollection<TCoordinate>)
             {
-                foreach (TGeometry g in Extract<TGeometry, TCoordinate>(geometry))
+                foreach (IGeometry<TCoordinate> g in (IGeometryCollection<TCoordinate>)geometry)
                 {
-                    yield return g;
+                    foreach (TGeometry g2 in Extract<TGeometry, TCoordinate>(g))
+                        yield return g2;
+                    
                 }
             }
         }
@@ -155,7 +157,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         {
             if (geometry is IHasGeometryComponents<TCoordinate>)
             {
-                foreach (IGeometry<TCoordinate> g in Filter((IHasGeometryComponents<TCoordinate>) geometry))
+                foreach (IGeometry<TCoordinate> g in ((IHasGeometryComponents<TCoordinate>) geometry).Components)
                 {
                     if (g is ICurve<TCoordinate>)
                         yield return geometry.Coordinates;

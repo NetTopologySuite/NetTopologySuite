@@ -37,7 +37,7 @@ namespace NetTopologySuite.Tests.NUnit.NTS
             {
                 for (int i = 1; i < s.Length; i += 1)
                 {
-                    // Select the 2 input geometries that we want to test
+                    // Select the 2 input geometries that we want to Test
                     IGeometry<Coordinate> g1 = wktReader.Read(s[i-1]);
                     IGeometry<Coordinate> g2 = wktReader.Read(s[i]);
                     Console.WriteLine("Geometry 1: " + g1);

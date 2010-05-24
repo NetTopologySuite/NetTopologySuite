@@ -124,9 +124,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
             LineStringExtracter.getLines(geom, lines);
             PointExtracter.getPoints(geom, points);
             */
-            _polygons.AddRange(GeometryFilter.Filter<IPolygon<TCoordinate>, TCoordinate>(geom));
-            _lines.AddRange(GeometryFilter.Filter<ILineString<TCoordinate>, TCoordinate>(geom));
-            _points.AddRange(GeometryFilter.Filter<IPoint<TCoordinate>, TCoordinate>(geom));
+            _polygons.AddRange(GeometryFilter.Extract<IPolygon<TCoordinate>, TCoordinate>(geom));
+            _lines.AddRange(GeometryFilter.Extract<ILineString<TCoordinate>, TCoordinate>(geom));
+            _points.AddRange(GeometryFilter.Extract<IPoint<TCoordinate>, TCoordinate>(geom));
         }
 
         ///<summary>
@@ -174,7 +174,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
             else if (unionLA == null)
                 union = unionPoints;
             else
-                union = PointGeometryUnion<TCoordinate>.Union((IPoint<TCoordinate>) unionPoints, unionLA);
+                union = PointGeometryUnion<TCoordinate>.Union((IPuntal<TCoordinate>) unionPoints, unionLA);
 
             if (union == null)
                 return _geomFact.CreateGeometryCollection(null);
@@ -190,8 +190,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
 
         private IEnumerable<IGeometry<TCoordinate>> convertLineStrings(IEnumerable<ILineString<TCoordinate>> geom)
         {
-            foreach (ILineString<TCoordinate> point in geom)
-                yield return point;
+            foreach (ILineString<TCoordinate> line in geom)
+                yield return line;
         }
 
         /// <summary>

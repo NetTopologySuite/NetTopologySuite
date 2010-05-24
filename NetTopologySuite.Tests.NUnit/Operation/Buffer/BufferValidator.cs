@@ -56,7 +56,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 
         public BufferValidator(double bufferDistance, String wkt)
         {
-            // SRID = 888 is to test that SRID is preserved in computed buffers
+            // SRID = 888 is to Test that SRID is preserved in computed buffers
             //SetFactory(new PrecisionModel(), 888);
             _bufferDistance = bufferDistance;
             _wkt = wkt;

@@ -23,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
             return r;
         }
 
-        [Test]
+        [Test][Ignore]
         public void TestNoding()
         {
             const int iterLimit = IterLimit;
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
             IPolygon<Coordinate> rr1 = rrFact.CreateRectangle(100, 20, angle1);
             IPolygon<Coordinate> rr2 = rrFact.CreateRectangle(100, 20, angle2);
 
-            // this line can be used to test for the presence of noding failures for
+            // this line can be used to Test for the presence of noding failures for
             // non-tricky cases
             // Geometry star = rr2;
             IGeometry<Coordinate> star = rr1.Union(rr2);
@@ -79,7 +79,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
                 _baseAccum = rr1;
             else
             {
-                // this line can be used to test for the presence of noding failures for
+                // this line can be used to Test for the presence of noding failures for
                 // non-tricky cases
                 // Geometry star = rr2;
                 _baseAccum = rr1.Union(_baseAccum);
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
         public void CheckIntersection(IGeometry<Coordinate> basis, IGeometry<Coordinate> testGeom)
         {
 
-            // this line can be used to test for the presence of noding failures for
+            // this line can be used to Test for the presence of noding failures for
             // non-tricky cases
             // Geometry star = rr2;
             Console.WriteLine("Star:");
@@ -98,7 +98,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
             Console.WriteLine("Rectangle:");
             Console.WriteLine(testGeom);
 
-            // test to see whether the basic overlay code fails
+            // Test to see whether the basic overlay code fails
             try
             {
                 IGeometry<Coordinate> intTrial = basis.Intersection(testGeom);
