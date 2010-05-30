@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures.Collections.Generic;
 using NPack.Interfaces;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
@@ -18,9 +20,9 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             IComputable<Double, TCoordinate>, IConvertible
     {
         private readonly PlanarGraph<TCoordinate> _parentGraph;
-        //private readonly ISet<Edge<TCoordinate>> _edges = new HashedSet<Edge<TCoordinate>>();
-        //private readonly IList<DirectedEdge<TCoordinate>> _dirEdges = new List<DirectedEdge<TCoordinate>>();
-        //private readonly NodeMap<TCoordinate> _nodeMap = new NodeMap<TCoordinate>();
+        private readonly IDictionary<Edge<TCoordinate>, Edge<TCoordinate>> _edges = new Dictionary<Edge<TCoordinate>, Edge<TCoordinate>>();
+        private readonly IList<DirectedEdge<TCoordinate>> _dirEdges = new List<DirectedEdge<TCoordinate>>();
+        private readonly NodeMap<TCoordinate> _nodeMap = new NodeMap<TCoordinate>();
 
         /// <summary>
         /// Creates a new subgraph of the given <see cref="PlanarGraph{TCoordinate}" />.
@@ -46,42 +48,43 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <param name="e">The <see cref="Edge{TCoordinate}" /> to add.</param>
         public void Add(Edge<TCoordinate> e)
         {
-            //_edges.Add(e);
+            Edge<TCoordinate> tmp;
+            if (_edges.TryGetValue( e, out tmp )) return;
+            
+            _edges.Add(e, null);
 
-            //_dirEdges.Add(e.GetDirectedEdge(0));
-            //_dirEdges.Add(e.GetDirectedEdge(1));
+            _dirEdges.Add(e.GetDirectedEdge(0));
+            _dirEdges.Add(e.GetDirectedEdge(1));
 
-            base.Add(e);
-
-            NodeMap.Add(e.GetDirectedEdge(0).FromNode);
-            NodeMap.Add(e.GetDirectedEdge(1).FromNode);
+            _nodeMap.Add(e.GetDirectedEdge(0).FromNode);
+            _nodeMap.Add(e.GetDirectedEdge(1).FromNode);
         }
 
-        ///// <summary>
-        ///// Returns an <see cref="IEnumerator" /> over the 
-        ///// <see cref="DirectedEdge{TCoordinate}" />s in this graph,
-        ///// in the order in which they were added.
-        ///// </summary>
-        //public IEnumerator GetDirEdgeEnumerator()
-        //{
-        //    return _dirEdges.GetEnumerator();
-        //}
+        /// <summary>
+        /// Returns an <see cref="IEnumerable{T}" /> over the 
+        /// <see cref="DirectedEdge{TCoordinate}" />s in this graph,
+        /// in the order in which they were added.
+        /// </summary>
+        public new IEnumerable<DirectedEdge<TCoordinate>> DirectedEdges
+        {
+            get { return _dirEdges; }
+        }
 
-        ///// <summary>
-        ///// Returns an <see cref="IEnumerator" /> over the <see cref="Edge" />s in this graph,
-        ///// in the order in which they were added.
-        ///// </summary>
-        //public IEnumerator GetEdgeEnumerator()
-        //{
-        //    return _edges.GetEnumerator();
-        //}
+        /// <summary>
+        /// Returns an <see cref="IEnumerable{T}" /> over the <see cref="Edge{TCoordinate}" />s in this graph,
+        /// in the order in which they were added.
+        /// </summary>
+        public new IEnumerable<Edge<TCoordinate>> Edges
+        {
+            get { return _edges.Keys; }
+        }
 
-        ///// <summary>
-        ///// Returns an <see cref="IEnumerator" /> over the <see cref="Node" />s in this graph.
-        ///// </summary>
-        //public IEnumerator GetNodeEnumerator()
-        //{
-        //    return _nodeMap.GetEnumerator();
-        //}
+        /// <summary>
+        /// Returns an <see cref="IEnumerable{T}" /> over the <see cref="Node{TCoordinate}" />s in this graph.
+        /// </summary>
+        public new IEnumerable<Node<TCoordinate>> Nodes
+        {
+            get { return _nodeMap.Values; }
+        }
     }
 }

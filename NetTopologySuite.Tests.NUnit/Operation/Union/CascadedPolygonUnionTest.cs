@@ -4,7 +4,7 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Coordinates.Simple;
 using NUnit.Framework;
 
-namespace NetTopologySuite.Tests.NUnit.Operation
+namespace NetTopologySuite.Tests.NUnit.Operation.Union
 {
     /**
      * Large-scale tests of {@link CascadedPolygonUnion}
@@ -17,7 +17,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
     public class CascadedPolygonUnionTest
     {
         [Test]
-        public void testBoxes()
+        public void TestBoxes()
         {
             runTest(new List<IGeometry<Coordinate>>(GeometryUtils.ReadWKT(
                     new String[] {
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
         }
 
         [Test]
-        public void testDiscs2()
+        public void TestDiscs2()
         {
             IList<IGeometry<Coordinate>> geoms = CreateDiscs(5, 0.55);
 

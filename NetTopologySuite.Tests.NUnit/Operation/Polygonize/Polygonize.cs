@@ -37,7 +37,7 @@ using NetTopologySuite.Coordinates.Simple;
 using GisSharpBlog.NetTopologySuite.Operation.Polygonize;
 using NUnit.Framework;
 
-namespace NetTopologySuite.Tests.NUnit.Operation
+namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
 {
 
     /**

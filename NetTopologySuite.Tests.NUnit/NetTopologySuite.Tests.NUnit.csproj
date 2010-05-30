@@ -53,6 +53,7 @@
     <Compile Include="Algorithm\PerturbedGridPolygonBuilder.cs" />
     <Compile Include="Algorithm\PointInAreaStressTester.cs" />
     <Compile Include="Algorithm\PointInRingTest.cs" />
+    <Compile Include="Algorithm\RobustLineIntersectionTest.cs" />
     <Compile Include="GeometryUtils.cs" />
     <Compile Include="Index\DoubleBitsTest.cs" />
     <Compile Include="Index\IntervalTest.cs" />

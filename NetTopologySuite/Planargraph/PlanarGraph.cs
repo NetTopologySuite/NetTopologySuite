@@ -22,8 +22,11 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly List<DirectedEdge<TCoordinate>> _dirEdges = new List<DirectedEdge<TCoordinate>>();
-        private readonly List<Edge<TCoordinate>> _edges = new List<Edge<TCoordinate>>();
+        //private readonly List<DirectedEdge<TCoordinate>> _dirEdges = new List<DirectedEdge<TCoordinate>>();
+        //private readonly List<Edge<TCoordinate>> _edges = new List<Edge<TCoordinate>>();
+        private readonly Dictionary<DirectedEdge<TCoordinate>, DirectedEdge<TCoordinate>> _dirEdges = new Dictionary<DirectedEdge<TCoordinate>, DirectedEdge<TCoordinate>>();
+        private readonly Dictionary<Edge<TCoordinate>, Edge<TCoordinate>> _edges = new Dictionary<Edge<TCoordinate>, Edge<TCoordinate>>();
+
         private readonly NodeMap<TCoordinate> _nodeMap = new NodeMap<TCoordinate>();
 
         /// <summary>
@@ -39,17 +42,19 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// in this <see cref="PlanarGraph{TCoordinate}"/>, in the order in which they
         /// were added.
         /// </summary>
-        public IList<DirectedEdge<TCoordinate>> DirectedEdges
+        //public IList<DirectedEdge<TCoordinate>> DirectedEdges
+        public ICollection<DirectedEdge<TCoordinate>> DirectedEdges
         {
-            get { return _dirEdges; }
+            get { return _dirEdges.Keys; }
         }
 
         /// <summary>
         /// Returns the Edges that have been added to this PlanarGraph.
         /// </summary>
-        public IList<Edge<TCoordinate>> Edges
+        //public IList<Edge<TCoordinate>> Edges
+        public ICollection<Edge<TCoordinate>> Edges
         {
-            get { return _edges; }
+            get { return _edges.Keys; }
         }
 
         protected NodeMap<TCoordinate> NodeMap
@@ -76,7 +81,9 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </returns>
         public Boolean Contains(Edge<TCoordinate> e)
         {
-            return _edges.Contains(e);
+            //return _edges.Contains(e);
+            Edge<TCoordinate> tmp;
+            return _edges.TryGetValue(e, out tmp);
         }
 
         /// <summary>
@@ -180,12 +187,13 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         protected void Add(Edge<TCoordinate> edge)
         {
-            if (_edges.Contains(edge))
+            Edge<TCoordinate> tmp;
+            if (_edges.TryGetValue(edge, out tmp))
             {
                 return;
             }
 
-            _edges.Add(edge);
+            _edges.Add(edge, null);
             Add(edge.GetDirectedEdge(0));
             Add(edge.GetDirectedEdge(1));
         }
@@ -196,7 +204,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         protected void Add(DirectedEdge<TCoordinate> dirEdge)
         {
-            _dirEdges.Add(dirEdge);
+            _dirEdges.Add(dirEdge, null);
         }
     }
 }

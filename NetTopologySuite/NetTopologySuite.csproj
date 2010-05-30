@@ -100,6 +100,8 @@
     <Compile Include="Algorithm\MCPointInRing.cs" />
     <Compile Include="Algorithm\MinimumDiameter.cs" />
     <Compile Include="Algorithm\Mod2BoundaryNodeRule.cs" />
+    <Compile Include="Algorithm\MonoValentEndPointBoundaryNodeRule.cs" />
+    <Compile Include="Algorithm\MultiValentEndPointBoundaryNodeRule.cs" />
     <Compile Include="Algorithm\NonRobustLineIntersector.cs" />
     <Compile Include="Algorithm\NotRepresentableException.cs" />
     <Compile Include="Algorithm\IPointInRing.cs" />
@@ -112,7 +114,6 @@
     <Compile Include="Algorithm\SimplePointInRing.cs" />
     <Compile Include="Algorithm\SIRtreePointInRing.cs" />
     <Compile Include="Densify\Densifier.cs" />
-    <Compile Include="IBoundaryNodeRule.cs" />
     <Compile Include="Index\KdTree\KdNode.cs" />
     <Compile Include="Index\KdTree\KdTree.cs" />
     <Compile Include="Noding\BasicSegmentString.cs" />

@@ -33,6 +33,8 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
 
         public IEnumerable<Subgraph<TCoordinate>> FindConnectedSubgraphs()
         {
+            List<Subgraph<TCoordinate>> subgraphs = new List<Subgraph<TCoordinate>>();
+            
             IEnumerable<GraphComponent<TCoordinate>> components
                 = Caster.Upcast<GraphComponent<TCoordinate>, Node<TCoordinate>>(_graph.Nodes);
 
@@ -44,21 +46,22 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
 
                 if (!node.IsVisited)
                 {
-                    yield return findSubgraph(node);
+                    subgraphs.Add(FindSubgraph(node));
                 }
             }
+            return subgraphs;
         }
 
-        private Subgraph<TCoordinate> findSubgraph(Node<TCoordinate> node)
+        private Subgraph<TCoordinate> FindSubgraph(Node<TCoordinate> node)
         {
             Subgraph<TCoordinate> subgraph = new Subgraph<TCoordinate>(_graph);
-            addReachableToSubgraph(subgraph, node);
+            AddReachableToSubgraph(subgraph, node);
             return subgraph;
         }
 
         // Adds all nodes and edges reachable from this node to the subgraph.
         // Uses an explicit stack to avoid a large depth of recursion.
-        private static void addReachableToSubgraph(Subgraph<TCoordinate> subgraph, Node<TCoordinate> startNode)
+        private static void AddReachableToSubgraph(Subgraph<TCoordinate> subgraph, Node<TCoordinate> startNode)
         {
             Stack<Node<TCoordinate>> nodeStack = new Stack<Node<TCoordinate>>();
             nodeStack.Push(startNode);
@@ -66,12 +69,12 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
             while (!(nodeStack.Count == 0))
             {
                 Node<TCoordinate> node = nodeStack.Pop();
-                addEdgesToSubgraph(subgraph, node, nodeStack);
+                AddEdgesToSubgraph(subgraph, node, nodeStack);
             }
         }
 
         // Adds the argument node and all its out edges to the subgraph.
-        private static void addEdgesToSubgraph(Subgraph<TCoordinate> subgraph, Node<TCoordinate> node,
+        private static void AddEdgesToSubgraph(Subgraph<TCoordinate> subgraph, Node<TCoordinate> node,
                                                Stack<Node<TCoordinate>> nodeStack)
         {
             node.Visited = true;

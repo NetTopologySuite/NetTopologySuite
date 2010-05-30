@@ -5,7 +5,7 @@ using GisSharpBlog.NetTopologySuite.Operation.Union;
 using NetTopologySuite.Coordinates.Simple;
 using NUnit.Framework;
 
-namespace NetTopologySuite.Tests.NUnit.Operation
+namespace NetTopologySuite.Tests.NUnit.Operation.Union
 {
     [TestFixture]
     public class UnaryUnionTest

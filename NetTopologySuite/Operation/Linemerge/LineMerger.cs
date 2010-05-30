@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+using GeoAPI.DataStructures;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
@@ -54,7 +55,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         //}
 
         private readonly LineMergeGraph<TCoordinate> _graph = new LineMergeGraph<TCoordinate>();
-        private readonly List<EdgeString<TCoordinate>> edgeStrings = new List<EdgeString<TCoordinate>>();
+        private List<EdgeString<TCoordinate>> _edgeStrings = new List<EdgeString<TCoordinate>>();
         private IGeometryFactory<TCoordinate> _factory;
         private List<ILineString<TCoordinate>> _mergedLineStrings;// = new List<ILineString<TCoordinate>>();
 
@@ -131,11 +132,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                 return;
             }
 
+            GraphComponent<TCoordinate>.SetVisited(Caster.Upcast<GraphComponent<TCoordinate>, Node<TCoordinate>>(_graph.Nodes), false);
+            GraphComponent<TCoordinate>.SetMarked(Caster.Upcast<GraphComponent<TCoordinate>, Node<TCoordinate>>(_graph.Nodes), false);
+
+            _edgeStrings = new List<EdgeString<TCoordinate>>();
             buildEdgeStringsForObviousStartNodes();
             buildEdgeStringsForIsolatedLoops();
             _mergedLineStrings = new List<ILineString<TCoordinate>>();
 
-            foreach (EdgeString<TCoordinate> edgeString in edgeStrings)
+            foreach (EdgeString<TCoordinate> edgeString in _edgeStrings)
             {
                 _mergedLineStrings.Add(edgeString.ToLineString());
             }
@@ -185,7 +190,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                     continue;
                 }
 
-                edgeStrings.Add(buildEdgeStringStartingWith(directedEdge));
+                _edgeStrings.Add(buildEdgeStringStartingWith(directedEdge));
             }
         }
 

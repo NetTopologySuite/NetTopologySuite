@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Diagnostics;
@@ -16,6 +17,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
+
+        
         private Boolean _isCovered;
         private Boolean _isCoveredSet;
         private Boolean _isInResult;
