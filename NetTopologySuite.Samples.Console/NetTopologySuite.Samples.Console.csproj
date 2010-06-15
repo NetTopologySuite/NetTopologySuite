@@ -101,6 +101,7 @@
     <Compile Include="Tests\Various\DbfDateTest.cs" />
     <Compile Include="Tests\Various\FormattingTest.cs" />
     <Compile Include="Tests\Various\GeomBinOpTest_Issue14_Simplified.cs" />
+    <Compile Include="Tests\Various\GoogleGroupTests.cs" />
     <Compile Include="Tests\Various\GraphBuilder2.cs" />
     <Compile Include="Tests\Various\GraphBuilder2Test.cs" />
     <Compile Include="Tests\Various\IntesectIterationTest.cs" />
