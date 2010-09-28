@@ -539,7 +539,7 @@ namespace NetTopologySuite.Coordinates.Simple
         {
             get
             {
-                return this[IndexToOrdinate(index)];
+                return new DoubleComponent(this[IndexToOrdinate(index)]);
             }
             set
             {

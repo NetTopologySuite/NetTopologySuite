@@ -133,6 +133,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
+        ///<summary>
+        ///</summary>
+        ///<param name="index"></param>
         public new IPoint<TCoordinate> this[Int32 index]
         {
             get { return base[index] as IPoint<TCoordinate>; }
@@ -141,16 +144,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IPoint IMultiPoint.this[Int32 index]
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return this[index]; }
+            set { this[index] = value as IPoint<TCoordinate>; }
         }
 
         IEnumerator<IPoint> IEnumerable<IPoint>.GetEnumerator()
         {
             foreach (IPoint point in GeometriesInternal)
-            {
                 yield return point;
-            }
         }
 
         #endregion
