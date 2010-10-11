@@ -6,7 +6,7 @@ using GeoAPI.DataStructures;
 using NetTopologySuite.Coordinates;
 using NPack;
 using NPack.Interfaces;
-using Xunit;
+using NUnit.Framework;
 using Rhino.Mocks;
 
 #if DOTNET35
@@ -20,96 +20,94 @@ namespace ManagedBufferedCoordinateTests
 {
     public class BufferedCoordinateFactoryTests
     {
-        [Fact]
+        [Test]
         public void CreateFactorySucceeds()
         {
             BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
-            Assert.NotNull(factory);
+            Assert.IsNotNull(factory);
         }
 
-        [Fact]
+        [Test]
         public void CreateBufferedCoordinateSucceeds()
         {
             BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
             BufferedCoordinate coord = factory.Create(5, 10);
-            Assert.Equal(5, coord.X);
-            Assert.Equal(10, coord.Y);
+            Assert.AreEqual(5, coord.X);
+            Assert.AreEqual(10, coord.Y);
         }
 
-        [Fact]
+        [Test]
         public void CreateTwoBufferedCoordinateSucceeds()
         {
             BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
             BufferedCoordinate coord1 = factory.Create(1, 15);
             BufferedCoordinate coord2 = factory.Create(15, 1);
 
-            Assert.Equal(1, coord1.X);
-            Assert.Equal(15, coord1.Y);
-            Assert.Equal(15, coord2.X);
-            Assert.Equal(1, coord2.Y);
+            Assert.AreEqual(1, coord1.X);
+            Assert.AreEqual(15, coord1.Y);
+            Assert.AreEqual(15, coord2.X);
+            Assert.AreEqual(1, coord2.Y);
         }
 
-        [Fact]
+        [Test]
+        [ExpectedException(typeof(NotSupportedException))]
         public void Create3DCoordinateFails()
         {
-            Assert.Throws<NotSupportedException>(delegate()
-            {
-                BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
-                factory.Create3D(5, 10, 15);
-            });
+            BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
+            factory.Create3D(5, 10, 15);
         }
 
-        [Fact]
+        [Test]
         public void CreateCoordinateCopySucceeds()
         {
             BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
             BufferedCoordinate coord = factory.Create(5, 10);
             BufferedCoordinate clone = factory.Create(coord);
 
-            Assert.Equal(coord.X, clone.X);
-            Assert.Equal(coord.Y, clone.Y);
+            Assert.AreEqual(coord.X, clone.X);
+            Assert.AreEqual(coord.Y, clone.Y);
         }
 
-        [Fact]
+        [Test]
         public void CreateCoordinateCopyOfEmptySucceeds()
         {
             BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
             BufferedCoordinate coord = new BufferedCoordinate();
             BufferedCoordinate clone = factory.Create(coord);
 
-            Assert.True(clone.IsEmpty);
+            Assert.IsTrue(clone.IsEmpty);
         }
 
-        [Fact(Skip = "Not Implemented")]
+        [Test][Ignore("Not Implemented")]
         public void CreateAffineTransformSucceeds()
         {
             BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
             //AffineTransformMatrix<BufferedCoordinate> matrix = factory.CreateTransform();
 
-            //Assert.NotNull(matrix);
+            //Assert.IsNotNull(matrix);
         }
 
-        [Fact(Skip = "Not Implemented")]
+        [Test][Ignore( "Not Implemented")]
         public void CreateAffineTransformWithAxisOfRotationSucceeds()
         {
             BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
             //AffineTransformMatrix<BufferedCoordinate> matrix = factory.CreateTransform();
 
-            //Assert.NotNull(matrix);
+            //Assert.IsNotNull(matrix);
         }
 
-        [Fact]
+        [Test]
         public void CreateHomogenizedCoordinateSucceeds()
         {
             BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
             BufferedCoordinate coord = factory.Create(5, 10);
             BufferedCoordinate homogeneous = factory.Homogenize(coord);
 
-            Assert.Equal(2, coord.ComponentCount);
-            Assert.Equal(3, homogeneous.ComponentCount);
+            Assert.AreEqual(2, coord.ComponentCount);
+            Assert.AreEqual(3, homogeneous.ComponentCount);
         }
 
-        [Fact]
+        [Test]
         public void CreateHomogenizedCoordinateStreamSucceeds()
         {
             BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
@@ -126,14 +124,14 @@ namespace ManagedBufferedCoordinateTests
 
             foreach (BufferedCoordinate coord in homogeneous)
             {
-                Assert.Equal(3, coord.ComponentCount);
+                Assert.AreEqual(3, coord.ComponentCount);
                 count--;
             }
 
-            Assert.Equal(0, count);
+            Assert.AreEqual(0, count);
         }
 
-        [Fact]
+        [Test]
         public void CreateDeomogenizedCoordinateSucceeds()
         {
             BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
@@ -141,12 +139,12 @@ namespace ManagedBufferedCoordinateTests
             BufferedCoordinate homogeneous = factory.Homogenize(coord);
             BufferedCoordinate dehomogeneous = factory.Dehomogenize(homogeneous);
 
-            Assert.Equal(2, coord.ComponentCount);
-            Assert.Equal(3, homogeneous.ComponentCount);
-            Assert.Equal(2, dehomogeneous.ComponentCount);
+            Assert.AreEqual(2, coord.ComponentCount);
+            Assert.AreEqual(3, homogeneous.ComponentCount);
+            Assert.AreEqual(2, dehomogeneous.ComponentCount);
         }
 
-        [Fact]
+        [Test]
         public void CreateDehomogenizedCoordinateStreamSucceeds()
         {
             BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
@@ -158,14 +156,14 @@ namespace ManagedBufferedCoordinateTests
 
             foreach (BufferedCoordinate coord in dehomogeneous)
             {
-                Assert.Equal(2, coord.ComponentCount);
+                Assert.AreEqual(2, coord.ComponentCount);
                 count--;
             }
 
-            Assert.Equal(0, count);
+            Assert.AreEqual(0, count);
         }
 
-        [Fact]
+        [Test]
         public void CoordinateAddToBufferSucceeds()
         {
             MockRepository mocks = new MockRepository();
@@ -179,31 +177,29 @@ namespace ManagedBufferedCoordinateTests
 
             Int32 index = buffer.Add(vector);
 
-            Assert.Equal(5, buffer[index].X);
-            Assert.Equal(6, buffer[index].Y);
+            Assert.AreEqual(5, buffer[index].X);
+            Assert.AreEqual(6, buffer[index].Y);
         }
 
-        [Fact]
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
         public void Coordinate3DAddToBufferFails()
         {
-            Assert.Throws<ArgumentException>(delegate()
-                              {
-                                  MockRepository mocks = new MockRepository();
-                                  IVector<DoubleComponent> vector = mocks.Stub<IVector<DoubleComponent>>();
-                                  Expect.Call(vector.ComponentCount).Repeat.Any().Return(3);
-                                  vector[0] = 5;
-                                  vector[1] = 6;
-                                  vector[2] = 7;
-                                  mocks.ReplayAll();
+            MockRepository mocks = new MockRepository();
+            IVector<DoubleComponent> vector = mocks.Stub<IVector<DoubleComponent>>();
+            Expect.Call(vector.ComponentCount).Repeat.Any().Return(3);
+            vector[0] = 5;
+            vector[1] = 6;
+            vector[2] = 7;
+            mocks.ReplayAll();
 
-                                  IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer =
-                                      new BufferedCoordinateFactory();
+            IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer =
+                new BufferedCoordinateFactory();
 
-                                  buffer.Add(vector);
-                              });
+            buffer.Add(vector);
         }
 
-        [Fact]
+        [Test]
         public void BufferedCoordinateAddToBufferSucceeds()
         {
             BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
@@ -212,10 +208,10 @@ namespace ManagedBufferedCoordinateTests
 
             Int32 index = buffer.Add(vector);
 
-            Assert.Equal(vector, buffer[index]);
+            Assert.AreEqual(vector, buffer[index]);
         }
 
-        [Fact]
+        [Test]
         public void BufferedCoordinateFromOtherFactoryAddToBufferSucceeds()
         {
             IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer = new BufferedCoordinateFactory();
@@ -224,47 +220,43 @@ namespace ManagedBufferedCoordinateTests
 
             Int32 index = buffer.Add(vector);
 
-            Assert.NotEqual(vector, buffer[index]);
-            Assert.True(vector.ValueEquals(buffer[index]));
+            Assert.AreNotEqual(vector, buffer[index]);
+            Assert.IsTrue(vector.ValueEquals(buffer[index]));
         }
 
-        [Fact]
+        [Test]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void BufferedCoordinateAddToBufferFailsOnEmpty()
         {
-            Assert.Throws<InvalidOperationException>(delegate
-                              {
-                                  IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer =
-                                      new BufferedCoordinateFactory();
-                                  BufferedCoordinate emptyVector = new BufferedCoordinate();
+            IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer =
+                new BufferedCoordinateFactory();
+            BufferedCoordinate emptyVector = new BufferedCoordinate();
 
-                                  buffer.Add(emptyVector);
-                              });
+            buffer.Add(emptyVector);
         }
 
-        [Fact]
+        [Test]
         public void DoublesAddToBufferSucceeds()
         {
             IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer = new BufferedCoordinateFactory();
 
             BufferedCoordinate result = buffer.Add(1, 2);
 
-            Assert.Equal(1, result.X);
-            Assert.Equal(2, result.Y);
+            Assert.AreEqual(1, result.X);
+            Assert.AreEqual(2, result.Y);
         }
 
-        [Fact]
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
         public void Doubles3DAddToBufferFails()
         {
-            Assert.Throws<ArgumentException>(delegate
-                              {
-                                  IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer =
-                                      new BufferedCoordinateFactory();
+            IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer =
+                new BufferedCoordinateFactory();
 
-                                  buffer.Add(1, 2, 3);
-                              });
+            buffer.Add(1, 2, 3);
         }
 
-        [Fact]
+        [Test]
         public void ClearBufferSucceeds()
         {
             BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
@@ -273,17 +265,16 @@ namespace ManagedBufferedCoordinateTests
 
             IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer = factory;
 
-            Assert.Equal(2, buffer.Count);
+            Assert.AreEqual(2, buffer.Count);
 
             buffer.Clear();
-            Assert.Equal(0, buffer.Count);
+            Assert.AreEqual(0, buffer.Count);
         }
 
-        [Fact]
+        [Test]
+        [ExpectedException(typeof(NotImplementedException))]
         public void BufferContainsIVectorSucceeds()
         {
-            Assert.Throws<NotImplementedException>(delegate
-             {
                  MockRepository mocks = new MockRepository();
                  IVector<DoubleComponent> vector =
                      mocks.Stub<IVector<DoubleComponent>>();
@@ -295,19 +286,17 @@ namespace ManagedBufferedCoordinateTests
                  BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
                  IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer = factory;
 
-                 Assert.False(buffer.Contains(vector));
+                 Assert.IsFalse(buffer.Contains(vector));
 
                  factory.Create(5, 6);
 
-                 Assert.True(buffer.Contains(vector));
-             });
+                 Assert.IsTrue(buffer.Contains(vector));
         }
 
-        [Fact]
+        [Test]
+        [ExpectedException(typeof(NotImplementedException))]
         public void BufferContainsBufferedCoordinateSucceeds()
         {
-            Assert.Throws<NotImplementedException>(delegate()
-            {
                 BufferedCoordinateFactory factory1 = new BufferedCoordinateFactory();
                 BufferedCoordinateFactory factory2 = new BufferedCoordinateFactory();
 
@@ -317,12 +306,11 @@ namespace ManagedBufferedCoordinateTests
 
                 IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer = factory1;
 
-                Assert.True(buffer.Contains(coord1));  // Not implemented in NPack
-                Assert.False(buffer.Contains(coord2));
-            });
+                Assert.IsTrue(buffer.Contains(coord1));  // Not implemented in NPack
+                Assert.IsFalse(buffer.Contains(coord2));
         }
 
-        [Fact]
+        [Test]
         public void CopyToSucceeds()
         {
             BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
@@ -335,11 +323,11 @@ namespace ManagedBufferedCoordinateTests
 
             buffer.CopyTo(result, 0, 1);
 
-            Assert.Equal(buffer[0], result[0]);
-            Assert.Equal(buffer[1], result[1]);
+            Assert.AreEqual(buffer[0], result[0]);
+            Assert.AreEqual(buffer[1], result[1]);
         }
 
-        [Fact]
+        [Test]
         public void CountSucceeds()
         {
             BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
@@ -348,10 +336,10 @@ namespace ManagedBufferedCoordinateTests
 
             IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer = factory;
 
-            Assert.Equal(2, buffer.Count);
+            Assert.AreEqual(2, buffer.Count);
         }
 
-        //[Fact]
+        //[Test]
         //[ExpectedException(typeof(NotImplementedException))]
         //public void FactorySucceeds()
         //{
@@ -363,102 +351,95 @@ namespace ManagedBufferedCoordinateTests
         //    // not implemented and possibly going away in NPack
         //}
 
-        [Fact]
+        [Test]
         public void IsReadOnlySucceeds()
         {
             BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
             IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer = factory;
 
-            Assert.False(buffer.IsReadOnly);
+            Assert.IsFalse(buffer.IsReadOnly);
         }
 
-        [Fact]
+        [Test]
         public void GettingAndSettingMaximumSizeSucceeds()
         {
             BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
             IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer = factory;
 
             buffer.MaximumSize = Int32.MaxValue - 1000;
-            Assert.Equal(Int32.MaxValue - 1000, buffer.MaximumSize);
+            Assert.AreEqual(Int32.MaxValue - 1000, buffer.MaximumSize);
         }
 
-        [Fact]
+        [Test]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void SettingMaximumSizeFailsOnNegativeValue()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(delegate
-             {
                  BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
                  IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer = factory;
 
                  buffer.MaximumSize = -1;
-             });
         }
 
-        [Fact]
+        [Test]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void SettingMaximumSizeFailsOnSmallerValueThanCurrentContents()
         {
-            Assert.Throws<InvalidOperationException>(delegate
-                                {
                                     BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
                                     IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer = factory;
 
                                     buffer.MaximumSize = 3;
-                                });
         }
 
-        [Fact]
+        [Test]
+        [ExpectedException(typeof(NotImplementedException))]
         public void RemoveFails()
         {
-            Assert.Throws<NotImplementedException>(delegate
-                                {
-                                    BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
-                                    BufferedCoordinate coord = factory.Create(1, 1);
-                                    IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer = factory;
+            BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
+            BufferedCoordinate coord = factory.Create(1, 1);
+            IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer = factory;
 
-                                    buffer.Remove(coord.Index); // potentially invalidates sequences if allowed
-                                });
+            buffer.Remove(coord.Index); // potentially invalidates sequences if allowed
         }
 
-        [Fact(Skip = "Need to implement")]
+        [Test][Ignore( "Need to implement")]
         public void SizeIncreasedSucceeds()
         {
 
         }
 
-        [Fact(Skip = "Need to implement")]
+        [Test][Ignore( "Need to implement")]
         public void SizeIncreasingSucceeds()
         {
 
         }
 
-        [Fact(Skip = "Need to implement")]
+        [Test][Ignore( "Need to implement")]
         public void VectorChangedSucceeds()
         {
 
         }
 
-        [Fact(Skip = "Need to implement")]
+        [Test][Ignore( "Need to implement")]
         public void VectorLengthSucceeds()
         {
 
         }
 
-        [Fact]
+        [Test]
         public void GettingIndexerSucceeds()
         {
             BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
             BufferedCoordinate coord = factory.Create(1, 1);
             IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer = factory;
 
-            Assert.Equal(coord, buffer[coord.Index]);
+            Assert.AreEqual(coord, buffer[coord.Index]);
         }
 
-        [Fact]
+        [Test]
+        [ExpectedException(typeof(NotSupportedException))]
         public void SettingIndexerFails()
         {
-            Assert.Throws<NotSupportedException>(delegate
-             {
-                 BufferedCoordinateFactory factory =
+                  BufferedCoordinateFactory factory =
                      new BufferedCoordinateFactory();
                  BufferedCoordinate coord = factory.Create(1, 1);
                  IVectorBuffer<DoubleComponent, BufferedCoordinate> buffer =
@@ -466,11 +447,10 @@ namespace ManagedBufferedCoordinateTests
 
                  // coordinate should be immutable except for possible precision snap-to
                  buffer[coord.Index] = factory.Create(2, 2);
-             });
         }
 
 
-        [Fact]
+        [Test]
         public void EnumeratingVertexesSucceeds()
         {
             BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
@@ -485,11 +465,11 @@ namespace ManagedBufferedCoordinateTests
 
             foreach (BufferedCoordinate coord in buffer)
             {
-                Assert.True(coordList.Contains(coord));
+                Assert.IsTrue(coordList.Contains(coord));
             }
         }
 
-        [Fact]
+        [Test]
         public void CreatingMultipleCoordinatesWithTheSameValueReturnsExistingCoordinate()
         {
             BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
@@ -516,10 +496,10 @@ namespace ManagedBufferedCoordinateTests
                 }
             }
 
-            Assert.Equal(4, factory.VectorBuffer.Count);
+            Assert.AreEqual(4, factory.VectorBuffer.Count);
         }
 
-        [Fact(Skip = "Test to check performance")]
+        [Test][Ignore( "Test to check performance")]
         public void Creating1MRandomCoordinatesDoesntKillPerformance()
         {
             //BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
@@ -560,7 +540,7 @@ namespace ManagedBufferedCoordinateTests
             //Console.WriteLine("Average time to create a coordinate: {0:N4} ms", avg / 10000);
         }
 
-        [Fact(Skip = "Test to check performance")]
+        [Test][Ignore( "Test to check performance")]
         public void Creating1MRepeatedCoordinatesDoesntKillPerformance()
         {
             //BufferedCoordinateFactory factory = new BufferedCoordinateFactory();
@@ -601,7 +581,7 @@ namespace ManagedBufferedCoordinateTests
             //Console.WriteLine("Last average time to create a coordinate: {0:N4} ms", avg / 10000);
         }
 
-        [Fact(Skip = "Test to check performance")]
+        [Test][Ignore( "Test to check performance")]
         public void CreatingSequencesWith1MRandomCoordinatesDoesntKillPerformance()
         {
             //BufferedCoordinateFactory coordFactory = new BufferedCoordinateFactory();
@@ -647,7 +627,7 @@ namespace ManagedBufferedCoordinateTests
             //foreach (ICoordinateSequence<BufferedCoordinate> sequence in sequences)
             //{
             //    timer.Start();
-            //    Assert.True(sequence.Maximum.GreaterThanOrEqualTo(sequence.Minimum));
+            //    Assert.IsTrue(sequence.Maximum.GreaterThanOrEqualTo(sequence.Minimum));
             //    timer.Stop();
 
             //    times[i % 10] = (Int32)timer.ElapsedTicks;
@@ -670,7 +650,7 @@ namespace ManagedBufferedCoordinateTests
             //Console.WriteLine("Average time to compute Minimum and Maximum for a sequence: {0:N4} ms", avg / 10000);
         }
 
-        [Fact]
+        [Test]
         public void BitResolutionSnapsCoordinatesToGrid()
         {
             throw new NotImplementedException("Need to put correct scale here...");
@@ -679,7 +659,7 @@ namespace ManagedBufferedCoordinateTests
             factory.Create(10, 10);
             factory.Create(10.000000003, 10.000000003);
 
-            Assert.Equal(1, factory.VectorBuffer.Count);
+            Assert.AreEqual(1, factory.VectorBuffer.Count);
         }
 
         #region Private helper methods

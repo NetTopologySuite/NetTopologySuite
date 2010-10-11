@@ -46,7 +46,7 @@ namespace SimpleCoordinateTests
             Assert.AreEqual(200, seq.Count);
         }
 
-        //[Fact(Skip = "3d Coords ok now")]
+        //[Test][Ignore( "3d Coords ok now")]
         //public void CreatingCoordinateSequenceWith3DCoordinateFails()
         //{
         //    Assert.Throws<NotSupportedException>(delegate
