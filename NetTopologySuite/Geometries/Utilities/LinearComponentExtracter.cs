@@ -4,7 +4,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
+namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary> 
     /// Extracts all the 1-dimensional (<see cref="LineString{TCoordinate}"/>) 

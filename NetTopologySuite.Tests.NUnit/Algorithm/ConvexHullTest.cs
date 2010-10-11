@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
-using Coord = NetTopologySuite.Coordinates.Simple.Coordinate;
-using CoordFac = NetTopologySuite.Coordinates.Simple.CoordinateFactory;
-using CoordSeqFac = NetTopologySuite.Coordinates.Simple.CoordinateSequenceFactory;
+using Coord = NetTopologySuite.Coordinates.Coordinate;
+using CoordFac = NetTopologySuite.Coordinates.CoordinateFactory;
+using CoordSeqFac = NetTopologySuite.Coordinates.CoordinateSequenceFactory;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {

@@ -4,15 +4,15 @@ using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 #if DOTNET35
-using System.Linq;
+using sl = System.Linq;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     /// <summary>
     /// Validates that a collection of <see cref="NodedSegmentString{TCoordinate}" />s is correctly noded.
@@ -179,7 +179,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 
                 Int32 pointIndex = 1; // Skip 1st
                 Int32 lastIndex = ss.Coordinates.Count - 1;
-                foreach (TCoordinate coordinate in Enumerable.Skip(pts, 1))
+                foreach (TCoordinate coordinate in sl.Enumerable.Skip(pts, 1))
                 {
                     if (pointIndex >= lastIndex)
                         break;

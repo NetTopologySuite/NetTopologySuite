@@ -7,10 +7,10 @@ using GeoAPI.Geometries;
 using NPack.Interfaces;
 
 #if DOTNET35
-using System.Linq;
+using sl = System.Linq;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
+namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary> 
     /// Supports creating a new <see cref="Geometry{TCoordinate}"/> 

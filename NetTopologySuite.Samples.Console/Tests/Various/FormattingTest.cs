@@ -4,12 +4,12 @@ using System.Globalization;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Samples.SimpleTests;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Samples.SimpleTests;
 using NetTopologySuite.Coordinates;
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
+namespace NetTopologySuite.Samples.Tests.Various
 {
     [TestFixture]
     public class FormattingTest : BaseSamples

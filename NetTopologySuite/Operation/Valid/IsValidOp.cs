@@ -1,4 +1,6 @@
+#if !DOTNET40
 #define C5
+#endif
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,16 +8,18 @@ using System.Diagnostics;
 using C5;
 #endif
 using GeoAPI.Coordinates;
+#if !DOTNET40
 using GeoAPI.DataStructures.Collections.Generic;
+#endif
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.GeometriesGraph;
 using NPack;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Valid
+namespace NetTopologySuite.Operation.Valid
 {
     /// <summary>
     /// Implements the algorithsm required to compute the <see cref="Geometry{TCoordinate}.IsValid" />
@@ -540,7 +544,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
 #if C5
             TreeSet<TCoordinate> nodeSet = new TreeSet<TCoordinate>();
 #else
+#if DOTNET40
+            ISet<TCoordinate> nodeSet = new SortedSet<TCoordinate>();
+#else
             ISet<TCoordinate> nodeSet = new ListSet<TCoordinate>();
+#endif
 #endif
             Boolean isFirst = true;
 

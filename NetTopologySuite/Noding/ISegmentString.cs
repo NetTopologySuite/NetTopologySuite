@@ -1,9 +1,9 @@
 using System;
 using GeoAPI.Coordinates;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     ///<summary>
     /// An interface for classes which represent a sequence of contiguous line segments.

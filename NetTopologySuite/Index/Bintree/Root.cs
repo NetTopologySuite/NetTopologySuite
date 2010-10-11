@@ -2,9 +2,9 @@ using System;
 using GeoAPI.DataStructures;
 using GeoAPI.Diagnostics;
 using GeoAPI.Indexing;
-using GisSharpBlog.NetTopologySuite.Index.Quadtree;
+using NetTopologySuite.Index.Quadtree;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Bintree
+namespace NetTopologySuite.Index.Bintree
 {
     /// <summary> 
     /// The root node of a single <see cref="BinTree{TItem}"/>.

@@ -5,12 +5,12 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
-using GisSharpBlog.NetTopologySuite.Index.Chain;
-using GisSharpBlog.NetTopologySuite.Index.Quadtree;
-using GisSharpBlog.NetTopologySuite.Index.Strtree;
+using NetTopologySuite.Index.Chain;
+using NetTopologySuite.Index.Quadtree;
+using NetTopologySuite.Index.Strtree;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     /// <summary>
     /// Nodes a set of <see cref="NodedSegmentString{TCoordinate}" />s using a index based

@@ -5,11 +5,10 @@ using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
 using GeoAPI.Operations.Buffer;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation.Distance;
-using GisSharpBlog.NetTopologySuite.Simplify;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation.Distance;
+using NetTopologySuite.Simplify;
 using NetTopologySuite.Coordinates;
-using NetTopologySuite.Coordinates.Simple;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.NTS

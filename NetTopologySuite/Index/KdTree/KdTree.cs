@@ -26,7 +26,7 @@ using GeoAPI.Geometries;
 using NPack;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Index.KdTree
+namespace NetTopologySuite.Index.KdTree
 {
     ///<summary>
     /// An implementation of a 2-D KD-Tree. KD-trees provide fast range searching on point data.

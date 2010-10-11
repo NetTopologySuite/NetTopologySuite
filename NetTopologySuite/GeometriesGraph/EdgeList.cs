@@ -1,4 +1,6 @@
-#define C5
+#if !DOTNET40
+#define C5 // or goletas
+#endif
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,8 +9,7 @@ using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
-using GisSharpBlog.NetTopologySuite.Index.Quadtree;
-using GisSharpBlog.NetTopologySuite.Noding;
+using NetTopologySuite.Index.Quadtree;
 using NPack.Interfaces;
 
 #if goletas
@@ -18,14 +19,14 @@ using Goletas.Collections;
 using C5;
 #endif
 #endif
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>
     /// An <see cref="EdgeList{TCoordinate}"/> is a list of 
     /// <see cref="Edge{TCoordinate}"/>s. It supports locating edges 
     /// that are pointwise equal to a target edge.
     /// </summary>
-    public class EdgeList<TCoordinate> : System.Collections.Generic.IList<Edge<TCoordinate>>
+    public class EdgeList<TCoordinate> : IList<Edge<TCoordinate>>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>

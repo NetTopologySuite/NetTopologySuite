@@ -3,10 +3,10 @@ using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.Diagnostics;
 using GeoAPI.Units;
-using GisSharpBlog.NetTopologySuite.Algorithm;
+using NetTopologySuite.Algorithm;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary> 
     /// Models the end of an edge incident on a node.

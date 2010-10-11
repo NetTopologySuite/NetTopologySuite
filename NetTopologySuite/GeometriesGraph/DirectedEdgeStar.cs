@@ -5,11 +5,11 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation.Overlay;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation.Overlay;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary> 
     /// A <see cref="DirectedEdgeStar{TCoordinate}"/> is an ordered list of 
@@ -292,9 +292,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 {
                     throw new TopologyException("no outgoing dirEdge found", Coordinate);
                 }
-
+#if DEBUG
                 Assert.IsTrue(firstOut.IsInResult, "unable to link last incoming dirEdge");
                 Assert.IsTrue(incoming != null);
+#endif
                 incoming.Next = firstOut;
             }
         }
@@ -348,9 +349,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             if (state == DirectedEdgeState.LinkingToOutgoing)
             {
                 Assert.IsTrue(firstOut != null, "found null for first outgoing dirEdge");
-                Debug.Assert(firstOut != null);
                 Assert.IsTrue(firstOut.EdgeRing == er, "unable to link last incoming dirEdge");
-                Debug.Assert(incoming != null);
                 incoming.NextMin = firstOut;
             }
         }

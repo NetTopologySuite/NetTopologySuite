@@ -4,16 +4,16 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
 #if DOTNET35
-using System.Linq;
+using sl = System.Linq;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
+namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
     /// Computes the raw offset curve for a
@@ -176,7 +176,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             TCoordinate last = default(TCoordinate);
 
-            foreach (TCoordinate coordinate in Enumerable.Skip(_coordinates, 1))
+            foreach (TCoordinate coordinate in sl.Enumerable.Skip(_coordinates, 1))
             {
                 last = coordinate;
                 yield return coordinate;
@@ -195,7 +195,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             // compute points for left side of line
             initSideSegments(initPoints.First, initPoints.Second, Positions.Left);
 
-            foreach (TCoordinate point in Enumerable.Skip(inputPts, 2))
+            foreach (TCoordinate point in sl.Enumerable.Skip(inputPts, 2))
             {
                 addNextSegment(point, true);
             }
@@ -231,7 +231,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
             Int32 pointIndex = 0;
 
-            foreach (TCoordinate coordinate in Enumerable.Skip(inputPts, 1))
+            foreach (TCoordinate coordinate in sl.Enumerable.Skip(inputPts, 1))
             {
                 addNextSegment(coordinate, pointIndex == 0);
                 pointIndex++;

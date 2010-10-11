@@ -4,10 +4,10 @@ using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
-using GisSharpBlog.NetTopologySuite.Index.Chain;
+using NetTopologySuite.Index.Chain;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
+namespace NetTopologySuite.Noding.Snapround
 {
     /// <summary>
     /// "Snaps" all <see cref="NodedSegmentString{TCoordinate}" />s in 

@@ -3,7 +3,7 @@ using GeoAPI.Coordinates;
 using NPack.Interfaces;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap
+namespace NetTopologySuite.Operation.Overlay.Snap
 {
     public class SnapIfNeededOverlayOp<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,

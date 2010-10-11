@@ -3,10 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Diagnostics;
-using GisSharpBlog.NetTopologySuite;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite
+namespace NetTopologySuite
 {
     /// <summary>
     /// Summary description for XmlTestCollection.

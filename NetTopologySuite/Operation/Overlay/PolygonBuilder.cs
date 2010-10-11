@@ -4,15 +4,15 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
 #if DOTNET35
-using System.Linq;
+using sl = System.Linq;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
+namespace NetTopologySuite.Operation.Overlay
 {
     /// <summary>
     /// Forms <see cref="IPolygon{TCoordinate}" />s out of a graph of 
@@ -56,12 +56,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         {
             PlanarGraph<TCoordinate>.LinkResultDirectedEdges(nodes);
             IEnumerable<MaximalEdgeRing<TCoordinate>> maxEdgeRings = buildMaximalEdgeRings(dirEdges);
-            //= Enumerable.ToArray(buildMaximalEdgeRings(dirEdges));
+            //= sl.Enumerable.ToArray(buildMaximalEdgeRings(dirEdges));
             List<EdgeRing<TCoordinate>> freeHoleList = new List<EdgeRing<TCoordinate>>();
             IEnumerable<EdgeRing<TCoordinate>> edgeRings = buildMinimalEdgeRings(maxEdgeRings,
                                                                                  _shellList,
                                                                                  freeHoleList);
-            //= Enumerable.ToArray(buildMinimalEdgeRings(maxEdgeRings, _shellList, freeHoleList));
+            //= sl.Enumerable.ToArray(buildMinimalEdgeRings(maxEdgeRings, _shellList, freeHoleList));
             sortShellsAndHoles(edgeRings, _shellList, freeHoleList);
             placeFreeHoles(_shellList, freeHoleList);
             //Assert: every hole on freeHoleList has a shell assigned to it

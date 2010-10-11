@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm.Match;
-using GisSharpBlog.NetTopologySuite.Operation.Union;
-using NetTopologySuite.Coordinates.Simple;
+using NetTopologySuite.Algorithm.Match;
+using NetTopologySuite.Operation.Union;
+using NetTopologySuite.Coordinates;
 
 namespace NetTopologySuite.Tests.NUnit.Operation
 {

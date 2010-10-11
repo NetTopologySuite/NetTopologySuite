@@ -28,7 +28,7 @@ using GeoAPI.Coordinates;
 using NPack;
 using NPack.Interfaces;
 
-namespace NetTopologySuite.Coordinates.Simple
+namespace NetTopologySuite.Coordinates
 {
     using IVector2D = IVector<DoubleComponent, Coordinate>;
     using IVectorD = IVector<DoubleComponent>;

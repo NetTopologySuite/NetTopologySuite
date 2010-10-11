@@ -2,7 +2,7 @@ using System;
 using GeoAPI.DataStructures;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Index
+namespace NetTopologySuite.Index
 {
     /// <summary> 
     /// A key is a unique identifier for a node in regular region indexes.

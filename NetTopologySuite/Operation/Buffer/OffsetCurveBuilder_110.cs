@@ -4,12 +4,14 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
-
-namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
+#if DOTNET35
+using sl = System.Linq;
+#endif
+namespace NetTopologySuite.Operation.Buffer
 {
     ///<summary>
     /// Computes the raw offset curve for a
@@ -225,7 +227,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             Pair<TCoordinate> initPoints = Slice.GetPair(simp1).Value;
 
             InitSideSegments(initPoints.First, initPoints.Second, Positions.Left);
-            foreach (TCoordinate point in Enumerable.Skip(simp1, 2))
+            foreach (TCoordinate point in sl.Enumerable.Skip(simp1, 2))
             {
                 AddNextSegment(point, true);
             }

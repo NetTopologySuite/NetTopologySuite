@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
-using GisSharpBlog.NetTopologySuite.Index.Strtree;
-using NetTopologySuite.Coordinates.Simple;
+using NetTopologySuite.Index.Strtree;
+using NetTopologySuite.Coordinates;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Index

@@ -4,7 +4,7 @@ using GeoAPI.Coordinates;
 using NPack;
 using NPack.Interfaces;
 #if DOTNET35
-using System.Linq;
+using sl = System.Linq;
 #endif
 
 namespace NetTopologySuite.Coordinates
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Coordinates
 
             if (!direction)
             {
-                coordinates = Enumerable.Reverse(coordinates);
+                coordinates = sl.Enumerable.Reverse(coordinates);
             }
 
             foreach (BufferedCoordinate coordinate in coordinates)

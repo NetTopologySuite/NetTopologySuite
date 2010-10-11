@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace GisSharpBlog.NetTopologySuite
+namespace NetTopologySuite
 {
     [Serializable]
     public class NtsException : Exception

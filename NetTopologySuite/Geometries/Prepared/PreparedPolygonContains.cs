@@ -3,7 +3,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries.Prepared
+namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
     /// <see cref="ISpatialRelation{TCoordinate}.Contains(GeoAPI.Geometries.IGeometry{TCoordinate})"/> operation for <see cref="PreparedPolygon{TCoordinate}"/>.

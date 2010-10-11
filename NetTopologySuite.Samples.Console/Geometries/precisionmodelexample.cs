@@ -4,7 +4,7 @@ using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
 using NetTopologySuite.Coordinates;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
+namespace NetTopologySuite.Samples.Geometries
 {
     /// <summary> 
     /// An example showing the results of using different precision models

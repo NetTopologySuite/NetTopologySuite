@@ -4,7 +4,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Distance
+namespace NetTopologySuite.Operation.Distance
 {
     /// <summary>
     /// Represents the location of a point on a Geometry.

@@ -2,8 +2,8 @@ using System;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm.Locate;
-using NetTopologySuite.Coordinates.Simple;
+using NetTopologySuite.Algorithm.Locate;
+using NetTopologySuite.Coordinates;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {

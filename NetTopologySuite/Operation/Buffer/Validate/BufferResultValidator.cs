@@ -3,7 +3,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Buffer.Validate
+namespace NetTopologySuite.Operation.Buffer.Validate
 {
     ///<summary>
     /// Validates that the result of a standard buffer operation

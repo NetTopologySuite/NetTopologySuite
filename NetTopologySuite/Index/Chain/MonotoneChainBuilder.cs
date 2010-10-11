@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Chain
+namespace NetTopologySuite.Index.Chain
 {
     /// <summary> 
     /// A <see cref="MonotoneChainBuilder"/> implements static functions

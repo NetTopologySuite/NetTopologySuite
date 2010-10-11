@@ -11,6 +11,9 @@ using Rhino.Mocks;
 
 #if DOTNET35
 using System.Linq;
+using Enumerable = System.Linq.Enumerable;
+#else
+using Enumerable = GeoAPI.DataStructures.Enumerable;
 #endif
 
 namespace ManagedBufferedCoordinateTests

@@ -9,7 +9,7 @@ using C5;
 #else
 using System.Collections.Generic;
 #endif
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
 #if C5
     public class CoordinateList<TCoordinate> : ArrayList<TCoordinate>

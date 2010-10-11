@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
+#if !DOTNET40
 using GeoAPI.DataStructures.Collections.Generic;
+#endif
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Planargraph;
+using NetTopologySuite.Planargraph;
 using NPack.Interfaces;
 
 #if DOTNET35
-using System.Linq;
+using sl = System.Linq;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
+namespace NetTopologySuite.Operation.Polygonize
 {
     /// <summary>
     /// Represents a planar graph of edges that can be used to compute a
@@ -186,7 +188,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         public IEnumerable<ILineString<TCoordinate>> DeleteDangles()
         {
             IEnumerable<Node<TCoordinate>> nodesToRemove = FindNodesOfDegree(1);
+#if DOTNET40
+            ISet<ILineString<TCoordinate>> dangleLines = new HashSet<ILineString<TCoordinate>>();
+#else
             ISet<ILineString<TCoordinate>> dangleLines = new HashedSet<ILineString<TCoordinate>>();
+#endif
 
             Stack<Node<TCoordinate>> nodeStack = new Stack<Node<TCoordinate>>(nodesToRemove);
 

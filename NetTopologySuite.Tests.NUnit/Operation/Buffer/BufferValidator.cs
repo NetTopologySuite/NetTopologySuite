@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
+#if !DOTNET40
 using C5;
+#endif
 using GeoAPI;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using NetTopologySuite.Coordinates.Simple;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Coordinates;
 using NUnit.Framework;
+
 namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 {
     public class BufferValidator
@@ -69,8 +72,14 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
         {
             try
             {
+#if DOTNET40
+                SortedSet<Test> ts = new SortedSet<Test>();
+                foreach (Test test in _nameToTestMap.Values)
+                    ts.Add(test);
+#else
                 TreeSet<Test> ts = new TreeSet<Test>();
                 ts.AddAll(_nameToTestMap.Values);
+#endif
                 foreach (Test test in ts)
                     test.Do();
             }
@@ -266,7 +275,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                                                    }
 
                                                    Assert.IsTrue(
-                                                       GisSharpBlog.NetTopologySuite.Operation.Buffer.Validate.
+                                                       NetTopologySuite.Operation.Buffer.Validate.
                                                            BufferResultValidator<Coordinate>.IsValid(_original,
                                                                                                      _bufferDistance,
                                                                                                      _buffer),

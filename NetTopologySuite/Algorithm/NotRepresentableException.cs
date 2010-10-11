@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm
+namespace NetTopologySuite.Algorithm
 {
     [Serializable]
     public class NotRepresentableException : Exception

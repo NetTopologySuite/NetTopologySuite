@@ -1,8 +1,8 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using NetTopologySuite.Coordinates.Simple;
-using Coord = NetTopologySuite.Coordinates.Simple.Coordinate;
+using NetTopologySuite.Coordinates;
+using Coord = NetTopologySuite.Coordinates.Coordinate;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {

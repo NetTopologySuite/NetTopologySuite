@@ -4,8 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Operation.Buffer.Validate;
-using NetTopologySuite.Coordinates.Simple;
+using NetTopologySuite.Operation.Buffer.Validate;
+using NetTopologySuite.Coordinates;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Buffer

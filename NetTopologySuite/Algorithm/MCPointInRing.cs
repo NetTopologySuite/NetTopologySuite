@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Index.Bintree;
-using GisSharpBlog.NetTopologySuite.Index.Chain;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Index.Bintree;
+using NetTopologySuite.Index.Chain;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm
+namespace NetTopologySuite.Algorithm
 {
     /// <summary>
     /// Implements <see cref="IPointInRing{TCoordinate}"/>

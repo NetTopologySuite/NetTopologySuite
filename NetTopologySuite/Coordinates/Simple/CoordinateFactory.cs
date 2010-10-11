@@ -20,12 +20,16 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+#if DOTNET35
+using System.Linq;
+#else
 using GeoAPI.DataStructures;
+#endif
 using NPack;
 using NPack.Interfaces;
 
 // ReSharper disable InconsistentNaming
-namespace NetTopologySuite.Coordinates.Simple
+namespace NetTopologySuite.Coordinates
 {
     using ISimpleCoordFactory = ICoordinateFactory<Coordinate>;
     using ITypedVectorFactory = IVectorFactory<DoubleComponent, Coordinate>;

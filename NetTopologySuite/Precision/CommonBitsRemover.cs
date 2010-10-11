@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Geometries.Utilities;
 using NPack;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Precision
+#if DOTNET40
+//using Processor = Transform
+#else
+#endif
+
+namespace NetTopologySuite.Precision
 {
     /// <summary>
     /// Allow computing and removing common significand bits from one or more 
@@ -140,10 +145,10 @@ namespace GisSharpBlog.NetTopologySuite.Precision
                     return _geomFact.CreatePoint(AddTrans(geom.Coordinates[0]));
 
                 if ( geom is IMultiPoint<TCoordinate>)
-                    return _geomFact.CreateMultiPoint(Processor.Transform(geom.Coordinates, AddTrans));
+                    return _geomFact.CreateMultiPoint(Processor.Transform<TCoordinate>(geom.Coordinates, AddTrans));
 
                 if ( geom is ILineString<TCoordinate> )
-                    return _geomFact.CreateLineString(Processor.Transform(geom.Coordinates, AddTrans));
+                    return _geomFact.CreateLineString(Processor.Transform<TCoordinate>(geom.Coordinates, AddTrans));
 
                 if (geom is IMultiLineString<TCoordinate>)
                 {
@@ -159,8 +164,8 @@ namespace GisSharpBlog.NetTopologySuite.Precision
                     IPolygon<TCoordinate> poly =
                         _geomFact.CreatePolygon(
                             _geomFact.CreateLinearRing(
-                                Processor.Transform(polyInput.ExteriorRing.Coordinates, AddTrans)),
-                                Processor.Transform<ILineString<TCoordinate>, ILinearRing<TCoordinate>>(polyInput.InteriorRings, AddTrans));
+                                Processor.Transform<TCoordinate>(polyInput.ExteriorRing.Coordinates, AddTrans)),
+                                Processor.Transform(polyInput.InteriorRings, AddTrans));
 
                     return poly;
                 }
@@ -191,7 +196,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
 
             private ILinearRing<TCoordinate> AddTrans(ILineString<TCoordinate> input)
             {
-                return _geomFact.CreateLinearRing(Processor.Transform(input.Coordinates, AddTrans));
+                return _geomFact.CreateLinearRing(Processor.Transform<TCoordinate>(input.Coordinates, AddTrans));
             }
 
             private class AddDeltaOperation : GeometryEditor<TCoordinate>.CoordinateOperation

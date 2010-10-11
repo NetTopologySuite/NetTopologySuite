@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm
+namespace NetTopologySuite.Algorithm
 {
 #if class
     public class Intersection<TCoordinate> : IEnumerable<TCoordinate>

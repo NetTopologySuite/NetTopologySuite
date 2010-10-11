@@ -1,10 +1,10 @@
 using System;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Coordinates;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
+namespace NetTopologySuite.Samples.Geometries
 {
     /// <summary>
     /// An example showing a simple use of JTS methods for:

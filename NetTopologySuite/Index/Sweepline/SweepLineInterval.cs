@@ -1,6 +1,6 @@
 using System;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Sweepline
+namespace NetTopologySuite.Index.Sweepline
 {
     // DESIGN_NOTE: Looks like a value type
     public class SweepLineInterval

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Noding.Snapround;
-using Coord = NetTopologySuite.Coordinates.Simple.Coordinate;
-using CoordSeq = NetTopologySuite.Coordinates.Simple.CoordinateSequence;
-using CoordFac = NetTopologySuite.Coordinates.Simple.CoordinateFactory;
-using CoordSeqFac = NetTopologySuite.Coordinates.Simple.CoordinateSequenceFactory;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Noding.Snapround;
+using Coord = NetTopologySuite.Coordinates.Coordinate;
+using CoordSeq = NetTopologySuite.Coordinates.CoordinateSequence;
+using CoordFac = NetTopologySuite.Coordinates.CoordinateFactory;
+using CoordSeqFac = NetTopologySuite.Coordinates.CoordinateSequenceFactory;
 
 namespace NetTopologySuite.Tests.NUnit
 {

@@ -1,9 +1,9 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Operation.Relate;
-using NetTopologySuite.Coordinates.Simple;
+using NetTopologySuite;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Operation.Relate;
+using NetTopologySuite.Coordinates;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Relate

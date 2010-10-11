@@ -8,11 +8,11 @@ using System.Threading;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
-using GisSharpBlog.NetTopologySuite.Index.Strtree;
+using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Index.Strtree;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Union
+namespace NetTopologySuite.Operation.Union
 {
     /// <summary>
     /// <see href="http://code.google.com/p/nettopologysuite/issues/detail?id=44"/>

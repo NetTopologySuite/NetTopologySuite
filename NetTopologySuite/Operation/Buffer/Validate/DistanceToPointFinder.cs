@@ -2,12 +2,12 @@ using System;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm.Distance;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Algorithm.Distance;
+using NetTopologySuite.Geometries;
 using NPack;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Buffer.Validate
+namespace NetTopologySuite.Operation.Buffer.Validate
 {
     ///<summary>
     /// Computes the Euclidean distance (L2 metric) from a Point to a Geometry.

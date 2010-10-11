@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
-using GisSharpBlog.NetTopologySuite.Triangulate.Quadedge;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Triangulate.Quadedge;
 using NPack.Interfaces;
+#if !DOTNET40
 using C5;
+#endif
 
-namespace GisSharpBlog.NetTopologySuite.Triangulate
+namespace NetTopologySuite.Triangulate
 {
     ///<summary>
     /// A utility class which creates Conforming Delaunay Trianglulations
@@ -27,8 +29,11 @@ namespace GisSharpBlog.NetTopologySuite.Triangulate
         private Double _tolerance;
         private QuadEdgeSubdivision<TCoordinate> _subdiv;
 
+#if DOTNET40
+        private readonly SortedDictionary<TCoordinate, Vertex<TCoordinate>> _vertexMap = new SortedDictionary<TCoordinate, Vertex<TCoordinate>>();
+#else
         private readonly TreeDictionary<TCoordinate, Vertex<TCoordinate>> _vertexMap = new TreeDictionary<TCoordinate, Vertex<TCoordinate>>();
-
+#endif
         ///<summary>
         /// Creates an instance of this class
         ///</summary>

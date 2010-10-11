@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
+using NetTopologySuite.Algorithm;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
+namespace NetTopologySuite.Operation.Predicate
 {
     /// <summary>
     /// Tests if any line segments in two sets of 

@@ -20,10 +20,13 @@
  */
 
 #endregion
+/*
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+#if !DOTNET40
 using GeoAPI.DataStructures.Collections.Generic;
+#endif
 
 namespace NetTopologySuite.Coordinates.Simple
 {
@@ -139,3 +142,4 @@ namespace NetTopologySuite.Coordinates.Simple
         #endregion
     }
 }
+*/

@@ -4,19 +4,22 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
+#if !DOTNET40
 using GeoAPI.DataStructures.Collections.Generic;
+#endif
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Planargraph;
-using GisSharpBlog.NetTopologySuite.Planargraph.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Planargraph;
+using NetTopologySuite.Planargraph.Algorithm;
+using NPack;
 using NPack.Interfaces;
 
 #if DOTNET35
-using System.Linq;
+using sl = System.Linq;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
+namespace NetTopologySuite.Operation.Linemerge
 {
     /// <summary>
     /// Builds a sequence from a set of <see cref="ILineString" />s,
@@ -115,7 +118,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                 if (!Coordinates<TCoordinate>.IsEmpty(lastNode) && !lastNode.Equals(startNode))
                 {
                     // start new connected sequence
+#if DOTNET40
+                    foreach (TCoordinate coordinate in currNodes)
+                        prevSubgraphNodes.Add(coordinate);
+#else
                     prevSubgraphNodes.AddRange(currNodes);
+#endif
                     currNodes.Clear();
                 }
 
@@ -512,7 +520,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 
             if (flipSeq)
             {
-                return Enumerable.Reverse(seq);
+                return sl.Enumerable.Reverse(seq);
             }
 
             return seq;

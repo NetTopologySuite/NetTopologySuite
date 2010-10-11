@@ -3,7 +3,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm
+namespace NetTopologySuite.Algorithm
 {
     ///<summary>
     /// An interface for classes which determine the <see cref="Locations"/> of points in an areal <see cref="IGeometry{TCoordinate}"/>

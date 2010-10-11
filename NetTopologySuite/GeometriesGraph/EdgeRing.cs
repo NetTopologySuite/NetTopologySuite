@@ -5,15 +5,15 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 #if DOTNET35
-using System.Linq;
+using sl = System.Linq;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>
     /// A base class for a ring of <see cref="Edge{TCoordinate}"/>s of a graph.
@@ -288,7 +288,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                     startIndex = 0;
                 }
 
-                foreach (TCoordinate coordinate in Enumerable.Skip(edgePts, startIndex))
+                foreach (TCoordinate coordinate in sl.Enumerable.Skip(edgePts, startIndex))
                 {
                     _coordinates.Add(coordinate);
                 }

@@ -2,10 +2,10 @@ using System;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap
+namespace NetTopologySuite.Operation.Overlay.Snap
 {
     ///<summary>
     ///Snaps the vertices and segments of a <see cref="IGeometry{TCoordinate}"/> to another Geometry's vertices.

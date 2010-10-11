@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
-using GisSharpBlog.NetTopologySuite.Operation.Overlay;
+using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Operation.Overlay;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Union
+namespace NetTopologySuite.Operation.Union
 {
     ///<summary>
     ///Unions a collection of Geometry or a single Geometry 

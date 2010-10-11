@@ -1,7 +1,7 @@
 using System;
 using SysConsole = System.Console;
 
-namespace GisSharpBlog.NetTopologySuite.Console
+namespace NetTopologySuite.Console
 {
     internal partial class ConsoleTest
     {

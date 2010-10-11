@@ -5,7 +5,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm.Match
+namespace NetTopologySuite.Algorithm.Match
 {
     ///<summary>
     /// An interface for classes which measures the degree of similarity between two <see cref="IGeometry{TCoordinate}"/>s.

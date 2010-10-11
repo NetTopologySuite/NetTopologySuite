@@ -1,11 +1,11 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation
+namespace NetTopologySuite.Operation
 {
     /// <summary>
     /// The base class for operations that require <see cref="GeometryGraph{TCoordinate}"/>s.

@@ -3,7 +3,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Diagnostics;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     /// <summary>
     /// Implements a robust method of comparing the relative position of two points 

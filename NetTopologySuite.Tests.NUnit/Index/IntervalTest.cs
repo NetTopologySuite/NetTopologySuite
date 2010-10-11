@@ -30,8 +30,8 @@ namespace NetTopologySuite.Tests.NUnit.Index
         [Test]
         public void TestCopyConstructor()
         {
-            Assert.AreEqual(new Interval(3, 4), new Interval(3, 4));
-            Assert.AreEqual(new Interval(3, 4), new Interval(new Interval(3, 4)));
+            Assert.IsTrue(new Interval(3, 4).Equals(new Interval(3, 4)));
+            Assert.IsTrue(new Interval(3, 4).Equals(new Interval(new Interval(3, 4))));
         }
 
         [Test]
@@ -43,12 +43,12 @@ namespace NetTopologySuite.Tests.NUnit.Index
         [Test]
         public void TestExpandToInclude()
         {
-            Assert.AreEqual(new Interval(3, 8), new Interval(3, 4)
-                         .ExpandToInclude(new Interval(7, 8)));
-            Assert.AreEqual(new Interval(3, 7), new Interval(3, 7)
-                         .ExpandToInclude(new Interval(4, 5)));
-            Assert.AreEqual(new Interval(3, 8), new Interval(3, 7)
-                         .ExpandToInclude(new Interval(4, 8)));
+            Assert.IsTrue(new Interval(3, 8).Equals(new Interval(3, 4)
+                         .ExpandToInclude(new Interval(7, 8))));
+            Assert.IsTrue(new Interval(3, 7).Equals(new Interval(3, 7)
+                         .ExpandToInclude(new Interval(4, 5))));
+            Assert.IsTrue(new Interval(3, 8).Equals(new Interval(3, 7)
+                         .ExpandToInclude(new Interval(4, 8))));
         }
     }
 }

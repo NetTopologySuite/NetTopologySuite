@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Noding.Snapround;
-using NetTopologySuite.Coordinates.Simple;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Noding.Snapround;
+using NetTopologySuite.Coordinates;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Noding.SnapRound

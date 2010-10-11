@@ -2,10 +2,10 @@ using System;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap
+namespace NetTopologySuite.Operation.Overlay.Snap
 {
     /**
      * Snaps the vertices and segments of a {@link LineString} to a set of target snap vertices.

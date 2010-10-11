@@ -5,10 +5,10 @@ using GeoAPI.Coordinates;
 using NPack.Interfaces;
 using GeoAPI.Geometries;
 using GeoAPI.DataStructures;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
 
-namespace GisSharpBlog.NetTopologySuite.Densify
+namespace NetTopologySuite.Densify
 {
     ///<summary>
     ///Densifies a geometry by inserting extra vertices along the line segments

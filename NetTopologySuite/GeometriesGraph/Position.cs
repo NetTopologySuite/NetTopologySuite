@@ -1,4 +1,4 @@
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary> 
     /// A Position indicates the position of a Location relative to a graph component

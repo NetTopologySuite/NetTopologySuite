@@ -2,10 +2,12 @@ using System;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
-
-namespace GisSharpBlog.NetTopologySuite.Algorithm.Distance
+#if DOTNET35
+using sl = System.Linq;
+#endif
+namespace NetTopologySuite.Algorithm.Distance
 {
     public class DiscreteHausdorffDistance<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,

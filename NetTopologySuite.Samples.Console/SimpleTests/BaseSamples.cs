@@ -2,10 +2,10 @@ using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Coordinates;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
+namespace NetTopologySuite.Samples.SimpleTests
 {
     public class BaseSamples
     {

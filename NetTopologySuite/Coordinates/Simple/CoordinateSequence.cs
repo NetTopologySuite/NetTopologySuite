@@ -26,16 +26,18 @@ using System.Collections.Generic;
 using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
+#if !DOTNET40
 using GeoAPI.DataStructures.Collections.Generic;
+using C5;
+#endif
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 
-namespace NetTopologySuite.Coordinates.Simple
+namespace NetTopologySuite.Coordinates
 {
     using ICoordFactory = ICoordinateFactory<Coordinate>;
     using ICoordSequence = ICoordinateSequence<Coordinate>;
     using ICoordSequenceFactory = ICoordinateSequenceFactory<Coordinate>;
-    using C5;
 
     /// <summary>
     /// Delegate to compute the index
@@ -397,10 +399,12 @@ namespace NetTopologySuite.Coordinates.Simple
             return AddRange(coordinates);
         }
 
+        /*
         public ISet<Coordinate> AsSet()
         {
             return new CoordinateSet(this, _factory);
         }
+         */
 
         public ICoordinateSequence<Coordinate> Clear()
         {
@@ -839,12 +843,21 @@ namespace NetTopologySuite.Coordinates.Simple
             }
         }
 
+        ///<summary>
+        ///</summary>
+        ///<returns></returns>
         public ICoordinateSequence<Coordinate> WithoutDuplicatePoints()
         {
+#if DOTNET40
+            HashSet<Coordinate> hs = new HashSet<Coordinate>(this);
+            return new CoordinateSequence(_factory, hs);
+            //hs.AllowsDuplicates = false;
+#else
             HashSet<Coordinate> hs= new HashSet<Coordinate>();
             //hs.AllowsDuplicates = false;
             hs.AddAll(_coordinates);
             return new CoordinateSequence(_factory, hs.UniqueItems());
+#endif
         }
 
         public Pair<Coordinate> SegmentAt(int index)

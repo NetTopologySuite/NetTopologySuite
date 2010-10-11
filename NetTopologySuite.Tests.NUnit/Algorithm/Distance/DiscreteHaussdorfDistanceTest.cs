@@ -1,9 +1,9 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm.Distance;
+using NetTopologySuite.Algorithm.Distance;
 using NUnit.Framework;
 
-using Coord = NetTopologySuite.Coordinates.Simple.Coordinate;
+using Coord = NetTopologySuite.Coordinates.Coordinate;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm.Distance
 {

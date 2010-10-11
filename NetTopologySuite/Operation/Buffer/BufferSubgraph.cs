@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
+#if !DOTNET40
 using GeoAPI.DataStructures.Collections.Generic;
+#endif
 using GeoAPI.Diagnostics;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
+namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
     /// A connected subset of the graph of
@@ -186,7 +188,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         // <FIX> MD - use iteration & queue rather than recursion, for speed and robustness
         private void computeDepths(DirectedEdge<TCoordinate> startEdge)
         {
+#if DOTNET40
+            ISet<Node<TCoordinate>> nodesVisited = new HashSet<Node<TCoordinate>>();
+#else
             ISet<Node<TCoordinate>> nodesVisited = new HashedSet<Node<TCoordinate>>();
+#endif
             Queue<Node<TCoordinate>> nodeQueue = new Queue<Node<TCoordinate>>();
             Node<TCoordinate> startNode = startEdge.Node;
             nodeQueue.Enqueue(startNode);

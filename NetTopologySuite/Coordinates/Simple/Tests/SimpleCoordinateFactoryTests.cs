@@ -1,17 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using GeoAPI.Coordinates;
-using GeoAPI.DataStructures;
-using NetTopologySuite.Coordinates.Simple;
+using NetTopologySuite.Coordinates;
 using NPack;
-using NPack.Interfaces;
 //using Xunit;
-using Rhino.Mocks;
 using NUnit.Framework;
 
 #if DOTNET35
 using System.Linq;
+using sl = System.Linq;
 #endif
 
 namespace SimpleCoordinateTests
@@ -166,7 +162,7 @@ namespace SimpleCoordinateTests
             Int32 count = 10000;
 
             IEnumerable<Coordinate> homogeneous = generateInfiniteHomogeneousCoordinates(factory, rnd);
-            IEnumerable<Coordinate> dehomogeneous = Enumerable.Take(factory.Dehomogenize(homogeneous), count);
+            IEnumerable<Coordinate> dehomogeneous = sl.Enumerable.Take(factory.Dehomogenize(homogeneous), count);
 
             foreach (Coordinate coord in dehomogeneous)
             {

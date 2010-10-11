@@ -1,8 +1,8 @@
 using System;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Simplify;
-using NetTopologySuite.Coordinates.Simple;
+using NetTopologySuite.Simplify;
+using NetTopologySuite.Coordinates;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Simplify

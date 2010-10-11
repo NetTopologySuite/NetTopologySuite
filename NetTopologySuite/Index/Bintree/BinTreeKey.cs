@@ -2,7 +2,7 @@ using System;
 using GeoAPI.DataStructures;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Bintree
+namespace NetTopologySuite.Index.Bintree
 {
     public struct DoubleBinTreeValue : IAddable<DoubleBinTreeValue>,
                                        IAddable<Double, DoubleBinTreeValue>,

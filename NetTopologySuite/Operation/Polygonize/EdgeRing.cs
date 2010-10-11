@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Planargraph;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Planargraph;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
+namespace NetTopologySuite.Operation.Polygonize
 {
     /// <summary>
     /// Represents a ring of <c>PolygonizeDirectedEdge</c>s which form
@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         // cache the following data for efficiency
         private readonly List<DirectedEdge<TCoordinate>> _deList = new List<DirectedEdge<TCoordinate>>();
         private readonly IGeometryFactory<TCoordinate> _factory;
-        private GisSharpBlog.NetTopologySuite.Geometries.CoordinateList<TCoordinate> _ringPoints;
+        private CoordinateList<TCoordinate> _ringPoints;
         private IList<ILinearRing<TCoordinate>> _holes;
         private ILinearRing<TCoordinate> _ring;
 

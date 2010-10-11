@@ -1,7 +1,7 @@
 using System;
-using GisSharpBlog.NetTopologySuite.Algorithm;
+using NetTopologySuite.Algorithm;
 using NUnit.Framework;
-using Coord = NetTopologySuite.Coordinates.Simple.Coordinate;
+using Coord = NetTopologySuite.Coordinates.Coordinate;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {

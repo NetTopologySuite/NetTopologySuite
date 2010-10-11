@@ -6,7 +6,7 @@ using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Basic implementation of <see cref="GeometryCollection{TCoordinate}" />.

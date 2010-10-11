@@ -23,7 +23,7 @@ using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 
-namespace NetTopologySuite.Coordinates.Simple
+namespace NetTopologySuite.Coordinates
 {
     /// <summary> 
     /// Specifies the precision model of the <see cref="ICoordinate"/>s 

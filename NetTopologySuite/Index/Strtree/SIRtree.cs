@@ -4,7 +4,7 @@ using System.Diagnostics;
 using GeoAPI.DataStructures;
 using GeoAPI.Indexing;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Strtree
+namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
     /// One-dimensional version of an STR-packed R-tree.
@@ -90,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
             public override Boolean Intersects(Interval bounds)
             {
-                return Bounds.Overlaps(bounds);
+                return Bounds.Intersects(bounds);
             }
         }
 
@@ -106,7 +106,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
             protected override Interval ComputeBounds()
             {
-                Interval? bounds = null;
+                Interval bounds = null;
 
                 foreach (IBoundable<Interval> childBoundable in SubNodes)
                 {
@@ -116,22 +116,22 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
                     }
                     else
                     {
-                        bounds.Value.ExpandToInclude(childBoundable.Bounds);
+                        bounds.ExpandToInclude(childBoundable.Bounds);
                     }
                 }
 
                 Debug.Assert(bounds != null);
-                return bounds.Value;
+                return bounds;
             }
 
             public override Boolean Intersects(Interval bounds)
             {
-                return Bounds.Overlaps(bounds);
+                return Bounds.Intersects(bounds);
             }
 
             protected override Boolean IsSearchMatch(Interval query)
             {
-                return query.Overlaps(Bounds);
+                return query.Intersects(Bounds);
             }
         }
 

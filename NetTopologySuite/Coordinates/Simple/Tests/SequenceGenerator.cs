@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
-using NetTopologySuite.Coordinates.Simple;
+using NetTopologySuite.Coordinates;
 using NPack;
 
 namespace SimpleCoordinateTests
@@ -13,10 +13,10 @@ namespace SimpleCoordinateTests
         private readonly Int32 _maxRandomLimit;
         private readonly CoordinateFactory _coordFactory;
         private readonly CoordinateSequenceFactory _seqFactory;
-        private ICoordinateSequence<Coordinate> _sequence;
-        private List<Coordinate> _main;
-        private List<Coordinate> _prepend;
-        private List<Coordinate> _append;
+        private readonly ICoordinateSequence<Coordinate> _sequence;
+        private readonly List<Coordinate> _main;
+        private readonly List<Coordinate> _prepend;
+        private readonly List<Coordinate> _append;
 
         public CoordinateFactory CoordinateFactory
         {

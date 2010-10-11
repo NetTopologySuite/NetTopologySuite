@@ -1,9 +1,9 @@
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-//using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap;
-using NetTopologySuite.Coordinates.Simple;
+//using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation.Overlay.Snap;
+using NetTopologySuite.Coordinates;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Overlay

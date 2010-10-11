@@ -1,18 +1,23 @@
-#define Goletas
+#if !DOTNET40
+#define Goletas // or C5
+#endif
 using System;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
-using Goletas.Collections;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries.Utilities;
 using NPack.Interfaces;
+#if !DOTNET40
 #if Goletas
-
+using Goletas.Collections;
 #else
 using C5;
 #endif
+#else
+using System.Collections.Generic;
+#endif
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Union
+namespace NetTopologySuite.Operation.Union
 {
     public class PointGeometryUnion<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
@@ -48,12 +53,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
         {
             PointLocator<TCoordinate> locater = new PointLocator<TCoordinate>();
             // use a set to eliminate duplicates, as required for union
+#if DOTNET40
+            ISet<TCoordinate> exteriorCoords = new SortedSet<TCoordinate>();
+#else
 #if Goletas
             SortedSet<TCoordinate> exteriorCoords = new SortedSet<TCoordinate>();
 #else
             TreeSet<TCoordinate> exteriorCoords = new TreeSet<TCoordinate>();
 #endif
-
+#endif
             foreach (IPoint<TCoordinate> point in GeometryFilter.Filter<IPoint<TCoordinate>, TCoordinate>(_pointGeom))
             {
                 TCoordinate coord = point.Coordinate;

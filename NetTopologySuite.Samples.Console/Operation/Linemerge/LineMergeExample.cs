@@ -4,11 +4,15 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Operation.Linemerge;
+using NetTopologySuite.Operation.Linemerge;
 using NetTopologySuite.Coordinates;
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
+#if DOTNET35
+using sl = System.Linq;
+#endif
+
+namespace NetTopologySuite.Samples.Operation.Linemerge
 {
     /// <summary> 
     /// Example of using the <see cref="LineMerger{TCoordinate}"/> class to 
@@ -80,7 +84,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Linemerge
             IEnumerable<ILineString<BufferedCoordinate>> mergedLineStrings
                 = lineMerger.MergedLineStrings;
 
-            Console.WriteLine("Lines formed (" + Enumerable.Count(mergedLineStrings) + "):");
+            Console.WriteLine("Lines formed (" + sl.Enumerable.Count(mergedLineStrings) + "):");
 
             foreach (Object obj in mergedLineStrings)
             {

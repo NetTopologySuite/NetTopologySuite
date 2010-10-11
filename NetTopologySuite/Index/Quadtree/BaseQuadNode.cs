@@ -7,7 +7,7 @@ using GeoAPI.Indexing;
 using NPack;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
+namespace NetTopologySuite.Index.Quadtree
 {
     /// <summary>
     /// The base class for nodes in a <see cref="Quadtree{TCoordinate, TItem}"/>.

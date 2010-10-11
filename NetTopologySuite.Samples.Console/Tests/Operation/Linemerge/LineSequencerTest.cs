@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation.Linemerge;
-using GisSharpBlog.NetTopologySuite.Samples.SimpleTests;
+using NetTopologySuite.Operation.Linemerge;
+using NetTopologySuite.Samples.SimpleTests;
 using NetTopologySuite.Coordinates;
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
+namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
 {
     [TestFixture]
     public class LineSequencerTest : BaseSamples
@@ -18,8 +18,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
         //        new BufferedCoordinateSequenceFactory()), null);
 
         public LineSequencerTest() :
-            base(GeometryServices.GetGeometryFactory(PrecisionModelType.Fixed),
-                 null)
+            base(GeometryServices.GetGeometryFactory(PrecisionModelType.Fixed))
         {
         }
 

@@ -4,8 +4,9 @@ using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownBinary;
 using GeoAPI.Operations.Buffer;
 using NetTopologySuite.Coordinates;
+using NetTopologySuite.IO.WellKnownBinary;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
+namespace NetTopologySuite.Samples.SimpleTests.Geometries
 {
     public class LineStringSamples : BaseSamples
     {

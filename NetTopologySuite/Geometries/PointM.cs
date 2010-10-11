@@ -3,7 +3,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
     public class PointM<TCoordinate> : Point<TCoordinate>, IPoint2DM, IPoint3DM
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,

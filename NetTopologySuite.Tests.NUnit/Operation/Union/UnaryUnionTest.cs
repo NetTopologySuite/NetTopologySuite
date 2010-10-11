@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation.Union;
-using NetTopologySuite.Coordinates.Simple;
+using NetTopologySuite.Operation.Union;
+using NetTopologySuite.Coordinates;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Union

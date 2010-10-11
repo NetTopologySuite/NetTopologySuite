@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
+#if !DOTNET40
 using GeoAPI.DataStructures.Collections.Generic;
+#endif
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 #if DOTNET35
-using System.Linq;
+using sl = System.Linq;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm
+namespace NetTopologySuite.Algorithm
 {
     /// <summary> 
     /// Computes the convex hull of a <see cref="Geometry{TCoordinate}" />.
@@ -178,7 +180,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             ps.Push(triple.Second);
             ps.Push(triple.Third);
 
-            foreach (TCoordinate coordinate in Enumerable.Skip(c, 3))
+            foreach (TCoordinate coordinate in sl.Enumerable.Skip(c, 3))
             {
                 p = ps.Pop();
 

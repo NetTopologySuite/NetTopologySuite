@@ -3,10 +3,10 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm
+namespace NetTopologySuite.Algorithm
 {
     /// <summary> 
     /// A <see cref="LineIntersector{TCoordinate}"/> is an algorithm that can 
@@ -143,6 +143,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             Double dx = p[Ordinates.X] - line.First[Ordinates.X];
             Double dy = p[Ordinates.Y] - line.First[Ordinates.Y];
             Double dist = Math.Sqrt(dx*dx + dy*dy); // dummy value
+
             Assert.IsTrue(!(dist == 0.0 && !p.Equals(line.First)),
                           "Invalid distance calculation");
             return dist;

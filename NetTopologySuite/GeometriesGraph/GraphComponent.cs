@@ -6,7 +6,7 @@ using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>
     /// A GraphComponent is the parent class for the objects'

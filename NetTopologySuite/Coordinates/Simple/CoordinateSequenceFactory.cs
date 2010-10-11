@@ -24,13 +24,17 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using NPack;
+#if DOTNET35
+    using System.Linq;
+#else
+    using GeoAPI.DataStructures;
+#endif
 
-namespace NetTopologySuite.Coordinates.Simple
+namespace NetTopologySuite.Coordinates
 {
     using ISimpleCoordFactory = ICoordinateFactory<Coordinate>;
     using ISimpleCoordSequence = ICoordinateSequence<Coordinate>;
     using ISimpleCoordSequenceFactory = ICoordinateSequenceFactory<Coordinate>;
-    using GeoAPI.DataStructures;
 
     public class CoordinateSequenceFactory : 
         ISimpleCoordSequenceFactory

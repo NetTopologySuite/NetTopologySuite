@@ -5,16 +5,16 @@ using GeoAPI.Coordinates;
 using GeoAPI.DataStructures;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 #if DOTNET35
-using System.Linq;
+using sl = System.Linq;
 #else
 
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.LinearReferencing
+namespace NetTopologySuite.LinearReferencing
 {
     public class LengthIndexOfPoint<TCoordinate>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
@@ -81,7 +81,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
 
             // sanity check for minIndex at or past end of line
             Double endIndex = _linearGeometry is IEnumerable<ILineString<TCoordinate>>
-                                  ? Enumerable.Sum(_linearGeometry as IEnumerable<ILineString<TCoordinate>>, getLength)
+                                  ? sl.Enumerable.Sum(_linearGeometry as IEnumerable<ILineString<TCoordinate>>, getLength)
                                   : ((ILineString) _linearGeometry).Length;
 
             if (endIndex < minIndex)

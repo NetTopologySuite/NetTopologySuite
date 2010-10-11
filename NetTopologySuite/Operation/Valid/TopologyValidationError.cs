@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
+#if !DOTNET40
 using GeoAPI.DataStructures.Collections.Generic;
+#endif
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Operation.Valid
+namespace NetTopologySuite.Operation.Valid
 {
     /// <summary>
     /// Contains information about the nature and location of 
@@ -120,8 +122,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
             errors[TopologyValidationErrors.InvalidCoordinate] = "Invalid Coordinate";
             errors[TopologyValidationErrors.RingNotClosed] = "Ring not closed: first and last points are different";
 
+#if DOTNET40
+            _errMsg = new Dictionary<TopologyValidationErrors, String>(errors);
+#else
             _errMsg = new ReadOnlyDictionary<TopologyValidationErrors, String>(errors);
-        }
+#endif
+            }
 
         public TopologyValidationError(TopologyValidationErrors errorType, ICoordinate coordinate)
         {

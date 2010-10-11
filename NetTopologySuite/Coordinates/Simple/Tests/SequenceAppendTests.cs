@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Coordinates;
-using NetTopologySuite.Coordinates.Simple;
+using NetTopologySuite.Coordinates;
 using Xunit;
 
 namespace SimpleCoordinateTests

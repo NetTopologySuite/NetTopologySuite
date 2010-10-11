@@ -5,7 +5,7 @@ using GeoAPI.DataStructures;
 using GeoAPI.Diagnostics;
 using GeoAPI.Indexing;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Strtree
+namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
     /// Base class for STR trees and SIR trees. 

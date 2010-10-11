@@ -1,10 +1,10 @@
 using System;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Coordinates;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Technique
+namespace NetTopologySuite.Samples.Technique
 {
     /// <summary> 
     /// Shows a technique for using a zero-width buffer to compute

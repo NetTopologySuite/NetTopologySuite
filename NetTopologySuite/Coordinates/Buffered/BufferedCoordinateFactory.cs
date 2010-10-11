@@ -9,7 +9,7 @@ using NPack.Interfaces;
 using BitConverter = GisSharpBlog.NetTopologySuite.Utilities;
 #endif
 #if DOTNET35
-using System.Linq;
+using sl = System.Linq;
 #endif
 
 namespace NetTopologySuite.Coordinates
@@ -657,7 +657,7 @@ namespace NetTopologySuite.Coordinates
         {
             checkCounts(rowCount, columnCount);
 
-            return new BufferedMatrix(this, Enumerable.ToArray(values));
+            return new BufferedMatrix(this, sl.Enumerable.ToArray(values));
         }
 
         public BufferedMatrix CreateMatrix(Int32 rowCount, Int32 columnCount)
@@ -792,7 +792,7 @@ namespace NetTopologySuite.Coordinates
 
         IVectorD IVectorFactoryD.CreateVector(IEnumerable<DoubleComponent> values)
         {
-            return CreateVector(Enumerable.ToArray(values));
+            return CreateVector(sl.Enumerable.ToArray(values));
         }
 
         IVectorD IVectorFactoryD.CreateVector(DoubleComponent a, DoubleComponent b)

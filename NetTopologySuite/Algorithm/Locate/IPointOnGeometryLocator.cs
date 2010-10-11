@@ -3,7 +3,7 @@ using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
+namespace NetTopologySuite.Algorithm.Locate
 {
     /// <summary>
     /// An interface for classes which determine the {@link Location} of

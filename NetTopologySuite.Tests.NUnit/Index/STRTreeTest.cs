@@ -6,10 +6,10 @@ using System.IO;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Index;
-using GisSharpBlog.NetTopologySuite.Index.Strtree;
-using NetTopologySuite.Coordinates.Simple;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Index;
+using NetTopologySuite.Index.Strtree;
+using NetTopologySuite.Coordinates;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Index

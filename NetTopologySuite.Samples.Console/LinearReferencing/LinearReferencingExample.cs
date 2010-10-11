@@ -1,12 +1,12 @@
 using System;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.LinearReferencing;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.LinearReferencing;
 using NetTopologySuite.Coordinates;
 using NUnit.Framework;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.LinearReferencing
+namespace NetTopologySuite.Samples.LinearReferencing
 {
     /// <summary>
     /// Examples of Linear Referencing

@@ -1,12 +1,13 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm.Locate;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Algorithm.Locate;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
-using Coord = NetTopologySuite.Coordinates.Simple.Coordinate;
-using CoordFac = NetTopologySuite.Coordinates.Simple.CoordinateFactory;
-using CoordSeqFac = NetTopologySuite.Coordinates.Simple.CoordinateSequenceFactory;
-using PrecisionModel = NetTopologySuite.Coordinates.Simple.PrecisionModel;
+using Coord = NetTopologySuite.Coordinates.Coordinate;
+using CoordFac = NetTopologySuite.Coordinates.CoordinateFactory;
+using CoordSeqFac = NetTopologySuite.Coordinates.CoordinateSequenceFactory;
+//using PrecisionModel = NetTopologySuite.Coordinates.PrecisionModel;
+
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     [TestFixture]

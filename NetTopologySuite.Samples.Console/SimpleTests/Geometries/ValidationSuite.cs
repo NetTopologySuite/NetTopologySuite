@@ -1,7 +1,7 @@
 using System;
 using GeoAPI.Geometries;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests.Geometries
+namespace NetTopologySuite.Samples.SimpleTests.Geometries
 {
     public class ValidationSuite : BaseSamples
     {

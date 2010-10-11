@@ -1,7 +1,7 @@
 using System;
 using GeoAPI.DataStructures;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
+namespace NetTopologySuite.Index.Quadtree
 {
     /// <summary>
     /// Provides a test for whether an interval is

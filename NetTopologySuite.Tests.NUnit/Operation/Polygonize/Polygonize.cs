@@ -33,8 +33,8 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-using NetTopologySuite.Coordinates.Simple;
-using GisSharpBlog.NetTopologySuite.Operation.Polygonize;
+using NetTopologySuite.Coordinates;
+using NetTopologySuite.Operation.Polygonize;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize

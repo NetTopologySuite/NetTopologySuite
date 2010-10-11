@@ -3,20 +3,20 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation.Polygonize;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation.Polygonize;
 using NetTopologySuite.Coordinates;
 
 #if simple
 using NUnit.Framework;
-using Coord = NetTopologySuite.Coordinates.Simple.Coordinate;
-using CoordSeqFac = NetTopologySuite.Coordinates.Simple.CoordinateSequenceFactory;
+using Coord = NetTopologySuite.Coordinates.Coordinate;
+using CoordSeqFac = NetTopologySuite.Coordinates.CoordinateSequenceFactory;
 #else
 using Coord = NetTopologySuite.Coordinates.BufferedCoordinate;
 using CoordSeqFac = NetTopologySuite.Coordinates.Simple.BufferedCoordinateSequenceFactory;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Operation.Poligonize
+namespace NetTopologySuite.Samples.Operation.Poligonize
 {
     /// <summary>  
     /// Example of using Polygonizer class to polygonize a set of fully noded linestrings.

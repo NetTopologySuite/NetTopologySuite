@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Coordinates;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.GeometriesGraph;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Planargraph
+namespace NetTopologySuite.Planargraph
 {
     /// <summary>
     /// Represents a directed edge in a <see cref="PlanarGraph{TCoordinate}"/>. 

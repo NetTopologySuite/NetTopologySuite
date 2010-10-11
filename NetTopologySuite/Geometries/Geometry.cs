@@ -8,20 +8,20 @@ using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
 using GeoAPI.Operations.Buffer;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
-using GisSharpBlog.NetTopologySuite.Operation.Buffer;
-using GisSharpBlog.NetTopologySuite.Operation.Distance;
-using GisSharpBlog.NetTopologySuite.Operation.Overlay;
-using GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap;
-using GisSharpBlog.NetTopologySuite.Operation.Predicate;
-using GisSharpBlog.NetTopologySuite.Operation.Relate;
-using GisSharpBlog.NetTopologySuite.Operation.Union;
-using GisSharpBlog.NetTopologySuite.Operation.Valid;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Operation.Buffer;
+using NetTopologySuite.Operation.Distance;
+using NetTopologySuite.Operation.Overlay;
+using NetTopologySuite.Operation.Overlay.Snap;
+using NetTopologySuite.Operation.Predicate;
+using NetTopologySuite.Operation.Relate;
+using NetTopologySuite.Operation.Union;
+using NetTopologySuite.Operation.Valid;
 using NPack;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>  
     /// Basic implementation of <see cref="IGeometry{TCoordinate}"/>, the fundamental

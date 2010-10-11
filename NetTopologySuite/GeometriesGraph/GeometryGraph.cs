@@ -1,4 +1,6 @@
+#if !DOTNET40
 #define C5
+#endif
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,11 +10,11 @@ using C5;
 using GeoAPI.Coordinates;
 using GeoAPI.Diagnostics;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
+using NetTopologySuite.Algorithm;
+using NetTopologySuite.GeometriesGraph.Index;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
+namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>
     /// A <see cref="GeometryGraph{TCoordinate}"/> is a graph that models a given 

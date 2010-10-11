@@ -3,15 +3,15 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using NetTopologySuite.Coordinates;
-using GeoAPI.Coordinates;
+using NetTopologySuite.Geometries;
 using NPack.Interfaces;
 
 #endregion
 
-namespace GisSharpBlog.NetTopologySuite
+namespace NetTopologySuite
 {
     public class XmlTestEventArgs<TCoordinate> : EventArgs
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,

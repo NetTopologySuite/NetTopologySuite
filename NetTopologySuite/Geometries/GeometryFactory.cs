@@ -8,14 +8,15 @@ using GeoAPI.Geometries;
 using GeoAPI.Indexing;
 using GeoAPI.IO.WellKnownBinary;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.IO.WellKnownBinary;
 using NPack.Interfaces;
 
 #if DOTNET35
-using System.Linq;
+using sl = System.Linq;
 #endif
 
-namespace GisSharpBlog.NetTopologySuite.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Supplies a set of utility methods for building Geometry objects 
@@ -432,7 +433,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public IPoint<TCoordinate> CreatePoint(IEnumerable<TCoordinate> coordinates)
         {
             Point<TCoordinate> point
-                = new Point<TCoordinate>(Enumerable.First(coordinates), this);
+                = new Point<TCoordinate>(sl.Enumerable.First(coordinates), this);
             return point;
         }
 
@@ -732,11 +733,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public IGeometryCollection<TCoordinate> SafeCreateHomogenousGeometryCollection(IEnumerable<IGeometry<TCoordinate>> geometries)
         {
             OgcGeometryType geometryType = OgcGeometryType.Unknown;
-            IGeometry<TCoordinate> g1 = Enumerable.FirstOrDefault(geometries);
+            IGeometry<TCoordinate> g1 = sl.Enumerable.FirstOrDefault(geometries);
             if (g1 != null)
             {
                 OgcGeometryType type = g1.GeometryType;
-                if (Enumerable.All(geometries, delegate(IGeometry<TCoordinate> o) { return o.GeometryType == type; }))
+                if (sl.Enumerable.All(geometries, delegate(IGeometry<TCoordinate> o) { return o.GeometryType == type; }))
                     geometryType = type;
             }
             return CreateGeometryCollection(geometries, geometryType);

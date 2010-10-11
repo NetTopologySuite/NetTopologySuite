@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
-using GisSharpBlog.NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Coordinates;
 
-namespace GisSharpBlog.NetTopologySuite.Samples.Technique
+namespace NetTopologySuite.Samples.Technique
 {
     /// <summary> 
     /// Shows a technique for identifying the location of self-intersections

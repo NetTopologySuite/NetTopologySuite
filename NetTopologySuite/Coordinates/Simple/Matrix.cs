@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using NPack;
 using NPack.Interfaces;
 
-namespace NetTopologySuite.Coordinates.Simple
+namespace NetTopologySuite.Coordinates
 {
     public struct Matrix : IAffineTransformMatrix<DoubleComponent, Coordinate, Matrix>
     {

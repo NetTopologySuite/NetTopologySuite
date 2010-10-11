@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using GeoAPI.Coordinates;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Noding
+namespace NetTopologySuite.Noding
 {
     /// <summary>
     /// Computes all intersections between segments in a set of 

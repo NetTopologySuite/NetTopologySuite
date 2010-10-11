@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using GeoAPI.Coordinates;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Triangulate.Quadedge
+namespace NetTopologySuite.Triangulate.Quadedge
 {
     ///<summary>
     /// A framework to visit sets of edge-connected <see cref="QuadEdgeTriangle{TCoordinate}"/>s in breadth-first order

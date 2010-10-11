@@ -4,20 +4,28 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using GeoAPI.Coordinates;
+#if !DOTNET40
 using GeoAPI.DataStructures.Collections.Generic;
+#endif
 using GeoAPI.Geometries;
 using NPack;
 using NPack.Interfaces;
+
 #if DOTNET35
 using System.Linq;
+using Enumerable = System.Linq.Enumerable;
+#else
+using GeoAPI.DataStructures;
+using Enumerable = GeoAPI.DataStructures.Enumerable;
 #endif
+
+
 
 namespace NetTopologySuite.Coordinates
 {
     using IBufferedCoordFactory = ICoordinateFactory<BufferedCoordinate>;
     using IBufferedCoordSequence = ICoordinateSequence<BufferedCoordinate>;
     using IBufferedCoordSequenceFactory = ICoordinateSequenceFactory<BufferedCoordinate>;
-    using GeoAPI.DataStructures;
 
     /// <summary>
     /// An <see cref="ICoordinateSequence{BufferedCoordinate}"/>.
@@ -311,12 +319,12 @@ namespace NetTopologySuite.Coordinates
             OnSequenceChanged();
             return this;
         }
-
+/*
         public ISet<BufferedCoordinate> AsSet()
         {
             return new BufferedCoordinateSet(this, _factory, _buffer);
         }
-
+*/
         public IBufferedCoordSequence Clear()
         {
             _sequence.Clear();
@@ -1013,7 +1021,7 @@ namespace NetTopologySuite.Coordinates
             return this;
         }
 
-        public Pair<BufferedCoordinate> SegmentAt(Int32 index)
+        public GeoAPI.DataStructures.Pair<BufferedCoordinate> SegmentAt(Int32 index)
         {
             if (index < 0 || index >= LastIndex)
             {
@@ -1021,7 +1029,7 @@ namespace NetTopologySuite.Coordinates
                     "Index must be between 0 and LastIndex - 1");
             }
 
-            return new Pair<BufferedCoordinate>(this[index], this[index + 1]);
+            return new GeoAPI.DataStructures.Pair<BufferedCoordinate>(this[index], this[index + 1]);
         }
 
         public IBufferedCoordSequence Slice(Int32 startIndex, Int32 endIndex)
@@ -1116,6 +1124,12 @@ namespace NetTopologySuite.Coordinates
             {
                 if (_skipIndexes != null)
                 {
+#if DOTNET40
+                    sliceSkips = new SortedSet<int>();
+                    for (int i = transformedStart; i < transformedEnd; i++)
+                        sliceSkips.Add(i);
+                    sliceSkips.IntersectWith(_skipIndexes);
+#else
                     Int32 i = transformedStart;
                     generator = delegate() { return i++; };
                     condition = delegate(Int32 v) { return v <= transformedEnd; };
@@ -1123,6 +1137,7 @@ namespace NetTopologySuite.Coordinates
                     sliceSkips.AddRange(Set<Int32>
                                             .Create(generator, condition)
                                             .Intersect(_skipIndexes));
+#endif
                 }
 
                 return new BufferedCoordinateSequence(_reversed,
@@ -1147,7 +1162,12 @@ namespace NetTopologySuite.Coordinates
                 if (_skipIndexes != null)
                 {
                     sliceSkips = new SortedSet<Int32>();
+#if DOTNET40
+                    foreach (int sliceSkip in _skipIndexes)
+                        sliceSkips.Add(sliceSkip);
+#else
                     sliceSkips.AddRange(_skipIndexes);
+#endif
                 }
             }
             else
@@ -1196,9 +1216,19 @@ namespace NetTopologySuite.Coordinates
                 if (_skipIndexes != null)
                 {
                     sliceSkips = new SortedSet<Int32>();
+#if DOTNET40
+                    int val = generator();
+                    while(condition(val))
+                    {
+                        sliceSkips.Add(val);
+                        val = generator();
+                    }
+                    sliceSkips.IntersectWith(_skipIndexes);
+#else
                     sliceSkips.AddRange(Set<Int32>
                                             .Create(generator, condition)
                                             .Intersect(_skipIndexes));
+#endif
                 }
             }
 
@@ -1422,7 +1452,7 @@ namespace NetTopologySuite.Coordinates
             throw new NotImplementedException();
         }
 
-        Pair<ICoordinate> ICoordinateSequence.SegmentAt(Int32 index)
+        GeoAPI.DataStructures.Pair<ICoordinate> ICoordinateSequence.SegmentAt(Int32 index)
         {
             if (index < 0 || index >= LastIndex)
             {
@@ -1430,7 +1460,7 @@ namespace NetTopologySuite.Coordinates
                     "Index must be between 0 and LastIndex - 1");
             }
 
-            return new Pair<ICoordinate>(this[index], this[index + 1]);
+            return new GeoAPI.DataStructures.Pair<ICoordinate>(this[index], this[index + 1]);
         }
 
         ICoordinate[] ICoordinateSequence.ToArray()
@@ -1777,7 +1807,14 @@ namespace NetTopologySuite.Coordinates
                         do
                         {
                             lastSkips = skips;
+#if DOTNET40
+                            int tmpMainIndex = mainIndex;
+                            int tmpSkips = skips;
+                            IEnumerable<int> t = _skipIndexes.Where(x => x <= tmpMainIndex + tmpSkips);
+                            skips = t.Count();
+#else
                             skips = _skipIndexes.CountAtAndBefore(mainIndex + skips);
+#endif
                         } while (lastSkips != skips);
 
                         mainIndex += skips;

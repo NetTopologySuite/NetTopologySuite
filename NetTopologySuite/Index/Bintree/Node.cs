@@ -3,7 +3,7 @@ using GeoAPI.DataStructures;
 using GeoAPI.Diagnostics;
 using GeoAPI.Indexing;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Bintree
+namespace NetTopologySuite.Index.Bintree
 {
     /// <summary>
     /// A node of a <see cref="BinTree{TCoordinates}"/>.
@@ -62,7 +62,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
 
         protected override Boolean IsSearchMatch(Interval itemInterval)
         {
-            return itemInterval.Overlaps(Bounds);
+            return itemInterval.Intersects(Bounds);
         }
 
         /// <summary>

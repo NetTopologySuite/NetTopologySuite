@@ -4,7 +4,7 @@ using GeoAPI.Geometries;
 using GeoAPI.Indexing;
 using NPack.Interfaces;
 
-namespace GisSharpBlog.NetTopologySuite.Index.Strtree
+namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
     /// Experimental class which behaves like an STR-Tree before being built and a Dynamic R-Tree for further inserts
