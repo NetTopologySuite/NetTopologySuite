@@ -5,7 +5,6 @@ using GeoAPI.Geometries;
 using GeoAPI.IO.WellKnownText;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Polygonize;
-using NetTopologySuite.Coordinates;
 
 #if simple
 using NUnit.Framework;

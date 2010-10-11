@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup Condition=" '$(TargetFrameworkVersion)' == 'v4.0' ">
+    <DotNet>;DOTNET35;DOTNET40</DotNet>
+    <IncludeCollections>FALSE</IncludeCollections>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFrameworkVersion)' == 'v3.5' ">
+    <DotNet>;DOTNET35</DotNet>
+    <IncludeCollections>TRUE</IncludeCollections>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFrameworkVersion)' == 'v2.0' ">
+    <DotNet />
+    <IncludeCollections>TRUE</IncludeCollections>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+  <DebugSymbols>true</DebugSymbols>
+  <DebugType>full</DebugType>
+  <Optimize>false</Optimize>
+  <DefineConstants>DEBUG;TRACE$(DotNet)</DefineConstants>
+</PropertyGroup>
+<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+  <DebugSymbols>false</DebugSymbols>
+  <DebugType>pdbonly</DebugType>
+  <Optimize>true</Optimize>
+  <DefineConstants>TRACE$(DotNet)</DefineConstants>
+</PropertyGroup>
+<PropertyGroup Condition=" '$(Platform)' == 'x64' "><PlatformTarget>x64</PlatformTarget></PropertyGroup>
+<PropertyGroup Condition=" '$(Platform)' == 'x86' "><PlatformTarget>x86</PlatformTarget></PropertyGroup>
+<PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' "><PlatformTarget>AnyCPU</PlatformTarget></PropertyGroup>
+</Project>

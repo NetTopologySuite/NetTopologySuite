@@ -97,6 +97,10 @@
       <Project>{8A1C8DC2-9E24-47E9-A51C-AA46E0B0260C}</Project>
       <Name>ManagedBufferedCoordinate.VS2010.Net40</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite\Coordinates\Simple\NetTopologySuite.Coordinates.Simple.VS2010.Net40.csproj">
+      <Project>{FA286D16-E405-4FCB-95EA-BE1F9A4A83A4}</Project>
+      <Name>NetTopologySuite.Coordinates.Simple.VS2010.Net40</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.VS2010.Net40.csproj">
       <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
       <Name>NetTopologySuite.VS2010.Net40</Name>
@@ -104,10 +108,6 @@
     <ProjectReference Include="..\NPack\NPack.VS2010.Net40.csproj">
       <Project>{B139E1D5-091B-40D2-B7A2-7D7D82E13019}</Project>
       <Name>NPack.VS2010.Net40</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetTopologySuite\Coordinates\Simple\Coordinates.Simple.VS2010.Net40.csproj">
-      <Project>{FA286D16-E405-4FCB-95EA-BE1F9A4A83A4}</Project>
-      <Name>Coordinates.Simple.VS2010.Net40</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
