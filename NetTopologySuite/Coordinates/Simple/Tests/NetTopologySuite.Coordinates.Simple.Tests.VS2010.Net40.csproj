@@ -62,7 +62,7 @@
       <Project>{B139E1D5-091B-40D2-B7A2-7D7D82E13019}</Project>
       <Name>NPack.VS2010.Net40</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Coordinates.Simple.VS2010.Net40.csproj">
+    <ProjectReference Include="..\NetTopologySuite.Coordinates.Simple.VS2010.Net40.csproj">
       <Project>{FA286D16-E405-4FCB-95EA-BE1F9A4A83A4}</Project>
       <Name>Coordinates.Simple.VS2010.Net40</Name>
     </ProjectReference>
