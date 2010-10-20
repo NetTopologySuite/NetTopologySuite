@@ -6,7 +6,7 @@ using NPack.Interfaces;
 namespace NetTopologySuite.Triangulate.Quadedge
 {
     ///<summary>
-    /// Locates <see cref="QuadEdge{TCoordinate, TData}"/>s in a <see cref="QuadEdgeSubdivision{TCoordinate}"/>,
+    /// Locates <see cref="QuadEdge{TCoordinate}"/>s in a <see cref="QuadEdgeSubdivision{TCoordinate}"/>,
     /// optimizing the search by starting in the locality of the last edge found.
     ///</summary>
     ///<typeparam name="TCoordinate"></typeparam>
@@ -18,7 +18,7 @@ namespace NetTopologySuite.Triangulate.Quadedge
         private QuadEdge<TCoordinate> _lastEdge;
 
         ///<summary>
-        /// Creates a new <see cref="LastFoundQuadEdgeLocator{TCoordinate, TData}"/>.
+        /// Creates a new <see cref="LastFoundQuadEdgeLocator{TCoordinate}"/>.
         ///</summary>
         ///<param name="subdiv"></param>
         public LastFoundQuadEdgeLocator(QuadEdgeSubdivision<TCoordinate> subdiv)

@@ -405,7 +405,8 @@ namespace NetTopologySuite.Geometries
                                          coordFactory.Create(xMin, yMin),
                                          coordFactory.Create(xMax, yMin),
                                          coordFactory.Create(xMax, yMax),
-                                         coordFactory.Create(xMin, yMin),
+                                         coordFactory.Create(xMin, yMax),
+                                         coordFactory.Create(xMin, yMin)
                                      });
 
             return CreatePolygon(shell);

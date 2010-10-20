@@ -24,6 +24,10 @@ namespace NetTopologySuite.Triangulate.Quadedge
             _triQueue.Enqueue(tri);
         }
 
+        /// <summary>
+        /// Called to initialize the traversal queue with a set of <see cref="QuadEdgeTriangle{TCoordinate}"/>s
+        /// </summary>
+        /// <param name="tris"></param>
         public void Init(IEnumerable<QuadEdgeTriangle<TCoordinate>> tris)
         {
             foreach (QuadEdgeTriangle<TCoordinate> tri in tris)

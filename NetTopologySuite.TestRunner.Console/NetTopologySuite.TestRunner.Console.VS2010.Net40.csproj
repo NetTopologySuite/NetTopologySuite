@@ -89,9 +89,6 @@
       <Name>NetTopologySuite.TestRunner.VS2010.Net40</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
   <Import Project="$(SolutionDir)GeoAPI.Net.VS2010.targets" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

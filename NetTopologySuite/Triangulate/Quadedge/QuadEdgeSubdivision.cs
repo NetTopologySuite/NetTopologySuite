@@ -542,8 +542,9 @@ namespace NetTopologySuite.Triangulate.Quadedge
   ///</summary>
   ///<param name="includeFrame"></param>
   ///<returns></returns>
-  public IEnumerable<QuadEdge<TCoordinate>> GetVertexUniqueEdges(Boolean includeFrame) 
+  public IList<QuadEdge<TCoordinate>> GetVertexUniqueEdges(Boolean includeFrame) 
   {
+      IList<QuadEdge<TCoordinate>> edges = new List<QuadEdge<TCoordinate>>();
       SortedList<Int32, Vertex<TCoordinate>> visited = new SortedList<Int32, Vertex<TCoordinate>>();
       foreach (QuadEdge<TCoordinate> qe in _quadEdges)
       {
@@ -552,7 +553,7 @@ namespace NetTopologySuite.Triangulate.Quadedge
           {
               visited.Add(v.GetHashCode(), v);
               if (includeFrame || !IsFrameVertex(v))
-                  yield return qe;
+                  edges.Add(qe);
           }
           /**
            * Inspect the sym edge as well, since it is
@@ -566,12 +567,11 @@ namespace NetTopologySuite.Triangulate.Quadedge
           {
       	    visited.Add(vd.GetHashCode(), vd);
             if (includeFrame || ! IsFrameVertex(vd)) {
-        	    yield return qd;
+        	    edges.Add(qd);
             }
           }
-
-
       }
+      return edges;
   }
 
 	///<summary>
@@ -611,14 +611,10 @@ namespace NetTopologySuite.Triangulate.Quadedge
 		return edges;
 	}
   
-  /**
-   * A TriangleVisitor which computes and sets the 
-   * circumcentre as the origin of the dual 
-   * edges originating in each triangle.
-   * 
-   * @author mbdavis
-   *
-   */
+        ///<summary>
+        /// A TriangleVisitor which computes and sets the circumcentre as the origin of the dual 
+        /// edges originating in each triangle.
+        ///</summary>
 	private class TriangleCircumcentreVisitor : ITriangleVisitor<TCoordinate>
 	{
 	    public void Visit(ICoordinateFactory<TCoordinate> factory, QuadEdge<TCoordinate>[] triEdges) 
@@ -893,7 +889,7 @@ namespace NetTopologySuite.Triangulate.Quadedge
   /// This allows easily associating external data associated with the sites to the cells.
   ///</summary>
   ///<returns>an enumeration of polygons</returns>
-  public IEnumerable<IGeometry<TCoordinate>> GetVoronoiCellPolygons()
+  public IList<IGeometry<TCoordinate>> GetVoronoiCellPolygons()
   {
   	/*
   	 * Compute circumcentres of triangles as vertices for dual edges.
@@ -901,12 +897,13 @@ namespace NetTopologySuite.Triangulate.Quadedge
   	 * and more importantly ensures that the computed centres
   	 * are consistent across the Voronoi cells.
   	 */ 
+      IList<IGeometry<TCoordinate>> vorCells = new List<IGeometry<TCoordinate>>();
   	VisitTriangles(new TriangleCircumcentreVisitor(), true);
 
       foreach (QuadEdge<TCoordinate> qe in GetVertexUniqueEdges(false)    )
-      {
-          yield return GetVoronoiCellPolygon(qe);
-      }
+          vorCells.Add(GetVoronoiCellPolygon(qe));
+      
+      return vorCells;
   }
   
   ///<summary>Gets the Voronoi cell around a site specified by the origin of a QuadEdge.

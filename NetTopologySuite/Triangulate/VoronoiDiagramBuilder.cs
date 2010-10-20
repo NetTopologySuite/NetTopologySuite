@@ -113,13 +113,33 @@ namespace NetTopologySuite.Triangulate
         {
             Create();
             IGeometry<TCoordinate> polys = _subdiv.GetVoronoiDiagram();
-
-            List<IGeometry<TCoordinate>> clippedPolys = new List<IGeometry<TCoordinate>>();
             // clip polys to _diagramEnv
-            ClipGeometry(polys, _diagramEnv.ToGeometry(), clippedPolys);
-           return  _geomFactory.CreateGeometryCollection(clippedPolys);
+            return ClipGeometryCollection(polys, _diagramEnv);
             
 
+        }
+
+        private IGeometry<TCoordinate> ClipGeometryCollection(IGeometry<TCoordinate> geom, IExtents<TCoordinate> clipEnv)
+        {
+            IGeometry<TCoordinate> clipPoly = _geomFactory.ToGeometry(clipEnv);
+            IList<IGeometry<TCoordinate>> clipped = new List<IGeometry<TCoordinate>>();
+            foreach (IGeometry<TCoordinate> g in (IGeometryCollection<TCoordinate>)geom) 
+            {
+                IGeometry<TCoordinate> result = null;
+                // don't clip unless necessary
+                if (clipEnv.Contains(g.Extents))
+                    result = g;
+                else if (clipEnv.Intersects(g.Extents))
+                {
+                    result = clipPoly.Intersection(g);
+                    // keep vertex key info
+                    result.UserData = g.UserData;
+                }
+
+                if (result != null && !result.IsEmpty)
+                    clipped.Add(result);
+            }
+            return _geomFactory.CreateGeometryCollection(clipped);
         }
 
         private void ClipGeometry(IGeometry<TCoordinate> geom, IGeometry<TCoordinate> clipPoly, List<IGeometry<TCoordinate>> clipped)

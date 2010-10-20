@@ -208,11 +208,9 @@ namespace NetTopologySuite.Triangulate.Quadedge
             return string.Format("POLYGON({0}, {1}, {2})", vertices[0].ToString(), vertices[1].ToString(), vertices[2].ToString());
         }
 
-        /**
-         * Tests whether this triangle is adjacent to the outside of the subdivision.
-         * 
-         * @return true if the triangle is adjacent to the subdivision exterior
-         */
+        ///<summary>
+        /// Tests whether this triangle is adjacent to the outside of the subdivision.
+        ///</summary>
         public Boolean IsBorder()
         {
             for (int i = 0; i < 3; i++)
@@ -223,6 +221,9 @@ namespace NetTopologySuite.Triangulate.Quadedge
             return false;
         }
 
+        ///<summary>
+        /// Tests whether this triangle is adjacent to the outside of the subdivision.
+        ///</summary>
         public Boolean IsBorder(int i)
         {
             return GetAdjacentTriangleAcrossEdge(i) == null;

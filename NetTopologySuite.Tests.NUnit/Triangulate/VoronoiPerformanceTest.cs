@@ -3,13 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Triangulate;
-using NetTopologySuite.Coordinates;
 using NUnit.Framework;
-#if unbuffered
 using coord = NetTopologySuite.Coordinates.Coordinate;
-#else
-using coord = NetTopologySuite.Coordinates.BufferedCoordinate;
-#endif
 
 namespace NetTopologySuite.Tests.NUnit.Triangulate
 {
@@ -35,7 +30,7 @@ public class VoronoiPerfTest
 	{
 		Stopwatch sw = new Stopwatch();
         sw.Start();
-		DelaunayTriangulationBuilder<coord> builder = new DelaunayTriangulationBuilder<coord>(TestFactories.GeometryFactory);
+		DelaunayTriangulationBuilder<coord> builder = new DelaunayTriangulationBuilder<coord>(GeometryUtils.GeometryFactory);
 		builder.SetSites(randomPoints(nPts));
 		
 		IGeometry<coord> g = builder.GetEdges();
@@ -52,7 +47,7 @@ public class VoronoiPerfTest
 			for (int j = 0; j < nSide; j++) {
 				double x = i * SIDE_LEN + SIDE_LEN * r.NextDouble();
 				double y = j * SIDE_LEN + SIDE_LEN * r.NextDouble();
-				yield return(TestFactories.CoordFactory.Create(x, y));
+				yield return(GeometryUtils.CoordFac.Create(x, y));
 			}
 		}
 	}

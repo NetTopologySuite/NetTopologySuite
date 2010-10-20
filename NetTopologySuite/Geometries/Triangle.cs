@@ -52,7 +52,7 @@ namespace NetTopologySuite.Geometries
             TCoordinate l2 = factory.Create(a[Ordinates.X] - dy + dx/2.0, a[Ordinates.Y] + dx + dy/2.0);
             return l1.Cross(l2);
         }
-
+        
         ///**
         // * Computes the circumcentre of a triangle.
         // * The circumcentre is the centre of the circumcircle,
@@ -63,6 +63,7 @@ namespace NetTopologySuite.Geometries
         // * @param c a vertx of the triangle
         // * @return the circumcentre of the triangle
         // */
+        /*
         public static TCoordinate Circumcentre(ICoordinateFactory<TCoordinate> factory, TCoordinate a, TCoordinate b, TCoordinate c)
         {
             // compute the perpendicular bisector of chord ab
@@ -85,6 +86,66 @@ namespace NetTopologySuite.Geometries
             return cc;
 
         }
+        */
+        /**
+         * Computes the circumcentre of a triangle.
+         * The circumcentre is the centre of the circumcircle,
+         * the smallest circle which encloses the triangle.
+         * It is also the common intersection point of the
+         * perpendicular bisectors of the sides of the triangle,
+         * and is the only point which has equal distance to all three
+         * vertices of the triangle.
+         * <p>
+         * This method uses an algorithm due to J.R.Shewchuk which
+         * uses normalization to the origin
+         * to improve the accuracy of computation.
+         * (See <i>Lecture Notes on Geometric Robustness</i>, 
+         * Jonathan Richard Shewchuk, 1999).
+         *
+         * @param a a vertx of the triangle
+         * @param b a vertx of the triangle
+         * @param c a vertx of the triangle
+         * @return the circumcentre of the triangle
+         */
+        public static TCoordinate Circumcentre(ICoordinateFactory<TCoordinate> factory, TCoordinate a, TCoordinate b, TCoordinate c)
+        {
+            double cx = c[Ordinates.X];
+            double cy = c[Ordinates.Y];
+            double ax = a[Ordinates.X] - cx;
+            double ay = a[Ordinates.Y] - cy;
+            double bx = b[Ordinates.X] - cx;
+            double by = b[Ordinates.Y] - cy;
+
+            double denom = 2 * Det(ax, ay, bx, by);
+            double numx = Det(ay, ax * ax + ay * ay, by, bx * bx + by * by);
+            double numy = Det(ax, ax * ax + ay * ay, bx, bx * bx + by * by);
+
+            double ccx = cx - numx / denom;
+            double ccy = cy + numy / denom;
+
+            return factory.Create(ccx, ccy);
+        }
+
+        /**
+         * 
+         * 
+         * 
+         * 
+         * @param m00 the [0,0] entry of the matrix
+         * @param m01 the [0,1] entry of the matrix
+         * @param m10 the [1,0] entry of the matrix
+         * @param m11 the [1,1] entry of the matrix
+         * @return the determinant
+         */
+        ///<summary>
+        /// Computes the determinant of a 2x2 matrix. Uses standard double-precision arithmetic, 
+        /// so is susceptible to round-off error.
+        ///</summary>
+        private static double Det(double m00, double m01, double m10, double m11)
+        {
+            return m00 * m11 - m01 * m10;
+        }
+  
 
         ///<summary>
         /// Computes the incentre of a triangle.
