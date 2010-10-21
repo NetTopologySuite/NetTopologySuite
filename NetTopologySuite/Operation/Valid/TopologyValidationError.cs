@@ -118,7 +118,7 @@ namespace NetTopologySuite.Operation.Valid
             errors[TopologyValidationErrors.RingSelfIntersection] = "Ring self-intersection";
             errors[TopologyValidationErrors.NestedShells] = "Nested shells";
             errors[TopologyValidationErrors.DuplicateRings] = "Duplicate Rings";
-            errors[TopologyValidationErrors.TooFewPoints] = "Too few points in geometry component";
+            errors[TopologyValidationErrors.TooFewPoints] = "Too few distinct points in geometry component";
             errors[TopologyValidationErrors.InvalidCoordinate] = "Invalid Coordinate";
             errors[TopologyValidationErrors.RingNotClosed] = "Ring not closed: first and last points are different";
 

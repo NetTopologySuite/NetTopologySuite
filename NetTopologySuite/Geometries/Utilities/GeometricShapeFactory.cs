@@ -14,10 +14,10 @@ namespace NetTopologySuite.Geometries.Utilities
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
             IComputable<Double, TCoordinate>, IConvertible
     {
-        private readonly Dimensions _dim;
-        private readonly IGeometryFactory<TCoordinate> _geoFactory;
-        private readonly ICoordinateFactory<TCoordinate> _coordFactory;
-        private Int32 _pointCount = 100;
+        protected readonly Dimensions _dim;
+        protected readonly IGeometryFactory<TCoordinate> _geoFactory;
+        protected readonly ICoordinateFactory<TCoordinate> _coordFactory;
+        protected Int32 _pointCount = 100;
 
         ///// <summary>
         ///// Create a shape factory which will create shapes using the default GeometryFactory.
@@ -179,6 +179,68 @@ namespace NetTopologySuite.Geometries.Utilities
             return poly;
         }
 
+        ///<summary>
+        /// Creates a squircular <see cref="IPolygon{TCoordinate}"/>.
+        ///</summary>
+        ///<returns></returns>
+        public IPolygon<TCoordinate> CreateSquircle()
+        {
+            return CreateSupercircle(4);
+        }
+
+        ///<summary>
+        /// Creates a supercircular <see cref="IPolygon{TCoordinate}"/> of a given positive power.
+        ///</summary>
+        ///<param name="power"></param>
+        ///<returns></returns>
+        public IPolygon<TCoordinate> CreateSupercircle(double power)
+        {
+            double recipPow = 1.0 / power;
+
+            IExtents<TCoordinate> env = _dim.Extents;
+
+            double radius = _dim.MinSize / 2d;
+            TCoordinate centre = _dim.Center;
+
+            double r4 = Math.Pow(radius, power);
+            double y0 = radius;
+
+            double xyInt = Math.Pow(r4 / 2, recipPow);
+
+            int nSegsInOct = PointCount / 8;
+            int totPts = nSegsInOct * 8 + 1;
+            TCoordinate[] pts = new TCoordinate[totPts];
+            double xInc = xyInt / nSegsInOct;
+
+            for (int i = 0; i <= nSegsInOct; i++)
+            {
+                double x = 0.0;
+                double y = y0;
+                if (i != 0)
+                {
+                    x = xInc * i;
+                    double x4 = Math.Pow(x, power);
+                    y = Math.Pow(r4 - x4, recipPow);
+                }
+                pts[i] = CreateCoordTrans(x, y, centre);
+                pts[2 * nSegsInOct - i] = CreateCoordTrans(y, x, centre);
+
+                pts[2 * nSegsInOct + i] = CreateCoordTrans(y, -x, centre);
+                pts[4 * nSegsInOct - i] = CreateCoordTrans(x, -y, centre);
+
+                pts[4 * nSegsInOct + i] = CreateCoordTrans(-x, -y, centre);
+                pts[6 * nSegsInOct - i] = CreateCoordTrans(-y, -x, centre);
+
+                pts[6 * nSegsInOct + i] = CreateCoordTrans(-y, x, centre);
+                pts[8 * nSegsInOct - i] = CreateCoordTrans(-x, y, centre);
+            }
+            pts[pts.Length - 1] = _coordFactory.Create(pts[0]);
+
+            ILinearRing<TCoordinate> ring = _geoFactory.CreateLinearRing(pts);
+            IPolygon<TCoordinate> poly = _geoFactory.CreatePolygon(ring, null);
+            return poly;
+        }
+
         /// <summary>
         /// Creates a elliptical arc, as a <see cref="ILineString{TCoordinate}"/>.
         /// </summary>
@@ -259,9 +321,22 @@ namespace NetTopologySuite.Geometries.Utilities
             return geom;
         }
 
+        protected TCoordinate CreateCoord(double x, double y)
+        {
+            TCoordinate pt = _coordFactory.Create(x, y);
+            //precModel.makePrecise(pt);
+            return pt;
+        }
+
+        protected TCoordinate CreateCoordTrans(double x, double y, TCoordinate trans)
+        {
+            return CreateCoord(x + trans[Ordinates.X], y + trans[Ordinates.Y]);
+        }
+
+
         #region Nested type: Dimensions
 
-        private class Dimensions
+        protected class Dimensions
         {
             private readonly IGeometryFactory<TCoordinate> _geoFactory;
             private TCoordinate _base;
@@ -306,6 +381,11 @@ namespace NetTopologySuite.Geometries.Utilities
                     Height = value;
                     Width = value;
                 }
+            }
+
+            public Double MinSize
+            {
+                get { return Math.Min(_width, _height); }
             }
 
             public Extents<TCoordinate> Extents

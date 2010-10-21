@@ -12,12 +12,6 @@ using NPack.Interfaces;
 
 namespace NetTopologySuite.Operation.Buffer
 {
-    /**
-     * 
-     * 
-     *
-     * @version 1.7
-     */
     ///<summary>
     /// Creates all the raw offset curves for a buffer of a <see cref="IGeometry{TCoordinate}"/>.
     /// Raw curves need to be noded together and polygonized to form the final buffer area.
@@ -180,7 +174,7 @@ namespace NetTopologySuite.Operation.Buffer
 
             ILinearRing<TCoordinate> shell = p.ExteriorRing as ILinearRing<TCoordinate>;
             Debug.Assert(shell != null);
-            IEnumerable<TCoordinate> shellCoord = shell.Coordinates.WithoutRepeatedPoints();
+            ICoordinateSequence<TCoordinate> shellCoord = shell.Coordinates.WithoutRepeatedPoints();
 
             // optimization - don't bother computing buffer
             // if the polygon would be completely eroded
@@ -194,7 +188,7 @@ namespace NetTopologySuite.Operation.Buffer
 
             foreach (ILinearRing<TCoordinate> hole in p.InteriorRings)
             {
-                IEnumerable<TCoordinate> holeCoord = hole.Coordinates.WithoutRepeatedPoints();
+                ICoordinateSequence<TCoordinate> holeCoord = hole.Coordinates.WithoutRepeatedPoints();
 
                 // optimization - don't bother computing buffer for this hole
                 // if the hole would be completely covered
@@ -211,7 +205,7 @@ namespace NetTopologySuite.Operation.Buffer
             }
         }
         /// <summary>
-        /// Add an offset curve for a ring.
+        /// Adds an offset curve for a polygon.
         /// The side and left and right topological location arguments
         /// assume that the ring is oriented CW.
         /// If the ring is in the opposite orientation,
@@ -222,13 +216,17 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="side">The side of the ring on which to construct the buffer line.</param>
         /// <param name="cwLeftLoc">The location on the L side of the ring (if it is CW).</param>
         /// <param name="cwRightLoc">The location on the R side of the ring (if it is CW).</param>
-        private void AddPolygonRing(IEnumerable<TCoordinate> coord, Double offsetDistance,
+        private void AddPolygonRing(ICoordinateSequence<TCoordinate> coord, Double offsetDistance,
                                     Positions side, Locations cwLeftLoc, Locations cwRightLoc)
         {
+            // don't bother adding ring if it is "flat" and will disappear in the output
+            if (offsetDistance == 0.0 && coord.Count < LinearRing<TCoordinate>.MinimumValidSize)
+                return;
+    
             Locations leftLoc = cwLeftLoc;
             Locations rightLoc = cwRightLoc;
 
-            if (CGAlgorithms<TCoordinate>.IsCCW(coord))
+            if (coord.Count >= LinearRing<TCoordinate>.MinimumValidSize && CGAlgorithms<TCoordinate>.IsCCW(coord))
             {
                 leftLoc = cwRightLoc;
                 rightLoc = cwLeftLoc;

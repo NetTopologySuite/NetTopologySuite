@@ -22,6 +22,12 @@ namespace NetTopologySuite.Geometries
             IComparable<TCoordinate>, IConvertible,
             IComputable<Double, TCoordinate>
     {
+        ///<summary>
+        /// The minimum number of vertices allowed in a valid non-empty ring (= 4).
+        /// Empty rings with 0 vertices are also valid.
+        ///</summary>
+        public const Int32 MinimumValidSize = 4;
+        
         /// <summary>
         /// Constructs a <see cref="LinearRing{TCoordinate}" /> with the given coordinates.
         /// </summary>
@@ -34,7 +40,7 @@ namespace NetTopologySuite.Geometries
         public LinearRing(ICoordinateSequence<TCoordinate> coordinates, IGeometryFactory<TCoordinate> factory)
             : base(coordinates, factory)
         {
-            validateConstruction();
+            ValidateConstruction();
         }
 
         #region ILinearRing<TCoordinate> Members
@@ -44,6 +50,12 @@ namespace NetTopologySuite.Geometries
             return Factory.CreateLinearRing(Coordinates);
         }
 
+        /// <summary>
+        /// Returns <see langword="true"/> if the geometry has no anomalous geometric 
+        /// points, such as self intersection or self tangency. The description of each 
+        /// instantiable geometric class will include the specific conditions that cause 
+        /// an instance of that class to be classified as not simple.
+        /// </summary>
         public override Boolean IsSimple
         {
             get { return true; }
@@ -56,9 +68,18 @@ namespace NetTopologySuite.Geometries
             get { return OgcGeometryType.LineString; }
         }
 
+        ///<summary>
+        /// Returns <see langword="true"/> if the first and last coordinate describe the same location.
+        ///</summary>
         public override Boolean IsClosed
         {
-            get { return true; }
+            get
+            {
+                // Empty Linear Rings are closed by definition
+                if (IsEmpty)
+                    return true;
+                return base.IsClosed;
+            }
         }
 
         public Boolean IsCcw
@@ -83,14 +104,14 @@ namespace NetTopologySuite.Geometries
 
         /* END ADDED BY MPAUL42: monoGIS team */
 
-        private void validateConstruction()
+        private void ValidateConstruction()
         {
             if (!IsEmpty && !base.IsClosed)
             {
                 throw new GeometryInvalidException("Coordinates must form a closed linestring");
             }
 
-            if (Coordinates.Count >= 1 && Coordinates.Count <= 3)
+            if (Coordinates.Count >= 1 && Coordinates.Count < MinimumValidSize)
             {
                 throw new GeometryInvalidException("Number of coordinates must equal 0 " +
                                                    "or be greater than 3");

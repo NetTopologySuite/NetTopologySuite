@@ -289,11 +289,10 @@ namespace NetTopologySuite.Algorithm
         /// <returns> The distance from p to line segment AB.</returns>
         public static Double DistancePointLine(TCoordinate p, TCoordinate A, TCoordinate B)
         {
-            // if start == end, then use pt distance
-            if (A.Equals(B))
-            {
+            // if start = end, then just compute distance to one of the endpoints
+            //if (A.Equals(B))
+            if (A[Ordinates.X] == B[Ordinates.X] && A[Ordinates.Y] == B[Ordinates.Y])
                 return p.Distance(A);
-            }
 
             // codekaizen:  Isn't this the standard v1 · v2 / norm(v2)^2 formula to project
             //              a point to the vector space spanned by the line?

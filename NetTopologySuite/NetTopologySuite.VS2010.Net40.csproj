@@ -25,6 +25,7 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Geometries\Utilities\SineStarFactory.cs" />
     <Compile Include="IO\WellKnownBinary\GeometryFromWkb.cs" />
     <Compile Include="IO\WellKnownBinary\GeometryToWkb.cs" />
     <Compile Include="IO\WellKnownBinary\WkbGeometryType.cs" />

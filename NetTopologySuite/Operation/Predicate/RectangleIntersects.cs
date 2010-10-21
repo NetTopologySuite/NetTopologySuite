@@ -243,17 +243,19 @@ namespace NetTopologySuite.Operation.Predicate
                 return;
             }
 
+            /*
+            // Sep 30 2010 - disabled because using intersects() is not 100% robust  
             // check if general relate algorithm should be used, since it's faster for large inputs
             if (geom.PointCount > RectangleIntersects<TCoordinate>.MaximumScanSegmentCount)
             {
                 _intersects = _rectangle.Relate(geom).IsIntersects();
                 return;
             }
-
-            computeSegmentIntersection(geom);
+            */
+            ComputeSegmentIntersection(geom);
         }
 
-        private void computeSegmentIntersection(IGeometry<TCoordinate> geom)
+        private void ComputeSegmentIntersection(IGeometry<TCoordinate> geom)
         {
             // check segment intersection
             // get all lines from geom (e.g. if it's a multi-ring polygon)

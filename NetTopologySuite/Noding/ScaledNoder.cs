@@ -88,7 +88,33 @@ namespace NetTopologySuite.Noding
 
         private ICoordinateSequence<TCoordinate> Scale(ICoordinateSequence<TCoordinate> pts)
         {
-            return _sequenceFactory.Create(Math.Round, Scale((IEnumerable<TCoordinate>)pts));
+            return _sequenceFactory.Create(JavaRound, Scale((IEnumerable<TCoordinate>)pts));
+        }
+
+        private static Double JavaRound(Double value)
+        {
+            /*    Returns the closest long to the argument. The result is rounded to an integer by adding 1/2, taking the floor of the result, and casting the result to type long. In other words, the result is equal to the value of the expression:
+
+                (long)Math.floor(a + 0.5d)
+
+                Special cases:
+
+                    * If the argument is NaN, the result is 0.
+                    * If the argument is negative infinity or any value less than or equal to the value of Long.MIN_VALUE, the result is equal to the value of Long.MIN_VALUE.
+                    * If the argument is positive infinity or any value greater than or equal to the value of Long.MAX_VALUE, the result is equal to the value of Long.MAX_VALUE.
+
+                Parameters:
+                    a - a floating-point value to be rounded to a long. 
+                Returns:
+                    the value of the argument rounded to the nearest long value.
+                See Also:
+                    Long.MAX_VALUE, Long.MIN_VALUE
+
+            */
+            if (double.IsNaN(value)) return 0d;
+            if (double.IsNegativeInfinity(value)) return Int64.MinValue;
+            if (double.IsPositiveInfinity(value)) return Int64.MaxValue;
+            return (long) (Math.Floor(value + 0.5d));
         }
 
         /// <summary>
@@ -115,8 +141,8 @@ namespace NetTopologySuite.Noding
             foreach (TCoordinate coord in coords)
             {
                 TCoordinate current = _coordFactory.Create(
-                    Math.Round((coord[Ordinates.X] - _offsetX)*_scaleFactor),
-                    Math.Round((coord[Ordinates.Y] - _offsetY)*_scaleFactor));
+                    JavaRound((coord[Ordinates.X] - _offsetX) * _scaleFactor),
+                    JavaRound((coord[Ordinates.Y] - _offsetY) * _scaleFactor));
 
                 if (!current.Equals(last))
                 {
