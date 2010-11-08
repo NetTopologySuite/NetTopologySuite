@@ -165,7 +165,7 @@ namespace NetTopologySuite.Precision
                         _geomFact.CreatePolygon(
                             _geomFact.CreateLinearRing(
                                 Processor.Transform<TCoordinate>(polyInput.ExteriorRing.Coordinates, AddTrans)),
-                                Processor.Transform(polyInput.InteriorRings, AddTrans));
+                                Processor.Transform<ILinearRing<TCoordinate>>(ToLinearRings(polyInput.InteriorRings), AddTrans));
 
                     return poly;
                 }
@@ -193,6 +193,12 @@ namespace NetTopologySuite.Precision
             {
                 return input.Add(_trans);
             }
+
+           private IEnumerable<ILinearRing<TCoordinate>> ToLinearRings(IEnumerable<ILineString<TCoordinate>> t)
+           {
+               foreach (ILineString<TCoordinate> lineString in t)
+                   yield return lineString as ILinearRing<TCoordinate>;
+           }
 
             private ILinearRing<TCoordinate> AddTrans(ILineString<TCoordinate> input)
             {

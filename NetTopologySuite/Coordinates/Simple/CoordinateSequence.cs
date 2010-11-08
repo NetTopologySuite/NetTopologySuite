@@ -853,7 +853,7 @@ namespace NetTopologySuite.Coordinates
             return new CoordinateSequence(_factory, hs);
             //hs.AllowsDuplicates = false;
 #else
-            HashSet<Coordinate> hs= new HashSet<Coordinate>();
+            C5.HashSet<Coordinate> hs = new C5.HashSet<Coordinate>();
             //hs.AllowsDuplicates = false;
             hs.AddAll(_coordinates);
             return new CoordinateSequence(_factory, hs.UniqueItems());

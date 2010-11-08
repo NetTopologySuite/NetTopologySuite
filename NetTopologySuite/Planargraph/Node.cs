@@ -96,7 +96,7 @@ namespace NetTopologySuite.Planargraph
         {
             IEnumerable<Edge<TCoordinate>> edges0 = DirectedEdge<TCoordinate>.ToEdges(node0.OutEdges.Edges);
 #if C5
-            HashSet<Edge<TCoordinate>> commonEdges = new HashSet<Edge<TCoordinate>>();
+            C5.HashSet<Edge<TCoordinate>> commonEdges = new C5.HashSet<Edge<TCoordinate>>();
 #else
 #if DOTNET40
             ISet<Edge<TCoordinate>> commonEdges = new HashSet<Edge<TCoordinate>>(edges0);

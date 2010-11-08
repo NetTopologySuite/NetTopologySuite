@@ -1,14 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup Condition=" '$(TargetFrameworkVersion)' == 'v4.0' ">
+    <DotNetString>Net40</DotNetString>
     <DotNet>;DOTNET35;DOTNET40</DotNet>
     <IncludeCollections>FALSE</IncludeCollections>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(TargetFrameworkVersion)' == 'v3.5' ">
+    <DotNetString>Net35</DotNetString>
     <DotNet>;DOTNET35</DotNet>
     <IncludeCollections>TRUE</IncludeCollections>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(TargetFrameworkVersion)' == 'v2.0' ">
+    <DotNetString>Net20</DotNetString>
     <DotNet />
     <IncludeCollections>TRUE</IncludeCollections>
   </PropertyGroup>

@@ -9,6 +9,7 @@ using System.Text;
 using GeoAPI.Coordinates;
 using GeoAPI.Geometries;
 using GeoAPI.Indexing;
+using NetTopologySuite.Noding;
 using NetTopologySuite.Index.Quadtree;
 using NPack.Interfaces;
 
@@ -26,7 +27,7 @@ namespace NetTopologySuite.GeometriesGraph
     /// <see cref="Edge{TCoordinate}"/>s. It supports locating edges 
     /// that are pointwise equal to a target edge.
     /// </summary>
-    public class EdgeList<TCoordinate> : IList<Edge<TCoordinate>>
+    public class EdgeList<TCoordinate> : System.Collections.Generic.IList<Edge<TCoordinate>>
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>,
                             IComparable<TCoordinate>, IConvertible,
                             IComputable<Double, TCoordinate>
