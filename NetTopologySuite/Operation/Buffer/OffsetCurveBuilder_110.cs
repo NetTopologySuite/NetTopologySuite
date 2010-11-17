@@ -32,7 +32,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// The angle quantum with which to approximate a fillet curve
         /// (based on the input # of quadrant segments)
         ///</summary>
-        private Double _filletAngleQuantum;
+        private readonly Double _filletAngleQuantum;
 
         ///<summary>
         /// the max error of approximation (distance) between a quad segment and the true fillet curve
@@ -54,10 +54,10 @@ namespace NetTopologySuite.Operation.Buffer
         ///</summary>
         private const Int32 MaxClosingSegFraction = 80;
 
-        private Double _distance = 0.0;
-        private IPrecisionModel<TCoordinate> _precisionModel;
+        private Double _distance;
+        private readonly IPrecisionModel<TCoordinate> _precisionModel;
 
-        private BufferParameters _bufParams;
+        private readonly BufferParameters _bufParams;
 
         ///<summary>
         /// The Closing Segment Factor controls how long
@@ -74,7 +74,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// (this option is reasonable for the very common default situation of round joins
         /// and quadrantSegs >= 8)
         /// </summary>
-        private Int32 _closingSegFactor = 1;
+        private readonly Int32 _closingSegFactor = 1;
         private OffsetCurveVertexList_110<TCoordinate> _vertexList;
         private readonly LineIntersector<TCoordinate> _li;
         private readonly IGeometryFactory<TCoordinate> _geomFact;
@@ -114,6 +114,14 @@ namespace NetTopologySuite.Operation.Buffer
                 _closingSegFactor = MaxClosingSegFraction;
         }
 
+        /// <value>
+        /// The parameters for buffer generation
+        /// </value>
+        public BufferParameters BufferParameters
+        {
+            get { return _bufParams; }
+        }
+
         /// <summary>
         /// This method handles single points as well as lines.
         /// Lines are assumed to not be closed (the function will not
@@ -123,38 +131,44 @@ namespace NetTopologySuite.Operation.Buffer
         public IEnumerable<ICoordinateSequence<TCoordinate>> GetLineCurve(IEnumerable<TCoordinate> inputPts, Double distance)
         {
             // a zero or negative width buffer of a line/point is empty
-            if (distance <= 0.0)
+            if (distance <= 0.0 && !_bufParams.IsSingleSided )
                 yield break;
 
-            Init(distance);
+            double posDistance = Math.Abs(distance);
+            Init(posDistance);
             if (!Slice.CountGreaterThan(inputPts, 1))
             {
                 TCoordinate start = Slice.GetFirst(inputPts);
                 switch (_bufParams.EndCapStyle)
                 {
                     case BufferParameters.BufferEndCapStyle.CapRound:
-                        AddCircle(start, distance);
+                        AddCircle(start, posDistance);
                         break;
                     case BufferParameters.BufferEndCapStyle.CapSquare:
-                        AddSquare(start, distance);
+                        AddSquare(start, posDistance);
                         break;
                     // default is for buffer to be empty (e.g. for a butt line cap);
                 }
             }
             else
-                ComputeLineBufferCurve(inputPts);
+            {
+                if (_bufParams.IsSingleSided)
+                {
+                    Boolean isRightSide = distance > 0.0;
+                    ComputeSingleSidedBufferCurve(inputPts, isRightSide);
+                }
+                else
+                    ComputeLineBufferCurve(inputPts);
+            }
 
             //System.out.println(vertexList);
 
             yield return _sequenceFactory.Create(_vertexList.GetCoordinates());
         }
 
-        /**
-         * This method handles the degenerate cases of single points and lines,
-         * as well as rings.
-         *
-         * @return a List of Coordinate[]
-         */
+        ///<summary>
+        /// This method handles the degenerate cases of single points and lines, as well as rings.
+        ///</summary>
         public IEnumerable<ICoordinateSequence<TCoordinate>> GetRingCurve(IEnumerable<TCoordinate> inputPts, Positions side, double distance)
         {
             Init(distance);
@@ -256,7 +270,8 @@ namespace NetTopologySuite.Operation.Buffer
 
             _vertexList.CloseRing();
         }
-
+        
+        /*
         private void OldComputeLineBufferCurve(TCoordinate[] inputPts)
         {
             int n = inputPts.Length - 1;
@@ -283,6 +298,55 @@ namespace NetTopologySuite.Operation.Buffer
 
             _vertexList.CloseRing();
         }
+         */
+
+        private void ComputeSingleSidedBufferCurve(IEnumerable<TCoordinate> inputPts, Boolean isRightSide)
+        {
+            double distTol = SimplifyTolerance(_distance);
+
+            if (isRightSide)
+            {
+                // add original line
+                _vertexList.AddRange(inputPts, true);
+
+                //---------- compute points for right side of line
+                // Simplify the appropriate side of the line before generating
+                IEnumerable<TCoordinate> simp2 = new Stack<TCoordinate>(BufferInputLineSimplifier_110<TCoordinate>.Simplify(inputPts, -distTol));
+                // MD - used for testing only (to eliminate simplification)
+                //    Coordinate[] simp2 = inputPts;
+                //int n2 = simp2.length - 1;
+
+                // since we are traversing line in opposite order, offset position is still LEFT
+                Pair<TCoordinate> seg = Slice.GetPair(simp2).Value;
+                InitSideSegments(seg.First, seg.Second, Positions.Left);
+                AddFirstSegment();
+                foreach (TCoordinate point in sl.Enumerable.Skip(simp2, 2))
+                {
+                    AddNextSegment(point, true);
+                }
+            }
+            else
+            {
+                // add original line
+                _vertexList.AddRange(inputPts, false);
+
+                //--------- compute points for left side of line
+                // Simplify the appropriate side of the line before generating
+                IEnumerable<TCoordinate> simp1 = BufferInputLineSimplifier_110<TCoordinate>.Simplify(inputPts, distTol);
+                // MD - used for testing only (to eliminate simplification)
+                //      Coordinate[] simp1 = inputPts;
+
+                Pair<TCoordinate> seg = Slice.GetPair(simp1).Value;
+                InitSideSegments(seg.First, seg.Second, Positions.Left);
+                AddFirstSegment();
+                foreach (TCoordinate point in sl.Enumerable.Skip(simp1, 2))
+                {
+                    AddNextSegment(point, true);
+                }
+            }
+            AddLastSegment();
+            _vertexList.CloseRing();
+        }
 
         private void ComputeRingBufferCurve(IEnumerable<TCoordinate> inputPts, Positions side)
         {
@@ -305,10 +369,10 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         private TCoordinate _s0, _s1, _s2;
-        private LineSegment<TCoordinate> _seg0 = new LineSegment<TCoordinate>();
-        private LineSegment<TCoordinate> _seg1 = new LineSegment<TCoordinate>();
-        private LineSegment<TCoordinate> _offset0 = new LineSegment<TCoordinate>();
-        private LineSegment<TCoordinate> _offset1 = new LineSegment<TCoordinate>();
+        private LineSegment<TCoordinate> _seg0;
+        private LineSegment<TCoordinate> _seg1;
+        private LineSegment<TCoordinate> _offset0;
+        private LineSegment<TCoordinate> _offset1;
         private Positions _side = 0;
 
         private void InitSideSegments(TCoordinate s1, TCoordinate s2, Positions side)
@@ -320,7 +384,23 @@ namespace NetTopologySuite.Operation.Buffer
             _offset1 = ComputeOffsetSegment(_seg1, _side, _distance);
         }
 
-        private static double _maxClosingSegLen = 3.0;
+        ///<summary>
+        /// Add first offset point
+        ///</summary>
+        private void AddFirstSegment()
+        {
+            _vertexList.Add(_offset1.P0);
+        }
+
+        ///<summary>
+        /// Add last offset point
+        ///</summary>
+        private void AddLastSegment()
+        {
+            _vertexList.Add(_offset1.P1);
+        }
+
+        //private static double _maxClosingSegLen = 3.0;
 
         private void AddNextSegment(TCoordinate p, Boolean addStartPoint)
         {
@@ -492,14 +572,6 @@ namespace NetTopologySuite.Operation.Buffer
                     _vertexList.Add(_offset1.P0);
                 }
             }
-        }
-
-        /**
-         * Add last offset point
-         */
-        private void AddLastSegment()
-        {
-            _vertexList.Add(_offset1.P1);
         }
 
         /**

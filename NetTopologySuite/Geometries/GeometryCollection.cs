@@ -355,7 +355,7 @@ namespace NetTopologySuite.Geometries
 
             for (int i = 0; i < count; i++)
             {
-                if (!this[i].EqualsExact(otherCollection[i]))
+                if (!this[i].EqualsExact(otherCollection[i], tolerance))
                 {
                     return false;
                 }

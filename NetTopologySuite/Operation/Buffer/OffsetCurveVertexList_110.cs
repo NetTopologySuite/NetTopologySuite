@@ -87,17 +87,34 @@ namespace NetTopologySuite.Operation.Buffer
             _ptList.Add(startPt);
         }
 
+        public void AddRange(IEnumerable<TCoordinate> pts, Boolean isForward)
+        {
+            if (isForward)
+            {
+                foreach(TCoordinate pt in pts) 
+                    Add(pt);
+            }
+            else
+            {
+                foreach (TCoordinate pt in new Stack<TCoordinate>(pts))
+                    Add(pt);
+            }
+        }
+  
+
+
         public TCoordinate[] GetCoordinates()
         {
-            //get
-            //{
-                if (_ptList.Count > 1)
-                {
-                    CloseRing();
-                    return _ptList.ToArray();
-                }
-                return null;
-            //}
+            /*
+            // check that points are a ring - add the startpoint again if they are not
+            if (_ptList.Count > 1)
+            {
+                TCoordinate start = _ptList[0];
+                TCoordinate end = _ptList[_ptList.Count - 1];
+                if (!start.Equals(end)) Add(start);
+            }
+            */
+            return _ptList.ToArray();
         }
 
         public override String ToString()

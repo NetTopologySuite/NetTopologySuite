@@ -21,11 +21,11 @@ namespace NetTopologySuite.Operation.Buffer
         where TCoordinate : ICoordinate<TCoordinate>, IEquatable<TCoordinate>, IComparable<TCoordinate>,
                             IComputable<Double, TCoordinate>, IDivisible<Double, TCoordinate>, IConvertible
     {
-        private IGeometry<TCoordinate> _inputGeom;
-        private Double _distance;
-        private OffsetCurveBuilder_110<TCoordinate> _curveBuilder;
+        private readonly IGeometry<TCoordinate> _inputGeom;
+        private readonly Double _distance;
+        private readonly OffsetCurveBuilder_110<TCoordinate> _curveBuilder;
 
-        private List<ISegmentString<TCoordinate>> _curveList = new List<ISegmentString<TCoordinate>>();
+        private readonly List<ISegmentString<TCoordinate>> _curveList = new List<ISegmentString<TCoordinate>>();
 
         ///<summary>
         /// Creates an instance of this class
@@ -43,13 +43,14 @@ namespace NetTopologySuite.Operation.Buffer
             _curveBuilder = curveBuilder;
         }
 
-        /**
-         * Computes the set of raw offset curves for the buffer.
-         * Each offset curve has an attached {@link Label} indicating
-         * its left and right location.
-         *
-         * @return a Collection of SegmentStrings representing the raw buffer curves
-         */
+        ///<summary>
+        /// Computes the set of raw offset curves for the buffer.
+        /// Each offset curve has an attached {@link Label} indicating
+        /// its left and right location.
+        ///</summary>
+        ///<returns>
+        /// An <see cref="IEnumerable{ISegmentString}"/> representing the raw buffer curves
+        ///</returns>
         public IEnumerable<ISegmentString<TCoordinate>> GetCurves()
         {
             Add(_inputGeom);
@@ -246,8 +247,6 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         private Boolean IsErodedCompletely(IEnumerable<TCoordinate> ringCoord, Double bufferDistance)
         {
-            Double minDiam;
-
             Int32 count = Slice.GetLength(ringCoord);
 
             // degenerate ring has no area
@@ -262,7 +261,7 @@ namespace NetTopologySuite.Operation.Buffer
             {
                 ICoordinateFactory<TCoordinate> coordinateFactory
                     = _inputGeom.Factory.CoordinateFactory;
-                return isTriangleErodedCompletely(coordinateFactory,
+                return IsTriangleErodedCompletely(coordinateFactory,
                                                   ringCoord,
                                                   bufferDistance);
             }
@@ -280,7 +279,7 @@ namespace NetTopologySuite.Operation.Buffer
              */
             ILinearRing<TCoordinate> ring = _inputGeom.Factory.CreateLinearRing(ringCoord);
             MinimumDiameter<TCoordinate> md = new MinimumDiameter<TCoordinate>(ring);
-            minDiam = md.Length;
+            double minDiam = md.Length;
             return minDiam < 2 * Math.Abs(bufferDistance);
         }
 
@@ -296,7 +295,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// In this case the triangle buffer curve "inverts" with incorrect topology,
         /// producing an incorrect hole in the buffer.       
         /// </summary>
-        private static Boolean isTriangleErodedCompletely(ICoordinateFactory<TCoordinate> coordinateFactory,
+        private static Boolean IsTriangleErodedCompletely(ICoordinateFactory<TCoordinate> coordinateFactory,
                                                           IEnumerable<TCoordinate> triangleCoord,
                                                           Double bufferDistance)
         {

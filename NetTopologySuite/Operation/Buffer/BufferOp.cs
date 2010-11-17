@@ -19,12 +19,21 @@ namespace NetTopologySuite.Operation.Buffer
     /// </summary>
     /// <remarks>  
     /// <para>
-    /// In GIS, the buffer of a point is defined as
-    /// the Minkowski sum or difference of the point
+    /// In GIS, the positive (or negative) buffer of a point is defined as
+    /// the Minkowski sum (or difference) of the point
     /// with a circle with radius equal to the absolute value of the buffer distance.
     /// </para>
     /// <para>
     /// In the CAD/CAM world buffers are known as offset curves.
+    /// In morphological analysis the 
+    /// operation of postive and negative buffering 
+    /// is referred to as <i>erosion</i> and <i>dilation</i>
+    /// </para>
+    /// <para>
+    /// The buffer operation always returns a polygonal result.
+    /// The negative or zero-distance buffer of lines and points is always an empty <see cref="IPolygon{TCoordinate}"/>.
+    /// </para>
+    /// <para>
     /// Since true buffer curves may contain circular arcs,
     /// computed buffer polygons can only be approximations to the true point.
     /// The user can control the accuracy of the curve approximation by specifying
