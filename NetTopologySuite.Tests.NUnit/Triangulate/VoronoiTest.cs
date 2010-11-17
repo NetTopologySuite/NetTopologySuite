@@ -21,7 +21,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
     {
 
         private readonly GeoAPI.IO.WellKnownText.IWktGeometryReader<coord> _reader =
-            GeometryUtils.GeometryFactory.WktReader;
+            GeometryUtils.Reader;
 
         [Test]
         public void TestSimple()
@@ -29,11 +29,12 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             String wkt = "MULTIPOINT ((10 10), (20 70), (60 30), (80 70))";
             //String expected = "MULTILINESTRING ((70 180, 190 110), (30 150, 70 180), (30 150, 50 40), (50 40, 120 20), (190 110, 120 20), (120 20, 140 70), (190 110, 140 70), (130 140, 140 70), (130 140, 190 110), (70 180, 130 140), (80 100, 130 140), (70 180, 80 100), (30 150, 80 100), (50 40, 80 100), (80 100, 120 20), (80 100, 140 70))";
             //    runDelaunayEdges(wkt, expected);
-            String expectedTri = "GEOMETRYCOLLECTION (POLYGON ((30 150, 50 40, 80 100, 30 150)), POLYGON ((30 150, 80 100, 70 180, 30 150)), POLYGON ((70 180, 80 100, 130 140, 70 180)), POLYGON ((70 180, 130 140, 190 110, 70 180)), POLYGON ((190 110, 130 140, 140 70, 190 110)), POLYGON ((190 110, 140 70, 120 20, 190 110)), POLYGON ((120 20, 140 70, 80 100, 120 20)), POLYGON ((120 20, 80 100, 50 40, 120 20)), POLYGON ((80 100, 140 70, 130 140, 80 100)))";
+            String expectedTri =
+                "GEOMETRYCOLLECTION (POLYGON ((-60 52.5, -60 140, 50 140, 50 60, 27.857 37.857, -60 52.5)), POLYGON ((67 -60, -60 -60, -60 52.5, 27.857 37.857, 67 -60)), POLYGON ((150 10, 150 -60, 67 -60, 27.857 37.857, 50 60, 150 10)), POLYGON ((50 140, 150 140, 150 10, 50 60, 50 140)))";
             RunVoronoi(wkt, true, expectedTri);
         }
 
-        const double ComparisonTolerance = 1.0e-7;
+        const double ComparisonTolerance = 1.0e-2;
 
         void RunVoronoi(String sitesWKT, Boolean computeTriangles, String expectedWKT)
         {
