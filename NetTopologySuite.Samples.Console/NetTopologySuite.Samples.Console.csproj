@@ -97,6 +97,7 @@
     <Compile Include="Tests\Various\BufferTest.cs" />
     <Compile Include="Tests\Various\CoordinateArraysTest.cs" />
     <Compile Include="Tests\Various\CascadedPolygonUnionFixture.cs" />
+    <Compile Include="Tests\Various\Issue68Tests.cs" />
     <Compile Include="Tests\Various\CoversTest.cs" />
     <Compile Include="Tests\Various\DbfDateTest.cs" />
     <Compile Include="Tests\Various\FormattingTest.cs" />

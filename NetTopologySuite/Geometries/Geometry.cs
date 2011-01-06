@@ -781,6 +781,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns><c>true</c> if the two <c>Geometry</c>s are equal.</returns>
         public bool Equals(IGeometry g)
         {
+            if (Object.Equals(g, null))
+                return false;
+
             if (ReferenceEquals(g, this))
                 return true;
 
