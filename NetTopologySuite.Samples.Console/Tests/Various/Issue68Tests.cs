@@ -1,4 +1,3 @@
-using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using NUnit.Framework;
 
@@ -11,7 +10,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         public void EqualsNullThrowsBugFix()
         {
             var polygon = new Polygon(null);
-            var result = polygon.Equals((IGeometry)null);
+            var result = polygon.Equals(null);
             Assert.IsNotNull(result);
         }
     }
