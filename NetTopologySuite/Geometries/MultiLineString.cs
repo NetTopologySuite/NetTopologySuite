@@ -4,9 +4,12 @@ using GisSharpBlog.NetTopologySuite.Operation;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
+    using System;
+
     /// <summary>
     /// Basic implementation of <c>MultiLineString</c>.
     /// </summary>    
+    [Serializable]
     public class MultiLineString : GeometryCollection, IMultiLineString
     {
         /// <summary>
