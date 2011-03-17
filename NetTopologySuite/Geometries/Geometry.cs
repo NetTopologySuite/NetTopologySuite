@@ -14,6 +14,9 @@ using GisSharpBlog.NetTopologySuite.Operation.Predicate;
 using GisSharpBlog.NetTopologySuite.Operation.Relate;
 using GisSharpBlog.NetTopologySuite.Operation.Valid;
 using GisSharpBlog.NetTopologySuite.Utilities;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {   
@@ -83,8 +86,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// topologically equal Geometries are added to Collections and Dictionaries, they
     /// remain distinct. This behaviour is desired in many cases.
     /// </remarks>
-    [Serializable]    
-    public abstract class Geometry: IGeometry
+#if !SILVERLIGHT
+    [Serializable]
+#endif
+    public abstract class Geometry : IGeometry
     {        
         /// <summary>
         /// 

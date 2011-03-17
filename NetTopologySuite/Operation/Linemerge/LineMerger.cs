@@ -2,6 +2,9 @@ using System.Collections;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 {

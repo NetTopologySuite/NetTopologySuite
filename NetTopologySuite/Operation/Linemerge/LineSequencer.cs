@@ -1,12 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using GisSharpBlog.NetTopologySuite.Planargraph.Algorithm;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using Wintellect.PowerCollections;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
 {
@@ -307,7 +311,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
              * At this point, we have a valid sequence of graph DirectedEdges, but it
              * is not necessarily appropriately oriented relative to the underlying geometry.
              */
-            IList orientedSeq = Orient(new ArrayList(seq));
+            IList orientedSeq = Orient(new ArrayList(seq.CastPlatform()));
             return orientedSeq;
         }
 
@@ -478,7 +482,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                 DirectedEdge de = (DirectedEdge) i.Current;
                 newSeq.AddFirst(de.Sym);
             }
-            return new ArrayList(newSeq);
+            return new List<DirectedEdge>(newSeq);
         }
 
         /// <summary>

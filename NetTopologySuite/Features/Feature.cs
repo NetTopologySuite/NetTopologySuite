@@ -6,8 +6,10 @@ namespace GisSharpBlog.NetTopologySuite.Features
     /// <summary>
     /// 
     /// </summary>
+#if !SILVERLIGHT
     [Serializable]
-    public class Feature
+#endif
+     public class Feature
     {
         private IGeometry geometry = null;
 

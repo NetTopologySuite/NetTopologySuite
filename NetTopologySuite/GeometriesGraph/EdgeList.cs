@@ -2,6 +2,9 @@ using System.Collections;
 using System.IO;
 using GisSharpBlog.NetTopologySuite.Index;
 using GisSharpBlog.NetTopologySuite.Index.Quadtree;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {

@@ -1,6 +1,9 @@
 using System.Collections;
 using GisSharpBlog.NetTopologySuite.Planargraph;
-
+#if SILVERLIGHT
+using Stack = System.Collections.Generic.Stack<object>;
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
 {
     /// <summary>

@@ -6,6 +6,9 @@ using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using RTools_NTS.Util;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.IO
 {
@@ -88,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         public IGeometry Read(TextReader reader) 
         {
             StreamTokenizer tokenizer = new StreamTokenizer(reader);
-            ArrayList tokens = new ArrayList();
+            List<Token> tokens = new List<Token>();
             tokenizer.Tokenize(tokens);     // Read directly all tokens
             index = 0;                      // Reset pointer to start of tokens
             try

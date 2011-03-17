@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
+using System.Linq;
 using GeoAPI.Geometries;
-
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
@@ -241,7 +244,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 
             if (isAllValidLinearRings)
                 return factory.CreatePolygon((ILinearRing)   shell, 
-                                             (ILinearRing[]) holes.ToArray(typeof(ILinearRing)));
+                                             (ILinearRing[]) holes.Cast<ILinearRing>().ToArray());
             else 
             {
                 ArrayList components = new ArrayList();

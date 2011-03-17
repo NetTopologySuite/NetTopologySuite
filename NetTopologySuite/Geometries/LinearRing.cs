@@ -9,7 +9,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Either orientation of the ring is allowed.
     /// A valid ring must not self-intersect.
     /// </summary>
+#if !SILVERLIGHT
     [Serializable]
+#endif
     public class LinearRing : LineString, ILinearRing
     {
         /// <summary>

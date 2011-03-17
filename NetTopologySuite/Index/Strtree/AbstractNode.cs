@@ -1,5 +1,8 @@
 using System.Collections;
 using GisSharpBlog.NetTopologySuite.Utilities;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 {

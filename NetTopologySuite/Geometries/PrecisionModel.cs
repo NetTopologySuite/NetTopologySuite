@@ -38,7 +38,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// integer is 9,007,199,254,740,992).
     /// NTS methods currently do not handle inputs with different precision models.
     /// </summary>
+#if !SILVERLIGHT
     [Serializable]
+#endif
     public class PrecisionModel : IPrecisionModel
     {
         private const int FloatingPrecisionDigits = 16;

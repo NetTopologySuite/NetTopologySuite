@@ -1,7 +1,12 @@
 using System.Collections;
 using System.IO;
+using System.Linq;
 using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Utilities;
 using Wintellect.PowerCollections;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -90,7 +95,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public IList Values
         {
-            get { return new ArrayList(nodeMap.Values); }
+            get { return new ArrayList(nodeMap.Values.CastPlatform()); }
         }
 
         /// <summary>

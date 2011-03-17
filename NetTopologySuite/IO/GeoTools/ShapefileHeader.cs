@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.IO
 {
@@ -42,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			_version = shpBinaryReader.ReadInt32();
 			Debug.Assert(_version == 1000, "Shapefile version", String.Format("Expecting only one version (1000), but got {0}",_version));
 			int shapeType = shpBinaryReader.ReadInt32();
-            _shapeType = (ShapeGeometryType) Enum.Parse(typeof(ShapeGeometryType), shapeType.ToString());
+            _shapeType = (ShapeGeometryType) EnumUtility.Parse(typeof(ShapeGeometryType), shapeType.ToString());
 
 			//read in and store the bounding box
 			double[] coords = new double[4];
@@ -143,7 +144,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			file.Write(_version);
 			pos += 4;
 
-            file.Write(int.Parse(Enum.Format(typeof(ShapeGeometryType), _shapeType, "d")));
+            file.Write(int.Parse(EnumUtility.Format(typeof(ShapeGeometryType), _shapeType, "d")));
 			
             pos += 4;
 			// Write the bounding box

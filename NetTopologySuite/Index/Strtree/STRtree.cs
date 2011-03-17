@@ -1,8 +1,13 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 {
@@ -22,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <summary>
         /// 
         /// </summary>        
-        private class AnonymousXComparerImpl : IComparer
+        private class AnonymousXComparerImpl : IComparer, IComparer<object>
         {
             private STRtree container = null;
 
@@ -51,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <summary>
         /// 
         /// </summary>
-        private class AnonymousYComparerImpl : IComparer
+        private class AnonymousYComparerImpl : IComparer<object>, IComparer
         {
             private STRtree container = null;
 
@@ -191,7 +196,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             Assert.IsTrue(childBoundables.Count != 0);
             int minLeafCount = (int)Math.Ceiling((childBoundables.Count / (double)NodeCapacity));
-            ArrayList sortedChildBoundables = new ArrayList(childBoundables);
+            ArrayList sortedChildBoundables = new ArrayList(childBoundables.CastPlatform());
             sortedChildBoundables.Sort(new AnonymousXComparerImpl(this));
             IList[] verticalSlices = VerticalSlices(sortedChildBoundables,
                 (int) Math.Ceiling(Math.Sqrt(minLeafCount)));
@@ -327,7 +332,17 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return base.Remove(itemEnv, item);
         }        
         
+#if SILVERLIGHT
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        protected override IComparer<object> GetComparer() 
+        {
+            return new AnonymousYComparerImpl(this);
+        }
+#else
+          /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
@@ -335,5 +350,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             return new AnonymousYComparerImpl(this);
         }
+#endif
     }
 }

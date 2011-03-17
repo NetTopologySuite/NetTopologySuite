@@ -1,9 +1,15 @@
 using System.Collections;
+using System.Linq;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Planargraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using Wintellect.PowerCollections;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+using Stack = System.Collections.Generic.Stack<object>;
+#endif
+
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
 {
@@ -457,7 +463,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
                         nodeStack.Push(toNode);
                 }
             }
-            return new ArrayList(dangleLines);
+            return new ArrayList(dangleLines.CastPlatform());
         }
     }
 }

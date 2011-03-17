@@ -1,12 +1,17 @@
 using System;
 using System.Collections;
+#if SILVERLIGHT
+using Hashtable = System.Collections.Generic.Dictionary<string, object>;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Features
 {
     /// <summary>
     /// Stores all attributes associated with a single <c>Geometry</c> feature.
     /// </summary>
+#if !SILVERLIGHT
     [Serializable]
+#endif
     public class AttributesTable : IAttributesTable
     {        
         private const string IndexField = "_NTS_ID_";

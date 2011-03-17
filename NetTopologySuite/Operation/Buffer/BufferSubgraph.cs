@@ -4,7 +4,11 @@ using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using Wintellect.PowerCollections;
-
+#if SILVERLIGHT
+using Stack = System.Collections.Generic.Stack<object>;
+using ArrayList = System.Collections.Generic.List<object>;
+using Queue = System.Collections.Generic.Queue<object>;
+#endif
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 {
     /// <summary>

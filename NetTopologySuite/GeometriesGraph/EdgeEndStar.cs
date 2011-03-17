@@ -1,10 +1,14 @@
 using System.Collections;
 using System.IO;
+using System.Linq;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
 using Wintellect.PowerCollections;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -98,7 +102,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             get
             {
                 if (edgeList == null) 
-                    edgeList = new ArrayList(edgeMap.Values);            
+                    edgeList = new ArrayList(edgeMap.Values.CastPlatform());            
                 return edgeList;
             }
         }

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.IO.Handlers
 {
@@ -27,7 +28,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
         public override IGeometry Read(BigEndianBinaryReader file, IGeometryFactory geometryFactory)
         {
             int shapeTypeNum = file.ReadInt32();
-            type = (ShapeGeometryType) Enum.Parse(typeof(ShapeGeometryType), shapeTypeNum.ToString());
+            type = (ShapeGeometryType) EnumUtility.Parse(typeof(ShapeGeometryType), shapeTypeNum.ToString());
             if (type == ShapeGeometryType.NullShape)
                 return geometryFactory.CreateMultiLineString(null);
 
@@ -91,7 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
                  multi = (IMultiLineString) geometry;
             else multi = geometryFactory.CreateMultiLineString(new ILineString[] { (ILineString) geometry });
 
-            file.Write(int.Parse(Enum.Format(typeof(ShapeGeometryType), ShapeType, "d")));
+            file.Write(int.Parse(EnumUtility.Format(typeof(ShapeGeometryType), ShapeType, "d")));
         
             IEnvelope box = multi.EnvelopeInternal;
             file.Write(box.MinX);

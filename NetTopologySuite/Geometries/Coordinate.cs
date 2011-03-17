@@ -17,7 +17,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// z-ordinate of <c>NaN</c>.  The standard comparison functions will ignore
     /// the z-ordinate.
     /// </summary>
+#if !SILVERLIGHT
     [Serializable]
+#endif
     public class Coordinate : ICoordinate
     {
         private double x; // = Double.NaN;

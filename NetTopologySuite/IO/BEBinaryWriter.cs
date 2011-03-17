@@ -187,7 +187,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         {
             throw new NotImplementedException();
         }
-
+#if !SILVERLIGHT
         /// <summary>
         /// Writes a decimal value to the current stream and advances the stream position by sixteen bytes.
         /// </summary>
@@ -199,5 +199,6 @@ namespace GisSharpBlog.NetTopologySuite.IO
         {
             throw new NotImplementedException();
         }
+#endif
     }
 }

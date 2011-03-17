@@ -5,46 +5,99 @@ using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO.Handlers;
 
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
+
 namespace GisSharpBlog.NetTopologySuite.IO
 {
-	/// <summary>
-	/// This class represnts an ESRI Shapefile.
-	/// </summary>
-	public class ShapefileReader : IEnumerable
-	{        
-		/// <summary>
-		/// Summary description for ShapefileEnumerator.
-		/// </summary>
-        private class ShapefileEnumerator : IEnumerator, IDisposable
+    /// <summary>
+    /// This class represnts an ESRI Shapefile.
+    /// </summary>
+    public partial class ShapefileReader : IEnumerable
+    {
+        private readonly string _filename;
+        private readonly IGeometryFactory _geometryFactory;
+        private readonly ShapefileHeader _mainHeader;
+
+
+        /// <summary>
+        /// Initializes a new instance of the Shapefile class with the given parameter 
+        /// and a standard GeometryFactory.
+        /// </summary>
+        /// <param name="filename">The filename of the shape file to read (with .shp).</param>        
+        public ShapefileReader(string filename) :
+            this(filename, new GeometryFactory())
         {
-            private ShapefileReader _parent;
-            private IGeometry _geometry;
-            private ShapeHandler _handler;
-            private BigEndianBinaryReader _shpBinaryReader = null;
+        }
 
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="ShapefileEnumerator"/> class.
-            /// </summary>
-            /// <param name="shapefile"></param>
-            public ShapefileEnumerator(ShapefileReader shapefile)
-            {                
-                _parent = shapefile;
+        /// <summary>
+        /// Gets the bounds of the shape file.
+        /// </summary>
+        public ShapefileHeader Header
+        {
+            get { return _mainHeader; }
+        }
 
-                // create a file stream for each enumerator that is given out. This allows the same file
-                // to have one or more enumerator. If we used the parents stream - than only one IEnumerator 
-                // could be given out.
-                FileStream stream = new FileStream(_parent._filename, FileMode.Open, FileAccess.Read, FileShare.Read);
-                _shpBinaryReader = new BigEndianBinaryReader(stream);
+        #region IEnumerable Members
 
-                // skip header - since parent has already read this.
-                _shpBinaryReader.ReadBytes(100);
-                ShapeGeometryType type = _parent._mainHeader.ShapeType;
-                _handler = Shapefile.GetShapeHandler(type);
-                if (_handler == null) 
-                    throw new NotSupportedException("Unsuported shape type:" + type);
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"></see> object 
+        /// that can be used to iterate through the collection.
+        /// </returns>
+        public IEnumerator GetEnumerator()
+        {
+            return new ShapefileEnumerator(this);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Reads the shapefile and returns a GeometryCollection representing all the records in the shapefile.
+        /// </summary>
+        /// <returns>GeometryCollection representing every record in the shapefile.</returns>
+        public IGeometryCollection ReadAll()
+        {
+            var list = new ArrayList();
+            ShapeGeometryType type = _mainHeader.ShapeType;
+            ShapeHandler handler = Shapefile.GetShapeHandler(type);
+            if (handler == null)
+                throw new NotSupportedException("Unsupported shape type:" + type);
+
+            int i = 0;
+            foreach (IGeometry geometry in this)
+            {
+                list.Add(geometry);
+                i++;
             }
 
+            IGeometry[] geomArray = GeometryFactory.ToGeometryArray(list);
+            return _geometryFactory.CreateGeometryCollection(geomArray);
+        }
+
+        #region Nested type: ShapefileEnumerator
+
+        /// <summary>
+        /// Summary description for ShapefileEnumerator.
+        /// </summary>
+        private partial class ShapefileEnumerator : IEnumerator, IDisposable
+        {
+            private readonly ShapeHandler _handler;
+            private readonly ShapefileReader _parent;
+            private readonly BigEndianBinaryReader _shpBinaryReader;
+            private IGeometry _geometry;
+
+            #region IDisposable Members
+
+
+
+            #endregion
+
+            #region IEnumerator Members
 
             /// <summary>
             /// Sets the enumerator to its initial position, which is 
@@ -78,7 +131,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
                         int contentLength = _shpBinaryReader.ReadInt32BE();
                         _geometry = _handler.Read(_shpBinaryReader, _parent._geometryFactory);
                     }
-                    catch (Exception) { return false; }
+                    catch (Exception)
+                    {
+                        return false;
+                    }
                     return true;
                 }
                 else
@@ -100,103 +156,12 @@ namespace GisSharpBlog.NetTopologySuite.IO
             /// </exception>
             public object Current
             {
-                get
-                {
-                    return _geometry;
-                }
-            }
-
-            #region IDisposable Members
-
-            /// <summary>
-            /// Performs application-defined tasks associated with freeing, 
-            /// releasing, or resetting unmanaged resources.
-            /// </summary>
-            public void Dispose()
-            {
-                _shpBinaryReader.Close();
+                get { return _geometry; }
             }
 
             #endregion
         }
 
-		private ShapefileHeader _mainHeader = null;
-		private IGeometryFactory _geometryFactory = null;
-		private string _filename;
-		
-		/// <summary>
-		/// Initializes a new instance of the Shapefile class with the given parameters.
-		/// </summary>
-		/// <param name="filename">The filename of the shape file to read (with .shp).</param>
-		/// <param name="geometryFactory">The GeometryFactory to use when creating Geometry objects.</param>
-		public ShapefileReader(string filename, IGeometryFactory geometryFactory)
-		{           
-			if (filename == null)
-				throw new ArgumentNullException("filename");
-			if (geometryFactory == null)
-				throw new ArgumentNullException("geometryFactory");
-			
-            _filename = filename;
-            _geometryFactory = geometryFactory;					
-
-			// read header information. note, we open the file, read the header information and then
-			// close the file. This means the file is not opened again until GetEnumerator() is requested.
-			// For each call to GetEnumerator() a new BinaryReader is created.
-			FileStream stream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read);
-			BigEndianBinaryReader shpBinaryReader = new BigEndianBinaryReader(stream);
-			_mainHeader = new ShapefileHeader(shpBinaryReader);
-			shpBinaryReader.Close();
-		}
-
-        /// <summary>
-        /// Initializes a new instance of the Shapefile class with the given parameter 
-        /// and a standard GeometryFactory.
-        /// </summary>
-        /// <param name="filename">The filename of the shape file to read (with .shp).</param>        
-        public ShapefileReader(string filename) : 
-            this(filename, new GeometryFactory()) { }        
-
-		/// <summary>
-		/// Gets the bounds of the shape file.
-		/// </summary>
-		public ShapefileHeader Header
-		{
-			get { return _mainHeader; }
-		}	
-		
-		/// <summary>
-		/// Reads the shapefile and returns a GeometryCollection representing all the records in the shapefile.
-		/// </summary>
-		/// <returns>GeometryCollection representing every record in the shapefile.</returns>
-		public IGeometryCollection ReadAll()
-		{
-			ArrayList list = new ArrayList();
-            ShapeGeometryType type = _mainHeader.ShapeType;
-			ShapeHandler handler = Shapefile.GetShapeHandler(type);
-			if (handler == null) 
-				throw new NotSupportedException("Unsupported shape type:" + type);
-
-			int i = 0;
-			foreach (IGeometry geometry in this)
-			{                
-				list.Add(geometry);
-				i++;
-			}
-			
-	        IGeometry[] geomArray = GeometryFactory.ToGeometryArray(list);
-			return _geometryFactory.CreateGeometryCollection(geomArray);
-		}
-
-        /// <summary>
-        /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        /// <returns>
-        /// An <see cref="T:System.Collections.IEnumerator"></see> object 
-        /// that can be used to iterate through the collection.
-        /// </returns>
-        public IEnumerator GetEnumerator()
-		{
-			return new ShapefileEnumerator(this);
-		}
-	}
+        #endregion
+    }
 }

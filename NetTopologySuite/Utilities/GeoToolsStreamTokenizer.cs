@@ -140,7 +140,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
 			bool isNumber=false;
 			bool isWord=false;
 			byte[] ba=null;
-			ASCIIEncoding AE = new ASCIIEncoding();
+			Encoding AE = PlatformUtilityEx.GetASCIIEncoding();
 			char[] ascii=null;
 			Char currentCharacter;
 			Char nextCharacter;

@@ -7,7 +7,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// <summary>  
     /// Models a collection of <c>Point</c>s.
     /// </summary>
+#if !SILVERLIGHT
     [Serializable]
+#endif
     public class MultiPoint : GeometryCollection, IMultiPoint
     {
         /// <summary>

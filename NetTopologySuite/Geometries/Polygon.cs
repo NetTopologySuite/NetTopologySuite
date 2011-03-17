@@ -13,7 +13,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// The shell and holes must conform to the assertions specified in the
     /// <see href="http://www.opengis.org/techno/specs.htm"/> OpenGIS Simple Features Specification for SQL.     
     /// </summary>
+#if !SILVERLIGHT
     [Serializable]
+#endif
     public class Polygon : Geometry, IPolygon
     {
         /// <summary>

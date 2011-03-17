@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.IO.Handlers
 {
@@ -28,7 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
         public override IGeometry Read(BigEndianBinaryReader file, IGeometryFactory geometryFactory)
         {
             int shapeTypeNum = file.ReadInt32();
-            type = (ShapeGeometryType) Enum.Parse(typeof (ShapeGeometryType), shapeTypeNum.ToString());
+            type = (ShapeGeometryType) EnumUtility.Parse(typeof (ShapeGeometryType), shapeTypeNum.ToString());
             if (type == ShapeGeometryType.NullShape)
             {
                 ICoordinate emptyCoordinate = null;
@@ -56,7 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
         /// <param name="geometryFactory">The geometry factory to use.</param>
         public override void Write(IGeometry geometry, BinaryWriter file, IGeometryFactory geometryFactory)
         {
-            file.Write(int.Parse(Enum.Format(typeof(ShapeGeometryType), this.ShapeType, "d")));
+            file.Write(int.Parse(EnumUtility.Format(typeof(ShapeGeometryType), this.ShapeType, "d")));
             ICoordinate external = geometry.Coordinates[0];
             file.Write(external.X);
             file.Write(external.Y);

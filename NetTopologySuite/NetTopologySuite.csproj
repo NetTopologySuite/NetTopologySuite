@@ -1,4 +1,5 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -21,10 +22,11 @@
     <AssemblyOriginatorKeyFile>nts.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <OldToolsVersion>2.0</OldToolsVersion>
+    <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -37,11 +39,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkSubset>
-    </TargetFrameworkSubset>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -228,7 +227,11 @@
     <Compile Include="IO\GeoTools\Dbase\DbaseFieldDescriptor.cs" />
     <Compile Include="IO\GeoTools\Dbase\DbaseFileHeader.cs" />
     <Compile Include="IO\GeoTools\Dbase\DbaseFileReader.cs" />
+    <Compile Include="IO\GeoTools\Dbase\DbaseFileReader.FullFat.cs" />
     <Compile Include="IO\GeoTools\Dbase\DbaseFileWriter.cs" />
+    <Compile Include="IO\GeoTools\Shapefile.FullFat.cs" />
+    <Compile Include="IO\GeoTools\ShapefileDataReader.FullFat.cs" />
+    <Compile Include="IO\GeoTools\ShapefileReader.FullFat.cs" />
     <Compile Include="IO\GML2\GMLElements.cs" />
     <Compile Include="IO\GML2\GMLReader.cs" />
     <Compile Include="IO\GML2\GMLWriter.cs" />
@@ -389,9 +392,12 @@
     <Compile Include="Utilities\CoordinateCompare.cs" />
     <Compile Include="Utilities\CoordinateCountFilter.cs" />
     <Compile Include="Utilities\Degrees.cs" />
+    <Compile Include="Utilities\EnumUtility.cs" />
     <Compile Include="Utilities\GeometricShapeFactory.cs" />
+    <Compile Include="Utilities\Guard.cs" />
     <Compile Include="Utilities\HexConverter.cs" />
     <Compile Include="Utilities\Global.cs" />
+    <Compile Include="Utilities\PlatformUtilityEx.cs" />
     <Compile Include="Utilities\Radians.cs" />
     <Compile Include="Utilities\ReverseOrder.cs" />
     <Compile Include="Utilities\RToolsUtil\BufferedTextReader.cs" />
@@ -421,7 +427,7 @@
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
-      <ProductName>.NET Framework Client Profile</ProductName>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">

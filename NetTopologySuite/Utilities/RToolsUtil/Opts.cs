@@ -25,8 +25,13 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
-
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+using Hashtable = System.Collections.Generic.Dictionary<string, object>;
+using DictionaryEntry = System.Collections.Generic.KeyValuePair<string, object>;
+#endif
 namespace RTools_NTS.Util
 {
 	/// <summary>
@@ -171,7 +176,7 @@ namespace RTools_NTS.Util
 				StreamTokenizer tokenizer = new StreamTokenizer();
 				tokenizer.Verbosity = VerbosityLevel.Warn;
 				tokenizer.Settings.WordChar('-');
-				ArrayList tokens = new ArrayList();
+				List<Token> tokens = new List<Token>();
 				tokenizer.TokenizeString(value, tokens);
 				StringBuilder sb = new StringBuilder();
 

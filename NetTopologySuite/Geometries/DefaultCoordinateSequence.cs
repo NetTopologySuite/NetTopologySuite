@@ -10,7 +10,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// parties that change them are actually changing the
     /// DefaultCoordinateSequence's underlying data.
     /// </summary>
+#if !SILVERLIGHT
     [Serializable]
+#endif
     [Obsolete("No longer used.")]
     public class DefaultCoordinateSequence : ICoordinateSequence
     {

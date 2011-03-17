@@ -7,7 +7,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// <summary>
     /// Basic implementation of <c>MultiPolygon</c>.
     /// </summary>
+#if !SILVERLIGHT
     [Serializable]
+#endif
     public class MultiPolygon : GeometryCollection, IMultiPolygon 
     {
         /// <summary>

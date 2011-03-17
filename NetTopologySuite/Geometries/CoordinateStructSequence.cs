@@ -3,7 +3,9 @@ using GeoAPI.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
+#if!SILVERLIGHT
     [Serializable]
+#endif
     public class CoordinateStructSequence : CoordinateArraySequence 
     {
         public CoordinateStructSequence(ICoordinate[] coordinates) : base(coordinates) { }

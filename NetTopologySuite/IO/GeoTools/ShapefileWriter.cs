@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -127,7 +128,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
 			dbfWriter.Write(dbfHeader);
 			for (int i = 0; i < recordCount; i++)
 			{
-				ArrayList columnValues = new ArrayList();
+				List<double>columnValues = new List<double>();
 				columnValues.Add((double) i);                
 				dbfWriter.Write(columnValues);
 			}

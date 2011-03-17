@@ -1,11 +1,15 @@
 using System;
 using System.Collections;
 using System.Diagnostics;
+using System.Linq;
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 {
@@ -179,7 +183,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                     if (!start.Equals(end)) 
                         AddPt(start);
                 }
-                var coord = (ICoordinate[]) ptList.ToArray(typeof(ICoordinate));
+                var coord = (ICoordinate[]) ptList.Cast<ICoordinate>().ToArray();
                 return coord;
             }
         }

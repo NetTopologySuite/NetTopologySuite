@@ -1,5 +1,9 @@
 using System.Collections;
 
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
+
 namespace GisSharpBlog.NetTopologySuite.Index
 {
     /// <summary>

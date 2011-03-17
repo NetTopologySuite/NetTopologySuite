@@ -1,7 +1,13 @@
 using System.Collections;
 using System.IO;
+using System.Linq;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
+using GisSharpBlog.NetTopologySuite.Utilities;
+
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -139,7 +145,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return new ArrayList(nodes.Values);
+                return new ArrayList(nodes.Values.CastPlatform());
             }
         }
 

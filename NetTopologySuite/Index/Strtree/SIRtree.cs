@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 {
@@ -14,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <summary>
         /// 
         /// </summary>
-        private class AnnonymousComparerImpl : IComparer
+        private class AnnonymousComparerImpl : IComparer<object>, IComparer
         {    
             /// <summary>
             /// 
@@ -76,7 +77,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             }
         }       
 
+#if SILVERLIGHT
+        private IComparer<object> comparator = new AnnonymousComparerImpl(); 
+#else
         private IComparer comparator = new AnnonymousComparerImpl(); 
+#endif
         private IIntersectsOp intersectsOp = new AnonymousIntersectsOpImpl();
 
         /// <summary> 
@@ -141,13 +146,24 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             }
         }
 
+#if SILVERLIGHT
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        protected override IComparer GetComparer() 
+        protected override IComparer<object> GetComparer() 
         {
             return comparator;
         }
+#else
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        protected override IComparer GetComparer()
+        {
+            return comparator;
+        }
+#endif
     }
 }

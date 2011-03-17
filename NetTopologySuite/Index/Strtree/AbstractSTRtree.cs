@@ -1,6 +1,11 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using GisSharpBlog.NetTopologySuite.Utilities;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 {
@@ -85,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             Assert.IsTrue(childBoundables.Count != 0);
             var parentBoundables = new ArrayList();
             parentBoundables.Add(CreateNode(newLevel));
-            var sortedChildBoundables = new ArrayList(childBoundables);
+            var sortedChildBoundables = new ArrayList(childBoundables.CastPlatform());
             sortedChildBoundables.Sort(GetComparer());
             for (var i = sortedChildBoundables.GetEnumerator(); i.MoveNext(); )
             {
@@ -384,6 +389,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             }
         }
 
+#if SILVERLIGHT
+        protected abstract IComparer<object> GetComparer();
+#else
         protected abstract IComparer GetComparer();
+#endif
+
     }
 }

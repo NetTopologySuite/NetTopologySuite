@@ -15,8 +15,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// object as a way of computing segment properties on the
     /// segments defined by arrays or lists of <c>Coordinate</c>s.
     /// </summary>    
+#if !SILVERLIGHT
     [Serializable]
-    public class LineSegment: IComparable
+#endif
+    public class LineSegment : IComparable
     {
         private ICoordinate p0 = null, p1 = null;
 

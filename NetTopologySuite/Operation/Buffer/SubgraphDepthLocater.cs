@@ -1,9 +1,15 @@
 using System;
 using System.Collections;
+using System.Linq;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
+using GisSharpBlog.NetTopologySuite.Utilities;
+
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 {
@@ -34,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <returns></returns>
         public int GetDepth(ICoordinate p)
         {
-            ArrayList stabbedSegments = new ArrayList(FindStabbedSegments(p));
+            ArrayList stabbedSegments = new ArrayList(FindStabbedSegments(p).CastPlatform());
             // if no segments on stabbing line subgraph must be outside all others.
             if (stabbedSegments.Count == 0)
                 return 0;

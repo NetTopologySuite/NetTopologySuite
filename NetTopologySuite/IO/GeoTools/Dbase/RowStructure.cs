@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.IO
 {

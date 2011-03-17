@@ -8,7 +8,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// <summary>  
     /// Basic implementation of <c>LineString</c>.
     /// </summary>  
+#if !SILVERLIGHT
     [Serializable]
+#endif
     public class LineString : Geometry, ILineString 
     {
         /// <summary>

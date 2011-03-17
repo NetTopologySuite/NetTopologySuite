@@ -1,7 +1,9 @@
 using System.Collections;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
-
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 {
     /// <summary>

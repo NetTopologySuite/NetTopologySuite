@@ -4,7 +4,11 @@ using System.IO;
 using System.Xml;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
-
+#if SILVERLIGHT
+using XmlTextWriter = System.Xml.XmlWriter;
+using XmlTextReader = System.Xml.XmlReader;
+using System.Xml.Linq;
+#endif
 namespace GisSharpBlog.NetTopologySuite.IO.GML2
 {
     /// <summary>
@@ -37,6 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
             this.factory = factory;
         }
 
+#if !SILVERLIGHT
         /// <summary>
         /// Read a GML document and returns relative <c>Geometry</c>.
         /// </summary>
@@ -44,9 +49,16 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// <returns></returns>
         public IGeometry Read(XmlDocument document)
         {
-            XmlReader reader = new XmlTextReader(new StringReader(document.InnerXml));
+            XmlReader reader = XmlTextReader.Create(new StringReader(document.InnerXml));
             return Read(reader);
         }
+#else
+        public IGeometry Read(XDocument document)
+        {
+            XmlReader reader = document.CreateReader();
+            return Read(reader);
+        }
+#endif
 
         /// <summary>
         /// 
@@ -55,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// <returns></returns>
         public IGeometry Read(string xmlText)
         {
-            XmlReader reader = new XmlTextReader(new StringReader(xmlText));
+            XmlReader reader =  XmlTextReader.Create(new StringReader(xmlText));
             return Read(reader);
         }
 
@@ -66,7 +78,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// <returns></returns>
         public IGeometry Read(StringReader stringReader)
         {
-            XmlReader reader = new XmlTextReader(stringReader);
+            XmlReader reader = XmlTextReader.Create(stringReader);
             return Read(reader);
         }
 

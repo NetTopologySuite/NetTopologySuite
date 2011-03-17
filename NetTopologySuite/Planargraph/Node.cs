@@ -1,7 +1,11 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using GeoAPI.Geometries;
 using Wintellect.PowerCollections;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
 {
@@ -26,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             Set<DirectedEdge> commonEdges = new Set<DirectedEdge>(edges0.Cast<DirectedEdge>());
             IList edges1 = DirectedEdge.ToEdges(node1.OutEdges.Edges);
             commonEdges.RemoveMany(edges1.Cast<DirectedEdge>());
-            return new ArrayList(commonEdges);
+            return new List<DirectedEdge>(commonEdges);
         }
 
         /// <summary>

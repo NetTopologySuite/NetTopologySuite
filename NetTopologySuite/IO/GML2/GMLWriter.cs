@@ -5,6 +5,11 @@ using System.Xml;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
 
+#if SILVERLIGHT
+using XmlTextWriter = System.Xml.XmlWriter;
+using XmlTextReader = System.Xml.XmlReader;
+#endif
+
 namespace GisSharpBlog.NetTopologySuite.IO.GML2
 {
     /// <summary>
@@ -16,8 +21,8 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
     /// </summary>
     public class GMLWriter
     {
-		private const int InitValue = 150;
-		private const int CoordSize = 200;
+        private const int InitValue = 150;
+        private const int CoordSize = 200;
 
         /// <summary>
         /// Formatter for double values of coordinates
@@ -39,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
             using (Stream stream = new MemoryStream(data))
                 Write(geometry, stream);
             Stream outStream = new MemoryStream(data);
-            return new XmlTextReader(outStream);
+            return XmlTextReader.Create(outStream);
         }
 
         /// <summary>
@@ -49,12 +54,26 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// <param name="stream"></param>
         public void Write(IGeometry geometry, Stream stream)
         {
-            XmlTextWriter writer = new XmlTextWriter(stream, null);
-            writer.Namespaces = true;
+
+            XmlWriterSettings settings = null;
+
+#if SILVERLIGHT
+
+            settings =new XmlWriterSettings(){NamespaceHandling = NamespaceHandling.OmitDuplicates,Indent=true};
+#else
+            settings = new XmlWriterSettings() { Indent = true };
+#endif
+
+
+
+            XmlTextWriter writer = (XmlTextWriter)XmlWriter.Create(stream, settings);
             writer.WriteStartElement(GMLElements.gmlPrefix, "GML", GMLElements.gmlNS);
+#if !SILVERLIGHT
+            writer.Namespaces = true;
             writer.Formatting = Formatting.Indented;
+#endif
             Write(geometry, writer);
-			writer.WriteEndElement();
+            writer.WriteEndElement();
             writer.Close();
         }
 

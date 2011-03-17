@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.IO.Handlers
 {
@@ -30,7 +31,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
         {
             int shapeTypeNum = file.ReadInt32();
 
-            type = (ShapeGeometryType) Enum.Parse(typeof(ShapeGeometryType), shapeTypeNum.ToString());
+            type = (ShapeGeometryType) EnumUtility.Parse(typeof(ShapeGeometryType), shapeTypeNum.ToString());
             if (type == ShapeGeometryType.NullShape)
                 return geometryFactory.CreateMultiPoint(new IPoint[] { });
             
@@ -79,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
 
             IMultiPoint mpoint = geometry as IMultiPoint;
             
-            file.Write(int.Parse(Enum.Format(typeof(ShapeGeometryType), ShapeType, "d")));
+            file.Write(int.Parse(EnumUtility.Format(typeof(ShapeGeometryType), ShapeType, "d")));
 
             IEnvelope box = geometry.EnvelopeInternal;
             IEnvelope bounds = GetEnvelopeExternal(geometryFactory.PrecisionModel, box);

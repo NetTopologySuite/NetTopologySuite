@@ -7,7 +7,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// <summary>
     /// Basic implementation of <c>Point</c>.
     /// </summary>
+#if !SILVERLIGHT
     [Serializable]
+#endif
     public class Point : Geometry, IPoint
     {
         private static readonly ICoordinate emptyCoordinate = null;

@@ -9,7 +9,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// <summary>
     /// Basic implementation of <c>MultiLineString</c>.
     /// </summary>    
+#if !SILVERLIGHT
     [Serializable]
+#endif
     public class MultiLineString : GeometryCollection, IMultiLineString
     {
         /// <summary>

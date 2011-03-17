@@ -5,6 +5,10 @@ using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
 using GisSharpBlog.NetTopologySuite.Utilities;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+using Hashtable = System.Collections.Generic.Dictionary<string, object>;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {

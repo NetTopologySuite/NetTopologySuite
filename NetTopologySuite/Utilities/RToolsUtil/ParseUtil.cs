@@ -17,6 +17,10 @@
 //
 using System;
 using System.Collections;
+using System.Collections.Generic;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace RTools_NTS.Util
 {
@@ -45,7 +49,7 @@ namespace RTools_NTS.Util
 		/// to parse.  If this is negative, then it is not used.</param>
 		/// <param name="log">A Logger to use for messages.</param>
 		/// <returns>The Array, or null for error.</returns>
-		public static Array BuildArray(ArrayList tokens, ref int i, Type type,
+		public static Array BuildArray(IList<Token> tokens, ref int i, Type type,
 			Token endToken, int maxLength, Logger log)
 		{
 			int len = tokens.Count;
@@ -76,7 +80,13 @@ namespace RTools_NTS.Util
 			}
 			i--; // went one past
 
-			return(list.ToArray(type));
+
+            Array output = Array.CreateInstance(type, list.Count);
+            for (int j = 0; j < list.Count; j++)
+                output.SetValue(list[j], j);
+
+            return output;
+
 		}
 
 		/// <summary>
@@ -276,11 +286,11 @@ namespace RTools_NTS.Util
 			tokenizer.Verbosity = VerbosityLevel.Warn;
 
 			// FindMatch
-			ArrayList alist = new ArrayList();
+			List<Token> alist = new List<Token>();
 			tokenizer.TokenizeString("{ [ ] '}' }", alist);
 			foreach(Token t in alist) log.Debug("Token = {0}", t);
 
-			Token[] tarray = (Token[])alist.ToArray(typeof(Token));
+			Token[] tarray = (Token[])alist.ToArray();
 			int i = 0;
 			if (!FindMatch(tarray, ref i, '{'))
 			{
@@ -298,7 +308,7 @@ namespace RTools_NTS.Util
 			//
 			// try BuildArray
 			//
-			ArrayList tokens = new ArrayList();
+			List<Token> tokens = new List<Token>();
 			tokenizer.TokenizeString("1 2 3 4 5", tokens);
 			foreach(Token t in tokens) log.Debug("Token = {0}", t);
 

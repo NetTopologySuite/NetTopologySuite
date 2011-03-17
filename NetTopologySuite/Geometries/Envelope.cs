@@ -1,6 +1,8 @@
 using System;
 using GeoAPI.Geometries;
-
+#if SILVERLIGHT
+using GeoAPI;
+#endif
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
     /// <summary>
@@ -12,7 +14,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// When Envelope objects are created or initialized,
     /// the supplies extent values are automatically sorted into the correct order.    
     /// </summary>
+#if !SILVERLIGHT
     [Serializable]
+#endif
     public class Envelope : IEnvelope
     {        
         /// <summary>
@@ -712,10 +716,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Creates a new object that is a copy of the current instance.
         /// </summary>
         /// <returns>A new object that is a copy of this instance.</returns>
+
+#if !SILVERLIGHT
         object ICloneable.Clone()
         {
             return Clone();
         }
+#else
+        object GeoAPI.ICloneable.Clone()
+        {
+            return Clone();
+        }
+#endif
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
         

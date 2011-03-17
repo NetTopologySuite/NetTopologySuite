@@ -1,6 +1,11 @@
 using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
+using System.Linq;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
@@ -67,13 +72,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             // if client did not supply a GeometryFactory, use the one from the input Geometry
             if (factory == null)
                 factory = geometry.Factory;
-            if (geometry is IGeometryCollection) 
-                return EditGeometryCollection((IGeometryCollection) geometry, operation);
+            if (geometry is IGeometryCollection)
+                return EditGeometryCollection((IGeometryCollection)geometry, operation);
             if (geometry is IPolygon)
-                return EditPolygon((IPolygon) geometry, operation);
-            if (geometry is IPoint) 
+                return EditPolygon((IPolygon)geometry, operation);
+            if (geometry is IPoint)
                 return operation.Edit(geometry, factory);
-            if (geometry is ILineString) 
+            if (geometry is ILineString)
                 return operation.Edit(geometry, factory);
             Assert.ShouldNeverReachHere("Unsupported Geometry classes should be caught in the GeometryEditorOperation.");
             return null;
@@ -85,27 +90,27 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <param name="polygon"></param>
         /// <param name="operation"></param>
         /// <returns></returns>
-        private IPolygon EditPolygon(IPolygon polygon, GeometryEditorOperation operation) 
+        private IPolygon EditPolygon(IPolygon polygon, GeometryEditorOperation operation)
         {
-            IPolygon newPolygon = (IPolygon) operation.Edit(polygon, factory);
-            if (newPolygon.IsEmpty) 
+            IPolygon newPolygon = (IPolygon)operation.Edit(polygon, factory);
+            if (newPolygon.IsEmpty)
                 //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
                 return newPolygon;
 
-            ILinearRing shell = (ILinearRing) Edit(newPolygon.ExteriorRing, operation);
-            if (shell.IsEmpty) 
+            ILinearRing shell = (ILinearRing)Edit(newPolygon.ExteriorRing, operation);
+            if (shell.IsEmpty)
                 //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
                 return factory.CreatePolygon(null, null);
 
-            ArrayList holes = new ArrayList();
-            for (int i = 0; i < newPolygon.NumInteriorRings; i++) 
+            List<ILinearRing> holes = new List<ILinearRing>();
+            for (int i = 0; i < newPolygon.NumInteriorRings; i++)
             {
-                ILinearRing hole = (ILinearRing) Edit(newPolygon.GetInteriorRingN(i), operation);
+                ILinearRing hole = (ILinearRing)Edit(newPolygon.GetInteriorRingN(i), operation);
                 if (hole.IsEmpty) continue;
                 holes.Add(hole);
             }
 
-            return factory.CreatePolygon(shell, (ILinearRing[]) holes.ToArray(typeof(ILinearRing)));
+            return factory.CreatePolygon(shell, holes.ToArray());
         }
 
         /// <summary>
@@ -116,25 +121,25 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <returns></returns>
         private IGeometryCollection EditGeometryCollection(IGeometryCollection collection, GeometryEditorOperation operation)
         {
-            IGeometryCollection newCollection = (IGeometryCollection) operation.Edit(collection, factory);
+            IGeometryCollection newCollection = (IGeometryCollection)operation.Edit(collection, factory);
             ArrayList geometries = new ArrayList();
-            for (int i = 0; i < newCollection.NumGeometries; i++) 
+            for (int i = 0; i < newCollection.NumGeometries; i++)
             {
                 IGeometry geometry = Edit(newCollection.GetGeometryN(i), operation);
-                if (geometry.IsEmpty)  continue;
+                if (geometry.IsEmpty) continue;
                 geometries.Add(geometry);
             }
 
-            if (newCollection is IMultiPoint) 
-                return factory.CreateMultiPoint((IPoint[]) geometries.ToArray(typeof(IPoint)));
+            if (newCollection is IMultiPoint)
+                return factory.CreateMultiPoint((IPoint[])geometries.Cast<IPoint>().ToArray());
 
-            if (newCollection is IMultiLineString) 
-                return factory.CreateMultiLineString((ILineString[]) geometries.ToArray(typeof(ILineString)));
+            if (newCollection is IMultiLineString)
+                return factory.CreateMultiLineString((ILineString[])geometries.Cast<ILineString>().ToArray());
 
             if (newCollection is IMultiPolygon)
-                return factory.CreateMultiPolygon((IPolygon[]) geometries.ToArray(typeof(IPolygon)));
+                return factory.CreateMultiPolygon((IPolygon[])geometries.Cast<IPolygon>().ToArray());
 
-            return factory.CreateGeometryCollection((IGeometry[]) geometries.ToArray(typeof(IGeometry)));
+            return factory.CreateGeometryCollection((IGeometry[])geometries.Cast<IGeometry>().ToArray());
         }
 
         /// <summary> 
@@ -167,15 +172,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             /// <param name="geometry"></param>
             /// <param name="factory"></param>
             /// <returns></returns>
-            public IGeometry Edit(IGeometry geometry, IGeometryFactory factory) 
+            public IGeometry Edit(IGeometry geometry, IGeometryFactory factory)
             {
-                if (geometry is ILinearRing) 
+                if (geometry is ILinearRing)
                     return factory.CreateLinearRing(Edit(geometry.Coordinates, geometry));
 
                 if (geometry is ILineString)
-                    return factory.CreateLineString(Edit(geometry.Coordinates, geometry));                
+                    return factory.CreateLineString(Edit(geometry.Coordinates, geometry));
 
-                if (geometry is Point) 
+                if (geometry is Point)
                 {
                     ICoordinate[] newCoordinates = Edit(geometry.Coordinates, geometry);
                     return factory.CreatePoint((newCoordinates.Length > 0) ? newCoordinates[0] : null);

@@ -4,6 +4,9 @@ using System.IO;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Features;
 using GisSharpBlog.NetTopologySuite.Geometries;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.IO
 {

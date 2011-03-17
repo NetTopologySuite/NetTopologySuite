@@ -31,8 +31,13 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace RTools_NTS.Util
 {
@@ -111,8 +116,10 @@ namespace RTools_NTS.Util
 	/// This is separated from the StreamTokenizer so that common settings
 	/// are easy to package and keep together.
 	/// </summary>
-	[Serializable]
-	public class StreamTokenizerSettings
+#if !SILVERLIGHT
+    [Serializable]
+#endif
+    public class StreamTokenizerSettings
 	{
 		// ---------------------------------------------------------------------
 		#region Properties
@@ -1472,7 +1479,7 @@ namespace RTools_NTS.Util
 		/// </summary>
 		/// <param name="tokens">The ArrayList to append to.</param>
 		/// <returns>bool - true for success</returns>
-		public bool Tokenize(ArrayList tokens)
+		public bool Tokenize(IList<Token> tokens)
 		{
 			Token token;
 			this.lineNumber = 1;
@@ -1496,7 +1503,7 @@ namespace RTools_NTS.Util
 		/// <param name="tr">The TextReader to read from.</param>
 		/// <param name="tokens">The ArrayList to append to.</param>
 		/// <returns>bool - true for success, false for failure.</returns>
-		public bool TokenizeReader(TextReader tr, ArrayList tokens)
+		public bool TokenizeReader(TextReader tr, IList<Token> tokens)
 		{
 			textReader = tr;
 			return(Tokenize(tokens));
@@ -1509,7 +1516,7 @@ namespace RTools_NTS.Util
 		/// <param name="fileName">The file to read.</param>
 		/// <param name="tokens">The ArrayList to put tokens in.</param>
 		/// <returns>bool - true for success, false for failure.</returns>
-		public bool TokenizeFile(string fileName, ArrayList tokens)
+		public bool TokenizeFile(string fileName, IList<Token> tokens)
 		{
 			FileInfo fi = new FileInfo(fileName);
 			FileStream fr = null;
@@ -1550,7 +1557,7 @@ namespace RTools_NTS.Util
 		/// <param name="str"></param>
 		/// <param name="tokens">The ArrayList to put tokens in.</param>
 		/// <returns>bool - true for success, false for failure.</returns>
-		public bool TokenizeString(string str, ArrayList tokens)
+		public bool TokenizeString(string str, IList<Token> tokens)
 		{
 			textReader = new StringReader(str);
 			return(Tokenize(tokens));
@@ -1563,7 +1570,7 @@ namespace RTools_NTS.Util
 		/// <param name="s"></param>
 		/// <param name="tokens">The ArrayList to put tokens in.</param>
 		/// <returns>bool - true for success, false for failure.</returns>
-		public bool TokenizeStream(Stream s, ArrayList tokens)
+		public bool TokenizeStream(Stream s, IList<Token> tokens)
 		{
 			textReader = new StreamReader(s);
 			return(Tokenize(tokens));
@@ -1576,7 +1583,7 @@ namespace RTools_NTS.Util
 		/// <returns>A Token[] with all tokens.</returns>
 		public Token[] TokenizeFile(string fileName)
 		{
-			ArrayList list = new ArrayList();
+			IList<Token> list = new List<Token>();
 			if (!TokenizeFile(fileName, list))
 			{
 				return(null);
@@ -1585,7 +1592,7 @@ namespace RTools_NTS.Util
 			{
 				if (list.Count > 0)
 				{
-					return((Token[])list.ToArray(typeof(Token)));
+					return((Token[])list.ToArray());
 				}
 				else return(null);
 			}

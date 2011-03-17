@@ -11,7 +11,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Supplies a set of utility methods for building Geometry objects 
     /// from lists of Coordinates.
     /// </summary>            
+#if !SILVERLIGHT
     [Serializable]
+#endif
     public class GeometryFactory : IGeometryFactory
     {
         /// <summary>

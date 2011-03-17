@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 
 namespace GisSharpBlog.NetTopologySuite.Utilities
 {
@@ -21,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
 		public int Compare(object x, object y)
 		{
 			// flips result
-			return Comparer.Default.Compare(x, y) * -1;
+			return Comparer<object>.Default.Compare(x, y) * -1;
 		}
 
 	}

@@ -1,6 +1,14 @@
 using System.Collections;
+using System.Linq;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
+using GisSharpBlog.NetTopologySuite.Utilities;
+
+#if SILVERLIGHT
+using Hashtable = System.Collections.Generic.Dictionary<string, object>;
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
+
 
 namespace GisSharpBlog.NetTopologySuite.Simplify
 {
@@ -42,7 +50,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <param name="inputGeom"></param>
         public TopologyPreservingSimplifier(IGeometry inputGeom)
         {
-            this.inputGeom = inputGeom;            
+            this.inputGeom = inputGeom;
         }
 
         /// <summary>
@@ -64,11 +72,11 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// 
         /// </summary>
         /// <returns></returns>
-        public IGeometry GetResultGeometry() 
+        public IGeometry GetResultGeometry()
         {
             lineStringMap = new Hashtable();
             inputGeom.Apply(new LineStringMapBuilderFilter(this));
-            lineSimplifier.Simplify(new ArrayList(lineStringMap.Values));
+            lineSimplifier.Simplify(new ArrayList(lineStringMap.Values.CastPlatform()));
             IGeometry result = (new LineStringTransformer(this)).Transform(inputGeom);
             return result;
         }
@@ -84,7 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             /// 
             /// </summary>
             /// <param name="container"></param>
-            public LineStringTransformer(TopologyPreservingSimplifier container)            
+            public LineStringTransformer(TopologyPreservingSimplifier container)
             {
                 this.container = container;
             }
@@ -97,9 +105,9 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             /// <returns></returns>
             protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
             {
-                if (parent is ILineString) 
+                if (parent is ILineString)
                 {
-                    TaggedLineString taggedLine = (TaggedLineString) container.lineStringMap[parent];
+                    TaggedLineString taggedLine = (TaggedLineString)container.lineStringMap[parent];
                     return CreateCoordinateSequence(taggedLine.ResultCoordinates);
                 }
                 // for anything else (e.g. points) just copy the coordinates
@@ -118,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             /// 
             /// </summary>
             /// <param name="container"></param>
-            public LineStringMapBuilderFilter(TopologyPreservingSimplifier container)            
+            public LineStringMapBuilderFilter(TopologyPreservingSimplifier container)
             {
                 this.container = container;
             }
@@ -129,14 +137,14 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             /// <param name="geom"></param>
             public void Filter(IGeometry geom)
             {
-                if (geom is ILinearRing) 
+                if (geom is ILinearRing)
                 {
-                    TaggedLineString taggedLine = new TaggedLineString((ILineString) geom, 4);
+                    TaggedLineString taggedLine = new TaggedLineString((ILineString)geom, 4);
                     container.lineStringMap.Add(geom, taggedLine);
                 }
-                else if (geom is ILineString) 
+                else if (geom is ILineString)
                 {
-                    TaggedLineString taggedLine = new TaggedLineString((ILineString) geom, 2);
+                    TaggedLineString taggedLine = new TaggedLineString((ILineString)geom, 2);
                     container.lineStringMap.Add(geom, taggedLine);
                 }
             }

@@ -272,7 +272,7 @@ namespace RTools_NTS.Util
 		/// <returns>The new object, or null for error.</returns>
 		public Object ConvertToType(Type t)
 		{
-            return Convert.ChangeType(StringValue, t);			
+            return Convert.ChangeType(StringValue, t, CultureInfo.InvariantCulture);			
 		}
 
 		#endregion

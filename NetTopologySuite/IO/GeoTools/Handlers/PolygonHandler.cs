@@ -1,9 +1,14 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Utilities;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.IO.Handlers
 {
@@ -29,7 +34,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
         public override IGeometry Read(BigEndianBinaryReader file, IGeometryFactory geometryFactory)
         {
             int shapeTypeNum = file.ReadInt32();
-            type = (ShapeGeometryType) Enum.Parse(typeof(ShapeGeometryType), shapeTypeNum.ToString());
+            type = (ShapeGeometryType) EnumUtility.Parse(typeof(ShapeGeometryType), shapeTypeNum.ToString());
             if (type == ShapeGeometryType.NullShape)
                 return geometryFactory.CreatePolygon(null, null);
 
@@ -143,7 +148,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
             IPolygon[] polygons = new IPolygon[shells.Count];
             for (int i = 0; i < shells.Count; i++)
                 polygons[i] = (geometryFactory.CreatePolygon((ILinearRing) shells[i], 
-                    (ILinearRing[]) ((ArrayList) holesForShells[i]).ToArray(typeof(ILinearRing))));
+                    (ILinearRing[]) ((ArrayList) holesForShells[i]).Cast<ILinearRing>().ToArray()));
 
             if (polygons.Length == 1)
                  geom = polygons[0];
@@ -173,7 +178,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.Handlers
                 multi = gf.CreateMultiPolygon(new IPolygon[] { (IPolygon) geometry, } );
             }
 
-            file.Write(int.Parse(Enum.Format(typeof(ShapeGeometryType), ShapeType, "d")));
+            file.Write(int.Parse(EnumUtility.Format(typeof(ShapeGeometryType), ShapeType, "d")));
 
             IEnvelope box = multi.EnvelopeInternal;
             IEnvelope bounds = GetEnvelopeExternal(geometryFactory.PrecisionModel,  box);
