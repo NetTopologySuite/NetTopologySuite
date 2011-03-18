@@ -1,16 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Data
 {
-    public interface IMemoryRecordSet : IList<IRecord>
-    {
-        ISchema Schema { get; }
-
-    }
-
     public class MemoryRecordSet : IMemoryRecordSet
     {
         private readonly List<IRecord> _records;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.IO.IsolatedStorage;
+using GeoAPI.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.IO
 {
@@ -16,15 +17,21 @@ namespace GisSharpBlog.NetTopologySuite.IO
             }
         }
 
-        public Stream GetStream(string filePath)
+        private Stream GetStream(string filePath)
         {
             return IsolatedStorageFile.OpenFile(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+        }
+
+        public IGeometryCollection ReadRawStream(Stream stream)
+        {
+            return Read(stream);
         }
 
         public void Dispose()
         {
             Dispose(true);
         }
+
         private bool IsDisposed
         {
             get;
@@ -36,8 +43,12 @@ namespace GisSharpBlog.NetTopologySuite.IO
             if (IsDisposed)
                 return;
             IsDisposed = true;
+            
             if (disposing)
-                _file.Dispose();
+            {
+                if (_file != null)
+                    _file.Dispose();
+            }
 
         }
         ~MyShapeFileReader()

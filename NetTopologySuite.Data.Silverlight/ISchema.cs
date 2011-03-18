@@ -5,6 +5,11 @@ namespace GisSharpBlog.NetTopologySuite.Data
 {
     public interface ISchema : IEquatable<ISchema>
     {
+        
+        IPropertyInfo this[int index]{ get;}
+        IPropertyInfo this[string propertyName] { get; }
+        ISchemaFactory SchemaFactory { get; }
+
         ReadOnlyCollection<IPropertyInfo> Properties { get; }
         IPropertyInfo IdProperty { get; }
 

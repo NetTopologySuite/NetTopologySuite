@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace GisSharpBlog.NetTopologySuite.Data
 {
-    internal class ValueFactory : IValueFactory
+    public class ValueFactory : IValueFactory
     {
         private static readonly Dictionary<Type, Func<object, IValue>> _innerFactories =
             new Dictionary<Type, Func<object, IValue>>();
@@ -30,7 +30,15 @@ namespace GisSharpBlog.NetTopologySuite.Data
 
         public IValue<T> CreateValue<T>(object value)
         {
-            return CreateValue((T) Convert.ChangeType(value, typeof (T), CultureInfo.InvariantCulture));
+
+            Type valueType = value.GetType();
+
+            ICustomConverter converter;
+
+            if (CustomConverters.TryGetValue(Tuple.Create(valueType, typeof(T)), out converter))
+                return CreateValue((T)converter.Convert(value));
+
+            return CreateValue((T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture));
         }
 
         public IValue<T> CreateValue<T>(T value)
@@ -43,22 +51,41 @@ namespace GisSharpBlog.NetTopologySuite.Data
         private Func<object, IValue> CreateDelegate(Type targetType)
         {
             MethodInfo mif =
-                typeof (ValueFactory).GetMethods(BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.Public)
+                typeof(ValueFactory).GetMethods(BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.Public)
                     .Where(
                         a =>
                         a.Name == "CreateValue"
                         && a.GetGenericArguments().Length == 1
-                        && a.GetParameters()[0].ParameterType == typeof (object)).FirstOrDefault();
+                        && a.GetParameters()[0].ParameterType == typeof(object)).FirstOrDefault();
 
             if (mif == null)
                 throw new MissingMemberException();
 
             mif = mif.MakeGenericMethod(targetType);
 
-            ParameterExpression pex = Expression.Parameter(typeof (object));
-            ConstantExpression instance = Expression.Constant(this, typeof (ValueFactory));
+            ParameterExpression pex = Expression.Parameter(typeof(object));
+            ConstantExpression instance = Expression.Constant(this, typeof(ValueFactory));
 
             return Expression.Lambda<Func<object, IValue>>(Expression.Call(instance, mif, pex), pex).Compile();
+        }
+
+        private readonly IDictionary<Tuple<Type, Type>, ICustomConverter> _customConverters 
+            = new Dictionary<Tuple<Type, Type>, ICustomConverter>();
+        
+        protected IDictionary<Tuple<Type, Type>, ICustomConverter> CustomConverters
+        {
+            get { return _customConverters; }
+        }
+
+
+        public bool HasConverter(Type from, Type to)
+        {
+            return _customConverters.ContainsKey(Tuple.Create(from, to));
+        }
+
+        public void AddConverter(ICustomConverter converter)
+        {
+            _customConverters.Add(Tuple.Create(converter.SourceType, converter.TargetType), converter);
         }
     }
 }

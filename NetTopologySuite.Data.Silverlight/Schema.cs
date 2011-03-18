@@ -13,8 +13,9 @@ namespace GisSharpBlog.NetTopologySuite.Data
         private readonly IRecordFactory _recordFactory;
 
 
-        internal Schema(IEnumerable<IPropertyInfo> properties, IPropertyInfo idProperty)
+        internal Schema(ISchemaFactory schemaFactory, IEnumerable<IPropertyInfo> properties, IPropertyInfo idProperty)
         {
+            SchemaFactory = schemaFactory;
             _properties = new ReadOnlyCollection<IPropertyInfo>(properties.ToList());
             _idProperty = idProperty;
             _recordFactory = new RecordFactory(this);
@@ -127,6 +128,21 @@ namespace GisSharpBlog.NetTopologySuite.Data
         public static bool operator !=(Schema left, Schema right)
         {
             return !Equals(left, right);
+        }
+
+        public ISchemaFactory SchemaFactory
+        {
+            get; private set;
+        }
+
+        public IPropertyInfo this[int index]
+        {
+            get { return _properties[index]; }
+        }
+
+        public IPropertyInfo this[string propertyName]
+        {
+            get { return _properties[_nameIndexMap[propertyName]]; }
         }
     }
 }

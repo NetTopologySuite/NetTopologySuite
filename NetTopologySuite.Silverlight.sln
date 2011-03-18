@@ -82,11 +82,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySute.TestRunner.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Tests.Vivid.XUnit", "NetTopologySuite.Tests.Vivid.XUnit\NetTopologySuite.Tests.Vivid.XUnit.csproj", "{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Data.Silverlight", "NetTopologySuite.Data.Silverlight\NetTopologySuite.Data.Silverlight.csproj", "{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}"
+EndProject
 Global
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
-	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = NetTopologySuite.vsmdi
 	EndGlobalSection
@@ -138,6 +136,12 @@ Global
 		{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Bug|Any CPU.ActiveCfg = Release|Any CPU
+		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Bug|Any CPU.Build.0 = Release|Any CPU
+		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -151,5 +155,9 @@ Global
 		{13669184-2446-404F-8894-5E20B6C3FCC6} = {7404154C-D788-443D-BD16-AC16F7858250}
 		{85945EF0-2BD4-42C1-A934-C3485FCE9021} = {7404154C-D788-443D-BD16-AC16F7858250}
 		{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8} = {7404154C-D788-443D-BD16-AC16F7858250}
+	EndGlobalSection
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 EndGlobal

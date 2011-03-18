@@ -54,7 +54,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
             {
                 return Read(stream);
             }
-        }        
+        }
+
 
         /// <summary>
         /// Reads a generic stream containing geographic data saved as shapefile structure, 

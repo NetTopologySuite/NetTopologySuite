@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace GisSharpBlog.NetTopologySuite.Data
@@ -36,14 +37,14 @@ namespace GisSharpBlog.NetTopologySuite.Data
             return _values[_schema.Property(name)];
         }
 
-        public IValue<T> GetValue<T>(int index)
+        public T GetValue<T>(int index)
         {
-            return (IValue<T>) GetValue(index);
+            return ((IValue<T>)GetValue(index)).Value;
         }
 
-        public IValue<T> GetValue<T>(string name)
+        public T GetValue<T>(string name)
         {
-            return (IValue<T>) GetValue(name);
+            return ((IValue<T>)GetValue(name)).Value;
         }
 
         public IEnumerator<KeyValuePair<IPropertyInfo, IValue>> GetEnumerator()
@@ -61,9 +62,12 @@ namespace GisSharpBlog.NetTopologySuite.Data
             return _values[propertyInfo];
         }
 
-        public IValue<T> GetValue<T>(IPropertyInfo propertyInfo)
+        public T GetValue<T>(IPropertyInfo propertyInfo)
         {
-            return (IValue<T>) GetValue(propertyInfo);
+            if (!(propertyInfo is IPropertyInfo<T>))
+                throw new ArgumentException();
+
+            return ((IValue<T>)GetValue(propertyInfo)).Value;
         }
 
         public IValue this[int index]
@@ -82,5 +86,17 @@ namespace GisSharpBlog.NetTopologySuite.Data
         }
 
         #endregion
+
+
+
+        public T GetId<T>()
+        {
+            return ((IValue<T>)Id).Value;
+        }
+
+        public IValue GetId()
+        {
+            return Id;
+        }
     }
 }

@@ -10,7 +10,26 @@ namespace GisSharpBlog.NetTopologySuite.IO
 {
     public partial class ShapefileDataReader : IRecordSource
     {
-        private readonly ValueFactory _valueFactory = new ValueFactory();
+        public ShapefileDataReader(ISchemaFactory schemaFactory)
+        {
+            SchemaFactory = schemaFactory;
+
+        }
+
+        protected ISchemaFactory SchemaFactory
+        {
+            get;
+            set;
+        }
+
+        protected IValueFactory ValueFactory
+        {
+            get
+            {
+                return SchemaFactory.PropertyFactory.ValueFactory;
+            }
+        }
+
         private List<object> _columnValues;
 
         private ISchema _schema;
@@ -46,10 +65,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
 
         private ISchema CreateSchema()
         {
-            var props = new List<IPropertyInfo> {new PropertyInfo("Geom", typeof (IGeometry))};
-            props.AddRange(_dbfHeader.Fields.Select(a => (IPropertyInfo) new PropertyInfo(a.Name, a.Type)));
+            var props = new List<IPropertyInfo> { SchemaFactory.PropertyFactory.Create<IGeometry>("Geom") };
+            props.AddRange(_dbfHeader.Fields.Select(a => SchemaFactory.PropertyFactory.Create(a.Type, a.Name)));
 
-            return new Schema(props, props.FirstOrDefault(a => a.Name == "OID"));
+            return SchemaFactory.Create(props, props.FirstOrDefault(a => a.Name == "OID"));
         }
 
         /// <summary>
@@ -74,10 +93,10 @@ namespace GisSharpBlog.NetTopologySuite.IO
             _moreRecords = moreDbfRecords && moreShpRecords;
 
             // get current shape 
-            geometry = (IGeometry) _shpEnumerator.Current;
+            geometry = (IGeometry)_shpEnumerator.Current;
 
             // get current dbase record
-            _columnValues = (List<object>) _dbfEnumerator.Current;
+            _columnValues = (List<object>)_dbfEnumerator.Current;
 
             return _moreRecords; // moreDbfRecords && moreShpRecords;
         }
@@ -103,14 +122,13 @@ namespace GisSharpBlog.NetTopologySuite.IO
                                      {
                                          {
                                              _shapefileDataReader.Schema.Properties[0],
-                                             _shapefileDataReader._valueFactory
-                                             .CreateValue((IGeometry) _shapefileDataReader._shpEnumerator.Current)
+                                            _shapefileDataReader.ValueFactory.CreateValue((IGeometry) _shapefileDataReader._shpEnumerator.Current)
                                              }
                                      };
 
                     for (int i = 1; i < _shapefileDataReader.Schema.Properties.Count; i++)
                         values.Add(_shapefileDataReader.Schema.Properties[i],
-                                   _shapefileDataReader._valueFactory.CreateValue(
+                                   _shapefileDataReader.ValueFactory.CreateValue(
                                        _shapefileDataReader.Schema.Properties[i].PropertyType,
                                        _shapefileDataReader._columnValues[i - 1]));
 

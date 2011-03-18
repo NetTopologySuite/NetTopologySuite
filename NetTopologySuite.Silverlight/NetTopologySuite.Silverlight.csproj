@@ -160,22 +160,6 @@
     <Compile Include="..\NetTopologySuite\Utilities\PlatformUtilityEx.cs">
       <Link>Utilities\PlatformUtilityEx.cs</Link>
     </Compile>
-    <Compile Include="Data\IMemoryRecordSet.cs" />
-    <Compile Include="Data\IPropertyInfo.cs" />
-    <Compile Include="Data\IRecordSource.cs" />
-    <Compile Include="Data\IRecordFactory.cs" />
-    <Compile Include="Data\IRecord.cs" />
-    <Compile Include="Data\ISchema.cs" />
-    <Compile Include="Data\ISchemaFactory.cs" />
-    <Compile Include="Data\IValue.cs" />
-    <Compile Include="Data\IValueFactory.cs" />
-    <Compile Include="Data\PropertyInfo.cs" />
-    <Compile Include="Data\Record.cs" />
-    <Compile Include="Data\RecordFactory.cs" />
-    <Compile Include="Data\Schema.cs" />
-    <Compile Include="Data\SchemaMismatchException.cs" />
-    <Compile Include="Data\Value.cs" />
-    <Compile Include="Data\ValueFactory.cs" />
     <Compile Include="FrameworkReplacements\Trace.cs" />
     <Compile Include="..\NetTopologySuite\Geometries\Coordinate.cs">
       <SubType>Code</SubType>
@@ -981,8 +965,8 @@
     <Compile Include="IO\GeoTools\ShapefileDataReader.SL.cs" />
     <Compile Include="IO\GeoTools\SLShapeFileDataEnumerator.cs" />
     <Compile Include="IO\GeoTools\ShapefileReader.SL.cs" />
+    <Compile Include="IO\GeoTools\StringToGeometryConverter.cs" />
     <Compile Include="IO\MyShapeFileReader.SL.cs" />
-    <Compile Include="ModuleAttributes.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\NetTopologySuite\License.txt">
@@ -1005,6 +989,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetTopologySuite.Data.Silverlight\NetTopologySuite.Data.Silverlight.csproj">
+      <Project>{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}</Project>
+      <Name>NetTopologySuite.Data.Silverlight</Name>
+    </ProjectReference>
   </ItemGroup>
   <!-- <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

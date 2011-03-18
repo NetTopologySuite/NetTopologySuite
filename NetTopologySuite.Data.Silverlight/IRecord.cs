@@ -7,13 +7,14 @@ namespace GisSharpBlog.NetTopologySuite.Data
         IValue this[int index] { get; }
         IValue this[string propertyName] { get; }
         IValue this[IPropertyInfo propertyInfo] { get; }
-        IValue Id { get; }
         ISchema Schema { get; }
         IValue GetValue(int index);
         IValue GetValue(string name);
-        IValue<T> GetValue<T>(int index);
-        IValue<T> GetValue<T>(string name);
         IValue GetValue(IPropertyInfo propertyInfo);
-        IValue<T> GetValue<T>(IPropertyInfo propertyInfo);
+        T GetValue<T>(int index);
+        T GetValue<T>(string name);
+        T GetValue<T>(IPropertyInfo propertyInfo);
+        T GetId<T>();
+        IValue GetId();
     }
 }
