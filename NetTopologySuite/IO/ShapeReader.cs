@@ -1,10 +1,14 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
-
+using GisSharpBlog.NetTopologySuite.Utilities;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 namespace GisSharpBlog.NetTopologySuite.IO
 {
     /// <summary>
@@ -359,7 +363,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns></returns>
         public IGeometryCollection CreateGeometryCollection(IList list)
         {            
-            IGeometry[] geometries = (IGeometry[]) (new ArrayList(list).ToArray(typeof(IGeometry)));
+            IGeometry[] geometries = (IGeometry[]) (new ArrayList(list.CastPlatform()).Cast<IGeometry>().ToArray());
             return Factory.CreateGeometryCollection(geometries);
         }
     }

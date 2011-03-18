@@ -253,6 +253,7 @@
     <Compile Include="IO\MsSqlSpatialWriter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IO\MyShapeFileReader.FullFat.cs" />
     <Compile Include="IO\PostGisGeometryType.cs" />
     <Compile Include="IO\PostGisReader.cs" />
     <Compile Include="IO\PostGisWriter.cs" />

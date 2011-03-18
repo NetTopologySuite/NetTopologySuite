@@ -4,6 +4,10 @@ using System.Diagnostics;
 using System.IO;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
+using GisSharpBlog.NetTopologySuite.Utilities;
+#if SILVERLIGHT
+using ArrayList = System.Collections.Generic.List<object>;
+#endif
 
 namespace GisSharpBlog.NetTopologySuite.IO
 {
@@ -11,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
     ///  A class for reading shapefiles data.
     /// </summary>
     [Obsolete("Use ShapefileReader instead")]
-    public class MyShapeFileReader
+    public partial class MyShapeFileReader
     {
         private int length = 0;
 
@@ -46,7 +50,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns><c>GeometryCollection</c> containing all geometries in shapefile.</returns>
         public IGeometryCollection Read(string filepath)
         {
-            using (Stream stream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (Stream stream = GetStream(filepath))
             {
                 return Read(stream);
             }
@@ -89,28 +93,28 @@ namespace GisSharpBlog.NetTopologySuite.IO
                         case ShapeGeometryType.PointZ:
                         case ShapeGeometryType.PointM:
                         case ShapeGeometryType.PointZM:
-                            list = new ArrayList(ReadPointData(stream));
+                            list = new ArrayList(ReadPointData(stream).CastPlatform());
                             break;
 
                         case ShapeGeometryType.LineString:
                         case ShapeGeometryType.LineStringZ:
                         case ShapeGeometryType.LineStringM:
                         case ShapeGeometryType.LineStringZM:
-                            list = new ArrayList(ReadLineStringData(stream));
+                            list = new ArrayList(ReadLineStringData(stream).CastPlatform());
                             break;
 
                         case ShapeGeometryType.Polygon:
                         case ShapeGeometryType.PolygonZ:
                         case ShapeGeometryType.PolygonM:
                         case ShapeGeometryType.PolygonZM:
-                            list = new ArrayList(ReadPolygonData(stream));
+                            list = new ArrayList(ReadPolygonData(stream).CastPlatform());
                             break;
 
                         case ShapeGeometryType.MultiPoint:
                         case ShapeGeometryType.MultiPointZ:
                         case ShapeGeometryType.MultiPointM:
                         case ShapeGeometryType.MultiPointZM:
-                            list = new ArrayList(ReadMultiPointData(stream));
+                            list = new ArrayList(ReadMultiPointData(stream).CastPlatform());
                             break;
 
                         case ShapeGeometryType.MultiPatch:

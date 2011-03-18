@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO.IsolatedStorage;
 using System.Resources;
 using System.Windows;
+using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Data;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
@@ -55,6 +57,7 @@ namespace NetTopologySuite.Silverlight.Test
             EnsureFile("world.shx", "world.shx");
         }
 
+        [Ignore]
         [TestMethod]
         public void TestShapefile()
         {
@@ -64,6 +67,21 @@ namespace NetTopologySuite.Silverlight.Test
                 Shapefile.CreateDataReader(@"world.shp", new GeometryFactory()).ToInMemorySet();
 
             memoryRecordSet.Where(a => a.GetValue<int>(a.Schema.IdProperty).Value == 1);
+        }
+
+        [TestMethod]
+        public void TestMyShapeReader()
+        {
+            EnsureFilesExistInIsolatedStorage();
+            using (MyShapeFileReader msfr = new MyShapeFileReader())
+            {
+                IGeometryCollection geoms = msfr.Read("world.shp");
+
+                foreach (var geom in geoms.Geometries)
+                {
+                    Debug.WriteLine(geom.ToString());
+                }
+            }
         }
     }
 }

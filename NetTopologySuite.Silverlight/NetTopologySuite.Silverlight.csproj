@@ -139,6 +139,18 @@
     <Compile Include="..\NetTopologySuite\Features\IAttributesTable.cs">
       <Link>Features\IAttributesTable.cs</Link>
     </Compile>
+    <Compile Include="..\NetTopologySuite\IO\MyShapeFileReader.cs">
+      <Link>IO\MyShapeFileReader.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\IO\MyShapeFileWriter.cs">
+      <Link>IO\MyShapeFileWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\IO\ShapeReader.cs">
+      <Link>IO\ShapeReader.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\IO\ShapeWriter.cs">
+      <Link>IO\ShapeWriter.cs</Link>
+    </Compile>
     <Compile Include="..\NetTopologySuite\Utilities\EnumUtility.cs">
       <Link>Utilities\EnumUtility.cs</Link>
     </Compile>
@@ -968,7 +980,8 @@
     <Compile Include="IO\GeoTools\Dbase\DbaseFileReader.SL.cs" />
     <Compile Include="IO\GeoTools\ShapefileDataReader.SL.cs" />
     <Compile Include="IO\GeoTools\SLShapeFileDataEnumerator.cs" />
-    <Compile Include="IO\ShapefileReader.SL.cs" />
+    <Compile Include="IO\GeoTools\ShapefileReader.SL.cs" />
+    <Compile Include="IO\MyShapeFileReader.SL.cs" />
     <Compile Include="ModuleAttributes.cs" />
   </ItemGroup>
   <ItemGroup>
