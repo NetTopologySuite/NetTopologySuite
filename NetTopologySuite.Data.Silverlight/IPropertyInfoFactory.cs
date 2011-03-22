@@ -2,7 +2,7 @@
 
 namespace GisSharpBlog.NetTopologySuite.Data
 {
-    public interface IPropertyInfoFactory
+    public interface IPropertyInfoFactory :IEquatable<IPropertyInfoFactory>
     {
         IValueFactory ValueFactory { get; }
 

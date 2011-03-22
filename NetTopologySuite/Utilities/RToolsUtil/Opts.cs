@@ -29,8 +29,8 @@ using System.Collections.Generic;
 using System.Text;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
-using Hashtable = System.Collections.Generic.Dictionary<string, object>;
-using DictionaryEntry = System.Collections.Generic.KeyValuePair<string, object>;
+using Hashtable = System.Collections.Generic.Dictionary<object, object>;
+using DictionaryEntry = System.Collections.Generic.KeyValuePair<object, object>;
 #endif
 namespace RTools_NTS.Util
 {

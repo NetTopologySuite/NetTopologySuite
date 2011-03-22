@@ -8,18 +8,18 @@ namespace GisSharpBlog.NetTopologySuite.Data
 {
     public class PropertyInfoFactory : IPropertyInfoFactory
     {
+        private static readonly Dictionary<Type, Func<string, IPropertyInfo>> _innerFactories =
+            new Dictionary<Type, Func<string, IPropertyInfo>>();
 
         public PropertyInfoFactory()
             : this(new ValueFactory())
-        { }
+        {
+        }
 
         public PropertyInfoFactory(IValueFactory valueFactory)
         {
             ValueFactory = valueFactory;
         }
-
-        private static readonly Dictionary<Type, Func<string, IPropertyInfo>> _innerFactories =
-            new Dictionary<Type, Func<string, IPropertyInfo>>();
 
         #region IPropertyInfoFactory Members
 
@@ -28,9 +28,23 @@ namespace GisSharpBlog.NetTopologySuite.Data
             return GetInnerFactory(propertyType)(name);
         }
 
+        public IPropertyInfo<TProperty> Create<TProperty>(string name)
+        {
+            if (typeof(TProperty) == typeof(string))
+                return (IPropertyInfo<TProperty>)new StringPropertyInfo(this, name);
+
+            if (typeof(TProperty) == typeof(Decimal))
+                return (IPropertyInfo<TProperty>)new DecimalPropertyInfo(this, name);
+
+            return new PropertyInfo<TProperty>(this, name);
+        }
+
+        public IValueFactory ValueFactory { get; private set; }
+
+        #endregion
+
         private Func<string, IPropertyInfo> GetInnerFactory(Type propertyType)
         {
-
             Func<string, IPropertyInfo> factory;
 
             if (!_innerFactories.TryGetValue(propertyType, out factory))
@@ -57,20 +71,20 @@ namespace GisSharpBlog.NetTopologySuite.Data
 
             return Expression.Lambda<Func<string, IPropertyInfo>>(
                 Expression.Call(self, memberInfo, pex), pex).Compile();
-
         }
 
-        public IPropertyInfo<TProperty> Create<TProperty>(string name)
+        public bool Equals(IPropertyInfoFactory other)
         {
-            return new PropertyInfo<TProperty>(this, name);
-        }
+            if (other == null)
+                return false;
 
-        #endregion
+            if (ReferenceEquals(this, other))
+                return true;
 
-        public IValueFactory ValueFactory
-        {
-            get;
-            private set;
+            if (other is PropertyInfoFactory)
+                return true;
+
+            return false;
         }
     }
 }

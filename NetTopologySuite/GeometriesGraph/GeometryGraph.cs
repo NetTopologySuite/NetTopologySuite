@@ -7,7 +7,7 @@ using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
 using GisSharpBlog.NetTopologySuite.Utilities;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
-using Hashtable = System.Collections.Generic.Dictionary<string, object>;
+using Hashtable = System.Collections.Generic.Dictionary<object, object>;
 #endif
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph

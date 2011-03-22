@@ -8,6 +8,7 @@ using GisSharpBlog.NetTopologySuite.Data;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.IO.GeoTools;
+using GisSharpBlog.NetTopologySuite.Shapefile;
 using Microsoft.Silverlight.Testing.UnitTesting.Metadata.VisualStudio;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
@@ -79,11 +80,25 @@ namespace NetTopologySuite.Silverlight.Test
 
             IGeometry geometry = new WKTReader().Read(_testPolygon);
 
-            memoryRecordSet.Where(a => a.GetId<int>() == 1 
+            memoryRecordSet.Where(a => a.GetId<uint>() == 1
                 && a.GetValue<IGeometry>("Geom").Intersects(geometry));
 
         }
 
+
+        [TestMethod]
+        public void TestShapefileProvider()
+        {
+            EnsureFilesExistInIsolatedStorage();
+            ShapeFileProvider spf = new ShapeFileProvider("world.shp", new GeometryFactory(), new IsolatedStorageManager(), new SchemaFactory(new PropertyInfoFactory(new ValueFactory())));
+            spf.Open();
+            foreach (var v in spf.GetAllFeatues())
+            {
+                Debug.WriteLine(v.ToString());
+            }
+
+        }
+        [Ignore]
         [TestMethod]
         public void TestMyShapeReader()
         {

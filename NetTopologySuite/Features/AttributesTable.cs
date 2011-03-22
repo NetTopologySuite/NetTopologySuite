@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 #if SILVERLIGHT
-using Hashtable = System.Collections.Generic.Dictionary<string, object>;
+using Hashtable = System.Collections.Generic.Dictionary<object, object>;
 #endif
 
 namespace GisSharpBlog.NetTopologySuite.Features

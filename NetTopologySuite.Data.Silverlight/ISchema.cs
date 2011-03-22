@@ -5,8 +5,8 @@ namespace GisSharpBlog.NetTopologySuite.Data
 {
     public interface ISchema : IEquatable<ISchema>
     {
-        
-        IPropertyInfo this[int index]{ get;}
+
+        IPropertyInfo this[int index] { get; }
         IPropertyInfo this[string propertyName] { get; }
         ISchemaFactory SchemaFactory { get; }
 
@@ -23,5 +23,6 @@ namespace GisSharpBlog.NetTopologySuite.Data
         IPropertyInfo Property(string name);
 
         bool HasIdProperty { get; }
+        bool ContainsProperty(IPropertyInfo propertyInfo);
     }
 }

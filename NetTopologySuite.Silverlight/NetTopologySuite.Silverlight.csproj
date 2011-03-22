@@ -160,6 +160,8 @@
     <Compile Include="..\NetTopologySuite\Utilities\PlatformUtilityEx.cs">
       <Link>Utilities\PlatformUtilityEx.cs</Link>
     </Compile>
+    <Compile Include="Extension\ICoordinateEx.cs" />
+    <Compile Include="Extension\IEnvelopeEx.cs" />
     <Compile Include="FrameworkReplacements\Trace.cs" />
     <Compile Include="..\NetTopologySuite\Geometries\Coordinate.cs">
       <SubType>Code</SubType>

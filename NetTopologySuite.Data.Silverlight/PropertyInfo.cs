@@ -76,7 +76,8 @@ namespace GisSharpBlog.NetTopologySuite.Data
             if (ReferenceEquals(this, other))
                 return true;
 
-            return Name == other.Name;
+            return Name == other.Name
+                && Factory.Equals(other.Factory);
         }
 
         public IValue<T> CreateValue(T value)
@@ -92,6 +93,12 @@ namespace GisSharpBlog.NetTopologySuite.Data
         public IPropertyInfoFactory Factory
         {
             get { return _factory; }
+        }
+
+
+        IValue IPropertyInfo.CreateValue(object value)
+        {
+            return CreateValue(value);
         }
     }
 }

@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomConverterBase.cs" />
+    <Compile Include="DecimalPropertyInfo.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="IMemoryRecordSet.cs" />
     <Compile Include="IPropertyInfo.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Schema.cs" />
     <Compile Include="SchemaFactory.cs" />
     <Compile Include="SchemaMismatchException.cs" />
+    <Compile Include="StringPropertyInfo.cs" />
     <Compile Include="Value.cs" />
     <Compile Include="ValueFactory.cs" />
   </ItemGroup>

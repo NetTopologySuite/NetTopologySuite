@@ -15,12 +15,12 @@ namespace GisSharpBlog.NetTopologySuite.Data
             _values = values;
         }
 
-        #region IRecord Members
-
         public IValue Id
         {
             get { return _values[_schema.IdProperty]; }
         }
+
+        #region IRecord Members
 
         public ISchema Schema
         {
@@ -73,21 +73,37 @@ namespace GisSharpBlog.NetTopologySuite.Data
         public IValue this[int index]
         {
             get { return GetValue(index); }
+            set { SetValue(index, value); }
+        }
+
+        public void SetValue(int index, IValue value)
+        {
+            SetValue(_schema.Property(index), value);
         }
 
         public IValue this[string propertyName]
         {
             get { return GetValue(propertyName); }
+            set { SetValue(propertyName, value); }
+        }
+
+        public void SetValue(string propertyName, IValue value)
+        {
+            SetValue(_schema.Property(propertyName), value);
         }
 
         public IValue this[IPropertyInfo propertyInfo]
         {
             get { return GetValue(propertyInfo); }
+            set { SetValue(propertyInfo, value); }
         }
 
-        #endregion
-
-
+        public void SetValue(IPropertyInfo propertyInfo, IValue value)
+        {
+            if (value.Type != propertyInfo.PropertyType)
+                throw new ArgumentException();
+            _values[propertyInfo] = value;
+        }
 
         public T GetId<T>()
         {
@@ -97,6 +113,61 @@ namespace GisSharpBlog.NetTopologySuite.Data
         public IValue GetId()
         {
             return Id;
+        }
+
+
+        public void SetValue<T>(IPropertyInfo<T> propertyInfo, IValue<T> value)
+        {
+            if (!_schema.ContainsProperty(propertyInfo))
+                throw new ArgumentException();
+
+            _values[propertyInfo] = value;
+        }
+
+
+        public bool IsUnset(int index)
+        {
+            return IsUnset(Schema.Property(index));
+        }
+
+        #endregion
+
+        public bool IsUnset(string propertyName)
+        {
+            return IsUnset(Schema.Property(propertyName));
+        }
+
+        public bool IsUnset(IPropertyInfo propertyInfo)
+        {
+            if (!_values.ContainsKey(propertyInfo))
+                return true;
+
+            return _values[propertyInfo] == null;
+        }
+
+
+        public void SetValue(int index, object value)
+        {
+            SetValue(Schema.Property(index), value);
+        }
+
+        public void SetValue(string name, object value)
+        {
+            SetValue(Schema.Property(name), value);
+        }
+
+        public void SetValue(IPropertyInfo propertyInfo, object value)
+        {
+            if (!_schema.ContainsProperty(propertyInfo))
+                throw new ArgumentException("propertyInfo");
+            _values[propertyInfo] = propertyInfo.CreateValue(value);
+        }
+
+        public void SetValue<T>(IPropertyInfo<T> propertyInfo, T value)
+        {
+            if (!Schema.ContainsProperty(propertyInfo))
+                throw new ArgumentException("propertyInfo");
+            _values[propertyInfo] = propertyInfo.CreateValue(value);
         }
     }
 }

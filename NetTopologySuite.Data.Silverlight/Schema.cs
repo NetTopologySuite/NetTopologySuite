@@ -132,7 +132,8 @@ namespace GisSharpBlog.NetTopologySuite.Data
 
         public ISchemaFactory SchemaFactory
         {
-            get; private set;
+            get;
+            private set;
         }
 
         public IPropertyInfo this[int index]
@@ -143,6 +144,12 @@ namespace GisSharpBlog.NetTopologySuite.Data
         public IPropertyInfo this[string propertyName]
         {
             get { return _properties[_nameIndexMap[propertyName]]; }
+        }
+
+
+        public bool ContainsProperty(IPropertyInfo propertyInfo)
+        {
+            return _properties.Contains(propertyInfo);
         }
     }
 }
