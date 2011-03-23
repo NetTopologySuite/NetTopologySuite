@@ -1092,7 +1092,7 @@ namespace GisSharpBlog.NetTopologySuite.Shapefile
         /// </exception>
         public IRecord GetFeatureByOid(UInt32 oid)
         {
-            return getFeature(oid, null);
+            return getFeature(oid, _dbaseFile.GetSchemaTable());
         }
 
 
@@ -1145,8 +1145,7 @@ namespace GisSharpBlog.NetTopologySuite.Shapefile
             //jd:modifying so that null query returns all OIDS
 
             if (Equals(query, null))
-                foreach (UInt32 u in getAllOIDs())
-                    yield return u;
+                return getAllOIDs();
             else
             {
 
@@ -1157,13 +1156,7 @@ namespace GisSharpBlog.NetTopologySuite.Shapefile
                                                  ? queryIndex(query)
                                                  : queryData(query);
 
-                IDictionary<UInt32, Object> idsInBounds = null;
-
-
-                foreach (IdBounds idBoundse in keys)
-                {
-                    yield return idBoundse.Id;
-                }
+                return keys.Select(a => a.Id);
 
 
             }
@@ -2105,7 +2098,7 @@ namespace GisSharpBlog.NetTopologySuite.Shapefile
         /// <returns>QuadTree index</returns>
         private ISpatialIndex<IEnvelope, IdBounds> createSpatialIndexFromFile(String filename)
         {
-            if (File.Exists(filename + SharpMapShapeFileIndexFileExtension))
+            if (StorageManager.FileExists(filename + SharpMapShapeFileIndexFileExtension))
             {
                 throw new NotImplementedException();
 

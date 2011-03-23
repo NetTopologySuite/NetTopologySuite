@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("NetTopologySuite.Shapefile.Silverlight")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Shapefile provider back ported from SharpMap v2 with many modifications.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("NetTopologySuite")]
 [assembly: AssemblyProduct("NetTopologySuite.Shapefile.Silverlight")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
+[assembly: AssemblyCopyright("Copyright © NTS Developers 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

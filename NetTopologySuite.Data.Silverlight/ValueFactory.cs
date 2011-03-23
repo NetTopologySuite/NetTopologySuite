@@ -16,20 +16,23 @@ namespace GisSharpBlog.NetTopologySuite.Data
 
         public IValue CreateValue(Type targetType, object value)
         {
-            if (!_innerFactories.ContainsKey(targetType))
+
+            Func<object, IValue> fact;
+            if (!_innerFactories.TryGetValue(targetType, out fact))
             {
                 lock (_innerFactories)
                 {
-                    if (!_innerFactories.ContainsKey(targetType))
-                        _innerFactories.Add(targetType, CreateDelegate(targetType));
+                    fact = CreateDelegate(targetType);
+                    _innerFactories.Add(targetType, fact);
                 }
             }
-
-            return _innerFactories[targetType](value);
+            return fact(value);
         }
 
         public IValue<T> CreateValue<T>(object value)
         {
+            if (value is T)
+                return CreateValue((T)value);
 
             Type valueType = value.GetType();
 
@@ -37,9 +40,6 @@ namespace GisSharpBlog.NetTopologySuite.Data
 
             if (CustomConverters.TryGetValue(Tuple.Create(valueType, typeof(T)), out converter))
                 return CreateValue((T)converter.Convert(value));
-
-            if (value is T)
-                return CreateValue((T)value);
 
             return CreateValue((T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture));
         }

@@ -35,6 +35,35 @@ namespace NetTopologySuite.Silverlight.Test
             Assert.IsInstanceOfType(factory.CreateValue<IGeometry>(_testPolygon), typeof(IValue<IGeometry>));
         }
 
+        [TestMethod]
+        public void CreateManyValuesKnownType()
+        {
+            IValueFactory vf = new ValueFactory();
+            for (int i = 0; i < 1000000; i++)
+            {
+                var v = vf.CreateValue<int>(i);
+            }
+        }
+
+        [TestMethod]
+        public void CreateManyValuesForcedType()
+        {
+            IValueFactory vf = new ValueFactory();
+            for (int i = 0; i < 1000000; i++)
+            {
+                var v = vf.CreateValue(typeof(int), i);
+            }
+        }
+
+        [TestMethod]
+        public void CreateManyValuesConvertedType()
+        {
+            IValueFactory vf = new ValueFactory();
+            for (int i = 0; i < 1000000; i++)
+            {
+                var v = vf.CreateValue(typeof(int), i.ToString());
+            }
+        }
 
         void EnsureFile(string fileName, string sourceUri)
         {
@@ -106,7 +135,7 @@ namespace NetTopologySuite.Silverlight.Test
 
 
         [TestMethod]
-        public void GetRecordByOID()
+        public void GetRecordByOID1()
         {
             Debug.WriteLine("**************GetRecordByOID******************");
 
@@ -114,7 +143,9 @@ namespace NetTopologySuite.Silverlight.Test
             using (ShapeFileProvider spf = new ShapeFileProvider("world.shp", new GeometryFactory(), new IsolatedStorageManager(), new SchemaFactory(new PropertyInfoFactory(new ValueFactory()))))
             {
                 spf.Open();
-                Debug.WriteLine(spf.GetAllFeatues().First(a => a.GetId<uint>() == 1));
+                IRecord record = spf.GetAllFeatues().First(a => a.GetId<uint>() == 1);
+                Debug.WriteLine(record);
+                Assert.AreEqual(record.GetId<uint>(), (uint)1);
             }
             Debug.WriteLine("**************End GetRecordByOID******************");
 
@@ -129,17 +160,45 @@ namespace NetTopologySuite.Silverlight.Test
             IGeometry geometry = new WKTReader().Read(_testPolygon);
 
             EnsureFilesExistInIsolatedStorage();
-            using (ShapeFileProvider spf = new ShapeFileProvider("world.shp", new GeometryFactory(), new IsolatedStorageManager(), new SchemaFactory(new PropertyInfoFactory(new ValueFactory()))))
+            using (ShapeFileProvider spf = new ShapeFileProvider("world.shp",
+                                                                new GeometryFactory(),
+                                                                new IsolatedStorageManager(),
+                                                                new SchemaFactory(
+                                                                        new PropertyInfoFactory(
+                                                                                new ValueFactory()))))
             {
                 spf.Open();
-                spf.GetAllFeatues().Where(a => a.GetValue<IGeometry>("Geom").Intersects(geometry)).ToList().ForEach(a => Debug.WriteLine(a));
+                spf.GetAllFeatues()
+                   .Where(a => a.GetValue<IGeometry>("Geom")
+                   .Intersects(geometry))
+                   .ToList()
+                   .ForEach(a => Debug.WriteLine(a));
             }
 
             Debug.WriteLine("**************End GetRecordbyIntersection******************");
 
         }
 
-        [Ignore]
+        [TestMethod]
+        public void GetRecordByOID2()
+        {
+            Debug.WriteLine("**************GetRecordByOID******************");
+
+            IGeometry geometry = new WKTReader().Read(_testPolygon);
+
+            EnsureFilesExistInIsolatedStorage();
+            using (ShapeFileProvider spf = new ShapeFileProvider("world.shp", new GeometryFactory(), new IsolatedStorageManager(), new SchemaFactory(new PropertyInfoFactory(new ValueFactory()))))
+            {
+                spf.Open();
+                IRecord rec = spf.GetFeatureByOid(3);
+                Debug.WriteLine(rec.ToString());
+                Assert.AreEqual(rec.GetId<uint>(), (uint)3);
+            }
+
+            Debug.WriteLine("**************End GetRecordByOID******************");
+
+        }
+
         [TestMethod]
         public void TestMyShapeReader()
         {
