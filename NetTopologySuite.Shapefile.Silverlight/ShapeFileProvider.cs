@@ -1539,7 +1539,7 @@ namespace GisSharpBlog.NetTopologySuite.Shapefile
             IRecord result = null;
             for (UInt32 i = 1; i <= FeatureCount; i++)
             {
-                result = getFeature(i, null);
+                result = getFeature(i, _dbaseFile.GetSchemaTable());
                 if (result != null)
                     yield return result;
             }
@@ -2014,6 +2014,7 @@ namespace GisSharpBlog.NetTopologySuite.Shapefile
                                                                                             });
 
             featureRecord["Geom"] = table.Property("Geom").CreateValue(readGeometry(oid));
+            featureRecord["OID"] = table.Property("OID").CreateValue(oid);
             dr = featureRecord;
 
 

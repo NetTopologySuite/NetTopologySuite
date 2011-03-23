@@ -89,15 +89,56 @@ namespace NetTopologySuite.Silverlight.Test
         [TestMethod]
         public void TestShapefileProvider()
         {
+
+            Debug.WriteLine("**************TestShapefileProvider******************");
             EnsureFilesExistInIsolatedStorage();
-            ShapeFileProvider spf = new ShapeFileProvider("world.shp", new GeometryFactory(), new IsolatedStorageManager(), new SchemaFactory(new PropertyInfoFactory(new ValueFactory())));
-            spf.Open();
-            foreach (var v in spf.GetAllFeatues())
+            using (ShapeFileProvider spf = new ShapeFileProvider("world.shp", new GeometryFactory(), new IsolatedStorageManager(), new SchemaFactory(new PropertyInfoFactory(new ValueFactory()))))
             {
-                Debug.WriteLine(v.ToString());
+                spf.Open();
+                foreach (var v in spf.GetAllFeatues())
+                {
+                    Debug.WriteLine(v.ToString());
+                }
             }
+            Debug.WriteLine("**************End TestShapefileProvider******************");
 
         }
+
+
+        [TestMethod]
+        public void GetRecordByOID()
+        {
+            Debug.WriteLine("**************GetRecordByOID******************");
+
+            EnsureFilesExistInIsolatedStorage();
+            using (ShapeFileProvider spf = new ShapeFileProvider("world.shp", new GeometryFactory(), new IsolatedStorageManager(), new SchemaFactory(new PropertyInfoFactory(new ValueFactory()))))
+            {
+                spf.Open();
+                Debug.WriteLine(spf.GetAllFeatues().First(a => a.GetId<uint>() == 1));
+            }
+            Debug.WriteLine("**************End GetRecordByOID******************");
+
+        }
+
+
+        [TestMethod]
+        public void GetRecordByIntersection()
+        {
+            Debug.WriteLine("**************GetRecordByIntersection******************");
+
+            IGeometry geometry = new WKTReader().Read(_testPolygon);
+
+            EnsureFilesExistInIsolatedStorage();
+            using (ShapeFileProvider spf = new ShapeFileProvider("world.shp", new GeometryFactory(), new IsolatedStorageManager(), new SchemaFactory(new PropertyInfoFactory(new ValueFactory()))))
+            {
+                spf.Open();
+                spf.GetAllFeatues().Where(a => a.GetValue<IGeometry>("Geom").Intersects(geometry)).ToList().ForEach(a => Debug.WriteLine(a));
+            }
+
+            Debug.WriteLine("**************End GetRecordbyIntersection******************");
+
+        }
+
         [Ignore]
         [TestMethod]
         public void TestMyShapeReader()

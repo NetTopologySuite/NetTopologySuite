@@ -24,5 +24,10 @@ namespace GisSharpBlog.NetTopologySuite.Data
         {
             get { return typeof (T); }
         }
+
+        public override string ToString()
+        {
+            return _value.ToString();
+        }
     }
 }

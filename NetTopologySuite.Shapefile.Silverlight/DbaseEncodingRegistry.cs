@@ -40,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.Shapefile
         /// Specifies which code page to use in a <see cref="TextInfo"/>
         /// instance.
         /// </summary>
-        enum CodePageChoice
+        public enum CodePageChoice
         {
             Custom,
             Oem,
@@ -80,11 +80,11 @@ namespace GisSharpBlog.NetTopologySuite.Shapefile
                         return _encoding;
                     }
 
-                    throw new NotImplementedException();
+                    return  _encodingRegistry.GetEncoding(GlobalizationHelper.GetCodePage(CultureInfo.Name, CodePageChoice));
                     //switch (CodePageChoice)
                     //{
                     //    case CodePageChoice.Ansi:
-                    //        return Encoding.GetEncoding(CultureInfo.TextInfo.ANSICodePage);
+                    //        return
                     //    case CodePageChoice.Mac:
                     //        return Encoding.GetEncoding(CultureInfo.TextInfo.MacCodePage);
                     //    case CodePageChoice.Oem:

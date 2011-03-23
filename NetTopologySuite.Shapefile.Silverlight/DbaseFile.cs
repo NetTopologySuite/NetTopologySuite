@@ -78,7 +78,8 @@ namespace GisSharpBlog.NetTopologySuite.Shapefile
 
         public ISchemaFactory SchemaFactory
         {
-            get; protected set;
+            get;
+            protected set;
         }
 
         #region Dispose Pattern
@@ -362,7 +363,7 @@ namespace GisSharpBlog.NetTopologySuite.Shapefile
         internal ISchema GetSchemaTable()
         {
             checkState();
-            return Header.GetSchemaTable(SchemaFactory);
+            return _baseTable ?? (_baseTable = Header.GetSchemaTable(SchemaFactory));
         }
 
         //internal void SetTableSchema(FeatureDataTable target, SchemaMergeAction mergeAction)

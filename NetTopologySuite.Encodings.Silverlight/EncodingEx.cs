@@ -31,6 +31,11 @@ namespace NetTopologySuite.Encodings
 
         public static int CodePage(this Encoding self)
         {
+            if (self is UTF8Encoding)
+                return 65001;
+
+            return _encodingRegistry.GetCodePage(self);
+
             return Accessor(self);
         }
     }

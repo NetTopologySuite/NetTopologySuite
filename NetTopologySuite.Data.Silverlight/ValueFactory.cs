@@ -38,6 +38,9 @@ namespace GisSharpBlog.NetTopologySuite.Data
             if (CustomConverters.TryGetValue(Tuple.Create(valueType, typeof(T)), out converter))
                 return CreateValue((T)converter.Convert(value));
 
+            if (value is T)
+                return CreateValue((T)value);
+
             return CreateValue((T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture));
         }
 
@@ -69,9 +72,9 @@ namespace GisSharpBlog.NetTopologySuite.Data
             return Expression.Lambda<Func<object, IValue>>(Expression.Call(instance, mif, pex), pex).Compile();
         }
 
-        private readonly IDictionary<Tuple<Type, Type>, ICustomConverter> _customConverters 
+        private readonly IDictionary<Tuple<Type, Type>, ICustomConverter> _customConverters
             = new Dictionary<Tuple<Type, Type>, ICustomConverter>();
-        
+
         protected IDictionary<Tuple<Type, Type>, ICustomConverter> CustomConverters
         {
             get { return _customConverters; }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 
 namespace GisSharpBlog.NetTopologySuite.Data
 {
@@ -100,7 +101,7 @@ namespace GisSharpBlog.NetTopologySuite.Data
 
         public void SetValue(IPropertyInfo propertyInfo, IValue value)
         {
-            if (value.Type != propertyInfo.PropertyType)
+            if (!value.Type.IsAssignableFrom(propertyInfo.PropertyType))
                 throw new ArgumentException();
             _values[propertyInfo] = value;
         }
@@ -168,6 +169,22 @@ namespace GisSharpBlog.NetTopologySuite.Data
             if (!Schema.ContainsProperty(propertyInfo))
                 throw new ArgumentException("propertyInfo");
             _values[propertyInfo] = propertyInfo.CreateValue(value);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(GetType());
+            sb.Append(":: ");
+            foreach (var prop in _schema.Properties)
+            {
+                sb.Append(prop.Name);
+                sb.Append(":");
+                sb.Append(GetValue(prop));
+                sb.Append("; ");
+            }
+
+            return sb.ToString();
         }
     }
 }

@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Data;
 
 namespace GisSharpBlog.NetTopologySuite.Shapefile
@@ -126,7 +127,8 @@ namespace GisSharpBlog.NetTopologySuite.Shapefile
         internal ISchema GetSchemaTable(ISchemaFactory schemaFactory)
         {
             List<IPropertyInfo> propertyInfos = new List<IPropertyInfo>(_dbaseColumns.Count);
-
+            propertyInfos.Add(schemaFactory.PropertyFactory.Create<uint>("OID"));
+            propertyInfos.Add(schemaFactory.PropertyFactory.Create<IGeometry>("Geom"));
             foreach (KeyValuePair<String, DbaseField> entry in _dbaseColumns)
             {
                 DbaseField field = entry.Value;

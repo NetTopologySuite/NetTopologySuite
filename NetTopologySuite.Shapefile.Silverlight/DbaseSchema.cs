@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Data;
 
@@ -61,6 +62,8 @@ namespace GisSharpBlog.NetTopologySuite.Shapefile
         internal static ISchema GetFeatureTableForFields(ISchemaFactory schemaFactory, IEnumerable<DbaseField> dbaseColumns, IGeometryFactory factory)
         {
             List<IPropertyInfo> propertyInfos = new List<IPropertyInfo>();
+            propertyInfos.Add(schemaFactory.PropertyFactory.Create<uint>("OID"));
+            propertyInfos.Add(schemaFactory.PropertyFactory.Create<IGeometry>("Geom"));
             foreach (DbaseField dbf in dbaseColumns)
             {
 
@@ -77,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.Shapefile
                     ((IDecimalPropertyInfo)propertyInfo).Precision = dbf.Decimals;
             }
 
-            return schemaFactory.Create(propertyInfos, null);
+            return schemaFactory.Create(propertyInfos, propertyInfos.First(a => a.Name == "OID"));
         }
 
         internal static Char GetFieldTypeCode(Type type)
