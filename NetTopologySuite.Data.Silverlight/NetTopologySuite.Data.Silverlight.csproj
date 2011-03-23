@@ -47,16 +47,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
-    <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomConverterBase.cs" />
-    <Compile Include="DecimalPropertyInfo.cs" />
+    <Compile Include="ICustomConverter.cs" />
+    <Compile Include="InternalImpl\DecimalPropertyInfo.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="IMemoryRecordSet.cs" />
     <Compile Include="IPropertyInfo.cs" />
@@ -72,14 +69,14 @@
     <Compile Include="ModuleAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyInfoFactory.cs" />
-    <Compile Include="PropertyInfo.cs" />
-    <Compile Include="Record.cs" />
+    <Compile Include="InternalImpl\PropertyInfo.cs" />
+    <Compile Include="InternalImpl\Record.cs" />
     <Compile Include="RecordFactory.cs" />
-    <Compile Include="Schema.cs" />
+    <Compile Include="InternalImpl\Schema.cs" />
     <Compile Include="SchemaFactory.cs" />
     <Compile Include="SchemaMismatchException.cs" />
-    <Compile Include="StringPropertyInfo.cs" />
-    <Compile Include="Value.cs" />
+    <Compile Include="InternalImpl\StringPropertyInfo.cs" />
+    <Compile Include="InternalImpl\Value.cs" />
     <Compile Include="ValueFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />

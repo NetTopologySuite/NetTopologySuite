@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace GisSharpBlog.NetTopologySuite.Data
+namespace GisSharpBlog.NetTopologySuite.Data.InternalImpl
 {
     internal class Schema : ISchema, IEquatable<Schema>
     {

@@ -1994,24 +1994,21 @@ namespace GisSharpBlog.NetTopologySuite.Shapefile
         private IRecord getFeature(UInt32 oid, ISchema table)
         {
             checkOpen();
-            GisSharpBlog.NetTopologySuite.Data.Guard.IsNotNull(table, "table");
-            IRecord dr;
+            Guard.IsNotNull(table, "table");
 
             IRecord featureRecord = HasDbf
-                // [rp] - should table get passed as the 2nd param here?
-                                                                     ? _dbaseFile.GetAttributes(oid, table)
-                                                                     : table.RecordFactory.Create(new Dictionary<IPropertyInfo, IValue>()
-                                                                                            {
-                                                                                                {table.Property("Geom"), null},
-                                                                                                {table.Property("OID"), table.Property("OID").CreateValue(oid)}
-                                                                                            });
+                                    ? _dbaseFile.GetAttributes(oid, table)
+                                    : table.RecordFactory.Create(new Dictionary<IPropertyInfo, IValue>()
+                                                        {
+                                                            {table.Property("Geom"), null},
+                                                            {table.Property("OID"), table.Property("OID").CreateValue(oid)}
+                                                        });
 
             featureRecord["Geom"] = table.Property("Geom").CreateValue(readGeometry(oid));
             featureRecord["OID"] = table.Property("OID").CreateValue(oid);
-            dr = featureRecord;
 
 
-            return Filter == null || Filter(dr) ? dr : null;
+            return Filter == null || Filter(featureRecord) ? featureRecord : null;
         }
 
         //private ShapeFileFeatureDataRecord getOidOnlyFeatureRecord(UInt32 oid)

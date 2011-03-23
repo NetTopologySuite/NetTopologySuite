@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GisSharpBlog.NetTopologySuite.Data
+namespace GisSharpBlog.NetTopologySuite.Data.InternalImpl
 {
     internal class Value<T> : IValue<T>
     {

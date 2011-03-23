@@ -82,11 +82,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySute.TestRunner.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Tests.Vivid.XUnit", "NetTopologySuite.Tests.Vivid.XUnit\NetTopologySuite.Tests.Vivid.XUnit.csproj", "{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Data.Silverlight", "NetTopologySuite.Data.Silverlight\NetTopologySuite.Data.Silverlight.csproj", "{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Shapefile.Silverlight", "NetTopologySuite.Shapefile.Silverlight\NetTopologySuite.Shapefile.Silverlight.csproj", "{A1CD501C-D498-41C7-91E3-276E2BEEA867}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Encodings.Silverlight", "NetTopologySuite.Encodings.Silverlight\NetTopologySuite.Encodings.Silverlight.csproj", "{C7FA023B-0259-47C4-8051-EE7EB639DD39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Data.Silverlight", "NetTopologySuite.Data.Silverlight\NetTopologySuite.Data.Silverlight.csproj", "{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -140,12 +140,6 @@ Global
 		{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Bug|Any CPU.ActiveCfg = Release|Any CPU
-		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Bug|Any CPU.Build.0 = Release|Any CPU
-		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A1CD501C-D498-41C7-91E3-276E2BEEA867}.Bug|Any CPU.ActiveCfg = Release|Any CPU
 		{A1CD501C-D498-41C7-91E3-276E2BEEA867}.Bug|Any CPU.Build.0 = Release|Any CPU
 		{A1CD501C-D498-41C7-91E3-276E2BEEA867}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -158,6 +152,12 @@ Global
 		{C7FA023B-0259-47C4-8051-EE7EB639DD39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7FA023B-0259-47C4-8051-EE7EB639DD39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7FA023B-0259-47C4-8051-EE7EB639DD39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Bug|Any CPU.ActiveCfg = Release|Any CPU
+		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Bug|Any CPU.Build.0 = Release|Any CPU
+		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

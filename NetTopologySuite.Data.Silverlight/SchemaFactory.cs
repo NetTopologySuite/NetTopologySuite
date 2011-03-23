@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GisSharpBlog.NetTopologySuite.Data.InternalImpl;
 
 namespace GisSharpBlog.NetTopologySuite.Data
 {
