@@ -4,13 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 #if SILVERLIGHT
-using GisSharpBlog.NetTopologySuite.FrameworkReplacements;
+using GisSharpBlog.NetTopologySuite.Encodings;
+using NetTopologySuite.Encodings;
+
 #endif
 namespace GisSharpBlog.NetTopologySuite.Utilities
 {
     public static class PlatformUtilityEx
     {
 #if SILVERLIGHT
+
+        private static IEncodingRegistry _registry = new EncodingRegistry();
+
         public static IEnumerable<object> CastPlatform(this ICollection self)
         {
             return self.Cast<object>();
@@ -29,7 +34,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
 
         public static Encoding GetASCIIEncoding()
         {
-            return new ASCIIEncoding();
+            return _registry.ASCII;
         }
 
 #else

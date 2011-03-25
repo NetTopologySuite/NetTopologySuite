@@ -962,7 +962,6 @@
     <Compile Include="..\NetTopologySuite\Utilities\UniqueCoordinateArrayFilter.cs">
       <Link>Utilities\UniqueCoordinateArrayFilter.cs</Link>
     </Compile>
-    <Compile Include="FrameworkReplacements\ASCIIEncoding.cs" />
     <Compile Include="IO\GeoTools\Dbase\DbaseFileReader.SL.cs" />
     <Compile Include="IO\GeoTools\ShapefileDataReader.SL.cs" />
     <Compile Include="IO\GeoTools\SLShapeFileDataEnumerator.cs" />
@@ -996,6 +995,10 @@
     <ProjectReference Include="..\NetTopologySuite.Data.Silverlight\NetTopologySuite.Data.Silverlight.csproj">
       <Project>{4283DC66-9A93-4EBF-9D9A-EC5C6866604E}</Project>
       <Name>NetTopologySuite.Data.Silverlight</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite.Encodings.Silverlight\NetTopologySuite.Encodings.Silverlight.csproj">
+      <Project>{C7FA023B-0259-47C4-8051-EE7EB639DD39}</Project>
+      <Name>NetTopologySuite.Encodings.Silverlight</Name>
     </ProjectReference>
   </ItemGroup>
   <!-- <ItemGroup>
