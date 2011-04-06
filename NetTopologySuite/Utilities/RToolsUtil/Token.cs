@@ -604,10 +604,10 @@ namespace RTools_NTS.Util
 		{ 
 			get
 			{
-				if (obj != null)
+			    if (obj != null)
 					 // return(String.Format("{0:f9}", (Double)obj)); 
-                     return (String.Format("{0:R}", (Double) obj)); 
-				else return(String.Format("null")); 
+                     return ( String.Format(GetNumberFormatInfo(), "{0:R}", (Double) obj));
+			    return(String.Format("null"));
 			}
 		}
 
