@@ -42,6 +42,12 @@ namespace NetTopologySuite.Geometries
         {
             ValidateConstruction();
         }
+		
+		public override ILineString<TCoordinate> Reverse()
+        {
+            ILineString<TCoordinate> reverse = base.Reverse();
+            return Factory.CreateLinearRing(reverse.Coordinates);
+        }
 
         #region ILinearRing<TCoordinate> Members
 

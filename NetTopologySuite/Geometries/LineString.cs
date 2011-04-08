@@ -223,7 +223,7 @@ namespace NetTopologySuite.Geometries
         /// An <see cref="ILineString{TCoordinate}" /> with coordinates 
         /// in the reverse order.
         /// </returns>
-        public ILineString<TCoordinate> Reverse()
+        public virtual ILineString<TCoordinate> Reverse()
         {
             ICoordinateSequence<TCoordinate> seq = CoordinatesInternal.Clone();
             Debug.Assert(seq != null);
