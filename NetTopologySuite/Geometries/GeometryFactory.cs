@@ -436,11 +436,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return point;
         }
 
-        public IGeometry<TCoordinate> CreateGeometry(ICoordinateSequence<TCoordinate> coordinates,
-                                                     OgcGeometryType type)
+        public IGeometry<TCoordinate> CreateGeometry(ICoordinateSequence<TCoordinate> coordinates, OgcGeometryType type)
         {
             IGeometryFactory<TCoordinate> f = this;
-
             switch (type)
             {
                 case OgcGeometryType.Point:
@@ -454,7 +452,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 case OgcGeometryType.MultiLineString:
                     throw new NotImplementedException();
                 case OgcGeometryType.MultiPolygon:
-                    throw new NotImplementedException();
+                    return f.CreateMultiPolygon(coordinates);
                 default:
                     throw new NotImplementedException();
             }
@@ -742,8 +740,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return CreateGeometryCollection(geometries, geometryType);
         }
 
-        public IGeometryCollection<TCoordinate> CreateGeometryCollection(IGeometry<TCoordinate> a,
-                                                                         IGeometry<TCoordinate> b)
+        public IGeometryCollection<TCoordinate> CreateGeometryCollection(IGeometry<TCoordinate> a, IGeometry<TCoordinate> b)
         {
             return new GeometryCollection<TCoordinate>(new[] { a, b }, this);
         }
@@ -948,23 +945,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IGeometry IGeometryFactory.CreateGeometry(ICoordinateSequence coordinates, OgcGeometryType type)
         {
-            IGeometryFactory f = this;
-
-            switch (type)
-            {
-                case OgcGeometryType.Point:
-                    return f.CreatePoint(coordinates);
-                case OgcGeometryType.LineString:
-                    return f.CreateLineString(coordinates);
-                case OgcGeometryType.Polygon:
-                    return f.CreatePolygon(coordinates);
-                case OgcGeometryType.MultiPoint:
-                    return f.CreateMultiPoint(coordinates);
-                case OgcGeometryType.MultiPolygon:
-                    return f.CreateMultiPolygon(coordinates);
-                default:
-                    throw new NotImplementedException();
-            }
+            return CreateGeometry((ICoordinateSequence<TCoordinate>)coordinates, type);
         }
 
         IPoint IGeometryFactory.CreatePoint()
