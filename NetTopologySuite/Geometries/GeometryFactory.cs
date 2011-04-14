@@ -945,7 +945,23 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         IGeometry IGeometryFactory.CreateGeometry(ICoordinateSequence coordinates, OgcGeometryType type)
         {
-            return CreateGeometry((ICoordinateSequence<TCoordinate>)coordinates, type);
+            IGeometryFactory f = this;
+
+            switch (type)
+            {
+                case OgcGeometryType.Point:
+                    return f.CreatePoint(coordinates);
+                case OgcGeometryType.LineString:
+                    return f.CreateLineString(coordinates);
+                case OgcGeometryType.Polygon:
+                    return f.CreatePolygon(coordinates);
+                case OgcGeometryType.MultiPoint:
+                    return f.CreateMultiPoint(coordinates);
+                case OgcGeometryType.MultiPolygon:
+                    return f.CreateMultiPolygon(coordinates);
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         IPoint IGeometryFactory.CreatePoint()
