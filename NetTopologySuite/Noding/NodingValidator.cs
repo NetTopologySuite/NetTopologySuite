@@ -59,9 +59,20 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         private void CheckInteriorIntersections()
         {
-            foreach (SegmentString ss0 in segStrings)
-                foreach(SegmentString ss1 in segStrings)
-                    CheckInteriorIntersections(ss0, ss1);                
+            for (int i = 0; i < this.segStrings.Count; i++)
+            {
+                SegmentString ss0 = (SegmentString)this.segStrings[i];
+                for (int j = 0; j < this.segStrings.Count; j++)
+                {
+                    SegmentString ss1 = (SegmentString)this.segStrings[j];
+                    Stopwatch watch = new Stopwatch();
+                    watch.Start();
+                    this.CheckInteriorIntersections(ss0, ss1);
+                    watch.Stop();
+                    string format = String.Format("{0}-{1}: {2}", i, j, watch.Elapsed);
+                    Debug.WriteLine(format);
+                }
+            }
         }
 
         private void CheckInteriorIntersections(SegmentString ss0, SegmentString ss1)
