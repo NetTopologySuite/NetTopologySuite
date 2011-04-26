@@ -122,6 +122,7 @@
     <Compile Include="Tests\Various\ReverseTest.cs" />
     <Compile Include="Tests\Various\RobustLineIntersectorTest.cs" />
     <Compile Include="Tests\Various\OGCTests.cs" />
+    <Compile Include="Tests\Various\SlowIntersectionTest.cs" />
     <Compile Include="Tests\Various\SRSConversionTest.cs" />
     <Compile Include="Tests\Various\UnionAggregateTest.cs" />
     <Compile Include="Tests\Various\WKTTest.cs" />
