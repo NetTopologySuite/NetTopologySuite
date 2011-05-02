@@ -322,8 +322,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns><c>true</c> if the input point lies within both input segment envelopes.</returns>
         private bool IsInSegmentEnvelopes(ICoordinate intPt)
         {
-            IEnvelope env0 = new Envelope(inputLines[0, 0], inputLines[0, 1]);
-            IEnvelope env1 = new Envelope(inputLines[1, 0], inputLines[1, 1]);
+            IEnvelope env0 = new Envelope(inputLines[0], inputLines[1]);
+            IEnvelope env1 = new Envelope(inputLines[2], inputLines[3]);
             return env0.Contains(intPt) && env1.Contains(intPt);
         }
     }

@@ -102,7 +102,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        protected ICoordinate[,] inputLines = new ICoordinate[2, 2];
+        protected ICoordinate[] inputLines = new ICoordinate[4];
         
         /// <summary>
         /// 
@@ -113,7 +113,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// The indexes of the endpoints of the intersection lines, in order along
         /// the corresponding line
         /// </summary>
-        protected int[,] intLineIndex;
+        protected int[] intLineIndex;
 
         /// <summary>
         /// 
@@ -199,10 +199,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         public void ComputeIntersection(ICoordinate p1, ICoordinate p2, ICoordinate p3, ICoordinate p4) 
         {
-            inputLines[0,0] = p1;
-            inputLines[0,1] = p2;
-            inputLines[1,0] = p3;
-            inputLines[1,1] = p4;
+            inputLines[0] = p1;
+            inputLines[1] = p2;
+            inputLines[2] = p3;
+            inputLines[3] = p4;
             result = ComputeIntersect(p1, p2, p3, p4);        
         }
 
@@ -223,10 +223,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         public override string ToString() 
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(inputLines[0, 0]).Append("-");
-            sb.Append(inputLines[0, 1]).Append(" ");
-            sb.Append(inputLines[1, 0]).Append("-");
-            sb.Append(inputLines[1, 1]).Append(" : ");
+            sb.Append(inputLines[0]).Append("-");
+            sb.Append(inputLines[1]).Append(" ");
+            sb.Append(inputLines[2]).Append("-");
+            sb.Append(inputLines[3]).Append(" : ");
 
             if (IsEndPoint)  sb.Append(" endpoint");
             if (isProper)    sb.Append(" proper");
@@ -286,7 +286,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             if (intLineIndex == null) 
             {
-                intLineIndex = new int[2, 2];
+                intLineIndex = new int[4];
                 ComputeIntLineIndex(0);
                 ComputeIntLineIndex(1);
             }
@@ -331,9 +331,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         public bool IsInteriorIntersection(int inputLineIndex)
         {
             for (int i = 0; i < result; i++)
-                if (!(intPt[i].Equals2D(inputLines[inputLineIndex, 0]) || 
-                      intPt[i].Equals2D(inputLines[inputLineIndex, 1])))                                   
-                    return true;                
+            {
+                int index = inputLineIndex == 0 ? 0 : 2;
+                if (!(this.intPt[i].Equals2D(this.inputLines[index]) || 
+                      this.intPt[i].Equals2D(this.inputLines[index + 1])))                                   
+                    return true;
+            }
             return false;
         }
 
@@ -367,7 +370,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             // lazily compute int line array
             ComputeIntLineIndex();
-            return intPt[intLineIndex[segmentIndex, intIndex]];
+            int index = segmentIndex == 0 ? 0 : 2;
+            return intPt[intLineIndex[index + intIndex]];
         }
 
         /// <summary>
@@ -382,7 +386,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         public int GetIndexAlongSegment(int segmentIndex, int intIndex) 
         {
             ComputeIntLineIndex();
-            return intLineIndex[segmentIndex, intIndex];
+            int index = segmentIndex == 0 ? 0 : 2;
+            return intLineIndex[index + intIndex];
         }
 
         /// <summary>
@@ -395,13 +400,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             double dist1 = GetEdgeDistance(segmentIndex, 1);
             if (dist0 > dist1) 
             {
-                intLineIndex[segmentIndex, 0] = 0;
-                intLineIndex[segmentIndex, 1] = 1;
+                int index = segmentIndex == 0 ? 0 : 2;
+                intLineIndex[index] = 0;
+                intLineIndex[index + 1] = 1;
             }
             else
             {
-                intLineIndex[segmentIndex, 0] = 1;
-                intLineIndex[segmentIndex, 1] = 0;
+                int index = segmentIndex == 0 ? 0 : 2;
+                intLineIndex[index] = 1;
+                intLineIndex[index + 1] = 0;
             }
         }
 
@@ -413,7 +420,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns>The edge distance of the intersection point.</returns>
         public double GetEdgeDistance(int segmentIndex, int intIndex) 
         {
-            double dist = ComputeEdgeDistance(intPt[intIndex], inputLines[segmentIndex, 0], inputLines[segmentIndex, 1]);
+            int index = segmentIndex == 0 ? 0 : 2;
+            double dist = ComputeEdgeDistance(intPt[intIndex], inputLines[index], inputLines[index + 1]);
             return dist;
         }
     }
