@@ -1,9 +1,5 @@
-using System;
-using System.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.Utilities;
-
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     /// <summary> 
@@ -22,35 +18,27 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="p"></param>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
-        public override void ComputeIntersection(ICoordinate p, ICoordinate p1, ICoordinate p2) 
+        public override void ComputeIntersection(ICoordinate p, ICoordinate p1, ICoordinate p2)
         {
             isProper = false;
             // do between check first, since it is faster than the orientation test
-            if(Envelope.Intersects(p1, p2, p)) 
+            if (Envelope.Intersects(p1, p2, p))
             {
-                if( (CGAlgorithms.OrientationIndex(p1, p2, p) == 0) && 
-                    (CGAlgorithms.OrientationIndex(p2, p1, p) == 0) ) 
+                if ((CGAlgorithms.OrientationIndex(p1, p2, p) == 0) &&
+                    (CGAlgorithms.OrientationIndex(p2, p1, p) == 0))
                 {
                     isProper = true;
-                    if (p.Equals(p1) || p.Equals(p2)) 
-                        isProper = false;                    
+                    if (p.Equals(p1) || p.Equals(p2))
+                        isProper = false;
                     result = DoIntersect;
                     return;
                 }
             }
             result = DontIntersect;
         }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        /// <param name="q1"></param>
-        /// <param name="q2"></param>
-        /// <returns></returns>
-        public override int ComputeIntersect(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2) 
-        {            
+
+        public override int ComputeIntersect(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2)
+        {
             isProper = false;
 
             // first try a fast test to see if the envelopes of the lines intersect
@@ -63,46 +51,74 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             int Pq1 = CGAlgorithms.OrientationIndex(p1, p2, q1);
             int Pq2 = CGAlgorithms.OrientationIndex(p1, p2, q2);
 
-            if((Pq1 > 0 && Pq2 > 0) || (Pq1 < 0 && Pq2 < 0)) 
-                return DontIntersect;            
+            if ((Pq1 > 0 && Pq2 > 0) ||
+                (Pq1 < 0 && Pq2 < 0))
+                return DontIntersect;
 
             int Qp1 = CGAlgorithms.OrientationIndex(q1, q2, p1);
             int Qp2 = CGAlgorithms.OrientationIndex(q1, q2, p2);
 
-            if ((Qp1 > 0 && Qp2 > 0) || (Qp1 < 0 && Qp2 < 0)) 
-                return DontIntersect;            
+            if ((Qp1 > 0 && Qp2 > 0) ||
+                (Qp1 < 0 && Qp2 < 0))
+                return DontIntersect;
 
-            bool collinear = (Pq1 == 0 && Pq2 == 0 && Qp1 == 0 && Qp2 == 0);
-            if (collinear) 
+            bool collinear = Pq1 == 0 && Pq2 == 0 && Qp1 == 0 && Qp2 == 0;
+            if (collinear)
                 return ComputeCollinearIntersection(p1, p2, q1, q2);
 
-            /*
-            *  Check if the intersection is an endpoint. If it is, copy the endpoint as
-            *  the intersection point. Copying the point rather than computing it
-            *  ensures the point has the exact value, which is important for
-            *  robustness. It is sufficient to simply check for an endpoint which is on
-            *  the other line, since at this point we know that the inputLines must
-            *  intersect.
-            */
-            if (Pq1 == 0 || Pq2 == 0 || Qp1 == 0 || Qp2 == 0) 
+            /**
+             * At this point we know that there is a single intersection point
+             * (since the lines are not collinear).
+             */
+
+            /**
+             *  Check if the intersection is an endpoint. If it is, copy the endpoint as
+             *  the intersection point. Copying the point rather than computing it
+             *  ensures the point has the exact value, which is important for
+             *  robustness. It is sufficient to simply check for an endpoint which is on
+             *  the other line, since at this point we know that the inputLines must
+             *  intersect.
+             */
+            if (Pq1 == 0 || Pq2 == 0 || Qp1 == 0 || Qp2 == 0)
             {
                 isProper = false;
-                if (Pq1 == 0) 
-                    intPt[0] = new Coordinate(q1);            
-                if (Pq2 == 0) 
-                    intPt[0] = new Coordinate(q2);            
-                if (Qp1 == 0) 
+
+                /**
+                 * Check for two equal endpoints.  
+                 * This is done explicitly rather than by the orientation tests
+                 * below in order to improve robustness.
+                 * 
+                 * [An example where the orientation tests fail to be consistent is
+                 * the following (where the true intersection is at the shared endpoint
+                 * POINT (19.850257749638203 46.29709338043669)
+                 * 
+                 * LINESTRING ( 19.850257749638203 46.29709338043669, 20.31970698357233 46.76654261437082 ) 
+                 * and 
+                 * LINESTRING ( -48.51001596420236 -22.063180333403878, 19.850257749638203 46.29709338043669 )
+                 * 
+                 * which used to produce the INCORRECT result: (20.31970698357233, 46.76654261437082, NaN)
+                 * 
+                 */
+                if (p1.Equals2D(q1) || p1.Equals2D(q2))
+                    intPt[0] = p1;
+                else if (p2.Equals2D(q1) || p2.Equals2D(q2))
+                    intPt[0] = p2;
+                else if (Pq1 == 0)
+                    intPt[0] = new Coordinate(q1);
+                else if (Pq2 == 0)
+                    intPt[0] = new Coordinate(q2);
+                else if (Qp1 == 0)
                     intPt[0] = new Coordinate(p1);
-                if (Qp2 == 0) 
+                else if (Qp2 == 0)
                     intPt[0] = new Coordinate(p2);
             }
             else
             {
                 isProper = true;
-                intPt[0] = Intersection(p1, p2, q1, q2);
+                intPt[0] = this.Intersection(p1, p2, q1, q2);
             }
             return DoIntersect;
-        }        
+        }
 
         /// <summary>
         /// 
@@ -112,20 +128,20 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="q1"></param>
         /// <param name="q2"></param>
         /// <returns></returns>
-        private int ComputeCollinearIntersection(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2) 
+        private int ComputeCollinearIntersection(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2)
         {
             bool p1q1p2 = Envelope.Intersects(p1, p2, q1);
             bool p1q2p2 = Envelope.Intersects(p1, p2, q2);
             bool q1p1q2 = Envelope.Intersects(q1, q2, p1);
             bool q1p2q2 = Envelope.Intersects(q1, q2, p2);
 
-            if (p1q1p2 && p1q2p2) 
+            if (p1q1p2 && p1q2p2)
             {
                 intPt[0] = q1;
                 intPt[1] = q2;
                 return Collinear;
             }
-            if (q1p1q2 && q1p2q2) 
+            if (q1p1q2 && q1p2q2)
             {
                 intPt[0] = p1;
                 intPt[1] = p2;
@@ -135,25 +151,25 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             {
                 intPt[0] = q1;
                 intPt[1] = p1;
-                return q1.Equals(p1) && !p1q2p2 && !q1p2q2 ? DoIntersect : Collinear;
+                return q1.Equals(p1) /* && !p1q2p2 && !q1p2q2 */ ? DoIntersect : Collinear;
             }
-            if (p1q1p2 && q1p2q2) 
+            if (p1q1p2 && q1p2q2)
             {
                 intPt[0] = q1;
                 intPt[1] = p2;
-                return q1.Equals(p2) && !p1q2p2 && !q1p1q2 ? DoIntersect : Collinear;
+                return q1.Equals(p2) /* && !p1q2p2 && !q1p1q2 */ ? DoIntersect : Collinear;
             }
-            if (p1q2p2 && q1p1q2) 
+            if (p1q2p2 && q1p1q2)
             {
                 intPt[0] = q2;
                 intPt[1] = p1;
-                return q2.Equals(p1) && !p1q1p2 && !q1p2q2 ? DoIntersect : Collinear;
+                return q2.Equals(p1) /* && !p1q1p2 && !q1p2q2 */? DoIntersect : Collinear;
             }
-            if (p1q2p2 && q1p2q2) 
+            if (p1q2p2 && q1p2q2)
             {
                 intPt[0] = q2;
                 intPt[1] = p2;
-                return q2.Equals(p2) && !p1q1p2 && !q1p1q2 ? DoIntersect : Collinear;
+                return q2.Equals(p2) /* && !p1q1p2 && !q1p1q2 */ ? DoIntersect : Collinear;
             }
             return DontIntersect;
         }
@@ -173,6 +189,35 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns></returns>
         private ICoordinate Intersection(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2)
         {
+            ICoordinate intPt = IntersectionWithNormalization(p1, p2, q1, q2);
+
+            /**
+             * Due to rounding it can happen that the computed intersection is
+             * outside the envelopes of the input segments.  Clearly this
+             * is inconsistent. 
+             * This code checks this condition and forces a more reasonable answer
+             * 
+             * MD - May 4 2005 - This is still a problem.  Here is a failure case:
+             *
+             * LINESTRING (2089426.5233462777 1180182.3877339689, 2085646.6891757075 1195618.7333999649)
+             * LINESTRING (1889281.8148903656 1997547.0560044837, 2259977.3672235999 483675.17050843034)
+             * int point = (2097408.2633752143,1144595.8008114607)
+             * 
+             * MD - Dec 14 2006 - This does not seem to be a failure case any longer
+             */
+            if (!IsInSegmentEnvelopes(intPt))
+            {
+                // compute a safer result
+                intPt = CentralEndpointIntersector.GetIntersection(p1, p2, q1, q2);
+            }
+
+            if (precisionModel != null)
+                precisionModel.MakePrecise(intPt);
+            return intPt;
+        }
+
+        private ICoordinate IntersectionWithNormalization(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2)
+        {
             ICoordinate n1 = new Coordinate(p1);
             ICoordinate n2 = new Coordinate(p2);
             ICoordinate n3 = new Coordinate(q1);
@@ -180,70 +225,30 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             ICoordinate normPt = new Coordinate();
             NormalizeToEnvCentre(n1, n2, n3, n4, normPt);
 
-            ICoordinate intPt = null;
-            try 
-            {
-                intPt = HCoordinate.Intersection(n1, n2, n3, n4);
-            }
-            catch (NotRepresentableException) 
-            {
-                Assert.ShouldNeverReachHere("Coordinate for intersection is not calculable");
-            }
-
+            ICoordinate intPt = SafeHCoordinateIntersection(n1, n2, n3, n4);
             intPt.X += normPt.X;
             intPt.Y += normPt.Y;
-
-            /*
-             *
-             * MD - May 4 2005 - This is still a problem.  Here is a failure case:
-             *
-             * LINESTRING (2089426.5233462777 1180182.3877339689, 2085646.6891757075 1195618.7333999649)
-             * LINESTRING (1889281.8148903656 1997547.0560044837, 2259977.3672235999 483675.17050843034)
-             * int point = (2097408.2633752143,1144595.8008114607)
-             */
-            if(!IsInSegmentEnvelopes(intPt)) 
-              Trace.WriteLine("Intersection outside segment envelopes: " + intPt);
-            
-            /*
-            // disabled until a better solution is found
-            if(!IsInSegmentEnvelopes(intPt)) 
-            {
-                Trace.WriteLine("first value outside segment envelopes: " + intPt);
-
-                IteratedBisectionIntersector ibi = new IteratedBisectionIntersector(p1, p2, q1, q2);
-                intPt = ibi.Intersection;
-            }
-            if(!IsInSegmentEnvelopes(intPt)) 
-            {
-                Trace.WriteLine("ERROR - outside segment envelopes: " + intPt);
-
-                IteratedBisectionIntersector ibi = new IteratedBisectionIntersector(p1, p2, q1, q2);
-                Coordinate testPt = ibi.Intersection;
-            }
-            */
-
-            if (precisionModel != null) 
-                precisionModel.MakePrecise( intPt);
-     
             return intPt;
         }
 
-        /// <summary>
-        /// 
+        /// <summary> 
+        /// Computes a segment intersection using homogeneous coordinates.
+        /// Round-off error can cause the raw computation to fail, 
+        /// (usually due to the segments being approximately parallel).
+        /// If this happens, a reasonable approximation is computed instead.
         /// </summary>
-        /// <param name="n1"></param>
-        /// <param name="n2"></param>
-        /// <param name="n3"></param>
-        /// <param name="n4"></param>
-        /// <param name="normPt"></param>
-        private void NormalizeToMinimum(ICoordinate n1, ICoordinate n2, ICoordinate n3, ICoordinate n4, ICoordinate normPt)
+        private ICoordinate SafeHCoordinateIntersection(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2)
         {
-            normPt.X = SmallestInAbsValue(n1.X, n2.X, n3.X, n4.X);
-            normPt.Y = SmallestInAbsValue(n1.Y, n2.Y, n3.Y, n4.Y);
-            n1.X -= normPt.X; n1.Y -= normPt.Y;
-            n2.X -= normPt.X; n2.Y -= normPt.Y;
-            n3.X -= normPt.X; n3.Y -= normPt.Y;
-            n4.X -= normPt.X; n4.Y -= normPt.Y;
+            ICoordinate intPt;
+            try
+            {
+                intPt = HCoordinate.Intersection(p1, p2, q1, q2);
+            }
+            catch (NotRepresentableException e)
+            {
+                intPt = CentralEndpointIntersector.GetIntersection(p1, p2, q1, q2);
+            }
+            return intPt;
         }
 
         /// <summary>
@@ -251,11 +256,6 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// so that the midpoint of their intersection envelope
         /// lies at the origin.
         /// </summary>
-        /// <param name="n00"></param>
-        /// <param name="n01"></param>
-        /// <param name="n10"></param>
-        /// <param name="n11"></param>
-        /// <param name="normPt"></param>
         private void NormalizeToEnvCentre(ICoordinate n00, ICoordinate n01, ICoordinate n10, ICoordinate n11, ICoordinate normPt)
         {
             double minX0 = n00.X < n01.X ? n00.X : n01.X;
@@ -276,39 +276,12 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             double intMidX = (intMinX + intMaxX) / 2.0;
             double intMidY = (intMinY + intMaxY) / 2.0;
             normPt.X = intMidX;
-            normPt.Y = intMidY;           
+            normPt.Y = intMidY;
 
             n00.X -= normPt.X; n00.Y -= normPt.Y;
             n01.X -= normPt.X; n01.Y -= normPt.Y;
             n10.X -= normPt.X; n10.Y -= normPt.Y;
             n11.X -= normPt.X; n11.Y -= normPt.Y;
-        }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="x1"></param>
-        /// <param name="x2"></param>
-        /// <param name="x3"></param>
-        /// <param name="x4"></param>
-        /// <returns></returns>
-        private double SmallestInAbsValue(double x1, double x2, double x3, double x4)
-        {
-            double x = x1;
-            double xabs = Math.Abs(x);
-            if (Math.Abs(x2) < xabs) 
-            {
-                x = x2;
-                xabs = Math.Abs(x2);
-            }
-            if (Math.Abs(x3) < xabs) 
-            {
-                x = x3;
-                xabs = Math.Abs(x3);
-            }
-            if (Math.Abs(x4) < xabs) 
-                x = x4;
-            return x;
         }
 
         /// <summary> 
