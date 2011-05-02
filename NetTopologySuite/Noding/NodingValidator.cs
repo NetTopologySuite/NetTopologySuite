@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 
@@ -65,15 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                 for (int j = 0; j < this.segStrings.Count; j++)
                 {
                     SegmentString ss1 = (SegmentString)this.segStrings[j];
-                    Stopwatch watch = new Stopwatch();
-                    watch.Start();
                     this.CheckInteriorIntersections(ss0, ss1);
-                    watch.Stop();
-                    if (watch.ElapsedMilliseconds > 2000)
-                    {
-                        string format = String.Format("{0}-{1}: {2}", i, j, watch.Elapsed);
-                        Debug.WriteLine(format);
-                    }
                 }
             }
         }
