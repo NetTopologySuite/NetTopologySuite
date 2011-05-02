@@ -69,8 +69,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                     watch.Start();
                     this.CheckInteriorIntersections(ss0, ss1);
                     watch.Stop();
-                    string format = String.Format("{0}-{1}: {2}", i, j, watch.Elapsed);
-                    Debug.WriteLine(format);
+                    if (watch.ElapsedMilliseconds > 2000)
+                    {
+                        string format = String.Format("{0}-{1}: {2}", i, j, watch.Elapsed);
+                        Debug.WriteLine(format);
+                    }
                 }
             }
         }
