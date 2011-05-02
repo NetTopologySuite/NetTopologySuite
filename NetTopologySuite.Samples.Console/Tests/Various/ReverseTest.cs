@@ -33,8 +33,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 
             Debug.WriteLine(lineString.ToString());
             Debug.WriteLine(reverse.ToString());
-            
-            Assert.AreNotEqual(lineString, reverse);            
+
+            Assert.IsTrue(lineString.EqualsExact(reverse));
+            Assert.IsFalse(lineString.EqualsExact(reverse));
         }
 
         /// <summary>
@@ -61,7 +62,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             Debug.WriteLine(multiLineString.ToString());
             Debug.WriteLine(reverse.ToString());
 
-            Assert.AreNotEqual(multiLineString, reverse);
+            Assert.IsTrue(multiLineString.EqualsExact(reverse));
+            Assert.IsFalse(multiLineString.EqualsExact(reverse));
         }
     }
 }
