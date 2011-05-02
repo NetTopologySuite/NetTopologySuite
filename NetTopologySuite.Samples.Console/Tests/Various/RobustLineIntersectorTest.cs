@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Samples.SimpleTests;
@@ -21,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             Assert.IsNotNull(result);            
         }
 
-        [Test]
+        [Test, ExpectedException(typeof(ApplicationException))]
         public void IntersectionTest2()
         {
             var g1 = Reader.Read("LINESTRING(0 10, 620 10, 0 11)");
