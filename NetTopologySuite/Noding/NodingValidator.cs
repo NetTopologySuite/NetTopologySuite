@@ -77,10 +77,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             if (e0 == e1 && segIndex0 == segIndex1) 
                 return;
 
-            var p00 = e0.Coordinates[segIndex0];
-            var p01 = e0.Coordinates[segIndex0 + 1];
-            var p10 = e1.Coordinates[segIndex1];
-            var p11 = e1.Coordinates[segIndex1 + 1];
+            ICoordinate[] coordinates0 = e0.Coordinates;
+            var p00 = coordinates0[segIndex0];
+            var p01 = coordinates0[segIndex0 + 1];
+            ICoordinate[] coordinates1 = e1.Coordinates;
+            var p10 = coordinates1[segIndex1];
+            var p11 = coordinates1[segIndex1 + 1];
 
             li.ComputeIntersection(p00, p01, p10, p11);
             if (li.HasIntersection)  
