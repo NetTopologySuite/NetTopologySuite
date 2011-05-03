@@ -215,10 +215,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
                     IGeometry expected = rdr.Read(expectedWKT);
                     IGeometry result = sequencer.GetSequencedLineStrings();
                     bool isTrue = expected.EqualsExact(result);
-                    Assert.IsTrue(isTrue);
+                    Assert.IsTrue(isTrue, "Expected " + expected + " but was " + result);
 
                     bool isSequenced = LineSequencer.IsSequenced(result);
-                    Assert.IsTrue(isSequenced);
+                    Assert.IsTrue(isSequenced, "result is not sequenced");
                 }
             }
             catch (Exception ex) { Debug.WriteLine(ex.ToString()); throw; }            
