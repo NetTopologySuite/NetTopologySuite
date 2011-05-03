@@ -258,9 +258,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         {            
             GraphComponent.SetVisited(graph.GetEdgeEnumerator(), false);
 
-            Node startNode = FindLowestDegreeNode(graph);                        
-            
-            IList list = startNode.OutEdges.Edges;
+            Node startNode = FindLowestDegreeNode(graph);
+
+            // HACK: reversing linestring fixes some cases... see LineSequencerTest.SimpleBigLoop and others
+            ArrayList list = (ArrayList)startNode.OutEdges.Edges;
+            list.Reverse();
+
             IEnumerator ie = list.GetEnumerator();
             ie.MoveNext();
 

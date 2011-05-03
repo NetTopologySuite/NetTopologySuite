@@ -9,7 +9,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// </summary>   
     public class NodeMap
     {
-        private readonly IDictionary nodeMap = new Dictionary<ICoordinate, Node>();
+        private readonly IDictionary nodeMap = new SortedDictionary<ICoordinate, Node>();
 
         /// <summary>
         /// Constructs a NodeMap without any Nodes.
