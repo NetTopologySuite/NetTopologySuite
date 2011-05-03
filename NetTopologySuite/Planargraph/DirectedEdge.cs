@@ -253,16 +253,14 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <returns></returns>
         public int CompareDirection(DirectedEdge e)
         {
-            int i = 0;
             // if the rays are in different quadrants, determining the ordering is trivial
             if (quadrant > e.Quadrant)
-                i = 1;
+                return 1;
             if (quadrant < e.Quadrant) 
-                i = -1;
+                return -1;
             // vectors are in the same quadrant - check relative orientation of direction vectors
             // this is > e if it is CCW of e
-            i = CGAlgorithms.ComputeOrientation(e.p0, e.p1, p1);            
-            return i;
+            return CGAlgorithms.ComputeOrientation(e.p0, e.p1, p1);            
         }
 
         /// <summary>
