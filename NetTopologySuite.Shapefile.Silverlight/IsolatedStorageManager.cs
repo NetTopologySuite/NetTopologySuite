@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.IO.IsolatedStorage;
 
 namespace GisSharpBlog.NetTopologySuite.Shapefile
@@ -19,7 +20,11 @@ namespace GisSharpBlog.NetTopologySuite.Shapefile
 
         public void Dispose()
         {
+            if (IsDisposed)
+                return;
+
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public bool IsDisposed { get; private set; }

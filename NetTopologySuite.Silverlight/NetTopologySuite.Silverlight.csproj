@@ -60,6 +60,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\NetTopologySuite\Algorithm\CentralEndpointIntersector.cs">
+      <Link>Algorithm\CentralEndpointIntersector.cs</Link>
+    </Compile>
     <Compile Include="..\NetTopologySuite\Algorithm\CentroidArea.cs">
       <Link>Algorithm\CentroidArea.cs</Link>
     </Compile>
@@ -151,6 +154,21 @@
     <Compile Include="..\NetTopologySuite\IO\ShapeWriter.cs">
       <Link>IO\ShapeWriter.cs</Link>
     </Compile>
+    <Compile Include="..\NetTopologySuite\Noding\BasicSegmentString.cs">
+      <Link>Noding\BasicSegmentString.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Noding\FastNodingValidator.cs">
+      <Link>Noding\FastNodingValidator.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Noding\INodableSegmentString.cs">
+      <Link>Noding\INodableSegmentString.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Noding\InteriorIntersectionFinder.cs">
+      <Link>Noding\InteriorIntersectionFinder.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Noding\ISegmentString.cs">
+      <Link>Noding\ISegmentString.cs</Link>
+    </Compile>
     <Compile Include="..\NetTopologySuite\Utilities\EnumUtility.cs">
       <Link>Utilities\EnumUtility.cs</Link>
     </Compile>
@@ -162,6 +180,7 @@
     </Compile>
     <Compile Include="Extension\ICoordinateEx.cs" />
     <Compile Include="Extension\IEnvelopeEx.cs" />
+    <Compile Include="FrameworkReplacements\SortedDictionary.cs" />
     <Compile Include="FrameworkReplacements\Trace.cs" />
     <Compile Include="..\NetTopologySuite\Geometries\Coordinate.cs">
       <SubType>Code</SubType>

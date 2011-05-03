@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// for preserving topological or parentage information.
     /// All noded substrings are initialized with the same context object.
     ///</summary>
-    public class BasicSegmentString: ISegmentString
+    public class BasicSegmentString : ISegmentString
     {
 
         private readonly ICoordinate[] _pts;
@@ -58,8 +58,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         ///<returns>octant of the segment at the vertex</returns>
         public Octants GetSegmentOctant(int index)
         {
-            return index == _pts.Length-1 
-                ? Octants.Null : 
+            return index == _pts.Length - 1
+                ? Octants.Null :
                 Octant.GetOctant(_pts[index], _pts[index + 1]);
         }
 
@@ -69,8 +69,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             {
                 if (index < 0 || index >= Count)
                 {
+#if SILVERLIGHT
+                    throw new ArgumentOutOfRangeException("index", "Parameter must be greater than or equal to 0 and less than TotalItemCount.");
+#else
                     throw new ArgumentOutOfRangeException("index", index,
                                                           "Parameter must be greater than or equal to 0 and less than TotalItemCount.");
+#endif
                 }
 
                 return new LineSegment(_pts[index], _pts[index + 1]);

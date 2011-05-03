@@ -63,7 +63,7 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
 
             XmlWriterSettings settings = null;
             settings =new XmlWriterSettings(){NamespaceHandling = NamespaceHandling.OmitDuplicates,Indent=true};
-            XmlTextWriter writer = (XmlTextWriter)XmlWriter.Create(stream, settings);
+            writer = (XmlTextWriter)XmlWriter.Create(stream, settings);
 #else
             writer = new XmlTextWriter(stream, null) {Namespaces = true};
 #endif

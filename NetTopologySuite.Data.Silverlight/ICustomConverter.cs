@@ -2,7 +2,7 @@
 
 namespace GisSharpBlog.NetTopologySuite.Data
 {
-    public interface ICustomConverter<in TSource, out TTarget> :ICustomConverter
+    public interface ICustomConverter<in TSource, out TTarget> : ICustomConverter
     {
         TTarget Convert(TSource source);
     }
