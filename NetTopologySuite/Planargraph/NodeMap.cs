@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using Wintellect.PowerCollections;
 using GeoAPI.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
@@ -9,7 +9,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// </summary>   
     public class NodeMap
     {
-        private readonly IDictionary nodeMap = new SortedDictionary<ICoordinate, Node>();
+        private readonly IDictionary nodeMap = new OrderedDictionary<ICoordinate, Node>();
 
         /// <summary>
         /// Constructs a NodeMap without any Nodes.
