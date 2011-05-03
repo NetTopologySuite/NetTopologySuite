@@ -78,7 +78,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             if (coord.Length < 2) 
                 return;
             // add the edge for a coordinate list which is a raw offset curve
-            var e = new SegmentString(coord, new Label(0, Locations.Boundary, leftLoc, rightLoc));
+            var e = new NodedSegmentString(coord, new Label(0, Locations.Boundary, leftLoc, rightLoc));
             curveList.Add(e);
         }
 

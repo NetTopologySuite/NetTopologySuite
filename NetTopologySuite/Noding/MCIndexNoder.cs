@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 {
 
     /// <summary>
-    /// Nodes a set of <see cref="SegmentString" />s using a index based
+    /// Nodes a set of <see cref="ISegmentString" />s using a index based
     /// on <see cref="MonotoneChain" />s and a <see cref="ISpatialIndex" />.
     /// The <see cref="ISpatialIndex" /> used should be something that supports
     /// envelope (range) queries efficiently (such as a <see cref="Quadtree" />
@@ -54,18 +54,18 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// Returns a <see cref="IList"/> of fully noded <see cref="SegmentString"/>s.
-        /// The <see cref="SegmentString"/>s have the same context as their parent.
+        /// Returns a <see cref="IList"/> of fully noded <see cref="ISegmentString"/>s.
+        /// The <see cref="ISegmentString"/>s have the same context as their parent.
         /// </summary>
         /// <returns></returns>
         public override IList GetNodedSubstrings()
         {
-            return SegmentString.GetNodedSubstrings(nodedSegStrings);
+            return NodedSegmentString.GetNodedSubstrings(nodedSegStrings);
         }
 
         /// <summary>
-        /// Computes the noding for a collection of <see cref="SegmentString"/>s.
-        /// Some Noders may add all these nodes to the input <see cref="SegmentString"/>s;
+        /// Computes the noding for a collection of <see cref="ISegmentString"/>s.
+        /// Some Noders may add all these nodes to the input <see cref="ISegmentString"/>s;
         /// others may only add some or none at all.
         /// </summary>
         /// <param name="inputSegStrings"></param>
@@ -73,7 +73,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         {
             nodedSegStrings = inputSegStrings;
             foreach(var obj in inputSegStrings)
-                Add((SegmentString)obj);            
+                Add((ISegmentString)obj);            
             IntersectChains();            
         }
 
@@ -106,7 +106,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// 
         /// </summary>
         /// <param name="segStr"></param>
-        private void Add(SegmentString segStr)
+        private void Add(ISegmentString segStr)
         {
             var segChains = MonotoneChainBuilder.GetChains(segStr.Coordinates, segStr);
             foreach (var obj in segChains) 
@@ -143,8 +143,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             /// <param name="start2"></param>
             public override void Overlap(MonotoneChain mc1, int start1, MonotoneChain mc2, int start2)
             {
-                var ss1 = (SegmentString) mc1.Context;
-                var ss2 = (SegmentString) mc2.Context;
+                var ss1 = (ISegmentString) mc1.Context;
+                var ss2 = (ISegmentString) mc2.Context;
                 si.ProcessIntersections(ss1, start1, ss2, start2);
             }
 

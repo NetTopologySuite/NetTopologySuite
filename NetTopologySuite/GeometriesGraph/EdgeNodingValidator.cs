@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using GisSharpBlog.NetTopologySuite.Noding;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
@@ -12,28 +13,25 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     public class EdgeNodingValidator
     {        
-        private static IList ToSegmentStrings(IEnumerable edges)
+        private static IEnumerable<ISegmentString> ToSegmentStrings(IEnumerable edges)
         {
             // convert Edges to SegmentStrings
-            IList segStrings = new ArrayList();
-            for (var i = edges.GetEnumerator(); i.MoveNext(); )
-            {
-                var e = (Edge)i.Current;
-                segStrings.Add(new SegmentString(e.Coordinates, e));
-            }
+            IList<ISegmentString> segStrings = new List<ISegmentString>();
+            foreach (Edge e in edges)
+                segStrings.Add(new BasicSegmentString(e.Coordinates, e));
             return segStrings;
         }
 
-        private readonly NodingValidator nv;
+        private readonly FastNodingValidator _nv;
 
         public EdgeNodingValidator(IEnumerable edges)
         {
-            nv = new NodingValidator(ToSegmentStrings(edges));
+            _nv = new FastNodingValidator(ToSegmentStrings(edges));
         }
 
-        public void checkValid()
+        public void CheckValid()
         {
-            nv.CheckValid();
+            _nv.CheckValid();
         }
     }
 }

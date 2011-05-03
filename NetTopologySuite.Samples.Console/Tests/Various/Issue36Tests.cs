@@ -96,7 +96,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             var bufferSegStrList = curveSetBuilder.GetCurves();
             Assert.AreEqual(1, bufferSegStrList.Count);
             
-            var segmentString = (SegmentString) bufferSegStrList[0];
+            var segmentString = (NodedSegmentString) bufferSegStrList[0];
             Assert.AreEqual(77, segmentString.Count);
 
             for (var i = 0; i < segmentString.Coordinates.Length; i++)

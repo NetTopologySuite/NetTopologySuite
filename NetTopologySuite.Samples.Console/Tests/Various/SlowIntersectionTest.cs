@@ -50,13 +50,21 @@
                 coordinates[i] = new Coordinate(x, y);
             }
 
-            SegmentString segmentString = new SegmentString(coordinates, null);            
+            NodedSegmentString segmentString = new NodedSegmentString(coordinates, null);            
             Stopwatch watch = new Stopwatch();            
             NodingValidator validator = new NodingValidator(new[] { segmentString });
+            validator.CheckValid();
             watch.Start();
             validator.CheckValid();
             watch.Stop();
             Console.WriteLine("NodingValidator.CheckValid => ElapsedMilliseconds: {0}", watch.ElapsedMilliseconds);
+
+            BasicSegmentString segmentStringBasic = new BasicSegmentString(coordinates, null);
+            FastNodingValidator fastValidator = new FastNodingValidator( new [] { segmentStringBasic } );
+            watch.Reset(); watch.Start();
+            fastValidator.CheckValid();
+            watch.Stop();
+            Console.WriteLine("FastNodingValidator.CheckValid => ElapsedMilliseconds: {0}", watch.ElapsedMilliseconds);
         }
 
         private static void PerformTest(IGeometryFactory factory, out Stopwatch watch)

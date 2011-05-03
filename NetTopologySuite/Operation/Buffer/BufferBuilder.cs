@@ -153,8 +153,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             
             foreach (var obj in nodedSegStrings)
             {
-                var segStr = (SegmentString) obj;
-                var oldLabel = (Label) segStr.Data;
+                var segStr = (NodedSegmentString) obj;
+                var oldLabel = (Label) segStr.Context;
                 var edge = new Edge(segStr.Coordinates, new Label(oldLabel));
                 InsertEdge(edge);
             }

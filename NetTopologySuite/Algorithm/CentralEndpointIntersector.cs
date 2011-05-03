@@ -27,24 +27,24 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return intor.Intersection;
         }
 
-        private readonly ICoordinate[] pts;
-        private ICoordinate intPt;
+        private readonly ICoordinate[] _pts;
+        private ICoordinate _intPt;
 
         public CentralEndpointIntersector(ICoordinate p00, ICoordinate p01, ICoordinate p10, ICoordinate p11)
         {
-            this.pts = new ICoordinate[] { p00, p01, p10, p11 };
-            this.Compute();
+            _pts = new[] { p00, p01, p10, p11 };
+            Compute();
         }
 
         private void Compute()
         {
-            ICoordinate centroid = Average(this.pts);
-            this.intPt = this.FindNearestPoint(centroid, this.pts);
+            ICoordinate centroid = Average(_pts);
+            _intPt = FindNearestPoint(centroid, _pts);
         }
 
         public ICoordinate Intersection
         {
-            get { return this.intPt; }
+            get { return _intPt; }
         }
 
         private static ICoordinate Average(ICoordinate[] pts)
@@ -67,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// Determines a point closest to the given point.
         /// </summary>        
-        private ICoordinate FindNearestPoint(ICoordinate p, ICoordinate[] pts)
+        private static ICoordinate FindNearestPoint(ICoordinate p, ICoordinate[] pts)
         {
             double minDist = Double.MaxValue;
             ICoordinate result = null;

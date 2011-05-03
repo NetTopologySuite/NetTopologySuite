@@ -6,7 +6,7 @@ using GisSharpBlog.NetTopologySuite.Geometries;
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
     /// <summary>
-    /// Represents an intersection point between two <see cref="SegmentString" />s.
+    /// Represents an intersection point between two <see cref="ISegmentString" />s.
     /// </summary>
     public class SegmentNode : IComparable
     {        
@@ -20,9 +20,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         public readonly int SegmentIndex;   // the index of the containing line segment in the parent edge
 
-        private readonly SegmentString segString = null;
-        private readonly Octants segmentOctant = Octants.Null;
-        private readonly bool isInterior;
+        private readonly INodableSegmentString segString;
+        private readonly Octants _segmentOctant = Octants.Null;
+        private readonly bool _isInterior;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SegmentNode"/> class.
@@ -31,14 +31,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="coord"></param>
         /// <param name="segmentIndex"></param>
         /// <param name="segmentOctant"></param>
-        public SegmentNode(SegmentString segString, ICoordinate coord, int segmentIndex, Octants segmentOctant) 
+        public SegmentNode(INodableSegmentString segString, ICoordinate coord, int segmentIndex, Octants segmentOctant) 
         {
             Coordinate = null;
             this.segString = segString;
             Coordinate = new Coordinate(coord);
             SegmentIndex = segmentIndex;
-            this.segmentOctant = segmentOctant;
-            isInterior = !coord.Equals2D(segString.GetCoordinate(segmentIndex));
+            this._segmentOctant = segmentOctant;
+            _isInterior = !coord.Equals2D(segString.Coordinates[segmentIndex]);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <returns></returns>
         public bool IsInterior
         { 
-            get { return isInterior;  }
+            get { return _isInterior;  }
 
         }
 
@@ -58,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <returns></returns>
         public bool IsEndPoint(int maxSegmentIndex)
         {
-            if (SegmentIndex == 0 && ! isInterior) 
+            if (SegmentIndex == 0 && ! _isInterior) 
                 return true;
             return SegmentIndex == maxSegmentIndex;
         } 
@@ -80,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                 return 1;
             if (Coordinate.Equals2D(other.Coordinate))
                 return 0;
-            return SegmentPointComparator.Compare(segmentOctant, Coordinate, other.Coordinate);
+            return SegmentPointComparator.Compare(_segmentOctant, Coordinate, other.Coordinate);
         }
 
         /// <summary>

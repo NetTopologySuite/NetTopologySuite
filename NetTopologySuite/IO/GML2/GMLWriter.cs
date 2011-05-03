@@ -44,7 +44,11 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
             using (Stream stream = new MemoryStream(data))
                 Write(geometry, stream);
             Stream outStream = new MemoryStream(data);
+#if SILVERLIGHT
             return XmlTextReader.Create(outStream);
+#else
+            return new XmlTextReader(outStream);
+#endif
         }
 
         /// <summary>
@@ -54,23 +58,20 @@ namespace GisSharpBlog.NetTopologySuite.IO.GML2
         /// <param name="stream"></param>
         public void Write(IGeometry geometry, Stream stream)
         {
-
-            XmlWriterSettings settings = null;
-
+            XmlTextWriter writer;
 #if SILVERLIGHT
 
+            XmlWriterSettings settings = null;
             settings =new XmlWriterSettings(){NamespaceHandling = NamespaceHandling.OmitDuplicates,Indent=true};
+            XmlTextWriter writer = (XmlTextWriter)XmlWriter.Create(stream, settings);
 #else
-            settings = new XmlWriterSettings() { Indent = true };
+            writer = new XmlTextWriter(stream, null) {Namespaces = true};
 #endif
 
-
-
-            XmlTextWriter writer = (XmlTextWriter)XmlWriter.Create(stream, settings);
             writer.WriteStartElement(GMLElements.gmlPrefix, "GML", GMLElements.gmlNS);
+
 #if !SILVERLIGHT
-            writer.Namespaces = true;
-            writer.Formatting = Formatting.Indented;
+            //writer.Formatting = Formatting.Indented;
 #endif
             Write(geometry, writer);
             writer.WriteEndElement();

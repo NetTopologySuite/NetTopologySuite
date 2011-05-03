@@ -14,11 +14,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// The line segments are represented by an array of <see cref="Coordinate" />s.
     /// Intended to optimize the noding of contiguous segments by
     /// reducing the number of allocated objects.
-    /// <see cref="SegmentString" />s can carry a context object, which is useful
+    /// <see cref="NodedSegmentString" />s can carry a context object, which is useful
     /// for preserving topological or parentage information.
     /// All noded substrings are initialized with the same context object.
     /// </summary>
-    public class SegmentString
+    public class NodedSegmentString : INodableSegmentString
     {
         /// <summary>
         /// 
@@ -41,38 +41,38 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         {
             foreach (var obj in segStrings)
             {
-                var ss = (SegmentString) obj;
+                var ss = (NodedSegmentString) obj;
                 ss.NodeList.AddSplitEdges(resultEdgelist);
             }
         }
 
-        private readonly SegmentNodeList nodeList;
-        private readonly ICoordinate[] pts;
+        private readonly SegmentNodeList _nodeList;
+        private readonly ICoordinate[] _pts;
 
         /// <summary>
         /// Creates a new segment string from a list of vertices.
         /// </summary>
         /// <param name="pts">The vertices of the segment string.</param>
         /// <param name="data">The user-defined data of this segment string (may be null).</param>
-        public SegmentString(ICoordinate[] pts, Object data)
+        public NodedSegmentString(ICoordinate[] pts, Object data)
         {
-            nodeList = new SegmentNodeList(this);
+            _nodeList = new SegmentNodeList(this);
 
-            this.pts = pts;
-            Data = data;
+            _pts = pts;
+            Context = data;
         }
 
         /// <summary>
         /// Gets/Sets the user-defined data for this segment string.
         /// </summary>
-        public object Data { get; set; }
+        public object Context { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         public SegmentNodeList NodeList
         {
-            get { return nodeList; }
+            get { return _nodeList; }
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <value></value>
         public int Count
         {
-            get { return pts.Length; }
+            get { return _pts.Length; }
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <returns></returns>
         public ICoordinate GetCoordinate(int i) 
         { 
-            return pts[i]; 
+            return _pts[i]; 
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         public ICoordinate[] Coordinates
         {
-            get { return pts; }
+            get { return _pts; }
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         public bool IsClosed
         {
-            get { return pts[0].Equals(pts[pts.Length - 1]); }
+            get { return _pts[0].Equals2D(_pts[_pts.Length - 1]); }
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <returns>The octant of the segment at the vertex</returns>
         public Octants GetSegmentOctant(int index)
         {
-            return index == pts.Length - 1 ? 
+            return index == _pts.Length - 1 ? 
                 Octants.Null :
                 Octant.GetOctant(GetCoordinate(index), GetCoordinate(index + 1));
         }
@@ -141,7 +141,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <summary>
         /// Add an <see cref="SegmentNode" /> for intersection intIndex.
         /// An intersection that falls exactly on a vertex
-        /// of the <see cref="SegmentString" /> is normalized
+        /// of the <see cref="NodedSegmentString" /> is normalized
         /// to use the higher of the two possible segmentIndexes.
         /// </summary>
         /// <param name="li"></param>
@@ -164,9 +164,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             var normalizedSegmentIndex = segmentIndex;
             // normalize the intersection point location
             var nextSegIndex = normalizedSegmentIndex + 1;
-            if(nextSegIndex < pts.Length)
+            if(nextSegIndex < _pts.Length)
             {
-                var nextPt = pts[nextSegIndex];
+                var nextPt = _pts[nextSegIndex];
               
                 // Normalize segment index if intPt falls on vertex
                 // The check for point equality is 2D only - Z values are ignored
@@ -175,7 +175,27 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             }
 
             // Add the intersection point to edge intersection list.
-            var ei = nodeList.Add(intPt, normalizedSegmentIndex);
+            /*var ei = */_nodeList.Add(intPt, normalizedSegmentIndex);
         }
+
+        public LineSegment this[Int32 index]
+        {
+            get
+            {
+                if (index < 0 || index >= Count)
+                {
+                    throw new ArgumentOutOfRangeException("index", index,
+                                                          "Parameter must be greater than or equal to 0 and less than TotalItemCount.");
+                }
+
+                return new LineSegment(_pts[index], _pts[index + 1]);
+            }
+            set
+            {
+                throw new NotSupportedException(
+                    "Setting line segments in a ISegmentString not supported.");
+            }
+        }
+
     }
 }

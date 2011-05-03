@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -9,13 +10,13 @@ using ArrayList = System.Collections.Generic.List<object>;
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
     /// <summary>
-    /// Finds proper and interior intersections in a set of <see cref="SegmentString" />s,
+    /// Finds proper and interior intersections in a set of <see cref="ISegmentString" />s,
     /// and adds them as nodes.
     /// </summary>
     public class IntersectionFinderAdder : ISegmentIntersector
     {
         private LineIntersector li = null;
-        private readonly IList interiorIntersections = null;
+        private readonly IList _interiorIntersections = null;
 
         /// <summary>
         /// Creates an intersection finder which finds all proper intersections.
@@ -24,7 +25,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         public IntersectionFinderAdder(LineIntersector li)
         {
             this.li = li;
-            interiorIntersections = new ArrayList();
+            _interiorIntersections = new ArrayList();
         }
 
         /// <summary>
@@ -34,14 +35,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         {
             get
             {
-                return interiorIntersections;
+                return _interiorIntersections;
             }
         }
    
         /// <summary>
         /// This method is called by clients
         /// of the <see cref="ISegmentIntersector" /> class to process
-        /// intersections for two segments of the <see cref="SegmentString" />s being intersected.
+        /// intersections for two segments of the <see cref="ISegmentString" />s being intersected.
         /// Note that some clients (such as <see cref="MonotoneChain" />s) may optimize away
         /// this call for segment pairs which they have determined do not intersect
         /// (e.g. by an disjoint envelope test).
@@ -50,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="segIndex0"></param>
         /// <param name="e1"></param>
         /// <param name="segIndex1"></param>
-        public void ProcessIntersections(SegmentString e0, int segIndex0, SegmentString e1, int segIndex1 )
+        public void ProcessIntersections(ISegmentString e0, int segIndex0, ISegmentString e1, int segIndex1 )
         {
             // don't bother intersecting a segment with itself
             if (e0 == e1 && segIndex0 == segIndex1) 
@@ -69,10 +70,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                 if (li.IsInteriorIntersection())
                 {
                     for(int intIndex = 0; intIndex < li.IntersectionNum; intIndex++)
-                        interiorIntersections.Add(li.GetIntersection(intIndex));
+                        _interiorIntersections.Add(li.GetIntersection(intIndex));
                     
-                    e0.AddIntersections(li, segIndex0, 0);
-                    e1.AddIntersections(li, segIndex1, 1);
+                    ((NodedSegmentString)e0).AddIntersections(li, segIndex0, 0);
+                    ((NodedSegmentString)e1).AddIntersections(li, segIndex1, 1);
                 }
             }
         }

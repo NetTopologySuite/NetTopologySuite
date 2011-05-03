@@ -286,9 +286,14 @@
     <Compile Include="LinearReferencing\LocationIndexedLine.cs" />
     <Compile Include="LinearReferencing\LocationIndexOfLine.cs" />
     <Compile Include="LinearReferencing\LocationIndexOfPoint.cs" />
+    <Compile Include="Noding\BasicSegmentString.cs" />
+    <Compile Include="Noding\FastNodingValidator.cs" />
+    <Compile Include="Noding\INodableSegmentString.cs" />
+    <Compile Include="Noding\InteriorIntersectionFinder.cs" />
     <Compile Include="Noding\IntersectionAdder.cs" />
     <Compile Include="Noding\IntersectionFinderAdder.cs" />
     <Compile Include="Noding\ISegmentIntersector.cs" />
+    <Compile Include="Noding\ISegmentString.cs" />
     <Compile Include="Noding\IteratedNoder.cs" />
     <Compile Include="Noding\MCIndexNoder.cs" />
     <Compile Include="Noding\INoder.cs" />

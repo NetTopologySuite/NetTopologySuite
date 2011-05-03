@@ -145,7 +145,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             if (!NodingValidatorDisabled)
             {
                 var nv = new EdgeNodingValidator(edgeList.Edges);
-                nv.checkValid();
+                nv.CheckValid();
             }
             
             graph.AddEdges(edgeList.Edges);

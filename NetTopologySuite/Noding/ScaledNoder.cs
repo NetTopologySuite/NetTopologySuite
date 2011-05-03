@@ -88,8 +88,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         {
             return CollectionUtil.Transform(segStrings, delegate(object obj)
             {
-                SegmentString ss = (SegmentString) obj;
-                return new SegmentString(Scale(ss.Coordinates), ss.Data);
+                ISegmentString ss = (ISegmentString) obj;
+                return new NodedSegmentString(Scale(ss.Coordinates), ss.Context);
             });
         }
         
@@ -116,7 +116,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         {
             CollectionUtil.Apply(segStrings, delegate(object obj)
             {
-                SegmentString ss = (SegmentString)obj;
+                ISegmentString ss = (ISegmentString)obj;
                 Rescale(ss.Coordinates);
                 return null;
             });                                           

@@ -6,8 +6,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
 {
 
     /// <summary>
-    /// Nodes a set of <see cref="SegmentString" />s completely.
-    /// The set of <see cref="SegmentString" />s is fully noded;
+    /// Nodes a set of <see cref="ISegmentString" />s completely.
+    /// The set of <see cref="ISegmentString" />s is fully noded;
     /// i.e. noding is repeated until no further intersections are detected.
     /// <para>
     /// Iterated noding using a <see cref="PrecisionModels.Floating" /> precision model is not guaranteed to converge,
@@ -55,8 +55,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// Returns a <see cref="IList"/> of fully noded <see cref="SegmentString"/>s.
-        /// The <see cref="SegmentString"/>s have the same context as their parent.
+        /// Returns a <see cref="IList"/> of fully noded <see cref="ISegmentString"/>s.
+        /// The <see cref="ISegmentString"/>s have the same context as their parent.
         /// </summary>
         /// <returns></returns>
         public IList GetNodedSubstrings() 
@@ -65,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// Fully nodes a list of <see cref="SegmentString" />s, i.e. peforms noding iteratively
+        /// Fully nodes a list of <see cref="ISegmentString" />s, i.e. peforms noding iteratively
         /// until no intersections are found between segments.
         /// Maintains labelling of edges correctly through the noding.
         /// </summary>

@@ -21,6 +21,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Performances
 
             OverlayOp.NodingValidatorDisabled = true;
             var elapsed1 = Perform(geom1, geom2);
+            elapsed1 = Perform(geom1, geom2);
             Debug.WriteLine("NodingValidator disabled => elapsed time: " + elapsed1);
 
             OverlayOp.NodingValidatorDisabled = false;

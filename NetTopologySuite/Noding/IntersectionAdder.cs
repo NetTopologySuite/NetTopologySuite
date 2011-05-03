@@ -7,11 +7,11 @@ using GisSharpBlog.NetTopologySuite.Index.Chain;
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
     /// <summary>
-    /// Computes the intersections between two line segments in <see cref="SegmentString" />s
+    /// Computes the intersections between two line segments in <see cref="ISegmentString" />s
     /// and adds them to each string.
     /// The <see cref="ISegmentIntersector" /> is passed to a <see cref="INoder" />.
-    /// The <see cref="SegmentString.AddIntersections" /> method is called whenever the <see cref="INoder" />
-    /// detects that two <see cref="SegmentString" />s might intersect.
+    /// The <see cref="ISegmentString.AddIntersections" /> method is called whenever the <see cref="INoder" />
+    /// detects that two <see cref="ISegmentString" />s might intersect.
     /// This class is an example of the Strategy pattern.
     /// </summary>
     public class IntersectionAdder : ISegmentIntersector
@@ -152,7 +152,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="e1"></param>
         /// <param name="segIndex1"></param>
         /// <returns></returns>
-        private bool IsTrivialIntersection(SegmentString e0, int segIndex0, SegmentString e1, int segIndex1)
+        private bool IsTrivialIntersection(ISegmentString e0, int segIndex0, ISegmentString e1, int segIndex1)
         {
             if(e0 == e1)
             {
@@ -175,7 +175,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <summary>
         /// This method is called by clients
         /// of the <see cref="ISegmentIntersector" /> class to process
-        /// intersections for two segments of the <see cref="SegmentString" /> being intersected.
+        /// intersections for two segments of the <see cref="ISegmentString" /> being intersected.
         /// Note that some clients (such as <see cref="MonotoneChain" />s) may optimize away
         /// this call for segment pairs which they have determined do not intersect
         /// (e.g. by an disjoint envelope test).
@@ -184,7 +184,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="segIndex0"></param>
         /// <param name="e1"></param>
         /// <param name="segIndex1"></param>
-        public void ProcessIntersections(SegmentString e0, int segIndex0, SegmentString e1, int segIndex1)
+        public void ProcessIntersections(ISegmentString e0, int segIndex0, ISegmentString e1, int segIndex1)
         {
             if (e0 == e1 && segIndex0 == segIndex1)
                 return;
@@ -212,8 +212,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                 if (!IsTrivialIntersection(e0, segIndex0, e1, segIndex1))
                 {
                     hasIntersection = true;
-                    e0.AddIntersections(li, segIndex0, 0);
-                    e1.AddIntersections(li, segIndex1, 1);
+                    ((NodedSegmentString)e0).AddIntersections(li, segIndex0, 0);
+                    ((NodedSegmentString)e1).AddIntersections(li, segIndex1, 1);
                     if (li.IsProper)
                     {
                         NumProperIntersections++;
