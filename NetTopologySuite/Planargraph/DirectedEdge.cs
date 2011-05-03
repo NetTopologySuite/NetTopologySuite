@@ -33,44 +33,18 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             return edges;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         protected Edge parentEdge;
         
-        /// <summary>
-        /// 
-        /// </summary>
-        protected Node from;
-        
-        /// <summary>
-        /// 
-        /// </summary>
+        protected Node from;        
         protected Node to;
         
-        /// <summary>
-        /// 
-        /// </summary>
-        protected ICoordinate p0, p1;
+        protected ICoordinate p0;
+        protected ICoordinate p1;
+
+        protected DirectedEdge sym;  // optional
         
-        /// <summary>
-        /// 
-        /// </summary>
-        protected DirectedEdge sym = null;  // optional
-        
-        /// <summary>
-        /// 
-        /// </summary>
         protected bool edgeDirection;
-        
-        /// <summary>
-        /// 
-        /// </summary>
         protected int quadrant;
-        
-        /// <summary>
-        /// 
-        /// </summary>
         protected double angle;
 
         /// <summary>
@@ -107,14 +81,8 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public Edge Edge
         {
-            get
-            {
-                return parentEdge; 
-            }
-            set
-            {
-                parentEdge = value;
-            }
+            get { return parentEdge; }
+            set { parentEdge = value; }
 
         }
 
@@ -124,10 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public int Quadrant
         {
-            get
-            {
-                return quadrant; 
-            }
+            get { return quadrant; }
         }
 
         /// <summary>
@@ -136,10 +101,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public ICoordinate DirectionPt
         {
-            get
-            {
-                return p1; 
-            }
+            get { return p1; }
         }
 
         /// <summary>
@@ -148,10 +110,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public bool EdgeDirection
         {
-            get
-            {
-                return edgeDirection; 
-            }
+            get { return edgeDirection; }
         }
 
         /// <summary>
@@ -159,10 +118,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public Node FromNode
         {
-            get
-            {
-                return from; 
-            }
+            get { return from; }
         }
 
         /// <summary>
@@ -170,10 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public Node ToNode
         {
-            get
-            {
-                return to; 
-            }
+            get { return to; }
         }
 
         /// <summary>
@@ -181,10 +134,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public ICoordinate Coordinate
         {
-            get
-            {
-                return from.Coordinate; 
-            }
+            get { return from.Coordinate; }
         }
 
         /// <summary>
@@ -193,10 +143,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public double Angle
         {
-            get
-            {
-                return angle; 
-            }
+            get { return angle; }
         }
 
         /// <summary>
@@ -207,14 +154,8 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public DirectedEdge Sym
         {
-            get
-            {
-                return sym; 
-            }
-            set
-            {
-                sym = value;
-            }
+            get { return sym;  }
+            set { sym = value; }
         }
 
         /// <summary>
@@ -281,10 +222,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <value></value>
         public override bool IsRemoved
         {
-            get
-            {
-                return parentEdge == null;
-            }
+            get { return parentEdge == null; }
         }
 
         /// <summary>
@@ -296,10 +234,6 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             this.parentEdge = null;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {            
             return "DirectedEdge: " + p0 + " - " + p1 + " " + quadrant + ":" + angle;
