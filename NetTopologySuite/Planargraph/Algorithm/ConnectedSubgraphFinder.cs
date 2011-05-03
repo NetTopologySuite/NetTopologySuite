@@ -1,5 +1,4 @@
 using System.Collections;
-using GisSharpBlog.NetTopologySuite.Planargraph;
 #if SILVERLIGHT
 using Stack = System.Collections.Generic.Stack<object>;
 using ArrayList = System.Collections.Generic.List<object>;
@@ -11,7 +10,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
     /// </summary>
     public class ConnectedSubgraphFinder
     {
-        private PlanarGraph graph;
+        private readonly PlanarGraph graph;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConnectedSubgraphFinder"/> class.
@@ -22,14 +21,9 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
             this.graph = graph;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public IList GetConnectedSubgraphs()
         {
             IList subgraphs = new ArrayList();
-
             GraphComponent.SetVisited(graph.GetNodeEnumerator(), false);
             IEnumerator ienum = graph.GetEdgeEnumerator();
             while(ienum.MoveNext())
@@ -59,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
         {
             Stack nodeStack = new Stack();
             nodeStack.Push(startNode);
-            while (!(nodeStack.Count == 0))
+            while (nodeStack.Count != 0)
             {
                 Node node = (Node)nodeStack.Pop();
                 AddEdges(node, nodeStack, subgraph);
@@ -72,10 +66,10 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
         /// <param name="node"></param>
         /// <param name="nodeStack"></param>
         /// <param name="subgraph"></param>
-        private void AddEdges(Node node, Stack nodeStack, Subgraph subgraph)
+        private static void AddEdges(Node node, Stack nodeStack, Subgraph subgraph)
         {
             node.Visited = true;
-            IEnumerator i = ((DirectedEdgeStar)node.OutEdges).GetEnumerator();
+            IEnumerator i = node.OutEdges.GetEnumerator();
             while(i.MoveNext())
             {
                 DirectedEdge de = (DirectedEdge)i.Current;

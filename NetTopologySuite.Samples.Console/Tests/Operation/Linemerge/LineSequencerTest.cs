@@ -10,24 +10,13 @@ using NUnit.Framework;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
 {   
-    /// <summary>
-    /// 
-    /// </summary>
     [TestFixture]
     public class LineSequencerTest : BaseSamples    
     {
-        private static WKTReader rdr = new WKTReader(GeometryFactory.Fixed);
+        private static readonly WKTReader rdr = new WKTReader(GeometryFactory.Fixed);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        public LineSequencerTest() : 
-            base(GeometryFactory.Fixed) { }
+        public LineSequencerTest() : base(GeometryFactory.Fixed) { }
 
-        /// <summary>
-        /// 
-        /// </summary>
         [Test]
         public void Simple()      
         {
@@ -37,13 +26,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
                 "LINESTRING ( 0 20, 0 30 )",
                 "LINESTRING ( 0 10, 0 20 )",     
             };
-            String result = "MULTILINESTRING ((0 0, 0 10), (0 10, 0 20), (0 20, 0 30))";
+            const string result = "MULTILINESTRING ((0 0, 0 10), (0 10, 0 20), (0 20, 0 30))";
             RunLineSequencer(wkt, result);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         [Test]
         public void SimpleLoop()      
         {
@@ -52,13 +38,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
                 "LINESTRING ( 0 0, 0 10 )",
                 "LINESTRING ( 0 10, 0 0 )",
             };
-            String result = "MULTILINESTRING ((0 0, 0 10), (0 10, 0 0))";
+            const string result = "MULTILINESTRING ((0 0, 0 10), (0 10, 0 0))";
             RunLineSequencer(wkt, result);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         [Test]
         public void SimpleBigLoop()      
         {
@@ -69,13 +52,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
                 "LINESTRING ( 0 30, 0 00 )",
                 "LINESTRING ( 0 10, 0 20 )",
             };
-            String result = "MULTILINESTRING ((0 0, 0 10), (0 10, 0 20), (0 20, 0 30), (0 30, 0 0))";
+            const string result = "MULTILINESTRING ((0 0, 0 10), (0 10, 0 20), (0 20, 0 30), (0 30, 0 0))";
             RunLineSequencer(wkt, result);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         [Test]
         public void SimpleVeryBigLoop()
         {
@@ -87,13 +67,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
                 "LINESTRING ( 0 20, 0 30 )",
                 "LINESTRING ( 0 10, 0 20 )",
             };
-            String result = "MULTILINESTRING ((0 0, 0 10), (0 10, 0 20), (0 20, 0 30), (0 30, 0 40), (0 40, 0 0))";
+            const string result = "MULTILINESTRING ((0 0, 0 10), (0 10, 0 20), (0 20, 0 30), (0 30, 0 40), (0 40, 0 0))";
             RunLineSequencer(wkt, result);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         [Test]
         public void SimpleVeryVeryBigLoop()
         {
@@ -106,13 +83,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
                 "LINESTRING ( 0 30, 0 40 )",
                 "LINESTRING ( 0 10, 0 20 )",
             };
-            String result = "MULTILINESTRING ((0 50, 0 0), (0 0, 0 10), (0 10, 0 20), (0 20, 0 30), (0 30, 0 40), (0 40, 0 30))";
+            const string result = "MULTILINESTRING ((0 50, 0 0), (0 0, 0 10), (0 10, 0 20), (0 20, 0 30), (0 30, 0 40), (0 40, 0 30))";
             RunLineSequencer(wkt, result);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
         [Test]
         public void TwoSimpleLoops()      
         {
@@ -123,13 +97,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
                 "LINESTRING ( 0 0, 0 20 )",
                 "LINESTRING ( 0 20, 0 0 )",
             };
-            String result = "MULTILINESTRING ((0 10, 0 0), (0 0, 0 20), (0 20, 0 0), (0 0, 0 10))";
+            const string result = "MULTILINESTRING ((0 10, 0 0), (0 0, 0 20), (0 20, 0 0), (0 0, 0 10))";
             RunLineSequencer(wkt, result);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         [Test]
         public void Wide8WithTail()      
         {
@@ -148,10 +119,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
             RunLineSequencer(wkt, result);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        [Test]
+       [Test]
         public void SimpleLoopWithTail()      
         {
             String[] wkt = 
@@ -160,13 +128,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
                 "LINESTRING ( 0 10, 10 10 )",
                 "LINESTRING ( 10 10, 10 20, 0 10 )",
             };
-            String result = "MULTILINESTRING ((0 0, 0 10), (0 10, 10 10), (10 10, 10 20, 0 10))";
+            const string result = "MULTILINESTRING ((0 0, 0 10), (0 10, 10 10), (10 10, 10 20, 0 10))";
             RunLineSequencer(wkt, result);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         [Test]
         public void LineWithRing()
         {
@@ -177,13 +142,10 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
                 "LINESTRING ( 0 30, 0 20 )",
                 "LINESTRING ( 0 20, 0 10 )",
             };
-            String result = "MULTILINESTRING ((0 0, 0 10), (0 10, 10 10, 10 20, 0 10), (0 10, 0 20), (0 20, 0 30))";
+            const string result = "MULTILINESTRING ((0 0, 0 10), (0 10, 10 10, 10 20, 0 10), (0 10, 0 20), (0 20, 0 30))";
             RunLineSequencer(wkt, result);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         [Test]
         public void MultipleGraphsWithRing()
         {
@@ -196,15 +158,12 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
                 "LINESTRING ( 0 60, 0 50 )",
                 "LINESTRING ( 0 40, 0 50 )",
             };
-            String result = "MULTILINESTRING ((0 0, 0 10), (0 10, 10 10, 10 20, 0 10), (0 10, 0 20), (0 20, 0 30), (0 40, 0 50), (0 50, 0 60))";
+            const string result = "MULTILINESTRING ((0 0, 0 10), (0 10, 10 10, 10 20, 0 10), (0 10, 0 20), (0 20, 0 30), (0 40, 0 50), (0 50, 0 60))";
             RunLineSequencer(wkt, result);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         [Test]
-        public void MultipleGraphsWithMultipeRings()
+        public void MultipleGraphsWithMultipleRings()
         {
             String[] wkt = 
             {
@@ -216,50 +175,36 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
                 "LINESTRING ( 0 60, 0 50 )",
                 "LINESTRING ( 0 40, 0 50 )",
             };
-            String result = "MULTILINESTRING ((0 0, 0 10), (0 10, 40 40, 40 20, 0 10), (0 10, 10 10, 10 20, 0 10), (0 10, 0 20), (0 20, 0 30), (0 40, 0 50), (0 50, 0 60))";
+            const string result = "MULTILINESTRING ((0 0, 0 10), (0 10, 40 40, 40 20, 0 10), (0 10, 10 10, 10 20, 0 10), (0 10, 0 20), (0 20, 0 30), (0 40, 0 50), (0 50, 0 60))";
             RunLineSequencer(wkt, result);
         }        
 
-        /// <summary>
-        /// 
-        /// </summary>
         [Test]
-        public void LineSequence()      
+        public void LineSequence()
         {
-            String wkt = "LINESTRING ( 0 0, 0 10 )";
+            const string wkt = "LINESTRING ( 0 0, 0 10 )";
             RunIsSequenced(wkt, true);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         [Test]
-        public void SplitLineSequence()      
-        { 
-            String wkt = "MULTILINESTRING ((0 0, 0 1), (0 2, 0 3), (0 3, 0 4) )";
+        public void SplitLineSequence()
+        {
+            const string wkt = "MULTILINESTRING ((0 0, 0 1), (0 2, 0 3), (0 3, 0 4) )";
             RunIsSequenced(wkt, true);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         [Test]
         public void BadLineSequence()
         {
-            String wkt = "MULTILINESTRING ((0 0, 0 1), (0 2, 0 3), (0 1, 0 4) )";
+            const string wkt = "MULTILINESTRING ((0 0, 0 1), (0 2, 0 3), (0 1, 0 4) )";
             RunIsSequenced(wkt, false);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="inputWKT"></param>
-        /// <param name="expectedWKT"></param>
-        private void RunLineSequencer(String[] inputWKT, String expectedWKT)      
+        private static void RunLineSequencer(String[] inputWKT, String expectedWKT)      
         {
             try
             {
-                IList<IGeometry> inputGeoms = FromWKT(inputWKT);
+                IEnumerable<IGeometry> inputGeoms = FromWKT(inputWKT);
                 LineSequencer sequencer = new LineSequencer();
                 sequencer.Add(inputGeoms);
 
@@ -279,12 +224,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
             catch (Exception ex) { Debug.WriteLine(ex.ToString()); throw; }            
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="inputWKT"></param>
-        /// <param name="expected"></param>
-        private void RunIsSequenced(String inputWKT, bool expected)
+        private static void RunIsSequenced(String inputWKT, bool expected)
         {
             try
             {
@@ -295,12 +235,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.Linemerge
             catch(Exception ex) { Debug.WriteLine(ex.ToString()); throw ex; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="wkts"></param>
-        /// <returns></returns>
-        private IList<IGeometry> FromWKT(String[] wkts)
+        private static IEnumerable<IGeometry> FromWKT(String[] wkts)
         {
             IList<IGeometry> geomList = new List<IGeometry>();
             foreach (string wkt in wkts)

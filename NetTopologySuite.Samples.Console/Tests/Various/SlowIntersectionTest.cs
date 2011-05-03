@@ -65,7 +65,7 @@
             fastValidator.CheckValid();
             watch.Stop();
             Console.WriteLine("FastNodingValidator.CheckValid => ElapsedMilliseconds: {0}", watch.ElapsedMilliseconds);
-        }
+        }        
 
         private static void PerformTest(IGeometryFactory factory, out Stopwatch watch)
         {
