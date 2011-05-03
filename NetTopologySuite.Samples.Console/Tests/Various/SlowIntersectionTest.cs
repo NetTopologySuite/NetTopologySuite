@@ -22,9 +22,9 @@
         public void TestAsDefault()
         {
             Stopwatch watch;
-            PerformTest(GeometryFactory.Floating, out watch);
+            PerformTest(GeometryFactory.Default, out watch);
             string format = String.Format("GeometryFactory.Default => Elapsed: {0}", watch.Elapsed);
-            Debug.WriteLine(format);
+            Console.WriteLine(format);
         }
 
         [Test]
@@ -32,9 +32,9 @@
         {
             OverlayOp.NodingValidatorDisabled = true;
             Stopwatch watch;
-            PerformTest(GeometryFactory.Floating, out watch);
+            PerformTest(GeometryFactory.Default, out watch);
             string format = String.Format("GeometryFactory.Default => Elapsed: {0}", watch.Elapsed);
-            Debug.WriteLine(format);
+            Console.WriteLine(format);
         }
 
         [Test]

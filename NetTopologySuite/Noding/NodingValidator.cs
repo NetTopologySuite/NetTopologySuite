@@ -58,15 +58,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         private void CheckInteriorIntersections()
         {
-            for (int i = 0; i < this.segStrings.Count; i++)
-            {
-                SegmentString ss0 = (SegmentString)this.segStrings[i];
-                for (int j = 0; j < this.segStrings.Count; j++)
-                {
-                    SegmentString ss1 = (SegmentString)this.segStrings[j];
+            foreach (SegmentString ss0 in this.segStrings)
+                foreach (SegmentString ss1 in this.segStrings)
                     this.CheckInteriorIntersections(ss0, ss1);
-                }
-            }
         }
 
         private void CheckInteriorIntersections(SegmentString ss0, SegmentString ss1)
