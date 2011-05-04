@@ -455,7 +455,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                 if (holePt == null) 
                     return;
 
-                bool outside = !pir.IsInside((Coordinate) holePt);
+                bool outside = !pir.IsInside(holePt);
                 if(outside)
                 {
                     validErr = new TopologyValidationError(TopologyValidationErrors.HoleOutsideShell, holePt);
