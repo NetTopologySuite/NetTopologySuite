@@ -133,7 +133,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             {
                 ICoordinate p0 = pt[i - 1];
                 ICoordinate p1 = pt[i];
-                lineIntersector.ComputeIntersection((Coordinate) p, (Coordinate) p0, (Coordinate) p1);
+                lineIntersector.ComputeIntersection(p, p0, p1);
                 if (lineIntersector.HasIntersection) 
                     return true;                
             }

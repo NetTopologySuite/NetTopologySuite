@@ -241,7 +241,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (IsEmpty) 
                 return;             
-            filter.Filter((Coordinate) Coordinate);
+            filter.Filter(Coordinate);
         }
 
         /// <summary>
