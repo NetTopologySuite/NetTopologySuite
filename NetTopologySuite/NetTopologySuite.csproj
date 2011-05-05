@@ -132,6 +132,8 @@
     </Compile>
     <Compile Include="Geometries\DefaultCoordinateSequence.cs" />
     <Compile Include="Geometries\DefaultCoordinateSequenceFactory.cs" />
+    <Compile Include="Geometries\DotSpatialAffineCoordinateSequence.cs" />
+    <Compile Include="Geometries\DotSpatialAffineCoordinateSequenceFactory.cs" />
     <Compile Include="Geometries\Envelope.cs" />
     <Compile Include="Geometries\Geometry.cs" />
     <Compile Include="Geometries\GeometryCollection.cs" />

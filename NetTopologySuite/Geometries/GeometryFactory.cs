@@ -41,7 +41,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
 		public static readonly IGeometryFactory Fixed = new GeometryFactory(new PrecisionModel(PrecisionModels.Fixed));
            
-        private IPrecisionModel precisionModel;
+        private readonly IPrecisionModel precisionModel;
 
         /// <summary>
         /// Returns the PrecisionModel that Geometries created by this factory
@@ -52,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return precisionModel; }
         }
 
-        private ICoordinateSequenceFactory coordinateSequenceFactory;
+        private readonly ICoordinateSequenceFactory coordinateSequenceFactory;
 
         /// <summary>
         /// 
@@ -88,11 +88,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Constructs a GeometryFactory that generates Geometries having the given
         /// PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.
         /// </summary>        
-        /// <param name="precisionModel"></param>
-        /// <param name="SRID"></param>
-        /// <param name="coordinateSequenceFactory"></param>       
-        public GeometryFactory(IPrecisionModel precisionModel, int SRID,
-                               ICoordinateSequenceFactory coordinateSequenceFactory) 
+        public GeometryFactory(IPrecisionModel precisionModel, int SRID, ICoordinateSequenceFactory coordinateSequenceFactory) 
         {
             this.precisionModel = precisionModel;
             this.coordinateSequenceFactory = coordinateSequenceFactory;
@@ -104,9 +100,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// CoordinateSequence implementation, a double-precision floating PrecisionModel and a
         /// spatial-reference ID of 0.
         /// </summary>
-        /// <param name="coordinateSequenceFactory"></param>
-        public GeometryFactory(ICoordinateSequenceFactory coordinateSequenceFactory) 
-            : this(new PrecisionModel(), 0, coordinateSequenceFactory) { }
+        public GeometryFactory(ICoordinateSequenceFactory coordinateSequenceFactory) : 
+            this(new PrecisionModel(), 0, coordinateSequenceFactory) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
@@ -114,8 +109,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// implementation.
         /// </summary>
         /// <param name="precisionModel">The PrecisionModel to use.</param>
-        public GeometryFactory(IPrecisionModel precisionModel) 
-            : this(precisionModel, 0, GetDefaultCoordinateSequenceFactory()) { }
+        public GeometryFactory(IPrecisionModel precisionModel) : 
+            this(precisionModel, 0, GetDefaultCoordinateSequenceFactory()) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
@@ -124,8 +119,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="precisionModel">The PrecisionModel to use.</param>
         /// <param name="SRID">The SRID to use.</param>
-        public GeometryFactory(PrecisionModel precisionModel, int SRID) 
-            : this(precisionModel, SRID, GetDefaultCoordinateSequenceFactory()) { }
+        public GeometryFactory(PrecisionModel precisionModel, int SRID) : 
+            this(precisionModel, SRID, GetDefaultCoordinateSequenceFactory()) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having a floating
@@ -267,18 +262,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return CreatePoint((ICoordinateSequence) null);
 
             if (envelope.MinX == envelope.MaxX && envelope.MinY == envelope.MaxY) 
-                return CreatePoint(new Coordinate(envelope.MinX, envelope.MinY));            
+                return CreatePoint(new Coordinate(envelope.MinX, envelope.MinY));
 
-            return CreatePolygon(
-                CreateLinearRing(new ICoordinate[]
-                {
-                    new Coordinate(envelope.MinX, envelope.MinY),
-                    new Coordinate(envelope.MaxX, envelope.MinY),
-                    new Coordinate(envelope.MaxX, envelope.MaxY),
-                    new Coordinate(envelope.MinX, envelope.MaxY),
-                    new Coordinate(envelope.MinX, envelope.MinY),
-                }), 
-                null);
+            ILinearRing ring = this.CreateLinearRing(new ICoordinate[]
+            {
+                new Coordinate(envelope.MinX, envelope.MinY),
+                new Coordinate(envelope.MaxX, envelope.MinY),
+                new Coordinate(envelope.MaxX, envelope.MaxY),
+                new Coordinate(envelope.MinX, envelope.MaxY),
+                new Coordinate(envelope.MinX, envelope.MinY),
+            });
+            return CreatePolygon(ring, null);
         }
 
         /// <summary>
@@ -288,8 +282,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coordinate"></param>
         public IPoint CreatePoint(ICoordinate coordinate) 
         {
-            return CreatePoint(coordinate != null ? 
-                CoordinateSequenceFactory.Create(new ICoordinate[] { coordinate }) : null);
+            return CreatePoint(coordinate != null ? CoordinateSequenceFactory.Create(new[] { coordinate }) : null);
         }
 
         /// <summary>
@@ -310,8 +303,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public ILineString CreateLineString(ICoordinate[] coordinates)
         {
-            return CreateLineString(coordinates != null ?
-                CoordinateSequenceFactory.Create(coordinates) : null);
+            return CreateLineString(coordinates != null ? CoordinateSequenceFactory.Create(coordinates) : null);
         }
 
         /// <summary>
@@ -333,8 +325,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
         public ILinearRing CreateLinearRing(ICoordinate[] coordinates)
         {
-            return CreateLinearRing(coordinates != null ?
-                CoordinateSequenceFactory.Create(coordinates) : null);
+            return CreateLinearRing(coordinates != null ? CoordinateSequenceFactory.Create(coordinates) : null);
         }
 
         /// <summary> 
@@ -384,8 +375,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
         public IMultiPoint CreateMultiPoint(ICoordinate[] coordinates)
         {
-            return CreateMultiPoint(coordinates != null ?
-                CoordinateSequenceFactory.Create(coordinates) : null);
+            return CreateMultiPoint(coordinates != null ? CoordinateSequenceFactory.Create(coordinates) : null);
         }
 
         /// <summary> 
@@ -401,7 +391,6 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             List<IPoint> points = new List<IPoint>();
             for (int i = 0; i < coordinates.Count; i++)
                 points.Add(CreatePoint(coordinates.GetCoordinate(i)));
-
             return CreateMultiPoint(points.ToArray());
         }
 
@@ -493,24 +482,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (isCollection) 
             {
                 if (geom0 is IPolygon)
-                    return CreateMultiPolygon(ToPolygonArray(geomList));                
-                else if (geom0 is ILineString)
-                    return CreateMultiLineString(ToLineStringArray(geomList));                
-                else if (geom0 is IPoint)
-                    return CreateMultiPoint(ToPointArray(geomList));
+                    return CreateMultiPolygon(ToPolygonArray(geomList));
+                if (geom0 is ILineString)
+                    return this.CreateMultiLineString(ToLineStringArray(geomList));
+                if (geom0 is IPoint)
+                    return this.CreateMultiPoint(ToPointArray(geomList));
                 Assert.ShouldNeverReachHere();
             }
             return geom0;
         }       
 
         /// <summary>
-        /// 
+        /// Returns a clone of g based on a CoordinateSequence created by this
+        /// GeometryFactory's CoordinateSequenceFactory.        
         /// </summary>
-        /// <param name="g"></param>
-        /// <returns>
-        /// A clone of g based on a CoordinateSequence created by this
-        /// GeometryFactory's CoordinateSequenceFactory.
-        /// </returns>
         public IGeometry CreateGeometry(IGeometry g)
         {
             // could this be cached to make this more efficient? Or maybe it isn't enough overhead to bother
@@ -518,18 +503,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return editor.Edit(g, new AnonymousCoordinateOperationImpl());            
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         private static ICoordinateSequenceFactory GetDefaultCoordinateSequenceFactory()
         {
             return CoordinateArraySequenceFactory.Instance;            
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         private class AnonymousCoordinateOperationImpl : GeometryEditor.CoordinateOperation
         {
             public override ICoordinate[] Edit(ICoordinate[] coordinates, IGeometry geometry)

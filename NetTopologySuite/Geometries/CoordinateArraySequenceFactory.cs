@@ -1,8 +1,8 @@
-using System;
-using GeoAPI.Geometries;
-
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
+    using System;
+    using GeoAPI.Geometries;
+
     /// <summary>
     /// Creates CoordinateSequences represented as an array of Coordinates.
     /// </summary>
@@ -12,22 +12,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     public sealed class CoordinateArraySequenceFactory : ICoordinateSequenceFactory
     {
         private static readonly CoordinateArraySequenceFactory instance = new CoordinateArraySequenceFactory();
-
-        /// <summary>
-        /// 
-        /// </summary>
+        
         private CoordinateArraySequenceFactory() { }
 
         /// <summary>
         /// Returns the singleton instance of CoordinateArraySequenceFactory.
         /// </summary>
-        /// <returns></returns>
         public static CoordinateArraySequenceFactory Instance
         {
-            get
-            {
-                return instance;
-            }
+            get { return instance; }
         }
 
         /// <summary>
@@ -40,23 +33,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return new CoordinateArraySequence(coordinates);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="coordSeq"></param>
-        /// <returns></returns>
         public ICoordinateSequence Create(ICoordinateSequence coordSeq) 
         {
             return new CoordinateArraySequence(coordSeq);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="size"></param>
-        /// <param name="dimension">not used</param>
-        /// <returns></returns>
-        public ICoordinateSequence Create(int size, int dimension) 
+        public ICoordinateSequence Create(int size, int dimension)
         {
             return new CoordinateArraySequence(size);
         }
