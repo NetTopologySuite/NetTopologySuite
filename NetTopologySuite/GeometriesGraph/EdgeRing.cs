@@ -202,7 +202,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             bool isFirstEdge = true;
             do
             {
-                Assert.IsTrue(de != null, "found null Directed Edge");
+                if (de == null)
+                    throw new TopologyException("found null Directed Edge");
                 if (de.EdgeRing == this)
                     throw new TopologyException("Directed Edge visited twice during ring-building at " + de.Coordinate);
 

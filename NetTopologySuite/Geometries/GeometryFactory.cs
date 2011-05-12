@@ -11,6 +11,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// Supplies a set of utility methods for building Geometry objects 
     /// from lists of Coordinates.
     /// </summary>            
+    /// <remarks>
+     /// Note that the factory constructor methods do <b>not</b> change the input coordinates in any way.
+     /// In particular, they are not rounded to the supplied <c>PrecisionModel</c>.
+     /// It is assumed that input Coordinates meet the given precision.
+    /// </remarks>
 #if !SILVERLIGHT
     [Serializable]
 #endif
@@ -360,29 +365,32 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary> 
-        /// Creates a MultiPoint using the given Points; a null or empty array will
-        /// create an empty MultiPoint.
+        /// Creates a <see cref="IMultiPoint"/> using the given Points.
+        /// A null or empty array will  create an empty MultiPoint.
         /// </summary>
-        /// <param name="point">An array without null elements, or an empty array, or null.</param>
+        /// <param name="point">An array (without null elements), or an empty array, or <c>null</c>.</param>
+        /// <returns>A <see cref="IMultiPoint"/> object</returns>
         public IMultiPoint CreateMultiPoint(IPoint[] point)
         {
             return new MultiPoint(point, this);
         }
 
         /// <summary> 
-        /// Creates a MultiPoint using the given Coordinates; a null or empty array will create an empty MultiPoint.
+        /// Creates a <see cref="IMultiPoint"/> using the given Coordinates.
+        /// A null or empty array will create an empty MultiPoint.
         /// </summary>
-        /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
+        /// <param name="coordinates">An array (without null elements), or an empty array, or <c>null</c></param>
+        /// <returns>A <see cref="IMultiPoint"/> object</returns>
         public IMultiPoint CreateMultiPoint(ICoordinate[] coordinates)
         {
             return CreateMultiPoint(coordinates != null ? CoordinateSequenceFactory.Create(coordinates) : null);
         }
 
         /// <summary> 
-        /// Creates a MultiPoint using the given CoordinateSequence; a null or empty CoordinateSequence will
-        /// create an empty MultiPoint.
+        /// Creates a <see cref="IMultiPoint"/> using the given CoordinateSequence.
+        /// A null or empty CoordinateSequence will create an empty MultiPoint.
         /// </summary>
-        /// <param name="coordinates">A CoordinateSequence possibly empty, or null.</param>
+        /// <param name="coordinates">A CoordinateSequence (possibly empty), or <c>null</c>.</param>
         public IMultiPoint CreateMultiPoint(ICoordinateSequence coordinates)
         {
             if (coordinates == null)
@@ -454,6 +462,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             Type geomClass = null;
             bool isHeterogeneous = false;
+            bool hasGeometryCollection = false;
 
             foreach (IGeometry geom in geomList)
             {                
@@ -461,14 +470,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 if (geomClass == null) 
                     geomClass = partClass;                
                 if (partClass != geomClass) 
-                    isHeterogeneous = true;                
+                    isHeterogeneous = true;
+                if (geom is IGeometryCollection)
+                    hasGeometryCollection = true;
             }
 
             // for the empty point, return an empty GeometryCollection
             if (geomClass == null) 
                 return CreateGeometryCollection(null);
 
-            if (isHeterogeneous)             
+            if (isHeterogeneous || hasGeometryCollection)             
                 return CreateGeometryCollection(ToGeometryArray(geomList));            
 
             // at this point we know the collection is hetereogenous.
@@ -487,7 +498,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     return this.CreateMultiLineString(ToLineStringArray(geomList));
                 if (geom0 is IPoint)
                     return this.CreateMultiPoint(ToPointArray(geomList));
-                Assert.ShouldNeverReachHere();
+                Assert.ShouldNeverReachHere("Unhandled class: " + geom0.GetType().FullName);
             }
             return geom0;
         }       
@@ -505,7 +516,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         private static ICoordinateSequenceFactory GetDefaultCoordinateSequenceFactory()
         {
-            return CoordinateArraySequenceFactory.Instance;            
+            /*return CoordinateArraySequenceFactory.Instance;*/
+            return DotSpatialAffineCoordinateSequenceFactory.Instance;
         }
 
         private class AnonymousCoordinateOperationImpl : GeometryEditor.CoordinateOperation

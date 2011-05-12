@@ -304,6 +304,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </returns>
         protected abstract IIntersectsOp IntersectsOp { get; }
 
+        /// <summary>
+        /// Removes an item from the tree.
+        /// (Builds the tree, if necessary.)
+        /// </summary>
         protected bool Remove(object searchBounds, object item)
         {
             if (!built)

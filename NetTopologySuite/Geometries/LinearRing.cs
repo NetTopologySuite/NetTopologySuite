@@ -40,6 +40,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Returns <c>Dimensions.False</c>, since by definition LinearRings do not have a boundary.
+        /// </summary>
+        public override Dimensions BoundaryDimension
+        {
+	        get 
+	        { 
+		         return Dimensions.False;
+	        }
+        }
+
+  /**
+
+
+        /// <summary>
         /// 
         /// </summary>
         public override bool IsSimple

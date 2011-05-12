@@ -155,14 +155,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public ICoordinate[] ToCoordinateArray()
         {
-            var j = 0;
+            //var j = 0;
             var count = Count;
             var ret = new ICoordinate[count];
             for (var i = 0; i < count; i++)
             {
+                ret[i] = new DotSpatialAffineCoordinate(this, i);
+                /*
                 ret[i] = new Coordinate(_xy[j++], _xy[j++]);
                 if (_z != null)
                     ret[i].Z = _z[i];
+                 */
             }
             return ret;
         }
@@ -340,6 +343,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             set { _sequence.SetOrdinate(_index, Ordinates.Z, value); }
         }
 
+        public double M
+        {
+            get { return _sequence.GetOrdinate(_index, Ordinates.M); }
+            set { _sequence.SetOrdinate(_index, Ordinates.Z, value); }
+        }
+
         public ICoordinate CoordinateValue
         {
             get { return this; }
@@ -349,6 +358,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 Y = value.Y;
                 Z = value.Z;
             }
+        }
+
+        public double this[Ordinates index]
+        {
+            get { return _sequence.GetOrdinate(_index, index); }
+            set { _sequence.SetOrdinate(_index, index, value); }
         }
     }
 }

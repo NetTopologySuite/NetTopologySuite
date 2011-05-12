@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Operation;
+using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -215,29 +217,22 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public override bool IsSimple
-        {
-            get
-            {
-                return (new IsSimpleOp()).IsSimple(this);
-            }
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public override bool IsSimple
+        //{
+        //    get
+        //    {
+        //        return (new IsSimpleOp()).IsSimple(this);
+        //    }
+        //}
 
-        /// <summary>
-        /// 
-        /// </summary>
         public override IGeometry Boundary
         {
             get
             {
-                if (IsEmpty)
-                    return Factory.CreateGeometryCollection(null);
-                if (IsClosed)
-                    return Factory.CreateMultiPoint((ICoordinate[]) null);
-                return Factory.CreateMultiPoint(new IPoint[] { StartPoint, EndPoint });
+                return (new BoundaryOp(this)).GetBoundary();
             }
         }
 
@@ -295,6 +290,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return new Envelope(minx, maxx, miny, maxy);
         }
 
+        internal override int GetHashCodeInternal(int baseValue, Func<int, int> operation)
+        {
+            if (!IsEmpty)
+                baseValue = points.GetHashCode(baseValue, operation);
+            return baseValue;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -324,6 +326,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             for (int i = 0; i < points.Count; i++)
                 filter.Filter(points.GetCoordinate(i));
+        }
+
+        public override void Apply(ICoordinateSequenceFilter filter)
+        {
+            if (points.Count == 0)
+                return;
+            for (int i = 0; i < points.Count; i++)
+            {
+                filter.Filter(points, i);
+                if (filter.Done)
+                    break;
+            }
+            if (filter.GeometryChanged)
+                GeometryChanged();
         }
 
         /// <summary>
@@ -382,23 +398,32 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         protected internal override int CompareToSameClass(object o)
         {
-            LineString line = (LineString) o;
+            Assert.IsTrue(o is ILineString);
+
+            ILineString line = (ILineString)o;
             // MD - optimized implementation
             int i = 0;
             int j = 0;
-            while (i < points.Count && j < line.points.Count) 
+            while (i < points.Count && j < line.CoordinateSequence.Count) 
             {
-                int comparison = points.GetCoordinate(i).CompareTo(line.points.GetCoordinate(j));
+                int comparison = points.GetCoordinate(i).CompareTo(line.CoordinateSequence.GetCoordinate(j));
                 if (comparison != 0) 
                     return comparison;                
                 i++;
                 j++;
             }
             if (i < points.Count) 
-                return 1;            
-            if (j < line.points.Count)
+                return 1;
+            if (j < line.CoordinateSequence.Count)
                 return -1;            
             return 0;            
+        }
+
+        protected internal override int CompareToSameClass(Object o, IComparer<ICoordinateSequence> comp)
+        {
+            Assert.IsTrue(o is ILineString);
+            ILineString line = (LineString)o;
+            return comp.Compare(points, line.CoordinateSequence);
         }
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */

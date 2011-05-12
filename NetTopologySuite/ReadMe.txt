@@ -14,3 +14,8 @@ TODO: GML Reader/Writer
 Please send me any corrections and all suggestions to diego.guidi@gmail.com
 
 Bye :)
+
+This Library has been updated to JTS 1.8 in May 2011.
+The target framework version has been updated to v3.5.
+
+Enjoy

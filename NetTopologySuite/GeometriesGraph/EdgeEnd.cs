@@ -212,7 +212,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// Subclasses should override this if they are using labels
         /// </summary>
-        public virtual void ComputeLabel() { }
+        /// <param name="boundaryNodeRule"></param>
+        public virtual void ComputeLabel(IBoundaryNodeRule boundaryNodeRule) { }
 
         /// <summary>
         /// 

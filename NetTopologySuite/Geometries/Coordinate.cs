@@ -22,17 +22,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 #endif
     public class Coordinate : ICoordinate
     {
-        private double x; // = Double.NaN;
-        private double y; // = Double.NaN;
-        private double z; // = Double.NaN;
+        private double _x; // = Double.NaN;
+        private double _y; // = Double.NaN;
+        private double _z; // = Double.NaN;
 
         /// <summary>
         /// X coordinate.
         /// </summary>
         public double X
         {
-            get { return x; }
-            set { x = value; }
+            get { return _x; }
+            set { _x = value; }
         }
 
         /// <summary>
@@ -40,8 +40,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public double Y
         {
-            get { return y; }
-            set { y = value; }
+            get { return _y; }
+            set { _y = value; }
         }
 
         /// <summary>
@@ -49,8 +49,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public double Z
         {
-            get { return z; }
-            set { z = value; }
+            get { return _z; }
+            set { _z = value; }
+        }
+
+        /// <summary>
+        /// The measure value
+        /// </summary>
+        public double M
+        {
+            get { return Double.NaN; }
+            set { }
         }
 
         /// <summary>
@@ -61,9 +70,47 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="z">Z value.</param>
         public Coordinate(double x, double y, double z)
         {
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            _x = x;
+            _y = y;
+            _z = z;
+        }
+
+        /// <summary>
+        /// Gets/Sets the ordinate value for a given index
+        /// </summary>
+        /// <param name="index">The index of the ordinate</param>
+        /// <returns>The ordinate value</returns>
+        public double this[Ordinates index]
+        {
+            get
+            {
+                switch (index)
+                {
+                    case Ordinates.X:
+                        return _x;
+                    case Ordinates.Y:
+                        return _y;
+                    case Ordinates.Z:
+                        return _z;
+                    default:
+                        return Double.NaN;
+                }
+            }
+            set
+            {
+                switch (index)
+                {
+                    case Ordinates.X:
+                        _x = value;
+                        break;
+                    case Ordinates.Y:
+                        _y = value;
+                        break;
+                    case Ordinates.Z:
+                        _z = value;
+                        break;
+                }
+            }
         }
 
         /// <summary>
@@ -93,9 +140,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get { return this; }
             set
             {
-                x = value.X;
-                y = value.Y;
-                z = value.Z;
+                _x = value.X;
+                _y = value.Y;
+                _z = value.Z;
             }
         }
 
@@ -193,13 +240,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public int CompareTo(ICoordinate other)
         {
-            if (x < other.X)
+            if (_x < other.X)
                 return -1;
-            if (x > other.X)
+            if (_x > other.X)
                 return 1;
-            if (y < other.Y)
+            if (_y < other.Y)
                 return -1;
-            if (y > other.Y)
+            if (_y > other.Y)
                 return 1;
             return 0;
         }
@@ -211,8 +258,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns><c>true</c> if <c>other</c> is a <c>Coordinate</c> with the same values for x, y and z.</returns>
         public bool Equals3D(ICoordinate other)
         {
-            return (x == other.X) && (y == other.Y) &&
-                ((z == other.Z) || (Double.IsNaN(Z) && Double.IsNaN(other.Z)));
+            return (_x == other.X) && (_y == other.Y) &&
+                ((_z == other.Z) || (Double.IsNaN(Z) && Double.IsNaN(other.Z)));
         }
 
         /// <summary>
@@ -221,7 +268,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns><c>string</c> of the form <I>(x,y,z)</I></returns>
         public override string ToString()
         {
-            return "(" + x + ", " + y + ", " + z + ")";
+            return "(" + _x + ", " + _y + ", " + _z + ")";
         }
 
         /// <summary>
@@ -240,8 +287,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public double Distance(ICoordinate p)
         {
-            var dx = x - p.X;
-            var dy = y - p.Y;
+            var dx = _x - p.X;
+            var dy = _y - p.Y;
             return Math.Sqrt(dx * dx + dy * dy);
         }
 

@@ -75,10 +75,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public override IGeometry Boundary
+       ///<summary>
+       /// Gets the boundary of this geometry.
+       /// Zero-dimensional geometries have no boundary by definition,
+       /// so an empty GeometryCollection is returned.
+       /// </summary> 
+       public override IGeometry Boundary
         {
             get
             {
@@ -86,16 +88,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public override bool IsSimple
-        {
-            get
-            {
-                return (new IsSimpleOp()).IsSimple(this);
-            }
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public override bool IsSimple
+        //{
+        //    get
+        //    {
+        //        return (new IsSimpleOp()).IsSimple(this);
+        //    }
+        //}
 
         /// <summary>
         /// 

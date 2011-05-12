@@ -30,8 +30,8 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             return tss.GetResultGeometry();
         }
 
-        private IGeometry inputGeom;
-        private double distanceTolerance;
+        private readonly IGeometry _inputGeom;
+        private double _distanceTolerance;
 
         /// <summary>
         /// 
@@ -39,7 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <param name="inputGeom"></param>
         public DouglasPeuckerSimplifier(IGeometry inputGeom)
         {
-            this.inputGeom = inputGeom;
+            this._inputGeom = inputGeom;
         }
 
         /// <summary>
@@ -49,11 +49,11 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         {
             get
             {
-                return distanceTolerance; 
+                return _distanceTolerance; 
             }
             set
             {
-                distanceTolerance = value; 
+                _distanceTolerance = value; 
             }
         }
 
@@ -63,7 +63,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <returns></returns>
         public IGeometry GetResultGeometry()
         {
-            return (new DPTransformer(this)).Transform(inputGeom);
+            return (new DPTransformer(this)).Transform(_inputGeom);
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             {
                 ICoordinate[] inputPts = coords.ToCoordinateArray();
                 ICoordinate[] newPts = DouglasPeuckerLineSimplifier.Simplify(inputPts, container.DistanceTolerance);
-                return factory.CoordinateSequenceFactory.Create(newPts);
+                return Factory.CoordinateSequenceFactory.Create(newPts);
             }
 
             /// <summary>

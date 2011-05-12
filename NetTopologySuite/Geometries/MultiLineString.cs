@@ -101,31 +101,28 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
-        public override bool IsSimple
-        {
-            get
-            {
-                return (new IsSimpleOp()).IsSimple((IMultiLineString) this);
-            }
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <value></value>
+        //public override bool IsSimple
+        //{
+        //    get
+        //    {
+        //        return (new IsSimpleOp()).IsSimple((IMultiLineString) this);
+        //    }
+        //}
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
-        public override IGeometry Boundary
+       public override IGeometry Boundary
         {
             get
             {
-                if(IsEmpty)
-                    return Factory.CreateGeometryCollection(null);
-                GeometryGraph g = new GeometryGraph(0, this);
-                ICoordinate[] pts = g.GetBoundaryPoints();
-                return Factory.CreateMultiPoint(pts);
+                return (new BoundaryOp(this)).GetBoundary();
+                //if(IsEmpty)
+                //    return Factory.CreateGeometryCollection(null);
+                //GeometryGraph g = new GeometryGraph(0, this);
+                //ICoordinate[] pts = g.GetBoundaryPoints();
+                //return Factory.CreateMultiPoint(pts);
             }
         }
 

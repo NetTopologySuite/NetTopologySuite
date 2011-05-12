@@ -140,8 +140,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// 
         /// </summary>
         /// <param name="tokens"></param>
+        /// <param name="skipExtraParenthesis"></param>
         /// <returns></returns>
-		private ICoordinate GetPreciseCoordinate(IList tokens, Boolean skipExtraParenthesis)
+        private ICoordinate GetPreciseCoordinate(IList tokens, Boolean skipExtraParenthesis)
         {
             ICoordinate coord = new Coordinate();
 			Boolean extraParenthesisFound = false;

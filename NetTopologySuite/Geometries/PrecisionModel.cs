@@ -43,6 +43,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 #endif
     public class PrecisionModel : IPrecisionModel
     {
+        ///<summary>
+        /// Determines which of two <see cref="IPrecisionModel"/>s is the most precise
+        ///</summary>
+        /// <param name="pm1">A precision model</param>
+        /// <param name="pm2">A precision model</param>
+        /// <returns>The PrecisionModel which is most precise</returns>
+        public static IPrecisionModel MostPrecise(IPrecisionModel pm1, IPrecisionModel pm2)
+        {
+            if (pm1.CompareTo(pm2) >= 0)
+                return pm1;
+            return pm2;
+        }
+
         private const int FloatingPrecisionDigits = 16;
         private const int FloatingSinglePrecisionDigits = 6;
         private const int FixedPrecisionDigits = 1;
@@ -57,12 +70,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// The type of PrecisionModel this represents.
         /// </summary>
-        private PrecisionModels modelType;
+        private readonly PrecisionModels _modelType;
 
         /// <summary> 
         /// The scale factor which determines the number of decimal places in fixed precision.
         /// </summary>
-        private double scale;
+        private double _scale;
 
         /// <summary> 
         /// Creates a <c>PrecisionModel</c> with a default precision
@@ -71,7 +84,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public PrecisionModel() 
         {
             // default is floating precision
-            modelType = PrecisionModels.Floating;
+            _modelType = PrecisionModels.Floating;
         }
 
         /// <summary>
@@ -84,7 +97,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </param>
         public PrecisionModel(PrecisionModels modelType)
         {
-            this.modelType = modelType;
+            _modelType = modelType;
 
             if (modelType == PrecisionModels.Fixed)
                 Scale = 1.0;            
@@ -104,7 +117,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         [Obsolete("Offsets are no longer supported, since internal representation is rounded floating point")]
         public PrecisionModel(double scale, double offsetX, double offsetY) 
         {
-            modelType = PrecisionModels.Fixed;
+            _modelType = PrecisionModels.Fixed;
             Scale = scale;
         }
 
@@ -119,7 +132,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </param>  
         public PrecisionModel(double scale) 
         {
-            modelType = PrecisionModels.Fixed;
+            _modelType = PrecisionModels.Fixed;
             Scale = scale;
         }
 
@@ -130,8 +143,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="pm"></param>
         public PrecisionModel(PrecisionModel pm) 
         {
-            modelType = pm.modelType;
-            scale = pm.scale;
+            _modelType = pm._modelType;
+            _scale = pm._scale;
         }
 
         /// <summary>
@@ -151,7 +164,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                return modelType == PrecisionModels.Floating || modelType == PrecisionModels.FloatingSingle;
+                return _modelType == PrecisionModels.Floating || _modelType == PrecisionModels.FloatingSingle;
             }
         }
 
@@ -167,7 +180,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                switch (modelType)
+                switch (_modelType)
                 {
                     case PrecisionModels.Floating:
                         return FloatingPrecisionDigits;
@@ -176,7 +189,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     case PrecisionModels.Fixed:
                         return FixedPrecisionDigits + (int)Math.Ceiling(Math.Log(Scale) / Math.Log(10));
                     default:
-                        throw new ArgumentOutOfRangeException(modelType.ToString());
+                        throw new ArgumentOutOfRangeException(_modelType.ToString());
                 }
             }
 	    }
@@ -192,18 +205,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public double Scale
         {
-            get { return scale; }
-            set { this.scale = Math.Abs(value); }
+            get { return _scale; }
+            set { _scale = Math.Abs(value); }
         }
 
-        /// <summary> 
-        /// Gets the type of this PrecisionModel.
-        /// </summary>
-        /// <returns></returns>
-        public PrecisionModels GetPrecisionModelType()
-        {                        
-            return modelType;
-        }
+        ///// <summary> 
+        ///// Gets the type of this PrecisionModel.
+        ///// </summary>
+        ///// <returns></returns>
+        //public PrecisionModels GetPrecisionModelType()
+        //{                        
+        //    return _modelType;
+        //}
 
         /// <summary> 
         /// Gets the type of this PrecisionModel.
@@ -211,7 +224,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public PrecisionModels PrecisionModelType
         {
-            get { return modelType; }            
+            get { return _modelType; }            
         }
 
         /// <summary> 
@@ -319,15 +332,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="val"></param>
         public double MakePrecise(double val) 
         {
-  	        if (modelType == PrecisionModels.FloatingSingle)
+  	        if (_modelType == PrecisionModels.FloatingSingle)
             {                
   		        float floatSingleVal = (float) val;
   		        return (double)floatSingleVal;
   	        }  	        
-            if (modelType == PrecisionModels.Fixed) 
+            if (_modelType == PrecisionModels.Fixed) 
   		        // return Math.Round(val * scale) / scale;          // Diego Guidi say's: i use the Java Round algorithm (used in JTS 1.6)
                                                                     // Java Rint method, used in JTS 1.5, was consistend with .NET Round algorithm
-                return Math.Floor(((val * scale) + 0.5d)) / scale;
+                return Math.Floor(((val * _scale) + 0.5d)) / _scale;
             return val;     // modelType == FLOATING - no rounding necessary
         }
 
@@ -338,7 +351,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public void MakePrecise(ICoordinate coord)
         {
             // optimization for full precision
-            if (modelType == PrecisionModels.Floating) 
+            if (_modelType == PrecisionModels.Floating) 
                 return;
 
             coord.X = MakePrecise(coord.X);
@@ -353,11 +366,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public override string ToString() 
         {
   	        string description = "UNKNOWN";
-  	        if (modelType == PrecisionModels.Floating)
+  	        if (_modelType == PrecisionModels.Floating)
   		        description = "Floating";  	        
-            else if (modelType == PrecisionModels.FloatingSingle)
+            else if (_modelType == PrecisionModels.FloatingSingle)
   		        description = "Floating-Single";  	        
-            else if (modelType == PrecisionModels.Fixed) 
+            else if (_modelType == PrecisionModels.Fixed) 
   		        description = "Fixed (Scale=" + Scale + ")";  	        
   	        return description;
         }
@@ -385,8 +398,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public bool Equals(IPrecisionModel otherPrecisionModel)
         {
-            return  modelType == otherPrecisionModel.PrecisionModelType &&
-                    scale == otherPrecisionModel.Scale;
+            return  _modelType == otherPrecisionModel.PrecisionModelType &&
+                    _scale == otherPrecisionModel.Scale;
         }        
         
         /// <summary>

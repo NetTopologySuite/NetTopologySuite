@@ -15,7 +15,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         private readonly IList _segStrings;
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="NodingValidator"/> class.
+        /// Creates a new validator for the given collection 
+        /// of <see cref="ISegmentString"/>s.
         /// </summary>
         /// <param name="segStrings">The seg strings.</param>
         public NodingValidator(IList segStrings)
@@ -23,6 +24,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             _segStrings = segStrings;
         }
 
+        /// <summary>
+        /// Checks whether the supplied segment strings
+        /// are correctly noded.  Throws an exception if they are not.
+        /// </summary>
         public void CheckValid()
         {
             CheckEndPtVertexIntersections();

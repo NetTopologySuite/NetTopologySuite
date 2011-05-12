@@ -126,10 +126,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="geom"></param>
-        public virtual void ComputeLabelling(GeometryGraph[] geom)
+        /// <param name="geomGraph"></param>
+        public virtual void ComputeLabelling(GeometryGraph[] geomGraph)
         {
-            ComputeEdgeEndLabels();
+            ComputeEdgeEndLabels(geomGraph[0].BoundaryNodeRule);
             // Propagate side labels  around the edges in the star
             // for each parent Geometry        
             PropagateSideLabels(0);        
@@ -187,7 +187,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                         else 
                         {
                             ICoordinate p = e.Coordinate;
-                            loc = GetLocation(geomi, p, geom);
+                            loc = GetLocation(geomi, p, geomGraph);
                         }
                         label.SetAllLocationsIfNull(geomi, loc);
                     }
@@ -198,13 +198,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        private void ComputeEdgeEndLabels()
+        private void ComputeEdgeEndLabels(IBoundaryNodeRule boundaryNodeRule)
         {
             // Compute edge label for each EdgeEnd
             for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
             {
                 EdgeEnd ee = (EdgeEnd) it.Current;
-                ee.ComputeLabel();
+                ee.ComputeLabel(boundaryNodeRule);
             }
         }
 
@@ -226,13 +226,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public bool IsAreaLabelsConsistent
+        public bool IsAreaLabelsConsistent(GeometryGraph geometryGraph)
         {
-            get
-            {
-                ComputeEdgeEndLabels();
-                return CheckAreaLabelsConsistent(0);
-            }
+            ComputeEdgeEndLabels(geometryGraph.BoundaryNodeRule);
+            return CheckAreaLabelsConsistent(0);
         }
 
         /// <summary>

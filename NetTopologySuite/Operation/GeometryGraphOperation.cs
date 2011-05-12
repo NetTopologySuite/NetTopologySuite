@@ -5,7 +5,7 @@ using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 namespace GisSharpBlog.NetTopologySuite.Operation
 {
     /// <summary>
-    /// The base class for operations that require <c>GeometryGraph</c>s.
+    /// The base class for operations that require <see cref="GeometryGraph"/>s.
     /// </summary>
     public class GeometryGraphOperation
     {        
@@ -44,6 +44,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation
         /// <param name="g0"></param>
         /// <param name="g1"></param>
         public GeometryGraphOperation(IGeometry g0, IGeometry g1)
+            :this(g0, g1, BoundaryNodeRules.OgcSfsBoundaryRule /*BoundaryNodeRules.EndpointBoundaryRule*/)
+        {}
+
+        public GeometryGraphOperation(IGeometry g0, IGeometry g1, IBoundaryNodeRule boundaryNodeRule)
         {
             // use the most precise model for the result
             if (g0.PrecisionModel.CompareTo(g1.PrecisionModel) >= 0)
@@ -51,8 +55,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation
             else ComputationPrecision = g1.PrecisionModel;
 
             arg = new GeometryGraph[2];
-            arg[0] = new GeometryGraph(0, g0);
-            arg[1] = new GeometryGraph(1, g1);
+            arg[0] = new GeometryGraph(0, g0, boundaryNodeRule);
+            arg[1] = new GeometryGraph(1, g1, boundaryNodeRule);
         }
 
         /// <summary>

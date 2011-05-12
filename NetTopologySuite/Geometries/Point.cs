@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Geometries;
 
@@ -96,16 +97,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public override bool IsSimple
-        {
-            get
-            {
-                return true;
-            }
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public override bool IsSimple
+        //{
+        //    get
+        //    {
+        //        return true;
+        //    }
+        //}
 
         /// <summary>
         /// 
@@ -197,7 +198,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        ///Gets the boundary of this geometry.
+        ///Zero-dimensional geometries have no boundary by definition,
+        ///so an empty GeometryCollection is returned.
         /// </summary>
         public override IGeometry Boundary
         {
@@ -218,6 +221,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return new Envelope(Coordinate.X, Coordinate.X, Coordinate.Y, Coordinate.Y);
         }
 
+        internal override int  GetHashCodeInternal(int baseValue, Func<int,int> operation)
+        {
+            if (!IsEmpty)
+                baseValue = operation(baseValue) + coordinates.GetX(0).GetHashCode();
+            return baseValue;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -230,7 +240,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;            
             if (IsEmpty && other.IsEmpty) 
                 return true;
-            return Equal(((IPoint) other).Coordinate, this.Coordinate, tolerance);
+            return Equal(other.Coordinate, Coordinate, tolerance);
         }
 
         /// <summary>
@@ -242,6 +252,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (IsEmpty) 
                 return;             
             filter.Filter(Coordinate);
+        }
+
+        public override void Apply(ICoordinateSequenceFilter filter)
+        {
+            if (IsEmpty)
+                return;
+            filter.Filter(coordinates, 0);
+            if (filter.GeometryChanged)
+                GeometryChanged();
         }
 
         /// <summary>
@@ -287,6 +306,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             Point point = (Point)  other;
             return Coordinate.CompareTo(point.Coordinate);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
+        /// <param name="comparer"></param>
+        /// <returns></returns>
+        protected internal override int CompareToSameClass(object other, IComparer<ICoordinateSequence> comparer)
+        {
+            return comparer.Compare(CoordinateSequence, ((IPoint) other).CoordinateSequence);
         }
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */

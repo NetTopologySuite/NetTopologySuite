@@ -198,18 +198,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public override bool IsSimple
-        {
-            get
-            {
-                CheckNotGeometryCollection(this);
-                Assert.ShouldNeverReachHere();
-                return false;
-            }
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public override bool IsSimple
+        //{
+        //    get
+        //    {
+        //        CheckNotGeometryCollection(this);
+        //        Assert.ShouldNeverReachHere();
+        //        return false;
+        //    }
+        //}
 
         /// <summary>
         /// 
@@ -252,6 +252,36 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
+        internal override int GetHashCodeInternal(int baseValue, Func<int, int> operation)
+        {
+            if (!IsEmpty)
+            {
+                for (int i = 0; i < Count; i++)
+                {
+                    var g = GetGeometryN(i);
+                    if (g is Point)
+                    {
+                        baseValue = ((Point)g).GetHashCodeInternal(baseValue, operation);
+                        continue;
+                    }
+                    if (g is LineString)
+                    {
+                        baseValue = ((LineString)g).GetHashCodeInternal(baseValue, operation);
+                        continue;
+                    }
+                    if (g is Polygon)
+                    {
+                        baseValue = ((Polygon)g).GetHashCodeInternal(baseValue, operation);
+                        continue;
+                    }
+
+                    baseValue = ((GeometryCollection) g).GetHashCodeInternal(baseValue, operation);
+
+                }
+            }
+            return baseValue;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -282,6 +312,22 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             for (int i = 0; i < geometries.Length; i++)
                  geometries[i].Apply(filter);
+        }
+
+        public override void Apply(ICoordinateSequenceFilter filter)
+        {
+            if (geometries.Length == 0)
+                return;
+            for (int i = 0; i < geometries.Length; i++)
+            {
+                ((Geometry)geometries[i]).Apply(filter);
+                if (filter.Done)
+                {
+                    break;
+                }
+            }
+            if (filter.GeometryChanged)
+                GeometryChanged();
         }
 
         /// <summary>
@@ -351,6 +397,27 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             ArrayList theseElements = new ArrayList(geometries);
             ArrayList otherElements = new ArrayList(((GeometryCollection) o).geometries);
             return Compare(theseElements, otherElements);
+        }
+
+        protected internal override int CompareToSameClass(object o, System.Collections.Generic.IComparer<ICoordinateSequence> comp)
+        {
+            IGeometryCollection gc = (IGeometryCollection) o;
+
+            int n1 = NumGeometries;
+            int n2 = gc.NumGeometries;
+            int i = 0;
+            while (i < n1 && i < n2)
+            {
+                IGeometry thisGeom = GetGeometryN(i);
+                Assert.IsTrue(thisGeom is Geometry);
+                IGeometry otherGeom = gc.GetGeometryN(i);
+                int holeComp = ((Geometry) thisGeom).CompareToSameClass(otherGeom, comp);
+                if (holeComp != 0) return holeComp;
+                i++;
+            }
+            if (i < n1) return 1;
+            if (i < n2) return -1;
+            return 0;
         }
 
         /// <summary>

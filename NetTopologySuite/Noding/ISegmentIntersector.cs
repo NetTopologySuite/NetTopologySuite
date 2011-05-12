@@ -4,8 +4,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// Computes the intersections between two line segments in <see cref="ISegmentString" />s
     /// and adds them to each string.
     /// The <see cref="ISegmentIntersector" /> is passed to a <see cref="INoder" />.
-    /// The <see cref="ISegmentString.AddIntersections" />  method is called whenever the <see cref="INoder" />
-    /// detects that two <see cref="ISegmentString" /> s might intersect.
+    /// The <see cref="INodableSegmentString.AddIntersection" />  method is called whenever the <see cref="INoder" />
+    /// detects that two <see cref="ISegmentString" />s might intersect.
     /// This class is an example of the Strategy pattern.
     /// </summary>
     public interface ISegmentIntersector

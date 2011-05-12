@@ -1,6 +1,8 @@
 using System;
 using System.IO;
+using System.Text;
 using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Utilities;
 
 namespace GisSharpBlog.NetTopologySuite.IO
 {
@@ -14,29 +16,181 @@ namespace GisSharpBlog.NetTopologySuite.IO
     // Thanks to Roberto Acioli for ICoordinate.Z patch
     public class WKBWriter
     {
-        protected ByteOrder encodingType;
+
+        ///<summary>Converts a byte array to a hexadecimal string.</summary>
+        /// <param name="bytes">A byte array</param>
+        [Obsolete("Use ToHex(byte[])")]
+        public static String BytesToHex(byte[] bytes)
+        {
+            return ToHex(bytes);
+        }
+
+        ///<summary>Converts a byte array to a hexadecimal string.</summary>
+        /// <param name="bytes">A byte array</param>
+        public static String ToHex(byte[] bytes)
+        {
+            StringBuilder buf = new StringBuilder(bytes.Length*2);
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                byte b = bytes[i];
+                buf.Append(ToHexDigit((b >> 4) & 0x0F));
+                buf.Append(ToHexDigit(b & 0x0F));
+            }
+            return buf.ToString();
+        }
+
+        private static char ToHexDigit(int n)
+        {
+            if (n < 0 || n > 15)
+                throw new ArgumentException("Nibble value out of range: " + n);
+            if (n <= 9)
+                return (char)('0' + n);
+            return (char)('A' + (n - 10));
+        }
+
+        public bool EmitSRID { get; set; }
+
+        private bool _emitZ;
+        public bool EmitZ
+        {
+            get { return _emitZ; }
+            set {
+                _emitZ = value;
+                CalcCoordinateSize();
+            }
+        }
+
+        private bool _emitM;
+        public bool EmitM
+        {
+            get { return _emitM; }
+            set
+            {
+                _emitM = value;
+                CalcCoordinateSize();
+            }
+        }
+
+
+        private void WriteHeader(BinaryWriter writer, IGeometry geom)
+        {
+            //Byte Order
+            WriteByteOrder(writer);
+
+            WKBGeometryTypes geometryType;
+            switch (geom.GeometryType)
+            {
+                case "Point":
+                    geometryType = WKBGeometryTypes.WKBPoint;
+                    break;
+                case "LineString":
+                    geometryType = WKBGeometryTypes.WKBLineString;
+                    break;
+                case "Polygon":
+                    geometryType = WKBGeometryTypes.WKBPolygon;
+                    break;
+                case "MultiPoint":
+                    geometryType = WKBGeometryTypes.WKBMultiPoint;
+                    break;
+                case "MultiPolygon":
+                    geometryType = WKBGeometryTypes.WKBMultiPolygon;
+                    break;
+                case "MultiLineString":
+                    geometryType = WKBGeometryTypes.WKBMultiLineString;
+                    break;
+                case "GeometryCollection":
+                    geometryType = WKBGeometryTypes.WKBGeometryCollection;
+                    break;
+                default:
+                    Assert.ShouldNeverReachHere("Unknown geometry type:" + geom.GeometryType);
+                    throw new ArgumentException("geom");
+            }
+
+            //Modify WKB Geometry type
+            uint intGeometryType = (uint) geometryType & 0xff;
+            if (EmitZ)
+            {
+                intGeometryType += 1000;
+                intGeometryType |= 0x80000000;
+            }
+
+            if (EmitM)
+            {
+                intGeometryType += 2000;
+                intGeometryType |= 0x40000000;
+            }
+
+            //Flag for SRID if needed
+            if (EmitSRID)
+                intGeometryType |= 0x20000000;
+
+            //
+            writer.Write(intGeometryType);
+
+            //Write SRID if needed
+            if (EmitSRID)
+                writer.Write(geom.SRID);
+        }
+        
+        protected ByteOrder EncodingType;
 
         /// <summary>
         /// Standard byte size for each complex point.
         /// Each complex point (LineString, Polygon, ...) contains:
         ///     1 byte for ByteOrder and
-        ///     4 bytes for WKBType.      
+        ///     4 bytes for WKBType.    
+        ///     4 bytes for SRID value  
         /// </summary>
-        protected const int InitCount = 5;        
+        protected int InitCount { get { return 5 + (EmitSRID ? 4 : 0); }}
 
         /// <summary>
         /// Initializes writer with LittleIndian byte order.
         /// </summary>
         public WKBWriter() : 
-            this(ByteOrder.LittleEndian) { }
+            this(ByteOrder.LittleEndian, false) { }
 
         /// <summary>
         /// Initializes writer with the specified byte order.
         /// </summary>
         /// <param name="encodingType">Encoding type</param>
-        public WKBWriter(ByteOrder encodingType)
+        public WKBWriter(ByteOrder encodingType) :
+            this(encodingType, false)
         {
-            this.encodingType = encodingType;
+        }
+
+        /// <summary>
+        /// Initializes writer with the specified byte order.
+        /// </summary>
+        /// <param name="encodingType">Encoding type</param>
+        /// <param name="emitSRID">SRID values, present or not, should be emitted.</param>
+        public WKBWriter(ByteOrder encodingType, bool emitSRID) :
+            this(encodingType, emitSRID, false)
+        {
+        }
+        /// <summary>
+        /// Initializes writer with the specified byte order.
+        /// </summary>
+        /// <param name="encodingType">Encoding type</param>
+        /// <param name="emitSRID">SRID values, present or not, should be emitted.</param>
+        /// <param name="emitZ">Z values, present or not, should be emitted</param>
+        public WKBWriter(ByteOrder encodingType, bool emitSRID, bool emitZ) :
+            this(encodingType, emitSRID, emitZ, false)
+        {
+        }
+
+        /// <summary>
+        /// Initializes writer with the specified byte order.
+        /// </summary>
+        /// <param name="encodingType">Encoding type</param>
+        /// <param name="emitSRID">SRID values, present or not, should be emitted.</param>
+        /// <param name="emitZ">Z values, present or not, should be emitted</param>
+        /// <param name="emitM">M values, present or not, should be emitted</param>
+        public WKBWriter(ByteOrder encodingType, bool emitSRID, bool emitZ, bool emitM)
+        {
+            EncodingType = encodingType;
+            EmitSRID = emitSRID;
+            EmitZ = emitZ;
+            EmitM = emitM;
         }
 
         /// <summary>
@@ -62,7 +216,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
             BinaryWriter writer = null;
             try
             {
-                if (encodingType == ByteOrder.LittleEndian)
+                if (EncodingType == ByteOrder.LittleEndian)
                      writer = new BinaryWriter(stream);
                 else writer = new BEBinaryWriter(stream);
                 Write(geometry, writer);
@@ -95,7 +249,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
                 Write(geometry as IMultiPolygon, writer);
             else if (geometry is IGeometryCollection)
                 Write(geometry as IGeometryCollection, writer);
-            else throw new ArgumentException("Geometry not recognized: " + geometry.ToString());
+            else throw new ArgumentException("Geometry not recognized: " + geometry);
         }
 
         /// <summary>
@@ -104,7 +258,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void WriteByteOrder(BinaryWriter writer)
         {
-            writer.Write((byte) ByteOrder.LittleEndian);
+            writer.Write((byte) EncodingType);
         }
 
         /// <summary>
@@ -114,10 +268,15 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(ICoordinate coordinate, BinaryWriter writer)
         {
-            writer.Write((double) coordinate.X);
-            writer.Write((double) coordinate.Y);
-            if (!Double.IsNaN(coordinate.Z))
-                writer.Write((double)coordinate.Z);            
+            writer.Write(coordinate.X);
+            writer.Write(coordinate.Y);
+            if (EmitZ)
+                writer.Write(coordinate.Z);
+            if (EmitM)
+                //NOTE: Implement
+                writer.Write(Double.NaN);
+            //if (!Double.IsNaN(coordinate.Z))
+            //    writer.Write((double)coordinate.Z);            
         }
 
         /// <summary>
@@ -127,10 +286,11 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(IPoint point, BinaryWriter writer)
         {
-            WriteByteOrder(writer);     // LittleIndian
-            if (Double.IsNaN(point.Coordinate.Z))
-                 writer.Write((int)WKBGeometryTypes.WKBPoint);
-            else writer.Write((int)WKBGeometryTypes.WKBPointZ);
+            //WriteByteOrder(writer);     // LittleIndian
+            WriteHeader(writer, point);
+            //if (Double.IsNaN(point.Coordinate.Z))
+            //     writer.Write((int)WKBGeometryTypes.WKBPoint);
+            //else writer.Write((int)WKBGeometryTypes.WKBPointZ);
             Write(point.Coordinate, writer);
         }
 
@@ -141,11 +301,12 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(ILineString lineString, BinaryWriter writer)
         {
-            WriteByteOrder(writer);     // LittleIndian
-            if (Double.IsNaN(lineString.Coordinate.Z))
-                 writer.Write((int)WKBGeometryTypes.WKBLineString);
-            else writer.Write((int)WKBGeometryTypes.WKBLineStringZ);
-            writer.Write((int) lineString.NumPoints);
+            //WriteByteOrder(writer);     // LittleIndian
+            WriteHeader(writer, lineString);
+            //if (Double.IsNaN(lineString.Coordinate.Z))
+            //     writer.Write((int)WKBGeometryTypes.WKBLineString);
+            //else writer.Write((int)WKBGeometryTypes.WKBLineStringZ);
+            writer.Write(lineString.NumPoints);
             for (int i = 0; i < lineString.Coordinates.Length; i++)
                 Write(lineString.Coordinates[i], writer);
         }
@@ -157,7 +318,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(ILinearRing ring, BinaryWriter writer)
         {
-            writer.Write((int) ring.NumPoints);
+            writer.Write(ring.NumPoints);
             for (int i = 0; i < ring.Coordinates.Length; i++)
                 Write(ring.Coordinates[i], writer);
         }
@@ -169,11 +330,12 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(IPolygon polygon, BinaryWriter writer)
         {
-            WriteByteOrder(writer);     // LittleIndian
-            if (Double.IsNaN(polygon.Coordinate.Z))
-                 writer.Write((int)WKBGeometryTypes.WKBPolygon);
-            else writer.Write((int)WKBGeometryTypes.WKBPolygonZ);            
-            writer.Write((int) polygon.NumInteriorRings + 1);
+            //WriteByteOrder(writer);     // LittleIndian
+            WriteHeader(writer, polygon);
+            //if (Double.IsNaN(polygon.Coordinate.Z))
+            //     writer.Write((int)WKBGeometryTypes.WKBPolygon);
+            //else writer.Write((int)WKBGeometryTypes.WKBPolygonZ);            
+            writer.Write(polygon.NumInteriorRings + 1);
             Write(polygon.ExteriorRing as ILinearRing, writer);
             for (int i = 0; i < polygon.NumInteriorRings; i++)
                 Write(polygon.InteriorRings[i] as ILinearRing, writer);
@@ -186,11 +348,12 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(IMultiPoint multiPoint, BinaryWriter writer)
         {
-            WriteByteOrder(writer);     // LittleIndian
-            if (Double.IsNaN(multiPoint.Coordinate.Z))
-                 writer.Write((int)WKBGeometryTypes.WKBMultiPoint);
-            else writer.Write((int)WKBGeometryTypes.WKBMultiPointZ);
-            writer.Write((int) multiPoint.NumGeometries);
+            //WriteByteOrder(writer);     // LittleIndian
+            WriteHeader(writer, multiPoint);
+            //if (Double.IsNaN(multiPoint.Coordinate.Z))
+            //     writer.Write((int)WKBGeometryTypes.WKBMultiPoint);
+            //else writer.Write((int)WKBGeometryTypes.WKBMultiPointZ);
+            writer.Write(multiPoint.NumGeometries);
             for (int i = 0; i < multiPoint.NumGeometries; i++)
                 Write(multiPoint.Geometries[i] as IPoint, writer);
         }
@@ -202,11 +365,12 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(IMultiLineString multiLineString, BinaryWriter writer)
         {
-            WriteByteOrder(writer);     // LittleIndian
-            if (Double.IsNaN(multiLineString.Coordinate.Z))
-                 writer.Write((int)WKBGeometryTypes.WKBMultiLineString);
-            else writer.Write((int)WKBGeometryTypes.WKBMultiLineStringZ);
-            writer.Write((int) multiLineString.NumGeometries);
+            //WriteByteOrder(writer);     // LittleIndian
+            WriteHeader(writer, multiLineString);
+            //if (Double.IsNaN(multiLineString.Coordinate.Z))
+            //     writer.Write((int)WKBGeometryTypes.WKBMultiLineString);
+            //else writer.Write((int)WKBGeometryTypes.WKBMultiLineStringZ);
+            writer.Write(multiLineString.NumGeometries);
             for (int i = 0; i < multiLineString.NumGeometries; i++)
                 Write(multiLineString.Geometries[i] as ILineString, writer);
         }
@@ -218,11 +382,12 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(IMultiPolygon multiPolygon, BinaryWriter writer)
         {
-            WriteByteOrder(writer);     // LittleIndian
-            if (Double.IsNaN(multiPolygon.Coordinate.Z))
-                 writer.Write((int)WKBGeometryTypes.WKBMultiPolygon);
-            else writer.Write((int)WKBGeometryTypes.WKBMultiPolygonZ);
-            writer.Write((int) multiPolygon.NumGeometries);
+            //WriteByteOrder(writer);     // LittleIndian
+            WriteHeader(writer, multiPolygon);
+            //if (Double.IsNaN(multiPolygon.Coordinate.Z))
+            //     writer.Write((int)WKBGeometryTypes.WKBMultiPolygon);
+            //else writer.Write((int)WKBGeometryTypes.WKBMultiPolygonZ);
+            writer.Write(multiPolygon.NumGeometries);
             for (int i = 0; i < multiPolygon.NumGeometries; i++)
                 Write(multiPolygon.Geometries[i] as IPolygon, writer);
         }
@@ -234,13 +399,14 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(IGeometryCollection geomCollection, BinaryWriter writer)
         {
-            WriteByteOrder(writer);     // LittleIndian
-            if (Double.IsNaN(geomCollection.Coordinate.Z))
-                 writer.Write((int)WKBGeometryTypes.WKBGeometryCollection);
-            else writer.Write((int)WKBGeometryTypes.WKBGeometryCollectionZ);
-            writer.Write((int)geomCollection.NumGeometries);
+            //WriteByteOrder(writer);     // LittleIndian
+            WriteHeader(writer, geomCollection);
+            //if (Double.IsNaN(geomCollection.Coordinate.Z))
+            //     writer.Write((int)WKBGeometryTypes.WKBGeometryCollection);
+            //else writer.Write((int)WKBGeometryTypes.WKBGeometryCollectionZ);
+            writer.Write(geomCollection.NumGeometries);
             for (int i = 0; i < geomCollection.NumGeometries; i++)
-                Write(geomCollection.Geometries[i], writer); ;
+                Write(geomCollection.Geometries[i], writer);
         }
 
         /// <summary>
@@ -252,19 +418,19 @@ namespace GisSharpBlog.NetTopologySuite.IO
         {
             if (geometry is IPoint)
                 return new byte[SetByteStream(geometry as IPoint)];
-            else if (geometry is ILineString)
+            if (geometry is ILineString)
                 return new byte[SetByteStream(geometry as ILineString)];
-            else if (geometry is IPolygon)
+            if (geometry is IPolygon)
                 return new byte[SetByteStream(geometry as IPolygon)];
-            else if (geometry is IMultiPoint)
+            if (geometry is IMultiPoint)
                 return new byte[SetByteStream(geometry as IMultiPoint)];
-            else if (geometry is IMultiLineString)
+            if (geometry is IMultiLineString)
                 return new byte[SetByteStream(geometry as IMultiLineString)];
-            else if (geometry is IMultiPolygon)
+            if (geometry is IMultiPolygon)
                 return new byte[SetByteStream(geometry as IMultiPolygon)];
-            else if (geometry is IGeometryCollection)
+            if (geometry is IGeometryCollection)
                 return new byte[SetByteStream(geometry as IGeometryCollection)];
-            else throw new ArgumentException("ShouldNeverReachHere");
+            throw new ArgumentException("ShouldNeverReachHere");
         }
 
         /// <summary>
@@ -276,19 +442,19 @@ namespace GisSharpBlog.NetTopologySuite.IO
         {
             if (geometry is IPoint)
                 return SetByteStream(geometry as IPoint);
-            else if (geometry is ILineString)
+            if (geometry is ILineString)
                 return SetByteStream(geometry as ILineString);
-            else if (geometry is IPolygon)
+            if (geometry is IPolygon)
                 return SetByteStream(geometry as IPolygon);
-            else if (geometry is IMultiPoint)
+            if (geometry is IMultiPoint)
                 return SetByteStream(geometry as IMultiPoint);
-            else if (geometry is IMultiLineString)
+            if (geometry is IMultiLineString)
                 return SetByteStream(geometry as IMultiLineString);
-            else if (geometry is IMultiPolygon)
+            if (geometry is IMultiPolygon)
                 return SetByteStream(geometry as IMultiPolygon);
-            else if (geometry is IGeometryCollection)
+            if (geometry is IGeometryCollection)
                 return SetByteStream(geometry as IGeometryCollection);
-            else throw new ArgumentException("ShouldNeverReachHere");
+            throw new ArgumentException("ShouldNeverReachHere");
         }
 
         /// <summary>
@@ -354,7 +520,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns></returns>
         protected int SetByteStream(IPolygon geometry)
         {
-            int pointSize = Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
+            int pointSize = _coordinateSize; //Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
             int count = InitCount;
             count += 4 + 4;                                 // NumRings + NumPoints
             count += 4 * (geometry.NumInteriorRings + 1);   // Index parts
@@ -369,7 +535,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns></returns>
         protected int SetByteStream(ILineString geometry)
         {
-            int pointSize = Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
+            int pointSize = _coordinateSize; //Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
             int numPoints = geometry.NumPoints;
             int count = InitCount;
             count += 4;                             // NumPoints
@@ -384,7 +550,16 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns></returns>
         protected int SetByteStream(IPoint geometry)
         {
-            return Double.IsNaN(geometry.Coordinate.Z) ? 21 : 29;
+            return InitCount + _coordinateSize;
+            //return Double.IsNaN(geometry.Coordinate.Z) ? 21 : 29;
+        }
+
+        private int _coordinateSize = 16;
+        private void CalcCoordinateSize()
+        {
+            _coordinateSize = 16;
+            if (EmitZ) _coordinateSize += 8;
+            if (EmitM) _coordinateSize += 8;
         }
     }
 }

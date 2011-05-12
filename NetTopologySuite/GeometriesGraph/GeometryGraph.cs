@@ -27,38 +27,36 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// the "At Most One Rule":
         /// isInBoundary = (componentCount == 1)
         /// </summary>
+        /*
         public static bool IsInBoundary(int boundaryCount)
         {
             // the "Mod-2 Rule"
             return boundaryCount % 2 == 1;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="boundaryCount"></param>
-        /// <returns></returns>
-        public static Locations DetermineBoundary(int boundaryCount)
+        }*/
+        public static Locations DetermineBoundary(IBoundaryNodeRule boundaryNodeRule, int boundaryCount)
         {
-            return IsInBoundary(boundaryCount) ? Locations.Boundary : Locations.Interior;
+            return boundaryNodeRule.IsInBoundary(boundaryCount)
+                ? Locations.Boundary : Locations.Interior;
         }
 
-        private IGeometry parentGeom;
+        private readonly IGeometry _parentGeom;
 
         /// <summary>
         /// The lineEdgeMap is a map of the linestring components of the
         /// parentGeometry to the edges which are derived from them.
         /// This is used to efficiently perform findEdge queries
         /// </summary>
-        private IDictionary lineEdgeMap = new Hashtable();
+        private readonly IDictionary _lineEdgeMap = new Hashtable();
+
+        private IBoundaryNodeRule boundaryNodeRule;
 
         /// <summary>
         /// If this flag is true, the Boundary Determination Rule will used when deciding
         /// whether nodes are in the boundary or not
         /// </summary>
-        private bool useBoundaryDeterminationRule = false;
+        private bool _useBoundaryDeterminationRule = true;
 
-        private int argIndex;  // the index of this point as an argument to a spatial function (used for labelling)
+        private readonly int argIndex;  // the index of this point as an argument to a spatial function (used for labelling)
         private ICollection boundaryNodes;
         private bool hasTooFewPoints = false;
         private ICoordinate invalidPoint = null;
@@ -79,12 +77,24 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="argIndex"></param>
         /// <param name="parentGeom"></param>
         public GeometryGraph(int argIndex, IGeometry parentGeom)
+            :this(argIndex, parentGeom, BoundaryNodeRules.OgcSfsBoundaryRule)
+        {
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="argIndex"></param>
+        /// <param name="parentGeom"></param>
+        /// <param name="boundaryNodeRule"></param>
+        public GeometryGraph(int argIndex, IGeometry parentGeom, IBoundaryNodeRule boundaryNodeRule)
         {
             this.argIndex = argIndex;
-            this.parentGeom = parentGeom;
-            if (parentGeom != null)                    
+            this.boundaryNodeRule = boundaryNodeRule;
+            _parentGeom = parentGeom;
+            if (parentGeom != null)
                 Add(parentGeom);
-            
+
         }
 
         /// <summary>
@@ -116,8 +126,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return parentGeom;
+                return _parentGeom;
             }
+        }
+
+        public IBoundaryNodeRule BoundaryNodeRule
+        {
+            get { return boundaryNodeRule; }
         }
 
         /// <summary>
@@ -157,7 +172,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public Edge FindEdge(ILineString line)
         {
-            return (Edge) lineEdgeMap[line];
+            return (Edge) _lineEdgeMap[line];
         }
 
         /// <summary>
@@ -184,8 +199,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
             // check if this Geometry should obey the Boundary Determination Rule
             // all collections except MultiPolygons obey the rule
-            if (g is IGeometryCollection && !(g is IMultiPolygon))
-                useBoundaryDeterminationRule = true;
+            if (g is IMultiPolygon)
+                _useBoundaryDeterminationRule = false;
 
             if (g is IPolygon)                 
                 AddPolygon((IPolygon) g);                                
@@ -254,7 +269,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 right = cwLeft;
             }
             Edge e = new Edge(coord, new Label(argIndex, Locations.Boundary, left, right));
-            lineEdgeMap[lr] = e;
+            _lineEdgeMap[lr] = e;
             InsertEdge(e);
             // insert the endpoint as a node, to mark that it is on the boundary
             InsertPoint(argIndex, coord[0], Locations.Boundary);
@@ -292,7 +307,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             // add the edge for the LineString
             // line edges do not have locations for their left and right sides
             Edge e = new Edge(coord, new Label(argIndex, Locations.Interior));            
-            lineEdgeMap[line] = e;
+            _lineEdgeMap[line] = e;
             InsertEdge(e);
 
             /*
@@ -343,7 +358,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             EdgeSetIntersector esi = CreateEdgeSetIntersector();
             // optimized test for Polygons and Rings
             if (!computeRingSelfNodes &&
-               (parentGeom is ILinearRing || parentGeom is IPolygon || parentGeom is IMultiPolygon))
+               (_parentGeom is ILinearRing || _parentGeom is IPolygon || _parentGeom is IMultiPolygon))
                  esi.ComputeIntersections(edges, si, false);            
             else esi.ComputeIntersections(edges, si, true);      
             AddSelfIntersectionNodes(argIndex);
@@ -383,10 +398,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         }
 
         /// <summary> 
-        /// Adds points using the mod-2 rule of SFS.  This is used to add the boundary
-        /// points of dim-1 geometries (Curves/MultiCurves).  According to the SFS,
-        /// an endpoint of a Curve is on the boundary
-        /// if it is in the boundaries of an odd number of Geometries.
+        /// Adds candidate boundary points using the current <see cref="IBoundaryNodeRule"/>.
+        /// This is used to add the boundary
+        /// points of dim-1 geometries (Curves/MultiCurves).
         /// </summary>
         /// <param name="argIndex"></param>
         /// <param name="coord"></param>
@@ -404,7 +418,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 boundaryCount++;
 
             // determine the boundary status of the point according to the Boundary Determination Rule
-            Locations newLoc = DetermineBoundary(boundaryCount);
+            Locations newLoc = DetermineBoundary(boundaryNodeRule, boundaryCount);
             lbl.SetLocation(argIndex, newLoc);
         }
 
@@ -440,7 +454,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             // if this node is already a boundary node, don't change it
             if (IsBoundaryNode(argIndex, coord)) 
                 return;
-            if (loc == Locations.Boundary && useBoundaryDeterminationRule)
+            if (loc == Locations.Boundary && _useBoundaryDeterminationRule)
                  InsertBoundaryPoint(argIndex, coord);
             else InsertPoint(argIndex, coord, loc);
         }

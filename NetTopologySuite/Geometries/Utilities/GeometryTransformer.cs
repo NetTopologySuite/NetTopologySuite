@@ -28,9 +28,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
     /// each Geometry component into an identical object by copying.
     /// Note that all <c>TransformX</c> methods may return <c>null</c>,
     /// to avoid creating empty point objects. This will be handled correctly
-    /// by the transformer.
-    /// The Transform method itself will always
-    /// return a point object.
+    /// by the transformer. <c>transformX</c> methods should always return valid
+    /// geometry - if they cannot do this they should return <c>null</c>
+    /// (for instance, it may not be possible for a transformLineString implementation
+    /// to return at least two points - in this case, it should return <c>null</c>).
+    /// The <see cref="Transform"/> method itself will always
+    /// return a non-null Geometry object (but this may be empty).
     /// </summary>    
     public class GeometryTransformer 
     {
@@ -39,12 +42,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         * GetParent() method to return immediate parent e.g. of LinearRings in Polygons
         */
 
-        private IGeometry inputGeom = null;
+        private IGeometry _inputGeom;
 
         /// <summary>
         /// 
         /// </summary>
-        protected IGeometryFactory factory = null;
+        protected IGeometryFactory Factory;
 
         // these could eventually be exposed to clients
         /// <summary>
@@ -62,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <summary> 
         /// <c>true</c> if the type of the input should be preserved.
         /// </summary>
-        private bool preserveType = false;
+        private bool preserveType;
 
         /// <summary>
         /// 
@@ -70,13 +73,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         public GeometryTransformer() { }
 
         /// <summary>
-        /// 
+        /// Makes the input geometry available
         /// </summary>
         public IGeometry InputGeometry
         {
             get
             {
-                return inputGeom; 
+                return _inputGeom; 
             }
         }
 
@@ -87,8 +90,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <returns></returns>
         public IGeometry Transform(IGeometry inputGeom)
         {
-            this.inputGeom = inputGeom;
-            this.factory = inputGeom.Factory;
+            _inputGeom = inputGeom;
+            Factory = inputGeom.Factory;
             if (inputGeom is IPoint)
                 return TransformPoint((IPoint) inputGeom, null);
             if (inputGeom is IMultiPoint)
@@ -116,7 +119,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <returns>A coordinate sequence for the array.</returns>
         protected virtual ICoordinateSequence CreateCoordinateSequence(ICoordinate[] coords)
         {
-            return factory.CoordinateSequenceFactory.Create(coords);
+            return Factory.CoordinateSequenceFactory.Create(coords);
         }
 
         /// <summary> 
@@ -130,11 +133,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// 
+        /// Transforms a <see cref="ICoordinateSequence"/>.
+        /// This method should always return a valid coordinate list for
+        /// the desired result type.  (E.g. a coordinate list for a LineString
+        /// must have 0 or at least 2 points).
+        /// If this is not possible, return an empty sequence -
+        /// this will be pruned out.
         /// </summary>
-        /// <param name="coords"></param>
-        /// <param name="parent"></param>
-        /// <returns></returns>
+        /// <param name="coords">The coordinates to transform</param>
+        /// <param name="parent">The parent geometry</param>
+        /// <returns>The transformed coordinates</returns>
         protected virtual ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
         {
             return Copy(coords);
@@ -148,7 +156,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <returns></returns>
         protected virtual IGeometry TransformPoint(IPoint geom, IGeometry parent) 
         {
-            return factory.CreatePoint(TransformCoordinates(geom.CoordinateSequence, geom));
+            return Factory.CreatePoint(TransformCoordinates(geom.CoordinateSequence, geom));
         }
 
         /// <summary>
@@ -167,7 +175,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                 if (transformGeom.IsEmpty) continue;
                 transGeomList.Add(transformGeom);
             }
-            return factory.BuildGeometry(transGeomList);
+            return Factory.BuildGeometry(transGeomList);
         }
 
         /// <summary>
@@ -182,8 +190,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             int seqSize = seq.Count;
             // ensure a valid LinearRing
             if (seqSize > 0 && seqSize < 4 && ! preserveType)
-                return factory.CreateLineString(seq);
-            return factory.CreateLinearRing(seq);
+                return Factory.CreateLineString(seq);
+            return Factory.CreateLinearRing(seq);
 
         }
 
@@ -196,7 +204,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         protected virtual IGeometry TransformLineString(ILineString geom, IGeometry parent) 
         {
             // should check for 1-point sequences and downgrade them to points
-            return factory.CreateLineString(TransformCoordinates(geom.CoordinateSequence, geom));
+            return Factory.CreateLineString(TransformCoordinates(geom.CoordinateSequence, geom));
         }
 
         /// <summary>
@@ -215,7 +223,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                 if (transformGeom.IsEmpty) continue;
                 transGeomList.Add(transformGeom);
             }
-            return factory.BuildGeometry(transGeomList);
+            return Factory.BuildGeometry(transGeomList);
         }
 
         /// <summary>
@@ -243,7 +251,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             }
 
             if (isAllValidLinearRings)
-                return factory.CreatePolygon((ILinearRing)   shell, 
+                return Factory.CreatePolygon((ILinearRing)   shell, 
                                              (ILinearRing[]) holes.Cast<ILinearRing>().ToArray());
             else 
             {
@@ -252,7 +260,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                     components.Add(shell);                
                 foreach (object hole in holes)
                     components.Add(hole);
-                return factory.BuildGeometry(components);
+                return Factory.BuildGeometry(components);
             }
         }
 
@@ -272,7 +280,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                 if (transformGeom.IsEmpty) continue;
                 transGeomList.Add(transformGeom);
             }
-            return factory.BuildGeometry(transGeomList);
+            return Factory.BuildGeometry(transGeomList);
         }
 
         /// <summary>
@@ -292,8 +300,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
                 transGeomList.Add(transformGeom);
             }
             if (preserveGeometryCollectionType)
-                return factory.CreateGeometryCollection(GeometryFactory.ToGeometryArray(transGeomList));
-            return factory.BuildGeometry(transGeomList);
+                return Factory.CreateGeometryCollection(GeometryFactory.ToGeometryArray(transGeomList));
+            return Factory.BuildGeometry(transGeomList);
         }
     }
 }

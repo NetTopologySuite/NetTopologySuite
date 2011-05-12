@@ -78,7 +78,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Valid
                 for (IEnumerator nodeIt = nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext(); )
                 {
                     RelateNode node = (RelateNode) nodeIt.Current;
-                    if (!node.Edges.IsAreaLabelsConsistent)
+                    if (!node.Edges.IsAreaLabelsConsistent(geomGraph))
                     {
                         invalidPoint = (ICoordinate) node.Coordinate.Clone();
                         return false;

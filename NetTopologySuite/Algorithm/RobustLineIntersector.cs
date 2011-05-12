@@ -10,11 +10,6 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <summary>
         /// 
         /// </summary>
-        public RobustLineIntersector() { }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="p"></param>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
@@ -237,7 +232,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// (usually due to the segments being approximately parallel).
         /// If this happens, a reasonable approximation is computed instead.
         /// </summary>
-        private ICoordinate SafeHCoordinateIntersection(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2)
+        private static ICoordinate SafeHCoordinateIntersection(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2)
         {
             ICoordinate intPt;
             try

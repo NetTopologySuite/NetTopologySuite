@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -13,13 +14,23 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class PointLocator
     {
-        private bool isIn;            // true if the point lies in or on any Geometry element
-        private int numBoundaries;    // the number of sub-elements whose boundaries the point lies in
+        // default is to use OGC SFS rule
+        private IBoundaryNodeRule _boundaryRule = BoundaryNodeRules.EndpointBoundaryRule; //OGC_SFS_BOUNDARY_RULE;
+
+        private bool _isIn;            // true if the point lies in or on any Geometry element
+        private int _numBoundaries;    // the number of sub-elements whose boundaries the point lies in
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PointLocator"/> class.
         /// </summary>
         public PointLocator() { }
+
+        public PointLocator(IBoundaryNodeRule boundaryRule)
+        {
+            if (boundaryRule == null)
+                throw new ArgumentException("Rule must be non-null");
+            _boundaryRule = boundaryRule;
+        }
 
         /// <summary> 
         /// Convenience method to test a point for intersection with a Geometry
@@ -43,17 +54,18 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             if (geom.IsEmpty)
                 return Locations.Exterior;
             if (geom is ILineString) 
-                return Locate(p, (ILineString) geom);                        
-            else if (geom is IPolygon) 
+                return Locate(p, (ILineString) geom);
+            if (geom is IPolygon) 
                 return Locate(p, (IPolygon) geom);
-        
-            isIn = false;
-            numBoundaries = 0;
+
+            _isIn = false;
+            _numBoundaries = 0;
             ComputeLocation(p, geom);
-            if(GeometryGraph.IsInBoundary(numBoundaries))
+            if (_boundaryRule.IsInBoundary(_numBoundaries))
                 return Locations.Boundary;
-            if(numBoundaries > 0 || isIn)
+            if (_numBoundaries > 0 || _isIn)
                 return Locations.Interior;
+
             return Locations.Exterior;
         }
 
@@ -99,9 +111,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private void UpdateLocationInfo(Locations loc)
         {
             if(loc == Locations.Interior) 
-                isIn = true;
+                _isIn = true;
             if(loc == Locations.Boundary) 
-                numBoundaries++;
+                _numBoundaries++;
         }
 
         /// <summary>

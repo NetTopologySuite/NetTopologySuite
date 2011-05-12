@@ -83,6 +83,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithm\BoundaryNodeRule.cs" />
     <Compile Include="Algorithm\CentralEndpointIntersector.cs" />
     <Compile Include="Algorithm\CentroidArea.cs" />
     <Compile Include="Algorithm\CentroidLine.cs" />
@@ -113,6 +114,7 @@
     </Compile>
     <Compile Include="Features\Feature.cs" />
     <Compile Include="Features\IAttributesTable.cs" />
+    <Compile Include="Algorithm\Angle.cs" />
     <Compile Include="Geometries\Coordinate.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -120,6 +122,7 @@
     <Compile Include="Geometries\CoordinateArraySequence.cs" />
     <Compile Include="Geometries\CoordinateArraySequenceFactory.cs" />
     <Compile Include="Geometries\CoordinateList.cs" />
+    <Compile Include="Geometries\CoordinateSequenceComparator.cs" />
     <Compile Include="Geometries\CoordinateSequences.cs" />
     <Compile Include="Geometries\CoordinateStruct.cs">
       <SubType>Code</SubType>
@@ -152,10 +155,14 @@
     <Compile Include="Geometries\PrecisionModel.cs" />
     <Compile Include="Geometries\TopologyException.cs" />
     <Compile Include="Geometries\Triangle.cs" />
+    <Compile Include="Geometries\Utilities\AffineTransformation.cs" />
+    <Compile Include="Geometries\Utilities\AffineTransformationBuilder.cs" />
     <Compile Include="Geometries\Utilities\GeometryCombiner.cs" />
     <Compile Include="Geometries\Utilities\GeometryEditor.cs" />
     <Compile Include="Geometries\Utilities\GeometryTransformer.cs" />
     <Compile Include="Geometries\Utilities\LinearComponentExtracter.cs" />
+    <Compile Include="Geometries\Utilities\Matrix.cs" />
+    <Compile Include="Geometries\Utilities\NoninvertibleTransformationException.cs" />
     <Compile Include="Geometries\Utilities\PointExtracter.cs" />
     <Compile Include="Geometries\Utilities\PolygonExtracter.cs" />
     <Compile Include="Geometries\Utilities\ShortCircuitedGeometryVisitor.cs" />
@@ -314,6 +321,7 @@
     <Compile Include="Noding\Snapround\MCIndexPointSnapper.cs" />
     <Compile Include="Noding\Snapround\MCIndexSnapRounder.cs" />
     <Compile Include="Noding\Snapround\SimpleSnapRounder.cs" />
+    <Compile Include="Operation\BoundaryOp.cs" />
     <Compile Include="Operation\Buffer\BufferBuilder.cs" />
     <Compile Include="Operation\Buffer\BufferOp.cs" />
     <Compile Include="Operation\Buffer\BufferSubgraph.cs" />
@@ -345,6 +353,9 @@
     <Compile Include="Operation\Overlay\Snap\LineStringSnapper.cs" />
     <Compile Include="Operation\Overlay\Snap\SnapIfNeededOverlayOp.cs" />
     <Compile Include="Operation\Overlay\Snap\SnapOverlayOp.cs" />
+    <Compile Include="Operation\Overlay\Validate\FuzzyPointLocator.cs" />
+    <Compile Include="Operation\Overlay\Validate\OffsetPointGenerator.cs" />
+    <Compile Include="Operation\Overlay\Validate\OverlayResultValidator.cs" />
     <Compile Include="Operation\Polygonize\EdgeRing.cs" />
     <Compile Include="Operation\Polygonize\PolygonizeDirectedEdge.cs" />
     <Compile Include="Operation\Polygonize\PolygonizeEdge.cs" />

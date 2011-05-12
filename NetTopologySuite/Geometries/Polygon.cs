@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 
@@ -170,16 +171,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public override bool IsSimple
-        {
-            get
-            {
-                return true;
-            }
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public override bool IsSimple
+        //{
+        //    get
+        //    {
+        //        return true;
+        //    }
+        //}
 
         /// <summary>
         /// 
@@ -275,11 +276,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get
             {
                 if (IsEmpty)
-                    return Factory.CreateGeometryCollection(null);
+                    return Factory.CreateMultiLineString(null);
                 ILinearRing[] rings = new ILinearRing[holes.Length + 1];
                 rings[0] = shell;
                 for (int i = 0; i < holes.Length; i++)
                     rings[i + 1] = holes[i];
+                // create LineString or MultiLineString as appropriate
                 if (rings.Length <= 1)
                     return Factory.CreateLinearRing(rings[0].CoordinateSequence);
                 return Factory.CreateMultiLineString(rings);
@@ -332,6 +334,22 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 holes[i].Apply(filter);            
         }
 
+        public override void Apply(ICoordinateSequenceFilter filter)
+        {
+            ((LinearRing)shell).Apply(filter);
+            if (!filter.Done)
+            {
+                for (int i = 0; i < holes.Length; i++)
+                {
+                    ((LinearRing)holes[i]).Apply(filter);
+                    if (filter.Done)
+                        break;
+                }
+            }
+            if (filter.GeometryChanged)
+                GeometryChanged();
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -367,6 +385,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return poly; 
         }
 
+        internal override int GetHashCodeInternal(int baseValue, Func<int, int> operation)
+        {
+            if (!IsEmpty)
+            {
+                baseValue = shell.CoordinateSequence.GetHashCode(baseValue, operation);
+                foreach(var ring in holes)
+                    baseValue = ring.CoordinateSequence.GetHashCode(baseValue, operation);
+            }
+            return baseValue;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -397,6 +426,37 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             LinearRing thisShell = (LinearRing) shell;
             ILinearRing otherShell = ((IPolygon) o).Shell;
             return thisShell.CompareToSameClass(otherShell);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
+        /// <param name="comparer"></param>
+        /// <returns></returns>
+        protected internal override int CompareToSameClass(object other, IComparer<ICoordinateSequence> comparer)
+        {
+            IPolygon poly = (IPolygon)other;
+
+            LinearRing thisShell = (LinearRing)shell;
+            LinearRing otherShell = (LinearRing)poly.Shell;
+            int shellComp = thisShell.CompareToSameClass(otherShell, comparer);
+            if (shellComp != 0) return shellComp;
+
+            int nHole1 = NumInteriorRings;
+            int nHole2 = poly.NumInteriorRings;
+            int i = 0;
+            while (i < nHole1 && i < nHole2)
+            {
+                LinearRing thisHole = (LinearRing)GetInteriorRingN(i);
+                LinearRing otherHole = (LinearRing)poly.GetInteriorRingN(i);
+                int holeComp = thisHole.CompareToSameClass(otherHole, comparer);
+                if (holeComp != 0) return holeComp;
+                i++;
+            }
+            if (i < nHole1) return 1;
+            if (i < nHole2) return -1;
+            return 0;
         }
 
         /// <summary>
@@ -512,5 +572,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         /*END ADDED BY MPAUL42 */
 
+    }
+
+    public static class CoordinateSequenceEx
+    {
+        public static int GetHashCode(this ICoordinateSequence sequence, int baseValue, Func<int, int> operation)
+        {
+            if (sequence!=null && sequence.Count > 0)
+            {
+                for (var i = 0; i < sequence.Count; i++)
+                    baseValue = operation(baseValue) + sequence.GetX(i).GetHashCode();
+            }
+            return baseValue;
+        }
+        
     }
 }

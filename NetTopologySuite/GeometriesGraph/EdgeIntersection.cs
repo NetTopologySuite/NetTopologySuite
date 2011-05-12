@@ -17,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     public class EdgeIntersection : IComparable
     {
-        private ICoordinate coordinate;   
+        private readonly ICoordinate _coordinate;   
 
         /// <summary>
         /// The point of intersection.
@@ -26,15 +26,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return coordinate; 
+                return _coordinate; 
             }
-            set
-            {
-                coordinate = value; 
-            }
+            //set
+            //{
+            //    _coordinate = value; 
+            //}
         }
 
-        private int segmentIndex;  
+        private readonly int _segmentIndex;  
 
         /// <summary>
         /// The index of the containing line segment in the parent edge.
@@ -43,15 +43,15 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get 
             {
-                return segmentIndex; 
+                return _segmentIndex; 
             }
-            set
-            {
-                segmentIndex = value; 
-            }
+            //set
+            //{
+            //    segmentIndex = value; 
+            //}
         }
 
-        private double dist;       
+        private readonly double _distance;       
 
         /// <summary>
         /// The edge distance of this point along the containing line segment.
@@ -60,12 +60,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return dist; 
+                return _distance; 
             }
-            set
-            {
-                dist = value; 
-            }
+            //set
+            //{
+            //    dist = value; 
+            //}
         }
 
         /// <summary>
@@ -76,9 +76,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="dist"></param>
         public EdgeIntersection(ICoordinate coord, int segmentIndex, double dist) 
         {
-            this.coordinate = new Coordinate(coord);
-            this.segmentIndex = segmentIndex;
-            this.dist = dist;
+            _coordinate = new Coordinate(coord);
+            _segmentIndex = segmentIndex;
+            _distance = dist;
         }
 
         /// <summary>
@@ -104,13 +104,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </returns>
         public int Compare(int segmentIndex, double dist)
         {
-            if (this.SegmentIndex < segmentIndex) 
+            if (_segmentIndex < segmentIndex) 
                 return -1;
-            if (this.SegmentIndex > segmentIndex) 
+            if (_segmentIndex > segmentIndex) 
                 return 1;
-            if (this.Distance < dist) 
+            if (_distance < dist) 
                 return -1;
-            if (this.Distance > dist) 
+            if (_distance > dist) 
                 return 1;
             return 0;
         }

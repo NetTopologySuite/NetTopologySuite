@@ -10,7 +10,63 @@ namespace GisSharpBlog.NetTopologySuite.IO
     /// </summary>
     public class WKBReader
     {
-        private IGeometryFactory factory = null;
+
+        ///<summary>
+        /// Converts a hexadecimal string to a byte array.
+        ///</summary>
+        /// <param name="hex">A string containing hex digits</param>
+        public static byte[] HexToBytes(String hex)
+        {
+            int byteLen = hex.Length / 2;
+            byte[] bytes = new byte[byteLen];
+
+            for (int i = 0; i < hex.Length / 2; i++)
+            {
+                int i2 = 2 * i;
+                if (i2 + 1 > hex.Length)
+                    throw new ArgumentException("Hex string has odd length");
+
+                int nib1 = HexToInt(hex[i2]);
+                int nib0 = HexToInt(hex[i2 + 1]);
+                bytes[i] = (byte)((nib1 << 4) + (byte)nib0);
+            }
+            return bytes;
+        }
+
+        private static int HexToInt(char hex)
+        {
+            switch (hex)
+            {
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    return hex - '0';
+                case 'A':
+                case 'B':
+                case 'C':
+                case 'D':
+                case 'E':
+                case 'F':
+                    return hex - 'A' + 10;
+                case 'a':
+                case 'b':
+                case 'c':
+                case 'd':
+                case 'e':
+                case 'f':
+                    return hex - 'a' + 10;
+            }
+            throw new ArgumentException("Invalid hex digit: " + hex);
+        }
+        
+        private IGeometryFactory factory;
 
         /// <summary>
         /// <c>Geometry</c> builder.
@@ -76,8 +132,23 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="reader"></param>
         /// <returns></returns>
         protected IGeometry Read(BinaryReader reader)
-        {     
-            WKBGeometryTypes geometryType = (WKBGeometryTypes) reader.ReadInt32();
+        {
+            int typeInt = reader.ReadInt32();
+            int srid = -1;
+            bool hasZ = (typeInt & 0x80000000) != 0;
+            bool hasSRID = (typeInt & 0x20000000) != 0;
+
+            if (hasSRID)
+                srid = reader.ReadInt32();
+
+            if (factory.SRID != srid)
+                factory = new GeometryFactory((PrecisionModel)GeometryFactory.Default.PrecisionModel, srid);
+
+            typeInt = typeInt & 0xffff;
+            if (hasZ && ((typeInt / 1000) & 1) != 1)
+                typeInt += 1000;
+
+            WKBGeometryTypes geometryType = (WKBGeometryTypes) (typeInt );
             switch (geometryType)
             {
                 //Point
@@ -157,6 +228,43 @@ namespace GisSharpBlog.NetTopologySuite.IO
         {
             byte byteOrder = reader.ReadByte();
             return (ByteOrder) byteOrder;
+        }
+
+        private WKBGeometryTypes ReadGeometryType(BinaryReader reader, out CoordinateSystem coordinateSystem, out int srid)
+        {
+            uint type = reader.ReadUInt32();
+            //Determine coordinate system
+            if ((type & (0x80000000 | 0x40000000)) == (0x80000000 | 0x40000000)) 
+                coordinateSystem = CoordinateSystem.XYZM;
+            else if ((type & 0x80000000) == 0x80000000) 
+                coordinateSystem = CoordinateSystem.XYZ;
+            else if ((type & 0x40000000) == 0x40000000)
+                coordinateSystem = CoordinateSystem.XYM;
+            else
+                coordinateSystem = CoordinateSystem.XY;
+
+            //Has SRID
+            if ((type & 0x20000000) != 0)
+                srid = reader.ReadInt32();
+            else
+                srid = -1;
+
+            //Get cs from prefix
+            uint ordinate = (type & 0xffff)/1000;
+            switch (ordinate)
+            {
+                case 1:
+                    coordinateSystem = CoordinateSystem.XYZ;
+                    break;
+                case 2:
+                    coordinateSystem = CoordinateSystem.XYM;
+                    break;
+                case 3:
+                    coordinateSystem = CoordinateSystem.XYZM;
+                    break;
+            }
+
+            return (WKBGeometryTypes) ((type & 0xffff) % 1000);
         }
 
         /// <summary>
@@ -260,7 +368,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
             for (int i = 0; i < numGeometries; i++)
             {
                 ReadByteOrder(reader);
-                WKBGeometryTypes geometryType = (WKBGeometryTypes)reader.ReadInt32();
+                int srid;
+                WKBGeometryTypes geometryType = ReadGeometryType(reader, out cs, out srid);//(WKBGeometryTypes)reader.ReadInt32();
                 if (geometryType != WKBGeometryTypes.WKBPoint)
                     throw new ArgumentException("IPoint feature expected");
                 points[i] = ReadPoint(reader, cs) as IPoint;
@@ -281,7 +390,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
             for (int i = 0; i < numGeometries; i++)
             {
                 ReadByteOrder(reader);
-                WKBGeometryTypes geometryType = (WKBGeometryTypes) reader.ReadInt32();
+                int srid;
+                WKBGeometryTypes geometryType = ReadGeometryType(reader, out cs, out srid);//(WKBGeometryTypes) reader.ReadInt32();
                 if (geometryType != WKBGeometryTypes.WKBLineString)
                     throw new ArgumentException("ILineString feature expected");
                 strings[i] = ReadLineString(reader, cs) as ILineString ;
@@ -302,7 +412,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
             for (int i = 0; i < numGeometries; i++)
             {
                 ReadByteOrder(reader);
-                WKBGeometryTypes geometryType = (WKBGeometryTypes) reader.ReadInt32();
+                int srid;
+                WKBGeometryTypes geometryType = ReadGeometryType(reader, out cs, out srid);//(WKBGeometryTypes) reader.ReadInt32();
                 if (geometryType != WKBGeometryTypes.WKBPolygon)
                     throw new ArgumentException("IPolygon feature expected");
                 polygons[i] = ReadPolygon(reader, cs) as IPolygon;
@@ -324,100 +435,107 @@ namespace GisSharpBlog.NetTopologySuite.IO
             for (int i = 0; i < numGeometries; i++)
             {
                 ReadByteOrder(reader);
-                WKBGeometryTypes geometryType = (WKBGeometryTypes) reader.ReadInt32();
+                int srid;
+                WKBGeometryTypes geometryType = ReadGeometryType(reader, out cs, out srid);//(WKBGeometryTypes) reader.ReadInt32();
                 switch (geometryType)
                 {
                     //Point
                     case WKBGeometryTypes.WKBPoint:
-                        geometries[i] = ReadPoint(reader, CoordinateSystem.XY);
+                        geometries[i] = ReadPoint(reader, cs);
                         break;
-                    case WKBGeometryTypes.WKBPointZ:
-                        geometries[i] = ReadPoint(reader, CoordinateSystem.XYZ);
-                        break;
-                    case WKBGeometryTypes.WKBPointM:
-                        geometries[i] = ReadPoint(reader, CoordinateSystem.XYM);
-                        break;
-                    case WKBGeometryTypes.WKBPointZM:
-                        geometries[i] = ReadPoint(reader, CoordinateSystem.XYZM);
-                        break;
+                    //case WKBGeometryTypes.WKBPointZ:
+                    //    geometries[i] = ReadPoint(reader, CoordinateSystem.XYZ);
+                    //    break;
+                    //case WKBGeometryTypes.WKBPointM:
+                    //    geometries[i] = ReadPoint(reader, CoordinateSystem.XYM);
+                    //    break;
+                    //case WKBGeometryTypes.WKBPointZM:
+                    //    geometries[i] = ReadPoint(reader, CoordinateSystem.XYZM);
+                    //    break;
+
                     //Line String
                     case WKBGeometryTypes.WKBLineString:
-                        geometries[i] = ReadLineString(reader, CoordinateSystem.XY);
+                        geometries[i] = ReadLineString(reader, cs);
                         break;
-                    case WKBGeometryTypes.WKBLineStringZ:
-                        geometries[i] = ReadLineString(reader, CoordinateSystem.XYZ);
-                        break;
-                    case WKBGeometryTypes.WKBLineStringM:
-                        geometries[i] = ReadLineString(reader, CoordinateSystem.XYM);
-                        break;
-                    case WKBGeometryTypes.WKBLineStringZM:
-                        geometries[i] = ReadLineString(reader, CoordinateSystem.XYZM);
-                        break;
+                    //case WKBGeometryTypes.WKBLineStringZ:
+                    //    geometries[i] = ReadLineString(reader, CoordinateSystem.XYZ);
+                    //    break;
+                    //case WKBGeometryTypes.WKBLineStringM:
+                    //    geometries[i] = ReadLineString(reader, CoordinateSystem.XYM);
+                    //    break;
+                    //case WKBGeometryTypes.WKBLineStringZM:
+                    //    geometries[i] = ReadLineString(reader, CoordinateSystem.XYZM);
+                    //    break;
+
                     //Polygon
                     case WKBGeometryTypes.WKBPolygon:
-                        geometries[i] = ReadPolygon(reader, CoordinateSystem.XY);
+                        geometries[i] = ReadPolygon(reader, cs);
                         break;
-                    case WKBGeometryTypes.WKBPolygonZ:
-                        geometries[i] = ReadPolygon(reader, CoordinateSystem.XYZ);
-                        break;
-                    case WKBGeometryTypes.WKBPolygonM:
-                        geometries[i] = ReadPolygon(reader, CoordinateSystem.XYM);
-                        break;
-                    case WKBGeometryTypes.WKBPolygonZM:
-                        geometries[i] = ReadPolygon(reader, CoordinateSystem.XYZM);
-                        break;
+                    //case WKBGeometryTypes.WKBPolygonZ:
+                    //    geometries[i] = ReadPolygon(reader, CoordinateSystem.XYZ);
+                    //    break;
+                    //case WKBGeometryTypes.WKBPolygonM:
+                    //    geometries[i] = ReadPolygon(reader, CoordinateSystem.XYM);
+                    //    break;
+                    //case WKBGeometryTypes.WKBPolygonZM:
+                    //    geometries[i] = ReadPolygon(reader, CoordinateSystem.XYZM);
+                    //    break;
+
                     //Multi Point
                     case WKBGeometryTypes.WKBMultiPoint:
-                        geometries[i] = ReadMultiPoint(reader, CoordinateSystem.XY);
+                        geometries[i] = ReadMultiPoint(reader, cs);
                         break;
-                    case WKBGeometryTypes.WKBMultiPointZ:
-                        geometries[i] = ReadMultiPoint(reader, CoordinateSystem.XYZ);
-                        break;
-                    case WKBGeometryTypes.WKBMultiPointM:
-                        geometries[i] = ReadMultiPoint(reader, CoordinateSystem.XYM);
-                        break;
-                    case WKBGeometryTypes.WKBMultiPointZM:
-                        geometries[i] = ReadMultiPoint(reader, CoordinateSystem.XYZM);
-                        break;
+                    //case WKBGeometryTypes.WKBMultiPointZ:
+                    //    geometries[i] = ReadMultiPoint(reader, CoordinateSystem.XYZ);
+                    //    break;
+                    //case WKBGeometryTypes.WKBMultiPointM:
+                    //    geometries[i] = ReadMultiPoint(reader, CoordinateSystem.XYM);
+                    //    break;
+                    //case WKBGeometryTypes.WKBMultiPointZM:
+                    //    geometries[i] = ReadMultiPoint(reader, CoordinateSystem.XYZM);
+                    //    break;
+
                     //Multi Line String
                     case WKBGeometryTypes.WKBMultiLineString:
-                        geometries[i] = ReadMultiLineString(reader, CoordinateSystem.XY);
+                        geometries[i] = ReadMultiLineString(reader, cs);
                         break;
-                    case WKBGeometryTypes.WKBMultiLineStringZ:
-                        geometries[i] = ReadMultiLineString(reader, CoordinateSystem.XYZ);
-                        break;
-                    case WKBGeometryTypes.WKBMultiLineStringM:
-                        geometries[i] = ReadMultiLineString(reader, CoordinateSystem.XYM);
-                        break;
-                    case WKBGeometryTypes.WKBMultiLineStringZM:
-                        geometries[i] = ReadMultiLineString(reader, CoordinateSystem.XYZM);
-                        break;
+                    //case WKBGeometryTypes.WKBMultiLineStringZ:
+                    //    geometries[i] = ReadMultiLineString(reader, CoordinateSystem.XYZ);
+                    //    break;
+                    //case WKBGeometryTypes.WKBMultiLineStringM:
+                    //    geometries[i] = ReadMultiLineString(reader, CoordinateSystem.XYM);
+                    //    break;
+                    //case WKBGeometryTypes.WKBMultiLineStringZM:
+                    //    geometries[i] = ReadMultiLineString(reader, CoordinateSystem.XYZM);
+                    //    break;
+
                     //Multi Polygon
                     case WKBGeometryTypes.WKBMultiPolygon:
-                        geometries[i] = ReadMultiPolygon(reader, CoordinateSystem.XY);
+                        geometries[i] = ReadMultiPolygon(reader, cs);
                         break;
-                    case WKBGeometryTypes.WKBMultiPolygonZ:
-                        geometries[i] = ReadMultiPolygon(reader, CoordinateSystem.XYZ);
-                        break;
-                    case WKBGeometryTypes.WKBMultiPolygonM:
-                        geometries[i] = ReadMultiPolygon(reader, CoordinateSystem.XYM);
-                        break;
-                    case WKBGeometryTypes.WKBMultiPolygonZM:
-                        geometries[i] = ReadMultiPolygon(reader, CoordinateSystem.XYZM);
-                        break;
+                    //case WKBGeometryTypes.WKBMultiPolygonZ:
+                    //    geometries[i] = ReadMultiPolygon(reader, CoordinateSystem.XYZ);
+                    //    break;
+                    //case WKBGeometryTypes.WKBMultiPolygonM:
+                    //    geometries[i] = ReadMultiPolygon(reader, CoordinateSystem.XYM);
+                    //    break;
+                    //case WKBGeometryTypes.WKBMultiPolygonZM:
+                    //    geometries[i] = ReadMultiPolygon(reader, CoordinateSystem.XYZM);
+                    //    break;
+
                     //Geometry Collection
                     case WKBGeometryTypes.WKBGeometryCollection:
                         geometries[i] = ReadGeometryCollection(reader, CoordinateSystem.XY);
                         break;
-                    case WKBGeometryTypes.WKBGeometryCollectionZ:
-                        geometries[i] = ReadGeometryCollection(reader, CoordinateSystem.XYZ);
-                        break;
-                    case WKBGeometryTypes.WKBGeometryCollectionM:
-                        geometries[i] = ReadGeometryCollection(reader, CoordinateSystem.XYM);
-                        break;
-                    case WKBGeometryTypes.WKBGeometryCollectionZM:
-                        geometries[i] = ReadGeometryCollection(reader, CoordinateSystem.XYZM);
-                        break;
+                    //case WKBGeometryTypes.WKBGeometryCollectionZ:
+                    //    geometries[i] = ReadGeometryCollection(reader, CoordinateSystem.XYZ);
+                    //    break;
+                    //case WKBGeometryTypes.WKBGeometryCollectionM:
+                    //    geometries[i] = ReadGeometryCollection(reader, CoordinateSystem.XYM);
+                    //    break;
+                    //case WKBGeometryTypes.WKBGeometryCollectionZM:
+                    //    geometries[i] = ReadGeometryCollection(reader, CoordinateSystem.XYZM);
+                    //    break;
                     default:
                         throw new ArgumentException("Should never reach here!");
                 }                

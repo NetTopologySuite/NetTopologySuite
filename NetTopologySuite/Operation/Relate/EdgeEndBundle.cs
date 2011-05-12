@@ -1,6 +1,7 @@
 using System.Collections;
 using System.IO;
 using GeoAPI.Geometries;
+using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
@@ -15,16 +16,27 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
     /// </summary>
     public class EdgeEndBundle : EdgeEnd
     {
-        private IList edgeEnds = new ArrayList();
+        //private readonly IBoundaryNodeRule _boundaryNodeRule;
+        private readonly IList _edgeEnds = new ArrayList();
 
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="boundaryNodeRule"></param>
         /// <param name="e"></param>
-        public EdgeEndBundle(EdgeEnd e) : base(e.Edge, e.Coordinate, e.DirectedCoordinate, new Label(e.Label))
+        public EdgeEndBundle(IBoundaryNodeRule boundaryNodeRule, EdgeEnd e) 
+            : base(e.Edge, e.Coordinate, e.DirectedCoordinate, new Label(e.Label))
         {
+            /*
+            if (boundaryNodeRule != null)
+              this.boundaryNodeRule = boundaryNodeRule;
+            else
+              boundaryNodeRule = BoundaryNodeRules.OgcSfsBoundaryRule;
+            */
             Insert(e);
-        }       
+        }
+       
+        public EdgeEndBundle(EdgeEnd e) : this (null, e){}
 
         /// <summary>
         /// 
@@ -32,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// <returns></returns>
         public IEnumerator GetEnumerator() 
         { 
-            return edgeEnds.GetEnumerator(); 
+            return _edgeEnds.GetEnumerator(); 
         }
 
         /// <summary>
@@ -42,7 +54,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         {
             get
             {
-                return edgeEnds; 
+                return _edgeEnds; 
             }
         }
 
@@ -54,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         {
             // Assert: start point is the same
             // Assert: direction is the same
-            edgeEnds.Add(e);
+            _edgeEnds.Add(e);
         }
 
         /// <summary>
@@ -63,7 +75,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// the ON and side labels for each edge. 
         /// These labels must be compatible
         /// </summary>
-        public override void ComputeLabel()
+        /// <param name="boundaryNodeRule"></param>
+        public override void ComputeLabel(IBoundaryNodeRule boundaryNodeRule)
         {
             // create the label.  If any of the edges belong to areas,
             // the label must be an area label
@@ -81,7 +94,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             // compute the On label, and the side labels if present
             for (int i = 0; i < 2; i++)
             {
-                ComputeLabelOn(i);
+                ComputeLabelOn(i, boundaryNodeRule);
                 if (isArea)
                     ComputeLabelSides(i);
             }
@@ -94,11 +107,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// edgeStubs can be either on the boundary (eg Polygon edge)
         /// OR in the interior (e.g. segment of a LineString)
         /// of their parent Geometry.
-        /// In addition, GeometryCollections use the mod-2 rule to determine
+        /// In addition, GeometryCollections use the <see cref="IBoundaryNodeRule"/> to determine
         /// whether a segment is on the boundary or not.
-        /// Finally, in GeometryCollections it can still occur that an edge is both
+        /// Finally, in GeometryCollections it can occur that an edge is both
         /// on the boundary and in the interior (e.g. a LineString segment lying on
-        /// top of a Polygon edge.) In this case as usual the Boundary is given precendence.
+        /// top of a Polygon edge.) In this case the Boundary is given precendence.
         /// These observations result in the following rules for computing the ON location:
         ///  if there are an odd number of Bdy edges, the attribute is Bdy
         ///  if there are an even number >= 2 of Bdy edges, the attribute is Int
@@ -106,7 +119,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         ///  otherwise, the attribute is Null.
         /// </summary>
         /// <param name="geomIndex"></param>
-        private void ComputeLabelOn(int geomIndex)
+        private void ComputeLabelOn(int geomIndex, IBoundaryNodeRule boundaryNodeRule)
         {
             // compute the On location value
             int boundaryCount = 0;
@@ -127,7 +140,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
             if (foundInterior) 
                 loc = Locations.Interior;
             if (boundaryCount > 0) 
-                loc = GeometryGraph.DetermineBoundary(boundaryCount);            
+                loc = GeometryGraph.DetermineBoundary(boundaryNodeRule, boundaryCount);            
             label.SetLocation(geomIndex, loc);
         }
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
+using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
 #if SILVERLIGHT
@@ -220,7 +221,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
                 if (hole.Shell == null)
                 {
                     EdgeRing shell = FindEdgeRingContaining(hole, shellList);
-                    Assert.IsTrue(shell != null, "unable to assign hole to a shell");
+                    //Assert.IsTrue(shell != null, "unable to assign hole to a shell");
+                    if (shell == null)
+                        throw new TopologyException("unable to assign hole to a shell", hole.GetCoordinate(0));
                     hole.Shell = shell;
                 }
              }

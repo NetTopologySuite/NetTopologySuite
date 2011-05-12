@@ -20,45 +20,45 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 #endif
     public class LineSegment : IComparable
     {
-        private ICoordinate p0 = null, p1 = null;
+        private ICoordinate _p0, _p1;
 
         /// <summary>
-        /// 
+        /// The end-point
         /// </summary>
         public ICoordinate P1
         {
-            get { return p1; }
-            set { p1 = value; }
+            get { return _p1; }
+            set { _p1 = value; }
         }
 
         /// <summary>
-        /// 
+        /// The start-point
         /// </summary>
         public ICoordinate P0
         {
-            get { return p0; }
-            set { p0 = value; }
+            get { return _p0; }
+            set { _p0 = value; }
         }
 
         /// <summary>
-        /// 
+        /// Creates an instance of this class using two coordinates
         /// </summary>
-        /// <param name="p0"></param>
-        /// <param name="p1"></param>
+        /// <param name="p0">The start-point</param>
+        /// <param name="p1">The end-point</param>
         public LineSegment(ICoordinate p0, ICoordinate p1) 
         {
-            this.p0 = p0;
-            this.p1 = p1;
+            _p0 = p0;
+            _p1 = p1;
         }
 
         /// <summary>
-        /// 
+        /// Creates an instance of this class using another instance
         /// </summary>
         /// <param name="ls"></param>
-        public LineSegment(LineSegment ls) : this(ls.p0, ls.p1) { }
+        public LineSegment(LineSegment ls) : this(ls._p0, ls._p1) { }
 
         /// <summary>
-        /// 
+        /// Creates an instance of this class using two empty coordinates
         /// </summary>
         public LineSegment() : this(new Coordinate(), new Coordinate()) { }
         
@@ -179,6 +179,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public double Angle
         {
             get { return Math.Atan2(P1.Y - P0.Y, P1.X - P0.X); }
+        }
+
+        ///<summary>The midpoint of the segment</summary>
+        public ICoordinate MidPoint
+        {
+            get
+            {
+                return new Coordinate((_p0.X + _p1.X) / 2,
+                                      (_p0.Y + _p1.Y) / 2);
+            } 
         }
 
         /// <summary> 
@@ -395,7 +405,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (!(o is LineSegment)) 
                 return false;            
             var other = (LineSegment) o;
-            return p0.Equals(other.p0) && p1.Equals(other.p1);
+            return _p0.Equals(other._p0) && _p1.Equals(other._p1);
         }
         
         /// <summary>

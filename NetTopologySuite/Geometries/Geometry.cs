@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Xml;
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.IO;
 using GisSharpBlog.NetTopologySuite.IO.GML2;
+using GisSharpBlog.NetTopologySuite.Operation;
 using GisSharpBlog.NetTopologySuite.Operation.Buffer;
 using GisSharpBlog.NetTopologySuite.Operation.Distance;
 using GisSharpBlog.NetTopologySuite.Operation.Overlay;
@@ -106,7 +108,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             typeof(GeometryCollection),    
         };                    
 
-        private IGeometryFactory factory = null;
+        //FObermaier: not *readonly* due to SRID property in geometryfactory
+        private /*readonly*/ IGeometryFactory _factory;
 
         /// <summary> 
         /// Gets the factory which contains the context in which this point was created.
@@ -116,11 +119,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get 
             { 
-                return factory; 
+                return _factory;
             }
         }
 
-        private object userData = null;
+        private object _userData;
         
         /// <summary> 
         /// Gets/Sets the user data object for this point, if any.
@@ -133,11 +136,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {                
-                return userData;
+                return _userData;
             }
             set
             {
-                userData = value;
+                _userData = value;
             }
         }
            
@@ -147,7 +150,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         protected IEnvelope envelope;
        
         // The ID of the Spatial Reference System used by this <c>Geometry</c>
-        private int srid;
+        private int _srid;
 
         /// <summary>  
         /// Gets/Sets the ID of the Spatial Reference System used by the <c>Geometry</c>. 
@@ -161,11 +164,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get 
             { 
-                return srid; 
+                return _srid; 
             }
             set 
             {
-                srid = value;
+                _srid = value;
 				IGeometryCollection collection = this as IGeometryCollection;
 				if (collection != null)
 				{
@@ -174,7 +177,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 						geometry.SRID = value;
 					}
 				}
-				factory = new GeometryFactory(factory.PrecisionModel, value, factory.CoordinateSequenceFactory);
+				_factory = new GeometryFactory(_factory.PrecisionModel, value, _factory.CoordinateSequenceFactory);
 			}
         }
 
@@ -184,8 +187,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="factory"></param>
         public Geometry(IGeometryFactory factory)
         {
-            this.factory = factory;
-            srid = factory.SRID;
+            this._factory = factory;
+            _srid = factory.SRID;
         }
 
         /// <summary>  
@@ -300,7 +303,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <c>true</c> if this <c>Geometry</c> has any points of
         /// self-tangency, self-intersection or other anomalous points.
         /// </returns>
-        public abstract bool IsSimple { get; }
+        //public abstract bool IsSimple { get; }
+        public bool IsSimple
+        {
+            get
+            {
+                CheckNotGeometryCollection(this);
+                IsSimpleOp isSimpleOp = new IsSimpleOp(this);
+                return isSimpleOp.IsSimple();
+            }
+        }
 
         /// <summary>  
         /// Tests the validity of this <c>Geometry</c>.
@@ -474,22 +486,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
 
-        private IGeometry boundary;
+        /*private IGeometry boundary;*/
 
         /// <summary>  
-        /// Returns the boundary, or the empty point if this <c>Geometry</c>
-        /// is empty. For a discussion of this function, see the OpenGIS Simple
+        /// Returns the boundary, or an empty geometry of appropriate dimension 
+        /// if this <c>Geometry</c> is empty. 
+        /// For a discussion of this function, see the OpenGIS Simple
         /// Features Specification. As stated in SFS Section 2.1.13.1, "the boundary
         /// of a Geometry is a set of Geometries of the next lower dimension."
         /// </summary>
         /// <returns>The closure of the combinatorial boundary of this <c>Geometry</c>.</returns>
-        public virtual IGeometry Boundary
-        {
-            get { return boundary; }
-            set { boundary = value; }
-        }
+        /// NOTE: make abstract, remove setter and change geoapi
+        public virtual IGeometry Boundary { get; set; }
 
-        private Dimensions boundaryDimension;
+        /*private Dimensions boundaryDimension;*/
 
         /// <summary> 
         /// Returns the dimension of this <c>Geometry</c>s inherent boundary.
@@ -499,11 +509,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// interface, whether or not this object is the empty point. Returns
         /// <c>Dimension.False</c> if the boundary is the empty point.
         /// </returns>
-        public virtual Dimensions BoundaryDimension
-        {
-            get { return boundaryDimension; }
-            set { boundaryDimension = value; }
-        }
+        /// NOTE: make abstract, remove setter and change geoapi
+        public virtual Dimensions BoundaryDimension { get; set; }
 
         /// <summary>  
         /// Returns this <c>Geometry</c>s bounding box. If this <c>Geometry</c>
@@ -881,11 +888,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public override int GetHashCode()
         {
-            int result = 17;            
-            foreach (Coordinate coord in Coordinates)
+            int result = 17;
+            return GetHashCodeInternal(result, x => 37 * x );
+            /*
+            foreach (var coord in Coordinates)
                 result = 37 * result + coord.X.GetHashCode();                        
-            return result;
-        } 
+             */
+        }
+
+        internal abstract int GetHashCodeInternal(int baseValue, Func<int, int> operation);
 
         /// <summary>
         /// Returns the Well-known Text representation of this <c>Geometry</c>.
@@ -967,6 +978,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// All points whose distance from this <c>Geometry</c>
         /// are less than or equal to <c>distance</c>.
         /// </returns>
+        /// <exception cref="TopologyException">If a robustness error occurs</exception>
         public IGeometry Buffer(double distance)
         {
             return BufferOp.Buffer(this, distance);
@@ -985,6 +997,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// All points whose distance from this <c>Geometry</c>
         /// are less than or equal to <c>distance</c>.
         /// </returns>
+        /// <exception cref="TopologyException">If a robustness error occurs</exception>
         public IGeometry Buffer(double distance, BufferStyle endCapStyle)
         {
             return BufferOp.Buffer(this, distance, endCapStyle);
@@ -1007,6 +1020,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// All points whose distance from this <c>Geometry</c>
         /// are less than or equal to <c>distance</c>.
         /// </returns>
+        /// <exception cref="TopologyException">If a robustness error occurs</exception>
         public IGeometry Buffer(double distance, int quadrantSegments) 
         {
             return BufferOp.Buffer(this, distance, quadrantSegments);
@@ -1030,6 +1044,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// All points whose distance from this <c>Geometry</c>
         /// are less than or equal to <c>distance</c>.
         /// </returns>
+        /// <exception cref="TopologyException">If a robustness error occurs</exception>
         public IGeometry Buffer(double distance, int quadrantSegments, BufferStyle endCapStyle)
         {
             return BufferOp.Buffer(this, distance, quadrantSegments, endCapStyle);
@@ -1052,6 +1067,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other">The <c>Geometry</c> with which to compute the intersection.</param>
         /// <returns>The points common to the two <c>Geometry</c>s.</returns>
+        /// <exception cref="ArgumentException"></exception>
         public IGeometry Intersection(IGeometry other) 
         {
             // Special case: if one input is empty ==> empty
@@ -1179,6 +1195,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="filter">The filter to apply to this <c>Geometry</c>'s coordinates</param>
         public abstract void Apply(ICoordinateFilter filter);
 
+        ///<summary>
+        /// Performs an operation on the coordinates in this <c>Geometry</c>'s <see cref="ICoordinateSequence"/>s. 
+        /// If this method modifies any coordinate values, <see cref="GeometryChanged()"/> must be called to update the geometry state.
+        ///</summary>
+        /// <param name="filter">The filter to apply</param>
+        public abstract void Apply(ICoordinateSequenceFilter filter);
+
         /// <summary>
         /// Performs an operation with or on this <c>Geometry</c> and its
         /// subelement <c>Geometry</c>s (if any).
@@ -1273,6 +1296,58 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return CompareToSameClass(geom);
         }
 
+        /**
+          *  Returns whether this <code>Geometry</code> is greater than, equal to,
+          *  or less than another <code>Geometry</code>,
+          * using the given {@link CoordinateSequenceComparator}.
+          * <P>
+          *
+          *  If their classes are different, they are compared using the following
+          *  ordering:
+          *  <UL>
+          *    <LI> Point (lowest)
+          *    <LI> MultiPoint
+          *    <LI> LineString
+          *    <LI> LinearRing
+          *    <LI> MultiLineString
+          *    <LI> Polygon
+          *    <LI> MultiPolygon
+          *    <LI> GeometryCollection (highest)
+          *  </UL>
+          *  If the two <code>Geometry</code>s have the same class, their first
+          *  elements are compared. If those are the same, the second elements are
+          *  compared, etc.
+          *
+          *@param  o  a <code>Geometry</code> with which to compare this <code>Geometry</code>
+          *@param comp a <code>CoordinateSequenceComparator</code>
+          *
+          *@return    a positive number, 0, or a negative number, depending on whether
+          *      this object is greater than, equal to, or less than <code>o</code>, as
+          *      defined in "Normal Form For Geometry" in the JTS Technical
+          *      Specifications
+          */
+        public int CompareTo(Object o, IComparer<ICoordinateSequence> comp)
+        {
+            Geometry other = (Geometry)o;
+            if (ClassSortIndex != other.ClassSortIndex)
+            {
+                return ClassSortIndex - other.ClassSortIndex;
+            }
+            if (IsEmpty && other.IsEmpty)
+            {
+                return 0;
+            }
+            if (IsEmpty)
+            {
+                return -1;
+            }
+            if (other.IsEmpty)
+            {
+                return 1;
+            }
+            return CompareToSameClass(o, comp);
+        }
+
         /// <summary>
         /// Returns whether the two <c>Geometry</c>s are equal, from the point
         /// of view of the <c>EqualsExact</c> method. Called by <c>EqualsExact</c>
@@ -1342,6 +1417,20 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Specifications.
         /// </returns>
         protected internal abstract int CompareToSameClass(object o);
+
+        ///<summary>
+        /// Returns whether this <c>Geometry</c> is greater than, equal to,
+        /// or less than another <c>Geometry</c> of the same class.
+        /// using the given <see cref="IComparer{ICoordinateSequence}"/>.
+        ///</summary>
+        /// <param name="o">A <c>Geometry</c> having the same class as this <c>Geometry</c></param>
+        /// <param name="comp">The comparer</param>
+        /// <returns>A positive number, 0, or a negative number, depending on whether
+        ///      this object is greater than, equal to, or less than <code>o</code>, as
+        ///      defined in "Normal Form For Geometry" in the JTS Technical
+        ///      Specifications
+        /// </returns>
+        protected internal abstract int CompareToSameClass(Object o, IComparer<ICoordinateSequence> comp);
 
         /// <summary>
         /// Returns the first non-zero result of <c>CompareTo</c> encountered as
@@ -1442,6 +1531,5 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public static readonly IGeometryFactory DefaultFactory = GeometryFactory.Default;
         
         /* END ADDED BY MPAUL42: monoGIS team */
-
     }
 }

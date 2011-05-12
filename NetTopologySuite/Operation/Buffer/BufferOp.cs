@@ -172,6 +172,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="distance"></param>
         /// <param name="quadrantSegments"></param>
         /// <returns></returns>
+        [Obsolete("Use QuadrantSegments property instead.")]
         public IGeometry GetResultGeometry(double distance, int quadrantSegments)
         {
             this.distance = distance;

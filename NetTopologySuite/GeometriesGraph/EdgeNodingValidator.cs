@@ -8,7 +8,7 @@ using ArrayList = System.Collections.Generic.List<object>;
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     /// <summary>
-    /// Validates that a collection of SegmentStrings is correctly noded.
+    /// Validates that a collection of <see cref="Edge"/> is correctly noded.
     /// Throws an appropriate exception if an noding error is found.
     /// </summary>
     public class EdgeNodingValidator
@@ -24,11 +24,18 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         private readonly FastNodingValidator _nv;
 
-        public EdgeNodingValidator(IEnumerable edges)
+       ///<summary>
+       /// Creates a new validator for the given collection of <see cref="Edge"/>s.
+       /// </summary> 
+       public EdgeNodingValidator(IEnumerable edges)
         {
             _nv = new FastNodingValidator(ToSegmentStrings(edges));
         }
 
+        /// <summary>
+        /// Checks whether the supplied edges
+        /// are correctly noded.  Throws an exception if they are not.
+        /// </summary>
         public void CheckValid()
         {
             _nv.CheckValid();

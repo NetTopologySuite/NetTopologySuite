@@ -41,6 +41,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             set { z = value; }
         }
 
+        public double M
+        {
+            get { return Double.NaN; }
+            set {  }
+        }
+
         public ICoordinate CoordinateValue
         {
             get { return this; }
@@ -50,7 +56,40 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 y = value.Y;
                 z = value.Z;
             }
-        }        
+        }
+
+        public double this[Ordinates index]
+        {
+            get
+            {
+                switch (index)
+                {
+                    case Ordinates.X:
+                        return x;
+                    case Ordinates.Y:
+                        return y;
+                    case Ordinates.Z:
+                        return z;
+                    default:
+                        return Double.NaN;
+                }
+            }
+            set
+            {
+                switch (index)
+                {
+                    case Ordinates.X:
+                        x = value;
+                        break;
+                    case Ordinates.Y:
+                        y = value;
+                        break;
+                    case Ordinates.Z:
+                        z = value;
+                        break;
+                }
+            }
+        }
 
         public double Distance(ICoordinate p)
         {

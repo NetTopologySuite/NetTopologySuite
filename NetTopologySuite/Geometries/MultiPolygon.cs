@@ -81,16 +81,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public override bool IsSimple
-        {
-            get
-            {
-                return true;
-            }
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public override bool IsSimple
+        //{
+        //    get
+        //    {
+        //        return true;
+        //    }
+        //}
 
         /// <summary>
         /// 
@@ -100,7 +100,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get
             {
                 if (IsEmpty)    
-                    return Factory.CreateGeometryCollection(null);
+                    return Factory.CreateMultiPolygon(null);
 
                 List<ILineString> allRings = new List<ILineString>();
                 for (int i = 0; i < geometries.Length; i++)

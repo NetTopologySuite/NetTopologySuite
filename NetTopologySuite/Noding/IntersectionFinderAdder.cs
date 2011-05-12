@@ -77,5 +77,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                 }
             }
         }
+
+        ///<summary>
+        /// Always process all intersections
+        ///</summary>
+        public Boolean Done { get { return false; } }
     }
 }

@@ -189,7 +189,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap
         {
             ICoordinate[] srcPts = coords.ToCoordinateArray();
             ICoordinate[] newPts = SnapLine(srcPts, snapPts);
-            return factory.CoordinateSequenceFactory.Create(newPts);
+            return Factory.CoordinateSequenceFactory.Create(newPts);
         }
 
         /// <summary>
