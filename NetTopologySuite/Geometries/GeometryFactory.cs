@@ -516,8 +516,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         private static ICoordinateSequenceFactory GetDefaultCoordinateSequenceFactory()
         {
-            /*return CoordinateArraySequenceFactory.Instance;*/
-            return DotSpatialAffineCoordinateSequenceFactory.Instance;
+            return CoordinateArraySequenceFactory.Instance;
         }
 
         private class AnonymousCoordinateOperationImpl : GeometryEditor.CoordinateOperation

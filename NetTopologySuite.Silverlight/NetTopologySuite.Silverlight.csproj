@@ -60,6 +60,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\NetTopologySuite\Algorithm\Angle.cs">
+      <Link>Algorithm\Angle.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Algorithm\BoundaryNodeRule.cs">
+      <Link>Algorithm\BoundaryNodeRule.cs</Link>
+    </Compile>
     <Compile Include="..\NetTopologySuite\Algorithm\CentralEndpointIntersector.cs">
       <Link>Algorithm\CentralEndpointIntersector.cs</Link>
     </Compile>
@@ -707,6 +713,9 @@
     </Compile>
     <Compile Include="..\NetTopologySuite\Operation\Distance\GeometryLocation.cs">
       <Link>Operation\Distance\GeometryLocation.cs</Link>
+    </Compile>
+    <Compile Include="..\NetTopologySuite\Operation\BoundaryOp.cs">
+      <Link>Operation\BoundaryOp.cs</Link>
     </Compile>
     <Compile Include="..\NetTopologySuite\Operation\GeometryGraphOperation.cs">
       <Link>Operation\GeometryGraphOperation.cs</Link>
