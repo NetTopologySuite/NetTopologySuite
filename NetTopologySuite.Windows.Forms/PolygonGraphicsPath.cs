@@ -5,7 +5,7 @@ using GeoAPI.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Windows.Forms
 {
-public class PolygonGraphcisPath 
+public class PolygonGraphicsPath 
 {
     // use a GraphicsPath with a winding rule, since it supports floating point coordinates
     //private GraphicsPath _ringPath;
@@ -15,7 +15,7 @@ public class PolygonGraphcisPath
     ///</summary>
     /// <param name="shellVertices">The vertices of the shell</param>
     /// <param name="holeVerticesCollection">A collection of ICoordinate[] for each hole</param>
-    public PolygonGraphcisPath(ICoordinate[] shellVertices,
+    public PolygonGraphicsPath(ICoordinate[] shellVertices,
         IEnumerable<ICoordinate[]> holeVerticesCollection) 
     {
         Path = ToPath(shellVertices);
@@ -24,7 +24,7 @@ public class PolygonGraphcisPath
             Path.AddPath(ToPath(coordinates), false);
     }
 
-    public PolygonGraphcisPath() 
+    public PolygonGraphicsPath() 
     {
     }
 

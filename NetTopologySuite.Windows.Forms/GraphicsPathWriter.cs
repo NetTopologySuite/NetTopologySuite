@@ -133,7 +133,7 @@ public class GraphicsPathWriter
 
 	private GraphicsPath ToShape(IPolygon p) 
 	{
-		var poly = new PolygonGraphcisPath();
+		var poly = new PolygonGraphicsPath();
 		
 		Append(poly, p.ExteriorRing.Coordinates);
 		for (int j = 0; j < p.NumInteriorRings; j++) {
@@ -143,7 +143,7 @@ public class GraphicsPathWriter
 		return poly.Path;
 	}
 
-	private void Append(PolygonGraphcisPath poly, ICoordinate[] coords)
+	private void Append(PolygonGraphicsPath poly, ICoordinate[] coords)
 	{
 	    GraphicsPath ring = null;
 	        for (var i = 0; i < coords.Length; i++)
