@@ -63,7 +63,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Validate", "Validate", "{20
 		NetTopologySuite.TestRunner.Tests\validate\TestRelateLL.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelateLL.xml
 		NetTopologySuite.TestRunner.Tests\validate\TestRelatePA.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelatePA.xml
 		NetTopologySuite.TestRunner.Tests\validate\TestRelatePL.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelatePL.xml
-		NetTopologySuite.TestRunner.Tests\validate\TestRelatePP.xml = NetTopologySuite.TestRunner.Tests\validate\TestRelatePP.xml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite", "NetTopologySuite\NetTopologySuite.csproj", "{5770DAA9-84E5-4770-AF43-F6B815894368}"
