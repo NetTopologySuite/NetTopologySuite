@@ -8,7 +8,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     ///<summary>
     /// An interface for rules which determine whether node points
-    /// which are in boundaries of lineal geometry components
+    /// which are in boundaries of <see cref="ILineal"/> geometry components
     /// are in the boundary of the parent geometry collection.
     /// The SFS specifies a single kind of boundary node rule,
     /// the <see cref="BoundaryNodeRules.Mod2BoundaryNodeRule"/> rule.

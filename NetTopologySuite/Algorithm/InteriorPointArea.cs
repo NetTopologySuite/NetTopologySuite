@@ -27,9 +27,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             return (a + b) / 2.0;
         }
 
-        private IGeometryFactory factory;
-        private ICoordinate interiorPoint = null;
-        private double maxWidth = 0;
+        private readonly IGeometryFactory _factory;
+        private ICoordinate _interiorPoint;
+        private double _maxWidth;
 
         /// <summary>
         /// 
@@ -37,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="g"></param>
         public InteriorPointArea(IGeometry g)
         {
-            factory = g.Factory;
+            _factory = g.Factory;
             Add(g);
         }
 
@@ -48,14 +48,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         {
             get
             {
-                return interiorPoint;
+                return _interiorPoint;
             }
         }
 
         /// <summary> 
         /// Tests the interior vertices (if any)
-        /// defined by a linear Geometry for the best inside point.
-        /// If a Geometry is not of dimension 1 it is not tested.
+        /// defined by a areal Geometry for the best inside point.
+        /// If a Geometry is not of dimension 2 it is not tested.
         /// </summary>
         /// <param name="geom">The point to add.</param>
         private void Add(IGeometry geom)
@@ -86,10 +86,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             IGeometry widestIntersection = WidestGeometry(intersections);
 
             double width = widestIntersection.EnvelopeInternal.Width;
-            if (interiorPoint == null || width > maxWidth)
+            if (_interiorPoint == null || width > _maxWidth)
             {
-                interiorPoint = Centre(widestIntersection.EnvelopeInternal);
-                maxWidth = width;
+                _interiorPoint = Centre(widestIntersection.EnvelopeInternal);
+                _maxWidth = width;
             }
         }
            
@@ -136,7 +136,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             // Assert: for areas, minx <> maxx
             double avgY = Avg(envelope.MinY, envelope.MaxY);
-            return factory.CreateLineString(
+            return _factory.CreateLineString(
                 new ICoordinate[] { new Coordinate(envelope.MinX, avgY), new Coordinate(envelope.MaxX, avgY) });
         }
 

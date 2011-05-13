@@ -62,57 +62,36 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         }        
 
         /// <summary> 
-        /// Test whether a point lies inside a ring.
-        /// The ring may be oriented in either direction.
-        /// If the point lies on the ring boundary the result of this method is unspecified.
-        /// This algorithm does not attempt to first check the point against the envelope
-        /// of the ring.
+        /// Tests whether a point lies inside a ring.
         /// </summary>
+        /// <remarks>
+        /// <para>The ring may be oriented in either direction.</para>
+        /// <para>A point lying exactly on the ring boundary is considered to be inside the ring.</para>
+        /// <para>This algorithm does not attempt to first check the point against the envelope
+        /// of the ring.</para>
+        /// </remarks>
         /// <param name="p">Point to check for ring inclusion.</param>
-        /// <param name="ring">Assumed to have first point identical to last point.</param>
-        /// <returns><c>true</c> if p is inside ring.</returns>
+        /// <param name="ring">An array of <see cref="ICoordinate"/>s representing the ring (which must have first point identical to last point)</param>
+        /// <returns>true if p is inside ring.</returns>
+        /// <see cref="IPointInRing"/>
         public static bool IsPointInRing(ICoordinate p, ICoordinate[] ring) 
         {
-            if (p == null) 
-                throw new ArgumentNullException("p", "coordinate 'p' is null");
-            if (ring == null) 
-                throw new ArgumentNullException("ring", "ring 'ring' is null");
+            return LocatePointInRing(p, ring) != Locations.Exterior;
+        }
 
-            int crossings = 0;            
-            /*
-            *  For each segment l = (i-1, i), see if it crosses ray from test point in positive x direction.
-            */
-            for (int i = 1; i < ring.Length; i++) 
-            {
-                int i1 = i - 1;
-                ICoordinate p1 = ring[i];
-                ICoordinate p2 = ring[i1];                
-
-                if (((p1.Y > p.Y) && (p2.Y <= p.Y)) || ((p2.Y > p.Y) && (p1.Y <= p.Y))) 
-                {
-                    double x1 = p1.X - p.X;
-                    double y1 = p1.Y - p.Y;
-                    double x2 = p2.X - p.X;
-                    double y2 = p2.Y - p.Y;
-                    /*
-                    *  segment straddles x axis, so compute intersection.
-                    */
-                    double xInt = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2) / (y2 - y1);
-
-                    /*
-                    *  crosses ray if strictly positive intersection.
-                    */
-                    if (0.0 < xInt) 
-                        crossings++;
-                }
-            }
-
-            /*
-            *  p is inside if number of crossings is odd.
-            */
-            if ((crossings % 2) == 1) 
-                return true;            
-            else return false;
+        ///<summary>
+        /// Determines whether a point lies in the interior, on the boundary, or in the exterior of a ring.
+        ///</summary>
+        /// <remarks>
+        /// <para>The ring may be oriented in either direction.</para>
+        /// <para>This method does <i>not</i> first check the point against the envelope of the ring.</para>
+        /// </remarks>
+        /// <param name="p">Point to check for ring inclusion</param>
+        /// <param name="ring">An array of coordinates representing the ring (which must have first point identical to last point)</param>
+        /// <returns>The <see cref="Locations"/> of p relative to the ring</returns>
+        public static Locations LocatePointInRing(ICoordinate p, ICoordinate[] ring)
+        {
+            return RayCrossingCounter.LocatePointInRing(p, ring);
         }
 
         /// <summary> 
@@ -141,15 +120,17 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         }
  
 		/// <summary>
-        /// Computes whether a ring defined by an array of <see cref="Coordinate" />s is oriented counter-clockwise.
-        /// The list of points is assumed to have the first and last points equal.
-        /// This will handle coordinate lists which contain repeated points.
-        /// This algorithm is only guaranteed to work with valid rings.
-        /// If the ring is invalid (e.g. self-crosses or touches),
-        /// the computed result may not be correct.
-		/// </summary>>
-        /// <param name="ring"></param>
-        /// <returns></returns>
+        /// Computes whether a ring defined by an array of <see cref="ICoordinate" />s is oriented counter-clockwise.
+        /// </summary>>
+        /// <remarks>
+        /// <list type="Bullet">
+        /// <item>The list of points is assumed to have the first and last points equal.</item>
+        /// <item>This will handle coordinate lists which contain repeated points.</item>
+        /// </list>
+        /// <para>This algorithm is only guaranteed to work with valid rings. If the ring is invalid (e.g. self-crosses or touches), the computed result may not be correct.</para>
+        /// </remarks>
+        /// <param name="ring">An array of <see cref="ICoordinate"/>s froming a ring</param>
+        /// <returns>true if the ring is oriented <see cref="Orientation.CounterClockwise"/></returns>
         public static bool IsCCW(ICoordinate[] ring) 
         {
             // # of points without closing endpoint

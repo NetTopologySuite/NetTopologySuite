@@ -11,6 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// Implements <c>IPointInRing</c>
     /// using a <c>MonotoneChain</c>s and a <c>BinTree</c> index to increase performance.
     /// </summary>
+    /// <see cref="IndexedPointInAreaLocator"/>
     public class MCPointInRing : IPointInRing 
     {
         /// <summary>

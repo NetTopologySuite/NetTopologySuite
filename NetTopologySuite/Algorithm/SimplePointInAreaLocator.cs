@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -6,25 +5,25 @@ using GisSharpBlog.NetTopologySuite.Geometries;
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
     /// <summary>
-    /// Computes whether a point
-    /// lies in the interior of an area <c>Geometry</c>.
+    /// Computes the locations of points
+    /// relative to an an areal <see cref="IGeometry"/>,
+    /// using a simple O(n) algorithm.
+    /// This algorithm is suitable for use in cases where
+    /// only one or a few points will be tested against a given area.
+    /// </summary>
+    /// <remarks>
     /// The algorithm used is only guaranteed to return correct results
     /// for points which are not on the boundary of the Geometry.
-    /// </summary>
-    public class SimplePointInAreaLocator
+    /// </remarks>
+    public class SimplePointInAreaLocator : IPointInAreaLocator
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        private SimplePointInAreaLocator() { }
-
         /// <summary> 
-        /// Locate is the main location function.  It handles both single-element
-        /// and multi-element Geometries.  The algorithm for multi-element Geometries
-        /// is more complex, since it has to take into account the boundaryDetermination rule.
+        /// Determines the <see cref="Locations"/> of a point in an areal <see cref="IGeometry"/>.
+        /// Currently this will never return a value of <see cref ="Locations.Boundary"/>.  
         /// </summary>
-        /// <param name="geom"></param>
-        /// <param name="p"></param>
+        /// <param name="geom">the areal geometry to test</param>
+        /// <param name="p">The point to test</param>
+        /// <returns>The Location of the point in the geometry</returns>
         public static Locations Locate(ICoordinate p, IGeometry geom)
         {
             if (geom.IsEmpty)
@@ -44,8 +43,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         private static bool ContainsPoint(ICoordinate p, IGeometry geom)
         {
             if (geom is IPolygon) 
-                return ContainsPointInPolygon(p, (IPolygon) geom);            
-            else if(geom is IGeometryCollection) 
+                return ContainsPointInPolygon(p, (IPolygon) geom);
+            
+            if(geom is IGeometryCollection) 
             {
                 IEnumerator geomi = new GeometryCollectionEnumerator((IGeometryCollection) geom);
                 while (geomi.MoveNext()) 
@@ -71,16 +71,41 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             if (poly.IsEmpty) 
                 return false;
             ILinearRing shell = (ILinearRing) poly.ExteriorRing;
-            if (!CGAlgorithms.IsPointInRing(p, shell.Coordinates)) 
-                return false;
+            if (!IsPointInRing(p, shell)) return false;
             // now test if the point lies in or on the holes
             for (int i = 0; i < poly.NumInteriorRings; i++)
             {
                 ILinearRing hole = (ILinearRing) poly.GetInteriorRingN(i);
-                if (CGAlgorithms.IsPointInRing(p, hole.Coordinates)) 
-                    return false;
+                if (!IsPointInRing(p, hole)) return false;
             }
             return true;
         }
+
+        ///<summary>
+        /// Determines whether a point lies in a LinearRing, using the ring envelope to short-circuit if possible.
+        ///</summary>
+        /// <param name="p">The point to test</param>
+        /// <param name="ring">A linear ring</param>
+        /// <returns>true if the point lies inside the ring</returns>
+        private static bool IsPointInRing(ICoordinate p, ILinearRing ring)
+        {
+            // short-circuit if point is not in ring envelope
+            if (!ring.EnvelopeInternal.Intersects(p))
+                return false;
+            return CGAlgorithms.IsPointInRing(p, ring.Coordinates);
+        }
+
+        private readonly Geometry _geom;
+
+        public SimplePointInAreaLocator(Geometry geom)
+        {
+            _geom = geom;
+        }
+
+        public Locations Locate(ICoordinate p)
+        {
+            return Locate(p, _geom);
+        }
+
     }
 }

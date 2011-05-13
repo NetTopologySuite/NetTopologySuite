@@ -88,6 +88,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         ///<summary>
         /// Tests whether the angle between p0-p1-p2 is acute.
         ///</summary>
+        /// <remarks>
+        /// <para>An angle is acute if it is less than 90 degrees.</para>
+        /// <para>Note: this implementation is not robust for angles very close to 90 degrees.</para>    
+        /// </remarks>
         /// <param name="p0">An endpoint of the angle</param>
         /// <param name="p1">The base of the angle</param>
         /// <param name="p2">Another endpoint of the angle</param>
@@ -105,6 +109,10 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         ///<summary>
         /// Tests whether the angle between p0-p1-p2 is obtuse
         ///</summary>
+        /// <remarks>
+        /// <para>An angle is obtuse if it is greater than 90 degrees.</para>
+        /// <para>Note: this implementation is not robust for angles very close to 90 degrees.</para>    
+        /// </remarks>
         /// <param name="p0">An endpoint of the angle</param>
         /// <param name="p1">The base of the angle</param>
         /// <param name="p2">Another endpoint of the angle</param>
@@ -120,7 +128,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         }
 
         ///<summary>
-        /// Returns the smallest angle between two vectors.
+        /// Returns the unoriented smallest angle between two vectors.
         ///</summary>
         /// <remarks>
         /// The computed angle will be in the range [0, Pi].
@@ -135,6 +143,30 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             return Diff(a1, a2);
         }
+
+        /// <summary>
+        /// Returns the oriented smallest angle between two vectors.
+        /// The computed angle will be in the range (-Pi, Pi].
+        /// A positive result corresponds to a <see cref="Orientation.CounterClockwise"/> rotation from v1 to v2;
+        /// a negative result corresponds to a <see cref="Orientation.Clockwise"/> rotation.
+        /// </summary>
+        /// <param name="tip1">The tip of v1</param>
+        /// <param name="tail">The tail of each vector</param>
+        /// <param name="tip2">The tip of v2</param>
+        /// <returns>The angle between v1 and v2, relative to v1</returns>
+  public static double AngleBetweenOriented(ICoordinate tip1, ICoordinate tail, ICoordinate tip2) 
+  {
+		double a1 = Angle(tail, tip1);
+		double a2 = Angle(tail, tip2);
+		double angDel = a2 - a1;
+		
+		// normalize, maintaining orientation
+		if (angDel <= -Math.PI)
+			return angDel + PiTimes2;
+		if (angDel > Math.PI)
+            return angDel - PiTimes2;
+		return angDel;
+  }
 
         ///<summary>
         /// Computes the interior angle between two segments of a ring.
@@ -216,7 +248,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         }
 
         ///<summary>
-        /// Computes the unoriented (smallest) difference between two angles.
+        /// Computes the unoriented smallest difference between two angles.
         ///</summary>
         ///<remarks>
         /// <list type="Bulltet">

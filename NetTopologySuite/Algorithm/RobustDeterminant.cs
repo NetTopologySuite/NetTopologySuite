@@ -21,17 +21,20 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class RobustDeterminant
     {     
+
         /// <summary>
-        /// 
+        /// Computes the sign of the determinant of the 2x2 matrix with the given entries, in a robust way.
         /// </summary>
         /// <param name="x1"></param>
         /// <param name="y1"></param>
         /// <param name="x2"></param>
         /// <param name="y2"></param>
         /// <returns>
-        /// returns -1 if the determinant is negative,
-        /// returns  1 if the determinant is positive,
-        /// retunrs  0 if the determinant is null.
+        /// <list>
+        /// <item>-1 if the determinant is negative,</item>
+        /// <item>1 if the determinant is positive,</item>
+        /// <item>0 if the determinant is null.</item>
+        /// </list>
         /// </returns>
         public static int SignOfDet2x2(double x1, double y1, double x2, double y2)
         {
