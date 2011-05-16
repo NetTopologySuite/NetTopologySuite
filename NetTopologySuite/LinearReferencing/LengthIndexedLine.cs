@@ -28,11 +28,15 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Computes the <see cref="Coordinate" /> for the point
+        /// Computes the <see cref="ICoordinate" /> for the point
         /// on the line at the given index.
         /// If the index is out of range the first or last point on the
         /// line will be returned.
         /// </summary>
+        /// <remarks>
+        /// The Z-ordinate of the computed point will be interpolated from
+        /// the Z-ordinates of the line segment containing it, if they exist.
+        /// </remarks>
         /// <param name="index">The index of the desired point.</param>
         /// <returns>The <see cref="Coordinate" /> at the given index.</returns>
         public ICoordinate ExtractPoint(double index)

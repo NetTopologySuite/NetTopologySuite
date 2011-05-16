@@ -1,39 +1,52 @@
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
     /// <summary> 
-    /// Extracts all the 2-dimensional (<c>Polygon</c>) components from a <c>Geometry</c>.
+    /// Extracts all the <see cref="IPolygon"/> elements from a <see cref="IGeometry"/>.
     /// </summary>
     public class PolygonExtracter : IGeometryFilter
     {
-        /// <summary> 
-        /// Returns the Polygon components from a single point.
-        /// If more than one point is to be processed, it is more
-        /// efficient to create a single <c>PolygonExtracterFilter</c> instance
-        /// and pass it to multiple geometries.
+        /// <summary>
+        /// Extracts the <see cref="IPolygon"/> elements from a single <see cref="IGeometry"/> and adds them to the provided <see cref="IList{IPolygon}"/>.
         /// </summary>
-        /// <param name="geom"></param>
-        public static IList GetPolygons(IGeometry geom)
+        /// <param name="geom">The geometry from which to extract</param>
+        /// <param name="list">The list to add the extracted elements to</param>
+        /// <returns></returns>
+        public static IList<IPolygon> GetPolygons(IGeometry geom, IList<IPolygon> list)
         {
-            IList comps = new ArrayList();
-            geom.Apply(new PolygonExtracter(comps));
-            return comps;
+            if (geom is IPolygon)
+            {
+                list.Add((IPolygon)geom);
+            }
+            else if (geom is IGeometryCollection)
+            {
+                geom.Apply(new PolygonExtracter(list));
+            }
+            // skip non-Polygonal elemental geometries
+
+            return list;
         }
 
-        private IList comps;
+        /// <summary>
+        /// Extracts the <see cref="IPolygon"/> elements from a single <see cref="IGeometry"/> and returns them in a <see cref="IList{IPolygon}"/>.
+        /// </summary>
+        /// <param name="geom">The geometry from which to extract</param>
+        public static IList<IPolygon> GetPolygons(IGeometry geom)
+        {
+            return GetPolygons(geom, new List<IPolygon>());
+        }
+
+        private readonly IList<IPolygon> _comps;
 
         /// <summary> 
         /// Constructs a PolygonExtracterFilter with a list in which to store Polygons found.
         /// </summary>
         /// <param name="comps"></param>
-        public PolygonExtracter(IList comps)
+        public PolygonExtracter(IList<IPolygon> comps)
         {
-            this.comps = comps;
+            _comps = comps;
         }
 
         /// <summary>
@@ -42,8 +55,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <param name="geom"></param>
         public void Filter(IGeometry geom)
         {
-            if (geom is IPolygon) 
-                comps.Add(geom);
+            if (geom is IPolygon)
+                _comps.Add((IPolygon)geom);
         }
     }
 }

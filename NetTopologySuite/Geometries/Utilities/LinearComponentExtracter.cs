@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
@@ -19,22 +20,22 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="geom">The point from which to extract linear components.</param>
         /// <returns>The list of linear components.</returns>
-        public static IList GetLines(IGeometry geom)
+        public static IList<ILineString> GetLines(IGeometry geom)
         {
-            IList lines = new ArrayList();
+            IList<ILineString> lines = new List<ILineString>();
             geom.Apply(new LinearComponentExtracter(lines));
             return lines;
         }
 
-        private IList lines;
+        private readonly IList<ILineString> _lines;
 
         /// <summary> 
         /// Constructs a LineExtracterFilter with a list in which to store LineStrings found.
         /// </summary>
         /// <param name="lines"></param>
-        public LinearComponentExtracter(IList lines)
+        public LinearComponentExtracter(IList<ILineString> lines)
         {
-            this.lines = lines;
+            _lines = lines;
         }
 
         /// <summary>
@@ -44,7 +45,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         public void Filter(IGeometry geom)
         {
             if (geom is ILineString) 
-                lines.Add(geom);
+                _lines.Add((ILineString)geom);
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries.Utilities;
@@ -93,7 +94,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             private void Init(IGeometry geom)
             {
-                IList lines = LinearComponentExtracter.GetLines(geom);
+                IList<ILineString> lines = LinearComponentExtracter.GetLines(geom);
                 foreach (ILineString line in lines)
                 {
                     ICoordinate[] pts = line.Coordinates;

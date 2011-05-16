@@ -61,7 +61,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// Creates an instance of this class using two empty coordinates
         /// </summary>
         public LineSegment() : this(new Coordinate(), new Coordinate()) { }
-        
+
+        public LineSegment(double x0, double y0, double x1, double y1)
+            : this(new Coordinate(x0, y0), new Coordinate(x1, y1))
+        {
+        }
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -152,6 +158,36 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return 0;
         }
 
+        /**
+         * 
+         * 
+         *
+         * @param seg the LineSegment to compare
+         *
+         * @return 
+         * @return 
+         * @return 
+         * 
+         * @see CGAlgorithms#computeOrientation(Coordinate, Coordinate, Coordinate)
+         */
+        ///<summary>
+        /// Determines the orientation index of a <see cref="ICoordinate"/> relative to this segment.
+        /// The orientation index is as defined in <see cref="CGAlgorithms.ComputeOrientation"/>.
+        ///</summary>
+        /// 
+        /// <returns>
+        /// <list>
+        /// <item>1 if <c>p</c> is to the left of this segment</item>
+        /// <item>-1 if <c>p</c> is to the right of this segment</item>
+        /// <item>0 if <c>p</c> is collinear with this segment</item>
+        /// </list>"
+        /// </returns>
+        /// 
+        public int OrientationIndex(ICoordinate p)
+        {
+            return CGAlgorithms.OrientationIndex(P0, P1, p);
+        }
+
         /// <summary> 
         /// Reverses the direction of the line segment.
         /// </summary>
@@ -220,6 +256,60 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return CGAlgorithms.DistancePointLinePerpendicular(p, P0, P1);
         }
 
+        /**
+         * Computes the {@link Coordinate} that lies a given
+         * fraction along the line defined by this segment.
+         * A fraction of <code>0.0</code> returns the start point of the segment;
+         * a fraction of <code>1.0</code> returns the end point of the segment.
+         * If the fraction is < 0.0 or > 1.0 the point returned 
+         * will lie before the start or beyond the end of the segment. 
+         *
+         * @param segmentLengthFraction the fraction of the segment length along the line
+         * @return the point at that distance
+         */
+        public ICoordinate PointAlong(double segmentLengthFraction)
+        {
+            ICoordinate coord = new Coordinate();
+            coord.X = P0.X + segmentLengthFraction * (P1.X - P0.X);
+            coord.Y = P0.Y + segmentLengthFraction * (P1.Y - P0.Y);
+            return coord;
+        }
+
+        /**
+         * Computes the {@link Coordinate} that lies a given
+         * fraction along the line defined by this segment and offset from 
+         * the segment by a given distance.
+         * A fraction of <code>0.0</code> offsets from the start point of the segment;
+         * a fraction of <code>1.0</code> offsets from the end point of the segment.
+         * The computed point is offset to the left of the line if the offset distance is
+         * positive, to the right if negative.
+         *
+         * @param segmentLengthFraction the fraction of the segment length along the line
+         * @param offsetDistance the distance the point is offset from the segment
+         *    (positive is to the left, negative is to the right)
+         * @return the point at that distance and offset
+         */
+        public ICoordinate PointAlongOffset(double segmentLengthFraction, double offsetDistance)
+        {
+            // the point on the segment line
+            double segx = P0.X + segmentLengthFraction * (P1.X - P0.X);
+            double segy = P0.Y + segmentLengthFraction * (P1.Y - P0.Y);
+
+            double dx = P1.X - P0.X;
+            double dy = P1.Y - P0.Y;
+            double len = Math.Sqrt(dx * dx + dy * dy);
+            // u is the vector that is the length of the offset, in the direction of the segment
+            double ux = offsetDistance * dx / len;
+            double uy = offsetDistance * dy / len;
+
+            // the offset point is the seg point plus the offset vector rotated 90 degrees CCW
+            double offsetx = segx - uy;
+            double offsety = segy + ux;
+
+            ICoordinate coord = new Coordinate(offsetx, offsety);
+            return coord;
+        }
+
         /// <summary>
         /// Compute the projection factor for the projection of the point p
         /// onto this <c>LineSegment</c>. The projection factor is the constant k
@@ -249,6 +339,28 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             var len2 = dx * dx + dy * dy;
             var r = ((p.X - P0.X) * dx + (p.Y - P0.Y) * dy) / len2;
             return r;
+        }
+
+        /**
+         * Computes the fraction of distance (in <tt>[0.0, 1.0]</tt>) 
+         * that the projection of a point occurs along this line segment.
+         * If the point is beyond either ends of the line segment,
+         * the closest fractional value (<tt>0.0</tt> or <tt>1.0</tt>) is returned.
+         * <p>
+         * Essentially, this is the {@link #projectionFactor} clamped to 
+         * the range <tt>[0.0, 1.0]</tt>.
+         *  
+         * @param inputPt the point
+         * @return the fraction along the line segment the projection of the point occurs
+         */
+        public double SegmentFraction(ICoordinate inputPt)
+        {
+            double segFrac = ProjectionFactor(inputPt);
+            if (segFrac < 0.0)
+                segFrac = 0.0;
+            else if (segFrac > 1.0)
+                segFrac = 1.0;
+            return segFrac;
         }
 
         /// <summary> 

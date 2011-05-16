@@ -48,8 +48,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             /// <returns></returns>
             public int Compare(object o1, object o2) 
             {
-                return container.CompareDoubles(container.CentreX((IEnvelope) ((IBoundable) o1).Bounds),
-                                                container.CentreX((IEnvelope) ((IBoundable) o2).Bounds));
+                return container.CompareDoubles(CentreX((IEnvelope) ((IBoundable) o1).Bounds),
+                                                CentreX((IEnvelope) ((IBoundable) o2).Bounds));
             }
         }
 
@@ -77,8 +77,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             /// <returns></returns>
             public int Compare(object o1, object o2) 
             {
-                return container.CompareDoubles(container.CentreY((IEnvelope) ((IBoundable) o1).Bounds),
-                                                container.CentreY((IEnvelope) ((IBoundable) o2).Bounds));
+                return container.CompareDoubles(CentreY((IEnvelope) ((IBoundable) o1).Bounds),
+                                                CentreY((IEnvelope) ((IBoundable) o2).Bounds));
             }
         }
 
@@ -117,7 +117,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         private class AnonymousIntersectsOpImpl : IIntersectsOp
         {
-            private STRtree container = null;
+            private STRtree _container;
 
             /// <summary>
             /// 
@@ -125,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             /// <param name="container"></param>
             public AnonymousIntersectsOpImpl(STRtree container)
             {
-                this.container = container;
+                _container = container;
             }
 
             /// <summary>
@@ -140,15 +140,18 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             }
         }
 
+        private const int DefaultNodeCapacity = 10;
+
         /// <summary> 
         /// Constructs an STRtree with the default (10) node capacity.
         /// </summary>
-        public STRtree() : this(10) { }
+        public STRtree() : this(DefaultNodeCapacity) { }
 
         /// <summary> 
         /// Constructs an STRtree with the given maximum number of child nodes that
         /// a node may have.
         /// </summary>
+        /// <remarks>The minimum recommended capacity setting is 4.</remarks>
         public STRtree(int nodeCapacity) :
             base(nodeCapacity) { }
 
@@ -158,7 +161,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        private double Avg(double a, double b)
+        private static double Avg(double a, double b)
         {
             return (a + b) / 2d;
         }
@@ -168,7 +171,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        private double CentreX(IEnvelope e)
+        private static double CentreX(IEnvelope e)
         {
             return Avg(e.MinX, e.MaxX);
         }
@@ -178,7 +181,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        private double CentreY(IEnvelope e)
+        private static double CentreY(IEnvelope e)
         {
             return Avg(e.MinY, e.MaxY);
         }

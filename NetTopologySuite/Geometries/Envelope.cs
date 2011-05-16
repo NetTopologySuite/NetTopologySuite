@@ -72,22 +72,22 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /*
         *  the minimum x-coordinate
         */
-        private double minx;
+        private double _minx;
 
         /*
         *  the maximum x-coordinate
         */
-        private double maxx;
+        private double _maxx;
 
         /*
         * the minimum y-coordinate
         */
-        private double miny;
+        private double _miny;
 
         /*
         *  the maximum y-coordinate
         */
-        private double maxy;
+        private double _maxy;
 
         /// <summary>
         /// Creates a null <c>Envelope</c>.
@@ -116,7 +116,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="p2">The second Coordinate.</param>
         public Envelope(ICoordinate p1, ICoordinate p2)
         {
-            Init(p1, p2);
+            Init(p1.X, p2.X, p1.Y, p2.Y);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="p">The Coordinate.</param>
         public Envelope(ICoordinate p)
         {
-            Init(p);
+            Init(p.X, p.X, p.Y, p.Y);
         }
 
         /// <summary>
@@ -156,24 +156,24 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (x1 < x2)
             {
-                minx = x1;
-                maxx = x2;
+                _minx = x1;
+                _maxx = x2;
             }
             else
             {
-                minx = x2;
-                maxx = x1;
+                _minx = x2;
+                _maxx = x1;
             }
 
             if (y1 < y2)
             {
-                miny = y1;
-                maxy = y2;
+                _miny = y1;
+                _maxy = y2;
             }
             else
             {
-                miny = y2;
-                maxy = y1;
+                _miny = y2;
+                _maxy = y1;
             }
         }
 
@@ -202,10 +202,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="env">The Envelope to initialize from.</param>
         public void Init(IEnvelope env)
         {
-            this.minx = env.MinX;
-            this.maxx = env.MaxX;
-            this.miny = env.MinY;
-            this.maxy = env.MaxY;
+            _minx = env.MinX;
+            _maxx = env.MaxX;
+            _miny = env.MinY;
+            _maxy = env.MaxY;
         }
 
         /// <summary>
@@ -213,10 +213,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public void SetToNull()
         {
-            minx = 0;
-            maxx = -1;
-            miny = 0;
-            maxy = -1;
+            _minx = 0;
+            _maxx = -1;
+            _miny = 0;
+            _maxy = -1;
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                return maxx < minx;
+                return _maxx < _minx;
             }
         }
 
@@ -244,7 +244,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             {
                 if (IsNull)
                     return 0;
-                return maxx - minx;
+                return _maxx - _minx;
             }
         }
 
@@ -258,7 +258,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             {
                 if (IsNull)
                     return 0;
-                return maxy - miny;
+                return _maxy - _miny;
             }
         }
 
@@ -269,7 +269,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The minimum x-coordinate.</returns>
         public double MinX
         {
-            get { return minx; }
+            get { return _minx; }
         }
 
         /// <summary>
@@ -279,7 +279,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The maximum x-coordinate.</returns>
         public double MaxX
         {
-            get { return maxx; }
+            get { return _maxx; }
         }
 
         /// <summary>
@@ -289,7 +289,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The minimum y-coordinate.</returns>
         public double MinY
         {
-            get { return miny; }
+            get { return _miny; }
         }
 
         /// <summary>
@@ -299,7 +299,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The maximum y-coordinate.</returns>
         public double MaxY
         {
-            get { return maxy; }
+            get { return _maxy; }
         }
 
         /// <summary>
@@ -323,13 +323,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (IsNull)
                 return;
 
-            minx -= deltaX;
-            maxx += deltaX;
-            miny -= deltaY;
-            maxy += deltaY;
+            _minx -= deltaX;
+            _maxx += deltaX;
+            _miny -= deltaY;
+            _maxy += deltaY;
 
             // check for envelope disappearing
-            if (minx > maxx || miny > maxy)
+            if (_minx > _maxx || _miny > _maxy)
                 SetToNull();
         }
 
@@ -353,21 +353,21 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (IsNull)
             {
-                minx = x;
-                maxx = x;
-                miny = y;
-                maxy = y;
+                _minx = x;
+                _maxx = x;
+                _miny = y;
+                _maxy = y;
             }
             else
             {
-                if (x < minx)
-                    minx = x;
-                if (x > maxx)
-                    maxx = x;
-                if (y < miny)
-                    miny = y;
-                if (y > maxy)
-                    maxy = y;
+                if (x < _minx)
+                    _minx = x;
+                if (x > _maxx)
+                    _maxx = x;
+                if (y < _miny)
+                    _miny = y;
+                if (y > _maxy)
+                    _maxy = y;
             }
         }
 
@@ -383,21 +383,21 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return;
             if (IsNull)
             {
-                minx = other.MinX;
-                maxx = other.MaxX;
-                miny = other.MinY;
-                maxy = other.MaxY;
+                _minx = other.MinX;
+                _maxx = other.MaxX;
+                _miny = other.MinY;
+                _maxy = other.MaxY;
             }
             else
             {
-                if (other.MinX < minx)
-                    minx = other.MinX;
-                if (other.MaxX > maxx)
-                    maxx = other.MaxX;
-                if (other.MinY < miny)
-                    miny = other.MinY;
-                if (other.MaxY > maxy)
-                    maxy = other.MaxY;
+                if (other.MinX < _minx)
+                    _minx = other.MinX;
+                if (other.MaxX > _maxx)
+                    _maxx = other.MaxX;
+                if (other.MinY < _miny)
+                    _miny = other.MinY;
+                if (other.MaxY > _maxy)
+                    _maxy = other.MaxY;
             }
         }
 
@@ -460,7 +460,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (IsNull || other.IsNull)
                 return false;
-            return !(other.MinX > maxx || other.MaxX < minx || other.MinY > maxy || other.MaxY < miny);
+            return !(other.MinX > _maxx || other.MaxX < _minx || other.MinY > _maxy || other.MaxY < _miny);
         }
 
         /// <summary>
@@ -517,49 +517,93 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns><c>true</c> if the point overlaps this <c>Envelope</c>.</returns>
         public bool Intersects(double x, double y)
         {
-            return !(x > maxx || x < minx || y > maxy || y < miny);
+            return !(x > _maxx || x < _minx || y > _maxy || y < _miny);
         }
 
-        /// <summary>  
-        /// Returns <c>true</c> if the given point lies in or on the envelope.
-        /// </summary>
-        /// <param name="p"> the point which this <c>Envelope</c> is
-        /// being checked for containing.</param>
-        /// <returns>    
-        /// <c>true</c> if the point lies in the interior or
-        /// on the boundary of this <c>Envelope</c>.
-        /// </returns>                
+        ///<summary>
+        /// Tests if the <c>Envelope other</c> lies wholely inside this <c>Envelope</c> (inclusive of the boundary).
+        ///</summary>
+        /// <remarks>
+        /// Note that this is <b>not</b> the same definition as the SFS <tt>contains</tt>,
+        /// which would exclude the envelope boundary.
+        /// </remarks>
+        /// <para>The <c>Envelope</c> to check</para>
+        /// <returns>true if <c>other</c> is contained in this <c>Envelope</c></returns>
+        /// <see cref="Covers(IEnvelope)"/>
+        public bool Contains(IEnvelope other)
+        {
+            return Covers(other);
+        }
+
+        ///<summary>
+        /// Tests if the given point lies in or on the envelope.
+        ///</summary>
+        /// <remarks>
+        /// Note that this is <b>not</b> the same definition as the SFS <tt>contains</tt>,
+        /// which would exclude the envelope boundary.
+        /// </remarks>
+        /// <param name="p">the point which this <c>Envelope</c> is being checked for containing</param>
+        /// <returns><c>true</c> if the point lies in the interior or on the boundary of this <c>Envelope</c>. </returns>
+        /// <see cref="Covers(ICoordinate)"/>
         public bool Contains(ICoordinate p)
         {
-            return Contains(p.X, p.Y);
+            return Covers(p);
         }
 
-        /// <summary>  
-        /// Returns <c>true</c> if the given point lies in or on the envelope.
-        /// </summary>
-        /// <param name="x"> the x-coordinate of the point which this <c>Envelope</c> is
-        /// being checked for containing.</param>
-        /// <param name="y"> the y-coordinate of the point which this <c>Envelope</c> is
-        /// being checked for containing.</param>
-        /// <returns><c>true</c> if <c>(x, y)</c> lies in the interior or
-        /// on the boundary of this <c>Envelope</c>.</returns>
+        ///<summary>
+        /// Tests if the given point lies in or on the envelope.
+        ///</summary>
+        /// <remarks>
+        /// Note that this is <b>not</b> the same definition as the SFS <tt>contains</tt>, which would exclude the envelope boundary.
+        /// </remarks>
+        /// <param name="x">the x-coordinate of the point which this <c>Envelope</c> is being checked for containing</param>
+        /// <param name="y">the y-coordinate of the point which this <c>Envelope</c> is being checked for containing</param>
+        /// <returns>
+        /// <c>true</c> if <c>(x, y)</c> lies in the interior or on the boundary of this <c>Envelope</c>.
+        /// </returns>
         public bool Contains(double x, double y)
         {
-            return x >= minx && x <= maxx && y >= miny && y <= maxy;
+            return Covers(x, y);
         }
 
-        /// <summary>  
-        /// Returns <c>true</c> if the <c>Envelope other</c>
-        /// lies wholely inside this <c>Envelope</c> (inclusive of the boundary).
-        /// </summary>
-        /// <param name="other"> the <c>Envelope</c> which this <c>Envelope</c> is being checked for containing.</param>
-        /// <returns><c>true</c> if <c>other</c> is contained in this <c>Envelope</c>.</returns>
-        public bool Contains(IEnvelope other)
+        ///<summary>
+        /// Tests if the given point lies in or on the envelope.
+        ///</summary>
+        /// <param name="x">the x-coordinate of the point which this <c>Envelope</c> is being checked for containing</param>
+        /// <param name="y">the y-coordinate of the point which this <c>Envelope</c> is being checked for containing</param>
+        /// <returns> <c>true</c> if <c>(x, y)</c> lies in the interior or on the boundary of this <c>Envelope</c>.</returns>
+        public bool Covers(double x, double y)
+        {
+            if (IsNull) return false;
+            return x >= _minx &&
+                x <= _maxx &&
+                y >= _miny &&
+                y <= _maxy;
+        }
+
+        ///<summary>
+        /// Tests if the given point lies in or on the envelope.
+        ///</summary>
+        /// <param name="p">the point which this <c>Envelope</c> is being checked for containing</param>
+        /// <returns><c>true</c> if the point lies in the interior or on the boundary of this <c>Envelope</c>.</returns>
+        public bool Covers(ICoordinate p)
+        {
+            return Covers(p.X, p.Y);
+        }
+
+        ///<summary>
+        /// Tests if the <c>Envelope other</c> lies wholely inside this <c>Envelope</c> (inclusive of the boundary).
+        ///</summary>
+        /// <param name="other">the <c>Envelope</c> to check</param>
+        /// <returns>true if this <c>Envelope</c> covers the <c>other</c></returns>
+        public bool Covers(IEnvelope other)
         {
             if (IsNull || other.IsNull)
                 return false;
-            return other.MinX >= minx && other.MaxX <= maxx &&
-                other.MinY >= miny && other.MaxY <= maxy;
+            return other.MinX >= _minx &&
+                other.MaxX <= _maxx &&
+                other.MinY >= _miny &&
+                other.MaxY <= _maxy;
         }
 
         /// <summary> 
@@ -576,17 +620,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
             double dx = 0.0;
 
-            if (maxx < env.MinX)
-                dx = env.MinX - maxx;
-            if (minx > env.MaxX)
-                dx = minx - env.MaxX;
+            if (_maxx < env.MinX)
+                dx = env.MinX - _maxx;
+            if (_minx > env.MaxX)
+                dx = _minx - env.MaxX;
 
             double dy = 0.0;
 
-            if (maxy < env.MinY)
-                dy = env.MinY - maxy;
-            if (miny > env.MaxY)
-                dy = miny - env.MaxY;
+            if (_maxy < env.MinY)
+                dy = env.MinY - _maxy;
+            if (_miny > env.MaxY)
+                dy = _miny - env.MaxY;
 
             // if either is zero, the envelopes overlap either vertically or horizontally
             if (dx == 0.0) 
@@ -613,8 +657,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             if (IsNull)
                 return other.IsNull;
 
-            return maxx == other.MaxX && maxy == other.MaxY &&
-                   minx == other.MinX && miny == other.MinY;
+            return _maxx == other.MaxX && _maxy == other.MaxY &&
+                   _minx == other.MinX && _miny == other.MinY;
         }
 
         public int CompareTo(object other)
@@ -627,9 +671,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (IsNull && other.IsNull)
                 return 0;
-            if (!this.IsNull && other.IsNull)
+            if (!IsNull && other.IsNull)
                 return 1;
-            if (this.IsNull && !other.IsNull)
+            if (IsNull && !other.IsNull)
                 return -1;
 
             if (Area > other.Area)
@@ -642,10 +686,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public override int GetHashCode()
         {
             int result = 17;
-            result = 37 * result + GetHashCode(minx);
-            result = 37 * result + GetHashCode(maxx);
-            result = 37 * result + GetHashCode(miny);
-            result = 37 * result + GetHashCode(maxy);
+            result = 37 * result + GetHashCode(_minx);
+            result = 37 * result + GetHashCode(_maxx);
+            result = 37 * result + GetHashCode(_miny);
+            result = 37 * result + GetHashCode(_maxy);
             return result;
         }
 
@@ -667,14 +711,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 
         public override string ToString()
         {
-            return "Env[" + minx + " : " + maxx + ", " + miny + " : " + maxy + "]";
+            return "Env[" + _minx + " : " + _maxx + ", " + _miny + " : " + _maxy + "]";
         }
 
         /// <summary>
         /// Creates a new object that is a copy of the current instance.
         /// </summary>
         /// <returns>A new object that is a copy of this instance.</returns>
-
 #if !SILVERLIGHT
         object ICloneable.Clone()
         {
@@ -697,8 +740,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get
             {
                 double area = 1;
-                area = area * (maxx - minx);
-                area = area * (maxy - miny);
+                area = area * (_maxx - _minx);
+                area = area * (_maxy - _miny);
                 return area;
             }
         }
@@ -709,7 +752,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public IEnvelope Clone()
         {
-            return new Envelope(minx, maxx, miny, maxy);
+            return new Envelope(_minx, _maxx, _miny, _maxy);
         }
 
         /// <summary>
@@ -725,7 +768,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public IEnvelope Union(ICoordinate coord)
         {
-            Envelope env = (Envelope)this.Clone();
+            Envelope env = (Envelope)Clone();
             env.ExpandToInclude(coord);
             return env;
         }
@@ -737,13 +780,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (box.IsNull)
                 return this;
-            if (this.IsNull)
+            if (IsNull)
                 return box;
 
-            return new Envelope(Math.Min(minx, box.MinX),
-                                Math.Max(maxx, box.MaxX),
-                                Math.Min(miny, box.MinY),
-                                Math.Max(maxy, box.MaxY));
+            return new Envelope(Math.Min(_minx, box.MinX),
+                                Math.Max(_maxx, box.MaxX),
+                                Math.Min(_miny, box.MinY),
+                                Math.Max(_maxy, box.MaxY));
         }
 
         /// <summary>
@@ -793,10 +836,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="height">The new height.</param>
         public void SetCentre(ICoordinate centre, double width, double height)
         {
-            minx = centre.X - (width / 2);
-            maxx = centre.X + (width / 2);
-            miny = centre.Y - (height / 2);
-            maxy = centre.Y + (height / 2);
+            _minx = centre.X - (width / 2);
+            _maxx = centre.X + (width / 2);
+            _miny = centre.Y - (height / 2);
+            _maxy = centre.Y + (height / 2);
         }
 
         /// <summary>
@@ -813,8 +856,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </example>
         public void Zoom(double perCent)
         {
-            double w = (this.Width * perCent / 100);
-            double h = (this.Height * perCent / 100);
+            double w = (Width * perCent / 100);
+            double h = (Height * perCent / 100);
             SetCentre(w, h);
         }
 

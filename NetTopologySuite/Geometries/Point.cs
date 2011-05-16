@@ -364,5 +364,23 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /* END ADDED BY MPAUL42: monoGIS team */
+
+        /// <summary>
+        /// 
+        /// </summary>        
+        public double M
+        {
+            get
+            {
+                if (Coordinate == null)
+                    throw new ArgumentOutOfRangeException("M called on empty Point");
+                return Coordinate.M;
+            }
+            set
+            {
+                Coordinate.M = value;
+            }
+        }
+    
     }
 }

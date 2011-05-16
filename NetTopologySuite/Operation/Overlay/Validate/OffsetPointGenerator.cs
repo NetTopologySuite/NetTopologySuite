@@ -31,7 +31,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay.Validate
         public List<ICoordinate> GetPoints()
         {
             _offsetPts = new List<ICoordinate>();
-            IList lines = LinearComponentExtracter.GetLines(_g);
+            IList<ILineString> lines = LinearComponentExtracter.GetLines(_g);
             foreach (ILineString line in lines)
                 ExtractPoints(line);
 

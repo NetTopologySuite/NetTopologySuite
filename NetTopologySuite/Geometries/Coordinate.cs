@@ -6,14 +6,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// <summary>
     /// A lightweight class used to store coordinates
     /// on the 2-dimensional Cartesian plane.
-    /// It is distinct from <c>Point</c>, which is a subclass of <c>Geometry</c>.
+    /// It is distinct from <see cref="IPoint"/>, which is a subclass of <see cref="IGeometry"/>.
     /// Unlike objects of type <c>Point</c> (which contain additional
     /// information such as an envelope, a precision model, and spatial reference
     /// system information), a <c>Coordinate</c> only contains ordinate values
     /// and propertied.
-    /// <c>Coordinate</c>s are two-dimensional points, with an additional
-    /// z-ordinate. NTS does not support any operations on the z-ordinate except
-    /// the basic accessor functions. Constructed coordinates will have a
+    /// <c>Coordinate</c>s are two-dimensional points, with an additional Z-ordinate.
+    /// NTS does not support any operations on the Z-ordinate except
+    /// the basic accessor functions. 
+    /// If a value is not specified, constructed coordinates will have a
     /// z-ordinate of <c>NaN</c>.  The standard comparison functions will ignore
     /// the z-ordinate.
     /// </summary>
@@ -281,7 +282,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns distance from <c>p</c> coordinate.
+        /// Computes the 2-dimensional Euclidean distance to another location.
+        /// The Z-ordinate is ignored.
         /// </summary>
         /// <param name="p"><c>Coordinate</c> with which to do the distance comparison.</param>
         /// <returns></returns>
@@ -293,8 +295,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        /// Gets a hashcode for this coordinate.
         /// </summary>
+        /// <returns>A hashcode for this coordinate.</returns>
         public override int GetHashCode()
         {
             var result = 17;
@@ -304,13 +307,25 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Return HashCode.
+        /// Computes a hash code for a double value, using the algorithm from
+        /// Joshua Bloch's book <i>Effective Java"</i>
         /// </summary>
-        /// <param name="value">Value from HashCode computation.</param>
+        /// <param name="value">A hashcode for the double value</param>
         private static int GetHashCode(double value)
         {
+            /*
+             * From the java language specification, it says:
+             * 
+             * The value of n>>>s is n right-shifted s bit positions with zero-extension.
+             * If n is positive, then the result is the same as that of n>>s; if n is
+             * negative, the result is equal to that of the expression (n>>s)+(2<<~s) if
+             * the type of the left-hand operand is int
+             */
             var f = BitConverter.DoubleToInt64Bits(value);
-            return (int)(f ^ (f >> 32));
+            if (f > 0)
+                return (int)(f ^ (f >> 32));
+            return (int) (f ^ ((f >> 32) + (2 << ~32)));
+            
         }
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */

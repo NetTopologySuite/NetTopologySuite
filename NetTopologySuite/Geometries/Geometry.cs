@@ -14,6 +14,7 @@ using GisSharpBlog.NetTopologySuite.Operation.Overlay;
 using GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap;
 using GisSharpBlog.NetTopologySuite.Operation.Predicate;
 using GisSharpBlog.NetTopologySuite.Operation.Relate;
+using GisSharpBlog.NetTopologySuite.Operation.Union;
 using GisSharpBlog.NetTopologySuite.Operation.Valid;
 using GisSharpBlog.NetTopologySuite.Utilities;
 #if SILVERLIGHT
@@ -1140,6 +1141,22 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
             return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.SymDifference);
+        }
+
+        ///<summary> 
+        /// Computes the union of all the elements of this geometry. Heterogeneous <see cref="IGeometryCollection"/>s are fully supported.
+        /// 
+        ///</summary>
+        /// <remarks>
+        /// The result obeys the following contract:
+        /// <list type="Bullet">
+        /// <item>Unioning a set of <see cref="ILineString"/>s has the effect of fully noding and dissolving the linework.</item>
+        /// <item>Unioning a set of <see cref="IPolygon"/>s will always return a <see cref="IPolygonal"/> geometry (unlike <see cref="Union(IGeometry)"/>), which may return geometrys of lower dimension if a topology collapse occurred.</item>
+        /// </list>
+        /// </remarks>
+        public IGeometry Union()
+        {
+            return UnaryUnionOp.Union(this);
         }
 
         /// <summary>

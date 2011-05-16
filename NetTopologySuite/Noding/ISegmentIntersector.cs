@@ -1,13 +1,26 @@
+using System;
+
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
     /// <summary>
-    /// Computes the intersections between two line segments in <see cref="ISegmentString" />s
-    /// and adds them to each string.
+    /// Processes possible intersections detected by a <see cref="INoder"/>.
+    /// </summary>
+    /// <remarks>
+    /// <para>
     /// The <see cref="ISegmentIntersector" /> is passed to a <see cref="INoder" />.
+    /// </para>
     /// The <see cref="INodableSegmentString.AddIntersection" />  method is called whenever the <see cref="INoder" />
     /// detects that two <see cref="ISegmentString" />s might intersect.
+    /// <para>
+    /// </para>
     /// This class is an example of the Strategy pattern.
-    /// </summary>
+    /// <para>
+    /// This class may be used either to find all intersections, or
+    /// to detect the presence of an intersection.  In the latter case,
+    /// Noders may choose to short-circuit their computation by calling the
+    /// <see cref="IsDone"/> property.
+    /// </para>
+    /// </remarks>
     public interface ISegmentIntersector
     {
         /// <summary>
@@ -20,5 +33,12 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// <param name="e1"></param>
         /// <param name="segIndex1"></param>
         void ProcessIntersections(ISegmentString e0, int segIndex0, ISegmentString e1, int segIndex1);
+
+        ///<summary>
+        /// Reports whether the client of this class needs to continue testing
+        /// all intersections in an arrangement.
+        ///</summary>
+        Boolean IsDone { get; }
+
     }
 }

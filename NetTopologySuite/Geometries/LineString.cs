@@ -13,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
 #if !SILVERLIGHT
     [Serializable]
 #endif
-    public class LineString : Geometry, ILineString 
+    public class LineString : Geometry, ILineString, ILineal
     {
         /// <summary>
         /// Represents an empty <c>LineString</c>.
