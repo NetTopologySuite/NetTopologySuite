@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
@@ -12,7 +13,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     public class SimpleNoder : SinglePassNoder
     {
 
-        private IList _nodedSegStrings;
+        private IList<ISegmentString> _nodedSegStrings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleNoder"/> class.
@@ -31,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// The <see cref="NodedSegmentString"/>s have the same context as their parent.
         /// </summary>
         /// <returns></returns>
-        public override IList GetNodedSubstrings()
+        public override IList<ISegmentString> GetNodedSubstrings()
         {
             return NodedSegmentString.GetNodedSubstrings(_nodedSegStrings);
         }
@@ -42,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// others may only add some or none at all.
         /// </summary>
         /// <param name="inputSegStrings"></param>
-        public override void ComputeNodes(IList inputSegStrings)
+        public override void ComputeNodes(IList<ISegmentString> inputSegStrings)
         {
             _nodedSegStrings = inputSegStrings;
             foreach (object obj0 in inputSegStrings)

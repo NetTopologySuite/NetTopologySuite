@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using GisSharpBlog.NetTopologySuite.Index;
 using GisSharpBlog.NetTopologySuite.Index.Chain;
 using GisSharpBlog.NetTopologySuite.Index.Quadtree;
@@ -19,11 +20,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public class MCIndexNoder : SinglePassNoder
     {
-        private readonly IList monoChains = new ArrayList();
-        private readonly ISpatialIndex index = new STRtree();
-        private int idCounter;
-        private IList nodedSegStrings;
-        private int nOverlaps; // statistics
+        private readonly List<MonotoneChain> _monoChains = new List<MonotoneChain>();
+        private readonly ISpatialIndex _index = new STRtree();
+        private int _idCounter;
+        private IList<ISegmentString> nodedSegStrings;
+        private int _nOverlaps; // statistics
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MCIndexNoder"/> class.
@@ -42,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         public IList MonotoneChains
         {
-            get { return monoChains; }
+            get { return _monoChains; }
         }
 
         /// <summary>
@@ -50,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         public ISpatialIndex Index
         {
-            get { return index; }
+            get { return _index; }
         }
 
         /// <summary>
@@ -58,7 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// The <see cref="ISegmentString"/>s have the same context as their parent.
         /// </summary>
         /// <returns></returns>
-        public override IList GetNodedSubstrings()
+        public override IList<ISegmentString> GetNodedSubstrings()
         {
             return NodedSegmentString.GetNodedSubstrings(nodedSegStrings);
         }
@@ -69,11 +70,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// others may only add some or none at all.
         /// </summary>
         /// <param name="inputSegStrings"></param>
-        public override void ComputeNodes(IList inputSegStrings)
+        public override void ComputeNodes(IList<ISegmentString> inputSegStrings)
         {
             nodedSegStrings = inputSegStrings;
             foreach(var obj in inputSegStrings)
-                Add((ISegmentString)obj);            
+                Add(obj);            
             IntersectChains();            
         }
 
@@ -83,10 +84,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         private void IntersectChains()
         {
             MonotoneChainOverlapAction overlapAction = new SegmentOverlapAction(SegmentIntersector);
-            foreach(var obj in monoChains) 
+            foreach(var obj in _monoChains) 
             {
                 var queryChain = (MonotoneChain)obj;
-                var overlapChains = index.Query(queryChain.Envelope);
+                var overlapChains = _index.Query(queryChain.Envelope);
                 foreach(var j in overlapChains)
                 {
                     var testChain = (MonotoneChain)j;
@@ -94,10 +95,15 @@ namespace GisSharpBlog.NetTopologySuite.Noding
                      * following test makes sure we only compare each pair of chains once
                      * and that we don't compare a chain to itself
                      */
-                    if (testChain.Id <= queryChain.Id)
-                        continue;
-                    queryChain.ComputeOverlaps(testChain, overlapAction);
-                    nOverlaps++;
+                    if (testChain.Id > queryChain.Id)
+                    {
+                        queryChain.ComputeOverlaps(testChain, overlapAction);
+                        _nOverlaps++;
+                    }
+                    // short-circuit if possible
+                    if (SegmentIntersector.IsDone)
+                        return;
+
                 }
             }
         }
@@ -109,12 +115,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         private void Add(ISegmentString segStr)
         {
             var segChains = MonotoneChainBuilder.GetChains(segStr.Coordinates, segStr);
-            foreach (var obj in segChains) 
+            foreach (var mc in segChains) 
             {
-                var mc = (MonotoneChain)obj;
-                mc.Id = idCounter++;
-                index.Insert(mc.Envelope, mc);
-                monoChains.Add(mc);
+                mc.Id = _idCounter++;
+                _index.Insert(mc.Envelope, mc);
+                _monoChains.Add(mc);
             }
         }
 

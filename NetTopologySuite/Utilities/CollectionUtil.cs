@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
@@ -21,6 +22,15 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         public delegate T FunctionDelegate<T>(T obj);
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public delegate TResult FunctionDelegate<in T, out TResult>(T obj);
+
+        /// <summary>
         /// Executes a function on each item in a <see cref="ICollection" />
         /// and returns the results in a new <see cref="IList" />.
         /// </summary>
@@ -30,9 +40,52 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         public static IList Transform(ICollection coll, FunctionDelegate<object> func)
         {
             IList result = new ArrayList();
-            IEnumerator i = coll.GetEnumerator(); 
             foreach(object obj in coll)           
                 result.Add(func(obj));
+            return result;
+        }
+
+        /// <summary>
+        /// Executes a function on each item in a <see cref="ICollection" />
+        /// and returns the results in a new <see cref="IList" />.
+        /// </summary>
+        /// <param name="coll"></param>
+        /// <returns></returns>
+        public static IList<T> Cast<T>(ICollection coll)
+        {
+            IList<T> result = new List<T>(coll.Count);
+            foreach (var obj in coll)
+                result.Add((T)obj);
+            return result;
+        }
+
+        /// <summary>
+        /// Executes a function on each item in a <see cref="IList{T}" />
+        /// and returns the results in a new <see cref="IList{T}" />.
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="function"></param>
+        /// <returns></returns>
+        public static IList<T> Transform<T>(IList<T> list, FunctionDelegate<T> function)
+        {
+            IList<T> result = new List<T>(list.Count);
+            foreach (T item in list)
+                result.Add(function(item));
+            return result;
+        }
+
+        /// <summary>
+        /// Executes a function on each item in a <see cref="IList{T}" />
+        /// and returns the results in a new <see cref="IList{TResult}" />.
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="function"></param>
+        /// <returns></returns>
+        public static IList<TResult> Transform<T, TResult>(IList<T> list, FunctionDelegate<T, TResult> function)
+        {
+            IList<TResult> result = new List<TResult>(list.Count);
+            foreach (T item in list)
+                result.Add(function(item));
             return result;
         }
 
@@ -44,7 +97,19 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <param name="func"></param>
         public static void Apply(ICollection coll, FunctionDelegate<object> func)
         {
-            foreach(object obj in coll)
+            foreach (object obj in coll)
+                func(obj);
+        }
+
+        /// <summary>
+        /// Executes a function on each item in a <see cref="IEnumerable{T}" /> 
+        /// but does not accumulate the result.
+        /// </summary>
+        /// <param name="coll"></param>
+        /// <param name="func"></param>
+        public static void Apply<T>(IEnumerable<T> coll, FunctionDelegate<T> func)
+        {
+            foreach (var obj in coll)
                 func(obj);
         }
 
@@ -56,13 +121,30 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <param name="coll"></param>
         /// <param name="func"></param>
         /// <returns></returns>
-        public static IList Select(ICollection coll, FunctionDelegate<object> func)
+        public static IList Select(ICollection coll, FunctionDelegate<object, bool> func)
         {
             IList result = new ArrayList();            
             foreach (object obj in coll)
-                if (true.Equals(func(obj)))
+                if (func(obj))
                     result.Add(obj);                            
             return result;
         }
+
+        /// <summary>
+        /// Executes a function on each item in a <see cref="ICollection" />
+        /// and collects all the entries for which the result
+        /// of the function is equal to <c>true</c>.
+        /// </summary>
+        /// <param name="items"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public static IList<T> Select<T>(IEnumerable<T> items, FunctionDelegate<T, bool> func)
+        {
+            IList<T> result = new List<T>();
+            foreach (var obj in items)
+                if (func(obj)) result.Add(obj);
+            return result;
+        }
+
     }
 }

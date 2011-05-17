@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
@@ -9,20 +10,20 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public abstract class SinglePassNoder : INoder
     {
-        private ISegmentIntersector segInt = null;
+        private ISegmentIntersector _segInt;
        
         /// <summary>
         /// Initializes a new instance of the <see cref="SinglePassNoder"/> class.
         /// </summary>
-        public SinglePassNoder() { }
+        protected SinglePassNoder() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SinglePassNoder"/> class.
         /// </summary>
         /// <param name="segInt">The <see cref="ISegmentIntersector" /> to use.</param>
-        public SinglePassNoder(ISegmentIntersector segInt)
+        protected SinglePassNoder(ISegmentIntersector segInt)
         {
-            this.segInt = segInt;
+            _segInt = segInt;
         }
 
         /// <summary>
@@ -36,11 +37,11 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         {
             get 
             { 
-                return segInt; 
+                return _segInt; 
             }
             set 
             { 
-                segInt = value; 
+                _segInt = value; 
             }
         }
 
@@ -51,14 +52,14 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// others may only add some or none at all.
         /// </summary>
         /// <param name="segStrings"></param>
-        public abstract void ComputeNodes(IList segStrings);
+        public abstract void ComputeNodes(IList<ISegmentString> segStrings);
 
         /// <summary>
         /// Returns a <see cref="IList"/> of fully noded <see cref="SegmentString"/>s.
         /// The <see cref="SegmentString"/>s have the same context as their parent.
         /// </summary>
         /// <returns></returns>
-        public abstract IList GetNodedSubstrings();
+        public abstract IList<ISegmentString> GetNodedSubstrings();
 
     }
 }

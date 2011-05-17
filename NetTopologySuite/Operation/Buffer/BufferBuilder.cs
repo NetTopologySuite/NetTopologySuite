@@ -5,6 +5,8 @@ using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Noding;
 using GisSharpBlog.NetTopologySuite.Operation.Overlay;
+using GisSharpBlog.NetTopologySuite.Utilities;
+
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
 #endif
@@ -148,7 +150,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         private void ComputeNodedEdges(IList bufferSegStrList, IPrecisionModel precisionModel)
         {
             var noder = GetNoder(precisionModel);
-            noder.ComputeNodes(bufferSegStrList);
+            noder.ComputeNodes(CollectionUtil.Cast<ISegmentString>(bufferSegStrList));
             var nodedSegStrings = noder.GetNodedSubstrings();
             
             foreach (var obj in nodedSegStrings)

@@ -124,7 +124,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="precisionModel">The PrecisionModel to use.</param>
         /// <param name="SRID">The SRID to use.</param>
-        public GeometryFactory(PrecisionModel precisionModel, int SRID) : 
+        public GeometryFactory(IPrecisionModel precisionModel, int SRID) : 
             this(precisionModel, SRID, GetDefaultCoordinateSequenceFactory()) { }
 
         /// <summary>

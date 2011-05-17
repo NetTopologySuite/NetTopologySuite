@@ -160,6 +160,10 @@
     <Compile Include="Geometries\Prepared\LineIntersectionAdder.cs" />
     <Compile Include="Geometries\Prepared\LineNode.cs" />
     <Compile Include="Geometries\Prepared\LineTopology.cs" />
+    <Compile Include="Geometries\Prepared\PreparedGeometryFactory.cs" />
+    <Compile Include="Geometries\Prepared\PreparedLineString.cs" />
+    <Compile Include="Geometries\Prepared\PreparedLineStringIntersects.cs" />
+    <Compile Include="Geometries\Prepared\PreparedPoint.cs" />
     <Compile Include="Geometries\Prepared\PreparedPolygonCovers.cs" />
     <Compile Include="Geometries\Prepared\PreparedPolygon.cs" />
     <Compile Include="Geometries\Prepared\PreparedPolygonContains.cs" />

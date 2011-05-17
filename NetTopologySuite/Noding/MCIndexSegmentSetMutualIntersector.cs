@@ -17,9 +17,6 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         * The SpatialIndex used should be something that supports envelope
         * (range) queries efficiently (such as a Quadtree or STRtree.
         */
-        /// <summary>
-        /// 
-        /// </summary>
         private readonly ISpatialIndex _index = new STRtree();
         private int _indexCounter;
         private int _processCounter;
