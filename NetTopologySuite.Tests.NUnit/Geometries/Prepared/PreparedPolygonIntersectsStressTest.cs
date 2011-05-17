@@ -36,14 +36,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
         {
             //  	Geometry poly = createCircle(new Coordinate(0, 0), 100, nPts);
             IGeometry poly = createSineStar(new Coordinate(0, 0), 100, nPts);
-            System.Console.WriteLine(poly);
+            Console.WriteLine(poly);
 
-            System.Console.WriteLine(poly);
+            Console.WriteLine(poly);
             //System.out.println("Running with " + nPts + " points");
             Test(poly);
         }
 
-        IGeometry createCircle(Coordinate origin, double size, int nPts)
+        static IGeometry CreateCircle(Coordinate origin, double size, int nPts)
         {
             GeometricShapeFactory gsf = new GeometricShapeFactory();
             gsf.Centre = origin;
@@ -67,7 +67,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             return poly;
         }
 
-        ILineString createTestLine(IEnvelope env, double size, int nPts)
+        ILineString CreateTestLine(IEnvelope env, double size, int nPts)
         {
             Random rnd = new Random();
             double width = env.Width;
@@ -76,11 +76,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             ICoordinate basePt = new Coordinate(
                             env.MinX + xOffset,
                             env.MinY + yOffset);
-            ILineString line = createTestLine(basePt, size, nPts);
+            ILineString line = CreateTestLine(basePt, size, nPts);
             return line;
         }
 
-        ILineString createTestLine(ICoordinate basePt, double size, int nPts)
+        ILineString CreateTestLine(ICoordinate basePt, double size, int nPts)
         {
             GeometricShapeFactory gsf = new GeometricShapeFactory();
             gsf.Centre = basePt;
@@ -97,15 +97,15 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             while (count < MAX_ITER)
             {
                 count++;
-                ILineString line = createTestLine(g.EnvelopeInternal, 10, 20);
+                ILineString line = CreateTestLine(g.EnvelopeInternal, 10, 20);
 
                 //      System.out.println("Test # " + count);
                 //  		System.out.println(line);
-                testResultsEqual(g, line);
+                TestResultsEqual(g, line);
             }
         }
 
-        public void testResultsEqual(IGeometry g, ILineString line)
+        public void TestResultsEqual(IGeometry g, ILineString line)
         {
             bool slowIntersects = g.Intersects(line);
 

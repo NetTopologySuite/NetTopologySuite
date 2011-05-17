@@ -99,6 +99,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
             var coords = e0.Coordinates;
             ICoordinate p00 = coords[segIndex0];
             ICoordinate p01 = coords[segIndex0 + 1];
+            coords = e1.Coordinates;
             ICoordinate p10 = coords[segIndex1];
             ICoordinate p11 = coords[segIndex1 + 1];
 

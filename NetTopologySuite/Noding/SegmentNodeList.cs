@@ -48,9 +48,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         public SegmentNode Add(ICoordinate intPt, int segmentIndex)
         {
             var eiNew = new SegmentNode(_edge, intPt, segmentIndex, _edge.GetSegmentOctant(segmentIndex));
-            var ei = (SegmentNode) _nodeMap[eiNew];
-            if (ei != null)
+            object eiObj;
+            if (_nodeMap.TryGetValue(eiNew, out eiObj))
             {
+                var ei = (SegmentNode)eiObj;
                 // debugging sanity check
                 Assert.IsTrue(ei.Coordinate.Equals2D(intPt), "Found equal nodes with different coordinates");               
                 return ei;

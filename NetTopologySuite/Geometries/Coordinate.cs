@@ -322,9 +322,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
              * the type of the left-hand operand is int
              */
             var f = BitConverter.DoubleToInt64Bits(value);
-            if (f > 0)
+            //if (f > 0)
                 return (int)(f ^ (f >> 32));
-            return (int) (f ^ ((f >> 32) + (2 << ~32)));
+            //return (int) (f ^ ((f >> 32) + (2 << ~32)));
             
         }
 

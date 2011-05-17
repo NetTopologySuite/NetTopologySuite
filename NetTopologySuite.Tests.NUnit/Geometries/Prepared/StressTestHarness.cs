@@ -102,7 +102,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 
                 //      System.out.println("Test # " + count);
                 //  		System.out.println(line);
-                Console.WriteLine("Test[" + count + "] " + target.GetType().FullName + "/" + test.GetType().FullName);
+                Console.WriteLine("Test[" + count + "] " + target.GetType().Name + "/" + test.GetType().Name);
                 bool isResultCorrect = CheckResult(target, test);
                 if (!isResultCorrect)
                 {
