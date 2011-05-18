@@ -17,9 +17,9 @@ namespace GisSharpBlog.NetTopologySuite.Precision
     /// </summary>
     public class SimpleGeometryPrecisionReducer
     {
-        private PrecisionModel newPrecisionModel = null;
-        private bool removeCollapsed = true;
-        private bool changePrecisionModel = false;
+        private readonly PrecisionModel _newPrecisionModel;
+        private bool _removeCollapsed = true;
+        private bool _changePrecisionModel;
 
         /// <summary>
         /// 
@@ -27,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <param name="pm"></param>
         public SimpleGeometryPrecisionReducer(PrecisionModel pm)
         {
-            newPrecisionModel = pm;
+            _newPrecisionModel = pm;
         }
 
         /// <summary>
@@ -39,11 +39,11 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         {
             get
             {
-                return removeCollapsed;
+                return _removeCollapsed;
             }
             set
             {
-                removeCollapsed = value;
+                _removeCollapsed = value;
             }
         }
 
@@ -57,11 +57,11 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         {
             get
             {
-                return changePrecisionModel;
+                return _changePrecisionModel;
             }
             set
             {
-                changePrecisionModel = value;
+                _changePrecisionModel = value;
             }
         }
 
@@ -73,9 +73,9 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         public IGeometry Reduce(IGeometry geom)
         {
             GeometryEditor geomEdit;
-            if (changePrecisionModel) 
+            if (_changePrecisionModel) 
             {
-                GeometryFactory newFactory = new GeometryFactory(newPrecisionModel);
+                GeometryFactory newFactory = new GeometryFactory(_newPrecisionModel);
                 geomEdit = new GeometryEditor(newFactory);
             }
             else
@@ -89,7 +89,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// </summary>
         private class PrecisionReducerCoordinateOperation : GeometryEditor.CoordinateOperation
         {
-            private SimpleGeometryPrecisionReducer container = null;
+            private readonly SimpleGeometryPrecisionReducer _container;
 
             /// <summary>
             /// 
@@ -97,7 +97,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             /// <param name="container"></param>
             public PrecisionReducerCoordinateOperation(SimpleGeometryPrecisionReducer container)
             {
-                this.container = container;
+                _container = container;
             }
 
             /// <summary>
@@ -116,7 +116,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
                 for (int i = 0; i < coordinates.Length; i++) 
                 {
                     ICoordinate coord = new Coordinate(coordinates[i]);
-                    container.newPrecisionModel.MakePrecise( coord);
+                    _container._newPrecisionModel.MakePrecise( coord);
                     reducedCoords[i] = coord;
                 }
 
@@ -141,7 +141,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
                     minLength = 4;
 
                 ICoordinate[] collapsedCoords = reducedCoords;
-                if (container.removeCollapsed) 
+                if (_container._removeCollapsed) 
                     collapsedCoords = null;
 
                 // return null or orginal length coordinate array

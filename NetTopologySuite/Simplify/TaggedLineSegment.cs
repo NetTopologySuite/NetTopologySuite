@@ -10,8 +10,8 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// </summary>
     public class TaggedLineSegment : LineSegment
     {
-        private IGeometry parent;
-        private int index;
+        private readonly IGeometry _parent;
+        private readonly int _index;
 
         /// <summary>
         /// 
@@ -23,8 +23,8 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         public TaggedLineSegment(ICoordinate p0, ICoordinate p1, IGeometry parent, int index)
             : base(p0, p1)
         {            
-            this.parent = parent;
-            this.index = index;
+            _parent = parent;
+            _index = index;
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         {
             get
             {
-                return parent;
+                return _parent;
             }
         }
 
@@ -53,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         {
             get
             {
-                return index;
+                return _index;
             }
         }
     }

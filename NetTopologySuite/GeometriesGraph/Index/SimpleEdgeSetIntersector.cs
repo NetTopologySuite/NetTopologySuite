@@ -11,11 +11,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// </summary>
     public class SimpleEdgeSetIntersector : EdgeSetIntersector
     {        
+        /*
         /// <summary>
         /// 
         /// </summary>
         public SimpleEdgeSetIntersector() { }
-
+        */
         /// <summary>
         /// 
         /// </summary>

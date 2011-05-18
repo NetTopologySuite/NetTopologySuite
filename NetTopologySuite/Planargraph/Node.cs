@@ -1,4 +1,4 @@
-using System.Collections;
+//using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using GeoAPI.Geometries;
@@ -24,11 +24,11 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <param name="node0"></param>
         /// <param name="node1"></param>
         /// <returns></returns>
-        public static IList getEdgesBetween(Node node0, Node node1)
+        public static IList<DirectedEdge> GetEdgesBetween(Node node0, Node node1)
         {
-            IList edges0 = DirectedEdge.ToEdges(node0.OutEdges.Edges);
+            IList<Edge> edges0 = DirectedEdge.ToEdges(node0.OutEdges.Edges);
             Set<DirectedEdge> commonEdges = new Set<DirectedEdge>(edges0.Cast<DirectedEdge>());
-            IList edges1 = DirectedEdge.ToEdges(node1.OutEdges.Edges);
+            IList<Edge> edges1 = DirectedEdge.ToEdges(node1.OutEdges.Edges);
             commonEdges.RemoveMany(edges1.Cast<DirectedEdge>());
             return new List<DirectedEdge>(commonEdges);
         }
@@ -113,6 +113,14 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             return deStar.GetIndex(edge);
         }
 
+        ///<summary>
+        /// Removes a <see cref="DirectedEdge"/> incident on this node. Does not change the state of the directed edge.
+        ///</summary>
+        public void Remove(DirectedEdge de)
+        {
+            deStar.Remove(de);
+        }
+
         /// <summary>
         /// Removes this node from its containing graph.
         /// </summary>
@@ -139,7 +147,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <returns></returns>
         public override string ToString()
         {
-            return "NODE: " + pt.ToString() + ": " + Degree;
+            return "NODE: " + pt + ": " + Degree;
         }
     }
 }

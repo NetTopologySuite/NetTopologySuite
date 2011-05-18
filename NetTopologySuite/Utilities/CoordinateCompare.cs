@@ -10,11 +10,12 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
 	/// </summary>
 	public class CoordinateCompare : IComparer
 	{
+        /*
 		/// <summary>
 		/// Constructor.
 		/// </summary>
 		public CoordinateCompare() { }
-
+        */
 		/// <summary>
 		/// Compares two object and returns a value indicating whether one is less than, equal to or greater
 		/// than the other.
@@ -49,7 +50,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
 		/// </remarks>
 		public int Compare(object x, object y)
 		{
-			int returnValue = 0;
+			int returnValue;
             if (x is ICoordinate && y is  ICoordinate)
             {
 			

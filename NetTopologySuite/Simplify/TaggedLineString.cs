@@ -1,22 +1,21 @@
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
-
 
 namespace GisSharpBlog.NetTopologySuite.Simplify
 {
     /// <summary>
-    /// 
+    /// Represents a <see cref="ILineString"/> which can be modified to a simplified shape.
+    /// Every line segment in the parent LineString is represented as a <see cref="TaggedLineSegment"/>.
+    /// This class provides an attribute which specifies the minimum allowable length
+    /// for the modified result.
     /// </summary>
     public class TaggedLineString
     {
-        private ILineString parentLine;
-        private TaggedLineSegment[] segs;
-        private IList resultSegs = new ArrayList();
-        private int minimumSize;
+        private readonly ILineString _parentLine;
+        private TaggedLineSegment[] _segs;
+        private readonly IList<LineSegment> _resultSegs = new List<LineSegment>();
+        private readonly int _minimumSize;
 
         /// <summary>
         /// 
@@ -31,8 +30,8 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <param name="minimumSize"></param>
         public TaggedLineString(ILineString parentLine, int minimumSize)
         {
-            this.parentLine = parentLine;
-            this.minimumSize = minimumSize;
+            _parentLine = parentLine;
+            _minimumSize = minimumSize;
             Init();
         }
 
@@ -43,7 +42,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         {
             get
             {
-                return minimumSize;
+                return _minimumSize;
             }
         }
 
@@ -54,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         {
             get
             {
-                return parentLine;
+                return _parentLine;
             }
         }
 
@@ -65,7 +64,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         {
             get
             {
-                return parentLine.Coordinates;
+                return _parentLine.Coordinates;
             }
         }
 
@@ -76,7 +75,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         {
             get
             {
-                return ExtractCoordinates(resultSegs);
+                return ExtractCoordinates(_resultSegs);
             }
         }
 
@@ -87,7 +86,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         {
             get
             {
-                int resultSegsSize = resultSegs.Count;
+                int resultSegsSize = _resultSegs.Count;
                 return resultSegsSize == 0 ? 0 : resultSegsSize + 1;
             }
         }
@@ -99,7 +98,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <returns></returns>
         public TaggedLineSegment GetSegment(int i)
         {
-            return segs[i]; 
+            return _segs[i]; 
         }
 
         /// <summary>
@@ -107,12 +106,12 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// </summary>
         private void Init()
         {
-            ICoordinate[] pts = parentLine.Coordinates;
-            segs = new TaggedLineSegment[pts.Length - 1];
+            ICoordinate[] pts = _parentLine.Coordinates;
+            _segs = new TaggedLineSegment[pts.Length - 1];
             for (int i = 0; i < pts.Length - 1; i++)
             {
-                TaggedLineSegment seg = new TaggedLineSegment(pts[i], pts[i + 1], parentLine, i);
-                segs[i] = seg;
+                TaggedLineSegment seg = new TaggedLineSegment(pts[i], pts[i + 1], _parentLine, i);
+                _segs[i] = seg;
             }
         }
 
@@ -123,7 +122,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         {
             get
             {
-                return segs;
+                return _segs;
             }
         }
 
@@ -133,7 +132,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <param name="seg"></param>
         public void AddToResult(LineSegment seg)
         {
-            resultSegs.Add(seg);
+            _resultSegs.Add(seg);
         }
 
         /// <summary>
@@ -142,7 +141,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <returns></returns>
         public ILineString AsLineString()
         {
-            return parentLine.Factory.CreateLineString(ExtractCoordinates(resultSegs));        
+            return _parentLine.Factory.CreateLineString(ExtractCoordinates(_resultSegs));        
         }
 
         /// <summary>
@@ -151,7 +150,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <returns></returns>
         public ILinearRing AsLinearRing()
         {
-            return parentLine.Factory.CreateLinearRing(ExtractCoordinates(resultSegs));
+            return _parentLine.Factory.CreateLinearRing(ExtractCoordinates(_resultSegs));
         }
 
         /// <summary>
@@ -159,17 +158,17 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// </summary>
         /// <param name="segs"></param>
         /// <returns></returns>
-        private static ICoordinate[] ExtractCoordinates(IList segs)
+        private static ICoordinate[] ExtractCoordinates(IList<LineSegment> segs)
         {
             ICoordinate[] pts = new ICoordinate[segs.Count + 1];
             LineSegment seg = null;
             for (int i = 0; i < segs.Count; i++)
             {
-                seg = (LineSegment) segs[i];
+                seg = segs[i];
                 pts[i] = seg.P0;
             }
             // add last point
-            pts[pts.Length - 1] = seg.P1;
+            if (seg != null) pts[pts.Length - 1] = seg.P1;
             return pts;
         }
     }

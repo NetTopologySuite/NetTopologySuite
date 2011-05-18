@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -25,11 +25,11 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="dirEdges"></param>
         /// <returns></returns>
-        public static IList ToEdges(IList dirEdges)
+        public static IList<Edge> ToEdges(IList<DirectedEdge> dirEdges)
         {
-            IList edges = new ArrayList();
-            for (IEnumerator i = dirEdges.GetEnumerator(); i.MoveNext(); ) 
-                edges.Add(((DirectedEdge) i.Current).parentEdge);            
+            IList<Edge> edges = new List<Edge>();
+            foreach (DirectedEdge directedEdge in dirEdges)
+                edges.Add(directedEdge.parentEdge);
             return edges;
         }
         
@@ -230,8 +230,8 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         internal void Remove()
         {
-            this.sym = null;
-            this.parentEdge = null;
+            sym = null;
+            parentEdge = null;
         }
 
         public override string ToString()

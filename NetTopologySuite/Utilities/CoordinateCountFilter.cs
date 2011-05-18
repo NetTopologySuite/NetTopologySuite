@@ -8,13 +8,14 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
     /// </summary>
     public class CoordinateCountFilter : ICoordinateFilter 
     {
-        private int n = 0;
+        private int _n;
 
+        /*
         /// <summary>
         /// 
         /// </summary>
         public CoordinateCountFilter() { }
-
+        */
         /// <summary>
         /// Returns the result of the filtering.
         /// </summary>
@@ -22,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         {
             get
             {
-                return n;
+                return _n;
             }
         }
 
@@ -32,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <param name="coord"></param>
         public void Filter(ICoordinate coord) 
         {
-            n++;
+            _n++;
         }
     }
 }

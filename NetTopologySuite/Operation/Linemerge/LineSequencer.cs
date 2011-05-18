@@ -218,7 +218,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         {
             IList sequences = new ArrayList();
             ConnectedSubgraphFinder csFinder = new ConnectedSubgraphFinder(graph);
-            IList subgraphs = csFinder.GetConnectedSubgraphs();
+            var subgraphs = csFinder.GetConnectedSubgraphs();
             foreach(Subgraph subgraph in subgraphs)
             {                
                 if (HasSequence(subgraph))

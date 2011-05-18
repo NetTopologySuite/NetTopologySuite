@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections.Generic;
 #if SILVERLIGHT
 using Stack = System.Collections.Generic.Stack<object>;
 using ArrayList = System.Collections.Generic.List<object>;
@@ -21,14 +21,14 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
             this.graph = graph;
         }
 
-        public IList GetConnectedSubgraphs()
+        public IList<Subgraph> GetConnectedSubgraphs()
         {
-            IList subgraphs = new ArrayList();
+            IList<Subgraph> subgraphs = new List<Subgraph>();
             GraphComponent.SetVisited(graph.GetNodeEnumerator(), false);
-            IEnumerator ienum = graph.GetEdgeEnumerator();
+            IEnumerator<Edge> ienum = graph.GetEdgeEnumerator();
             while(ienum.MoveNext())
             {
-                Edge e = ienum.Current as Edge;
+                Edge e = ienum.Current;
                 Node node = e.GetDirEdge(0).FromNode;
                 if (!node.IsVisited)
                     subgraphs.Add(FindSubgraph(node));                
@@ -51,11 +51,11 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
         /// <param name="subgraph"></param>
         private void AddReachable(Node startNode, Subgraph subgraph)
         {
-            Stack nodeStack = new Stack();
+            Stack<Node> nodeStack = new Stack<Node>();
             nodeStack.Push(startNode);
             while (nodeStack.Count != 0)
             {
-                Node node = (Node)nodeStack.Pop();
+                Node node = nodeStack.Pop();
                 AddEdges(node, nodeStack, subgraph);
             }
         }
@@ -66,13 +66,11 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph.Algorithm
         /// <param name="node"></param>
         /// <param name="nodeStack"></param>
         /// <param name="subgraph"></param>
-        private static void AddEdges(Node node, Stack nodeStack, Subgraph subgraph)
+        private static void AddEdges(Node node, Stack<Node> nodeStack, Subgraph subgraph)
         {
             node.Visited = true;
-            IEnumerator i = node.OutEdges.GetEnumerator();
-            while(i.MoveNext())
+            foreach (DirectedEdge de in node.OutEdges)
             {
-                DirectedEdge de = (DirectedEdge)i.Current;
                 subgraph.Add(de.Edge);
                 Node toNode = de.ToNode;
                 if (!toNode.IsVisited) 

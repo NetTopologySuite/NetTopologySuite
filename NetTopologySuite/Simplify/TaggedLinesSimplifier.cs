@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections.Generic;
 
 namespace GisSharpBlog.NetTopologySuite.Simplify
 {
@@ -8,9 +8,9 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// </summary>
     public class TaggedLinesSimplifier
     {
-        private LineSegmentIndex inputIndex = new LineSegmentIndex();
-        private LineSegmentIndex outputIndex = new LineSegmentIndex();
-        private double distanceTolerance = 0.0;
+        private readonly LineSegmentIndex _inputIndex = new LineSegmentIndex();
+        private readonly LineSegmentIndex _outputIndex = new LineSegmentIndex();
+        private double _distanceTolerance;
 
         /// <summary>
         /// 
@@ -26,11 +26,11 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         {
             get
             {
-                return distanceTolerance;
+                return _distanceTolerance;
             }
             set
             {
-                distanceTolerance = value;
+                _distanceTolerance = value;
             }
         }
 
@@ -38,17 +38,30 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// Simplify a collection of <c>TaggedLineString</c>s.
         /// </summary>
         /// <param name="taggedLines">The collection of lines to simplify.</param>
-        public void Simplify(IList taggedLines)
+        public void Simplify(ICollection<TaggedLineString> taggedLines)
         {
+            foreach (TaggedLineString taggedLineString in taggedLines)
+                _inputIndex.Add(taggedLineString);
+
+            foreach (TaggedLineString taggedLineString in taggedLines)
+            {
+                TaggedLineStringSimplifier tlss
+                              = new TaggedLineStringSimplifier(_inputIndex, _outputIndex);
+                tlss.DistanceTolerance = _distanceTolerance;
+                tlss.Simplify(taggedLineString);
+            }
+
+            /*
             for (IEnumerator i = taggedLines.GetEnumerator(); i.MoveNext(); )            
-                inputIndex.Add((TaggedLineString)i.Current);
+                _inputIndex.Add((TaggedLineString)i.Current);
             for (IEnumerator i = taggedLines.GetEnumerator(); i.MoveNext(); )
             {
                 TaggedLineStringSimplifier tlss
-                              = new TaggedLineStringSimplifier(inputIndex, outputIndex);
-                tlss.DistanceTolerance = distanceTolerance;
+                              = new TaggedLineStringSimplifier(_inputIndex, _outputIndex);
+                tlss.DistanceTolerance = _distanceTolerance;
                 tlss.Simplify((TaggedLineString)i.Current);
             }
+             */
         }
     }
 }

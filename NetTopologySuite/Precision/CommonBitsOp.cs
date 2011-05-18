@@ -12,8 +12,8 @@ namespace GisSharpBlog.NetTopologySuite.Precision
     /// </summary>
     public class CommonBitsOp
     {
-        private bool returnToOriginalPrecision = true;
-        private CommonBitsRemover cbr;
+        private readonly bool _returnToOriginalPrecision = true;
+        private CommonBitsRemover _cbr;
 
         /// <summary>
         /// Creates a new instance of class, which reshifts result <c>Geometry</c>s.
@@ -27,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <param name="returnToOriginalPrecision"></param>
         public CommonBitsOp(bool returnToOriginalPrecision)
         {
-            this.returnToOriginalPrecision = returnToOriginalPrecision;
+            _returnToOriginalPrecision = returnToOriginalPrecision;
         }
 
         /// <summary>
@@ -101,8 +101,8 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <returns>The result Geometry with the required precision.</returns>
         private IGeometry ComputeResultPrecision(IGeometry result)
         {
-            if (returnToOriginalPrecision)
-                cbr.AddCommonBits(result);
+            if (_returnToOriginalPrecision)
+                _cbr.AddCommonBits(result);
             return result;
         }
 
@@ -114,9 +114,9 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <returns>A copy of the input Geometry with common bits removed.</returns>
         private IGeometry RemoveCommonBits(IGeometry geom0)
         {
-            cbr = new CommonBitsRemover();
-            cbr.Add(geom0);
-            IGeometry geom = cbr.RemoveCommonBits((IGeometry) geom0.Clone());
+            _cbr = new CommonBitsRemover();
+            _cbr.Add(geom0);
+            IGeometry geom = _cbr.RemoveCommonBits((IGeometry) geom0.Clone());
             return geom;
         }
 
@@ -132,12 +132,12 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// </returns>
         private IGeometry[] RemoveCommonBits(IGeometry geom0, IGeometry geom1)
         {
-            cbr = new CommonBitsRemover();
-            cbr.Add(geom0);
-            cbr.Add(geom1);
+            _cbr = new CommonBitsRemover();
+            _cbr.Add(geom0);
+            _cbr.Add(geom1);
             IGeometry[] geom = new IGeometry[2];
-            geom[0] = cbr.RemoveCommonBits((IGeometry) geom0.Clone());
-            geom[1] = cbr.RemoveCommonBits((IGeometry) geom1.Clone());
+            geom[0] = _cbr.RemoveCommonBits((IGeometry) geom0.Clone());
+            geom[1] = _cbr.RemoveCommonBits((IGeometry) geom1.Clone());
             return geom;
         }
     }

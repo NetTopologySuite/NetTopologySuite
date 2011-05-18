@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 #if SILVERLIGHT
 using ArrayList = System.Collections.Generic.List<object>;
@@ -62,12 +63,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Initialized with empty collections, in case nothing is computed
         /// </summary>
-        protected IList dangles = new ArrayList();
+        protected ICollection<ILineString> dangles = new List<ILineString>();
 
         /// <summary>
         /// 
         /// </summary>
-        protected IList cutEdges = new ArrayList();
+        protected ICollection<ILineString> cutEdges = new List<ILineString>();
 
         /// <summary>
         /// 
@@ -150,7 +151,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <summary> 
         /// Compute and returns the list of dangling lines found during polygonization.
         /// </summary>
-        public IList GetDangles()
+        public ICollection<ILineString> GetDangles()
         {
             Polygonize();
             return dangles;
@@ -159,7 +160,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Compute and returns the list of cut edges found during polygonization.
         /// </summary>
-        public IList GetCutEdges()
+        public ICollection<ILineString> GetCutEdges()
         {
             Polygonize();
             return cutEdges;
@@ -208,11 +209,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             }
         }
 
-        private static void FindValidRings(IList edgeRingList, IList validEdgeRingList, IList invalidRingList)
+        private static void FindValidRings(IList<EdgeRing> edgeRingList, IList validEdgeRingList, IList invalidRingList)
         {
             for (var i = edgeRingList.GetEnumerator(); i.MoveNext(); ) 
             {
-                var er = (EdgeRing) i.Current;
+                var er = i.Current;
                 if (er.IsValid)
                      validEdgeRingList.Add(er);
                 else invalidRingList.Add(er.LineString);

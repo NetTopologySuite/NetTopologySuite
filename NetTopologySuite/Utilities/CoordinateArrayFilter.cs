@@ -7,8 +7,8 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
     /// </summary>
     public class CoordinateArrayFilter : ICoordinateFilter 
     {
-        ICoordinate[] pts = null;
-        int n = 0;
+        readonly ICoordinate[] _pts;
+        int _n;
 
         /// <summary>
         /// Constructs a <c>CoordinateArrayFilter</c>.
@@ -16,7 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <param name="size">The number of points that the <c>CoordinateArrayFilter</c> will collect.</param>
         public CoordinateArrayFilter(int size) 
         {
-            pts = new ICoordinate[size];
+            _pts = new ICoordinate[size];
         }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         {
             get
             {
-                return pts;
+                return _pts;
             }
         }
 
@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <param name="coord"></param>
         public void Filter(ICoordinate coord) 
         {
-            pts[n++] = (ICoordinate) coord;
+            _pts[_n++] = coord;
         }
     }
 }

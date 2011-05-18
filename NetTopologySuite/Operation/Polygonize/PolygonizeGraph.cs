@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -29,11 +29,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <returns></returns>
         private static int GetDegreeNonDeleted(Node node)
         {
-            IList edges = node.OutEdges.Edges;
+            IList<DirectedEdge> edges = node.OutEdges.Edges;
             int degree = 0;
-            for (IEnumerator i = edges.GetEnumerator(); i.MoveNext(); ) 
+            foreach (PolygonizeDirectedEdge de in edges)
             {
-                PolygonizeDirectedEdge de = (PolygonizeDirectedEdge) i.Current;
                 if (! de.IsMarked)
                     degree++;
             }
@@ -48,11 +47,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <returns></returns>
         private static int GetDegree(Node node, long label)
         {
-            IList edges = node.OutEdges.Edges;
+            IList<DirectedEdge> edges = node.OutEdges.Edges;
             int degree = 0;
-            for (IEnumerator i = edges.GetEnumerator(); i.MoveNext(); )
+            foreach (PolygonizeDirectedEdge de in edges)
             {
-                PolygonizeDirectedEdge de = (PolygonizeDirectedEdge) i.Current;
                 if (de.Label == label) 
                     degree++;
             }
@@ -65,17 +63,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <param name="node"></param>
         public static void DeleteAllEdges(Node node)
         {
-            IList edges = node.OutEdges.Edges;
-            for (IEnumerator i = edges.GetEnumerator(); i.MoveNext(); )
+            IList<DirectedEdge> edges = node.OutEdges.Edges;
+            foreach (PolygonizeDirectedEdge de in edges)
             {
-                PolygonizeDirectedEdge de = (PolygonizeDirectedEdge) i.Current;
                 de.Marked = true;
                 PolygonizeDirectedEdge sym = (PolygonizeDirectedEdge) de.Sym;
                 if (sym != null) sym.Marked = true;
             }
         }
 
-        private IGeometryFactory factory;
+        private readonly IGeometryFactory _factory;
 
         /// <summary>
         /// Create a new polygonization graph.
@@ -83,7 +80,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// <param name="factory"></param>
         public PolygonizeGraph(IGeometryFactory factory)
         {
-            this.factory = factory;
+            this._factory = factory;
         }
 
         /// <summary>
@@ -132,11 +129,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         private void ComputeNextCWEdges()
         {
             // set the next pointers for the edges around each node
-            for (IEnumerator iNode = GetNodeEnumerator(); iNode.MoveNext(); ) 
-            {
-                Node node = (Node) iNode.Current;
+            foreach (var node in Nodes)
                 ComputeNextCWEdges(node);
-            }
         }
 
         /// <summary>
@@ -144,21 +138,19 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// into the minimal edge rings required by NTS polygon topology rules.
         /// </summary>
         /// <param name="ringEdges">The list of start edges for the edgeRings to convert.</param>
-        private void ConvertMaximalToMinimalEdgeRings(IList ringEdges)
+        private static void ConvertMaximalToMinimalEdgeRings(IEnumerable<DirectedEdge> ringEdges)
         {
-            for (IEnumerator i = ringEdges.GetEnumerator(); i.MoveNext(); ) 
+            foreach (PolygonizeDirectedEdge de in ringEdges)
             {
-                PolygonizeDirectedEdge de = (PolygonizeDirectedEdge) i.Current;
                 long label = de.Label;
-                IList intNodes = FindIntersectionNodes(de, label);
+                var intNodes = FindIntersectionNodes(de, label);
 
                 if (intNodes == null) 
                     continue;
 
                 // flip the next pointers on the intersection nodes to create minimal edge rings
-                for (IEnumerator iNode = intNodes.GetEnumerator(); iNode.MoveNext(); )
+                foreach (var node in intNodes)
                 {
-                    Node node = (Node) iNode.Current;
                     ComputeNextCCWEdges(node, label);
                 }
             }
@@ -173,17 +165,17 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// The list of intersection nodes found,
         /// or null if no intersection nodes were found.       
         /// </returns>
-        private static IList FindIntersectionNodes(PolygonizeDirectedEdge startDE, long label)
+        private static IEnumerable<Node> FindIntersectionNodes(PolygonizeDirectedEdge startDE, long label)
         {
             PolygonizeDirectedEdge de = startDE;
-            IList intNodes = null;
+            IList<Node> intNodes = null;
             do 
             {
                 Node node = de.FromNode;
                 if (GetDegree(node, label) > 1) 
                 {
                     if (intNodes == null)
-                        intNodes = new ArrayList();
+                        intNodes = new List<Node>();
                     intNodes.Add(node);
                 }
 
@@ -199,20 +191,19 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Computes the EdgeRings formed by the edges in this graph.        
         /// </summary>
         /// <returns>A list of the{EdgeRings found by the polygonization process.</returns>
-        public IList GetEdgeRings()
+        public IList<EdgeRing> GetEdgeRings()
         {
             // maybe could optimize this, since most of these pointers should be set correctly already by deleteCutEdges()
             ComputeNextCWEdges();
             // clear labels of all edges in graph
             Label(dirEdges, -1);
-            IList maximalRings = FindLabeledEdgeRings(dirEdges);
+            IList<DirectedEdge> maximalRings = FindLabeledEdgeRings(dirEdges);
             ConvertMaximalToMinimalEdgeRings(maximalRings);
 
             // find all edgerings
-            IList edgeRingList = new ArrayList();
-            for (IEnumerator i = dirEdges.GetEnumerator(); i.MoveNext(); )
+            IList<EdgeRing  > edgeRingList = new List<EdgeRing>();
+            foreach (PolygonizeDirectedEdge de in dirEdges)
             {
-                PolygonizeDirectedEdge de = (PolygonizeDirectedEdge) i.Current;
                 if (de.IsMarked) continue;
                 if (de.IsInRing) continue;
 
@@ -227,19 +218,18 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// </summary>
         /// <param name="dirEdges">A List of the DirectedEdges in the graph.</param>
         /// <returns>A List of DirectedEdges, one for each edge ring found.</returns>
-        private static IList FindLabeledEdgeRings(IList dirEdges)
+        private static IList<DirectedEdge> FindLabeledEdgeRings(IEnumerable<DirectedEdge> dirEdges)
         {
-            IList edgeRingStarts = new ArrayList();
+            IList<DirectedEdge> edgeRingStarts = new List<DirectedEdge>();
             // label the edge rings formed
             long currLabel = 1;
-            for (IEnumerator i = dirEdges.GetEnumerator(); i.MoveNext(); ) 
+            foreach (PolygonizeDirectedEdge de in dirEdges)
             {
-                PolygonizeDirectedEdge de = (PolygonizeDirectedEdge) i.Current;
                 if (de.IsMarked) continue;
                 if (de.Label >= 0) continue;
 
                 edgeRingStarts.Add(de);
-                IList edges = FindDirEdgesInRing(de);
+                var edges = FindDirEdgesInRing(de);
 
                 Label(edges, currLabel);
                 currLabel++;
@@ -251,7 +241,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// Finds and removes all cut edges from the graph.
         /// </summary>
         /// <returns>A list of the <c>LineString</c>s forming the removed cut edges.</returns>
-        public IList DeleteCutEdges()
+        public IList<ILineString> DeleteCutEdges()
         {
             ComputeNextCWEdges();
             // label the current set of edgerings
@@ -260,10 +250,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             * Cut Edges are edges where both dirEdges have the same label.
             * Delete them, and record them
             */
-            IList cutLines = new ArrayList();
-            for (IEnumerator i = dirEdges.GetEnumerator(); i.MoveNext(); )
+            IList<ILineString> cutLines = new List<ILineString>();
+            foreach (PolygonizeDirectedEdge de in dirEdges)
             {
-                PolygonizeDirectedEdge de = (PolygonizeDirectedEdge) i.Current;
                 if (de.IsMarked) continue;
 
                 PolygonizeDirectedEdge sym = (PolygonizeDirectedEdge) de.Sym;
@@ -285,13 +274,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// </summary>
         /// <param name="dirEdges"></param>
         /// <param name="label"></param>
-        private static void Label(IList dirEdges, long label)
+        private static void Label(IEnumerable<DirectedEdge> dirEdges, long label)
         {
-            for (IEnumerator i = dirEdges.GetEnumerator(); i.MoveNext(); )
-            {
-                PolygonizeDirectedEdge de = (PolygonizeDirectedEdge) i.Current;
+            foreach (PolygonizeDirectedEdge de in dirEdges)
                 de.Label = label;
-            }
         }
 
         /// <summary>
@@ -305,9 +291,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             PolygonizeDirectedEdge prevDE = null;
 
             // the edges are stored in CCW order around the star
-            for (IEnumerator i = deStar.Edges.GetEnumerator(); i.MoveNext(); )
+            foreach (PolygonizeDirectedEdge outDE in deStar.Edges)
             {
-                PolygonizeDirectedEdge outDE = (PolygonizeDirectedEdge) i.Current;
                 if (outDE.IsMarked) continue;
 
                 if (startDE == null) 
@@ -342,7 +327,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
             PolygonizeDirectedEdge prevInDE = null;
 
             // the edges are stored in CCW order around the star
-            IList edges = deStar.Edges;
+            IList<DirectedEdge> edges = deStar.Edges;
             //for (IEnumerator i = deStar.Edges.GetEnumerator(); i.MoveNext(); ) {
             for (int i = edges.Count - 1; i >= 0; i--) 
             {
@@ -385,10 +370,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// </summary>
         /// <param name="startDE">The DirectedEdge to start traversing at.</param>
         /// <returns>A List of DirectedEdges that form a ring.</returns>
-        private static IList FindDirEdgesInRing(PolygonizeDirectedEdge startDE)
+        private static IEnumerable<DirectedEdge> FindDirEdgesInRing(PolygonizeDirectedEdge startDE)
         {
             PolygonizeDirectedEdge de = startDE;
-            IList edges = new ArrayList();
+            IList<DirectedEdge> edges = new List<DirectedEdge>();
             do 
             {
                 edges.Add(de);
@@ -408,7 +393,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         private EdgeRing FindEdgeRing(PolygonizeDirectedEdge startDE)
         {
             PolygonizeDirectedEdge de = startDE;
-            EdgeRing er = new EdgeRing(factory);
+            EdgeRing er = new EdgeRing(_factory);
             do 
             {
                 er.Add(de);
@@ -430,24 +415,23 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
         /// an explicit recursion stack is used.
         /// </summary>
         /// <returns>A List containing the LineStrings that formed dangles.</returns>
-        public IList DeleteDangles()
+        public ICollection<ILineString> DeleteDangles()
         {
-            IList nodesToRemove = FindNodesOfDegree(1);
+            var nodesToRemove = FindNodesOfDegree(1);
             Set<ILineString> dangleLines = new Set<ILineString>();
 
-            Stack nodeStack = new Stack();
-            for (IEnumerator i = nodesToRemove.GetEnumerator(); i.MoveNext(); ) 
-                nodeStack.Push(i.Current);
+            Stack<Node> nodeStack = new Stack<Node>();
+            foreach (Node node in nodesToRemove)
+                nodeStack.Push(node);
             
             while (nodeStack.Count != 0) 
             {
                 Node node = (Node) nodeStack.Pop();
 
                 DeleteAllEdges(node);
-                IList nodeOutEdges = node.OutEdges.Edges;
-                for (IEnumerator i = nodeOutEdges.GetEnumerator(); i.MoveNext(); ) 
+                IList<DirectedEdge> nodeOutEdges = node.OutEdges.Edges;
+                foreach (PolygonizeDirectedEdge de in nodeOutEdges)
                 {
-                    PolygonizeDirectedEdge de = (PolygonizeDirectedEdge) i.Current;
                     // delete this edge and its sym
                     de.Marked = true;
                     PolygonizeDirectedEdge sym = (PolygonizeDirectedEdge) de.Sym;
@@ -463,7 +447,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Polygonize
                         nodeStack.Push(toNode);
                 }
             }
-            return new ArrayList(dangleLines.CastPlatform());
+            return dangleLines.AsReadOnly();
+                //new ArrayList(dangleLines.CastPlatform());
         }
     }
 }
