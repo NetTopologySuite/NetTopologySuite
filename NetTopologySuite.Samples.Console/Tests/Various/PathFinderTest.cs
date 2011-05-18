@@ -122,12 +122,13 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         }
 
         [Test]
+        [Ignore]
         public void BuildGraphFromCompleteGraphShapefile()
         {
             var shapepath = "graph.shp";
             var count = 1179;
 
-            Assert.IsTrue(File.Exists(shapepath));
+            Assert.IsTrue(File.Exists(shapepath), string.Format("File not found: '{0}'", shapepath));
             var reader = new ShapefileReader(shapepath);
             var edges = reader.ReadAll();
             Assert.IsNotNull(edges);

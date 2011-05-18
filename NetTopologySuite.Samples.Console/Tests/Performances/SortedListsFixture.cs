@@ -33,8 +33,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Performances
 
             BenchmarkPolygons();
 
-            Console.Write("Press any key to continue . . . ");
-            Console.ReadKey(true);
+            //Console.Write("Press any key to continue . . . ");
+            //Console.ReadKey(true);
         }
 
         private void Benchmark(IPolygon poly)

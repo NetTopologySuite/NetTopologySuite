@@ -28,6 +28,7 @@ namespace  GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// 
         /// </summary>
         [Test]
+        [Ignore("sa_region.shp not present")]
         public void PerformUnionAggregateTest1()
         {
             Assert.IsNotNull(CheckShapefile("sa_region"));
@@ -61,7 +62,7 @@ namespace  GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             int count = 0;
             IGeometry current = null;
             IGeometry result = null;
-            using (ShapefileDataReader reader = new ShapefileDataReader(fileName, GeometryFactory.Fixed))
+            using (ShapefileDataReader reader = new ShapefileDataReader(fileName, GeometryFactory.Floating))
             {                
                 while (reader.Read())
                 {

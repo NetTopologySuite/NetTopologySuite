@@ -26,7 +26,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             var point = factory.CreatePoint(coord);
             var text = writer.Write(point);
             Assert.IsNotNull(text);
-            Assert.AreEqual("POINT(300000 -2147483648)", text);
+            Assert.AreEqual("POINT (300000 -2147483648)", text);
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             var point = factory.CreatePoint(coord);
             var text = writer.Write(point);
             Assert.IsNotNull(text);
-            Assert.AreEqual("POINT(300000 -1.7976931348623157E+308)", text);
+            Assert.AreEqual("POINT (300000 -1.7976931348623157E+308)", text);
         }
     }
 }

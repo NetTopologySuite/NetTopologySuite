@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             Assert.IsNotNull(result);            
         }
 
-        [Test, ExpectedException(typeof(ApplicationException))]
+        [Test]
         public void IntersectionTest2()
         {
             var g1 = Reader.Read("LINESTRING(0 10, 620 10, 0 11)");
@@ -30,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             var result = g1.Intersection(g2);
 
             Debug.WriteLine(result);
-            Assert.IsNotNull(result);
+            Assert.IsNotNull(result, "");
         }
     }
 }

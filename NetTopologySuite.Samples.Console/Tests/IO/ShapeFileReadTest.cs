@@ -44,6 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.IO
         }
 
         [Test]
+        [Ignore("File aaa.shp not present")]
         public void TestReadingAaaShapeFile()
         {
             using (var reader = new ShapefileDataReader("aaa", Factory))
@@ -106,8 +107,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.IO
             Assert.IsTrue(multiBuffer.IsValid);
 
             var writer = new ShapefileWriter(factory); 
-            writer.Write(@"c:\test_buffer", multiBuffer); 
-            ShapefileWriter.WriteDummyDbf(@"c:\test_buffer.dbf", multiBuffer.NumGeometries);        
+            writer.Write(@"test_buffer", multiBuffer); 
+            ShapefileWriter.WriteDummyDbf(@"test_buffer.dbf", multiBuffer.NumGeometries);        
         }
     }
 }

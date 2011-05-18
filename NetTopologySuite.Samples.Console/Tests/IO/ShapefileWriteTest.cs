@@ -25,9 +25,9 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.IO
 
             var coll = new GeometryCollection(new IGeometry[] { p1, p2, });
             var writer = new ShapefileWriter(Factory);
-            writer.Write(@"c:\test_arcview", coll);
+            writer.Write(@"test_arcview", coll);
 
-            ShapefileWriter.WriteDummyDbf(@"c:\test_arcview.dbf", 2);
+            ShapefileWriter.WriteDummyDbf(@"test_arcview.dbf", 2);
             
             // Not read by ArcView!!!
         }
