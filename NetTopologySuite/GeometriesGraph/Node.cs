@@ -27,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             this.coord = coord;
             this.edges = edges;
-            label = new Label(0, Locations.Null);
+            Label = new Label(0, Locations.Null);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return (label.GeometryCount == 1);
+                return (Label.GeometryCount == 1);
             }
         }
 
@@ -101,9 +101,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             for (int i = 0; i < 2; i++) 
             {
                 Locations loc = ComputeMergedLocation(label2, i);
-                Locations thisLoc = label.GetLocation(i);
+                Locations thisLoc = Label.GetLocation(i);
                 if (thisLoc == Locations.Null) 
-                    label.SetLocation(i, loc);
+                    Label.SetLocation(i, loc);
             }
         }
         
@@ -114,9 +114,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="onLocation"></param>
         public void SetLabel(int argIndex, Locations onLocation)
         {
-            if (label == null) 
-                 label = new Label(argIndex, onLocation);            
-            else label.SetLocation(argIndex, onLocation);
+            if (Label == null) 
+                 Label = new Label(argIndex, onLocation);            
+            else Label.SetLocation(argIndex, onLocation);
         }
 
         /// <summary> 
@@ -128,8 +128,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             // determine the current location for the point (if any)
             Locations loc = Locations.Null;
-            if (label != null)
-                loc = label.GetLocation(argIndex);
+            if (Label != null)
+                loc = Label.GetLocation(argIndex);
             // flip the loc
             Locations newLoc;
             switch (loc)
@@ -144,7 +144,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 newLoc = Locations.Boundary; 
                 break;
             }
-            label.SetLocation(argIndex, newLoc);
+            Label.SetLocation(argIndex, newLoc);
         }
 
         /// <summary> 
@@ -159,7 +159,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public Locations ComputeMergedLocation(Label label2, int eltIndex)
         {
             Locations loc = Locations.Null;
-            loc = label.GetLocation(eltIndex);
+            loc = Label.GetLocation(eltIndex);
             if (!label2.IsNull(eltIndex)) 
             {
                 Locations nLoc = label2.GetLocation(eltIndex);
@@ -175,7 +175,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="outstream"></param>
         public void Write(TextWriter outstream)
         {
-            outstream.WriteLine("node " + coord + " lbl: " + label);
+            outstream.WriteLine("node " + coord + " lbl: " + Label);
         }
 
         /// <summary>

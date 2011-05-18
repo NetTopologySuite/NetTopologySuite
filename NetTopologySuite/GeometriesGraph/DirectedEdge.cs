@@ -354,6 +354,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             SetDepth(oppositePos, oppositeDepth);
         }
 
+        public override string ToString()
+        {
+            return base.ToString();
+        }
         /// <summary>
         /// 
         /// </summary>

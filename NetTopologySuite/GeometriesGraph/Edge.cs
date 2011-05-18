@@ -29,16 +29,16 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             }
         }
 
-        private ICoordinate[] pts;
+        private ICoordinate[] _pts;
         
-        private IEnvelope env;
-        private EdgeIntersectionList eiList = null;
+        private IEnvelope _env;
+        private readonly EdgeIntersectionList _eiList;
       
-        private string name;
-        private MonotoneChainEdge mce;
-        private bool isIsolated = true;
-        private Depth depth = new Depth();
-        private int depthDelta = 0;   // the change in area depth from the R to Curve side of this edge
+        private string _name;
+        private MonotoneChainEdge _mce;
+        private bool _isIsolated = true;
+        private readonly Depth _depth = new Depth();
+        private int _depthDelta;   // the change in area depth from the R to Curve side of this edge
 
         /// <summary>
         /// 
@@ -47,10 +47,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="label"></param>
         public Edge(ICoordinate[] pts, Label label)
         {
-            eiList = new EdgeIntersectionList(this);
+            _eiList = new EdgeIntersectionList(this);
 
-            this.pts = pts;
-            this.label = label;
+            this._pts = pts;
+            Label = label;
         }
 
         /// <summary>
@@ -66,11 +66,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return pts;
+                return _pts;
             }
             set
             {
-                pts = value;
+                _pts = value;
             }
         }
 
@@ -92,11 +92,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return name;
+                return _name;
             }
             set
             {
-                name = value; 
+                _name = value; 
             }
         }
 
@@ -148,13 +148,13 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             get
             {
                 // compute envelope lazily
-                if (env == null) 
+                if (_env == null) 
                 {
-                    env = new Envelope();
+                    _env = new Envelope();
                     for (var i = 0; i < Points.Length; i++) 
-                        env.ExpandToInclude(Points[i]);                
+                        _env.ExpandToInclude(Points[i]);                
                 }
-                return env;
+                return _env;
             }
         }
 
@@ -165,7 +165,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return depth; 
+                return _depth; 
             }
         }
 
@@ -177,11 +177,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return depthDelta;  
+                return _depthDelta;  
             }
             set
             {
-                depthDelta = value;
+                _depthDelta = value;
             }
         }        
 
@@ -203,7 +203,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return eiList; 
+                return _eiList; 
             }
         }
 
@@ -214,9 +214,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                if (mce == null) 
-                    mce = new MonotoneChainEdge(this);
-                return mce;
+                if (_mce == null) 
+                    _mce = new MonotoneChainEdge(this);
+                return _mce;
             }
         }
 
@@ -239,7 +239,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                if (!label.IsArea()) 
+                if (!Label.IsArea()) 
                     return false;
                 if (Points.Length != 3) 
                     return false;
@@ -259,7 +259,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 var newPts = new ICoordinate[2];
                 newPts[0] = Points[0];
                 newPts[1] = Points[1];
-                var newe = new Edge(newPts, Label.ToLineLabel(label));
+                var newe = new Edge(newPts, Label.ToLineLabel(Label));
                 return newe;
             }
         }
@@ -271,11 +271,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return isIsolated;
+                return _isIsolated;
             }
             set
             {
-                isIsolated = value;
+                _isIsolated = value;
             }
         }
 
@@ -286,7 +286,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return isIsolated;
+                return _isIsolated;
             }
         }
 
@@ -343,7 +343,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="im"></param>
         public override void ComputeIM(IntersectionMatrix im)
         {
-            UpdateIM(label, im);
+            UpdateIM(Label, im);
         }
 
         /// <summary>
@@ -440,14 +440,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="outstream"></param>
         public void Write(TextWriter outstream)
         {
-            outstream.Write("edge " + name + ": ");
+            outstream.Write("edge " + _name + ": ");
             outstream.Write("LINESTRING (");
             for (var i = 0; i < Points.Length; i++)
             {
                 if (i > 0)  outstream.Write(",");
                 outstream.Write(Points[i].X + " " + Points[i].Y);
             }
-            outstream.Write(")  " + label + " " + depthDelta);
+            outstream.Write(")  " + Label + " " + _depthDelta);
         }
 
         /// <summary>
@@ -456,7 +456,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="outstream"></param>
         public void WriteReverse(TextWriter outstream)
         {
-            outstream.Write("edge " + name + ": ");
+            outstream.Write("edge " + _name + ": ");
             for (var i = Points.Length - 1; i >= 0; i--) 
                 outstream.Write(Points[i] + " ");            
             outstream.WriteLine(String.Empty);
@@ -469,14 +469,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("edge " + name + ": ");
+            sb.Append("edge " + _name + ": ");
             sb.Append("LINESTRING (");
             for (var i = 0; i < Points.Length; i++)
             {
                 if (i > 0) sb.Append(",");
                 sb.Append(Points[i].X + " " + Points[i].Y);
             }
-            sb.Append(")  " + label + " " + depthDelta);
+            sb.Append(")  " + Label + " " + _depthDelta);
             return sb.ToString();
         }
     }

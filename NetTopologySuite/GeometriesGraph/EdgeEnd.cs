@@ -239,7 +239,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             sb.Append(p0.X);
             sb.Append((' '));
             sb.Append(p1.Y);
-            sb.Append((']'));
+            sb.Append(("]:" ));
+            sb.Append(Label);
             return sb.ToString();
         }  
     }

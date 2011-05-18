@@ -13,27 +13,27 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        protected Label label;
+        private Label _label;
 
         // isInResult indicates if this component has already been included in the result
-        private bool isInResult = false;
+        private bool _isInResult;
 
-        private bool isCovered = false;
-        private bool isCoveredSet = false;
-        private bool isVisited = false;
+        private bool _isCovered;
+        private bool _isCoveredSet;
+        private bool _isVisited;
 
         /// <summary>
         /// 
         /// </summary>
-        public GraphComponent() { }
+        protected GraphComponent() { }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="label"></param>
-        public GraphComponent(Label label)
+        protected GraphComponent(Label label)
         {
-            this.label = label;
+            this._label = label;
         }
 
         /// <summary>
@@ -43,11 +43,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return label;
+                return _label;
             }
-            set
+            protected internal set
             {
-                label = value;
+                _label = value;
             }
         }     
                 
@@ -58,11 +58,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         { 
             get
             {
-                return isInResult;
+                return _isInResult;
             }
             set
             {
-                isInResult = value;
+                _isInResult = value;
             }           
         }
 
@@ -84,12 +84,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return this.isCovered;
+                return _isCovered;
             }
             set
             {
-                isCovered = value;
-                isCoveredSet = true;                
+                _isCovered = value;
+                _isCoveredSet = true;                
             }
         }
 
@@ -111,7 +111,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return isCoveredSet;
+                return _isCoveredSet;
             }
         }
 
@@ -122,11 +122,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return isVisited;
+                return _isVisited;
             }
             set
             {
-                isVisited = value;
+                _isVisited = value;
             }
         }
 
@@ -137,7 +137,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return isVisited;
+                return _isVisited;
             }
         }
     
@@ -169,7 +169,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="im"></param>
         public void UpdateIM(IntersectionMatrix im)
         {
-            Assert.IsTrue(label.GeometryCount >= 2, "found partial label");
+            Assert.IsTrue(_label.GeometryCount >= 2, "found partial label");
             ComputeIM(im);
         }
     }

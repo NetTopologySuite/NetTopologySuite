@@ -76,7 +76,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             for (int i = 0; i < poly.NumInteriorRings; i++)
             {
                 ILinearRing hole = (ILinearRing) poly.GetInteriorRingN(i);
-                if (!IsPointInRing(p, hole)) return false;
+                if (IsPointInRing(p, hole)) return false;
             }
             return true;
         }
