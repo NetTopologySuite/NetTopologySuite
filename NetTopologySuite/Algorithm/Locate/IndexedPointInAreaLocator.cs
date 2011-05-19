@@ -120,12 +120,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm.Locate
                 }
             }
 
+            /*
             public IList Query(double min, double max)
             {
                 ArrayListVisitor visitor = new ArrayListVisitor();
                 index.Query(min, max, visitor);
                 return visitor.Items;
             }
+             */
 
             public void Query(double min, double max, IItemVisitor visitor)
             {

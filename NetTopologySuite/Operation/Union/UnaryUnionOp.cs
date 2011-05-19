@@ -41,9 +41,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
             return op.Union();
         }
 
-        private readonly List<IPolygon> _polygons = new List<IPolygon>();
-        private readonly List<ILineString> _lines = new List<ILineString>();
-        private readonly List<IPoint> _points = new List<IPoint>();
+        private readonly List<IGeometry> _polygons = new List<IGeometry>();
+        private readonly List<IGeometry> _lines = new List<IGeometry>();
+        private readonly List<IGeometry> _points = new List<IGeometry>();
 
         private IGeometryFactory _geomFact;
 

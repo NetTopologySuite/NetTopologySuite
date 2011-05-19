@@ -356,9 +356,11 @@
     <Compile Include="Operation\BoundaryOp.cs" />
     <Compile Include="Operation\Buffer\BufferBuilder.cs" />
     <Compile Include="Operation\Buffer\BufferOp.cs" />
+    <Compile Include="Operation\Buffer\BufferParameters.cs" />
     <Compile Include="Operation\Buffer\BufferSubgraph.cs" />
     <Compile Include="Operation\Buffer\OffsetCurveBuilder.cs" />
     <Compile Include="Operation\Buffer\OffsetCurveSetBuilder.cs" />
+    <Compile Include="Operation\Buffer\OffsetCurveVertexList.cs" />
     <Compile Include="Operation\Buffer\RightmostEdgeFinder.cs" />
     <Compile Include="Operation\Buffer\SubgraphDepthLocater.cs" />
     <Compile Include="Operation\Distance\ConnectedElementLocationFilter.cs" />

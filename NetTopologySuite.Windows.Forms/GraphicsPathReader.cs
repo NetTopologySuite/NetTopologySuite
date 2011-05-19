@@ -70,7 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.Windows.Forms
         {
             var pathPtSeq = ToCoordinates(pathIt);
 
-            var polys = new List<IPolygon>();
+            var polys = new List<IGeometry>();
             var seqIndex = 0;
             while (seqIndex < pathPtSeq.Count)
             {

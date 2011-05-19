@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -46,9 +46,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// parentGeometry to the edges which are derived from them.
         /// This is used to efficiently perform findEdge queries
         /// </summary>
-        private readonly IDictionary _lineEdgeMap = new Hashtable();
+        private readonly IDictionary<ILineString, Edge> _lineEdgeMap = new Dictionary<ILineString, Edge>();
 
-        private IBoundaryNodeRule boundaryNodeRule;
+        private readonly IBoundaryNodeRule _boundaryNodeRule;
 
         /// <summary>
         /// If this flag is true, the Boundary Determination Rule will used when deciding
@@ -56,16 +56,16 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         private bool _useBoundaryDeterminationRule = true;
 
-        private readonly int argIndex;  // the index of this point as an argument to a spatial function (used for labelling)
-        private ICollection boundaryNodes;
-        private bool hasTooFewPoints = false;
-        private ICoordinate invalidPoint = null;
+        private readonly int _argIndex;  // the index of this point as an argument to a spatial function (used for labelling)
+        private IList<Node> _boundaryNodes;
+        private bool _hasTooFewPoints;
+        private ICoordinate _invalidPoint;
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        private EdgeSetIntersector CreateEdgeSetIntersector()
+        private static EdgeSetIntersector CreateEdgeSetIntersector()
         {
             // various options for computing intersections, from slowest to fastest                    
             return new SimpleMCSweepLineIntersector();
@@ -89,8 +89,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="boundaryNodeRule"></param>
         public GeometryGraph(int argIndex, IGeometry parentGeom, IBoundaryNodeRule boundaryNodeRule)
         {
-            this.argIndex = argIndex;
-            this.boundaryNodeRule = boundaryNodeRule;
+            _argIndex = argIndex;
+            _boundaryNodeRule = boundaryNodeRule;
             _parentGeom = parentGeom;
             if (parentGeom != null)
                 Add(parentGeom);
@@ -104,7 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return hasTooFewPoints;
+                return _hasTooFewPoints;
             }
         }
 
@@ -115,7 +115,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return invalidPoint;
+                return _invalidPoint;
             }
         }
 
@@ -132,19 +132,19 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 
         public IBoundaryNodeRule BoundaryNodeRule
         {
-            get { return boundaryNodeRule; }
+            get { return _boundaryNodeRule; }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public ICollection BoundaryNodes
+        public IList<Node> BoundaryNodes
         {
             get
             {
-                if (boundaryNodes == null)
-                    boundaryNodes = nodes.GetBoundaryNodes(argIndex);
-                return boundaryNodes;
+                if (_boundaryNodes == null)
+                    _boundaryNodes = nodes.GetBoundaryNodes(_argIndex);
+                return _boundaryNodes;
             }
         }
 
@@ -154,12 +154,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public ICoordinate[] GetBoundaryPoints()
         {
-            ICollection coll = BoundaryNodes;
+            var coll = BoundaryNodes;
             ICoordinate[] pts = new ICoordinate[coll.Count];
             int i = 0;
-            for (IEnumerator it = coll.GetEnumerator(); it.MoveNext(); ) 
+            foreach (Node node in coll)
             {
-                Node node = (Node) it.Current;
                 pts[i++] = (ICoordinate) node.Coordinate.Clone();
             }
             return pts;
@@ -172,18 +171,17 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public Edge FindEdge(ILineString line)
         {
-            return (Edge) _lineEdgeMap[line];
+            return _lineEdgeMap[line];
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="edgelist"></param>
-        public void ComputeSplitEdges(IList edgelist)
+        public void ComputeSplitEdges(IList<Edge> edgelist)
         {
-            for (IEnumerator i = edges.GetEnumerator(); i.MoveNext(); ) 
-            {                
-                Edge e = (Edge) i.Current;                
+            foreach (Edge e in edges)
+            {
                 e.EdgeIntersectionList.AddSplitEdges(edgelist);
             }
         }
@@ -241,7 +239,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         private void AddPoint(IPoint p)
         {
             ICoordinate coord = p.Coordinate;
-            InsertPoint(argIndex, coord, Locations.Interior);
+            InsertPoint(_argIndex, coord, Locations.Interior);
         }
 
         /// <summary> 
@@ -257,8 +255,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             ICoordinate[] coord = CoordinateArrays.RemoveRepeatedPoints(lr.Coordinates);
             if (coord.Length < 4) 
             {
-                hasTooFewPoints = true;
-                invalidPoint = coord[0];
+                _hasTooFewPoints = true;
+                _invalidPoint = coord[0];
                 return;
             }
             Locations left = cwLeft;
@@ -268,11 +266,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 left = cwRight;
                 right = cwLeft;
             }
-            Edge e = new Edge(coord, new Label(argIndex, Locations.Boundary, left, right));
+            Edge e = new Edge(coord, new Label(_argIndex, Locations.Boundary, left, right));
             _lineEdgeMap[lr] = e;
             InsertEdge(e);
             // insert the endpoint as a node, to mark that it is on the boundary
-            InsertPoint(argIndex, coord[0], Locations.Boundary);
+            InsertPoint(_argIndex, coord[0], Locations.Boundary);
         }
 
         /// <summary>
@@ -299,14 +297,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             ICoordinate[] coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
             if (coord.Length < 2) 
             {
-                hasTooFewPoints = true;
-                invalidPoint = coord[0];
+                _hasTooFewPoints = true;
+                _invalidPoint = coord[0];
                 return;
             }
 
             // add the edge for the LineString
             // line edges do not have locations for their left and right sides
-            Edge e = new Edge(coord, new Label(argIndex, Locations.Interior));            
+            Edge e = new Edge(coord, new Label(_argIndex, Locations.Interior));            
             _lineEdgeMap[line] = e;
             InsertEdge(e);
 
@@ -316,8 +314,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             * This allows for the case that the node already exists and is a boundary point.
             */
             Assert.IsTrue(coord.Length >= 2, "found LineString with single point");
-            InsertBoundaryPoint(argIndex, coord[0]);
-            InsertBoundaryPoint(argIndex, coord[coord.Length - 1]);
+            InsertBoundaryPoint(_argIndex, coord[0]);
+            InsertBoundaryPoint(_argIndex, coord[coord.Length - 1]);
         }
 
         /// <summary> 
@@ -330,8 +328,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             InsertEdge(e);
             ICoordinate[] coord = e.Coordinates;
             // insert the endpoint as a node, to mark that it is on the boundary
-            InsertPoint(argIndex, coord[0], Locations.Boundary);
-            InsertPoint(argIndex, coord[coord.Length - 1], Locations.Boundary);
+            InsertPoint(_argIndex, coord[0], Locations.Boundary);
+            InsertPoint(_argIndex, coord[coord.Length - 1], Locations.Boundary);
         }
 
         /// <summary>
@@ -341,7 +339,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="pt"></param>
         public void AddPoint(ICoordinate pt)
         {
-            InsertPoint(argIndex, pt, Locations.Interior);
+            InsertPoint(_argIndex, pt, Locations.Interior);
         }
 
         /// <summary>
@@ -361,7 +359,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                (_parentGeom is ILinearRing || _parentGeom is IPolygon || _parentGeom is IMultiPolygon))
                  esi.ComputeIntersections(edges, si, false);            
             else esi.ComputeIntersections(edges, si, true);      
-            AddSelfIntersectionNodes(argIndex);
+            AddSelfIntersectionNodes(_argIndex);
             return si;
         }
         
@@ -418,7 +416,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 boundaryCount++;
 
             // determine the boundary status of the point according to the Boundary Determination Rule
-            Locations newLoc = DetermineBoundary(boundaryNodeRule, boundaryCount);
+            Locations newLoc = DetermineBoundary(_boundaryNodeRule, boundaryCount);
             lbl.SetLocation(argIndex, newLoc);
         }
 
@@ -428,13 +426,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="argIndex"></param>
         private void AddSelfIntersectionNodes(int argIndex)
         {
-            for (IEnumerator i = edges.GetEnumerator(); i.MoveNext(); ) 
+            foreach (Edge e in edges)
             {
-                Edge e = (Edge) i.Current;
                 Locations eLoc = e.Label.GetLocation(argIndex);
-                for (IEnumerator eiIt = e.EdgeIntersectionList.GetEnumerator(); eiIt.MoveNext(); ) 
+                foreach (EdgeIntersection ei in e.EdgeIntersectionList)
                 {
-                    EdgeIntersection ei = (EdgeIntersection) eiIt.Current;
                     AddSelfIntersectionNode(argIndex, ei.Coordinate, eLoc);
                 }
             }

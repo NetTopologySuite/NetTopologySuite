@@ -9,24 +9,28 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     /// <summary> 
     /// Models the end of an edge incident on a node.
-    /// EdgeEnds have a direction
-    /// determined by the direction of the ray from the initial
-    /// point to the next point.
-    /// EdgeEnds are IComparable under the ordering
-    /// "a has a greater angle with the x-axis than b".
-    /// This ordering is used to sort EdgeEnds around a node.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// EdgeEnds have a direction determined by the direction of the ray from the initial
+    /// point to the next point.
+    /// </para>
+    /// <para>
+    /// EdgeEnds are IComparable under the ordering  "a has a greater angle with the x-axis than b".
+    /// This ordering is used to sort EdgeEnds around a node.
+    /// </para>
+    /// </remarks>
     public class EdgeEnd : IComparable
     {
         /// <summary>
         /// The parent edge of this edge end.
         /// </summary>
-        protected Edge edge = null;        
+        protected Edge edge;        
 
         /// <summary>
         /// 
         /// </summary>
-        protected Label label = null;
+        protected Label label;
 
         private Node node;          // the node this edge end originates at
         private ICoordinate p0, p1;  // points of initial line segment
@@ -222,7 +226,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public virtual void Write(StreamWriter outstream)
         {            
             double angle = Math.Atan2(dy, dx);
-            string fullname = this.GetType().FullName;
+            string fullname = GetType().FullName;
             int lastDotPos = fullname.LastIndexOf('.');
             string name = fullname.Substring(lastDotPos + 1);
             outstream.Write("  " + name + ": " + p0 + " - " + p1 + " " + quadrant + ":" + angle + "   " + label);

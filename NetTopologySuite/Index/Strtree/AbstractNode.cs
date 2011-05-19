@@ -1,7 +1,8 @@
-using System.Collections;
+using System.Collections.Generic;
+using IList = System.Collections.Generic.IList<object>;
 using GisSharpBlog.NetTopologySuite.Utilities;
 #if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
+using ArrayList = 
 #endif
 
 namespace GisSharpBlog.NetTopologySuite.Index.Strtree
@@ -13,9 +14,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
     /// </summary>
     public abstract class AbstractNode : IBoundable 
     {
-        private ArrayList childBoundables = new ArrayList();
-        private object bounds = null;
-        private int level;
+        private readonly List<object> _childBoundables = new List<object>();
+        private object _bounds;
+        private readonly int _level;
 
         /// <summary> 
         /// Constructs an AbstractNode at the given level in the tree
@@ -24,9 +25,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// 0 if this node is a leaf, 1 if a parent of a leaf, and so on; the
         /// root node will have the highest level.
         /// </param>
-        public AbstractNode(int level) 
+        protected AbstractNode(int level) 
         {
-            this.level = level;
+            _level = level;
         }
 
         /// <summary> 
@@ -37,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             get
             {
-                return childBoundables;
+                return _childBoundables;
             }
         }
 
@@ -60,11 +61,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             get
             {
-                if (bounds == null)
+                if (_bounds == null)
                 {
-                    bounds = ComputeBounds();
+                    _bounds = ComputeBounds();
                 }
-                return bounds;
+                return _bounds;
             }
         }
 
@@ -76,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             get
             {
-                return level;
+                return _level;
             }
         }
 
@@ -87,8 +88,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <param name="childBoundable"></param>
         public void AddChildBoundable(IBoundable childBoundable) 
         {
-            Assert.IsTrue(bounds == null);
-            childBoundables.Add(childBoundable);
+            Assert.IsTrue(_bounds == null);
+            _childBoundables.Add(childBoundable);
         }
     }
 }

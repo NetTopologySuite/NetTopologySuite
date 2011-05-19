@@ -1460,7 +1460,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="a">A <c>Collection</c> of <c>IComparable</c>s.</param>
         /// <param name="b">A <c>Collection</c> of <c>IComparable</c>s.</param>
         /// <returns>The first non-zero <c>compareTo</c> result, if any; otherwise, zero.</returns>
-        protected int Compare(ArrayList a, ArrayList b) 
+        protected int Compare(List<IGeometry> a, List<IGeometry> b) 
         {
             IEnumerator i = a.GetEnumerator();
             IEnumerator j = b.GetEnumerator();

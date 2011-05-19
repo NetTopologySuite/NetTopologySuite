@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
@@ -12,36 +12,36 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
     /// simple to ignore the <c>GeometryCollection</c> objects if they are not
     /// needed.
     /// </summary>    
-    public class GeometryCollectionEnumerator : IEnumerator
+    public class GeometryCollectionEnumerator : IEnumerator<IGeometry>
     {
         /// <summary>
         /// The <c>GeometryCollection</c> being iterated over.
         /// </summary>
-        private IGeometryCollection parent;
+        private readonly IGeometryCollection _parent;
 
         /// <summary>
         /// Indicates whether or not the first element (the <c>GeometryCollection</c>)
         /// has been returned.
         /// </summary>
-        private bool atStart;
+        private bool _atStart;
 
         /// <summary>
         /// The number of <c>Geometry</c>s in the the <c>GeometryCollection</c>.
         /// </summary>
-        private int max;
+        private readonly int _max;
 
         /// <summary>
         /// The index of the <c>Geometry</c> that will be returned when <c>next</c>
         /// is called.
         /// </summary>
-        private int index;
+        private int _index;
 
         /// <summary>
         /// The iterator over a nested <c>GeometryCollection</c>, or <c>null</c>
         /// if this <c>GeometryCollectionIterator</c> is not currently iterating
         /// over a nested <c>GeometryCollection</c>.
         /// </summary>
-        private GeometryCollectionEnumerator subcollectionEnumerator;
+        private GeometryCollectionEnumerator _subcollectionEnumerator;
 
         /// <summary>
         /// Constructs an iterator over the given <c>GeometryCollection</c>.
@@ -52,10 +52,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </param>
         public GeometryCollectionEnumerator(IGeometryCollection parent) 
         {
-            this.parent = parent;
-            atStart = true;
-            index = 0;
-            max = parent.NumGeometries;
+            _parent = parent;
+            _atStart = true;
+            _index = 0;
+            _max = parent.NumGeometries;
         }
 
         /// <summary>
@@ -64,15 +64,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public bool MoveNext() 
         {
-            if (atStart) 
+            if (_atStart) 
                 return true;
-            if (subcollectionEnumerator != null) 
+            if (_subcollectionEnumerator != null) 
             {
-                if (subcollectionEnumerator.MoveNext())  
+                if (_subcollectionEnumerator.MoveNext())  
                     return true;
-                subcollectionEnumerator = null;
+                _subcollectionEnumerator = null;
             }
-            if (index >= max) 
+            if (_index >= _max) 
                 return false;
             return true;
         }
@@ -81,34 +81,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <remarks> The parent GeometryCollection is the first object returned!</remarks>
-        public object Current
+        object System.Collections.IEnumerator.Current
         {
-            get
-            {
-                // the parent GeometryCollection is the first object returned
-                if (atStart) 
-                {
-                    atStart = false;
-                    return parent;
-                }
-                if (subcollectionEnumerator != null) 
-                {
-                    if (subcollectionEnumerator.MoveNext()) 
-                        return subcollectionEnumerator.Current;
-                    else subcollectionEnumerator = null;
-                }
-                if (index >= max) 
-                    throw new ArgumentOutOfRangeException(); 
-                
-                IGeometry obj = parent.GetGeometryN(index++);
-                if (obj is IGeometryCollection) 
-                {
-                    subcollectionEnumerator = new GeometryCollectionEnumerator((IGeometryCollection) obj);
-                    // there will always be at least one element in the sub-collection
-                    return subcollectionEnumerator.Current;
-                }
-                return obj;
-            }
+            get { return Current; }
         }
 
         /// <summary>
@@ -116,8 +91,44 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public void Reset()
         {
-            atStart = true;
-            index = 0;            
+            _atStart = true;
+            _index = 0;            
+        }
+
+        public IGeometry Current
+        {
+            get
+            {
+                // the parent GeometryCollection is the first object returned
+                if (_atStart)
+                {
+                    _atStart = false;
+                    return _parent;
+                }
+                if (_subcollectionEnumerator != null)
+                {
+                    if (_subcollectionEnumerator.MoveNext())
+                        return _subcollectionEnumerator.Current;
+                    _subcollectionEnumerator = null;
+                }
+                if (_index >= _max)
+                    throw new ArgumentOutOfRangeException();
+
+                IGeometry obj = _parent.GetGeometryN(_index++);
+                if (obj is IGeometryCollection)
+                {
+                    _subcollectionEnumerator = new GeometryCollectionEnumerator((IGeometryCollection)obj);
+                    // there will always be at least one element in the sub-collection
+                    return _subcollectionEnumerator.Current;
+                }
+                return obj;
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_subcollectionEnumerator != null)
+                _subcollectionEnumerator.Dispose();
         }
     }    
 }

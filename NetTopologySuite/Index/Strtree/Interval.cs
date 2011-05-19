@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// 
         /// </summary>
         /// <param name="other"></param>
-        public Interval(Interval other) : this(other.min, other.max) { }
+        public Interval(Interval other) : this(other._min, other._max) { }
 
         /// <summary>
         /// 
@@ -22,12 +22,12 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         public Interval(double min, double max)
         {
             Assert.IsTrue(min <= max);
-            this.min = min;
-            this.max = max;
+            _min = min;
+            _max = max;
         }
 
-        private double min;
-        private double max;
+        private double _min;
+        private double _max;
 
         /// <summary>
         /// 
@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             get
             {
-                return (min + max) / 2;
+                return (_min + _max) / 2;
             }
         }
 
@@ -47,8 +47,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <returns><c>this</c></returns>
         public Interval ExpandToInclude(Interval other)
         {
-            max = Math.Max(max, other.max);
-            min = Math.Min(min, other.min);
+            _max = Math.Max(_max, other._max);
+            _min = Math.Min(_min, other._min);
             return this;
         }
 
@@ -59,7 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <returns></returns>
         public bool Intersects(Interval other)
         {
-            return !(other.min > max || other.max < min);
+            return !(other._min > _max || other._max < _min);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             if (!(o is Interval))             
                 return false;            
             Interval other = (Interval) o;
-            return min == other.min && max == other.max;
+            return _min == other._min && _max == other._max;
         }
 
         /// <summary>

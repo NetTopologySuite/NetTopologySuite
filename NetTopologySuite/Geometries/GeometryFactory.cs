@@ -138,7 +138,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="points">The <c>ICollection</c> of Points to convert.</param>
         /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static IPoint[] ToPointArray(ICollection points) 
+        public static IPoint[] ToPointArray(ICollection<IGeometry> points) 
         {
             IPoint[] list = new IPoint[points.Count];
             int i = 0;
@@ -152,7 +152,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="geometries">The <c>ICollection</c> of <c>Geometry</c>'s to convert.</param>
         /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static IGeometry[] ToGeometryArray(ICollection geometries) 
+        public static IGeometry[] ToGeometryArray(ICollection<IGeometry> geometries) 
         {
             IGeometry[] list = new IGeometry[geometries.Count];
             int i = 0;
@@ -166,7 +166,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="lineStrings">The <c>ICollection</c> of LineStrings to convert.</param>
         /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static ILineString[] ToLineStringArray(ICollection lineStrings)
+        public static ILineString[] ToLineStringArray(ICollection<IGeometry> lineStrings)
         {
             ILineString[] list = new ILineString[lineStrings.Count];
             int i = 0;
@@ -194,7 +194,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="polygons">The <c>ICollection</c> of Polygons to convert.</param>
         /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static IPolygon[] ToPolygonArray(ICollection polygons)
+        public static IPolygon[] ToPolygonArray(ICollection<IGeometry> polygons)
         {
             IPolygon[] list = new IPolygon[polygons.Count];
             int i = 0;
@@ -458,7 +458,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// A <c>Geometry</c> of the "smallest", "most type-specific" 
         /// class that can contain the elements of <c>geomList</c>.
         /// </returns>
-        public IGeometry BuildGeometry(ICollection geomList) 
+        public IGeometry BuildGeometry(ICollection<IGeometry> geomList) 
         {
             Type geomClass = null;
             bool isHeterogeneous = false;
@@ -495,9 +495,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 if (geom0 is IPolygon)
                     return CreateMultiPolygon(ToPolygonArray(geomList));
                 if (geom0 is ILineString)
-                    return this.CreateMultiLineString(ToLineStringArray(geomList));
+                    return CreateMultiLineString(ToLineStringArray(geomList));
                 if (geom0 is IPoint)
-                    return this.CreateMultiPoint(ToPointArray(geomList));
+                    return CreateMultiPoint(ToPointArray(geomList));
                 Assert.ShouldNeverReachHere("Unhandled class: " + geom0.GetType().FullName);
             }
             return geom0;

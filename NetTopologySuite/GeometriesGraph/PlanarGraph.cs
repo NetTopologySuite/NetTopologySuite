@@ -1,13 +1,7 @@
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
-using GisSharpBlog.NetTopologySuite.Utilities;
-
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -32,29 +26,26 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// efficiency (because they know that only a subset is of interest).
         /// </summary>
         /// <param name="nodes"></param>
-        public static void LinkResultDirectedEdges(IList nodes)
+        public static void LinkResultDirectedEdges(IList<Node> nodes)
         {
-            for (IEnumerator nodeit = nodes.GetEnumerator(); nodeit.MoveNext(); ) 
-            {
-                Node node = (Node) nodeit.Current;
+            foreach (Node node in nodes)
                 ((DirectedEdgeStar) node.Edges).LinkResultDirectedEdges();
-            }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        protected IList edges = new ArrayList();
+        protected IList<Edge> edges = new List<Edge>();
 
         /// <summary>
         /// 
         /// </summary>
-        protected NodeMap nodes = null;
+        protected NodeMap nodes;
 
         /// <summary>
         /// 
         /// </summary>
-        protected IList edgeEndList = new ArrayList();
+        protected IList<EdgeEnd> edgeEndList = new List<EdgeEnd>();
 
         /// <summary>
         /// 
@@ -77,7 +68,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <returns></returns>
-        public IEnumerator GetEdgeEnumerator()
+        public IEnumerator<Edge> GetEdgeEnumerator()
         {
             return edges.GetEnumerator();            
         }
@@ -85,7 +76,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public IList EdgeEnds
+        public IList<EdgeEnd> EdgeEnds
         {
             get
             {
@@ -133,7 +124,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <returns></returns>
-        public IEnumerator GetNodeEnumerator()
+        public IEnumerator<Node> GetNodeEnumerator()
         {            
             return nodes.GetEnumerator();         
         }
@@ -141,11 +132,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public IList Nodes
+        public IList<Node> Nodes
         {
             get
             {
-                return new ArrayList(nodes.Values.CastPlatform());
+                return new List<Node>(nodes.Values);
             }
         }
 
@@ -183,12 +174,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// will be created.  DirectedEdges are NOT linked by this method.
         /// </summary>
         /// <param name="edgesToAdd"></param>
-        public void AddEdges(IList edgesToAdd)
+        public void AddEdges(IList<Edge> edgesToAdd)
         {
             // create all the nodes for the edges
-            for (IEnumerator it = edgesToAdd.GetEnumerator(); it.MoveNext(); )
+            foreach (Edge e in edgesToAdd)
             {
-                Edge e = (Edge) it.Current;
                 edges.Add(e);
 
                 DirectedEdge de1 = new DirectedEdge(e, true);
@@ -208,11 +198,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public void LinkResultDirectedEdges()
         {
-            for (IEnumerator nodeit = nodes.GetEnumerator(); nodeit.MoveNext(); ) 
-            {
-                Node node = (Node) nodeit.Current;
+            foreach (Node node in Nodes)
                 ((DirectedEdgeStar) node.Edges).LinkResultDirectedEdges();
-            }
         }
 
         /// <summary> 
@@ -222,11 +209,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public void LinkAllDirectedEdges()
         {
-            for (IEnumerator nodeit = nodes.GetEnumerator(); nodeit.MoveNext(); ) 
-            {
-                Node node = (Node) nodeit.Current;
+            foreach (Node node in Nodes)
                 ((DirectedEdgeStar) node.Edges).LinkAllDirectedEdges();
-            }
         }
 
         /// <summary> 
@@ -237,12 +221,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
         public EdgeEnd FindEdgeEnd(Edge e)
         {
-            for (IEnumerator i = EdgeEnds.GetEnumerator(); i.MoveNext(); ) 
-            {
-                EdgeEnd ee = (EdgeEnd) i.Current;
-                if (ee.Edge == e)
-                    return ee;
-            }
+            foreach (EdgeEnd ee in edgeEndList       )
+                if (ee.Edge == e) return ee;
             return null;
         }
 
@@ -256,7 +236,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             for (int i = 0; i < edges.Count; i++) 
             {
-                Edge e = (Edge) edges[i];
+                Edge e = edges[i];
                 ICoordinate[] eCoord = e.Coordinates;
                 if (p0.Equals(eCoord[0]) && p1.Equals(eCoord[1]))
                     return e;
@@ -275,7 +255,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             for (int i = 0; i < edges.Count; i++) 
             {
-                Edge e = (Edge) edges[i];
+                Edge e = edges[i];
                 ICoordinate[] eCoord = e.Coordinates;
                 if (MatchInSameDirection(p0, p1, eCoord[0], eCoord[1]))
                     return e;
@@ -294,7 +274,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="p1"></param>
         /// <param name="ep0"></param>
         /// <param name="ep1"></param>
-        private bool MatchInSameDirection(ICoordinate p0, ICoordinate p1, ICoordinate ep0, ICoordinate ep1)
+        private static bool MatchInSameDirection(ICoordinate p0, ICoordinate p1, ICoordinate ep0, ICoordinate ep1)
         {
             if (! p0.Equals(ep0))
                 return false;
@@ -314,7 +294,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             for (int i = 0; i < edges.Count; i++) 
             {
                 outstream.WriteLine("edge " + i + ":");
-                Edge e = (Edge) edges[i];
+                Edge e = edges[i];
                 e.Write(outstream);
                 e.EdgeIntersectionList.Write(outstream);
             }

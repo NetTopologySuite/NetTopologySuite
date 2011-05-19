@@ -9,22 +9,22 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
     /// It is centred at the origin,
     /// and does not have a defined extent.
     /// </summary>
-    public class Root : NodeBase
+    public class Root<T> : NodeBase<T>
     {
         // the singleton root quad is centred at the origin.
-        private static readonly ICoordinate origin = new Coordinate(0.0, 0.0);
+        private static readonly ICoordinate Origin = new Coordinate(0.0, 0.0);
 
         /// <summary>
         /// 
         /// </summary>
-        public Root() { }
+        //public Root() { }
 
         /// <summary> 
         /// Insert an item into the quadtree this is the root of.
         /// </summary>
-        public void Insert(IEnvelope itemEnv, object item)
+        public void Insert(IEnvelope itemEnv, T item)
         {
-            int index = GetSubnodeIndex(itemEnv, origin);
+            int index = GetSubnodeIndex(itemEnv, Origin);
             // if index is -1, itemEnv must cross the X or Y axis.
             if (index == -1) 
             {
@@ -35,21 +35,21 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             * the item must be contained in one quadrant, so insert it into the
             * tree for that quadrant (which may not yet exist)
             */
-            Node node = subnode[index];
+            var node = Subnode[index];
             /*
             *  If the subquad doesn't exist or this item is not contained in it,
             *  have to expand the tree upward to contain the item.
             */
             if (node == null || ! node.Envelope.Contains(itemEnv)) 
             {
-                Node largerNode = Node.CreateExpanded(node, itemEnv);
-                subnode[index] = largerNode;
+                var largerNode = Node<T>.CreateExpanded(node, itemEnv);
+                Subnode[index] = largerNode;
             }
             /*
             * At this point we have a subquad which exists and must contain
             * contains the env for the item.  Insert the item into the tree.
             */
-            InsertContained(subnode[index], itemEnv, item);            
+            InsertContained(Subnode[index], itemEnv, item);            
         }
 
         /// <summary> 
@@ -57,7 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// the given QuadNode root.  Lower levels of the tree will be created
         /// if necessary to hold the item.
         /// </summary>
-        private void InsertContained(Node tree, IEnvelope itemEnv, object item)
+        private static void InsertContained(Node<T> tree, IEnvelope itemEnv, T item)
         {
             Assert.IsTrue(tree.Envelope.Contains(itemEnv));
             /*
@@ -67,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             */
             bool isZeroX = IntervalSize.IsZeroWidth(itemEnv.MinX, itemEnv.MaxX);
             bool isZeroY = IntervalSize.IsZeroWidth(itemEnv.MinY, itemEnv.MaxY);
-            NodeBase node;
+            NodeBase<T> node;
             if (isZeroX || isZeroY)
                  node = tree.Find(itemEnv);
             else node = tree.GetNode(itemEnv);

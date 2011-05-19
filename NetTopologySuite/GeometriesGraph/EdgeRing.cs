@@ -186,7 +186,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary> 
         /// Returns the list of DirectedEdges that make up this EdgeRing.
         /// </summary>
-        public IList Edges
+        public IList<DirectedEdge> Edges
         {
             get
             {

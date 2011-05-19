@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Utilities;
 #if SILVERLIGHT
@@ -394,12 +394,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         protected internal override int CompareToSameClass(object o) 
         {
-            ArrayList theseElements = new ArrayList(geometries);
-            ArrayList otherElements = new ArrayList(((GeometryCollection) o).geometries);
+            var theseElements = new List<IGeometry>(geometries);
+            var otherElements = new List<IGeometry>(((GeometryCollection) o).geometries);
             return Compare(theseElements, otherElements);
         }
 
-        protected internal override int CompareToSameClass(object o, System.Collections.Generic.IComparer<ICoordinateSequence> comp)
+        protected internal override int CompareToSameClass(object o, IComparer<ICoordinateSequence> comp)
         {
             IGeometryCollection gc = (IGeometryCollection) o;
 
@@ -443,9 +443,14 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// this returns an IEnumerator over geometries composing GeometryCollection.
         /// </summary>
         /// <returns></returns>
-        public IEnumerator GetEnumerator()
+        public IEnumerator<IGeometry> GetEnumerator()
         {
             return new GeometryCollectionEnumerator(this);
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         /// <summary>

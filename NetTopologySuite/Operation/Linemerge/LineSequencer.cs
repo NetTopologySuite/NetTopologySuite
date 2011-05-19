@@ -461,7 +461,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// </returns>
         private IGeometry BuildSequencedGeometry(IEnumerable sequences)
         {
-            IList lines = new ArrayList();
+            IList<IGeometry> lines = new List<IGeometry>();
 
             IEnumerator i1 = sequences.GetEnumerator();
             while (i1.MoveNext())
@@ -482,7 +482,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                 }
             }
 
-            return lines.Count == 0 ? this.factory.CreateMultiLineString(new ILineString[] { }) : this.factory.BuildGeometry(lines);
+            return lines.Count == 0 ? factory.CreateMultiLineString(new ILineString[] { }) : factory.BuildGeometry(lines);
         }
 
         private static ILineString Reverse(ILineString line)

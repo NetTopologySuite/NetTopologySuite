@@ -1,40 +1,38 @@
-using System.Collections;
-
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
+using System.Collections.Generic;
 
 namespace GisSharpBlog.NetTopologySuite.Index
 {
+    public class ArrayListVisitor : ArrayListVisitor<object>
+    {}
     /// <summary>
     /// 
     /// </summary>
-    public class ArrayListVisitor : IItemVisitor
+    public class ArrayListVisitor<T> : IItemVisitor<T>
     {
-        private ArrayList items = new ArrayList();
+        private readonly List<T> _items = new List<T>();
         
-        /// <summary>
-        /// 
-        /// </summary>
-        public ArrayListVisitor() { }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public ArrayListVisitor() { }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="item"></param>
-        public void VisitItem(object item)
+        public void VisitItem(T item)
         {
-            items.Add(item);
+            _items.Add(item);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public ArrayList Items
+        public IList<T> Items
         {
             get
             {
-                return items;
+                return _items;
             }
         }
     }

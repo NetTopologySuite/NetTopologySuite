@@ -6,8 +6,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
     /// </summary>
     public class ItemBoundable : IBoundable 
     {
-        private object bounds;
-        private object item;
+        private readonly object _bounds;
+        private readonly object _item;
 
         /// <summary>
         /// 
@@ -16,8 +16,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <param name="item"></param>
         public ItemBoundable(object bounds, object item) 
         {
-            this.bounds = bounds;
-            this.item = item;
+            _bounds = bounds;
+            _item = item;
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             get
             {
-                return bounds;
+                return _bounds;
             }
         }
 
@@ -38,7 +38,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             get
             {
-                return item;
+                return _item;
             }
         }
     }

@@ -1,9 +1,6 @@
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 {
@@ -69,9 +66,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// 
         /// </summary>
         /// <returns></returns>
-        public IList BuildMinimalRings()
+        public IList<EdgeRing> BuildMinimalRings()
         {
-            IList minEdgeRings = new ArrayList();
+            IList<EdgeRing> minEdgeRings = new List<EdgeRing>();
             DirectedEdge de = startDe;
             do 
             {

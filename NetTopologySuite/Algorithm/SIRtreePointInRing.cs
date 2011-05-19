@@ -1,4 +1,4 @@
-using System.Collections;
+using IList = System.Collections.Generic.IList<object>;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Index.Strtree;
@@ -10,9 +10,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     /// </summary>
     public class SIRtreePointInRing : IPointInRing 
     {
-        private ILinearRing ring;
-        private SIRtree sirTree;
-        private int crossings = 0;  // number of segment/ray crossings
+        private readonly ILinearRing _ring;
+        private SIRtree _sirTree;
+        private int _crossings;  // number of segment/ray crossings
 
         /// <summary>
         /// 
@@ -20,7 +20,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="ring"></param>
         public SIRtreePointInRing(ILinearRing ring)
         {
-            this.ring = ring;
+            _ring = ring;
             BuildIndex();
         }
 
@@ -29,15 +29,15 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         private void BuildIndex()
         {
-            sirTree = new SIRtree();
-            ICoordinate[] pts = ring.Coordinates;
+            _sirTree = new SIRtree();
+            ICoordinate[] pts = _ring.Coordinates;
             for (int i = 1; i < pts.Length; i++) 
             {
                 if (pts[i - 1].Equals(pts[i])) 
                     continue;
 
                 LineSegment seg = new LineSegment(pts[i - 1], pts[i]);
-                sirTree.Insert(seg.P0.Y, seg.P1.Y, seg);
+                _sirTree.Insert(seg.P0.Y, seg.P1.Y, seg);
             }
         }
 
@@ -48,20 +48,20 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns></returns>
         public bool IsInside(ICoordinate pt)
         {
-            crossings = 0;
+            _crossings = 0;
 
             // test all segments intersected by vertical ray at pt
-            IList segs = sirTree.Query(pt.Y);        
-            for(IEnumerator i = segs.GetEnumerator(); i.MoveNext(); ) 
+            IList segs = _sirTree.Query(pt.Y);
+            foreach (object i in segs)
             {
-                LineSegment seg = (LineSegment) i.Current;
+                LineSegment seg = (LineSegment) i;
                 TestLineSegment(pt, seg);
             }
 
             /*
             *  p is inside if number of crossings is odd.
             */
-            if ((crossings % 2) == 1) 
+            if ((_crossings % 2) == 1) 
                 return true;            
             return false;
         }
@@ -100,7 +100,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 *  crosses ray if strictly positive intersection.
                 */
                 if (0.0 < xInt) 
-                    crossings++;            
+                    _crossings++;            
             }
         }
     }

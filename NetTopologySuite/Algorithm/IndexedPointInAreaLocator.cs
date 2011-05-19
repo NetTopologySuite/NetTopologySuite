@@ -1,5 +1,6 @@
 using System;
-using System.Collections;
+
+using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -113,13 +114,14 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 }
             }
 
+            /*
             public IList Query(double min, double max)
             {
-                ArrayListVisitor visitor = new ArrayListVisitor();
+                ArrayListVisitor<object> visitor = new ArrayListVisitor<object>();
                 _index.Query(min, max, visitor);
                 return visitor.Items;
             }
-
+            */
             public void Query(double min, double max, IItemVisitor visitor)
             {
                 _index.Query(min, max, visitor);

@@ -30,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             if (exp > 1023 || exp < -1022)
                 throw new ArgumentException("Exponent out of bounds");
             long expBias = exp + ExponentBias;
-            long bits = (long)expBias << 52;
+            long bits = expBias << 52;
             return BitConverter.Int64BitsToDouble(bits);
         }
 
@@ -91,7 +91,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         }
 
         private double x;
-        private long xBits;
+        private long _xBits;
 
         /// <summary>
         /// 
@@ -100,7 +100,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         public DoubleBits(double x)
         {
             this.x = x;
-            xBits = BitConverter.DoubleToInt64Bits(x);
+            _xBits = BitConverter.DoubleToInt64Bits(x);
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         {
             get
             {
-                return BitConverter.Int64BitsToDouble(xBits);
+                return BitConverter.Int64BitsToDouble(_xBits);
             }
         }
 
@@ -121,7 +121,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         {
             get
             {
-                int signExp = (int)(xBits >> 52);
+                int signExp = (int)(_xBits >> 52);
                 int exp = signExp & 0x07ff;
                 return exp;
             }
@@ -146,7 +146,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         {
             long invMask = (1L << nBits) - 1L;
             long mask = ~ invMask;
-            xBits &= mask;
+            _xBits &= mask;
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         public int GetBit(int i)
         {
             long mask = (1L << i);
-            return (xBits & mask) != 0 ? 1 : 0;
+            return (_xBits & mask) != 0 ? 1 : 0;
         }
 
         /// <summary> 
@@ -183,7 +183,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         public override string ToString()
         {            
-            string numStr = HexConverter.ConvertAny2Any(xBits.ToString(), 10, 2);
+            string numStr = HexConverter.ConvertAny2Any(_xBits.ToString(), 10, 2);
             
             // 64 zeroes!
             string zero64 = "0000000000000000000000000000000000000000000000000000000000000000";

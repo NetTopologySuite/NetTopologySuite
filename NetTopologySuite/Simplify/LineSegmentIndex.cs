@@ -11,7 +11,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// </summary>
     public class LineSegmentIndex
     {
-        private readonly Quadtree _index = new Quadtree();
+        private readonly ISpatialIndex<LineSegment>_index = new Quadtree<LineSegment>();
 
         /*
         /// <summary>
@@ -71,7 +71,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// <summary>
     /// ItemVisitor subclass to reduce volume of query results.
     /// </summary>
-    public class LineSegmentVisitor : IItemVisitor
+    public class LineSegmentVisitor : IItemVisitor<LineSegment>
     {
         // MD - only seems to make about a 10% difference in overall time.
         private readonly LineSegment _querySeg;
@@ -90,9 +90,9 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// 
         /// </summary>
         /// <param name="item"></param>
-        public void VisitItem(Object item)
+        public void VisitItem(LineSegment item)
         {
-            LineSegment seg = (LineSegment) item;
+            LineSegment seg = item;
             if (Envelope.Intersects(seg.P0, seg.P1, _querySeg.P0, _querySeg.P1))
                 _items.Add(seg);
         }

@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
-using System.Linq;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
+
 namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
@@ -70,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <summary>
         /// 
         /// </summary>
-        public GeometryTransformer() { }
+        /*public GeometryTransformer() { }*/
 
         /// <summary>
         /// Makes the input geometry available
@@ -167,7 +164,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <returns></returns>
         protected virtual IGeometry TransformMultiPoint(IMultiPoint geom, IGeometry parent) 
         {
-            ArrayList transGeomList = new ArrayList();
+            var transGeomList = new List<IGeometry>();
             for (int i = 0; i < geom.NumGeometries; i++) 
             {
                 IGeometry transformGeom = TransformPoint((IPoint) geom.GetGeometryN(i), geom);
@@ -215,7 +212,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <returns></returns>
         protected virtual IGeometry TransformMultiLineString(IMultiLineString geom, IGeometry parent) 
         {
-            ArrayList transGeomList = new ArrayList();
+            var transGeomList = new List<IGeometry>();
             for (int i = 0; i < geom.NumGeometries; i++) 
             {
                 IGeometry transformGeom = TransformLineString((ILineString) geom.GetGeometryN(i), geom);
@@ -240,25 +237,24 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             if (shell == null || ! (shell is ILinearRing) || shell.IsEmpty)
                 isAllValidLinearRings = false;
 
-            ArrayList holes = new ArrayList();
+            var holes = new List<ILinearRing>();
             for (int i = 0; i < geom.NumInteriorRings; i++) 
             {
                 IGeometry hole = TransformLinearRing(geom.Holes[i], geom);
                 if (hole == null || hole.IsEmpty) continue;            
                 if (!(hole is ILinearRing))
                     isAllValidLinearRings = false;
-                holes.Add(hole);
+                holes.Add((ILinearRing)hole);
             }
 
             if (isAllValidLinearRings)
-                return Factory.CreatePolygon((ILinearRing)   shell, 
-                                             (ILinearRing[]) holes.Cast<ILinearRing>().ToArray());
+                return Factory.CreatePolygon((ILinearRing)   shell, holes.ToArray());
             else 
             {
-                ArrayList components = new ArrayList();
+                var components = new List<IGeometry>();
                 if (shell != null) 
                     components.Add(shell);                
-                foreach (object hole in holes)
+                foreach (IGeometry hole in holes)
                     components.Add(hole);
                 return Factory.BuildGeometry(components);
             }
@@ -272,7 +268,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <returns></returns>
         protected virtual IGeometry TransformMultiPolygon(IMultiPolygon geom, IGeometry parent) 
         {
-            ArrayList transGeomList = new ArrayList();
+            var transGeomList = new List<IGeometry>();
             for (int i = 0; i < geom.NumGeometries; i++) 
             {
                 IGeometry transformGeom = TransformPolygon((IPolygon) geom.GetGeometryN(i), geom);
@@ -291,7 +287,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <returns></returns>
         protected virtual IGeometry TransformGeometryCollection(IGeometryCollection geom, IGeometry parent) 
         {
-            ArrayList transGeomList = new ArrayList();
+            var transGeomList = new List<IGeometry>();
             for (int i = 0; i < geom.NumGeometries; i++) 
             {
                 IGeometry transformGeom = Transform(geom.GetGeometryN(i));

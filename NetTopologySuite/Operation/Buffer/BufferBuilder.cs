@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -237,7 +239,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="polyBuilder">The PolygonBuilder which will build the final polygons.</param>
         private void BuildSubgraphs(IList subgraphList, PolygonBuilder polyBuilder)
         {
-            IList processedGraphs = new ArrayList();
+            IList<BufferSubgraph> processedGraphs = new List<BufferSubgraph>();
             foreach(var obj in subgraphList)
             {
                 var subgraph = (BufferSubgraph)obj;
@@ -247,9 +249,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 subgraph.ComputeDepth(outsideDepth);
                 subgraph.FindResultEdges();
                 processedGraphs.Add(subgraph);
-                polyBuilder.Add(subgraph.DirectedEdges, subgraph.Nodes);
+                polyBuilder.Add(new List<EdgeEnd>(subgraph.DirectedEdges.Cast<EdgeEnd>()), subgraph.Nodes);
             }
         }
-
     }
 }

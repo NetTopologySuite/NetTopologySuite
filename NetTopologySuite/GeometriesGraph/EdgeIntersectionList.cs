@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -12,7 +12,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     public class EdgeIntersectionList
     {
         // a list of EdgeIntersections      
-        private readonly IDictionary nodeMap = new OrderedDictionary<EdgeIntersection, object>();
+        private readonly IDictionary<EdgeIntersection, EdgeIntersection> nodeMap = new OrderedDictionary<EdgeIntersection, EdgeIntersection>();
         private readonly Edge edge;  // the parent edge
 
         /// <summary>
@@ -46,9 +46,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public EdgeIntersection Add(ICoordinate intPt, int segmentIndex, double dist)
         {
             EdgeIntersection eiNew = new EdgeIntersection(intPt, segmentIndex, dist);
-            EdgeIntersection ei = (EdgeIntersection) nodeMap[eiNew];
-            if (ei != null) 
-                return ei;            
+            EdgeIntersection ei;
+            if (nodeMap.TryGetValue(eiNew, out ei))
+                return ei;
             nodeMap[eiNew] = eiNew;
             return eiNew;
         }
@@ -56,7 +56,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary> 
         /// Returns an iterator of EdgeIntersections.
         /// </summary>
-        public IEnumerator GetEnumerator() 
+        public IEnumerator<EdgeIntersection> GetEnumerator() 
         { 
             return nodeMap.Values.GetEnumerator(); 
         }
@@ -68,9 +68,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public bool IsIntersection(ICoordinate pt)
         {
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
+            foreach (EdgeIntersection ei in nodeMap.Values    )
             {
-                EdgeIntersection ei = (EdgeIntersection) it.Current;
                 if (ei.Coordinate.Equals(pt))
                     return true;
             }
@@ -94,18 +93,18 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// can be used to accumulate all split edges for a Geometry).
         /// </summary>
         /// <param name="edgeList"></param>
-        public void AddSplitEdges(IList edgeList)
+        public void AddSplitEdges(IList<Edge> edgeList)
         {
             // ensure that the list has entries for the first and last point of the edge
             AddEndpoints();
 
-            IEnumerator it = GetEnumerator();
+            IEnumerator<EdgeIntersection> it = GetEnumerator();
             it.MoveNext();
             // there should always be at least two entries in the list
-            EdgeIntersection eiPrev = (EdgeIntersection) it.Current;
+            EdgeIntersection eiPrev = it.Current;
             while (it.MoveNext()) 
             {
-                EdgeIntersection ei = (EdgeIntersection) it.Current;
+                EdgeIntersection ei = it.Current;
                 Edge newEdge = CreateSplitEdge(eiPrev, ei);
                 edgeList.Add(newEdge);
 
@@ -150,9 +149,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public void Write(StreamWriter outstream)
         {
             outstream.WriteLine("Intersections:");
-            for (IEnumerator it = GetEnumerator(); it.MoveNext(); ) 
+            for (IEnumerator<EdgeIntersection> it = GetEnumerator(); it.MoveNext(); ) 
             {
-                EdgeIntersection ei = (EdgeIntersection)it.Current;
+                EdgeIntersection ei = it.Current;
                 ei.Write(outstream);
             }
         }

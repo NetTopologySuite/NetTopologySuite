@@ -1,11 +1,7 @@
 using System;
-using System.Collections;
+using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
-using System.Linq;
 using GisSharpBlog.NetTopologySuite.Utilities;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 {
@@ -43,9 +39,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         protected AbstractNode root;
 
-        private bool built;
-        private readonly ArrayList itemBoundables = new ArrayList();
-        private readonly int nodeCapacity;
+        private bool _built;
+        private readonly List<object> _itemBoundables = new List<object>();
+        private readonly int _nodeCapacity;
 
         /// <summary> 
         /// Constructs an AbstractSTRtree with the specified maximum number of child
@@ -55,7 +51,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         protected AbstractSTRtree(int nodeCapacity)
         {
             Assert.IsTrue(nodeCapacity > 1, "Node capacity must be greater than 1");
-            this.nodeCapacity = nodeCapacity;
+            _nodeCapacity = nodeCapacity;
         }
 
         /// <summary> 
@@ -66,10 +62,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         public void Build()
         {
-            Assert.IsTrue(!built);
-            root = (itemBoundables.Count == 0) ?
-                CreateNode(0) : CreateHigherLevels(itemBoundables, -1);
-            built = true;
+            Assert.IsTrue(!_built);
+            root = (_itemBoundables.Count == 0) ?
+                CreateNode(0) : CreateHigherLevels(_itemBoundables, -1);
+            _built = true;
         }
 
         /// <summary>
@@ -88,9 +84,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         protected virtual IList CreateParentBoundables(IList childBoundables, int newLevel)
         {
             Assert.IsTrue(childBoundables.Count != 0);
-            var parentBoundables = new ArrayList();
+            var parentBoundables = new List<object>();
             parentBoundables.Add(CreateNode(newLevel));
-            var sortedChildBoundables = new ArrayList(childBoundables.CastPlatform());
+            var sortedChildBoundables = new List<object>(childBoundables.CastPlatform());
             sortedChildBoundables.Sort(GetComparer());
             for (var i = sortedChildBoundables.GetEnumerator(); i.MoveNext(); )
             {
@@ -138,16 +134,16 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         public int NodeCapacity
         {
-            get { return nodeCapacity; }
+            get { return _nodeCapacity; }
         }
 
         public int Count
         {
             get
             {
-                if (!built)
+                if (!_built)
                     Build();
-                if (itemBoundables.Count == 0)
+                if (_itemBoundables.Count == 0)
                     return 0;
                 return GetSize(root);
             }
@@ -171,9 +167,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             get
             {
-                if (!built)
+                if (!_built)
                     Build();
-                return itemBoundables.Count == 0 ? 0 : GetDepth(root);
+                return _itemBoundables.Count == 0 ? 0 : GetDepth(root);
             }
         }
 
@@ -194,8 +190,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
         protected void Insert(object bounds, object item)
         {
-            Assert.IsTrue(!built, "Cannot insert items into an STR packed R-tree after it has been built.");
-            itemBoundables.Add(new ItemBoundable(bounds, item));
+            Assert.IsTrue(!_built, "Cannot insert items into an STR packed R-tree after it has been built.");
+            _itemBoundables.Add(new ItemBoundable(bounds, item));
         }
 
         /// <summary>
@@ -204,10 +200,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <param name="searchBounds"></param>
         protected IList Query(object searchBounds)
         {
-            if (!built)
+            if (!_built)
                 Build();
-            var matches = new ArrayList();
-            if (itemBoundables.Count == 0)
+            var matches = new List<object>();
+            if (_itemBoundables.Count == 0)
             {
                 Assert.IsTrue(root.Bounds == null);
                 return matches;
@@ -217,12 +213,12 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return matches;
         }
 
-        protected void Query(Object searchBounds, IItemVisitor visitor)
+        protected void Query(Object searchBounds, IItemVisitor<object> visitor)
         {
-            if (!built)
+            if (!_built)
                 Build();
 
-            if (itemBoundables.Count == 0)
+            if (_itemBoundables.Count == 0)
                 Assert.IsTrue(root.Bounds == null);
 
             if (IntersectsOp.Intersects(root.Bounds, searchBounds))
@@ -245,7 +241,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             }
         }
 
-        private void Query(object searchBounds, AbstractNode node, IItemVisitor visitor)
+        private void Query(object searchBounds, AbstractNode node, IItemVisitor<object> visitor)
         {
             foreach (var obj in node.ChildBoundables)
             {
@@ -270,15 +266,15 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         public IList ItemsTree()
         {
-            if (!built) { Build(); }
+            if (!_built) { Build(); }
 
             var valuesTree = ItemsTree(root);
-            return valuesTree ?? new ArrayList();
+            return valuesTree ?? new List<object>();
         }
 
-        private IList ItemsTree(AbstractNode node)
+        private static IList ItemsTree(AbstractNode node)
         {
-            var valuesTreeForNode = new ArrayList();
+            var valuesTreeForNode = new List<object>();
 
             foreach (IBoundable childBoundable in node.ChildBoundables)
             {
@@ -310,9 +306,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         protected bool Remove(object searchBounds, object item)
         {
-            if (!built)
+            if (!_built)
                 Build();
-            if (itemBoundables.Count == 0)
+            if (_itemBoundables.Count == 0)
                 Assert.IsTrue(root.Bounds == null);
             return IntersectsOp.Intersects(root.Bounds, searchBounds) && Remove(searchBounds, root, item);
         }
@@ -366,7 +362,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
         protected IList BoundablesAtLevel(int level)
         {
-            IList boundables = new ArrayList();
+            IList boundables = new List<object>();
             BoundablesAtLevel(level, root, ref boundables);
             return boundables;
         }
@@ -392,12 +388,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
                 }
             }
         }
-
-#if SILVERLIGHT
         protected abstract IComparer<object> GetComparer();
-#else
-        protected abstract IComparer GetComparer();
-#endif
 
     }
 }

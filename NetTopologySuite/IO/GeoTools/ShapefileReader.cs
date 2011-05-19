@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -62,7 +63,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <returns>GeometryCollection representing every record in the shapefile.</returns>
         public IGeometryCollection ReadAll()
         {
-            var list = new ArrayList();
+            var list = new List<IGeometry>();
             ShapeGeometryType type = _mainHeader.ShapeType;
             ShapeHandler handler = Shapefile.GetShapeHandler(type);
             if (handler == null)
