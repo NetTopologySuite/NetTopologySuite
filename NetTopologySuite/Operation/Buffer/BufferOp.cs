@@ -6,239 +6,255 @@ using GisSharpBlog.NetTopologySuite.Noding;
 using GisSharpBlog.NetTopologySuite.Noding.Snapround;
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
-{    
-    /// <summary>
-    /// Computes the buffer of a point, for both positive and negative buffer distances.    
-    /// In GIS, the buffer of a point is defined as
-    /// the Minkowski sum or difference of the point
-    /// with a circle with radius equal to the absolute value of the buffer distance.
-    /// In the CAD/CAM world buffers are known as offset curves.
-    /// Since true buffer curves may contain circular arcs,
-    /// computed buffer polygons can only be approximations to the true point.
-    /// The user can control the accuracy of the curve approximation by specifying
-    /// the number of linear segments with which to approximate a curve.
-    /// The end cap endCapStyle of a linear buffer may be specified. The
-    /// following end cap styles are supported:
-    /// <para>
-    /// {CAP_ROUND} - the usual round end caps
-    /// {CAP_BUTT} - end caps are truncated flat at the line ends
-    /// {CAP_SQUARE} - end caps are squared off at the buffer distance beyond the line ends
-    /// </para>
-    /// The computation uses an algorithm involving iterated noding and precision reduction
-    /// to provide a high degree of robustness.
-    /// </summary>
+{
+    /**
+     * Computes the buffer of a geometry, for both positive and negative buffer distances.
+     * <p>
+     * In GIS, the positive buffer of a geometry is defined as
+     * the Minkowski sum or difference of the geometry
+     * with a circle of radius equal to the absolute value of the buffer distance.
+     * In the CAD/CAM world buffers are known as </i>offset curves</i>.
+     * In morphological analysis they are known as <i>erosion</i> and <i>dilation</i>
+     * <p>
+     * The buffer operation always returns a polygonal result.
+     * The negative or zero-distance buffer of lines and points is always an empty {@link Polygon}.
+     * <p>
+     * Since true buffer curves may contain circular arcs,
+     * computed buffer polygons can only be approximations to the true geometry.
+     * The user can control the accuracy of the curve approximation by specifying
+     * the number of linear segments used to approximate curves.
+     * <p>
+     * The <b>end cap style</b> of a linear buffer may be specified. The
+     * following end cap styles are supported:
+     * <ul
+     * <li>{@link #CAP_ROUND} - the usual round end caps
+     * <li>{@link #CAP_BUTT} - end caps are truncated flat at the line ends
+     * <li>{@link #CAP_SQUARE} - end caps are squared off at the buffer distance beyond the line ends
+     * </ul>
+     * <p>
+     *
+     * @version 1.7
+     */
     public class BufferOp
     {
-        // NOTE: modified for "safe" assembly in Sql 2005
-        // Const added!
+        ///**
+        // * Specifies a round line buffer end cap style.
+        // * @deprecated use BufferParameters
+        // */
+        //public static final int CAP_ROUND = BufferParameters.CAP_ROUND;
+        ///**
+        // * Specifies a butt (or flat) line buffer end cap style.
+        // * @deprecated use BufferParameters
+        // */
+        //public static final int CAP_BUTT = BufferParameters.CAP_FLAT;
+
+        ///**
+        // * Specifies a butt (or flat) line buffer end cap style.
+        // * @deprecated use BufferParameters
+        // */
+        //public static final int CAP_FLAT = BufferParameters.CAP_FLAT;
+        ///**
+        // * Specifies a square line buffer end cap style.
+        // * @deprecated use BufferParameters
+        // */
+        //public static final int CAP_SQUARE = BufferParameters.CAP_SQUARE;
+
+        /**
+         * A number of digits of precision which leaves some computational "headroom"
+         * for floating point operations.
+         * 
+         * This value should be less than the decimal precision of double-precision values (16).
+         */
         private const int MaxPrecisionDigits = 12;
 
-        /// <summary>
-        /// Compute a reasonable scale factor to limit the precision of
-        /// a given combination of Geometry and buffer distance.
-        /// The scale factor is based on a heuristic.
-        /// </summary>
-        /// <param name="g">The Geometry being buffered.</param>
-        /// <param name="distance">The buffer distance.</param>
-        /// <param name="maxPrecisionDigits">The mzx # of digits that should be allowed by
-        /// the precision determined by the computed scale factor.</param>
-        /// <returns>A scale factor that allows a reasonable amount of precision for the buffer computation.</returns>
-        private static double PrecisionScaleFactor(IGeometry g, double distance, int maxPrecisionDigits)
+        /**
+         * Compute a scale factor to limit the precision of
+         * a given combination of Geometry and buffer distance.
+         * The scale factor is determined by a combination of
+         * the number of digits of precision in the (geometry + buffer distance),
+         * limited by the supplied <code>maxPrecisionDigits</code> value.
+         *
+         * @param g the Geometry being buffered
+         * @param distance the buffer distance
+         * @param maxPrecisionDigits the max # of digits that should be allowed by
+         *          the precision determined by the computed scale factor
+         *
+         * @return a scale factor for the buffer computation
+         */
+        private static double PrecisionScaleFactor(IGeometry g,
+            double distance,
+          int maxPrecisionDigits)
         {
-            var env = g.EnvelopeInternal;
-            var envSize = Math.Max(env.Height, env.Width);
-            var expandByDistance = distance > 0.0 ? distance : 0.0;
-            var bufEnvSize = envSize + 2 * expandByDistance;
+            IEnvelope env = g.EnvelopeInternal;
+            double envSize = Math.Max(env.Height, env.Width);
+            double expandByDistance = distance > 0.0 ? distance : 0.0;
+            double bufEnvSize = envSize + 2 * expandByDistance;
 
             // the smallest power of 10 greater than the buffer envelope
-            var bufEnvLog10 = (int) (Math.Log(bufEnvSize) / Math.Log(10) + 1.0);
-            var minUnitLog10 = bufEnvLog10 - maxPrecisionDigits;
-
+            int bufEnvLog10 = (int)(Math.Log(bufEnvSize) / Math.Log(10) + 1.0);
+            int minUnitLog10 = bufEnvLog10 - maxPrecisionDigits;
             // scale factor is inverse of min Unit size, so flip sign of exponent
-            var scaleFactor = Math.Pow(10.0, -minUnitLog10);
+            double scaleFactor = Math.Pow(10.0, -minUnitLog10);
             return scaleFactor;
         }
 
-        /// <summary>
-        /// Computes the buffer of a point for a given buffer distance.
-        /// </summary>
-        /// <param name="g">The point to buffer.</param>
-        /// <param name="distance">The buffer distance.</param>
-        /// <returns> The buffer of the input point.</returns>
-        public static IGeometry Buffer(IGeometry g, double distance) 
+        /**
+         * Computes the buffer of a geometry for a given buffer distance.
+         *
+         * @param g the geometry to buffer
+         * @param distance the buffer distance
+         * @return the buffer of the input geometry
+         */
+        public static IGeometry Buffer(IGeometry g, double distance)
         {
-            var gBuf = new BufferOp(g);
-            var geomBuf = gBuf.GetResultGeometry(distance);        
+            BufferOp gBuf = new BufferOp(g);
+            IGeometry geomBuf = gBuf.GetResultGeometry(distance);
+            //BufferDebug.saveBuffer(geomBuf);
+            //BufferDebug.runCount++;
             return geomBuf;
         }
 
-        /// <summary>
-        /// Computes the buffer of a point for a given buffer distance,
-        /// using the given Cap Style for borders of the point.
-        /// </summary>
-        /// <param name="g">The point to buffer.</param>
-        /// <param name="distance">The buffer distance.</param>        
-        /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
-        /// <returns> The buffer of the input point.</returns>
-        public static IGeometry Buffer(IGeometry g, double distance, BufferStyle endCapStyle)
+        /**
+         * Comutes the buffer for a geometry for a given buffer distance
+         * and accuracy of approximation.
+         *
+         * @param g the geometry to buffer
+         * @param distance the buffer distance
+         * @param params the buffer parameters to use
+         * @return the buffer of the input geometry
+         *
+         */
+        public static IGeometry Buffer(IGeometry g, double distance, IBufferParameters parameters)
         {
-            var gBuf = new BufferOp(g) {EndCapStyle = endCapStyle};
-            var geomBuf = gBuf.GetResultGeometry(distance);
+            BufferOp bufOp = new BufferOp(g, parameters);
+            IGeometry geomBuf = bufOp.GetResultGeometry(distance);
             return geomBuf;
         }
 
-        /// <summary>
-        /// Computes the buffer for a point for a given buffer distance
-        /// and accuracy of approximation.
-        /// </summary>
-        /// <param name="g">The point to buffer.</param>
-        /// <param name="distance">The buffer distance.</param>
-        /// <param name="quadrantSegments">The number of segments used to approximate a quarter circle.</param>
-        /// <returns>The buffer of the input point.</returns>
+        /**
+         * Comutes the buffer for a geometry for a given buffer distance
+         * and accuracy of approximation.
+         *
+         * @param g the geometry to buffer
+         * @param distance the buffer distance
+         * @param quadrantSegments the number of segments used to approximate a quarter circle
+         * @return the buffer of the input geometry
+         *
+         */
         public static IGeometry Buffer(IGeometry g, double distance, int quadrantSegments)
         {
-            var bufOp = new BufferOp(g) {QuadrantSegments = quadrantSegments};
-            var geomBuf = bufOp.GetResultGeometry(distance);
+            BufferOp bufOp = new BufferOp(g);
+            bufOp.QuadrantSegments = quadrantSegments;
+            IGeometry geomBuf = bufOp.GetResultGeometry(distance);
             return geomBuf;
         }
 
-        /// <summary>
-        /// Computes the buffer for a point for a given buffer distance
-        /// and accuracy of approximation.
-        /// </summary>
-        /// <param name="g">The point to buffer.</param>
-        /// <param name="distance">The buffer distance.</param>
-        /// <param name="quadrantSegments">The number of segments used to approximate a quarter circle.</param>
-        /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
-        /// <returns>The buffer of the input point.</returns>
-        public static IGeometry Buffer(IGeometry g, double distance, int quadrantSegments, BufferStyle endCapStyle)
+        /**
+         * Comutes the buffer for a geometry for a given buffer distance
+         * and accuracy of approximation.
+         *
+         * @param g the geometry to buffer
+         * @param distance the buffer distance
+         * @param quadrantSegments the number of segments used to approximate a quarter circle
+         * @param endCapStyle the end cap style to use
+         * @return the buffer of the input geometry
+         *
+         */
+        public static IGeometry Buffer(IGeometry g, double distance,
+          int quadrantSegments,
+          BufferStyle endCapStyle)
         {
-            var bufOp = new BufferOp(g) {EndCapStyle = endCapStyle, QuadrantSegments = quadrantSegments};
-            var geomBuf = bufOp.GetResultGeometry(distance);
+            BufferOp bufOp = new BufferOp(g);
+            bufOp.QuadrantSegments = quadrantSegments;
+            bufOp.BufferStyle = endCapStyle;
+            IGeometry geomBuf = bufOp.GetResultGeometry(distance);
             return geomBuf;
         }
 
-        private readonly IGeometry argGeom;
-        private double distance;
-        private int quadrantSegments = OffsetCurveBuilder.DefaultQuadrantSegments;
-        private BufferStyle endCapStyle = BufferStyle.CapRound;
-        private IGeometry resultGeometry;
-        private ApplicationException saveException;   // debugging only
+        private readonly IGeometry _argGeom;
+        private double _distance;
 
-        /// <summary>
-        /// Initializes a buffer computation for the given point.
-        /// </summary>
-        /// <param name="g">The point to buffer.</param>
+        private readonly IBufferParameters _bufParams = new BufferParameters();
+
+        private IGeometry _resultGeometry;
+        private Exception _saveException;   // debugging only
+
+        /**
+         * Initializes a buffer computation for the given geometry
+         *
+         * @param g the geometry to buffer
+         */
         public BufferOp(IGeometry g)
         {
-            argGeom = g;
+            _argGeom = g;
         }
 
-        /// <summary> 
-        /// Specifies the end cap endCapStyle of the generated buffer.
-        /// The styles supported are CapRound, CapButt, and CapSquare.
-        /// The default is CapRound.
-        /// </summary>
-        public BufferStyle EndCapStyle
+        /**
+         * Initializes a buffer computation for the given geometry
+         * with the given set of parameters
+         *
+         * @param g the geometry to buffer
+         * @param bufParams the buffer parameters to use
+         */
+        public BufferOp(IGeometry g, IBufferParameters bufParams)
         {
-            get { return endCapStyle; }
-            set { endCapStyle = value; }
+            _argGeom = g;
+            _bufParams = bufParams;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /**
+         * Specifies the end cap style of the generated buffer.
+         * The styles supported are {@link #CAP_ROUND}, {@link #CAP_BUTT}, and {@link #CAP_SQUARE}.
+         * The default is CAP_ROUND.
+         *
+         * @param endCapStyle the end cap style to specify
+         */
+        public BufferStyle BufferStyle
+        {
+            get { return (BufferStyle)_bufParams.EndCapStyle; }
+            set { _bufParams.EndCapStyle = (EndCapStyle)value; }
+        }
+
+        /**
+         * Sets the number of segments used to approximate a angle fillet
+         *
+         * @param quadrantSegments the number of segments in a fillet for a quadrant
+         */
         public int QuadrantSegments
         {
-            get { return quadrantSegments; }
-            set { quadrantSegments = value; }
+            get { return _bufParams.QuadrantSegments; }
+            set { _bufParams.QuadrantSegments = value; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="distance"></param>
-        /// <returns></returns>
+        /**
+         * Returns the buffer computed for a geometry for a given buffer distance.
+         *
+         * @param distance the buffer distance
+         * @return the buffer of the input geometry
+         */
         public IGeometry GetResultGeometry(double distance)
         {
-            this.distance = distance;
+            _distance = distance;
             ComputeGeometry();
-            return resultGeometry;
+            return _resultGeometry;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="distance"></param>
-        /// <param name="quadrantSegments"></param>
-        /// <returns></returns>
-        [Obsolete("Use QuadrantSegments property instead.")]
-        public IGeometry GetResultGeometry(double distance, int quadrantSegments)
-        {
-            this.distance = distance;
-            this.quadrantSegments = quadrantSegments;
-            ComputeGeometry();
-            return resultGeometry;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         private void ComputeGeometry()
         {
             BufferOriginalPrecision();
-            if (resultGeometry != null)
-                return;
+            if (_resultGeometry != null) return;
 
-            var argPM = argGeom.Factory.PrecisionModel;
+            IPrecisionModel argPM = _argGeom.Factory.PrecisionModel;
             if (argPM.PrecisionModelType == PrecisionModels.Fixed)
-                 BufferFixedPrecision(argPM);
-            else BufferReducedPrecision();
+                BufferFixedPrecision(argPM);
+            else
+                BufferReducedPrecision();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private void BufferOriginalPrecision()
-        {
-            try 
-            {
-                var bufBuilder = new BufferBuilder {QuadrantSegments = quadrantSegments, EndCapStyle = endCapStyle};
-                resultGeometry = bufBuilder.Buffer(argGeom, distance);
-            }
-            catch (ApplicationException ex) 
-            {
-                saveException = ex;
-                // don't propagate the exception - it will be detected by fact that resultGeometry is null
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="fixedPM"></param>
-        private void BufferFixedPrecision(IPrecisionModel fixedPM)
-        {
-            INoder noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)), fixedPM.Scale);
-
-            var bufBuilder = new BufferBuilder
-            {
-                WorkingPrecisionModel = fixedPM,
-                Noder = noder,
-                QuadrantSegments = quadrantSegments,
-                EndCapStyle = endCapStyle
-            };
-            // this may throw an exception, if robustness errors are encountered
-            resultGeometry = bufBuilder.Buffer(argGeom, distance);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         private void BufferReducedPrecision()
         {
             // try and compute with decreasing precision
-            for (var precDigits = MaxPrecisionDigits; precDigits >= 0; precDigits--)
+            for (int precDigits = MaxPrecisionDigits; precDigits >= 0; precDigits--)
             {
                 try
                 {
@@ -246,28 +262,53 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 }
                 catch (TopologyException ex)
                 {
-                    saveException = ex;
+                    _saveException = ex;
                     // don't propagate the exception - it will be detected by fact that resultGeometry is null
                 }
-                if (resultGeometry != null) 
-                    return;
+                if (_resultGeometry != null) return;
             }
 
             // tried everything - have to bail
-            throw saveException;
+            throw _saveException;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="precisionDigits"></param>
+        private void BufferOriginalPrecision()
+        {
+            try
+            {
+                // use fast noding by default
+                BufferBuilder bufBuilder = new BufferBuilder(_bufParams);
+                _resultGeometry = bufBuilder.Buffer(_argGeom, _distance);
+            }
+            catch (Exception ex)
+            {
+                _saveException = ex;
+                // don't propagate the exception - it will be detected by fact that resultGeometry is null
+
+                // testing - propagate exception
+                //throw ex;
+            }
+        }
+
         private void BufferReducedPrecision(int precisionDigits)
         {
-            var sizeBasedScaleFactor = PrecisionScaleFactor(argGeom, distance, precisionDigits);
-            // Debug.WriteLine(String.Format("recomputing with precision scale factor = {0}", sizeBasedScaleFactor));
+            double sizeBasedScaleFactor = PrecisionScaleFactor(_argGeom, _distance, precisionDigits);
+            //    System.out.println("recomputing with precision scale factor = " + sizeBasedScaleFactor);
 
-            IPrecisionModel fixedPM = new PrecisionModel(sizeBasedScaleFactor);
+            PrecisionModel fixedPM = new PrecisionModel(sizeBasedScaleFactor);
             BufferFixedPrecision(fixedPM);
+        }
+
+        private void BufferFixedPrecision(IPrecisionModel fixedPM)
+        {
+            INoder noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)),
+                                          fixedPM.Scale);
+
+            BufferBuilder bufBuilder = new BufferBuilder(_bufParams);
+            bufBuilder.WorkingPrecisionModel = fixedPM;
+            bufBuilder.Noder = noder;
+            // this may throw an exception, if robustness errors are encountered
+            _resultGeometry = bufBuilder.Buffer(_argGeom, _distance);
         }
     }
 }

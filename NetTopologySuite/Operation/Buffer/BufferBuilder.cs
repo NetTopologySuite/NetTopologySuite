@@ -1,187 +1,181 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using GeoAPI.Geometries;
 using GeoAPI.Operations.Buffer;
 using GisSharpBlog.NetTopologySuite.Algorithm;
+using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Noding;
 using GisSharpBlog.NetTopologySuite.Operation.Overlay;
-using GisSharpBlog.NetTopologySuite.Utilities;
-
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 {
-    /// <summary> 
-    /// Builds the buffer point for a given input point and precision model.
+    ///<summary>
+    /// Builds the buffer geometry for a given input geometry and precision model.
     /// Allows setting the level of approximation for circular arcs,
     /// and the precision model in which to carry out the computation.
-    /// When computing buffers in floating point double-precision
+    ///</summary>
+    /// <remarks>
+    /// When computing buffers in floating point double-precision 
     /// it can happen that the process of iterated noding can fail to converge (terminate).
-    /// In this case a TopologyException will be thrown.
+    /// In this case a <see cref="TopologyException"/> will be thrown.
     /// Retrying the computation in a fixed precision
-    /// can produce more robust results.    
-    /// </summary>
+    /// can produce more robust results.
+    /// </remarks>
     public class BufferBuilder
     {
-        /// <summary>
-        /// Compute the change in depth as an edge is crossed from R to L.
-        /// </summary>
-        /// <param name="label"></param>
+        ///<summary>Compute the change in depth as an edge is crossed from R to L</summary>
         private static int DepthDelta(Label label)
         {
             var lLoc = label.GetLocation(0, Positions.Left);
             var rLoc = label.GetLocation(0, Positions.Right);
             if (lLoc == Locations.Interior && rLoc == Locations.Exterior)
                 return 1;
-            else if (lLoc == Locations.Exterior && rLoc == Locations.Interior)
+            if (lLoc == Locations.Exterior && rLoc == Locations.Interior)
                 return -1;
             return 0;
         }
-        
-        private int quadrantSegments = OffsetCurveBuilder.DefaultQuadrantSegments;
-        private BufferStyle endCapStyle = BufferStyle.CapRound;
-        
-        private IPrecisionModel workingPrecisionModel;
-        private INoder workingNoder;
-        private IGeometryFactory geomFact;
-        private PlanarGraph graph;
-        private readonly EdgeList edgeList = new EdgeList();        
+        private readonly IBufferParameters _bufParams;
 
-        /// <summary>
-        /// Gets/Sets the number of segments used to approximate a angle fillet.
-        /// </summary>
-        public int QuadrantSegments
+        private IPrecisionModel _workingPrecisionModel;
+        private INoder _workingNoder;
+        private IGeometryFactory _geomFact;
+        private PlanarGraph _graph;
+        private readonly EdgeList _edgeList = new EdgeList();
+
+        ///<summary>Creates a new BufferBuilder</summary>
+        public BufferBuilder(IBufferParameters bufParams)
         {
-            get { return quadrantSegments;  }
-            set { quadrantSegments = value; }
+            _bufParams = bufParams;
         }
 
-        /// <summary>
-        /// Gets/Sets the precision model to use during the curve computation and noding,
+        ///<summary>
+        /// Sets the precision model to use during the curve computation and noding, 
         /// if it is different to the precision model of the Geometry.
+        ///</summary>
+        ///<remarks>
         /// If the precision model is less than the precision of the Geometry precision model,
         /// the Geometry must have previously been rounded to that precision.
-        /// </summary>
+        ///</remarks>
         public IPrecisionModel WorkingPrecisionModel
         {
-            get { return workingPrecisionModel;  }
-            set { workingPrecisionModel = value; }
+            get { return _workingPrecisionModel; }
+            set { _workingPrecisionModel = value; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public BufferStyle EndCapStyle
-        {
-            get { return endCapStyle;  }
-            set { endCapStyle = value; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
+        ///<summary>
+        /// Sets the <see cref="INoder"/> to use during noding.
+        /// This allows choosing fast but non-robust noding, or slower
+        /// but robust noding.
+        ///</summary>
         public INoder Noder
         {
-            get { return workingNoder; }
-            set { workingNoder = value; }
+            get { return _workingNoder; }
+            set { _workingNoder = value; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="g"></param>
-        /// <param name="distance"></param>
-        /// <returns></returns>
         public IGeometry Buffer(IGeometry g, double distance)
         {
-            var precisionModel = workingPrecisionModel ?? g.PrecisionModel;
+            IPrecisionModel precisionModel = _workingPrecisionModel;
+            if (precisionModel == null)
+                precisionModel = g.PrecisionModel;
 
             // factory must be the same as the one used by the input
-            geomFact = g.Factory;
+            _geomFact = g.Factory;
 
-            var curveBuilder = new OffsetCurveBuilder(precisionModel, quadrantSegments) {EndCapStyle = endCapStyle};
-            var curveSetBuilder = new OffsetCurveSetBuilder(g, distance, curveBuilder);
+            OffsetCurveBuilder curveBuilder = new OffsetCurveBuilder(precisionModel, _bufParams);
+
+            OffsetCurveSetBuilder curveSetBuilder = new OffsetCurveSetBuilder(g, distance, curveBuilder);
 
             var bufferSegStrList = curveSetBuilder.GetCurves();
 
             // short-circuit test
             if (bufferSegStrList.Count <= 0)
             {
-                IGeometry emptyGeom = geomFact.CreateGeometryCollection(new IGeometry[0]);
-                return emptyGeom;
+                return CreateEmptyResultGeometry();
             }
 
-            ComputeNodedEdges(bufferSegStrList, precisionModel);
-            graph = new PlanarGraph(new OverlayNodeFactory());
-            graph.AddEdges(edgeList.Edges);
+            //BufferDebug.runCount++;
+            //String filename = "run" + BufferDebug.runCount + "_curves";
+            //System.out.println("saving " + filename);
+            //BufferDebug.saveEdges(bufferEdgeList, filename);
+            // DEBUGGING ONLY
+            //WKTWriter wktWriter = new WKTWriter();
+            //Debug.println("Rings: " + wktWriter.write(convertSegStrings(bufferSegStrList.iterator())));
+            //wktWriter.setMaxCoordinatesPerLine(10);
+            //System.out.println(wktWriter.writeFormatted(convertSegStrings(bufferSegStrList.iterator())));
 
-            var subgraphList = CreateSubgraphs(graph);
-            var polyBuilder = new PolygonBuilder(geomFact);
+            ComputeNodedEdges(bufferSegStrList, precisionModel);
+            _graph = new PlanarGraph(new OverlayNodeFactory());
+            _graph.AddEdges(_edgeList.Edges);
+
+            IEnumerable<BufferSubgraph> subgraphList = CreateSubgraphs(_graph);
+            PolygonBuilder polyBuilder = new PolygonBuilder(_geomFact);
             BuildSubgraphs(subgraphList, polyBuilder);
             var resultPolyList = polyBuilder.Polygons;
 
-            var resultGeom = geomFact.BuildGeometry(resultPolyList);
+            // just in case...
+            if (resultPolyList.Count <= 0)
+            {
+                return CreateEmptyResultGeometry();
+            }
+
+            IGeometry resultGeom = _geomFact.BuildGeometry(resultPolyList);
             return resultGeom;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="precisionModel"></param>
-        /// <returns></returns>
         private INoder GetNoder(IPrecisionModel precisionModel)
         {
-            if (workingNoder != null) 
-                return workingNoder;
+            if (_workingNoder != null) return _workingNoder;
 
             // otherwise use a fast (but non-robust) noder
-            var li = new RobustLineIntersector {PrecisionModel = precisionModel};
-            var noder = new MCIndexNoder(new IntersectionAdder(li));                     
+            MCIndexNoder noder = new MCIndexNoder();
+            LineIntersector li = new RobustLineIntersector();
+            li.PrecisionModel = precisionModel;
+            noder.SegmentIntersector = new IntersectionAdder(li);
+            //    Noder noder = new IteratedNoder(precisionModel);
             return noder;
+            //    Noder noder = new SimpleSnapRounder(precisionModel);
+            //    Noder noder = new MCIndexSnapRounder(precisionModel);
+            //    Noder noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)),
+            //                                  precisionModel.getScale());
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="bufferSegStrList"></param>
-        /// <param name="precisionModel"></param>
-        private void ComputeNodedEdges(IList bufferSegStrList, IPrecisionModel precisionModel)
+        private void ComputeNodedEdges(IList<ISegmentString> bufferSegStrList, IPrecisionModel precisionModel)
         {
-            var noder = GetNoder(precisionModel);
-            noder.ComputeNodes(CollectionUtil.Cast<ISegmentString>(bufferSegStrList));
+            INoder noder = GetNoder(precisionModel);
+            noder.ComputeNodes(bufferSegStrList);
             var nodedSegStrings = noder.GetNodedSubstrings();
-            
-            foreach (var obj in nodedSegStrings)
+            // DEBUGGING ONLY
+            //BufferDebug.saveEdges(nodedEdges, "run" + BufferDebug.runCount + "_nodedEdges");
+
+            foreach (ISegmentString segStr in nodedSegStrings)
             {
-                var segStr = (NodedSegmentString) obj;
-                var oldLabel = (Label) segStr.Context;
-                var edge = new Edge(segStr.Coordinates, new Label(oldLabel));
+                Label oldLabel = (Label)segStr.Context;
+                Edge edge = new Edge(segStr.Coordinates, new Label(oldLabel));
                 InsertEdge(edge);
             }
+            //saveEdges(edgeList.getEdges(), "run" + runCount + "_collapsedEdges");
         }
 
-        /// <summary>
-        /// Inserted edges are checked to see if an identical edge already exists.
-        /// If so, the edge is not inserted, but its label is merged
-        /// with the existing edge.
-        /// </summary>
-        /// <param name="e"></param>
+
+        /**
+         * Inserted edges are checked to see if an identical edge already exists.
+         * If so, the edge is not inserted, but its label is merged
+         * with the existing edge.
+         */
         protected void InsertEdge(Edge e)
         {
             //<FIX> MD 8 Oct 03  speed up identical edge lookup
             // fast lookup
-            var existingEdge = edgeList.FindEqualEdge(e);
+            Edge existingEdge = _edgeList.FindEqualEdge(e);
 
             // If an identical edge already exists, simply update its label
             if (existingEdge != null)
             {
-                var existingLabel = existingEdge.Label;
+                Label existingLabel = existingEdge.Label;
 
-                var labelToMerge = e.Label;
+                Label labelToMerge = e.Label;
                 // check if new edge is in reverse direction to existing edge
                 // if so, must flip the label before merging it
                 if (!existingEdge.IsPointwiseEqual(e))
@@ -192,34 +186,33 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 existingLabel.Merge(labelToMerge);
 
                 // compute new depth delta of sum of edges
-                var mergeDelta = DepthDelta(labelToMerge);
-                var existingDelta = existingEdge.DepthDelta;
-                var newDelta = existingDelta + mergeDelta;
+                int mergeDelta = DepthDelta(labelToMerge);
+                int existingDelta = existingEdge.DepthDelta;
+                int newDelta = existingDelta + mergeDelta;
                 existingEdge.DepthDelta = newDelta;
             }
             else
             {   // no matching existing edge was found
                 // add this new edge to the list of edges in this graph
                 //e.setName(name + edges.size());
-                edgeList.Add(e);
+                _edgeList.Add(e);
                 e.DepthDelta = DepthDelta(e.Label);
             }
         }
 
-        private IList CreateSubgraphs(PlanarGraph graph)
+        private static IEnumerable<BufferSubgraph> CreateSubgraphs(PlanarGraph graph)
         {
-            var subgraphList = new ArrayList();
-            foreach(var obj in graph.Nodes)
+            var subgraphList = new List<BufferSubgraph>();
+            foreach (Node node in graph.Nodes)
             {
-                var node = (Node)obj;
-                if (node.IsVisited)
-                    continue;
-                var subgraph = new BufferSubgraph();
-                subgraph.Create(node);
-                subgraphList.Add(subgraph);
+                if (!node.IsVisited)
+                {
+                    var subgraph = new BufferSubgraph();
+                    subgraph.Create(node);
+                    subgraphList.Add(subgraph);
+                }
             }
-
-            /*
+            /**
              * Sort the subgraphs in descending order of their rightmost coordinate.
              * This ensures that when the Polygons for the subgraphs are built,
              * subgraphs for shells will have been built before the subgraphs for
@@ -230,27 +223,61 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             return subgraphList;
         }
 
-        /// <summary>
-        /// Completes the building of the input subgraphs by depth-labelling them,
-        /// and adds them to the <see cref="PolygonBuilder" />.
-        /// The subgraph list must be sorted in rightmost-coordinate order.
-        /// </summary>
-        /// <param name="subgraphList">The subgraphs to build.</param>
-        /// <param name="polyBuilder">The PolygonBuilder which will build the final polygons.</param>
-        private void BuildSubgraphs(IList subgraphList, PolygonBuilder polyBuilder)
+        /**
+         * Completes the building of the input subgraphs by depth-labelling them,
+         * and adds them to the PolygonBuilder.
+         * The subgraph list must be sorted in rightmost-coordinate order.
+         *
+         * @param subgraphList the subgraphs to build
+         * @param polyBuilder the PolygonBuilder which will build the final polygons
+         */
+        private static void BuildSubgraphs(IEnumerable<BufferSubgraph> subgraphList, PolygonBuilder polyBuilder)
         {
-            IList<BufferSubgraph> processedGraphs = new List<BufferSubgraph>();
-            foreach(var obj in subgraphList)
+            var processedGraphs = new List<BufferSubgraph>();
+            foreach (var subgraph in subgraphList)
             {
-                var subgraph = (BufferSubgraph)obj;
-                var p = subgraph.RightMostCoordinate;
+                ICoordinate p = subgraph.RightMostCoordinate;
+                //      int outsideDepth = 0;
+                //      if (polyBuilder.containsPoint(p))
+                //        outsideDepth = 1;
                 var locater = new SubgraphDepthLocater(processedGraphs);
-                var outsideDepth = locater.GetDepth(p);
+                int outsideDepth = locater.GetDepth(p);
+                //      try {
                 subgraph.ComputeDepth(outsideDepth);
+                //      }
+                //      catch (RuntimeException ex) {
+                //        // debugging only
+                //        //subgraph.saveDirEdges();
+                //        throw ex;
+                //      }
                 subgraph.FindResultEdges();
                 processedGraphs.Add(subgraph);
                 polyBuilder.Add(new List<EdgeEnd>(subgraph.DirectedEdges.Cast<EdgeEnd>()), subgraph.Nodes);
             }
+        }
+
+        private static IGeometry ConvertSegStrings(IEnumerator<ISegmentString> it)
+        {
+            var fact = new GeometryFactory();
+            var lines = new List<IGeometry>();
+            while (it.MoveNext())
+            {
+                ISegmentString ss = it.Current;
+                ILineString line = fact.CreateLineString(ss.Coordinates);
+                lines.Add(line);
+            }
+            return fact.BuildGeometry(lines);
+        }
+
+        ///<summary>
+        /// Gets the standard result for an empty buffer.
+        /// Since buffer always returns a polygonal result, this is chosen to be an empty polygon.
+        ///</summary>
+        /// <returns>The empty result geometry</returns>
+        private IGeometry CreateEmptyResultGeometry()
+        {
+            IGeometry emptyGeom = _geomFact.CreatePolygon(null, null);
+            return emptyGeom;
         }
     }
 }

@@ -720,12 +720,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public bool Covers(IGeometry g)
         {
             // short-circuit test
-            if (!EnvelopeInternal.Contains(g.EnvelopeInternal))
+            if (!EnvelopeInternal.Covers(g.EnvelopeInternal))
                 return false;
             
             // optimization for rectangle arguments
             if (IsRectangle)
-                return EnvelopeInternal.Contains(g.EnvelopeInternal);
+                // since we have already tested that the test envelope is covered
+                return true;
             
             return Relate(g).IsCovers();
         }
@@ -999,9 +1000,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// are less than or equal to <c>distance</c>.
         /// </returns>
         /// <exception cref="TopologyException">If a robustness error occurs</exception>
+        [Obsolete]
         public IGeometry Buffer(double distance, BufferStyle endCapStyle)
         {
-            return BufferOp.Buffer(this, distance, endCapStyle);
+            return BufferOp.Buffer(this, distance, BufferParameters.DefaultQuadrantSegments, endCapStyle);
+        }
+        
+        public IGeometry Buffer(double distance, EndCapStyle endCapStyle)
+        {
+            return BufferOp.Buffer(this, distance, BufferParameters.DefaultQuadrantSegments, (BufferStyle)endCapStyle);
         }
 
         /// <summary>
@@ -1049,7 +1056,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public IGeometry Buffer(double distance, int quadrantSegments, BufferStyle endCapStyle)
         {
             return BufferOp.Buffer(this, distance, quadrantSegments, endCapStyle);
-        } 
+        }
+
+        public IGeometry Buffer(double distance, int quadrantSegments, EndCapStyle endCapStyle)
+        {
+            return BufferOp.Buffer(this, distance, quadrantSegments, (BufferStyle)endCapStyle);
+        }
+
+        public IGeometry Buffer(double distance, IBufferParameters bufferParameters)
+        {
+            return BufferOp.Buffer(this, distance, bufferParameters);
+        }
 
         /// <summary>
         /// Returns the smallest convex <c>Polygon</c> that contains all the

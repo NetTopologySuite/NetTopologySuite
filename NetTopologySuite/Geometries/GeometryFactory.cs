@@ -243,31 +243,49 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             foreach (IMultiPolygon mp in multiPolygons)
                 list[i++] = mp;
             return list;
-        }        
+        }
 
         /// <summary>
-        /// If the <c>Envelope</c> is a null <c>Envelope</c>, returns an
-        /// empty <c>Point</c>. If the <c>Envelope</c> is a point, returns
-        /// a non-empty <c>Point</c>. If the <c>Envelope</c> is a
-        /// rectangle, returns a <c>Polygon</c> whose points are (minx, miny),
-        /// (maxx, miny), (maxx, maxy), (minx, maxy), (minx, miny).
+        /// Creates a <see cref="IGeometry"/> with the same extent as the given envelope.
         /// </summary>
-        /// <param name="envelope">The <c>Envelope</c> to convert to a <c>Geometry</c>.</param>       
+        /// <remarks>
+        /// The Geometry returned is guaranteed to be valid. 
+        /// To provide this behaviour, the following cases occur:
+        /// <para>
+        /// If the <c>Envelope</c> is:
+        /// <list type="Table">
+        /// <item>null</item><description>returns an empty <see cref="IPoint"/></description>
+        /// <item>a point</item><description>returns a non-empty <see cref="IPoint"/></description>
+        /// <item>a line</item><description>returns a two-point <see cref="ILineString"/></description>
+        /// <item>a rectangle</item><description>returns a {@link Polygon}> whose points are (minx, miny), (maxx, miny), (maxx, maxy), (minx, maxy), (minx, miny).</description>
+        /// </list>
+        /// </para>
+        /// </remarks>
+        /// <param name="envelope">The <c>Envelope</c></param>       
         /// <returns>
-        /// An empty <c>Point</c> (for null <c>Envelope</c>
-        /// s), a <c>Point</c> (when min x = max x and min y = max y) or a
-        /// <c>Polygon</c> (in all other cases)
-        /// throws a <c>TopologyException</c> if <c>coordinates</c>
-        /// is not a closed linestring, that is, if the first and last coordinates
-        /// are not equal.
+        /// An empty <c>Point</c> (for null <c>Envelope</c>s), a <c>Point</c> (when min x = max x and min y = max y) or a <c>Polygon</c> (in all other cases)
         /// </returns>
         public IGeometry ToGeometry(IEnvelope envelope) 
         {
+            // null envelope - return empty point geometry
             if (envelope.IsNull) 
                 return CreatePoint((ICoordinateSequence) null);
 
+            // point?
             if (envelope.MinX == envelope.MaxX && envelope.MinY == envelope.MaxY) 
                 return CreatePoint(new Coordinate(envelope.MinX, envelope.MinY));
+
+            // vertical or horizontal line?
+            if (envelope.MinX == envelope.MaxX
+                    || envelope.MinY == envelope.MaxY)
+            {
+                return CreateLineString(new ICoordinate[] 
+                    {
+                        new Coordinate(envelope.MinX, envelope.MinY),
+                        new Coordinate(envelope.MaxX, envelope.MaxY)
+                    });
+            }
+
 
             ILinearRing ring = this.CreateLinearRing(new ICoordinate[]
             {
