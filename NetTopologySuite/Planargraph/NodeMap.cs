@@ -33,7 +33,9 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <param name="pt"></param>
         /// <returns></returns>
         public Node Remove(ICoordinate pt)
-        {            
+        {
+            if (_nodeMap.ContainsKey(pt))
+                return null;
             Node node = _nodeMap[pt];
             _nodeMap.Remove(pt);
             return node;
@@ -44,9 +46,12 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>
-        public Node Find(ICoordinate coord) 
+        public Node Find(ICoordinate coord)
         {
-            return _nodeMap[coord]; 
+            Node res;
+            if (_nodeMap.TryGetValue(coord, out res))
+                return res;
+            return null; 
         }
 
         /// <summary>

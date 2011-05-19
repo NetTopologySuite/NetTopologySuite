@@ -76,7 +76,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 			WKTReader reader = new WKTReader();
 			IGeometry mp1 = reader.Read("MULTIPOINT (10 10, 20 20)");
 			IGeometry mp2 = reader.Read("MULTIPOINT ((10 10), (20 20))");
-			Assert.AreEqual(mp1, mp2);
+			Assert.IsTrue(mp1.EqualsExact(mp2));
 		}
 
         [Test]

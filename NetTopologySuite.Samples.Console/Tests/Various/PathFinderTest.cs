@@ -122,6 +122,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         }
 
         [Test]
+        [Ignore("graph.shp is not present")]
         public void BuildGraphFromCompleteGraphShapefile()
         {
             var shapepath = "graph.shp";
