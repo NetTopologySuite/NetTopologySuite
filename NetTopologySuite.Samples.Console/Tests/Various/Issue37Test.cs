@@ -19,7 +19,8 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             reader = new WKTReader(factory);
         }
 
-        [Test]
+        [Test, ExpectedException(typeof(TopologyException))]
+        [Ignore("What does JTS do with these geometries?")]
         public void Difference()
         {
             var geom1 = reader.Read(@"POLYGON((-17445.395049241037
