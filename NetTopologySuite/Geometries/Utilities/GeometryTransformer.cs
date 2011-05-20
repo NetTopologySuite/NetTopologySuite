@@ -62,7 +62,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
         /// <summary> 
         /// <c>true</c> if the type of the input should be preserved.
         /// </summary>
-        private bool preserveType;
+        private bool _preserveType;
 
         /// <summary>
         /// 
@@ -186,7 +186,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries.Utilities
             ICoordinateSequence seq = TransformCoordinates(geom.CoordinateSequence, geom);
             int seqSize = seq.Count;
             // ensure a valid LinearRing
-            if (seqSize > 0 && seqSize < 4 && ! preserveType)
+            if (seqSize > 0 && seqSize < 4 && ! _preserveType)
                 return Factory.CreateLineString(seq);
             return Factory.CreateLinearRing(seq);
 

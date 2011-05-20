@@ -73,17 +73,17 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// 
         /// </summary>
-        protected bool isMarked = false;
+        private bool _isMarked;
 
         /// <summary>
         /// 
         /// </summary>
-        protected bool isVisited = false;
+        private bool _isVisited;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GraphComponent"/> class.
         /// </summary>
-        public GraphComponent() { }
+        protected GraphComponent() { }
 
         /// <summary>
         /// Tests if a component has been visited during the course of a graph algorithm.
@@ -98,8 +98,8 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public bool Visited
         {
-            get { return isVisited; }
-            set { isVisited = value; }
+            get { return _isVisited; }
+            set { _isVisited = value; }
         }
 
         /// <summary>
@@ -116,8 +116,8 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public bool Marked
         {
-            get { return isMarked; }
-            set { isMarked = value; }
+            get { return _isMarked; }
+            set { _isMarked = value; }
         }
 
         /// <summary>

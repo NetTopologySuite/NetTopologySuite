@@ -7,8 +7,8 @@ using GisSharpBlog.NetTopologySuite.CoordinateSystems.Transformations;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Samples.SimpleTests;
 using NUnit.Framework;
-using SharpMap.CoordinateSystems;
-using SharpMap.CoordinateSystems.Transformations;
+using ProjNet.CoordinateSystems;
+using ProjNet.CoordinateSystems.Transformations;
 
 namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
 {

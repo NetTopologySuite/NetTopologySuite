@@ -161,7 +161,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             var reader = new ShapefileReader(shapepath);
             var edges = reader.ReadAll();
             Assert.IsNotNull(edges);
-            Assert.IsInstanceOfType(typeof (GeometryCollection), edges);
+            Assert.IsInstanceOf(typeof (GeometryCollection), edges);
             Assert.AreEqual(count, edges.NumGeometries);
 
             var startls = edges.GetGeometryN(515).GetGeometryN(0) as ILineString;
@@ -207,7 +207,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             var reader = new ShapefileReader(shapepath);
             var edges = reader.ReadAll();
             Assert.IsNotNull(edges);
-            Assert.IsInstanceOfType(typeof (GeometryCollection), edges);
+            Assert.IsInstanceOf(typeof (GeometryCollection), edges);
             Assert.AreEqual(count, edges.NumGeometries);
 
             var startls = edges.GetGeometryN(0).GetGeometryN(0) as ILineString;
@@ -241,7 +241,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             var reader = new ShapefileReader(shapepath);
             var edges = reader.ReadAll();
             Assert.IsNotNull(edges);
-            Assert.IsInstanceOfType(typeof (GeometryCollection), edges);
+            Assert.IsInstanceOf(typeof (GeometryCollection), edges);
             Assert.AreEqual(count, edges.NumGeometries);
 
             ICoordinate startCoord = new Coordinate(2317300d, 4843961d);

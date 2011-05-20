@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Operation;
 
 namespace GisSharpBlog.NetTopologySuite.Geometries
 {
@@ -131,7 +130,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>The <c>n</c>th <c>Coordinate</c>.</returns>
         protected ICoordinate GetCoordinate(int n) 
         {
-            return geometries[n].Coordinate;
+            return Geometries[n].Coordinate;
         }
     }
 }

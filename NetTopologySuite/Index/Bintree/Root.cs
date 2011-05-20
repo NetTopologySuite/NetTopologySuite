@@ -36,7 +36,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             * the item must be contained in one interval, so insert it into the
             * tree for that interval (which may not yet exist)
             */
-            Node node = subnode[index];
+            Node node = Subnode[index];
             /*
             *  If the subnode doesn't exist or this item is not contained in it,
             *  have to expand the tree upward to contain the item.
@@ -45,13 +45,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             if (node == null || ! node.Interval.Contains(itemInterval)) 
             {
                 Node largerNode = Node.CreateExpanded(node, itemInterval);
-                subnode[index] = largerNode;
+                Subnode[index] = largerNode;
             }
             /*
             * At this point we have a subnode which exists and must contain
             * contains the env for the item.  Insert the item into the tree.
             */
-            InsertContained(subnode[index], itemInterval, item);        
+            InsertContained(Subnode[index], itemInterval, item);        
         }
 
         /// <summary> 

@@ -13,6 +13,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.9.0.0")]
 [assembly: AssemblyFileVersion("1.9.*.*")]
 [assembly: AssemblyDelaySign(false)]
-[assembly: CLSCompliant(false)]
+[assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
 [assembly: Guid("6B7EB658-792E-4178-B853-8AEB851513A9")]

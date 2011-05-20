@@ -38,12 +38,12 @@ namespace RTools_NTS.Util
         // Readonly added!
 
 		///<summary>Backer for Log.</summary>
-		protected static readonly Logger log = new Logger(String.Empty);
+		private static readonly Logger log = new Logger(String.Empty);
 
 		///<summary>
 		///A static instance you can use without creating your own.
 		///</summary>
-		public static Logger Log { get { return(log); } }
+		public static Logger Log { get { return(log); }  }
 
 		///<summary>The name is prepended to all messages. </summary>
 		protected string name;
@@ -52,7 +52,7 @@ namespace RTools_NTS.Util
 		/// The verbosity of this logger.  Messages are filtered
 		/// based on this setting.
 		/// </summary>
-		protected VerbosityLevel verbosity;
+		private VerbosityLevel _verbosity;
 
 		/// <summary>
 		/// The verbosity of this logger.  Messages are filtered
@@ -60,8 +60,8 @@ namespace RTools_NTS.Util
 		/// </summary>
 		public VerbosityLevel Verbosity
 		{
-			get { return(verbosity); }
-			set { verbosity = value; }
+			get { return(_verbosity); }
+			set { _verbosity = value; }
 		}
 
 		/// <summary>
@@ -80,7 +80,7 @@ namespace RTools_NTS.Util
 		public Logger(string name)
 		{
 			this.name = name;
-			this.verbosity = VerbosityLevel.Debug;
+			this._verbosity = VerbosityLevel.Debug;
 		}
 
 		/// <summary>
@@ -112,7 +112,7 @@ namespace RTools_NTS.Util
 		/// <param name="args">The arguments.</param>
 		public void Debug(string msg, params object[] args)
 		{
-			if (verbosity >= VerbosityLevel.Debug)
+			if (_verbosity >= VerbosityLevel.Debug)
 			{				
 			}
 		}
@@ -128,7 +128,7 @@ namespace RTools_NTS.Util
 		/// <param name="args">The arguments.</param>
 		public void Info(string msg, params object[] args)
 		{
-			if (verbosity >= VerbosityLevel.Info)
+			if (_verbosity >= VerbosityLevel.Info)
 			{				
 			}
 		}
@@ -144,7 +144,7 @@ namespace RTools_NTS.Util
 		/// <param name="args">The arguments.</param>
 		public void Warn(string msg, params object[] args)
 		{
-			if (verbosity >= VerbosityLevel.Warn)
+			if (_verbosity >= VerbosityLevel.Warn)
 			{				
 			}
 		}
@@ -160,7 +160,7 @@ namespace RTools_NTS.Util
 		/// <param name="args">The arguments.</param>
 		public void Error(string msg, params object[] args)
 		{
-			if (verbosity >= VerbosityLevel.Error)
+			if (_verbosity >= VerbosityLevel.Error)
 			{				
 			}
 		}

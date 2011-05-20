@@ -61,22 +61,22 @@
             IGeometry g1 = reader.Read(t1);
             Assert.IsNotNull(g1);
             Assert.IsTrue(g1.IsValid);
-            Assert.IsInstanceOfType(typeof(IPolygon), g1);
-            Assert.IsInstanceOfType(typeof(Polygon), g1);
+            Assert.IsInstanceOf(typeof(IPolygon), g1);
+            Assert.IsInstanceOf(typeof(Polygon), g1);
 
             IGeometry g2 = reader.Read(t2);
             Assert.IsNotNull(g2);
             Assert.IsTrue(g2.IsValid);
-            Assert.IsInstanceOfType(typeof(IMultiPolygon), g2);
-            Assert.IsInstanceOfType(typeof(MultiPolygon), g2);
+            Assert.IsInstanceOf(typeof(IMultiPolygon), g2);
+            Assert.IsInstanceOf(typeof(MultiPolygon), g2);
             
             Stopwatch watch = new Stopwatch();
             watch.Start();
             IGeometry r = g1.Intersection(g2);
             watch.Stop();            
             Assert.IsNotNull(r);
-            Assert.IsInstanceOfType(typeof(IMultiPolygon), r);
-            Assert.IsInstanceOfType(typeof(MultiPolygon), r);
+            Assert.IsInstanceOf(typeof(IMultiPolygon), r);
+            Assert.IsInstanceOf(typeof(MultiPolygon), r);
             Assert.IsTrue(r.IsValid);
             Console.WriteLine("GeometryFactory.Default => Elapsed: {0}", watch.Elapsed);
         }

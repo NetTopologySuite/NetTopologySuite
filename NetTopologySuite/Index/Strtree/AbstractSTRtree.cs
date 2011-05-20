@@ -37,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <summary>
         /// 
         /// </summary>
-        protected AbstractNode root;
+        private AbstractNode _root;
 
         private bool _built;
         private readonly List<object> _itemBoundables = new List<object>();
@@ -63,7 +63,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         public void Build()
         {
             Assert.IsTrue(!_built);
-            root = (_itemBoundables.Count == 0) ?
+            _root = (_itemBoundables.Count == 0) ?
                 CreateNode(0) : CreateHigherLevels(_itemBoundables, -1);
             _built = true;
         }
@@ -126,7 +126,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
 
         protected AbstractNode Root
         {
-            get { return root; }
+            get { return _root; }
+            set { _root = value; }
         }
 
         /// <summary> 
@@ -145,7 +146,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
                     Build();
                 if (_itemBoundables.Count == 0)
                     return 0;
-                return GetSize(root);
+                return GetSize(_root);
             }
         }
 
@@ -169,7 +170,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             {
                 if (!_built)
                     Build();
-                return _itemBoundables.Count == 0 ? 0 : GetDepth(root);
+                return _itemBoundables.Count == 0 ? 0 : GetDepth(_root);
             }
         }
 
@@ -205,11 +206,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             var matches = new List<object>();
             if (_itemBoundables.Count == 0)
             {
-                Assert.IsTrue(root.Bounds == null);
+                Assert.IsTrue(_root.Bounds == null);
                 return matches;
             }
-            if (IntersectsOp.Intersects(root.Bounds, searchBounds))
-                Query(searchBounds, root, matches);
+            if (IntersectsOp.Intersects(_root.Bounds, searchBounds))
+                Query(searchBounds, _root, matches);
             return matches;
         }
 
@@ -219,10 +220,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
                 Build();
 
             if (_itemBoundables.Count == 0)
-                Assert.IsTrue(root.Bounds == null);
+                Assert.IsTrue(_root.Bounds == null);
 
-            if (IntersectsOp.Intersects(root.Bounds, searchBounds))
-                Query(searchBounds, root, visitor);
+            if (IntersectsOp.Intersects(_root.Bounds, searchBounds))
+                Query(searchBounds, _root, visitor);
         }
 
         private void Query(object searchBounds, AbstractNode node, IList matches)
@@ -268,7 +269,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             if (!_built) { Build(); }
 
-            var valuesTree = ItemsTree(root);
+            var valuesTree = ItemsTree(_root);
             return valuesTree ?? new List<object>();
         }
 
@@ -309,8 +310,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             if (!_built)
                 Build();
             if (_itemBoundables.Count == 0)
-                Assert.IsTrue(root.Bounds == null);
-            return IntersectsOp.Intersects(root.Bounds, searchBounds) && Remove(searchBounds, root, item);
+                Assert.IsTrue(_root.Bounds == null);
+            return IntersectsOp.Intersects(_root.Bounds, searchBounds) && Remove(searchBounds, _root, item);
         }
 
         private bool RemoveItem(AbstractNode node, object item)
@@ -363,7 +364,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         protected IList BoundablesAtLevel(int level)
         {
             IList boundables = new List<object>();
-            BoundablesAtLevel(level, root, ref boundables);
+            BoundablesAtLevel(level, _root, ref boundables);
             return boundables;
         }
 

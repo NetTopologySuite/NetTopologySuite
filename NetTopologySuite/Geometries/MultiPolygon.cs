@@ -103,9 +103,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     return Factory.CreateMultiPolygon(null);
 
                 List<ILineString> allRings = new List<ILineString>();
-                for (int i = 0; i < geometries.Length; i++)
+                for (int i = 0; i < Geometries.Length; i++)
                 {
-                    IPolygon polygon = (IPolygon) geometries[i];
+                    IPolygon polygon = (IPolygon) Geometries[i];
                     IGeometry rings = polygon.Boundary;
                     for (int j = 0; j < rings.NumGeometries; j++)
                         allRings.Add((ILineString) rings.GetGeometryN(j));

@@ -32,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// <param name="im"></param>
         public void UpdateIMFromEdges(IntersectionMatrix im)
         {
-            ((EdgeEndBundleStar) edges).UpdateIM(im);
+            ((EdgeEndBundleStar) Edges).UpdateIM(im);
         }
     }
 }

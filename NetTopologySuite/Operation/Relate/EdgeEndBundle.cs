@@ -88,8 +88,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                     isArea = true;
             }
             if (isArea)
-                 label = new Label(Locations.Null, Locations.Null, Locations.Null);
-            else label = new Label(Locations.Null);
+                 Label = new Label(Locations.Null, Locations.Null, Locations.Null);
+            else Label = new Label(Locations.Null);
 
             // compute the On label, and the side labels if present
             for (int i = 0; i < 2; i++)
@@ -141,7 +141,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                 loc = Locations.Interior;
             if (boundaryCount > 0) 
                 loc = GeometryGraph.DetermineBoundary(boundaryNodeRule, boundaryCount);            
-            label.SetLocation(geomIndex, loc);
+            Label.SetLocation(geomIndex, loc);
         }
 
         /// <summary>
@@ -179,11 +179,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
                     Locations loc = e.Label.GetLocation(geomIndex, side);
                     if (loc == Locations.Interior)
                     {
-                        label.SetLocation(geomIndex, side, Locations.Interior);
+                        Label.SetLocation(geomIndex, side, Locations.Interior);
                         return;
                     }
                     else if (loc == Locations.Exterior)
-                        label.SetLocation(geomIndex, side, Locations.Exterior);
+                        Label.SetLocation(geomIndex, side, Locations.Exterior);
                 }
             }
         }
@@ -194,7 +194,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// <param name="im"></param>
         public void UpdateIM(IntersectionMatrix im)
         {
-            Edge.UpdateIM(label, im);
+            Edge.UpdateIM(Label, im);
         }
 
         /// <summary>
@@ -203,7 +203,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// <param name="outstream"></param>
         public override void Write(StreamWriter outstream)
         {
-            outstream.WriteLine("EdgeEndBundle--> Label: " + label);
+            outstream.WriteLine("EdgeEndBundle--> Label: " + Label);
             for (IEnumerator it = GetEnumerator(); it.MoveNext(); )
             {
                 EdgeEnd ee = (EdgeEnd) it.Current;

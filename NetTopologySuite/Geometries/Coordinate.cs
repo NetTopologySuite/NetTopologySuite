@@ -57,7 +57,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// The measure value
         /// </summary>
-        public double M
+        public virtual double M
         {
             get { return Double.NaN; }
             set { }

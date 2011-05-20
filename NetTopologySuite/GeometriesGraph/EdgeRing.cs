@@ -32,7 +32,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        protected readonly IGeometryFactory _geometryFactory;
+        private readonly IGeometryFactory _geometryFactory;
+
+        protected IGeometryFactory GeometryFactory { get { return _geometryFactory; } }
 
         /// <summary>
         /// 

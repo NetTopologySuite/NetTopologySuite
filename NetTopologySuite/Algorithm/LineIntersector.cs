@@ -87,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// </summary>
         protected int[] intLineIndex;
 
-        protected bool isProper;
+        private bool _isProper;
         
         protected ICoordinate pa;        
         protected ICoordinate pb;
@@ -96,9 +96,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// If MakePrecise is true, computed intersection coordinates will be made precise
         /// using <c>Coordinate.MakePrecise</c>.
         /// </summary>
-        protected IPrecisionModel precisionModel = null;
+        private IPrecisionModel _precisionModel;
 
-        public LineIntersector() 
+        protected LineIntersector() 
         {
             this.intPt[0] = new Coordinate();
             this.intPt[1] = new Coordinate();
@@ -114,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         [Obsolete("Use PrecisionModel instead")]
         public IPrecisionModel MakePrecise
         {            
-            set { this.precisionModel = value; }
+            set { _precisionModel = value; }
         }
 
         /// <summary> 
@@ -122,8 +122,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// No getter is provided, because the precision model is not required to be specified.
         /// </summary>
         public IPrecisionModel PrecisionModel
-        {            
-            set { this.precisionModel = value; }
+        {
+            get { return _precisionModel; }
+            set { _precisionModel = value; }
         }
 
         /// <summary> 
@@ -136,7 +137,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         
         protected bool IsCollinear 
         {
-            get { return this.result == Collinear; }
+            get { return result == Collinear; }
         }
 
         /// <summary>
@@ -161,7 +162,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             sb.Append(this.inputLines[3]).Append(" : ");
 
             if (this.IsEndPoint)  sb.Append(" endpoint");
-            if (this.isProper)    sb.Append(" proper");
+            if (this._isProper)   sb.Append(" proper");
             if (this.IsCollinear) sb.Append(" collinear");
 
             return sb.ToString();                        
@@ -169,7 +170,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         
         protected bool IsEndPoint 
         {
-            get { return this.HasIntersection && !this.isProper; }
+            get { return this.HasIntersection && !this._isProper; }
         }
 
         /// <summary> 
@@ -268,7 +269,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <returns><c>true</c>  if the intersection is proper.</returns>
         public bool IsProper 
         {
-            get { return this.HasIntersection && this.isProper; }
+            get { return HasIntersection && _isProper; }
+            protected set { _isProper = value; }
         }
 
         /// <summary> 

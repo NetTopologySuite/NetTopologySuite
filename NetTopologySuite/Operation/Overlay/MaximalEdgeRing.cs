@@ -74,7 +74,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             {
                 if (de.MinEdgeRing == null) 
                 {
-                    EdgeRing minEr = new MinimalEdgeRing(de, _geometryFactory);
+                    EdgeRing minEr = new MinimalEdgeRing(de, GeometryFactory);
                     minEdgeRings.Add(minEr);
                 }
                 de = de.Next;

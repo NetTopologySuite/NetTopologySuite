@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// 
         /// </summary>
-        protected IList<Edge> edges = new List<Edge>();
+        private IList<Edge> _edges = new List<Edge>();
         
         /// <summary>
         /// 
@@ -68,7 +68,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <param name="edge"></param>
         protected void Add(Edge edge)
         {
-            edges.Add(edge);
+            _edges.Add(edge);
             Add(edge.GetDirEdge(0));
             Add(edge.GetDirEdge(1));
         }
@@ -117,7 +117,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <returns></returns>
         public IEnumerator<Edge> GetEdgeEnumerator()
         {
-            return edges.GetEnumerator(); 
+            return _edges.GetEnumerator(); 
         }
 
         /// <summary>
@@ -125,7 +125,8 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public IList<Edge> Edges
         {
-            get { return edges; }
+            get { return _edges; }
+            protected set { _edges = value; }
         }
 
         /// <summary>
@@ -139,7 +140,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         {
             Remove(edge.GetDirEdge(0));
             Remove(edge.GetDirEdge(1));
-            edges.Remove(edge);
+            _edges.Remove(edge);
             edge.Remove();
         }
 
@@ -181,7 +182,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
 
                 Edge edge = de.Edge;
                 if (edge != null)                
-                    edges.Remove(edge);                
+                    _edges.Remove(edge);                
             }
             // remove the node from the graph
             nodeMap.Remove(node.Coordinate);

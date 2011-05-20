@@ -63,6 +63,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <exception cref="T:System.ObjectDisposedException">The stream is closed. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
+        [CLSCompliant(false)]
         public override ushort ReadUInt16()
         {
             byte[] byteArray = new byte[2];
@@ -103,6 +104,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <exception cref="T:System.ObjectDisposedException">The stream is closed. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
+        [CLSCompliant(false)]
         public override uint ReadUInt32()
         {
             byte[] byteArray = new byte[4];
@@ -144,6 +146,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <exception cref="T:System.ObjectDisposedException">The stream is closed. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
+        [CLSCompliant(false)]
         public override ulong ReadUInt64()
         {
             byte[] byteArray = new byte[8];

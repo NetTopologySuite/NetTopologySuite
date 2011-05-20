@@ -40,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        protected NodeMap nodes;
+        private readonly NodeMap _nodes;
 
         /// <summary>
         /// 
@@ -53,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="nodeFact"></param>
         public PlanarGraph(NodeFactory nodeFact)
         {
-            nodes = new NodeMap(nodeFact);
+            _nodes = new NodeMap(nodeFact);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         public PlanarGraph() 
         {
-            nodes = new NodeMap(new NodeFactory());
+            _nodes = new NodeMap(new NodeFactory());
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public bool IsBoundaryNode(int geomIndex, ICoordinate coord)
         {
-            Node node = nodes.Find(coord);
+            Node node = _nodes.Find(coord);
             if (node == null) 
                 return false;
             Label label = node.Label;
@@ -116,7 +116,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="e"></param>
         public void Add(EdgeEnd e)
         {
-            nodes.Add(e);
+            _nodes.Add(e);
             edgeEndList.Add(e);
         }
 
@@ -126,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public IEnumerator<Node> GetNodeEnumerator()
         {            
-            return nodes.GetEnumerator();         
+            return _nodes.GetEnumerator();         
         }
 
         /// <summary>
@@ -136,8 +136,14 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return new List<Node>(nodes.Values);
+                return new List<Node>(_nodes.Values);
             }
+            //protected set { nodes = value; }
+        }
+
+        protected NodeMap NodeMap
+        {
+            get { return _nodes; }
         }
 
         /// <summary>
@@ -147,7 +153,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public Node AddNode(Node node) 
         { 
-            return nodes.AddNode(node); 
+            return _nodes.AddNode(node); 
         }
 
         /// <summary>
@@ -157,7 +163,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public Node AddNode(ICoordinate coord) 
         {
-            return nodes.AddNode(coord); 
+            return _nodes.AddNode(coord); 
         }
 
         /// <returns> 
@@ -166,7 +172,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="coord"></param>
         public Node Find(ICoordinate coord) 
         {
-            return nodes.Find(coord); 
+            return _nodes.Find(coord); 
         }
 
         /// <summary> 

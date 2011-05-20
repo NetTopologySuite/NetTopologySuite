@@ -138,6 +138,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             {
                 return Points.Length > 0 ? Points[0] : null;
             }
+            protected set
+            {
+                throw new NotSupportedException();
+            }
         }
 
         /// <summary>

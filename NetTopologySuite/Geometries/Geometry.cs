@@ -148,7 +148,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// The bounding box of this <c>Geometry</c>.
         /// </summary>
-        protected IEnvelope envelope;
+        private IEnvelope _envelope;
        
         // The ID of the Spatial Reference System used by this <c>Geometry</c>
         private int _srid;
@@ -545,9 +545,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                if (envelope == null)
-                    envelope = ComputeEnvelopeInternal();                
-                return envelope;
+                if (_envelope == null)
+                    _envelope = ComputeEnvelopeInternal();                
+                return _envelope;
             }
         }
 
@@ -576,7 +576,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public void GeometryChangedAction()
         {
-            envelope = null;
+            _envelope = null;
         }
 
         /// <summary>  
@@ -1264,8 +1264,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public virtual object Clone() 
         {            
             Geometry clone = (Geometry) MemberwiseClone();
-            if (clone.envelope != null) 
-                clone.envelope = new Envelope(clone.envelope);                 
+            if (clone._envelope != null) 
+                clone._envelope = new Envelope(clone._envelope);                 
             return clone;         
         }
 

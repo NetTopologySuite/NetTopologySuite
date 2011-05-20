@@ -67,6 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="value">The two-byte unsigned integer to write.</param>
         /// <exception cref="T:System.ObjectDisposedException">The stream is closed. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
+        [CLSCompliant(false)]
         public override void Write(ushort value)
         {            
             byte[] bytes = BitConverter.GetBytes(value);
@@ -99,6 +100,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="value">The four-byte unsigned integer to write.</param>
         /// <exception cref="T:System.ObjectDisposedException">The stream is closed. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
+        [CLSCompliant(false)]
         public override void Write(uint value)
         {
             byte[] bytes = BitConverter.GetBytes(value);
@@ -131,6 +133,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         /// <param name="value">The eight-byte unsigned integer to write.</param>
         /// <exception cref="T:System.ObjectDisposedException">The stream is closed. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
+        [CLSCompliant(false)]
         public override void Write(ulong value)
         {
             byte[] bytes = BitConverter.GetBytes(value);
