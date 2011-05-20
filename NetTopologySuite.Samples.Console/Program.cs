@@ -20,14 +20,14 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
             new Program().Start();
         }
 
-        private static BaseSamples sample = null;
+        private static BaseSamples _sample;
 
         /// <summary>
         /// 
         /// </summary>
         public void Start()
         {
-            SamplesTest();
+            SamplesTest(true);
         }
 
         /// <summary>
@@ -35,6 +35,11 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
         /// </summary>
         [Test]
         public void SamplesTest()
+        {
+            SamplesTest(false);
+        }
+
+        public void SamplesTest(bool readLine)
         {
 			try
 			{
@@ -70,8 +75,8 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
                 //sample.Start();
                 //Console.WriteLine();
 
-				sample = new GMLTesting();
-				sample.Start();
+				_sample = new GMLTesting();
+				_sample.Start();
 				Console.WriteLine();
 
                 //new LinearReferencingExample().Run();
@@ -79,7 +84,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
 			}
             finally
             {
-                Console.ReadLine();
+                if (readLine) Console.ReadLine();
             }                       
         }
     }

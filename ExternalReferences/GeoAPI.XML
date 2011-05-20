@@ -4,160 +4,68 @@
         <name>GeoAPI</name>
     </assembly>
     <members>
-        <member name="T:GeoAPI.Geometries.IGeometry">
+        <member name="T:GeoAPI.Geometries.Dimensions">
             <summary>
-            
+            Constants representing the dimensions of a point, a curve and a surface.
+            Also, constants representing the dimensions of the empty point and
+            non-empty geometries, and a wildcard dimension meaning "any dimension".
             </summary>
         </member>
-        <member name="M:GeoAPI.Geometries.IGeometry.GetGeometryN(System.Int32)">
+        <member name="F:GeoAPI.Geometries.Dimensions.Point">
             <summary>
-            A IGeometryCollection method moved in IGeometry
-            </summary>
-            <param name="n"></param>
-            <returns></returns>
-        </member>
-        <member name="M:GeoAPI.Geometries.IGeometry.Distance(GeoAPI.Geometries.IGeometry)">
-            <summary>  
-            Returns the minimum distance between this <c>Geometry</c>
-            and the <c>Geometry</c> g.
-            </summary>
-            <param name="g">The <c>Geometry</c> from which to compute the distance.</param>
-        </member>
-        <member name="M:GeoAPI.Geometries.IGeometry.Apply(GeoAPI.Geometries.ICoordinateFilter)">
-            <summary>
-            Performs an operation with or on this <c>Geometry</c>'s
-            coordinates. If you are using this method to modify the point, be sure
-            to call <see cref="M:GeoAPI.Geometries.IGeometry.GeometryChanged"/> afterwards.
-            Note that you cannot use this  method to modify this Geometry 
-            if its underlying <see cref="T:GeoAPI.Geometries.ICoordinateSequence"/>'s Get method
-            returns a copy of the <see cref="T:GeoAPI.Geometries.ICoordinate"/>, rather than the actual
-            Coordinate stored (if it even stores Coordinates at all).
-            </summary>
-            <param name="filter">The filter to apply to this <c>Geometry</c>'s coordinates</param>
-        </member>
-        <member name="M:GeoAPI.Geometries.IGeometry.Apply(GeoAPI.Geometries.ICoordinateSequenceFilter)">
-            <summary>
-             Performs an operation on the coordinates in this <c>Geometry</c>'s <see cref="T:GeoAPI.Geometries.ICoordinateSequence"/>s. 
-             If this method modifies any coordinate values, <see cref="M:GeoAPI.Geometries.IGeometry.GeometryChanged"/> must be called to update the geometry state.
-            </summary>
-             <param name="filter">The filter to apply</param>
-        </member>
-        <member name="M:GeoAPI.Geometries.IGeometry.Apply(GeoAPI.Geometries.IGeometryFilter)">
-            <summary>
-            Performs an operation with or on this <c>Geometry</c> and its
-            subelement <c>Geometry</c>s (if any).
-            Only GeometryCollections and subclasses
-            have subelement Geometry's.
-            </summary>
-            <param name="filter">
-            The filter to apply to this <c>Geometry</c> (and
-            its children, if it is a <c>GeometryCollection</c>).
-            </param>
-        </member>
-        <member name="M:GeoAPI.Geometries.IGeometry.Apply(GeoAPI.Geometries.IGeometryComponentFilter)">
-            <summary>
-            Performs an operation with or on this Geometry and its
-            component Geometry's. Only GeometryCollections and
-            Polygons have component Geometry's; for Polygons they are the LinearRings
-            of the shell and holes.
-            </summary>
-            <param name="filter">The filter to apply to this <c>Geometry</c>.</param>
-        </member>
-        <member name="M:GeoAPI.Geometries.IGeometry.GeometryChanged">
-            <summary>
-            Notifies this Geometry that its Coordinates have been changed by an external
-            party (using a CoordinateFilter, for example). The Geometry will flush
-            and/or update any information it has cached (such as its Envelope).
+            Dimension value of a point (0).
             </summary>
         </member>
-        <member name="M:GeoAPI.Geometries.IGeometry.GeometryChangedAction">
+        <member name="F:GeoAPI.Geometries.Dimensions.Curve">
             <summary>
-            Notifies this Geometry that its Coordinates have been changed by an external
-            party. When #geometryChanged is called, this method will be called for
-            this Geometry and its component Geometries.
+            Dimension value of a curve (1).
             </summary>
         </member>
-        <member name="P:GeoAPI.Geometries.IGeometry.SRID">
+        <member name="F:GeoAPI.Geometries.Dimensions.Surface">
             <summary>
-            The spatial reference id
+            Dimension value of a surface (2).
             </summary>
         </member>
-        <member name="P:GeoAPI.Geometries.IGeometry.GeometryType">
+        <member name="F:GeoAPI.Geometries.Dimensions.False">
             <summary>
-            The geometry type
+            Dimension value of a empty point (-1).
             </summary>
         </member>
-        <member name="P:GeoAPI.Geometries.IGeometry.Area">
+        <member name="F:GeoAPI.Geometries.Dimensions.True">
             <summary>
-            A ISurface method moved in IGeometry 
+            Dimension value of non-empty geometries (= {Point,Curve,A}).
             </summary>
         </member>
-        <member name="P:GeoAPI.Geometries.IGeometry.Length">
+        <member name="F:GeoAPI.Geometries.Dimensions.Dontcare">
             <summary>
-            A ICurve method moved in IGeometry
+            Dimension value for any dimension (= {False, True}).
             </summary>
         </member>
-        <member name="P:GeoAPI.Geometries.IGeometry.NumGeometries">
+        <member name="T:GeoAPI.Geometries.Dimension">
             <summary>
-            A IGeometryCollection method moved in IGeometry
+            Class containing static methods for conversions
+            between dimension values and characters.
             </summary>
         </member>
-        <member name="P:GeoAPI.Geometries.IGeometry.NumPoints">
+        <member name="M:GeoAPI.Geometries.Dimension.ToDimensionSymbol(GeoAPI.Geometries.Dimensions)">
             <summary>
-            A ILineString method moved to IGeometry
+            Converts the dimension value to a dimension symbol,
+            for example, <c>True => 'T'</c>
             </summary>
+            <param name="dimensionValue">Number that can be stored in the <c>IntersectionMatrix</c>.
+            Possible values are <c>True, False, Dontcare, 0, 1, 2</c>.</param>
+            <returns>Character for use in the string representation of an <c>IntersectionMatrix</c>.
+            Possible values are <c>T, F, * , 0, 1, 2</c>.</returns>
         </member>
-        <member name="P:GeoAPI.Geometries.IGeometry.Centroid">
+        <member name="M:GeoAPI.Geometries.Dimension.ToDimensionValue(System.Char)">
             <summary>
-            A ISurface method moved in IGeometry 
+            Converts the dimension symbol to a dimension value,
+            for example, <c>'*' => Dontcare</c>
             </summary>
-        </member>
-        <member name="P:GeoAPI.Geometries.IGeometry.PointOnSurface">
-            <summary>
-            A ISurface method moved in IGeometry 
-            </summary>        
-        </member>
-        <member name="T:GeoAPI.Geometries.ICoordinateSequenceFilter">
-            <summary>
-             Interface for classes which provide operations that
-             can be applied to the coordinates in a <see cref="T:GeoAPI.Geometries.ICoordinateSequence"/>. 
-             A CoordinateSequence filter can either record information about each coordinate or
-             change the coordinate in some way. CoordinateSequence filters can be
-             used to implement such things as coordinate transformations, centroid and
-             envelope computation, and many other functions.
-             For maximum efficiency, the execution of filters can be short-circuited.
-             <see cref="T:GeoAPI.Geometries.IGeometry"/> classes support the concept of applying a
-             <c>CoordinateSequenceFilter</c> to each 
-             <see cref="T:GeoAPI.Geometries.ICoordinateSequence"/>s they contain. 
-            </summary>
-            <see cref="M:GeoAPI.Geometries.IGeometry.Apply(GeoAPI.Geometries.ICoordinateSequenceFilter)"/>
-            <remarks>
-             <c>CoordinateSequenceFilter</c> is an example of the Gang-of-Four Visitor pattern.
-            </remarks>
-             <author>Martin Davis</author>
-        </member>
-        <member name="M:GeoAPI.Geometries.ICoordinateSequenceFilter.Filter(GeoAPI.Geometries.ICoordinateSequence,System.Int32)">
-            <summary>
-             Performs an operation on a coordinate in a <see cref="T:GeoAPI.Geometries.ICoordinateSequence"/>.
-            </summary>
-             <param name="seq">the <c>CoordinateSequence</c> to which the filter is applied</param>
-             <param name="i">i the index of the coordinate to apply the filter to</param>
-        </member>
-        <member name="P:GeoAPI.Geometries.ICoordinateSequenceFilter.Done">
-            <summary>
-             Reports whether the application of this filter can be terminated.
-            </summary>
-            <remarks>
-             Once this method returns <c>false</c>, it should 
-             continue to return <c>false</c> on every subsequent call.
-            </remarks>
-        </member>
-        <member name="P:GeoAPI.Geometries.ICoordinateSequenceFilter.GeometryChanged">
-            <summary>
-             Reports whether the execution of this filter has modified the coordinates of the geometry.
-             If so, <see cref="M:GeoAPI.Geometries.IGeometry.GeometryChanged"/> will be executed.
-             </summary>
-             <remarks>Most filters can simply return a constant value reflecting whether they are able to change the coordinates.</remarks>
+            <param name="dimensionSymbol">Character for use in the string representation of an <c>IntersectionMatrix</c>.
+            Possible values are <c>T, F, * , 0, 1, 2</c>.</param>
+            <returns>Number that can be stored in the <c>IntersectionMatrix</c>.
+            Possible values are <c>True, False, Dontcare, 0, 1, 2</c>.</returns>
         </member>
         <member name="T:GeoAPI.CoordinateSystems.Wgs84ConversionInfo">
             <summary>
@@ -344,29 +252,24 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:GeoAPI.CoordinateSystems.IVerticalCoordinateSystem">
+        <member name="T:GeoAPI.CoordinateSystems.IHorizontalDatum">
             <summary>
-            A one-dimensional coordinate system suitable for vertical measurements.
+            Procedure used to measure positions on the surface of the Earth.
             </summary>
         </member>
-        <member name="T:GeoAPI.CoordinateSystems.ICoordinateSystem">
+        <member name="T:GeoAPI.CoordinateSystems.IDatum">
             <summary>
-            Base interface for all coordinate systems
+            A set of quantities from which other quantities are calculated.
             </summary>
             <remarks>
-            <para>A coordinate system is a mathematical space, where the elements of the space are called
-            positions. Each position is described by a list of numbers. The length of the list corresponds
-            to the dimension of the coordinate system. So in a 2D coordinate system each position is 
-            described by a list containing 2 numbers.</para>
-            <para>
-            However, in a coordinate system, not all lists of numbers correspond to a position - 
-            some lists may be outside the domain of the coordinate system. For example, in a 2D Lat/Lon
-            coordinate system, the list (91,91) does not correspond to a position.</para>
-            <para>
-            Some coordinate systems also have a mapping from the mathematical space into locations
-            in the real world. So in a Lat/Lon coordinate system, the mathematical position (lat, long) 
-            corresponds to a location on the surface of the Earth. This mapping from the mathematical 
-            space into real-world locations is called a Datum.</para>
+            For the OGC abstract model, it can be defined as a set of real points on the earth 
+            that have coordinates. EG. A datum can be thought of as a set of parameters 
+            defining completely the origin and orientation of a coordinate system with respect 
+            to the earth. A textual description and/or a set of parameters describing the 
+            relationship of a coordinate system to some predefined physical locations (such 
+            as center of mass) and physical directions (such as axis of spin). The definition 
+            of the datum may also include the temporal behavior (such as the rate of change of
+            the orientation of the coordinate axes).
             </remarks>
         </member>
         <member name="T:GeoAPI.CoordinateSystems.IInfo">
@@ -429,300 +332,36 @@
             Gets an XML representation of this object.
             </summary>
         </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystem.GetAxis(System.Int32)">
-            <summary>
-            Gets axis details for dimension within coordinate system.
-            </summary>
-            <param name="dimension">Dimension</param>
-            <returns>Axis info</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystem.GetUnits(System.Int32)">
-            <summary>
-            Gets units for dimension within coordinate system.
-            </summary>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.ICoordinateSystem.Dimension">
-            <summary>
-            Dimension of the coordinate system.
-            </summary>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.ICoordinateSystem.DefaultEnvelope">
-            <summary>
-            Gets default envelope of coordinate system.
-            </summary>
-            <remarks>
-            Gets default envelope of coordinate system. Coordinate systems 
-            which are bounded should return the minimum bounding box of their 
-            domain. Unbounded coordinate systems should return a box which is 
-            as large as is likely to be used. For example, a (lon,lat) 
-            geographic coordinate system in degrees should return a box from 
-            (-180,-90) to (180,90), and a geocentric coordinate system could 
-            return a box from (-r,-r,-r) to (+r,+r,+r) where r is the 
-            approximate radius of the Earth.
-            </remarks>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.IVerticalCoordinateSystem.VerticalDatum">
-            <summary>
-            Gets the vertical datum, which indicates the measurement method
-            </summary>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.IVerticalCoordinateSystem.VerticalUnit">
-            <summary>
-            Gets the units used along the vertical axis.
-            </summary>
-        </member>
-        <member name="T:GeoAPI.CoordinateSystems.ICompoundCoordinateSystem">
-            <summary>
-            An aggregate of two coordinate systems (CRS). One of these is usually a 
-            CRS based on a two dimensional coordinate system such as a geographic or
-            a projected coordinate system with a horizontal datum. The other is a 
-            vertical CRS which is a one-dimensional coordinate system with a vertical
-            datum.
-            </summary>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.ICompoundCoordinateSystem.HeadCS">
-            <summary>
-            Gets first sub-coordinate system.
-            </summary>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.ICompoundCoordinateSystem.TailCS">
-            <summary>
-            Gets second sub-coordinate system.
-            </summary>
-        </member>
-        <member name="T:GeoAPI.CoordinateSystems.Transformations.TransformType">
-            <summary>
-            Semantic type of transform used in coordinate transformation.
-            </summary>
-        </member>
-        <member name="F:GeoAPI.CoordinateSystems.Transformations.TransformType.Other">
-            <summary>
-            Unknown or unspecified type of transform.
-            </summary>
-        </member>
-        <member name="F:GeoAPI.CoordinateSystems.Transformations.TransformType.Conversion">
-            <summary>
-            Transform depends only on defined parameters. For example, a cartographic projection.
-            </summary>
-        </member>
-        <member name="F:GeoAPI.CoordinateSystems.Transformations.TransformType.Transformation">
-            <summary>
-            Transform depends only on empirically derived parameters. For example a datum transformation.
-            </summary>
-        </member>
-        <member name="F:GeoAPI.CoordinateSystems.Transformations.TransformType.ConversionAndTransformation">
-            <summary>
-            Transform depends on both defined and empirical parameters.
-            </summary>
-        </member>
-        <member name="T:GeoAPI.CoordinateSystems.Transformations.IMathTransform">
-            <summary>
-            Transforms muti-dimensional coordinate points.
-            </summary>
-            <remarks>
-            If a client application wishes to query the source and target coordinate 
-            systems of a transformation, then it should keep hold of the 
-            <see cref="T:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation"/> interface, and use the contained 
-            math transform object whenever it wishes to perform a transform.
-            </remarks>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.Transformations.IMathTransform.Identity">
-            <summary>
-            Tests whether this transform does not move any points.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.Transformations.IMathTransform.Derivative(System.Double[])">
-            <summary>
-            Gets the derivative of this transform at a point. If the transform does 
-            not have a well-defined derivative at the point, then this function should 
-            fail in the usual way for the DCP. The derivative is the matrix of the 
-            non-translating portion of the approximate affine map at the point. The
-            matrix will have dimensions corresponding to the source and target 
-            coordinate systems. If the input dimension is M, and the output dimension 
-            is N, then the matrix will have size [M][N]. The elements of the matrix 
-            {elt[n][m] : n=0..(N-1)} form a vector in the output space which is 
-            parallel to the displacement caused by a small change in the m'th ordinate 
-            in the input space.
-            </summary>
-            <param name="point"></param>
-            <returns></returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.Transformations.IMathTransform.GetCodomainConvexHull(System.Collections.Generic.List{System.Double})">
-            <summary>
-            Gets transformed convex hull.
-            </summary>
-            <remarks>
-            <para>The supplied ordinates are interpreted as a sequence of points, which generates a convex
-            hull in the source space. The returned sequence of ordinates represents a convex hull in the 
-            output space. The number of output points will often be different from the number of input 
-            points. Each of the input points should be inside the valid domain (this can be checked by 
-            testing the points' domain flags individually). However, the convex hull of the input points
-            may go outside the valid domain. The returned convex hull should contain the transformed image
-            of the intersection of the source convex hull and the source domain.</para>
-            <para>A convex hull is a shape in a coordinate system, where if two positions A and B are 
-            inside the shape, then all positions in the straight line between A and B are also inside 
-            the shape. So in 3D a cube and a sphere are both convex hulls. Other less obvious examples 
-            of convex hulls are straight lines, and single points. (A single point is a convex hull, 
-            because the positions A and B must both be the same - i.e. the point itself. So the straight
-            line between A and B has zero length.)</para>
-            <para>Some examples of shapes that are NOT convex hulls are donuts, and horseshoes.</para>
-            </remarks>
-            <param name="points"></param>
-            <returns></returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.Transformations.IMathTransform.GetDomainFlags(System.Collections.Generic.List{System.Double})">
-            <summary>
-            Gets flags classifying domain points within a convex hull.
-            </summary>
-            <remarks>
-             The supplied ordinates are interpreted as a sequence of points, which 
-            generates a convex hull in the source space. Conceptually, each of the 
-            (usually infinite) points inside the convex hull is then tested against
-            the source domain. The flags of all these tests are then combined. In 
-            practice, implementations of different transforms will use different 
-            short-cuts to avoid doing an infinite number of tests.
-            </remarks>
-            <param name="points"></param>
-            <returns></returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.Transformations.IMathTransform.Inverse">
-            <summary>
-            Creates the inverse transform of this object.
-            </summary>
-            <remarks>This method may fail if the transform is not one to one. However, all cartographic projections should succeed.</remarks>
-            <returns></returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.Transformations.IMathTransform.Transform(System.Double[])">
-            <summary>
-            Transforms a coordinate point. The passed parameter point should not be modified.
-            </summary>
-            <param name="point"></param>
-            <returns></returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.Transformations.IMathTransform.TransformList(System.Collections.Generic.List{System.Double[]})">
-            <summary>
-            Transforms a list of coordinate point ordinal values.
-            </summary>
-            <remarks>
-            This method is provided for efficiently transforming many points. The supplied array 
-            of ordinal values will contain packed ordinal values. For example, if the source 
-            dimension is 3, then the ordinals will be packed in this order (x0,y0,z0,x1,y1,z1 ...).
-            The size of the passed array must be an integer multiple of DimSource. The returned 
-            ordinal values are packed in a similar way. In some DCPs. the ordinals may be 
-            transformed in-place, and the returned array may be the same as the passed array.
-            So any client code should not attempt to reuse the passed ordinal values (although
-            they can certainly reuse the passed array). If there is any problem then the server
-            implementation will throw an exception. If this happens then the client should not
-            make any assumptions about the state of the ordinal values.
-            </remarks>
-            <param name="points"></param>
-            <returns></returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.Transformations.IMathTransform.Invert">
-            <summary>
-            Reverses the transformation
-            </summary>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.Transformations.IMathTransform.DimSource">
-            <summary>
-            Gets the dimension of input points.
-            </summary>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.Transformations.IMathTransform.DimTarget">
-            <summary>
-            Gets the dimension of output points.
-            </summary>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.Transformations.IMathTransform.WKT">
-            <summary>
-            Gets a Well-Known text representation of this object.
-            </summary>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.Transformations.IMathTransform.XML">
-            <summary>
-            Gets an XML representation of this object.
-            </summary>
-        </member>
-        <member name="T:GeoAPI.CoordinateSystems.Transformations.DomainFlags">
-            <summary>
-            Flags indicating parts of domain covered by a convex hull. 
-            </summary>
-            <remarks>
-            These flags can be combined. For example, the value 3 
-            corresponds to a combination of <see cref="F:GeoAPI.CoordinateSystems.Transformations.DomainFlags.Inside"/> and <see cref="F:GeoAPI.CoordinateSystems.Transformations.DomainFlags.Outside"/>,
-            which means that some parts of the convex hull are inside the 
-            domain, and some parts of the convex hull are outside the domain.
-            </remarks>
-        </member>
-        <member name="F:GeoAPI.CoordinateSystems.Transformations.DomainFlags.Inside">
-            <summary>
-            At least one point in a convex hull is inside the transform's domain.
-            </summary>
-        </member>
-        <member name="F:GeoAPI.CoordinateSystems.Transformations.DomainFlags.Outside">
-            <summary>
-            At least one point in a convex hull is outside the transform's domain.
-            </summary>
-        </member>
-        <member name="F:GeoAPI.CoordinateSystems.Transformations.DomainFlags.Discontinuous">
-            <summary>
-            At least one point in a convex hull is not transformed continuously.
-            </summary>
-            <remarks>
-            As an example, consider a "Longitude_Rotation" transform which adjusts 
-            longitude coordinates to take account of a change in Prime Meridian. If
-            the rotation is 5 degrees east, then the point (Lat=175,Lon=0) is not 
-            transformed continuously, since it is on the meridian line which will 
-            be split at +180/-180 degrees.
-            </remarks>
-        </member>
-        <member name="T:GeoAPI.CoordinateSystems.ILocalDatum">
-            <summary>
-            Local datum. If two local datum objects have the same datum type and name, 
-            then they can be considered equal. This means that coordinates can be
-            transformed between two different local coordinate systems, as long as
-            they are based on the same local datum.
-            </summary>
-        </member>
-        <member name="T:GeoAPI.CoordinateSystems.IDatum">
-            <summary>
-            A set of quantities from which other quantities are calculated.
-            </summary>
-            <remarks>
-            For the OGC abstract model, it can be defined as a set of real points on the earth 
-            that have coordinates. EG. A datum can be thought of as a set of parameters 
-            defining completely the origin and orientation of a coordinate system with respect 
-            to the earth. A textual description and/or a set of parameters describing the 
-            relationship of a coordinate system to some predefined physical locations (such 
-            as center of mass) and physical directions (such as axis of spin). The definition 
-            of the datum may also include the temporal behavior (such as the rate of change of
-            the orientation of the coordinate axes).
-            </remarks>
-        </member>
         <member name="P:GeoAPI.CoordinateSystems.IDatum.DatumType">
             <summary>
             Gets or sets the type of the datum as an enumerated code.
             </summary>
         </member>
-        <member name="T:GeoAPI.Geometries.IGeometryComponentFilter">
+        <member name="P:GeoAPI.CoordinateSystems.IHorizontalDatum.Ellipsoid">
             <summary>
-            <c>Geometry</c> classes support the concept of applying
-            an <c>IGeometryComponentFilter</c> filter to the <c>Geometry</c>.
-            The filter is applied to every component of the <c>Geometry</c>
-            which is itself a <c>Geometry</c>.
-            (For instance, all the LinearRings in Polygons are visited.)
-            An <c>IGeometryComponentFilter</c> filter can either
-            record information about the <c>Geometry</c>
-            or change the <c>Geometry</c> in some way.
-            <c>IGeometryComponentFilter</c> is an example of the Gang-of-Four Visitor pattern.
-            </summary>    
-        </member>
-        <member name="M:GeoAPI.Geometries.IGeometryComponentFilter.Filter(GeoAPI.Geometries.IGeometry)">
-            <summary>
-            Performs an operation with or on <c>geom</c>.
+            Gets or sets the ellipsoid of the datum.
             </summary>
-            <param name="geom">A <c>Geometry</c> to which the filter is applied.</param>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.IHorizontalDatum.Wgs84Parameters">
+            <summary>
+            Gets preferred parameters for a Bursa Wolf transformation into WGS84. The 7 returned values 
+            correspond to (dx,dy,dz) in meters, (ex,ey,ez) in arc-seconds, and scaling in parts-per-million.
+            </summary>
+        </member>
+        <member name="T:GeoAPI.CoordinateSystems.IAngularUnit">
+            <summary>
+            The IAngularUnit interface defines methods on angular units.
+            </summary>
+        </member>
+        <member name="T:GeoAPI.CoordinateSystems.IUnit">
+            <summary>
+            The IUnit interface abstracts different kinds of units, it has no methods.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.IAngularUnit.RadiansPerUnit">
+            <summary>
+            Gets or sets the number of radians per angular unit.
+            </summary>
         </member>
         <member name="T:GeoAPI.CoordinateSystems.ProjectionParameter">
             <summary>
@@ -768,96 +407,233 @@
             Gets an XML representation of this object
             </summary>
         </member>
-        <member name="T:GeoAPI.CoordinateSystems.IProjection">
+        <member name="T:GeoAPI.CoordinateSystems.ILinearUnit">
             <summary>
-            The IProjection interface defines the standard information stored with projection
-            objects. A projection object implements a coordinate transformation from a geographic
-            coordinate system to a projected coordinate system, given the ellipsoid for the
-            geographic coordinate system. It is expected that each coordinate transformation of
-            interest, e.g., Transverse Mercator, Lambert, will be implemented as a COM class of
-            coType Projection, supporting the IProjection interface.
+            The ILinearUnit interface defines methods on linear units.
             </summary>
         </member>
-        <member name="M:GeoAPI.CoordinateSystems.IProjection.GetParameter(System.Int32)">
+        <member name="P:GeoAPI.CoordinateSystems.ILinearUnit.MetersPerUnit">
             <summary>
-            Gets an indexed parameter of the projection.
-            </summary>
-            <param name="n">Index of parameter</param>
-            <returns>n'th parameter</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.IProjection.GetParameter(System.String)">
-            <summary>
-            Gets an named parameter of the projection.
-            </summary>
-            <remarks>The parameter name is case insensitive</remarks>
-            <param name="name">Name of parameter</param>
-            <returns>parameter or null if not found</returns>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.IProjection.NumParameters">
-            <summary>
-            Gets number of parameters of the projection.
+            Gets or sets the number of meters per <see cref="T:GeoAPI.CoordinateSystems.ILinearUnit"/>.
             </summary>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.IProjection.ClassName">
+        <member name="T:GeoAPI.Geometries.Locations">
             <summary>
-            Gets the projection classification name (e.g. 'Transverse_Mercator').
+            
             </summary>
         </member>
-        <member name="T:GeoAPI.CoordinateSystems.IAngularUnit">
+        <member name="F:GeoAPI.Geometries.Locations.Interior">
             <summary>
-            The IAngularUnit interface defines methods on angular units.
+            DE-9IM row index of the interior of the first point and column index of
+            the interior of the second point. Location value for the interior of a
+            point.
+            int value = 0;
             </summary>
         </member>
-        <member name="T:GeoAPI.CoordinateSystems.IUnit">
+        <member name="F:GeoAPI.Geometries.Locations.Boundary">
             <summary>
-            The IUnit interface abstracts different kinds of units, it has no methods.
+            DE-9IM row index of the boundary of the first point and column index of
+            the boundary of the second point. Location value for the boundary of a
+            point.
+            int value = 1;
             </summary>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.IAngularUnit.RadiansPerUnit">
+        <member name="F:GeoAPI.Geometries.Locations.Exterior">
             <summary>
-            Gets or sets the number of radians per angular unit.
+            DE-9IM row index of the exterior of the first point and column index of
+            the exterior of the second point. Location value for the exterior of a
+            point.
+            int value = 2;
             </summary>
         </member>
-        <member name="T:GeoAPI.Geometries.Ordinates">
+        <member name="F:GeoAPI.Geometries.Locations.Null">
             <summary>
-            Standard ordinate index values.
+            Used for uninitialized location values.
+            int value = -1;
             </summary>
         </member>
-        <member name="F:GeoAPI.Geometries.Ordinates.X">
+        <member name="T:GeoAPI.Geometries.Location">
             <summary>
-            X Ordinate = 0.
+            
             </summary>
         </member>
-        <member name="F:GeoAPI.Geometries.Ordinates.Y">
+        <member name="M:GeoAPI.Geometries.Location.ToLocationSymbol(GeoAPI.Geometries.Locations)">
             <summary>
-            Y Ordinate = 1.
+            Converts the location value to a location symbol, for example, <c>EXTERIOR => 'e'</c>.
+            </summary>
+            <param name="locationValue"></param>
+            <returns>Either 'e', 'b', 'i' or '-'.</returns>
+        </member>
+        <member name="T:GeoAPI.Geometries.IGeometry">
+            <summary>
+            
             </summary>
         </member>
-        <member name="F:GeoAPI.Geometries.Ordinates.Z">
+        <member name="M:GeoAPI.Geometries.IGeometry.GetGeometryN(System.Int32)">
             <summary>
-            Z Ordinate = 2.
+            A IGeometryCollection method moved in IGeometry
+            </summary>
+            <param name="n"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.IGeometry.Distance(GeoAPI.Geometries.IGeometry)">
+            <summary>  
+            Returns the minimum distance between this <c>Geometry</c>
+            and the <c>Geometry</c> g.
+            </summary>
+            <param name="g">The <c>Geometry</c> from which to compute the distance.</param>
+        </member>
+        <member name="M:GeoAPI.Geometries.IGeometry.Apply(GeoAPI.Geometries.ICoordinateFilter)">
+            <summary>
+            Performs an operation with or on this <c>Geometry</c>'s
+            coordinates. If you are using this method to modify the point, be sure
+            to call <see cref="M:GeoAPI.Geometries.IGeometry.GeometryChanged"/> afterwards.
+            Note that you cannot use this  method to modify this Geometry 
+            if its underlying <see cref="T:GeoAPI.Geometries.ICoordinateSequence"/>'s Get method
+            returns a copy of the <see cref="T:GeoAPI.Geometries.ICoordinate"/>, rather than the actual
+            Coordinate stored (if it even stores Coordinates at all).
+            </summary>
+            <param name="filter">The filter to apply to this <c>Geometry</c>'s coordinates</param>
+        </member>
+        <member name="M:GeoAPI.Geometries.IGeometry.Apply(GeoAPI.Geometries.ICoordinateSequenceFilter)">
+            <summary>
+             Performs an operation on the coordinates in this <c>Geometry</c>'s <see cref="T:GeoAPI.Geometries.ICoordinateSequence"/>s. 
+             If this method modifies any coordinate values, <see cref="M:GeoAPI.Geometries.IGeometry.GeometryChanged"/> must be called to update the geometry state.
+            </summary>
+             <param name="filter">The filter to apply</param>
+        </member>
+        <member name="M:GeoAPI.Geometries.IGeometry.Apply(GeoAPI.Geometries.IGeometryFilter)">
+            <summary>
+            Performs an operation with or on this <c>Geometry</c> and its
+            subelement <c>Geometry</c>s (if any).
+            Only GeometryCollections and subclasses
+            have subelement Geometry's.
+            </summary>
+            <param name="filter">
+            The filter to apply to this <c>Geometry</c> (and
+            its children, if it is a <c>GeometryCollection</c>).
+            </param>
+        </member>
+        <member name="M:GeoAPI.Geometries.IGeometry.Apply(GeoAPI.Geometries.IGeometryComponentFilter)">
+            <summary>
+            Performs an operation with or on this Geometry and its
+            component Geometry's. Only GeometryCollections and
+            Polygons have component Geometry's; for Polygons they are the LinearRings
+            of the shell and holes.
+            </summary>
+            <param name="filter">The filter to apply to this <c>Geometry</c>.</param>
+        </member>
+        <member name="M:GeoAPI.Geometries.IGeometry.GeometryChanged">
+            <summary>
+            Notifies this Geometry that its Coordinates have been changed by an external
+            party (using a CoordinateFilter, for example). The Geometry will flush
+            and/or update any information it has cached (such as its Envelope).
             </summary>
         </member>
-        <member name="F:GeoAPI.Geometries.Ordinates.M">
+        <member name="M:GeoAPI.Geometries.IGeometry.GeometryChangedAction">
             <summary>
-            M Ordinate = 3.
+            Notifies this Geometry that its Coordinates have been changed by an external
+            party. When #geometryChanged is called, this method will be called for
+            this Geometry and its component Geometries.
             </summary>
         </member>
-        <member name="T:GeoAPI.CoordinateSystems.IHorizontalDatum">
+        <member name="P:GeoAPI.Geometries.IGeometry.SRID">
             <summary>
-            Procedure used to measure positions on the surface of the Earth.
+            The spatial reference id
             </summary>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.IHorizontalDatum.Ellipsoid">
+        <member name="P:GeoAPI.Geometries.IGeometry.GeometryType">
             <summary>
-            Gets or sets the ellipsoid of the datum.
+            The geometry type
             </summary>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.IHorizontalDatum.Wgs84Parameters">
+        <member name="P:GeoAPI.Geometries.IGeometry.Area">
             <summary>
-            Gets preferred parameters for a Bursa Wolf transformation into WGS84. The 7 returned values 
-            correspond to (dx,dy,dz) in meters, (ex,ey,ez) in arc-seconds, and scaling in parts-per-million.
+            A ISurface method moved in IGeometry 
             </summary>
+        </member>
+        <member name="P:GeoAPI.Geometries.IGeometry.Length">
+            <summary>
+            A ICurve method moved in IGeometry
+            </summary>
+        </member>
+        <member name="P:GeoAPI.Geometries.IGeometry.NumGeometries">
+            <summary>
+            A IGeometryCollection method moved in IGeometry
+            </summary>
+        </member>
+        <member name="P:GeoAPI.Geometries.IGeometry.NumPoints">
+            <summary>
+            A ILineString method moved to IGeometry
+            </summary>
+        </member>
+        <member name="P:GeoAPI.Geometries.IGeometry.Centroid">
+            <summary>
+            A ISurface method moved in IGeometry 
+            </summary>
+        </member>
+        <member name="P:GeoAPI.Geometries.IGeometry.PointOnSurface">
+            <summary>
+            A ISurface method moved in IGeometry 
+            </summary>        
+        </member>
+        <member name="T:GeoAPI.CoordinateSystems.IGeodeticSpatialReference">
+            <summary>
+            The IGeodeticSpatialReference interface defines a root interface for all types of geodetic
+            spatial references, it is a subclass of ICoordinateSystem.
+            </summary>
+        </member>
+        <member name="T:GeoAPI.CoordinateSystems.ICoordinateSystem">
+            <summary>
+            Base interface for all coordinate systems
+            </summary>
+            <remarks>
+            <para>A coordinate system is a mathematical space, where the elements of the space are called
+            positions. Each position is described by a list of numbers. The length of the list corresponds
+            to the dimension of the coordinate system. So in a 2D coordinate system each position is 
+            described by a list containing 2 numbers.</para>
+            <para>
+            However, in a coordinate system, not all lists of numbers correspond to a position - 
+            some lists may be outside the domain of the coordinate system. For example, in a 2D Lat/Lon
+            coordinate system, the list (91,91) does not correspond to a position.</para>
+            <para>
+            Some coordinate systems also have a mapping from the mathematical space into locations
+            in the real world. So in a Lat/Lon coordinate system, the mathematical position (lat, long) 
+            corresponds to a location on the surface of the Earth. This mapping from the mathematical 
+            space into real-world locations is called a Datum.</para>
+            </remarks>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystem.GetAxis(System.Int32)">
+            <summary>
+            Gets axis details for dimension within coordinate system.
+            </summary>
+            <param name="dimension">Dimension</param>
+            <returns>Axis info</returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystem.GetUnits(System.Int32)">
+            <summary>
+            Gets units for dimension within coordinate system.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.ICoordinateSystem.Dimension">
+            <summary>
+            Dimension of the coordinate system.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.ICoordinateSystem.DefaultEnvelope">
+            <summary>
+            Gets default envelope of coordinate system.
+            </summary>
+            <remarks>
+            Gets default envelope of coordinate system. Coordinate systems 
+            which are bounded should return the minimum bounding box of their 
+            domain. Unbounded coordinate systems should return a box which is 
+            as large as is likely to be used. For example, a (lon,lat) 
+            geographic coordinate system in degrees should return a box from 
+            (-180,-90) to (180,90), and a geocentric coordinate system could 
+            return a box from (-r,-r,-r) to (+r,+r,+r) where r is the 
+            approximate radius of the Earth.
+            </remarks>
         </member>
         <member name="T:GeoAPI.CoordinateSystems.Transformations.IMathTransformFactory">
             <summary>
@@ -940,119 +716,255 @@
             <param name="parameterName"></param>
             <returns></returns>
         </member>
-        <member name="T:GeoAPI.CoordinateSystems.IProjectedCoordinateSystem">
+        <member name="T:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformationFactory">
             <summary>
-            The IProjectedCoordinateSystem interface defines the standard information stored with
-            projected coordinate system objects. A projected coordinate system is defined using a
-            geographic coordinate system object and a projection object that defines the
-            coordinate transformation from the geographic coordinate system to the projected
-            coordinate systems. The instances of a single ProjectedCoordinateSystem COM class can
-            be used to model different projected coordinate systems (e.g., UTM Zone 10, Albers)
-            by associating the ProjectedCoordinateSystem instances with Projection instances
-            belonging to different Projection COM classes (Transverse Mercator and Albers,
-            respectively).
+            Creates coordinate transformations.
             </summary>
         </member>
-        <member name="T:GeoAPI.CoordinateSystems.IHorizontalCoordinateSystem">
+        <member name="M:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformationFactory.CreateFromCoordinateSystems(GeoAPI.CoordinateSystems.ICoordinateSystem,GeoAPI.CoordinateSystems.ICoordinateSystem)">
             <summary>
-            A 2D coordinate system suitable for positions on the Earth's surface.
+            Creates a transformation between two coordinate systems.
+            </summary>
+            <remarks>
+            This method will examine the coordinate systems in order to construct
+            a transformation between them. This method may fail if no path between 
+            the coordinate systems is found, using the normal failing behavior of 
+            the DCP (e.g. throwing an exception).</remarks>
+            <param name="sourceCS">Source coordinate system</param>
+            <param name="targetCS">Target coordinate system</param>
+            <returns></returns>
+        </member>
+        <member name="T:GeoAPI.Geometries.IGeometryComponentFilter">
+            <summary>
+            <c>Geometry</c> classes support the concept of applying
+            an <c>IGeometryComponentFilter</c> filter to the <c>Geometry</c>.
+            The filter is applied to every component of the <c>Geometry</c>
+            which is itself a <c>Geometry</c>.
+            (For instance, all the LinearRings in Polygons are visited.)
+            An <c>IGeometryComponentFilter</c> filter can either
+            record information about the <c>Geometry</c>
+            or change the <c>Geometry</c> in some way.
+            <c>IGeometryComponentFilter</c> is an example of the Gang-of-Four Visitor pattern.
+            </summary>    
+        </member>
+        <member name="M:GeoAPI.Geometries.IGeometryComponentFilter.Filter(GeoAPI.Geometries.IGeometry)">
+            <summary>
+            Performs an operation with or on <c>geom</c>.
+            </summary>
+            <param name="geom">A <c>Geometry</c> to which the filter is applied.</param>
+        </member>
+        <member name="T:GeoAPI.CoordinateSystems.Transformations.DomainFlags">
+            <summary>
+            Flags indicating parts of domain covered by a convex hull. 
+            </summary>
+            <remarks>
+            These flags can be combined. For example, the value 3 
+            corresponds to a combination of <see cref="F:GeoAPI.CoordinateSystems.Transformations.DomainFlags.Inside"/> and <see cref="F:GeoAPI.CoordinateSystems.Transformations.DomainFlags.Outside"/>,
+            which means that some parts of the convex hull are inside the 
+            domain, and some parts of the convex hull are outside the domain.
+            </remarks>
+        </member>
+        <member name="F:GeoAPI.CoordinateSystems.Transformations.DomainFlags.Inside">
+            <summary>
+            At least one point in a convex hull is inside the transform's domain.
             </summary>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.IHorizontalCoordinateSystem.HorizontalDatum">
+        <member name="F:GeoAPI.CoordinateSystems.Transformations.DomainFlags.Outside">
             <summary>
-            Returns the HorizontalDatum.
+            At least one point in a convex hull is outside the transform's domain.
             </summary>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.IProjectedCoordinateSystem.GeographicCoordinateSystem">
+        <member name="F:GeoAPI.CoordinateSystems.Transformations.DomainFlags.Discontinuous">
             <summary>
-            Gets or sets the geographic coordinate system associated with the projected
-            coordinate system.
+            At least one point in a convex hull is not transformed continuously.
             </summary>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.IProjectedCoordinateSystem.LinearUnit">
-            <summary>
-            Gets or sets the linear (projected) units of the projected coordinate system.
-            </summary>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.IProjectedCoordinateSystem.Projection">
-            <summary>
-            Gets or sets the projection for the projected coordinate system.
-            </summary>
-        </member>
-        <member name="T:GeoAPI.Geometries.IGeometryFactory">
-            <summary>
-            
-            </summary>
+            <remarks>
+            As an example, consider a "Longitude_Rotation" transform which adjusts 
+            longitude coordinates to take account of a change in Prime Meridian. If
+            the rotation is 5 degrees east, then the point (Lat=175,Lon=0) is not 
+            transformed continuously, since it is on the meridian line which will 
+            be split at +180/-180 degrees.
+            </remarks>
         </member>
         <member name="T:GeoAPI.CoordinateSystems.IVerticalDatum">
             <summary>
             Procedure used to measure vertical distances.
             </summary>
         </member>
-        <member name="T:GeoAPI.CoordinateSystems.ILinearUnit">
+        <member name="T:GeoAPI.CoordinateSystems.IGeographicTransform">
             <summary>
-            The ILinearUnit interface defines methods on linear units.
+            The IGeographicTransform interface is implemented on geographic transformation
+            objects and implements datum transformations between geographic coordinate systems.
             </summary>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.ILinearUnit.MetersPerUnit">
+        <member name="M:GeoAPI.CoordinateSystems.IGeographicTransform.Forward(System.Collections.Generic.List{System.Double[]})">
             <summary>
-            Gets or sets the number of meters per <see cref="T:GeoAPI.CoordinateSystems.ILinearUnit"/>.
+            Transforms an array of points from the source geographic coordinate system
+            to the target geographic coordinate system.
+            </summary>
+            <param name="points">Points in the source geographic coordinate system</param>
+            <returns>Points in the target geographic coordinate system</returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.IGeographicTransform.Inverse(System.Collections.Generic.List{System.Double[]})">
+            <summary>
+            Transforms an array of points from the target geographic coordinate system
+            to the source geographic coordinate system.
+            </summary>
+            <param name="points">Points in the target geographic coordinate system</param>
+            <returns>Points in the source geographic coordinate system</returns>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.IGeographicTransform.SourceGCS">
+            <summary>
+            Gets or sets source geographic coordinate system for the transformation.
             </summary>
         </member>
-        <member name="T:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation">
+        <member name="P:GeoAPI.CoordinateSystems.IGeographicTransform.TargetGCS">
             <summary>
-            Describes a coordinate transformation. This interface only describes a 
-            coordinate transformation, it does not actually perform the transform 
-            operation on points. To transform points you must use a math transform.
+            Gets or sets the target geographic coordinate system for the transformation.
             </summary>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation.AreaOfUse">
+        <member name="P:GeoAPI.CoordinateSystems.IGeographicTransform.ParameterInfo">
             <summary>
-            Human readable description of domain in source coordinate system.
+            Returns an accessor interface to the parameters for this geographic transformation.
             </summary>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation.Authority">
+        <member name="T:GeoAPI.CoordinateSystems.IEllipsoid">
             <summary>
-            Authority which defined transformation and parameter values.
-            </summary>
-            <remarks>
-            An Authority is an organization that maintains definitions of Authority Codes. For example the European Petroleum Survey Group (EPSG) maintains a database of coordinate systems, and other spatial referencing objects, where each object has a code number ID. For example, the EPSG code for a WGS84 Lat/Lon coordinate system is ‘4326’
-            </remarks>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation.AuthorityCode">
-            <summary>
-            Code used by authority to identify transformation. An empty string is used for no code.
-            </summary>
-            <remarks>The AuthorityCode is a compact string defined by an Authority to reference a particular spatial reference object. For example, the European Survey Group (EPSG) authority uses 32 bit integers to reference coordinate systems, so all their code strings will consist of a few digits. The EPSG code for WGS84 Lat/Lon is ‘4326’.</remarks>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation.MathTransform">
-            <summary>
-            Gets math transform.
+            The IEllipsoid interface defines the standard information stored with ellipsoid objects.
             </summary>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation.Name">
+        <member name="P:GeoAPI.CoordinateSystems.IEllipsoid.SemiMajorAxis">
             <summary>
-            Name of transformation.
+            Gets or sets the value of the semi-major axis.
             </summary>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation.Remarks">
+        <member name="P:GeoAPI.CoordinateSystems.IEllipsoid.SemiMinorAxis">
             <summary>
-            Gets the provider-supplied remarks.
+            Gets or sets the value of the semi-minor axis.
             </summary>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation.SourceCS">
+        <member name="P:GeoAPI.CoordinateSystems.IEllipsoid.InverseFlattening">
             <summary>
-            Source coordinate system.
+            Gets or sets the value of the inverse of the flattening constant of the ellipsoid.
             </summary>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation.TargetCS">
+        <member name="P:GeoAPI.CoordinateSystems.IEllipsoid.AxisUnit">
             <summary>
-            Target coordinate system.
+            Gets or sets the value of the axis unit.
             </summary>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation.TransformType">
+        <member name="P:GeoAPI.CoordinateSystems.IEllipsoid.IsIvfDefinitive">
             <summary>
-            Semantic type of transform. For example, a datum transformation or a coordinate conversion.
+            Is the Inverse Flattening definitive for this ellipsoid? Some ellipsoids use the
+            IVF as the defining value, and calculate the polar radius whenever asked. Other
+            ellipsoids use the polar radius to calculate the IVF whenever asked. This
+            distinction can be important to avoid floating-point rounding errors.
+            </summary>
+        </member>
+        <member name="T:GeoAPI.CoordinateSystems.DatumType">
+            <summary>
+            A vertical datum of geoid model derived heights, also called GPS-derived heights.
+            These heights are approximations of orthometric heights (H), constructed from the
+            ellipsoidal heights (h) by the use of the given geoid undulation model (N) through
+            the equation: H=h-N.
+            </summary>
+        </member>
+        <member name="F:GeoAPI.CoordinateSystems.DatumType.HD_Min">
+            <summary>
+            Lowest possible value for horizontal datum types
+            </summary>
+        </member>
+        <member name="F:GeoAPI.CoordinateSystems.DatumType.HD_Other">
+            <summary>
+            Unspecified horizontal datum type. Horizontal datums with this type should never
+            supply a conversion to WGS84 using Bursa Wolf parameters.
+            </summary>
+        </member>
+        <member name="F:GeoAPI.CoordinateSystems.DatumType.HD_Classic">
+            <summary>
+            These datums, such as ED50, NAD27 and NAD83, have been designed to support
+            horizontal positions on the ellipsoid as opposed to positions in 3-D space. These datums were designed mainly to support a horizontal component of a position in a domain of limited extent, such as a country, a region or a continent.
+            </summary>
+        </member>
+        <member name="F:GeoAPI.CoordinateSystems.DatumType.HD_Geocentric">
+            <summary>
+            A geocentric datum is a "satellite age" modern geodetic datum mainly of global
+            extent, such as WGS84 (used in GPS), PZ90 (used in GLONASS) and ITRF. These
+            datums were designed to support both a horizontal component of position and 
+            a vertical component of position (through ellipsoidal heights). The regional
+            realizations of ITRF, such as ETRF, are also included in this category.
+            </summary>
+        </member>
+        <member name="F:GeoAPI.CoordinateSystems.DatumType.HD_Max">
+            <summary>
+            Highest possible value for horizontal datum types.
+            </summary>
+        </member>
+        <member name="F:GeoAPI.CoordinateSystems.DatumType.VD_Min">
+            <summary>
+            Lowest possible value for vertical datum types.
+            </summary>
+        </member>
+        <member name="F:GeoAPI.CoordinateSystems.DatumType.VD_Other">
+            <summary>
+            Unspecified vertical datum type.
+            </summary>
+        </member>
+        <member name="F:GeoAPI.CoordinateSystems.DatumType.VD_Orthometric">
+            <summary>
+            A vertical datum for orthometric heights that are measured along the plumb line.
+            </summary>
+        </member>
+        <member name="F:GeoAPI.CoordinateSystems.DatumType.VD_Ellipsoidal">
+            <summary>
+            A vertical datum for ellipsoidal heights that are measured along the normal to
+            the ellipsoid used in the definition of horizontal datum.
+            </summary>
+        </member>
+        <member name="F:GeoAPI.CoordinateSystems.DatumType.VD_AltitudeBarometric">
+            <summary>
+            The vertical datum of altitudes or heights in the atmosphere. These are
+            approximations of orthometric heights obtained with the help of a barometer or
+            a barometric altimeter. These values are usually expressed in one of the
+            following units: meters, feet, millibars (used to measure pressure levels), or
+            theta value (units used to measure geopotential height).
+            </summary>
+        </member>
+        <member name="F:GeoAPI.CoordinateSystems.DatumType.VD_Normal">
+            <summary>
+            A normal height system.
+            </summary>
+        </member>
+        <member name="F:GeoAPI.CoordinateSystems.DatumType.VD_GeoidModelDerived">
+            <summary>
+            A vertical datum of geoid model derived heights, also called GPS-derived heights.
+            These heights are approximations of orthometric heights (H), constructed from the
+            ellipsoidal heights (h) by the use of the given geoid undulation model (N) 
+            through the equation: H=h-N.
+            </summary>
+        </member>
+        <member name="F:GeoAPI.CoordinateSystems.DatumType.VD_Depth">
+            <summary>
+            This attribute is used to support the set of datums generated for hydrographic
+            engineering projects where depth measurements below sea level are needed. It is
+            often called a hydrographic or a marine datum. Depths are measured in the 
+            direction perpendicular (approximately) to the actual equipotential surfaces of
+            the earth's gravity field, using such procedures as echo-sounding.
+            </summary>
+        </member>
+        <member name="F:GeoAPI.CoordinateSystems.DatumType.VD_Max">
+            <summary>
+            Highest possible value for vertical datum types.
+            </summary>
+        </member>
+        <member name="F:GeoAPI.CoordinateSystems.DatumType.LD_Min">
+            <summary>
+            Lowest possible value for local datum types.
+            </summary>
+        </member>
+        <member name="F:GeoAPI.CoordinateSystems.DatumType.LD_Max">
+            <summary>
+            Highest possible value for local datum types.
             </summary>
         </member>
         <member name="T:GeoAPI.CoordinateSystems.AxisOrientationEnum">
@@ -1098,123 +1010,227 @@
             Increasing ordinates values go down. This is used for vertical coordinate systems.
             </summary>
         </member>
-        <member name="T:GeoAPI.Geometries.Locations">
+        <member name="T:GeoAPI.Geometries.ICoordinateFilter">
             <summary>
-            
+            <c>Geometry</c> classes support the concept of applying a
+            coordinate filter to every coordinate in the <c>Geometry</c>. A
+            coordinate filter can either record information about each coordinate or
+            change the coordinate in some way. Coordinate filters implement the
+            interface <c>ICoordinateFilter</c>. 
+            <c>ICoordinateFilter</c> is an example of the Gang-of-Four Visitor pattern. 
+            Coordinate filters can be
+            used to implement such things as coordinate transformations, centroid and
+            envelope computation, and many other functions.
             </summary>
         </member>
-        <member name="F:GeoAPI.Geometries.Locations.Interior">
+        <member name="M:GeoAPI.Geometries.ICoordinateFilter.Filter(GeoAPI.Geometries.ICoordinate)">
             <summary>
-            DE-9IM row index of the interior of the first point and column index of
-            the interior of the second point. Location value for the interior of a
-            point.
-            int value = 0;
+            Performs an operation with or on <c>coord</c>.
+            </summary>
+            <param name="coord"><c>Coordinate</c> to which the filter is applied.</param>
+        </member>
+        <member name="T:GeoAPI.CoordinateSystems.Parameter">
+            <summary>
+            A named parameter value.
             </summary>
         </member>
-        <member name="F:GeoAPI.Geometries.Locations.Boundary">
+        <member name="M:GeoAPI.CoordinateSystems.Parameter.#ctor(System.String,System.Double)">
             <summary>
-            DE-9IM row index of the boundary of the first point and column index of
-            the boundary of the second point. Location value for the boundary of a
-            point.
-            int value = 1;
+            Creates an instance of a parameter
+            </summary>
+            <remarks>Units are always either meters or degrees.</remarks>
+            <param name="name">Name of parameter</param>
+            <param name="value">Value</param>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.Parameter.Name">
+            <summary>
+            Parameter name
             </summary>
         </member>
-        <member name="F:GeoAPI.Geometries.Locations.Exterior">
+        <member name="P:GeoAPI.CoordinateSystems.Parameter.Value">
             <summary>
-            DE-9IM row index of the exterior of the first point and column index of
-            the exterior of the second point. Location value for the exterior of a
-            point.
-            int value = 2;
+            Parameter value
             </summary>
         </member>
-        <member name="F:GeoAPI.Geometries.Locations.Null">
+        <member name="T:GeoAPI.CoordinateSystems.ICoordinateSystemFactory">
             <summary>
-            Used for uninitialized location values.
-            int value = -1;
+            Builds up complex objects from simpler objects or values.
             </summary>
+            <remarks>
+            <para>ICoordinateSystemFactory allows applications to make coordinate systems that 
+            cannot be created by a <see cref="T:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory"/>. This factory is very 
+            flexible, whereas the authority factory is easier to use.</para>
+            <para>So <see cref="T:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory"/>can be used to make 'standard' coordinate 
+            systems, and <see cref="T:GeoAPI.CoordinateSystems.ICoordinateSystemFactory"/> can be used to make 'special' 
+            coordinate systems.</para>
+            <para>For example, the EPSG authority has codes for USA state plane coordinate systems 
+            using the NAD83 datum, but these coordinate systems always use meters. EPSG does not 
+            have codes for NAD83 state plane coordinate systems that use feet units. This factory
+            lets an application create such a hybrid coordinate system.</para>
+            </remarks>
         </member>
-        <member name="T:GeoAPI.Geometries.Location">
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateCompoundCoordinateSystem(System.String,GeoAPI.CoordinateSystems.ICoordinateSystem,GeoAPI.CoordinateSystems.ICoordinateSystem)">
             <summary>
-            
+            Creates a <see cref="T:GeoAPI.CoordinateSystems.ICompoundCoordinateSystem"/>.
             </summary>
+            <param name="name">Name of compound coordinate system.</param>
+            <param name="head">Head coordinate system</param>
+            <param name="tail">Tail coordinate system</param>
+            <returns>Compound coordinate system</returns>
         </member>
-        <member name="M:GeoAPI.Geometries.Location.ToLocationSymbol(GeoAPI.Geometries.Locations)">
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateEllipsoid(System.String,System.Double,System.Double,GeoAPI.CoordinateSystems.ILinearUnit)">
             <summary>
-            Converts the location value to a location symbol, for example, <c>EXTERIOR => 'e'</c>.
+            Creates an <see cref="T:GeoAPI.CoordinateSystems.IEllipsoid"/> from radius values.
             </summary>
-            <param name="locationValue"></param>
-            <returns>Either 'e', 'b', 'i' or '-'.</returns>
+            <seealso cref="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateFlattenedSphere(System.String,System.Double,System.Double,GeoAPI.CoordinateSystems.ILinearUnit)"/>
+            <param name="name">Name of ellipsoid</param>
+            <param name="semiMajorAxis"></param>
+            <param name="semiMinorAxis"></param>
+            <param name="linearUnit"></param>
+            <returns>Ellipsoid</returns>
         </member>
-        <member name="T:GeoAPI.CoordinateSystems.IPrimeMeridian">
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateFittedCoordinateSystem(System.String,GeoAPI.CoordinateSystems.ICoordinateSystem,System.String,System.Collections.Generic.List{GeoAPI.CoordinateSystems.AxisInfo})">
             <summary>
-            The IPrimeMeridian interface defines the standard information stored with prime
-            meridian objects. Any prime meridian object must implement this interface as
-            well as the ISpatialReferenceInfo interface.
+            Creates a <see cref="T:GeoAPI.CoordinateSystems.IFittedCoordinateSystem"/>.
             </summary>
+            <remarks>The units of the axes in the fitted coordinate system will be 
+            inferred from the units of the base coordinate system. If the affine map
+            performs a rotation, then any mixed axes must have identical units. For
+            example, a (lat_deg,lon_deg,height_feet) system can be rotated in the 
+            (lat,lon) plane, since both affected axes are in degrees. But you 
+            should not rotate this coordinate system in any other plane.</remarks>
+            <param name="name">Name of coordinate system</param>
+            <param name="baseCoordinateSystem">Base coordinate system</param>
+            <param name="toBaseWkt"></param>
+            <param name="arAxes"></param>
+            <returns>Fitted coordinate system</returns>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.IPrimeMeridian.Longitude">
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateFlattenedSphere(System.String,System.Double,System.Double,GeoAPI.CoordinateSystems.ILinearUnit)">
             <summary>
-            Gets or sets the longitude of the prime meridian (relative to the Greenwich prime meridian).
+            Creates an <see cref="T:GeoAPI.CoordinateSystems.IEllipsoid"/> from an major radius, and inverse flattening.
             </summary>
+            <seealso cref="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateEllipsoid(System.String,System.Double,System.Double,GeoAPI.CoordinateSystems.ILinearUnit)"/>
+            <param name="name">Name of ellipsoid</param>
+            <param name="semiMajorAxis">Semi major-axis</param>
+            <param name="inverseFlattening">Inverse flattening</param>
+            <param name="linearUnit">Linear unit</param>
+            <returns>Ellipsoid</returns>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.IPrimeMeridian.AngularUnit">
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateFromXml(System.String)">
             <summary>
-            Gets or sets the AngularUnits.
+            Creates a coordinate system object from an XML string.
             </summary>
+            <param name="xml">XML representation for the spatial reference</param>
+            <returns>The resulting spatial reference object</returns>
         </member>
-        <member name="T:GeoAPI.CoordinateSystems.IGeographicCoordinateSystem">
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateFromWkt(System.String)">
             <summary>
-            The IGeographicCoordinateSystem interface is a subclass of IGeodeticSpatialReference and
-            defines the standard information stored with geographic coordinate system objects.
+            Creates a spatial reference object given its Well-known text representation.
+            The output object may be either a <see cref="T:GeoAPI.CoordinateSystems.IGeographicCoordinateSystem"/> or
+            a <see cref="T:GeoAPI.CoordinateSystems.IProjectedCoordinateSystem"/>.
             </summary>
+            <param name="WKT">The Well-known text representation for the spatial reference</param>
+            <returns>The resulting spatial reference object</returns>
         </member>
-        <member name="M:GeoAPI.CoordinateSystems.IGeographicCoordinateSystem.GetWgs84ConversionInfo(System.Int32)">
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateGeographicCoordinateSystem(System.String,GeoAPI.CoordinateSystems.IAngularUnit,GeoAPI.CoordinateSystems.IHorizontalDatum,GeoAPI.CoordinateSystems.IPrimeMeridian,GeoAPI.CoordinateSystems.AxisInfo,GeoAPI.CoordinateSystems.AxisInfo)">
             <summary>
-            Gets details on a conversion to WGS84.
+            Creates a <see cref="T:GeoAPI.CoordinateSystems.IGeographicCoordinateSystem"/>, which could be Lat/Lon or Lon/Lat.
             </summary>
+            <param name="name">Name of geographical coordinate system</param>
+            <param name="angularUnit">Angular units</param>
+            <param name="datum">Horizontal datum</param>
+            <param name="primeMeridian">Prime meridian</param>
+            <param name="axis0">First axis</param>
+            <param name="axis1">Second axis</param>
+            <returns>Geographic coordinate system</returns>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.IGeographicCoordinateSystem.AngularUnit">
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateHorizontalDatum(System.String,GeoAPI.CoordinateSystems.DatumType,GeoAPI.CoordinateSystems.IEllipsoid,GeoAPI.CoordinateSystems.Wgs84ConversionInfo)">
             <summary>
-            Gets or sets the angular units of the geographic coordinate system.
+            Creates <see cref="T:GeoAPI.CoordinateSystems.IHorizontalDatum"/> from ellipsoid and Bursa-World parameters.
             </summary>
+            <remarks>
+            Since this method contains a set of Bursa-Wolf parameters, the created 
+            datum will always have a relationship to WGS84. If you wish to create a
+            horizontal datum that has no relationship with WGS84, then you can 
+            either specify a <see cref="T:GeoAPI.CoordinateSystems.DatumType">horizontalDatumType</see> of <see cref="F:GeoAPI.CoordinateSystems.DatumType.HD_Other"/>, or create it via WKT.
+            </remarks>
+            <param name="name">Name of ellipsoid</param>
+            <param name="datumType">Type of datum</param>
+            <param name="ellipsoid">Ellipsoid</param>
+            <param name="toWgs84">Wgs84 conversion parameters</param>
+            <returns>Horizontal datum</returns>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.IGeographicCoordinateSystem.PrimeMeridian">
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateLocalCoordinateSystem(System.String,GeoAPI.CoordinateSystems.ILocalDatum,GeoAPI.CoordinateSystems.IUnit,System.Collections.Generic.List{GeoAPI.CoordinateSystems.AxisInfo})">
             <summary>
-            Gets or sets the prime meridian of the geographic coordinate system.
+            Creates a <see cref="T:GeoAPI.CoordinateSystems.ILocalCoordinateSystem">local coordinate system</see>.
             </summary>
+            <remarks>
+             The dimension of the local coordinate system is determined by the size of 
+            the axis array. All the axes will have the same units. If you want to make 
+            a coordinate system with mixed units, then you can make a compound 
+            coordinate system from different local coordinate systems.
+            </remarks>
+            <param name="name">Name of local coordinate system</param>
+            <param name="datum">Local datum</param>
+            <param name="unit">Units</param>
+            <param name="axes">Axis info</param>
+            <returns>Local coordinate system</returns>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.IGeographicCoordinateSystem.NumConversionToWGS84">
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateLocalDatum(System.String,GeoAPI.CoordinateSystems.DatumType)">
             <summary>
-            Gets the number of available conversions to WGS84 coordinates.
+            Creates a <see cref="T:GeoAPI.CoordinateSystems.ILocalDatum"/>.
             </summary>
+            <param name="name">Name of datum</param>
+            <param name="datumType">Datum type</param>
+            <returns></returns>
         </member>
-        <member name="T:GeoAPI.CoordinateSystems.IGeocentricCoordinateSystem">
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreatePrimeMeridian(System.String,GeoAPI.CoordinateSystems.IAngularUnit,System.Double)">
             <summary>
-            A 3D coordinate system, with its origin at the center of the Earth.
+            Creates a <see cref="T:GeoAPI.CoordinateSystems.IPrimeMeridian"/>, relative to Greenwich.
             </summary>
+            <param name="name">Name of prime meridian</param>
+            <param name="angularUnit">Angular unit</param>
+            <param name="longitude">Longitude</param>
+            <returns>Prime meridian</returns>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.IGeocentricCoordinateSystem.HorizontalDatum">
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateProjectedCoordinateSystem(System.String,GeoAPI.CoordinateSystems.IGeographicCoordinateSystem,GeoAPI.CoordinateSystems.IProjection,GeoAPI.CoordinateSystems.ILinearUnit,GeoAPI.CoordinateSystems.AxisInfo,GeoAPI.CoordinateSystems.AxisInfo)">
             <summary>
-            Returns the HorizontalDatum. The horizontal datum is used to determine where
-            the centre of the Earth is considered to be. All coordinate points will be 
-            measured from the centre of the Earth, and not the surface.
+            Creates a <see cref="T:GeoAPI.CoordinateSystems.IProjectedCoordinateSystem"/> using a projection object.
             </summary>
+            <param name="name">Name of projected coordinate system</param>
+            <param name="gcs">Geographic coordinate system</param>
+            <param name="projection">Projection</param>
+            <param name="linearUnit">Linear unit</param>
+            <param name="axis0">Primary axis</param>
+            <param name="axis1">Secondary axis</param>
+            <returns>Projected coordinate system</returns>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.IGeocentricCoordinateSystem.LinearUnit">
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateProjection(System.String,System.String,System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter})">
             <summary>
-            Gets the units used along all the axes.
+            Creates a <see cref="T:GeoAPI.CoordinateSystems.IProjection"/>.
             </summary>
+            <param name="name">Name of projection</param>
+            <param name="wktProjectionClass">Projection class</param>
+            <param name="Parameters">Projection parameters</param>
+            <returns>Projection</returns>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.IGeocentricCoordinateSystem.PrimeMeridian">
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateVerticalCoordinateSystem(System.String,GeoAPI.CoordinateSystems.IVerticalDatum,GeoAPI.CoordinateSystems.ILinearUnit,GeoAPI.CoordinateSystems.AxisInfo)">
             <summary>
-            Returns the PrimeMeridian.
+            Creates a <see cref="T:GeoAPI.CoordinateSystems.IVerticalCoordinateSystem"/> from a <see cref="T:GeoAPI.CoordinateSystems.IVerticalDatum">datum</see> and <see cref="T:GeoAPI.CoordinateSystems.ILinearUnit">linear units</see>.
             </summary>
+            <param name="name">Name of vertical coordinate system</param>
+            <param name="datum">Vertical datum</param>
+            <param name="verticalUnit">Unit</param>
+            <param name="axis">Axis info</param>
+            <returns>Vertical coordinate system</returns>
         </member>
-        <member name="T:GeoAPI.CoordinateSystems.IGeodeticSpatialReference">
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateVerticalDatum(System.String,GeoAPI.CoordinateSystems.DatumType)">
             <summary>
-            The IGeodeticSpatialReference interface defines a root interface for all types of geodetic
-            spatial references, it is a subclass of ICoordinateSystem.
+            Creates a <see cref="T:GeoAPI.CoordinateSystems.IVerticalDatum"/> from an enumerated type value.
             </summary>
+            <param name="name">Name of datum</param>
+            <param name="datumType">Type of datum</param>
+            <returns>Vertical datum</returns>	
         </member>
         <member name="T:GeoAPI.CoordinateSystems.AxisInfo">
             <summary>
@@ -1249,337 +1265,76 @@
             Gets an XML representation of this object
             </summary>
         </member>
-        <member name="M:GeoAPI.Geometries.ICoordinate.Distance(GeoAPI.Geometries.ICoordinate)">
+        <member name="T:GeoAPI.CoordinateSystems.IPrimeMeridian">
             <summary>
-            Computes the 2-dimensional distance to the <see cref="!:other"/> coordiante.
-            </summary>
-            <param name="other">The other coordinate</param>
-            <returns>The 2-dimensional distance to other</returns>
-        </member>
-        <member name="P:GeoAPI.Geometries.ICoordinate.X">
-            <summary>
-            The x-ordinate value
+            The IPrimeMeridian interface defines the standard information stored with prime
+            meridian objects. Any prime meridian object must implement this interface as
+            well as the ISpatialReferenceInfo interface.
             </summary>
         </member>
-        <member name="P:GeoAPI.Geometries.ICoordinate.Y">
+        <member name="P:GeoAPI.CoordinateSystems.IPrimeMeridian.Longitude">
             <summary>
-            The y-ordinate value
+            Gets or sets the longitude of the prime meridian (relative to the Greenwich prime meridian).
             </summary>
         </member>
-        <member name="P:GeoAPI.Geometries.ICoordinate.Z">
+        <member name="P:GeoAPI.CoordinateSystems.IPrimeMeridian.AngularUnit">
             <summary>
-            The z-ordinate value
+            Gets or sets the AngularUnits.
             </summary>
         </member>
-        <member name="P:GeoAPI.Geometries.ICoordinate.M">
+        <member name="T:GeoAPI.CoordinateSystems.IHorizontalCoordinateSystem">
             <summary>
-            The measure value
+            A 2D coordinate system suitable for positions on the Earth's surface.
             </summary>
         </member>
-        <member name="P:GeoAPI.Geometries.ICoordinate.CoordinateValue">
+        <member name="P:GeoAPI.CoordinateSystems.IHorizontalCoordinateSystem.HorizontalDatum">
             <summary>
-            Gets/Sets all ordinate values
+            Returns the HorizontalDatum.
             </summary>
         </member>
-        <member name="T:GeoAPI.Geometries.ICoordinateSequence">
+        <member name="T:GeoAPI.Geometries.Ordinates">
             <summary>
-            The internal representation of a list of coordinates inside a Geometry.
-            <para>
-            There are some cases in which you might want Geometries to store their
-            points using something other than the NTS Coordinate class. For example, you
-            may want to experiment with another implementation, such as an array of x’s
-            and an array of y’s. or you might want to use your own coordinate class, one
-            that supports extra attributes like M-values.
-            </para>
-            <para>
-            You can do this by implementing the ICoordinateSequence and
-            ICoordinateSequenceFactory interfaces. You would then create a
-            GeometryFactory parameterized by your ICoordinateSequenceFactory, and use
-            this GeometryFactory to create new Geometries. All of these new Geometries
-            will use your ICoordinateSequence implementation.
-            A note on performance. If your ICoordinateSequence is not based on an array
-            of Coordinates, it may incur a performance penalty when its ToArray() method
-            is called because the array needs to be built from scratch. 
-            </para>
-            </summary>
-            <seealso cref="!:DefaultCoordinateSequenceFactory"/>
-        </member>
-        <member name="M:GeoAPI.Geometries.ICoordinateSequence.GetCoordinate(System.Int32)">
-            <summary>
-            Returns (possibly a copy of) the ith Coordinate in this collection.
-            Whether or not the Coordinate returned is the actual underlying
-            Coordinate or merely a copy depends on the implementation.
-            Note that in the future the semantics of this method may change
-            to guarantee that the Coordinate returned is always a copy. Callers are
-            advised not to assume that they can modify a CoordinateSequence by
-            modifying the Coordinate returned by this method.
-            </summary>
-            <param name="i"></param>
-            <returns></returns>
-        </member>
-        <member name="M:GeoAPI.Geometries.ICoordinateSequence.GetCoordinateCopy(System.Int32)">
-            <summary>
-            Returns a copy of the i'th coordinate in this sequence.
-            This method optimizes the situation where the caller is
-            going to make a copy anyway - if the implementation
-            has already created a new Coordinate object, no further copy is needed.
-            </summary>
-            <param name="i">The index of the coordinate to retrieve.</param>
-            <returns>A copy of the i'th coordinate in the sequence</returns>
-        </member>
-        <member name="M:GeoAPI.Geometries.ICoordinateSequence.GetCoordinate(System.Int32,GeoAPI.Geometries.ICoordinate)">
-            <summary>
-            Copies the i'th coordinate in the sequence to the supplied Coordinate.  
-            Only the first two dimensions are copied.        
-            </summary>
-            <param name="index">The index of the coordinate to copy.</param>
-            <param name="coord">A Coordinate to receive the value.</param>
-        </member>
-        <member name="M:GeoAPI.Geometries.ICoordinateSequence.GetX(System.Int32)">
-            <summary>
-            Returns ordinate X (0) of the specified coordinate.
-            </summary>
-            <param name="index"></param>
-            <returns>The value of the X ordinate in the index'th coordinate.</returns>
-        </member>
-        <member name="M:GeoAPI.Geometries.ICoordinateSequence.GetY(System.Int32)">
-            <summary>
-            Returns ordinate Y (1) of the specified coordinate.
-            </summary>
-            <param name="index"></param>
-            <returns>The value of the Y ordinate in the index'th coordinate.</returns>
-        </member>
-        <member name="M:GeoAPI.Geometries.ICoordinateSequence.GetOrdinate(System.Int32,GeoAPI.Geometries.Ordinates)">
-            <summary>
-            Returns the ordinate of a coordinate in this sequence.
-            Ordinate indices 0 and 1 are assumed to be X and Y.
-            Ordinates indices greater than 1 have user-defined semantics
-            (for instance, they may contain other dimensions or measure values).         
-            </summary>
-            <param name="index">The coordinate index in the sequence.</param>
-            <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
-            <returns></returns>       
-        </member>
-        <member name="M:GeoAPI.Geometries.ICoordinateSequence.SetOrdinate(System.Int32,GeoAPI.Geometries.Ordinates,System.Double)">
-            <summary>
-            Sets the value for a given ordinate of a coordinate in this sequence.       
-            </summary>
-            <param name="index">The coordinate index in the sequence.</param>
-            <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
-            <param name="value">The new ordinate value.</param>       
-        </member>
-        <member name="M:GeoAPI.Geometries.ICoordinateSequence.ToCoordinateArray">
-            <summary>
-            Returns (possibly copies of) the Coordinates in this collection.
-            Whether or not the Coordinates returned are the actual underlying
-            Coordinates or merely copies depends on the implementation. Note that
-            if this implementation does not store its data as an array of Coordinates,
-            this method will incur a performance penalty because the array needs to
-            be built from scratch.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:GeoAPI.Geometries.ICoordinateSequence.ExpandEnvelope(GeoAPI.Geometries.IEnvelope)">
-            <summary>
-            Expands the given Envelope to include the coordinates in the sequence.
-            Allows implementing classes to optimize access to coordinate values.      
-            </summary>
-            <param name="env">The envelope to expand.</param>
-            <returns>A reference to the expanded envelope.</returns>       
-        </member>
-        <member name="P:GeoAPI.Geometries.ICoordinateSequence.Dimension">
-            <summary>
-            Returns the dimension (number of ordinates in each coordinate) for this sequence.
+            Standard ordinate index values.
             </summary>
         </member>
-        <member name="P:GeoAPI.Geometries.ICoordinateSequence.Count">
+        <member name="F:GeoAPI.Geometries.Ordinates.X">
             <summary>
-            Returns the number of coordinates in this sequence.
-            </summary>        
-        </member>
-        <member name="T:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory">
-            <summary>
-            Creates spatial reference objects using codes.
-            </summary>
-            <remarks>
-             The codes are maintained by an external authority. A commonly used authority is EPSG, which is also used in the GeoTIFF standard and in SharpMap.
-            </remarks>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreateProjectedCoordinateSystem(System.Int64)">
-            <summary>
-            Returns a projected coordinate system object corresponding to the given code.
-            </summary>
-            <param name="code">The identification code.</param>
-            <returns>The projected coordinate system object with the given code.</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreateGeographicCoordinateSystem(System.Int64)">
-            <summary>
-            Returns a geographic coordinate system object corresponding to the given code.
-            </summary>
-            <param name="code">The identification code.</param>
-            <returns>The geographic coordinate system object with the given code.</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreateHorizontalDatum(System.Int64)">
-            <summary>
-            Returns a horizontal datum object corresponding to the given code.
-            </summary>
-            <param name="code">The identification code.</param>
-            <returns>The horizontal datum object with the given code.</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreateEllipsoid(System.Int64)">
-            <summary>
-            Returns an ellipsoid object corresponding to the given code.
-            </summary>
-            <param name="code">The identification code.</param>
-            <returns>The ellipsoid object with the given code.</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreatePrimeMeridian(System.Int64)">
-            <summary>
-            Returns a prime meridian object corresponding to the given code.
-            </summary>
-            <param name="code">The identification code.</param>
-            <returns>The prime meridian object with the given code.</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreateLinearUnit(System.Int64)">
-            <summary>
-            Returns a linear unit object corresponding to the given code.
-            </summary>
-            <param name="code">The identification code.</param>
-            <returns>The linear unit object with the given code.</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreateAngularUnit(System.Int64)">
-            <summary>
-            Returns an <see cref="T:GeoAPI.CoordinateSystems.IAngularUnit">angular unit</see> object corresponding to the given code.
-            </summary>
-            <param name="code">The identification code.</param>
-            <returns>The angular unit object for the given code.</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreateVerticalDatum(System.Int64)">
-            <summary>
-            Creates a <see cref="T:GeoAPI.CoordinateSystems.IVerticalDatum"/> from a code.
-            </summary>
-            <param name="code">Authority code</param>
-            <returns>Vertical datum for the given code</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreateVerticalCoordinateSystem(System.Int64)">
-            <summary>
-            Create a <see cref="T:GeoAPI.CoordinateSystems.IVerticalCoordinateSystem">vertical coordinate system</see> from a code.
-            </summary>
-            <param name="code">Authority code</param>
-            <returns></returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreateCompoundCoordinateSystem(System.Int64)">
-            <summary>
-            Creates a 3D coordinate system from a code.
-            </summary>
-            <param name="code">Authority code</param>
-            <returns>Compound coordinate system for the given code</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreateHorizontalCoordinateSystem(System.Int64)">
-            <summary>
-            Creates a <see cref="T:GeoAPI.CoordinateSystems.IHorizontalCoordinateSystem">horizontal co-ordinate system</see> from a code.
-            The horizontal coordinate system could be geographic or projected.
-            </summary>
-            <param name="code">Authority code</param>
-            <returns>Horizontal coordinate system for the given code</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.GeoidFromWktName(System.String)">
-            <summary>
-            Gets the Geoid code from a WKT name.
-            </summary>
-            <remarks>
-             In the OGC definition of WKT horizontal datums, the geoid is referenced 
-            by a quoted string, which is used as a key value. This method converts 
-            the key value string into a code recognized by this authority.
-            </remarks>
-            <param name="wkt"></param>
-            <returns></returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.WktGeoidName(System.String)">
-            <summary>
-            Gets the WKT name of a Geoid.
-            </summary>
-            <remarks>
-             In the OGC definition of WKT horizontal datums, the geoid is referenced by 
-            a quoted string, which is used as a key value. This method gets the OGC WKT 
-            key value from a geoid code.
-            </remarks>
-            <param name="geoid"></param>
-            <returns></returns>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.Authority">
-            <summary>
-            Returns the authority name for this factory (e.g., "EPSG" or "POSC").
+            X Ordinate = 0.
             </summary>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.DescriptionText">
+        <member name="F:GeoAPI.Geometries.Ordinates.Y">
             <summary>
-            Gets a description of the object corresponding to a code.
+            Y Ordinate = 1.
             </summary>
         </member>
-        <member name="T:GeoAPI.CoordinateSystems.IEllipsoid">
+        <member name="F:GeoAPI.Geometries.Ordinates.Z">
             <summary>
-            The IEllipsoid interface defines the standard information stored with ellipsoid objects.
+            Z Ordinate = 2.
             </summary>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.IEllipsoid.SemiMajorAxis">
+        <member name="F:GeoAPI.Geometries.Ordinates.M">
             <summary>
-            Gets or sets the value of the semi-major axis.
+            M Ordinate = 3.
             </summary>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.IEllipsoid.SemiMinorAxis">
+        <member name="T:GeoAPI.Operations.Buffer.BufferStyle">
             <summary>
-            Gets or sets the value of the semi-minor axis.
+            Buffer style.
             </summary>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.IEllipsoid.InverseFlattening">
-            <summary>
-            Gets or sets the value of the inverse of the flattening constant of the ellipsoid.
+        <member name="F:GeoAPI.Operations.Buffer.BufferStyle.CapRound">
+            <summary> 
+            Specifies a round line buffer end cap endCapStyle (Default).
+            </summary>/
+        </member>
+        <member name="F:GeoAPI.Operations.Buffer.BufferStyle.CapButt">
+            <summary> 
+            Specifies a butt (or flat) line buffer end cap endCapStyle.
             </summary>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.IEllipsoid.AxisUnit">
+        <member name="F:GeoAPI.Operations.Buffer.BufferStyle.CapSquare">
             <summary>
-            Gets or sets the value of the axis unit.
-            </summary>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.IEllipsoid.IsIvfDefinitive">
-            <summary>
-            Is the Inverse Flattening definitive for this ellipsoid? Some ellipsoids use the
-            IVF as the defining value, and calculate the polar radius whenever asked. Other
-            ellipsoids use the polar radius to calculate the IVF whenever asked. This
-            distinction can be important to avoid floating-point rounding errors.
-            </summary>
-        </member>
-        <member name="T:GeoAPI.CoordinateSystems.IParameterInfo">
-            <summary>
-            The IParameterInfo interface provides an interface through which clients of a
-            Projected Coordinate System or of a Projection can set the parameters of the
-            projection. It provides a generic interface for discovering the names and default
-            values of parameters, and for setting and getting parameter values. Subclasses of
-            this interface may provide projection specific parameter access methods.
-            </summary>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.IParameterInfo.DefaultParameters">
-            <summary>
-            Returns the default parameters for this projection.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.IParameterInfo.GetParameterByName(System.String)">
-            <summary>
-            Gets the parameter by its name
-            </summary>
-            <param name="name"></param>
-            <returns></returns>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.IParameterInfo.NumParameters">
-            <summary>
-            Gets the number of parameters expected.
-            </summary>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.IParameterInfo.Parameters">
-            <summary>
-            Gets or sets the parameters set for this projection.
+            Specifies a square line buffer end cap endCapStyle.
             </summary>
         </member>
         <member name="T:GeoAPI.Geometries.IntersectionMatrix">
@@ -1884,68 +1639,194 @@
             See methods Get(int, int) and Set(int, int, int value)
             </summary>         
         </member>
-        <member name="T:GeoAPI.Geometries.Dimensions">
+        <member name="T:GeoAPI.Geometries.ICoordinateSequence">
             <summary>
-            Constants representing the dimensions of a point, a curve and a surface.
-            Also, constants representing the dimensions of the empty point and
-            non-empty geometries, and a wildcard dimension meaning "any dimension".
+            The internal representation of a list of coordinates inside a Geometry.
+            <para>
+            There are some cases in which you might want Geometries to store their
+            points using something other than the NTS Coordinate class. For example, you
+            may want to experiment with another implementation, such as an array of x’s
+            and an array of y’s. or you might want to use your own coordinate class, one
+            that supports extra attributes like M-values.
+            </para>
+            <para>
+            You can do this by implementing the ICoordinateSequence and
+            ICoordinateSequenceFactory interfaces. You would then create a
+            GeometryFactory parameterized by your ICoordinateSequenceFactory, and use
+            this GeometryFactory to create new Geometries. All of these new Geometries
+            will use your ICoordinateSequence implementation.
+            A note on performance. If your ICoordinateSequence is not based on an array
+            of Coordinates, it may incur a performance penalty when its ToArray() method
+            is called because the array needs to be built from scratch. 
+            </para>
+            </summary>
+            <seealso cref="!:DefaultCoordinateSequenceFactory"/>
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequence.GetCoordinate(System.Int32)">
+            <summary>
+            Returns (possibly a copy of) the ith Coordinate in this collection.
+            Whether or not the Coordinate returned is the actual underlying
+            Coordinate or merely a copy depends on the implementation.
+            Note that in the future the semantics of this method may change
+            to guarantee that the Coordinate returned is always a copy. Callers are
+            advised not to assume that they can modify a CoordinateSequence by
+            modifying the Coordinate returned by this method.
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequence.GetCoordinateCopy(System.Int32)">
+            <summary>
+            Returns a copy of the i'th coordinate in this sequence.
+            This method optimizes the situation where the caller is
+            going to make a copy anyway - if the implementation
+            has already created a new Coordinate object, no further copy is needed.
+            </summary>
+            <param name="i">The index of the coordinate to retrieve.</param>
+            <returns>A copy of the i'th coordinate in the sequence</returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequence.GetCoordinate(System.Int32,GeoAPI.Geometries.ICoordinate)">
+            <summary>
+            Copies the i'th coordinate in the sequence to the supplied Coordinate.  
+            Only the first two dimensions are copied.        
+            </summary>
+            <param name="index">The index of the coordinate to copy.</param>
+            <param name="coord">A Coordinate to receive the value.</param>
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequence.GetX(System.Int32)">
+            <summary>
+            Returns ordinate X (0) of the specified coordinate.
+            </summary>
+            <param name="index"></param>
+            <returns>The value of the X ordinate in the index'th coordinate.</returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequence.GetY(System.Int32)">
+            <summary>
+            Returns ordinate Y (1) of the specified coordinate.
+            </summary>
+            <param name="index"></param>
+            <returns>The value of the Y ordinate in the index'th coordinate.</returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequence.GetOrdinate(System.Int32,GeoAPI.Geometries.Ordinates)">
+            <summary>
+            Returns the ordinate of a coordinate in this sequence.
+            Ordinate indices 0 and 1 are assumed to be X and Y.
+            Ordinates indices greater than 1 have user-defined semantics
+            (for instance, they may contain other dimensions or measure values).         
+            </summary>
+            <param name="index">The coordinate index in the sequence.</param>
+            <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
+            <returns></returns>       
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequence.SetOrdinate(System.Int32,GeoAPI.Geometries.Ordinates,System.Double)">
+            <summary>
+            Sets the value for a given ordinate of a coordinate in this sequence.       
+            </summary>
+            <param name="index">The coordinate index in the sequence.</param>
+            <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
+            <param name="value">The new ordinate value.</param>       
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequence.ToCoordinateArray">
+            <summary>
+            Returns (possibly copies of) the Coordinates in this collection.
+            Whether or not the Coordinates returned are the actual underlying
+            Coordinates or merely copies depends on the implementation. Note that
+            if this implementation does not store its data as an array of Coordinates,
+            this method will incur a performance penalty because the array needs to
+            be built from scratch.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequence.ExpandEnvelope(GeoAPI.Geometries.IEnvelope)">
+            <summary>
+            Expands the given Envelope to include the coordinates in the sequence.
+            Allows implementing classes to optimize access to coordinate values.      
+            </summary>
+            <param name="env">The envelope to expand.</param>
+            <returns>A reference to the expanded envelope.</returns>       
+        </member>
+        <member name="P:GeoAPI.Geometries.ICoordinateSequence.Dimension">
+            <summary>
+            Returns the dimension (number of ordinates in each coordinate) for this sequence.
             </summary>
         </member>
-        <member name="F:GeoAPI.Geometries.Dimensions.Point">
+        <member name="P:GeoAPI.Geometries.ICoordinateSequence.Count">
             <summary>
-            Dimension value of a point (0).
+            Returns the number of coordinates in this sequence.
+            </summary>        
+        </member>
+        <member name="T:GeoAPI.CoordinateSystems.Transformations.TransformType">
+            <summary>
+            Semantic type of transform used in coordinate transformation.
             </summary>
         </member>
-        <member name="F:GeoAPI.Geometries.Dimensions.Curve">
+        <member name="F:GeoAPI.CoordinateSystems.Transformations.TransformType.Other">
             <summary>
-            Dimension value of a curve (1).
+            Unknown or unspecified type of transform.
             </summary>
         </member>
-        <member name="F:GeoAPI.Geometries.Dimensions.Surface">
+        <member name="F:GeoAPI.CoordinateSystems.Transformations.TransformType.Conversion">
             <summary>
-            Dimension value of a surface (2).
+            Transform depends only on defined parameters. For example, a cartographic projection.
             </summary>
         </member>
-        <member name="F:GeoAPI.Geometries.Dimensions.False">
+        <member name="F:GeoAPI.CoordinateSystems.Transformations.TransformType.Transformation">
             <summary>
-            Dimension value of a empty point (-1).
+            Transform depends only on empirically derived parameters. For example a datum transformation.
             </summary>
         </member>
-        <member name="F:GeoAPI.Geometries.Dimensions.True">
+        <member name="F:GeoAPI.CoordinateSystems.Transformations.TransformType.ConversionAndTransformation">
             <summary>
-            Dimension value of non-empty geometries (= {Point,Curve,A}).
+            Transform depends on both defined and empirical parameters.
             </summary>
         </member>
-        <member name="F:GeoAPI.Geometries.Dimensions.Dontcare">
+        <member name="T:GeoAPI.CoordinateSystems.IGeographicCoordinateSystem">
             <summary>
-            Dimension value for any dimension (= {False, True}).
+            The IGeographicCoordinateSystem interface is a subclass of IGeodeticSpatialReference and
+            defines the standard information stored with geographic coordinate system objects.
             </summary>
         </member>
-        <member name="T:GeoAPI.Geometries.Dimension">
+        <member name="M:GeoAPI.CoordinateSystems.IGeographicCoordinateSystem.GetWgs84ConversionInfo(System.Int32)">
             <summary>
-            Class containing static methods for conversions
-            between dimension values and characters.
+            Gets details on a conversion to WGS84.
             </summary>
         </member>
-        <member name="M:GeoAPI.Geometries.Dimension.ToDimensionSymbol(GeoAPI.Geometries.Dimensions)">
+        <member name="P:GeoAPI.CoordinateSystems.IGeographicCoordinateSystem.AngularUnit">
             <summary>
-            Converts the dimension value to a dimension symbol,
-            for example, <c>True => 'T'</c>
+            Gets or sets the angular units of the geographic coordinate system.
             </summary>
-            <param name="dimensionValue">Number that can be stored in the <c>IntersectionMatrix</c>.
-            Possible values are <c>True, False, Dontcare, 0, 1, 2</c>.</param>
-            <returns>Character for use in the string representation of an <c>IntersectionMatrix</c>.
-            Possible values are <c>T, F, * , 0, 1, 2</c>.</returns>
         </member>
-        <member name="M:GeoAPI.Geometries.Dimension.ToDimensionValue(System.Char)">
+        <member name="P:GeoAPI.CoordinateSystems.IGeographicCoordinateSystem.PrimeMeridian">
             <summary>
-            Converts the dimension symbol to a dimension value,
-            for example, <c>'*' => Dontcare</c>
+            Gets or sets the prime meridian of the geographic coordinate system.
             </summary>
-            <param name="dimensionSymbol">Character for use in the string representation of an <c>IntersectionMatrix</c>.
-            Possible values are <c>T, F, * , 0, 1, 2</c>.</param>
-            <returns>Number that can be stored in the <c>IntersectionMatrix</c>.
-            Possible values are <c>True, False, Dontcare, 0, 1, 2</c>.</returns>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.IGeographicCoordinateSystem.NumConversionToWGS84">
+            <summary>
+            Gets the number of available conversions to WGS84 coordinates.
+            </summary>
+        </member>
+        <member name="T:GeoAPI.CoordinateSystems.IGeocentricCoordinateSystem">
+            <summary>
+            A 3D coordinate system, with its origin at the center of the Earth.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.IGeocentricCoordinateSystem.HorizontalDatum">
+            <summary>
+            Returns the HorizontalDatum. The horizontal datum is used to determine where
+            the centre of the Earth is considered to be. All coordinate points will be 
+            measured from the centre of the Earth, and not the surface.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.IGeocentricCoordinateSystem.LinearUnit">
+            <summary>
+            Gets the units used along all the axes.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.IGeocentricCoordinateSystem.PrimeMeridian">
+            <summary>
+            Returns the PrimeMeridian.
+            </summary>
         </member>
         <member name="T:GeoAPI.Geometries.PrecisionModels">
             <summary>
@@ -1972,24 +1853,87 @@
             The number of decimal places is determined by the log10 of the scale factor.
             </summary>
         </member>
-        <member name="T:GeoAPI.Geometries.ICoordinateFilter">
+        <member name="T:GeoAPI.Geometries.IGeometryFilter">
             <summary>
-            <c>Geometry</c> classes support the concept of applying a
-            coordinate filter to every coordinate in the <c>Geometry</c>. A
-            coordinate filter can either record information about each coordinate or
-            change the coordinate in some way. Coordinate filters implement the
-            interface <c>ICoordinateFilter</c>. 
-            <c>ICoordinateFilter</c> is an example of the Gang-of-Four Visitor pattern. 
-            Coordinate filters can be
-            used to implement such things as coordinate transformations, centroid and
-            envelope computation, and many other functions.
+            <c>GeometryCollection</c> classes support the concept of
+            applying a <c>IGeometryFilter</c> to the <c>Geometry</c>.
+            The filter is applied to every element <c>Geometry</c>.
+            A <c>IGeometryFilter</c> can either record information about the <c>Geometry</c>
+            or change the <c>Geometry</c> in some way.
+            <c>IGeometryFilter</c> is an example of the Gang-of-Four Visitor pattern.
             </summary>
         </member>
-        <member name="M:GeoAPI.Geometries.ICoordinateFilter.Filter(GeoAPI.Geometries.ICoordinate)">
+        <member name="M:GeoAPI.Geometries.IGeometryFilter.Filter(GeoAPI.Geometries.IGeometry)">
             <summary>
-            Performs an operation with or on <c>coord</c>.
+            Performs an operation with or on <c>geom</c>.
             </summary>
-            <param name="coord"><c>Coordinate</c> to which the filter is applied.</param>
+            <param name="geom">A <c>Geometry</c> to which the filter is applied.</param>
+        </member>
+        <member name="T:GeoAPI.CoordinateSystems.IVerticalCoordinateSystem">
+            <summary>
+            A one-dimensional coordinate system suitable for vertical measurements.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.IVerticalCoordinateSystem.VerticalDatum">
+            <summary>
+            Gets the vertical datum, which indicates the measurement method
+            </summary>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.IVerticalCoordinateSystem.VerticalUnit">
+            <summary>
+            Gets the units used along the vertical axis.
+            </summary>
+        </member>
+        <member name="T:GeoAPI.CoordinateSystems.ICompoundCoordinateSystem">
+            <summary>
+            An aggregate of two coordinate systems (CRS). One of these is usually a 
+            CRS based on a two dimensional coordinate system such as a geographic or
+            a projected coordinate system with a horizontal datum. The other is a 
+            vertical CRS which is a one-dimensional coordinate system with a vertical
+            datum.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.ICompoundCoordinateSystem.HeadCS">
+            <summary>
+            Gets first sub-coordinate system.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.ICompoundCoordinateSystem.TailCS">
+            <summary>
+            Gets second sub-coordinate system.
+            </summary>
+        </member>
+        <member name="T:GeoAPI.CoordinateSystems.IParameterInfo">
+            <summary>
+            The IParameterInfo interface provides an interface through which clients of a
+            Projected Coordinate System or of a Projection can set the parameters of the
+            projection. It provides a generic interface for discovering the names and default
+            values of parameters, and for setting and getting parameter values. Subclasses of
+            this interface may provide projection specific parameter access methods.
+            </summary>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.IParameterInfo.DefaultParameters">
+            <summary>
+            Returns the default parameters for this projection.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.IParameterInfo.GetParameterByName(System.String)">
+            <summary>
+            Gets the parameter by its name
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.IParameterInfo.NumParameters">
+            <summary>
+            Gets the number of parameters expected.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.IParameterInfo.Parameters">
+            <summary>
+            Gets or sets the parameters set for this projection.
+            </summary>
         </member>
         <member name="T:GeoAPI.CoordinateSystems.IFittedCoordinateSystem">
             <summary>
@@ -2013,169 +1957,300 @@
             Gets underlying coordinate system.
             </summary>
         </member>
-        <member name="T:GeoAPI.CoordinateSystems.DatumType">
+        <member name="T:GeoAPI.Geometries.IGeometryFactory">
             <summary>
-            A vertical datum of geoid model derived heights, also called GPS-derived heights.
-            These heights are approximations of orthometric heights (H), constructed from the
-            ellipsoidal heights (h) by the use of the given geoid undulation model (N) through
-            the equation: H=h-N.
+            
             </summary>
         </member>
-        <member name="F:GeoAPI.CoordinateSystems.DatumType.HD_Min">
+        <member name="T:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory">
             <summary>
-            Lowest possible value for horizontal datum types
+            Creates spatial reference objects using codes.
+            </summary>
+            <remarks>
+             The codes are maintained by an external authority. A commonly used authority is EPSG, which is also used in the GeoTIFF standard and in SharpMap.
+            </remarks>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreateProjectedCoordinateSystem(System.Int64)">
+            <summary>
+            Returns a projected coordinate system object corresponding to the given code.
+            </summary>
+            <param name="code">The identification code.</param>
+            <returns>The projected coordinate system object with the given code.</returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreateGeographicCoordinateSystem(System.Int64)">
+            <summary>
+            Returns a geographic coordinate system object corresponding to the given code.
+            </summary>
+            <param name="code">The identification code.</param>
+            <returns>The geographic coordinate system object with the given code.</returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreateHorizontalDatum(System.Int64)">
+            <summary>
+            Returns a horizontal datum object corresponding to the given code.
+            </summary>
+            <param name="code">The identification code.</param>
+            <returns>The horizontal datum object with the given code.</returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreateEllipsoid(System.Int64)">
+            <summary>
+            Returns an ellipsoid object corresponding to the given code.
+            </summary>
+            <param name="code">The identification code.</param>
+            <returns>The ellipsoid object with the given code.</returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreatePrimeMeridian(System.Int64)">
+            <summary>
+            Returns a prime meridian object corresponding to the given code.
+            </summary>
+            <param name="code">The identification code.</param>
+            <returns>The prime meridian object with the given code.</returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreateLinearUnit(System.Int64)">
+            <summary>
+            Returns a linear unit object corresponding to the given code.
+            </summary>
+            <param name="code">The identification code.</param>
+            <returns>The linear unit object with the given code.</returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreateAngularUnit(System.Int64)">
+            <summary>
+            Returns an <see cref="T:GeoAPI.CoordinateSystems.IAngularUnit">angular unit</see> object corresponding to the given code.
+            </summary>
+            <param name="code">The identification code.</param>
+            <returns>The angular unit object for the given code.</returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreateVerticalDatum(System.Int64)">
+            <summary>
+            Creates a <see cref="T:GeoAPI.CoordinateSystems.IVerticalDatum"/> from a code.
+            </summary>
+            <param name="code">Authority code</param>
+            <returns>Vertical datum for the given code</returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreateVerticalCoordinateSystem(System.Int64)">
+            <summary>
+            Create a <see cref="T:GeoAPI.CoordinateSystems.IVerticalCoordinateSystem">vertical coordinate system</see> from a code.
+            </summary>
+            <param name="code">Authority code</param>
+            <returns></returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreateCompoundCoordinateSystem(System.Int64)">
+            <summary>
+            Creates a 3D coordinate system from a code.
+            </summary>
+            <param name="code">Authority code</param>
+            <returns>Compound coordinate system for the given code</returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.CreateHorizontalCoordinateSystem(System.Int64)">
+            <summary>
+            Creates a <see cref="T:GeoAPI.CoordinateSystems.IHorizontalCoordinateSystem">horizontal co-ordinate system</see> from a code.
+            The horizontal coordinate system could be geographic or projected.
+            </summary>
+            <param name="code">Authority code</param>
+            <returns>Horizontal coordinate system for the given code</returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.GeoidFromWktName(System.String)">
+            <summary>
+            Gets the Geoid code from a WKT name.
+            </summary>
+            <remarks>
+             In the OGC definition of WKT horizontal datums, the geoid is referenced 
+            by a quoted string, which is used as a key value. This method converts 
+            the key value string into a code recognized by this authority.
+            </remarks>
+            <param name="wkt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.WktGeoidName(System.String)">
+            <summary>
+            Gets the WKT name of a Geoid.
+            </summary>
+            <remarks>
+             In the OGC definition of WKT horizontal datums, the geoid is referenced by 
+            a quoted string, which is used as a key value. This method gets the OGC WKT 
+            key value from a geoid code.
+            </remarks>
+            <param name="geoid"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.Authority">
+            <summary>
+            Returns the authority name for this factory (e.g., "EPSG" or "POSC").
             </summary>
         </member>
-        <member name="F:GeoAPI.CoordinateSystems.DatumType.HD_Other">
+        <member name="P:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory.DescriptionText">
             <summary>
-            Unspecified horizontal datum type. Horizontal datums with this type should never
-            supply a conversion to WGS84 using Bursa Wolf parameters.
+            Gets a description of the object corresponding to a code.
             </summary>
         </member>
-        <member name="F:GeoAPI.CoordinateSystems.DatumType.HD_Classic">
+        <member name="T:GeoAPI.Geometries.ICoordinateSequenceFilter">
             <summary>
-            These datums, such as ED50, NAD27 and NAD83, have been designed to support
-            horizontal positions on the ellipsoid as opposed to positions in 3-D space. These datums were designed mainly to support a horizontal component of a position in a domain of limited extent, such as a country, a region or a continent.
+             Interface for classes which provide operations that
+             can be applied to the coordinates in a <see cref="T:GeoAPI.Geometries.ICoordinateSequence"/>. 
+             A CoordinateSequence filter can either record information about each coordinate or
+             change the coordinate in some way. CoordinateSequence filters can be
+             used to implement such things as coordinate transformations, centroid and
+             envelope computation, and many other functions.
+             For maximum efficiency, the execution of filters can be short-circuited.
+             <see cref="T:GeoAPI.Geometries.IGeometry"/> classes support the concept of applying a
+             <c>CoordinateSequenceFilter</c> to each 
+             <see cref="T:GeoAPI.Geometries.ICoordinateSequence"/>s they contain. 
+            </summary>
+            <see cref="M:GeoAPI.Geometries.IGeometry.Apply(GeoAPI.Geometries.ICoordinateSequenceFilter)"/>
+            <remarks>
+             <c>CoordinateSequenceFilter</c> is an example of the Gang-of-Four Visitor pattern.
+            </remarks>
+             <author>Martin Davis</author>
+        </member>
+        <member name="M:GeoAPI.Geometries.ICoordinateSequenceFilter.Filter(GeoAPI.Geometries.ICoordinateSequence,System.Int32)">
+            <summary>
+             Performs an operation on a coordinate in a <see cref="T:GeoAPI.Geometries.ICoordinateSequence"/>.
+            </summary>
+             <param name="seq">the <c>CoordinateSequence</c> to which the filter is applied</param>
+             <param name="i">i the index of the coordinate to apply the filter to</param>
+        </member>
+        <member name="P:GeoAPI.Geometries.ICoordinateSequenceFilter.Done">
+            <summary>
+             Reports whether the application of this filter can be terminated.
+            </summary>
+            <remarks>
+             Once this method returns <c>false</c>, it should 
+             continue to return <c>false</c> on every subsequent call.
+            </remarks>
+        </member>
+        <member name="P:GeoAPI.Geometries.ICoordinateSequenceFilter.GeometryChanged">
+            <summary>
+             Reports whether the execution of this filter has modified the coordinates of the geometry.
+             If so, <see cref="M:GeoAPI.Geometries.IGeometry.GeometryChanged"/> will be executed.
+             </summary>
+             <remarks>Most filters can simply return a constant value reflecting whether they are able to change the coordinates.</remarks>
+        </member>
+        <member name="T:GeoAPI.CoordinateSystems.Transformations.IMathTransform">
+            <summary>
+            Transforms muti-dimensional coordinate points.
+            </summary>
+            <remarks>
+            If a client application wishes to query the source and target coordinate 
+            systems of a transformation, then it should keep hold of the 
+            <see cref="T:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation"/> interface, and use the contained 
+            math transform object whenever it wishes to perform a transform.
+            </remarks>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.Transformations.IMathTransform.Identity">
+            <summary>
+            Tests whether this transform does not move any points.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.Transformations.IMathTransform.Derivative(System.Double[])">
+            <summary>
+            Gets the derivative of this transform at a point. If the transform does 
+            not have a well-defined derivative at the point, then this function should 
+            fail in the usual way for the DCP. The derivative is the matrix of the 
+            non-translating portion of the approximate affine map at the point. The
+            matrix will have dimensions corresponding to the source and target 
+            coordinate systems. If the input dimension is M, and the output dimension 
+            is N, then the matrix will have size [M][N]. The elements of the matrix 
+            {elt[n][m] : n=0..(N-1)} form a vector in the output space which is 
+            parallel to the displacement caused by a small change in the m'th ordinate 
+            in the input space.
+            </summary>
+            <param name="point"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.Transformations.IMathTransform.GetCodomainConvexHull(System.Collections.Generic.List{System.Double})">
+            <summary>
+            Gets transformed convex hull.
+            </summary>
+            <remarks>
+            <para>The supplied ordinates are interpreted as a sequence of points, which generates a convex
+            hull in the source space. The returned sequence of ordinates represents a convex hull in the 
+            output space. The number of output points will often be different from the number of input 
+            points. Each of the input points should be inside the valid domain (this can be checked by 
+            testing the points' domain flags individually). However, the convex hull of the input points
+            may go outside the valid domain. The returned convex hull should contain the transformed image
+            of the intersection of the source convex hull and the source domain.</para>
+            <para>A convex hull is a shape in a coordinate system, where if two positions A and B are 
+            inside the shape, then all positions in the straight line between A and B are also inside 
+            the shape. So in 3D a cube and a sphere are both convex hulls. Other less obvious examples 
+            of convex hulls are straight lines, and single points. (A single point is a convex hull, 
+            because the positions A and B must both be the same - i.e. the point itself. So the straight
+            line between A and B has zero length.)</para>
+            <para>Some examples of shapes that are NOT convex hulls are donuts, and horseshoes.</para>
+            </remarks>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.Transformations.IMathTransform.GetDomainFlags(System.Collections.Generic.List{System.Double})">
+            <summary>
+            Gets flags classifying domain points within a convex hull.
+            </summary>
+            <remarks>
+             The supplied ordinates are interpreted as a sequence of points, which 
+            generates a convex hull in the source space. Conceptually, each of the 
+            (usually infinite) points inside the convex hull is then tested against
+            the source domain. The flags of all these tests are then combined. In 
+            practice, implementations of different transforms will use different 
+            short-cuts to avoid doing an infinite number of tests.
+            </remarks>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.Transformations.IMathTransform.Inverse">
+            <summary>
+            Creates the inverse transform of this object.
+            </summary>
+            <remarks>This method may fail if the transform is not one to one. However, all cartographic projections should succeed.</remarks>
+            <returns></returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.Transformations.IMathTransform.Transform(System.Double[])">
+            <summary>
+            Transforms a coordinate point. The passed parameter point should not be modified.
+            </summary>
+            <param name="point"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.Transformations.IMathTransform.TransformList(System.Collections.Generic.List{System.Double[]})">
+            <summary>
+            Transforms a list of coordinate point ordinal values.
+            </summary>
+            <remarks>
+            This method is provided for efficiently transforming many points. The supplied array 
+            of ordinal values will contain packed ordinal values. For example, if the source 
+            dimension is 3, then the ordinals will be packed in this order (x0,y0,z0,x1,y1,z1 ...).
+            The size of the passed array must be an integer multiple of DimSource. The returned 
+            ordinal values are packed in a similar way. In some DCPs. the ordinals may be 
+            transformed in-place, and the returned array may be the same as the passed array.
+            So any client code should not attempt to reuse the passed ordinal values (although
+            they can certainly reuse the passed array). If there is any problem then the server
+            implementation will throw an exception. If this happens then the client should not
+            make any assumptions about the state of the ordinal values.
+            </remarks>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.Transformations.IMathTransform.Invert">
+            <summary>
+            Reverses the transformation
             </summary>
         </member>
-        <member name="F:GeoAPI.CoordinateSystems.DatumType.HD_Geocentric">
+        <member name="P:GeoAPI.CoordinateSystems.Transformations.IMathTransform.DimSource">
             <summary>
-            A geocentric datum is a "satellite age" modern geodetic datum mainly of global
-            extent, such as WGS84 (used in GPS), PZ90 (used in GLONASS) and ITRF. These
-            datums were designed to support both a horizontal component of position and 
-            a vertical component of position (through ellipsoidal heights). The regional
-            realizations of ITRF, such as ETRF, are also included in this category.
+            Gets the dimension of input points.
             </summary>
         </member>
-        <member name="F:GeoAPI.CoordinateSystems.DatumType.HD_Max">
+        <member name="P:GeoAPI.CoordinateSystems.Transformations.IMathTransform.DimTarget">
             <summary>
-            Highest possible value for horizontal datum types.
+            Gets the dimension of output points.
             </summary>
         </member>
-        <member name="F:GeoAPI.CoordinateSystems.DatumType.VD_Min">
+        <member name="P:GeoAPI.CoordinateSystems.Transformations.IMathTransform.WKT">
             <summary>
-            Lowest possible value for vertical datum types.
+            Gets a Well-Known text representation of this object.
             </summary>
         </member>
-        <member name="F:GeoAPI.CoordinateSystems.DatumType.VD_Other">
+        <member name="P:GeoAPI.CoordinateSystems.Transformations.IMathTransform.XML">
             <summary>
-            Unspecified vertical datum type.
-            </summary>
-        </member>
-        <member name="F:GeoAPI.CoordinateSystems.DatumType.VD_Orthometric">
-            <summary>
-            A vertical datum for orthometric heights that are measured along the plumb line.
-            </summary>
-        </member>
-        <member name="F:GeoAPI.CoordinateSystems.DatumType.VD_Ellipsoidal">
-            <summary>
-            A vertical datum for ellipsoidal heights that are measured along the normal to
-            the ellipsoid used in the definition of horizontal datum.
-            </summary>
-        </member>
-        <member name="F:GeoAPI.CoordinateSystems.DatumType.VD_AltitudeBarometric">
-            <summary>
-            The vertical datum of altitudes or heights in the atmosphere. These are
-            approximations of orthometric heights obtained with the help of a barometer or
-            a barometric altimeter. These values are usually expressed in one of the
-            following units: meters, feet, millibars (used to measure pressure levels), or
-            theta value (units used to measure geopotential height).
-            </summary>
-        </member>
-        <member name="F:GeoAPI.CoordinateSystems.DatumType.VD_Normal">
-            <summary>
-            A normal height system.
-            </summary>
-        </member>
-        <member name="F:GeoAPI.CoordinateSystems.DatumType.VD_GeoidModelDerived">
-            <summary>
-            A vertical datum of geoid model derived heights, also called GPS-derived heights.
-            These heights are approximations of orthometric heights (H), constructed from the
-            ellipsoidal heights (h) by the use of the given geoid undulation model (N) 
-            through the equation: H=h-N.
-            </summary>
-        </member>
-        <member name="F:GeoAPI.CoordinateSystems.DatumType.VD_Depth">
-            <summary>
-            This attribute is used to support the set of datums generated for hydrographic
-            engineering projects where depth measurements below sea level are needed. It is
-            often called a hydrographic or a marine datum. Depths are measured in the 
-            direction perpendicular (approximately) to the actual equipotential surfaces of
-            the earth's gravity field, using such procedures as echo-sounding.
-            </summary>
-        </member>
-        <member name="F:GeoAPI.CoordinateSystems.DatumType.VD_Max">
-            <summary>
-            Highest possible value for vertical datum types.
-            </summary>
-        </member>
-        <member name="F:GeoAPI.CoordinateSystems.DatumType.LD_Min">
-            <summary>
-            Lowest possible value for local datum types.
-            </summary>
-        </member>
-        <member name="F:GeoAPI.CoordinateSystems.DatumType.LD_Max">
-            <summary>
-            Highest possible value for local datum types.
-            </summary>
-        </member>
-        <member name="T:GeoAPI.Geometries.IGeometryFilter">
-            <summary>
-            <c>GeometryCollection</c> classes support the concept of
-            applying a <c>IGeometryFilter</c> to the <c>Geometry</c>.
-            The filter is applied to every element <c>Geometry</c>.
-            A <c>IGeometryFilter</c> can either record information about the <c>Geometry</c>
-            or change the <c>Geometry</c> in some way.
-            <c>IGeometryFilter</c> is an example of the Gang-of-Four Visitor pattern.
-            </summary>
-        </member>
-        <member name="M:GeoAPI.Geometries.IGeometryFilter.Filter(GeoAPI.Geometries.IGeometry)">
-            <summary>
-            Performs an operation with or on <c>geom</c>.
-            </summary>
-            <param name="geom">A <c>Geometry</c> to which the filter is applied.</param>
-        </member>
-        <member name="T:GeoAPI.CoordinateSystems.Parameter">
-            <summary>
-            A named parameter value.
-            </summary>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.Parameter.#ctor(System.String,System.Double)">
-            <summary>
-            Creates an instance of a parameter
-            </summary>
-            <remarks>Units are always either meters or degrees.</remarks>
-            <param name="name">Name of parameter</param>
-            <param name="value">Value</param>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.Parameter.Name">
-            <summary>
-            Parameter name
-            </summary>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.Parameter.Value">
-            <summary>
-            Parameter value
-            </summary>
-        </member>
-        <member name="T:GeoAPI.Operations.Buffer.BufferStyle">
-            <summary>
-            Buffer style.
-            </summary>
-        </member>
-        <member name="F:GeoAPI.Operations.Buffer.BufferStyle.CapRound">
-            <summary> 
-            Specifies a round line buffer end cap endCapStyle (Default).
-            </summary>/
-        </member>
-        <member name="F:GeoAPI.Operations.Buffer.BufferStyle.CapButt">
-            <summary> 
-            Specifies a butt (or flat) line buffer end cap endCapStyle.
-            </summary>
-        </member>
-        <member name="F:GeoAPI.Operations.Buffer.BufferStyle.CapSquare">
-            <summary>
-            Specifies a square line buffer end cap endCapStyle.
+            Gets an XML representation of this object.
             </summary>
         </member>
         <member name="T:GeoAPI.Geometries.ICoordinateSequenceFactory">
@@ -2211,23 +2286,104 @@
             (if user-specifiable, otherwise ignored)</param>
             <returns></returns>
         </member>
-        <member name="T:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformationFactory">
+        <member name="T:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation">
             <summary>
-            Creates coordinate transformations.
+            Describes a coordinate transformation. This interface only describes a 
+            coordinate transformation, it does not actually perform the transform 
+            operation on points. To transform points you must use a math transform.
             </summary>
         </member>
-        <member name="M:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformationFactory.CreateFromCoordinateSystems(GeoAPI.CoordinateSystems.ICoordinateSystem,GeoAPI.CoordinateSystems.ICoordinateSystem)">
+        <member name="P:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation.AreaOfUse">
             <summary>
-            Creates a transformation between two coordinate systems.
+            Human readable description of domain in source coordinate system.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation.Authority">
+            <summary>
+            Authority which defined transformation and parameter values.
             </summary>
             <remarks>
-            This method will examine the coordinate systems in order to construct
-            a transformation between them. This method may fail if no path between 
-            the coordinate systems is found, using the normal failing behavior of 
-            the DCP (e.g. throwing an exception).</remarks>
-            <param name="sourceCS">Source coordinate system</param>
-            <param name="targetCS">Target coordinate system</param>
-            <returns></returns>
+            An Authority is an organization that maintains definitions of Authority Codes. For example the European Petroleum Survey Group (EPSG) maintains a database of coordinate systems, and other spatial referencing objects, where each object has a code number ID. For example, the EPSG code for a WGS84 Lat/Lon coordinate system is ‘4326’
+            </remarks>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation.AuthorityCode">
+            <summary>
+            Code used by authority to identify transformation. An empty string is used for no code.
+            </summary>
+            <remarks>The AuthorityCode is a compact string defined by an Authority to reference a particular spatial reference object. For example, the European Survey Group (EPSG) authority uses 32 bit integers to reference coordinate systems, so all their code strings will consist of a few digits. The EPSG code for WGS84 Lat/Lon is ‘4326’.</remarks>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation.MathTransform">
+            <summary>
+            Gets math transform.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation.Name">
+            <summary>
+            Name of transformation.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation.Remarks">
+            <summary>
+            Gets the provider-supplied remarks.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation.SourceCS">
+            <summary>
+            Source coordinate system.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation.TargetCS">
+            <summary>
+            Target coordinate system.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.Transformations.ICoordinateTransformation.TransformType">
+            <summary>
+            Semantic type of transform. For example, a datum transformation or a coordinate conversion.
+            </summary>
+        </member>
+        <member name="T:GeoAPI.CoordinateSystems.IProjection">
+            <summary>
+            The IProjection interface defines the standard information stored with projection
+            objects. A projection object implements a coordinate transformation from a geographic
+            coordinate system to a projected coordinate system, given the ellipsoid for the
+            geographic coordinate system. It is expected that each coordinate transformation of
+            interest, e.g., Transverse Mercator, Lambert, will be implemented as a COM class of
+            coType Projection, supporting the IProjection interface.
+            </summary>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.IProjection.GetParameter(System.Int32)">
+            <summary>
+            Gets an indexed parameter of the projection.
+            </summary>
+            <param name="n">Index of parameter</param>
+            <returns>n'th parameter</returns>
+        </member>
+        <member name="M:GeoAPI.CoordinateSystems.IProjection.GetParameter(System.String)">
+            <summary>
+            Gets an named parameter of the projection.
+            </summary>
+            <remarks>The parameter name is case insensitive</remarks>
+            <param name="name">Name of parameter</param>
+            <returns>parameter or null if not found</returns>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.IProjection.NumParameters">
+            <summary>
+            Gets number of parameters of the projection.
+            </summary>
+        </member>
+        <member name="P:GeoAPI.CoordinateSystems.IProjection.ClassName">
+            <summary>
+            Gets the projection classification name (e.g. 'Transverse_Mercator').
+            </summary>
+        </member>
+        <member name="T:GeoAPI.CoordinateSystems.ILocalDatum">
+            <summary>
+            Local datum. If two local datum objects have the same datum type and name, 
+            then they can be considered equal. This means that coordinates can be
+            transformed between two different local coordinate systems, as long as
+            they are based on the same local datum.
+            </summary>
         </member>
         <member name="T:GeoAPI.CoordinateSystems.ILocalCoordinateSystem">
             <summary>
@@ -2248,222 +2404,66 @@
             Gets or sets the local datum
             </summary>
         </member>
-        <member name="T:GeoAPI.CoordinateSystems.IGeographicTransform">
+        <member name="M:GeoAPI.Geometries.ICoordinate.Distance(GeoAPI.Geometries.ICoordinate)">
             <summary>
-            The IGeographicTransform interface is implemented on geographic transformation
-            objects and implements datum transformations between geographic coordinate systems.
+            Computes the 2-dimensional distance to the <see cref="!:other"/> coordiante.
+            </summary>
+            <param name="other">The other coordinate</param>
+            <returns>The 2-dimensional distance to other</returns>
+        </member>
+        <member name="P:GeoAPI.Geometries.ICoordinate.X">
+            <summary>
+            The x-ordinate value
             </summary>
         </member>
-        <member name="M:GeoAPI.CoordinateSystems.IGeographicTransform.Forward(System.Collections.Generic.List{System.Double[]})">
+        <member name="P:GeoAPI.Geometries.ICoordinate.Y">
             <summary>
-            Transforms an array of points from the source geographic coordinate system
-            to the target geographic coordinate system.
-            </summary>
-            <param name="points">Points in the source geographic coordinate system</param>
-            <returns>Points in the target geographic coordinate system</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.IGeographicTransform.Inverse(System.Collections.Generic.List{System.Double[]})">
-            <summary>
-            Transforms an array of points from the target geographic coordinate system
-            to the source geographic coordinate system.
-            </summary>
-            <param name="points">Points in the target geographic coordinate system</param>
-            <returns>Points in the source geographic coordinate system</returns>
-        </member>
-        <member name="P:GeoAPI.CoordinateSystems.IGeographicTransform.SourceGCS">
-            <summary>
-            Gets or sets source geographic coordinate system for the transformation.
+            The y-ordinate value
             </summary>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.IGeographicTransform.TargetGCS">
+        <member name="P:GeoAPI.Geometries.ICoordinate.Z">
             <summary>
-            Gets or sets the target geographic coordinate system for the transformation.
+            The z-ordinate value
             </summary>
         </member>
-        <member name="P:GeoAPI.CoordinateSystems.IGeographicTransform.ParameterInfo">
+        <member name="P:GeoAPI.Geometries.ICoordinate.M">
             <summary>
-            Returns an accessor interface to the parameters for this geographic transformation.
+            The measure value
             </summary>
         </member>
-        <member name="T:GeoAPI.CoordinateSystems.ICoordinateSystemFactory">
+        <member name="P:GeoAPI.Geometries.ICoordinate.CoordinateValue">
             <summary>
-            Builds up complex objects from simpler objects or values.
+            Gets/Sets all ordinate values
             </summary>
-            <remarks>
-            <para>ICoordinateSystemFactory allows applications to make coordinate systems that 
-            cannot be created by a <see cref="T:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory"/>. This factory is very 
-            flexible, whereas the authority factory is easier to use.</para>
-            <para>So <see cref="T:GeoAPI.CoordinateSystems.ICoordinateSystemAuthorityFactory"/>can be used to make 'standard' coordinate 
-            systems, and <see cref="T:GeoAPI.CoordinateSystems.ICoordinateSystemFactory"/> can be used to make 'special' 
-            coordinate systems.</para>
-            <para>For example, the EPSG authority has codes for USA state plane coordinate systems 
-            using the NAD83 datum, but these coordinate systems always use meters. EPSG does not 
-            have codes for NAD83 state plane coordinate systems that use feet units. This factory
-            lets an application create such a hybrid coordinate system.</para>
-            </remarks>
         </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateCompoundCoordinateSystem(System.String,GeoAPI.CoordinateSystems.ICoordinateSystem,GeoAPI.CoordinateSystems.ICoordinateSystem)">
+        <member name="T:GeoAPI.CoordinateSystems.IProjectedCoordinateSystem">
             <summary>
-            Creates a <see cref="T:GeoAPI.CoordinateSystems.ICompoundCoordinateSystem"/>.
+            The IProjectedCoordinateSystem interface defines the standard information stored with
+            projected coordinate system objects. A projected coordinate system is defined using a
+            geographic coordinate system object and a projection object that defines the
+            coordinate transformation from the geographic coordinate system to the projected
+            coordinate systems. The instances of a single ProjectedCoordinateSystem COM class can
+            be used to model different projected coordinate systems (e.g., UTM Zone 10, Albers)
+            by associating the ProjectedCoordinateSystem instances with Projection instances
+            belonging to different Projection COM classes (Transverse Mercator and Albers,
+            respectively).
             </summary>
-            <param name="name">Name of compound coordinate system.</param>
-            <param name="head">Head coordinate system</param>
-            <param name="tail">Tail coordinate system</param>
-            <returns>Compound coordinate system</returns>
         </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateEllipsoid(System.String,System.Double,System.Double,GeoAPI.CoordinateSystems.ILinearUnit)">
+        <member name="P:GeoAPI.CoordinateSystems.IProjectedCoordinateSystem.GeographicCoordinateSystem">
             <summary>
-            Creates an <see cref="T:GeoAPI.CoordinateSystems.IEllipsoid"/> from radius values.
+            Gets or sets the geographic coordinate system associated with the projected
+            coordinate system.
             </summary>
-            <seealso cref="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateFlattenedSphere(System.String,System.Double,System.Double,GeoAPI.CoordinateSystems.ILinearUnit)"/>
-            <param name="name">Name of ellipsoid</param>
-            <param name="semiMajorAxis"></param>
-            <param name="semiMinorAxis"></param>
-            <param name="linearUnit"></param>
-            <returns>Ellipsoid</returns>
         </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateFittedCoordinateSystem(System.String,GeoAPI.CoordinateSystems.ICoordinateSystem,System.String,System.Collections.Generic.List{GeoAPI.CoordinateSystems.AxisInfo})">
+        <member name="P:GeoAPI.CoordinateSystems.IProjectedCoordinateSystem.LinearUnit">
             <summary>
-            Creates a <see cref="T:GeoAPI.CoordinateSystems.IFittedCoordinateSystem"/>.
+            Gets or sets the linear (projected) units of the projected coordinate system.
             </summary>
-            <remarks>The units of the axes in the fitted coordinate system will be 
-            inferred from the units of the base coordinate system. If the affine map
-            performs a rotation, then any mixed axes must have identical units. For
-            example, a (lat_deg,lon_deg,height_feet) system can be rotated in the 
-            (lat,lon) plane, since both affected axes are in degrees. But you 
-            should not rotate this coordinate system in any other plane.</remarks>
-            <param name="name">Name of coordinate system</param>
-            <param name="baseCoordinateSystem">Base coordinate system</param>
-            <param name="toBaseWkt"></param>
-            <param name="arAxes"></param>
-            <returns>Fitted coordinate system</returns>
         </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateFlattenedSphere(System.String,System.Double,System.Double,GeoAPI.CoordinateSystems.ILinearUnit)">
+        <member name="P:GeoAPI.CoordinateSystems.IProjectedCoordinateSystem.Projection">
             <summary>
-            Creates an <see cref="T:GeoAPI.CoordinateSystems.IEllipsoid"/> from an major radius, and inverse flattening.
+            Gets or sets the projection for the projected coordinate system.
             </summary>
-            <seealso cref="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateEllipsoid(System.String,System.Double,System.Double,GeoAPI.CoordinateSystems.ILinearUnit)"/>
-            <param name="name">Name of ellipsoid</param>
-            <param name="semiMajorAxis">Semi major-axis</param>
-            <param name="inverseFlattening">Inverse flattening</param>
-            <param name="linearUnit">Linear unit</param>
-            <returns>Ellipsoid</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateFromXml(System.String)">
-            <summary>
-            Creates a coordinate system object from an XML string.
-            </summary>
-            <param name="xml">XML representation for the spatial reference</param>
-            <returns>The resulting spatial reference object</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateFromWkt(System.String)">
-            <summary>
-            Creates a spatial reference object given its Well-known text representation.
-            The output object may be either a <see cref="T:GeoAPI.CoordinateSystems.IGeographicCoordinateSystem"/> or
-            a <see cref="T:GeoAPI.CoordinateSystems.IProjectedCoordinateSystem"/>.
-            </summary>
-            <param name="WKT">The Well-known text representation for the spatial reference</param>
-            <returns>The resulting spatial reference object</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateGeographicCoordinateSystem(System.String,GeoAPI.CoordinateSystems.IAngularUnit,GeoAPI.CoordinateSystems.IHorizontalDatum,GeoAPI.CoordinateSystems.IPrimeMeridian,GeoAPI.CoordinateSystems.AxisInfo,GeoAPI.CoordinateSystems.AxisInfo)">
-            <summary>
-            Creates a <see cref="T:GeoAPI.CoordinateSystems.IGeographicCoordinateSystem"/>, which could be Lat/Lon or Lon/Lat.
-            </summary>
-            <param name="name">Name of geographical coordinate system</param>
-            <param name="angularUnit">Angular units</param>
-            <param name="datum">Horizontal datum</param>
-            <param name="primeMeridian">Prime meridian</param>
-            <param name="axis0">First axis</param>
-            <param name="axis1">Second axis</param>
-            <returns>Geographic coordinate system</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateHorizontalDatum(System.String,GeoAPI.CoordinateSystems.DatumType,GeoAPI.CoordinateSystems.IEllipsoid,GeoAPI.CoordinateSystems.Wgs84ConversionInfo)">
-            <summary>
-            Creates <see cref="T:GeoAPI.CoordinateSystems.IHorizontalDatum"/> from ellipsoid and Bursa-World parameters.
-            </summary>
-            <remarks>
-            Since this method contains a set of Bursa-Wolf parameters, the created 
-            datum will always have a relationship to WGS84. If you wish to create a
-            horizontal datum that has no relationship with WGS84, then you can 
-            either specify a <see cref="T:GeoAPI.CoordinateSystems.DatumType">horizontalDatumType</see> of <see cref="F:GeoAPI.CoordinateSystems.DatumType.HD_Other"/>, or create it via WKT.
-            </remarks>
-            <param name="name">Name of ellipsoid</param>
-            <param name="datumType">Type of datum</param>
-            <param name="ellipsoid">Ellipsoid</param>
-            <param name="toWgs84">Wgs84 conversion parameters</param>
-            <returns>Horizontal datum</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateLocalCoordinateSystem(System.String,GeoAPI.CoordinateSystems.ILocalDatum,GeoAPI.CoordinateSystems.IUnit,System.Collections.Generic.List{GeoAPI.CoordinateSystems.AxisInfo})">
-            <summary>
-            Creates a <see cref="T:GeoAPI.CoordinateSystems.ILocalCoordinateSystem">local coordinate system</see>.
-            </summary>
-            <remarks>
-             The dimension of the local coordinate system is determined by the size of 
-            the axis array. All the axes will have the same units. If you want to make 
-            a coordinate system with mixed units, then you can make a compound 
-            coordinate system from different local coordinate systems.
-            </remarks>
-            <param name="name">Name of local coordinate system</param>
-            <param name="datum">Local datum</param>
-            <param name="unit">Units</param>
-            <param name="axes">Axis info</param>
-            <returns>Local coordinate system</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateLocalDatum(System.String,GeoAPI.CoordinateSystems.DatumType)">
-            <summary>
-            Creates a <see cref="T:GeoAPI.CoordinateSystems.ILocalDatum"/>.
-            </summary>
-            <param name="name">Name of datum</param>
-            <param name="datumType">Datum type</param>
-            <returns></returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreatePrimeMeridian(System.String,GeoAPI.CoordinateSystems.IAngularUnit,System.Double)">
-            <summary>
-            Creates a <see cref="T:GeoAPI.CoordinateSystems.IPrimeMeridian"/>, relative to Greenwich.
-            </summary>
-            <param name="name">Name of prime meridian</param>
-            <param name="angularUnit">Angular unit</param>
-            <param name="longitude">Longitude</param>
-            <returns>Prime meridian</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateProjectedCoordinateSystem(System.String,GeoAPI.CoordinateSystems.IGeographicCoordinateSystem,GeoAPI.CoordinateSystems.IProjection,GeoAPI.CoordinateSystems.ILinearUnit,GeoAPI.CoordinateSystems.AxisInfo,GeoAPI.CoordinateSystems.AxisInfo)">
-            <summary>
-            Creates a <see cref="T:GeoAPI.CoordinateSystems.IProjectedCoordinateSystem"/> using a projection object.
-            </summary>
-            <param name="name">Name of projected coordinate system</param>
-            <param name="gcs">Geographic coordinate system</param>
-            <param name="projection">Projection</param>
-            <param name="linearUnit">Linear unit</param>
-            <param name="axis0">Primary axis</param>
-            <param name="axis1">Secondary axis</param>
-            <returns>Projected coordinate system</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateProjection(System.String,System.String,System.Collections.Generic.List{GeoAPI.CoordinateSystems.ProjectionParameter})">
-            <summary>
-            Creates a <see cref="T:GeoAPI.CoordinateSystems.IProjection"/>.
-            </summary>
-            <param name="name">Name of projection</param>
-            <param name="wktProjectionClass">Projection class</param>
-            <param name="Parameters">Projection parameters</param>
-            <returns>Projection</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateVerticalCoordinateSystem(System.String,GeoAPI.CoordinateSystems.IVerticalDatum,GeoAPI.CoordinateSystems.ILinearUnit,GeoAPI.CoordinateSystems.AxisInfo)">
-            <summary>
-            Creates a <see cref="T:GeoAPI.CoordinateSystems.IVerticalCoordinateSystem"/> from a <see cref="T:GeoAPI.CoordinateSystems.IVerticalDatum">datum</see> and <see cref="T:GeoAPI.CoordinateSystems.ILinearUnit">linear units</see>.
-            </summary>
-            <param name="name">Name of vertical coordinate system</param>
-            <param name="datum">Vertical datum</param>
-            <param name="verticalUnit">Unit</param>
-            <param name="axis">Axis info</param>
-            <returns>Vertical coordinate system</returns>
-        </member>
-        <member name="M:GeoAPI.CoordinateSystems.ICoordinateSystemFactory.CreateVerticalDatum(System.String,GeoAPI.CoordinateSystems.DatumType)">
-            <summary>
-            Creates a <see cref="T:GeoAPI.CoordinateSystems.IVerticalDatum"/> from an enumerated type value.
-            </summary>
-            <param name="name">Name of datum</param>
-            <param name="datumType">Type of datum</param>
-            <returns>Vertical datum</returns>	
         </member>
     </members>
 </doc>
