@@ -30,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
             var result = g1.Intersection(g2);
 
             Debug.WriteLine(result);
-            Assert.IsNotNull(result);
+            Assert.IsNotNull(result, "");
         }
     }
 }

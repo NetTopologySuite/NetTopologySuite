@@ -16,6 +16,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Various
     /// 
     /// </summary>
     [TestFixture]
+    //[Ignore("Need to update ProjNet to GeoAPI v1.2")]
     public class SRSConversionTest :  BaseSamples
     {
         /// <summary>

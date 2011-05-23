@@ -44,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Tests.Operation.IO
         }
 
         [Test, ExpectedException(typeof(FileNotFoundException))]
-        [Ignore("aaa.shp not present")]
+        [Ignore("File aaa.shp not present")]
         public void TestReadingAaaShapeFile()
         {
             using (var reader = new ShapefileDataReader("aaa", Factory))

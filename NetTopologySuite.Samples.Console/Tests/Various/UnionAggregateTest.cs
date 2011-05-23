@@ -28,6 +28,7 @@ namespace  GisSharpBlog.NetTopologySuite.Samples.Tests.Various
         /// 
         /// </summary>
         [Test(), ExpectedException(typeof(FileNotFoundException))]
+        [Ignore("sa_region.shp not present")]
         public void PerformUnionAggregateTest1()
         {
             Assert.IsNotNull(CheckShapefile("sa_region"));

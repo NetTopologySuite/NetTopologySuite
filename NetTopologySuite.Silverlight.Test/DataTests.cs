@@ -27,9 +27,9 @@ namespace NetTopologySuite.Silverlight.Test
             if (!factory.HasConverter(typeof(string), typeof(IGeometry)))
                 factory.AddConverter(new StringToGeometryConverter());
 
-            Assert.IsInstanceOfType(factory.CreateValue(typeof(int), (object)1), typeof(IValue<int>));
+            Assert.IsInstanceOfType(factory.CreateValue(typeof(int), 1), typeof(IValue<int>));
             Assert.IsInstanceOfType(factory.CreateValue<int>((object)1), typeof(IValue<int>));
-            Assert.IsInstanceOfType(factory.CreateValue<int>((object)"1"), typeof(IValue<int>));
+            Assert.IsInstanceOfType(factory.CreateValue<int>("1"), typeof(IValue<int>));
             Assert.IsInstanceOfType(factory.CreateValue<double>((object)1), typeof(IValue<double>));
 
             Assert.IsInstanceOfType(factory.CreateValue<IGeometry>(_testPolygon), typeof(IValue<IGeometry>));
@@ -65,7 +65,7 @@ namespace NetTopologySuite.Silverlight.Test
             }
         }
 
-        void EnsureFile(string fileName, string sourceUri)
+        static void EnsureFile(string fileName, string sourceUri)
         {
             using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
             {
