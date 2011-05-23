@@ -1,12 +1,7 @@
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using GeoAPI.Geometries;
-using GisSharpBlog.NetTopologySuite.Utilities;
 using Wintellect.PowerCollections;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
@@ -15,8 +10,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     public class NodeMap
     {        
-        private readonly IDictionary nodeMap = new OrderedDictionary<ICoordinate, object>();
-        private readonly NodeFactory nodeFact;
+        private readonly IDictionary<ICoordinate, Node > _nodeMap = new OrderedDictionary<ICoordinate, Node>();
+        private readonly NodeFactory _nodeFact;
 
         /// <summary>
         /// 
@@ -24,7 +19,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="nodeFact"></param>
         public NodeMap(NodeFactory nodeFact)
         {
-            this.nodeFact = nodeFact;
+            _nodeFact = nodeFact;
         }
 
         /// <summary> 
@@ -33,11 +28,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="coord"></param>
         public Node AddNode(ICoordinate coord)
         {
-            Node node = (Node) nodeMap[coord];
-            if (node == null) 
+            Node node;
+            if (!_nodeMap.TryGetValue(coord, out node))
             {
-                node = nodeFact.CreateNode(coord);
-                nodeMap.Add(coord, node);
+                node = _nodeFact.CreateNode(coord);
+                _nodeMap.Add(coord, node);
             }
             return node;
         }
@@ -49,10 +44,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public Node AddNode(Node n)
         {
-            Node node = (Node) nodeMap[n.Coordinate];
+            Node node = _nodeMap[n.Coordinate];
             if (node == null) 
             {
-                nodeMap.Add(n.Coordinate, n);
+                _nodeMap.Add(n.Coordinate, n);
                 return n;
             }
             node.MergeLabel(n);
@@ -76,26 +71,29 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// The node if found; null otherwise.
         /// </returns>
         /// <param name="coord"></param>
-        public Node Find(ICoordinate coord)  
+        public Node Find(ICoordinate coord)
         {
-            return (Node) nodeMap[coord];
+            Node res;
+            if (!_nodeMap.TryGetValue(coord, out res))
+                return null;
+            return res;
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public IEnumerator GetEnumerator()
+        public IEnumerator<Node> GetEnumerator()
         {
-            return nodeMap.Values.GetEnumerator();
+            return _nodeMap.Values.GetEnumerator();
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public IList Values
+        public IList<Node> Values
         {
-            get { return new ArrayList(nodeMap.Values.CastPlatform()); }
+            get { return new List<Node>(_nodeMap.Values); }
         }
 
         /// <summary>
@@ -103,12 +101,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
-        public IList GetBoundaryNodes(int geomIndex)
+        public IList<Node> GetBoundaryNodes(int geomIndex)
         {
-            IList bdyNodes = new ArrayList();
-            for (IEnumerator i = GetEnumerator(); i.MoveNext(); ) 
+            IList<Node> bdyNodes = new List<Node>();
+            foreach (Node node in _nodeMap.Values)
             {
-                Node node = (Node) i.Current;
                 if (node.Label.GetLocation(geomIndex) == Locations.Boundary)
                     bdyNodes.Add(node);
             }
@@ -121,10 +118,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="outstream"></param>
         public void Write(StreamWriter outstream)
         {
-            for (IEnumerator i = GetEnumerator(); i.MoveNext(); ) 
+            foreach (Node node in _nodeMap.Values)
             {
-                Node n = (Node)i.Current;
-                n.Write(outstream);
+                node.Write(outstream);
             }
         }
     }

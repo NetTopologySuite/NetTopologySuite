@@ -4,7 +4,6 @@ using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using GeoAPI.Geometries;
-using System.Data;
 
 namespace GisSharpBlog.NetTopologySuite.IO
 {

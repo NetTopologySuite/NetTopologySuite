@@ -15,16 +15,16 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="p2"></param>
         public override void ComputeIntersection(ICoordinate p, ICoordinate p1, ICoordinate p2)
         {
-            isProper = false;
+            IsProper = false;
             // do between check first, since it is faster than the orientation test
             if (Envelope.Intersects(p1, p2, p))
             {
                 if ((CGAlgorithms.OrientationIndex(p1, p2, p) == 0) &&
                     (CGAlgorithms.OrientationIndex(p2, p1, p) == 0))
                 {
-                    isProper = true;
+                    IsProper = true;
                     if (p.Equals(p1) || p.Equals(p2))
-                        isProper = false;
+                        IsProper = false;
                     result = DoIntersect;
                     return;
                 }
@@ -34,7 +34,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
         public override int ComputeIntersect(ICoordinate p1, ICoordinate p2, ICoordinate q1, ICoordinate q2)
         {
-            isProper = false;
+            IsProper = false;
 
             // first try a fast test to see if the envelopes of the lines intersect
             if (!Envelope.Intersects(p1, p2, q1, q2))
@@ -76,7 +76,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
              */
             if (Pq1 == 0 || Pq2 == 0 || Qp1 == 0 || Qp2 == 0)
             {
-                isProper = false;
+                IsProper = false;
 
                 /**
                  * Check for two equal endpoints.  
@@ -109,8 +109,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             }
             else
             {
-                isProper = true;
-                intPt[0] = this.Intersection(p1, p2, q1, q2);
+                IsProper = true;
+                intPt[0] = Intersection(p1, p2, q1, q2);
             }
             return DoIntersect;
         }
@@ -206,8 +206,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 intPt = CentralEndpointIntersector.GetIntersection(p1, p2, q1, q2);
             }
 
-            if (precisionModel != null)
-                precisionModel.MakePrecise(intPt);
+            if (PrecisionModel != null)
+                PrecisionModel.MakePrecise(intPt);
             return intPt;
         }
 

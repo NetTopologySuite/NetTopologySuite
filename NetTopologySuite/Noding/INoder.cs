@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 
 namespace GisSharpBlog.NetTopologySuite.Noding
 {
@@ -11,21 +12,20 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public interface INoder
     {
-
         /// <summary>
         /// Computes the noding for a collection of <see cref="ISegmentString" />s.
         /// Some Noders may add all these nodes to the input <see cref="ISegmentString" />s;
         /// others may only add some or none at all.
         /// </summary>
         /// <param name="segStrings"></param>
-        void ComputeNodes(IList segStrings);
+        void ComputeNodes(IList<ISegmentString> segStrings);
 
         /// <summary>
         /// Returns a <see cref="IList" /> of fully noded <see cref="ISegmentString" />s.
         /// The <see cref="ISegmentString" />s have the same context as their parent.
         /// </summary>
         /// <returns></returns>
-        IList GetNodedSubstrings();
+        IList<ISegmentString> GetNodedSubstrings();
 
     }
 }

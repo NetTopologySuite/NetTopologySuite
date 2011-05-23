@@ -10,7 +10,8 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <summary>
         /// 
         /// </summary>
-        public AssertionFailedException() : base() { }
+        public AssertionFailedException()
+        { }
 
         /// <summary>
         /// 

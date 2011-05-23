@@ -49,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             *  'Sign' values
             */
 
-            isProper = false;
+            IsProper = false;
 
             /*
             *  Compute a1, b1, c1, where line joining points 1 and 2
@@ -80,9 +80,9 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 return;
             }
 
-            isProper = true;
+            IsProper = true;
             if (p.Equals(p1) || p.Equals(p2))             
-                isProper = false;
+                IsProper = false;
             
             result = DoIntersect;
         }
@@ -116,7 +116,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
             *  'Sign' values
             */
             
-            isProper = false;
+            IsProper = false;
 
             /*
             *  Compute a1, b1, c1, where line joining points 1 and 2
@@ -175,13 +175,13 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
 
             // check if this is a proper intersection BEFORE truncating values,
             // to avoid spurious equality comparisons with endpoints
-            isProper = true;
+            IsProper = true;
             if (pa.Equals(p1) || pa.Equals(p2) || pa.Equals(p3) || pa.Equals(p4))             
-                isProper = false;            
+                IsProper = false;            
 
             // truncate computed point to precision grid            
-            if (precisionModel != null) 
-                precisionModel.MakePrecise(pa);
+            if (PrecisionModel != null) 
+                PrecisionModel.MakePrecise(pa);
             
             return DoIntersect;
         }

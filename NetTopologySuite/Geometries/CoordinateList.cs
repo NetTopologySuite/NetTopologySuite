@@ -13,15 +13,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// Constructs a new list without any coordinates
         /// </summary>
-        public CoordinateList() : base() {}
+        public CoordinateList()
+        {}
 
         /// <summary>
-        /// The basic constructor for a CoordinateArray allows repeated points
-        /// (i.e produces a CoordinateList with exactly the same set of points).
+        /// Constructs a new list from an array of Coordinates, allowing repeated points.
+        /// (I.e. this constructor produces a <see cref="CoordinateList"/> with exactly the same set of points
+        /// as the input array.)
         /// </summary>
         /// <param name="coord">Initial coordinates</param>
         public CoordinateList(ICoordinate[] coord)
+            :base(coord.Length)
         {
+            //EnsureCapacity(coord.Length);
             Add(coord, true);
         }
 
@@ -30,8 +34,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// allows repeated points.
         /// </summary>
         /// <param name="coordList">Collection of coordinates to load into the list.</param>
-        public CoordinateList(List<ICoordinate> coordList)
+        public CoordinateList(IList<ICoordinate> coordList)
+            :base(coordList.Count)
         {
+            //EnsureCapacity(coordList.Count);
             AddAll(coordList, true);
         }
 
@@ -41,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordList">Collection of coordinates to load into the list.</param>
         /// <param name="allowRepeated">If <c>false</c>, repeated points are removed.</param>
-        public CoordinateList(List<ICoordinate> coordList, bool allowRepeated)
+        public CoordinateList(IList<ICoordinate> coordList, bool allowRepeated)
         {
             AddAll(coordList, allowRepeated);
         }
@@ -108,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Add a coordinate.
+        /// Adds a coordinate to the end of this list.
         /// </summary>
         /// <param name="coord">Coordinate to be inserted.</param>
         /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed.</param>
@@ -130,11 +136,11 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        ///Inserts the specified coordinate at the specified position in this list.
         /// </summary>
-        /// <param name="i"></param>
-        /// <param name="coord"></param>
-        /// <param name="allowRepeated"></param>
+        /// <param name="i">The position at which to insert</param>
+        /// <param name="coord">the coordinate to insert</param>
+        /// <param name="allowRepeated">if set to false, repeated coordinates are collapsed</param>
         public void Add(int i, ICoordinate coord, bool allowRepeated)
         {
             // don't add duplicate coordinates
@@ -164,7 +170,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="coll">Coordinates collection to be inserted.</param>
         /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed.</param>
         /// <returns>Return true if at least one element has added (IList not empty).</returns>
-        public bool AddAll(List<ICoordinate> coll, bool allowRepeated)
+        public bool AddAll(IList<ICoordinate> coll, bool allowRepeated)
         {
             bool isChanged = false;
             foreach (ICoordinate c in coll)

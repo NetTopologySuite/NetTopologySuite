@@ -8,20 +8,20 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation
 {
-    /**
-     * Tests {@link IsSimpleOp} with different {@link BoundaryNodeRule}s.
-     *
-     * @author Martin Davis
-     * @version 1.7
-     */
+    ///<summary>
+    /// Tests <see cref="IsSimpleOp"/> with different <see cref="IBoundaryNodeRule"/>s.
+    ///</summary>
+    /// <author>Martin Davis</author>
     public class IsSimpleTest
     {
         private const double Tolerance = 0.00005;
 
-        private static readonly IGeometryFactory fact = new GeometryFactory();
-        private static readonly WKTReader rdr = new WKTReader(fact);
+        private static readonly IGeometryFactory Fact = new GeometryFactory();
+        private static readonly WKTReader rdr = new WKTReader(Fact);
 
-        ///<summary>2 LineStrings touching at an endpoint</summary>
+        ///<summary>
+        /// 2 LineStrings touching at an endpoint
+        ///</summary>
         [Test]
         public void Test2TouchAtEndpoint()
         {

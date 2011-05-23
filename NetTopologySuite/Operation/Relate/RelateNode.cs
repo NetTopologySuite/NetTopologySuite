@@ -23,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// </summary>
         public override void ComputeIM(IntersectionMatrix im)
         {
-            im.SetAtLeastIfValid(label.GetLocation(0), label.GetLocation(1), Dimensions.Point);
+            im.SetAtLeastIfValid(Label.GetLocation(0), Label.GetLocation(1), Dimensions.Point);
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Relate
         /// <param name="im"></param>
         public void UpdateIMFromEdges(IntersectionMatrix im)
         {
-            ((EdgeEndBundleStar) edges).UpdateIM(im);
+            ((EdgeEndBundleStar) Edges).UpdateIM(im);
         }
     }
 }

@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Linq;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace GisSharpBlog.NetTopologySuite.Utilities
 {
@@ -13,14 +9,14 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
     /// </summary>
     public class UniqueCoordinateArrayFilter : ICoordinateFilter 
     {
-        private readonly ArrayList list = new ArrayList();
+        private readonly List<ICoordinate> _list = new List<ICoordinate>();
 
         /// <summary>
         /// Returns the gathered <c>Coordinate</c>s.
         /// </summary>
         public ICoordinate[] Coordinates
         {
-            get { return list.Cast<ICoordinate>().ToArray(); }
+            get { return _list.ToArray(); }
         }
 
         /// <summary>
@@ -29,8 +25,8 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <param name="coord"></param>
         public void Filter(ICoordinate coord) 
         {
-            if (!list.Contains(coord))
-                 list.Add(coord);            
+            if (!_list.Contains(coord))
+                 _list.Add(coord);            
         }
     }
 }

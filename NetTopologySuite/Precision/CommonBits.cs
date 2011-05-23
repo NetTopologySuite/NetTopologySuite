@@ -71,16 +71,17 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             return (bits & mask) != 0 ? 1 : 0;
         }
 
-        private bool isFirst = true;
-        private int commonMantissaBitsCount = 53;
-        private long commonBits = 0;
-        private long commonSignExp;
+        private bool _isFirst = true;
+        private int _commonMantissaBitsCount = 53;
+        private long _commonBits;
+        private long _commonSignExp;
 
+        /*
         /// <summary>
         /// 
         /// </summary>
         public CommonBits() { }
-
+        */
         /// <summary>
         /// 
         /// </summary>
@@ -88,22 +89,22 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         public void Add(double num)
         {
             long numBits = BitConverter.DoubleToInt64Bits(num);            
-            if (isFirst)
+            if (_isFirst)
             {
-                commonBits = numBits;
-                commonSignExp = SignExpBits(commonBits);
-                isFirst = false;
+                _commonBits = numBits;
+                _commonSignExp = SignExpBits(_commonBits);
+                _isFirst = false;
                 return;
             }
 
             long numSignExp = SignExpBits(numBits);
-            if (numSignExp != commonSignExp)
+            if (numSignExp != _commonSignExp)
             {
-                commonBits = 0;
+                _commonBits = 0;
                 return;
             }            
-            commonMantissaBitsCount = NumCommonMostSigMantissaBits(commonBits, numBits);
-            commonBits = ZeroLowerBits(commonBits, 64 - (12 + commonMantissaBitsCount));
+            _commonMantissaBitsCount = NumCommonMostSigMantissaBits(_commonBits, numBits);
+            _commonBits = ZeroLowerBits(_commonBits, 64 - (12 + _commonMantissaBitsCount));
         }
 
         /// <summary>
@@ -113,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         {
             get
             {
-                return BitConverter.Int64BitsToDouble(commonBits);
+                return BitConverter.Int64BitsToDouble(_commonBits);
             }
         }
 

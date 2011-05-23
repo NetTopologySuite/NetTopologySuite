@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
 using System.Linq;
 using GeoAPI.Geometries;
@@ -27,9 +27,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <summary>
         /// 
         /// </summary>        
-        private class AnonymousXComparerImpl : IComparer, IComparer<object>
+        private class AnonymousXComparerImpl : IComparer<object>
         {
-            private STRtree container = null;
+            private readonly STRtree _container;
 
             /// <summary>
             /// 
@@ -37,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             /// <param name="container"></param>
             public AnonymousXComparerImpl(STRtree container)
             {
-                this.container = container;
+                _container = container;
             }
 
             /// <summary>
@@ -48,17 +48,17 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             /// <returns></returns>
             public int Compare(object o1, object o2) 
             {
-                return container.CompareDoubles(container.CentreX((IEnvelope) ((IBoundable) o1).Bounds),
-                                                container.CentreX((IEnvelope) ((IBoundable) o2).Bounds));
+                return _container.CompareDoubles(CentreX((IEnvelope) ((IBoundable) o1).Bounds),
+                                                CentreX((IEnvelope) ((IBoundable) o2).Bounds));
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        private class AnonymousYComparerImpl : IComparer<object>, IComparer
+        private class AnonymousYComparerImpl : IComparer<object>
         {
-            private STRtree container = null;
+            private readonly STRtree _container;
 
             /// <summary>
             /// 
@@ -66,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             /// <param name="container"></param>
             public AnonymousYComparerImpl(STRtree container)
             {
-                this.container = container;
+                _container = container;
             }
 
             /// <summary>
@@ -77,8 +77,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             /// <returns></returns>
             public int Compare(object o1, object o2) 
             {
-                return container.CompareDoubles(container.CentreY((IEnvelope) ((IBoundable) o1).Bounds),
-                                                container.CentreY((IEnvelope) ((IBoundable) o2).Bounds));
+                return _container.CompareDoubles(CentreY((IEnvelope) ((IBoundable) o1).Bounds),
+                                                CentreY((IEnvelope) ((IBoundable) o2).Bounds));
             }
         }
 
@@ -101,9 +101,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             protected override object ComputeBounds() 
             {
                 IEnvelope bounds = null;
-                for (IEnumerator i = ChildBoundables.GetEnumerator(); i.MoveNext(); ) 
+                foreach (object i in ChildBoundables)
                 {
-                    IBoundable childBoundable = (IBoundable) i.Current;
+                    IBoundable childBoundable = (IBoundable) i;
                     if (bounds == null) 
                          bounds =  new Envelope((IEnvelope) childBoundable.Bounds);                
                     else bounds.ExpandToInclude((IEnvelope) childBoundable.Bounds);
@@ -117,7 +117,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         private class AnonymousIntersectsOpImpl : IIntersectsOp
         {
-            private STRtree container = null;
+            private STRtree _container;
 
             /// <summary>
             /// 
@@ -125,7 +125,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             /// <param name="container"></param>
             public AnonymousIntersectsOpImpl(STRtree container)
             {
-                this.container = container;
+                _container = container;
             }
 
             /// <summary>
@@ -140,15 +140,18 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             }
         }
 
+        private const int DefaultNodeCapacity = 10;
+
         /// <summary> 
         /// Constructs an STRtree with the default (10) node capacity.
         /// </summary>
-        public STRtree() : this(10) { }
+        public STRtree() : this(DefaultNodeCapacity) { }
 
         /// <summary> 
         /// Constructs an STRtree with the given maximum number of child nodes that
         /// a node may have.
         /// </summary>
+        /// <remarks>The minimum recommended capacity setting is 4.</remarks>
         public STRtree(int nodeCapacity) :
             base(nodeCapacity) { }
 
@@ -158,7 +161,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        private double Avg(double a, double b)
+        private static double Avg(double a, double b)
         {
             return (a + b) / 2d;
         }
@@ -168,7 +171,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        private double CentreX(IEnvelope e)
+        private static double CentreX(IEnvelope e)
         {
             return Avg(e.MinX, e.MaxX);
         }
@@ -178,7 +181,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        private double CentreY(IEnvelope e)
+        private static double CentreY(IEnvelope e)
         {
             return Avg(e.MinY, e.MaxY);
         }
@@ -196,7 +199,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             Assert.IsTrue(childBoundables.Count != 0);
             int minLeafCount = (int)Math.Ceiling((childBoundables.Count / (double)NodeCapacity));
-            ArrayList sortedChildBoundables = new ArrayList(childBoundables.CastPlatform());
+            var sortedChildBoundables = new List<object>(childBoundables);
             sortedChildBoundables.Sort(new AnonymousXComparerImpl(this));
             IList[] verticalSlices = VerticalSlices(sortedChildBoundables,
                 (int) Math.Ceiling(Math.Sqrt(minLeafCount)));
@@ -213,7 +216,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         private IList CreateParentBoundablesFromVerticalSlices(IList[] verticalSlices, int newLevel)
         {
             Assert.IsTrue(verticalSlices.Length > 0);
-            IList parentBoundables = new ArrayList();
+            IList parentBoundables = new List<object>();
             for (int i = 0; i < verticalSlices.Length; i++)
             {
                 IList tempList = CreateParentBoundablesFromVerticalSlice(verticalSlices[i], newLevel);
@@ -243,10 +246,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             int sliceCapacity = (int)Math.Ceiling(childBoundables.Count / (double)sliceCount);
             IList[] slices = new IList[sliceCount];
-            IEnumerator i = childBoundables.GetEnumerator();
+            IEnumerator<object> i = childBoundables.GetEnumerator();
             for (int j = 0; j < sliceCount; j++)
             {
-                slices[j] = new ArrayList();
+                slices[j] = new List<object>();
                 int boundablesAddedToSlice = 0;
                 /* 
                  *          Diego Guidi says:
@@ -302,7 +305,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// Returns items whose bounds intersect the given envelope.
         /// </summary>
         /// <param name="searchEnv"></param>
-        public IList Query(IEnvelope searchEnv) 
+        public IList<object> Query(IEnvelope searchEnv) 
         {
             //Yes this method does something. It specifies that the bounds is an
             //Envelope. super.query takes an object, not an Envelope. [Jon Aquino 10/24/2003]
@@ -314,7 +317,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
-        public void Query(IEnvelope searchEnv, IItemVisitor visitor)
+        public void Query(IEnvelope searchEnv, IItemVisitor<object> visitor)
         {
             //Yes this method does something. It specifies that the bounds is an
             //Envelope. super.query takes an Object, not an Envelope. [Jon Aquino 10/24/2003]
@@ -332,7 +335,6 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             return base.Remove(itemEnv, item);
         }        
         
-#if SILVERLIGHT
         /// <summary>
         /// 
         /// </summary>
@@ -341,15 +343,5 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             return new AnonymousYComparerImpl(this);
         }
-#else
-          /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        protected override IComparer GetComparer() 
-        {
-            return new AnonymousYComparerImpl(this);
-        }
-#endif
     }
 }

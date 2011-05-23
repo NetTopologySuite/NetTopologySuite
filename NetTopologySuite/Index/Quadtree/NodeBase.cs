@@ -1,15 +1,15 @@
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 {
+    //public abstract class NodeBase : NodeBase<object>
+    //{}
+
     /// <summary>
     /// The base class for nodes in a <c>Quadtree</c>.
     /// </summary>
-    public abstract class NodeBase
+    public abstract class NodeBase<T> 
     {        
         /// <summary> 
         /// Returns the index of the subquad that wholly contains the given envelope.
@@ -40,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        protected IList items = new ArrayList();
+        private List<T> _items = new List<T>();
 
         /// <summary>
         /// subquads are numbered as follows:
@@ -48,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// --+--
         /// 0 | 1
         /// </summary>
-        protected Node[] subnode = new Node[4];
+        protected Node<T>[] Subnode = new Node<T>[4];
 
         /// <summary>
         /// 
@@ -58,12 +58,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public IList Items
+        public IList<T> Items
         {
             get
             {
-                return items;
+                return _items;
             }
+            protected set { _items = (List<T>)value; }
         }
 
         /// <summary>
@@ -74,7 +75,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             get
             {
                 // return !items.IsEmpty; 
-                if (items.Count == 0)
+                if (_items.Count == 0)
                     return false;
                 return true;                
             }
@@ -84,9 +85,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// 
         /// </summary>
         /// <param name="item"></param>
-        public void Add(object item)
+        public void Add(T item)
         {
-            items.Add(item);            
+            _items.Add(item);            
         }
 
         /// <summary> 
@@ -95,7 +96,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <param name="itemEnv">The envelope containing the item.</param>
         /// <param name="item">The item to remove.</param>
         /// <returns><c>true</c> if the item was found and removed.</returns>
-        public bool Remove(IEnvelope itemEnv, object item)
+        public bool Remove(IEnvelope itemEnv, T item)
         {
             // use envelope to restrict nodes scanned
             if (!IsSearchMatch(itemEnv))
@@ -104,14 +105,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             bool found = false;
             for (int i = 0; i < 4; i++)
             {
-                if (subnode[i] != null)
+                if (Subnode[i] != null)
                 {
-                    found = subnode[i].Remove(itemEnv, item);
+                    found = Subnode[i].Remove(itemEnv, item);
                     if (found)
                     {
                         // trim subtree if empty
-                        if (subnode[i].IsPrunable)
-                            subnode[i] = null;
+                        if (Subnode[i].IsPrunable)
+                            Subnode[i] = null;
                         break;
                     }
                 }
@@ -122,9 +123,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
                 return found;
 
             // otherwise, try and remove the item from the list of items in this node
-            if(items.Contains(item))
+            if(_items.Contains(item))
             {                
-                items.Remove(item);
+                _items.Remove(item);
                 found = true;
             }
             return found;
@@ -150,7 +151,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    if (subnode[i] != null)
+                    if (Subnode[i] != null)
                         return true;
                 }
                 return false;
@@ -165,11 +166,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             get
             {
                 bool isEmpty = true;
-                if(items.Count != 0)
+                if(_items.Count != 0)
                     isEmpty = false;
                 for (int i = 0; i < 4; i++)
-                    if (subnode[i] != null)
-                        if (!subnode[i].IsEmpty)
+                    if (Subnode[i] != null)
+                        if (!Subnode[i].IsEmpty)
                             isEmpty = false;
                 return isEmpty;
             }
@@ -180,16 +181,16 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="resultItems">IList for adding items.</param>
         /// <returns>Parameter IList with <c>this</c> items.</returns>
-        public IList AddAllItems(ref IList resultItems)
+        public IList<T> AddAllItems(ref IList<T> resultItems)
         {
             // this node may have items as well as subnodes (since items may not
             // be wholely contained in any single subnode
             // resultItems.addAll(this.items);
-            foreach (object o in this.items)
+            foreach (T o in _items)
                 resultItems.Add(o);
             for (int i = 0; i < 4; i++)            
-                if (subnode[i] != null)
-                    subnode[i].AddAllItems(ref resultItems);                
+                if (Subnode[i] != null)
+                    Subnode[i].AddAllItems(ref resultItems);                
             return resultItems;
         }
 
@@ -205,19 +206,19 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="resultItems"></param>
-        public void AddAllItemsFromOverlapping(IEnvelope searchEnv, ref IList resultItems)
+        public void AddAllItemsFromOverlapping(IEnvelope searchEnv, ref IList<T> resultItems)
         {
             if (!IsSearchMatch(searchEnv))
                 return;
 
             // this node may have items as well as subnodes (since items may not
             // be wholely contained in any single subnode
-            foreach (object o in this.items)
+            foreach (T o in this._items)
                 resultItems.Add(o);
 
             for (int i = 0; i < 4; i++)            
-                if (subnode[i] != null)
-                    subnode[i].AddAllItemsFromOverlapping(searchEnv, ref resultItems);                            
+                if (Subnode[i] != null)
+                    Subnode[i].AddAllItemsFromOverlapping(searchEnv, ref resultItems);                            
         }
 
         /// <summary>
@@ -225,7 +226,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
-        public void Visit(IEnvelope searchEnv, IItemVisitor visitor)
+        public void Visit(IEnvelope searchEnv, IItemVisitor<T> visitor)
         {
             if (!IsSearchMatch(searchEnv))
                 return;
@@ -235,8 +236,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             VisitItems(searchEnv, visitor);
 
             for (int i = 0; i < 4; i++)
-                if (subnode[i] != null)                
-                    subnode[i].Visit(searchEnv, visitor);                            
+                if (Subnode[i] != null)                
+                    Subnode[i].Visit(searchEnv, visitor);                            
         }
 
         /// <summary>
@@ -244,10 +245,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
-        private void VisitItems(IEnvelope searchEnv, IItemVisitor visitor)
+        private void VisitItems(IEnvelope searchEnv, IItemVisitor<T> visitor)
         {
             // would be nice to filter items based on search envelope, but can't until they contain an envelope
-            for (IEnumerator i = items.GetEnumerator(); i.MoveNext(); )            
+            for (IEnumerator<T> i = _items.GetEnumerator(); i.MoveNext(); )            
                 visitor.VisitItem(i.Current);            
         }
        
@@ -261,9 +262,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
                 int maxSubDepth = 0;
                 for (int i = 0; i < 4; i++)
                 {
-                    if (subnode[i] != null)
+                    if (Subnode[i] != null)
                     {
-                        int sqd = subnode[i].Depth;
+                        int sqd = Subnode[i].Depth;
                         if (sqd > maxSubDepth)
                             maxSubDepth = sqd;
                     }
@@ -281,9 +282,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             {
                 int subSize = 0;
                 for (int i = 0; i < 4; i++)
-                    if (subnode[i] != null)                    
-                        subSize += subnode[i].Count;                                    
-                return subSize + items.Count;
+                    if (Subnode[i] != null)                    
+                        subSize += Subnode[i].Count;                                    
+                return subSize + _items.Count;
             }
         }
 
@@ -296,8 +297,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             {
                 int subSize = 0;
                 for (int i = 0; i < 4; i++)
-                    if (subnode[i] != null)
-                        subSize += subnode[i].Count;
+                    if (Subnode[i] != null)
+                        subSize += Subnode[i].Count;
                 return subSize + 1;
             }
         }

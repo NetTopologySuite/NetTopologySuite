@@ -39,7 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <param name="inputGeom"></param>
         public DouglasPeuckerSimplifier(IGeometry inputGeom)
         {
-            this._inputGeom = inputGeom;
+            _inputGeom = inputGeom;
         }
 
         /// <summary>
@@ -69,9 +69,11 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <summary>
         /// 
         /// </summary>
+// ReSharper disable InconsistentNaming
         private class DPTransformer : GeometryTransformer
+// ReSharper restore InconsistentNaming
         {
-            private DouglasPeuckerSimplifier container = null;
+            private readonly DouglasPeuckerSimplifier _container;
 
             /// <summary>
             /// 
@@ -79,7 +81,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             /// <param name="container"></param>
             public DPTransformer(DouglasPeuckerSimplifier container)
             {
-                this.container = container;
+                _container = container;
             }
 
             /// <summary>
@@ -91,7 +93,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
             protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
             {
                 ICoordinate[] inputPts = coords.ToCoordinateArray();
-                ICoordinate[] newPts = DouglasPeuckerLineSimplifier.Simplify(inputPts, container.DistanceTolerance);
+                ICoordinate[] newPts = DouglasPeuckerLineSimplifier.Simplify(inputPts, _container.DistanceTolerance);
                 return Factory.CoordinateSequenceFactory.Create(newPts);
             }
 

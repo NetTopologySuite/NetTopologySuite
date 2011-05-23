@@ -87,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
                 exception = ex;
             }
             Assert.IsNotNull(exception);
-            Assert.IsInstanceOfType(typeof(TopologyException), exception);
+            Assert.IsInstanceOf(typeof(TopologyException), exception);
 
             var buf1 = geom1.Buffer(0);
             Assert.IsNotNull(buf1);

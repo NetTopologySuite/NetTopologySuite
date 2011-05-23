@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -29,7 +30,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         private readonly double _scaleFactor;
         private MCIndexNoder _noder;
         private MCIndexPointSnapper _pointSnapper;
-        private IList _nodedSegStrings;
+        private IList<ISegmentString> _nodedSegStrings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MCIndexSnapRounder"/> class.
@@ -46,7 +47,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// The <see cref="ISegmentString"/>s have the same context as their parent.
         /// </summary>
         /// <returns></returns>
-        public IList GetNodedSubstrings()
+        public IList<ISegmentString> GetNodedSubstrings()
         {
             return NodedSegmentString.GetNodedSubstrings(_nodedSegStrings);
         }
@@ -57,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// others may only add some or none at all.
         /// </summary>
         /// <param name="inputSegmentStrings"></param>
-        public void ComputeNodes(IList inputSegmentStrings)
+        public void ComputeNodes(IList<ISegmentString> inputSegmentStrings)
         {
             _nodedSegStrings = inputSegmentStrings;
             _noder = new MCIndexNoder();
@@ -86,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// </summary>
         /// <param name="segStrings"></param>
         /// <param name="li"></param>
-        private void SnapRound(IList segStrings, LineIntersector li)
+        private void SnapRound(IList<ISegmentString> segStrings, LineIntersector li)
         {
             IList intersections = FindInteriorIntersections(segStrings, li);
             ComputeIntersectionSnaps(intersections);
@@ -102,7 +103,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// <param name="segStrings"></param>
         /// <param name="li"></param>
         /// <returns>A list of Coordinates for the intersections.</returns>
-        private IList FindInteriorIntersections(IList segStrings, LineIntersector li)
+        private IList FindInteriorIntersections(IList<ISegmentString> segStrings, LineIntersector li)
         {
             IntersectionFinderAdder intFinderAdder = new IntersectionFinderAdder(li);
             _noder.SegmentIntersector = intFinderAdder;
@@ -128,7 +129,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding.Snapround
         /// snapping segments to vertices of other segments.
         /// </summary>
         /// <param name="edges"></param>
-        public void ComputeVertexSnaps(IList edges)
+        public void ComputeVertexSnaps(IList<ISegmentString> edges)
         {
             foreach (INodableSegmentString edge in edges)
                 ComputeVertexSnaps(edge);            

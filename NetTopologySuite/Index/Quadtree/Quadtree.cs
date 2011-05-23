@@ -1,11 +1,11 @@
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
+
 namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
 {
+    //public class QuadTree : Quadtree<object>
+    //{}
     /// <summary>
     /// A Quadtree is a spatial index structure for efficient querying
     /// of 2D rectangles.  If other kinds of spatial objects
@@ -24,7 +24,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
     /// This data structure is also known as an <c>MX-CIF quadtree</c>
     /// following the usage of Samet and others.
     /// </summary>
-    public class Quadtree : ISpatialIndex
+    public class Quadtree<T> : ISpatialIndex<T>
     {
         /// <summary>
         /// Ensure that the envelope for the inserted item has non-zero extents.
@@ -59,7 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
             return new Envelope(minx, maxx, miny, maxy);
         }
 
-        private Root root;
+        private readonly Root<T> _root;
 
         /// <summary>
         /// minExtent is the minimum envelope extent of all items
@@ -69,14 +69,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// a zero extent in both directions.  This value may be non-optimal, but
         /// only one feature will be inserted with this value.
         /// </summary>
-        private double minExtent = 1.0;
+        private double _minExtent = 1.0;
 
         /// <summary>
         /// Constructs a Quadtree with zero items.
         /// </summary>
         public Quadtree()
         {
-            root = new Root();
+            _root = new Root<T>();
         }
 
         /// <summary> 
@@ -89,8 +89,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
                 //I don't think it's possible for root to be null. Perhaps we should
                 //remove the check. [Jon Aquino]
                 //Or make an assertion [Jon Aquino 10/29/2003]
-                if (root != null) 
-                    return root.Depth;
+                if (_root != null) 
+                    return _root.Depth;
                 return 0;
             }
         }
@@ -102,8 +102,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         {
             get
             {
-                if (root != null) 
-                    return root.Count;
+                if (_root != null) 
+                    return _root.Count;
                 return 0;
             }
         }
@@ -113,11 +113,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="itemEnv"></param>
         /// <param name="item"></param>
-        public void Insert(IEnvelope itemEnv, object item)
+        public void Insert(IEnvelope itemEnv, T item)
         {
             CollectStats(itemEnv);
-            IEnvelope insertEnv = EnsureExtent(itemEnv, minExtent);
-            root.Insert(insertEnv, item);
+            IEnvelope insertEnv = EnsureExtent(itemEnv, _minExtent);
+            _root.Insert(insertEnv, item);
         }
 
         /// <summary> 
@@ -126,10 +126,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <param name="itemEnv">The Envelope of the item to remove.</param>
         /// <param name="item">The item to remove.</param>
         /// <returns><c>true</c> if the item was found.</returns>
-        public bool Remove(IEnvelope itemEnv, object item)
+        public bool Remove(IEnvelope itemEnv, T item)
         {
-            IEnvelope posEnv = EnsureExtent(itemEnv, minExtent);
-            return root.Remove(posEnv, item);
+            IEnvelope posEnv = EnsureExtent(itemEnv, _minExtent);
+            return _root.Remove(posEnv, item);
         }        
 
         /// <summary>
@@ -137,13 +137,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <returns></returns>
-        public IList Query(IEnvelope searchEnv)
+        public IList<T> Query(IEnvelope searchEnv)
         {
             /*
             * the items that are matched are the items in quads which
             * overlap the search envelope
             */
-            ArrayListVisitor visitor = new ArrayListVisitor();
+            ArrayListVisitor<T> visitor = new ArrayListVisitor<T>();
             Query(searchEnv, visitor);
             return visitor.Items;
         }
@@ -153,22 +153,22 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
-        public void Query(IEnvelope searchEnv, IItemVisitor visitor)
+        public void Query(IEnvelope searchEnv, IItemVisitor<T> visitor)
         {
             /*
             * the items that are matched are the items in quads which
             * overlap the search envelope
             */
-            root.Visit(searchEnv, visitor);
+            _root.Visit(searchEnv, visitor);
         }
 
         /// <summary>
         /// Return a list of all items in the Quadtree.
         /// </summary>
-        public IList QueryAll()
+        public IList<T> QueryAll()
         {
-            IList foundItems = new ArrayList();
-            root.AddAllItems(ref foundItems);
+            IList<T> foundItems = new List<T>();
+            _root.AddAllItems(ref foundItems);
             return foundItems;
         }
         
@@ -179,12 +179,12 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         private void CollectStats(IEnvelope itemEnv)
         {
             double delX = itemEnv.Width;
-            if (delX < minExtent && delX > 0.0)
-            minExtent = delX;
+            if (delX < _minExtent && delX > 0.0)
+            _minExtent = delX;
 
             double delY = itemEnv.Height;
-            if (delY < minExtent && delY > 0.0)
-            minExtent = delY;
+            if (delY < _minExtent && delY > 0.0)
+            _minExtent = delY;
         }
     }
 }

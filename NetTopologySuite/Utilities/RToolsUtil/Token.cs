@@ -37,12 +37,12 @@ namespace RTools_NTS.Util
 		/// The line number in the input stream where this token originated.
 		/// This is base-1.
 		/// </summary>
-		protected int lineNumber;
+		private readonly int _lineNumber;
 
 		/// <summary>
 		/// The line number where this token was found.  This is base-1.
 		/// </summary>
-		public int LineNumber { get { return(lineNumber); }}
+        public int LineNumber { get { return (_lineNumber); } /*protected set { _lineNumber = value; }*/ }
 
 		/// <summary>
 		/// A storage object for the data of this token.
@@ -101,7 +101,7 @@ namespace RTools_NTS.Util
 		{
 			obj = null;
 			untermError = false;
-			lineNumber = line;
+			_lineNumber = line;
 		}
 
 		#endregion
@@ -252,7 +252,7 @@ namespace RTools_NTS.Util
 		/// <returns></returns>
 		public string ToLineString() 
 		{ 
-			return(String.Format("{0}: line {1}", ToDebugString(), lineNumber));
+			return(String.Format("{0}: line {1}", ToDebugString(), _lineNumber));
 		}
 
 		/// <summary>
@@ -261,7 +261,7 @@ namespace RTools_NTS.Util
 		/// <returns></returns>
 		public virtual string ToDebugString() 
 		{ 
-			return(String.Format("{0}: line {1}", ToString(), lineNumber));
+			return(String.Format("{0}: line {1}", ToString(), _lineNumber));
 		}
 
 		/// <summary>

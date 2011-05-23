@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
@@ -21,14 +22,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// </summary>
     public class SubgraphDepthLocater
     {
-        private IList subgraphs;
+        private readonly IList<BufferSubgraph> subgraphs;
         private LineSegment seg = new LineSegment();        
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="subgraphs"></param>
-        public SubgraphDepthLocater(IList subgraphs)
+        public SubgraphDepthLocater(IList<BufferSubgraph> subgraphs)
         {
             this.subgraphs = subgraphs;
         }
@@ -40,12 +41,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <returns></returns>
         public int GetDepth(ICoordinate p)
         {
-            ArrayList stabbedSegments = new ArrayList(FindStabbedSegments(p).CastPlatform());
+            //ArrayList stabbedSegments = new ArrayList(FindStabbedSegments(p).CastPlatform());
+            var stabbedSegments = new List<DepthSegment>(FindStabbedSegments(p));
             // if no segments on stabbing line subgraph must be outside all others.
             if (stabbedSegments.Count == 0)
                 return 0;
             stabbedSegments.Sort();
-            DepthSegment ds = (DepthSegment) stabbedSegments[0];
+            DepthSegment ds = stabbedSegments[0];
             return ds.LeftDepth;
         }
 
@@ -55,13 +57,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <param name="stabbingRayLeftPt">The left-hand origin of the stabbing line.</param>
         /// <returns>A List of {DepthSegments} intersecting the stabbing line.</returns>
-        private IList FindStabbedSegments(ICoordinate stabbingRayLeftPt)
+        private IList<DepthSegment> FindStabbedSegments(ICoordinate stabbingRayLeftPt)
         {
-            IList stabbedSegments = new ArrayList();
-            IEnumerator i = subgraphs.GetEnumerator();
-            while(i.MoveNext())
+            IList<DepthSegment> stabbedSegments = new List<DepthSegment>();
+            foreach (BufferSubgraph bsg in subgraphs)
             {
-                BufferSubgraph bsg = (BufferSubgraph) i.Current;
                 FindStabbedSegments(stabbingRayLeftPt, bsg.DirectedEdges, stabbedSegments);
             }
             return stabbedSegments;
@@ -75,16 +75,14 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="stabbingRayLeftPt">The left-hand origin of the stabbing line.</param>
         /// <param name="dirEdges"></param>
         /// <param name="stabbedSegments">The current list of DepthSegments intersecting the stabbing line.</param>
-        private void FindStabbedSegments(ICoordinate stabbingRayLeftPt, IList dirEdges, IList stabbedSegments)
+        private void FindStabbedSegments(ICoordinate stabbingRayLeftPt, IEnumerable<DirectedEdge> dirEdges, IList<DepthSegment> stabbedSegments)
         {
             /*
             * Check all forward DirectedEdges only.  This is still general,
             * because each Edge has a forward DirectedEdge.
             */
-            IEnumerator i = dirEdges.GetEnumerator();
-            while (i.MoveNext())             
+            foreach (DirectedEdge de in dirEdges)
             {
-                DirectedEdge de = (DirectedEdge) i.Current;
                 if (! de.IsForward) 
                     continue;
                 FindStabbedSegments(stabbingRayLeftPt, de, stabbedSegments);
@@ -99,7 +97,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="stabbingRayLeftPt">The left-hand origin of the stabbing line.</param>
         /// <param name="dirEdge"></param>
         /// <param name="stabbedSegments">The current list of DepthSegments intersecting the stabbing line.</param>
-        private void FindStabbedSegments(ICoordinate stabbingRayLeftPt, DirectedEdge dirEdge, IList stabbedSegments)
+        private void FindStabbedSegments(ICoordinate stabbingRayLeftPt, DirectedEdge dirEdge, IList<DepthSegment> stabbedSegments)
         {
             ICoordinate[] pts = dirEdge.Edge.Coordinates;
             for (int i = 0; i < pts.Length - 1; i++)

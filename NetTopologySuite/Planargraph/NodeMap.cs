@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections.Generic;
 using Wintellect.PowerCollections;
 using GeoAPI.Geometries;
 
@@ -9,13 +9,13 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
     /// </summary>   
     public class NodeMap
     {
-        private readonly IDictionary nodeMap = new OrderedDictionary<ICoordinate, Node>();
-
+        private readonly IDictionary<ICoordinate, Node> _nodeMap = new OrderedDictionary<ICoordinate, Node>();
+        /*
         /// <summary>
         /// Constructs a NodeMap without any Nodes.
         /// </summary>
         public NodeMap() { }
-
+        */
         /// <summary>
         /// Adds a node to the map, replacing any that is already at that location.
         /// </summary>
@@ -23,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <returns>The added node.</returns>
         public Node Add(Node n)
         {
-            nodeMap[n.Coordinate] = n;            
+            _nodeMap[n.Coordinate] = n;            
             return n;
         }
 
@@ -33,9 +33,11 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <param name="pt"></param>
         /// <returns></returns>
         public Node Remove(ICoordinate pt)
-        {            
-            Node node = (Node) nodeMap[pt];
-            nodeMap.Remove(pt);
+        {
+            if (_nodeMap.ContainsKey(pt))
+                return null;
+            Node node = _nodeMap[pt];
+            _nodeMap.Remove(pt);
             return node;
         }
 
@@ -44,27 +46,30 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>
-        public Node Find(ICoordinate coord) 
+        public Node Find(ICoordinate coord)
         {
-            return (Node) nodeMap[coord]; 
+            Node res;
+            if (_nodeMap.TryGetValue(coord, out res))
+                return res;
+            return null; 
         }
 
         /// <summary>
         /// Returns an Iterator over the Nodes in this NodeMap, sorted in ascending order
         /// by angle with the positive x-axis.
         /// </summary>
-        public IEnumerator GetEnumerator()
+        public IEnumerator<Node> GetEnumerator()
         {
-            return nodeMap.Values.GetEnumerator();
+            return _nodeMap.Values.GetEnumerator();
         }
 
         /// <summary>
         /// Returns the Nodes in this NodeMap, sorted in ascending order
         /// by angle with the positive x-axis.
         /// </summary>
-        public ICollection Values
+        public ICollection<Node> Values
         {
-            get { return nodeMap.Values; }
+            get { return _nodeMap.Values; }
         }
 
         /// <summary>
@@ -72,7 +77,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         public int Count
         {
-            get { return nodeMap.Count; }
+            get { return _nodeMap.Count; }
         }
     }
 }

@@ -53,7 +53,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Performances
             var holes = new List<ILinearRing>(100);
             var shell = CreateRing(0, 0, 20, 10000);            
             Benchmark(factory.CreatePolygon(shell, holes.ToArray()));
-            for (var i = 0; i < 100; i += 1)
+            for (var i = 0; i < 100; i += 5)
             {
                 holes.Add(CreateRing((i % 10) - 5, (i / 10) - 5, 0.4, 500));
                 Benchmark(factory.CreatePolygon(shell, holes.ToArray()));

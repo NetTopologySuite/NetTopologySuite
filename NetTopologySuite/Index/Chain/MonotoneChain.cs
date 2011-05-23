@@ -6,40 +6,55 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
     /// <summary> 
     /// MonotoneChains are a way of partitioning the segments of a linestring to
     /// allow for fast searching of intersections.
+    /// </summary>
+    /// <remarks>
+    /// <para>
     /// They have the following properties:
-    /// the segments within a monotone chain will never intersect each other
-    /// the envelope of any contiguous subset of the segments in a monotone chain
-    /// is equal to the envelope of the endpoints of the subset.
+    /// <list>
+    /// <item>the segments within a monotone chain never intersect each other</item>
+    /// <item>the envelope of any contiguous subset of the segments in a monotone chain
+    /// is equal to the envelope of the endpoints of the subset.</item>
+    /// </list>
+    /// </para>
+    /// <para>
     /// Property 1 means that there is no need to test pairs of segments from within
-    /// the same monotone chain for intersection.
-    /// Property 2 allows
+    /// the same monotone chain for intersection.</para>
+    /// <para>Property 2 allows an efficient 
     /// binary search to be used to find the intersection points of two monotone chains.
     /// For many types of real-world data, these properties eliminate a large number of
-    /// segment comparisons, producing substantial speed gains.
+    /// segment comparisons, producing substantial speed gains.</para>
+    /// <para>
     /// One of the goals of this implementation of MonotoneChains is to be
     /// as space and time efficient as possible. One design choice that aids this
     /// is that a MonotoneChain is based on a subarray of a list of points.
     /// This means that new arrays of points (potentially very large) do not
-    /// have to be allocated.
+    /// have to be allocated.</para>
+    /// <para>
     /// MonotoneChains support the following kinds of queries:
-    /// Envelope select: determine all the segments in the chain which
-    /// intersect a given envelope.
-    /// Overlap: determine all the pairs of segments in two chains whose
-    /// envelopes overlap.
+    /// <list type="Table">
+    /// <item>Envelope select</item><description>determine all the segments in the chain which
+    /// intersect a given envelope.</description>
+    /// <item>Overlap</item><description>determine all the pairs of segments in two chains whose
+    /// envelopes overlap.</description>
+    /// </list>
+    /// </para>
+    /// <para>
     /// This implementation of MonotoneChains uses the concept of internal iterators
     /// to return the resultsets for the above queries.
     /// This has time and space advantages, since it
     /// is not necessary to build lists of instantiated objects to represent the segments
     /// returned by the query.
     /// However, it does mean that the queries are not thread-safe.
-    /// </summary>
+    /// </para>
+    ///</remarks>
     public class MonotoneChain
     {
-        private ICoordinate[] pts;
-        private int start, end;
-        private IEnvelope env = null;
-        private object context = null;  // user-defined information
-        private int id;                 // useful for optimizing chain comparisons
+        private readonly ICoordinate[] _pts;
+        private readonly int _start;
+        private readonly int _end;
+        private IEnvelope _env;
+        private readonly object _context;  // user-defined information
+        private int _id;                   // useful for optimizing chain comparisons
 
         /// <summary>
         /// 
@@ -50,10 +65,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <param name="context"></param>
         public MonotoneChain(ICoordinate[] pts, int start, int end, object context)
         {
-            this.pts = pts;
-            this.start = start;
-            this.end = end;
-            this.context = context;
+            _pts = pts;
+            _start = start;
+            _end = end;
+            _context = context;
         }
 
         /// <summary>
@@ -63,11 +78,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         {
             get
             {
-                return this.id;
+                return _id;
             }
             set
             {
-                this.id = value;
+                _id = value;
             }
         }
 
@@ -78,7 +93,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         {
             get
             {
-                return context;
+                return _context;
             }
         }
 
@@ -89,13 +104,13 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         {
             get
             {
-                if (env == null)
+                if (_env == null)
                 {
-                    ICoordinate p0 = pts[start];
-                    ICoordinate p1 = pts[end];
-                    env = new Envelope(p0, p1);
+                    ICoordinate p0 = _pts[_start];
+                    ICoordinate p1 = _pts[_end];
+                    _env = new Envelope(p0, p1);
                 }
-                return env;
+                return _env;
             }
         }
 
@@ -106,7 +121,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         {
             get
             {
-                return start;
+                return _start;
             }
         }
 
@@ -117,7 +132,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         {
             get
             {
-                return end;
+                return _end;
             }
         }
 
@@ -128,8 +143,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <param name="ls"></param>
         public void GetLineSegment(int index, ref LineSegment ls)
         {
-            ls.P0 = pts[index];
-            ls.P1 = pts[index + 1];
+            ls.P0 = _pts[index];
+            ls.P1 = _pts[index + 1];
         }
 
         /// <summary>
@@ -140,10 +155,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         {
             get
             {
-                ICoordinate[] coord = new ICoordinate[end - start + 1];
+                ICoordinate[] coord = new ICoordinate[_end - _start + 1];
                 int index = 0;
-                for (int i = start; i <= end; i++) 
-                    coord[index++] = pts[i];                
+                for (int i = _start; i <= _end; i++) 
+                    coord[index++] = _pts[i];                
                 return coord;
             }
         }
@@ -156,7 +171,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <param name="mcs"></param>
         public void Select(IEnvelope searchEnv, MonotoneChainSelectAction mcs)
         {
-            ComputeSelect(searchEnv, start, end, mcs);
+            ComputeSelect(searchEnv, _start, _end, mcs);
         }
 
         /// <summary>
@@ -168,8 +183,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <param name="mcs"></param>
         private void ComputeSelect(IEnvelope searchEnv, int start0, int end0, MonotoneChainSelectAction mcs)
         {
-            ICoordinate p0 = pts[start0];
-            ICoordinate p1 = pts[end0];
+            ICoordinate p0 = _pts[start0];
+            ICoordinate p1 = _pts[end0];
             mcs.TempEnv1.Init(p0, p1);
             
             // terminating condition for the recursion
@@ -200,7 +215,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <param name="mco"></param>
         public  void ComputeOverlaps(MonotoneChain mc, MonotoneChainOverlapAction mco)
         {
-            ComputeOverlaps(start, end, mc, mc.start, mc.end, mco);
+            ComputeOverlaps(_start, _end, mc, mc._start, mc._end, mco);
         }
 
         /// <summary>
@@ -214,10 +229,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Chain
         /// <param name="mco"></param>
         private void ComputeOverlaps(int start0, int end0, MonotoneChain mc, int start1, int end1, MonotoneChainOverlapAction mco)
         {
-            ICoordinate p00 = pts[start0];
-            ICoordinate p01 = pts[end0];
-            ICoordinate p10 = mc.pts[start1];
-            ICoordinate p11 = mc.pts[end1];
+            ICoordinate p00 = _pts[start0];
+            ICoordinate p01 = _pts[end0];
+            ICoordinate p10 = mc._pts[start1];
+            ICoordinate p11 = mc._pts[end1];
             
             // terminating condition for the recursion
             if (end0 - start0 == 1 && end1 - start1 == 1)

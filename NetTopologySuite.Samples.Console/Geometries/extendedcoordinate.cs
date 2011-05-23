@@ -10,36 +10,36 @@ namespace GisSharpBlog.NetTopologySuite.Samples.Geometries
 		/// <summary> 
         /// Default constructor
 		/// </summary>
-		public ExtendedCoordinate() : base()
+		public ExtendedCoordinate()
 		{
-			this.m = 0.0;
+			_m = 0.0;
 		}
 		
 		public ExtendedCoordinate(double x, double y, double z, double m) : base(x, y, z)
 		{
-			this.m = m;
+			_m = m;
 		}
 		
 		public ExtendedCoordinate(ICoordinate coord) : base(coord)
 		{
-			m = 0.0;
+			_m = 0.0;
 		}
 		
 		public ExtendedCoordinate(ExtendedCoordinate coord) : base(coord)
 		{
-			m = coord.m;
+			_m = coord._m;
 		}
 		
 		/// <summary> 
         /// An example of extended data.
 		/// The m variable holds a measure value for linear referencing
 		/// </summary>		
-		private double m;
+		private double _m;
         
-        virtual public double M
+         public override double M
         {
-            get { return m; }
-            set { this.m = value; }
+            get { return _m; }
+            set { _m = value; }
         }
 		
 		public override string ToString()

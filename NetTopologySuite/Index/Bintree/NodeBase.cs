@@ -29,19 +29,19 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <summary>
         /// 
         /// </summary>
-        protected IList items = new ArrayList();
+        private IList _items = new ArrayList();
 
         /// <summary>
         /// Subnodes are numbered as follows:
         /// 0 | 1        
         /// .
         /// </summary>
-        protected Node[] subnode = new Node[2];
+        protected Node[] Subnode = new Node[2];
         
         /// <summary>
         /// 
         /// </summary>
-        public NodeBase() { }
+        protected NodeBase() { }
 
         /// <summary>
         /// 
@@ -50,8 +50,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         {
             get
             {                
-                return items;
+                return _items;
             }
+            protected set { _items = value; }
         }
 
         /// <summary>
@@ -60,7 +61,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <param name="item"></param>
         public  void Add(object item)
         {
-            items.Add(item);
+            _items.Add(item);
         }
 
         /// <summary>
@@ -71,11 +72,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         public  IList AddAllItems(IList items)
         {
             // items.addAll(this.items);
-            foreach (object o in this.items)
+            foreach (object o in _items)
                 items.Add(o);
             for (int i = 0; i < 2; i++)
-                if (subnode[i] != null)
-                    subnode[i].AddAllItems(items);                            
+                if (Subnode[i] != null)
+                    Subnode[i].AddAllItems(items);                            
             return items;
         }
 
@@ -95,14 +96,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         public  IList AddAllItemsFromOverlapping(Interval interval, IList resultItems)
         {
             if (!IsSearchMatch(interval))
-                return items;
+                return _items;
             // resultItems.addAll(items);
-            foreach (object o in items)
+            foreach (object o in _items)
                 resultItems.Add(o);
             for (int i = 0; i < 2; i++)
-                if (subnode[i] != null)
-                    subnode[i].AddAllItemsFromOverlapping(interval, resultItems);                            
-            return items;
+                if (Subnode[i] != null)
+                    Subnode[i].AddAllItemsFromOverlapping(interval, resultItems);                            
+            return _items;
         }
 
         /// <summary>
@@ -115,9 +116,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
                 int maxSubDepth = 0;
                 for (int i = 0; i < 2; i++)
                 {
-                    if (subnode[i] != null)
+                    if (Subnode[i] != null)
                     {
-                        int sqd = subnode[i].Depth;
+                        int sqd = Subnode[i].Depth;
                         if (sqd > maxSubDepth)
                             maxSubDepth = sqd;
                     }
@@ -135,9 +136,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             {
                 int subSize = 0;
                 for (int i = 0; i < 2; i++)
-                    if (subnode[i] != null)
-                        subSize += subnode[i].Count;
-                return subSize + items.Count;
+                    if (Subnode[i] != null)
+                        subSize += Subnode[i].Count;
+                return subSize + _items.Count;
             }
         }
 
@@ -150,8 +151,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             {
                 int subCount = 0;
                 for (int i = 0; i < 2; i++)
-                    if (subnode[i] != null)
-                        subCount += subnode[i].NodeCount;
+                    if (Subnode[i] != null)
+                        subCount += Subnode[i].NodeCount;
                 return subCount + 1;
             }
         }

@@ -317,12 +317,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             StringBuilder sb = new StringBuilder();
             if (elt[0] != null) 
             {
-                sb.Append("a:");
+                sb.Append("A:");
                 sb.Append(elt[0].ToString());
             }
             if (elt[1] != null) 
             {
-                sb.Append(" b:");
+                sb.Append(" B:");
                 sb.Append(elt[1].ToString());
             }
             return sb.ToString();

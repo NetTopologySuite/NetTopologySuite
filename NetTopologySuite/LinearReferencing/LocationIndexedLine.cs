@@ -37,6 +37,13 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// If the <paramref name="index" /> is out of range,
         /// the first or last point on the line will be returned.
         /// </summary>
+        /// <remarks>
+        /// <para></para>
+        /// <para>
+        /// The Z-ordinate of the computed point will be interpolated from
+        /// the Z-ordinates of the line segment containing it, if they exist.
+        /// </para>
+        /// </remarks>
         /// <param name="index">The index of the desired point.</param>
         /// <returns>The <see cref="Coordinate" /> at the given index.</returns>
         public ICoordinate ExtractPoint(LinearLocation index)
@@ -82,6 +89,35 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         public LinearLocation[] IndicesOf(IGeometry subLine)
         {
             return LocationIndexOfLine.IndicesOf(linearGeom, subLine);
+        }
+
+        ///<summary>
+        /// Finds the index for a point on the line which is greater than the given index. 
+        /// If no such index exists, returns <tt>minIndex</tt>.
+        ///</summary>
+        /// <remarks>
+        /// <para>
+        /// This method can be used to determine all indexes for
+        /// a point which occurs more than once on a non-simple line.
+        /// It can also be used to disambiguate cases where the given point lies
+        /// slightly off the line and is equidistant from two different
+        /// points on the line.
+        /// </para>
+        /// <para>
+        /// The supplied point does not <i>necessarily</i> have to lie precisely
+        /// on the line, but if it is far from the line the accuracy and
+        /// performance of this function is not guaranteed.
+        /// Use <see cref="Project"/> to compute a guaranteed result for points
+        /// which may be far from the line.
+        /// </para>
+        /// </remarks>
+        /// <param name="pt">A point on the line</param>
+        /// <param name="minIndex">The value the returned index must be greater than</param>
+        /// <returns>The index of the point greater than the given minimum index</returns>
+        /// <see cref="Project"/>
+        public LinearLocation IndexOfAfter(ICoordinate pt, LinearLocation minIndex)
+        {
+            return LocationIndexOfPoint.IndexOfAfter(linearGeom, pt, minIndex);
         }
 
         /// <summary>

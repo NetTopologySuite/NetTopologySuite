@@ -14,6 +14,7 @@ using GisSharpBlog.NetTopologySuite.Operation.Overlay;
 using GisSharpBlog.NetTopologySuite.Operation.Overlay.Snap;
 using GisSharpBlog.NetTopologySuite.Operation.Predicate;
 using GisSharpBlog.NetTopologySuite.Operation.Relate;
+using GisSharpBlog.NetTopologySuite.Operation.Union;
 using GisSharpBlog.NetTopologySuite.Operation.Valid;
 using GisSharpBlog.NetTopologySuite.Utilities;
 #if SILVERLIGHT
@@ -147,7 +148,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// The bounding box of this <c>Geometry</c>.
         /// </summary>
-        protected IEnvelope envelope;
+        private IEnvelope _envelope;
        
         // The ID of the Spatial Reference System used by this <c>Geometry</c>
         private int _srid;
@@ -544,9 +545,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                if (envelope == null)
-                    envelope = ComputeEnvelopeInternal();                
-                return envelope;
+                if (_envelope == null)
+                    _envelope = ComputeEnvelopeInternal();                
+                return _envelope;
             }
         }
 
@@ -575,7 +576,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public void GeometryChangedAction()
         {
-            envelope = null;
+            _envelope = null;
         }
 
         /// <summary>  
@@ -719,12 +720,13 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public bool Covers(IGeometry g)
         {
             // short-circuit test
-            if (!EnvelopeInternal.Contains(g.EnvelopeInternal))
+            if (!EnvelopeInternal.Covers(g.EnvelopeInternal))
                 return false;
             
             // optimization for rectangle arguments
             if (IsRectangle)
-                return EnvelopeInternal.Contains(g.EnvelopeInternal);
+                // since we have already tested that the test envelope is covered
+                return true;
             
             return Relate(g).IsCovers();
         }
@@ -998,9 +1000,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// are less than or equal to <c>distance</c>.
         /// </returns>
         /// <exception cref="TopologyException">If a robustness error occurs</exception>
+        [Obsolete]
         public IGeometry Buffer(double distance, BufferStyle endCapStyle)
         {
-            return BufferOp.Buffer(this, distance, endCapStyle);
+            return BufferOp.Buffer(this, distance, BufferParameters.DefaultQuadrantSegments, endCapStyle);
+        }
+        
+        public IGeometry Buffer(double distance, EndCapStyle endCapStyle)
+        {
+            return BufferOp.Buffer(this, distance, BufferParameters.DefaultQuadrantSegments, (BufferStyle)endCapStyle);
         }
 
         /// <summary>
@@ -1048,7 +1056,17 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public IGeometry Buffer(double distance, int quadrantSegments, BufferStyle endCapStyle)
         {
             return BufferOp.Buffer(this, distance, quadrantSegments, endCapStyle);
-        } 
+        }
+
+        public IGeometry Buffer(double distance, int quadrantSegments, EndCapStyle endCapStyle)
+        {
+            return BufferOp.Buffer(this, distance, quadrantSegments, (BufferStyle)endCapStyle);
+        }
+
+        public IGeometry Buffer(double distance, IBufferParameters bufferParameters)
+        {
+            return BufferOp.Buffer(this, distance, bufferParameters);
+        }
 
         /// <summary>
         /// Returns the smallest convex <c>Polygon</c> that contains all the
@@ -1142,6 +1160,22 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.SymDifference);
         }
 
+        ///<summary> 
+        /// Computes the union of all the elements of this geometry. Heterogeneous <see cref="IGeometryCollection"/>s are fully supported.
+        /// 
+        ///</summary>
+        /// <remarks>
+        /// The result obeys the following contract:
+        /// <list type="Bullet">
+        /// <item>Unioning a set of <see cref="ILineString"/>s has the effect of fully noding and dissolving the linework.</item>
+        /// <item>Unioning a set of <see cref="IPolygon"/>s will always return a <see cref="IPolygonal"/> geometry (unlike <see cref="Union(IGeometry)"/>), which may return geometrys of lower dimension if a topology collapse occurred.</item>
+        /// </list>
+        /// </remarks>
+        public IGeometry Union()
+        {
+            return UnaryUnionOp.Union(this);
+        }
+
         /// <summary>
         /// Returns true if the two <c>Geometry</c>s are exactly equal,
         /// up to a specified tolerance.
@@ -1230,8 +1264,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public virtual object Clone() 
         {            
             Geometry clone = (Geometry) MemberwiseClone();
-            if (clone.envelope != null) 
-                clone.envelope = new Envelope(clone.envelope);                 
+            if (clone._envelope != null) 
+                clone._envelope = new Envelope(clone._envelope);                 
             return clone;         
         }
 
@@ -1443,7 +1477,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="a">A <c>Collection</c> of <c>IComparable</c>s.</param>
         /// <param name="b">A <c>Collection</c> of <c>IComparable</c>s.</param>
         /// <returns>The first non-zero <c>compareTo</c> result, if any; otherwise, zero.</returns>
-        protected int Compare(ArrayList a, ArrayList b) 
+        protected int Compare(List<IGeometry> a, List<IGeometry> b) 
         {
             IEnumerator i = a.GetEnumerator();
             IEnumerator j = b.GetEnumerator();

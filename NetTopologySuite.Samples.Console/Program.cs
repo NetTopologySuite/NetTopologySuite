@@ -33,7 +33,7 @@ namespace GisSharpBlog.NetTopologySuite.Samples.SimpleTests
         /// <summary>
         /// 
         /// </summary>
-        [Test]
+        //[Test]
         public void SamplesTest()
         {
             SamplesTest(false);

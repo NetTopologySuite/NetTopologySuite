@@ -94,8 +94,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             {
                 if (IsEmpty) 
                     return false;
-                for (int i = 0; i < geometries.Length; i++)
-                    if (!((ILineString) geometries[i]).IsClosed)
+                for (int i = 0; i < Geometries.Length; i++)
+                    if (!((ILineString) Geometries[i]).IsClosed)
                         return false;                
                 return true;
             }
@@ -134,10 +134,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>a <see cref="MultiLineString" /> in the reverse order.</returns>
         public IMultiLineString Reverse()
         {
-            int nLines = geometries.Length;
+            int nLines = Geometries.Length;
             ILineString[] revLines = new ILineString[nLines];
-            for (int i = 0; i < geometries.Length; i++)
-                revLines[nLines - 1 - i] = ((ILineString) geometries[i]).Reverse();            
+            for (int i = 0; i < Geometries.Length; i++)
+                revLines[nLines - 1 - i] = ((ILineString) Geometries[i]).Reverse();            
             return Factory.CreateMultiLineString(revLines);
         }
 

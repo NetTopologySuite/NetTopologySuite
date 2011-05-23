@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
 
 namespace GisSharpBlog.NetTopologySuite.Index.Strtree
@@ -15,7 +15,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <summary>
         /// 
         /// </summary>
-        private class AnnonymousComparerImpl : IComparer<object>, IComparer
+        private class AnnonymousComparerImpl : IComparer<object>
         {    
             /// <summary>
             /// 
@@ -66,9 +66,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             protected override object ComputeBounds()
             {
                 Interval bounds = null;
-                for (IEnumerator i = ChildBoundables.GetEnumerator(); i.MoveNext(); )
+                foreach (object i in ChildBoundables)
                 {
-                    IBoundable childBoundable = (IBoundable)i.Current;
+                    IBoundable childBoundable = (IBoundable)i;
                     if (bounds == null)
                          bounds = new Interval((Interval)childBoundable.Bounds);
                     else bounds.ExpandToInclude((Interval)childBoundable.Bounds);
@@ -77,12 +77,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
             }
         }       
 
-#if SILVERLIGHT
-        private IComparer<object> comparator = new AnnonymousComparerImpl(); 
-#else
-        private IComparer comparator = new AnnonymousComparerImpl(); 
-#endif
-        private IIntersectsOp intersectsOp = new AnonymousIntersectsOpImpl();
+        private readonly IComparer<object> _comparator = new AnnonymousComparerImpl(); 
+
+        private readonly IIntersectsOp _intersectsOp = new AnonymousIntersectsOpImpl();
 
         /// <summary> 
         /// Constructs an SIRtree with the default (10) node capacity.
@@ -113,7 +110,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <param name="item"></param>
         public void Insert(double x1, double x2, object item) 
         {
-            base.Insert(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)), item);
+            Insert(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)), item);
         }
 
         /// <summary>
@@ -132,7 +129,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         /// <param name="x2">Possibly equal to x1.</param>
         public IList Query(double x1, double x2) 
         {
-            return base.Query(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)));
+            return Query(new Interval(Math.Min(x1, x2), Math.Max(x1, x2)));
         }
 
         /// <summary>
@@ -142,28 +139,17 @@ namespace GisSharpBlog.NetTopologySuite.Index.Strtree
         {
             get
             {
-                return intersectsOp;
+                return _intersectsOp;
             }
         }
 
-#if SILVERLIGHT
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
         protected override IComparer<object> GetComparer() 
         {
-            return comparator;
+            return _comparator;
         }
-#else
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        protected override IComparer GetComparer()
-        {
-            return comparator;
-        }
-#endif
     }
 }

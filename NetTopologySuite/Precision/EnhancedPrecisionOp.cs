@@ -22,7 +22,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <returns>The Geometry representing the set-theoretic intersection of the input Geometries.</returns>
         public static IGeometry Intersection(IGeometry geom0, IGeometry geom1)
         {
-            ApplicationException originalEx = null;
+            ApplicationException originalEx;
             try
             {
                 IGeometry result = geom0.Intersection(geom1);
@@ -60,7 +60,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <returns>The Geometry representing the set-theoretic union of the input Geometries.</returns>
         public static IGeometry Union(IGeometry geom0, IGeometry geom1)
         {
-            ApplicationException originalEx = null;
+            ApplicationException originalEx;
             try
             {
                 IGeometry result = geom0.Union(geom1);
@@ -98,7 +98,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <returns>The Geometry representing the set-theoretic difference of the input Geometries.</returns>
         public static IGeometry Difference(IGeometry geom0, IGeometry geom1)
         {
-            ApplicationException originalEx = null;
+            ApplicationException originalEx;
             try
             {
                 IGeometry result = geom0.Difference(geom1);
@@ -136,7 +136,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <returns>The Geometry representing the set-theoretic symmetric difference of the input Geometries.</returns>
         public static IGeometry SymDifference(IGeometry geom0, IGeometry geom1)
         {
-            ApplicationException originalEx = null;
+            ApplicationException originalEx;
             try
             {
                 IGeometry result = geom0.SymmetricDifference(geom1);
@@ -177,7 +177,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         [Obsolete("This method should no longer be necessary, since the buffer algorithm now is highly robust.")]
         public static IGeometry Buffer(IGeometry geom, double distance)
         {
-            ApplicationException originalEx = null;
+            ApplicationException originalEx;
             try
             {
                 IGeometry result = geom.Buffer(distance);

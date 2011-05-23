@@ -8,16 +8,25 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
     /// <summary>
     /// An <c>BinTree</c> (or "Binary Interval Tree")
     /// is a 1-dimensional version of a quadtree.
-    /// It indexes 1-dimensional intervals (which of course may
+    /// It indexes 1-dimensional intervals (which may
     /// be the projection of 2-D objects on an axis).
     /// It supports range searching
     /// (where the range may be a single point).
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This structure is dynamic - 
+    /// new items can be added at any time,   
+    /// and it will support deletion of items 
+    /// (although this is not currently implemented).
+    /// </para>
+    /// <para>
     /// This implementation does not require specifying the extent of the inserted
     /// items beforehand.  It will automatically expand to accomodate any extent
-    /// of dataset.
-    /// This index is different to the Interval Tree of Edelsbrunner
-    /// or the Segment Tree of Bentley.
-    /// </summary>
+    /// of dataset.</para>
+    /// <para>This index is different to the Interval Tree of Edelsbrunner
+    /// or the Segment Tree of Bentley.</para>
+    /// </remarks>
     public class Bintree
     {
         /// <summary>
@@ -40,7 +49,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             return new Interval(min, max);
         }
 
-        private Root root;
+        private readonly Root _root;
         
         /*
         * Statistics:
@@ -58,7 +67,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// </summary>
         public Bintree()
         {
-            root = new Root();
+            _root = new Root();
         }
 
         /// <summary>
@@ -68,8 +77,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         {
             get
             {
-                if (root != null) 
-                    return root.Depth;
+                if (_root != null) 
+                    return _root.Depth;
                 return 0;
             }
         }
@@ -81,8 +90,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         {
             get
             {
-                if (root != null) 
-                    return root.Count;
+                if (_root != null) 
+                    return _root.Count;
                 return 0;
             }
         }
@@ -95,8 +104,8 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         {
             get
             {
-                if (root != null) 
-                    return root.NodeCount;
+                if (_root != null) 
+                    return _root.NodeCount;
                 return 0;
             }
         }
@@ -110,7 +119,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         {
             CollectStats(itemInterval);
             Interval insertInterval = EnsureExtent(itemInterval, minExtent);            
-            root.Insert(insertInterval, item);            
+            _root.Insert(insertInterval, item);            
         }
 
         /// <summary>
@@ -120,7 +129,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         public IEnumerator GetEnumerator()
         {
             IList foundItems = new ArrayList();
-            root.AddAllItems(foundItems);
+            _root.AddAllItems(foundItems);
             return foundItems.GetEnumerator();
         }
 
@@ -156,7 +165,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// <param name="foundItems"></param>
         public void Query(Interval interval, IList foundItems)
         {
-            root.AddAllItemsFromOverlapping(interval, foundItems);
+            _root.AddAllItemsFromOverlapping(interval, foundItems);
         }
 
         /// <summary>

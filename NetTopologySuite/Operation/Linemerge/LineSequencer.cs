@@ -218,7 +218,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         {
             IList sequences = new ArrayList();
             ConnectedSubgraphFinder csFinder = new ConnectedSubgraphFinder(graph);
-            IList subgraphs = csFinder.GetConnectedSubgraphs();
+            var subgraphs = csFinder.GetConnectedSubgraphs();
             foreach(Subgraph subgraph in subgraphs)
             {                
                 if (HasSequence(subgraph))
@@ -261,13 +261,13 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
             Node startNode = FindLowestDegreeNode(graph);
 
             // HACK: reversing linestring fixes some cases... see LineSequencerTest.SimpleBigLoop and others
-            ArrayList list = (ArrayList)startNode.OutEdges.Edges;
+            var list = (List<DirectedEdge>)startNode.OutEdges.Edges;
             list.Reverse();
 
-            IEnumerator ie = list.GetEnumerator();
+            IEnumerator<DirectedEdge> ie = list.GetEnumerator();
             ie.MoveNext();
 
-            DirectedEdge startDE = (DirectedEdge) ie.Current;            
+            DirectedEdge startDE = ie.Current;            
             DirectedEdge startDESym = startDE.Sym;
             
             LinkedList<DirectedEdge> seq = new LinkedList<DirectedEdge>();
@@ -461,7 +461,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
         /// </returns>
         private IGeometry BuildSequencedGeometry(IEnumerable sequences)
         {
-            IList lines = new ArrayList();
+            IList<IGeometry> lines = new List<IGeometry>();
 
             IEnumerator i1 = sequences.GetEnumerator();
             while (i1.MoveNext())
@@ -482,7 +482,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Linemerge
                 }
             }
 
-            return lines.Count == 0 ? this.factory.CreateMultiLineString(new ILineString[] { }) : this.factory.BuildGeometry(lines);
+            return lines.Count == 0 ? factory.CreateMultiLineString(new ILineString[] { }) : factory.BuildGeometry(lines);
         }
 
         private static ILineString Reverse(ILineString line)

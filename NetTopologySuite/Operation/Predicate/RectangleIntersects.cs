@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -269,7 +269,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Predicate
         {
             // check segment intersection
             // get all lines from geom (e.g. if it's a multi-ring polygon)
-            IList lines = LinearComponentExtracter.GetLines(geom);
+            IList<ILineString> lines = LinearComponentExtracter.GetLines(geom);
             SegmentIntersectionTester si = new SegmentIntersectionTester();
             bool hasIntersection = si.HasIntersectionWithLineStrings(rectSeq, lines);
             if (hasIntersection) 

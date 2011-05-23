@@ -11,12 +11,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// Only non-null if this node is precise.
         /// </summary>
-        protected ICoordinate coord = null;     
+        private ICoordinate _coord;     
         
         /// <summary>
         /// 
         /// </summary>
-        protected EdgeEndStar edges = null;
+        private EdgeEndStar _edges;
 
         /// <summary>
         /// 
@@ -25,9 +25,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="edges"></param>
         public Node(ICoordinate coord, EdgeEndStar edges)
         {
-            this.coord = coord;
-            this.edges = edges;
-            label = new Label(0, Locations.Null);
+            _coord = coord;
+            _edges = edges;
+            Label = new Label(0, Locations.Null);
         }
 
         /// <summary>
@@ -37,8 +37,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return coord; 
+                return _coord; 
             }
+            protected set { _coord = value; }
         }
 
         /// <summary>
@@ -48,8 +49,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return edges; 
+                return _edges; 
             }
+            protected set { _edges = value; }
         }
 
         /// <summary>
@@ -59,7 +61,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return (label.GeometryCount == 1);
+                return (Label.GeometryCount == 1);
             }
         }
 
@@ -76,7 +78,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public void Add(EdgeEnd e)
         {
             // Assert: start pt of e is equal to node point
-            edges.Insert(e);
+            _edges.Insert(e);
             e.Node = this;
         }
 
@@ -101,9 +103,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             for (int i = 0; i < 2; i++) 
             {
                 Locations loc = ComputeMergedLocation(label2, i);
-                Locations thisLoc = label.GetLocation(i);
+                Locations thisLoc = Label.GetLocation(i);
                 if (thisLoc == Locations.Null) 
-                    label.SetLocation(i, loc);
+                    Label.SetLocation(i, loc);
             }
         }
         
@@ -114,9 +116,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="onLocation"></param>
         public void SetLabel(int argIndex, Locations onLocation)
         {
-            if (label == null) 
-                 label = new Label(argIndex, onLocation);            
-            else label.SetLocation(argIndex, onLocation);
+            if (Label == null) 
+                 Label = new Label(argIndex, onLocation);            
+            else Label.SetLocation(argIndex, onLocation);
         }
 
         /// <summary> 
@@ -128,8 +130,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             // determine the current location for the point (if any)
             Locations loc = Locations.Null;
-            if (label != null)
-                loc = label.GetLocation(argIndex);
+            if (Label != null)
+                loc = Label.GetLocation(argIndex);
             // flip the loc
             Locations newLoc;
             switch (loc)
@@ -144,7 +146,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 newLoc = Locations.Boundary; 
                 break;
             }
-            label.SetLocation(argIndex, newLoc);
+            Label.SetLocation(argIndex, newLoc);
         }
 
         /// <summary> 
@@ -158,8 +160,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="eltIndex"></param>
         public Locations ComputeMergedLocation(Label label2, int eltIndex)
         {
-            Locations loc = Locations.Null;
-            loc = label.GetLocation(eltIndex);
+            /*Locations loc = Locations.Null*/;
+            Locations loc = Label.GetLocation(eltIndex);
             if (!label2.IsNull(eltIndex)) 
             {
                 Locations nLoc = label2.GetLocation(eltIndex);
@@ -175,7 +177,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="outstream"></param>
         public void Write(TextWriter outstream)
         {
-            outstream.WriteLine("node " + coord + " lbl: " + label);
+            outstream.WriteLine("node " + _coord + " lbl: " + Label);
         }
 
         /// <summary>
@@ -184,7 +186,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public override string ToString()
         {
-            return coord + " " + edges;
+            return _coord + " " + _edges;
         }
     }
 }

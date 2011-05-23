@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 
@@ -23,8 +25,8 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         public const int MaxIterations = 5;
 
-        private LineIntersector li = null;
-        private IList nodedSegStrings = null;
+        private LineIntersector li;
+        private IList<ISegmentString> nodedSegStrings;
         private int maxIter = MaxIterations;
 
         /// <summary>
@@ -59,7 +61,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// The <see cref="ISegmentString"/>s have the same context as their parent.
         /// </summary>
         /// <returns></returns>
-        public IList GetNodedSubstrings() 
+        public IList<ISegmentString> GetNodedSubstrings() 
         { 
             return nodedSegStrings; 
         }
@@ -71,7 +73,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         /// <param name="segStrings">A collection of SegmentStrings to be noded.</param>
         /// <exception cref="TopologyException">If the iterated noding fails to converge.</exception>
-        public void ComputeNodes(IList segStrings)    
+        public void ComputeNodes(IList<ISegmentString> segStrings)    
         {
             int[] numInteriorIntersections = new int[1];
             nodedSegStrings = segStrings;
@@ -104,7 +106,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         /// <param name="segStrings"></param>
         /// <param name="numInteriorIntersections"></param>
-        private void Node(IList segStrings, int[] numInteriorIntersections)
+        private void Node(IList<ISegmentString> segStrings, int[] numInteriorIntersections)
         {
             IntersectionAdder si = new IntersectionAdder(li);
             MCIndexNoder noder = new MCIndexNoder(si);            

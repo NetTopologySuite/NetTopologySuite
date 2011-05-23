@@ -9,29 +9,33 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
 {
     /// <summary> 
     /// Models the end of an edge incident on a node.
-    /// EdgeEnds have a direction
-    /// determined by the direction of the ray from the initial
-    /// point to the next point.
-    /// EdgeEnds are IComparable under the ordering
-    /// "a has a greater angle with the x-axis than b".
-    /// This ordering is used to sort EdgeEnds around a node.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// EdgeEnds have a direction determined by the direction of the ray from the initial
+    /// point to the next point.
+    /// </para>
+    /// <para>
+    /// EdgeEnds are IComparable under the ordering  "a has a greater angle with the x-axis than b".
+    /// This ordering is used to sort EdgeEnds around a node.
+    /// </para>
+    /// </remarks>
     public class EdgeEnd : IComparable
     {
         /// <summary>
         /// The parent edge of this edge end.
         /// </summary>
-        protected Edge edge = null;        
+        private Edge _edge;        
 
         /// <summary>
         /// 
         /// </summary>
-        protected Label label = null;
+        private Label _label;
 
-        private Node node;          // the node this edge end originates at
-        private ICoordinate p0, p1;  // points of initial line segment
-        private double dx, dy;      // the direction vector for this edge from its starting point
-        private int quadrant;
+        private Node _node;          // the node this edge end originates at
+        private ICoordinate _p0, _p1;  // points of initial line segment
+        private double _dx, _dy;      // the direction vector for this edge from its starting point
+        private int _quadrant;
 
         /// <summary>
         /// 
@@ -39,7 +43,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="edge"></param>
         protected EdgeEnd(Edge edge)
         {
-            this.edge = edge;
+            this._edge = edge;
         }
 
         /// <summary>
@@ -62,7 +66,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
             : this(edge)
         {
             Init(p0, p1);
-            this.label = label;
+            _label = label;
         }
 
         /// <summary>
@@ -72,12 +76,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="p1"></param>
         protected void Init(ICoordinate p0, ICoordinate p1)
         {
-            this.p0 = p0;
-            this.p1 = p1;
-            dx = p1.X - p0.X;
-            dy = p1.Y - p0.Y;
-            quadrant = QuadrantOp.Quadrant(dx, dy);
-            Assert.IsTrue(! (dx == 0 && dy == 0), "EdgeEnd with identical endpoints found");
+            this._p0 = p0;
+            this._p1 = p1;
+            _dx = p1.X - p0.X;
+            _dy = p1.Y - p0.Y;
+            _quadrant = QuadrantOp.Quadrant(_dx, _dy);
+            Assert.IsTrue(! (_dx == 0 && _dy == 0), "EdgeEnd with identical endpoints found");
         }
 
         /// <summary>
@@ -87,8 +91,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return edge;
+                return _edge;
             }
+            protected set { _edge = value; }
         }
 
         /// <summary>
@@ -98,8 +103,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return label;
+                return _label;
             }
+            protected set { _label = value; }
         }
 
         /// <summary>
@@ -109,7 +115,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return p0;
+                return _p0;
             }
         }
 
@@ -120,7 +126,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return p1;
+                return _p1;
             }
         }
 
@@ -131,7 +137,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return quadrant;
+                return _quadrant;
             }
         }
 
@@ -142,7 +148,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return dx;
+                return _dx;
             }
         }
 
@@ -153,7 +159,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return dy;
+                return _dy;
             }
         }
 
@@ -164,11 +170,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return node;
+                return _node;
             }
             set
             {
-                this.node = value;
+                this._node = value;
             }
         }
 
@@ -197,16 +203,16 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="e"></param>
         public int CompareDirection(EdgeEnd e)
         {
-            if (dx == e.dx && dy == e.dy)
+            if (_dx == e._dx && _dy == e._dy)
                 return 0;
             // if the rays are in different quadrants, determining the ordering is trivial
-            if (quadrant > e.quadrant)
+            if (_quadrant > e._quadrant)
                 return 1;
-            if (quadrant < e.quadrant)
+            if (_quadrant < e._quadrant)
                 return -1;
             // vectors are in the same quadrant - check relative orientation of direction vectors
             // this is > e if it is CCW of e
-            return CGAlgorithms.ComputeOrientation(e.p0, e.p1, p1);
+            return CGAlgorithms.ComputeOrientation(e._p0, e._p1, _p1);
         }
 
         /// <summary>
@@ -221,11 +227,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="outstream"></param>
         public virtual void Write(StreamWriter outstream)
         {            
-            double angle = Math.Atan2(dy, dx);
-            string fullname = this.GetType().FullName;
+            double angle = Math.Atan2(_dy, _dx);
+            string fullname = GetType().FullName;
             int lastDotPos = fullname.LastIndexOf('.');
             string name = fullname.Substring(lastDotPos + 1);
-            outstream.Write("  " + name + ": " + p0 + " - " + p1 + " " + quadrant + ":" + angle + "   " + label);
+            outstream.Write("  " + name + ": " + _p0 + " - " + _p1 + " " + _quadrant + ":" + angle + "   " + _label);
         }
 
         /// <summary>
@@ -236,10 +242,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(('['));
-            sb.Append(p0.X);
+            sb.Append(_p0.X);
             sb.Append((' '));
-            sb.Append(p1.Y);
-            sb.Append(("]:"));
+            sb.Append(_p1.Y);
+            sb.Append(("]:" ));
             sb.Append(Label);
             return sb.ToString();
         }  

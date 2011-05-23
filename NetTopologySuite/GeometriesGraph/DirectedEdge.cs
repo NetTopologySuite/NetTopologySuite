@@ -26,22 +26,22 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        protected bool isForward;
+        private bool _isForward;
 
-        private bool isInResult = false;
-        private bool isVisited = false;
+        private bool _isInResult;
+        private bool _isVisited;
 
-        private DirectedEdge sym; // the symmetric edge
-        private DirectedEdge next;  // the next edge in the edge ring for the polygon containing this edge
-        private DirectedEdge nextMin;  // the next edge in the MinimalEdgeRing that contains this edge
-        private EdgeRing edgeRing;  // the EdgeRing that this edge is part of
-        private EdgeRing minEdgeRing;  // the MinimalEdgeRing that this edge is part of
+        private DirectedEdge _sym; // the symmetric edge
+        private DirectedEdge _next;  // the next edge in the edge ring for the polygon containing this edge
+        private DirectedEdge _nextMin;  // the next edge in the MinimalEdgeRing that contains this edge
+        private EdgeRing _edgeRing;  // the EdgeRing that this edge is part of
+        private EdgeRing _minEdgeRing;  // the MinimalEdgeRing that this edge is part of
 
         /// <summary> 
         /// The depth of each side (position) of this edge.
         /// The 0 element of the array is never used.
         /// </summary>
-        private int[] depth = { 0, -999, -999 };
+        private readonly int[] _depth = { 0, -999, -999 };
 
         /// <summary>
         /// 
@@ -50,7 +50,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="isForward"></param>
         public DirectedEdge(Edge edge, bool isForward) : base(edge)
         {            
-            this.isForward = isForward;
+            _isForward = isForward;
             if (isForward) 
                 Init(edge.GetCoordinate(0), edge.GetCoordinate(1));            
             else 
@@ -68,11 +68,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return isInResult;
+                return _isInResult;
             }
             set
             {
-                isInResult = value;
+                _isInResult = value;
             }
         }
 
@@ -83,7 +83,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return isInResult;
+                return _isInResult;
             }
         }
 
@@ -94,11 +94,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return isVisited;
+                return _isVisited;
             }
             set
             {
-                isVisited = value;
+                _isVisited = value;
             }
         }
 
@@ -109,7 +109,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return isVisited;
+                return _isVisited;
             }
         }
         
@@ -120,11 +120,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return edgeRing;
+                return _edgeRing;
             }
             set
             {
-                edgeRing = value;
+                _edgeRing = value;
             }
         }
 
@@ -135,11 +135,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return minEdgeRing;
+                return _minEdgeRing;
             }
             set
             {
-                minEdgeRing = value; 
+                _minEdgeRing = value; 
             }
         }
 
@@ -150,7 +150,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public int GetDepth(Positions position) 
         { 
-            return depth[(int)position]; 
+            return _depth[(int)position]; 
         }
 
         /// <summary>
@@ -160,10 +160,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="depthVal"></param>
         public void SetDepth(Positions position, int depthVal)
         {
-            if (depth[(int)position] != -999) 
-                if (depth[(int)position] != depthVal)                                     
+            if (_depth[(int)position] != -999) 
+                if (_depth[(int)position] != depthVal)                                     
                     throw new TopologyException("assigned depths do not match", Coordinate);                                    
-            depth[(int)position] = depthVal;
+            _depth[(int)position] = depthVal;
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                int depthDelta = edge.DepthDelta;
+                int depthDelta = Edge.DepthDelta;
                 if (!IsForward) 
                     depthDelta = -depthDelta;
                 return depthDelta;
@@ -191,12 +191,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return Visited && sym.Visited;
+                return Visited && _sym.Visited;
             }
             set
             {
                 Visited = value;
-                sym.Visited = value;
+                _sym.Visited = value;
             }
         }
         
@@ -207,8 +207,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return this.isForward;
+                return _isForward;
             }
+            protected set { _isForward = value; }
         }
 
         /// <summary>
@@ -218,11 +219,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return this.sym; 
+                return _sym; 
             }
             set
             {
-                sym = value;
+                _sym = value;
             }
         }
 
@@ -233,11 +234,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return next;
+                return _next;
             }
             set
             {
-                next = value;
+                _next = value;
             }
         }
 
@@ -248,11 +249,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                return nextMin;
+                return _nextMin;
             }
             set
             {
-                nextMin = value;
+                _nextMin = value;
             }
         }
 
@@ -265,11 +266,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             get
             {
-                bool isLine = label.IsLine(0) || label.IsLine(1);
+                bool isLine = Label.IsLine(0) || Label.IsLine(1);
                 bool isExteriorIfArea0 =
-                    !label.IsArea(0) || label.AllPositionsEqual(0, Locations.Exterior);
+                    !Label.IsArea(0) || Label.AllPositionsEqual(0, Locations.Exterior);
                 bool isExteriorIfArea1 =
-                    !label.IsArea(1) || label.AllPositionsEqual(1, Locations.Exterior);
+                    !Label.IsArea(1) || Label.AllPositionsEqual(1, Locations.Exterior);
                 return isLine && isExteriorIfArea0 && isExteriorIfArea1;
             }
         }
@@ -287,9 +288,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
                 bool isInteriorAreaEdge = true;
                 for (int i = 0; i < 2; i++)
                 {
-                    if (!(label.IsArea(i)
-                        && label.GetLocation(i, Positions.Left)  == Locations.Interior
-                        && label.GetLocation(i, Positions.Right) == Locations.Interior))
+                    if (!(Label.IsArea(i)
+                        && Label.GetLocation(i, Positions.Left)  == Locations.Interior
+                        && Label.GetLocation(i, Positions.Right) == Locations.Interior))
                     {
                         isInteriorAreaEdge = false;
                     }
@@ -303,9 +304,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </summary>
         private void ComputeDirectedLabel()
         {
-            label = new Label(edge.Label);
-            if (!isForward)
-                label.Flip();
+            Label = new Label(Edge.Label);
+            if (!_isForward)
+                Label.Flip();
         }
 
         /// <summary> 
@@ -320,7 +321,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             // get the depth transition delta from R to Curve for this directed Edge
             int depthDelta = Edge.DepthDelta;
-            if (!isForward) 
+            if (!_isForward) 
                 depthDelta = -depthDelta;
 
             // if moving from Curve to R instead of R to Curve must change sign of delta
@@ -345,9 +346,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public void OLDSetEdgeDepths(Positions position, int depth)
         {
             int depthDelta = Edge.DepthDelta;
-            Locations loc = label.GetLocation(0, position);
+            Locations loc = Label.GetLocation(0, position);
             Positions oppositePos = Position.Opposite(position);
-            Locations oppositeLoc = label.GetLocation(0, oppositePos);
+            Locations oppositeLoc = Label.GetLocation(0, oppositePos);
             int delta = Math.Abs(depthDelta) * DepthFactor(loc, oppositeLoc);            
             int oppositeDepth = depth + delta;
             SetDepth(position, depth);
@@ -361,9 +362,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public override void Write(StreamWriter outstream)
         {
             base.Write(outstream);
-            outstream.Write(" " + depth[(int)Positions.Left] + "/" + depth[(int)Positions.Right]);
+            outstream.Write(" " + _depth[(int)Positions.Left] + "/" + _depth[(int)Positions.Right]);
             outstream.Write(" (" + DepthDelta + ")");            
-            if (isInResult)
+            if (_isInResult)
                 outstream.Write(" inResult");
         }
 
@@ -375,9 +376,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         {
             Write(outstream);
             outstream.Write(" ");
-            if (isForward)
-                 edge.Write(outstream);
-            else edge.WriteReverse(outstream);
+            if (_isForward)
+                 Edge.Write(outstream);
+            else Edge.WriteReverse(outstream);
         }
     }
 }

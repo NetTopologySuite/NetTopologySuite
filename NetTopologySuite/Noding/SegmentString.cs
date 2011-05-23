@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -25,9 +25,9 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         /// <param name="segStrings"></param>
         /// <returns></returns>
-        public static IList GetNodedSubstrings(IList segStrings)
+        public static IList<ISegmentString> GetNodedSubstrings(IList<ISegmentString> segStrings)
         {
-            IList resultEdgelist = new ArrayList();
+            IList<ISegmentString> resultEdgelist = new List<ISegmentString>();
             GetNodedSubstrings(segStrings, resultEdgelist);
             return resultEdgelist;
         }
@@ -37,7 +37,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// </summary>
         /// <param name="segStrings"></param>
         /// <param name="resultEdgelist"></param>
-        public static void GetNodedSubstrings(IList segStrings, IList resultEdgelist)
+        public static void GetNodedSubstrings(IList<ISegmentString> segStrings, IList<ISegmentString> resultEdgelist)
         {
             foreach (var obj in segStrings)
             {

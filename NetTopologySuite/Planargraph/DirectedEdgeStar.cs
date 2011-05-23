@@ -1,8 +1,5 @@
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace GisSharpBlog.NetTopologySuite.Planargraph
 {
@@ -15,15 +12,16 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// The underlying list of outgoing DirectedEdges.
         /// </summary>
-        protected IList outEdges = new ArrayList();
+        protected List<DirectedEdge> outEdges = new List<DirectedEdge>();
 
-        private bool sorted = false;
+        private bool _sorted;
 
+        /*
         /// <summary>
         /// Constructs a DirectedEdgeStar with no edges.
         /// </summary>
         public DirectedEdgeStar() { }
-
+        */
         /// <summary>
         /// Adds a new member to this DirectedEdgeStar.
         /// </summary>
@@ -31,7 +29,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         public void Add(DirectedEdge de)
         {            
             outEdges.Add(de);
-            sorted = false;
+            _sorted = false;
         }
 
         /// <summary>
@@ -46,7 +44,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// <summary>
         /// Returns an Iterator over the DirectedEdges, in ascending order by angle with the positive x-axis.
         /// </summary>
-        public IEnumerator GetEnumerator()
+        public IEnumerator<DirectedEdge> GetEnumerator()
         {            
             SortEdges();
             return outEdges.GetEnumerator();
@@ -70,18 +68,16 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         {
             get
             {
-                IEnumerator it = GetEnumerator();
-                if (!it.MoveNext()) 
+                if (outEdges.Count == 0 || outEdges[0] == null)
                     return null;
-                DirectedEdge e = (DirectedEdge) it.Current;
-                return e.Coordinate;
+                return outEdges[0].Coordinate;
             }
         }
 
         /// <summary>
         /// Returns the DirectedEdges, in ascending order by angle with the positive x-axis.
         /// </summary>
-        public IList Edges
+        public IList<DirectedEdge> Edges
         {
             get
             {
@@ -95,11 +91,10 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         /// </summary>
         private void SortEdges()
         {
-            if (!sorted)
+            if (!_sorted)
             {
-                ArrayList list  = (ArrayList) outEdges;
-                list.Sort();
-                sorted = true;                
+                outEdges.Sort();
+                _sorted = true;                
             }
         }
 
@@ -114,7 +109,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             SortEdges();
             for (int i = 0; i < outEdges.Count; i++)
             {
-                DirectedEdge de = (DirectedEdge)outEdges[i];
+                DirectedEdge de = outEdges[i];
                 if (de.Edge == edge)
                     return i;
             }
@@ -132,7 +127,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
             SortEdges();
             for (int i = 0; i < outEdges.Count; i++)
             {
-                DirectedEdge de = (DirectedEdge)outEdges[i];
+                DirectedEdge de = outEdges[i];
                 if (de == dirEdge)
                     return i;
             }
@@ -163,7 +158,7 @@ namespace GisSharpBlog.NetTopologySuite.Planargraph
         public DirectedEdge GetNextEdge(DirectedEdge dirEdge)
         {
             int i = GetIndex(dirEdge);
-            return (DirectedEdge)outEdges[GetIndex(i + 1)];
+            return outEdges[GetIndex(i + 1)];
         }
     }
 }

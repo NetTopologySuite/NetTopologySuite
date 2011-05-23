@@ -15,8 +15,8 @@ namespace GisSharpBlog.NetTopologySuite.IO
     public class DbaseFileWriter
     {
         readonly BinaryWriter _writer;
-        private bool headerWritten;
-        private bool recordsWritten;
+        private bool _headerWritten;
+        //private bool _recordsWritten;
         private DbaseFileHeader _header;
 
         /// <summary>
@@ -39,9 +39,9 @@ namespace GisSharpBlog.NetTopologySuite.IO
         {
             if (header == null)
                 throw new ArgumentNullException("header");
-            if (recordsWritten)
-                throw new InvalidOperationException("Records have already been written. Header file needs to be written first.");
-            headerWritten = true;
+            //if (_recordsWritten)
+            //    throw new InvalidOperationException("Records have already been written. Header file needs to be written first.");
+            _headerWritten = true;
             header.WriteHeader(_writer);
             _header = header;
         }
@@ -54,7 +54,7 @@ namespace GisSharpBlog.NetTopologySuite.IO
         {
             if (columnValues == null)
                 throw new ArgumentNullException("columnValues");
-            if (!headerWritten)
+            if (!_headerWritten)
                 throw new InvalidOperationException("Header records need to be written first.");
             int i = 0;
             _writer.Write((byte)0x20); // the deleted flag

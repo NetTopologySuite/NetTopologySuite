@@ -13,12 +13,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// A soft reference to the Coordinate[] representation of this sequence.
         /// Makes repeated coordinate array accesses more efficient.
         /// </summary>
-        protected WeakReference coordRef;
+        protected WeakReference CoordRef;
 
         /// <summary>
         /// The dimensions of the coordinates hold in the packed array
         /// </summary>
-        protected int dimension;
+        private int _dimension;
 
         /// <summary>
         /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
@@ -26,7 +26,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <value></value>
         public int Dimension
         {
-            get { return dimension; }            
+            get { return _dimension; }
+            protected set { _dimension = value; }
         }
 
         /// <summary>
@@ -51,7 +52,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             ICoordinate[] arr = GetCachedCoords();
             if(arr != null)
                  return arr[i];
-            else return GetCoordinateInternal(i);
+            return GetCoordinateInternal(i);
         }
 
         /// <summary>
@@ -101,7 +102,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             for (int i = 0; i < arr.Length; i++) 
                 arr[i] = GetCoordinateInternal(i);
             
-            coordRef = new WeakReference(arr);
+            CoordRef = new WeakReference(arr);
             return arr;
         }        
 
@@ -109,20 +110,18 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <returns></returns>
-        private ICoordinate[] GetCachedCoords() 
+        private ICoordinate[] GetCachedCoords()
         {
-            if (coordRef != null) 
+            if (CoordRef != null) 
             {
-                ICoordinate[] arr = (ICoordinate[]) coordRef.Target;
+                ICoordinate[] arr = (ICoordinate[]) CoordRef.Target;
                 if (arr != null) 
                     return arr;
-                else 
-                {            
-                    coordRef = null;
-                    return null;
-                }
-            } 
-            else return null;            
+                
+                CoordRef = null;
+                return null;
+            }
+            return null;
         }
 
         /// <summary>
@@ -168,7 +167,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="value"></param>
         public void SetX(int index, double value) 
         {
-            coordRef = null;
+            CoordRef = null;
             SetOrdinate(index, Ordinates.X, value);
         }
 
@@ -177,9 +176,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         /// <param name="index"></param>
         /// <param name="value"></param>
-        public void setY(int index, double value) 
+        public void SetY(int index, double value) 
         {
-            coordRef = null;
+            CoordRef = null;
             SetOrdinate(index, Ordinates.Y, value);
         }
 
@@ -229,7 +228,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// The packed coordinate array
         /// </summary>
-        private double[] coords;
+        private readonly double[] _coords;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
@@ -245,8 +244,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 throw new ArgumentException("Packed array does not contain " + 
                     "an integral number of coordinates");
       
-            this.dimension = dimensions;
-            this.coords = coords;
+            Dimension = dimensions;
+            _coords = coords;
         }
 
         /// <summary>
@@ -256,10 +255,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="dimensions"></param>
         public PackedDoubleCoordinateSequence(float[] coordinates, int dimensions) 
         {
-            this.coords = new double[coordinates.Length];
-            this.dimension = dimensions;
+            _coords = new double[coordinates.Length];
+            Dimension = dimensions;
             for (int i = 0; i < coordinates.Length; i++) 
-                this.coords[i] = coordinates[i];
+                _coords[i] = coordinates[i];
         }
 
         /// <summary>
@@ -271,16 +270,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (coordinates == null)
                 coordinates = new ICoordinate[0];
-            this.dimension = dimension;
+            Dimension = dimension;
 
-            coords = new double[coordinates.Length * this.dimension];
+            _coords = new double[coordinates.Length * Dimension];
             for (int i = 0; i < coordinates.Length; i++) 
             {
-                coords[i * this.dimension] = coordinates[i].X;
-                if (this.dimension >= 2)
-                    coords[i * this.dimension + 1] = coordinates[i].Y;
-                if (this.dimension >= 3)
-                    coords[i * this.dimension + 2] = coordinates[i].Z;
+                _coords[i * Dimension] = coordinates[i].X;
+                if (Dimension >= 2)
+                    _coords[i * Dimension + 1] = coordinates[i].Y;
+                if (Dimension >= 3)
+                    _coords[i * Dimension + 2] = coordinates[i].Z;
             }
         }
         
@@ -297,8 +296,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="dimension"></param>
         public PackedDoubleCoordinateSequence(int size, int dimension)
         {
-            this.dimension = dimension;
-            coords = new double[size * this.dimension];
+            Dimension = dimension;
+            _coords = new double[size * Dimension];
         }
 
         /// <summary>
@@ -309,9 +308,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         protected override ICoordinate GetCoordinateInternal(int index) 
         {
-            double x = coords[index * dimension];
-            double y = coords[index * dimension + 1];
-            double z = dimension == 2 ? 0.0 : coords[index * dimension + 2];
+            double x = _coords[index * Dimension];
+            double y = _coords[index * Dimension + 1];
+            double z = Dimension == 2 ? 0.0 : _coords[index * Dimension + 2];
             return new Coordinate(x, y, z);
         }
 
@@ -321,7 +320,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <value></value>
         public override int Count 
         {
-            get { return coords.Length / dimension; }
+            get { return _coords.Length / Dimension; }
         }
 
         /// <summary>
@@ -332,9 +331,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public override Object Clone() 
         {
-            double[] clone = new double[coords.Length];
-            Array.Copy(coords, clone, coords.Length);
-            return new PackedDoubleCoordinateSequence(clone, dimension);
+            double[] clone = new double[_coords.Length];
+            Array.Copy(_coords, clone, _coords.Length);
+            return new PackedDoubleCoordinateSequence(clone, Dimension);
         }
 
         /// <summary>
@@ -348,7 +347,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public override double GetOrdinate(int index, Ordinates ordinate) 
         {
-            return coords[index * dimension + (int) ordinate];
+            return _coords[index * Dimension + (int) ordinate];
         }
 
         /// <summary>
@@ -364,8 +363,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </remarks>
         public override void SetOrdinate(int index, Ordinates ordinate, double value) 
         {
-            coordRef = null;
-            coords[index * dimension + (int) ordinate] = value;
+            CoordRef = null;
+            _coords[index * Dimension + (int) ordinate] = value;
         }
 
         /// <summary>
@@ -376,8 +375,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>A reference to the expanded envelope.</returns>
         public override IEnvelope ExpandEnvelope(IEnvelope env)
         {
-            for (int i = 0; i < coords.Length; i += dimension)
-                env.ExpandToInclude(coords[i], coords[i + 1]);        
+            for (int i = 0; i < _coords.Length; i += Dimension)
+                env.ExpandToInclude(_coords[i], _coords[i + 1]);        
             return env;
         }
     }
@@ -390,7 +389,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <summary>
         /// The packed coordinate array
         /// </summary>
-        private float[] coords;
+        private readonly float[] _coords;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedFloatCoordinateSequence"/> class.
@@ -406,8 +405,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 throw new ArgumentException("Packed array does not contain " + 
                     "an integral number of coordinates");
       
-            this.dimension = dimensions;
-            this.coords = coords;
+            Dimension = dimensions;
+            _coords = coords;
         }
     
         /// <summary>
@@ -417,10 +416,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="dimensions"></param>
         public PackedFloatCoordinateSequence(double[] coordinates, int dimensions) 
         {
-            this.coords = new float[coordinates.Length];
-            this.dimension = dimensions;
+            _coords = new float[coordinates.Length];
+            Dimension = dimensions;
             for (int i = 0; i < coordinates.Length; i++) 
-                this.coords[i] = (float) coordinates[i];      
+                _coords[i] = (float) coordinates[i];      
         }
 
         /// <summary>
@@ -432,16 +431,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (coordinates == null)
                 coordinates = new ICoordinate[0];
-            this.dimension = dimension;
+            Dimension = dimension;
 
-            coords = new float[coordinates.Length * this.dimension];
+            _coords = new float[coordinates.Length * Dimension];
             for (int i = 0; i < coordinates.Length; i++) 
             {
-                coords[i * this.dimension] = (float) coordinates[i].X;
-                if (this.dimension >= 2)
-                    coords[i * this.dimension + 1] = (float) coordinates[i].Y;
-                if (this.dimension >= 3)
-                coords[i * this.dimension + 2] = (float) coordinates[i].Z;
+                _coords[i * Dimension] = (float) coordinates[i].X;
+                if (Dimension >= 2)
+                    _coords[i * Dimension + 1] = (float) coordinates[i].Y;
+                if (Dimension >= 3)
+                _coords[i * Dimension + 2] = (float) coordinates[i].Z;
             }
         }
 
@@ -452,8 +451,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="dimension"></param>
         public PackedFloatCoordinateSequence(int size, int dimension) 
         {
-            this.dimension = dimension;
-            coords = new float[size * this.dimension];
+            Dimension = dimension;
+            _coords = new float[size * Dimension];
         }
 
         /// <summary>
@@ -464,9 +463,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         protected override ICoordinate GetCoordinateInternal(int index) 
         {
-            double x = coords[index * dimension];
-            double y = coords[index * dimension + 1];
-            double z = dimension == 2 ? 0.0 : coords[index * dimension + 2];
+            double x = _coords[index * Dimension];
+            double y = _coords[index * Dimension + 1];
+            double z = Dimension == 2 ? 0.0 : _coords[index * Dimension + 2];
             return new Coordinate(x, y, z);
         }
 
@@ -476,7 +475,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <value></value>
         public override int Count
         {
-            get { return coords.Length / dimension; }
+            get { return _coords.Length / Dimension; }
         }
 
         /// <summary>
@@ -487,9 +486,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </returns>
         public override Object Clone() 
         {
-            float[] clone = new float[coords.Length];
-            Array.Copy(coords, clone, coords.Length);
-            return new PackedFloatCoordinateSequence(clone, dimension);
+            float[] clone = new float[_coords.Length];
+            Array.Copy(_coords, clone, _coords.Length);
+            return new PackedFloatCoordinateSequence(clone, Dimension);
         }
 
         /// <summary>
@@ -503,7 +502,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public override double GetOrdinate(int index, Ordinates ordinate) 
         {
-            return coords[index * dimension + (int) ordinate];
+            return _coords[index * Dimension + (int) ordinate];
         }
 
         /// <summary>
@@ -519,8 +518,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </remarks>
         public override void SetOrdinate(int index, Ordinates ordinate, double value) 
         {
-            coordRef = null;
-            coords[index * dimension + (int) ordinate] = (float) value;
+            CoordRef = null;
+            _coords[index * Dimension + (int) ordinate] = (float) value;
         }
 
         /// <summary>
@@ -531,8 +530,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns>A reference to the expanded envelope.</returns>
         public override IEnvelope ExpandEnvelope(IEnvelope env)
         {
-        for (int i = 0; i < coords.Length; i += dimension )
-            env.ExpandToInclude(coords[i], coords[i + 1]);      
+        for (int i = 0; i < _coords.Length; i += Dimension )
+            env.ExpandToInclude(_coords[i], _coords[i + 1]);      
         return env;
         }
     }

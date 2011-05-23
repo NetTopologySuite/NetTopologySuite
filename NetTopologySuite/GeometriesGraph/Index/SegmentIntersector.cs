@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 
@@ -25,24 +25,24 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
          * These variables keep track of what types of intersections were
          * found during ALL edges that have been intersected.
          */
-        private bool hasIntersection = false;
-        private bool hasProper = false;
-        private bool hasProperInterior = false;
+        private bool _hasIntersection;
+        private bool _hasProper;
+        private bool _hasProperInterior;
 
         // the proper intersection point found
-        private ICoordinate properIntersectionPoint = null;
+        private ICoordinate _properIntersectionPoint;
 
-        private LineIntersector li;
-        private bool includeProper;
-        private bool recordIsolated;
-        private int numIntersections = 0;
+        private readonly LineIntersector _li;
+        private readonly bool _includeProper;
+        private readonly bool _recordIsolated;
+        private int _numIntersections;
 
         /// <summary>
         /// Testing only.
         /// </summary>
-        public int numTests = 0;
+        public int NumTests;
 
-        private ICollection[] bdyNodes;
+        private IList<Node>[] _bdyNodes;
         
         /// <summary>
         /// 
@@ -52,9 +52,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <param name="recordIsolated"></param>
         public SegmentIntersector(LineIntersector li, bool includeProper, bool recordIsolated)
         {
-            this.li = li;
-            this.includeProper = includeProper;
-            this.recordIsolated = recordIsolated;
+            _li = li;
+            _includeProper = includeProper;
+            _recordIsolated = recordIsolated;
         }
 
         /// <summary>
@@ -62,11 +62,11 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         /// <param name="bdyNodes0"></param>
         /// <param name="bdyNodes1"></param>
-        public void SetBoundaryNodes(ICollection bdyNodes0, ICollection bdyNodes1)
+        public void SetBoundaryNodes(IList<Node> bdyNodes0, IList<Node> bdyNodes1)
         {
-            bdyNodes = new ICollection[2];
-            bdyNodes[0] = bdyNodes0;
-            bdyNodes[1] = bdyNodes1;
+            _bdyNodes = new IList<Node>[2];
+            _bdyNodes[0] = bdyNodes0;
+            _bdyNodes[1] = bdyNodes1;
         }
 
         /// <returns> 
@@ -76,7 +76,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         {
             get
             {
-                return properIntersectionPoint;
+                return _properIntersectionPoint;
             }
         }
 
@@ -87,7 +87,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         {
             get
             {
-                return hasIntersection;
+                return _hasIntersection;
             }
         }
 
@@ -102,7 +102,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         {
             get
             {
-                return hasProper; 
+                return _hasProper; 
             }
         }
 
@@ -114,7 +114,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         {
             get
             {
-                return hasProperInterior;
+                return _hasProperInterior;
             }
         }
 
@@ -132,7 +132,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         {
             if (ReferenceEquals(e0, e1))
             {
-                if (li.IntersectionNum == 1)
+                if (_li.IntersectionNum == 1)
                 {
                     if (IsAdjacentSegments(segIndex0, segIndex1))
                         return true;
@@ -164,41 +164,41 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
             if (ReferenceEquals(e0, e1) && segIndex0 == segIndex1)
                 return;             // Diego Guidi say's: Avoid overload equality, i use references equality, otherwise TOPOLOGY ERROR!
                             
-            numTests++;
+            NumTests++;
             ICoordinate p00 = e0.Coordinates[segIndex0];
             ICoordinate p01 = e0.Coordinates[segIndex0 + 1];
             ICoordinate p10 = e1.Coordinates[segIndex1];
             ICoordinate p11 = e1.Coordinates[segIndex1 + 1];
-            li.ComputeIntersection(p00, p01, p10, p11);            
+            _li.ComputeIntersection(p00, p01, p10, p11);            
             /*
              *  Always record any non-proper intersections.
              *  If includeProper is true, record any proper intersections as well.
              */
-            if (li.HasIntersection)
+            if (_li.HasIntersection)
             {
-                if (recordIsolated)
+                if (_recordIsolated)
                 {
                     e0.Isolated = false;
                     e1.Isolated = false;
                 }                
-                numIntersections++;
+                _numIntersections++;
                 // if the segments are adjacent they have at least one trivial intersection,
                 // the shared endpoint.  Don't bother adding it if it is the
                 // only intersection.
                 if (!IsTrivialIntersection(e0, segIndex0, e1, segIndex1))
                 {
-                    hasIntersection = true;
-                    if (includeProper || !li.IsProper)
+                    _hasIntersection = true;
+                    if (_includeProper || !_li.IsProper)
                     {                     
-                        e0.AddIntersections(li, segIndex0, 0);
-                        e1.AddIntersections(li, segIndex1, 1);
+                        e0.AddIntersections(_li, segIndex0, 0);
+                        e1.AddIntersections(_li, segIndex1, 1);
                     }
-                    if (li.IsProper)
+                    if (_li.IsProper)
                     {
-                        properIntersectionPoint = (ICoordinate) li.GetIntersection(0).Clone();
-                        hasProper = true;
-                        if (!IsBoundaryPoint(li, bdyNodes))
-                            hasProperInterior = true;                        
+                        _properIntersectionPoint = (ICoordinate) _li.GetIntersection(0).Clone();
+                        _hasProper = true;
+                        if (!IsBoundaryPoint(_li, _bdyNodes))
+                            _hasProperInterior = true;                        
                     }                    
                 }
             }
@@ -210,7 +210,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <param name="li"></param>
         /// <param name="bdyNodes"></param>
         /// <returns></returns>
-        private bool IsBoundaryPoint(LineIntersector li, ICollection[] bdyNodes)
+        private static bool IsBoundaryPoint(LineIntersector li, IList<Node>[] bdyNodes)
         {
             if (bdyNodes == null) 
                 return false;
@@ -227,11 +227,10 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <param name="li"></param>
         /// <param name="bdyNodes"></param>
         /// <returns></returns>
-        private bool IsBoundaryPoint(LineIntersector li, ICollection bdyNodes)
+        private static bool IsBoundaryPoint(LineIntersector li, IEnumerable<Node> bdyNodes)
         {
-            for (IEnumerator i = bdyNodes.GetEnumerator(); i.MoveNext(); )
+            foreach (Node node in bdyNodes)
             {
-                Node node = (Node) i.Current;
                 ICoordinate pt = node.Coordinate;
                 if (li.IsIntersection(pt)) 
                     return true;

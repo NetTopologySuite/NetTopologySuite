@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
-using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 
 namespace GisSharpBlog.NetTopologySuite.Algorithm
 {
@@ -15,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
     public class PointLocator
     {
         // default is to use OGC SFS rule
-        private IBoundaryNodeRule _boundaryRule = BoundaryNodeRules.EndpointBoundaryRule; //OGC_SFS_BOUNDARY_RULE;
+        private readonly IBoundaryNodeRule _boundaryRule = BoundaryNodeRules.EndpointBoundaryRule; //OGC_SFS_BOUNDARY_RULE;
 
         private bool _isIn;            // true if the point lies in or on any Geometry element
         private int _numBoundaries;    // the number of sub-elements whose boundaries the point lies in
@@ -76,6 +75,8 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="geom"></param>
         private void ComputeLocation(ICoordinate p, IGeometry geom)
         {
+            if (geom is IPoint)
+                UpdateLocationInfo(Locate(p, (IPoint) geom));
             if (geom is ILineString) 
                 UpdateLocationInfo(Locate(p, (ILineString) geom));                                  
             else if(geom is Polygon) 
@@ -116,14 +117,30 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
                 _numBoundaries++;
         }
 
+        private static Locations Locate(ICoordinate p, IPoint pt)
+        {
+            // no point in doing envelope test, since equality test is just as fast
+
+            ICoordinate ptCoord = pt.Coordinate;
+            if (ptCoord.Equals2D(p))
+                return Locations.Interior;
+            return Locations.Exterior;
+        }
+
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="p"></param>
         /// <param name="l"></param>
         /// <returns></returns>
-        private Locations Locate(ICoordinate p, ILineString l)
+        private static Locations Locate(ICoordinate p, ILineString l)
         {
+            // bounding-box check
+            if (!l.EnvelopeInternal.Intersects(p)) 
+                return Locations.Exterior;
+  	
+
             ICoordinate[] pt = l.Coordinates;
             if(!l.IsClosed)
                 if(p.Equals(pt[0]) || p.Equals(pt[pt.Length - 1]))
@@ -139,14 +156,21 @@ namespace GisSharpBlog.NetTopologySuite.Algorithm
         /// <param name="p"></param>
         /// <param name="ring"></param>
         /// <returns></returns>
-        private Locations LocateInPolygonRing(ICoordinate p, ILinearRing ring)
+        private static Locations LocateInPolygonRing(ICoordinate p, ILinearRing ring)
         {
+  	        // bounding-box check
+  	        if (! ring.EnvelopeInternal.Intersects(p)) return Locations.Exterior;
+
+  	        return CGAlgorithms.LocatePointInRing(p, ring.Coordinates);
+  	
+          	/*
             // can this test be folded into IsPointInRing?
             if (CGAlgorithms.IsOnLine(p, ring.Coordinates))
                 return Locations.Boundary;
             if (CGAlgorithms.IsPointInRing(p, ring.Coordinates))
                 return Locations.Interior;
             return Locations.Exterior;
+            */
         }
 
         /// <summary>

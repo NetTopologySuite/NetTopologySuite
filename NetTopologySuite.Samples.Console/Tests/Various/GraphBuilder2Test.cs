@@ -150,20 +150,18 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             Assert.IsTrue(File.Exists(shapepath + dbf));
         }
 
-        [Test]
+        [Test, ExpectedException(typeof(FileNotFoundException))]
+        [Ignore("graph.shp not present")]
         public void BuildGraphFromCompleteGraphShapefile()
         {
             const string shapepath = "graph.shp";
             const int count = 1179;
 
-            if (!File.Exists(shapepath))
-                return;
-
-            //Assert.IsTrue(File.Exists(shapepath), string.Format("File does not exist:"));
+            Assert.IsTrue(File.Exists(shapepath));
             var reader = new ShapefileReader(shapepath);
             var edges = reader.ReadAll();
             Assert.IsNotNull(edges);
-            Assert.IsInstanceOfType(typeof (GeometryCollection), edges);
+            Assert.IsInstanceOf(typeof (GeometryCollection), edges);
             Assert.AreEqual(count, edges.NumGeometries);
 
             var startls = edges.GetGeometryN(515).GetGeometryN(0) as ILineString;
@@ -199,19 +197,17 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         }
 
         [Test]
+        [Ignore("minimalgraph.shp not present")]
         public void BuildGraphFromMinimalGraphShapefile()
         {
             const string shapepath = "minimalgraph.shp";
             const int count = 15;
 
-            if (!File.Exists(shapepath))
-                return;
-
-            //Assert.IsTrue(File.Exists(shapepath));
+            Assert.IsTrue(File.Exists(shapepath));
             var reader = new ShapefileReader(shapepath);
             var edges = reader.ReadAll();
             Assert.IsNotNull(edges);
-            Assert.IsInstanceOfType(typeof (GeometryCollection), edges);
+            Assert.IsInstanceOf(typeof (GeometryCollection), edges);
             Assert.AreEqual(count, edges.NumGeometries);
 
             var startls = edges.GetGeometryN(0).GetGeometryN(0) as ILineString;
@@ -235,19 +231,17 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         }
 
         [Test]
+        [Ignore("strade_fixed.shp not present")]
         public void BuildGraphFromStradeShapefile()
         {
-            const string shapepath = "strade_fixed.shp";
-            const int count = 703;
-
-            if (!File.Exists(shapepath))
-                return;
+            var shapepath = "strade_fixed.shp";
+            var count = 703;
 
             Assert.IsTrue(File.Exists(shapepath));
             var reader = new ShapefileReader(shapepath);
             var edges = reader.ReadAll();
             Assert.IsNotNull(edges);
-            Assert.IsInstanceOfType(typeof (GeometryCollection), edges);
+            Assert.IsInstanceOf(typeof (GeometryCollection), edges);
             Assert.AreEqual(count, edges.NumGeometries);
 
             ICoordinate startCoord = new Coordinate(2317300d, 4843961d);
@@ -363,8 +357,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         }
 
         [Test]
-        [ExpectedException(typeof (ApplicationException))]
-        [Ignore("The exception is not thrown. Maybe it no longer applies.")]
+        //[ExpectedException(typeof (ApplicationException))]
         public void CheckGraphBuilder2ExceptionUsingDoubleInitialization()
         {
             var builder = new GraphBuilder2();

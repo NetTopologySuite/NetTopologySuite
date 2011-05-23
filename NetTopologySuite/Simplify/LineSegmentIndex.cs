@@ -1,11 +1,8 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.Index;
 using GisSharpBlog.NetTopologySuite.Index.Quadtree;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace GisSharpBlog.NetTopologySuite.Simplify
 {
@@ -14,13 +11,14 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// </summary>
     public class LineSegmentIndex
     {
-        private Quadtree index = new Quadtree();
+        private readonly ISpatialIndex<LineSegment>_index = new Quadtree<LineSegment>();
 
+        /*
         /// <summary>
         /// 
         /// </summary>
         public LineSegmentIndex() { }
-
+        */
         /// <summary>
         /// 
         /// </summary>
@@ -41,7 +39,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <param name="seg"></param>
         public void Add(LineSegment seg)
         {
-            index.Insert(new Envelope(seg.P0, seg.P1), seg);
+            _index.Insert(new Envelope(seg.P0, seg.P1), seg);
         }
 
         /// <summary>
@@ -50,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <param name="seg"></param>
         public void Remove(LineSegment seg)
         {
-            index.Remove(new Envelope(seg.P0, seg.P1), seg);
+            _index.Remove(new Envelope(seg.P0, seg.P1), seg);
         }
 
         /// <summary>
@@ -58,13 +56,13 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// </summary>
         /// <param name="querySeg"></param>
         /// <returns></returns>
-        public IList Query(LineSegment querySeg)
+        public IList<LineSegment> Query(LineSegment querySeg)
         {
             Envelope env = new Envelope(querySeg.P0, querySeg.P1);
 
             LineSegmentVisitor visitor = new LineSegmentVisitor(querySeg);
-            index.Query(env, visitor);
-            IList itemsFound = visitor.Items;        
+            _index.Query(env, visitor);
+            IList<LineSegment> itemsFound = visitor.Items;        
 
             return itemsFound;
         }
@@ -73,11 +71,11 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
     /// <summary>
     /// ItemVisitor subclass to reduce volume of query results.
     /// </summary>
-    public class LineSegmentVisitor : IItemVisitor
+    public class LineSegmentVisitor : IItemVisitor<LineSegment>
     {
         // MD - only seems to make about a 10% difference in overall time.
-        private LineSegment querySeg;
-        private ArrayList items = new ArrayList();
+        private readonly LineSegment _querySeg;
+        private readonly IList<LineSegment> _items = new List<LineSegment>();
 
         /// <summary>
         /// 
@@ -85,28 +83,28 @@ namespace GisSharpBlog.NetTopologySuite.Simplify
         /// <param name="querySeg"></param>
         public LineSegmentVisitor(LineSegment querySeg) 
         {
-            this.querySeg = querySeg;
+            _querySeg = querySeg;
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="item"></param>
-        public void VisitItem(Object item)
+        public void VisitItem(LineSegment item)
         {
-            LineSegment seg = (LineSegment) item;
-            if (Envelope.Intersects(seg.P0, seg.P1, querySeg.P0, querySeg.P1))
-                items.Add(item);
+            LineSegment seg = item;
+            if (Envelope.Intersects(seg.P0, seg.P1, _querySeg.P0, _querySeg.P1))
+                _items.Add(seg);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public ArrayList Items 
+        public IList<LineSegment> Items 
         {
             get
             {
-                return items;
+                return _items;
             }
         }
     }

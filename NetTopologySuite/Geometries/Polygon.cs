@@ -28,12 +28,12 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// The exterior boundary, or <c>null</c> if this <c>Polygon</c>
         /// is the empty point.
         /// </summary>
-        protected ILinearRing shell = null;
+        private ILinearRing _shell;
 
         /// <summary>
         /// The interior boundaries, if any.
         /// </summary>
-        protected ILinearRing[] holes; 
+        private ILinearRing[] _holes; 
         
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Polygon"/> class.
@@ -79,8 +79,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 throw new ArgumentException("holes must not contain null elements");
             if (shell.IsEmpty && HasNonEmptyElements(holes)) 
                 throw new ArgumentException("shell is empty but holes are not");
-            this.shell = shell;
-            this.holes = holes;
+            _shell = shell;
+            _holes = holes;
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                return shell.Coordinate;
+                return _shell.Coordinate;
             }
         }
 
@@ -105,15 +105,15 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                     return new ICoordinate[] { };
                 ICoordinate[] coordinates = new ICoordinate[NumPoints];
                 int k = -1;
-                ICoordinate[] shellCoordinates = shell.Coordinates;
+                ICoordinate[] shellCoordinates = _shell.Coordinates;
                 for (int x = 0; x < shellCoordinates.Length; x++)
                 {
                     k++;
                     coordinates[k] = shellCoordinates[x];
                 }
-                for (int i = 0; i < holes.Length; i++)
+                for (int i = 0; i < _holes.Length; i++)
                 {
-                    ICoordinate[] childCoordinates = holes[i].Coordinates;
+                    ICoordinate[] childCoordinates = _holes[i].Coordinates;
                     for (int j = 0; j < childCoordinates.Length; j++)
                     {
                         k++;
@@ -131,9 +131,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                int numPoints = shell.NumPoints;
-                for (int i = 0; i < holes.Length; i++)
-                    numPoints += holes[i].NumPoints;
+                int numPoints = _shell.NumPoints;
+                for (int i = 0; i < _holes.Length; i++)
+                    numPoints += _holes[i].NumPoints;
                 return numPoints;
             }
         }
@@ -167,7 +167,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                return shell.IsEmpty;
+                return _shell.IsEmpty;
             }
         }
 
@@ -189,7 +189,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                return shell;
+                return _shell;
             }
         }
 
@@ -200,7 +200,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                return holes.Length;
+                return _holes.Length;
             }
         }
 
@@ -211,7 +211,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                return holes;
+                return _holes;
             }
         }
 
@@ -222,7 +222,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         public ILineString GetInteriorRingN(int n) 
         {
-            return holes[n];
+            return _holes[n];
         }
 
         /// <summary>
@@ -245,9 +245,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get
             {
                 double area = 0.0;
-                area += Math.Abs(CGAlgorithms.SignedArea(shell.Coordinates));
-                for (int i = 0; i < holes.Length; i++)
-                    area -= Math.Abs(CGAlgorithms.SignedArea(holes[i].Coordinates));                
+                area += Math.Abs(CGAlgorithms.SignedArea(_shell.Coordinates));
+                for (int i = 0; i < _holes.Length; i++)
+                    area -= Math.Abs(CGAlgorithms.SignedArea(_holes[i].Coordinates));                
                 return area;
             }
         }
@@ -261,9 +261,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             get
             {
                 double len = 0.0;
-                len += shell.Length;
-                for (int i = 0; i < holes.Length; i++)
-                    len += holes[i].Length;
+                len += _shell.Length;
+                for (int i = 0; i < _holes.Length; i++)
+                    len += _holes[i].Length;
                 return len;
             }
         }
@@ -277,10 +277,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
             {
                 if (IsEmpty)
                     return Factory.CreateMultiLineString(null);
-                ILinearRing[] rings = new ILinearRing[holes.Length + 1];
-                rings[0] = shell;
-                for (int i = 0; i < holes.Length; i++)
-                    rings[i + 1] = holes[i];
+                ILinearRing[] rings = new ILinearRing[_holes.Length + 1];
+                rings[0] = _shell;
+                for (int i = 0; i < _holes.Length; i++)
+                    rings[i + 1] = _holes[i];
                 // create LineString or MultiLineString as appropriate
                 if (rings.Length <= 1)
                     return Factory.CreateLinearRing(rings[0].CoordinateSequence);
@@ -294,7 +294,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         protected override IEnvelope ComputeEnvelopeInternal() 
         {
-            return shell.EnvelopeInternal;
+            return _shell.EnvelopeInternal;
         }
 
         /// <summary>
@@ -309,16 +309,16 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
                 return false;
 
             IPolygon otherPolygon = (IPolygon) other;
-            IGeometry thisShell = shell;
+            IGeometry thisShell = _shell;
             IGeometry otherPolygonShell = otherPolygon.Shell;
             if (!thisShell.EqualsExact(otherPolygonShell, tolerance)) 
                 return false;
-            if (holes.Length != otherPolygon.Holes.Length) 
+            if (_holes.Length != otherPolygon.Holes.Length) 
                 return false;
-            if (holes.Length != otherPolygon.Holes.Length) 
+            if (_holes.Length != otherPolygon.Holes.Length) 
                 return false;
-            for (int i = 0; i < holes.Length; i++) 
-                if (!(holes[i]).EqualsExact(otherPolygon.Holes[i], tolerance)) 
+            for (int i = 0; i < _holes.Length; i++) 
+                if (!(_holes[i]).EqualsExact(otherPolygon.Holes[i], tolerance)) 
                     return false;
             return true;
         }
@@ -329,19 +329,19 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <param name="filter"></param>
         public override void Apply(ICoordinateFilter filter)
         {
-            shell.Apply(filter);
-            for (int i = 0; i < holes.Length; i++) 
-                holes[i].Apply(filter);            
+            _shell.Apply(filter);
+            for (int i = 0; i < _holes.Length; i++) 
+                _holes[i].Apply(filter);            
         }
 
         public override void Apply(ICoordinateSequenceFilter filter)
         {
-            ((LinearRing)shell).Apply(filter);
+            ((LinearRing)_shell).Apply(filter);
             if (!filter.Done)
             {
-                for (int i = 0; i < holes.Length; i++)
+                for (int i = 0; i < _holes.Length; i++)
                 {
-                    ((LinearRing)holes[i]).Apply(filter);
+                    ((LinearRing)_holes[i]).Apply(filter);
                     if (filter.Done)
                         break;
                 }
@@ -366,9 +366,9 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public override void Apply(IGeometryComponentFilter filter) 
         {
             filter.Filter(this);
-            shell.Apply(filter);
-            for (int i = 0; i < holes.Length; i++) 
-                holes[i].Apply(filter);            
+            _shell.Apply(filter);
+            for (int i = 0; i < _holes.Length; i++) 
+                _holes[i].Apply(filter);            
         }
 
         /// <summary>
@@ -378,10 +378,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         public override object Clone() 
         {
             Polygon poly = (Polygon) base.Clone();
-            poly.shell = (LinearRing) shell.Clone();
-            poly.holes = new ILinearRing[holes.Length];
-            for (int i = 0; i < holes.Length; i++) 
-                poly.holes[i] = (LinearRing) holes[i].Clone();            
+            poly._shell = (LinearRing) _shell.Clone();
+            poly._holes = new ILinearRing[_holes.Length];
+            for (int i = 0; i < _holes.Length; i++) 
+                poly._holes[i] = (LinearRing) _holes[i].Clone();            
             return poly; 
         }
 
@@ -389,8 +389,8 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             if (!IsEmpty)
             {
-                baseValue = shell.CoordinateSequence.GetHashCode(baseValue, operation);
-                foreach(var ring in holes)
+                baseValue = _shell.CoordinateSequence.GetHashCode(baseValue, operation);
+                foreach(var ring in _holes)
                     baseValue = ring.CoordinateSequence.GetHashCode(baseValue, operation);
             }
             return baseValue;
@@ -410,10 +410,10 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// </summary>
         public override void Normalize() 
         {
-            Normalize(shell, true);
+            Normalize(_shell, true);
             foreach(ILinearRing hole in Holes)
                 Normalize(hole, false);
-            Array.Sort(holes);
+            Array.Sort(_holes);
         }
 
         /// <summary>
@@ -423,7 +423,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         /// <returns></returns>
         protected internal override int CompareToSameClass(object o) 
         {   
-            LinearRing thisShell = (LinearRing) shell;
+            LinearRing thisShell = (LinearRing) _shell;
             ILinearRing otherShell = ((IPolygon) o).Shell;
             return thisShell.CompareToSameClass(otherShell);
         }
@@ -438,7 +438,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             IPolygon poly = (IPolygon)other;
 
-            LinearRing thisShell = (LinearRing)shell;
+            LinearRing thisShell = (LinearRing)_shell;
             LinearRing otherShell = (LinearRing)poly.Shell;
             int shellComp = thisShell.CompareToSameClass(otherShell, comparer);
             if (shellComp != 0) return shellComp;
@@ -555,7 +555,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                return shell;
+                return _shell;
             }
         }
 
@@ -566,7 +566,7 @@ namespace GisSharpBlog.NetTopologySuite.Geometries
         {
             get
             {
-                return holes;
+                return _holes;
             }
         }
 

@@ -12,15 +12,15 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
          *        i try to use readonly members and singleton implementations...
          */
 
-        private readonly NumberFormatInfo nfi = null;            
+        private readonly NumberFormatInfo _nfi;            
 
         /// <summary>
         /// 
         /// </summary>
         private Global() 
         {
-            nfi = new NumberFormatInfo();
-            nfi.NumberDecimalSeparator = ".";            
+            _nfi = new NumberFormatInfo();
+            _nfi.NumberDecimalSeparator = ".";            
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         /// <returns></returns>
         public static NumberFormatInfo GetNfi()
         {            
-            return global.nfi;
+            return global._nfi;
         }        
     }
 }

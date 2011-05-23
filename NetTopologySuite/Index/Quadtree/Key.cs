@@ -26,11 +26,11 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         }
 
         // the fields which make up the key
-        private ICoordinate pt = new Coordinate();
-        private int level = 0;
+        private readonly ICoordinate _pt = new Coordinate();
+        private int _level;
 
         // auxiliary data which is derived from the key for use in computation
-        private IEnvelope env = null;
+        private IEnvelope _env;
 
         /// <summary>
         /// 
@@ -48,7 +48,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         {
             get
             {
-                return pt;
+                return _pt;
             }
         }
 
@@ -59,7 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         {
             get
             {
-                return level;
+                return _level;
             }
         }
 
@@ -70,7 +70,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         {
             get
             {
-                return env;
+                return _env;
             }
         }
 
@@ -81,7 +81,7 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         {
             get
             {
-                return new Coordinate((env.MinX + env.MaxX) / 2, (env.MinY + env.MaxY) / 2);
+                return new Coordinate((_env.MinX + _env.MaxX) / 2, (_env.MinY + _env.MaxY) / 2);
             }
         }
 
@@ -92,14 +92,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         /// <param name="itemEnv"></param>
         public void ComputeKey(IEnvelope itemEnv)
         {
-            level = ComputeQuadLevel(itemEnv);
-            env = new Envelope();
-            ComputeKey(level, itemEnv);
+            _level = ComputeQuadLevel(itemEnv);
+            _env = new Envelope();
+            ComputeKey(_level, itemEnv);
             // MD - would be nice to have a non-iterative form of this algorithm
-            while (!env.Contains(itemEnv))
+            while (!_env.Contains(itemEnv))
             {
-                level += 1;
-                ComputeKey(level, itemEnv);
+                _level += 1;
+                ComputeKey(_level, itemEnv);
             }
         }
 
@@ -111,9 +111,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Quadtree
         private void ComputeKey(int level, IEnvelope itemEnv)
         {
             double quadSize = DoubleBits.PowerOf2(level);            
-            pt.X = Math.Floor(itemEnv.MinX / quadSize) * quadSize;
-            pt.Y = Math.Floor(itemEnv.MinY / quadSize) * quadSize;
-            env.Init(pt.X, pt.X + quadSize, pt.Y, pt.Y + quadSize);
+            _pt.X = Math.Floor(itemEnv.MinX / quadSize) * quadSize;
+            _pt.Y = Math.Floor(itemEnv.MinY / quadSize) * quadSize;
+            _env.Init(_pt.X, _pt.X + quadSize, _pt.Y, _pt.Y + quadSize);
         }
     }
 }

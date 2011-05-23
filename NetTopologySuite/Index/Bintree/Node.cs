@@ -102,10 +102,10 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             int subnodeIndex = GetSubnodeIndex(searchInterval, centre);
             if (subnodeIndex == -1)
                 return this;
-            if (subnode[subnodeIndex] != null) 
+            if (Subnode[subnodeIndex] != null) 
             {
                 // query lies in subnode, so search it
-                Node node = subnode[subnodeIndex];
+                Node node = Subnode[subnodeIndex];
                 return node.Find(searchInterval);
             }
             // no existing subnode, so return this one anyway
@@ -121,14 +121,14 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
             Assert.IsTrue(interval == null || interval.Contains(node.Interval));
             int index = GetSubnodeIndex(node.interval, centre);
             if (node.level == level - 1) 
-                subnode[index] = node;            
+                Subnode[index] = node;            
             else 
             {
                 // the node is not a direct child, so make a new child node to contain it
                 // and recursively insert the node
                 Node childNode = CreateSubnode(index);
                 childNode.Insert(node);
-                subnode[index] = childNode;
+                Subnode[index] = childNode;
             }
         }
 
@@ -138,9 +138,9 @@ namespace GisSharpBlog.NetTopologySuite.Index.Bintree
         /// </summary>
         private Node GetSubnode(int index)
         {
-            if (subnode[index] == null)             
-                subnode[index] = CreateSubnode(index);            
-            return subnode[index];
+            if (Subnode[index] == null)             
+                Subnode[index] = CreateSubnode(index);            
+            return Subnode[index];
         }
 
         /// <summary>

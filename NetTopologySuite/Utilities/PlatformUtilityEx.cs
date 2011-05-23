@@ -26,6 +26,10 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
             return self.Cast<object>();
         }
 
+        public static IEnumerable<T> CastPlatform<T>(this IList<T> self)
+        {
+            return self;
+        }
 
         public static Encoding GetDefaultEncoding()
         {
@@ -44,6 +48,11 @@ namespace GisSharpBlog.NetTopologySuite.Utilities
         }
 
         public static ICollection CastPlatform(this IList self)
+        {
+            return self;
+        }
+
+        public static ICollection<T> CastPlatform<T>(this IList<T> self)
         {
             return self;
         }

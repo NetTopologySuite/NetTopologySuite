@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using GisSharpBlog.NetTopologySuite.Index;
 using GisSharpBlog.NetTopologySuite.Index.Quadtree;
@@ -14,7 +14,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
     /// </summary>
     public class EdgeList
     {
-        private readonly IList edges = new ArrayList();
+        private readonly IList<Edge> _edges = new List<Edge>();
 
         /// <summary>
         /// An index of the edges, for fast lookup.
@@ -23,7 +23,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// An alternative would be to use an ordered set based on the values
         /// of the edge coordinates.
         /// </summary>
-        private readonly ISpatialIndex index = new Quadtree();
+        private readonly ISpatialIndex<Edge> _index = new Quadtree<Edge>();
 
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="e">Edge element to remove from list</param>
         public void Remove(Edge e)
         {
-            edges.Remove(e);
+            _edges.Remove(e);
         }
 
         /// <summary> 
@@ -41,26 +41,26 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <param name="e"></param>
         public void Add(Edge e)
         {
-            edges.Add(e);
-            index.Insert(e.Envelope, e);
+            _edges.Add(e);
+            _index.Insert(e.Envelope, e);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="edgeColl"></param>
-        public void AddAll(ICollection edgeColl)
+        public void AddAll(IEnumerable<Edge> edgeColl)
         {
             for (var i = edgeColl.GetEnumerator(); i.MoveNext(); ) 
-                Add((Edge) i.Current);
+                Add(i.Current);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public IList Edges
+        public IList<Edge> Edges
         {
-            get { return edges; }
+            get { return _edges; }
         }
 
         // <FIX> fast lookup for edges
@@ -75,10 +75,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </returns>
         public Edge FindEqualEdge(Edge e)
         {
-            ICollection testEdges = index.Query(e.Envelope);
-            for (var i = testEdges.GetEnumerator(); i.MoveNext(); ) 
+            var testEdges = _index.Query(e.Envelope);
+            foreach (Edge testEdge in testEdges)
             {
-                var testEdge = (Edge) i.Current;
                 if (testEdge.Equals(e)) 
                     return testEdge;
             }
@@ -89,9 +88,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// 
         /// </summary>
         /// <returns></returns>
-        public IEnumerator GetEnumerator() 
+        public IEnumerator<Edge> GetEnumerator() 
         { 
-            return edges.GetEnumerator(); 
+            return _edges.GetEnumerator(); 
         }
 
         /// <summary>
@@ -114,7 +113,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public Edge Get(int i) 
         {
-            return (Edge) edges[i]; 
+            return _edges[i]; 
         }
 
         /// <summary>
@@ -127,8 +126,8 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         /// </returns>
         public int FindEdgeIndex(Edge e)
         {
-            for (var i = 0; i < edges.Count; i++)
-                if ((edges[i]).Equals(e))
+            for (var i = 0; i < _edges.Count; i++)
+                if ((_edges[i]).Equals(e))
                     return i;            
             return -1;
         }
@@ -141,9 +140,9 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph
         public void Write(StreamWriter outstream)
         {
             outstream.Write("MULTILINESTRING ( ");
-            for (var j = 0; j < edges.Count; j++) 
+            for (var j = 0; j < _edges.Count; j++) 
             {
-                var e = (Edge) edges[j];
+                var e = _edges[j];
                 if (j > 0) 
                     outstream.Write(",");
                 outstream.Write("(");

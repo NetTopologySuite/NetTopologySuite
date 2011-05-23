@@ -8,14 +8,15 @@ namespace GisSharpBlog.NetTopologySuite.Precision
     /// </summary>
     public class CommonBitsRemover
     {
-        private ICoordinate commonCoord = null;
-        private CommonCoordinateFilter ccFilter = new CommonCoordinateFilter();
+        private ICoordinate _commonCoord;
+        private readonly CommonCoordinateFilter _ccFilter = new CommonCoordinateFilter();
 
+        /*
         /// <summary>
         /// 
         /// </summary>
         public CommonBitsRemover() { }
-
+        */
         /// <summary>
         /// Add a point to the set of geometries whose common bits are
         /// being computed.  After this method has executed the
@@ -25,8 +26,8 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <param name="geom">A Geometry to test for common bits.</param>
         public void Add(IGeometry geom)
         {
-            geom.Apply(ccFilter);
-            commonCoord = ccFilter.CommonCoordinate;
+            geom.Apply(_ccFilter);
+            _commonCoord = _ccFilter.CommonCoordinate;
         }
 
         /// <summary>
@@ -34,7 +35,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// </summary>
         public ICoordinate CommonCoordinate
         {
-            get { return commonCoord; }
+            get { return _commonCoord; }
         }
 
         /// <summary>
@@ -45,9 +46,9 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <returns>The shifted Geometry.</returns>
         public IGeometry RemoveCommonBits(IGeometry geom)
         {
-            if (commonCoord.X == 0.0 && commonCoord.Y == 0.0)
+            if (_commonCoord.X == 0.0 && _commonCoord.Y == 0.0)
                 return geom;
-            ICoordinate invCoord = new Coordinate(commonCoord);
+            ICoordinate invCoord = new Coordinate(_commonCoord);
             invCoord.X = -invCoord.X;
             invCoord.Y = -invCoord.Y;
             Translater trans = new Translater(invCoord);            
@@ -64,7 +65,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// <returns>The shifted Geometry.</returns>
         public void AddCommonBits(IGeometry geom)
         {
-            Translater trans = new Translater(commonCoord);
+            Translater trans = new Translater(_commonCoord);
             geom.Apply(trans);
             geom.GeometryChanged();
         }
@@ -104,7 +105,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
         /// </summary>
         class Translater : ICoordinateFilter
         {
-            private ICoordinate trans = null;
+            private readonly ICoordinate _trans;
 
             /// <summary>
             /// 
@@ -112,7 +113,7 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             /// <param name="trans"></param>
             public Translater(ICoordinate trans)
             {
-                this.trans = trans;
+                _trans = trans;
             }
 
             /// <summary>
@@ -121,8 +122,8 @@ namespace GisSharpBlog.NetTopologySuite.Precision
             /// <param name="coord"></param>
             public void Filter(ICoordinate coord)
             {
-                coord.X += trans.X;
-                coord.Y += trans.Y;
+                coord.X += _trans.X;
+                coord.Y += _trans.Y;
             }
         }
     }

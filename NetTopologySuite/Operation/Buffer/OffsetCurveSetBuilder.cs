@@ -1,13 +1,10 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.Geometries;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Noding;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 {
@@ -17,11 +14,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
     /// </summary>
     public class OffsetCurveSetBuilder
     {        
-        private readonly IGeometry inputGeom;
-        private readonly double distance;
-        private readonly OffsetCurveBuilder curveBuilder;
+        private readonly IGeometry _inputGeom;
+        private readonly double _distance;
+        private readonly OffsetCurveBuilder _curveBuilder;
 
-        private readonly IList curveList = new ArrayList();
+        private readonly IList<ISegmentString> _curveList = new List<ISegmentString>();
 
         /// <summary>
         /// 
@@ -31,9 +28,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="curveBuilder"></param>
         public OffsetCurveSetBuilder(IGeometry inputGeom, double distance, OffsetCurveBuilder curveBuilder)
         {
-            this.inputGeom = inputGeom;
-            this.distance = distance;
-            this.curveBuilder = curveBuilder;
+            _inputGeom = inputGeom;
+            _distance = distance;
+            _curveBuilder = curveBuilder;
         }
 
         /// <summary>
@@ -42,10 +39,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// its left and right location.
         /// </summary>
         /// <returns>A Collection of SegmentStrings representing the raw buffer curves.</returns>
-        public IList GetCurves()
+        public IList<ISegmentString> GetCurves()
         {            
-            Add(inputGeom);
-            return curveList;         
+            Add(_inputGeom);
+            return _curveList;         
         }
 
         /// <summary>
@@ -54,13 +51,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="lineList"></param>
         /// <param name="leftLoc"></param>
         /// <param name="rightLoc"></param>
-        private void AddCurves(IEnumerable lineList, Locations leftLoc, Locations rightLoc)
+        private void AddCurves(IEnumerable<ICoordinate[]> lineList, Locations leftLoc, Locations rightLoc)
         {
-            for (var i = lineList.GetEnumerator(); i.MoveNext(); )
-            {
-                var coords = (ICoordinate[]) i.Current;
+            foreach (ICoordinate[] coords in lineList)
                 AddCurve(coords, leftLoc, rightLoc);
-            }
         }
 
         /// <summary>
@@ -79,7 +73,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 return;
             // add the edge for a coordinate list which is a raw offset curve
             var e = new NodedSegmentString(coord, new Label(0, Locations.Boundary, leftLoc, rightLoc));
-            curveList.Add(e);
+            _curveList.Add(e);
         }
 
         /// <summary>
@@ -126,10 +120,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="p"></param>
         private void AddPoint(IGeometry p)
         {
-            if (distance <= 0.0) 
+            if (_distance <= 0.0) 
                 return;
             var coord = p.Coordinates;
-            var lineList = curveBuilder.GetLineCurve(coord, distance);
+            var lineList = _curveBuilder.GetLineCurve(coord, _distance);
             AddCurves(lineList, Locations.Exterior, Locations.Interior);
         }
 
@@ -139,10 +133,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="line"></param>
         private void AddLineString(IGeometry line)
         {
-            if (distance <= 0.0) 
+            if (_distance <= 0.0) 
                 return;
             var coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
-            var lineList = curveBuilder.GetLineCurve(coord, distance);
+            var lineList = _curveBuilder.GetLineCurve(coord, _distance);
             AddCurves(lineList, Locations.Exterior, Locations.Interior);
         }
 
@@ -152,11 +146,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <param name="p"></param>
         private void AddPolygon(IPolygon p)
         {
-            var offsetDistance = distance;
+            var offsetDistance = _distance;
             var offsetSide = Positions.Left;
-            if (distance < 0.0)
+            if (_distance < 0.0)
             {
-                offsetDistance = -distance;
+                offsetDistance = -_distance;
                 offsetSide = Positions.Right;
             }
 
@@ -164,7 +158,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
             var shellCoord = CoordinateArrays.RemoveRepeatedPoints(shell.Coordinates);
             // optimization - don't bother computing buffer
             // if the polygon would be completely eroded
-            if (distance < 0.0 && IsErodedCompletely(shellCoord, distance))
+            if (_distance < 0.0 && IsErodedCompletely(shellCoord, _distance))
                 return;
 
             AddPolygonRing(shellCoord, offsetDistance, offsetSide, 
@@ -177,7 +171,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
 
                 // optimization - don't bother computing buffer for this hole
                 // if the hole would be completely covered
-                if (distance > 0.0 && IsErodedCompletely(holeCoord, -distance))
+                if (_distance > 0.0 && IsErodedCompletely(holeCoord, -_distance))
                     continue;
 
                 // Holes are topologically labelled opposite to the shell, since
@@ -211,7 +205,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
                 rightLoc = cwLeftLoc;
                 side = Position.Opposite(side);
             }
-            var lineList = curveBuilder.GetRingCurve(coord, side, offsetDistance);
+            var lineList = _curveBuilder.GetRingCurve(coord, side, offsetDistance);
             AddCurves(lineList, leftLoc, rightLoc);
         }
 
@@ -225,7 +219,6 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
         /// <returns></returns>
         private bool IsErodedCompletely(ICoordinate[] ringCoord, double bufferDistance)
         {
-            var minDiam = 0.0;
             // degenerate ring has no area
             if (ringCoord.Length < 4)
                 return bufferDistance < 0;
@@ -246,9 +239,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Buffer
              * a full topological computation.
              *
              */
-            var ring = inputGeom.Factory.CreateLinearRing(ringCoord);
+            var ring = _inputGeom.Factory.CreateLinearRing(ringCoord);
             var md = new MinimumDiameter(ring);
-            minDiam = md.Length;
+            double minDiam = md.Length;
             return minDiam < 2 * Math.Abs(bufferDistance);
         }
 

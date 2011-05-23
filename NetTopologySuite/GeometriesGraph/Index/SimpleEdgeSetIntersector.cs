@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 
 namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
@@ -11,25 +11,24 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
     /// </summary>
     public class SimpleEdgeSetIntersector : EdgeSetIntersector
     {        
+        /*
         /// <summary>
         /// 
         /// </summary>
         public SimpleEdgeSetIntersector() { }
-
+        */
         /// <summary>
         /// 
         /// </summary>
         /// <param name="edges"></param>
         /// <param name="si"></param>
         /// <param name="testAllSegments"></param>
-        public override void ComputeIntersections(IList edges, SegmentIntersector si, bool testAllSegments)
-        {            
-            for (IEnumerator i0 = edges.GetEnumerator(); i0.MoveNext(); ) 
+        public override void ComputeIntersections(IList<Edge> edges, SegmentIntersector si, bool testAllSegments)
+        {
+            foreach (Edge edge0 in edges)
             {
-                Edge edge0 = (Edge) i0.Current;
-                for (IEnumerator i1 = edges.GetEnumerator(); i1.MoveNext(); ) 
+                foreach (Edge edge1 in edges)
                 {
-                    Edge edge1 = (Edge) i1.Current;
                     if (testAllSegments || edge0 != edge1)
                         ComputeIntersects(edge0, edge1, si);
                 }
@@ -42,16 +41,12 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <param name="edges0"></param>
         /// <param name="edges1"></param>
         /// <param name="si"></param>
-        public override void ComputeIntersections(IList edges0, IList edges1, SegmentIntersector si)
-        {            
-            for (IEnumerator i0 = edges0.GetEnumerator(); i0.MoveNext(); )
+        public override void ComputeIntersections(IList<Edge> edges0, IList<Edge> edges1, SegmentIntersector si)
+        {
+            foreach (Edge edge0 in edges0)
             {
-                Edge edge0 = (Edge) i0.Current;
-                for (IEnumerator i1 = edges1.GetEnumerator(); i1.MoveNext(); )
-                {
-                    Edge edge1 = (Edge) i1.Current;
-                        ComputeIntersects(edge0, edge1, si);
-                }
+                foreach (Edge edge1 in edges1)
+                    ComputeIntersects(edge0, edge1, si);
             }
         }
 
@@ -63,7 +58,7 @@ namespace GisSharpBlog.NetTopologySuite.GeometriesGraph.Index
         /// <param name="e0"></param>
         /// <param name="e1"></param>
         /// <param name="si"></param>
-        private void ComputeIntersects(Edge e0, Edge e1, SegmentIntersector si)
+        private static void ComputeIntersects(Edge e0, Edge e1, SegmentIntersector si)
         {
             ICoordinate[] pts0 = e0.Coordinates;
             ICoordinate[] pts1 = e1.Coordinates;

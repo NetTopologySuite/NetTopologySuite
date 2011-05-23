@@ -1,4 +1,4 @@
-using System.Collections;
+using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
 using System.Threading;
 using GeoAPI.Geometries;
@@ -16,18 +16,18 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
     /// </summary>
     public class CascadedPolygonUnion
     {
-        private readonly ICollection inputPolys;
-        private IGeometryFactory geomFactory;
+        private readonly ICollection<IGeometry> _inputPolys;
+        private IGeometryFactory _geomFactory;
 
-        public static IGeometry Union(ICollection polys)
+        public static IGeometry Union(ICollection<IGeometry> polys)
         {
             var op = new CascadedPolygonUnion(polys);
             return op.Union();
         }
 
-        public CascadedPolygonUnion(ICollection polys)
+        public CascadedPolygonUnion(ICollection<IGeometry> polys)
         {
-            inputPolys = polys;
+            _inputPolys = polys;
         }
 
         /**
@@ -41,16 +41,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
 
         private IGeometryFactory Factory()
         {
-            var geomenumerator = inputPolys.GetEnumerator();
+            var geomenumerator = _inputPolys.GetEnumerator();
             geomenumerator.MoveNext();
-            return ((IGeometry) geomenumerator.Current).Factory;
+            return geomenumerator.Current.Factory;
         }
 
         public IGeometry Union()
         {
-            if (inputPolys.Count == 0)
+            if (_inputPolys.Count == 0)
                 return null;
-            geomFactory = Factory();
+            _geomFactory = Factory();
 
             /**
              * A spatial index to organize the collection
@@ -59,7 +59,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
              * to be eliminated on each round.
              */
             var index = new STRtree(StrtreeNodeCapacity);
-            foreach (IGeometry item in inputPolys)
+            foreach (IGeometry item in _inputPolys)
                 index.Insert(item.EnvelopeInternal, item);
 
             var itemTree = index.ItemsTree();
@@ -82,19 +82,19 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
         //========================================================
         // The following methods are for experimentation only
          
-        private IGeometry RepeatedUnion(IList geoms)
+        private IGeometry RepeatedUnion(IEnumerable<IGeometry> geoms)
         {
             IGeometry union = null;
             foreach (Geometry g in geoms)
             {
                 if (union == null)
-                     union = (Geometry) g.Clone();
+                     union = (IGeometry) g.Clone();
                 else union = union.Union(g);
             }
             return union;
         }
 
-        private IGeometry BufferUnion(ICollection geoms)
+        private IGeometry BufferUnion(ICollection<IGeometry> geoms)
         {
             var factory = Factory();
             var gColl = factory.BuildGeometry(geoms);
@@ -102,22 +102,22 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
             return unionAll;
         }
 
-        private IGeometry BufferUnion(Geometry g0, Geometry g1)
+        private IGeometry BufferUnion(IGeometry g0, IGeometry g1)
         {
             var factory = g0.Factory;
-            IGeometry gColl = factory.CreateGeometryCollection(new Geometry[] { g0, g1 });
+            IGeometry gColl = factory.CreateGeometryCollection(new[] { g0, g1 });
             var unionAll = gColl.Buffer(0.0);
             return unionAll;
         }
 
         //=======================================
 
-        private IGeometry BinaryUnion(IList geoms)
+        private IGeometry BinaryUnion(IList<IGeometry> geoms)
         {
             return BinaryUnion(geoms, 0, geoms.Count);
         }
 
-        private IGeometry BinaryUnion(IList geoms, int start, int end)
+        private IGeometry BinaryUnion(IList<IGeometry> geoms, int start, int end)
         {
             if (end - start <= 1)
             {
@@ -149,43 +149,43 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
 
         class Worker
         {
-            private readonly CascadedPolygonUnion tool;
-            private readonly IList geoms;
-            private readonly int start;
-            private readonly int end;
+            private readonly CascadedPolygonUnion _tool;
+            private readonly IList<IGeometry> _geoms;
+            private readonly int _start;
+            private readonly int _end;
 
-            private IGeometry ret;
+            private IGeometry _ret;
 
-            protected internal Worker(CascadedPolygonUnion tool, IList geoms, int start, int end)
+            protected internal Worker(CascadedPolygonUnion tool, IList<IGeometry> geoms, int start, int end)
             {
-                this.tool = tool;
-                this.geoms = geoms;
-                this.start = start;
-                this.end = end;
+                _tool = tool;
+                _geoms = geoms;
+                _start = start;
+                _end = end;
             }
 
             internal void Execute()
             {
-                ret = tool.BinaryUnion(geoms, start, end);
+                _ret = _tool.BinaryUnion(_geoms, _start, _end);
             }
 
             public IGeometry Geometry
             {
-                get { return ret; }
+                get { return _ret; }
             }
         }
 
 
-        private static IGeometry GetGeometry(IList list, int index)
+        private static IGeometry GetGeometry(IList<IGeometry> list, int index)
         {
             if (index >= list.Count)
                 return null;
-            return (Geometry) list[index];
+            return list[index];
         }
 
-        private IList ReduceToGeometries(IList geomTree)
+        private IList<IGeometry> ReduceToGeometries(IList geomTree)
         {
-            IList geoms = new ArrayList();
+            IList<IGeometry> geoms = new List<IGeometry>();
             foreach (var o in geomTree)
             {
                 IGeometry geom = null;
@@ -241,7 +241,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
             return overallUnion;
         }
 
-        private IGeometry ExtractByEnvelope(IEnvelope env, IGeometry geom, IList disjointGeoms)
+        private IGeometry ExtractByEnvelope(IEnvelope env, IGeometry geom, IList<IGeometry> disjointGeoms)
         {
             var intersectingGeoms = new List<IGeometry>();
             for (var i = 0; i < geom.NumGeometries; i++)
@@ -252,7 +252,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Union
                 else
                     disjointGeoms.Add(elem);
             }
-            return geomFactory.BuildGeometry(intersectingGeoms);
+            return _geomFactory.BuildGeometry(intersectingGeoms);
         }
 
         private IGeometry UnionActual(IGeometry g0, IGeometry g1)

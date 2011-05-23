@@ -1,10 +1,7 @@
-using System.Collections;
+using System.Collections.Generic;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph.Index;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 {
@@ -16,8 +13,8 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// </summary>
     public class EdgeSetNoder
     {
-        private LineIntersector li = null;
-        private IList inputEdges = new ArrayList();
+        private readonly LineIntersector _li;
+        private readonly IList<Edge> _inputEdges = new List<Edge>();
 
         /// <summary>
         /// 
@@ -25,35 +22,33 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <param name="li"></param>
         public EdgeSetNoder(LineIntersector li)
         {
-            this.li = li;
+            _li = li;
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="edges"></param>
-        public void AddEdges(IList edges)
+        public void AddEdges(IEnumerable<Edge> edges)
         {
-            foreach (object obj in edges)
-                inputEdges.Add(obj);
+            foreach (Edge obj in edges)
+                _inputEdges.Add(obj);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public IList NodedEdges
+        public IList<Edge> NodedEdges
         {
             get
             {
                 EdgeSetIntersector esi = new SimpleMCSweepLineIntersector();
-                SegmentIntersector si = new SegmentIntersector(li, true, false);
-                esi.ComputeIntersections(inputEdges, si, true);                
+                SegmentIntersector si = new SegmentIntersector(_li, true, false);
+                esi.ComputeIntersections(_inputEdges, si, true);                
 
-                IList splitEdges = new ArrayList();
-                IEnumerator i = inputEdges.GetEnumerator();
-                while (i.MoveNext()) 
+                IList<Edge> splitEdges = new List<Edge>();
+                foreach (Edge e in _inputEdges)
                 {
-                    Edge e = (Edge)i.Current;
                     e.EdgeIntersectionList.AddSplitEdges(splitEdges);
                 }
                 return splitEdges;

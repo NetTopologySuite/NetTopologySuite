@@ -1,10 +1,7 @@
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 {
@@ -13,9 +10,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
     /// </summary>
     public class PointBuilder
     {
-        private OverlayOp op;
-        private IGeometryFactory geometryFactory;
-        private PointLocator ptLocator;
+        private readonly OverlayOp _op;
+        private readonly IGeometryFactory _geometryFactory;
+        //private PointLocator _ptLocator;
 
         /// <summary>
         /// 
@@ -25,9 +22,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <param name="ptLocator"></param>
         public PointBuilder(OverlayOp op, IGeometryFactory geometryFactory, PointLocator ptLocator)
         {
-            this.op = op;
-            this.geometryFactory = geometryFactory;
-            this.ptLocator = ptLocator;
+            _op = op;
+            _geometryFactory = geometryFactory;
+            //this._ptLocator = ptLocator;
         }
 
         /// <summary>
@@ -37,10 +34,10 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <returns>
         /// A list of the Points in the result of the specified overlay operation.
         /// </returns>
-        public IList Build(SpatialFunction opCode)
+        public IList<IGeometry> Build(SpatialFunction opCode)
         {
-            IList nodeList = CollectNodes(opCode);
-            IList resultPointList = SimplifyPoints(nodeList);
+            var nodeList = CollectNodes(opCode);
+            var resultPointList = SimplifyPoints(nodeList);
             return resultPointList;
         }
 
@@ -49,14 +46,12 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         /// <param name="opCode"></param>
         /// <returns></returns>
-        private IList CollectNodes(SpatialFunction opCode)
+        private IList<Node> CollectNodes(SpatialFunction opCode)
         {
-            IList resultNodeList = new ArrayList();
+            IList<Node> resultNodeList = new List<Node>();
             // add nodes from edge intersections which have not already been included in the result
-            IEnumerator nodeit = op.Graph.Nodes.GetEnumerator();
-            while (nodeit.MoveNext()) 
+            foreach (Node n in _op.Graph.Nodes)
             {
-                Node n = (Node) nodeit.Current;
                 if (!n.IsInResult)
                 {
                     Label label = n.Label;
@@ -76,17 +71,15 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         /// <param name="resultNodeList"></param>
         /// <returns></returns>
-        private IList SimplifyPoints(IList resultNodeList)
+        private IList<IGeometry> SimplifyPoints(IEnumerable<Node> resultNodeList)
         {
-            IList nonCoveredPointList = new ArrayList();
-            IEnumerator it = resultNodeList.GetEnumerator();
-            while (it.MoveNext()) 
+            IList<IGeometry> nonCoveredPointList = new List<IGeometry>();
+            foreach (Node n in resultNodeList)
             {
-                Node n = (Node)it.Current;
                 ICoordinate coord = n.Coordinate;
-                if (!op.IsCoveredByLA(coord))
+                if (!_op.IsCoveredByLA(coord))
                 {
-                    IPoint pt = geometryFactory.CreatePoint(coord);
+                    IPoint pt = _geometryFactory.CreatePoint(coord);
                     nonCoveredPointList.Add(pt);
                 }
             }

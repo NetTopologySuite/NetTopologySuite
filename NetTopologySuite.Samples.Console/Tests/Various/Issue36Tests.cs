@@ -85,12 +85,10 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             Assert.IsNotNull(geometry);
             Assert.IsTrue(geometry.IsValid);
 
+            BufferParameters parameters = new BufferParameters() {EndCapStyle = EndCapStyle.Round};
+
             var curveBuilder = new OffsetCurveBuilder(
-                geometry.PrecisionModel, 
-                OffsetCurveBuilder.DefaultQuadrantSegments)
-                {
-                    EndCapStyle =  BufferStyle.CapRound
-                };
+                geometry.PrecisionModel, parameters);
             var curveSetBuilder = new OffsetCurveSetBuilder(geometry, 5, curveBuilder);
 
             var bufferSegStrList = curveSetBuilder.GetCurves();

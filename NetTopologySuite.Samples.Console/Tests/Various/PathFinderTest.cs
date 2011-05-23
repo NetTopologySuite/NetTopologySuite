@@ -84,9 +84,9 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             Assert.AreEqual(1, coll.Count);
 
             var geom = coll.GetGeometryN(0);
-            Assert.IsInstanceOfType(typeof(IMultiLineString), geom);
+            Assert.IsInstanceOf(typeof(IMultiLineString), geom);
             var str = geom.GetGeometryN(0);
-            Assert.IsInstanceOfType(typeof(ILineString), str);
+            Assert.IsInstanceOf(typeof(ILineString), str);
             return str;
         }
 
@@ -122,7 +122,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
         }
 
         [Test]
-        [Ignore]
+        [Ignore("graph.shp is not present")]
         public void BuildGraphFromCompleteGraphShapefile()
         {
             var shapepath = "graph.shp";
@@ -132,7 +132,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             var reader = new ShapefileReader(shapepath);
             var edges = reader.ReadAll();
             Assert.IsNotNull(edges);
-            Assert.IsInstanceOfType(typeof(GeometryCollection), edges);
+            Assert.IsInstanceOf(typeof(GeometryCollection), edges);
             Assert.AreEqual(count, edges.NumGeometries);
 
             // Insert arbitrary userdata
@@ -174,7 +174,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
             var expectedResultCount = 8;
             var path = finder.Find(startPoint, endPoint);
             Assert.IsNotNull(path);
-            Assert.IsInstanceOfType(typeof (IMultiLineString), path);
+            Assert.IsInstanceOf(typeof (IMultiLineString), path);
             var strings = (IMultiLineString) path;            
             Assert.AreEqual(expectedResultCount, strings.NumGeometries);
             foreach (var g in strings.Geometries)
@@ -185,7 +185,7 @@ namespace GisSharpBlog.NetTopologySuite.Tests.Various
 
             var reversedPath = finder.Find(endPoint, startPoint);
             Assert.IsNotNull(reversedPath);
-            Assert.IsInstanceOfType(typeof(IMultiLineString), reversedPath);
+            Assert.IsInstanceOf(typeof(IMultiLineString), reversedPath);
 
             var reversedStrings = (IMultiLineString) reversedPath;
             Assert.AreEqual(expectedResultCount, reversedStrings.NumGeometries);

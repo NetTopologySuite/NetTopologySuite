@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Geometries;
@@ -16,7 +17,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
     /// </summary>
     public class SegmentNodeList : IEnumerable
     {
-        private readonly IDictionary _nodeMap = new OrderedDictionary<SegmentNode, Object>();
+        private readonly IDictionary<SegmentNode, Object> _nodeMap = new OrderedDictionary<SegmentNode, Object>();
         private readonly NodedSegmentString _edge;  // the parent edge
 
         /// <summary>
@@ -47,9 +48,10 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         public SegmentNode Add(ICoordinate intPt, int segmentIndex)
         {
             var eiNew = new SegmentNode(_edge, intPt, segmentIndex, _edge.GetSegmentOctant(segmentIndex));
-            var ei = (SegmentNode) _nodeMap[eiNew];
-            if (ei != null)
+            object eiObj;
+            if (_nodeMap.TryGetValue(eiNew, out eiObj))
             {
+                var ei = (SegmentNode)eiObj;
                 // debugging sanity check
                 Assert.IsTrue(ei.Coordinate.Equals2D(intPt), "Found equal nodes with different coordinates");               
                 return ei;
@@ -176,7 +178,7 @@ namespace GisSharpBlog.NetTopologySuite.Noding
         /// for a set of <see cref="ISegmentString" />s).
         /// </summary>
         /// <param name="edgeList"></param>
-        public void AddSplitEdges(IList edgeList)
+        public void AddSplitEdges(IList<ISegmentString> edgeList)
         {
             // ensure that the list has entries for the first and last point of the edge
             AddEndPoints();

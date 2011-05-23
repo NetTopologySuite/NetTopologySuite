@@ -25,7 +25,14 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             return locater.IndexOf(inputPt);
         }
 
-        private IGeometry linearGeom;
+        public static LinearLocation IndexOfAfter(IGeometry linearGeom, ICoordinate inputPt, LinearLocation minIndex)
+        {
+            LocationIndexOfPoint locater = new LocationIndexOfPoint(linearGeom);
+            return locater.IndexOfAfter(inputPt, minIndex);
+        }
+
+
+        private readonly IGeometry _linearGeom;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:LocationIndexOfPoint"/> class.
@@ -33,7 +40,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
         /// <param name="linearGeom">A linear geometry.</param>
         public LocationIndexOfPoint(IGeometry linearGeom)
         {
-            this.linearGeom = linearGeom;
+            _linearGeom = linearGeom;
         }
         
         /// <summary>     
@@ -62,7 +69,7 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
                 return IndexOf(inputPt);
 
             // sanity check for minLocation at or past end of line
-            LinearLocation endLoc = LinearLocation.GetEndLocation(linearGeom);
+            LinearLocation endLoc = LinearLocation.GetEndLocation(_linearGeom);
             if (endLoc.CompareTo(minIndex) <= 0)
                 return endLoc;
 
@@ -90,14 +97,14 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             double minFrac = -1.0;
 
             LineSegment seg = new LineSegment();
-            foreach (LinearIterator.LinearElement element in new LinearIterator(linearGeom))
+            foreach (LinearIterator.LinearElement element in new LinearIterator(_linearGeom))
             {
                 if (!element.IsEndOfLine)
                 {
                     seg.P0 = element.SegmentStart;
                     seg.P1 = element.SegmentEnd;
                     double segDistance = seg.Distance(inputPt);
-                    double segFrac = SegmentFraction(seg, inputPt);
+                    double segFrac = seg.SegmentFraction(inputPt)/* SegmentFraction(seg, inputPt)*/;
 
                     int candidateComponentIndex = element.ComponentIndex;
                     int candidateSegmentIndex = element.VertexIndex;
@@ -121,12 +128,14 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
             return loc;
         }
 
+        /*
         /// <summary>
-        /// 
+        /// Computes the fraction of distance (in <tt>[0.0, 1.0]</tt>) that a point occurs along a line segment.
         /// </summary>
-        /// <param name="seg"></param>
-        /// <param name="inputPt"></param>
-        /// <returns></returns>
+        /// <remarks>If the point is beyond either ends of the line segment, the closest fractional value (<tt>0.0</tt> or <tt>1.0</tt>) is returned.</remarks>
+        /// <param name="seg">The line segment to use</param>
+        /// <param name="inputPt">The point</param>
+        /// <returns>The fraction along the line segment the point occurs</returns>
         public static double SegmentFraction(LineSegment seg, ICoordinate inputPt)
         {
             double segFrac = seg.ProjectionFactor(inputPt);
@@ -136,5 +145,6 @@ namespace GisSharpBlog.NetTopologySuite.LinearReferencing
                 segFrac = 1.0;
             return segFrac;
         }
+        */
     }
 }

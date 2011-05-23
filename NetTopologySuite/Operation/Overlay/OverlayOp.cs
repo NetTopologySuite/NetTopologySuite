@@ -1,12 +1,9 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
 using GisSharpBlog.NetTopologySuite.Algorithm;
 using GisSharpBlog.NetTopologySuite.GeometriesGraph;
 using GisSharpBlog.NetTopologySuite.Utilities;
-#if SILVERLIGHT
-using ArrayList = System.Collections.Generic.List<object>;
-#endif
 
 namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 {
@@ -79,16 +76,16 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             }            
         }
 
-        private readonly PointLocator ptLocator = new PointLocator();
-        private readonly IGeometryFactory geomFact;
-        private IGeometry resultGeom;
+        private readonly PointLocator _ptLocator = new PointLocator();
+        private readonly IGeometryFactory _geomFact;
+        private IGeometry _resultGeom;
 
-        private readonly PlanarGraph graph;
-        private readonly EdgeList edgeList      = new EdgeList();
+        private readonly PlanarGraph _graph;
+        private readonly EdgeList _edgeList      = new EdgeList();
 
-        private IList resultPolyList   = new ArrayList();
-        private IList resultLineList   = new ArrayList();
-        private IList resultPointList  = new ArrayList();
+        private IList<IGeometry> _resultPolyList = new List<IGeometry>();
+        private IList<IGeometry> _resultLineList = new List<IGeometry>();
+        private IList<IGeometry> _resultPointList = new List<IGeometry>();
 
         /// <summary>
         /// 
@@ -97,25 +94,25 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <param name="g1"></param>
         public OverlayOp(IGeometry g0, IGeometry g1) : base(g0, g1)
         {            
-            graph = new PlanarGraph(new OverlayNodeFactory());
+            _graph = new PlanarGraph(new OverlayNodeFactory());
 
             /*
             * Use factory of primary point.
             * Note that this does NOT handle mixed-precision arguments
             * where the second arg has greater precision than the first.
             */
-            geomFact = g0.Factory;
+            _geomFact = g0.Factory;
         }
 
         public IGeometry GetResultGeometry(SpatialFunction funcCode)
         {
             ComputeOverlay(funcCode);
-            return resultGeom;
+            return _resultGeom;
         }
 
         public PlanarGraph Graph
         {
-            get { return graph; }
+            get { return _graph; }
         }
 
         private void ComputeOverlay(SpatialFunction opCode)
@@ -133,7 +130,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             // compute intersections between edges of the two input geometries
             arg[0].ComputeEdgeIntersections(arg[1], lineIntersector, true);
 
-            IList baseSplitEdges = new ArrayList();
+            IList<Edge> baseSplitEdges = new List<Edge>();
             arg[0].ComputeSplitEdges(baseSplitEdges);            
             arg[1].ComputeSplitEdges(baseSplitEdges);            
             // add the noded edges to this result graph
@@ -144,11 +141,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
 
             if (!NodingValidatorDisabled)
             {
-                var nv = new EdgeNodingValidator(edgeList.Edges);
+                var nv = new EdgeNodingValidator(_edgeList.Edges);
                 nv.CheckValid();
             }
             
-            graph.AddEdges(edgeList.Edges);
+            _graph.AddEdges(_edgeList.Edges);
             ComputeLabelling();
             LabelIncompleteNodes();
 
@@ -160,21 +157,21 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             */
             FindResultAreaEdges(opCode);
             CancelDuplicateResultEdges();
-            var polyBuilder = new PolygonBuilder(geomFact);
-            polyBuilder.Add(graph);
-            resultPolyList = polyBuilder.Polygons;
+            var polyBuilder = new PolygonBuilder(_geomFact);
+            polyBuilder.Add(_graph);
+            _resultPolyList = polyBuilder.Polygons;
 
-            var lineBuilder = new LineBuilder(this, geomFact, ptLocator);
-            resultLineList = lineBuilder.Build(opCode);
+            var lineBuilder = new LineBuilder(this, _geomFact, _ptLocator);
+            _resultLineList = lineBuilder.Build(opCode);
 
-            var pointBuilder = new PointBuilder(this, geomFact, ptLocator);
-            resultPointList = pointBuilder.Build(opCode);
+            var pointBuilder = new PointBuilder(this, _geomFact, _ptLocator);
+            _resultPointList = pointBuilder.Build(opCode);
 
             // gather the results from all calculations into a single Geometry for the result set
-            resultGeom = ComputeGeometry(resultPointList, resultLineList, resultPolyList);
+            _resultGeom = ComputeGeometry(_resultPointList, _resultLineList, _resultPolyList);
         }        
 
-        private void InsertUniqueEdges(IEnumerable edges)
+        private void InsertUniqueEdges(IList<Edge> edges)
         {
             for (var i = edges.GetEnumerator(); i.MoveNext(); ) 
             {
@@ -193,11 +190,11 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <param name="e"></param>
         protected void InsertUniqueEdge(Edge e)
         {
-            var foundIndex = edgeList.FindEdgeIndex(e);
+            var foundIndex = _edgeList.FindEdgeIndex(e);
             // If an identical edge already exists, simply update its label
             if (foundIndex >= 0)
             {
-                var existingEdge = edgeList[foundIndex];
+                var existingEdge = _edgeList[foundIndex];
                 var existingLabel = existingEdge.Label;
 
                 var labelToMerge = e.Label;
@@ -219,7 +216,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             {
                 // no matching existing edge was found
                 // add this new edge to the list of edges in this graph
-                edgeList.Add(e);
+                _edgeList.Add(e);
             }
         }
 
@@ -235,7 +232,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         private void ComputeLabelsFromDepths()
         {
-            for (var it = edgeList.GetEnumerator(); it.MoveNext(); ) 
+            for (var it = _edgeList.GetEnumerator(); it.MoveNext(); ) 
             {
                 var e = (Edge) it.Current;
                 var lbl = e.Label;
@@ -284,9 +281,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         private void ReplaceCollapsedEdges()
         {
-            IList newEdges = new ArrayList();
-            IList edgesToRemove = new ArrayList();
-            var it = edgeList.GetEnumerator();
+            IList<Edge> newEdges = new List<Edge>();
+            IList<Edge> edgesToRemove = new List<Edge>();
+            var it = _edgeList.GetEnumerator();
             while (it.MoveNext()) 
             {
                 var e = (Edge) it.Current;
@@ -301,9 +298,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             }
             // Removing all collapsed edges at the end of iteration.
             foreach (Edge obj in edgesToRemove)
-                edgeList.Remove(obj);            
+                _edgeList.Remove(obj);            
             foreach (var obj in newEdges)
-                edgeList.Add((Edge) obj);
+                _edgeList.Add((Edge) obj);
         }
 
         /// <summary>
@@ -322,7 +319,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             while (i.MoveNext()) 
             {
                 var graphNode = (Node) i.Current;
-                var newNode = graph.AddNode(graphNode.Coordinate);
+                var newNode = _graph.AddNode(graphNode.Coordinate);
                 newNode.SetLabel(argIndex, graphNode.Label.GetLocation(argIndex));
             }
         }
@@ -336,7 +333,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         private void ComputeLabelling()
         {
-            var nodeit = graph.Nodes.GetEnumerator();
+            var nodeit = _graph.Nodes.GetEnumerator();
             while (nodeit.MoveNext()) 
             {
                 var node = (Node) nodeit.Current;
@@ -354,7 +351,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         private void MergeSymLabels()
         {
-            var nodeit = graph.Nodes.GetEnumerator();
+            var nodeit = _graph.Nodes.GetEnumerator();
             while (nodeit.MoveNext()) 
             {
                 var node = (Node) nodeit.Current;
@@ -368,7 +365,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
             // The label for a node is updated from the edges incident on it
             // (Note that a node may have already been labelled
             // because it is a point in one of the input geometries)
-            var nodeit = graph.Nodes.GetEnumerator();
+            var nodeit = _graph.Nodes.GetEnumerator();
             while (nodeit.MoveNext()) 
             {
                 var node = (Node) nodeit.Current;
@@ -392,7 +389,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         private void LabelIncompleteNodes()
         {
-            var ni = graph.Nodes.GetEnumerator();
+            var ni = _graph.Nodes.GetEnumerator();
             while (ni.MoveNext()) 
             {
                 var n = (Node) ni.Current;
@@ -413,7 +410,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         private void LabelIncompleteNode(GraphComponent n, int targetIndex)
         {
-            var loc = ptLocator.Locate(n.Coordinate, arg[targetIndex].Geometry);
+            var loc = _ptLocator.Locate(n.Coordinate, arg[targetIndex].Geometry);
             n.Label.SetLocation(targetIndex, loc);
         }
 
@@ -427,7 +424,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// </summary>
         private void FindResultAreaEdges(SpatialFunction opCode)
         {
-            var it = graph.EdgeEnds.GetEnumerator();
+            var it = _graph.EdgeEnds.GetEnumerator();
             while (it.MoveNext()) 
             {
                 var de = (DirectedEdge) it.Current;
@@ -447,7 +444,7 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         {
             // remove any dirEdges whose sym is also included
             // (they "cancel each other out")
-            var it = graph.EdgeEnds.GetEnumerator();
+            var it = _graph.EdgeEnds.GetEnumerator();
             while (it.MoveNext()) 
             {
                 var de = (DirectedEdge) it.Current;
@@ -466,9 +463,9 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <returns><c>true</c> if the coord point is covered by a result Line or Area point.</returns>
         public bool IsCoveredByLA(ICoordinate coord)
         {
-            if (IsCovered(coord, resultLineList)) 
+            if (IsCovered(coord, _resultLineList)) 
                 return true;
-            return IsCovered(coord, resultPolyList);
+            return IsCovered(coord, _resultPolyList);
         }
         /// <summary>
         /// This method is used to decide if an L edge should be included in the result or not.
@@ -476,44 +473,37 @@ namespace GisSharpBlog.NetTopologySuite.Operation.Overlay
         /// <returns><c>true</c> if the coord point is covered by a result Area point.</returns>
         public bool IsCoveredByA(ICoordinate coord)
         {
-            return IsCovered(coord, resultPolyList);
+            return IsCovered(coord, _resultPolyList);
         }
 
         /// <returns>
         /// <c>true</c> if the coord is located in the interior or boundary of
         /// a point in the list.
         /// </returns>
-        private bool IsCovered(ICoordinate coord, IEnumerable geomList)
+        private bool IsCovered(ICoordinate coord, IEnumerable<IGeometry> geomList)
         {
             var it = geomList.GetEnumerator();
             while (it.MoveNext()) 
             {
-                var geom = (IGeometry) it.Current;
-                var loc = ptLocator.Locate(coord, geom);
+                var geom = it.Current;
+                var loc = _ptLocator.Locate(coord, geom);
                 if (loc != Locations.Exterior) 
                     return true;
             }
             return false;
         }
 
-        private IGeometry ComputeGeometry(IList resultPtList, IList resultLiList, IList resultPlList)
+        private IGeometry ComputeGeometry(IEnumerable<IGeometry> resultPtList, IEnumerable<IGeometry> resultLiList, IEnumerable<IGeometry> resultPlList)
         {
-            var geomList = new ArrayList();
+            var geomList = new List<IGeometry>();
+
             // element geometries of the result are always in the order Point,Curve,A
-            //geomList.addAll(resultPtList);
-            foreach (var obj in resultPtList)
-                geomList.Add(obj);
-
-            //geomList.addAll(resultLiList);
-            foreach (var obj in resultLiList)
-                geomList.Add(obj);
-
-            //geomList.addAll(resultPlList);
-            foreach (var obj in resultPlList)
-                geomList.Add(obj);
+            geomList.AddRange(resultPtList);
+            geomList.AddRange(resultLiList);
+            geomList.AddRange(resultPlList);
 
             // build the most specific point possible
-            return geomFact.BuildGeometry(geomList);
+            return _geomFact.BuildGeometry(geomList);
         }
     }
 }

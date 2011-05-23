@@ -63,10 +63,6 @@
     <DocumentationFile>bin\Release\NetTopologySuite.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GeoAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ExternalReferences\GeoAPI.dll</HintPath>
-    </Reference>
     <Reference Include="PowerCollections, Version=1.0.2141.24679, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ExternalReferences\PowerCollections.dll</HintPath>
@@ -91,10 +87,15 @@
     <Compile Include="Algorithm\CGAlgorithms.cs" />
     <Compile Include="Algorithm\ConvexHull.cs" />
     <Compile Include="Algorithm\HCoordinate.cs" />
+    <Compile Include="Algorithm\IndexedPointInAreaLocator.cs" />
     <Compile Include="Algorithm\InteriorPointArea.cs" />
     <Compile Include="Algorithm\InteriorPointLine.cs" />
     <Compile Include="Algorithm\InteriorPointPoint.cs" />
+    <Compile Include="Algorithm\IPointInAreaLocator.cs" />
     <Compile Include="Algorithm\LineIntersector.cs" />
+    <Compile Include="Algorithm\Locate\IndexedPointInAreaLocator.cs" />
+    <Compile Include="Algorithm\Locate\IPointOnGeometryLocator.cs" />
+    <Compile Include="Algorithm\Locate\SimplePointInAreaLocator.cs" />
     <Compile Include="Algorithm\MCPointInRing.cs" />
     <Compile Include="Algorithm\MinimumDiameter.cs" />
     <Compile Include="Algorithm\NonRobustCGAlgorithms.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Algorithm\NotRepresentableException.cs" />
     <Compile Include="Algorithm\IPointInRing.cs" />
     <Compile Include="Algorithm\PointLocator.cs" />
+    <Compile Include="Algorithm\RayCrossingCounter.cs" />
     <Compile Include="Algorithm\RobustDeterminant.cs" />
     <Compile Include="Algorithm\RobustLineIntersector.cs" />
     <Compile Include="Algorithm\SimplePointInAreaLocator.cs" />
@@ -153,14 +155,33 @@
     <Compile Include="Geometries\Point.cs" />
     <Compile Include="Geometries\Polygon.cs" />
     <Compile Include="Geometries\PrecisionModel.cs" />
+    <Compile Include="Geometries\Prepared\AbstractPreparedPolygonContains.cs" />
+    <Compile Include="Geometries\Prepared\BasicPreparedGeometry.cs" />
+    <Compile Include="Geometries\Prepared\LineIntersectionAdder.cs" />
+    <Compile Include="Geometries\Prepared\LineNode.cs" />
+    <Compile Include="Geometries\Prepared\LineTopology.cs" />
+    <Compile Include="Geometries\Prepared\PreparedGeometryFactory.cs" />
+    <Compile Include="Geometries\Prepared\PreparedLineString.cs" />
+    <Compile Include="Geometries\Prepared\PreparedLineStringIntersects.cs" />
+    <Compile Include="Geometries\Prepared\PreparedPoint.cs" />
+    <Compile Include="Geometries\Prepared\PreparedPolygonCovers.cs" />
+    <Compile Include="Geometries\Prepared\PreparedPolygon.cs" />
+    <Compile Include="Geometries\Prepared\PreparedPolygonContains.cs" />
+    <Compile Include="Geometries\Prepared\PreparedPolygonContainsProperly.cs" />
+    <Compile Include="Geometries\Prepared\PreparedPolygonIntersects.cs" />
+    <Compile Include="Geometries\Prepared\PreparedPolygonLineIntersection.cs" />
+    <Compile Include="Geometries\Prepared\PreparedPolygonPredicate.cs" />
     <Compile Include="Geometries\TopologyException.cs" />
     <Compile Include="Geometries\Triangle.cs" />
     <Compile Include="Geometries\Utilities\AffineTransformation.cs" />
     <Compile Include="Geometries\Utilities\AffineTransformationBuilder.cs" />
+    <Compile Include="Geometries\Utilities\ComponentGeometryExtractor.cs" />
     <Compile Include="Geometries\Utilities\GeometryCombiner.cs" />
     <Compile Include="Geometries\Utilities\GeometryEditor.cs" />
+    <Compile Include="Geometries\Utilities\GeometryExtracter.cs" />
     <Compile Include="Geometries\Utilities\GeometryTransformer.cs" />
     <Compile Include="Geometries\Utilities\LinearComponentExtracter.cs" />
+    <Compile Include="Geometries\Utilities\LineStringExtracter.cs" />
     <Compile Include="Geometries\Utilities\Matrix.cs" />
     <Compile Include="Geometries\Utilities\NoninvertibleTransformationException.cs" />
     <Compile Include="Geometries\Utilities\PointExtracter.cs" />
@@ -197,6 +218,13 @@
     <Compile Include="GeometriesGraph\Position.cs" />
     <Compile Include="GeometriesGraph\QuadrantOp.cs" />
     <Compile Include="GeometriesGraph\TopologyLocation.cs" />
+    <Compile Include="IO\WKTFileReader.cs" />
+    <Compile Include="Noding\FastSegmentSetIntersectionFinder.cs" />
+    <Compile Include="Noding\MCIndexSegmentSetMutualIntersector.cs" />
+    <Compile Include="Noding\SegmentIntersectionDetector.cs" />
+    <Compile Include="Noding\SegmentSetMutualIntersector.cs" />
+    <Compile Include="Noding\SegmentStringUtil.cs" />
+    <Compile Include="Geometries\Utilities\SineStarFactory.cs" />
     <Compile Include="Index\ArrayListVisitor.cs" />
     <Compile Include="Index\Bintree\Bintree.cs" />
     <Compile Include="Index\Bintree\Interval.cs" />
@@ -210,6 +238,10 @@
     <Compile Include="Index\Chain\MonotoneChainSelectAction.cs" />
     <Compile Include="Index\IIndexVisitor.cs" />
     <Compile Include="Index\IItemVisitor.cs" />
+    <Compile Include="Index\IntervalRTree\IntervalRTreeBranchNode.cs" />
+    <Compile Include="Index\IntervalRTree\IntervalRTreeLeafNode.cs" />
+    <Compile Include="Index\IntervalRTree\IntervalRTreeNode.cs" />
+    <Compile Include="Index\IntervalRTree\SortedPackedIntervalRTree.cs" />
     <Compile Include="Index\ISpatialIndex.cs" />
     <Compile Include="Index\Quadtree\DoubleBits.cs" />
     <Compile Include="Index\Quadtree\IntervalSize.cs" />
@@ -324,9 +356,11 @@
     <Compile Include="Operation\BoundaryOp.cs" />
     <Compile Include="Operation\Buffer\BufferBuilder.cs" />
     <Compile Include="Operation\Buffer\BufferOp.cs" />
+    <Compile Include="Operation\Buffer\BufferParameters.cs" />
     <Compile Include="Operation\Buffer\BufferSubgraph.cs" />
     <Compile Include="Operation\Buffer\OffsetCurveBuilder.cs" />
     <Compile Include="Operation\Buffer\OffsetCurveSetBuilder.cs" />
+    <Compile Include="Operation\Buffer\OffsetCurveVertexList.cs" />
     <Compile Include="Operation\Buffer\RightmostEdgeFinder.cs" />
     <Compile Include="Operation\Buffer\SubgraphDepthLocater.cs" />
     <Compile Include="Operation\Distance\ConnectedElementLocationFilter.cs" />
@@ -373,6 +407,8 @@
     <Compile Include="Operation\Relate\RelateNodeGraph.cs" />
     <Compile Include="Operation\Relate\RelateOp.cs" />
     <Compile Include="Operation\Union\CascadedPolygonUnion.cs" />
+    <Compile Include="Operation\Union\UnaryUnionOp.cs" />
+    <Compile Include="Operation\Union\UnionInteracting.cs" />
     <Compile Include="Operation\Valid\ConnectedInteriorTester.cs" />
     <Compile Include="Operation\Valid\ConsistentAreaTester.cs" />
     <Compile Include="Operation\Valid\IsValidOp.cs" />
@@ -470,6 +506,15 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">
+      <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
+      <Name>GeoAPI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Geometries\Implementation\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
